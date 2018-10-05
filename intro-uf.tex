@@ -1,0 +1,228 @@
+%% this chapter sets up the foundational system, which is Univalent Foundations
+
+\section{What is a type?}
+
+In some computer programming languages, all variables are introduced along with a declaration of the type of thing they will refer to.  For example,
+one may encounter types such as $bool$, $string$, $int$, and $real$, describing Boolean values, character strings, 32 bit integers, and 64 bit
+floating point numbers.  The types are used to determine which statements of the programming language are grammatically well-formed.
+For example, if $s$ of type $string$ and $x$ is of type $real$, we may write $1/x$, but we may not write $1/s$.
+
+Types occur in mathematics, too, and are used in the same way: all variables are introduced along with a declaration of the type of thing they
+will refer to.  For example, one may say ``consider a point $P$ of the plane'', ``consider a line $L$ of the plane'', ``consider a hexagon
+$H$'', or ``consider a graph $G$''.  The types are used to determine which mathematical statements are grammatically well-formed.  For example,
+one may write ``$P$ lies on $L$'' or ``$L$ passes through $P$'', but not ``$L$ lies on $P$''.
+
+In {\em univalent mathematics}, types are used for everything.  There are ways to form new types from old ones to provide everything we need to
+write mathematics.
+
+One expresses the statement that an ``element'' $a$ is of ``type'' $X$ by writing $a:X$.  Using that notation, each variable is introduced along
+with a declaration of the type of thing it will refer to, and the declared types of the variables are used to determine which statements of the
+theory are grammatically well-formed.
+
+If $X$ and $Y$ are types, there will be a type whose elements serve as {\em functions} from $X$ to $Y$; the notation for it is $X \to Y$.  Thus
+when we write $f : X \to Y$, we mean that $f$ is an element of the type $X \to Y$, and we are saying that $f$ is a function from $X$ to $Y$.
+
+Functions behave as one would expect, and one can make new ones in the usual way.
+
+To provide an example of making new functions in the usual way, consider functions $f : X \to Y$ and $g : Y \to Z$.  We define their composite
+$g \circ f : X \to Z$ by setting $g \circ f \defeq (a \mapsto g(f(a)))$.  Such definitions are to be regarded as syntactically transparent in
+our formal system, in the sense that two formal expressions will be regarded as being {\em the same by definition} if they yield the same formal
+expression after the definitions of all the symbols within them are completely expanded.  Given two expressions that are the same by definition,
+we may replace one with the other in any other expression, at will.  Here is an example: consider functions $f : X \to Y$, $g : Y \to Z$, and $h
+: Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by definition, since applying the definitions within expands both
+to $a \mapsto h(g(f(a)))$.
+
+One may define the identity function $id_X : X \to X$ by setting $id_X \defeq (a \mapsto a)$.  Application of definitions shows that $f \circ
+id_X$ is the same as $a \mapsto f(a)$, which, by convention, is to be regarded as the same as $f$.  A similar computation applies to $id_Y \circ
+f$.
+
+In the following sections we will expose various other elementary sorts of types and elementary ways to make new types from old ones.
+
+\section{The type of natural numbers}\label{nat}
+
+Here are Peano's rules \citep{peano-principia} for constructing the natural numbers in the form that is used in type theory.
+\begin{enumerate}
+\item[P1:] there is a type called $\NN$ (whose elements will be called natural numbers);
+\item[P2:] there is an element of $\NN$ called $0$;
+\item[P3:] if $m$ is a natural number, then there is also a natural number $S(m)$, called the {\em successor} of $m$;
+\item[P4:] given a family of types $X(m)$ depending on a parameter
+  $m$ of type $\NN$, in order to define a family $f(m) : X(m)$ of elements of each of them it suffices to provide an element $a$ of $X(0)$ and
+  to provide, for each $m$, a function $g_m : X(m) \to X(S(m))$.  (The resulting function $f$ may be regarded as having been defined inductively
+  by the two declarations $f(0) \defeq a$ and $f(S(m)) \defeq g_m(f(m))$.)
+\end{enumerate}
+\nopagebreak
+You may recognize rule P4 as ``the principle of mathematical induction'' or as ``defining a function by recursion''.  We may also refer to it
+simply as ``induction for $\NN$''.  Notice that the two cases in an inductive definition correspond to the two ways of introducing elements of
+$\NN$ via the use of rules P2 and P3.
+
+Here is an example of defining a function by recursion using induction for $\NN$.  We define the factorial function $f : \NN \to \NN$ by setting
+$f(0) \defeq 1$ and setting $f(S(m)) \defeq (m+1) \cdot f(m)$.  One can infer that the function $g_m$ of rule (P4) is $n \mapsto (m+1) \cdot n$.
+
+We introduce the following definitions.
+\begin{align*}
+ 1 & \defeq S(0) \\
+ 2 & \defeq S(1) \\
+ 3 & \defeq S(2) \\
+ 4 & \defeq S(3)
+\end{align*}
+
+We may use induction to define the sum $m+n$ of two natural numbers, as a natural number.  We handle the two possible cases for the argument $m$
+as follows: we define $0+n \defeq n$, and we define $(S(m))+n \defeq S(m+n)$.  Application of definitions shows, for example, that $2+2$ and $4$
+are the same by definition, because they both reduce to $S(S(S(S(0))))$.
+
+Before we can write an equation such as $2+2=4$, we must introduce a formal treatment of equality in type theory.  We do that in the next section.
+
+\section{Identity types}\label{paths}
+
+One of the most important types is the {\em identity type}, which implements the intuitive notion of equality; the reader may be more
+comfortable if we call it the {\em equality type}, at least initially.  Identity (or equality) between two elements may be considered only when
+the two elements are of the same type; we shall have no need to compare elements of different types.
+
+Here are the rules for constructing equality types.
+\begin{enumerate}
+\item[E1:]
+  for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a=b$;
+\item[E2:] for any type $X$ and for any element $a$ of it, there is an element $\refl(a)$ of type $a=a$ (the name $\refl$ comes from the word
+  ``reflexivity'')
+\item[E3:] for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
+  $a=b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl(a))$.  The resulting
+  function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl(a)) \defeq p$.
+\end{enumerate}
+
+An element of $a=b$ can be thought of, for now, as a ``proof'' that $a$ is equal to $b$.
+
+We see from rule E2 that $\refl(S(S(S(S(0)))))$ serves as a proof of $2+2=4$, as do $\refl(4)$ and $\refl(2+2)$.  A student might wish for a
+more detailed proof of that equation, but as a result of our convention above that definitions are syntactically transparent, the application of
+definitions, including inductive definitions, is regarded as a trivial operation.
+
+We will refer to rule E3 as ``induction for equality''.  It says that to prove something about (or to construct something from) every proof that
+$a$ is equal to something else, it suffices to consider the special case where the proof is the trivial proof that $a$ is equal to itself, i.e.,
+where the proof is $\refl(a) : a=a$.  Notice that the single case in such an induction corresponds to the single way of introducing elements of
+equality types via rule E2, and compare that with P4, which dealt with the two ways of introducing elements of $\NN$.
+%% ???
+Intuitively, the induction principle for equality amounts to saying that the element $\refl(a)$ ``generates'' the system of types $a=b$, as $b$
+ranges over elements of $A$.
+
+We may use induction to prove symmetry of equality.  In accordance with our discussion of implication above, we show how to produce an element
+of $b=a$ from an element $e$ of $a=b$, for any $b$ and $e$.  By induction (letting $P(b,e)$ be $b=a$ in rule E3 above), it suffices to produce
+an element of $a=a$; we choose $\refl(a)$ to achieve that.
+
+Transitivity of equality is established the same way.  For each $a,b,c:X$ and for each $p:a=b$ and for each $q:b=c$ we want to produce an
+element of type $a=c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl(b)$, and we are to produce an element
+of $a=b$.  The element $p$ serves the purpose.  Notice the similarity of this inductive definition with the definition given above of the sum
+$m+n$.
+
+Associativity of transitivity is established the same way.  We leave its proof as an exercise.
+
+Now we state our symmetry result a little more formally.
+
+\begin{definition}
+  For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$ be the function defined by induction by setting 
+  $\symm_{a,a}(\refl(a)) \defeq \refl(a)$.
+\end{definition}
+
+Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
+abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
+
+One frequent use of elements of identity types is in {\em substitution}.  Let $X$ be a type, and let $P(x)$ be a family of types depending on a
+parameter $x:X$.  Suppose $a,b:X$ and $e:a=b$.  Then there is a function of type $P(a) \to P(b)$.  To prove that, it suffices, by induction, to
+consider the case where $b$ is $a$ and $e$ is $\refl(a)$ and to provide a function $P(a) \to P(a)$.  To achieve that, we provide the identity
+function.
+
+In the case where each $P(a)$ is a proposition (to be defined later), we may say that the truth of $P(a)$ is invariant under substitution.  In
+other words, equal elements of $X$ have the same properties.  In the case where each $P(a)$ is not assumed to be a proposition, and thus its
+elements are ways to add extra structure to $a$, we may say that the structures can be {\em transported} from $a$ to $b$ by the proof $e$ of
+equality.
+
+\section{Other types}
+
+There are other examples of types that are conveniently presented as inductive definitions, in the style we have seen with the natural numbers
+and the equality types.  We present three examples.
+
+Firstly, there is the ``empty'' type, called $\emptyset$, defined inductively, with no way to construct elements provided in the inductive
+definition.  The inductive principle for $\emptyset$ says that to prove something about (or to construct something from) every element of
+$\emptyset$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptyset$ can be proven.  As
+an example, we may prove that any two elements $x$ and $y$ of $\emptyset$ are equal by using induction on $x$.
+
+An element of $\emptyset$ will be called an {\em absurdity}, and the negation $\neg P$ of a proposition $P$ will be implemented as the function
+type $P \to \emptyset$.  This is sensible, because an element of $\neg P$ could be applied to an element of $P$ to produce an element of
+$\emptyset$, i.e., an absurdity.
+
+Another appropriate name for $\emptyset$ is $\false$.
+
+We may also construct a function $\false \to X$, for any type $X$, by induction, showing that from an absurdity anything follows.
+
+To encode the property that $X$ has no elements we use the type $X \to \emptyset$.  To encode the property that elements $a,b:X$ are not equal,
+we use the type $(a=b) \to \emptyset$, and we let $a \ne b$ denote it.
+
+Secondly, there will also be a type called $\true$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
+  ``trivial'').  Its induction principle
+states that, in order to prove something about (or to construct something from) every element of $\true$, it suffices to consider the special
+case where the element is $\triv$.  As an example, we may prove, for any element $u : \true$, that $u=\triv$, by using induction to reduce
+to proving $\triv=\triv$, a proof of which is provided by $\refl(\triv)$.  One may also prove that any two elements of $\true$ are equal by using induction twice.
+
+There is a function $X \to \true$, for any type $X$, namely: $a \mapsto \triv$.  This corresponds, for propositions, to the statement that an
+implication holds if the conclusion is true.
+
+Thirdly, there will be a type called $\bool$, defined by induction and provided with two elements, $\yes$ and $\no$.  One may prove by induction
+that any element of $\bool$ is equal to $\yes$ or to $\no$.
+
+We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
+Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.  The definition of $P(b)$ is motivated by the expectation that we will be able
+to prove that $P(b)$ and $b = \yes$ are equivalent.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv :
+P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptyset$,
+establishing the claim.
+
+In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, i.e., for any $n:\NN$ that $0 \ne
+S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
+\defeq \true$ and $P(S(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
+and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
+of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptyset$, establishing the claim.
+
+There are {\em sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
+there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$.  Sums may be implemented by an inductive
+definition, and they behave as one would expect.
+
+Given a function $f : X \to Y$ and an element $y:Y$, the {\em fiber} (or {\em inverse image}) $f^{-1}(y)$ consists of points $x$ such that $f(x)
+= y$.  This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (f(x) = y)$.  In other words, a point of the fiber is a pair $(x,e)$ consisting
+of the point $x$ and an element $e$ of the identity type $f(x) = y$.
+
+There is a binary sum operation on types: for any types $X$ and $Y$, there is a type $X \amalg Y$, which is analogous to the disjoint union of
+two sets.  From an element of $X$ or an element of $Y$ we can produce an element of $X \amalg Y$.  The binary sum can be implemented as a sum
+where the index type is $\bool$ and the family of types sends $\yes$ to $X$ and sends $\no$ to $Y$, or it may be implemented as an inductive
+definition.  Binary sums behave as one would expect.
+
+Our type theory will also contain {\em products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
+parameter $x$ of type $X$, then there will be a type $\prod _{x:X} Y(x)$ whose elements serve as {\em families} of elements $b:Y(a)$, one for
+each $a:X$.  A family is much like a function, but without a single codomain.  (FILL IN SOME PROPERTIES.)
+
+There is a binary product operation on types: for any types $X$ and $Y$, there is a type $X \times Y$.  From an element of $X$ and an element of
+$Y$ we can produce an element $(x,y)$ of $X \times Y$.  The binary product can be implemented as an inductive definition, as a special case of
+products, or as a special case of sums.  (FILL IN SOME PROPERTIES.)
+
+Let $X$ be a type.  The property that $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is
+equal to it.  Hence it is encoded by the type $\sum_{a:X} \prod_{b:X} (a=b)$.
+
+\section{Propositions and sets}
+
+Let $X$ be a type.  The property that $X$ has at most one element is equivalent to the property that any two elements are equal, so is encoded
+by $\prod_{a:X} \prod_{b:X} (a=b)$.  We shall call such a type a {\em proposition}, and its elements will be called {\em proofs}.
+Alternatively, we shall say that $X$ has level {\em at most 1}.
+
+Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a proposition, then we shall say that $X$ is a {\em set}.
+Alternatively, we shall say that $X$ has level {\em at most 2}.
+
+Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a set, then we shall say that $X$ has level {\em at most 3}.
+
+The pattern continues.  If for any $n:\NN$, any $x:X$, and any $y:X$ the identity type $x=y$ is of level at most $n$, then we shall say that $X$
+has level {\em at most $n+1$}.
+
+\section{Logical operations on propositions}
+
+\section{Propositional truncation; disjunction}
+
+\section{Operations on sets that produce new sets}
+
+\section{Equivalences; function extensionality}
+
+\section{Universes and univalence}
