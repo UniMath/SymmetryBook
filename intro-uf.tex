@@ -12,12 +12,14 @@ will refer to.  For example, one may say ``consider a point $P$ of the plane'', 
 $H$'', or ``consider a graph $G$''.  The types are used to determine which mathematical statements are grammatically well-formed.  For example,
 one may write ``$P$ lies on $L$'' or ``$L$ passes through $P$'', but not ``$L$ lies on $P$''.
 
-In {\em univalent mathematics}, types are used for everything.  There are ways to form new types from old ones to provide everything we need to
-write mathematics.
+In {\em univalent mathematics}, types are used to classify all mathematical objects.  Every mathematical object is an element of some (unique)
+type.
 
 One expresses the statement that an ``element'' $a$ is of ``type'' $X$ by writing $a:X$.  Using that notation, each variable is introduced along
 with a declaration of the type of thing it will refer to, and the declared types of the variables are used to determine which statements of the
 theory are grammatically well-formed.
+
+There are enough ways to form new types from old ones to provide everything we need to write mathematics.
 
 If $X$ and $Y$ are types, there will be a type whose elements serve as {\em functions} from $X$ to $Y$; the notation for it is $X \to Y$.  Thus
 when we write $f : X \to Y$, we mean that $f$ is an element of the type $X \to Y$, and we are saying that $f$ is a function from $X$ to $Y$.
@@ -36,7 +38,7 @@ One may define the identity function $id_X : X \to X$ by setting $id_X \defeq (a
 id_X$ is the same as $a \mapsto f(a)$, which, by convention, is to be regarded as the same as $f$.  A similar computation applies to $id_Y \circ
 f$.
 
-In the following sections we will expose various other elementary sorts of types and elementary ways to make new types from old ones.
+In the following sections we will expose various other elementary types and elementary ways to make new types from old ones.
 
 \section{The type of natural numbers}\label{nat}
 
@@ -55,8 +57,9 @@ You may recognize rule P4 as ``the principle of mathematical induction'' or as `
 simply as ``induction for $\NN$''.  Notice that the two cases in an inductive definition correspond to the two ways of introducing elements of
 $\NN$ via the use of rules P2 and P3.
 
-Here is an example of defining a function by recursion using induction for $\NN$.  We define the factorial function $f : \NN \to \NN$ by setting
-$f(0) \defeq 1$ and setting $f(S(m)) \defeq (m+1) \cdot f(m)$.  One can infer that the function $g_m$ of rule (P4) is $n \mapsto (m+1) \cdot n$.
+Here is an example of defining a function by recursion using induction for $\NN$.  We define the factorial function $f : \NN \to \NN$ by
+defining $X(m)$ to be $\NN$ for all $m$ and by setting $f(0) \defeq 1$ and setting $f(S(m)) \defeq (m+1) \cdot f(m)$.  One can infer that the
+function $g_m$ of rule (P4) is $n \mapsto (m+1) \cdot n$.
 
 We introduce the following definitions.
 \begin{align*}
@@ -104,15 +107,13 @@ Intuitively, the induction principle for equality amounts to saying that the ele
 ranges over elements of $A$.
 
 We may use induction to prove symmetry of equality.  In accordance with our discussion of implication above, we show how to produce an element
-of $b=a$ from an element $e$ of $a=b$, for any $b$ and $e$.  By induction (letting $P(b,e)$ be $b=a$ in rule E3 above), it suffices to produce
-an element of $a=a$; we choose $\refl(a)$ to achieve that.
+of $b=a$ from an element $p$ of $a=b$, for any $b$ and $p$.  By induction (letting $P(b,e)$ be $b=a$ for any $b$ of type $X$ and for any $e$ of
+type $a=b$, for use in rule E3 above), it suffices to produce an element of $a=a$; we choose $\refl(a)$ to achieve that.
 
 Transitivity of equality is established the same way.  For each $a,b,c:X$ and for each $p:a=b$ and for each $q:b=c$ we want to produce an
 element of type $a=c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl(b)$, and we are to produce an element
 of $a=b$.  The element $p$ serves the purpose.  Notice the similarity of this inductive definition with the definition given above of the sum
 $m+n$.
-
-Associativity of transitivity is established the same way.  We leave its proof as an exercise.
 
 Now we state our symmetry result a little more formally.
 
@@ -124,15 +125,12 @@ Now we state our symmetry result a little more formally.
 Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
 abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
 
+Associativity of transitivity is formulated and established similarly.  We leave that as an exercise.
+
 One frequent use of elements of identity types is in {\em substitution}.  Let $X$ be a type, and let $P(x)$ be a family of types depending on a
 parameter $x:X$.  Suppose $a,b:X$ and $e:a=b$.  Then there is a function of type $P(a) \to P(b)$.  To prove that, it suffices, by induction, to
 consider the case where $b$ is $a$ and $e$ is $\refl(a)$ and to provide a function $P(a) \to P(a)$.  To achieve that, we provide the identity
 function.
-
-In the case where each $P(a)$ is a proposition (to be defined later), we may say that the truth of $P(a)$ is invariant under substitution.  In
-other words, equal elements of $X$ have the same properties.  In the case where each $P(a)$ is not assumed to be a proposition, and thus its
-elements are ways to add extra structure to $a$, we may say that the structures can be {\em transported} from $a$ to $b$ by the proof $e$ of
-equality.
 
 \section{Other types}
 
@@ -180,25 +178,25 @@ and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could su
 of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptyset$, establishing the claim.
 
 There are {\em sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
-there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$.  Sums may be implemented by an inductive
-definition, and they behave as one would expect.
+there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$.  We may refer to $X$ as the {\em index
+  type} of the sum.  Sums may be implemented by an inductive definition.   (FILL IN SOME PROPERTIES.)
 
 Given a function $f : X \to Y$ and an element $y:Y$, the {\em fiber} (or {\em inverse image}) $f^{-1}(y)$ consists of points $x$ such that $f(x)
 = y$.  This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (f(x) = y)$.  In other words, a point of the fiber is a pair $(x,e)$ consisting
 of the point $x$ and an element $e$ of the identity type $f(x) = y$.
 
-There is a binary sum operation on types: for any types $X$ and $Y$, there is a type $X \amalg Y$, which is analogous to the disjoint union of
-two sets.  From an element of $X$ or an element of $Y$ we can produce an element of $X \amalg Y$.  The binary sum can be implemented as a sum
-where the index type is $\bool$ and the family of types sends $\yes$ to $X$ and sends $\no$ to $Y$, or it may be implemented as an inductive
-definition.  Binary sums behave as one would expect.
+There is a binary sum operation on types: for any types $X$ and $Y$, there is a type $X \amalg Y$.  It is also called the {\em disjoint union}
+of $X$ and $Y$.  From an element of $X$ or an element of $Y$ we can produce an element of $X \amalg Y$.  The binary sum is implemented by an
+inductive definition.  (SAY MORE AND FILL IN SOME PROPERTIES.)
 
 Our type theory will also contain {\em products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
-parameter $x$ of type $X$, then there will be a type $\prod _{x:X} Y(x)$ whose elements serve as {\em families} of elements $b:Y(a)$, one for
-each $a:X$.  A family is much like a function, but without a single codomain.  (FILL IN SOME PROPERTIES.)
+parameter $x$ of type $X$, then there will be a type $\prod _{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
+$Y(a)$, one for each $a:X$.  A function $f : X \to Y$ is essentially the same thing as a function $f$ of $\prod_{x:X} Y$, where the product is
+formed using a constant family of types.  (FILL IN SOME PROPERTIES.)
 
 There is a binary product operation on types: for any types $X$ and $Y$, there is a type $X \times Y$.  From an element of $X$ and an element of
-$Y$ we can produce an element $(x,y)$ of $X \times Y$.  The binary product can be implemented as an inductive definition, as a special case of
-products, or as a special case of sums.  (FILL IN SOME PROPERTIES.)
+$Y$ we can produce an element $(x,y)$ of $X \times Y$.  The binary product is implemented as a special case of sums.  (SAY MORE AND FILL IN SOME
+PROPERTIES.)
 
 Let $X$ be a type.  The property that $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is
 equal to it.  Hence it is encoded by the type $\sum_{a:X} \prod_{b:X} (a=b)$.
@@ -217,6 +215,12 @@ Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a 
 The pattern continues.  If for any $n:\NN$, any $x:X$, and any $y:X$ the identity type $x=y$ is of level at most $n$, then we shall say that $X$
 has level {\em at most $n+1$}.
 
+DO SOMETHING WITH THIS TEXT HERE: In the case where each $P(a)$ is a proposition (to be defined later), we may say that the truth of $P(a)$ is
+invariant under substitution.  In other words, equal elements of $X$ have the same properties.  In the case where each $P(a)$ is not assumed to
+be a proposition, and thus its elements are ways to add extra structure to $a$, we may say that the structures can be {\em transported} from $a$
+to $b$ by the proof $e$ of equality.
+
+
 \section{Logical operations on propositions}
 
 \section{Propositional truncation; disjunction}
@@ -226,3 +230,8 @@ has level {\em at most $n+1$}.
 \section{Equivalences; function extensionality}
 
 \section{Universes and univalence}
+
+% Local Variables:
+% fill-column: 144
+% latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition")
+% End:
