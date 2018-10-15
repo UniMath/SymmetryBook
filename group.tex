@@ -1,36 +1,191 @@
 %\usepackage{\xspace}
-\newcommand{\ie}{i.e.,\xspace}
-%\newcommand{\refl}{\mathrm{refl}}
-The identity type is not just any type.  In the previous sections we have seen that the identity type $a=_Aa$ reflects all the ``symmetries'' of a term $a$ in a type $A$.  Symmetries have special properties; for instance if you rotate a square by $90^o$, or by $-90^o$, undoing the first rotation.  Symmetries can also be composed.  
-We have also seen that the order with which you compose symmetries can matter (see Example~]ref{}).
+\newcommand{\ie}{{\em i.e., }}%\xspace}fixlater
+\newcommand{\refer}{{\bf crossref}}%fixlater
+The identity type is not just any type.  In the previous sections we have seen that the identity type $a=_Aa$ reflects all the ``symmetries'' of a term $a$ in a type $A$.  Symmetries have special properties; for instance you can rotate a square by $90^o$, and you can rotate it by $-90^o$, undoing the first rotation.  
+Symmetries can also be composed, and this composition respects certain rules that holds in all examples.  When coining the concept of ``symmetries'', we should isolate these common rules for all our examples, but also show, conversely, that anything satisfying these rules actually {\em is} an example.  This is the purpose of the mathematical term ``group''. 
 
-With inspiration with geometric and algebraic origins, it became clear to mathematicians at the end of the 19'th century that the properties of such symmetries could be codified by saying that they form a {\em group}.  Conversely, once one has given an abstract definition of a group it emerges that they all are identity types (see Lemma~\ref{}).  This chapter is about groups, and their basic properties; everything from the point of view of identity types which arguably is closer to the geometric origins of group theory than the abstract approach which is usual in traditional textbooks.  
+As an instance of a property that holds in some examples but not in others, we have seen that sometimes the order in which we use our symmetries matters, and sometimes it does, see \refer{}.  Hence, the concept of a group should not have a rule allowing you to change the order of arbitrary elements.
 
-See the end of the section \ref{} for a brief summary of the early history of groups.  
+In Section~\refer{} ((can we label everything so that cross-referencing can be done continuously?)) we saw that the identity type was ``reflexive, symmeric and transitive''.  
+
+With inspiration with geometric and algebraic origins, it became clear to mathematicians at the end of the 19'th century that the properties of such symmetries could be codified by saying that they form a {\em group}. 
+
+The examples Klein and Lie were interested in were of a type making it admissible to say that a group is the identity type $a=_Aa$ for {\em some} type $A$ and element $a:A$.  
+However, in elementary texts it is customary to restrict the notion of a group to the case when $a=_Aa$ is a {\em set} as in Section~\refer{}.  This makes some proofs easier, since we given two elements $g,h:a=_Aa$, then the identity type $g=h$ is a proposition, \ie $g$ can be equal to $h$ in at most one way.  hence questions relating to uniqueness will never be a problem.
+
+  % Conversely, once one has given an abstract definition of a group it emerges that they all are identity types (see Lemma~\refer{}).  This chapter is about groups, and their basic properties; everything from the point of view of identity types which arguably is closer to the geometric origins of group theory than the abstract approach which is usual in traditional textbooks.  
+
+See the end of the section \refer{} for a brief summary of the early history of groups.  
 \begin{remark}
-  The reader may wonder about the status of the identity type $a=_Aa'$ where $a,a':A$.  One problem is of course that there is no obvious ways of composing and another is that $a=_Aa'$ does not have a distinguished element such as $\mathrm{refl{}_a}:a=_Aa$.
-If $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent existence and choice of such an $f$ there is not much one generally can say about the behavior of $a=_Aa'$.
+  The reader may wonder about the status of the identity type $a=_Aa'$ where $a,a':A$ are different elements.  One problem is of course that there is no obvious ways of composing and another is that $a=_Aa'$ does not have a distinguished element such as $\mathrm{refl{}_a}:a=_Aa$.
+If $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent existence and choice of such an $f$ the identity types $a=_Aa'$ and $a=_Aa$ are very different objects.
 \end{remark}
 
-\subsection{The identity type as a group}
+\subsection{Further properties of the identity type}
+Studying the identity type leads one to the definition of what a group should be:
+Let $A$ be a type, and for the moment let $a=b$ be shorthand for $a=_Ab$.  In Section~\refer{} we saw that
+\begin{enumerate}
+\item[R] {\bf Reflexivity.} For any $a:A$ there is an element 
+$$\refl(a):a=a$$ (by definition)
+\item[S] {\bf Symmetry.} For any $a,b:A$ there is a an element $$\symm{}_{a,b}:(a=b)\to (b=a)$$ defined by $\symm{}_{a,a}(\refl(a)):=\refl(a)$
+\item[T] {\bf Transitivity.} For any $a,b,c:A$ there is an element $$\trans{}_{a,b,c}:(b=c)\to((a=b)\to(a=c))$$ defined by $\trans{}_{a,a,a}(\refl(a))(\refl(a)):=\refl(a)$.
+\end{enumerate}
+\footnote{\em\bf I have swapped the order of the input in trans so that it can fit.  I know you hate it and will force me to recant}
 
-((list the axioms informally))
+ To emulate classical notation, for fixed $a:A$,  for the moment let's write 
+ \begin{enumerate}
+ \item $G$ instead of $a=_Aa$,
+ \item $e$ instead of $\refl(a)$
+ \item $g^{-1}$ instead of $\symm_{a,a}(g)$, when $g:G$
+ \item $g\cdot h$ instead of $\trans_{a,a,a}(g)(h)$ when $g,h"G$.
+ \end{enumerate}
+ What properties can we show about this without knowing anything about $A$ and $a$? For convenience, here is a list of the results we are aiming for: for all $g,g_1,g_2,g_3:G$ we will construct elements in all the following types 
+ \begin{enumerate}
+ \item $g=g\cdot e$
+ \item $g=e\cdot g$
+ \item $g^{-1}\cdot g=e$
+ \item $g\cdot g^{-1}=e$
+ \item $(g^{-1})^{-1}=g$
+ \item $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$.
+ \end{enumerate}
+The reader may worry about many things when they see this list.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the first and second item equal?  Actually they turn out to be, but when we eventually get around to insisting that $G$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two inhabitants are equal.
 
-Fix a type $A$ and let $a,b,c:A$ be terms in $A$.
+We do $g=e\cdot g$ in some detail (remember that is shorthand for $e=\refl(a)$)
+\begin{definition}
+  Let $A$ be a type and $a, b:A$ and $g:a=b$ be elements.  Then $p_1(a,b,g):g=_{a=b}g\cdot e$ is the element defined by induction by saying that $p_1(a,a,e)$ is $\refl(e):e=e\cdot e$.
+\end{definition}
+\begin{remark}
+  This makes sense since we defined $e\cdot e:=e$ (or, if you prefer, $\trans_{a,a,a}(\refl(a))(\refl(a)):=\refl(a)$).  We'll say that we produce $p_1(a,b,g)$ by ``induction on $b$'', the case where $b$ is $a$ (and $g$ is $e$) is the start of the induction; the induction priciple for the identity type $a=b$ then finishes the construction.
 
-The first property is already present at the very foundations: there is a preferred term
-$$\refl{}_a:a=_Aa,$$
-which we think of the identity symmetry of $a$, not doing anything.
+As constructed, $p_1$ is actually a term in the type 
+$$\prod_{a:A}\prod_{b:A}\prod_{g:a=b}(g=g\cdot e)$$ -- it is constructed ``uniformly'' or ``naturally'' for all $a,b,g$: think of it as a function with $(a,b,g)$ as input and $p_1(a,b,g):g=g\cdot e$ as output.  
 
-The existence of the inverse is presented as follows.  
+To add a little meat on the definition of $p_1$: in the definition of the identity type, for each $a:A$ let $P$ be the type family given by $P(b,g):=(g=g\cdot e)$ for each $b:A$ and $g:a=b$.  According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e):=(e=e\cdot e):=(e=e)$, and $\refl(e)$ will do.\footnote{we have chosen to give the identity type such that the naturality in $a$ is not explicit}
+\end{remark}
+\begin{definition}
+  Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_3(a,b,g):g^{-1}\cdot g=_{a=_Aa} e$ is the element defined by induction by saying that $p_3(a,a,e)$ is $\refl(e):e=e\cdot e$ [which makes sense since $e^{-1}:=e$ and $e\cdot e:=e$].
+\end{definition}
+\begin{definition}
+  Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_5(a,b,g):(g^{-1})^{-1}=_{a=_Aa} e$ is the element defined by induction by saying that $p_5(a,a,e)$ is $\refl(e):(e^{-1})^{-1}=e$ [which makes sense since $e^{-1}:=e$].
+\end{definition}
+\begin{definition}
+  Let $A$ be a type and $a,b,c,d:A$ and $g_3:a=b$, $g_2:b=c$ and $g_1:c=d$ elements.  Then $p_6(a,b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{a=_Ad}(g_1\cdot g_2)\cdot g_3$ is the element defined by induction by saying that $p_6(a,a,a,a,e,e,e,e)$ is $\refl(e):e\cdot(e\cdot e)=(e\cdot e)\cdot e$ [which makes sense since $e\cdot e:=e$].
+\end{definition}
+\begin{remark}
+  This last definition is somewhat more complicated than the others, in the sense that in order to inravel the induction to exactly the form accepted in the definition of the identity type, we need to apply the rule three times.  ((write out))
+\end{remark}
+
+{\bf  exercise}
+  Define $p_2(a,b,g)$ and $p_4(a,b,g)$ by the exactly the same procedure, completing the list.
+
+These properties of the identity type are bundled together in the concept of a group, under the additional hypothesis that we are dealing with a set.
+
+  \begin{definition}\label{def:abstractgroup}
+    A {\em abstract group} is a set $G$ together with
+\begin{enumerate}
+\item an element $e:G$, 
+\item a binary operation taking a pair of elements $g_1,g_2:G$ to a third element which we call $g_1\cdot g_2:G$ such that
+  \begin{enumerate}
+  \item $e$ is a ``neutral element'': if $g:G$, then $g\cdot e=e\cdot g=g$ and
+  \item satisfying ``associativity'': if $g_1,g_2,g_3:G$, then 
+$$g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3,$$
+  \end{enumerate}
+\item inverses: to every $g:G$ there is a $g^{-1}:G$ such that $g\cdot g^{-1}=g^{-1}\cdot g=e$.
+\end{enumerate} 
+  \end{definition}
+
+  \begin{lemma}\label{lem:idtypesgiveabstractgroups}
+    If $A$ is a type of level at most 3 (see \refer) and $a:A$ is an element, then $a=_Aa$, together with $e=\refl(a)$, $g^{-1}=\symm_{a,a}g$ and $g\cdot h=\trans_{a,a,a}(g)(h)$ define an abstract group 
+$$(a=_Aa,e,{-}^{-1},\cdot).$$
+  \end{lemma}
+  \begin{proof}
+    The elements $p_1,\dots p_6$ show that all the relevant identity types (which are propositions since $A$ is of type at most $3$) are inhabited as required.
+  \end{proof}
+
+
+\newcommand{\typegroup}{\mathbf{Groups}}
+\newcommand{\typeset}{\mathbf{Sets}}
+\newcommand{\iscontr}{\mathrm{isContr}}
+\newcommand{\isset}{\mathrm{isSet}}
+\newcommand{\isonetype}{\mathrm{1Type}}
+\newcommand{\isconn}{\mathrm{isConn}}
+\newcommand{\conn}{\mathrm{conn}}
+\newcommand{\aut}{\mathrm{Aut}}
+\newcommand{\Hom}{\mathrm{Hom}}
+
+It is clear that when considering identity types $a=_Aa$ as groups, terms $x:A$ with $x$ unequal to $a$ are irrelevant, and we are free to consider only the {\em connected} case, \ie where $x=_Aa$ is inhabited.
+With this established, we let the {\em type} of groups be defined as follows:
+
+\begin{definition}\footnote{for one of the alternatives we must define $\isonetype$ and $\conn$ and the other  $\isset$ and $0$-truncation}
+  The {\em type of groups} is defined as follows
+$$\typegroup=\sum_{A:\mathcal U}A\times\isonetype(A)\times \conn_0A.$$
+$$\typegroup=\sum_{A:\mathcal U}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||.$$
+We refer to a term in $\typegroup$ as a {\em group}.
+\end{definition}
+\begin{remark}
+  Since the first $\sum$ ranges over the entire universe $\mathcal U$, this type does not belong to $\mathcal U$ itself, but rather to the next universe.\footnote{where do we explain this?}  
+
+Also, as $\isset(a=_Aa)$ is always a proposition,\footnote{where do we explain this?}   we will write $\aut_A(a)$ for a triple $(A,a,p,q):\typegroup$ when the mention of the unique $(p,q):\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$ is not of interest.
+
+We saw in Lemma~\ref{lem:idtypesgiveabstractgroups} that to a $\aut_A(a):\typegroup$ we may associate an abstract group $(a=_Aa,e,{-}^{-1},\cdot)$ and we will later show that the group and the associated abstract group carry essentially exactly the same data: from an abstract group we may construct a group and ``going back and forth either way is the identity''.
+Hence the distinction is superficial and we will use the adjective ``abstract'' only if it is important to keep the distinction.
+\end{remark}
+
+{\bf exercise} Let $\aut_A(a):\typegroup$ and let $b:A$.  Prove that $\aut_A(a)=\aut_A(b)$.
+
+\begin{remark}
+  In the literature it is not uncommon to refer to the terms in $\typegroup$ as ``pointed, connected groupoids'', but from our geometric perspective through symmetries it is not unreasonable that we simply call them ``groups''.
+\end{remark}
+
+Let $\typeset:=\sum_{A:\mathcal U}\isset(A)$.  
+
+To every group $G=\aut_A(a)$ we have an {\em underlying set} $|G|$ consisting of the type $a=_Aa$ (together with the fact that it is a set).  
+
+
+
+In this context the notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an arrow $f:A\to B$ that ``sends $a$ to $b$'', \ie together with a $p:a=_Bf(b)$:
+\begin{definition}\label{def:grouphomomorphism}
+  The type of {\em group homomorphisms} from $G=\aut_A(a)$ to $H=\aut_B(b)$ is defined to be
+$$\Hom(G,H)=\sum_{f:A\to B}f(a)=_Bb.
+$$
+\end{definition}
+This should be contrasted with the usual notion of a group homomorphism $f\colon G\to H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_H f(g')=f(g\cdot_G g')$ (where we have set the name of the group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
+
+\begin{definition}\label{def:grouphomomaxioms}
+  ((prove/define the standard axioms))
+\end{definition}
+
+
+
+
+\subsection{$G$-sets}
+\label{sec:gsets}
+One of the goals of this section is to prove that, in a precise sense, any abstract group $G$ is an identity type.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
+
+\begin{enumerate}
+\item be precise abt the type of abstract groups and homom.
+\item define $G$-type/set
+\end{enumerate}
+\subsubsection{$G$-torsors}
+\label{sec:Gtorsors}
+\newcommand{\Gtorsor}{\mathrm{tors}_G}
+\begin{definition}
+  A $G$-torsor is a $G$-set which is isomorphic to the underlying $G$-set of $G$ (write out - avoid conflict of notation wrt $|G|$)
+\end{definition}
+\begin{example}
+  If $\aut_A(a)\colon\typegroup$ with underlying abstract group $G$, then for any $b:A$ the set $a=_Ab$ has a natural structure of a $G$-torsor as follows ((write))
+\end{example}
+
+\footnote{how deeply do we want to integrate univalence?}
 \begin{lemma}
-  For every $p:a=_Ab$ there is a $p^{-1}:b=_Aa$ such that $\refl{}_a{}^{-1}\equiv\refl{}_a$.  More precisely, there is a term 
-$$\mathrm{inv}:\prod_{a,b:A}((a=_Ab)\to(b=_Aa))$$
-such that $\mathrm{inv}(a,a,\refl{}_a)=\refl{}_a$. In this formulation, $p^{-1}$ is shorthand for $\mathrm{inv}(a,b,p)$.
+  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  Then the abstract group associated with $\aut_{\Gtorsor}(|G|):\typegroup$ is equal to $G$ in the type of abstract groups.
+
+Conversely, given $\aut_A(a):\typegroup$, let $G$ be the associated abstract group.  Then $A=\Gtorsor:\mathcal U$ and $\aut_A(a)=\aut_{\Gtorsor}(|G|):\typegroup$.
 \end{lemma}
+In essence we have shown that our ``abstract group'' is indeed the group of symmetries of something.
 
-\begin{remark}
-  Notice that the last statement  (``More precisely\dots'')  not only asserts that there {\em exist} inverses, but that there actually is a (preferred and consistent) way to produce them.  
+% \begin{remark}
+%   Notice that the last statement  (``More precisely\dots'')  not only asserts that there {\em exist} inverses, but that there actually is a (preferred and consistent) way to produce them.  
 
-Classically this was in many instances unnecessay to say because there was a unique inverse, and the distinction is not mentioned in introductory texts.  However, then this very point had to be revisited later on.  In our proof relevant setting it is obvious that the ultimate statement will have to go beyond an assertion that inverses exist.
-\end{remark}
+% Classically this was in many instances unnecessay to say because there was a unique inverse, and the distinction is not mentioned in introductory texts.  However, then this very point had to be revisited later on.  In our proof relevant setting it is obvious that the ultimate statement will have to go beyond an assertion that inverses exist.
+% \end{remark}
