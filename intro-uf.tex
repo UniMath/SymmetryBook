@@ -85,33 +85,33 @@ Here are the rules for constructing equality types.
 \begin{enumerate}
 \item[E1:]
   for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a=b$;
-\item[E2:] for any type $X$ and for any element $a$ of it, there is an element $\refl(a)$ of type $a=a$ (the name $\refl$ comes from the word
+\item[E2:] for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a=a$ (the name $\refl{}$ comes from the word
   ``reflexivity'')
 \item[E3:] for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
-  $a=b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl(a))$.  The resulting
-  function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl(a)) \defeq p$.
+  $a=b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl a)$.  The resulting
+  function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl a) \defeq p$.
 \end{enumerate}
 
 An element of $a=b$ can be thought of, for now, as a ``proof'' that $a$ is equal to $b$.
 
-We see from rule E2 that $\refl(S(S(S(S(0)))))$ serves as a proof of $2+2=4$, as do $\refl(4)$ and $\refl(2+2)$.  A student might wish for a
+We see from rule E2 that $\refl{S(S(S(S(0))))}$ serves as a proof of $2+2=4$, as do $\refl 4$ and $\refl{2+2}$.  A student might wish for a
 more detailed proof of that equation, but as a result of our convention above that definitions are syntactically transparent, the application of
 definitions, including inductive definitions, is regarded as a trivial operation.
 
 We will refer to rule E3 as ``induction for equality''.  It says that to prove something about (or to construct something from) every proof that
 $a$ is equal to something else, it suffices to consider the special case where the proof is the trivial proof that $a$ is equal to itself, i.e.,
-where the proof is $\refl(a) : a=a$.  Notice that the single case in such an induction corresponds to the single way of introducing elements of
+where the proof is $\refl a : a=a$.  Notice that the single case in such an induction corresponds to the single way of introducing elements of
 equality types via rule E2, and compare that with P4, which dealt with the two ways of introducing elements of $\NN$.
 %% ???
-Intuitively, the induction principle for equality amounts to saying that the element $\refl(a)$ ``generates'' the system of types $a=b$, as $b$
+Intuitively, the induction principle for equality amounts to saying that the element $\refl a$ ``generates'' the system of types $a=b$, as $b$
 ranges over elements of $A$.
 
 We may use induction to prove symmetry of equality.  In accordance with our discussion of implication above, we show how to produce an element
 of $b=a$ from an element $p$ of $a=b$, for any $b$ and $p$.  By induction (letting $P(b,e)$ be $b=a$ for any $b$ of type $X$ and for any $e$ of
-type $a=b$, for use in rule E3 above), it suffices to produce an element of $a=a$; we choose $\refl(a)$ to achieve that.
+type $a=b$, for use in rule E3 above), it suffices to produce an element of $a=a$; we choose $\refl a$ to achieve that.
 
 Transitivity of equality is established the same way.  For each $a,b,c:X$ and for each $p:a=b$ and for each $q:b=c$ we want to produce an
-element of type $a=c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl(b)$, and we are to produce an element
+element of type $a=c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl b$, and we are to produce an element
 of $a=b$.  The element $p$ serves the purpose.  Notice the similarity of this inductive definition with the definition given above of the sum
 $m+n$.
 
@@ -119,7 +119,7 @@ Now we state our symmetry result a little more formally.
 
 \begin{definition}
   For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$ be the function defined by induction by setting 
-  $\symm_{a,a}(\refl(a)) \defeq \refl(a)$.
+  $\symm_{a,a}(\refl a) \defeq \refl a$.
 \end{definition}
 
 Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
@@ -129,7 +129,7 @@ Associativity of transitivity is formulated and established similarly.  We leave
 
 One frequent use of elements of identity types is in {\em substitution}.  Let $X$ be a type, and let $P(x)$ be a family of types depending on a
 parameter $x:X$.  Suppose $a,b:X$ and $e:a=b$.  Then there is a function of type $P(a) \to P(b)$.  To prove that, it suffices, by induction, to
-consider the case where $b$ is $a$ and $e$ is $\refl(a)$ and to provide a function $P(a) \to P(a)$.  To achieve that, we provide the identity
+consider the case where $b$ is $a$ and $e$ is $\refl a$ and to provide a function $P(a) \to P(a)$.  To achieve that, we provide the identity
 function.
 
 \section{Other types}
@@ -157,7 +157,7 @@ Secondly, there will also be a type called $\true$, defined inductively and prov
   ``trivial'').  Its induction principle
 states that, in order to prove something about (or to construct something from) every element of $\true$, it suffices to consider the special
 case where the element is $\triv$.  As an example, we may prove, for any element $u : \true$, that $u=\triv$, by using induction to reduce
-to proving $\triv=\triv$, a proof of which is provided by $\refl(\triv)$.  One may also prove that any two elements of $\true$ are equal by using induction twice.
+to proving $\triv=\triv$, a proof of which is provided by $\refl{\triv}$.  One may also prove that any two elements of $\true$ are equal by using induction twice.
 
 There is a function $X \to \true$, for any type $X$, namely: $a \mapsto \triv$.  This corresponds, for propositions, to the statement that an
 implication holds if the conclusion is true.
@@ -230,6 +230,8 @@ to $b$ by the proof $e$ of equality.
 \section{Equivalences; function extensionality}
 
 \section{Universes and univalence}
+
+\begin{theorem} theorem \end{theorem}
 
 % Local Variables:
 % fill-column: 144
