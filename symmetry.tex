@@ -20,11 +20,11 @@ i.e., $A$ is a universe (or the universe of types-at-large):
 
 In this case, we define \emph{orbit type} of the action as
 \[
-  X_G \defeq \Sigma_{z:BG} X(z),
+  X_G \defeq \sum_{z:BG} X(z),
 \]
 and the type of \emph{fixed points} as
 \[
-  X^G \defeq \Pi_{z:BG} X(z).
+  X^G \defeq \prod_{z:BG} X(z).
 \]
 The set of orbits is the set-truncation of the orbit type,
 \[
@@ -37,7 +37,7 @@ Given an action $X : BG \to \Type$ and a point $x : X(\pt)$, we define
 the \emph{orbit} through $x$ as the subtype of $X(\pt)$ consisting of
 all $y : X(\pt)$ that are merely equal to $x$ in the orbit type:
 \[
-  G\cdot x \defeq \mathcal O_x \defeq \Sigma_{y : X(\pt)} \merely{[x] = [y]}
+  G\cdot x \defeq \mathcal O_x \defeq \sum_{y : X(\pt)} \merely{[x] = [y]}
 \]
 (Note the unfortunate terminology: an orbit is not an element in the
 orbit type!)
@@ -81,6 +81,97 @@ tells us that
 
 \section{(the lemma that is not) Burnside's lemma}
 
+
+% Where does this go?!
+\section{More about automorphisms}
+
+% Written to record somewhere the results of a discussion with Bjorn
+For every group $G$ (which for the purposes of the discussion
+in this section we allow to be a higher group)
+we have the automorphism group $\Aut(G)$.
+This is of course the group of self-identifications $G = G$ in the type of groups, $\Group$.
+If we represent $G$ by the pointed connected classifying type $BG$,
+then $\Aut(G)$ is the type of pointed self-equivalences of $BG$.
+
+We have a natural forgetful map from groups to the type of connected types.
+Let $\Gerbe$ denote this type.
+Thus, for every group $G$ we have a corresponding gerbe, $\gerbe(G)$.
+
+\begin{definition}[The center as an abelian group]
+  Let $Z(G) \defeq \prod_{z : BG}(z = z)$ denote the type of fixed points of the adjoint action of $G$ on itself.
+  This type is equivalent to the automorphism group of the identity of $\gerbe(G)$,
+  and hence the loop type of
+  \[
+    BZ(G) \defeq \sum_{f : BG \to BG} \merely{f \sim \id}.
+  \]
+  This type is itself the loop type of the pointed, connected type
+  \[
+    B^2Z(G) \defeq \sum_{X : \Gerbe}\Trunc{\gerbe(G) = X}_0,
+  \]
+  and we use this to give $Z(G)$ the structure of an \emph{abelian} group,
+  called the \emph{center} of $G$.
+\end{definition}
+There is a canonical homomorphism from $Z(G)$ to $G$ given by the pointed map
+from $BZ(G)$ to $BG$ that evaluates at the point $\pt$.
+The fiber of the evaluation map $e : BZ(G) \to_\pt BG$ is
+\begin{align*}
+  \fiber_e(\pt)
+  &\jdeq \sum_{f : BG \to BG} \merely{f \sim \id} \times (\mathop f \pt = \pt) \\
+  &\equiv \sum_{f : BG \to_\pt BG} \merely{f \sim \id},
+\end{align*}
+and this type is the loop type of the pointed, connected type
+\[
+  \B\Inn(G) \defeq \sum_{H : \Group} \Trunc{\gerbe(G) = \gerbe(H)}_0,
+\]
+thus giving the homomorphism $Z(G)$ to $G$ a normal structure with
+quotient group $\Inn(G)$, called the \emph{inner automorphism group}.
+
+Note that there is a canonical homomorphism from $\Inn(G)$ to $\Aut(G)$
+given by the pointed map $i : \B\Inn(G) \to \B\Aut(G)$ that forgets the component.
+On loops, $i$ gives the inclusion into $\Aut(G)$ of the subtype of automorphisms of $G$
+that become merely equal to the identity automorphism of $\gerbe(G)$.
+The fiber of $i$ is
+\begin{align*}
+  \fiber_i(\pt)
+  &\jdeq \sum_{H : \Group} \Trunc{\gerbe(G) = \gerbe(H)}_0 \times (H = G) \\
+  &\equiv \Trunc{\gerbe(G) = \gerbe(G)}_0.
+\end{align*}
+This is evidently the type of loops in the pointed, connected $1$-type
+\[
+  \B\Out(G) \defeq \Trunc*{\sum_{X : \Gerbe}\merely{\gerbe(G) = X}}_1,
+\]
+thus giving the homomorphism $\Inn(G)$ to $\Aut(G)$ a normal structure with
+quotient group $\Out(G)$, called the \emph{outer automorphism group}.
+Note that $\Out(G)$ is always a $1$-group,
+and that it is the decategorification of $\Aut(\gerbe(G))$.
+
+\begin{theorem}
+  Let two groups $G$ and $H$ be given.
+  There is a canonical action of $\Inn(H)$
+  on the set of homomorphisms from $G$ to $H$, $\Trunc{BG \to_\pt BH}_0$.
+  This gives rise to an equivalence
+  \[
+    \Trunc{BG \to BH}_0 \equiv \Trunc*{\Trunc{BG \to_\pt BH}_0 \dblslash \Inn(H)}_0
+  \]
+  between the set of maps from $\gerbe(G)$ to $\gerbe(H)$ and the set of
+  components of the orbit type of this action.
+\end{theorem}
+\begin{proof}
+  We give the action by defining a type family $X : \B\Inn(H) \to \Type$ as follows
+  \[
+    X\, \angled{K,\phi} \defeq \Trunc{\Hom(G,K)}_0 \jdeq \Trunc{BG \to_\pt BK}_0,
+  \]
+  for $\angled{K,\phi} : \B\Inn(H) \jdeq \sum_{K : \Group} \Trunc{\gerbe(H) = \gerbe(K)}_0$.
+  Now we can calculate
+  \begin{align*}
+    \Trunc{X_{\Inn(H)}}_0
+    &\jdeq \Trunc*{\sum_{K:\Group}\Trunc{\gerbe(H)=\gerbe(K)}_0\times\Trunc{\Hom(G,K)}}_0 \\
+    &\equiv \Trunc*{\sum_{K:\Group}(\gerbe(H)=\gerbe(K))\times\Hom(G,K)}_0 \\
+    &\equiv \Trunc*{\sum_{K:\Gerbe}\sum_{k:K}(\gerbe(H)=K)\times\sum_{f:\Hom(\gerbe(G),K)}\mathop f \pt = k}_0 \\
+    &\equiv \Trunc*{\sum_{K:\Gerbe} (\gerbe(H)=K) \times\Hom(\gerbe(G),K)}_0 \\
+    &\equiv \Trunc*{\Hom(\gerbe(G),\gerbe(H))}_0 \jdeq \Trunc{BG \to BH}_0.\qedhere
+  \end{align*}
+\end{proof}
 %%% Local Variables:
 %%% mode: latex
 %%% fill-column: 144
