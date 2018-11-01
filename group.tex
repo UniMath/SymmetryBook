@@ -1,10 +1,11 @@
 %\usepackage{\xspace}
 \newcommand{\ie}{{\em i.e., }}%\xspace}fixlater
+\newcommand{\defequi}{:\equiv}%definitionally equal}
 \newcommand{\refer}{{\bf crossref}}%fixlater
 The identity type is not just any type.  In the previous sections we have seen that the identity type $a=_Aa$ reflects all the ``symmetries'' of a term $a$ in a type $A$.  Symmetries have special properties; for instance you can rotate a square by $90^o$, and you can rotate it by $-90^o$, undoing the first rotation.  
 Symmetries can also be composed, and this composition respects certain rules that holds in all examples.  When coining the concept of ``symmetries'', we should isolate these common rules for all our examples, but also show, conversely, that anything satisfying these rules actually {\em is} an example.  This is the purpose of the mathematical term ``group''. 
 
-As an instance of a property that holds in some examples but not in others, we have seen that sometimes the order in which we use our symmetries matters, and sometimes it does, see \refer{}.  Hence, the concept of a group should not have a rule allowing you to change the order of arbitrary elements.
+As an instance of a property that holds in some examples but not in others, we have seen that sometimes the order in which we use our symmetries matters, and sometimes it does not, see \refer{}.  Hence, the concept of a group should not have a rule allowing you to change the order arbitrarily.
 
 In Section~\refer{} ((can we label everything so that cross-referencing can be done continuously?)) we saw that the identity type was ``reflexive, symmeric and transitive''.  
 
@@ -27,8 +28,8 @@ Let $A$ be a type, and for the moment let $a=b$ be shorthand for $a=_Ab$.  In Se
 \begin{enumerate}
 \item[R] {\bf Reflexivity.} For any $a:A$ there is an element 
 $$\refl(a):a=a$$ (by definition)
-\item[S] {\bf Symmetry.} For any $a,b:A$ there is a an element $$\symm{}_{a,b}:(a=b)\to (b=a)$$ defined by $\symm{}_{a,a}(\refl(a)):=\refl(a)$
-\item[T] {\bf Transitivity.} For any $a,b,c:A$ there is an element $$\trans{}_{a,b,c}:(b=c)\to((a=b)\to(a=c))$$ defined by $\trans{}_{a,a,a}(\refl(a))(\refl(a)):=\refl(a)$.
+\item[S] {\bf Symmetry.} For any $a,b:A$ there is a an element $$\symm{}_{a,b}:(a=b)\to (b=a)$$ defined by $\symm{}_{a,a}(\refl(a))\defequi\refl(a)$
+\item[T] {\bf Transitivity.} For any $a,b,c:A$ there is an element $$\trans{}_{a,b,c}:(b=c)\to((a=b)\to(a=c))$$ defined by $\trans{}_{a,a,a}(\refl(a))(\refl(a))\defequi \refl(a)$.
 \end{enumerate}
 \footnote{\em\bf I have swapped the order of the input in trans so that it can fit.  I know you hate it and will force me to recant}
 
@@ -48,35 +49,40 @@ $$\refl(a):a=a$$ (by definition)
  \item $(g^{-1})^{-1}=g$
  \item $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$.
  \end{enumerate}
-The reader may worry about many things when they see this list.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the first and second item equal?  Actually they turn out to be, but when we eventually get around to insisting that $G$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two inhabitants are equal.
+ \begin{remark}
+   One should worry about many things when one sees this list.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the first and second item equal?  Actually they turn out to be, but when we eventually get around to insisting that $G$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two inhabitants are equal.
+ \end{remark}
+
 
 We do $g=e\cdot g$ in some detail (remember that is shorthand for $e=\refl(a)$)
 \begin{definition}
   Let $A$ be a type and $a, b:A$ and $g:a=b$ be elements.  Then $p_1(a,b,g):g=_{a=b}g\cdot e$ is the element defined by induction by saying that $p_1(a,a,e)$ is $\refl(e):e=e\cdot e$.
 \end{definition}
 \begin{remark}
-  This makes sense since we defined $e\cdot e:=e$ (or, if you prefer, $\trans_{a,a,a}(\refl(a))(\refl(a)):=\refl(a)$).  We'll say that we produce $p_1(a,b,g)$ by ``induction on $b$'', the case where $b$ is $a$ (and $g$ is $e$) is the start of the induction; the induction priciple for the identity type $a=b$ then finishes the construction.
+  This makes sense since we defined $e\cdot e\defequi e$ (or, if you prefer, $\trans_{a,a,a}(\refl(a))(\refl(a))\defequi \refl(a)$).  We'll say that we produce $p_1(a,b,g)$ by ``induction on $b$'', the case where $b$ is $a$ (and $g$ is $e$) is the start of the induction; the induction priciple for the identity type $a=b$ then finishes the construction.
 
 As constructed, $p_1$ is actually a term in the type 
 $$\prod_{a:A}\prod_{b:A}\prod_{g:a=b}(g=g\cdot e)$$ -- it is constructed ``uniformly'' or ``naturally'' for all $a,b,g$: think of it as a function with $(a,b,g)$ as input and $p_1(a,b,g):g=g\cdot e$ as output.  
 
-To add a little meat on the definition of $p_1$: in the definition of the identity type, for each $a:A$ let $P$ be the type family given by $P(b,g):=(g=g\cdot e)$ for each $b:A$ and $g:a=b$.  According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e):=(e=e\cdot e):=(e=e)$, and $\refl(e)$ will do.\footnote{we have chosen to give the identity type such that the naturality in $a$ is not explicit}
+To add a little meat on the definition of $p_1$: in the definition of the identity type, for each $a:A$ let $P$ be the type family given by $P(b,g)\defequi (g=g\cdot e)$ for each $b:A$ and $g:a=b$.  According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e)\equiv (e=e\cdot e)\equiv (e=e)$, and $\refl(e)$ will do.\footnote{we have chosen to give the identity type such that the naturality in $a$ is not explicit}
 \end{remark}
 \begin{definition}
-  Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_3(a,b,g):g^{-1}\cdot g=_{a=_Aa} e$ is the element defined by induction by saying that $p_3(a,a,e)$ is $\refl(e):e=e\cdot e$ [which makes sense since $e^{-1}:=e$ and $e\cdot e:=e$].
+  Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_3(a,b,g):g^{-1}\cdot g=_{a=_Aa} e$ is the element defined by induction by saying that $p_3(a,a,e)$ is $\refl(e):e=e\cdot e$ [which makes sense since $e^{-1}\equiv e$ and $e\cdot e\equiv e$].
 \end{definition}
 \begin{definition}
-  Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_5(a,b,g):(g^{-1})^{-1}=_{a=_Aa} e$ is the element defined by induction by saying that $p_5(a,a,e)$ is $\refl(e):(e^{-1})^{-1}=e$ [which makes sense since $e^{-1}:=e$].
+  Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_5(a,b,g):(g^{-1})^{-1}=_{a=_Aa} e$ is the element defined by induction by saying that $p_5(a,a,e)$ is $\refl(e):(e^{-1})^{-1}=e$ [which makes sense since $e^{-1}\equiv e$].
 \end{definition}
 \begin{definition}
-  Let $A$ be a type and $a,b,c,d:A$ and $g_3:a=b$, $g_2:b=c$ and $g_1:c=d$ elements.  Then $p_6(a,b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{a=_Ad}(g_1\cdot g_2)\cdot g_3$ is the element defined by induction by saying that $p_6(a,a,a,a,e,e,e,e)$ is $\refl(e):e\cdot(e\cdot e)=(e\cdot e)\cdot e$ [which makes sense since $e\cdot e:=e$].
+  Let $A$ be a type and $a,b,c,d:A$ and $g_3:a=b$, $g_2:b=c$ and $g_1:c=d$ elements.  Then $p_6(a,b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{a=_Ad}(g_1\cdot g_2)\cdot g_3$ is the element defined by induction by saying that $p_6(a,a,a,a,e,e,e,e)$ is $\refl(e):e\cdot(e\cdot e)=(e\cdot e)\cdot e$ [which makes sense since $e\cdot e\equiv e$].
 \end{definition}
 \begin{remark}
   This last definition is somewhat more complicated than the others, in the sense that in order to inravel the induction to exactly the form accepted in the definition of the identity type, we need to apply the rule three times.  ((write out))
 \end{remark}
 
-{\bf  exercise}
-  Define $p_2(a,b,g)$ and $p_4(a,b,g)$ by the exactly the same procedure, completing the list.
+\begin{xca}
+    Define $p_2(a,b,g)$ and $p_4(a,b,g)$ by the exactly the same procedure, completing the list.
+\end{xca}
+
 
 These properties of the identity type are bundled together in the concept of a group, under the additional hypothesis that we are dealing with a set.
 
@@ -95,11 +101,11 @@ $$g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3,$$
   \end{definition}
 
   \begin{lemma}\label{lem:idtypesgiveabstractgroups}
-    If $A$ is a type of level at most 3 (see \refer) and $a:A$ is an element, then $a=_Aa$, together with $e=\refl(a)$, $g^{-1}=\symm_{a,a}g$ and $g\cdot h=\trans_{a,a,a}(g)(h)$ define an abstract group 
+    If $A$ is a $1$-type (alternatively called a ``type of level at most $3$'' in \refer) and $a:A$ is an element, then $a=_Aa$, together with $e=\refl(a)$, $g^{-1}=\symm_{a,a}g$ and $g\cdot h=\trans_{a,a,a}(g)(h)$ define an abstract group 
 $$(a=_Aa,e,{-}^{-1},\cdot).$$
   \end{lemma}
   \begin{proof}
-    The elements $p_1,\dots p_6$ show that all the relevant identity types (which are propositions since $A$ is of type at most $3$) are inhabited as required.
+    The elements $p_1,\dots p_6$ show that all the relevant identity types (which are propositions since $A$ is a $1$-type) are inhabited as required.
   \end{proof}
 
 
@@ -113,12 +119,17 @@ $$(a=_Aa,e,{-}^{-1},\cdot).$$
 \newcommand{\aut}{\mathrm{Aut}}
 \newcommand{\Hom}{\mathrm{Hom}}
 
-It is clear that when considering identity types $a=_Aa$ as groups, terms $x:A$ with $x$ unequal to $a$ are irrelevant, and we are free to consider only the {\em connected} case, \ie where $x=_Aa$ is inhabited.
+\begin{remark}
+  When considering identity type $a=_Aa$ as a group, terms $x:A$ with $x$ unequal to $a$ are irrelevant, and we are free to consider only the {\em connected} case, \ie where $x=_Aa$ is always inhabited.
+\end{remark}
+
+
+
 With this established, we let the {\em type} of groups be defined as follows:
 
 \begin{definition}\footnote{for one of the alternatives we must define $\isonetype$ and $\conn$ and the other  $\isset$ and $0$-truncation}
   The {\em type of groups} is defined as follows
-$$\typegroup=\sum_{A:\mathcal U}A\times\isonetype(A)\times \conn_0A.$$
+%$$\typegroup=\sum_{A:\mathcal U}A\times\isonetype(A)\times \conn_0A.$$
 $$\typegroup=\sum_{A:\mathcal U}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||.$$
 We refer to a term in $\typegroup$ as a {\em group}.
 \end{definition}
@@ -127,19 +138,23 @@ We refer to a term in $\typegroup$ as a {\em group}.
 
 Also, as $\isset(a=_Aa)$ is always a proposition,\footnote{where do we explain this?}   we will write $\aut_A(a)$ for a triple $(A,a,p,q):\typegroup$ when the mention of the unique $(p,q):\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$ is not of interest.
 
-We saw in Lemma~\ref{lem:idtypesgiveabstractgroups} that to a $\aut_A(a):\typegroup$ we may associate an abstract group $(a=_Aa,e,{-}^{-1},\cdot)$ and we will later show that the group and the associated abstract group carry essentially exactly the same data: from an abstract group we may construct a group and ``going back and forth either way is the identity''.
-Hence the distinction is superficial and we will use the adjective ``abstract'' only if it is important to keep the distinction.
+We saw in Lemma~\ref{lem:idtypesgiveabstractgroups} that to a group $\aut_A(a):\typegroup$ we may associate an abstract group $(a=_Aa,e,{-}^{-1},\cdot)$ and we will later show that the group and the associated abstract group carry essentially the same data: from an abstract group we may construct a group and ``going back and forth either way is the identity''.
+Hence the distinction is superficial and we will use the adjective ``abstract'' only if it is important to keep the notions separate.
 \end{remark}
 
-{\bf exercise} Let $\aut_A(a):\typegroup$ and let $b:A$.  Prove that $\aut_A(a)=\aut_A(b)$.
+\begin{xca}
+   Let $\aut_A(a):\typegroup$ and let $b:A$.  Prove that $\aut_A(a)=\aut_A(b)$.
+\end{xca}
+
 
 \begin{remark}
   In the literature it is not uncommon to refer to the terms in $\typegroup$ as ``pointed, connected groupoids'', but from our geometric perspective through symmetries it is not unreasonable that we simply call them ``groups''.
 \end{remark}
 
-Let $\typeset:=\sum_{A:\mathcal U}\isset(A)$.  
-
-To every group $G=\aut_A(a)$ we have an {\em underlying set} $|G|$ consisting of the type $a=_Aa$ (together with the fact that it is a set).  
+  
+\footnote{Let $\typeset\defequi \sum_{A:\mathcal U}\isset(A)$.}
+\newcommand{\setgroup}[1]{||#1||}
+To every group $G=\aut_A(a)$ we have an {\em underlying set} $\setgroup{G}$ consisting of the type $a=_Aa$ (together with the fact that it is a set).  
 
 
 
@@ -158,7 +173,7 @@ This should be contrasted with the usual notion of a group homomorphism $f\colon
 
 
 
-\subsection{$G$-sets}
+\section{$G$-sets}
 \label{sec:gsets}
 One of the goals of this section is to prove that, in a precise sense, any abstract group $G$ is an identity type.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
 
