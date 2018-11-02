@@ -36,6 +36,15 @@ We refer to a term in $\typegroup$ as a {\em group}.  A group $(A,a,p,q):\typegr
 \begin{remark}\label{rem:aut}
 The abuse inherent in writing $\aut_A(a)$ instead of $(A,a,p,q)$ is innocent: since $\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$ is a proposition  \refer\footnote{where do we explain that this is a proposition?}  the witnesses $(p,q)$  is unique. 
 \end{remark}
+\begin{example}
+  Since any pointed connected $1$-type represent a group, there is no shortage of examples, but perhaps it is worth while to consider some specially designed examples.
+  \begin{enumerate}
+  \item Recall that $1$ has the single element $*$.\footnote{what is the notation/reference for our chosen final element?} Then $\aut_1(*)$ is a group called the {\em trivial group}.
+  \item More generally, if $S$ is a set, we're after a pointed connected $1$-type $(A,a)$ so that $a=_Aa$ model all the permutations of $S$, \ie $S=_{\Set}S$.  The only thing wrong about the type $\Set$ (apart from it being large\footnote{how do we deal with that?}) is that it is not connected.  So we {\em pick
+ the component of $\Set$ containing $S$, pointed at $S$}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  The component of $S$ is picked out by considering 
+$$A=\Set_{(S)}\defequi\sum_{X\in\Set}||S=X||.$$  The connected $1$-type $\Set_{(S)}$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    Then $(S=_{\Set_{(S)}}S)=(S=_{\Set}S)$ (both the first and the second projections must be equal in a $\Sigma$-type, but in this case the second projection is a (true) proposition).  So, the {\em group of permutations of $S$} is defined to be $(\Set_{(S)},S)$.
+  \end{enumerate}
+\end{example}
 
 \begin{remark}
 In Lemma~\ref{lem:idtypesgiveabstractgroups} we will see that groups satisfy a set of laws justifying the name ``group''
@@ -239,18 +248,48 @@ Generically, if $G$ is \aninftygp, we let $\pt_G:BG$ (and sometimes simply $\pt$
 
 \section{$G$-sets}
 \label{sec:gsets}
-One of the goals of this section is to prove that, in a precise sense, any abstract group is a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
+One of the goals of this section is to prove that, in a precise sense, any abstract group is a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.  However, this takes a pleasant detour where we have to explore the most important feature of groups: the {\em act} on things (giving rise to symmetries)!
+
+Before we handle the more complex case of abstract groups, let us see what this looks like for groups.
 
 \begin{definition}
   For $G$ a group (or \inftygp), a {\em $G$-type} is a function 
-  $$X\colon BG\to\mathcal U$$
+  $$X\colon BG\to\mathcal U$$\footnote{in order for this to type check $BG$ must be considered here to be an unpointed type... should we care?}
 and $X(\pt_G)$ is referred to as the {\em underlying type}.
-If the underlying type is a set, then $X$ is called a {\em $G$-set}.
+If the underlying type is a set, then $X$ is called a {\em $G$-set}.  
+Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\mathcal U)$ and the type of $G$-sets is $\Set_G\defequi(BG\to\Set)$.
+%$$\Type_G\defequi (BG\to\mathcal U),\qquad \Set_G\defequi (BG\to\Set).$$
 \end{definition}
+
+\begin{example}\label{def:principaltorsor}
+  If $G$ is a group (or \inftygp), then 
+$$\princ_G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the {\em principal $G$-set (or type)}.\footnote{what do we call this $G$-type?}
+\end{example}
+
+\begin{remark}
+  A $G$-type $X$ is often presented by focusing on the underlying type $X(\pt_G)$  and providing is with a structure relating it to $G$ determining the entire function $X\colon BG\to\mathcal U$. 
+\end{remark}
+
 \begin{xca}
   Use that $BG$ is connected to show that if $X$ is a $G$-set, then $X(z)$ is a set for all $z:BG$ (\ie $\prod_{z:BG}\isset(X(z))$).
 \end{xca}
+\begin{definition}
+  Given a group (or \inftygp) $G$, the type of {\em$G$-torsors} (or {\em principal homogeneous $G$-types}) is  
+$$\typetorsor_G\defequi\sum_{X:\Type_G}||X=\princ_G||,$$
+where $\princ_G$ is the principal $G$-torsor of Example~\ref{def:principaltorsor}. 
+\end{definition}
+\begin{remark}
+  Note that if $G$ is a group, then $\princ_G$ is a $G${\em-set}, and so $||X=\princ_G||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||X=\princ_G||.$  Observe that for a group $G$, $\typetorsor_G$ is a connected $1$-type (admittedly in a higher universe) and so -- by specifying the base point $\princ_G$ -- it represents a group!  Guess which one:
+\end{remark}
+\begin{lemma}
+  If $G$ is a group (or \inftygp), then the pointed type $(\typetorsor_G,\princ_G)$ is equal to to $(BG,\pt_G)$,\footnote{in the appropriate universe} so both represent $G$. 
+\end{lemma}
 
+\begin{proof}
+  ((write))
+\end{proof}
+
+We use this as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of picking the underlying abstract group of a group and taking the group represented by the torsors of an abstract group are inverse to each others.
 \begin{enumerate}
 \item define $G$-type/set
 \end{enumerate}
