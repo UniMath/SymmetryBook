@@ -133,7 +133,6 @@ consider the case where $b$ is $a$ and $e$ is $\refl a$ and to provide a functio
 The function $P(a) \to P(b)$ thus defined is called (in full)
 \emph{the transport function in the type family $P$ along the path $e$},
 and will be denoted (in full)
-\newcommand{\trp}{\mathop{\mathit{transport}}} % to be moved to macros.tex
 $\trp(X,P,a,b,e)$. We often use less verbose phrases such as `by transport'
 and simplified denotations like $\trp^P e$, or even just $\trp e$.
 The precise expressions should always be easy to recover from the context.
@@ -145,7 +144,8 @@ and the equality types.  We present three examples.
 
 Firstly, there is the ``empty'' type, called $\emptyset$, defined inductively, with no way to construct elements provided in the inductive
 definition.  The inductive principle for $\emptyset$ says that to prove something about (or to construct something from) every element of
-$\emptyset$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptyset$ can be proven.  As
+$\emptyset$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptyset$ can be proven. (This is called the Ex Falso
+rule in traditional logic.) As
 an example, we may prove that any two elements $x$ and $y$ of $\emptyset$ are equal by using induction on $x$.
 
 An element of $\emptyset$ will be called an {\em absurdity}, and the negation $\neg P$ of a proposition $P$ will be implemented as the function
@@ -193,7 +193,10 @@ of the point $x$ and an element $e$ of the identity type $f(x) = y$.
 
 There is a binary sum operation on types: for any types $X$ and $Y$, there is a type $X \amalg Y$.  It is also called the {\em disjoint union}
 of $X$ and $Y$.  From an element of $X$ or an element of $Y$ we can produce an element of $X \amalg Y$.  The binary sum is implemented by an
-inductive definition.  (SAY MORE AND FILL IN SOME PROPERTIES.)
+inductive definition with two constructors: $\inl{} : X \to X \amalg Y$ and
+$\inr{} : Y \to X \amalg Y$. Proving a property of any element of $X \amalg Y$
+means proving that this property holds of any $\inl{x}$ with $x:X$ and any
+$\inr{y}$ with $y:Y$. (ADD COMPUTATIONAL RULE)
 
 Our type theory will also contain {\em products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
 parameter $x$ of type $X$, then there will be a type $\prod _{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
@@ -238,12 +241,66 @@ So $q$ is equal to $f(a,c)\cdot f(a,b)^{-1}$ which doesn't
 depend on $q$, so all such $q$ are equal. Hence $X$ is a set.
 \end{proof}
 
+In the following lemma we collect a number of useful results on propositions.
+
+\begin{lemma}\label{lem:prop_utils}
+Let $A$ be a type, and let $P$ and $Q$ propositions.
+Let $P(a)$ be a proposition depending on $a:A$. Then we have:
+\begin{enumerate}
+\item\label{prop_utils_false_true} $\false$ and $\true$ are propositions;
+\item\label{prop_utils_implication} $A\to P$ is a proposition;
+\item\label{prop_utils_product} $\prod_{a:A} P(a)$ is a proposition;
+\item\label{prop_utils_times} $P\times Q$ is a proposition.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If $p,q : \false$, then $p=q$ is proved by the Ex Falso rule.
+If $p,q : \true$, then $p=q$ is proved by double induction,
+which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
+If $p,q : A\to P$, then $p=q$ is proved by firstr observing that $p$ and $q$
+are functions. Hence by function extensionality they are equal if pointwise
+equal, which is the case since $P$ is a proposition.
+If $p,q : \prod_{a:A} P(a)$ one can use the same argument as for $A\to P$
+but now with \emph{dependent} functions $p,q$.
+If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
+is proved componentwise.
+\end{proof}
+
+Several remarks can be made here. First, the lemma supports the
+use of $\false,\true$ as truth values, and the use of 
+$\to,\prod,\times$ for implication, universal quantification,
+and conjunction, respectively. Since $\false$ is a proposition,
+it follows by (\ref{prop_utils_implication}) above that 
+$\neg A$ as defined by $A\to\false$ is a proposition for any type $A$.
+As noted before, (\ref{prop_utils_implication}) is a
+special case of (\ref{prop_utils_product}).
+
+Notably absent in the lemma above are disjunction
+and existential quantification. This has a simple reason:
+$\true\amalg \true$ has the distinct elements 
+$\inl{\triv}$ and $\inr{\triv}$, an is therefore \emph{not} a proposition. 
+Similarly, $\sum_{n:\NN} \true$ has infinitely many 
+distinct elements $(n,\triv)$ and is not a proposition. We will see later how
+to work with disjunction and existential quantification for propositions.
 
 DO SOMETHING WITH THIS TEXT HERE: In the case where each $P(a)$ is a proposition (to be defined later), we may say that the truth of $P(a)$ is
 invariant under substitution.  In other words, equal elements of $X$ have the same properties.  In the case where each $P(a)$ is not assumed to
 be a proposition, and thus its elements are ways to add extra structure to $a$, we may say that the structures can be {\em transported} from $a$
 to $b$ by the proof $e$ of equality.
 
+The lemma above has a generalization from propositions to
+types of level at most $n$ which we state without proving.
+
+\begin{lemma}\label{lem:level_n_utils}
+Let $A$ be a type, and let $X$ and $Y$ be types of level at most $n$.
+Let $Z(a)$ be a type of level at most $n$ depending on $a:A$. Then we have:
+\begin{enumerate}
+\item\label{level_n_utils_implication} $A\to X$ is a type of level at most $n$;
+\item\label{level_n_utils_product} $\prod_{a:A} Z(a)$ is a type of level at most $n$;
+\item\label{level_n_utils_times} $X\times Y$ is a type of level at most $n$.
+\end{enumerate}
+\end{lemma}
 
 \section{Logical operations on propositions}
 
