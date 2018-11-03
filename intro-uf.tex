@@ -129,8 +129,14 @@ Associativity of transitivity is formulated and established similarly.  We leave
 
 One frequent use of elements of identity types is in {\em substitution}.  Let $X$ be a type, and let $P(x)$ be a family of types depending on a
 parameter $x:X$.  Suppose $a,b:X$ and $e:a=b$.  Then there is a function of type $P(a) \to P(b)$.  To prove that, it suffices, by induction, to
-consider the case where $b$ is $a$ and $e$ is $\refl a$ and to provide a function $P(a) \to P(a)$.  To achieve that, we provide the identity
-function.
+consider the case where $b$ is $a$ and $e$ is $\refl a$ and to provide a function $P(a) \to P(a)$.  To achieve that, we provide the identity function. 
+The function $P(a) \to P(b)$ thus defined is called (in full)
+\emph{the transport function in the type family $P$ along the path $e$},
+and will be denoted (in full)
+\newcommand{\trp}{\mathop{\mathit{transport}}} % to be moved to macros.tex
+$\trp(X,P,a,b,e)$. We often use less verbose phrases such as `by transport'
+and simplified denotations like $\trp^P e$, or even just $\trp e$.
+The precise expressions should always be easy to recover from the context.
 
 \section{Other types}
 
@@ -204,7 +210,7 @@ equal to it.  Hence it is encoded by the type $\sum_{a:X} \prod_{b:X} (a=b)$.
 \section{Propositions and sets}
 
 Let $X$ be a type.  The property that $X$ has at most one element is equivalent to the property that any two elements are equal, so is encoded
-by $\prod_{a:X} \prod_{b:X} (a=b)$.  We shall call such a type a {\em proposition}, and its elements will be called {\em proofs}.
+by $\prod_{a,b:X} (a=b)$.  We shall call such a type a {\em proposition}, and its elements will be called {\em proofs}.
 Alternatively, we shall say that $X$ has level {\em at most 1}.
 
 Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a proposition, then we shall say that $X$ is a {\em set}.
@@ -214,6 +220,24 @@ Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a 
 
 The pattern continues.  If for any $n:\NN$, any $x:X$, and any $y:X$ the identity type $x=y$ is of level at most $n$, then we shall say that $X$
 has level {\em at most $n+1$}.
+
+For this terminology to make sense we must have that every type of level
+at most 1 is also a type of level at most 2. From this it follows
+that the levels are cumulative. Therefore we prove the following lemma.
+
+\begin{lemma}\label{lem:prop_is_set}
+Every type that is a proposition is also a set.
+\end{lemma}
+\begin{proof}
+Let $X$ be a type and let $f: \prod_{a,b:X} (a=b)$. Let $a,b,c : X$ and
+let $P(x)$ be the type $a=x$ depending on $x:X$. Then
+$f(a,b):P(b)$ and $f(a,c):P(c)$. By path induction we prove for
+all $q:b=c$ that $q\cdot f(a,b) = f(a,c)$. For this it suffices to
+verify that $\refl{b} \cdot f(a,b) = f(a,b)$, which follows immediately.
+So $q$ is equal to $f(a,c)\cdot f(a,b)^{-1}$ which doesn't
+depend on $q$, so all such $q$ are equal. Hence $X$ is a set.
+\end{proof}
+
 
 DO SOMETHING WITH THIS TEXT HERE: In the case where each $P(a)$ is a proposition (to be defined later), we may say that the truth of $P(a)$ is
 invariant under substitution.  In other words, equal elements of $X$ have the same properties.  In the case where each $P(a)$ is not assumed to
