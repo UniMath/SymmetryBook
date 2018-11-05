@@ -249,8 +249,9 @@ Let $P(a)$ be a proposition depending on $a:A$. Then we have:
 \begin{enumerate}
 \item\label{prop_utils_false_true} $\false$ and $\true$ are propositions;
 \item\label{prop_utils_implication} $A\to P$ is a proposition;
-\item\label{prop_utils_product} $\prod_{a:A} P(a)$ is a proposition;
-\item\label{prop_utils_times} $P\times Q$ is a proposition.
+\item\label{prop_utils_pi} $\prod_{a:A} P(a)$ is a proposition;
+\item\label{prop_utils_times} $P\times Q$ is a proposition;
+\item\label{prop_utils_eq} $P = Q$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
@@ -258,13 +259,15 @@ Let $P(a)$ be a proposition depending on $a:A$. Then we have:
 If $p,q : \false$, then $p=q$ is proved by the Ex Falso rule.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
-If $p,q : A\to P$, then $p=q$ is proved by firstr observing that $p$ and $q$
+If $p,q : A\to P$, then $p=q$ is proved by first observing that $p$ and $q$
 are functions. Hence by function extensionality they are equal if pointwise
 equal, which is the case since $P$ is a proposition.
 If $p,q : \prod_{a:A} P(a)$ one can use the same argument as for $A\to P$
 but now with \emph{dependent} functions $p,q$.
 If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
-is proved componentwise.
+is proved componentwise. By univalence, $P = Q$ is equivalent to
+$(P\to Q)\times(Q\to P)$, which is a proposition by 
+combining (\ref{prop_utils_implication},\ref{prop_utils_times})
 \end{proof}
 
 Several remarks can be made here. First, the lemma supports the
@@ -274,7 +277,7 @@ and conjunction, respectively. Since $\false$ is a proposition,
 it follows by (\ref{prop_utils_implication}) above that 
 $\neg A$ as defined by $A\to\false$ is a proposition for any type $A$.
 As noted before, (\ref{prop_utils_implication}) is a
-special case of (\ref{prop_utils_product}).
+special case of (\ref{prop_utils_pi}).
 
 Notably absent in the lemma above are disjunction
 and existential quantification. This has a simple reason:
@@ -297,7 +300,7 @@ Let $A$ be a type, and let $X$ and $Y$ be types of level at most $n$.
 Let $Z(a)$ be a type of level at most $n$ depending on $a:A$. Then we have:
 \begin{enumerate}
 \item\label{level_n_utils_implication} $A\to X$ is a type of level at most $n$;
-\item\label{level_n_utils_product} $\prod_{a:A} Z(a)$ is a type of level at most $n$;
+\item\label{level_n_utils_pi} $\prod_{a:A} Z(a)$ is a type of level at most $n$;
 \item\label{level_n_utils_times} $X\times Y$ is a type of level at most $n$.
 \end{enumerate}
 \end{lemma}
@@ -307,6 +310,31 @@ Let $Z(a)$ be a type of level at most $n$ depending on $a:A$. Then we have:
 \section{Propositional truncation; disjunction}
 
 \section{Operations on sets that produce new sets}
+
+\begin{lemma}\label{lem:subset}
+Let $S$ be a set, and let $P(x)$ be a proposition depending on $x:S$. 
+Then $\sum_{x:S} P(x)$ is a set. We also denote the latter set
+as $\set{x:S \mid P(x)}$.
+\end{lemma}
+
+\begin{proof}
+If $(x_1,p_1),(x_2,p_2) : \sum_{x:S} P(x)$, then by WHICH LEMMA
+$(x_1,p_1)=(x_2,p_2)$ is equivalent to 
+$\sum_{q:x_1=x_2} (\trp^P q\,p_1 = p_2)$. 
+Since $P(x_2)$ is a proposition, using SEVERAL LEMMAS we get 
+\[
+\sum_{q:x_1=x_2} ({\trp}^P q\,p_1 = p_2) \equiv 
+\sum_{q:x_1=x_2} \true \equiv (x_1=x_2).
+\]
+
+\end{proof}
+
+\begin{lemma}\label{lem:eq_of_sets_is set}
+If $X$ and $Y$ are sets, then $X=Y$ is a set.
+\end{lemma}
+
+
+
 
 \section{Equivalences; function extensionality}
 
