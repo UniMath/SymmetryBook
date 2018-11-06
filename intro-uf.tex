@@ -131,7 +131,7 @@ abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
 
 Associativity of transitivity is formulated and established similarly.  We leave that as an exercise.
 
-One frequent use of elements of identity types is in {\em substitution}.  Let $X$ be a type, and let $T(x)$ be a family of types depending on a
+One frequent use of elements of identity types is in \emph{substitution}.  Let $X$ be a type, and let $T(x)$ be a family of types depending on a
 parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  Then there is a function of type $T(x) \to T(y)$. We define one specific such function by path induction, by taking its value
 to be the identity function on $T(x)$ in the case of $\refl{x}:x=x$.
 \begin{definition}\label{def:transport} The function
@@ -145,6 +145,25 @@ The function thus defined is called (in full)
 We often use less verbose phrases such as `by transport'
 and simplified the notation to $\trp^T e$, or even just $\trp e$.
 The precise expressions should always be easy to recover from the context.
+
+In the case where, for each $x:X$, we are only interested in 
+$T(x)$ having elements or not, and not in the elements themselves,
+we may say that `having elements or not' is invariant under 
+substitution of equals.
+Once we have seen how we do logic in type theory this can be rephrased
+by saying that \emph{truth} is invariant under substitution of equals.
+In other words, equal elements of $X$ have the same properties.
+In such cases we often just say `by substitution', not mentioning
+transport at all.  
+
+On the other hand, we are often interested in the elements of $T(x)$,
+since they may add extra structure to $x$. For example,
+$T(x)$ could be $\bool\to S(x)$. Then $f:T(x)$ specifies a pair
+of elements of $S(x)$, and $\trp^T e f : T(y)$, specifies a pair
+of elements of $S(y)$. We see that the structure `pair of elements of $S(x)$'
+is \emph{transported} along the proof $e:x=y$ 
+to a `pair of elements of $S(x)$'. In such cases transport will of course
+not be ignored.
 
 \section{Other types}
 \label{sec:other-types}
@@ -231,7 +250,7 @@ Alternatively, we shall say that $X$ is a 0-\emph{type}.\footnote{%
 Sets are thought to consist of points. Points are entities of dimension 0, 
 which explains why the count starts here.
 One of the contributions of Vladimir Voevodsky is the extension of
-the hierarchy downwards, with the notion of proposition above,
+the hierarchy downwards, with the notion of proposition,
 including logic in the same hierarchy.
 Some authors therefore call propositions $(-1)$-\emph{types}.} 
 
@@ -273,18 +292,29 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \end{lemma}
 
 \begin{proof}
+(\ref{prop_utils_false_true})
 If $p,q : \false$, then $p=q$ is proved by the Ex Falso rule.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
+
+(\ref{prop_utils_implication})
 If $p,q : A\to P$, then $p=q$ is proved by first observing that $p$ and $q$
 are functions. Hence by function extensionality they are equal if pointwise
 equal, which is the case since $P$ is a proposition.
+
+(\ref{prop_utils_pi})
 If $p,q : \prod_{a:A} R(a)$ one can use the same argument as for $A\to P$
 but now with \emph{dependent} functions $p,q$.
+
+(\ref{prop_utils_times})
 If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
-is proved componentwise. By univalence, $P = Q$ is equivalent to
+is proved componentwise. 
+
+(\ref{prop_utils_eq})
+By univalence, $P = Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
-combining (\ref{prop_utils_implication},\ref{prop_utils_times})
+combining (\ref{prop_utils_implication}) and
+(\ref{prop_utils_times})
 \end{proof}
 
 Several remarks can be made here. First, the lemma supports the
@@ -303,11 +333,6 @@ $\inl{\triv}$ and $\inr{\triv}$, an is therefore \emph{not} a proposition.
 Similarly, $\sum_{n:\NN} \true$ has infinitely many
 distinct elements $(n,\triv)$ and is not a proposition. We will see later how
 to work with disjunction and existential quantification for propositions.
-
-DO SOMETHING WITH THIS TEXT HERE: In the case where each $P(a)$ is a proposition (to be defined later), we may say that the truth of $P(a)$ is
-invariant under substitution of an equal element for $a$.  In other words, equal elements of $X$ have the same properties.  In the case where each $P(a)$ is not assumed to
-be a proposition, and thus its elements are ways to add extra structure to $a$, we may say that the structures can be {\em transported} from $a$
-to $b$ by the proof $e$ of equality.
 
 The lemma above has a generalization from propositions to
 $n$-types which we state without proving.
