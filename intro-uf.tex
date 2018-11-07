@@ -146,11 +146,11 @@ We often use less verbose phrases such as `by transport'
 and simplified the notation to $\trp^T e$, or even just $\trp e$.
 The precise expressions should always be easy to recover from the context.
 
-In the case where, for each $x:X$, we are only interested in 
-$T(x)$ having elements or not, and not in the elements themselves,
-we may say that `having elements or not' is invariant under 
+There are cases where, for each $x:X$, we are only interested in 
+$T(x)$ having elements or not, and not in the elements themselves.
+By transport, `having elements or not' is invariant under 
 substitution of equals.
-Once we have seen how we do logic in type theory this can be rephrased
+Once we have seen how to do logic in type theory this can be rephrased
 by saying that \emph{truth} is invariant under substitution of equals.
 In other words, equal elements of $X$ have the same properties.
 In such cases we often just say `by substitution', not mentioning
@@ -158,9 +158,9 @@ transport at all.
 
 On the other hand, we are often interested in the elements of $T(x)$,
 since they may add extra structure to $x$. For example,
-$T(x)$ could be $\NN\to S(x)$. Then $f:T(x)$ specifies a sequence
-of elements of $S(x)$, and $\trp^T e\,f : T(y)$, specifies a sequence
-of elements of $S(y)$. We see that the structure `sequence of elements'
+$T(x)$ could be $\NN\to x=x$. Then $f:T(x)$ specifies a sequence
+of elements of $x=x$, and $\trp^T e\,f : T(y)$, specifies a sequence
+of elements of $y=y$. We see that the structure `sequence of elements'
 is \emph{transported} along the proof $e:x=y$. 
 In such cases transport will of course not be ignored.
 
@@ -168,8 +168,14 @@ In such cases transport will of course not be ignored.
 \label{sec:other-types}
 
 There are other examples of types that are conveniently presented as inductive definitions, in the style we have seen with the natural numbers
-and the equality types.  We present three examples.
+and the equality types.  We start by the finite types, and then
+present several constructions defining new types from old ones.
+For each of these constructions we explain what it means for two 
+elements of the newly constructed type to be equal in terms of
+equality in the constituent types.
 
+\subsection{Finite types}
+\label{sec:finite-types}
 Firstly, there is the ``empty'' type, called $\emptyset$, defined inductively, with no way to construct elements provided in the inductive
 definition.  The inductive principle for $\emptyset$ says that to prove something about (or to construct something from) every element of
 $\emptyset$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptyset$ can be proven. (This is called the Ex Falso
@@ -211,14 +217,110 @@ S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a vari
 and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
 of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptyset$, establishing the claim.
 
-There are \emph{sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
-there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$.  We may refer to $X$ as the \emph{index
-  type} of the sum.  Sums may be implemented by an inductive definition.   (FILL IN SOME PROPERTIES.)
+Of course we could continue defining inductively types with three elements, 
+with four elements, and even with $n$ elements for any $n:\NN$. It is,
+however, more interesting to look at other constructions for types.
 
+\subsection{Product types}
+\label{sec:product-types}
+Our type theory will also contain \emph{products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
+parameter $x$ of type $X$, then there will be a type $\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
+$Y(a)$, one for each $a:X$. We may refer to $X$ as the \emph{index
+  type} of the product.  A function $f : X \to Y$ is essentially the same thing as a function $f$ of $\prod_{x:X} Y$, where the product is
+formed using a constant family of types.
+
+Product types are not inductive, there are no constructors and
+there is no induction principle for product types. 
+The basic method for constructing an element of a product type
+is by explicit definition. Two elements $f,g : \prod_{x:X} Y(x)$
+are equal if they are pointwise equal, which can be expressed
+using two product types $(\prod,\to)$: 
+\[
+(\prod_{x:X} f(x) = g(x)) \to f=g
+\] 
+This axiom is called `function extensionality'.
+The opposite direction, $f=g \to \prod_{x:X} f(x) = g(x)$ can be
+obtained by substituting $g$ for the rightmost $f$ in
+$\prod_{x:X} f(x) = f(x)$. The latter can be obtained
+by the explicit definition $h(x)\defeq \refl{x}$.
+
+\subsection{Sum types}
+\label{sec:sum-types}
+There are \emph{sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
+there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$. Since the type of $b$ may depend on $a$ we also call such a pair
+a \emph{dependent} pair. We may refer to $X$ as the \emph{index
+  type} of the sum.  Proving something about (or constructing something from) every element of $\sum _{x:X} Y(x)$ is simply done for all $a:X$ and $b: Y(a)$.
+Two important examples of such constructions are:
+\begin{enumerate}
+\item \emph{first projection} $\fst:(\sum _{x:X} Y(x)) \to X$, 
+$\fst(a,b)\defeq a$;
+\item \emph{second projection}
+$\snd: \prod_{z: \sum _{x:X} Y(x)} Y(\fst z)$, $\snd(a,b)\defeq b$.
+\end{enumerate}
+
+Equality of two elements $(a_1,b_1),(a_2,b_2)$ of $\sum _{x:X} Y(x)$ is 
+inductively defined in \cref{sec:identity-types}, like for any other type.
+In the case of a structured type defined from other types, 
+here $\sum _{x:X} Y(x)$ from $X$ and $Y(x)$ for any $X$,
+one would like to express equality in the structured type in terms of 
+the equalities in the constituent types. This explains much better
+what it means for two elements of the structured type to be equal.
+This is so important that we give this explanation here and below
+every time we introduce a new structured type, even though not everything
+can be proved yet. For complete proofs we refer to \cite{hottbook}.
+
+An equality between two elements $(a_1,b_1),(a_2,b_2)$ of 
+$\sum _{x:X} Y(x)$ means in the first place, by taking
+the first projection, having an equality $e: a_1=a_2$.
+We cannot expect exactly the same for the second 
+projections $b_1: Y(a_1)$ and $b_2: Y(a_2)$, since they may
+have different types and can therefore not be compared directly.
+However, after transport of $b_1$ in the type family $Y$
+along the equality $e: a_1=a_2$ a direct comparison to $b_2$
+is possible. Thus we obtain the each equality $(a_1,b_1)=(a_2,b_2)$
+can be viewed as a pair of an equality $e: a_1=a_2$ and an
+equality $e' : \trp^Y e\, b_1 = b_2$. Note that the type
+of $e'$ depends on $e$, so that we actually have a dependent pair:
+\[
+(e,e'): \sum_{e:a_1 = a_2} {\trp}^Y e\, b_1 = b_2
+\]
+The latter type can be proved to be equivalent to the
+type $(a_1,b_1)=(a_2,b_2)$ in a precise sense.
+
+The combination of $\sum,\prod$- and equality types allow
+us to express important notions, as done in the following
+definitions.
+
+\begin{definition}
+\label{def:contractible}
+Let $X$ be a type.  The property that $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is
+equal to it.  Hence it is encoded by the type $\sum_{a:X} \prod_{b:X} (a=b)$.
+We call a type $X$ having this property \emph{contractible}, denoted by $\iscontr(X)$.
+\end{definition}
+
+\begin{definition}
+\label{def:fiber}
 Given a function $f : X \to Y$ and an element $y:Y$, the \emph{fiber} (or \emph{inverse image}) $f^{-1}(y)$ consists of points $x$ such that $f(x)
 = y$.  This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (f(x) = y)$.  In other words, a point of the fiber is a pair $(x,e)$ consisting
 of the point $x$ and an element $e$ of the identity type $f(x) = y$.
+\end{definition}
 
+In set theory, a function $f : X \to Y$ is a bijection if and only if
+all inverse images $f^{-1}(y)$ have exactly one element.
+This we can now express in type theory, in an definition due
+to Vladimir Voevodsky. 
+
+\begin{definition}
+\label{def:equivalence}
+A function $f : X \to Y$ is called an \emph{equivalence} if
+\[
+\prod_{y:Y} \iscontr(f^{-1}(y)),
+\]
+denoted by $\isEq(f)$.
+\end{definition}
+
+\subsection{Binary sums}
+\label{sec:binsum-types}
 There is a binary sum operation on types: for any types $X$ and $Y$, there is a type $X \amalg Y$.  It is also called the \emph{disjoint union}
 of $X$ and $Y$.  From an element of $X$ or an element of $Y$ we can produce an element of $X \amalg Y$.  The binary sum is implemented by an
 inductive definition with two constructors: $\inl{} : X \to X \amalg Y$ and
@@ -226,11 +328,15 @@ $\inr{} : Y \to X \amalg Y$. Proving a property of any element of $X \amalg Y$
 means proving that this property holds of any $\inl{x}$ with $x:X$ and any
 $\inr{y}$ with $y:Y$. (ADD COMPUTATIONAL RULE)
 
+\subsection{Product types}
+\label{sec:product-types}
 Our type theory will also contain \emph{products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
 parameter $x$ of type $X$, then there will be a type $\prod _{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
 $Y(a)$, one for each $a:X$.  A function $f : X \to Y$ is essentially the same thing as a function $f$ of $\prod_{x:X} Y$, where the product is
 formed using a constant family of types.  (FILL IN SOME PROPERTIES.)
 
+\subsection{Binary products}
+\label{sec:binprod-types}
 There is a binary product operation on types: for any types $X$ and $Y$, there is a type $X \times Y$.  From an element of $X$ and an element of
 $Y$ we can produce an element $(x,y)$ of $X \times Y$.  The binary product is implemented as a special case of sums.  (SAY MORE AND FILL IN SOME
 PROPERTIES.)
@@ -241,7 +347,7 @@ equal to it.  Hence it is encoded by the type $\sum_{a:X} \prod_{b:X} (a=b)$.
 \section{Propositions and sets}
 \label{sec:propositions-and-sets}
 
-Let $X$ be a type.  The property that $X$ has at most one element is equivalent to the property that any two elements are equal, so is encoded
+Let $X$ be a type.  The property that $X$ has at most one element may be expressed by saying that any two elements are equal. Hence it is encoded
 by $\prod_{a,b:X} (a=b)$.  We shall call such a type a \emph{proposition}, and its elements will be called \emph{proofs}.
 
 Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.
