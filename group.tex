@@ -1,5 +1,50 @@
 \label{ch:groups}
 
+\subsection{desiderata}
+The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
+
+\newcommand{\fin}{\mathrm{Fin}}
+\begin{definition}\label{def:finiteset}
+  \footnote{really want this exercise/definition in a previous chapter} Define the type family $\mathbf 0$, $\mathbf 1$, $\mathbf 2$,\dots inductively on $\NN$ by declaring that the value at $0:\NN$ is $\mathbf 0\defequi\emptyset$ and the value at a successor $s(n):\NN$ is $\mathbf n\coprod\true$.  
+%For simplicity we will refer to $\fin(n)$ as $\mathbf n$.  
+  \begin{enumerate}
+  \item Prove that $\mathbf 1=\true$, $\mathbf 2=\bool$. 
+  \item Prove that if $m,n:\NN$ and $\mathbf m=\mathbf n$ then $n=m$.  
+  \item   Prove that
+$$\sum_{n:\NN}\sum_{S:\Set}||S=\mathbf n|| =\sum_{S:\Set}||\sum_{n:\NN}S=\mathbf n||.
+$$
+  \end{enumerate}
+If a set $S$ is in the same component in $\Set$ as $\mathbf n$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
+The \emph{groupoid of finite sets} is defined to be
+$$\fin\defequi\sum_{S:\Set}||\sum_{n:\NN}S=\mathbf n||$$
+and for $n:\NN$ the \emph{sets of cardinality $n$}
+$$\fin_n\defequi \sum_{S:\Set}||S=\mathbf n||.$$
+Observe that $\fin_1=\mathbf 1$ and $\fin=\sum_{n:\NN}\fin_n.$
+
+\begin{definition}\label{def:connected}
+A type $A$ is \emph{connected} if $||A||%\sum{a,b:A}||a=b||
+=\mathbf 1$.  
+\end{definition}
+Note that under this definition, $\mathbf 0$ is not connected, and neither is $\mathbf n$ if $n>1$.  As a matter of fact, if $A$ has an element $a$, then $A$ is connected if and only if for all $b:A$ the identity type $a=_Ab$ is inhabited.
+\begin{definition}
+    If $A$ is a type and $a:A$, then the \emph{component of $a$ in $A$} is the type
+$$A_{(a)}\defequi \sum_{b:A}||b=a||.$$
+\end{definition}
+\begin{xca}
+  Prove that the component of $a$ in $A$ is connected.  
+
+ [\footnote{This tries to say that, nonfunctorially, a space is the disjoint union of its components.  Don't think we need it so it can propably be thrown away.}Assuming the appropriate form of axiom of choice \footnote{someone insert our choice}, prove that the path components define a family $A\to\mathcal U$ factoring as $A\to||A||$ making sense of the equation ``$||A=\sum_{[a]:||A||}A_{[a]}||$''.]
+\end{xca}
+\begin{xca}\label{xca:essentiallysmall} \footnote{Some version of this will probably be needed.  It won't be used in any cases where functoriality is needed.}
+  Let $\mathcal U\subseteq\mathcal U_1$ be universes and let $A:\mathcal U_1$ so that $||A||$ is in $\mathcal U$ and for all $a,b:A$ we have that $(a=_Ab):\mathcal U$.  Then $A$ is \emph{essentially small}, \ie there is an equivalence (in $\mathcal U_1$) to a type in $\mathcal U$.  
+
+Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\cref{def:finiteset}) is essentially small, and more generally that if $S$ is a set, then the component $\Set_{(S)}$ is essentially small.  
+\end{xca}
+\cref{xca:essentiallysmall} has the consequence that in many cases types and essentially small types can be used interchangeably.  Where this may clutter the notation we will gloss over this distinction.
+
+
+
+\section{Now it starts}
 The identity type is not just any type.  In the previous sections we have seen that the identity type $a=_Aa$ reflects the ``symmetries'' of a term $a$ in a type $A$.  Symmetries have special properties; for instance you can rotate a square by $90^o$, and you can rotate it by $-90^o$, undoing the first rotation.
 Symmetries can also be composed, and this composition respects certain rules that holds in all examples.  When coining the concept of ``symmetries'', we should isolate these common rules for all our examples, but also show, conversely, that anything satisfying these rules actually \emph{is} an example.  This is the purpose of the mathematical term ``group''.
 
@@ -23,7 +68,7 @@ Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$
 
 
 \begin{remark}
-  When considering the identity type $a=_Aa$, the elements $x:A$ with $x$ unequal to $a$ are not relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is always inhabited.  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
+  When considering the identity type $a=_Aa$, the elements $x:A$ with $x$ unequal to $a$ are not relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is always inhabited (c.f.~\cref{def:connected}).  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
 \end{remark}
 
 
@@ -40,36 +85,30 @@ A group $(A,a,p,q):\typegroup$ will be referred to simply as $\aut_A(a)$.
 \begin{remark}\label{rem:aut}
 There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a connected groupoid is asserted by $\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$ which is a proposition  (\cref{lem:props-are-props}) and so the witness $(p,q)$  is unique.
 \end{remark}
+\end{definition}
 \begin{example}
   % Since any pointed connected groupoid is a group, there is no shortage of examples, but perhaps i
   It is worthwhile to consider some specially designed examples.
   \begin{enumerate}
-  \item Recall that the set $\true$ has the single element $\triv$. Then $\aut_{\true}(\triv)$ is a group called the \emph{trivial group}.
-  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  The only thing wrong about $(\Set,S)$ (apart from $\Set$ being large\footnote{how do we deal with that?}) is that $\Set$ is not connected.  So we \emph{pick
- the component of $\Set$ containing $S$}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  To be precise, the component of $S$ is
-$$A\defequi\sum_{X\in\Set}||S=X||.$$  
-The connected groupoid $\sum_{X\in\Set}||S=X||$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    Then 
-$$(S=_AS)=(S=_{\Set}S)$$ 
-(in the identity type of a $\Sigma$-type both the first and the second projections must be equal, but for $A\oldequiv\sum_{X:\Set}||S=X||$ the second projection is a proposition).  
-
-So, the \emph{group of permutations of $S$} is defined to be $\BSigma_{S}=(A,S)$.
+  \item Recall that the set $\mathbf 1=\true$ has the single element which we can call $*$. Then $\aut_{\mathbf 1}(*)$ is a group called the \emph{trivial group}.
+  \item If $n:\NN$, then the \emph{permutation group of $n$ letters} is $B\Sigma_n\defequi\aut_{\fin_n}(\mathbf n)$, where $\fin_n$ is the type of sets of cardinality $n$ (c.f.~\ref{def:finiteset}).  Note that even though $(\mathbf n=_{\fin}\mathbf n)=(\mathbf n=_{\fin_n}\mathbf n)$ we must use the component $\fin_n$ rather than the entire type $\fin$ of finite sets to keep the underlying groupoid connected.
+  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  Again, the only thing wrong with ``$\aut_{\Set}(S)$'' (apart from $\Set$ being large\footnote{how do we deal with that?}) is that $\Set$ is not connected. 
+%}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  To be precise, the component of $S$ is
+%$$A\defequi\sum_{X\in\Set}||S=X||.$$  
+%The connected groupoid $\sum_{X\in\Set}||S=X||$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    
+% Then 
+% $$(S=_AS)=(S=_{\Set}S)$$ 
+% (in the identity type of a $\Sigma$-type both the first and the second projections must be equal, but for $A\oldequiv\sum_{X:\Set}||S=X||$ the second projection is a proposition).  
+%
+ So, 
+the \emph{group of permutations of $S$} is defined to be $\BSigma_{S}=\aut_{\Set_{(S)}}(S)$.  
   \end{enumerate}
 \end{example}
 \begin{xca}
   \begin{enumerate}
-  \item 
-  Prove that the the trivial group $\aut_{\true}(\triv)$ is equivalent to the group $\BSigma_{\true}$ of permutations of $\true$.
-\item Display a nontrivial element in the group $\BSigma_{\bool}$ of permutations of $\bool$.
-\item \footnote{really want this exercise in a previous chapter} Define a type family $\mathbf 0$, $\mathbf 1$, $\mathbf 2$,\dots inductively on $\NN$ by declaring that the value at $0:\NN$ is $\mathbf 0\defequi\emptyset$ and the value at a successor $s(n):\NN$ is $\mathbf n\coprod\true$.  
-%For simplicity we will refer to $\Fin(n)$ as $\mathbf n$.  
-  \begin{enumerate}
-  \item Prove that $\mathbf 1=\true$, $\mathbf 2=\bool$. 
-  \item Prove that if $m,n:\NN$ and $\mathbf m=\mathbf n$ then $n=m$.  
-  \item   Prove that
-$$\sum_{n:\NN}\sum_{S:\Set}||S=\mathbf n|| =\sum_{S:\Set}||\sum_{n:\NN}S=\mathbf n||.
-$$
-  \end{enumerate}
-If a set $S$ is in the same component in $\Set$ as $\mathbf n$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
+  \item Compare the definitions of \cref{def:finiteset} and show that if $n:\NN$, then $B\Sigma_n=B\Sigma_{\mathbf n}$ %is equal to the permutation group on $n$ letters 
+and that $B\Sigma_{1}=\aut_{\mathbf 1}(\triv)$.
+\item Display an element in $\mathbf 2=_{\fin_2}\mathbf 2$ different from $\refl{\mathbf 2}$ in the group $\BSigma_{2}$ of permutations of two letters.
   \end{enumerate} 
 \end{xca}
 
