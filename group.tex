@@ -15,38 +15,63 @@ However, in elementary texts it is customary to restrict the notion of a group t
 
 
 
-See the end of the chapter \cref{sec:grouphistory} for a brief summary of the early history of groups.
+See \cref{sec:grouphistory} for a brief summary of the early history of groups.
 \begin{remark}
   The reader may wonder about the status of the identity type $a=_Aa'$ where $a,a':A$ are different elements.  One problem is of course that if $p,q:(a=_Aa')$ there is no obvious way of composing $p$ and $q$, and another is that $a=_Aa'$ does not have a distinguished element such as $\mathrm{refl{}_a}:a=_Aa$.
-Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent existence and choice of such an $f$ the identity types $a=_Aa'$ and $a=_Aa$ are very different objects.
+Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent existence and choice of such an $f$ the identity types $a=_Aa'$ and $a=_Aa$ are different animals.
 \end{remark}
 
 
 \begin{remark}
-  When considering the identity type $a=_Aa$, the elements $x:A$ with $x$ unequal to $a$ are irrelevant, and we are free to consider only the \emph{connected} case, \ie where $x=_Aa$ is always inhabited.
+  When considering the identity type $a=_Aa$, the elements $x:A$ with $x$ unequal to $a$ are not relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is always inhabited.  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
 \end{remark}
 
 
 With this established, we let the \emph{type} of groups be defined as follows:
 
 \begin{definition}\label{def:typegroup}\footnote{we must define  $\isset$ and propositional truncation.  Alternatively we must define $\isonetype$ and $\conn$}
-  The \emph{type of groups} is
+  A \emph{group} is a pointed connected groupoid; the \emph{type of groups} is the type 
 %$$\typegroup=\sum_{A:\mathcal U}A\times\isonetype(A)\times \conn_0A.$$
-$$\typegroup\defequi\sum_{A:\mathcal U}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||.$$
-We refer to an element of $\typegroup$ as a \emph{group}.  A group $(A,a,p,q):\typegroup$ will be referred to simply as $\aut_A(a)$.
+$$\typegroup\defequi\sum_{A:\mathcal U}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$
+of pointed connected groupoids.
+%We refer to an element of $\typegroup$ as a \emph{group}.  
+A group $(A,a,p,q):\typegroup$ will be referred to simply as $\aut_A(a)$.
 \end{definition}
 \begin{remark}\label{rem:aut}
-The abuse inherent in writing $\aut_A(a)$ instead of $(A,a,p,q)$ is innocent: since $\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$ is a proposition  (\cref{lem:props-are-props}) the witnesses $(p,q)$  is unique.
+There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a connected groupoid is asserted by $\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$ which is a proposition  (\cref{lem:props-are-props}) and so the witness $(p,q)$  is unique.
 \end{remark}
 \begin{example}
-  Since any pointed connected $1$-type is a group, there is no shortage of examples, but perhaps it is worthwhile to consider some specially designed examples.
+  % Since any pointed connected groupoid is a group, there is no shortage of examples, but perhaps i
+  It is worthwhile to consider some specially designed examples.
   \begin{enumerate}
-  \item Recall that $1$ has the single element $*$.\footnote{what is the notation/reference for our chosen final element?} Then $\aut_1(*)$ is a group called the \emph{trivial group}.
-  \item More generally, if $S$ is a set, is there a pointed connected $1$-type $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$.  The only thing wrong about the type $\Set$ (apart from it being large\footnote{how do we deal with that?}) is that it is not connected.  So we \emph{pick
- the component of $\Set$ containing $S$, pointed at $S$}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  The component of $S$ is picked out by considering 
-$$A=\Set_{(S)}\defequi\sum_{X\in\Set}||S=X||.$$  The connected $1$-type $\Set_{(S)}$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    Then $(S=_{\Set_{(S)}}S)=(S=_{\Set}S)$ (both the first and the second projections must be equal in a $\Sigma$-type, but in this case the second projection is a (true) proposition).  So, the \emph{group of permutations of $S$} is defined to be $(\Set_{(S)},S)$.
+  \item Recall that the set $\true$ has the single element $\triv$. Then $\aut_{\true}(\triv)$ is a group called the \emph{trivial group}.
+  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  The only thing wrong about $(\Set,S)$ (apart from $\Set$ being large\footnote{how do we deal with that?}) is that $\Set$ is not connected.  So we \emph{pick
+ the component of $\Set$ containing $S$}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  To be precise, the component of $S$ is
+$$A\defequi\sum_{X\in\Set}||S=X||.$$  
+The connected groupoid $\sum_{X\in\Set}||S=X||$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    Then 
+$$(S=_AS)=(S=_{\Set}S)$$ 
+(in the identity type of a $\Sigma$-type both the first and the second projections must be equal, but for $A\oldequiv\sum_{X:\Set}||S=X||$ the second projection is a proposition).  
+
+So, the \emph{group of permutations of $S$} is defined to be $\BSigma_{S}=(A,S)$.
   \end{enumerate}
 \end{example}
+\begin{xca}
+  \begin{enumerate}
+  \item 
+  Prove that the the trivial group $\aut_{\true}(\triv)$ is equivalent to the group $\BSigma_{\true}$ of permutations of $\true$.
+\item Display a nontrivial element in the group $\BSigma_{\bool}$ of permutations of $\bool$.
+\item \footnote{really want this exercise in a previous chapter} Define a type family $\mathbf 0$, $\mathbf 1$, $\mathbf 2$,\dots inductively on $\NN$ by declaring that the value at $0:\NN$ is $\mathbf 0\defequi\emptyset$ and the value at a successor $s(n):\NN$ is $\mathbf n\coprod\true$.  
+%For simplicity we will refer to $\Fin(n)$ as $\mathbf n$.  
+  \begin{enumerate}
+  \item Prove that $\mathbf 1=\true$, $\mathbf 2=\bool$. 
+  \item Prove that if $m,n:\NN$ and $\mathbf m=\mathbf n$ then $n=m$.  
+  \item   Prove that
+$$\sum_{n:\NN}\sum_{S:\Set}||S=\mathbf n|| =\sum_{S:\Set}||\sum_{n:\NN}S=\mathbf n||.
+$$
+  \end{enumerate}
+If a set $S$ is in the same component in $\Set$ as $\mathbf n$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
+  \end{enumerate} 
+\end{xca}
 
 \begin{remark}
 In \cref{lem:idtypesgiveabstractgroups} we will see that groups satisfy a set of laws justifying the name ``group''
@@ -105,7 +130,7 @@ We do $g=e\cdot g$ in some detail (remember that is shorthand for $e=\refl a{}$)
 \begin{remark}
   This makes sense since we \emph{defined} $e\cdot e\defequi e$ (or, as it was originally formulated, $\trans_{a,a,a}(\refl a{})(\refl a{})\defequi \refl a{}$).  We'll say that we produce $p_1(a,b,g)$ by ``induction on $b$'', the case where $b$ is $a$ (and $g$ is $e$) is the start of the induction; the induction priciple for the identity type $a=b$ then finishes the construction.
 
-As constructed, $p_1$ is actually a term in the type
+As constructed, $p_1$ is actually an element in the type
 $$\prod_{a:A}\prod_{b:A}\prod_{g:a=b}(g=g\cdot e)$$ -- it is constructed ``uniformly'' or ``naturally'' for all $a,b,g$: think of it as a function with $(a,b,g)$ as input and $p_1(a,b,g):g=g\cdot e$ as output.
 
 To add a little meat on the definition of $p_1$: in the definition of the identity type, for each $a:A$ let $P$ be the type family given by $P(b,g)\defequi (g=g\cdot e)$ for each $b:A$ and $g:a=b$.  According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e)\oldequiv (e=e\cdot e)\oldequiv (e=e)$, and $\refl e$ will do.\footnote{we have chosen to give the identity type such that the naturality in $a$ is not explicit}
@@ -230,7 +255,7 @@ Disregarding the set-condition we get the simpler notion of \inftygps:
 \end{definition}
 
 \begin{remark}\label{rem:pointedtypes}
-  In the literature it is not uncommon to refer to the terms in $\typegroup$ as ``pointed, connected groupoids'', but from our geometric perspective through symmetries it is not unreasonable that we simply call them ``groups''.  Likewise, \inftygps are justifiably also known as pointed connected types;  the type of \emph{pointed types} being
+  In the literature it is not uncommon to refer to the elements in $\typegroup$ as ``pointed, connected groupoids'', but from our geometric perspective through symmetries it is not unreasonable that we simply call them ``groups''.  Likewise, \inftygps are justifiably also known as pointed connected types;  the type of \emph{pointed types} being
 $$\pttype\defequi\sum_{A:\mathcal U}A,$$
 and given two pointed types $(A,a)$ and $(B,b)$, the type of \emph{pointed maps} from $(A,a)$ to $(B,b)$ is
 $$((A,a)\to_*(B,b))\defequi\sum_{f\colon A\to B}f(a)=b.$$
