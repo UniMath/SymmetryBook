@@ -1,6 +1,8 @@
 %% this chapter sets up the foundational system, which is Univalent Foundations
+\label{ch:univalent-mathematics}
 
 \section{What is a type?}
+\label{sec:what-is-a-type}
 
 In some computer programming languages, all variables are introduced along with a declaration of the type of thing they will refer to.  For example,
 one may encounter types such as $bool$, $string$, $int$, and $real$, describing Boolean values, character strings, 32 bit integers, and 64 bit
@@ -12,7 +14,7 @@ will refer to.  For example, one may say ``consider a point $P$ of the plane'', 
 $H$'', or ``consider a graph $G$''.  The types are used to determine which mathematical statements are grammatically well-formed.  For example,
 one may write ``$P$ lies on $L$'' or ``$L$ passes through $P$'', but not ``$L$ lies on $P$''.
 
-In {\em univalent mathematics}, types are used to classify all mathematical objects.  Every mathematical object is an element of some (unique)
+In \emph{univalent mathematics}, types are used to classify all mathematical objects.  Every mathematical object is an element of some (unique)
 type.
 
 One expresses the statement that an ``element'' $a$ is of ``type'' $X$ by writing $a:X$.  Using that notation, each variable is introduced along
@@ -21,14 +23,14 @@ theory are grammatically well-formed.
 
 There are enough ways to form new types from old ones to provide everything we need to write mathematics.
 
-If $X$ and $Y$ are types, there will be a type whose elements serve as {\em functions} from $X$ to $Y$; the notation for it is $X \to Y$.  Thus
+If $X$ and $Y$ are types, there will be a type whose elements serve as \emph{functions} from $X$ to $Y$; the notation for it is $X \to Y$.  Thus
 when we write $f : X \to Y$, we mean that $f$ is an element of the type $X \to Y$, and we are saying that $f$ is a function from $X$ to $Y$.
 
 Functions behave as one would expect, and one can make new ones in the usual way.
 
 To provide an example of making new functions in the usual way, consider functions $f : X \to Y$ and $g : Y \to Z$.  We define their composite
 $g \circ f : X \to Z$ by setting $g \circ f \defeq (a \mapsto g(f(a)))$.  Such definitions are to be regarded as syntactically transparent in
-our formal system, in the sense that two formal expressions will be regarded as being {\em the same by definition} if they yield the same formal
+our formal system, in the sense that two formal expressions will be regarded as being \emph{the same by definition} if they yield the same formal
 expression after the definitions of all the symbols within them are completely expanded.  Given two expressions that are the same by definition,
 we may replace one with the other in any other expression, at will.  Here is an example: consider functions $f : X \to Y$, $g : Y \to Z$, and $h
 : Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by definition, since applying the definitions within expands both
@@ -40,13 +42,14 @@ f$.
 
 In the following sections we will expose various other elementary types and elementary ways to make new types from old ones.
 
-\section{The type of natural numbers}\label{nat}
+\section{The type of natural numbers}
+\label{sec:natural-numbers}
 
 Here are Peano's rules \citep{peano-principia} for constructing the natural numbers in the form that is used in type theory.
 \begin{enumerate}
 \item[P1:] there is a type called $\NN$ (whose elements will be called natural numbers);
 \item[P2:] there is an element of $\NN$ called $0$;
-\item[P3:] if $m$ is a natural number, then there is also a natural number $S(m)$, called the {\em successor} of $m$;
+\item[P3:] if $m$ is a natural number, then there is also a natural number $S(m)$, called the \emph{successor} of $m$;
 \item[P4:] given a family of types $X(m)$ depending on a parameter
   $m$ of type $\NN$, in order to define a family $f(m) : X(m)$ of elements of each of them it suffices to provide an element $a$ of $X(0)$ and
   to provide, for each $m$, a function $g_m : X(m) \to X(S(m))$.  (The resulting function $f$ may be regarded as having been defined inductively
@@ -75,10 +78,11 @@ are the same by definition, because they both reduce to $S(S(S(S(0))))$.
 
 Before we can write an equation such as $2+2=4$, we must introduce a formal treatment of equality in type theory.  We do that in the next section.
 
-\section{Identity types}\label{paths}
+\section{Identity types}
+\label{sec:identity-types}
 
-One of the most important types is the {\em identity type}, which implements the intuitive notion of equality; the reader may be more
-comfortable if we call it the {\em equality type}, at least initially.  Identity (or equality) between two elements may be considered only when
+One of the most important types is the \emph{identity type}, which implements the intuitive notion of equality; the reader may be more
+comfortable if we call it the \emph{equality type}, at least initially.  Identity (or equality) between two elements may be considered only when
 the two elements are of the same type; we shall have no need to compare elements of different types.
 
 Here are the rules for constructing equality types.
@@ -118,7 +122,7 @@ $m+n$.
 Now we state our symmetry result a little more formally.
 
 \begin{definition}
-  For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$ be the function defined by induction by setting 
+  For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$ be the function defined by induction by setting
   $\symm_{a,a}(\refl a) \defeq \refl a$.
 \end{definition}
 
@@ -127,17 +131,41 @@ abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
 
 Associativity of transitivity is formulated and established similarly.  We leave that as an exercise.
 
-One frequent use of elements of identity types is in {\em substitution}.  Let $X$ be a type, and let $P(x)$ be a family of types depending on a
-parameter $x:X$.  Suppose $a,b:X$ and $e:a=b$.  Then there is a function of type $P(a) \to P(b)$.  To prove that, it suffices, by induction, to
-consider the case where $b$ is $a$ and $e$ is $\refl a$ and to provide a function $P(a) \to P(a)$.  To achieve that, we provide the identity function. 
-The function $P(a) \to P(b)$ thus defined is called (in full)
-\emph{the transport function in the type family $P$ along the path $e$},
-and will be denoted (in full)
-$\trp(X,P,a,b,e)$. We often use less verbose phrases such as `by transport'
-and simplified denotations like $\trp^P e$, or even just $\trp e$.
+One frequent use of elements of identity types is in \emph{substitution}.  Let $X$ be a type, and let $T(x)$ be a family of types depending on a
+parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  Then there is a function of type $T(x) \to T(y)$. We define one specific such function by path induction, by taking its value
+to be the identity function on $T(x)$ in the case of $\refl{x}:x=x$.
+\begin{definition}\label{def:transport} The function
+\[ 
+\trp : \prod_{X:\Type} \prod_{T: X\to \Type} \prod_{x,y:X} (x=y \to T(x) \to T(y))
+\]
+is defined by path induction putting $\trp(X,T,x,x,\refl{x})\defeq \id_{T(x)}$.
+\end{definition} 
+The function thus defined is called (in full)
+\emph{the transport function in the type family $T$ along the path $e$},
+We often use less verbose phrases such as `by transport'
+and simplified the notation to $\trp^T e$, or even just $\trp e$.
 The precise expressions should always be easy to recover from the context.
 
+In the case where, for each $x:X$, we are only interested in 
+$T(x)$ having elements or not, and not in the elements themselves,
+we may say that `having elements or not' is invariant under 
+substitution of equals.
+Once we have seen how we do logic in type theory this can be rephrased
+by saying that \emph{truth} is invariant under substitution of equals.
+In other words, equal elements of $X$ have the same properties.
+In such cases we often just say `by substitution', not mentioning
+transport at all.  
+
+On the other hand, we are often interested in the elements of $T(x)$,
+since they may add extra structure to $x$. For example,
+$T(x)$ could be $\NN\to S(x)$. Then $f:T(x)$ specifies a sequence
+of elements of $S(x)$, and $\trp^T e\,f : T(y)$, specifies a sequence
+of elements of $S(y)$. We see that the structure `sequence of elements'
+is \emph{transported} along the proof $e:x=y$. 
+In such cases transport will of course not be ignored.
+
 \section{Other types}
+\label{sec:other-types}
 
 There are other examples of types that are conveniently presented as inductive definitions, in the style we have seen with the natural numbers
 and the equality types.  We present three examples.
@@ -148,7 +176,7 @@ $\emptyset$, it suffices to consider no special cases (!).  Hence, every stateme
 rule in traditional logic.) As
 an example, we may prove that any two elements $x$ and $y$ of $\emptyset$ are equal by using induction on $x$.
 
-An element of $\emptyset$ will be called an {\em absurdity}, and the negation $\neg P$ of a proposition $P$ will be implemented as the function
+An element of $\emptyset$ will be called an \emph{absurdity}, and the negation $\neg P$ of a proposition $P$ will be implemented as the function
 type $P \to \emptyset$.  This is sensible, because an element of $\neg P$ could be applied to an element of $P$ to produce an element of
 $\emptyset$, i.e., an absurdity.
 
@@ -183,22 +211,22 @@ S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a vari
 and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
 of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptyset$, establishing the claim.
 
-There are {\em sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
-there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$.  We may refer to $X$ as the {\em index
+There are \emph{sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
+there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$.  We may refer to $X$ as the \emph{index
   type} of the sum.  Sums may be implemented by an inductive definition.   (FILL IN SOME PROPERTIES.)
 
-Given a function $f : X \to Y$ and an element $y:Y$, the {\em fiber} (or {\em inverse image}) $f^{-1}(y)$ consists of points $x$ such that $f(x)
+Given a function $f : X \to Y$ and an element $y:Y$, the \emph{fiber} (or \emph{inverse image}) $f^{-1}(y)$ consists of points $x$ such that $f(x)
 = y$.  This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (f(x) = y)$.  In other words, a point of the fiber is a pair $(x,e)$ consisting
 of the point $x$ and an element $e$ of the identity type $f(x) = y$.
 
-There is a binary sum operation on types: for any types $X$ and $Y$, there is a type $X \amalg Y$.  It is also called the {\em disjoint union}
+There is a binary sum operation on types: for any types $X$ and $Y$, there is a type $X \amalg Y$.  It is also called the \emph{disjoint union}
 of $X$ and $Y$.  From an element of $X$ or an element of $Y$ we can produce an element of $X \amalg Y$.  The binary sum is implemented by an
 inductive definition with two constructors: $\inl{} : X \to X \amalg Y$ and
 $\inr{} : Y \to X \amalg Y$. Proving a property of any element of $X \amalg Y$
 means proving that this property holds of any $\inl{x}$ with $x:X$ and any
 $\inr{y}$ with $y:Y$. (ADD COMPUTATIONAL RULE)
 
-Our type theory will also contain {\em products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
+Our type theory will also contain \emph{products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
 parameter $x$ of type $X$, then there will be a type $\prod _{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
 $Y(a)$, one for each $a:X$.  A function $f : X \to Y$ is essentially the same thing as a function $f$ of $\prod_{x:X} Y$, where the product is
 formed using a constant family of types.  (FILL IN SOME PROPERTIES.)
@@ -211,22 +239,29 @@ Let $X$ be a type.  The property that $X$ has exactly one element may be express
 equal to it.  Hence it is encoded by the type $\sum_{a:X} \prod_{b:X} (a=b)$.
 
 \section{Propositions and sets}
+\label{sec:propositions-and-sets}
 
 Let $X$ be a type.  The property that $X$ has at most one element is equivalent to the property that any two elements are equal, so is encoded
-by $\prod_{a,b:X} (a=b)$.  We shall call such a type a {\em proposition}, and its elements will be called {\em proofs}.
-Alternatively, we shall say that $X$ has level {\em at most 1}.
+by $\prod_{a,b:X} (a=b)$.  We shall call such a type a \emph{proposition}, and its elements will be called \emph{proofs}.
 
-Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a proposition, then we shall say that $X$ is a {\em set}.
-Alternatively, we shall say that $X$ has level {\em at most 2}.
+Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.
+Alternatively, we shall say that $X$ is a 0-\emph{type}.\footnote{%
+Sets are thought to consist of points. Points are entities of dimension 0, 
+which explains why the count starts here.
+One of the contributions of Vladimir Voevodsky is the extension of
+the hierarchy downwards, with the notion of proposition,
+including logic in the same hierarchy.
+Some authors therefore call propositions $(-1)$-\emph{types}.} 
 
-Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a set, then we shall say that $X$ has level {\em at most 3}.
+Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a set, 
+ then we shall say that $X$ is a \emph{groupoid}, also called a 1-\emph{type}.
 
-The pattern continues.  If for any $n:\NN$, any $x:X$, and any $y:X$ the identity type $x=y$ is of level at most $n$, then we shall say that $X$
-has level {\em at most $n+1$}.
+The pattern continues.  If for any $n:\NN$, any $x:X$, and any $y:X$ 
+the identity type $x=y$ is is an $n$-\emph{type}, 
+then we shall say that $X$ is an $(n+1)$-\emph{type}.
 
-For this terminology to make sense we must have that every type of level
-at most 1 is also a type of level at most 2. From this it follows
-that the levels are cumulative. Therefore we prove the following lemma.
+We prove that every proposition is a set, from which it follows
+by induction that every $n$-type is an $(n+1)$-\emph{type}.
 
 \begin{lemma}\label{lem:prop_is_set}
 Every type that is a proposition is also a set.
@@ -245,104 +280,130 @@ In the following lemma we collect a number of useful results on propositions.
 
 \begin{lemma}\label{lem:prop_utils}
 Let $A$ be a type, and let $P$ and $Q$ propositions.
-Let $P(a)$ be a proposition depending on $a:A$. Then we have:
+Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \begin{enumerate}
 \item\label{prop_utils_false_true} $\false$ and $\true$ are propositions;
 \item\label{prop_utils_implication} $A\to P$ is a proposition;
-\item\label{prop_utils_pi} $\prod_{a:A} P(a)$ is a proposition;
+\item\label{prop_utils_pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop_utils_times} $P\times Q$ is a proposition;
 \item\label{prop_utils_eq} $P = Q$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
+(\ref{prop_utils_false_true})
 If $p,q : \false$, then $p=q$ is proved by the Ex Falso rule.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
+
+(\ref{prop_utils_implication})
 If $p,q : A\to P$, then $p=q$ is proved by first observing that $p$ and $q$
 are functions. Hence by function extensionality they are equal if pointwise
 equal, which is the case since $P$ is a proposition.
-If $p,q : \prod_{a:A} P(a)$ one can use the same argument as for $A\to P$
+
+(\ref{prop_utils_pi})
+If $p,q : \prod_{a:A} R(a)$ one can use the same argument as for $A\to P$
 but now with \emph{dependent} functions $p,q$.
+
+(\ref{prop_utils_times})
 If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
-is proved componentwise. By univalence, $P = Q$ is equivalent to
+is proved componentwise. 
+
+(\ref{prop_utils_eq})
+By univalence, $P = Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
-combining (\ref{prop_utils_implication},\ref{prop_utils_times})
+combining (\ref{prop_utils_implication}) and
+(\ref{prop_utils_times})
 \end{proof}
 
 Several remarks can be made here. First, the lemma supports the
-use of $\false,\true$ as truth values, and the use of 
+use of $\false,\true$ as truth values, and the use of
 $\to,\prod,\times$ for implication, universal quantification,
 and conjunction, respectively. Since $\false$ is a proposition,
-it follows by (\ref{prop_utils_implication}) above that 
+it follows by (\ref{prop_utils_implication}) above that
 $\neg A$ as defined by $A\to\false$ is a proposition for any type $A$.
 As noted before, (\ref{prop_utils_implication}) is a
 special case of (\ref{prop_utils_pi}).
 
 Notably absent in the lemma above are disjunction
 and existential quantification. This has a simple reason:
-$\true\amalg \true$ has the distinct elements 
-$\inl{\triv}$ and $\inr{\triv}$, an is therefore \emph{not} a proposition. 
-Similarly, $\sum_{n:\NN} \true$ has infinitely many 
+$\true\amalg \true$ has the distinct elements
+$\inl{\triv}$ and $\inr{\triv}$, an is therefore \emph{not} a proposition.
+Similarly, $\sum_{n:\NN} \true$ has infinitely many
 distinct elements $(n,\triv)$ and is not a proposition. We will see later how
 to work with disjunction and existential quantification for propositions.
 
-DO SOMETHING WITH THIS TEXT HERE: In the case where each $P(a)$ is a proposition (to be defined later), we may say that the truth of $P(a)$ is
-invariant under substitution.  In other words, equal elements of $X$ have the same properties.  In the case where each $P(a)$ is not assumed to
-be a proposition, and thus its elements are ways to add extra structure to $a$, we may say that the structures can be {\em transported} from $a$
-to $b$ by the proof $e$ of equality.
-
 The lemma above has a generalization from propositions to
-types of level at most $n$ which we state without proving.
+$n$-types which we state without proving.
 
 \begin{lemma}\label{lem:level_n_utils}
-Let $A$ be a type, and let $X$ and $Y$ be types of level at most $n$.
-Let $Z(a)$ be a type of level at most $n$ depending on $a:A$. Then we have:
+Let $A$ be a type, and let $X$ and $Y$ be $n$-types.
+Let $Z(a)$ be an $n$-type depending on $a:A$. Then we have:
 \begin{enumerate}
-\item\label{level_n_utils_implication} $A\to X$ is a type of level at most $n$;
-\item\label{level_n_utils_pi} $\prod_{a:A} Z(a)$ is a type of level at most $n$;
-\item\label{level_n_utils_times} $X\times Y$ is a type of level at most $n$.
+\item\label{level_n_utils_implication} $A\to X$ is an $n$-type;
+\item\label{level_n_utils_pi} $\prod_{a:A} Z(a)$ is an $n$-type;
+\item\label{level_n_utils_times} $X\times Y$ is an $n$-type.
 \end{enumerate}
 \end{lemma}
 
+\begin{lemma}\label{lem:props-are-props}
+  For any type $A$, the types $\iscontr(A)$, $\isset(A)$, $\isconn(A)$, etc.\ are in fact propositions.
+  (We shall only use the notation $\mathrm{isX}(A)$ for propositions about $A$.)
+\end{lemma}
 \section{Logical operations on propositions}
+\label{sec:logical-operations}
 
 \section{Propositional truncation; disjunction}
+\label{sec:propositional-truncation}
 
 \section{Operations on sets that produce new sets}
+\label{sec:operations-on-sets}
 
-\begin{lemma}\label{lem:subset}
-Let $S$ be a set, and let $P(x)$ be a proposition depending on $x:S$. 
-Then $\sum_{x:S} P(x)$ is a set. We also denote the latter set
-as $\set{x:S \mid P(x)}$.
+\begin{lemma}\label{lem:subtype}
+Let $T$ be an $n$-type, and let $P(x)$ be a proposition depending on $x:T$. 
+Then $\sum_{x:T} P(x)$ is also an $n$-type.
 \end{lemma}
 
 \begin{proof}
-If $(x_1,p_1),(x_2,p_2) : \sum_{x:S} P(x)$, then by WHICH LEMMA
+If $(x_1,p_1),(x_2,p_2) : \sum_{x:T} P(x)$, then by WHICH LEMMA
 $(x_1,p_1)=(x_2,p_2)$ is equivalent to 
 $\sum_{q:x_1=x_2} (\trp^P q\,p_1 = p_2)$. 
 Since $P(x_2)$ is a proposition, using SEVERAL LEMMAS we get 
 \[
+%(x_1,p_1)=(x_2,p_2) \equiv
 \sum_{q:x_1=x_2} ({\trp}^P q\,p_1 = p_2) \equiv 
 \sum_{q:x_1=x_2} \true \equiv (x_1=x_2).
 \]
-
+Hence $\sum_{x:T} P(x)$ is an $n$-type if $T$ is.
 \end{proof}
+In the special case that $T$ is set we call 
+$\sum_{x:T} P(x)$ a subset which we denote by 
+$\set{x:T \mid P(x)}$.
 
-\begin{lemma}\label{lem:eq_of_sets_is set}
-If $X$ and $Y$ are sets, then $X=Y$ is a set.
+\begin{lemma}\label{lem:eq_of_sets_is_set}
+If $X$ and $Y$ are sets, then $X=Y$ is a set. 
+In other words, $\Set$ is a groupoid.
 \end{lemma}
 
-
+\begin{proof}
+By univalence, $(X=Y) \equiv (X\equiv Y)$. The latter type is
+$\sum_{f:X\to Y} \isEq(f)$. Since $X$ and $Y$ are sets,
+so is $X\to Y$ by \cref{lem:level_n_utils}. Moreover,
+$\isEq(f)$ is a proposition by WHICH LEMMA.
+It follows by \cref{lem:subtype} that $X=Y$ is a set.  
+\end{proof}
 
 
 \section{Equivalences; function extensionality}
+\label{sec:equivalences}
 
 \section{Universes and univalence}
+\label{sce:universes}
 
 \begin{theorem} theorem \end{theorem}
 
 % Local Variables:
 % fill-column: 144
 % latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition")
+% TeX-master: "book"
 % End:
