@@ -133,63 +133,55 @@ abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
 Associativity of transitivity is formulated and established similarly.  We leave that as an exercise.
 
 One frequent use of elements of identity types is in \emph{substitution}.  Let $X$ be a type, and let $T(x)$ be a family of types depending on a
-parameter $x$ of type $X$. Let $x,y$ be of type $X$ and let $i$ be of type $x=y$.
-Then there is a function of type $T(x) \to T(y)$. 
-We define one specific such function as follows.
-\begin{definition}\label{def:transport} 
-For $x,y: X$, define by identification induction the function
-\[ 
-{\trp}^T_{x,y} : x=y \to T(x) \to T(y)
-\]
-setting ${\trp}^T_{X,x,x}(\refl{x})\defeq \id_{T(x)}$.
+parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  Then there is a function of type $T(x) \to T(y)$. We define one specific such function by induction, by taking its value to be the identity function on $T(x)$ in the case of $\refl{x}:x=x$.
+\begin{definition}\label{def:transport} The function
+  \[ 
+  \trp_{T,e} : T(x) \to T(y)
+  \]
+  is defined by induction setting $\trp_{T,\refl{x}} (t) \defeq t$.
 \end{definition} 
-The function thus defined is called (in full)
-\emph{the transport function in the type family $T$ along the path $e$},
-We often use less verbose phrases such as `by transport'
-and simplified the notation to $\trp^T e$, or even just $\trp e$.
-The precise expressions should always be easy to recover from the context.
+The function thus defined may be called 
+\emph{the transport function in the type family $T$ along the path $e$}, 
+ or, less verbosely, \emph{transport}.
+ We may also simplify the notation to just $\trp_e$.
 
-There are cases where, for each $x:X$, we are only interested in 
-$T(x)$ having elements or not, and not in the elements themselves.
-By transport, `having elements or not' is invariant under 
-substitution of equals.
-Once we have seen how to do logic in type theory this can be rephrased
-by saying that \emph{truth} is invariant under substitution of equals.
-In other words, equal elements of $X$ have the same properties.
-In such cases we often just say `by substitution', not mentioning
-transport at all.  
-
-On the other hand, we are often interested in the elements of $T(x)$,
-since they may add extra structure to $x$. For example,
-$T(x)$ could be $\NN\to x=x$. Then $f:T(x)$ specifies a sequence
-of elements of $x=x$, and $\trp^T e\,f : T(y)$, specifies a sequence
-of elements of $y=y$. We see that the structure `sequence of elements'
-is \emph{transported} along the proof $e:x=y$. 
-In such cases transport will of course not be ignored.
-
+When the types $T(x)$ may have more than one element, 
+we may regard an element of $T(x)$ as providing additional {\em structure} on $x$. 
+In that case, we will refer to the transport function $T(x) \to T(y)$ as 
+\emph{transport of structure} from $x$ to $y$.  By contrast, when the types
+$T(x)$ may have at most one element, we may regard an element of $T(x)$ 
+as providing a proof of a property of $x$. In that case, the transport
+function $T(x) \to T(y)$ provides a way to establish a claim about $y$ 
+from a claim about $x$, so we will refer to it as \emph{substitution}.  In
+other words, elements that can be identified have the same properties.
 
 \section{Product types}
 \label{sec:product-types}
-Our type theory will also contain \emph{products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
-parameter $x$ of type $X$, then there will be a type $\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
-$Y(a)$, one for each $a:X$. We may refer to $X$ as the \emph{index
-  type} of the product.  A function $f : X \to Y$ is essentially the same thing as a function $f$ of $\prod_{x:X} Y$, where the product is
-formed using a constant family of types.
+Our type theory will also contain \emph{products} of types. 
+By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
+parameter $x$ of type $X$, then there will be a type $\prod_{x:X} Y(x)$ 
+whose elements $f$ are functions that provide elements $f(a)$ of type
+$Y(a)$, one for each $a:X$. We may refer to $X$ as the 
+\emph{index type} of the product. 
+A function $f : X \to Y$ is essentially the same thing as a function $f$ 
+of type $\prod_{x:X} Y$, where the product is formed using a constant family of types.
 
 The basic method for constructing an element of a product type
 is by explicit definition, as we have seen before.
 
-If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, then they have equal values, i.e., for every element $x$ of $X$, we may
-conclude that $f(x) = g(x)$.  (This can be proven by induction or by substitution, as suggested in the exercises.)  Conversely, a basic
-principle, called `function extensionality', asserts that if for every element $x$ of $X$, we know that $f(x) = g(x)$, then we may conclude that
-$f=g$.
-
-
+If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, 
+then they have equal values, i.e., for every element $x$ of $X$, 
+we may conclude that $f(x) = g(x)$.
+(This can be proven by induction or by substitution, as suggested in the exercises.)
+Conversely, a basic principle, called `function extensionality', 
+asserts that if for every element $x$ of $X$, 
+we know that $f(x) = g(x)$, then we may conclude that $f=g$.
 
 \section{Other types}
 \label{sec:other-types}
 
-There are other examples of types that are conveniently presented as inductive definitions, in the style we have seen with the natural numbers
+There are other examples of types that are conveniently presented as 
+inductive definitions, in the style we have seen with the natural numbers
 and the equality types.  We start by the finite types, and then
 present several constructions defining new types from old ones.
 For each of these constructions we explain what it means for two 
