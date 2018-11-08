@@ -62,7 +62,7 @@ $\NN$ via the use of rules P2 and P3.
 
 Here is an example of defining a function by recursion using induction for $\NN$.  We define the factorial function $f : \NN \to \NN$ by
 defining $X(m)$ to be $\NN$ for all $m$ and by setting $f(0) \defeq 1$ and setting $f(S(m)) \defeq (m+1) \cdot f(m)$.  One can infer that the
-function $g_m$ of rule (P4) is $n \mapsto (m+1) \cdot n$.
+function $g_m$ of rule P4 is $n \mapsto (m+1) \cdot n$.
 
 We introduce the following definitions.
 \begin{align*}
@@ -132,13 +132,12 @@ abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
 Associativity of transitivity is formulated and established similarly.  We leave that as an exercise.
 
 One frequent use of elements of identity types is in \emph{substitution}.  Let $X$ be a type, and let $T(x)$ be a family of types depending on a
-parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  Then there is a function of type $T(x) \to T(y)$. We define one specific such function by path induction, by taking its value
-to be the identity function on $T(x)$ in the case of $\refl{x}:x=x$.
+parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  Then there is a function of type $T(x) \to T(y)$. We define one specific such function by induction on $e:x=y$.
 \begin{definition}\label{def:transport} The function
 \[ 
-\trp : \prod_{X:\Type} \prod_{T: X\to \Type} \prod_{x,y:X} (x=y \to T(x) \to T(y))
+{\trp}^T_{X,x,y} : x=y \to T(x) \to T(y)
 \]
-is defined by path induction putting $\trp(X,T,x,x,\refl{x})\defeq \id_{T(x)}$.
+is defined by path induction putting ${\trp}^T_{X,x,x}(\refl{x})\defeq \id_{T(x)}$.
 \end{definition} 
 The function thus defined is called (in full)
 \emph{the transport function in the type family $T$ along the path $e$},
@@ -163,6 +162,25 @@ of elements of $x=x$, and $\trp^T e\,f : T(y)$, specifies a sequence
 of elements of $y=y$. We see that the structure `sequence of elements'
 is \emph{transported} along the proof $e:x=y$. 
 In such cases transport will of course not be ignored.
+
+
+\section{Product types}
+\label{sec:product-types}
+Our type theory will also contain \emph{products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
+parameter $x$ of type $X$, then there will be a type $\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
+$Y(a)$, one for each $a:X$. We may refer to $X$ as the \emph{index
+  type} of the product.  A function $f : X \to Y$ is essentially the same thing as a function $f$ of $\prod_{x:X} Y$, where the product is
+formed using a constant family of types.
+
+The basic method for constructing an element of a product type
+is by explicit definition, as we have seen before.
+
+If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, then they have equal values, i.e., for every element $x$ of $X$, we may
+conclude that $f(x) = g(x)$.  (This can be proven by induction or by substitution, as suggested in the exercises.)  Conversely, a basic
+principle, called `function extensionality', asserts that if for every element $x$ of $X$, we know that $f(x) = g(x)$, then we may conclude that
+$f=g$.
+
+
 
 \section{Other types}
 \label{sec:other-types}
@@ -220,24 +238,6 @@ of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a funct
 Of course we could continue defining inductively types with three elements, 
 with four elements, and even with $n$ elements for any $n:\NN$. It is,
 however, more interesting to look at other constructions for types.
-
-\subsection{Product types}
-\label{sec:product-types}
-Our type theory will also contain \emph{products} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
-parameter $x$ of type $X$, then there will be a type $\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type
-$Y(a)$, one for each $a:X$. We may refer to $X$ as the \emph{index
-  type} of the product.  A function $f : X \to Y$ is essentially the same thing as a function $f$ of $\prod_{x:X} Y$, where the product is
-formed using a constant family of types.
-
-Product types are not inductive, there are no constructors and
-there is no induction principle for product types. 
-The basic method for constructing an element of a product type
-is by explicit definition, as we have seen before.
-
-If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, then they have equal values, i.e., for every element $x$ of $X$, we may
-conclude that $f(x) = g(x)$.  (This can be proven by induction or by substitution, as suggested in the exercises.)  Conversely, a basic
-principle, called `function extensionality', asserts that if for every element $x$ of $X$, we know that $f(x) = g(x)$, then we may conclude that
-$f=g$.
 
 \subsection{Sum types}
 \label{sec:sum-types}
