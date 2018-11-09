@@ -42,6 +42,24 @@ Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\
 \end{xca}
 \cref{xca:essentiallysmall} has the consequence that in many cases types and essentially small types can be used interchangeably.  Where this may clutter the notation we will gloss over this distinction.
 
+\subsubsection{Pointed types}
+\label{sec:poitedtypes}
+\begin{definition}\label{def:pointedtypes}
+  A \emph{pointed type} is a pair $(A,a)$ where $A$ is a type and $a$ is an element of $A$, so that the (large) \emph{type of pointed types} is
+$$\mathcal U_*=\sum_{A:\mathcal U}A.$$
+Given a type $A$ we let $A_+$ be the pointed type you get by adding an element: $A_+\defequi(A\coprod\true,\inr{\triv})$, and given a pointed type $B=(A,a)$, the \emph{underlying type} is $B_\div\defequi A$.  
+
+If $(A,a)$ and $(A',a')$ are pointed types,  \emph{pointed map} from  $(A,a)$ to $(A',a')$ is a map $f:A\to A'$ together with an element $p:f(a)=a'$: the \emph{type of pointed maps} is
+$$((A,a)\to_*(A',a'))=\sum_{f:A\to A'}f(a)=a'.$$
+\end{definition}
+\begin{remark}
+  It is customary to be sloppy regarding the distinction between $B$ and $B_\div$  when there is no chance for confusion; for instance, if $B$ is a pointed type ``$b:B$'' is taken to mean $b:B_\div$, and a type family $B_\div\to\mathcal U$ will often be referred to as $B\to\mathcal U$.
+\end{remark}
+
+\begin{xca}
+  If $A$ is a type and $B$ is a pointed type, prove that $A\to B_\div$ is equivalent to $A_+\to_*B$.
+\end{xca}
+
 
 
 \section{Now it starts}
@@ -172,14 +190,11 @@ We do $g=e\cdot g$ in some detail (remember that is shorthand for $e=\refl a{}$)
 As constructed, $p_1$ is actually an element in the type
 $$\prod_{a:A}\prod_{b:A}\prod_{g:a=b}(g=g\cdot e)$$ -- it is constructed ``uniformly'' or ``naturally'' for all $a,b,g$: think of it as a function with $(a,b,g)$ as input and $p_1(a,b,g):g=g\cdot e$ as output.
 
-To add a little meat on the definition of $p_1$: in the definition of the identity type, for each $a:A$ let $P$ be the type family given by $P(b,g)\defequi (g=g\cdot e)$ for each $b:A$ and $g:a=b$.  According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e)\oldequiv (e=e\cdot e)\oldequiv (e=e)$, and $\refl e$ will do.\footnote{we have chosen to give the identity type such that the naturality in $a$ is not explicit}
+We may add a little meat to the definition of $p_1$: in the definition of the identity type, for each $a:A$ let $P$ be the type family given by $P(b,g)\defequi (g=g\cdot e)$ for each $b:A$ and $g:a=b$.  According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e)\oldequiv (e=e\cdot e)$, but $e\cdot e\defequi e$ and $\refl e:e=e$ will do.
 \end{remark}
 \begin{definition}\label{def:p3}
-  Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_3(a,b,g):g^{-1}\cdot g=_{a=_Aa} e$ is the element defined by induction by saying that $p_3(a,a,e)$ is $\refl e:e=e\cdot e$ [which makes sense since $e^{-1}\equiv e$ and $e\cdot e\equiv e$].
+  Let $A$ be a type and let $a,b:A$ and $g:a=b$ be elements.  Then $p_3(a,b,g):g^{-1}\cdot g=_{a=_Aa} e$ is the element defined by induction by saying that $p_3(a,a,e)$ is $\refl e:e=e\cdot e$ [which makes sense since $e^{-1}\equiv e$ and $e\cdot e\defequi e$].
 \end{definition}
-% \begin{definition}
-%   Let $A$ be a type and $a,b:A$ and $g:a=b$ elements.  Then $p_5(a,b,g):(g^{-1})^{-1}=_{a=_Aa} e$ is the element defined by induction by saying that $p_5(a,a,e)$ is $\refl e:(e^{-1})^{-1}=e$ [which makes sense since $e^{-1}\equiv e$].
-% \end{definition}
 \begin{definition}\label{def:p4}
   Let $A$ be a type and $a,b,c,d:A$ and $g_3:a=b$, $g_2:b=c$ and $g_1:c=d$ elements.  Then $p_4(a,b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{a=_Ad}(g_1\cdot g_2)\cdot g_3$ is the element defined by induction by saying that $p_4(a,a,a,a,e,e,e,e)$ is $\refl e:e\cdot(e\cdot e)=(e\cdot e)\cdot e$ [which makes sense since $e\cdot e\equiv e$].
 \end{definition}
@@ -189,7 +204,7 @@ To add a little meat on the definition of $p_1$: in the definition of the identi
 
 \begin{xca}\label{xca:p2}
     Define $p_2(a,b,g)$ %and $p_4(a,b,g)$
-by the exactly the same procedure, completing the list.
+by exactly the same procedure, completing the list.
 \end{xca}
 
 
@@ -215,23 +230,26 @@ We refer to $e$ as the \emph{unit element}, $g_1\cdot g_2$ as the \emph{product 
 g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.
   \end{definition}
 
-In conclusion we have proved that groups ``are'' abstract groups:
-
+In conclusion we have proved that groups give rise to abstract groups:
+\newcommand{\abstr}{\mathrm{abstract}}
   \begin{lemma}\label{lem:idtypesgiveabstractgroups}
-    If $A$ is a $1$-type (alternatively called a ``groupoid'') and $a:A$ is an element, then $a=_Aa$, together with $e=\refl a{}$, $g^{-1}=\symm_{a,a}g$ and $g\cdot h=\trans_{a,a,a}(g)(h)$ define an abstract group
+    If $A$ is a groupoid (alternatively called a ``$1$-type'') and $a:A$ is an element, then $a=_Aa$, together with $e=\refl a{}$, $g^{-1}=\symm_{a,a}g$ and $g\cdot h=\trans_{a,a,a}(g)(h)$ define an abstract group
 $$(a=_Aa,e,{-}^{-1},\cdot).$$
   \end{lemma}
   \begin{proof}
-    The elements $p_1,\dots p_4$ of \cref{def:p1,def:p3,def:p4,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a $1$-type) are inhabited as required.
+    The elements $p_1,\dots p_4$ of \cref{def:p1,def:p3,def:p4,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a $1$-type) are inhabited, as required.
   \end{proof}
+  \begin{definition}
+    Given a group $G=\aut_A(a)$, the abstract group $\abstr(G)\defequi (a=_Aa,e,{-}^{-1},\cdot)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
+  \end{definition}
 
   \begin{remark}
-    It is handy to break up the rather long \cref{def:abstractgroup}  by saying that the first two points (\ie the presence of the unit element and the product satisfying the unit and associative laws) define a \emph{monoid} and if we in addition have inverses satisfying the law of inverses, then we have an abstract group.
+    It is handy to break up the rather long \cref{def:abstractgroup}  by saying that the first two points (\ie the presence of the unit element and the product satisfying the unit and associative laws) define a \emph{monoid}, and if we, in addition, have inverses satisfying the law of inverses, then we have an abstract group.
     \end{remark}
 
 
     \begin{remark}\label{rem:typemonoidabstrgp}
-        Summing up in language (only) a machine can handle, the \emph{type of monoids} is
+        Summing up in language a machine (and the occasional mad scientist) can handle, the \emph{type of monoids} is
 $$\typemonoid\defequi \sum_{M:\mathcal U}\sum_{e:M}\sum_{\mu{}:M\to M\to M}
 \isset{(M)}\times\mathrm{Monoidlaws}(G,e,\mu)
 $$
@@ -254,7 +272,7 @@ $$\typeabsgp\defequi
 % \prod_{g:G}(\mu{}(\iota{}(g))(g)=e)\times
 % (\mu{}(g)(\iota{}(g))=e)\times
 % (\iota{}(\iota{}(g))=g).$$
-We will typically refer to a monoid as a triple $(M,e,\mu)$ ommitting the names for the (true) $\isset$ and unit and associativity laws and likewise, an abstract group wil be referred to as a quadruple $(G,e,\mu,\iota)$.
+We will typically refer to a monoid as a triple $(M,e,\mu)$, omitting the names for the (true) $\isset$ and unit and associativity laws, and likewise, an abstract group wil be referred to as a quadruple $(G,e,\mu,\iota)$.
 \end{remark}
   \begin{remark}
 Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the case when $g$ is $e$, the unit law of \cref{def:abstractgroup} (or alternatively $\mathrm{Unitlaws}(G,\mu{},e)(e)$ in \cref{rem:typemonoidabstrgp}) would provide \emph{two} (potentially different) proofs that $e=e\cdot e$ and we would have to separately insist that they agree.  This problem vanishes in the setup we adopt below for \inftygps.
@@ -272,7 +290,7 @@ $
 \label{sec:homomorphisms}
 
 
-The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an arrow $f:A\to B$ that ``sends $a$ to $b$'', \ie together with a $p:a=_Bf(b)$:
+The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an arrow $f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element $p:a=_Bf(b)$:
 \begin{definition}\label{def:grouphomomorphism}
   The type of \emph{group homomorphisms} from $G=\aut_A(a):\typegroup$ to $H=\aut_B(b):\typegroup$ is defined to be
 $$\Hom(G,H)=\sum_{f:A\to B}f(a)=_Bb.
@@ -303,7 +321,7 @@ $$((A,a)\to_*(B,b))\defequi\sum_{f\colon A\to B}f(a)=b.$$
 
 \footnote{Let $\typeset\defequi \sum_{A:\mathcal U}\isset(A)$.}
 \begin{definition}\label{def:classifyingspace}
-  If $G\oldequiv\Aut_A(a):\typeinftygp$, then the underlying pointed type $BG\defequi (A,a)\colon\pttype$ is called the  \emph{classifying space}.  We retain the same language also for ordinary groups in which case the classifying space is a $1$-type.   For \inftygps the definition is identical.
+  If $G\oldequiv\Aut_A(a):\typeinftygp$, then the underlying pointed type $BG\defequi (A,a)\colon\pttype$ is called the  \emph{classifying space}.  We retain the same language also for ordinary groups in which case the classifying space is a groupoid (\ie a $1$-type).   %For \inftygps the definition is identical.
 \end{definition}
 \begin{remark}
   In view of \cref{rem:pointedtypes} and \cref{def:classifyingspace} we see that given groups (or even \inftygps) $G$ and $H$ we have a definitional equality
@@ -318,41 +336,45 @@ Generically, if $G$ is \aninftygp, we let $\pt_G:BG$ (and sometimes simply $\pt$
 \section{$G$-sets}
 \label{sec:gsets}
 
-One of the goals of this section is to prove that, in a precise sense, any abstract group is a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.  However, this takes a pleasant detour where we have to explore the most important feature of groups: the \emph{act} on things (giving rise to symmetries)!
+One of the goals of this section is to prove that, in a precise sense, any abstract group corresponds to a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.  However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
 
 Before we handle the more complex case of abstract groups, let us see what this looks like for groups.
 
 \begin{definition}
   For $G$ a group (or \inftygp), a \emph{$G$-type} is a function
-  $$X\colon BG\to\mathcal U$$\footnote{in order for this to type check $BG$ must be considered here to be an unpointed type... should we care?}
+  $$X\colon BG\to\mathcal U,$$
+%($\BG_\div$ was defined to be the underlying type of $BG$)
 and $X(\pt_G)$ is referred to as the \emph{underlying type}.
 If the underlying type is a set, then $X$ is called a \emph{$G$-set}.
 Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\mathcal U)$ and the type of $G$-sets is $\Set_G\defequi(BG\to\Set)$.
 %$$\Type_G\defequi (BG\to\mathcal U),\qquad \Set_G\defequi (BG\to\Set).$$
 \end{definition}
+Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
-$$\princ_G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-set (or type)}.\footnote{what do we call this $G$-type?}
+$$\princ_G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-set (or type)}.
 \end{example}
 
 \begin{remark}
-  A $G$-type $X$ is often presented by focusing on the underlying type $X(\pt_G)$  and providing is with a structure relating it to $G$ determining the entire function $X\colon BG\to\mathcal U$.
+  A $G$-type $X$ is often presented by focusing on the underlying type $X(\pt_G)$  and providing it with a structure relating it to $G$ determining the entire function $X\colon BG\to\mathcal U$.
 \end{remark}
 
 \begin{xca}
   Use that $BG$ is connected to show that if $X$ is a $G$-set, then $X(z)$ is a set for all $z:BG$ (\ie $\prod_{z:BG}\isset(X(z))$).
 \end{xca}
 \begin{definition}
-  Given a group (or \inftygp) $G$, the type of {\em$G$-torsors} (or \emph{principal homogeneous $G$-types}) is
+  Given a group (or \inftygp) $G$, the type of {\em$G$-torsors} is
 $$\typetorsor_G\defequi\sum_{X:\Type_G}||X=\princ_G||,$$
 where $\princ_G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
 \begin{remark}
-  Note that if $G$ is a group, then $\princ_G$ is a $G${\em-set}, and so $||X=\princ_G||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||X=\princ_G||.$  Observe that for a group $G$, $\typetorsor_G$ is a connected $1$-type (admittedly in a higher universe) and so -- by specifying the base point $\princ_G$ -- it represents a group!  Guess which one:
+  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ_G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||X=\princ_G||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||X=\princ_G||.$  
+
+Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ_G$ -- it represents a group!  Guess which one:
 \end{remark}
 \begin{lemma}
-  If $G$ is a group (or \inftygp), then the pointed type $(\typetorsor_G,\princ_G)$ is equal to to $(BG,\pt_G)$,\footnote{in the appropriate universe} so both represent $G$.
+  If $G$ is a group (or \inftygp), then the pointed type $(\typetorsor_G,\princ_G)$ is equal to to $BG$,\footnote{in the appropriate universe} so both represent $G$.
 \end{lemma}
 
 \begin{proof}
