@@ -126,7 +126,7 @@ the \emph{group of permutations of $S$} is defined to be $\Sigma_{S}=\aut_{\Set_
 \item If you have two groups $G$ and $H$, their {\em product} $G\times H$ is given by taking the product of their classifying spaces:
 $$G\times H\defequi\aut_{BG_\div\times BH_\div}((\pt_G,\pt_H))$$
 (note that $B(G\times H)\oldequiv BG\times BH$ is pointed in $\pt_{G\times H}\oldequiv(\pt_G,\pt_H)$).  
-For instance, $\Sigma_2\times\Sigma_2$ 
+For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}\footnote{something about symmetries}.
 \item MANY MORE EXAMPLES.  We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.
   \end{enumerate}
 \end{example}
@@ -134,7 +134,8 @@ For instance, $\Sigma_2\times\Sigma_2$
   \begin{enumerate}
   \item Compare the definitions of \cref{def:finiteset} and show that if $n:\NN$, then $\Sigma_n=\Sigma_{\mathbf n}$ %is equal to the permutation group on $n$ letters 
 and that $\Sigma_{1}=\aut_{\mathbf 1}(\triv)$.
-\item Display an element in $\mathbf 2=_{\fin_2}\mathbf 2$ different from $\refl{\mathbf 2}$ in the group $\Sigma_{2}$ of permutations of two letters.
+\item Display an element in $\mathbf 2=_{\fin_2}\mathbf 2$ different from $\refl{\mathbf 2}$ in the group $\Sigma_{2}$ of permutations of two letters.  
+\item Prove that the set $\mathbf n=_{\fin_n}\mathbf n$ is finite of cardinality $n!$.
   \end{enumerate} 
 \end{xca}
 
@@ -307,17 +308,32 @@ $
 
 The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an arrow $f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element $p:a=_Bf(b)$:
 \begin{definition}\label{def:grouphomomorphism}
-  The type of \emph{group homomorphisms} from $G=\aut_A(a):\typegroup$ to $H=\aut_B(b):\typegroup$ is defined to be
-$$\Hom(G,H)=\sum_{f:A\to B}f(a)=_Bb.
+  The type of \emph{group homomorphisms} from $G:\typegroup$ to $H:\typegroup$ is defined to be
+$$\Hom(G,H)=(BG\to_* BH).%\sum_{f:A\to B}f(a)=_Bb.
 $$
 \end{definition}
 This should be contrasted with the usual notion of a group homomorphism $f\colon G\to H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_H f(g')=f(g\cdot_G g')$ (where we have set the name of the group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
 
 \begin{definition}\label{def:grouphomomaxioms}
   ((prove/define the standard axioms))
-Let $G$ and $H$ be groups and given a group homomorphism $G\to H$, \ie a
+Let $G$ and $H$ be groups and assume given a group homomorphism $G\to H$, \ie a pointed map from $BG$ to $BH$; or in other words a map of (unpointed) types $f\colon BG_\div\to BH_\div$ and a $p: f(\pt_G)=\pt_H$.  As in \footnote{reference}, this gives rise to a map $$f:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G)),$$ 
+which is defined by induction by declaring that $f(\refl{\pt_G})\defequi \refl{f(\pt_G)}$.  If $g:\pt_G=\pt_G$, then $f(g)$ is an element of $f(\pt_G)=f(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p: f(\pt_G)=\pt_H$ gives rise to 
+$$\mathrm{ad}_p:(f(\pt_G)=f(\pt_G))=(\pt_H=\pt_H)\footnote{where is this discussed?}$$ (with $\mathrm{ad}_p(\refl{f(\pt_G)})=\refl{\pt_H}$) and so 
+$$\mathrm{ad}_p(f(g)):\pt_H=\pt_H.$$
+
+With the shorthand $e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)\oldequiv\abstr(G)$ and $g\cdot_Gg'\defequi\trans_{\pt_G,\pt_G\pt_g}(g,g')$, and likewise with a subscript $H$ we have the following definitions
   \begin{enumerate}
-  \item 
+  \item Since $f(e_G)\oldequiv f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
+$$\mathrm{ad}_p(f(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
+      \item 
+        \begin{align*}
+          \mathrm{ad}_pf(g\cdot g')
+          \oldequiv&\mathrm{ad}_pf(\trans_{\pt_G,\pt_G,\pt_G}(g)(g'))\\
+          =&\mathrm{ad}_p\trans_{f(\pt_G),f(\pt_G),f(\pt_G)}(f(g))(f(g)')\\
+          =& \trans_{\pt_H,\pt_H,\pt_H}(\mathrm{ad}_pf(g))(\mathrm{ad}_pf(g)')\\
+          =&\mathrm{ad}_pf(g))\cdot\mathrm{ad}_pf(g'))
+        \end{align*}
+(Write out fix references etc)
   \end{enumerate}
 
 \end{definition}
