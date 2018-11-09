@@ -122,7 +122,7 @@ $m+n$.
 
 Now we state our symmetry result a little more formally.
 
-\begin{definition}
+\begin{definition}\label{def:eq-symm}
   For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$ be the function defined by induction by setting
   $\symm_{a,a}(\refl a) \defeq \refl a$.
 \end{definition}
@@ -148,8 +148,14 @@ The function thus defined may be called
 When the types $T(x)$ may have more than one element, 
 we may regard an element of $T(x)$ as providing additional {\em structure} on $x$. 
 In that case, we will refer to the transport function $T(x) \to T(y)$ as 
-\emph{transport of structure} from $x$ to $y$.  By contrast, when the types
-$T(x)$ may have at most one element, we may regard an element of $T(x)$ 
+\emph{transport of structure} from $x$ to $y$. 
+
+Take, for example, $T(x)\defeq x=x$. 
+Then $\trp_e$ is of type $x=x \to y=y$ and transports the
+symmetries of $x$ to the symmetries of $y$.
+
+By contrast, when the types
+$T(x)$ have at most one element, we may regard an element of $T(x)$ 
 as providing a proof of a property of $x$. In that case, the transport
 function $T(x) \to T(y)$ provides a way to establish a claim about $y$ 
 from a claim about $x$, so we will refer to it as \emph{substitution}.  In
@@ -166,7 +172,7 @@ $Y(a)$, one for each $a:X$. We may refer to $X$ as the
 A function $f : X \to Y$ is essentially the same thing as a function $f$ 
 of type $\prod_{x:X} Y$, where the product is formed using a constant family of types.
 
-The basic method for constructing an element of a product type
+The basic way of constructing an element of a product type
 is by explicit definition, as we have seen before.
 
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, 
@@ -231,8 +237,8 @@ S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a vari
 and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
 of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptyset$, establishing the claim.
 
-Of course we could continue defining inductively types with three elements, 
-with four elements, and even with $n$ elements for any $n:\NN$. It is,
+We could continue defining inductively types with three elements, 
+four elements, and even with $n$ elements for any $n:\NN$. It is,
 however, more interesting to look at other constructions for types.
 
 \subsection{Sum types}
@@ -240,7 +246,10 @@ however, more interesting to look at other constructions for types.
 There are \emph{sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
 there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$. Since the type of $b$ may depend on $a$ we also call such a pair
 a \emph{dependent} pair. We may refer to $X$ as the \emph{index
-  type} of the sum.  Proving something about (or constructing something from) every element of $\sum _{x:X} Y(x)$ is simply done for all $a:X$ and $b: Y(a)$.
+  type} of the sum.  
+
+Proving something about (or constructing something from) 
+every element of $\sum _{x:X} Y(x)$ is simply done for all $a:X$ and $b: Y(a)$.
 Two important examples of such constructions are:
 \begin{enumerate}
 \item \emph{first projection} $\fst:(\sum _{x:X} Y(x)) \to X$, 
@@ -252,7 +261,7 @@ $\snd: \prod_{z: \sum _{x:X} Y(x)} Y(\fst z)$, $\snd(a,b)\defeq b$.
 Equality of two elements $(a_1,b_1),(a_2,b_2)$ of $\sum _{x:X} Y(x)$ is 
 inductively defined in \cref{sec:identity-types}, like for any other type.
 In the case of a structured type defined from other types, 
-here $\sum _{x:X} Y(x)$ from $X$ and $Y(x)$ for any $X$,
+here $\sum _{x:X} Y(x)$ from $X$ and $Y(x)$ for any $x$,
 one would like to express equality in the structured type in terms of 
 the equalities in the constituent types. This explains much better
 what it means for two elements of the structured type to be equal.
@@ -260,25 +269,26 @@ This is so important that we give this explanation here and below
 every time we introduce a new structured type, even though not everything
 can be proved yet. For complete proofs we refer to \cite{hottbook}.
 
-An equality between two elements $(a_1,b_1),(a_2,b_2)$ of 
+An identification between two elements $(a_1,b_1),(a_2,b_2)$ of 
 $\sum _{x:X} Y(x)$ means in the first place, by taking
-the first projection, having an equality $e: a_1=a_2$.
+the first projection, having an identification $i: a_1=a_2$.
 We cannot expect exactly the same for the second 
 projections $b_1: Y(a_1)$ and $b_2: Y(a_2)$, since they may
 have different types and can therefore not be compared directly.
 However, after transport of $b_1$ in the type family $Y$
-along the equality $e: a_1=a_2$ a direct comparison to $b_2$
-is possible. Thus we obtain the each equality $(a_1,b_1)=(a_2,b_2)$
-can be viewed as a pair of an equality $e: a_1=a_2$ and an
-equality $e' : \trp^Y e\, b_1 = b_2$. Note that the type
-of $e'$ depends on $e$, so that we actually have a dependent pair:
+along the identification $i: a_1=a_2$, a direct comparison to $b_2$
+is possible. Thus we obtain that each identification $(a_1,b_1)=(a_2,b_2)$
+can be viewed as a pair of an identification $i: a_1=a_2$ and an
+identification $i' : \trp_{Y,i}(b_1) = b_2$. Note that the type
+of $i'$ depends on $i$, so that we actually have a dependent pair:
 \[
-(e,e'): \sum_{e:a_1 = a_2} {\trp}^Y e\, b_1 = b_2
+(i,i'): \sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2
 \]
-The latter type can be proved to be equivalent to the
+The latter type (COULD BE LEFT OUT) can be proved to be equivalent to the
 type $(a_1,b_1)=(a_2,b_2)$ in a precise sense.
 
-The combination of $\sum,\prod$- and equality types allow
+
+The combination of $\sum$-, $\prod$- and equality types allow
 us to express important notions, as done in the following
 definitions.
 
@@ -291,9 +301,9 @@ We call a type $X$ having this property \emph{contractible}, denoted by $\iscont
 
 \begin{definition}
 \label{def:fiber}
-Given a function $f : X \to Y$ and an element $y:Y$, the \emph{fiber} (or \emph{inverse image}) $f^{-1}(y)$ consists of points $x$ such that $f(x)
-= y$.  This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (f(x) = y)$.  In other words, a point of the fiber is a pair $(x,e)$ consisting
-of the point $x$ and an element $e$ of the identity type $f(x) = y$.
+Given a function $f : X \to Y$ and an element $y:Y$, the \emph{fiber} (or \emph{inverse image}) $f^{-1}(y)$ consists of elements $x$ such that $f(x)
+= y$.  This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (f(x) = y)$.  In other words, an element of the fiber is a pair $(x,e)$ consisting
+of an element $x$ and an element $e$ of the identity type $f(x) = y$.
 \end{definition}
 
 In set theory, a function $f : X \to Y$ is a bijection if and only if
@@ -360,7 +370,7 @@ then we shall say that $X$ is an $(n+1)$-\emph{type}.
 We prove that every proposition is a set, from which it follows
 by induction that every $n$-type is an $(n+1)$-\emph{type}.
 
-\begin{lemma}\label{lem:prop_is_set}
+\begin{lemma}\label{lem:prop-is-set}
 Every type that is a proposition is also a set.
 \end{lemma}
 \begin{proof}
@@ -379,48 +389,49 @@ In the following lemma we collect a number of useful results on propositions.
 Let $A$ be a type, and let $P$ and $Q$ propositions.
 Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \begin{enumerate}
-\item\label{prop_utils_false_true} $\false$ and $\true$ are propositions;
-\item\label{prop_utils_implication} $A\to P$ is a proposition;
-\item\label{prop_utils_pi} $\prod_{a:A} R(a)$ is a proposition;
-\item\label{prop_utils_times} $P\times Q$ is a proposition;
-\item\label{prop_utils_eq} $P = Q$ is a proposition.
+\item\label{prop-utils-false-true} $\false$ and $\true$ are propositions;
+\item\label{prop-utils-implication} $A\to P$ is a proposition;
+\item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
+\item\label{prop-utils-times} $P\times Q$ is a proposition;
+\item\label{prop-utils-eq} $P = Q$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-(\ref{prop_utils_false_true})
+(\ref{prop-utils-false-true})
 If $p,q : \false$, then $p=q$ is proved by the Ex Falso rule.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
 
-(\ref{prop_utils_implication})
+(\ref{prop-utils-implication})
 If $p,q : A\to P$, then $p=q$ is proved by first observing that $p$ and $q$
-are functions. Hence by function extensionality they are equal if pointwise
-equal, which is the case since $P$ is a proposition.
+are functions which, by function extensionality, are equal if they have
+equal values $p(x) = q(x)$ in $P$ for all $x$ in $A$. This is
+actually the case since $P$ is a proposition.
 
-(\ref{prop_utils_pi})
+(\ref{prop-utils-pi})
 If $p,q : \prod_{a:A} R(a)$ one can use the same argument as for $A\to P$
 but now with \emph{dependent} functions $p,q$.
 
-(\ref{prop_utils_times})
+(\ref{prop-utils-times})
 If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
 is proved componentwise. 
 
-(\ref{prop_utils_eq})
+(\ref{prop-utils-eq})
 By univalence, $P = Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
-combining (\ref{prop_utils_implication}) and
-(\ref{prop_utils_times})
+combining (\ref{prop-utils-implication}) and
+(\ref{prop-utils-times})
 \end{proof}
 
 Several remarks can be made here. First, the lemma supports the
 use of $\false,\true$ as truth values, and the use of
 $\to,\prod,\times$ for implication, universal quantification,
 and conjunction, respectively. Since $\false$ is a proposition,
-it follows by (\ref{prop_utils_implication}) above that
+it follows by (\ref{prop-utils-implication}) above that
 $\neg A$ as defined by $A\to\false$ is a proposition for any type $A$.
-As noted before, (\ref{prop_utils_implication}) is a
-special case of (\ref{prop_utils_pi}).
+As noted before, (\ref{prop-utils-implication}) is a
+special case of (\ref{prop-utils-pi}).
 
 Notably absent in the lemma above are disjunction
 and existential quantification. This has a simple reason:
@@ -433,25 +444,49 @@ to work with disjunction and existential quantification for propositions.
 The lemma above has a generalization from propositions to
 $n$-types which we state without proving.
 
-\begin{lemma}\label{lem:level_n_utils}
+\begin{lemma}\label{lem:level-n-utils}
 Let $A$ be a type, and let $X$ and $Y$ be $n$-types.
 Let $Z(a)$ be an $n$-type depending on $a:A$. Then we have:
 \begin{enumerate}
-\item\label{level_n_utils_implication} $A\to X$ is an $n$-type;
-\item\label{level_n_utils_pi} $\prod_{a:A} Z(a)$ is an $n$-type;
-\item\label{level_n_utils_times} $X\times Y$ is an $n$-type.
+\item\label{level-n-utils-implication} $A\to X$ is an $n$-type;
+\item\label{level-n-utils-pi} $\prod_{a:A} Z(a)$ is an $n$-type;
+\item\label{level-n-utils-times} $X\times Y$ is an $n$-type.
 \end{enumerate}
 \end{lemma}
 
 \begin{lemma}\label{lem:props-are-props}
-  For any type $A$, the types $\iscontr(A)$, $\isset(A)$, $\isconn(A)$, etc.\ are in fact propositions.
-  (We shall only use the notation $\mathrm{isX}(A)$ for propositions about $A$.)
+  For any type $A$, the types 
+$\iscontr(A)$, $\isprop(A)$, $\isset(A)$, $\isconn(A)$, 
+etc.\ are in fact propositions.
+(We shall only use the notation $\mathrm{isX}(A)$ for propositions about $A$.)
 \end{lemma}
-\section{Logical operations on propositions}
+
+\begin{proof}
+Recall that $\iscontr(A)$ is $\sum_{a:A} \prod_{b:A} (a=b)$.
+It is clear that $A$ is a proposition if $\iscontr(A)$.
+Let $(a,f)$ and $(b,g)$ be elements of the type $\iscontr(A)$.
+For $(a,f) = (b,g)$ we need an $e : a=b$ and an $e' : \trp_e f = g$.
+For $e$ we can take $f(a)$ and for $e'$ we invoke 
+\cref{lem:prop-utils}(\ref{prop-utils-pi}).
+
+Recall that $\isprop(A)$ is $\prod_{a,b:A}(a=b)$.
+If $p$ is an element of $\isprop(A)$, then $A$ is a proposition
+and hence a set by \cref{lem:prop-is-set}. Hence $\isprop(A)$
+is a proposition by \cref{lem:prop-utils}(\ref{prop-utils-pi}).
+
+We delegate the other (and future) cases to the exercises.
+\end{proof}
+
+
+
+
+
+
+\section{Logical operations on propositions; propositional truncation}
 \label{sec:logical-operations}
 
-\section{Propositional truncation; disjunction}
-\label{sec:propositional-truncation}
+\section{Truncation}
+\label{sec:truncation}
 
 \section{Operations on sets that produce new sets}
 \label{sec:operations-on-sets}
@@ -477,7 +512,7 @@ In the special case that $T$ is set we call
 $\sum_{x:T} P(x)$ a subset which we denote by 
 $\set{x:T \mid P(x)}$.
 
-\begin{lemma}\label{lem:eq_of_sets_is_set}
+\begin{lemma}\label{lem:eq_of_sets-is-set}
 If $X$ and $Y$ are sets, then $X=Y$ is a set. 
 In other words, $\Set$ is a groupoid.
 \end{lemma}
