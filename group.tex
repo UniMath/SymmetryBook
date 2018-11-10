@@ -157,6 +157,10 @@ and we will later show that groups are uniquely characterized by these laws.
  In \cref{def:typegroup} the first $\sum$ in the definition of the type $\typegroup$ ranges over the entire universe $\mathcal U$.  Hence, $\typegroup$ does not belong to $\mathcal U$, but rather to the next universe. \footnote{where do we explain this?}  This tendency that the ``type of all the types we are interested in'' is a ``large type'' is a regular feature of the theory and since it will not cause any trouble for us, we will not be consistent in pointing it out in the future.
   \end{remark}
 
+  \begin{xca}\label{xca:typegroupisgroupoid}
+    Prove that the type of groups is a groupoid.  This means that, given a group $G$, the component of $\typegroup$, containing (and pointed at) $G$, is again a group, which we will call the \emph{group $\aut(G)$ of automorphisms} of $G$.
+  \end{xca}
+
 \section{The identity type as an abstract group }
 \label{sec:identity-type-as-abstract}
 
@@ -222,23 +226,23 @@ by exactly the same procedure, completing the list.
 These properties of the identity type are bundled together in the concept of an abstract group, under the additional hypothesis that we are dealing with a set.
 
   \begin{definition}\label{def:abstractgroup}
-    An \emph{abstract group} is a set $G$ together with
+    An \emph{abstract group} is a set $S$ together with
 \begin{enumerate}
-\item an element $e:G$,
-\item a binary operation taking a pair of elements $g_1,g_2:G$ to a third element which we call $g_1\cdot g_2:G$ such that
+\item an element $e:S$,
+\item a binary operation taking a pair of elements $g_1,g_2:S$ to a third element which we call $g_1\cdot g_2:S$ such that
   \begin{enumerate}
   \item %$e$ is a ``neutral element'':
-if $g:G$, then $g\cdot e=e\cdot g=g$ and
+if $g:S$, then $g\cdot e=e\cdot g=g$ and
   \item %satisfying ``associativity'':
-if $g_1,g_2,g_3:G$, then
+if $g_1,g_2,g_3:S$, then
 $$g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3,$$
   \end{enumerate}
 \item %inverses:
-to every $g:G$ there is a $g^{-1}:G$ such that $%g\cdot g^{-1}=
+to every $g:S$ there is a $g^{-1}:S$ such that $%g\cdot g^{-1}=
 g^{-1}\cdot g=e$.
 \end{enumerate}
 We refer to $e$ as the \emph{unit element}, $g_1\cdot g_2$ as the \emph{product of $g_1$ and $g_2$} and $g^{-1}$ as the \emph{inverse of $g$}.  The \emph{unit laws} will then be $g\cdot e=e\cdot g=g$, the \emph{associativity law} is $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ and $%g\cdot g^{-1}=
-g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.
+g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.  The set $S$ is called the \emph{underlying set} of the abstract group.
   \end{definition}
 
 In conclusion we have proved that groups give rise to abstract groups:
@@ -263,20 +267,20 @@ $$(a=_Aa,e,{-}^{-1},\cdot).$$
     \begin{remark}\label{rem:typemonoidabstrgp}
         Summing up in language a machine (and the occasional mad scientist) can handle, the \emph{type of monoids} is
 $$\typemonoid\defequi \sum_{M:\mathcal U}\sum_{e:M}\sum_{\mu{}:M\to M\to M}
-\isset{(M)}\times\mathrm{Monoidlaws}(G,e,\mu)
+\isset{(M)}\times\mathrm{Monoidlaws}(M,e,\mu)
 $$
 where
-$$\mathrm{Monoidlaws}(M,e,\mu)\defequi\mathrm{Unitlaws}(G,e,\mu)\times\mathrm{Assoclaw}(G,\mu{})$$and
+$$\mathrm{Monoidlaws}(M,e,\mu)\defequi\mathrm{Unitlaws}(M,e,\mu)\times\mathrm{Assoclaw}(M,\mu{})$$and
 \begin{align*}
-  \mathrm{Unitlaws}(G,e,\mu)\defequi\prod_{g:G}
+  \mathrm{Unitlaws}(M,e,\mu)\defequi\prod_{g:M}
 &(g=\mu{}(g)(e))\times(g=\mu{}(e)(g)),\\
-\mathrm{Assoclaw}(G,\mu{})\defequi\prod_{g_1,g_2,g_3:G}&\mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3).
+\mathrm{Assoclaw}(M,\mu{})\defequi\prod_{g_1,g_2,g_3:M}&\mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3).
 \end{align*}
 In the human language we used above, $\mu(g)(h)=g\cdot h$ and $\iota(g)=g^{-1}$ and $\mathrm{Unitlaws}$ and $\mathrm{Assoclaw}$ spell out to the machine that the unit behaves like a unit and that the multiplication is associative.
 The
 \emph{type of abstract groups} is
 $$\typeabsgp\defequi
-\sum_{(G,e,\mu):\typemonoid}\sum_{\iota\colon G\to G}\prod_{g:G}(\mu{}(\iota{}(g))(g)=e).$$
+\sum_{(M,e,\mu):\typemonoid}\sum_{\iota\colon M\to M}\prod_{g:M}(\mu{}(\iota{}(g))(g)=e).$$
 % where
 % $$\mathrm{Grouplaws}(G,e,\mu,\iota)\defequi\mathrm{Monoidlaws}(G,e,\mu)\times \mathrm{Invlaws}(G,\iota{},\mu{},e)$$
 % and
@@ -284,20 +288,21 @@ $$\typeabsgp\defequi
 % \prod_{g:G}(\mu{}(\iota{}(g))(g)=e)\times
 % (\mu{}(g)(\iota{}(g))=e)\times
 % (\iota{}(\iota{}(g))=g).$$
-We will typically refer to a monoid as a triple $(M,e,\mu)$, omitting the names for the (true) $\isset$ and unit and associativity laws, and likewise, an abstract group wil be referred to as a quadruple $(G,e,\mu,\iota)$.
+We will typically refer to a monoid as a triple $(M,e,\mu)$, omitting the names for the (true) $\isset$ and unit and associativity laws, and likewise, an abstract group wil be referred to as a quadruple $(M,e,\mu,\iota)$.  The \emph{underlying set} of a group is defined by setting 
+$$\mathrm{underlie}(M,e,\mu,\iota)=M.$$
 \end{remark}
   \begin{remark}
 Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the case when $g$ is $e$, the unit law of \cref{def:abstractgroup} (or alternatively $\mathrm{Unitlaws}(G,\mu{},e)(e)$ in \cref{rem:typemonoidabstrgp}) would provide \emph{two} (potentially different) proofs that $e=e\cdot e$ and we would have to separately insist that they agree.  This problem vanishes in the setup we adopt below for \inftygps.
   \end{remark}
 
   \begin{xca}
-    For an element $g$ in an abstract group $(G,e,\mu,\iota)$, prove that $g\cdot g^{-1}=e$ and $(g^{-1})^{-1}=g$ (for the machines among us: show that both the propositions
+    For an element $g$ in an abstract group $(G,e,\mu,\iota)$, prove that $g\cdot g^{-1}=e$ and $(g^{-1})^{-1}=g$ (for the machines among us: show that the proposition
 $
-(\mu{}(g)(\iota{}(g))=e)$ and $
-(\iota{}(\iota{}(g))=g)$ are nonempty).
+(\mu{}(g)(\iota{}(g))=e)\times
+(\iota{}(\iota{}(g))=g)$ is nonempty).
   \end{xca}
-  \begin{xca}
-    Prove that the types of monoids and groups are groupoids.
+  \begin{xca}\label{xca:typegroupisgroupoid}
+    Prove that the types of monoids and abstract groups are groupoids.
   \end{xca}
 
 
@@ -312,11 +317,25 @@ The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple
 $$\Hom(G,H)=(BG\to_* BH).%\sum_{f:A\to B}f(a)=_Bb.
 $$
 \end{definition}
-This should be contrasted with the usual notion of a group homomorphism $f\colon G\to H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_H f(g')=f(g\cdot_G g')$ (where we have set the name of the group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
+\begin{example}
+  \begin{enumerate}
+  \item   Consider two sets $S$ and $T$.  The map $\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$.
+Thought of as symmetries, this says that if you have a symmetry of $S$, then we get a symmetry on $S\coprod T$ (which doesn't do anything to $T$).  
+
+Likewise, we get a map $\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to $X\times T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\times T}$. 
+
+In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\Sigma_{mn}$. \footnote{Insert a good description of the sign $\Sigma_n\to\Sigma_2$}
+\item Let $G$ be a group.  Since there is a unique map from $BG$ to $\mathbf 1$, we get a unique homomorphism from $G$ to the trivial group. 
+\item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  Write out.\footnote{Say something about $BG\vee BH$?}
+  \end{enumerate}
+
+\end{example}
+
+The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon G\to H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_H f(g')=f(g\cdot_G g')$ (where we have set the name of the group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
 
 \begin{definition}\label{def:grouphomomaxioms}
-  ((prove/define the standard axioms))
-Let $G$ and $H$ be groups and assume given a group homomorphism $G\to H$, \ie a pointed map from $BG$ to $BH$; or in other words a map of (unpointed) types $f\colon BG_\div\to BH_\div$ and a $p: f(\pt_G)=\pt_H$.  As in \footnote{reference}, this gives rise to a map $$f:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G)),$$ 
+  %((prove/define the standard axioms))
+Let $G$ and $H$ be groups and assume given a group homomorphism $G\to H$, \ie a pointed map from $BG$ to $BH$; or in other words a map of (unpointed) types $f\colon BG_\div\to BH_\div$ and a $p: f(\pt_G)=\pt_H$.  As in \footnote{reference.  I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}, this gives rise to a map $$f:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G)),$$ 
 which is defined by induction by declaring that $f(\refl{\pt_G})\defequi \refl{f(\pt_G)}$.  If $g:\pt_G=\pt_G$, then $f(g)$ is an element of $f(\pt_G)=f(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p: f(\pt_G)=\pt_H$ gives rise to 
 $$\mathrm{ad}_p:(f(\pt_G)=f(\pt_G))=(\pt_H=\pt_H)\footnote{where is this discussed?}$$ (with $\mathrm{ad}_p(\refl{f(\pt_G)})=\refl{\pt_H}$) and so 
 $$\mathrm{ad}_p(f(g)):\pt_H=\pt_H.$$
@@ -335,8 +354,12 @@ $$\mathrm{ad}_p(f(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\p
         \end{align*}
 (Write out fix references etc)
   \end{enumerate}
-
 \end{definition}
+This proves that a homomorphism of groups give rise to a homomorphism of their associated abstract groups:
+\begin{definition}
+  If $G=(G,e_G,\mu_G,\iota_G)$ and $H=(H,e_H,\mu_H,\iota_H)$ are two abstract groups, then the set of homomorphisms 
+\end{definition}
+
 
 
 \section{\inftygps}
@@ -389,13 +412,28 @@ Given a $G$-set, we may consider it as a $G$-type and will usually not make a no
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
-$$\princ_G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-set (or type)}.
+$$\princ_G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  The name torsor will be explained shortly.
+\end{example}
+
+\newcommand{\Ad}{\mathrm{Ad}}
+\begin{example}\label{def:adjointrep}
+  If $G$ is a group (or \inftygp), then
+$$\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.
+\end{example}
+\begin{example}\label{def:trivGset}
+  If $G$ is a group (or \inftygp), and $X$ is a set (or type) then
+$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this sort (regardless of $X$ are called \emph{trivial $G$-sets (or $G$-types)}.
 \end{example}
 
 \begin{remark}
   A $G$-type $X$ is often presented by focusing on the underlying type $X(\pt_G)$  and providing it with a structure relating it to $G$ determining the entire function $X\colon BG\to\mathcal U$.
+
+However, we must be careful not to focus too much on the underlying type.  For instance, even though the underlying type of both $\Ad_G$ and $\princ_G$ is $\pt_G=\pt_G$, in general  $\Ad_G$ and $\princ_G$  are very different $G$-types.  A third $G$-type with underlying type $\pt_G=\pt_G$ is $\mathrm{triv}_G(\pt_G=\pt_G)$.
 \end{remark}
 
+\begin{xca}
+  Prove that if $G$ is an abelian\footnote{define, or is this our definition?} group, then $\Ad_G=\mathrm{triv}_G(\pt_G=\pt_G)$.
+\end{xca}
 \begin{xca}
   Use that $BG$ is connected to show that if $X$ is a $G$-set, then $X(z)$ is a set for all $z:BG$ (\ie $\prod_{z:BG}\isset(X(z))$).
 \end{xca}
@@ -409,7 +447,7 @@ where $\princ_G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ_G$ -- it represents a group!  Guess which one:
 \end{remark}
-\begin{lemma}
+\begin{lemma}\label{lem:BGbytorsor}
   If $G$ is a group (or \inftygp), then the pointed type $(\typetorsor_G,\princ_G)$ is equal to to $BG$,\footnote{in the appropriate universe} so both represent $G$.
 \end{lemma}
 
@@ -417,7 +455,11 @@ Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedl
   ((write))
 \end{proof}
 
-We use this as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of picking the underlying abstract group of a group and taking the group represented by the torsors of an abstract group are inverse to each others.
+\section{$G$-sets for abstract groups}
+\label{sec:Gsetforabstract}
+
+
+We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of picking the underlying abstract group of a group and taking the group represented by the torsors of an abstract group are inverse to each others.
 \begin{enumerate}
 \item define $G$-type/set
 \end{enumerate}
