@@ -105,7 +105,7 @@ There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a con
 $$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:props-are-props}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying space is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{BG}).$$
 \end{remark}
 \end{definition}
-\begin{example}
+\begin{example}\label{ex:groups}
   % Since any pointed connected groupoid is a group, there is no shortage of examples, but perhaps i
   It is worthwhile to consider some specially designed examples.
   \begin{enumerate}
@@ -123,6 +123,10 @@ where $\fin_n$ is the groupoid of sets of cardinality $n$ (c.f.~\ref{def:finites
 %
  So, 
 the \emph{group of permutations of $S$} is defined to be $\Sigma_{S}=\aut_{\Set_{(S)}}(S)$.  
+
+Likewise, if $X$ is any type, the \emph{group of automorphism} or \emph{permutations} of $X$ is defined to be 
+$$\Sigma_X=\aut_{\mathcal U_{(X)}}X,$$
+ where $U_{(X)}$ is the component of $\mathcal U$ containing $X$.
 \item If you have two groups $G$ and $H$, their {\em product} $G\times H$ is given by taking the product of their classifying spaces:
 $$G\times H\defequi\aut_{BG_\div\times BH_\div}((\pt_G,\pt_H))$$
 (note that $B(G\times H)\oldequiv BG\times BH$ is pointed in $\pt_{G\times H}\oldequiv(\pt_G,\pt_H)$).  
@@ -246,7 +250,7 @@ g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.  The set $S$ is c
   \end{definition}
 
 In conclusion we have proved that groups give rise to abstract groups:
-\newcommand{\abstr}{\mathrm{abstract}}
+\newcommand{\abstr}{\mathrm{abstr}}
   \begin{lemma}\label{lem:idtypesgiveabstractgroups}
     If $A$ is a groupoid %(alternatively called a ``$1$-type'') 
 and $a:A$ is an element, then $a=_Aa$, together with $e=\refl a{}$, $g^{-1}=\symm_{a,a}g$ and $g\cdot h=\trans_{a,a,a}(g)(h)$ define an abstract group
@@ -289,7 +293,7 @@ $$\typeabsgp\defequi
 % (\mu{}(g)(\iota{}(g))=e)\times
 % (\iota{}(\iota{}(g))=g).$$
 We will typically refer to a monoid as a triple $(M,e,\mu)$, omitting the names for the (true) $\isset$ and unit and associativity laws, and likewise, an abstract group wil be referred to as a quadruple $(M,e,\mu,\iota)$.  The \emph{underlying set} of a group is defined by setting 
-$$\mathrm{underlie}(M,e,\mu,\iota)=M.$$
+$$\mathrm{under}(M,e,\mu,\iota)=M.$$
 \end{remark}
   \begin{remark}
 Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the case when $g$ is $e$, the unit law of \cref{def:abstractgroup} (or alternatively $\mathrm{Unitlaws}(G,\mu{},e)(e)$ in \cref{rem:typemonoidabstrgp}) would provide \emph{two} (potentially different) proofs that $e=e\cdot e$ and we would have to separately insist that they agree.  This problem vanishes in the setup we adopt below for \inftygps.
@@ -395,7 +399,7 @@ Generically, if $G$ is \aninftygp, we let $\pt_G:BG$ (and sometimes simply $\pt$
 \section{$G$-sets}
 \label{sec:gsets}
 
-One of the goals of this section is to prove that, in a precise sense, any abstract group corresponds to a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.  However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
+One of the goals of the next section is to prove that, in a precise sense, any abstract group corresponds to a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.  However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
 
 Before we handle the more complex case of abstract groups, let us see what this looks like for groups.
 
@@ -427,6 +431,13 @@ $$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this 
 
 \begin{remark}
   A $G$-type $X$ is often presented by focusing on the underlying type $X(\pt_G)$  and providing it with a structure relating it to $G$ determining the entire function $X\colon BG\to\mathcal U$.
+
+More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\mathcal U$ factors over the component $\mathcal U_{(X)}=\sum_{Y:\mathcal U}||Y=X(\pt_G)||$, which contains the point $X(\pt_G)$.  Hence, without loss of information, $X$ can be considered a homomorphism 
+$$G\to\Sigma_{X(\pt_G)}$$ from $G$ to the automorphism group of $X(\pt_G)$.
+
+Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to\mathcal U_{(X)}$, then the composite
+$$BG\to \mathcal U_{(X)}\to \mathcal U$$
+is a $G$-type with $X$ exactly the value of $\pt_G$.
 
 However, we must be careful not to focus too much on the underlying type.  For instance, even though the underlying type of both $\Ad_G$ and $\princ_G$ is $\pt_G=\pt_G$, in general  $\Ad_G$ and $\princ_G$  are very different $G$-types.  A third $G$-type with underlying type $\pt_G=\pt_G$ is $\mathrm{triv}_G(\pt_G=\pt_G)$.
 \end{remark}
@@ -460,23 +471,39 @@ Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedl
 
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of picking the underlying abstract group of a group and taking the group represented by the torsors of an abstract group are inverse to each others.
-\begin{enumerate}
-\item define $G$-type/set
-\end{enumerate}
-\subsubsection{$G$-torsors}
-\label{sec:Gtorsors}
+
+Note that we have not considered an abstract analog of the concept of $\infty$-group, so all we do in theis section is set-based.
+
 \begin{definition}
-  A $G$-torsor is a $G$-set which is isomorphic to the underlying $G$-set of $G$ (write out - avoid conflict of notation wrt $|G|$)
+\label{def:abstrGtorsors}
+  If $G$ is an abstract group, a $G$-set is a set $S$ together with a homomorphism
+$G\to\abstr(\Sigma_S)$
+from $G$ to the (abstract) permutation group of $S$:
+$$Set_G^\abstr\defequi \sum_{S:\Set}\Hom_\abstr(G,\abstr(\Sigma_S).$$
+
+The \emph{principal $G$-torsor} $\princ_G^\abstr$ is the $G$-set consisting of the underlying set $\mathrm{under}(G)$ together with the homomorphism $G\to\abstr(\Sigma_{\mathrm{under}(G)})$ given by $g\mapsto \mathrm{ua}(g\cdot)$ ((explain)).
+
+The type of \emph{$G$-torsors} is
+$$\typetorsor_G^\abstr\defequi\sum_{S:\Set_G^\abstr}||S=\princ_G||.$$
 \end{definition}
 \begin{example}
   If $\aut_A(a)\colon\typegroup$ with underlying abstract group $G$, then for any $b:A$ the set $a=_Ab$ has a natural structure of a $G$-torsor as follows ((write))
 \end{example}
 
+\newcommand{\concr}{\mathrm{concr}}
+\begin{definition}
+  If $G$ is an abstract group, then the \emph{concrete group $\concr(G)$ associated with $G$} is the group (given by the pointed connected groupoid) $(\typetorsor_G^\abstr,\princ_G)$.
+\end{definition}
+
+% \begin{definition}
+%   A $G$-torsor is a $G$-set which is isomorphic to the underlying $G$-set of $G$ (write out - avoid conflict of notation wrt $|G|$)
+% \end{definition}
+
 \footnote{how deeply do we want to integrate univalence?}
 \begin{lemma}
-  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  Then the abstract group associated with $\aut_{\Gtorsor}(|G|):\typegroup$ is equal to $G$ in the type of abstract groups.
+  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  Then $p_G:G=\abstr(\concr(G))$ is given by (write out).
 
-Conversely, given $\aut_A(a):\typegroup$, let $G$ be the associated abstract group.  Then $A=\Gtorsor:\mathcal U$ and $\aut_A(a)=\aut_{\Gtorsor}(|G|):\typegroup$.
+Conversely, given a group $G$, then $q_G:G=\concr(\abstr(G))$  is given by (write out).
 \end{lemma}
 In essence we have shown that our ``abstract group'' is indeed the group of symmetries of something.
 
