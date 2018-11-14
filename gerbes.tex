@@ -1,0 +1,129 @@
+\label{ch:gerbes}
+
+We use here the $1$-convention: without further qualifiers, ``group'',
+``gerbe'', etc.~mean $1$-group, $1$-gerbe, etc.
+
+Recall definitions:
+
+$\Group$: A group is a pointed, connected $1$-type
+
+$\Gerbe$: A gerbe is a connected $1$-type
+
+$\Band\jdeq\Trunc{\Gerbe}_1$: a band is an element of the
+$1$-truncation of $\Gerbe$.
+
+Center: $Z : \Band \to \AbGerbe$, $B^2Z(K) \jdeq \sum_{X : \Gerbe}
+\band X = K$.
+
+The forgetful map $\AbGroup \to \AbGerbe$ is $1$-connected, so induces
+an equivalence $\AbGroup \equiv \AbBand$.
+
+\begin{lemma}
+  Let $A : \Gerbe$ and $x,y:A$. There is a canonical action of
+  $\Inn(x)\times\Inn(y)$ on $\Aut(x) = \Aut(y)$ whose orbit set is
+  $\Aut(\band A)$.
+\end{lemma}
+\begin{proof}
+  The action takes $\angled{\angled{G,p},\angled{H,q}}$ to $(G=H)$.
+  The orbit set $O \defeq (\Aut(x)=\Aut(y)) / \Inn(x)\times\Inn(y)$ is
+  \begin{align*}
+    O
+    &= \Trunc*{\sum_{G:\Group}\Trunc{\gerbe G=A}_0 \times
+      \sum_{H:\Group}\Trunc{\gerbe G=A}_0 \times (G = H)}_0 \\
+    &= \Trunc*{\sum_{X:\Gerbe}(X=A) \times
+      \sum_{Y:\Gerbe}(Y=A) \times \sum_{x:X}\sum_{y:Y}\sum_{f:X=Y}(\mathop
+      f x = y)}_0 \\
+    &= \Trunc*{\sum_{x:A}\sum_{y:A}\sum_{f:A=A}(\mathop f x = y)}_0 \\
+    &= \Trunc*{A \times (A = A)}_0 = \Trunc A_0 \times \Trunc{A=A}_0 \\
+    &= (\band A = \band A) = \Aut(\band A) \qedhere
+  \end{align*}
+\end{proof}
+
+\begin{definition}
+  The category of \emph{bands} is the homotopy category of the
+  $(2,1)$-category of gerbes.
+\end{definition}
+\begin{lemma} % Giraud IV.1.2.3
+  The band functor $\Group \Rightarrow \Band$ induces an equivalence
+  of categories between the subcategories of abelian groups and
+  abelian bands.
+\end{lemma}
+\begin{proof}
+  The functor is fully faithful and essentially surjective on objects.
+\end{proof}
+
+The category of bands has a zero object represented by the trivial
+group. We have finite products and $\band$ preserves products.
+
+\begin{lemma}
+  The category of bands has cokernels and $\band$ preserves cokernels.
+\end{lemma}
+\begin{lemma}
+  The inclusion $\AbGroup \hookrightarrow \Band$ has a left adjoint.
+\end{lemma}
+(This is abelianization, mapping $L$ to $\pi_2(\Sigma L)$.
+
+\begin{definition}
+  Suppose $u : L \to M$ is a morphism of bands. The \emph{centralizer}
+  of $u$ is a band $C_u$ and a morphism $c_u : L \times C_u \to M$
+  such that for every band $X$ the induced map
+  \[
+    \Hom(X,C_u) \to \setof{x \in \Hom(L \times X,
+      M)}{x\circ\iota_1=u},
+  \]
+  with $x \mapsto c_u \circ (\id_L\times x)$, is an isomorphism.
+\end{definition}
+Centralizers exist by picking representatives. (Is there a more direct
+definition?)
+
+If $L$ is a band, then the \emph{center} of $L$ is an abelian group
+$Z(L)$ with $B^2Z(L) \defeq \sum_{X : \Gerbe} L=\band(X) \jdeq
+L\Gerbe$. This gives a well-defined abelian group.
+
+\begin{theorem}
+  % Giraud IV.2.3.2
+  Let $u : L\to M$ be a morphism of bands, $P:L\Gerbe$, $Q:M\Gerbe$.
+  Then $\Hom_u(P,Q)$ is a gerbe.
+
+  Furthermore, $\band\Hom_u(P,Q)$ with the band of the application map
+  is a centralizer of $u$.
+\end{theorem}
+\begin{lemma}
+  Let $L:\Band$, $P,Q:L\Gerbe$. Then $\Hom_{\id_L}(P,Q)$ is banded by
+  the center of $L$.
+\end{lemma}
+
+\begin{lemma}
+  % Giraud IV.2.4.4
+  $L:\Band$, $C$ is the center of $L$, $P,Q:L\Gerbe$. Then there is a
+  canonical equivalence $P \wedge^C \Hom_L(P,Q) \to Q$.
+\end{lemma}
+
+\begin{lemma}
+  % Giraud IV.2.5.5.5
+  Suppose we have a $k : K\to F$, $m:F\to G$ morphisms of gerbes lying
+  over an exact sequence of band homomorphisms. Then there is a unique
+  section $s : G$ such that $m\circ k=s\circ 1$. There is an
+  equivalence between $K$ and $\fiber_m(s)$.
+\end{lemma}
+
+\begin{definition}
+  Let $1\to A\to B\to C\to 1$ be an exact sequence of groups, and let
+  $P$ be a $C$-torsor. Then the fiber of $P$ over $B$ is a gerbe with
+  band ${}^P\band(A)$.
+\end{definition}
+
+\begin{definition}
+  Let $L : \Band$. Then $\sum_{G:\Group}\band(G)=L$ is a gerbe. (The
+  gerbe of \emph{representatives} of $L$).
+\end{definition}
+
+\begin{definition} % Giraud IV.4.1.3
+  Let $v : M \to N$ be a map of bands. Then $\Ker(v)$ is a gerbe. It
+  consists of pairs $\angled{N,u}$ of a band $N$ and a map $u:N\to M$
+  giving an exact sequence.
+\end{definition}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "book"
+%%% End:
