@@ -1,6 +1,8 @@
 \label{ch:groups}
 \newcommand{\base}{\bullet}%point in circle
 \newcommand{\Sloop}{\mathit{loop}}%loop in circle
+\newcommand{\Eq}{\mathrm{Eq}}%type of equivalences from A to B \Eq(A,B)
+\newcommand{\idtoeq}{\mathrm{idtoeq}}
 
 \subsection{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
 The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
@@ -62,12 +64,11 @@ $$(B\to_*B')=\sum_{f:B_\div\to B'{}_\div}f(\pt_B)=\pt_{B'}.$$
   If $A$ is a type and $B$ is a pointed type, prove that $A\to B_\div$ is equivalent to $A_+\to_*B$.
 \end{xca}
 
+\subsubsection{The circle}
 \begin{definition}
   The \emph{circle} $S^1\colon\mathcal U$ is ((define))
 \end{definition}
-\subsubsection{The circle}
 \label{sec:sec:circle}
-%\newcommand{\Sloop}{\mathit{loop}}
 \begin{definition}
   \label{def:circle}
 The circle $S^1$ ((write and point it at $\base$))
@@ -81,6 +82,54 @@ The circle $S^1$ ((write and point it at $\base$))
 \end{proof}
 \begin{definition}
   \label{def:image}
+\end{definition}
+\subsubsection{Equivalences}
+\label{sec:equivalences}
+Two types are equivalent if you can freely translate back and forth between them: 
+\begin{definition}
+  Let $A$ and $B$ be types.  The type of \emph{equivalences} from $A$ to $B$ is
+$$\Eq(A,B)\defequi\sum_{f: A\to B}\left(\sum_{g:B\to A}\prod_{a:A}g(f(a))=a\right)\times\left(\sum_{h:B\to A}\prod_{b:B}f(h(b))=b\right).
+$$
+\end{definition}
+\begin{remark}
+  You recognize the spirit of ``inverse function'' in the definition of equivalences: an equivalence is a function $f:A\to B$ which has a $g:B\to A$ so that for all $a:A$ we have $g(f(a))=a$ and also an $h:B\to A$ so that for all $b:B$ we have that $f(h(b))=b$.  We will see in Lemma~\ref{lem:leftinvisrightinv} that this forces $g$ and $h$ to be equal, but it is technically convenient not to insist on this in the definition itself.  We refer to $g$ as a \emph{left inverse} of $f$ and $h$ as a \emph{right inverse} of $f$.
+\end{remark}
+
+
+\begin{lemma}
+  Given $f\colon A\to B$, the type of left inverses of $f$, 
+$$\sum_{g:B\to A}\prod_{a:A}g(f(a))=a,$$ is a proposition.  Consequently, the projection $\Eq(A,B)\to (A\to B)$ is a monomorphism.
+\end{lemma}
+\begin{proof}
+  ((write)) 4.2.9
+\end{proof}
+\begin{remark}
+  In view of this result, we will say that $f:A\to B$ \emph{is an equivalence form $A$ to $B$} if it is the projection of an equivalence from $A$ to $B$.  Occasionally the following alternative notation is more convenient:
+$$(A\simeq B)\defequi\Eq(A,B),$$
+and ocasionally we'll be sloppy and write $f:A\simeq B$ instead of the actual tuple $(f,(g,p),(h,q))$, hiding the (unique) choice proving that we actually are talking about an equivalence. 
+\end{remark}
+
+\begin{lemma}\label{lem:leftinvisrightinv}
+  The left and right inverses of an equivalence are equal.\footnote{check compatibility of notation and agree whether the carefree language is ok}
+\end{lemma}
+\begin{proof}
+  Let $(f,(g,p),(h,q)):\Eq(A,B)$. Then, for all $b:B$ we have $g(q_b):g(f(h(b))=g(b)$,  and $p_{h(b)}:g(f(h(b)))=h(b)$, and so, using symmetry and transitivity of the identity type, we have that $g(b)=h(b)$. 
+\end{proof}
+\begin{example}
+  If $A$ is a type, then the identity map $\id_A:A\to A$ (given by $\id_A(a)=a$) is an equivalence: it is its own (left and right) inverse, with $\refl a:\id_A(\id_A(a))=a$ as witness(es).  
+\end{example}
+
+
+\subsubsection{The univalence axiom}\label{sec:univax}
+
+Consider the identity $\id_{\mathcal U}:\mathcal U\to\mathcal U$ of the universe itself.  Given an equality $p:A=_{\mathcal U}B$ of types, we get a transport (c.f.~\cref{def:transport}) $\trp_{\id_{\mathcal U},p}:A\to B$, which we by abuse of notation continue to call $p$.  In other words, transport defines a map 
+$$(A=_{\mathcal U}B)\to (A\to B).$$
+We want to show that $\trp_{\id_{\mathcal U},p}:A\to B$ is an equivalence, and by induction it is enough to do this for the case when $p$ is $\refl A$.  However, by the very definition of transport we have 
+$\trp_{\id_{\mathcal U},\refl A}(a)\defequi a$, in other words 
+$$\trp_{\id_{\mathcal U},\refl A}=\id_A.$$
+Now, $\id_A$ is an equivalence in force of being its own (left and right) inverse.
+\begin{definition}\label{lem:idtoequiv}
+  The map $\idtoeq:(A=B)\to\Eq(A,B)$ is the function constructed above.
 \end{definition}
 
 
@@ -221,10 +270,11 @@ $$\refl a{}:a=a$$ (by definition)
  \end{remark}
  \begin{example}\label{ex:orbitofanelement}
    Given a group $G=\aut_A(a)$ and an element $g: a=_Aa$ we can iterate $g$ any number of times to get a (potentially) new element in $a=_Aa$. More precisely, for $n:\NN$ we define $g^n:a=_Aa$ by declaring that $g^0=e$ and $g^{n+1}=g^n\cdot g$.  We can also give meaning to $g^{-n}$ by setting it equal to $(g^{-1})^n$ (prove that $g^{-n}=(g^n)^{-1}$ and that $g^a\cdot g^b=g^{a+b}$).  \footnote{come back to this example in conjuction with $S^1$, show how to get it as an abstract group, connect it to orbits.}
+
+Note that we can have that $g^n=g^m$ even if $m$ and $n$ are different.  For instance, in $\Sigma_2=\aut_{\fin_2}(\mathbf 2)$, consider the element $p:\mathbf 2=\mathbf 2$ defined by $p(1)=2$ and $p(2)=1$.  Then $p^2(1)=p(2)=1$ and $p^2(2)=p(1)=2$, so that $p^2=e=p^0$.
    \end{example}
    \begin{example}\label{excirclegroup}
-     
-   The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid and is pointed at $\base$.  By definition, the identity type $\base=_{S^1}\base$ contains, in addition to $\refl\base$, also the element we called $\Sloop$.  In addition, $\base=_{S^1}\base$ must contain The corresponding group, $\ZZ\defequi\aut_{S^1}(\base)$ is the group of \emph{integers}, reflecting that we can represent any natural number $n$ by iterating $\Sloop:\base=_{S^1}\base$ and likewise we can iterate the inverse of $\Sloop$. We come back to this important group in \cref{ex:integers}.  \footnote{remember to return to the integers}
+   The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid and is pointed at $\base$.  By definition, the identity type $\base=_{S^1}\base$ contains, in addition to $\refl\base$, also the element we called $\Sloop$ and all its iterations $\Sloop^n$.   We come back to this important group in \cref{ex:integers}.  \footnote{remember to return to the integers}
  \end{example}
 
 
