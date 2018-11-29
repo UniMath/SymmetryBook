@@ -2,7 +2,8 @@
 \newcommand{\base}{\bullet}%point in circle
 \newcommand{\Sloop}{\mathit{loop}}%loop in circle
 \newcommand{\Eq}{\mathrm{Eq}}%type of equivalences from A to B \Eq(A,B)
-\newcommand{\idtoeq}{\mathrm{idtoeq}}
+\newcommand{\idtoeq}{\mathrm{id2eq}}%this is a provocation: fix it if you prefer
+\newcommand{\ua}{\mathrm{ua}}%univalence inverse
 
 \subsection{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
 The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
@@ -83,54 +84,108 @@ The circle $S^1$ ((write and point it at $\base$))
 \begin{definition}
   \label{def:image}
 \end{definition}
-\subsubsection{Equivalences}
-\label{sec:equivalences}
-Two types are equivalent if you can freely translate back and forth between them: 
-\begin{definition}
-  Let $A$ and $B$ be types.  The type of \emph{equivalences} from $A$ to $B$ is
-$$\Eq(A,B)\defequi\sum_{f: A\to B}\left(\sum_{g:B\to A}\prod_{a:A}g(f(a))=a\right)\times\left(\sum_{h:B\to A}\prod_{b:B}f(h(b))=b\right).
-$$
+% \subsubsection{Equivalences}
+% \label{sec:equivalences}
+% Two types are equivalent if you can freely translate back and forth between them: 
+% \begin{definition}
+%   Let $A$ and $B$ be types.  The type of \emph{equivalences} from $A$ to $B$ is
+% $$\Eq(A,B)\defequi\sum_{f: A\to B}\left(\sum_{g:B\to A}\prod_{a:A}g(f(a))=a\right)\times\left(\sum_{h:B\to A}\prod_{b:B}f(h(b))=b\right).
+% $$
+% \end{definition}
+% \begin{remark}
+%   You recognize the spirit of ``inverse function'' in the definition of equivalences: an equivalence is a function $f:A\to B$ which has a $g:B\to A$ so that for all $a:A$ we have $g(f(a))=a$ and also an $h:B\to A$ so that for all $b:B$ we have that $f(h(b))=b$.  We will see in Lemma~\ref{lem:leftinvisrightinv} that this forces $g$ and $h$ to be equal, but it is technically convenient not to insist on this in the definition itself.  We refer to $g$ as a \emph{left inverse} of $f$ and $h$ as a \emph{right inverse} of $f$.
+% \end{remark}
+
+
+% \begin{lemma}
+%   Given $f\colon A\to B$, the type of left inverses of $f$, 
+% $$\sum_{g:B\to A}\prod_{a:A}g(f(a))=a,$$ is a proposition.  Consequently, the projection $\Eq(A,B)\to (A\to B)$ is a monomorphism.
+% \end{lemma}
+% \begin{proof}
+%   ((write)) 4.2.9
+% \end{proof}
+% \begin{remark}
+%   In view of this result, we will say that $f:A\to B$ \emph{is an equivalence from $A$ to $B$} if it is the projection of an equivalence from $A$ to $B$.  Occasionally the following alternative notation is more convenient:
+% $$(A\simeq B)\defequi\Eq(A,B),$$
+% and ocasionally we'll be sloppy and write $f:A\simeq B$ instead of the actual tuple $(f,(g,p),(h,q))$, hiding the (unique) choice proving that we actually are talking about an equivalence. 
+% \end{remark}
+
+% \begin{lemma}\label{lem:leftinvisrightinv}
+%   The left and right inverses of an equivalence are equal.\footnote{check compatibility of notation and agree whether the carefree language is ok}
+% \end{lemma}
+% \begin{proof}
+%   Let $(f,(g,p),(h,q)):\Eq(A,B)$. Then, for all $b:B$ we have $g(q_b):g(f(h(b))=g(b)$,  and $p_{h(b)}:g(f(h(b)))=h(b)$, and so, using symmetry and transitivity of the identity type, we have that $g(b)=h(b)$. 
+% \end{proof}
+% \begin{example}
+%   If $A$ is a type, then the identity map $\id_A:A\to A$ (given by $\id_A(a)=a$) is an equivalence: it is its own (left and right) inverse, with $\refl a:\id_A(\id_A(a))=a$ as witness(es).  
+% \end{example}
+
+
+% \begin{remark}
+%   Inspired by sets, one can think of another possible definition of equivalence: namely a function $f:A\to B$ is a bijection if it is one-to-one and onto.  Spelling this out in detail, it means that for evey $b:B$ there is \emph{exactly one} $a:A$ such that $f(a)=b$.  The inverse of $f$ is then constructed by sending $b:B$ to the unique $a:A$ with $f(a)=b$.  The set of $a:A$ with $f(a)=b$ is called the ``preimage'' or ``fiber'' $f^{-1}(b)$ over $b$, and the condition then reads that ``for every $b:B$ the fiber over $b$ contains exactly one element''.  This works in our setting as well.  
+% \end{remark}
+% We must first transcribe these notions to our setting.
+% \begin{definition}
+%   The \emph{fiber} of a function $f:A\to B$ and $b:B$ over an element $b:B$ is the type
+% $$f^{-1}(b)=\sum_{a:A}f(a)=b.$$
+% The type of \emph{contractions} of a type $A$ is
+% $$\iscontr(A)\defequi\sum_{a:A}\prod_{x:A}a=x.$$
+% \end{definition}
+% Note that an element in $\iscontr(A)$ consists of a point $a:A$ and for every $x:A$ a $p_x:a=x$, that is, a proof of the assertion that all elements of $A$ are equal to $a$.  
+
+% If $f:A\to B$ is a function of types, we say that $f$ i a \emph{weak equivalence} if for every $b:B$ there is an $a:A$ such that for all $x:A$ with $f(x)=b$ we have a $p_x:a=x$.  More precisely:
+
+
+% \begin{definition}
+%   If $A$ and $B$ are types, the type of \emph{weak equivalences} from $A$ to $B$ is
+% $$\wEq(A,B)=\sum_{f:A\to B}\prod_{b:B}\sum_{a:A}\prod_{x:A}
+% $$
+% \end{definition}
+
+
+
+\subsubsection{The univalence axiom}\label{sec:univax}\footnote{The proof of \cref{lem:prop-utils} refers to univalence without it being defined}
+
+The univalence axiom is a statement about the universe $\mathcal U$: if $A,B:\mathcal U$ then $A$ being \emph{equal} to $B$ (in $\mathcal U$) is \emph{equivalent} to $A$ and $B$ being \emph{equivalent}.  This is an enormous reduction of the burden of proof for $A$ and $B$ being equal. 
+
+We now set up the language to make this fully precise.  Recall the definition of $f:A\to B$ being an equivalence from \cref{def:equivalence}, namely that for every $b:B$ the fiber $f^{-1}(b)=\sum_{a:A}(f(a)=b)$ should be contractible, or fully spelled out
+$$\isEq(f)\defequi \prod_{b:B}\sum_{a:f^{-1}(b)}\prod_{x:f^{-1}(b)}a=x.$$
+
+\begin{definition}\label{def:typeofeq}
+  Let $A$ and $B$ be types.  The \emph{type of equivalences from $A$ to $B$} is
+  $$\Eq(A,B)\defequi\sum_{f:A\to B}\isEq(f).$$
+If we say that $f:A\to B$ \emph{is} an equivalence, this refers to some specific $(f,p):\Eq(A,B)$.\footnote{our cavalier attitude would be easier to understand for the reader if we said that $\isEq(f)$ is a proposition}
 \end{definition}
-\begin{remark}
-  You recognize the spirit of ``inverse function'' in the definition of equivalences: an equivalence is a function $f:A\to B$ which has a $g:B\to A$ so that for all $a:A$ we have $g(f(a))=a$ and also an $h:B\to A$ so that for all $b:B$ we have that $f(h(b))=b$.  We will see in Lemma~\ref{lem:leftinvisrightinv} that this forces $g$ and $h$ to be equal, but it is technically convenient not to insist on this in the definition itself.  We refer to $g$ as a \emph{left inverse} of $f$ and $h$ as a \emph{right inverse} of $f$.
+\begin{remark}\label{remark:inversetoeq}
+  Equivalences have preferred ``inverses'': if $(f,p)$ is an equivalence, then for $b:B$ the element $p(b)=(c_b,q)$ is a contraction of $f^{-1}(b)$ to the \emph{center of the contraction} $c_b:f^{-1}(b)$. By the definition of the fiber, $c_b$ is a pair $(a_b,r_b)$, where $a_b:A$ and $r_b:f(a_b)=b$. If we let $g:B\to A$ be given by $g(b)\defequi a_b$, then 
+$$q_{f(a)}:a=g(f(a))\oldequiv a_{f(a)}$$ and  
+$$r_b:f(g(b))\oldequiv f(a_b)= b.$$
+
+This parallels the situation for sets, where the bijections can be characterized as the functions that are one-to-one and onto.  Spelling out ``one-to-one and onto'' one gets \emph{exactly} that each fiber has a unique element, and conversely ``bijection'' means that there is an inverse function.
 \end{remark}
 
 
-\begin{lemma}
-  Given $f\colon A\to B$, the type of left inverses of $f$, 
-$$\sum_{g:B\to A}\prod_{a:A}g(f(a))=a,$$ is a proposition.  Consequently, the projection $\Eq(A,B)\to (A\to B)$ is a monomorphism.
-\end{lemma}
-\begin{proof}
-  ((write)) 4.2.9
-\end{proof}
-\begin{remark}
-  In view of this result, we will say that $f:A\to B$ \emph{is an equivalence form $A$ to $B$} if it is the projection of an equivalence from $A$ to $B$.  Occasionally the following alternative notation is more convenient:
-$$(A\simeq B)\defequi\Eq(A,B),$$
-and ocasionally we'll be sloppy and write $f:A\simeq B$ instead of the actual tuple $(f,(g,p),(h,q))$, hiding the (unique) choice proving that we actually are talking about an equivalence. 
-\end{remark}
-
-\begin{lemma}\label{lem:leftinvisrightinv}
-  The left and right inverses of an equivalence are equal.\footnote{check compatibility of notation and agree whether the carefree language is ok}
-\end{lemma}
-\begin{proof}
-  Let $(f,(g,p),(h,q)):\Eq(A,B)$. Then, for all $b:B$ we have $g(q_b):g(f(h(b))=g(b)$,  and $p_{h(b)}:g(f(h(b)))=h(b)$, and so, using symmetry and transitivity of the identity type, we have that $g(b)=h(b)$. 
-\end{proof}
-\begin{example}
-  If $A$ is a type, then the identity map $\id_A:A\to A$ (given by $\id_A(a)=a$) is an equivalence: it is its own (left and right) inverse, with $\refl a:\id_A(\id_A(a))=a$ as witness(es).  
-\end{example}
-
-
-\subsubsection{The univalence axiom}\label{sec:univax}
-
-Consider the identity $\id_{\mathcal U}:\mathcal U\to\mathcal U$ of the universe itself.  Given an equality $p:A=_{\mathcal U}B$ of types, we get a transport (c.f.~\cref{def:transport}) $\trp_{\id_{\mathcal U},p}:A\to B$, which we by abuse of notation continue to call $p$.  In other words, transport defines a map 
+Consider the identity $\id_{\mathcal U}:\mathcal U\to\mathcal U$ of the universe itself.  Given an equality $p:A=_{\mathcal U}B$ of types, we get a transport (c.f.~\cref{def:transport}) $\trp_{\id_{\mathcal U},p}:A\to B$ (which we by abuse of notation later laps into also calling $p$).  In other words, transport defines a map 
 $$(A=_{\mathcal U}B)\to (A\to B).$$
 We want to show that $\trp_{\id_{\mathcal U},p}:A\to B$ is an equivalence, and by induction it is enough to do this for the case when $p$ is $\refl A$.  However, by the very definition of transport we have 
 $\trp_{\id_{\mathcal U},\refl A}(a)\defequi a$, in other words 
 $$\trp_{\id_{\mathcal U},\refl A}=\id_A.$$
-Now, $\id_A$ is an equivalence in force of being its own (left and right) inverse.
+Now, $\id_A$ is an equivalence, since the fiber over $a:A$ is $\sum_{x:A}(a=x)$ which contracts to $(a,\refl a)$.
 \begin{definition}\label{lem:idtoequiv}
-  The map $\idtoeq:(A=B)\to\Eq(A,B)$ is the function constructed above.
+  The function 
+$$\idtoeq:(A=B)\to\Eq(A,B)$$ is the one constructed above whose continuation to $A\to B$ is given by transport: $\idtoeq(p)(a)=\trp_{\id_{\mathcal U},p}(a)$.
 \end{definition}
+
+{\bf The univalence axiom}
+We assume our universe $\mathcal U$ satisfies the \emph{univalence axiom}:
+\begin{quote}
+  The function $\idtoeq:(A=_{\mathcal U}B)\to\Eq(A,B)$ is an equivalence.  The  inverse of $\idtoeq$ given by the center of contraction of \cref{remark:inversetoeq} is called 
+$$\ua:\Eq(A,B)\to (A=_{\mathcal U}B).$$
+\end{quote}
+% \begin{remark}
+%   The lack of symmetry (why \emph{left} inverse?) in this formulation is unsatisfactory and avoidable at the price of having a slightly more elaborate definition of $\Eq(A,B)$.\footnote{contractible fibers definition is also lop-sided in the sense that you define a section (left inverse) by picking the center of the contraction}
+% \end{remark}
+
 
 
 \section{Now it starts}
