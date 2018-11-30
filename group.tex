@@ -4,6 +4,7 @@
 \newcommand{\Eq}{\mathrm{Eq}}%type of equivalences from A to B \Eq(A,B)
 \newcommand{\idtoeq}{\mathrm{id2eq}}%this is a provocation: fix it if you prefer
 \newcommand{\ua}{\mathrm{ua}}%univalence inverse
+\newcommand{\zet}{\mathrm{Zet}}%the SET of integers  this is a provocation: fix it if you prefer
 
 \subsection{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
 The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
@@ -26,11 +27,29 @@ and for $n:\NN$ the \emph{sets of cardinality $n$}
 $$\fin_n\defequi \sum_{S:\Set}||S=\mathbf n||.$$
 Observe that $\fin_1=\mathbf 1$ and $\fin=\sum_{n:\NN}\fin_n.$
 
+\subsection{Connected types}
+\label{sec:connectedtypes}
+Recall the definition of a contractible type.  A type is connected essentially by the same definition, with the only difference that we do not have control over a contraction, merely that each point is individually equal to some center.
 \begin{definition}\label{def:connected}
-A type $A$ is \emph{connected} if $||A||%\sum{a,b:A}||a=b||
-=\mathbf 1$.  
+A type $A$ is \emph{connected} if there is an $a:A$ such that for all $b:B$ the proposition $||a=b||$ is true.  
 \end{definition}
-Note that under this definition, $\mathbf 0$ is not connected, and neither is $\mathbf n$ if $n>1$.  As a matter of fact, if $A$ has an element $a$, then $A$ is connected if and only if for all $b:A$ the identity type $a=_Ab$ is inhabited.
+Note that under this definition, the empty type $\mathbf 0$ is not connected, and neither is $\mathbf n$ if $n>1$. However, $\mathbf 1$ is connected.
+
+Another way of saying that a type $A$ is connected is to say that the truth-value of a proposition depending on $A$ is constant, a fact which is formalized as follows.
+\begin{lemma}
+  A type $A$ is connected if and only if the function 
+$$c:\mathbf 2\to(A\to\mathbf 2)$$ defined by $c(x)(a)=x$ for $x:\mathbf 2$ and $a:A$ 
+%to the constant function with value $x$ 
+is an equivalence. 
+%$||A||%\sum{a,b:A}||a=b||=\mathbf 1$.  
+\end{lemma}
+  \begin{proof}\footnote{this proof is classical.  Do you object?}    
+    Assume $A$ is connected.  Let $a:A$ be so that for every $b:A$, then $||a=_Ab||$ is true.  If $f:A\to\mathbf 2$, then for every $b:A$ we get that $||f(a)=f(b)||$, but since $\mathbf 2$ is a set, we get that $f(a)=f(b)$.  Hence, any function $f$ is constant and so $c$ is an equivalence.
+
+Conversely, assume that $c$ is an equivalence.  Then $A$ is nonempty.  Let $a:A$ and let $f:A\to \mathbf 2=\bool$ be defined by $f(b)\defequi||a=b||$.  Since $c$ is an equivalence and $f(a)$ is true, we get that $f(b)$ is true for all $b$.   
+  \end{proof}
+
+ As a matter of fact, if $A$ has an element $a$, then $A$ is connected if and only if for all $b:A$ the identity type $a=_Ab$ is inhabited, essentially because if $f\colon A\to\mathbf 2$ an equality $a=_Ab$ forces $f(a)=_{\mathbf 2}f(b)$.  So, a connected type is one that can't be ``torn apart''.  
 \begin{definition}
     If $A$ is a type and $a:A$, then the \emph{component of $a$ in $A$} is the type
 $$A_{(a)}\defequi \sum_{b:A}||b=a||.$$
@@ -65,21 +84,62 @@ $$(B\to_*B')=\sum_{f:B_\div\to B'{}_\div}f(\pt_B)=\pt_{B'}.$$
   If $A$ is a type and $B$ is a pointed type, prove that $A\to B_\div$ is equivalent to $A_+\to_*B$.
 \end{xca}
 
-\subsubsection{The circle}
+\subsubsection{Negative numbers}
+\label{sec:negativenumbers}
+
+ \begin{example}\label{ex:orbitofanelement}
+   Given a pointed type $a:A$ and an element $g: a=_Aa$ we can iterate $g$ any number of times to get a (potentially) new element in $a=_Aa$. More precisely, for $n:\NN$ we define $g^n:a=_Aa$ by declaring that $g^0=\refl a$ and $g^{n+1}=\trans{}_{a,a,a}(g^n)(g)$.  We can also give meaning to $g^{-n}$ by setting it equal to $(\symm{}_{a,a}(g)^n$ (prove that $g^{-n}=(g^n)^{-1}$ and that $g^a\cdot g^b=g^{a+b}$).  \footnote{come back to this example in conjuction with $S^1$, show how to get it as an abstract group, connect it to orbits.}
+
+Note that we can have that $g^n=g^m$ even if $m$ and $n$ are different.  For instance, in $\Sigma_2=\aut_{\fin_2}(\mathbf 2)$, consider the element $p:\mathbf 2=\mathbf 2$ defined by $p(1)=2$ and $p(2)=1$.  Then $p^2(1)=p(2)=1$ and $p^2(2)=p(1)=2$, so that $p^2=e=p^0$.
+   \end{example}
+This example tells us that if we want to start counting symmetries we should extend our type $\NN$ of natural numbers to include negatives.  Rather than ``adjoining negatives'' we do as we do when we define the rationals: heuristically, an integer is the set of pairs $(m,n)$ of natural numbers, subject to the relation that $(m,n)=(m',n')$ if $m+n'=m'+n$.\footnote{picture}.  If $m\geq n$, then $(m,n)=(m-n,0)$ and if $m\leq n$, then $(m,n)=(0,n-m)$.  We include the natural numbers as classes of the form $(m,0)$ and call the ones of the form $(0,n)$ ``negative numbers''.  The formal definition is as follows.
 \begin{definition}
-  The \emph{circle} $S^1\colon\mathcal U$ is ((define))
+  The \emph{set of integers} is the set
+$$\zet\defequi \sum_{(m,n):\NN\times\NN}(r(m,n)=_{\NN\times\NN}(m,n)),$$
+where $r:\NN\times\NN\to\NN\times\NN$ is given by
+$$r(m,n)\defequi
+\begin{cases}
+  (m-n,0)&\text{if $m\geq n$}\\
+  (0,n-m)&\text{otherwise.}
+\end{cases}
+$$
+We define the \emph{standard inclusion} 
+$$i:\NN\to\zet$$ by $i(m)=((m,0)\refl {(m,0)})$ (makes sense since $r(m,0)\defequi(m,0)$), the \emph{negative inclusion} $-:\NN\to\zet$ by $-n=((0,n),\refl{(0,n)})$ and the quotient $q:\NN\times\NN\to\zet$ by $q(m,n)=(r(m,n),\refl{r(m,n)})$ (makes sense since $r(r(m,n))\oldequiv r(m,n)$).
 \end{definition}
+\subsubsection{The circle}
 \label{sec:sec:circle}
 \begin{definition}
   \label{def:circle}
-The circle $S^1$ ((write and point it at $\base$))
+The circle $S^1\colon\mathcal U$ ((write and point it at $\base$))
 \end{definition}
-
-\begin{lemma}\label{lem:S1groupoid}
-  The circle $S^1$ is a groupoid.
+The following Lemma displays the prehaps most fundamental property of the circle: a function from the circle picks out an element and a symmetry of that element:
+\begin{lemma}\label{lem:freeloopspace}
+  If $A$ is a type, the function $$(S^1\to A)\to \sum_{a:A}(a=_Aa)$$
+given by sending $g$ to $(g(\base),g(\Sloop))$ is an equivalence.
 \end{lemma}
 \begin{proof}
-  ((write: for this I need at the very least the integers (as a pointed set) with the successor operation.  I want to use $\ZZ$ for the (abelian) group later on, so it might be good refraining from using this notation now.))
+  ((write)) 6.2.9
+\end{proof}
+
+\begin{lemma}\label{lem:circleisconnected}
+  The circle is connected.
+\end{lemma}
+\begin{proof}
+  We need to prove that the function $\mathbf 2\to(S^1\to\mathbf 2)$ of \cref{def:connected} is an equivalence.  In view of \cref{lem:freeloopspace} it is enough to show that the composite
+$$\mathbf 2\to \sum_{a:\mathbf 2}(a=_{\mathbf 2}a)$$
+sending $a:\mathbf 2$ to $(a,\refl a)$ is an equivalence, which is true since $a=_{\mathbf 2}a$ is a proposition.
+\end{proof}
+
+
+\begin{lemma}\label{lem:S1groupoid}
+  The circle $S^1$ is a groupoid and $\Sloop^-:\zet\to(\base=_{S^1}\base)$ sending $n$ to $\Sloop^n$ is an equivalence.
+\end{lemma}
+\begin{proof}
+  Since the circle is connected, for any $z,w:S^1$ the statement that $z=_{S^1}w$ is a set equivalent to $z=_{S^1}\base$ being a set, so it is enough to prove the last statement.  Define two type families 
+$$P,R:S^1\to\mathcal U.$$ The first is the family defined by $P(z)\defequi(z=\base)$ for $z:S^1$ and the second is defined by the induction priciple for the circle by  % $E(\Sloop)(p)=\trans{}_{z,\base,\base}(p)(\Sloop):(z=\base)$
+$R(\base)=\zet$ and $R(\Sloop)=\ua(S):(\zet=\zet)$, where $S$ is the successor function.\footnote{must define.  Shall $\ua$ be visible?}%8.1
+Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
+((finish!!!))
 \end{proof}
 \begin{definition}
   \label{def:image}
@@ -323,11 +383,6 @@ $$\refl a{}:a=a$$ (by definition)
  \begin{remark}
    One may worry about many things when one sees this list.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the first and second item equal?  Since $G$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two inhabitants are equal.
  \end{remark}
- \begin{example}\label{ex:orbitofanelement}
-   Given a group $G=\aut_A(a)$ and an element $g: a=_Aa$ we can iterate $g$ any number of times to get a (potentially) new element in $a=_Aa$. More precisely, for $n:\NN$ we define $g^n:a=_Aa$ by declaring that $g^0=e$ and $g^{n+1}=g^n\cdot g$.  We can also give meaning to $g^{-n}$ by setting it equal to $(g^{-1})^n$ (prove that $g^{-n}=(g^n)^{-1}$ and that $g^a\cdot g^b=g^{a+b}$).  \footnote{come back to this example in conjuction with $S^1$, show how to get it as an abstract group, connect it to orbits.}
-
-Note that we can have that $g^n=g^m$ even if $m$ and $n$ are different.  For instance, in $\Sigma_2=\aut_{\fin_2}(\mathbf 2)$, consider the element $p:\mathbf 2=\mathbf 2$ defined by $p(1)=2$ and $p(2)=1$.  Then $p^2(1)=p(2)=1$ and $p^2(2)=p(1)=2$, so that $p^2=e=p^0$.
-   \end{example}
    \begin{example}\label{excirclegroup}
    The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid and is pointed at $\base$.  By definition, the identity type $\base=_{S^1}\base$ contains, in addition to $\refl\base$, also the element we called $\Sloop$ and all its iterations $\Sloop^n$.   We come back to this important group in \cref{ex:integers}.  \footnote{remember to return to the integers}
  \end{example}
