@@ -1,6 +1,7 @@
 \label{ch:groups}
 \newcommand{\base}{\bullet}%point in circle
 \newcommand{\Sloop}{\mathit{loop}}%loop in circle
+\newcommand{\twist}{\mathit{twist}}%loop in BC_2
 \newcommand{\Eq}{\mathrm{Eq}}%type of equivalences from A to B \Eq(A,B)
 \newcommand{\idtoeq}{\mathrm{id2eq}}%this is a provocation: fix it if you prefer
 \newcommand{\ua}{\mathrm{ua}}%univalence inverse
@@ -106,44 +107,7 @@ $$
 We define the \emph{standard inclusion} 
 $$i:\NN\to\zet$$ by $i(m)=((m,0)\refl {(m,0)})$ (makes sense since $r(m,0)\defequi(m,0)$), the \emph{negative inclusion} $-:\NN\to\zet$ by $-n=((0,n),\refl{(0,n)})$ and the quotient $q:\NN\times\NN\to\zet$ by $q(m,n)=(r(m,n),\refl{r(m,n)})$ (makes sense since $r(r(m,n))\oldequiv r(m,n)$).
 \end{definition}
-\subsubsection{The circle}
-\label{sec:sec:circle}
-\begin{definition}
-  \label{def:circle}
-The circle $S^1\colon\mathcal U$ ((write and point it at $\base$))
-\end{definition}
-The following Lemma displays the prehaps most fundamental property of the circle: a function from the circle picks out an element and a symmetry of that element:
-\begin{lemma}\label{lem:freeloopspace}
-  If $A$ is a type, the function $$(S^1\to A)\to \sum_{a:A}(a=_Aa)$$
-given by sending $g$ to $(g(\base),g(\Sloop))$ is an equivalence.
-\end{lemma}
-\begin{proof}
-  ((write)) 6.2.9
-\end{proof}
 
-\begin{lemma}\label{lem:circleisconnected}
-  The circle is connected.
-\end{lemma}
-\begin{proof}
-  We need to prove that the function $\mathbf 2\to(S^1\to\mathbf 2)$ of \cref{def:connected} is an equivalence.  In view of \cref{lem:freeloopspace} it is enough to show that the composite
-$$\mathbf 2\to \sum_{a:\mathbf 2}(a=_{\mathbf 2}a)$$
-sending $a:\mathbf 2$ to $(a,\refl a)$ is an equivalence, which is true since $a=_{\mathbf 2}a$ is a proposition.
-\end{proof}
-
-
-\begin{lemma}\label{lem:S1groupoid}
-  The circle $S^1$ is a groupoid and $\Sloop^-:\zet\to(\base=_{S^1}\base)$ sending $n$ to $\Sloop^n$ is an equivalence.
-\end{lemma}
-\begin{proof}
-  Since the circle is connected, for any $z,w:S^1$ the statement that $z=_{S^1}w$ is a set equivalent to $z=_{S^1}\base$ being a set, so it is enough to prove the last statement.  Define two type families 
-$$P,R:S^1\to\mathcal U.$$ The first is the family defined by $P(z)\defequi(z=\base)$ for $z:S^1$ and the second is defined by the induction priciple for the circle by  % $E(\Sloop)(p)=\trans{}_{z,\base,\base}(p)(\Sloop):(z=\base)$
-$R(\base)=\zet$ and $R(\Sloop)=\ua(S):(\zet=\zet)$, where $S$ is the successor function.\footnote{must define.  Shall $\ua$ be visible?}%8.1
-Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
-((finish!!!))
-\end{proof}
-\begin{definition}
-  \label{def:image}
-\end{definition}
 % \subsubsection{Equivalences}
 % \label{sec:equivalences}
 % Two types are equivalent if you can freely translate back and forth between them: 
@@ -204,7 +168,7 @@ Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defe
 
 
 
-\subsubsection{The univalence axiom}\label{sec:univax}\footnote{The proof of \cref{lem:prop-utils} refers to univalence without it being defined}
+\subsubsection{The univalence axiom}\label{sec:univax}\footnote{The proof of \cref{lem:prop-utils} (prev. chapter) refers to univalence without it being defined}
 
 The univalence axiom is a statement about the universe $\mathcal U$: if $A,B:\mathcal U$ then $A$ being \emph{equal} to $B$ (in $\mathcal U$) is \emph{equivalent} to $A$ and $B$ being \emph{equivalent}.  This is an enormous reduction of the burden of proof for $A$ and $B$ being equal. 
 
@@ -242,9 +206,53 @@ We assume our universe $\mathcal U$ satisfies the \emph{univalence axiom}:
   The function $\idtoeq:(A=_{\mathcal U}B)\to\Eq(A,B)$ is an equivalence.  The  inverse of $\idtoeq$ given by the center of contraction of \cref{remark:inversetoeq} is called 
 $$\ua:\Eq(A,B)\to (A=_{\mathcal U}B).$$
 \end{quote}
+
+\begin{xca}\label{xca:C2}
+   Prove that $\mathbf 2=\mathbf 2$ has exactly two elements, $\refl{\mathbf 2}$ and $\twist$ (where $\twist$ is given by univalence from the function $\mathbf 2\to\mathbf 2$ exchanging the two elements of $\mathbf 2$), and that $\trans{}_{\mathbf 2,\mathbf 2,\mathbf 2}(\twist)(\twist)=\refl{\mathrm 2}$.
+\end{xca}
+
 % \begin{remark}
 %   The lack of symmetry (why \emph{left} inverse?) in this formulation is unsatisfactory and avoidable at the price of having a slightly more elaborate definition of $\Eq(A,B)$.\footnote{contractible fibers definition is also lop-sided in the sense that you define a section (left inverse) by picking the center of the contraction}
 % \end{remark}
+\subsubsection{The circle}
+\label{sec:sec:circle}
+\begin{definition}
+  \label{def:circle}
+The circle $S^1\colon\mathcal U$ ((write and point it at $\base$))
+\end{definition}
+The following Lemma displays the prehaps most fundamental property of the circle: a function from the circle picks out an element and a symmetry of that element:
+\begin{lemma}\label{lem:freeloopspace}
+  If $A$ is a type, the function $$(S^1\to A)\to \sum_{a:A}(a=_Aa)$$
+given by sending $g$ to $(g(\base),g(\Sloop))$ is an equivalence.
+\end{lemma}
+\begin{proof}
+  ((write)) 6.2.9
+\end{proof}
+
+\begin{lemma}\label{lem:circleisconnected}
+  The circle is connected.
+\end{lemma}
+\begin{proof}
+  We need to prove that the function $\mathbf 2\to(S^1\to\mathbf 2)$ of \cref{def:connected} is an equivalence.  In view of \cref{lem:freeloopspace} it is enough to show that the composite
+$$\mathbf 2\to \sum_{a:\mathbf 2}(a=_{\mathbf 2}a)$$
+sending $a:\mathbf 2$ to $(a,\refl a)$ is an equivalence, which is true since $a=_{\mathbf 2}a$ is a proposition.
+\end{proof}
+
+
+\begin{lemma}\label{lem:S1groupoid}
+  The circle $S^1$ is a groupoid and $\Sloop^-:\zet\to(\base=_{S^1}\base)$ sending $n$ to $\Sloop^n$ is an equivalence.
+\end{lemma}
+\begin{proof}
+  Since the circle is connected, for any $z,w:S^1$ the statement that $z=_{S^1}w$ is a set equivalent to $z=_{S^1}\base$ being a set, so it is enough to prove the last statement.  Define two type families 
+$$P,R:S^1\to\mathcal U.$$ The first is the family defined by $P(z)\defequi(z=\base)$ for $z:S^1$ and the second is defined by the induction priciple for the circle by  % $E(\Sloop)(p)=\trans{}_{z,\base,\base}(p)(\Sloop):(z=\base)$
+$R(\base)=\zet$ and $R(\Sloop)=\ua(S):(\zet=\zet)$, where $S$ is the successor function.\footnote{must define.  Shall $\ua$ be visible?}%8.1
+Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
+((finish!!!))
+\end{proof}
+\begin{definition}
+  \label{def:image}
+\end{definition}
+
 
 
 
@@ -256,8 +264,15 @@ As an instance of a property that holds in some examples but not in others, we h
 
 In \cref{sec:identity-types} we saw that the identity type was ``reflexive, symmeric and transitive''.
 
-
 With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19'th century that the properties of such symmetries could be codified by saying that they form a \emph{group}.
+
+\begin{example}\label{ex:base=base}
+  We defined the circle $S^1$ in \cref{def:circle} by declaring that it has a point $\base$ and an element $\Sloop:\base=_{S^1}\base$, and we proved in \cref{lem:S1groupoid} that $\base=_{S^1}\base$ is equivalent to the set $\zet$ (of integers), where $n\in\zet$ correspond to the $n$-fold composition of $\Sloop$ (which works for both positive and negative $n$).  We can think of this as describing the symmetries of $\base$: we have one ``generator'' $\Sloop$, and this can be applied any number of times, giving a new symmetry for each new number.  Here, composition of loops correspond to usual addition of integers.  Hence, the circle is a very cheap packaging of the ``{group}'' of integers, the declaration of $\base$ and $\Sloop$ not only gives the set $\zet$ of integers, but at the same time the addition.
+\end{example}
+\begin{example}
+  Recall the finite set $\mathbf 2=\bool:\fin_2$ from \cref{def:finiteset}, containing two elements.   According to \cref{xca:C2}, $\mathbf 2=\mathbf 2$ has exactly two elements, $\refl{\mathrm 2}$ and $\twist$, and $\twist^2=\refl{\mathbf 2}$.
+\end{example}
+
 
 The examples Klein and Lie were interested in were of a type making it admissible to say that a group is the identity type $a=_Aa$ for \emph{some} type $A$ and \emph{some} element $a:A$.
 However, in elementary texts it is customary to restrict the notion of a group to the case when $a=_Aa$ is a \emph{set} as in \cref{sec:identity-type-as-abstract}.  This makes some proofs easier, since if are we given two elements $g,h:a=_Aa$, then the identity type $g=h$ is a proposition, \ie $g$ can be equal to $h$ in at most one way.  Hence questions relating to uniqueness will never be a problem.
