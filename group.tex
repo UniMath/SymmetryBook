@@ -243,7 +243,7 @@ sending $a:\mathbf 2$ to $(a,\refl a)$ is an equivalence, which is true since $a
   The circle $S^1$ is a groupoid and $\Sloop^-:\zet\to(\base=_{S^1}\base)$ sending $n$ to $\Sloop^n$ is an equivalence.
 \end{lemma}
 \begin{proof}
-  Since the circle is connected, for any $z,w:S^1$ the statement that $z=_{S^1}w$ is a set equivalent to $z=_{S^1}\base$ being a set, so it is enough to prove the last statement.  Define two type families 
+  Since the circle is connected, for any $z,w:S^1$ the type $z=_{S^1}w$ is equivalent to $z=_{S^1}\base$, so it is enough to prove the last statement.  Define two type families 
 $$P,R:S^1\to\mathcal U.$$ The first is the family defined by $P(z)\defequi(z=\base)$ for $z:S^1$ and the second is defined by the induction priciple for the circle by  % $E(\Sloop)(p)=\trans{}_{z,\base,\base}(p)(\Sloop):(z=\base)$
 $R(\base)=\zet$ and $R(\Sloop)=\ua(S):(\zet=\zet)$, where $S$ is the successor function.\footnote{must define.  Shall $\ua$ be visible?}%8.1
 Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
@@ -270,7 +270,9 @@ With inspiration of geometric and algebraic origins, it became clear to mathemat
   We defined the circle $S^1$ in \cref{def:circle} by declaring that it has a point $\base$ and an element $\Sloop:\base=_{S^1}\base$, and we proved in \cref{lem:S1groupoid} that $\base=_{S^1}\base$ is equivalent to the set $\zet$ (of integers), where $n\in\zet$ correspond to the $n$-fold composition of $\Sloop$ (which works for both positive and negative $n$).  We can think of this as describing the symmetries of $\base$: we have one ``generator'' $\Sloop$, and this can be applied any number of times, giving a new symmetry for each new number.  Here, composition of loops correspond to usual addition of integers.  Hence, the circle is a very cheap packaging of the ``{group}'' of integers, the declaration of $\base$ and $\Sloop$ not only gives the set $\zet$ of integers, but at the same time the addition.
 \end{example}
 \begin{example}
-  Recall the finite set $\mathbf 2=\bool:\fin_2$ from \cref{def:finiteset}, containing two elements.   According to \cref{xca:C2}, $\mathbf 2=\mathbf 2$ has exactly two elements, $\refl{\mathrm 2}$ and $\twist$, and $\twist^2=\refl{\mathbf 2}$.
+  Recall the finite set $\mathbf 2=\bool:\fin_2$ from \cref{def:finiteset}, containing two elements.   According to \cref{xca:C2}, $\mathbf 2=\mathbf 2$ has exactly two elements, $\refl{\mathrm 2}$ and $\twist$, and doing $\twist$ twice gives you back $\refl{\mathbf 2}$.  We see that this is exactly all the symmtries you'd expect to have in a two point set: you can let everything be ($\refl{\mathbf 2}$) or you could swap the two elements ($\twist$); and if you swap twice everything is let be.  The type $\fin_2$ (of ``finite sets with two elements'') is our embodyment of these symmetries.  
+
+Observe that (by the definition of $S^1$) there is an interesting function $S^1\to\fin_2$, sending $\base:S^1$ to $\mathbf 2:\fin_2$ and $\Sloop$ to $\twist$.
 \end{example}
 
 
@@ -306,9 +308,15 @@ There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a con
 $$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:props-are-props}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying space is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{BG}).$$
 \end{remark}
 \end{definition}
+   \begin{example}\label{excirclegroup}
+   The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid (\cref{lem:circleisconnected}, \cref{lem:S1groupoid}) and is pointed at $\base$. The identity type $\base=_{S^1}\base$ is equivalent to to the set of integers $\zet$ and composition corresponds to addition.  This justifies our definition of the \emph{group of integers} as 
+$$\ZZ=\aut_{S^1}(\base).$$
+ \end{example}
+
 \begin{example}\label{ex:groups}
   % Since any pointed connected groupoid is a group, there is no shortage of examples, but perhaps i
-  It is worthwhile to consider some specially designed examples.
+  Apart from the circle, there are some important groups that come almost for free:
+%It is worthwhile to consider some specially designed examples.
   \begin{enumerate}
   \item Recall that the set $\mathbf 1=\true$ has the single element which we can call $*$. Then $\aut_{\mathbf 1}(*)$ is a group called the \emph{trivial group}.
   \item If $n:\NN$, then the \emph{permutation group of $n$ letters} is 
@@ -332,14 +340,14 @@ $$\Sigma_X=\aut_{\mathcal U_{(X)}}X,$$
 $$G\times H\defequi\aut_{BG_\div\times BH_\div}((\pt_G,\pt_H))$$
 (note that $B(G\times H)\oldequiv BG\times BH$ is pointed in $\pt_{G\times H}\oldequiv(\pt_G,\pt_H)$).  
 For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}\footnote{something about symmetries}.
-\item MANY MORE EXAMPLES.  We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.
+\item MANY MORE EXAMPLES.  \footnote{We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.}
   \end{enumerate}
 \end{example}
 \begin{xca}
   \begin{enumerate}
   \item Compare the definitions of \cref{def:finiteset} and show that if $n:\NN$, then $\Sigma_n=\Sigma_{\mathbf n}$ %is equal to the permutation group on $n$ letters 
 and that $\Sigma_{1}=\aut_{\mathbf 1}(\triv)$.
-\item Display an element in $\mathbf 2=_{\fin_2}\mathbf 2$ different from $\refl{\mathbf 2}$ in the group $\Sigma_{2}$ of permutations of two letters.  
+%\item Display an element in $\mathbf 2=_{\fin_2}\mathbf 2$ different from $\refl{\mathbf 2}$ in the group $\Sigma_{2}$ of permutations of two letters.  
 \item Prove that the set $\mathbf n=_{\fin_n}\mathbf n$ is finite of cardinality $n!$.
   \end{enumerate} 
 \end{xca}
@@ -398,10 +406,6 @@ $$\refl a{}:a=a$$ (by definition)
  \begin{remark}
    One may worry about many things when one sees this list.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the first and second item equal?  Since $G$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two inhabitants are equal.
  \end{remark}
-   \begin{example}\label{excirclegroup}
-   The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid and is pointed at $\base$.  By definition, the identity type $\base=_{S^1}\base$ contains, in addition to $\refl\base$, also the element we called $\Sloop$ and all its iterations $\Sloop^n$.   We come back to this important group in \cref{ex:integers}.  \footnote{remember to return to the integers}
- \end{example}
-
 
 We do $g=e\cdot g$ in some detail (remember that ``$e$'' is shorthand for $\refl a{}$)
 \begin{definition}\label{def:p1}
@@ -536,8 +540,10 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
 \item Let $G$ be a group.  Since there is a unique map from $BG$ to $\mathbf 1$, we get a unique homomorphism from $G$ to the trivial group. 
 \item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  Write out.\footnote{Say something about $BG\vee BH$?}
   \end{enumerate}
-
 \end{example}
+\begin{xca}
+  Let $G$ be a group.  Show that $\Hom(\ZZ,G)=(\pt_G=_{BG}\pt_G)$.  Show that ((wedges of circle vs multiplication))
+\end{xca}
 
 The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon G\to H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_H f(g')=f(g\cdot_G g')$ (where we have set the name of the group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
 
