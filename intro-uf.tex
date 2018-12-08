@@ -347,7 +347,7 @@ $\inl(x) = \inl(x')$ are equivalent to identifications $x=x'$ in $X$,
 and identifications
 $\inr(y) = \inr(y')$ are equivalent to identifications $y=y'$ in $Y$.
 
-\section{Equivalences and univalence}
+\section{Equivalences, universes and univalence}
 
 
 The combination of $\sum$-, $\prod$- and equality types allows
@@ -376,11 +376,46 @@ to Vladimir Voevodsky.
 \begin{definition}
 \label{def:equivalence}
 A function $f : X \to Y$ is called an \emph{equivalence} if
+we have an element $t$ satisfying
 \[
-\prod_{y:Y} \iscontr(f^{-1}(y)),
+t: \prod_{y:Y} \iscontr(f^{-1}(y)),
 \]
-denoted by $\isEq(f)$.
+denoted by $\isEq(f)$. If so, we can define an inverse $f^{-1}: Y\to X$
+by setting $^{-1}(y) = \fst(t(y))$ and prove that $f^{-1}$ is also
+an equivalence. (EXERCISE)
+In such a case we define the types
+$X$ and $Y$ to be \emph{equivalent}, denoted by $X\equiv Y$. 
+More precisely, since there could be more than one equivalence
+between two types, we define:
+\[
+(X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
+\]
+(EXERCISE: reflexive, symmetric, transitive.)
 \end{definition}
+
+Univalence expresses in a way made precise below that
+equivalent types are equal. One way to understand this is
+that an equivalence $f : X \to Y$ makes it possible to
+transport properties and structure from $X$ to $Y$
+(and vice versa using $f^{-1}$). We deliberately use the term transport
+here since it is precisely transport in the sense of
+\cref{def:transport} along the identification
+$X = Y$ stipulated by $f$ (there could be more than one).
+
+We are now discussing $X = Y$, and any identity type 
+(see \cref{sec:identity-types})
+requires an ambient type containing the subjects of the identification,
+here the types $X$ and $Y$. In other words, we need a type of types.
+
+\begin{definition}\label{def:universe}
+There is type, denoted $\UU$ and called a \emph{universe}, that contains
+all types discussed so far, with the exception of the types 
+$X = Y$, where $X$ and $Y$ themselves are types, and of $\UU$ itself. 
+(HOPEFULLY: one universe suffices for the purpose of this book.)
+\end{definition}
+
+
+
 
 
 \section{Propositions, sets and groupoids}
