@@ -357,9 +357,19 @@ definitions.
 \begin{definition}
 \label{def:contractible}
 Let $X$ be a type.  The property that $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is
-equal to it.  Hence it is encoded by the type $\sum_{a:X} \prod_{b:X} (a=b)$.
-We call a type $X$ having this property \emph{contractible}, denoted by $\iscontr(X)$.
+equal to it.  Hence it is encoded by the type $\sum_{c:X} \prod_{x:X} (c=x)$.
+We call a type $X$ having this property \emph{contractible}, 
+denoted by $\iscontr(X)$, and $c$ its \emph{center}. 
+(Note that the notion of center depends on the proof that $X$
+is contractible, rather than on the type $X$. 
+Any element of a contractible type $X$ can be proved to be a center.) 
 \end{definition}
+
+An important example of a contactible type in the
+\emph{singleton type} $\sum_{x:X} (a=x)$, thought of as
+the subtype of the type $X$ consisting of the element $a$.
+In order to see that singleton types are contractible,
+take as center the element $(a,\refl{a})$. TBE
 
 \begin{definition}
 \label{def:fiber}
@@ -369,24 +379,25 @@ of an element $x$ and an element $e$ of the identity type $f(x) = y$.
 \end{definition}
 
 In set theory, a function $f : X \to Y$ is a bijection if and only if
-all inverse images $f^{-1}(y)$ contain exactly one element.
+all inverse images $f^{-1}(y)$ consist of exactly one element.
 This we can also express in type theory, in an definition due
-to Vladimir Voevodsky. 
+to Voevodsky. 
 
 \begin{definition}
 \label{def:equivalence}
-A function $f : X \to Y$ is called an \emph{equivalence} if
-we have an element $t$ satisfying
+A function $f : X \to Y$ is called an \emph{equivalence},
+denoted by $\isEq(f)$,  if
 \[
-t: \prod_{y:Y} \iscontr(f^{-1}(y)),
+\prod_{y:Y} \iscontr(f^{-1}(y)).
 \]
-denoted by $\isEq(f)$. If so, we can define an inverse $f^{-1}: Y\to X$
-by setting $^{-1}(y) = \fst(t(y))$ and prove that $f^{-1}$ is also
+If $t:\prod_{y:Y} \iscontr(f^{-1}(y))$, 
+we can define an inverse $f^{-1}: Y\to X$
+by setting $f^{-1}(y) = \fst(t(y))$ and prove that $f^{-1}$ is also
 an equivalence. (EXERCISE)
-In such a case we define the types
-$X$ and $Y$ to be \emph{equivalent}, denoted by $X\equiv Y$. 
+In such a case we say that the types
+$X$ and $Y$ are \emph{equivalent}, denoted by $X\equiv Y$. 
 More precisely, since there could be more than one equivalence
-between two types, we define:
+between two types, we define the type of equivalences from $X$ to $Y$ by
 \[
 (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
 \]
@@ -408,7 +419,7 @@ transport properties and structure from $X$ to $Y$
 (and vice versa using $f^{-1}$). We deliberately use the term transport
 here since it is precisely transport in the sense of
 \cref{def:transport} along the identification
-$X = Y$ stipulated by $f$ (there could be more than one).
+$X = Y$ stipulated by $f$ (there could be other identifications as well).
 
 We are now discussing $X = Y$, and any identity type 
 (see \cref{sec:identity-types})
