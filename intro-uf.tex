@@ -144,6 +144,9 @@ The function thus defined may be called
 \emph{the transport function in the type family $T$ along the path $e$}, 
  or, less verbosely, \emph{transport}.
  We may also simplify the notation to just $\trp_e$.
+The transport functions behave as expected: transport along the composition
+$e\cdot e'$ is the composition of the two transport functions (to be
+ proved by induction).
 
 When the types $T(x)$ may have more than one element, 
 we may regard an element of $T(x)$ as providing additional {\em structure} on $x$. 
@@ -365,11 +368,18 @@ is contractible, rather than on the type $X$.
 Any element of a contractible type $X$ can be proved to be a center.) 
 \end{definition}
 
-An important example of a contactible type in the
+An important example of a contractible type is the
 \emph{singleton type} $\sum_{x:X} (a=x)$, thought of as
 the subtype of the type $X$ consisting of the element $a$.
 In order to see that singleton types are contractible,
-take as center the element $(a,\refl{a})$. TBE
+take as center the element $(a,\refl{a})$. Then we have
+to prove for any element $x$ of $X$ and identification
+$e: a=x$ that $(a,\refl{a}) = (x,e)$. This we do componentwise,
+as explained in \cref{sec:sum-types}. For the identification of
+the first components we take (of course) $e$. For the second
+components, we have to prove $trp_{a=\_,e}\refl{a}= e$.
+This follows immediately by induction on $e$.
+%EASY: for $e\jdeq \refl{a}$ take $\refl{\refl{a}} : trp_{a=\_,e} = e$.
 
 \begin{definition}
 \label{def:fiber}
@@ -403,16 +413,20 @@ between two types, we define the type of equivalences from $X$ to $Y$ by
 \]
 (EXERCISE: reflexive, symmetric, transitive.)
 \end{definition}
+For any type $X$, the identity function $\id_X$ is an
+equivalence from $X$ to $X$: for every element $a$ in $X$,
+$\id_X^{-1}(a)$ is a singleton type and hence contractible.
+This simple observation combined with the fact that
+$\trp_{T,\refl{x}}\jdeq \id_{T(x)}$ gives us the next
+lemma by induction.
 
-The following lemma gives an important example of an equivalence.
-
-\begin{lemma}
+\begin{lemma}\label{lem:equivalence-transport}
 Let $X$ be a type, and let $T(x)$ be a type depending on $x:X$.
 Then for every $x,y$ in $X$ and $e: x=y$, the function $\trp_{T,e}$
 is an equivalence from $T(x)$ to $T(y)$.
 \end{lemma}
 
-Univalence expresses in a way made precise below that
+Univalence expresses, in a way made precise below, that
 equivalent types are equal. One way to understand this is
 that an equivalence $f : X \to Y$ makes it possible to
 transport properties and structure from $X$ to $Y$
@@ -430,33 +444,62 @@ here the types $X$ and $Y$. In other words, we need a type of types.
 There is type, denoted $\UU$ and called a \emph{universe}, that contains
 all types discussed so far, with the exception of the types 
 $X = Y$, where $X$ and $Y$ themselves are types, and of $\UU$ itself. 
-(HOPEFULLY: one universe suffices for the purpose of this book.)
 \end{definition}
 
-REMOVE THIS PARA IF CONSIDERED A DISTRACTION.
 Using $\UU$ we can now also assign a type to type families:
 if $Y(x):\UU$ for all $x:X$, $X:\UU$, then $Y$ has type $X\to\UU$.
 What is the type of $X\to\UU$, and of $\UU$ itself?
-The answer is: the next universe. Although not done explicitly
-in this book, one can set up a hierarchy of universes to achieve
-the foundational ideal of `everything has a type'.
+The answer is: the next universe.
+In this book we use, mostly implicitly, as many such universes as we need.
+Note that a countable hierarchy of universes achieves
+the foundational ideal of `everything has a type' while
+avoiding the paradoxical $\UU:\UU$.
 
 \begin{definition}\label{def:univalence}
-Define $id_\UU$ by $id_\UU(X)\defeq X$ for all types $X$.
-We can alternatively see $id_\UU$ as the identity function on $\UU$
+Define $id_\UU$ by $\id_\UU(X)\defeq X$ for all types $X$.
+We can alternatively see $\id_\UU$ as the identity function on $\UU$
 and as a type family on $\UU$. Under the latter view,
 given an identification $e$ of types $X$ and $Y$ in $\UU$, we can
 transport elements from $X$ to elements of $Y$ using the transport
 function from \cref{def:transport}:
 \[
-\trp_{id_\UU, e} : X \to Y
+\trp_{\id_\UU, e} : X \to Y
 \]
-Voevodsky's \emph{univalence axiom} states that $\trp_{id_\UU, e}$
-as a function of $e$ is an equivalence from $X = Y$ to $X\equiv Y$.
-TBE
+By \cref{lem:equivalence-transport}, $\trp_{\id_\UU, e}$ is an 
+equivalence from $X$ to $Y$ for every $e: X = Y$. The corresponding
+function from $X = Y$ to $X\equiv Y$ will be denoted by
+$\trp^+_{X,Y}$. In its precise formulation,
+Voevodsky's \emph{univalence axiom} (UA) postulates that $\trp^+_{X,Y}$
+is an equivalence from $X = Y$ to $X\equiv Y$.
+Formally: $ua : \isEq(\trp^+_{X,Y})$.
 \end{definition}
-
-
+The above formulation is perhaps a bit `heavy' for daily use.
+Therefore we elaborate some consequences that almost always suffice.
+First, we can disregard the particular inhabitant and just use that
+the following principle is true under UA: 
+\[
+(X = Y) \equiv (X \equiv Y) \text{ for all types $X$ and $Y$.} 
+\]
+Second, UA implies the principle of \emph{weak univalence}:
+\[
+(X \equiv Y) \to (X=Y) \text{ for all types $X$ and $Y$.} 
+\]
+Third, if one actually uses the particular inhabitant,
+one can often cast this in the following form,
+where $X$ and $Y$ are types, and $f: X\to Y$ is an equivalence:
+\begin{quote}
+Transport from $X$ to $Y$ along the identification of $X$ and $Y$
+coming from $f$ through UA is just applying $f : X\to Y$.
+\end{quote}
+This justifies the terminology used right after
+\cref{lem:equivalence-transport}. Since this conveys an
+important insight into univalence, we elaborate.
+Let $p$ be a proof that $f$ is an equivalence
+and consider $ua(f,p)$ witnessing that the fiber of $\trp^+_{X,Y}$
+at $(f,p)$ is contractible. This means that $\trp^+_{X,Y}$
+applied to the center $c \defeq \fst(ua(f,p)) : X=Y$ is equal to $(f,p)$.
+Elaborating this and looking at the first component we get
+precisely $\trp_{\id_\UU, c} = f$.
 
 
 
@@ -666,12 +709,12 @@ Then $\sum_{x:T} P(x)$ is also an $n$-type.
 \begin{proof}
 If $(x_1,p_1),(x_2,p_2) : \sum_{x:T} P(x)$, then by WHICH LEMMA
 $(x_1,p_1)=(x_2,p_2)$ is equivalent to 
-$\sum_{q:x_1=x_2} (\trp^P q\,p_1 = p_2)$. 
+$\sum_{q:x_1=x_2} ({\trp}^P q\,p_1 = p_2)$. 
 Since $P(x_2)$ is a proposition, using SEVERAL LEMMAS we get 
 \[
 %(x_1,p_1)=(x_2,p_2) \equiv
-\sum_{q:x_1=x_2} ({\trp}^P q\,p_1 = p_2) \equiv 
-\sum_{q:x_1=x_2} \true \equiv (x_1=x_2).
+(\sum_{q:x_1=x_2} {\trp}^P q\,p_1 = p_2) \equiv 
+(\sum_{q:x_1=x_2} \true) \equiv (x_1=x_2).
 \]
 Hence $\sum_{x:T} P(x)$ is an $n$-type if $T$ is.
 \end{proof}
@@ -692,14 +735,6 @@ $\isEq(f)$ is a proposition by \cref{lem:isX-is-prop}.
 It follows by \cref{lem:subtype} that $X=Y$ is a set.  
 \end{proof}
 
-
-\section{Equivalences; function extensionality}
-\label{sec:equivalences}
-
-\section{Universes and univalence}
-\label{sce:universes}
-
-\begin{theorem} theorem \end{theorem}
 
 % Local Variables:
 % fill-column: 144
