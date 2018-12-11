@@ -350,7 +350,7 @@ $\inl(x) = \inl(x')$ are equivalent to identifications $x=x'$ in $X$,
 and identifications
 $\inr(y) = \inr(y')$ are equivalent to identifications $y=y'$ in $Y$.
 
-\section{Equivalences, universes and univalence}
+\section{Equivalences}\label{sec:euivalence}
 
 
 The combination of $\sum$-, $\prod$- and equality types allows
@@ -372,12 +372,12 @@ An important example of a contractible type is the
 \emph{singleton type} $\sum_{x:X} (a=x)$, thought of as
 the subtype of the type $X$ consisting of the element $a$.
 In order to see that singleton types are contractible,
-take as center the element $(a,\refl{a})$. Then we have
+take as center the element $(a,\refl{a})$. We have
 to prove for any element $x$ of $X$ and identification
 $e: a=x$ that $(a,\refl{a}) = (x,e)$. This we do componentwise,
 as explained in \cref{sec:sum-types}. For the identification of
 the first components we take (of course) $e$. For the second
-components, we have to prove $trp_{a=\_,e}\refl{a}= e$.
+components, we have to prove $\trp_{a=\_,e}\refl{a}= e$.
 This follows immediately by induction on $e$.
 %EASY: for $e\jdeq \refl{a}$ take $\refl{\refl{a}} : trp_{a=\_,e} = e$.
 
@@ -426,16 +426,11 @@ Then for every $x,y$ in $X$ and $e: x=y$, the function $\trp_{T,e}$
 is an equivalence from $T(x)$ to $T(y)$.
 \end{lemma}
 
-Univalence expresses, in a way made precise below, that
-equivalent types are equal. One way to understand this is
-that an equivalence $f : X \to Y$ makes it possible to
-transport properties and structure from $X$ to $Y$
-(and vice versa using $f^{-1}$). We deliberately use the term transport
-here since it is precisely transport in the sense of
-\cref{def:transport} along the identification
-$X = Y$ stipulated by $f$ (there could be other identifications as well).
+\section{Universes and univalence}\label{sec:univax}
 
-We are now discussing $X = Y$, and any identity type 
+Univalence expresses, in a way made precise below, that
+equivalent types are equal. This means
+we are now discussing $X = Y$, and any identity type 
 (see \cref{sec:identity-types})
 requires an ambient type containing the subjects of the identification,
 here the types $X$ and $Y$. In other words, we need a type of types.
@@ -454,6 +449,16 @@ In this book we use, mostly implicitly, as many such universes as we need.
 Note that a countable hierarchy of universes achieves
 the foundational ideal of `everything has a type' while
 avoiding the paradoxical $\UU:\UU$.
+
+The univalence axiom is a statement about the universe $\UU$: 
+for all types $A$ and $B$ in $\UU$ being \emph{equal} in $\UU$ is 
+\emph{equivalent} to them being \emph{equivalent}. This greatly
+enhances our capacity to prove that two types are equal
+and to use this equality to transport properties and structure
+between them. We deliberately use the term transport
+here since it is precisely transport in the sense of
+\cref{def:transport} along the identification
+$X = Y$ stipulated by the equivalence $f$.
 
 \begin{definition}\label{def:univalence}
 Define $id_\UU$ by $\id_\UU(X)\defeq X$ for all types $X$.
@@ -500,6 +505,44 @@ at $(f,p)$ is contractible. This means that $\trp^+_{X,Y}$
 applied to the center $c \defeq \fst(ua(f,p)) : X=Y$ is equal to $(f,p)$.
 Elaborating this and looking at the first component we get
 precisely $\trp_{\id_\UU, c} = f$.
+
+\begin{xca}\label{xca:C2}
+   Prove that $\mathbf 2=\mathbf 2$ has exactly two elements, $\refl{\mathbf 2}$ and $\twist$ (where $\twist$ is given by univalence from the equivalence $\mathbf 2\to\mathbf 2$ exchanging the two elements of $\mathbf 2$), and that $\trans{}_{\mathbf 2,\mathbf 2,\mathbf 2}(\twist)(\twist)=\refl{\mathrm 2}$.
+\end{xca}
+
+------------------------------------------------------
+
+\subsubsection{The univalence axiom}
+
+\begin{definition}\label{def:typeofeq}
+  Let $A$ and $B$ be types.  The \emph{type of equivalences from $A$ to $B$} is
+  $$\Eq(A,B)\defequi\sum_{f:A\to B}\isEq(f).$$
+If we say that $f:A\to B$ \emph{is} an equivalence, this refers to some specific $(f,p):\Eq(A,B)$.\footnote{our cavalier attitude would be easier to understand for the reader if we said that $\isEq(f)$ is a proposition}
+\end{definition}
+\begin{remark}\label{remark:inversetoeq}
+  Equivalences have preferred ``inverses'': if $(f,p)$ is an equivalence, then for $b:B$ the element $p(b)=(c_b,q)$ is a contraction of $f^{-1}(b)$ to the \emph{center of the contraction} $c_b:f^{-1}(b)$. By the definition of the fiber, $c_b$ is a pair $(a_b,r_b)$, where $a_b:A$ and $r_b:f(a_b)=b$. If we let $g:B\to A$ be given by $g(b)\defequi a_b$, then 
+$$q_{f(a)}:a=g(f(a))\oldequiv a_{f(a)}$$ and  
+$$r_b:f(g(b))\oldequiv f(a_b)= b.$$
+
+This parallels the situation for sets, where the bijections can be characterized as the functions that are one-to-one and onto.  Spelling out ``one-to-one and onto'' one gets \emph{exactly} that each fiber has a unique element, and conversely ``bijection'' means that there is an inverse function.
+\end{remark}
+
+
+Consider the identity $\id_{\UU}:\UU\to\UU$ of the universe itself.  Given an equality $p:A=_{\UU}B$ of types, we get a transport (c.f.~\cref{def:transport}) $\trp_{\id_{\UU},p}:A\to B$ (which we by abuse of notation later laps into also calling $p$).  In other words, transport defines a map 
+$$(A=_{\UU}B)\to (A\to B).$$
+We want to show that $\trp_{\id_{\UU},p}:A\to B$ is an equivalence, and by induction it is enough to do this for the case when $p$ is $\refl A$.  However, by the very definition of transport we have 
+$\trp_{\id_{\UU},\refl A}(a)\defequi a$, in other words 
+$$\trp_{\id_{\UU},\refl A}=\id_A.$$
+Now, $\id_A$ is an equivalence, since the fiber over $a:A$ is $\sum_{x:A}(a=x)$ which contracts to $(a,\refl a)$.
+
+% \begin{remark} % BID
+%   The lack of symmetry (why \emph{left} inverse?) in this formulation is unsatisfactory and avoidable at the price of having a slightly more elaborate definition of $\Eq(A,B)$.\footnote{contractible fibers definition is also lop-sided in the sense that you define a section (left inverse) by picking the center of the contraction}
+% \end{remark}
+
+-----------------------------------------------------
+
+
+
 
 
 
@@ -641,7 +684,7 @@ We delegate the other (and future) cases to the exercises.
 \section{Logical operations on propositions; Propositional truncation}
 \label{sec:logical-operations}
 
-In \cref{sec:prop-sets-grpds} we have seen that propositions are
+In \cref{sec:props-sets-grpds} we have seen that propositions are
 closed under $\times$, $\to$ and taking products over arbitrary
 index types. Moreover, $\false$ and $\true$ are propositions.
 In this section we explain in detail how to do logic in type theory.
