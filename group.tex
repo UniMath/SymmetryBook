@@ -20,6 +20,52 @@ $$\fin\defequi\sum_{S:\Set}||\sum_{n:\NN}S=\bn{n} ||$$
 and for $n:\NN$ the \emph{sets of cardinality $n$}
 $$\fin_n\defequi \sum_{S:\Set}||S=\bn{n} ||.$$
 Observe that $\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n.$
+\subsection{Subtypes}
+\label{sec:subtype}
+
+In ordinary sets, an a subset $A$ of a set $B$ can be given concretely by considering the \emph{characteristic function} $\chi_A\colon B\to\{0,1\}$ which takes the value $1$ on $A$ and $0$ everywhere else: $A$ is then exactly the preimage of $1$.  Another view is to observe that an injection of $A$ into $B$ is a function $f\colon A\to B$ with the property that for any $b\in B$, the preimage $\{a\in A\mid f(a)=b\}$ has \emph{at most} one element.  If we defined $\chi\colon B\to \{0,1\}$ by setting $\chi(b)$ to be the number of elements in the preimage of $b$, the corresponding subset would be nothing but the \emph{image} in $B$ onto which $A$ bijects.   These considerations translate nicely to types, though there is a slight subtlety in that we have not assumed that any proposition must be equal to either of the sets $\bn 0$ and $\bn 1$.  
+\begin{definition}
+  \label{def:subtype}
+  Let $B$ be a type and $P(b)$ a family of propositions depending on $b:B$.  Then the first projection $\sum_{b:B}P(b)\to B$ is said to be the \emph{inclusion of the subtype $\sum_{b:B}P(b)$ in $B$}.\index{subtype}\footnote{what do you prefer; injection or inclusion?  They don't mean the same thing and personally I'd prefer injection here.}  
+
+We say that an element $b':B$ \emph{lies in the subtype} $\sum_{b:B}P(b)$ if $P(b')$.
+\end{definition}
+Alternatively, a function $f:A\to B$ in \emph{injective} if all the preimages $f^{-1}(b)$ are propositions.
+\begin{definition}
+  \label{def:decidableprop}
+  A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equalities}\index{decidable equalities}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
+\end{definition}
+\begin{example}\label{ex:Nisdecidable}
+  The natural numbers $\NN$ has decidable equalities: we show that the proposition $m=n$ for $m,n:\NN$ is either true or false (so that it is given by a function in $\NN\times\NN\to\bn 2$). By the definition of $\NN$ we can (and must) do this by an induction on $m$ and $n$.  If both $m$ and $n$ are $0$ then $m=n$ is true.  If one of $m$ and $n$ is a successor and the other $0$ then $m=n$ is false.  If both $m$ and $n$ are successors, then we can reduce to an already treated case.
+\end{example}
+
+\subsection{Some more on natural numbers}
+\label{sec:archmed}
+\begin{definition}
+  \label{def:orderonN}
+  Let $n,m:\NN$. We say that $n$ is less than or equal to $m$, and write $n\leq m$, if there is a $k:\NN$ such that $n+k=m$. This $k$ is unique and we say that $n$ is less than $m$, and write $n<m$ if $k$ is not $0$. 
+\end{definition}
+Note that a double induction on $m:\NN$ and $n\NN$ shows that the proposition ``$n\leq m$'' is decidable.  Furthermore, we prove the standard properties, like reflexivity and transitivity for $\leq$, that $m\leq n$ and $n\leq m$ if and only if $m=n$ and that $\leq$ is preserved under addition. ((need we spell this out?  Shall we list it in a roster and give it as exercises?))
+\begin{definition}
+  \label{def:multiplicationinN}
+  Multiplication in $\NN$ is defined as follows: $m\cdot 0\defequi 0$ and $m\cdot(n+1)\defequi m\cdot n+m$.\footnote{would really be better to define this as the cardinality of $\bn m\times\bn n$, but I use this induction priciple later}
+\end{definition}
+From here one can prove the standard  properties of the natural numbers.  In particular, the so-called Arcimedean property 
+\begin{lemma}
+  \label{lem:archimed}
+  Given $m,n:\NN$ with $0<n$, there is a $k:\NN$ such that $m\leq n\cdot k$.
+\end{lemma}
+\begin{proof}
+  By induction on $m$: if $m$ is $0$, then $k$ can be zero too.  For a successor $m+1$ with a $k$ such that $m\leq n\cdot k$ we notice that $m+1\leq m+n\leq n\cdot k+n=n\cdot (k+1)$.
+\end{proof}
+Also, we have the following extremely important property:
+\begin{lemma}
+  \label{lem:Niswellordered}
+  The natural numbers are \emph{well ordered}, that is, if $S$ is a decidable subset of the natural number and a $t:S$, then there is a unique natural number $\min S$, called the \emph{minimum of $S$}, which lies in $S$ and satisfies the property that if $n:\NN$ lies in $S$, then $\min S\leq n$.  The minimum does not depend on $t:S$.
+\end{lemma}
+\begin{proof}
+  Let $S$ be given by the function $P\colon\NN\to\bn 2$.  Since there are but a finite number of natural numbers $s$ with $0\leq s\leq t$, we can test $P(s)$ iteratively for each $s$ and pick the first with $P(s)=1$. This is bound to terminate since $P(t)=1$.  Replacing $t$ with another $t':\NN$ with $P(t')=1$ does not change the result: the iteration will have terminated by the smaller one.\footnote{this is out of style, do change}
+\end{proof}
 
 \subsection{Connected types}
 \label{sec:connectedtypes}
@@ -60,7 +106,7 @@ Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\
 \end{xca}
 \cref{xca:essentiallysmall} has the consequence that in many cases types and essentially small types can be used interchangeably.  Where this may clutter the notation we will gloss over this distinction.
 
-\subsubsection{Pointed types}
+\subsection{Pointed types}
 \label{sec:poitedtypes}
 \begin{definition}\label{def:pointedtypes}
   A \emph{pointed type} is a pair $(A,a)$ where $A$ is a type and $a$ is an element of $A$, so that the (large) \emph{type of pointed types} is
@@ -77,6 +123,18 @@ $$(B\to_*B')=\sum_{f:B_\div\to B'{}_\div}f(\pt_B)=\pt_{B'}.$$
 \begin{xca}
   If $A$ is a type and $B$ is a pointed type, prove that $A\to B_\div$ is equivalent to $A_+\to_*B$.
 \end{xca}
+
+\subsection{Coverings}
+\label{sec:covering}
+
+\begin{definition}
+  \label{def:covering}
+  A function $f:A\to B$ between two types is a \emph{covering} if for all $y:Y$ the preimage $f^{-1}(y)$ is a nonempty set.  We say that the covering is \emph{decidable} if the preimages are decidable.
+\end{definition}
+
+((picture!!!))
+
+So, in particular, equivalences are coverings.
 
 \subsubsection{Negative numbers}
 \label{sec:negativenumbers}
@@ -485,7 +543,7 @@ Thought of as symmetries, this says that if you have a symmetry of $S$, then we 
 Likewise, we get a map $\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to $X\times T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\times T}$. 
 
 In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\Sigma_{mn}$. \footnote{Insert a good description of the sign $\Sigma_n\to\Sigma_2$}
-\item Let $G$ be a group.  Since there is a unique map from $BG$ to $\bn{1} $, we get a unique homomorphism from $G$ to the trivial group. 
+\item Let $G$ be a group.  Since there is a unique map from $BG$ to $\bn{1} $, we get a unique homomorphism from $G$ to the trivial group.  Likewise, there is a unique morphism from the trivial group to $G$, sending the unique element of $\bn 1$ to $\pt_G$. 
 \item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  Write out.\footnote{Say something about $BG\vee BH$?}
   \end{enumerate}
 \end{example}
