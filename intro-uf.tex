@@ -130,7 +130,8 @@ Now we state our symmetry result a little more formally.
 Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
 abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
 
-Associativity of transitivity is formulated and established similarly.  We leave that as an exercise.
+Associativity of transitivity is formulated and established similarly.  
+We leave that as an exercise.
 
 One frequent use of elements of identity types is in \emph{substitution}.  Let $X$ be a type, and let $T(x)$ be a family of types depending on a
 parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  Then there is a function of type $T(x) \to T(y)$. We define one specific such function by induction, by taking its value to be the identity function on $T(x)$ in the case of $\refl{x}:x=x$.
@@ -164,6 +165,8 @@ function $T(x) \to T(y)$ provides a way to establish a claim about $y$
 from a claim about $x$, so we will refer to it as \emph{substitution}.  In
 other words, elements that can be identified have the same properties.
 
+
+
 \section{Product types}
 \label{sec:product-types}
 Our type theory will also contain \emph{products} of types. 
@@ -171,20 +174,49 @@ By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
 parameter $x$ of type $X$, then there will be a type $\prod_{x:X} Y(x)$ 
 whose elements $f$ are functions that provide elements $f(a)$ of type
 $Y(a)$, one for each $a:X$. We may refer to $X$ as the 
-\emph{index type} of the product. 
+\emph{index type} of the product.
+
+We have actually seen such functions already, for example,
+the function $f$ in P4 in \cref{sec:natural-numbers}, where
+we called $f(m):X(m)$ a `family of elements'. We can now
+simply say $f: \prod_{m:\NN} X(m)$.
+
 A function $f : X \to Y$ is essentially the same thing as a function $f$ 
 of type $\prod_{x:X} Y$, where the product is formed using a constant family of types.
 
 The basic way of constructing an element of a product type
 is by explicit definition, as we have seen before.
 
+Functions preserve equality, a fact that is frequently used.
+We make this fully precise now, for once and for all, 
+to be used implicitly later on.
+
+\begin{definition}\label{lem:apd}
+For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,y:X$, the function
+$\ap{f} : x = y \to f(x) = f(y)$ is defined by induction by setting 
+$\ap{f}(\refl{x})\defeq\refl{f(x)}$. More generally, 
+if $Z(x)$ is a type for every element $x:X$,
+and $f:\prod_{x:X} Z(x)$ is a dependent function, then
+the function $\apd{f}$ is a dependent function defined similarly:
+\[
+ \apd{f}: \prod_{e:x=y} \trp_{Z,e}(f(x)) = f(y);~\apd{f}(\refl{x})\defeq\refl{f(x)}
+\]
+The latter definition is correct since $\trp_{Z,\refl{x}}(f(x)) \jdeq f(x)$. 
+\end{definition}
+
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, 
 then they have equal values, i.e., for every element $x$ of $X$, 
 we may conclude that $f(x) = g(x)$.
-(This can be proven by induction or by substitution, as suggested in WHICH EXERCISE.)
-Conversely, a basic principle, called `function extensionality', 
-asserts that if for every element $x$ of $X$, 
-we know that $f(x) = g(x)$, then we may conclude that $f=g$.
+This can be proven by induction or by substitution.
+\begin{xca}\label{happly}
+Let $f,g:\prod_{x:X} Y(x)$. Define a function of type 
+\[ 
+f=g \to \prod_{x:X} f(x)=g(x).
+\] 
+\end{xca}
+
+Conversely, a basic principle called `function extensionality'
+asserts that $f=g$ whenever $f(x) = g(x)$ for every element $x$ of $X$.
 
 \section{Inductive types}
 \label{sec:inductive-types}
@@ -199,22 +231,22 @@ equality in the constituent types.
 
 \subsection{Finite types}
 \label{sec:finite-types}
-Firstly, there is the ``empty'' type, called $\emptyset$, defined inductively, with no way to construct elements provided in the inductive
-definition.  The inductive principle for $\emptyset$ says that to prove something about (or to construct something from) every element of
-$\emptyset$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptyset$ can be proven. (This is called the Ex Falso
+Firstly, there is the ``empty'' type, denoted $\bn{0} $, defined inductively, with no way to construct elements provided in the inductive
+definition.  The inductive principle for $\bn{0} $ says that to prove something about (or to construct something from) every element of
+$\bn{0} $, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\bn{0} $ can be proven. (This is called the Ex Falso
 rule in traditional logic.) As
-an example, we may prove that any two elements $x$ and $y$ of $\emptyset$ are equal by using induction on $x$.
+an example, we may prove that any two elements $x$ and $y$ of $\bn{0} $ are equal by using induction on $x$.
 
-An element of $\emptyset$ will be called an \emph{absurdity}, and the negation $\neg P$ of a proposition $P$ will be implemented as the function
-type $P \to \emptyset$.  This is sensible, because an element of $\neg P$ could be applied to an element of $P$ to produce an element of
-$\emptyset$, i.e., an absurdity.
+An element of $\bn{0} $ will be called an \emph{absurdity}, and the negation $\neg P$ of a proposition $P$ will be implemented as the function
+type $P \to \bn{0} $.  This is sensible, because an element of $\neg P$ could be applied to an element of $P$ to produce an element of
+$\bn{0} $, i.e., an absurdity.
 
-Another appropriate name for $\emptyset$ is $\false$.
+Another appropriate name for $\bn{0} $ is $\false$.
 
 We may also construct a function $\false \to X$, for any type $X$, by induction, showing that from an absurdity anything follows.
 
-To encode the property that $X$ has no elements we use the type $X \to \emptyset$.  To encode the property that elements $a,b:X$ are not equal,
-we use the type $(a=b) \to \emptyset$, and we let $a \ne b$ denote it.
+To encode the property that $X$ has no elements we use the type $X \to \bn{0} $.  To encode the property that elements $a,b:X$ are not equal,
+we use the type $(a=b) \to \bn{0} $, and we let $a \ne b$ denote it.
 
 Secondly, there will also be a type called $\true$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
   ``trivial'').  Its induction principle
@@ -231,18 +263,22 @@ that any element of $\bool$ is equal to $\yes$ or to $\no$.
 We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
 Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.  The definition of $P(b)$ is motivated by the expectation that we will be able
 to prove that $P(b)$ and $b = \yes$ are equivalent.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv :
-P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptyset$,
+P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \bn{0} $,
 establishing the claim.
 
 In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, i.e., for any $n:\NN$ that $0 \ne
 S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
 \defeq \true$ and $P(S(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
 and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
-of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptyset$, establishing the claim.
+of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \bn{0} $, establishing the claim.
 
-We could continue defining inductively types with three elements, 
-four elements, and even with $n$ elements for any $n:\NN$. It is,
-however, more interesting to look at other constructions for types.
+In a similar way we can define inductively, for any $n:\NN$,
+an inductive type $\bn{n}$ of $n$ elements. For convenience
+we sometimes denote these elements $0,1,\ldots,n-1$. 
+Thus $\bn{0}\defeq\false$, 
+and $\bn{1}\defeq\true$,
+and $\bn{2}\defeq\bool$ with elements $\no\jdeq 0$ and $\yes\jdeq 1$.
+
 
 \subsection{Sum types}
 \label{sec:sum-types}
@@ -255,10 +291,12 @@ Proving something about (or constructing something from) every
 element $(a,b)$ of $\sum _{x:X} Y(x)$ is simply done for all $a:X$ and $b: Y(a)$.
 Two important examples of such constructions are:
 \begin{enumerate}
-\item \emph{first projection} $\fst:(\sum _{x:X} Y(x)) \to X$, 
+\item \emph{first projection}, 
+$\fst:(\sum _{x:X} Y(x)) \to X$, 
 $\fst(a,b)\defeq a$;
-\item \emph{second projection}
-$\snd: \prod_{z: \sum _{x:X} Y(x)} Y(\fst z)$, $\snd(a,b)\defeq b$.
+\item \emph{second projection},
+$\snd: \prod_{z: \sum _{x:X} Y(x)} Y(\fst z)$,
+$\snd(a,b)\defeq b$.
 \end{enumerate}
 
 Equality of two elements $(a_1,b_1),(a_2,b_2)$ of $\sum _{x:X} Y(x)$ is 
@@ -287,8 +325,13 @@ of $i'$ depends on $i$, so that we actually have a dependent pair:
 \[
 (i,i'): \sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2
 \]
-The latter type (COULD BE LEFT OUT) can be proved to be equivalent to the
-type $(a_1,b_1)=(a_2,b_2)$ in a precise sense.
+Conversely, we can define by induction a function of
+\[
+(\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2) \to (a_1,b_1)=(a_2,b_2).
+\]
+which often helps proving dependent pairs equal.
+See Theorem 2.7.2 in \cite{HoTTBook} for a detailed account.
+
 
 \subsection{Binary products}
 \label{sec:binprod-types}
@@ -340,15 +383,15 @@ $\inr{} : Y \to X \amalg Y$. Proving a property of any element of $X \amalg Y$
 means proving that this property holds of any $\inl{x}$ with $x:X$ and any
 $\inr{y}$ with $y:Y$. In general, constructing a function $f$ of type
 $\prod_{z: X \amalg Y} T(z)$, where $T(z)$ is a type depending on 
-$z$, is done by defining $f(\inl(x))$ for all $x$ in $X$
-and $f(\inr(y))$ for all $y$ in $Y$.
+$z$, is done by defining $f(\inl{x})$ for all $x$ in $X$
+and $f(\inr{y})$ for all $y$ in $Y$.
 
 Identification of two elements $a$ and $b$ in $X \amalg Y$ is 
 only possible if they are constructed with the same constructor.
-Thus $\inl(x) = \inr(y)$ is always empty, and identifications
-$\inl(x) = \inl(x')$ are equivalent to identifications $x=x'$ in $X$,
+Thus $\inl{x} = \inr{y}$ is always empty, and identifications
+$\inl{x} = \inl(x')$ are equivalent to identifications $x=x'$ in $X$,
 and identifications
-$\inr(y) = \inr(y')$ are equivalent to identifications $y=y'$ in $Y$.
+$\inr{y} = \inr(y')$ are equivalent to identifications $y=y'$ in $Y$.
 
 \section{Equivalences}\label{sec:euivalence}
 
