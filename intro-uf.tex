@@ -177,9 +177,11 @@ $Y(a)$, one for each $a:X$. We may refer to $X$ as the
 \emph{index type} of the product.
 
 We have actually seen such functions already, for example,
-the function $f$ in P4 in \cref{sec:natural-numbers}, where
+in P4 in \cref{sec:natural-numbers}, where
 we called $f(m):X(m)$ a `family of elements'. We can now
-simply say $f: \prod_{m:\NN} X(m)$.
+also say $f: \prod_{m:\NN} X(m)$. Phrases with `family' and
+`for all' will continue to be used, always referring to functions
+of appropriate types.
 
 A function $f : X \to Y$ is essentially the same thing as a function $f$ 
 of type $\prod_{x:X} Y$, where the product is formed using a constant family of types.
@@ -330,7 +332,7 @@ Conversely, we can define by induction a function of
 (\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2) \to (a_1,b_1)=(a_2,b_2).
 \]
 which often helps proving dependent pairs equal.
-See Theorem 2.7.2 in \cite{HoTTBook} for a detailed account.
+See Theorem 2.7.2 in \cite{hottbook} for a detailed account.
 
 
 \subsection{Binary products}
@@ -389,11 +391,11 @@ and $f(\inr{y})$ for all $y$ in $Y$.
 Identification of two elements $a$ and $b$ in $X \amalg Y$ is 
 only possible if they are constructed with the same constructor.
 Thus $\inl{x} = \inr{y}$ is always empty, and identifications
-$\inl{x} = \inl(x')$ are equivalent to identifications $x=x'$ in $X$,
+$\inl{x} = \inl{x'}$ are equivalent to identifications $x=x'$ in $X$,
 and identifications
-$\inr{y} = \inr(y')$ are equivalent to identifications $y=y'$ in $Y$.
+$\inr{y} = \inr{y'}$ are equivalent to identifications $y=y'$ in $Y$.
 
-\section{Equivalences}\label{sec:euivalence}
+\section{Equivalences}\label{sec:equivalence}
 
 
 The combination of $\sum$-, $\prod$- and equality types allows
@@ -402,7 +404,8 @@ definitions.
 
 \begin{definition}
 \label{def:contractible}
-Let $X$ be a type.  The property that $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is
+Let $X$ be a type. 
+The property that $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is
 equal to it.  Hence it is encoded by the type $\sum_{c:X} \prod_{x:X} (c=x)$.
 We call a type $X$ having this property \emph{contractible}, 
 denoted by $\iscontr(X)$, and $c$ its \emph{center}. 
@@ -439,23 +442,41 @@ to Voevodsky.
 \begin{definition}
 \label{def:equivalence}
 A function $f : X \to Y$ is called an \emph{equivalence},
-denoted by $\isEq(f)$,  if
-\[
-\prod_{y:Y} \iscontr(f^{-1}(y)).
-\]
-If $t:\prod_{y:Y} \iscontr(f^{-1}(y))$, 
-we can define an inverse $f^{-1}: Y\to X$
-by setting $f^{-1}(y) = \fst(t(y))$ and prove that $f^{-1}$ is also
-an equivalence. (EXERCISE)
-In such a case we say that the types
+denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
+
+Let $t(y): \iscontr(f^{-1}(y))$ for all $y:Y$.
+Using $t$ we can define a canonical inverse function
+that we (abusively) also denote by $f^{-1}$,
+by setting $f^{-1}(y)\defeq\fst(\fst(t(y)))$.
+Clearly, $f(f^{-1}(y)) = y$ by unfolding all definitions.
+Moreover, we have $(x,refl{f(x)}) : f^{-1}(f(x)$,
+with the latter as the \emph{type} that $t(f(x))$
+proves contractible. Hence the center of contraction
+$\fst(t(f(x))$ is equal to $(x,refl{f(x)})$, and hence
+$f^{-1}(f(x))\jdeq(\fst(\fst(t(f(x))) = x$.
+
+In the above case we say that the types
 $X$ and $Y$ are \emph{equivalent}, denoted by $X\equiv Y$. 
 More precisely, since there could be more than one equivalence
 between two types, we define the type of equivalences from $X$ to $Y$ by
 \[
 (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
 \]
-(EXERCISE: reflexive, symmetric, transitive.)
 \end{definition}
+
+\begin{xca}\label{xca:fstfstcontractiblefiber}
+Make sure you understand the two applications of $\fst$
+in the definition $f^{-1}(y)\defeq\fst(\fst(t(y)))$ above.
+\end{xca}
+
+\begin{xca}\label{xca:equivalence-invers}
+Show that $f^{-1}$ is an equivalence from $Y$ to $X$.
+\end{xca}
+
+\begin{xca}\label{xca:equivalencerel-equivalence}
+Show that $\equiv$ is an equivalence relation on types.
+\end{xca}
+
 For any type $X$, the identity function $\id_X$ is an
 equivalence from $X$ to $X$: for every element $a$ in $X$,
 $\id_X^{-1}(a)$ is a singleton type and hence contractible.
@@ -466,22 +487,22 @@ lemma by induction.
 \begin{lemma}\label{lem:equivalence-transport}
 Let $X$ be a type, and let $T(x)$ be a type depending on $x:X$.
 Then for every $x,y$ in $X$ and $e: x=y$, the function $\trp_{T,e}$
-is an equivalence from $T(x)$ to $T(y)$.
+is an equivalence from $T(x)$ to $T(y)$, so $T(x)\equiv T(y)$.
 \end{lemma}
 
 \section{Universes and univalence}\label{sec:univax}
 
 Univalence expresses, in a way made precise below, that
-equivalent types are equal. This means
-we are now discussing $X = Y$, and any identity type 
-(see \cref{sec:identity-types})
+equivalent types are equal. Discussing $X = Y$, 
+like any other identity (see \cref{sec:identity-types}),
 requires an ambient type containing the subjects of the identification,
-here the types $X$ and $Y$. In other words, we need a type of types.
+here the types $X$ and $Y$.
+In other words, we need a type of types.
 
 \begin{definition}\label{def:universe}
 There is type, denoted $\UU$ and called a \emph{universe}, that contains
-all types discussed so far, with the exception of the types 
-$X = Y$, where $X$ and $Y$ themselves are types, and of $\UU$ itself. 
+all types discussed so far, with the exception of $\UU$ itself and the types 
+$X = Y$, where $X$ and $Y$ themselves are types.
 \end{definition}
 
 Using $\UU$ we can now also assign a type to type families:
@@ -489,12 +510,12 @@ if $Y(x):\UU$ for all $x:X$, $X:\UU$, then $Y$ has type $X\to\UU$.
 What is the type of $X\to\UU$, and of $\UU$ itself?
 The answer is: the next universe.
 In this book we use, mostly implicitly, as many such universes as we need.
-Note that a countable hierarchy of universes achieves
+Note that a countable linear hierarchy of universes achieves
 the foundational ideal of `everything has a type' while
 avoiding the paradoxical $\UU:\UU$.
 
 The univalence axiom is a statement about the universe $\UU$: 
-for all types $A$ and $B$ in $\UU$ being \emph{equal} in $\UU$ is 
+for all types $X$ and $Y$ in $\UU$ being \emph{equal} in $\UU$ is 
 \emph{equivalent} to them being \emph{equivalent}. This greatly
 enhances our capacity to prove that two types are equal
 and to use this equality to transport properties and structure
@@ -503,92 +524,76 @@ here since it is precisely transport in the sense of
 \cref{def:transport} along the identification
 $X = Y$ stipulated by the equivalence $f$.
 
-\begin{definition}\label{def:univalence}
-Define $id_\UU$ by $\id_\UU(X)\defeq X$ for all types $X$.
-We can alternatively see $\id_\UU$ as the identity function on $\UU$
-and as a type family on $\UU$. Under the latter view,
-given an identification $e$ of types $X$ and $Y$ in $\UU$, we can
+We first define the \emph{function} that
+the univalence axiom postulates to be an equivalence.
+
+\begin{definition}\label{def:idtoeq}
+Define the identity function $id_\UU$ on $\UU$ by $\id_\UU(X)\defeq X$ 
+for all types $X$ in $\UU$.
+We can alternatively view $\id_\UU$ as a type family on $\UU$. 
+Under the latter view,
+given an identification $e : X = Y$ in $\UU$, we can
 transport elements from $X$ to elements of $Y$ using the transport
-function from \cref{def:transport}:
-\[
-\trp_{\id_\UU, e} : X \to Y
-\]
+function from \cref{def:transport},
+$\trp_{\id_\UU, e} : X \to Y$.
 By \cref{lem:equivalence-transport}, $\trp_{\id_\UU, e}$ is an 
-equivalence from $X$ to $Y$ for every $e: X = Y$. The corresponding
-function from $X = Y$ to $X\equiv Y$ will be denoted by
-$\trp^+_{X,Y}$. In its precise formulation,
-Voevodsky's \emph{univalence axiom} (UA) postulates that $\trp^+_{X,Y}$
-is an equivalence from $X = Y$ to $X\equiv Y$.
-Formally: $ua : \isEq(\trp^+_{X,Y})$.
+equivalence from $X$ to $Y$. 
+Together, they define the function
+\[
+\idtoeq : (X = Y) \to (X\equiv Y).
+\]
 \end{definition}
-The above formulation is perhaps a bit `heavy' for daily use.
-Therefore we elaborate some consequences that almost always suffice.
-First, we can disregard the particular inhabitant and just use that
-the following principle is true under UA: 
+
+Now comes the univalence axiom.
+
+\begin{definition}\label{def:univalence}
+Voevodsky's \emph{univalence axiom} (UA) postulates that 
+$\idtoeq$ above is an equivalence for all $X,Y:\UU$.
+Formally: \[ ua : \isEq(\idtoeq).\]
+\end{definition}
+
+This formulation is a bit `heavy' for daily use,
+so we elaborate.
+Let $p$ be a proof that $f: X\to Y$ is an equivalence.
+Then, unfolding $\isEq$ according to \cref{def:equivalence}, 
+$ua(f,p): \iscontr(\idtoeq^{-1}(f,p))$.
+Unfolding $\iscontr$ according to \cref{def:contractible}, 
+$\fst(ua(f,p))$ is the center of contraction 
+of the fiber $\idtoeq^{-1}(f,p)$,
+say a pair $(e,q)$ with $e:X=Y$ and $q: \idtoeq(e)=(f,p)$.
+Then $\fst(\fst(ua(f,p)))\jdeq e$. 
+The function $\fst\circ\fst\circ {\,ua}$ will
+by an abuse of notation also be written as $ua$:
 \[
-(X = Y) \equiv (X \equiv Y) \text{ for all types $X$ and $Y$.} 
+ua : (X \equiv Y) \to (X=Y). 
 \]
-Second, UA implies the principle of \emph{weak univalence}:
-\[
-(X \equiv Y) \to (X=Y) \text{ for all types $X$ and $Y$.} 
-\]
-Third, if one actually uses the particular inhabitant,
-one can often cast this in the following form,
-where $X$ and $Y$ are types, and $f: X\to Y$ is an equivalence:
+By an even larger abuse we denote the identification
+$\fst(\fst(ua(f,p)))$ also by $f: X=Y$. 
+This large abuse of notation is compatible with the following
+`practical use' of UA: 
 \begin{quote}
 Transport from $X$ to $Y$ along the identification of $X$ and $Y$
-coming from $f$ through UA is just applying $f : X\to Y$.
+coming from an equivalence $f : X\to Y$ through UA is just applying $f$.
 \end{quote}
-This justifies the terminology used right after
-\cref{lem:equivalence-transport}. Since this conveys an
-important insight into univalence, we elaborate.
-Let $p$ be a proof that $f$ is an equivalence
-and consider $ua(f,p)$ witnessing that the fiber of $\trp^+_{X,Y}$
-at $(f,p)$ is contractible. This means that $\trp^+_{X,Y}$
-applied to the center $c \defeq \fst(ua(f,p)) : X=Y$ is equal to $(f,p)$.
-Elaborating this and looking at the first component we get
-precisely $\trp_{\id_\UU, c} = f$.
+In order to understand this practical form of UA,
+let $p$ be a proof that $f$ is an equivalence.
+As above, $\fst(ua(e,p)) = (e,q)$ with $q: \idtoeq(e)=(f,p)$.
+Using \cref{def:idtoeq}, $\fst(\idtoeq(e))\jdeq\trp_{\id_\UU, e}$,
+so actually $\trp_{\id_\UU, e} =f$ using $q$.
+
+The notations and conventions are chosen in such a way that,
+if you start with an equivalence $f : X\to Y$ and you go all 
+the way to transport from $X$ to $Y$ along the identification
+$f: X=Y$ given by UA, you end up applying this same $f$, 
+and you never have to change notation underway. 
 
 \begin{xca}\label{xca:C2}
    Prove that $\mathbf 2=\mathbf 2$ has exactly two elements, $\refl{\mathbf 2}$ and $\twist$ (where $\twist$ is given by univalence from the equivalence $\mathbf 2\to\mathbf 2$ exchanging the two elements of $\mathbf 2$), and that $\trans{}_{\mathbf 2,\mathbf 2,\mathbf 2}(\twist)(\twist)=\refl{\mathrm 2}$.
 \end{xca}
 
-------------------------------------------------------
-
-\subsubsection{The univalence axiom}
-
-\begin{definition}\label{def:typeofeq}
-  Let $A$ and $B$ be types.  The \emph{type of equivalences from $A$ to $B$} is
-  $$\Eq(A,B)\defequi\sum_{f:A\to B}\isEq(f).$$
-If we say that $f:A\to B$ \emph{is} an equivalence, this refers to some specific $(f,p):\Eq(A,B)$.\footnote{our cavalier attitude would be easier to understand for the reader if we said that $\isEq(f)$ is a proposition}
-\end{definition}
-\begin{remark}\label{remark:inversetoeq}
-  Equivalences have preferred ``inverses'': if $(f,p)$ is an equivalence, then for $b:B$ the element $p(b)=(c_b,q)$ is a contraction of $f^{-1}(b)$ to the \emph{center of the contraction} $c_b:f^{-1}(b)$. By the definition of the fiber, $c_b$ is a pair $(a_b,r_b)$, where $a_b:A$ and $r_b:f(a_b)=b$. If we let $g:B\to A$ be given by $g(b)\defequi a_b$, then 
-$$q_{f(a)}:a=g(f(a))\oldequiv a_{f(a)}$$ and  
-$$r_b:f(g(b))\oldequiv f(a_b)= b.$$
-
-This parallels the situation for sets, where the bijections can be characterized as the functions that are one-to-one and onto.  Spelling out ``one-to-one and onto'' one gets \emph{exactly} that each fiber has a unique element, and conversely ``bijection'' means that there is an inverse function.
-\end{remark}
-
-
-Consider the identity $\id_{\UU}:\UU\to\UU$ of the universe itself.  Given an equality $p:A=_{\UU}B$ of types, we get a transport (c.f.~\cref{def:transport}) $\trp_{\id_{\UU},p}:A\to B$ (which we by abuse of notation later laps into also calling $p$).  In other words, transport defines a map 
-$$(A=_{\UU}B)\to (A\to B).$$
-We want to show that $\trp_{\id_{\UU},p}:A\to B$ is an equivalence, and by induction it is enough to do this for the case when $p$ is $\refl A$.  However, by the very definition of transport we have 
-$\trp_{\id_{\UU},\refl A}(a)\defequi a$, in other words 
-$$\trp_{\id_{\UU},\refl A}=\id_A.$$
-Now, $\id_A$ is an equivalence, since the fiber over $a:A$ is $\sum_{x:A}(a=x)$ which contracts to $(a,\refl a)$.
-
 % \begin{remark} % BID
 %   The lack of symmetry (why \emph{left} inverse?) in this formulation is unsatisfactory and avoidable at the price of having a slightly more elaborate definition of $\Eq(A,B)$.\footnote{contractible fibers definition is also lop-sided in the sense that you define a section (left inverse) by picking the center of the contraction}
 % \end{remark}
-
------------------------------------------------------
-
-
-
-
-
-
 
 \section{Propositions, sets and groupoids}
 \label{sec:props-sets-grpds}
