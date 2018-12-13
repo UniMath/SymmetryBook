@@ -826,6 +826,46 @@ $\isEq(f)$ is a proposition by \cref{lem:isX-is-prop}.
 It follows by \cref{lem:subtype} that $X=Y$ is a set.  
 \end{proof}
 
+\section{The type of finite types}
+\label{sec:typeFin}
+
+\newcommand{\fin}{\mathrm{Fin}}
+\begin{definition}\label{def:finiteset}
+   Define the type family $\bn{0} $, $\bn{1} $, $\bn{2} $,\dots inductively on $\NN$ by declaring that the value at $0:\NN$ is $\bn{0} \defequi\emptyset$ and the value at a successor $s(n):\NN$ is $\bn{n} \coprod\true$.  
+%For simplicity we will refer to $\fin(n)$ as $\bn{n} $.  
+  \begin{enumerate}
+  \item Prove that $\bn{1} =\true$, $\bn{2} =\bool$. 
+  \item Prove that if $m,n:\NN$ and $\mathbf m=\bn{n} $ then $n=m$.  
+  \item   Prove that
+$$\sum_{n:\NN}\sum_{S:\Set}||S=\bn{n} || =\sum_{S:\Set}||\sum_{n:\NN}S=\bn{n} ||.
+$$
+  \end{enumerate}
+If a set $S$ is in the same component in $\Set$ as $\bn{n} $ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
+The \emph{groupoid of finite sets} is defined to be
+$$\fin\defequi\sum_{S:\Set}||\sum_{n:\NN}S=\bn{n} ||$$
+and for $n:\NN$ the \emph{sets of cardinality $n$}
+$$\fin_n\defequi \sum_{S:\Set}||S=\bn{n} ||.$$
+Observe that $\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n.$
+\subsection{Subtypes}
+\label{sec:subtype}
+
+In ordinary sets, an a subset $A$ of a set $B$ can be given concretely by considering the \emph{characteristic function} $\chi_A\colon B\to\{0,1\}$ which takes the value $1$ on $A$ and $0$ everywhere else: $A$ is then exactly the preimage of $1$.  Another view is to observe that an injection of $A$ into $B$ is a function $f\colon A\to B$ with the property that for any $b\in B$, the preimage $\{a\in A\mid f(a)=b\}$ has \emph{at most} one element.  If we defined $\chi\colon B\to \{0,1\}$ by setting $\chi(b)$ to be the number of elements in the preimage of $b$, the corresponding subset would be nothing but the \emph{image} in $B$ onto which $A$ bijects.   These considerations translate nicely to types, though there is a slight subtlety in that we have not assumed that any proposition must be equal to either of the sets $\bn 0$ and $\bn 1$.  
+\begin{definition}
+  \label{def:subtype}
+  Let $B$ be a type and $P(b)$ a family of propositions depending on $b:B$.  Then the first projection $\sum_{b:B}P(b)\to B$ is said to be the \emph{inclusion of the subtype $\sum_{b:B}P(b)$ in $B$}.\index{subtype}\footnote{what do you prefer; injection or inclusion?  They don't mean the same thing and personally I'd prefer injection here.}  
+
+We say that an element $b':B$ \emph{lies in the subtype} $\sum_{b:B}P(b)$ if $P(b')$.
+\end{definition}
+Alternatively, a function $f:A\to B$ in \emph{injective} if all the preimages $f^{-1}(b)$ are propositions.
+\begin{definition}
+  \label{def:decidableprop}
+  A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equalities}\index{decidable equalities}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
+\end{definition}
+\begin{example}\label{ex:Nisdecidable}
+  The natural numbers $\NN$ has decidable equalities: we show that the proposition $m=n$ for $m,n:\NN$ is either true or false (so that it is given by a function in $\NN\times\NN\to\bn 2$). By the definition of $\NN$ we can (and must) do this by an induction on $m$ and $n$.  If both $m$ and $n$ are $0$ then $m=n$ is true.  If one of $m$ and $n$ is a successor and the other $0$ then $m=n$ is false.  If both $m$ and $n$ are successors, then we can reduce to an already treated case.
+\end{example}
+
+
 
 % Local Variables:
 % fill-column: 144
