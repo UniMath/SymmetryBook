@@ -839,26 +839,48 @@ by $0,1,\ldots,n-1$ rather than by the corresponding expressions
 using $\inl{}$ and $\inr{}$.
 %\end{definition}
 
-\begin{xca}\label{xca:finite-types} 
+\begin{xca}\label{xca:finite-types}\hspace{1in}
   \begin{enumerate}
   \item Denote in full all elements of $\bn{0} $, $\bn{1} $, and $\bn{2}$.
-  \item Prove that $\bn{1} =\true$, $\bn{2} =\bool$ using UA.
-  \item Prove by double induction on $m,n:\NN$ that $n=m$ if $\bn{m}=\bn{n}$.
+  \item Show (using UA) that $\bn{1} =\true$, $\bn{2} =\bool$.
+  \item Show by double induction on $m,n:\NN$ that $n=m$ if $\bn{m}=\bn{n}$.
   \end{enumerate}
 \end{xca}
   
-LATER Prove that
-$$\sum_{n:\NN}\sum_{S:\Set}||S=\bn{n} || =\sum_{S:\Set}||\sum_{n:\NN}S=\bn{n} ||.
-$$
+\begin{lemma}\label{lem:maxonefinitetype}
+bla
+\begin{enumerate}
+  \item $\sum_{n:\NN}\Trunc{X=\bn{n}}$ is a proposition, for all types $X$.
+  \item 
+$\sum_{X:\UU}\sum_{n:\NN}\Trunc{X=\bn{n}} =\sum_{X:\UU}\Trunc{\sum_{n:\NN}X=\bn{n}}.$
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
 
+(1) Assume $(n,p),(m,q): \sum_{n:\NN}\Trunc{X=\bn{n}}$.
+Then we have $\Trunc{\bn{n}=\bn{m}}$, so $\Trunc{n=m}$
+by \cref{xca:finite-types}. But $\NN$ is a set by \cref{XX}, 
+so $\Trunc{n=m}=(n=m)$. It follows that $(n,p)=(m,q)$.
 
-If a set $S$ is in the same component in $\Set$ as $\bn{n} $ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
-The \emph{groupoid of finite sets} is defined to be
-$$\fin\defequi\sum_{S:\Set}||\sum_{n:\NN}S=\bn{n} ||$$
-and for $n:\NN$ the \emph{sets of cardinality $n$}
-$$\fin_n\defequi \sum_{S:\Set}||S=\bn{n} ||.$$
-Observe that $\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n.$
+(2) Follows from $\sum_{n:\NN}\Trunc{X=\bn{n}} =\Trunc{\sum_{n:\NN}X=\bn{n}}$,
+which is easily proved by giving functions in both directions and using UA.
+\end{proof}
 
+The above lemma remains of course true if $X$ ranges over $\Set$.
+If a set $S$ is in the same component in $\Set$ as $\bn{n}$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
+
+\begin{definition}\label{def:groupoidFin}
+The \emph{groupoid of finite sets} is defined by
+\[
+\fin\defeq\sum_{S:\Set}\Trunc{\sum_{n:\NN}S=\bn{n}}.
+\]
+For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
+\[
+\fin_n\defequi \sum_{S:\Set}\Trunc{S=\bn{n}}.
+\]
+\end{definition}
+Observe that $\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n$
+by \cref{lem:maxonefinitetype}.
 
 \subsection{Subtypes}
 \label{sec:subtype}
