@@ -274,13 +274,8 @@ S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a vari
 and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
 of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \bn{0} $, establishing the claim.
 
-In a similar way we can define inductively, for any $n:\NN$,
-an inductive type $\bn{n}$ of $n$ elements. For convenience
-we sometimes denote these elements $0,1,\ldots,n-1$. 
-Thus $\bn{0}\defeq\false$, 
-and $\bn{1}\defeq\true$,
-and $\bn{2}\defeq\bool$ with elements $\no\jdeq 0$ and $\yes\jdeq 1$.
-
+In a similar way we will in \cref{sec:typeFin} define types $P(n)$ for any $n$ in $\NN$
+such that $P(n)$ is the type (set) of $n$ elements.
 
 \subsection{Sum types}
 \label{sec:sum-types}
@@ -828,24 +823,43 @@ It follows by \cref{lem:subtype} that $X=Y$ is a set.
 
 \section{The type of finite types}
 \label{sec:typeFin}
+Recall from \cref{sec:finite-types} the types
+$\false$, $\true$ and $\bool$ containing zero, one and two
+elements, respectively. We now define generally the
+type of $n$ elements for any $n:\NN$.
+%$\bn{0} $, $\bn{1} $, $\bn{2} ,\ldots$
 
-\newcommand{\fin}{\mathrm{Fin}}
 \begin{definition}\label{def:finiteset}
-   Define the type family $\bn{0} $, $\bn{1} $, $\bn{2} $,\dots inductively on $\NN$ by declaring that the value at $0:\NN$ is $\bn{0} \defequi\emptyset$ and the value at a successor $s(n):\NN$ is $\bn{n} \coprod\true$.  
-%For simplicity we will refer to $\fin(n)$ as $\bn{n} $.  
+For any type $X$ define $\Succ(X)\defeq X\amalg\true$.
+Define inductively the type family $F(n)$, for each $n:\NN$, by
+setting $F(0)\defeq\bn{0}$ and $F(S(n))\defeq\Succ(F(n))$.
+Now abbreviate $F(n)\defeq\bn{n}$. The type $\bn{n}$ is called
+the type with $n$ elements, and we denote its elements
+by $0,1,\ldots,n-1$ rather than by the corresponding expressions
+using $\inl{}$ and $\inr{}$.
+%\end{definition}
+
+\begin{xca}\label{xca:finite-types} 
   \begin{enumerate}
-  \item Prove that $\bn{1} =\true$, $\bn{2} =\bool$. 
-  \item Prove that if $m,n:\NN$ and $\mathbf m=\bn{n} $ then $n=m$.  
-  \item   Prove that
+  \item Denote in full all elements of $\bn{0} $, $\bn{1} $, and $\bn{2}$.
+  \item Prove that $\bn{1} =\true$, $\bn{2} =\bool$ using UA.
+  \item Prove by double induction on $m,n:\NN$ that $n=m$ if $\bn{m}=\bn{n}$.
+  \end{enumerate}
+\end{xca}
+  
+LATER Prove that
 $$\sum_{n:\NN}\sum_{S:\Set}||S=\bn{n} || =\sum_{S:\Set}||\sum_{n:\NN}S=\bn{n} ||.
 $$
-  \end{enumerate}
+
+
 If a set $S$ is in the same component in $\Set$ as $\bn{n} $ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
 The \emph{groupoid of finite sets} is defined to be
 $$\fin\defequi\sum_{S:\Set}||\sum_{n:\NN}S=\bn{n} ||$$
 and for $n:\NN$ the \emph{sets of cardinality $n$}
 $$\fin_n\defequi \sum_{S:\Set}||S=\bn{n} ||.$$
 Observe that $\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n.$
+
+
 \subsection{Subtypes}
 \label{sec:subtype}
 
@@ -856,11 +870,14 @@ In ordinary sets, an a subset $A$ of a set $B$ can be given concretely by consid
 
 We say that an element $b':B$ \emph{lies in the subtype} $\sum_{b:B}P(b)$ if $P(b')$.
 \end{definition}
+
 Alternatively, a function $f:A\to B$ in \emph{injective} if all the preimages $f^{-1}(b)$ are propositions.
+
 \begin{definition}
   \label{def:decidableprop}
   A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equalities}\index{decidable equalities}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
 \end{definition}
+
 \begin{example}\label{ex:Nisdecidable}
   The natural numbers $\NN$ has decidable equalities: we show that the proposition $m=n$ for $m,n:\NN$ is either true or false (so that it is given by a function in $\NN\times\NN\to\bn 2$). By the definition of $\NN$ we can (and must) do this by an induction on $m$ and $n$.  If both $m$ and $n$ are $0$ then $m=n$ is true.  If one of $m$ and $n$ is a successor and the other $0$ then $m=n$ is false.  If both $m$ and $n$ are successors, then we can reduce to an already treated case.
 \end{example}
