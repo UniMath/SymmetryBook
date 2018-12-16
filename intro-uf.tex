@@ -821,6 +821,58 @@ $\isEq(f)$ is a proposition by \cref{lem:isX-is-prop}.
 It follows by \cref{lem:subtype} that $X=Y$ is a set.  
 \end{proof}
 
+One may wonder whether $\NN$ as defined in \cref{sec:inductive-types}
+is a set. The answer is yes, but it is harder to prove than one
+would think. In fact we have the following theorem.
+
+\begin{theorem}\label{thm:sets-inductive-types}
+All inductive types in \cref{sec:inductive-types} are sets
+if all constituent types are sets.
+\end{theorem}
+
+\begin{proof}
+We only do the case of $\NN$ and leave the other cases to the reader
+(cf.\ \cref{xca:set-sum}). We have to prove that $n=m$ is a proposition
+for all $n,m:\NN$. A simple induction starting with proving that $0=0$
+is a proposition does not work. Instead we define by double induction
+on $n,m:\NN$ a type $\Eq_\NN(n,m)$ that is propositional and equal 
+to the type $n=m$.
+We set $\Eq_\NN(0,0)\defeq\bn{1}$ and 
+$\Eq_\NN(0,S(m))\defeq\Eq_\NN(S(n),0)\defeq\bn{0}$ for all $n,m:\NN$.
+We set $\Eq_\NN(S(n),S(m))\defeq\Eq_\NN(n,m)$. 
+By double induction on $n,m:\NN$ we get that $\Eq_\NN(n,m)$ is a proposition.
+From this definition it also
+follows by induction that $\Eq_\NN(n,n)=\bn{1}$ for all $n$. 
+Again by induction on $n:\NN$ we define $e(n):\Eq_\NN(n,n)$ by 
+setting $e(0)=0$ (well-typed since $0:\bn{1}\jdeq\Eq_\NN(0,0)$
+and $e(S(n))\defeq e(n)$ (also well-typed).
+
+Now it suffices to give equivalences $f_{n,m}: (n=m)\to\Eq_\NN(n,m)$.
+We define $f$ by induction setting $f_{n,n}(\refl{n})\defeq e(n)$.
+In order to prove that each $f_{n,m}$ is an equivalence, it is
+convenient to define functions $g_{n,m}$ in the other direction. 
+This we do by double induction on $n,m:\NN$. In the two (of four) 
+cases in which $n\neq m$ we have $\Eq_\NN(n,m)=\bn{0}$ 
+and use Ex Falso to define $g_{n,m}: \Eq_\NN(n,m)\to (n=m)$.
+In the two other cases we simply set $g_{n,n}(\_)=\refl{n}$.
+By induction on $p: n=m$ we get $g_{n,m}(f_{n,m}(p))=p$.
+By double induction on $n,m:\NN$ we get that $f_{n,m}(g_{n,m}(x))=x$
+for all $x:\Eq_\NN(n,m)$ (two of four cases are by Ex Falso
+and the others are identifications in a propositional type).
+
+We are now in position to prove that each $f_{n,m}$ is an equivalence,
+that is, that the fiber $f_{n,m}^{-1}(x)$ is contractible for all $x:\Eq_\NN(n,m)$.
+This is now easy using $g_{n,m}$. First, we can use $g_{n,m}(x)$
+paired with the proof above as the center of contraction.
+Second, if $f_{n,m}(p)=x$, then $p= g_{n,m}(f_{n,m}(p))= g_{n,m} (x)$.
+Finally, second components of pairs in the fiber have propositional 
+type and are therefore equal if in the same type.
+\end{proof}
+
+\begin{xca}\label{xca:set-sum}
+Show that $X\amalg Y$ is a set if $X$ and $Y$ are sets.
+\end{xca}
+
 \section{The type of finite types}
 \label{sec:typeFin}
 Recall from \cref{sec:finite-types} the types
