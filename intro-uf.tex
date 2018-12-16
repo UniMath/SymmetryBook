@@ -851,22 +851,25 @@ Now it suffices to give equivalences $f_{n,m}: (n=m)\to\Eq_\NN(n,m)$.
 We define $f$ by induction setting $f_{n,n}(\refl{n})\defeq e(n)$.
 In order to prove that each $f_{n,m}$ is an equivalence, it is
 convenient to define functions $g_{n,m}$ in the other direction. 
-This we do by double induction on $n,m:\NN$. In the two (of four) 
-cases in which $n\neq m$ we have $\Eq_\NN(n,m)=\bn{0}$ 
-and use Ex Falso to define $g_{n,m}: \Eq_\NN(n,m)\to (n=m)$.
-In the two other cases we simply set $g_{n,n}(\_)=\refl{n}$.
+This we do by double induction on $n,m:\NN$. In the base case
+we set $g_{0,0}(\_)=\refl{0}$. In the two cases $0,S(\_)$, $S(\_),0$
+for $n,m$ we have $\Eq_\NN(n,m)=\bn{0}$ 
+and define $g_{n,m}: \Eq_\NN(n,m)\to (n=m)$ by Ex Falso.
+In the last case we set $g_{S(n),S(m)}(x)=\ap{S} g_{n,m}(x)$,
+well-typed for all $x: \Eq_\NN(S(n),S(m))\defeq\Eq_\NN(n,m)$.
+By induction on $n:\NN$ we get $g_{n,n}(\_)=\refl{n}$.
 By induction on $p: n=m$ we get $g_{n,m}(f_{n,m}(p))=p$.
 By double induction on $n,m:\NN$ we get that $f_{n,m}(g_{n,m}(x))=x$
-for all $x:\Eq_\NN(n,m)$ (two of four cases are by Ex Falso
-and the others are identifications in a propositional type).
+for all $x:\Eq_\NN(n,m)$ 
+(all four cases are identifications in a propositional type).
 
 We are now in position to prove that each $f_{n,m}$ is an equivalence,
-that is, that the fiber $f_{n,m}^{-1}(x)$ is contractible for all $x:\Eq_\NN(n,m)$.
+that is, the fiber $f_{n,m}^{-1}(x)$ is contractible for all $x:\Eq_\NN(n,m)$.
 This is now easy using $g_{n,m}$. First, we can use $g_{n,m}(x)$
 paired with the proof above as the center of contraction.
 Second, if $f_{n,m}(p)=x$, then $p= g_{n,m}(f_{n,m}(p))= g_{n,m} (x)$.
 Finally, second components of pairs in the fiber have propositional 
-type and are therefore equal if in the same type.
+type and hence we are done.
 \end{proof}
 
 \begin{xca}\label{xca:set-sum}
