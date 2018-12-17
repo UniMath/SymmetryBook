@@ -885,6 +885,42 @@ type and hence we are done.
 Show that $X\amalg Y$ is a set if $X$ and $Y$ are sets.
 \end{xca}
 
+\section{More on natural numbers}
+\label{sec:more-on-N}
+\begin{definition}
+  \label{def:orderonN}
+  Let $n,m:\NN$. We say that $n$ is less than or equal to $m$, and write $n\leq m$, if there is a $k:\NN$ such that $n+k=m$. This $k$ is unique and we say that $n$ is less than $m$, and write $n<m$ if $k$ is not $0$. 
+\end{definition}
+Note that a double induction on $m:\NN$ and $n\NN$ shows that the proposition ``$n\leq m$'' is decidable.  Furthermore, we prove the standard properties, like reflexivity and transitivity for $\leq$, that $m\leq n$ and $n\leq m$ if and only if $m=n$ and that $\leq$ is preserved under addition. ((need we spell this out?  Shall we list it in a roster and give it as exercises?))
+\begin{definition}
+  \label{def:multiplicationinN}
+  Multiplication in $\NN$ is defined as follows: $m\cdot 0\defequi 0$ and $m\cdot(n+1)\defequi m\cdot n+m$.\footnote{would really be better to define this as the cardinality of $\bn m\times\bn n$, but I use this induction priciple later}
+\end{definition}
+From here one can prove the standard  properties of the natural numbers.  In particular, the so-called Arcimedean property 
+\begin{lemma}
+  \label{lem:archimed}
+  Given $m,n:\NN$ with $0<n$, there is a $k:\NN$ such that $m\leq n\cdot k$.
+\end{lemma}
+\begin{proof}
+  By induction on $m$: if $m$ is $0$, then $k$ can be zero too.  For a successor $m+1$ with a $k$ such that $m\leq n\cdot k$ we notice that $m+1\leq m+n\leq n\cdot k+n=n\cdot (k+1)$.
+\end{proof}
+Also, we have the following extremely important property:
+\begin{lemma}
+  \label{lem:Niswellordered}
+  The natural numbers are \emph{well ordered}, that is, if $S$ is a decidable subset of the natural number and a $t:S$, then there is a unique natural number $\min S$, called the \emph{minimum of $S$}, which lies in $S$ and satisfies the property that if $n:\NN$ lies in $S$, then $\min S\leq n$.  The minimum does not depend on $t:S$.
+\end{lemma}
+\begin{proof}
+  Let $S$ be given by the function $P\colon\NN\to\bn 2$.  Since there are but a finite number of natural numbers $s$ with $0\leq s\leq t$, we can test $P(s)$ iteratively for each $s$ and pick the first with $P(s)=1$. This is bound to terminate since $P(t)=1$.  Replacing $t$ with another $t':\NN$ with $P(t')=1$ does not change the result: the iteration will have terminated by the smaller one.\footnote{this is out of style, do change}
+\end{proof}
+
+
+\begin{example}\label{ex:Nisdecidable}
+  The natural numbers $\NN$ has decidable equality: we show that the proposition $m=n$ for $m,n:\NN$ is either true or false (so that it is given by a function in $\NN\times\NN\to\bn 2$). By the definition of $\NN$ we can (and must) do this by an induction on $m$ and $n$.  If both $m$ and $n$ are $0$ then $m=n$ is true.  If one of $m$ and $n$ is a successor and the other $0$ then $m=n$ is false.  If both $m$ and $n$ are successors, then we can reduce to an already treated case.
+\end{example}
+
+
+
+
 \section{The type of finite types}
 \label{sec:typeFin}
 Recall from \cref{sec:finite-types} the types
@@ -961,13 +997,8 @@ Alternatively, a function $f:A\to B$ in \emph{injective} if all the preimages $f
 
 \begin{definition}
   \label{def:decidableprop}
-  A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equalities}\index{decidable equalities}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
+  A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equality}\index{decidable equality}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
 \end{definition}
-
-\begin{example}\label{ex:Nisdecidable}
-  The natural numbers $\NN$ has decidable equalities: we show that the proposition $m=n$ for $m,n:\NN$ is either true or false (so that it is given by a function in $\NN\times\NN\to\bn 2$). By the definition of $\NN$ we can (and must) do this by an induction on $m$ and $n$.  If both $m$ and $n$ are $0$ then $m=n$ is true.  If one of $m$ and $n$ is a successor and the other $0$ then $m=n$ is false.  If both $m$ and $n$ are successors, then we can reduce to an already treated case.
-\end{example}
-
 
 
 % Local Variables:
