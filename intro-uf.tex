@@ -154,7 +154,7 @@ we may regard an element of $T(x)$ as providing additional {\em structure} on $x
 In that case, we will refer to the transport function $T(x) \to T(y)$ as 
 \emph{transport of structure} from $x$ to $y$. 
 
-Take, for example, $T(x)\defeq x=x$. 
+Take, for example, $T(x)\defeq (x=x)$. 
 Then $\trp_e$ is of type $x=x \to y=y$ and transports the
 symmetries of $x$ to the symmetries of $y$.
 
@@ -179,8 +179,8 @@ $Y(a)$, one for each $a:X$. We may refer to $X$ as the
 We have actually seen such functions already, for example,
 in P4 in \cref{sec:natural-numbers}, where
 we called $f(m):X(m)$ a `family of elements'. We can now
-also say $f: \prod_{m:\NN} X(m)$. Phrases with `family' and
-`for all' will continue to be used, always referring to functions
+also say $f: \prod_{m:\NN} X(m)$. However, we will continue to use
+phrases with `family' and `for all' as well, always referring to functions
 of appropriate types.
 
 A function $f : X \to Y$ is essentially the same thing as a function $f$ 
@@ -197,13 +197,13 @@ to be used implicitly later on.
 For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,y:X$, the function
 $\ap{f} : x = y \to f(x) = f(y)$ is defined by induction by setting 
 $\ap{f}(\refl{x})\defeq\refl{f(x)}$. More generally, 
-if $Z(x)$ is a type for every element $x:X$,
-and $f:\prod_{x:X} Z(x)$ is a dependent function, then
-the function $\apd{f}$ is a dependent function defined similarly:
+if $Z(x)$ is a type for every element $x:X$, and $f(x):Z(x)$
+a dependent function, then we define the dependent function
+$\apd{f}$ such that for every $e:x=y$
 \[
- \apd{f}: \prod_{e:x=y} \trp_{Z,e}(f(x)) = f(y);~\apd{f}(\refl{x})\defeq\refl{f(x)}
+ \apd{f}(e): (\trp_{Z,e}(f(x))) = f(y);~\apd{f}(\refl{x})\defeq\refl{f(x)}.
 \]
-The latter definition is correct since $\trp_{Z,\refl{x}}(f(x)) \jdeq f(x)$. 
+This is well-typed since $\trp_{Z,\refl{x}}(f(x)) \jdeq f(x)$. 
 \end{definition}
 
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, 
@@ -292,9 +292,11 @@ Two important examples of such constructions are:
 $\fst:(\sum _{x:X} Y(x)) \to X$, 
 $\fst(a,b)\defeq a$;
 \item \emph{second projection},
-$\snd: \prod_{z: \sum _{x:X} Y(x)} Y(\fst z)$,
+$\snd(a,b): Y(a)$,
 $\snd(a,b)\defeq b$.
 \end{enumerate}
+In (2), the type of $\snd$ is in full
+$\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
 
 Equality of two elements $(a_1,b_1),(a_2,b_2)$ of $\sum _{x:X} Y(x)$ is 
 inductively defined in \cref{sec:identity-types}, like for any other type.
@@ -438,16 +440,23 @@ to Voevodsky.
 \label{def:equivalence}
 A function $f : X \to Y$ is called an \emph{equivalence},
 denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
+\end{definition}
 
 Let $t(y): \iscontr(f^{-1}(y))$ for all $y:Y$.
 Using $t$ we can define a canonical inverse function
-that we (abusively) also denote by $f^{-1}$,
+%that we (abusively) also denote by $f^{-1}$,
 by setting $f^{-1}(y)\defeq\fst(\fst(t(y)))$.
+Note that we use $f^{-1}$ both for the fibers and
+for the inverse function in case the fibers are contractible.
+The dependency of $f^{-1}$ on $t$ is harmless by the very nature of
+being contractible: different $t$'s would give the same
+function by the principle of extensionality.
+
 Clearly, $f(f^{-1}(y)) = y$ by unfolding all definitions.
 Moreover, we have $(x,refl{f(x)}) : f^{-1}(f(x)$,
-with the latter as the \emph{type} that $t(f(x))$
+with the latter as the \emph{fiber} that $t(f(x))$
 proves contractible. Hence the center of contraction
-$\fst(t(f(x))$ is equal to $(x,refl{f(x)})$, and hence
+$\fst(t(f(x))$ is equal to $(x,refl{f(x)})$, and so
 $f^{-1}(f(x))\jdeq(\fst(\fst(t(f(x))) = x$.
 
 In the above case we say that the types
@@ -457,7 +466,7 @@ between two types, we define the type of equivalences from $X$ to $Y$ by
 \[
 (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
 \]
-\end{definition}
+
 
 \begin{xca}\label{xca:fstfstcontractiblefiber}
 Make sure you understand the two applications of $\fst$
