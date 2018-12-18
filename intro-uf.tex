@@ -494,6 +494,22 @@ Then for every $x,y$ in $X$ and $e: x=y$, the function $\trp_{T,e}$
 is an equivalence from $T(x)$ to $T(y)$, so $T(x)\equiv T(y)$.
 \end{lemma}
 
+The following lemma gives an equivalent characterization
+of equivalence that is sometimes easy to use.
+
+\begin{lemma}\label{lem:equivalence-via-inverse}
+Let $X,Y$ be types. A function $f: X\to Y$ is an equivalence
+if and only if there exists a function $g: Y\to X$ such that
+for all $x:X$ we have $g(f(x))=x$ and for all 
+$y:Y$ we have $f(g(y))=y$.
+\end{lemma}
+\begin{proof}
+If $f: X\to Y$ is an equivalence we can take $g=f^{-1}$.
+For the converse, see
+\cite[Chapter]{hottbook}, or
+\href{https://github.com/UniMath/UniMath/}{\url{Unimath/Foundations/PartA.v, isweq_iso}}.
+\end{proof}
+
 \section{Universes and univalence}\label{sec:univax}
 
 Univalence expresses, in a way made precise below, that
@@ -709,29 +725,36 @@ Let $Z(a)$ be an $n$-type depending on $a:A$. Then we have:
 \end{enumerate}
 \end{lemma}
 
+We recall the following definitions.
+\begin{align*}
+\isprop(P) &\defeq\prod\nolimits_{p,q:P}(p=q)\\
+\isset(S) &\defeq\prod\nolimits_{x,y:S}\isprop(x=y)\jdeq
+                  \prod\nolimits_{x,y:S}\prod\nolimits_{p,q:(x=y)}(p=q)\\
+\isgrpd(G) &\defeq\prod\nolimits_{g,h:G}\isset(g=h)\jdeq \ldots\\
+\end{align*}
+
 \begin{lemma}\label{lem:isX-is-prop}
   For any type $A$, the types 
-$\iscontr(A)$, $\isprop(A)$, $\isset(A)$, $\isconn(A)$, etc.\ are propositions.
+$\iscontr(A)$, $\isprop(P)$, $\isset(S)$, $\isgrpd(G)$, etc.\ are propositions.
 (We shall only use the notation $\mathrm{isX}(A)$ for propositions about $A$.)
 \end{lemma}
 
 \begin{proof}
 Recall that $\iscontr(A)$ is $\sum_{a:A} \prod_{b:A} (a=b)$.
-It is clear that $A$ is a proposition if $\iscontr(A)$.
 Let $(a,f)$ and $(b,g)$ be elements of the type $\iscontr(A)$.
 For $(a,f) = (b,g)$ we need an $e : a=b$ and an $e' : \trp_e f = g$.
-For $e$ we can take $f(a)$ and for $e'$ we invoke 
-\cref{lem:prop-utils}(\ref{prop-utils-pi}).
-
-Recall that $\isprop(A)$ is $\prod_{a,b:A}(a=b)$.
-If $p$ is an element of $\isprop(A)$, then $A$ is a proposition
-and hence a set by \cref{lem:prop-is-set}. Hence $\isprop(A)$
-is a proposition by \cref{lem:prop-utils}(\ref{prop-utils-pi}).
+For $e$ we can take $f(b)$. Clearly, $A$ is a proposition and hence
+a set by \cref{lem:prop-is-set}. Hence the type of $g$ is a proposition
+by \cref{lem:prop-utils}(\ref{prop-utils-pi}), which gives us $e'$.
 
 We delegate the other (and future) cases to the exercises.
 \end{proof}
 
-
+\begin{xca}\label{xca:isX-is-prop}
+Make sure you understand that $\isprop(P)$ is a proposition,
+using the same lemmas as for $\iscontr(A)$.
+Show that $\isset(S)$ and $\isgrpd(G)$ are propositions.
+\end{xca}
 
 \section{Logical operations on propositions; Propositional truncation}
 \label{sec:logical-operations}
@@ -834,7 +857,7 @@ One may wonder whether $\NN$ as defined in \cref{sec:inductive-types}
 is a set. The answer is yes, but it is harder to prove than one
 would think. In fact we have the following theorem.
 
-\begin{theorem}\label{thm:sets-inductive-types}
+\begin{theorem}\label{thm:isset-inductive-types}
 All inductive types in \cref{sec:inductive-types} are sets
 if all constituent types are sets.
 \end{theorem}
@@ -861,8 +884,8 @@ We define $f$ by induction setting $f_{n,n}(\refl{n})\defeq e(n)$.
 In order to prove that each $f_{n,m}$ is an equivalence, it is
 convenient to define functions $g_{n,m}$ in the other direction. 
 This we do by double induction on $n,m:\NN$. In the base case
-we set $g_{0,0}(\_)=\refl{0}$. In the two cases $0,S(\_)$, $S(\_),0$
-for $n,m$ we have $\Eq_\NN(n,m)=\bn{0}$ 
+we set $g_{0,0}(\_)=\refl{0}$. In the two cases $0,S(\_)$
+and $S(\_),0$ for $n,m$ we have $\Eq_\NN(n,m)=\bn{0}$ 
 and define $g_{n,m}: \Eq_\NN(n,m)\to (n=m)$ by Ex Falso.
 In the last case we set $g_{S(n),S(m)}(x)=\ap{S} g_{n,m}(x)$,
 well-typed for all $x: \Eq_\NN(S(n),S(m))\defeq\Eq_\NN(n,m)$.
@@ -872,13 +895,8 @@ By double induction on $n,m:\NN$ we get that $f_{n,m}(g_{n,m}(x))=x$
 for all $x:\Eq_\NN(n,m)$ 
 (all four cases are identifications in a propositional type).
 
-We are now in position to prove that each $f_{n,m}$ is an equivalence,
-that is, the fiber $f_{n,m}^{-1}(x)$ is contractible for all $x:\Eq_\NN(n,m)$.
-This is now easy using $g_{n,m}$. First, we can use $g_{n,m}(x)$
-paired with the proof above as the center of contraction.
-Second, if $f_{n,m}(p)=x$, then $p= g_{n,m}(f_{n,m}(p))= g_{n,m} (x)$.
-Finally, second components of pairs in the fiber have propositional 
-type and hence we are done.
+Now it follows by \cref{lem:equivalence-via-inverse} 
+that each $f_{n,m}$ is an equivalence.
 \end{proof}
 
 \begin{xca}\label{xca:set-sum}
@@ -887,15 +905,36 @@ Show that $X\amalg Y$ is a set if $X$ and $Y$ are sets.
 
 \section{More on natural numbers}
 \label{sec:more-on-N}
+
+Recall from \cref{sec:natural-numbers} the definition of addition in $\NN$,
+by $n+0\defeq n$ and $n+S(m)\defeq S(n+m)$. In the same way we can define
+multiplication in $\NN$, setting $m\cdot 0\defeq 0$ and 
+$m\cdot(n+1)\defeq (m\cdot n) + m$. Elementary properties of addition and
+multiplication can be proved in type theory in the usual way.
+We freely use them, sometimes even in definitions, leaving most of the
+proofs to the reader.
 \begin{definition}
-  \label{def:orderonN}
-  Let $n,m:\NN$. We say that $n$ is less than or equal to $m$, and write $n\leq m$, if there is a $k:\NN$ such that $n+k=m$. This $k$ is unique and we say that $n$ is less than $m$, and write $n<m$ if $k$ is not $0$. 
+\label{def:orderonN}
+  Let $n,m:\NN$. We say that $n$ is less than or equal to $m$, and write $n\leq m$, if there is a $k:\NN$ such that $n+k=m$. This $k$ is unique and we say 
+that $n$ is less than $m$, and write $n<m$, if this $k$ is not $0$. 
 \end{definition}
-Note that a double induction on $m:\NN$ and $n\NN$ shows that the proposition ``$n\leq m$'' is decidable.  Furthermore, we prove the standard properties, like reflexivity and transitivity for $\leq$, that $m\leq n$ and $n\leq m$ if and only if $m=n$ and that $\leq$ is preserved under addition. ((need we spell this out?  Shall we list it in a roster and give it as exercises?))
-\begin{definition}
-  \label{def:multiplicationinN}
-  Multiplication in $\NN$ is defined as follows: $m\cdot 0\defequi 0$ and $m\cdot(n+1)\defequi m\cdot n+m$.\footnote{would really be better to define this as the cardinality of $\bn m\times\bn n$, but I use this induction priciple later}
-\end{definition}
+
+We will prove the following lemma without using the 
+Law of the Excluded Middle (LEM).
+\begin{lemma}\label{lem:dec-eq+order-N}
+The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
+\end{lemma}
+\begin{proof}
+All are proved by double induction on $n:\NN$ and $m\NN$.
+\end{proof}
+
+\begin{xca}\label{xca:eq+order-N}
+The relations $\leq$ and $<$ on $\NN$ are transitive and preserved under addition. 
+We have $m\leq n$ if and only if $m<n$ or $m=n$ (so $\leq$ is reflexive).
+Furthermore, $m\leq n$ and $n\leq m$ if and only if $m=n$,
+and not $m<n$ and $n<m$.
+\end{xca}
+
 From here one can prove the standard  properties of the natural numbers.  In particular, the so-called Arcimedean property 
 \begin{lemma}
   \label{lem:archimed}
