@@ -1,6 +1,6 @@
 \label{ch:groups}
 
-\subsection{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
+\section{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
 The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
 
 
@@ -18,10 +18,30 @@ An inverse equivalence is given by  sending $P:A\to\UU$ to $(\sum_{a:A}P(a), \ma
 \end{lemma}
 
 \subsection{Equivalences of connected types}
-\label{sec:eqconntypes}
+\label{sec:eqconntypes}((to be moved AFTER connected types, coverings and injections))
 
+\begin{lemma}
+  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function and let $q:f(x_0)=_Yf(x_1)$. Then the following types are equivalent
+  \begin{enumerate}
+  \item the preimage of $q$ of the induced function 
+    $$f^=_{x_0,x_1}:(x_0=_Xx_1)\to (f(x_0)=_Yf(x_1))$$
+  \item $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ and
+  \item $\sum_{p:x_0=x_1}q=f(p)$.
+  \end{enumerate}
+If in addition $X$ and $Y$ are connected, then
+\begin{enumerate}
+\item $f$ is an equivalence if and only $f^=_{x_0,x_1}$ is an equivalence and
+\item $f$ is a covering if and only if  $f^=_{x_0,x_1}$ is an injection.
+\end{enumerate}
 
-\begin{lemma}\label{lem:eqofconntypes}
+\end{lemma}
+\begin{proof}
+  Steal the one below.
+\end{proof}
+
+\begin{lemma}\label{lem:eqofconntypes}\footnote{
+%The argument for a general group and the torsors over its abstract group is VERY similar.  
+Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread}
   Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is an equivalence if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is.\footnote{note to self: try to be consistent in writing equalities with right variance (as I hope I have managed to do here)}
 \end{lemma}
 \begin{proof}
@@ -30,6 +50,10 @@ An inverse equivalence is given by  sending $P:A\to\UU$ to $(\sum_{a:A}P(a), \ma
 Consider the induced map $Pf$ from $\sum_{x:X}x_0=x$ to $\sum_{y:Y}y_0=y$.  Its fiber over $(y_0,\refl{y_0})$ is 
 $$(Pf)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a map of contractible types.  We see that the projection $(Pf)^{-1}(y_0,\refl{y_0})\to f^{-1}(y_0)$ is an equivalence once we notice that the fiber over $(x_1,q:y_0=f(x_1)) $ is equivalent to the fiber $\sum_{p:x_0=x_1}q=f(p)$ over $q$ of the induced function $x_0=x_1$ to $y_0=f(x_1)$.
 \end{proof}
+\begin{lemma}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
+\end{lemma}
+
 
 \subsection{Connected types}
 \label{sec:connectedtypes}
@@ -243,9 +267,6 @@ $R(\base)=\zet$ and $R(\Sloop)=\ua(S):(\zet=\zet)$, where $S$ is the successor f
 Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
 ((finish!!! e.g. as in the book))
 \end{proof}
-\begin{definition}
-  \label{def:image}
-\end{definition}
 \begin{remark}
   Through \cref{lem:freeloopspace} we can get a different perspective on the circle which highlights it as a type classifying very simple symmetries.
 By \cref{lem:freeloopspace} (moving up one universe), a type family $S^1\to\UU$ is uniquely given by a type $X:\UU$ together with a $p:X=_\UU X$, with no further requirements on $p$.  We have seen one example in \cref{def:zet}, namely the one given by the set $\zet$ of integers together with the element $s:\zet=\zet$ given by the successor.  
@@ -266,7 +287,7 @@ This discussion tells us that the following definition makes sense:
 
 We are going to prove that $c$ is an equivalence.  This is greatly simplified by the fact that we already know that both $S^1$ and $C$ are connected groupoids, since then \cref{lem:eqofconntypes} says that it is enough to show that $c$ induces an equivalence of symmetries.\footnote{of course, the proof of \cref{lem:S1groupoid} \emph{could} attack $c$ directly, but that would compound the technicalities already present there: at present I prefer splitting it up like this.  I am open for letting the proof of \cref{lem:S1groupoid} be postponed till the end of a chapter, so as not to disrupt the flow of ideas}
 
-\begin{theorem}
+\begin{theorem}\label{thm:S1bysymmetries}
   The function $c:S^1\to C$ is an equivalence.
 \end{theorem}
 \begin{proof}
@@ -284,7 +305,7 @@ The composition with the function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending
 %   ((TODO))
 % As an illustration of things to come in a simpler setting, we can give the torsor definition of the circle, where Marc makes the simplifying observation that (since the integers is free on one generator) this can be coded in terms of the successor and there is a priori no need to talk about the abstract group.  In short: an (abstract) $\ZZ$-set is uniquely given by a set $X$ with an identity $f: X=_{\Set}X$.  A $\ZZ$-torsor $(X,f)$ is a $\ZZ$-set (merely) equal to $(\zet,S)$ ($S$ is the successor), that, there is a $p:X=\zet$, so that $Sp=_{X=X} pf$.  This is based at (the pricipal $\ZZ$-torsor represented by) $(\zet,S)$ and $(\zet,S)=(\zet,S)$ consists of $f:\zet=\zet$ s.t. $Sf=fS$.  Such an $f$ must be given by addition by the integer $f(0)$.  This gives us an equivalence between $S^1$ and the type of (secret) $\ZZ$-torsors.  This will be trivial if we have shown that a map of connected groupoids is an equivalence if it induces an equivalence on the identity sets.
 \end{remark}
-((The argument for a general group and the torsors over its abstract group is VERY similar.  Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread))
+
 
 \begin{remark}
   Do we want to present the coverings of the circle (and hence all subgroups of the integers) now?  If we don't insist on proving that these are are all this is elementary.
@@ -673,7 +694,7 @@ $$\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G
 \end{example}
 \begin{example}\label{def:trivGset}
   If $G$ is a group (or \inftygp), and $X$ is a set (or type) then
-$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this sort (regardless of $X$ are called \emph{trivial $G$-sets (or $G$-types)}.
+$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets (or $G$-types)}.
 \end{example}
 
 \begin{remark}
@@ -682,7 +703,7 @@ $$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this 
 More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors over the component $\UU_{(X)}=\sum_{Y:\UU}||Y=X(\pt_G)||$, which contains the point $X(\pt_G)$.  Hence, without loss of information, $X$ can be considered a homomorphism 
 $$G\to\Sigma_{X(\pt_G)}$$ from $G$ to the automorphism group of $X(\pt_G)$.
 
-Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to\UU_{(X)}$, then the composite
+Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to\UU_{(X)}$), then the composite
 $$BG\to \UU_{(X)}\to \UU$$
 is a $G$-type with $X$ exactly the value of $\pt_G$.
 
