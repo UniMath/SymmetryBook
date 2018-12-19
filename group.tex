@@ -1,7 +1,9 @@
 \label{ch:groups}
 
-\subsection{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
+\section{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
 The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
+
+
 
 \subsection{Type families}
 \label{sec:typefam}
@@ -14,6 +16,44 @@ $$
 given by $\mathrm{preim}(B,f)(a)=f^{-1}(a)$ is an equivalence.\footnote{in some higher universe}
 An inverse equivalence is given by  sending $P:A\to\UU$ to $(\sum_{a:A}P(a), \mathrm{pr_1})$.
 \end{lemma}
+
+\subsection{Equivalences of connected types}
+\label{sec:eqconntypes}((to be moved AFTER connected types, coverings and injections))
+
+\begin{lemma}
+  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function and let $q:f(x_0)=_Yf(x_1)$. Then the following types are equivalent
+  \begin{enumerate}
+  \item the preimage of $q$ of the induced function 
+    $$f^=_{x_0,x_1}:(x_0=_Xx_1)\to (f(x_0)=_Yf(x_1))$$
+  \item $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ and
+  \item $\sum_{p:x_0=x_1}q=f(p)$.
+  \end{enumerate}
+If in addition $X$ and $Y$ are connected, then
+\begin{enumerate}
+\item $f$ is an equivalence if and only $f^=_{x_0,x_1}$ is an equivalence and
+\item $f$ is a covering if and only if  $f^=_{x_0,x_1}$ is an injection.
+\end{enumerate}
+
+\end{lemma}
+\begin{proof}
+  Steal the one below.
+\end{proof}
+
+\begin{lemma}\label{lem:eqofconntypes}\footnote{
+%The argument for a general group and the torsors over its abstract group is VERY similar.  
+Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is an equivalence if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is.\footnote{note to self: try to be consistent in writing equalities with right variance (as I hope I have managed to do here)}
+\end{lemma}
+\begin{proof}
+  If $f$ is an equivalence, it follows automatically that the function of identity types is, so we concentrate on the other implication and assume the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an equivalence.  We want to show that all fibers of $f$ are contractible, but since $Y$ is connected it is enough to consider the fiber $f^{-1}(y_0)\defequi\sum_{x:X}y_0=f(x)$ over $y_0\defequi f(x_0)$.  
+
+Consider the induced map $Pf$ from $\sum_{x:X}x_0=x$ to $\sum_{y:Y}y_0=y$.  Its fiber over $(y_0,\refl{y_0})$ is 
+$$(Pf)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a map of contractible types.  We see that the projection $(Pf)^{-1}(y_0,\refl{y_0})\to f^{-1}(y_0)$ is an equivalence once we notice that the fiber over $(x_1,q:y_0=f(x_1)) $ is equivalent to the fiber $\sum_{p:x_0=x_1}q=f(p)$ over $q$ of the induced function $x_0=x_1$ to $y_0=f(x_1)$.
+\end{proof}
+\begin{lemma}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
+\end{lemma}
+
 
 \subsection{Connected types}
 \label{sec:connectedtypes}
@@ -104,6 +144,7 @@ Note that we can have that $g^n=g^m$ even if $m$ and $n$ are different.  For ins
    \end{example}
 This example tells us that if we want to start counting symmetries we should extend our type $\NN$ of natural numbers to include negatives.  Rather than ``adjoining negatives'' we do as we do when we define the rationals: heuristically, an integer is the set of pairs $(m,n)$ of natural numbers, subject to the relation that $(m,n)=(m',n')$ if $m+n'=m'+n$.\footnote{picture}.  If $m\geq n$, then $(m,n)=(m-n,0)$ and if $m\leq n$, then $(m,n)=(0,n-m)$.  We include the natural numbers as classes of the form $(m,0)$ and call the ones of the form $(0,n)$ ``negative numbers''.  The formal definition is as follows.
 \begin{definition}
+  \label{def:zet}\footnote{To the one who ports: I \emph{would} have preferred to define $\zet$ as a set quotient of $\NN\times\NN$, but I hoped we could avoid the book discussion (257).  A price is paid when defining the successor.  Given the disclaimer following the formal definition, it is safe to change the definition if you like}
   The \emph{set of integers} is the set
 $$\zet\defequi \sum_{(m,n):\NN\times\NN}(r(m,n)=_{\NN\times\NN}(m,n)),$$
 where $r:\NN\times\NN\to\NN\times\NN$ is given by
@@ -114,8 +155,12 @@ $$r(m,n)\defequi
 \end{cases}
 $$
 We define the \emph{standard inclusion} 
-$$i:\NN\to\zet$$ by $i(m)=((m,0)\refl {(m,0)})$ (makes sense since $r(m,0)\defequi(m,0)$), the \emph{negative inclusion} $-:\NN\to\zet$ by $-n=((0,n),\refl{(0,n)})$ and the quotient $q:\NN\times\NN\to\zet$ by $q(m,n)=(r(m,n),\refl{r(m,n)})$ (makes sense since $r(r(m,n))\oldequiv r(m,n)$).
+$$i:\NN\to\zet$$ by $i(m)=((m,0)\refl {(m,0)})$ (makes sense since $r(m,0)\defequi(m,0)$), the \emph{negative inclusion} $-:\NN\to\zet$ by $-n=((0,n),\refl{(0,n)})$ and the quotient $q:\NN\times\NN\to\zet$ by $q(m,n)=(r(m,n),\refl{r(m,n)})$ (makes sense since $r(r(m,n))\oldequiv r(m,n)$).  
+
+The successor $s:\zet=\zet$ is defined through univalence from $S\colon\NN\times\NN\to\NN\times\NN$ with $S(i(n))=i(S(n))$  and $S(-(Sn))=-n$ for $n:\NN$ (check that $S$ is an equivalence: ``any integer is the successor of exactly one integer'').
 \end{definition}
+
+Not wishing to mystify things more than necessary, we will refer to $i(n):\zet$ for $n:\NN$ as ``$n:\zet$'', so that any element of $\zet$ is ``plus or minus a natural number'', dividing the non-zero integers into the positive and negative integers.  We extend the order relation by saying that positive integers are greater than negative integes and by saying that $-m\leq -n$ if $n\leq m$ for $m,n:\NN$.
 
 % \subsubsection{Equivalences}
 % \label{sec:equivalences}
@@ -220,33 +265,47 @@ sending $a:\bn{2} $ to $(a,\refl a)$ is an equivalence.  Composing further with 
 $$P,R:S^1\to\UU$$ (actually, both families have values in sets).  The first is the family defined by $P(z)\defequi(z=\base)$ for $z:S^1$ and the second is defined by the induction priciple for the circle by  % $E(\Sloop)(p)=\trans{}_{z,\base,\base}(p)(\Sloop):(z=\base)$
 $R(\base)=\zet$ and $R(\Sloop)=\ua(S):(\zet=\zet)$, where $S$ is the successor function.\footnote{must define.  Shall $\ua$ be visible?}%8.1
 Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
-((finish!!!))
+((finish!!! e.g. as in the book))
 \end{proof}
-\begin{definition}
-  \label{def:image}
-\end{definition}
 \begin{remark}
-  Through \cref{lem:freeloopspace} we can get a different perspective on the circle which highlights it as an object classifying very simple symmetries.
+  Through \cref{lem:freeloopspace} we can get a different perspective on the circle which highlights it as a type classifying very simple symmetries.
+By \cref{lem:freeloopspace} (moving up one universe), a type family $S^1\to\UU$ is uniquely given by a type $X:\UU$ together with a $p:X=_\UU X$, with no further requirements on $p$.  We have seen one example in \cref{def:zet}, namely the one given by the set $\zet$ of integers together with the element $s:\zet=\zet$ given by the successor.  
 
-A type family $S^1\to\UU$ is uniquely given by a type $X:\UU$ together with a $p:X=_\UU X$, with no further requirements on $p$.  We have seen one example, namely the one given by the set $\zet$ of integers together with the element $s:\zet=\zet$ given by the successor.\footnote{brutal honesty would dictate $s=\ua(S)$}  The importance of this example will become apparent when we eventully explain that \emph{the circle is equivalent to the component $C$ of $\sum{X:\UU}X=_{\UU}X$ containing $(\zet,s)$}. 
+The importance of this example will become apparent when we eventually explain that \emph{the circle is equivalent to the component $C$ of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,s)$}. 
 
-Heading towards this goal, we investigate this component a bit further.  Firstly, if $(X,f):\sum{X:\UU}X=_{\UU}X$, then the identity type $(\zet,s)=(X,f)$ is $\sum_{p:\zet=X}fp=_{\zet=X}ps$ (the equation $fp=ps$ comes from the fact that equality in the identity type means that the transport of $s$ along $p$ is $f$).  Since $\zet$ is a set, this identity type is a proposition and so our component $C$ is a connected groupoid.  We investigate the symmetries $(\zet,s)=_C(\zet,s)$, and see that this type is equivalent to $\sum_{p:\zet=\zet}sp=ps$.  \footnote{((comebackhere))181218}
+Heading towards this goal, we investigate this component a bit further.  Firstly, if $(X,f):\sum_{X:\UU}X=_{\UU}X$, then the identity type $(\zet,s)=(X,f)$ is equivalent
+$$\sum_{p:\zet=X}fp=_{\zet=X}ps;$$ the equation $fp=ps$ comes from the fact that equality in the identity type means that the transport of $s$ along $p$ is equal to $f$, in other words we have an element in $p^{-1}sp=_{X=X}f$ (which we have transported for convenience to an element in $fp=_{\zet=X}ps$).  Since $\zet$ is a set, this identity type is a proposition and so our component $C$ is a connected groupoid.  
 
-  ((TODO))
-As an illustration of things to come in a simpler setting, we can give the torsor definition of the circle, where Marc makes the simplifying observation that (since the integers is free on one generator) this can be coded in terms of the successor and there is a priori no need to talk about the abstract group.  In short: an (abstract) $\ZZ$-set is uniquely given by a set $X$ with an identity $f: X=_{\Set}X$.  A $\ZZ$-torsor $(X,f)$ is a $\ZZ$-set (merely) equal to $(\zet,S)$ ($S$ is the successor), that, there is a $p:X=\zet$, so that $Sp=_{X=X} pf$.  This is based at (the pricipal $\ZZ$-torsor represented by) $(\zet,S)$ and $(\zet,S)=(\zet,S)$ consists of $f:\zet=\zet$ s.t. $Sf=fS$.  Such an $f$ must be given by addition by the integer $f(0)$.  This gives us an equivalence between $S^1$ and the type of (secret) $\ZZ$-torsors.  This will be trivial if we have shown that a map of connected groupoids is an equivalence if it induces an equivalence on the identity sets.
-\end{remark}
-((to do it as suggested in the remark we're going to need the following since it is going to reduce the burden of showing that $S^1$ is equivalent to the alternative model unto showing that it induces an equivalence $\zet\to\zet$.  
+In particular, the type of symmetries $(\zet,s)=_C(\zet,s)$ is equivalent to $\sum_{p:\zet=\zet}sp=ps$.  
 
-The argument for a general group and the torsors over its abstract group is VERY similar.  Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread))
-\begin{lemma}
-  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is an equivalence if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is.\footnote{note to self: try to be consistent in writing equalities with right variance (as I hope I have managed to do here)}
-\end{lemma}
+This discussion tells us that the following definition makes sense:
+
+\begin{definition}\label{def:S1toC}
+  Let $C$ be the component of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,s)$.
+  Let $$c:S^1\to C$$ be defined by $c(\base)\defequi (\zet,s)$ and $c(\Sloop):((\zet,s)=_C(\zet,s))$ be given by the successor $s:\zet=\zet$ (and $\refl{}:ss=ss$)
+\end{definition}
+
+We are going to prove that $c$ is an equivalence.  This is greatly simplified by the fact that we already know that both $S^1$ and $C$ are connected groupoids, since then \cref{lem:eqofconntypes} says that it is enough to show that $c$ induces an equivalence of symmetries.\footnote{of course, the proof of \cref{lem:S1groupoid} \emph{could} attack $c$ directly, but that would compound the technicalities already present there: at present I prefer splitting it up like this.  I am open for letting the proof of \cref{lem:S1groupoid} be postponed till the end of a chapter, so as not to disrupt the flow of ideas}
+
+\begin{theorem}\label{thm:S1bysymmetries}
+  The function $c:S^1\to C$ is an equivalence.
+\end{theorem}
 \begin{proof}
-  If $f$ is an equivalence, it follows automatically that the function of identity types is, so we concentrate on the other implication and assume the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an equivalence.  We want to show that all fibers of $f$ are contractible, but since $Y$ is connected it is enough to consider the fiber $f^{-1}(y_0)\defequi\sum_{x:X}y_0=f(x)$ over $y_0\defequi f(x_0)$.  
+  In view of \cref{lem:eqofconntypes} we only need to show that the induced function of symmetries $(\base=_{S^1}\base)\to((\zet,s)=_C(\zet,s))$ is an equivalence.\footnote{ ((can we call equivalences between sets bijections?)).}  
 
-Consider the induced map $Pf$ from $\sum_{x:X}x_0=x$ to $\sum_{y:Y}y_0=y$.  Its fiber over $(y_0,\refl{y_0})$ is 
-$$(Pf)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a map of contractible types.  We see that the projection $(Pf)^{-1}(y_0,\refl{y_0})\to f^{-1}(y_0)$ is an equivalence once we notice that the fiber over $(x_1,q:y_0=f(x_1)) $ is equivalent to the fiber $\sum_{p:x_0=x_1}q=f(p)$ over $q$ of the induced function $x_0=x_1$ to $y_0=f(x_1)$.
+The composition with the function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^n$ gives us a function $w:\zet\to((\zet,s)=_C(\zet,s))$ with $w(n)=(s^n,!:ss^n=s^ns)$.  From \cref{lem:S1groupoid} we know that $\Sloop^-$ is an equivalence, so we only need to show that $w$ is an equivalence\footnote{I may have used 2-out-of-3 before, we probably need to include it somewhere, though by univalence it hardly seems necessary}.  If $p:\zet=\zet$ with $!:sp=ps$, we get by induction on $n:\zet$ (induction for positive and negative $n$ separately) that $p(n)=n+p(0)$.  Hence, all the elements in the preimage $w^{-1}(p,!:sp=ps)$ are equal to $(p(0),!)$.  
 \end{proof}
+
+% Now, consider the function 
+% $$f:\sum_{p:\zet=\zet}(sp=ps)\to\zet,\qquad f(p,!)=p(0).$$  If $a:\zet$, then $f^{-1}(a)$ consists of the $p:\zet=\zet$ with $sp=ps$ and $p(0)=a$ (the last two are propositions), but by induction we see that $p(n)=n+a$ for all $n:\zet$ (separate induction on positive and negative numbers).  In other words, all elements in the set $f^{-1}(a)$ are equal, and so $f$ is an equivalence
+
+\footnote{((comebackhere))181219}
+
+
+%   ((TODO))
+% As an illustration of things to come in a simpler setting, we can give the torsor definition of the circle, where Marc makes the simplifying observation that (since the integers is free on one generator) this can be coded in terms of the successor and there is a priori no need to talk about the abstract group.  In short: an (abstract) $\ZZ$-set is uniquely given by a set $X$ with an identity $f: X=_{\Set}X$.  A $\ZZ$-torsor $(X,f)$ is a $\ZZ$-set (merely) equal to $(\zet,S)$ ($S$ is the successor), that, there is a $p:X=\zet$, so that $Sp=_{X=X} pf$.  This is based at (the pricipal $\ZZ$-torsor represented by) $(\zet,S)$ and $(\zet,S)=(\zet,S)$ consists of $f:\zet=\zet$ s.t. $Sf=fS$.  Such an $f$ must be given by addition by the integer $f(0)$.  This gives us an equivalence between $S^1$ and the type of (secret) $\ZZ$-torsors.  This will be trivial if we have shown that a map of connected groupoids is an equivalence if it induces an equivalence on the identity sets.
+\end{remark}
+
 
 \begin{remark}
   Do we want to present the coverings of the circle (and hence all subgroups of the integers) now?  If we don't insist on proving that these are are all this is elementary.
@@ -635,7 +694,7 @@ $$\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G
 \end{example}
 \begin{example}\label{def:trivGset}
   If $G$ is a group (or \inftygp), and $X$ is a set (or type) then
-$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this sort (regardless of $X$ are called \emph{trivial $G$-sets (or $G$-types)}.
+$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets (or $G$-types)}.
 \end{example}
 
 \begin{remark}
@@ -644,7 +703,7 @@ $$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this 
 More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors over the component $\UU_{(X)}=\sum_{Y:\UU}||Y=X(\pt_G)||$, which contains the point $X(\pt_G)$.  Hence, without loss of information, $X$ can be considered a homomorphism 
 $$G\to\Sigma_{X(\pt_G)}$$ from $G$ to the automorphism group of $X(\pt_G)$.
 
-Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to\UU_{(X)}$, then the composite
+Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to\UU_{(X)}$), then the composite
 $$BG\to \UU_{(X)}\to \UU$$
 is a $G$-type with $X$ exactly the value of $\pt_G$.
 
