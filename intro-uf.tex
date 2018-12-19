@@ -508,6 +508,7 @@ If $f: X\to Y$ is an equivalence we can take $g=f^{-1}$.
 For the converse, see
 \cite[Chapter]{hottbook}, or
 \href{https://github.com/UniMath/UniMath/}{\url{Unimath/Foundations/PartA.v, isweq_iso}}.
+OK? VVs PROOF IS PERFECT BUT WILL THE LINK BE STABLE?
 \end{proof}
 
 \section{Universes and univalence}\label{sec:univax}
@@ -663,7 +664,7 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \item\label{prop-utils-implication} $A\to P$ is a proposition;
 \item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
-\item\label{prop-utils-eq} $P = Q$ is a proposition.
+\item\label{prop-utils-eq} $P \liff Q$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
@@ -688,10 +689,9 @@ If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
 is proved componentwise. 
 
 (\ref{prop-utils-eq})
-By UNIVALENCE, $P = Q$ is equivalent to
+Using \cref{lem:equivalence-via-inverse}, $P \liff Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
-combining (\ref{prop-utils-implication}) and
-(\ref{prop-utils-times}).
+combining (\ref{prop-utils-implication}) and (\ref{prop-utils-times}).
 \end{proof}
 
 Several remarks can be made here. First, the lemma supports the
@@ -909,59 +909,88 @@ Show that $X\amalg Y$ is a set if $X$ and $Y$ are sets.
 Recall from \cref{sec:natural-numbers} the definition of addition in $\NN$,
 by $n+0\defeq n$ and $n+S(m)\defeq S(n+m)$. We also define
 multiplication in $\NN$, setting $m\cdot 0\defeq 0$ and 
-$m\cdot(n+1)\defeq (m\cdot n) + m$. Elementary properties of addition and
-multiplication can be proved in type theory in the usual way.
+$m\cdot(n+1)\defeq (m\cdot n) + m$. 
+Another useful function is the \emph{predecessor} $p$ defined by
+$p(0)\defeq 0$ and $p(S(n))\defeq n$.
+Elementary properties of addition, multiplication and predecessor
+can be proved in type theory in the usual way.
 We freely use them, sometimes even in definitions, leaving most of the
 proofs to the reader.
+
 \begin{definition}
 \label{def:orderonN}
-  Let $n,m:\NN$. We say that $n$ is less than or equal to $m$, and write $n\leq m$, if there is a $k:\NN$ such that $n+k=m$. This $k$ is unique and we say 
-that $n$ is less than $m$, and write $n<m$, if this $k$ is not $0$. 
+Let $n,m:\NN$. We say that $n$ is less than or equal to $m$, and write $n\leq m$,
+if there is a $k:\NN$ such that $k+n=m$. This $k$ is unique and we say 
+that $n$ is less than $m$, and write $n<m$, if this $k$ is not $0$.
+Both $n\leq m$ and $n<m$ are propositions for all $m,n:\NN$.
 \end{definition}
 
-We will prove the following lemma without using the 
+\begin{xca}\label{xca:try-your-luck-N}
+Try your luck in type theory proving any of the following.
+The successor function satisfies $(S(n)=S(m))\liff(n=m)$.
+The functions $+$ and $\cdot$ are commutative, associative and distributive.
+The relations $\leq$ and $<$ are transitive and preserved under $+$ and $\cdot$. 
+We have $(m\leq n) \liff ((m<n)\amalg(m=n))$ (so $\leq$ is reflexive).
+Furthermore, $((m\leq n)\times (n\leq m)) \liff (m=n)$,
+and $((m<n)\times(n<m))\to\false$ (so $<$ is irreflexive).
+\end{xca}
+
+We can prove the following lemma by double induction, avoiding the 
 Law of the Excluded Middle (LEM).
+
 \begin{lemma}\label{lem:dec-eq+order-N}
 The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
 \end{lemma}
-\begin{proof}
-A useful function is a the \emph{predecessor} defined by
-$p(0)\defeq 0$ and $p(S(n))\defeq n$, from which we get
-that the successor function is injective. 
-The lemma can now be proved by double induction.
-\end{proof}
 
-\begin{xca}\label{xca:eq+order-N}
-Try your luck in type thoery by proving any of the following.
-The relations $\leq$ and $<$ on $\NN$ are transitive and preserved under addition. 
-We have $m\leq n$ if and only if $m<n$ or $m=n$ (so $\leq$ is reflexive).
-Furthermore, $m\leq n$ and $n\leq m$ if and only if $m=n$,
-and not $m<n$ and $n<m$.
-\end{xca}
+We will now prove an important property of $\NN$, called the
+\emph{least number principle for decidable, non-empty subsets of} $\NN$.
+We give some more details of the proof, since they illustrate an aspect
+of type theory that has not been very visible until know, namely
+the close connection between proving and programming.
 
-From here one can prove the standard  properties of the natural numbers.  In particular, the so-called Arcimedean property 
-\begin{lemma}
-  \label{lem:archimed}
-  Given $m,n:\NN$ with $0<n$, there is a $k:\NN$ such that $m\leq n\cdot k$.
-\end{lemma}
-\begin{proof}
-  By induction on $m$: if $m$ is $0$, then $k$ can be zero too.  For a successor $m+1$ with a $k$ such that $m\leq n\cdot k$ we notice that $m+1\leq m+n\leq n\cdot k+n=n\cdot (k+1)$.
-\end{proof}
-Also, we have the following extremely important property:
-\begin{lemma}
-  \label{lem:Niswellordered}
-  The natural numbers are \emph{well ordered}, that is, if $S$ is a decidable subset of the natural number and a $t:S$, then there is a unique natural number $\min S$, called the \emph{minimum of $S$}, which lies in $S$ and satisfies the property that if $n:\NN$ lies in $S$, then $\min S\leq n$.  The minimum does not depend on $t:S$.
-\end{lemma}
+\begin{definition}
+\label{lem:Niswellordered}
+Let $P(n)$ be a proposition for all natural numbers $n$. 
+Define the type $\min(P,n)$ expressing that $n$ is the smallest
+natural number such that $P(n)$:
+\[
+\min(P,n) \defeq P(n) \times \prod_{m:\NN} (P(m) \to n\leq m)
+\]
+Then $\min(P,n)$ is also a proposition, and all $n$ such that $\min(P,n)$
+are equal. Therefore the type $\sum_{n:\NN} \min(P,n)$
+is also a proposition. 
+
+For any function $d(n): P(n)\amalg\neg P(n)$ deciding $P(n)$ for each $n:\NN$, 
+we can define
+\[
+\min(P,d) : \sum_{n:\NN} P(n) \to  \sum_{n:\NN} \min(P,n)
+\]
+by a bounded search. There are many ways to implement this,
+we sketch one. Define 
+\[
+f:\NN\to \bool\times\prod_{n:\NN} (P(n)\amalg\neg P(n))
+\] 
+setting $f(0)\defeq(\yes,(0,d(0)))$ if $P(0)$, that is, if 
+$d(0)\jdeq\inl{\_}$, and $f(0)\defeq(\no,(0,d(0)))$ else. 
+Set $f(S(n))\defeq f(n)$ if $f(n)\jdeq(\yes,(\_,\_))$.
+Otherwise, set $f(S(n))\defeq(\yes,(S(n),d(S(n))))$ if $P(S(n))$,
+and $f(S(n))\defeq(\no,(S(n),d(S(n))))$ else, using $d(S(n))$ decide.
+By design, $f$ `remembers' where it has found the least $n$ and the
+proof that $P(n)$.
+Now we can define $\min(P,d,n,p)\defeq f(n)$ having all
+the desired properties but one: 
+
+
+Now we can define for each $p: \Trunc{\sum_{n:\NN} P(n)}$ the function 
+\[
+\min_{P,d}(p) \defeq \fst(\min(P,d,p))
+\]
+which returns the smallest natural number $n$ such that $P(n)$ if
+such a number exists.
+\end{definition}
 \begin{proof}
   Let $S$ be given by the function $P\colon\NN\to\bn 2$.  Since there are but a finite number of natural numbers $s$ with $0\leq s\leq t$, we can test $P(s)$ iteratively for each $s$ and pick the first with $P(s)=1$. This is bound to terminate since $P(t)=1$.  Replacing $t$ with another $t':\NN$ with $P(t')=1$ does not change the result: the iteration will have terminated by the smaller one.\footnote{this is out of style, do change}
 \end{proof}
-
-
-\begin{example}\label{ex:Nisdecidable}
-  The natural numbers $\NN$ has decidable equality: we show that the proposition $m=n$ for $m,n:\NN$ is either true or false (so that it is given by a function in $\NN\times\NN\to\bn 2$). By the definition of $\NN$ we can (and must) do this by an induction on $m$ and $n$.  If both $m$ and $n$ are $0$ then $m=n$ is true.  If one of $m$ and $n$ is a successor and the other $0$ then $m=n$ is false.  If both $m$ and $n$ are successors, then we can reduce to an already treated case.
-\end{example}
-
-
 
 
 \section{The type of finite types}
