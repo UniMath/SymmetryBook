@@ -90,12 +90,22 @@ $$\sum_{b:B}(A\to_*(B,b))\oldequiv \sum_{b:B}\sum_{f:A_\div\to B}f(\pt_A)=b$$ is
 
 \begin{definition}
   \label{def:covering}
-  A function $f:A\to B$ between two types is a \emph{covering} if for all $y:Y$ the preimage $f^{-1}(y)$ is a nonempty set.  We say that the covering is \emph{decidable} if the preimages are decidable.
+  A function $f:A\to B$ between two types is a \emph{covering} if for all $b:B$ the preimage $f^{-1}(b)$ is a nonempty set.  We say that the covering is \emph{decidable} if the preimages are decidable sets.
 \end{definition}
 
 ((picture!!!))
 
 So, in particular, equivalences are coverings.
+
+To sum up with a formula, 
+given a type $B$, the type of coverings of $B$ is
+$$\sum_{A:\UU}\sum_{f:A\to B}||\prod_{b:B}\isset(f^{-1}(b))\times f^{-1}(b)||.$$ 
+Hence, an equality of coverings $(A,f,!)=(A',f',!)$ is equivalent to 
+$$\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f).$$
+\begin{definition}
+  Let $f:A\to B$ be a covering.  A symmetry $(A,f,!)=(A,f,!)$ is called a \emph{deck transformation}.
+\end{definition}
+%specified by a pair $(p_A,p_f)$ with consisting of a $p_A:A=_{\UU}A'$, a $p_f:f'p_A=_{A\to B}f$.
 
 \subsection{Equivalences and coverings of connected types}
 \label{sec:eqconntypes}((to be moved AFTER connected types, coverings and injections))
@@ -310,21 +320,49 @@ The composition with the function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending
 \subsection{Coverings of the circle}
 \label{sec:covS1}
 
-From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a conneted type $A$ is a covering if and only if for given $a_0:A$ the induced function from $a_0=_Aa_0$ to $\base=_{S^1}\base$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$.
-So, a classification of coverings of the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.
+\footnote{The below is not fully structured yet, and does contain known nonsense (basepoints, orientations etc need to be straightened out)}
+From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a conneted type $A$ is a covering if and only if for given $a_0:A$ the induced function from $a_0=_Aa_0$ to $\base=_{S^1}\base$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{lem:S1groupoid} may be identified with with the integers).
+So, a classification of coverings of the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.  Using language yet to be introduced, the question would be ``what are the subgroups of the integers?''
 
  Recall the function $c:S^1\to C$ of \cref{def:S1toC}.  By \cref{thm:S1bysymmetries} we know that $c$ is an equivalence, so classifying coverings of $S^1$ is equivalent to classifying coverings of $C$.  
+We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the element corresponding by \cref{def:S1toC} to $\base:S^1$), and allowing ourselves to write $s:\pt_C=_C\pt_C$ instead of the more honest $(s,!):\pt_C=_C\pt_C$ (corresponding to $\Sloop:\base=\base$).
 
-Fix for the moment a connected type $A$ and a covering $f:A\to C$.  Recall the element $(s,\refl{ss}):(\zet,s)=_C(\zet,s)$, which by \cref{def:S1toC} corresponds to $\Sloop:\base=\base$.
+Fix for the moment a connected type $A$ and a decidable covering $f:A\to C$ (c.f \cref{def:covering}).  Assume $(\pt_A,!):f^{-1}(\pt_C)$
+%Recall the element 
+%$$\pt_C\defequi(s,\refl{ss}):(\zet,s)=_C(\zet,s),$$ which by \cref{def:S1toC} corresponds to $\Sloop:\base=\base$.
+By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a covering exactly says that the induced function of identity types
+$g\defequi(cf)^=:(\pt_A=_C\pt_A)\to (\pt_C=_C\pt_C)=\zet$ is injective and decidable.\footnote{say this in a way consistent with the choices of subsets/injections/embeddings}    
 
+We are then left with two situations: either $\pt_A=\pt_A$ is contractible or there is a $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$. 
 
-By \cref{lem:eqandcovofconntypes} the preimage of $\refl{\pt_C}$ of the induced function $\pt_A=_A\pt_A$ to $\pt_C=_C\pt_C$ is equivalent to $\sum_{p:\pt_A=\pt_A}\refl{}=f(p)$.\footnote{((comebackhere))181219}
-
-
-
+In the former case, \cref{lem:eqandcovofconntypes} together with the fact that $A$ is connected and $\pt_A=\pt_A$ is contractible implies that $A$ itself is contractible.  
 \begin{remark}
-  Do we want to present the coverings of the circle (and hence all subgroups of the integers) now?  If we don't insist on proving that these are are all this is elementary.
+  This manifestation of the contractible type as a covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers forms a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this covering is the exponential function ``$e^{ix}$'' from the reals to the unit circle in the complex plane.
+\end{remark}  
+
+On the other hand, if $A$ is not contractible, either $g(p_0)$ or $g(p_0^{-1})$ is a positive integer.  Hence the set $H^+$ of positive integers in the image of $g$ is nonempty, and so by the fact that $\NN$ is well ordered\footnote{reference for well ordered} implies $H^+$ has a minimum, \ie there is a $p:\pt_A=\pt_A$ with  $g(p)=m\defequi\min H^+:H^+$.  Furthermore, if $q:\pt_A=\pt_A$ is any element with $0<g(q)$, then  there is a $k:\NN$ such that $g(p)k\leq g(q)<g(p)(k+1)$,\footnote{reference for the corresponding Archimedean property (or deduction here)} or equivalently $0\leq g(q)-g(p)k< g(p)$.  Since $g(q)-g(p)k=g(qp^{-k})$ is a nonnegative integer is in the image of $g$ and simultaneously less than the minimum positive value $g(p)$, we must conclude that $g(q)=g(p)k$.
+
+Arguing similarly for the negative values, we reach the conclusion that the image of $g$ in $\zet$ is the subset of multiples of $g(p)=\min H^+$.  Hence, the image of $f^=:(\pt_A=\pt_A)\to(\base=_{S^1}\base)$ is uniquely given by the positive integer $\min H^+$, and is not dependent on $\pt_A$.\footnote{how to say this gently without starting to much fuss regarding commutativity?}  Furthermore, if $p_A:A=_{\UU}A'$, $f':A'\to B$ and $p_f:f'p_A=_{A\to B}f$, then tracing through the argument, we see that the positive number reached through arguing with $f':A'\to B$ remains the same, but there \emph{is} a possibility that $g(p_0)$ changes sign, so that the minimum of $H^+$ is now not attained by $g(p_0)$, but by $g(p_0^{-1})$.\footnote{maybe some HoTT guy can say this less classically.  We also want to say something about the connection to pointed coverings, conjugations etc to clear the path for later applications}
+
+Summing up
+\begin{theorem}
+  \label{thm:coveringsofS1}
+  The type of decidable coverings of the circle by connected types is equivalent to $\NN$.
+\end{theorem}
+
+A natural question is, given $m:\NN$, what does the associated connective covering $f:A\to S^1$ look like?
+
+We saw that if $m=0$, then the identity types of $A$ were contractible, and so (in view of \cref{lem:eqandcovofconntypes} since $A$ is connected) $A$ is itself contractible.
+
+
+If $0<m$, then the injection $g:(\pt_A=\pt_A)\to\zet$ hits all multiples of $m$.  In particular, if $m=1$, then the injection hits \emph{all} integers, so $g:(\pt_A=\pt_A)\to\zet$ is an equivalence.  Again, by \cref{lem:eqandcovofconntypes} this means that $A\to S^1$ is an equivalence. 
+\begin{remark}
+  The reader may wonder how the ``orientation reversing'' $c:S^1\to S^1$ given by $c(\base)=\base$ and $c(\Sloop)=\Sloop^{-1}$ fits into the picture.  In our setting it is equal to the identity on $S^1$ (corresponding to $m=1$: Letting also $c:S^1=S^1$ be the identity given by univalence, we have that $\refl{S^1}=c\cdot c$, so that $c$ itself proves that $\id_{S^1}$ and $c$ are equal.
 \end{remark}
+
+
+More generally, if $0<m$, then $g$ gives an equivalence between $\pt_A=\pt_A$ and the multiples of $m$.\footnote{comeback181220: show that $A=S^1$}
+
 
 
 
