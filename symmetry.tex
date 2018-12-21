@@ -26,20 +26,22 @@ set of generators $S$.
     \node[vertex,label=210:$e$]     (ne)   at (210:\len) {};
     \node[vertex,label=270:$(23)$]  (n23)  at (270:\len) {};
     \node[vertex,label=330:$(123)$] (n123) at (330:\len) {};
-    % generator a is (12)
-    \draw[gena] (ne)   to[bend left] (n12);
-    \draw[gena] (n12)  to[bend left] (ne);
-    \draw[gena] (n13)  to[bend left] (n132);
-    \draw[gena] (n132) to[bend left] (n13);
-    \draw[gena] (n123) to[bend left] (n23);
-    \draw[gena] (n23)  to[bend left] (n123);
-    % generator b is (23)
-    \draw[genb] (ne)   to[bend left] (n23);
-    \draw[genb] (n23)  to[bend left] (ne);
-    \draw[genb] (n13)  to[bend left] (n123);
-    \draw[genb] (n123) to[bend left] (n13);
-    \draw[genb] (n12)  to[bend left] (n132);
-    \draw[genb] (n132)  to[bend left] (n12);
+    \begin{scope}[every to/.style={bend left=22}]
+      % generator a is (12)
+      \draw[gena] (ne)   to (n12);
+      \draw[gena] (n12)  to (ne);
+      \draw[gena] (n13)  to (n132);
+      \draw[gena] (n132) to (n13);
+      \draw[gena] (n123) to (n23);
+      \draw[gena] (n23)  to (n123);
+      % generator b is (23)
+      \draw[genb] (ne)   to (n23);
+      \draw[genb] (n23)  to (ne);
+      \draw[genb] (n13)  to (n123);
+      \draw[genb] (n123) to (n13);
+      \draw[genb] (n12)  to (n132);
+      \draw[genb] (n132) to (n12);
+    \end{scope}
   \end{tikzpicture}
   \caption{Cayley diagram for $S_3$ with respect to $S = \{(12),(23)\}$.}
   \label{fig:cayley-s3}
@@ -129,6 +131,8 @@ tells us that
   If $H \to G$ is a subgroup, then $H$ has a natural action on $G$,
   and all the orbits under this action are equivalent.
 \end{theorem}
+
+% Interaction with cardinality: if G acts freely on S, then card(S/G) = card(S)/card(G)
 
 \section{(the lemma that is not) Burnside's lemma}
 \label{sec:burnsides-lemma}
