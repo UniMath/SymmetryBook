@@ -10,11 +10,12 @@ The following definitions/exercises/notations/etc is used, but should probably b
 
 This is just a placeholder for the following result and variants (Marc and Ulrik will place it somewhere)
 \begin{lemma}
+\label{lem:typefamiliesandfibrations}
   Lat $A$ be a type.  Then
 $$\mathrm{preim}:\sum_{B:\UU}(B\to A)\quad\to\quad (A\to\UU) 
 $$ 
 given by $\mathrm{preim}(B,f)(a)=f^{-1}(a)$ is an equivalence.\footnote{in some higher universe}
-An inverse equivalence is given by  sending $P:A\to\UU$ to $(\sum_{a:A}P(a), \mathrm{pr_1})$.
+An inverse equivalence is given by sending $P:A\to\UU$ to $(\sum_{a:A}P(a), \mathrm{pr_1})$.\footnote{extend to families in other settings like sets or propositions or ...}
 \end{lemma}
 
 
@@ -27,6 +28,9 @@ A type $A$ is \emph{connected} if there is an $a:A$ such that for all $b:B$ the 
 Note that under this definition, the empty type $\bn{0} $ is not connected, and neither is $\bn{n} $ if $n>1$. However, $\bn{1} $ is connected.
 
 Another way of saying that a type $A$ is connected is to say that the truth-value of a proposition depending on $A$ is constant, a fact which is formalized as follows.
+\footnote{this proof is classical.  Do you object?.   Ulrik \emph{did} object.  
+The only place where I can remember having actually planned to use  this is in \cref{lem:circleisconnected} to show that $S^1$ is connected.  However, that can be replaced by dropping the simplification at the beginning of  \cref{lem:S1groupoid} and use that the $f$ in the proof actually is an equivalence without this. 
+
 \begin{lemma}
   A type $A$ is connected if and only if the function 
 $$c:\bn{2} \to(A\to\bn{2} )$$ defined by $c(x)(a)=x$ for $x:\bn{2} $ and $a:A$ 
@@ -34,11 +38,12 @@ $$c:\bn{2} \to(A\to\bn{2} )$$ defined by $c(x)(a)=x$ for $x:\bn{2} $ and $a:A$
 is an equivalence. 
 %$||A||%\sum{a,b:A}||a=b||=\bn{1} $.  
 \end{lemma}
-  \begin{proof}\footnote{this proof is classical.  Do you object?}    
+  \begin{proof}    
     Assume $A$ is connected.  Let $a:A$ be so that for every $b:A$, then $||a=_Ab||$ is true.  If $f:A\to\bn{2} $, then for every $b:A$ we get that $||f(a)=f(b)||$, but since $\bn{2} $ is a set, we get that $f(a)=f(b)$.  Hence, any function $f$ is constant and so $c$ is an equivalence.
 
 Conversely, assume that $c$ is an equivalence.  Then $A$ is nonempty.  Let $a:A$ and let $f:A\to \bn{2} =\bool$ be defined by $f(b)\defequi||a=b||$.  Since $c$ is an equivalence and $f(a)$ is true, we get that $f(b)$ is true for all $b$.   
   \end{proof}
+}
 
  As a matter of fact, if $A$ has an element $a$, then $A$ is connected if and only if for all $b:A$ the identity type $a=_Ab$ is inhabited, essentially because if $f\colon A\to\bn{2} $ an equality $a=_Ab$ forces $f(a)=_{\bn{2} }f(b)$.  So, a connected type is one that can't be ``torn apart''.  
 \begin{definition}
@@ -90,7 +95,7 @@ $$\sum_{b:B}(A\to_*(B,b))\oldequiv \sum_{b:B}\sum_{f:A_\div\to B}f(\pt_A)=b$$ is
 
 \begin{definition}
   \label{def:covering}
-  A function $f:A\to B$ between two types is a \emph{covering} if for all $b:B$ the preimage $f^{-1}(b)$ is a nonempty set.  We say that the covering is \emph{decidable} if the preimages are decidable sets.
+  A function $f:A\to B$ between two types is a \emph{covering} if for all $b:B$ the preimage $f^{-1}(b)$ is a  set.  We say that the covering is \emph{decidable} if the preimages are decidable sets.
 \end{definition}
 
 ((picture!!!))
@@ -99,7 +104,8 @@ So, in particular, equivalences are coverings.
 
 To sum up with a formula, 
 given a type $B$, the type of coverings of $B$ is
-$$\sum_{A:\UU}\sum_{f:A\to B}||\prod_{b:B}\isset(f^{-1}(b))\times f^{-1}(b)||.$$ 
+$$\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),$$ 
+or equivalently, to the type of type families $B\to\Set$.
 Hence, an equality of coverings $(A,f,!)=(A',f',!)$ is equivalent to 
 $$\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f).$$
 \begin{definition}
@@ -344,10 +350,12 @@ On the other hand, if $A$ is not contractible, either $g(p_0)$ or $g(p_0^{-1})$ 
 
 Arguing similarly for the negative values, we reach the conclusion that the image of $g$ in $\zet$ is the subset of multiples of $g(p)=\min H^+$.  Hence, the image of $f^=:(\pt_A=\pt_A)\to(\base=_{S^1}\base)$ is uniquely given by the positive integer $\min H^+$, and is not dependent on $\pt_A$.\footnote{how to say this gently without starting to much fuss regarding commutativity?}  Furthermore, if $p_A:A=_{\UU}A'$, $f':A'\to B$ and $p_f:f'p_A=_{A\to B}f$, then tracing through the argument, we see that the positive number reached through arguing with $f':A'\to B$ remains the same, but there \emph{is} a possibility that $g(p_0)$ changes sign, so that the minimum of $H^+$ is now not attained by $g(p_0)$, but by $g(p_0^{-1})$.\footnote{maybe some HoTT guy can say this less classically.  We also want to say something about the connection to pointed coverings, conjugations etc to clear the path for later applications}
 
-Summing up
+Summing up\footnote{this is still missing a full argument}.
 \begin{theorem}
   \label{thm:coveringsofS1}
-  The type of decidable coverings of the circle by connected types is equivalent to $\NN$.
+  The type of decidable coverings of the circle by connected types is a groupoid 
+  The set of components is equivalent to $\NN$.  
+  The deck transformations of a covering in the $m$'th component is a set equivalent to $\zet$ if $m=0$, and to $\bn m$ if $0\neq m$.
 \end{theorem}
 
 A natural question is, given $m:\NN$, what does the associated connective covering $f:A\to S^1$ look like?
@@ -361,7 +369,9 @@ If $0<m$, then the injection $g:(\pt_A=\pt_A)\to\zet$ hits all multiples of $m$.
 \end{remark}
 
 
-More generally, if $0<m$, then $g$ gives an equivalence between $\pt_A=\pt_A$ and the multiples of $m$.\footnote{comeback181220: show that $A=S^1$}
+More generally, if $0<m$, then $g$ gives an equivalence between $\pt_A=\pt_A$ and $m\zet$, the multiples of $m$.  Given $p:\pt_A=\pt_A$ in the preimage of $\Sloop:\base=\base$, define $i:S^1\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
+
+The composite $fi:S^1\to S^1$ is then the function given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.  \footnote{comeback181220: show that $A=S^1$}
 
 
 
