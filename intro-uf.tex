@@ -1030,11 +1030,109 @@ conditions for IH, so we get $n,m<k+1$ such that $n\neq m$
 and $g(n)=g(m)$. Swapping back we get the desired result for $f$.
 \end{proof}
 
-We can now rule out the existence of bijections between finite
-set of different size.
+We can now rule out the existence of equivalences between finite
+sets of different size.
 \begin{corollary}\label{cor:Fin-n-injective}
 If $n>m$, then $(\sum_{k:\NN} k<n) \neq (\sum_{k:\NN} k<m)$.
 \end{corollary}
+
+\section{A type of integer numbers - PROPOSAL}
+\label{sec:integers}
+
+Preparing for things to come we define a type of integer
+numbers that are unlike the more usual equivalence
+classes of pairs $(n,m)$ of natural numbers representing $n-m$.
+
+\begin{remark} Under UA, any type $T$ that is a set
+whose elements represent the integers is equal to $\NN$
+(as all countable sets are equal under UA). 
+The point here is to define $T$ in such a way that the usual 
+algebraic structure on the set of integers
+(the structure of a free group with one generator)
+arises naturally, which in this book means that this structure
+comes from the symmetries of $T$.
+\end{remark}
+
+\begin{definition}\label{def:one-orbit-int}
+Define $s:\NN\to\NN$ by $s(0) = 1$, $s(2(k+1)) = 2k$,
+and $s(2k + 1) = 2k+3$. 
+Then $s$ is an equivalence. It is helpful to depict iterating $s$
+in both directions:
+\[
+\ldots\mapsto 6 \mapsto 4 \mapsto 2 \mapsto 0 \mapsto 1 \mapsto 3 \mapsto 5 \mapsto\ldots
+\]
+An essential observation here is that this is a doubly infinite
+sequence containing all natural numbers, see below. 
+\end{definition}
+
+\begin{xca}\label{xca:one-orbit-int}
+Give an inductive definition of $s$
+(hint: use $\mu$ from \cref{def:Niswellordered}).
+Prove that $s$ is an equivalence.
+\end{xca}
+
+We define the $k$-fold iteration of $f:X\to X$ inductively 
+by $f^0 \defeq \id_X$ and $f^{k+1}\defeq f\circ f^k$. 
+If $f$ has an inverse $f^{-1}$ we write
+$f^{-n}$ for $(f^{-1})^n$. DO WE NEED THIS EARLIER?
+
+\begin{lemma}\label{lem:one-orbit-int}
+Let $s$ be as in \cref{def:one-orbit-int}, and 
+let $f:\NN\to\NN$ be such that $f\circ s = s\circ f$. 
+  \begin{enumerate}
+  \item\label{item-one-orbit} For all $m:\NN$ there is a unique $n:\NN$
+such that either $m=s^{-n}(0)$, or $m=s^{n+1}(0)$.
+  \item\label{item-f(0)-even} If $f(0)=s^{-k}(0)$, then $f=s^{-k}$.
+  \item\label{item-f(0)-odd} If $f(0)=s^{k+1}(0)$, then $f=s^{k+1}$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+From $f\circ s = s\circ f$ we get $f\circ s^n = s^n\circ f$
+and $f\circ s^{-n} = s^{-n}\circ f$ by induction on $n:\NN$.
+
+(\ref{item-one-orbit}) Induction on $n:\NN$ proves $s^{-n}(0)=2n$, 
+as well as $s^{n+1}(0)=2n+1$. Uniqueness is easy.
+
+(\ref{item-f(0)-even}) Assume $f(0)=s^{-k}(0)$.  
+Given $m$,  let $n$ be such that either $m=s^{-n}(0)$, or $m=s^{n+1}(0)$. 
+In the first case we calculate
+\[
+f(m)=f(s^{-n}(0))=s^{-n}(f(0))=s^{-n}(s^{-k}(0))=s^{-k}(s^{-n}(0))= s^{-k}(m),
+\]
+so that $f=s^{-k}$. 
+The second case is very similar;
+(\ref{item-f(0)-odd}) goes like (\ref{item-f(0)-even}).
+\end{proof}
+
+The above lemma also suggests a way to define integer numbers
+with its natural group structure given by composition.
+
+\begin{definition}\label{def:pre-torsor-int}
+\[
+\zet\defeq \sum_{f:\NN\to\NN} (f\circ s = s\circ f)
+\]
+\end{definition}
+
+We make a couple of observations, TBE IF WE GO FOR THIS.
+
+First, $f\circ s = s\circ f$ is a proposition.
+
+Second, by \cref{lem:one-orbit-int}, equality on $\zet$ is decidable.
+
+Third, again by \cref{lem:one-orbit-int}, if $(f,\_)$ in $\zet$,
+then $f$ is an equivalence.
+
+Fourth, using UA, 
+$\zet\equiv \sum_{f:\NN=\NN} (s\circ f \circ s^{-1} = f)$.
+
+Fifth, we have $\zet\equiv ((\NN,s) = (\NN,s))$ with
+$(\NN,s)$ so that $\zet$ is a type of symmetries in the
+type  $\sum_{X:\UU} (X=\NN)$. In order to comply with the
+definition of group we should single out the component of  
+$(\NN,s)$, but for now we could point at some other, non-equivalent
+types of symmetries, such as $(\NN,\id_\NN)=(\NN,\id_\NN)$ and 
+$(\NN,s^2)=(\NN,s^2)$.
+ 
 
 \section{The type of finite types}
 \label{sec:typeFin}
@@ -1055,7 +1153,7 @@ using $\inl{}$ and $\inr{}$.
 %\end{definition}
 
 \begin{xca}\label{xca:finite-types}
-\hspace{1in}S
+\hspace{1in}
   \begin{enumerate}
   \item Denote in full all elements of $\bn{0} $, $\bn{1} $, and $\bn{2}$.
   \item Show (using UA) that $\bn{1} =\true$, $\bn{2} =\bool$.
