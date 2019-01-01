@@ -758,6 +758,44 @@ using the same lemmas as for $\iscontr(A)$.
 Show that $\isset(S)$ and $\isgrpd(G)$ are propositions.
 \end{xca}
 
+\section{Heavy transport}
+\label{sec:heavy-transport}
+
+In this section we collect useful results on transport in
+type families that are defined by a type constructor applied
+to types that are depending on an element of some index type.
+Typical examples of such `structured' type families are 
+$Y(x)\to Z(x)$ and $x=x$ depending on $x:X$.
+
+\begin{lemma}\label{lem:transport-in-function-type}
+Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
+Let $Y\to Z$ be the type family such that $(Y\to Z)(x) \defeq Y(x)\to Z(x)$.
+Then we have for every $x,x':X$, $e: x=x'$, $f: Y(x)\to Z(x)$, and $y':Y(x')$:
+\[
+\trp_{Y\to Z, e} (f)(y') = \trp_{Z,e} (f(\trp_{Y, e^{-1}}(y')).
+\]
+\end{lemma}
+\begin{proof}
+By induction on $e: x=x'$. For $e \jdeq \refl{x}$ we have $e^{-1}\jdeq \refl{x}$
+and all transports are identity functions of appropriate type. 
+\end{proof}
+
+An important special case of the above lemma is with $\UU$
+as index type and type families $Y\defeq Z\defeq \id_\UU$.
+Then $Y\to Z$ is $X\to X$ as type depending on $X:\UU$. Now, 
+if $A:\UU$ and $e: A=A$ comes by UA from some equivalence 
+$g:A\to A$, then the above lemma combined with function extensionality 
+yields that for any $f: A\to A$
+\[
+%\trp_{X \mapsto (X\to X), e} (f) = g\circ f \circ g^{-1}.
+\trp_{(\id_\UU\to \id_\UU), e} (f) = g\circ f \circ g^{-1}.
+\]
+This equation is phrased as `transport by conjugation'.
+
+\begin{xca}\label{xca:conjugation}
+Draw a commutative diagram for the above equation. PERHAPS I SHOULD
+\end{xca}
+
 \section{Logical operations on propositions; Propositional truncation}
 \label{sec:logical-operations}
 
