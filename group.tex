@@ -413,14 +413,59 @@ We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the elemen
  \label{ex:listofCcovers}
   Returning to \cref{ex:listofS1covers}, it is instructive to rephraze these connected coverings in terms of $C$.
   \begin{enumerate}
-  \item The trivial connected cover is still represented by the constant function
+  \item  The trivial connected cover is still represented by the constant function
     $$c_{(\zet,s)}:\bn 1\to C$$ sends the unique element of $\bn 1$ to $(\zet,s):C$.
-  \item If $m:\NN$ is positive the \emph{degree $m$ function} $$-^m:C\to C$$ is given by $-^m((X,f))=(\sqrt[m]X,\sqrt[m]f)$, where $$\sqrt[m]X=\bn m\times X$$ and $\sqrt[m]f(i,x)=(i+1,x)$ for $i<m-1$ and $\sqrt[m]f(m-1,x)=(1,f(x))$.  We prove that $-^m((X,f))$ is in the component of $(\zet,s)$ (which was a requirement for elements in $C$).  Since we know that $(X,f)$ is in the component of $(\zet,s)$ it is enough consider the element $(p,!):(\sqrt[m]{\zet},\sqrt[m]s)=(zet,s)$ explicitly given by univalence through $p((i,n))=i+mn$ ((check that it gives an equivalence)).
+  \item Assume that $m:\NN$ is positive.  If $X$ is a type and $f:X\to X$ we define the \emph{ $m$th root}
+$$\sqrt[m]X=\bn m\times X$$ and 
+$$\sqrt[m]f(i,x)=
+\begin{cases}
+  (i+1,x)& \text{for $i<m-1$ and}\\(1,f(x))& \text{for i=m-1}:
+\end{cases}$$ most of the time $\sqrt[m]f$ increases the element $\bn m$, but when that is no longer possible (one $m$th of the time; hence the term $m$th root) it uses $f$ on $X$, see \cref{fig:root}:
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \node (A) at (2,1) {$\sqrt[m]X$};
+    \foreach \y in {0,1,2}
+    { \begin{scope}[shift={(0,\y)}]
+        \foreach \x in {0,...,4}
+        { \node[fill,circle,inner sep=1pt] at (180+72*\x:1 and .3) {}; }
+        \foreach \x in {0,...,3}
+        { \draw[-stealth] (180+72*\x:1 and .3) arc(180+72*\x:252+72*\x:1 and .3); }
+      \end{scope} }
+    \foreach \y in {1,2}
+    { \begin{scope}[shift={(0,\y)}]
+        \draw[-stealth] (108:1 and .3)
+        .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4)
+        .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
+      \end{scope} }
+    \draw[-stealth] (108:1 and .3)
+    .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4);
+    \node (dz) at (-.7,-.7) {\footnotesize$\vdots$};
+    \begin{scope}[shift={(0,3)}]
+      \draw[-stealth] (-.7,-.4)
+      .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
+      \node (da) at (-.7,0) {\footnotesize$\vdots$};
+    \end{scope}
+    \draw [decorate,decoration={brace,amplitude=10pt}]
+    (-1.1,-.8) -- (-1.1,2.8) node [black,midway,xshift=-20pt] {\footnotesize $X$};
+    \draw [decorate,decoration={brace,amplitude=10pt}]
+    (1,-1) -- (-1,-1) node [black,midway,yshift=-15pt] {\footnotesize $\bn{m}$};
+  \end{tikzpicture}
+  \caption{The $m$'th root of an endomorphism}
+  \label{fig:root}
+\end{figure}
 
-If $(p,!):(X,f)=_C(X',f')$, then $$(\sqrt[m](p),!):((\sqrt[m]X,\sqrt[m]f)=(\sqrt[m]X',\sqrt[m]f'))$$ is given by $\sqrt[m](p)(i,x)=(i,p(x))$ (and the fact $!:pf=f'p$).
+Note that the function $p:\sqrt[m]{\zet}\to\zet$ given by $p(i,n)=i+mn$ is an equivalence and that $p\sqrt[m]s(i,n)=i+1+mn=sp(i,n)$.  Consequently $(\sqrt[m]{\zet},\sqrt[m]s):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$, \ie $(\sqrt[m]{\zet},\sqrt[m]s):C$. % In consequence, if $(X,f):C$ (\ie, $(X,f):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$) then also $(\sqrt[m]X,\sqrt[m]f):C$, giving rise to the 
+Ultimately, we have defined the
+ \emph{degree $m$ function} $$-^m:C\to C,\qquad -^m((X,f))=(\sqrt[m]X,\sqrt[m]f).$$
+% , where $$\sqrt[m]X=\bn m\times X$$ and $\sqrt[m]f(i,x)=(i+1,x)$ for $i<m-1$ and $\sqrt[m]f(m-1,x)=(1,f(x))$.  We prove that $-^m((X,f))$ is in the component of $(\zet,s)$ (which was a requirement for elements in $C$).
+ % Since we know that $(X,f)$ is in the component of $(\zet,s)$ it is enough consider the element $(p,!):(\sqrt[m]{\zet},\sqrt[m]s)=(zet,s)$ explicitly given by univalence through $p((i,n))=i+mn$ ((check that it gives an equivalence)).
+
+If $(p,!):(X,f)=_C(X',f')$, then $$(p,!):((\sqrt[m]X,\sqrt[m]f)=(\sqrt[m]X',\sqrt[m]f'))$$ is given by $p(i,x)=(i,p(x))$ (and the fact $!:pf=f'p$).  In particular, letting $p\defequi s:\zet=\zet$, we get that $s(i,n)=(i,sn)=(\sqrt[m]s)^m(i,n)$.
 
 
- Note that the equivalence $c:S^1\to C$.
+
+ Note that the equivalence $c:S^1\to C$.\footnote{comeback 190102}
   \end{enumerate}
 \end{example}
 \begin{xca}
@@ -969,39 +1014,18 @@ In essence we have shown that our ``abstract group'' is indeed the group of symm
 \label{sec:grouphistory}
 
 % Move in place
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    \node (A) at (2,1) {$\sqrt[n]X$};
-    \foreach \y in {0,1,2}
-    { \begin{scope}[shift={(0,\y)}]
-        \foreach \x in {0,...,4}
-        { \node[fill,circle,inner sep=1pt] at (180+72*\x:1 and .3) {}; }
-        \foreach \x in {0,...,3}
-        { \draw[-stealth] (180+72*\x:1 and .3) arc(180+72*\x:252+72*\x:1 and .3); }
-      \end{scope} }
-    \foreach \y in {1,2}
-    { \begin{scope}[shift={(0,\y)}]
-        \draw[-stealth] (108:1 and .3)
-        .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4)
-        .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
-      \end{scope} }
-    \draw[-stealth] (108:1 and .3)
-    .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4);
-    \node (dz) at (-.7,-.7) {\footnotesize$\vdots$};
-    \begin{scope}[shift={(0,3)}]
-      \draw[-stealth] (-.7,-.4)
-      .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
-      \node (da) at (-.7,0) {\footnotesize$\vdots$};
-    \end{scope}
-    \draw [decorate,decoration={brace,amplitude=10pt}]
-    (-1.1,-.8) -- (-1.1,2.8) node [black,midway,xshift=-20pt] {\footnotesize $X$};
-    \draw [decorate,decoration={brace,amplitude=10pt}]
-    (1,-1) -- (-1,-1) node [black,midway,yshift=-15pt] {\footnotesize $\bn{n}$};
-  \end{tikzpicture}
-  \caption{The $n$'th root of an endomorphism}
-  \label{fig:root}
-\end{figure}
+
+% \begin{remark}
+%   Notice that the last statement  (``More precisely\dots'')  not only asserts that there \emph{exist} inverses, but that there actually is a (preferred and consistent) way to produce them.
+
+% Classically this was in many instances unnecessay to say because there was a unique inverse, and the distinction is not mentioned in introductory texts.  However, then this very point had to be revisited later on.  In our proof relevant setting it is obvious that the ultimate statement will have to go beyond an assertion that inverses exist.
+% \end{remark}
+
+%%% Local Variables:
+%%% mode: latex
+%%% fill-column: 144
+%%% TeX-master: "book"
+%%% End:
 
 % Move in place
 \begin{figure}
@@ -1036,17 +1060,6 @@ In essence we have shown that our ``abstract group'' is indeed the group of symm
     \end{scope}
   \end{tikzpicture}
   \caption{The $n$'th root of an endomorphism, with projection}
-  \label{fig:root}
+  \label{fig:rootproj}
 \end{figure}
 
-% \begin{remark}
-%   Notice that the last statement  (``More precisely\dots'')  not only asserts that there \emph{exist} inverses, but that there actually is a (preferred and consistent) way to produce them.
-
-% Classically this was in many instances unnecessay to say because there was a unique inverse, and the distinction is not mentioned in introductory texts.  However, then this very point had to be revisited later on.  In our proof relevant setting it is obvious that the ultimate statement will have to go beyond an assertion that inverses exist.
-% \end{remark}
-
-%%% Local Variables:
-%%% mode: latex
-%%% fill-column: 144
-%%% TeX-master: "book"
-%%% End:
