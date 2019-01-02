@@ -32,6 +32,7 @@ Another way of saying that a type $A$ is connected is to say that the truth-valu
 The only place where I can remember having actually planned to use  this is in \cref{lem:circleisconnected} to show that $S^1$ is connected.  However, that can be replaced by dropping the simplification at the beginning of  \cref{lem:S1groupoid} and use that the $f$ in the proof actually is an equivalence without this. 
 
 \begin{lemma}
+  \label{lem:classicalconnected}
   A type $A$ is connected if and only if the function 
 $$c:\bn{2} \to(A\to\bn{2} )$$ defined by $c(x)(a)=x$ for $x:\bn{2} $ and $a:A$ 
 %to the constant function with value $x$ 
@@ -92,6 +93,17 @@ $$\sum_{b:B}(A\to_*(B,b))\oldequiv \sum_{b:B}\sum_{f:A_\div\to B}f(\pt_A)=b$$ is
 
 \subsection{Coverings}
 \label{sec:covering}
+% {\color{red}Trying Alternative version:
+% \begin{definition}
+%   \label{def:covering}
+%   Let $B$ be a type.  A \emph{covering of $B$} is a family of sets $F:B\to\Set$.
+%   A function $f:A\to B$ between two types is a \emph{covering} if for all $b:B$. We say that the covering is \emph{decidable} if for all $b:B$ the set $F(b)$ is decidable.
+%   Given a covering $F:B\to\Set$, the identity type $F=_{B\to\Set B}F$ is called the type of \emph{deck transformations}.
+% \end{definition}
+
+% Traditionally, a covering is a function $f:A\to B$ so that for each $b:B$ the preimage $f^{-1}(b)$ is a set.  We see that if $F:B\to\Set$ is a covering in our sense, then the first projection $\mathrm{pr}_1:\sum_{b:B}F(b)\to B$ is a covering in the traditional sense. 
+%   }
+
 
 \begin{definition}
   \label{def:covering}
@@ -127,7 +139,8 @@ So, in particular, equivalences are coverings. Figure~\ref{fig:covering} display
 To sum up with a formula, 
 given a type $B$, the type of coverings of $B$ is
 $$\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),$$ 
-or equivalently, to the type of type families $B\to\Set$.
+or equivalently, to the type of type families
+$$B\to\Set.$$
 Hence, an equality of coverings $(A,f,!)=(A',f',!)$ is equivalent to 
 $$\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f).$$
 \begin{definition}
@@ -287,7 +300,7 @@ given by sending $g$ to $(g(\base),g(\Sloop))$ is an equivalence.  In particular
 \end{remark}
 
 
-
+\footnote{The current proof of the circle being connected uses \cref{lem:classicalconnected}.  This must be fixed, eg as suggested in the footnote where \cref{lem:classicalconnected} has been put.  Can also use the version where $\bn 2$ is replaced by an arbitrary finite set}
 \begin{lemma}\label{lem:circleisconnected}
   The circle is connected.
 \end{lemma}
@@ -349,22 +362,26 @@ The composition with the function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending
 \label{sec:covS1}
 
 \footnote{The below is not fully structured yet, and does contain known nonsense (basepoints, orientations etc need to be straightened out)}
-From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a conneted type $A$ is a covering if and only if for given $a_0:A$ the induced function from $a_0=_Aa_0$ to $\base=_{S^1}\base$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{lem:S1groupoid} may be identified with with the integers).
+From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a conneted type $A$ is a covering if and only if for given $a_0:A$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{S^1}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{lem:S1groupoid} may be identified with with the integers).
+
 So, a classification of coverings of the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.  Using language yet to be introduced, the question would be ``what are the subgroups of the integers?''
+
+We will be even a bit more ambitious: what is the \emph{type} of decidable coverings of the circle?  Since the type of coverings is equivalent to $S^1\to \Set$, and the fact that if $F,F':S^1\to\Set$, then $F=_{S^1\to\Set}F$ is the type $\prod_{z:S^1}(F(z)=_{\Set}F'(z))$ (which is a set\footnote{reference}), we see that the type of decidable coverings of the circle is a groupoid.  We will pin this groupoid down by first identifying the components (of which there turns out to be one for each natural number), and then analyzing one component at a time.
 
  Recall the function $c:S^1\to C$ of \cref{def:S1toC}.  By \cref{thm:S1bysymmetries} we know that $c$ is an equivalence, so classifying coverings of $S^1$ is equivalent to classifying coverings of $C$.  
 We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the element corresponding by \cref{def:S1toC} to $\base:S^1$), and allowing ourselves to write $s:\pt_C=_C\pt_C$ instead of the more honest $(s,!):\pt_C=_C\pt_C$ (corresponding to $\Sloop:\base=\base$).
 
-Fix for the moment a connected type $A$ and a decidable covering $f:A\to C$ (c.f \cref{def:covering}).  Assume $(\pt_A,!):f^{-1}(\pt_C)$
+Fix for the moment a connected type $A$ and a decidable covering $f:A\to C$ (c.f \cref{def:covering}) and an element $\pt_A:f^{-1}(\pt_C)$.  %Assume $(\pt_A,!):f^{-1}(\pt_C)$
 %Recall the element 
 %$$\pt_C\defequi(s,\refl{ss}):(\zet,s)=_C(\zet,s),$$ which by \cref{def:S1toC} corresponds to $\Sloop:\base=\base$.
-By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a covering exactly says that the induced function of identity types
-$g\defequi(cf)^=:(\pt_A=_C\pt_A)\to (\pt_C=_C\pt_C)=\zet$ is injective and decidable.\footnote{say this in a way consistent with the choices of subsets/injections/embeddings}    
+By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a decidable covering exactly says that the induced function of identity types
+$$g\defequi(cf)^=:(\pt_A=_A\pt_A)\to (\pt_C=_C\pt_C)=\zet$$ is injective and decidable.\footnote{say this in a way consistent with the choices of subsets/injections/embeddings}    
 
 We are then left with two situations: either $\pt_A=\pt_A$ is contractible or there is a $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$. 
 
-In the former case, \cref{lem:eqandcovofconntypes} together with the fact that $A$ is connected and $\pt_A=\pt_A$ is contractible implies that $A$ itself is contractible.  
+In the former case ($\pt_A=\pt_A$ is contractible), \cref{lem:eqandcovofconntypes} together with the fact that $A$ is connected implies that $A$ itself is contractible.  
 \begin{remark}
+  \label{rem:RtoS1}
   This manifestation of the contractible type as a covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers forms a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this covering is the exponential function ``$e^{ix}$'' from the reals to the unit circle in the complex plane.
 \end{remark}  
 
@@ -372,29 +389,37 @@ On the other hand, if $A$ is not contractible, either $g(p_0)$ or $g(p_0^{-1})$ 
 
 Arguing similarly for the negative values, we reach the conclusion that the image of $g$ in $\zet$ is the subset of multiples of $g(p)=\min H^+$.  Hence, the image of $f^=:(\pt_A=\pt_A)\to(\base=_{S^1}\base)$ is uniquely given by the positive integer $\min H^+$, and is not dependent on $\pt_A$.\footnote{how to say this gently without starting to much fuss regarding commutativity?}  Furthermore, if $p_A:A=_{\UU}A'$, $f':A'\to B$ and $p_f:f'p_A=_{A\to B}f$, then tracing through the argument, we see that the positive number reached through arguing with $f':A'\to B$ remains the same, but there \emph{is} a possibility that $g(p_0)$ changes sign, so that the minimum of $H^+$ is now not attained by $g(p_0)$, but by $g(p_0^{-1})$.\footnote{maybe some HoTT guy can say this less classically.  We also want to say something about the connection to pointed coverings, conjugations etc to clear the path for later applications}
 
-Summing up\footnote{this is still missing a full argument}.
-\begin{theorem}
-  \label{thm:coveringsofS1}
-  The type of decidable coverings of the circle by connected types is a groupoid 
-  The set of components is equivalent to $\NN$.  
-  The deck transformations of a covering in the $m$'th component is a set equivalent to $\zet$ if $m=0$, and to $\bn m$ if $0\neq m$.
-\end{theorem}
 
 A natural question is, given $m:\NN$, what does the associated connective covering $f:A\to S^1$ look like?
 
 We saw that if $m=0$, then the identity types of $A$ were contractible, and so (in view of \cref{lem:eqandcovofconntypes} since $A$ is connected) $A$ is itself contractible.
 
 
-If $0<m$, then the injection $g:(\pt_A=\pt_A)\to\zet$ hits all multiples of $m$.  In particular, if $m=1$, then the injection hits \emph{all} integers, so $g:(\pt_A=\pt_A)\to\zet$ is an equivalence.  Again, by \cref{lem:eqandcovofconntypes} this means that $A\to S^1$ is an equivalence. 
+If $0<m$, then the injection $g:(\pt_A=\pt_A)\to\zet$ gives an equivalence of $\pt_A=\pt_A$ with the set $m\zet$ of all multiples of $m$.  In particular, if $m=1$, then the injection hits \emph{all} integers, so $g:(\pt_A=\pt_A)\to\zet$ is an equivalence.  Again, by \cref{lem:eqandcovofconntypes} this means that $A\to S^1$ is an equivalence. 
 \begin{remark}
+  \label{rem:flipthecircle}
   The reader may wonder how the ``orientation reversing'' $c:S^1\to S^1$ given by $c(\base)=\base$ and $c(\Sloop)=\Sloop^{-1}$ fits into the picture.  In our setting it is equal to the identity on $S^1$ (corresponding to $m=1$: Letting also $c:S^1=S^1$ be the identity given by univalence, we have that $\refl{S^1}=c\cdot c$, so that $c$ itself proves that $\id_{S^1}$ and $c$ are equal.
 \end{remark}
 
 
-More generally, if $0<m$, then $g$ gives an equivalence between $\pt_A=\pt_A$ and $m\zet$, the multiples of $m$.  Given $p:\pt_A=\pt_A$ in the preimage of $\Sloop:\base=\base$, define $i:S^1\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
+More generally, if $0<m$, let $p:\pt_A=\pt_A$ be in the preimage of $m$ under the equivalenceinduced by $g$  between $\pt_A=\pt_A$ and $m\zet$ (the multiples of $m$).  Define $i:S^1\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
 
-The composite $fi:S^1\to S^1$ is then the function given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.  \footnote{comeback181220: show that $A=S^1$}
+The composite $fi:S^1\to S^1$ is then the decidable covering given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.   We want to be able to refer to this covering and call it the \emph{degree $m$ function} $-^m:S^1\to S^1$ for reference.
 
+\begin{remark}
+  \label{rem:finitecoveringsofS1}
+  Following up our interpretation of the covering $f:A\to S^1$ with contractible $A$ as the exponential function sending a real number $x$ to the point $e^{2\pi i x}$ on the complex unit circle, the analogue of our degree $m$ function is the $m$th power of complex numbers restricted to the unit circle.
+  ((picture!!))
+\end{remark}
+
+Summing up, the type of connected decidable covers of the circle has one component for every $m:\NN$.  The component corresponding to $m=0$ contains the first projection $\sum_{z:S^1}(\base= z)\to S^1$ from the contractible type.  If $0<m$, the component corresponding to $m$ contains the degree $m$ function $-^m:S^1\to S^1$.
+\footnote{fill in the rest of the argument!}
+\begin{theorem}
+  \label{thm:coveringsofS1}
+  The type of decidable coverings of the circle by connected types is a groupoid 
+  The set of components is equivalent to $\NN$.  
+  The deck transformations of a covering in the $m$'th component is a set equivalent to $\zet$ if $m=0$, and to $\bn m$ if $0\neq m$.
+\end{theorem}
 
 
 
