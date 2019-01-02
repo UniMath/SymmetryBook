@@ -1,7 +1,22 @@
 \label{ch:groups}
-
+\newcommand{\ev}{\mathrm{ev}}
 \section{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
 The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
+
+\subsection{Move to ``More on Natural numbers''}
+\label{sec:moonN}
+\begin{lemma}\label{lem:Nwellordered}
+  As an ordered set, the natural numbers are well ordered: any nonempty decidable subset of $\NN$ has a minimum.\footnote{move to around \cref{def:Niswellordered} (the statement I want to refer to is somewhat simpler than what is stated there).  Btw. Pigeonhole is in one word}
+\end{lemma}
+\begin{corollary}
+  \label{cor:arch}
+  If $m,n:\NN$ and $m$ is positive (\ie $0<m$), then there is a $k:\NN$ with 
+$$mk\leq n<m(k+1).$$
+\end{corollary}
+\begin{proof}
+  Recall from \cref{lem:dec-eq+order-N} that the order relation on $\NN$ is decidable.
+  Note that $$n=1\cdot n\leq m\cdot n<m\cdot n+m=m(n+1)$$ and so the decidable set of $k:\NN$ such that $n<m(k+1)$ is nonempty. By \cref{lem:Nwellordered} there is a minimal $k$ with this property.  If $k=0$, then $mk=m\cdot 0=0\leq n$, and if $k=k'+1$  is positive, then $mk=m(k'+1)\leq n$ by the minimality of $k$ (c.f. \cref{xca:try-your-luck-N}).  
+\end{proof}
 
 
 
@@ -341,13 +356,26 @@ This discussion tells us that the following definition makes sense:
 
 We are going to prove that $c$ is an equivalence.  This is greatly simplified by the fact that we already know that both $S^1$ and $C$ are connected groupoids, since then \cref{lem:eqofconntypes} says that it is enough to show that $c$ induces an equivalence of symmetries.\footnote{of course, the proof of \cref{lem:S1groupoid} \emph{could} attack $c$ directly, but that would compound the technicalities already present there: at present I prefer splitting it up like this.  I am open for letting the proof of \cref{lem:S1groupoid} be postponed till the end of a chapter, so as not to disrupt the flow of ideas}
 
+\begin{lemma}
+  \label{lem:IdCisZet}
+  Any element in $(\zet,s)=_C(zet,s)$ is of the form $(s^k,!)$ for some unique $k:\zet$.  In other words,
+  the function 
+$$\ev_0:((\zet,s)=_C(zet,s))\to \zet$$ given by $\ev_0(p)=p(0)$ is an equivalence.
+\end{lemma}
+\begin{proof}
+  Given $(p,!):(\zet,s)=_C(\zet,s)$ we must determine $p:\zet=_{\Set}\zet$, which by univalence amounts to giving all the values $p(n)$ for $n:\zet$.  However, since $sp=ps$ we get that $p(n+1)=p(n)+1$ and so induction on $n$ (induction for positive and negative $n$ separately) gives that $p(n)=n+p(0)$.  Hence, $p=s^{p(0)}$ (uniquely since $\zet:\Set$).
+\end{proof}
+
+
 \begin{theorem}\label{thm:S1bysymmetries}
   The function $c:S^1\to C$ is an equivalence.
 \end{theorem}
 \begin{proof}
-  In view of \cref{lem:eqofconntypes} we only need to show that the induced function of symmetries $(\base=_{S^1}\base)\to((\zet,s)=_C(\zet,s))$ is an equivalence.\footnote{ ((can we call equivalences between sets bijections?)).}  
+  In view of \cref{lem:eqofconntypes} we only need to show that the induced function of symmetries $c^=:(\base=_{S^1}\base)\to((\zet,s)=_C(\zet,s))$ is an equivalence.\footnote{ ((can we call equivalences between sets bijections?)).}  
 
-The composition with the function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^n$ gives us a function $w:\zet\to((\zet,s)=_C(\zet,s))$ with $w(n)=(s^n,!:ss^n=s^ns)$.  From \cref{lem:S1groupoid} we know that $\Sloop^-$ is an equivalence, so we only need to show that $w$ is an equivalence\footnote{I may have used 2-out-of-3 before, we probably need to include it somewhere, though by univalence it hardly seems necessary}.  If $p:\zet=\zet$ with $!:sp=ps$, we get by induction on $n:\zet$ (induction for positive and negative $n$ separately) that $p(n)=n+p(0)$.  Hence, all the elements in the preimage $w^{-1}(p,!:sp=ps)$ are equal to $(p(0),!)$.  
+The function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^n$ is an equivalence by  \cref{lem:S1groupoid} and the function  $\ev_0:((\zet,s)=_C(\zet,s))\to \zet$ given by $\ev_0(p)=p(0)$ is an equivalence by \cref{lem:IdCisZet}.  Tracing through the composite function $\ev_0c^=\Sloop^-:\zet\to\zet$ we see that $\ev_0c^=\Sloop^n=\ev_0s^n=n$, (\ie $\ev_0c^=\Sloop^-=\id_\zet$) giving that $c^=$ is an equivalence. 
+% The composition with the functions $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^n$ and $\ev_0:((\zet,s)=_C(zet,s))\to \zet$ of \cref{lem:IdCisZet} given by $\ev_0(p)=p(0)$ gives us a function $w:\zet\to\zet$ with $w(n)=s^n(0)$.  From \cref{lem:S1groupoid} we know that $\Sloop^-$ is an equivalence, so we only need to show that $w$ is an equivalence
+\footnote{I may have used 2-out-of-3 before, we probably need to include it somewhere, though by univalence it hardly seems necessary}% .  If $p:\zet=\zet$ with $!:sp=ps$, we get by induction on $n:\zet$ (induction for positive and negative $n$ separately) that $p(n)=n+p(0)$.  Hence, all the elements in the preimage $w^{-1}(p,!:sp=ps)$ are equal to $(p(0),!)$.  
 \end{proof}
 
 % Now, consider the function 
@@ -362,20 +390,49 @@ The composition with the function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending
 \label{sec:covS1}
 
 \footnote{The below is not fully structured yet, and does contain known nonsense (basepoints, orientations etc need to be straightened out)}
-From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a conneted type $A$ is a covering if and only if for given $a_0:A$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{S^1}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{lem:S1groupoid} may be identified with with the integers).
+From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a connected type $A$ is a covering if and only if for given $a_0:f^{-1}(\base)$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{S^1}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{lem:S1groupoid} may be identified with with the integers).
 
 So, a classification of coverings of the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.  Using language yet to be introduced, the question would be ``what are the subgroups of the integers?''
+
+\begin{example}
+  \label{ex:listofS1covers}
+  In the course of our discussion, we will see that the following represent all the connected coverings of the circle.
+  \begin{enumerate}
+  \item The trivial connected cover  $$c_\base:\bn 1\to S^1$$ sends the unique element of $\bn 1$ to $\base$ is a covering corresponding to the trivial symmetry of $\base$ (\ie only $\refl\base$).  
+  \item If $m:\NN$ is positive, consider the \emph{degree $m$ function} $$-^m:S^1\to S^1$$ given by $-^m(\base)\defequi\base$ and $-^m(\Sloop)\defequi\Sloop^m$.  On the level of identity types and under the equivalence $\Sloop^-:\zet\simeq(\base=_{S^1}\base)$, this covering corresponds to the function $\zet\to\zet$ given by multiplication by $m$.
+  \end{enumerate}
+\end{example}
 
 We will be even a bit more ambitious: what is the \emph{type} of decidable coverings of the circle?  Since the type of coverings is equivalent to $S^1\to \Set$, and the fact that if $F,F':S^1\to\Set$, then $F=_{S^1\to\Set}F$ is the type $\prod_{z:S^1}(F(z)=_{\Set}F'(z))$ (which is a set\footnote{reference}), we see that the type of decidable coverings of the circle is a groupoid.  We will pin this groupoid down by first identifying the components (of which there turns out to be one for each natural number), and then analyzing one component at a time.
 
  Recall the function $c:S^1\to C$ of \cref{def:S1toC}.  By \cref{thm:S1bysymmetries} we know that $c$ is an equivalence, so classifying coverings of $S^1$ is equivalent to classifying coverings of $C$.  
 We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the element corresponding by \cref{def:S1toC} to $\base:S^1$), and allowing ourselves to write $s:\pt_C=_C\pt_C$ instead of the more honest $(s,!):\pt_C=_C\pt_C$ (corresponding to $\Sloop:\base=\base$).
 
-Fix for the moment a connected type $A$ and a decidable covering $f:A\to C$ (c.f \cref{def:covering}) and an element $\pt_A:f^{-1}(\pt_C)$.  %Assume $(\pt_A,!):f^{-1}(\pt_C)$
+
+\begin{example}
+ \label{ex:listofCcovers}
+  Returning to \cref{ex:listofS1covers}, it is instructive to rephraze these connected coverings in terms of $C$.
+  \begin{enumerate}
+  \item The trivial connected cover is still represented by the constant function
+    $$c_{(\zet,s)}:\bn 1\to C$$ sends the unique element of $\bn 1$ to $(\zet,s):C$.
+  \item If $m:\NN$ is positive the \emph{degree $m$ function} $$-^m:C\to C$$ is given by $-^m((X,f))=(\sqrt[m]X,\sqrt[m]f)$, where $$\sqrt[m]X=\bn m\times X$$ and $\sqrt[m]f(i,x)=(i+1,x)$ for $i<m-1$ and $\sqrt[m]f(m-1,x)=(1,f(x))$.  We prove that $-^m((X,f))$ is in the component of $(\zet,s)$ (which was a requirement for elements in $C$).  Since we know that $(X,f)$ is in the component of $(\zet,s)$ it is enough consider the element $(p,!):(\sqrt[m]{\zet},\sqrt[m]s)=(zet,s)$ explicitly given by univalence through $p((i,n))=i+mn$ ((check that it gives an equivalence)).
+
+If $(p,!):(X,f)=_C(X',f')$, then $$(\sqrt[m](p),!):((\sqrt[m]X,\sqrt[m]f)=(\sqrt[m]X',\sqrt[m]f'))$$ is given by $\sqrt[m](p)(i,x)=(i,p(x))$ (and the fact $!:pf=f'p$).
+
+
+ Note that the equivalence $c:S^1\to C$.
+  \end{enumerate}
+\end{example}
+\begin{xca}
+  Check the implicit claims in \cref{ex:listofCcovers}.  ((perhaps best to make them explicit?))
+\end{xca}
+
+Fix for the moment a connected type $A$ and a decidable covering 
+$$f:A\to C$$ (c.f \cref{def:covering}) and an element $\pt_A:f^{-1}(\pt_C)$.  %Assume $(\pt_A,!):f^{-1}(\pt_C)$
 %Recall the element 
 %$$\pt_C\defequi(s,\refl{ss}):(\zet,s)=_C(\zet,s),$$ which by \cref{def:S1toC} corresponds to $\Sloop:\base=\base$.
 By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a decidable covering exactly says that the induced function of identity types
-$$g\defequi(cf)^=:(\pt_A=_A\pt_A)\to (\pt_C=_C\pt_C)=\zet$$ is injective and decidable.\footnote{say this in a way consistent with the choices of subsets/injections/embeddings}    
+$$g\defequi\ev_0f^=:(\pt_A=_A\pt_A)\to (\pt_C=_C\pt_C)=\zet$$ is injective and decidable.\footnote{say this in a way consistent with the choices of subsets/injections/embeddings}    
 
 We are then left with two situations: either $\pt_A=\pt_A$ is contractible or there is a $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$. 
 
@@ -385,9 +442,14 @@ In the former case ($\pt_A=\pt_A$ is contractible), \cref{lem:eqandcovofconntype
   This manifestation of the contractible type as a covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers forms a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this covering is the exponential function ``$e^{ix}$'' from the reals to the unit circle in the complex plane.
 \end{remark}  
 
-On the other hand, if $A$ is not contractible, either $g(p_0)$ or $g(p_0^{-1})$ is a positive integer.  Hence the set $H^+$ of positive integers in the image of $g$ is nonempty, and so by the fact that $\NN$ is well ordered\footnote{reference for well ordered} implies $H^+$ has a minimum, \ie there is a $p:\pt_A=\pt_A$ with  $g(p)=m\defequi\min H^+:H^+$.  Furthermore, if $q:\pt_A=\pt_A$ is any element with $0<g(q)$, then  there is a $k:\NN$ such that $g(p)k\leq g(q)<g(p)(k+1)$,\footnote{reference for the corresponding Archimedean property (or deduction here)} or equivalently $0\leq g(q)-g(p)k< g(p)$.  Since $g(q)-g(p)k=g(qp^{-k})$ is a nonnegative integer is in the image of $g$ and simultaneously less than the minimum positive value $g(p)$, we must conclude that $g(q)=g(p)k$.
+On the other hand, if $A$ is not contractible, either $g(p_0)$ or $g(p_0^{-1})$ is a positive integer.  Hence the set $H^+$ of positive integers in the image of $g$ is nonempty, and so the fact \cref{lem:Nwellordered} that $\NN$ is well ordered implies that $H^+$ has a minimum, \ie there is a $p:\pt_A=\pt_A$ with  $g(p)=m\defequi\min H^+:H^+$.  Furthermore, if $q:\pt_A=\pt_A$ is any element with $0<g(q)$, then  by \cref{cor:arch} there is a $k:\NN$ such that $g(p)k\leq g(q)<g(p)(k+1)$, or equivalently $0\leq g(q)-g(p)k< g(p)$.  Since $g(q)-g(p)k=g(qp^{-k})$ is a nonnegative integer is in the image of $g$ and simultaneously less than the minimum positive value $g(p)$, we must conclude that $g(q)=g(p)k$.
 
 Arguing similarly for the negative values, we reach the conclusion that the image of $g$ in $\zet$ is the subset of multiples of $g(p)=\min H^+$.  Hence, the image of $f^=:(\pt_A=\pt_A)\to(\base=_{S^1}\base)$ is uniquely given by the positive integer $\min H^+$, and is not dependent on $\pt_A$.\footnote{how to say this gently without starting to much fuss regarding commutativity?}  Furthermore, if $p_A:A=_{\UU}A'$, $f':A'\to B$ and $p_f:f'p_A=_{A\to B}f$, then tracing through the argument, we see that the positive number reached through arguing with $f':A'\to B$ remains the same, but there \emph{is} a possibility that $g(p_0)$ changes sign, so that the minimum of $H^+$ is now not attained by $g(p_0)$, but by $g(p_0^{-1})$.\footnote{maybe some HoTT guy can say this less classically.  We also want to say something about the connection to pointed coverings, conjugations etc to clear the path for later applications}
+
+\begin{lemma}
+  \label{lem:componentsofcoversofS1}
+  Given a connected decidable covering of the circle, there is a unique natural number $m$ so that the connected covering is equal to the connected covering $c^m$ of \cref{ex:listofS1covers}.  This gives an equivalence between $\NN$ and the propositional truncation of the type of connected decidable covering of the circle. 
+\end{lemma}
 
 
 A natural question is, given $m:\NN$, what does the associated connective covering $f:A\to S^1$ look like?
@@ -398,13 +460,13 @@ We saw that if $m=0$, then the identity types of $A$ were contractible, and so (
 If $0<m$, then the injection $g:(\pt_A=\pt_A)\to\zet$ gives an equivalence of $\pt_A=\pt_A$ with the set $m\zet$ of all multiples of $m$.  In particular, if $m=1$, then the injection hits \emph{all} integers, so $g:(\pt_A=\pt_A)\to\zet$ is an equivalence.  Again, by \cref{lem:eqandcovofconntypes} this means that $A\to S^1$ is an equivalence. 
 \begin{remark}
   \label{rem:flipthecircle}
-  The reader may wonder how the ``orientation reversing'' $c:S^1\to S^1$ given by $c(\base)=\base$ and $c(\Sloop)=\Sloop^{-1}$ fits into the picture.  In our setting it is equal to the identity on $S^1$ (corresponding to $m=1$: Letting also $c:S^1=S^1$ be the identity given by univalence, we have that $\refl{S^1}=c\cdot c$, so that $c$ itself proves that $\id_{S^1}$ and $c$ are equal.
+  The reader may wonder how the ``orientation reversing'' $c:S^1\to S^1$ given by $c(\base)=\base$ and $c(\Sloop)=\Sloop^{-1}$ fits into the picture.  In our setting it is equal to the identity on $S^1$ (corresponding to $m=1$): Letting also $c:S^1=S^1$ be the identity given by univalence, we have that $\refl{S^1}=c\cdot c$, so that $c$ itself proves that $\id_{S^1}$ and $c$ are equal.
 \end{remark}
 
 
-More generally, if $0<m$, let $p:\pt_A=\pt_A$ be in the preimage of $m$ under the equivalenceinduced by $g$  between $\pt_A=\pt_A$ and $m\zet$ (the multiples of $m$).  Define $i:S^1\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
+More generally, if $0<m$, let $p:\pt_A=\pt_A$ be in the preimage of $m$ under the equivalence induced by $g$  between $\pt_A=\pt_A$ and $m\zet$ (the multiples of $m$).  Define $i:S^1\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
 
-The composite $fi:S^1\to S^1$ is then the decidable covering given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.   We want to be able to refer to this covering and call it the \emph{degree $m$ function} $-^m:S^1\to S^1$ for reference.
+The composite $fi:S^1\to S^1$ is then the decidable covering given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.   
 
 \begin{remark}
   \label{rem:finitecoveringsofS1}
