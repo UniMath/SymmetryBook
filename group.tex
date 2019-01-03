@@ -415,16 +415,17 @@ We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the elemen
   \begin{enumerate}
   \item  The trivial connected cover is still represented by the constant function
     $$c_{(\zet,s)}:\bn 1\to C$$ sends the unique element of $\bn 1$ to $(\zet,s):C$.
-  \item Assume that $m:\NN$ is positive.  If $X$ is a type and $f:X\to X$ we define the \emph{ $m$th root}
-$$\sqrt[m]X=\bn m\times X$$ and 
+  \item Assume that $m:\NN$ is positive.  If $X$ is a set and $f:X\to X$ we define the \emph{ $m$th root}
+$$\sqrt[m]f:\bn m\times X\to\bn m\times X$$ by setting 
 $$\sqrt[m]f(i,x)=
 \begin{cases}
-  (i+1,x)& \text{for $i<m-1$ and}\\(1,f(x))& \text{for i=m-1}:
-\end{cases}$$ most of the time $\sqrt[m]f$ increases the element $\bn m$, but when that is no longer possible (one $m$th of the time; hence the term $m$th root) it uses $f$ on $X$, see \cref{fig:root}:
+  (i+1,x)& \text{for $i<m-1$ and}\\(0,f(x))& \text{for $i=m-1$}.\footnote{this indexing uses the incarnation $\bn m=\{0,1,\dots m-1\}$ and not $\{1,\dots,m\}$: if this is a problem we should change $\bn m$ since the indexing chosen is very convenient later.}
+\end{cases}$$ 
+Only one $m$th of the time does $\sqrt[m]f$ use $f$ on $X$ (the rest of the time it increases the element in $\bn m$).  This is illustrated in \cref{fig:root} with the shift by $f$ being vertical and the movement along $\bn m$ going around a circle.  
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \node (A) at (2,1) {$\sqrt[m]X$};
+    \node (A) at (2,8) {\quad$\sqrt[m]f:\bn m\times X\to\bn m\times X$};
     \foreach \y in {0,1,2}
     { \begin{scope}[shift={(0,\y)}]
         \foreach \x in {0,...,4}
@@ -454,14 +455,30 @@ $$\sqrt[m]f(i,x)=
   \caption{The $m$'th root of an endomorphism}
   \label{fig:root}
 \end{figure}
+Indeed, iterating $\sqrt[m]f$ we get $(\sqrt[m]f)^m(i,x)=(i,f(x))$; hence the term ``$m$th root'' is apt.
 
-Note that the function $p:\sqrt[m]{\zet}\to\zet$ given by $p(i,n)=i+mn$ is an equivalence and that $p\sqrt[m]s(i,n)=i+1+mn=sp(i,n)$.  Consequently $(\sqrt[m]{\zet},\sqrt[m]s):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$, \ie $(\sqrt[m]{\zet},\sqrt[m]s):C$. % In consequence, if $(X,f):C$ (\ie, $(X,f):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$) then also $(\sqrt[m]X,\sqrt[m]f):C$, giving rise to the 
+If $f$ is an equivalence, then so is $\sqrt[m]f$:
+\begin{enumerate}
+\item on one hand $(\sqrt[m]f)(j,y)$ is equal to $(0,x)$ if and only if $j=0$ and $f(y)=x$, so  $(\sqrt[m]f)^{-1}(0,x)$ is equivalent to $f^{-1}(x)$ which is contractible if $f$ is an equivalence, and 
+\item on the other, if $i:\bn m$ is not $0$, then $(\sqrt[m]f)(j,y)$ is equal to $(i,x)$ if and only $j+1=i$ and and $y=x$, and so  $(\sqrt[m]f)^{-1}(i,x)$ is equivalent to  a singleton.
+\end{enumerate}
+
+
+Using univalence, the $m$th root construction applies not only to equivalences, but equally well to identities $f:X=_{\Set}X$; resulting in a function 
+$$-^m:\sum_{X:\Set}(X=X)\to\sum_{X:\Set}(X=X),\quad -^m((X,f))=(\bn m\times X,\sqrt[m]f).$$
+We now focus on  $C$, the component of $\sum_{X:\Set}(X=X)$ containing $(\zet,s)$.
+Note that the function $p:\bn m\times \zet\to\zet$ given by $p(i,n)=i+mn$ is an equivalence and that 
+$$p\sqrt[m]s(i,n)=i+1+mn=sp(i,n).$$  
+Consequently $(\bn m\times\zet,\sqrt[m]s):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$, \ie $(\bn m\times \zet,\sqrt[m]s):C$. % In consequence, if $(X,f):C$ (\ie, $(X,f):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$) then also $(\sqrt[m]X,\sqrt[m]f):C$, giving rise to the 
 Ultimately, we have defined the
- \emph{degree $m$ function} $$-^m:C\to C,\qquad -^m((X,f))=(\sqrt[m]X,\sqrt[m]f).$$
+ \emph{degree $m$ function} $$-^m:C\to C,\qquad -^m((X,f))=(\bn m\times X,\sqrt[m]f).$$
 % , where $$\sqrt[m]X=\bn m\times X$$ and $\sqrt[m]f(i,x)=(i+1,x)$ for $i<m-1$ and $\sqrt[m]f(m-1,x)=(1,f(x))$.  We prove that $-^m((X,f))$ is in the component of $(\zet,s)$ (which was a requirement for elements in $C$).
  % Since we know that $(X,f)$ is in the component of $(\zet,s)$ it is enough consider the element $(p,!):(\sqrt[m]{\zet},\sqrt[m]s)=(zet,s)$ explicitly given by univalence through $p((i,n))=i+mn$ ((check that it gives an equivalence)).
 
-If $(p,!):(X,f)=_C(X',f')$, then $$(p,!):((\sqrt[m]X,\sqrt[m]f)=(\sqrt[m]X',\sqrt[m]f'))$$ is given by $p(i,x)=(i,p(x))$ (and the fact $!:pf=f'p$).  In particular, letting $p\defequi s:\zet=\zet$, we get that $s(i,n)=(i,sn)=(\sqrt[m]s)^m(i,n)$.
+If $(p,!):(X,f)=_C(X',f')$, then 
+$$(\id\times p,!):(\bn m\times X,\sqrt[m]f)=(\bn m\times X',\sqrt[m]f')$$ 
+is given by % $(\id\times p)(i,x)=(i,p(x))$ (and by 
+the fact $!:(\id\times p)\sqrt[m]f=_{\bn m\times X=\bn m\times X'}\sqrt[m]{f'}(\id\times p)$\footnote{$(i,x)$ is taken to $(i+1,px)$ if $i<m-1$ and $(m-1,x)$ is taken to either $(0,f'px)$ or $(1,pfx)$ which are equal by assumption}.  In particular, letting $p\defequi s:\zet=\zet$, we get that $s(i,n)=(i,sn)=(\sqrt[m]s)^m(i,n)$.
 
 
 
