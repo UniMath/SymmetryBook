@@ -1006,31 +1006,51 @@ are equal. Therefore the type $\sum_{n:\NN} P_{\min}(n)$
 is also a proposition. 
 
 For any function $d(n): P(n)\amalg\neg P(n)$ deciding $P(n)$ for each $n:\NN$, 
-we can define a function $\mu_P:\NN\to\NN$ that,
-given input $n$ searches for a $k<n$ such that $P(k)$.
-If $k<n$ with $P(k)$ exists, $\mu_P$ returns the least such $k$,
+we define a function $\mu_P:\NN\to\NN$ which,
+given input $n$, searches for a $k<n$ such that $P(k)$.
+If such a $k$ exists, $\mu_P$ returns the least such $k$,
 otherwise $\mu_P(n)=n$.
 This is a standard procedure that we will call \emph{bounded search}.
-The function $\mu_P$ is defined by induction setting
+The function $\mu_P$ is defined by induction, setting
 $\mu_P(0)\defeq 0$ and 
 $\mu_P(S(n))\defeq \mu_P(n)$ if $\mu_P(n) < n$.
 Otherwise, we set $\mu_P(S(n))\defeq n$ if $P(n)$,
-and $\mu_P(S(n))\defeq S(n)$ else, using $d(n)$ to decide.
+and $\mu_P(S(n))\defeq S(n)$ else, using $d(n)$ to decide,
+that is, by induction on $d(n):P(n)\amalg\neg P(n)$.
 By design, $\mu_P$ `remembers' where it has found the least $k$.
 We are now done with the computational part and the rest
 is a correctness proof.
 
-By triple induction on $n,k:\NN$ and $d(n): P(n)\amalg\neg P(n)$ one can show
+By induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \[
-\mu_P(n)=(\yes,k)) \to (P(k)\times (k\leq n)).
+((\mu_P(n)\leq n) \times (\mu_P(n)<n \to P(\mu_P(n)))).
 \]
-Note that there may not be an $n$ such that $P(n)$, but we can prove
+The base case $n=0$ is by Ex Falso. For the induction step, 
+review the computation of $\mu_P(S(n))$. If $\mu_P(S(n))=\mu_P(n)$
+since $\mu_P(n) < n$, then we are done by the induction hypothesis.
+Otherwise, either $\mu_P(S(n))=n$ and $P(n)$, or $\mu_P(S(n))=S(n)$.
+In both cases we are done.
+
+Also by induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \[
-P(n)\to \sum_{k:\NN} (\mu_P(n)=(\yes,k)
+P(m) \to \mu_P(n)\leq m \text{~for all $m$ in $\NN$.}
 \]
-by induction on $n:\NN$. 
-Since we also can show $\mu_P(n)=(\yes,k)\to \mu_P(n+m)=f(n)$,
-we can conclude $P(n)\to P_{\min}(\snd(\mu_P(n)))$.
+The base case $n=0$ holds since $\mu_P(0)=0$. For the induction step,
+assume $P(m) \to \mu_P(n)\leq m$ for all $m$. 
+We have either $\mu_P(S(n))=\mu_P(n)$, 
+or $\mu_P(n)=n$ and $\neg P(n)$ and $\mu_P(S(n)) = S(n)$. 
+In both cases we are done by using the induction hypothesis.
+
+Note that there may not be an $n$ such that $P(n)$,
+the best we can do is to prove
+\[
+P(n)\to P_{\min}(\mu_P(S(n)))
+\]
+by combining the two previous results. Assume $P(n)$.
+Then $\mu_P(S(n))\leq n < S(n)$, so that $P(\mu_P(S(n)))$.
+Moreover, $P(m) \to \mu_P(S(n))\leq m$ for all $m$ in $\NN$.
+Hence $P_{\min}(\mu_P(S(n)))$.
+
 Since $\sum_{n:\NN} P_{\min}(n)$ is a proposition, 
 we obtain the following function by the induction
 principle for propositional truncation \cref{lem:prop-trunc-elim}:
@@ -1041,15 +1061,15 @@ principle for propositional truncation \cref{lem:prop-trunc-elim}:
 \end{align}
 \end{definition}
 
-In the above we have made the use of the witnesses of decidability
-explicit. In the interest of readability, we will not continue
-to do so. For example, in order to define a function $f:\NN\to\NN$
-such that $f(n)$ takes value $1$ for $n=13$, and $0$ everywhere else,
-we consider this very definition as sufficient and will not refer
-to the decidability of $=$ in $\NN$. This remark applies to all
+\begin{remark}\label{rem:computations-can-decide}
+In the interest of readability, we do not always make the use
+of witnesses of decidability in computations explicit.
+A typical example is the case distinction on $\mu_P(n) < n$ in
+\cref{def:Niswellordered} above. This remark applies to all
 sets and decidable relations on them. We shall immediately put
-this convention to good use in the proof a form of the so-called
+this convention to good use in the proof of a form of the so-called
 \emph{Pigeon Hole Principle} (PHP).
+\end{remark}
 
 \begin{lemma}\label{lem:PHP}
 For all $k:\NN$ and $f:\NN\to\NN$ such that $f(n)<k$
