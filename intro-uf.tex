@@ -128,7 +128,10 @@ Now we state our symmetry result a little more formally.
 \end{definition}
 
 Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
-abbreviate $(\trans_{a,b,c}(p))(q)$ as $p*q$.
+abbreviate $(\trans_{a,b,c}(p))(q)$ as $p\cdot q$, or as $q\circ p$.
+(The latter notation will be used when $a,b,c$ are types and
+$p$ and $q$ come from functions $a\to b$ and $b\to c$, respectively.
+MAKE PICTURE)
 
 Associativity of transitivity is formulated and established similarly.  
 We leave that as an exercise.
@@ -193,7 +196,7 @@ Functions preserve equality, a fact that is frequently used.
 We make this fully precise now, for once and for all, 
 to be used implicitly later on.
 
-\begin{definition}\label{lem:apd}
+\begin{definition}\label{def:apd}
 For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,y:X$, the function
 $\ap{f} : x = y \to f(x) = f(y)$ is defined by induction by setting 
 $\ap{f}(\refl{x})\defeq\refl{f(x)}$. More generally, 
@@ -946,9 +949,9 @@ Show that $X\amalg Y$ is a set if $X$ and $Y$ are sets.
 \section{More on natural numbers}
 \label{sec:more-on-N}
 
-Recall from \cref{sec:natural-numbers} the definition of addition in $\NN$,
+Recall from \cref{sec:natural-numbers} the definition of addition on $\NN$,
 by $n+0\defeq n$ and $n+S(m)\defeq S(n+m)$. We also define
-multiplication in $\NN$, setting $m\cdot 0\defeq 0$ and 
+multiplication on $\NN$, setting $m\cdot 0\defeq 0$ and 
 $m\cdot(n+1)\defeq (m\cdot n) + m$. 
 Another useful function is the \emph{predecessor} $p$ defined by
 $p(0)\defeq 0$ and $p(S(n))\defeq n$.
@@ -968,8 +971,10 @@ Both $n\leq m$ and $n<m$ are propositions for all $m,n:\NN$.
 \begin{xca}\label{xca:try-your-luck-N}
 Try your luck in type theory proving any of the following.
 The successor function satisfies $(S(n)=S(m))\liff(n=m)$.
-The functions $+$ and $\cdot$ are commutative, associative and distributive.
-The relations $\leq$ and $<$ are transitive and preserved under $+$ and $\cdot$. 
+The functions $+$ and $\cdot$ are commutative and associative,
+$\cdot$ distributes over $+$.
+The relations $\leq$ and $<$ are transitive, and $\leq$ is
+preserved under $+$ and $\cdot$. 
 We have $(m\leq n) \liff ((m<n)\amalg(m=n))$ (so $\leq$ is reflexive).
 Furthermore, $((m\leq n)\times (n\leq m)) \liff (m=n)$,
 and $((m<n)\times(n<m))\to\false$ (so $<$ is irreflexive).
@@ -991,24 +996,27 @@ the close connection between proving and programming.
 \begin{definition}
 \label{def:Niswellordered}
 Let $P(n)$ be a proposition for all natural numbers $n$. 
-Define the type $\min(P,n)$ expressing that $n$ is the smallest
+Define the type $P_{\min}(n)$ expressing that $n$ is the smallest
 natural number such that $P(n)$:
 \[
-\min(P,n) \defeq P(n) \times \prod_{m:\NN} (P(m) \to n\leq m)
+P_{\min}(n) \defeq P(n) \times \prod_{m:\NN} (P(m) \to n\leq m)
 \]
-Then $\min(P,n)$ is also a proposition, and all $n$ such that $\min(P,n)$
-are equal. Therefore the type $\sum_{n:\NN} \min(P,n)$
+Then $P_{\min}(n)$ is also a proposition, and all $n$ such that $P_{\min}(n)$
+are equal. Therefore the type $\sum_{n:\NN} P_{\min}(n)$
 is also a proposition. 
 
 For any function $d(n): P(n)\amalg\neg P(n)$ deciding $P(n)$ for each $n:\NN$, 
-we can define a function $\mu_P:\NN\to \bool\times\NN$ that searches
-for an $n$ such that $P(n)$. 
-We set $\mu_P(0)\defeq(\yes,0)$ if $P(0)$, that is, if 
-$d(0)\jdeq\inl{\_}$, and $\mu_P(0)\defeq(\no,0)$ else. 
-We set $\mu_P(S(n))\defeq \mu_P(n)$ if $\mu_P(n)\jdeq(\yes,\_)$.
-Otherwise, we set $\mu_P(S(n))\defeq(\yes,S(n))$ if $P(S(n))$,
-and $\mu_P(S(n))\defeq(\no,S(n))$ else, using $d(S(n))$ to decide.
-By design, $f$ `remembers' where it has found the least $n$.
+we can define a function $\mu_P:\NN\to\NN$ that,
+given input $n$ searches for a $k<n$ such that $P(k)$.
+If $k<n$ with $P(k)$ exists, $\mu_P$ returns the least such $k$,
+otherwise $\mu_P(n)=n$.
+This is a standard procedure that we will call \emph{bounded search}.
+The function $\mu_P$ is defined by induction setting
+$\mu_P(0)\defeq 0$ and 
+$\mu_P(S(n))\defeq \mu_P(n)$ if $\mu_P(n) < n$.
+Otherwise, we set $\mu_P(S(n))\defeq n$ if $P(n)$,
+and $\mu_P(S(n))\defeq S(n)$ else, using $d(n)$ to decide.
+By design, $\mu_P$ `remembers' where it has found the least $k$.
 We are now done with the computational part and the rest
 is a correctness proof.
 
@@ -1022,14 +1030,14 @@ P(n)\to \sum_{k:\NN} (\mu_P(n)=(\yes,k)
 \]
 by induction on $n:\NN$. 
 Since we also can show $\mu_P(n)=(\yes,k)\to \mu_P(n+m)=f(n)$,
-we can conclude $P(n)\to \min(P,\snd(\mu_P(n)))$.
-Since $\sum_{n:\NN} \min(P,n)$ is a proposition, 
+we can conclude $P(n)\to P_{\min}(\snd(\mu_P(n)))$.
+Since $\sum_{n:\NN} P_{\min}(n)$ is a proposition, 
 we obtain the following function by the induction
 principle for propositional truncation \cref{lem:prop-trunc-elim}:
 
 \begin{align}\label{eqn:min}%\tag{bla}
 \min(P) : \prod_{n:\NN}(P(n)\amalg\neg P(n)) \to 
-           \Trunc{\sum_{n:\NN} P(n)} \to  \sum_{n:\NN} \min(P,n).
+           \Trunc{\sum_{n:\NN} P(n)} \to  \sum_{n:\NN} P_{\min}(n).
 \end{align}
 \end{definition}
 
