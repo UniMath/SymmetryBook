@@ -1023,7 +1023,8 @@ is a correctness proof.
 
 By induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \[
-((\mu_P(n)\leq n) \times (\mu_P(n)<n \to P(\mu_P(n)))).
+%((\mu_P(n)\leq n) \times (\mu_P(n)<n \to P(\mu_P(n)))).
+\mu_P(n)\leq n \quad\text{and}\quad \mu_P(n)<n \to P(\mu_P(n)).
 \]
 The base case $n=0$ is by Ex Falso. For the induction step, 
 review the computation of $\mu_P(S(n))$. If $\mu_P(S(n))=\mu_P(n)$
@@ -1033,20 +1034,24 @@ In both cases we are done.
 
 Also by induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \[
-P(m) \to \mu_P(n)\leq m \text{~for all $m$ in $\NN$.}
+P(m) \to \mu_P(n)\leq m,~ \text{for all $m$ in $\NN$.}
 \]
 The base case $n=0$ holds since $\mu_P(0)=0$. For the induction step,
 assume $P(m) \to \mu_P(n)\leq m$ for all $m$. 
 We have either $\mu_P(S(n))=\mu_P(n)$, 
 or $\mu_P(n)=n$ and $\neg P(n)$ and $\mu_P(S(n)) = S(n)$. 
 In both cases we are done by using the induction hypothesis.
+From this we get by by contraposition
+\[
+\mu_P(n)= n \to \neg P(m),~\text{for all $m<n$.}
+\]
 
 Note that there may not be an $n$ such that $P(n)$,
 the best we can do is to prove
 \[
 P(n)\to P_{\min}(\mu_P(S(n)))
 \]
-by combining the two previous results. Assume $P(n)$.
+by combining previous results. Assume $P(n)$.
 Then $\mu_P(S(n))\leq n < S(n)$, so that $P(\mu_P(S(n)))$.
 Moreover, $P(m) \to \mu_P(S(n))\leq m$ for all $m$ in $\NN$.
 Hence $P_{\min}(\mu_P(S(n)))$.
@@ -1080,20 +1085,18 @@ $n\neq m$ and $f(n)=f(m)$.
 By induction on $k$. The base case $k=0$ is by Ex Falso.
 For the induction case $k+1$, assume the lemma proved for $k$
 (induction hypothesis, IH, for all $f$). Let $f$ be such 
-that $f(n)<k+1$ for all $n<k+2$. Take $P(n)\defeq (f(n)=k)$
-and compute $\mu_P(k+1)$ as in \cref{def:Niswellordered}.
-If $\mu_P(k+1) = (\_,\no)$, then $f(n)<k$ for all $n<k+1$,
-so we are done by IH. If $\mu_P(k+1) = (l,\yes)$, take 
-$Q(n)\defeq (f(n)=k)\times (n\neq l)$ and compute $\mu_Q(k+1)$.
-If $\mu_Q(k+1) = (m,\yes)$, then $l$ and $m$ fulfill the 
-conclusion of the  lemma. If $\mu_Q(k+1) = (\_,\no)$,
-then $l$ is the unique preimage of $k$ under $f$.
-If $l=k+1$, then again $f(n)<k$ for all $n<k+1$ and
-we are done by IH. Otherwise, we swap $l$ and $k+1$,
-that is, we define $g(k+1) = f(l) = k$, $g(l) = f(k+1)< k$,
-and $g(n)=f(n)$ everywhere else. Then $g$ fulfills the
-conditions for IH, so we get $n,m<k+1$ such that $n\neq m$
-and $g(n)=g(m)$. Swapping back we get the desired result for $f$.
+that $f(n)<k+1$ for all $n<k+2$. The idea of the proof is
+to search for an $n<k+1$ such that $P(n)\defeq (f(n)=k)$,
+by computing $\mu_P(k+1)$ as in \cref{def:Niswellordered}.
+If $\mu_P(k+1)=k+1$, that is, $f(n)<k$ for all $n<k+1$,
+then we are done by IH. Now let $n_0 = \mu_P(k+1) < k+1$,
+so $f(n_0)=k$. If also $f(k+1)=k$ then we are done.
+If $f(k+1)<k$, then we define $g$ by $g(n_0)=f(k+1)$
+and equal to $f$ everywhere else. Then IH applies
+to $g$ and we get  $n,m < k+1$ such that 
+$n\neq m$ and $g(n)=g(m)$. If both $n,m$ are different
+from $n_0$ then we are done. Otherwise, say $n=n_0$,
+then $m\neq n_0$, and we are done by $f(m)=g(m)=g(n)=g(n_0)=f(k+1)$.
 \end{proof}
 
 We can now rule out the existence of equivalences between finite
