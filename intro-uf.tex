@@ -1089,14 +1089,16 @@ that $f(n)<k+1$ for all $n<k+2$. The idea of the proof is
 to search for an $n<k+1$ such that $P(n)\defeq (f(n)=k)$,
 by computing $\mu_P(k+1)$ as in \cref{def:Niswellordered}.
 If $\mu_P(k+1)=k+1$, that is, $f(n)<k$ for all $n<k+1$,
-then we are done by IH. Now let $n_0 = \mu_P(k+1) < k+1$,
-so $f(n_0)=k$. If also $f(k+1)=k$ then we are done.
-If $f(k+1)<k$, then we define $g$ by $g(n_0)=f(k+1)$
-and equal to $f$ everywhere else. Then IH applies
-to $g$ and we get  $n,m < k+1$ such that 
-$n\neq m$ and $g(n)=g(m)$. If both $n,m$ are different
-from $n_0$ then we are done. Otherwise, say $n=n_0$,
-then $m\neq n_0$, and we are done by $f(m)=g(m)=g(n)=g(n_0)=f(k+1)$.
+then we are done by IH. Assume $\mu_P(k+1) < k+1$,
+so $f(\mu_P(k+1))=k$.
+If also $f(k+1)=k$ then we are done.
+If $f(k+1)<k$, then we define $g$ by $g(n)=f(k+1)$
+if $f(n)= k$, and $g(n)=f(n)$ otherwise. 
+Then IH applies to $g$, and we get $n,m < k+1$ such that 
+$n\neq m$ and $g(n)=g(m)$. If $f(n)=f(m)$
+we are of course done. Otherwise, $f(n),f(m)$ cannot both
+be smaller than $k$, as $g(n)=g(m)$. And we are done in both
+remaining cases, $f(n)=g(n)=g(m)=f(k+1)$ and $f(k+1)=g(n)=g(m)=f(m)$.
 \end{proof}
 
 We can now rule out the existence of equivalences between finite
@@ -1110,21 +1112,29 @@ If $n>m$, then $(\sum_{k:\NN} k<n) \neq (\sum_{k:\NN} k<m)$.
 \section{Integer numbers}
 \label{sec:integers}
 
+We define a type of integer numbers in one of the many possible ways.
+
 \begin{definition}\label{def:integers}
 Let $\zet$ be the inductive type with the following three constructors:
 \begin{enumerate}
-\item $neg: \NN \to \zet$ for negative numbers,
+\item $neg: \NN \to \zet$ for negative numbers, 
+$-1 \defeq neg(0),\ldots$
 \item $z_0: \zet$ for the integer number zero,
-\item $pos: \NN \to \zet$ for positive numbers.
+\item $pos: \NN \to \zet$ for positive numbers,
+$1 \defeq pos(0),\ldots$.
 \end{enumerate}
+Like the type $\NN$, the type $\zet$ is a set.
 
-The embedding function $i:\NN\to\zet$ is defined by induction,
-setting $i(0) = z_0$, $i(S(n)) = pos(n)$.
+The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
+setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
 
-The successor function $s:\zet\to\zet$ is defined inductively
-setting $s(z_0) = pos(0)$, $s(pos(n)) = pos(S(n))$,
-$s(neg(0))=z_0$, $s(neg(S(n)))=neg(n)$. By induction on $n:\NN$
-one proves $s(i(n))=i(S(n))$, so that one can say that $s$ extends $S$
+The \emph{successor} function $s:\zet\to\zet$ is defined inductively
+setting $s(z_0)\defeq pos(0)$, 
+$s(pos(n))\defeq pos(S(n))$,
+$s(neg(0))\defeq z_0$, 
+$s(neg(S(n)))\defeq neg(n)$. 
+By induction on $n:\NN$ one proves $s(i(n))=i(S(n))$, 
+so that one can say that $s$ extends $S$
 on the $i$-image of $\NN$. 
 
 The successor function $s$ is an equivalence.
@@ -1133,10 +1143,14 @@ a doubly infinite sequence containing all integers:
 \[
 \ldots \mapsto neg(1) \mapsto neg(0) \mapsto z_0 \mapsto pos(0) \mapsto pos(1) \mapsto \ldots
 \]
-The inverse of $s$ is called the predecessor function $s^{-1}$.
+The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
 
-Yet another equivalence is the negation function $-:\zet\to\zet$
-inductively defined by setting $-pos(n)=neg(n)$,... 
+Yet another equivalence, one which is its own inverse, 
+is the \emph{negation} function ${-}:\zet\to\zet$
+inductively defined by setting 
+$-pos(n)\defeq neg(n)$, 
+$-z_0\defeq z_0$ 
+$-neg(n)\defeq pos(n)$.
 \end{definition}
 
 
