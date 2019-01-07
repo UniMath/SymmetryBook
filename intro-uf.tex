@@ -60,23 +60,42 @@ You may recognize rule P4 as ``the principle of mathematical induction'' or as `
 simply as ``induction for $\NN$''.  Notice that the two cases in an inductive definition correspond to the two ways of introducing elements of
 $\NN$ via the use of rules P2 and P3.
 
-Here is an example of defining a function by recursion using induction for $\NN$.  We define the factorial function $f : \NN \to \NN$ by
-defining $X(m)$ to be $\NN$ for all $m$ and by setting $f(0) \defeq 1$ and setting $f(S(m)) \defeq (m+1) \cdot f(m)$.  One can infer that the
-function $g_m$ of rule P4 is $n \mapsto (m+1) \cdot n$.
-
-We introduce the following definitions.
+We introduce the following convenient definitions.
 \begin{align*}
  1 & \defeq S(0) \\
  2 & \defeq S(1) \\
- 3 & \defeq S(2) \\
- 4 & \defeq S(3)
+ n+1 & \defeq S(n)
+% 3 & \defeq S(2) \\
+% 4 & \defeq S(3)
 \end{align*}
 
-We may use induction to define the sum $m+n$ of two natural numbers, as a natural number.  We handle the two possible cases for the argument $m$
-as follows: we define $0+n \defeq n$, and we define $(S(m))+n \defeq S(m+n)$.  Application of definitions shows, for example, that $2+2$ and $4$
-are the same by definition, because they both reduce to $S(S(S(S(0))))$.
+Here is an example of defining a function by recursion using induction for $\NN$.  Assuming that we already have defined multiplication
+(see \cref{sec:more-on-N}), we can define the factorial function $f : \NN \to \NN$ by
+defining $X(m)$ to be $\NN$ for all $m$ and by setting $f(0) \defeq 1$ and setting $f(S(m)) \defeq S(m) \cdot f(m)$.  The latter definition
+applies rule P4 with $1$ for $a$ and the function $n \mapsto S(m) \cdot n$ for $g_m$, for all $m$. Application of definition shows, for example,
+that $f(2)$ and $2$ are the same by definition, because they both reduce to $S(S(0))$.
+
+The following definition is another example of recursion that will be used later. 
+
+\begin{definition}\label{def:n-fold-iteration}
+Let $X$ be a type and $f$ a function from $X$ to $X$. 
+We define by induction the $n$-fold iteration of $f$
+by setting ....
+\end{definition}
+
+%We may use induction to define the sum $n+m$ of two natural numbers, as a natural number.  We handle the two possible cases for the argument $m$
+%as follows: we define $n+0 \defeq n$, and we define $n+S(m) \defeq S(n+m)$.  Application of definitions shows, for example, that $2+2$ and $4$
+%are the same by definition, because they both reduce to $S(S(S(S(0))))$.
+
 
 Before we can write an equation such as $2+2=4$, we must introduce a formal treatment of equality in type theory.  We do that in the next section.
+
+We define the $k$-fold iteration of $f:X\to X$ inductively 
+by $f^0 \defeq \id_X$ and $f^{k+1}\defeq f\circ f^k$. 
+If $f$ has an inverse $f^{-1}$ we write
+$f^{-n}$ for $(f^{-1})^n$. DO WE NEED THIS EARLIER?
+
+
 
 \section{Identity types}
 \label{sec:identity-types}
@@ -1123,7 +1142,16 @@ $-1 \defeq neg(0),\ldots$
 \item $pos: \NN \to \zet$ for positive numbers,
 $1 \defeq pos(0),\ldots$.
 \end{enumerate}
-Like the type $\NN$, the type $\zet$ is a set.
+Like the type $\NN$, the type $\zet$ is a set,
+and we denote its elements often in the usual way as
+$\ldots,-1,0,1,\ldots$.
+
+One well-known equivalence, which is its own inverse, 
+is the \emph{negation} function ${-}:\zet\to\zet$
+inductively defined by setting 
+$-pos(n)\defeq neg(n)$, 
+$-z_0\defeq z_0$, 
+$-neg(n)\defeq pos(n)$.
 
 The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
 setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
@@ -1131,8 +1159,8 @@ setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
 The \emph{successor} function $s:\zet\to\zet$ is defined inductively
 setting $s(z_0)\defeq pos(0)$, 
 $s(pos(n))\defeq pos(S(n))$,
-$s(neg(0))\defeq z_0$, 
-$s(neg(S(n)))\defeq neg(n)$. 
+$s(neg(n))\defeq -i(n)$. For example, we have
+$s(-1)\jdeq s(neg(0))\jdeq -i(0) \jdeq z_0 \jdeq 0$.
 By induction on $n:\NN$ one proves $s(i(n))=i(S(n))$, 
 so that one can say that $s$ extends $S$
 on the $i$-image of $\NN$. 
@@ -1145,12 +1173,10 @@ a doubly infinite sequence containing all integers:
 \]
 The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
 
-Yet another equivalence, one which is its own inverse, 
-is the \emph{negation} function ${-}:\zet\to\zet$
-inductively defined by setting 
-$-pos(n)\defeq neg(n)$, 
-$-z_0\defeq z_0$ 
-$-neg(n)\defeq pos(n)$.
+%$s(neg(0))\defeq z_0$, 
+%$s(neg(S(n)))\defeq neg(n)$. 
+
+Addition is 
 \end{definition}
 
 
@@ -1189,11 +1215,6 @@ Give an inductive definition of $s$
 (hint: use $\mu$ from \cref{def:Niswellordered}).
 Prove that $s$ is an equivalence.
 \end{xca}
-
-We define the $k$-fold iteration of $f:X\to X$ inductively 
-by $f^0 \defeq \id_X$ and $f^{k+1}\defeq f\circ f^k$. 
-If $f$ has an inverse $f^{-1}$ we write
-$f^{-n}$ for $(f^{-1})^n$. DO WE NEED THIS EARLIER?
 
 \begin{lemma}\label{lem:one-orbit-int}
 Let $s$ be as in \cref{def:one-orbit-int}, and 
