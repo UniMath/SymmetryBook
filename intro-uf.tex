@@ -1145,28 +1145,29 @@ We define a type of integer numbers in one of the many possible ways.
 \begin{definition}\label{def:integers}
 Let $\zet$ be the inductive type with the following three constructors:
 \begin{enumerate}
-\item $neg: \NN \to \zet$ for negative numbers, 
-$-1 \defeq neg(0),\ldots$
-\item $z_0: \zet$ for the integer number zero,
+\item $z_0: \zet$ for the integer number zero, 
+$0 \defeq z_0$
 \item $pos: \NN \to \zet$ for positive numbers,
 $1 \defeq pos(0),\ldots$.
+\item $neg: \NN \to \zet$ for negative numbers, 
+$-1 \defeq neg(0),\ldots$
 \end{enumerate}
-Like the type $\NN$, the type $\zet$ is a set,
-and we denote its elements often in the usual way as
-$\ldots,-1,0,1,\ldots$.
-
-One well-known equivalence, which is its own inverse, 
-is \emph{negation} or \emph{complement} ${-}:\zet\to\zet$
-inductively defined by setting 
-$-pos(n)\defeq neg(n)$, 
-$-z_0\defeq z_0$, 
-$-neg(n)\defeq pos(n)$.
 
 The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
 setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
+Like the type $\NN$, the type $\zet$ is a set,
+and we denote its elements often in the usual way as
+$\ldots,-1,0,1,\ldots$, ignoring $i$.
 
-The \emph{successor} function $s:\zet\to\zet$ is defined inductively
-setting $s(z_0)\defeq pos(0)$, 
+One well-known equivalence is \emph{negation} ${-}:\zet\to\zet$, 
+also called \emph{complement}, inductively defined by setting 
+$-z_0\defeq z_0$, 
+$-pos(n)\defeq neg(n)$, 
+$-neg(n)\defeq pos(n)$.
+Negation is its own inverse
+
+The \emph{successor} function $s:\zet\to\zet$ is defined inductively setting 
+$s(z_0)\defeq pos(0)$, 
 $s(pos(n))\defeq pos(S(n))$,
 $s(neg(n))\defeq -i(n)$. For example, we have
 $s(-1)\jdeq s(neg(0))\jdeq -i(0) \jdeq z_0 \jdeq 0$.
@@ -1180,24 +1181,22 @@ a doubly infinite sequence containing all integers:
 \[
 \ldots \mapsto neg(1) \mapsto neg(0) \mapsto z_0 \mapsto pos(0) \mapsto pos(1) \mapsto \ldots
 \]
+
 The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
 We recall the $n$-fold iteration $s^n$ from \cref{def:n-fold-iteration},
-the $n$-fold iteration of $s^{-1}$ is denoted by $s^{-n}$.
-
-Yet another equivalence, one which is its own inverse, 
-is the \emph{negation} function ${-}:\zet\to\zet$
-inductively defined by setting 
-$-pos(n)\defeq neg(n)$, 
-$-z_0\defeq z_0$, 
-$-neg(n)\defeq pos(n)$.
+the $n$-fold iteration of $s^{-1}$ will be denoted by $s^{-n}$.
 
 Addition of integers is defined inductively by setting
-$z + pos(n)\defeq s^{n+1}(z)$, 
 $z + z_0\defeq z$, 
+$z + pos(n)\defeq s^{n+1}(z)$, 
 $z + neg(n)\defeq s^{-(n+1)}(z)$.
-
+Again, addition extends $+$ on the $i$-image of $\NN$,
+see \cref{xca:addition-on-Z-and-N}.
 \end{definition}
 
+\begin{xca}\label{xca:addition-on-Z-and-N}
+Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
+\end{xca}
 
 
 \section{A type of integer numbers - PROPOSAL}
