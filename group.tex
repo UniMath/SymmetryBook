@@ -3,6 +3,13 @@
 \section{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
 The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
 
+\subsection{Request wrt notation}
+\label{sec:requestnotation}
+
+If $f:A\to B$ and $(a,p):f^{-1}(b)$ (for $a:A$, $b:B$ and $p:f(a)=b$), then the function
+$$\mathrm{ad}_p\ap f:(a=a)\to(b=b)$$
+needs a simpler name.  I have occasionally sinned and called it $f^=$ (with $p$ implicit).  
+
 \subsection{Move to ``More on Natural numbers''}
 \label{sec:moonN}
 \begin{lemma}\label{lem:Nwellordered}
@@ -168,17 +175,21 @@ $$\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f).$$
 
 \begin{lemma}
   \label{lem:eqandcovofconntypes}
-  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function and let $q:f(x_0)=_Yf(x_1)$. Then the following types are equivalent
+  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function and let $q:f(x_0)=_Yf(x_1)$. Let 
+    $$%f^=_{x_0,x_1}
+\ap f:(x_0=_Xx_1)\to (f(x_0)=_Yf(x_1))$$
+be the function of \cref{def:apd} induced by $f$.  Then the following types are equivalent
   \begin{enumerate}
-  \item the preimage of $q$ of the induced function 
-    $$f^=_{x_0,x_1}:(x_0=_Xx_1)\to (f(x_0)=_Yf(x_1))$$
+  \item the preimage of $q$ of $\ap f$,  
   \item $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ and
-  \item $\sum_{p:x_0=x_1}q=f(p)$.
+  \item $\sum_{p:x_0=x_1}q=\ap f(p)$.
   \end{enumerate}
 If in addition $X$ and $Y$ are connected, then
 \begin{enumerate}
-\item $f$ is an equivalence if and only $f^=_{x_0,x_1}$ is an equivalence and
-\item $f$ is a covering if and only if  $f^=_{x_0,x_1}$ is an injection.
+\item $f$ is an equivalence if and only $\ap f%f^=_{x_0,x_1}
+$ is an equivalence and
+\item $f$ is a covering if and only if  $\ap f%^=_{x_0,x_1}
+$ is an injection.
 \end{enumerate}
 
 \end{lemma}
@@ -342,8 +353,9 @@ By \cref{lem:freeloopspace} (moving up one universe), a type family $S^1\to\UU$ 
 
 The importance of this example will become apparent when we eventually explain that \emph{the circle is equivalent to the component $C$ of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,s)$}. 
 
-Heading towards this goal, we investigate this component a bit further.  Firstly, if $(X,f):\sum_{X:\UU}X=_{\UU}X$, then the identity type $(\zet,s)=(X,f)$ is equivalent
-$$\sum_{p:\zet=X}fp=_{\zet=X}ps;$$ the equation $fp=ps$ comes from the fact that equality in the identity type means that the transport of $s$ along $p$ is equal to $f$, in other words we have an element in $p^{-1}sp=_{X=X}f$ (which we have transported for convenience to an element in $fp=_{\zet=X}ps$).  Since $\zet$ is a set, this identity type is a proposition and so our component $C$ is a connected groupoid.  
+Heading towards this goal, we investigate this component a bit further.  Recall from \cref{sec:identity-types} that, in general, if given elements $x,y,z$ in a type $A$, and two identities $f:x=y$ and $g:y=z$, then transport gives rise to the ``composite identity'' $gf:x=z$ (aka $g\circ f$).    Now, if $(X,f):\sum_{X:\UU}(X=_{\UU}X)$, then an element in the identity type $(\zet,s)=(X,f)$ consists of a $p:\zet=X$ and a proof that the succesor $s:\zet=\zet$  is transported along $p$ to $f:X=X$, that is, an element in $psp^{-1}=_{X=X}f$.  Now, by transport, $psp^{-1}=_{X=X}f$ is equivalent to $fp=_{\zet=X}ps$, and so the identity type $(\zet,s)=(X,f)$ is equivalent to
+$$\sum_{p:\zet=X}fp=_{\zet=X}ps.$$ % the equation $fp=ps$ comes from the fact that equality in the identity type means that the transport of $s$ along $p$ is equal to $f$, in other words we have an element in $p^{-1}sp=_{X=X}f$ (which we have translated for convenience to an element in $fp=_{\zet=X}ps$).
+Since $\zet$ is a set, this identity type is a proposition and so our component $C$ is a connected groupoid.  
 
 In particular, the type of symmetries $(\zet,s)=_C(\zet,s)$ is equivalent to $\sum_{p:\zet=\zet}sp=ps$.  
 
@@ -351,16 +363,16 @@ This discussion tells us that the following definition makes sense:
 
 \begin{definition}\label{def:S1toC}
   Let $C$ be the component of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,s)$.
-  Let $$c:S^1\to C$$ be defined by $c(\base)\defequi (\zet,s)$ and $c(\Sloop):((\zet,s)=_C(\zet,s))$ be given by the successor $s:\zet=\zet$ (and $\refl{}:ss=ss$)
+  Let $$c:S^1\to C$$ be defined by $c(\base)\defequi (\zet,s)$ and $c(\Sloop):((\zet,s)=_C(\zet,s))$\footnote{atrictly speaking, this $c$ is $\ap c$ -- I have decided not to distinguish between them; ok?} be given by the successor $s:\zet=\zet$ (and $\refl{}:ss=ss$)
 \end{definition}
 
 We are going to prove that $c$ is an equivalence.  This is greatly simplified by the fact that we already know that both $S^1$ and $C$ are connected groupoids, since then \cref{lem:eqofconntypes} says that it is enough to show that $c$ induces an equivalence of symmetries.\footnote{of course, the proof of \cref{lem:S1groupoid} \emph{could} attack $c$ directly, but that would compound the technicalities already present there: at present I prefer splitting it up like this.  I am open for letting the proof of \cref{lem:S1groupoid} be postponed till the end of a chapter, so as not to disrupt the flow of ideas}
 
 \begin{lemma}
   \label{lem:IdCisZet}
-  Any element in $(\zet,s)=_C(zet,s)$ is of the form $(s^k,!)$ for some unique $k:\zet$.  In other words,
+  Any element in $(\zet,s)=_C(\zet,s)$ is of the form $(s^k,!)$ for some unique $k:\zet$.  In other words,
   the function 
-$$\ev_0:((\zet,s)=_C(zet,s))\to \zet$$ given by $\ev_0(p)=p(0)$ is an equivalence.
+$$\ev_0:((\zet,s)=_C(\zet,s))\to \zet$$ given by $\ev_0(p)=p(0)$ is an equivalence.
 \end{lemma}
 \begin{proof}
   Given $(p,!):(\zet,s)=_C(\zet,s)$ we must determine $p:\zet=_{\Set}\zet$, which by univalence amounts to giving all the values $p(n)$ for $n:\zet$.  However, since $sp=ps$ we get that $p(n+1)=p(n)+1$ and so induction on $n$ (induction for positive and negative $n$ separately) gives that $p(n)=n+p(0)$.  Hence, $p=s^{p(0)}$ (uniquely since $\zet:\Set$).
@@ -371,9 +383,9 @@ $$\ev_0:((\zet,s)=_C(zet,s))\to \zet$$ given by $\ev_0(p)=p(0)$ is an equivalenc
   The function $c:S^1\to C$ is an equivalence.
 \end{theorem}
 \begin{proof}
-  In view of \cref{lem:eqofconntypes} we only need to show that the induced function of symmetries $c^=:(\base=_{S^1}\base)\to((\zet,s)=_C(\zet,s))$ is an equivalence.\footnote{ ((can we call equivalences between sets bijections?)).}  
+  In view of \cref{lem:eqofconntypes} we only need to show that the induced function of symmetries $c:(\base=_{S^1}\base)\to((\zet,s)=_C(\zet,s))$ is an equivalence.\footnote{ ((can we call equivalences between sets bijections?)).}  
 
-The function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^n$ is an equivalence by  \cref{lem:S1groupoid} and the function  $\ev_0:((\zet,s)=_C(\zet,s))\to \zet$ given by $\ev_0(p)=p(0)$ is an equivalence by \cref{lem:IdCisZet}.  Tracing through the composite function $\ev_0c^=\Sloop^-:\zet\to\zet$ we see that $\ev_0c^=\Sloop^n=\ev_0s^n=n$, (\ie $\ev_0c^=\Sloop^-=\id_\zet$) giving that $c^=$ is an equivalence. 
+The function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^n$ is an equivalence by  \cref{lem:S1groupoid} and the function  $\ev_0:((\zet,s)=_C(\zet,s))\to \zet$ given by $\ev_0(p)=p(0)$ is an equivalence by \cref{lem:IdCisZet}.  Tracing through the composite function $\ev_0c\Sloop^-:\zet\to\zet$ we see that $\ev_0c\Sloop^n=\ev_0s^n=n$, (\ie $\ev_0c\Sloop^-=\id_\zet$) giving that $c$ is an equivalence. 
 % The composition with the functions $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^n$ and $\ev_0:((\zet,s)=_C(zet,s))\to \zet$ of \cref{lem:IdCisZet} given by $\ev_0(p)=p(0)$ gives us a function $w:\zet\to\zet$ with $w(n)=s^n(0)$.  From \cref{lem:S1groupoid} we know that $\Sloop^-$ is an equivalence, so we only need to show that $w$ is an equivalence
 \footnote{I may have used 2-out-of-3 before, we probably need to include it somewhere, though by univalence it hardly seems necessary}% .  If $p:\zet=\zet$ with $!:sp=ps$, we get by induction on $n:\zet$ (induction for positive and negative $n$ separately) that $p(n)=n+p(0)$.  Hence, all the elements in the preimage $w^{-1}(p,!:sp=ps)$ are equal to $(p(0),!)$.  
 \end{proof}
@@ -390,18 +402,27 @@ The function $\Sloop^-:\zet\to (\base=_{S^1}\base)$ sending $n:\zet$ to $\Sloop^
 \label{sec:covS1}
 
 \footnote{The below is not fully structured yet, and does contain known nonsense (basepoints, orientations etc need to be straightened out)}
-From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a connected type $A$ is a covering if and only if for given $a_0:f^{-1}(\base)$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{S^1}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{lem:S1groupoid} may be identified with with the integers).
+From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to S^1$ from a connected type $A$ is a covering if and only if for given $a_0:f^{-1}(\base)$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{S^1}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{lem:S1groupoid} may be identified with with the set $\zet$ of integers).
 
 So, a classification of coverings of the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.  Using language yet to be introduced, the question would be ``what are the subgroups of the integers?''
 
 \begin{example}
   \label{ex:listofS1covers}
-  In the course of our discussion, we will see that the following represent all the connected coverings of the circle.
+  In the course of our discussion, we will see that -- under an assumption on the setup called ``LPO'' -- the following represent all the connected decidable coverings of the circle.
   \begin{enumerate}
-  \item The trivial connected cover  $$c_\base:\bn 1\to S^1$$ sends the unique element of $\bn 1$ to $\base$ is a covering corresponding to the trivial symmetry of $\base$ (\ie only $\refl\base$).  
+  \item The \emph{universal} connected cover  $$c_\base:\bn 1\to S^1$$ sends the unique element of $\bn 1$ to $\base$ is a covering corresponding to the trivial symmetry of $\base$ (\ie only $\refl\base$).  
   \item If $m:\NN$ is positive, consider the \emph{degree $m$ function} $$-^m:S^1\to S^1$$ given by $-^m(\base)\defequi\base$ and $-^m(\Sloop)\defequi\Sloop^m$.  On the level of identity types and under the equivalence $\Sloop^-:\zet\simeq(\base=_{S^1}\base)$, this covering corresponds to the function $\zet\to\zet$ given by multiplication by $m$.
   \end{enumerate}
 \end{example}
+
+\begin{remark}
+  \label{rem:RtoS1}
+  The first case, namely the manifestation of the contractible type as a covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers form a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this covering is the exponential function sending the real number $x$ to the point $e^{2\pi ix}$ on the unit circle in the complex plane.
+
+  \label{rem:finitecoveringsofS1}
+  The analogue of our degree $m$ function is the $m$th power of complex numbers restricted to the unit circle.
+  ((picture!!))
+\end{remark}
 
 We will be even a bit more ambitious: what is the \emph{type} of decidable coverings of the circle?  Since the type of coverings is equivalent to $S^1\to \Set$, and the fact that if $F,F':S^1\to\Set$, then $F=_{S^1\to\Set}F$ is the type $\prod_{z:S^1}(F(z)=_{\Set}F'(z))$ (which is a set\footnote{reference}), we see that the type of decidable coverings of the circle is a groupoid.  We will pin this groupoid down by first identifying the components (of which there turns out to be one for each natural number), and then analyzing one component at a time.
 
@@ -413,8 +434,8 @@ We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the elemen
  \label{ex:listofCcovers}
   Returning to \cref{ex:listofS1covers}, it is instructive to rephraze these connected coverings in terms of $C$.
   \begin{enumerate}
-  \item  The trivial connected cover is still represented by the constant function
-    $$c_{(\zet,s)}:\bn 1\to C$$ sends the unique element of $\bn 1$ to $(\zet,s):C$.
+  \item  The universal connected cover is still represented by the constant function
+    $$c_{(\zet,s)}:\bn 1\to C$$ that sends the unique element of $\bn 1$ to $(\zet,s):C$.
   \item Assume that $m:\NN$ is positive.  If $X$ is a set and $f:X\to X$ we define the \emph{ $m$th root}
 $$\sqrt[m]f:\bn m\times X\to\bn m\times X$$ by setting 
 $$\sqrt[m]f(i,x)=
@@ -425,7 +446,7 @@ Only one $m$th of the time does $\sqrt[m]f$ use $f$ on $X$ (the rest of the time
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \node (A) at (2,8) {\quad$\sqrt[m]f:\bn m\times X\to\bn m\times X$};
+    \node (A) at (4,1) {\quad$\sqrt[m]f:\bn m\times X\to\bn m\times X$};
     \foreach \y in {0,1,2}
     { \begin{scope}[shift={(0,\y)}]
         \foreach \x in {0,...,4}
@@ -478,16 +499,26 @@ Ultimately, we have defined the
 If $(p,!):(X,f)=_C(X',f')$, then 
 $$(\id\times p,!):(\bn m\times X,\sqrt[m]f)=(\bn m\times X',\sqrt[m]f')$$ 
 is given by % $(\id\times p)(i,x)=(i,p(x))$ (and by 
-the fact $!:(\id\times p)\sqrt[m]f=_{\bn m\times X=\bn m\times X'}\sqrt[m]{f'}(\id\times p)$\footnote{$(i,x)$ is taken to $(i+1,px)$ if $i<m-1$ and $(m-1,x)$ is taken to either $(0,f'px)$ or $(1,pfx)$ which are equal by assumption}.  In particular, letting $p\defequi s:\zet=\zet$, we get that $s(i,n)=(i,sn)=(\sqrt[m]s)^m(i,n)$.
+the fact $!:(\id\times p)\sqrt[m]f=_{\bn m\times X=\bn m\times X'}\sqrt[m]{f'}(\id\times p)$\footnote{$(i,x)$ is taken to $(i+1,px)$ if $i<m-1$ and $(m-1,x)$ is taken to either $(0,f'px)$ or $(1,pfx)$ which are equal by assumption}.  In particular, letting $p\defequi s:\zet=\zet$, we get that $(\id\times s)(i,n)=(i,sn)=(\sqrt[m]s)^m(i,n)$.
+
+This will eventually ((forwardref)) be explained in terms of the \emph{deck transformations} of the degree $m$ covering of the circle being given by the powers of $\sqrt[m]s$ in a nonunique fashion: for any $a:\zet$, the $a$th and the $(a+m)$th power of $\sqrt[m]s$ give rise to the same deck transformation.
 
 
 
- Note that the equivalence $c:S^1\to C$.\footnote{comeback 190102}
+ Note that the equivalence $c:S^1\to C$.\footnote{comeback 190104: demonstrate that the descriptions of the coverings of the circle are the same}
   \end{enumerate}
 \end{example}
 \begin{xca}
   Check the implicit claims in \cref{ex:listofCcovers}.  ((perhaps best to make them explicit?))
 \end{xca}
+
+Any (other) textbook will tell you that these are all the connected coverings of the circle (precisely one for each natural number), but the procedure is unfortunately not constructive: we need a further assumption which is not generally present in our setup, namely
+
+\begin{quote}
+  {\bf The Limited Principle of Omniscience} (LPO)\index{LPO}\label{LPO}\footnote{make an environment that principles can fit in and be numbered}If given a function $P:\NN\to\bn 2$, then either $P$ is constant (we have that $\prod_{n:\NN}(P(0)=P(n))$) or there is an $n_0:\NN$ such that $P(n_0)\neq P(0)$.
+\end{quote}
+LPO is weaker than the law of excluded middle and we are free to assume it as an axiom -- or not.  We will be explicit about where we will use it.
+
 
 Fix for the moment a connected type $A$ and a decidable covering 
 $$f:A\to C$$ (c.f \cref{def:covering}) and an element $\pt_A:f^{-1}(\pt_C)$.  %Assume $(\pt_A,!):f^{-1}(\pt_C)$
@@ -496,54 +527,87 @@ $$f:A\to C$$ (c.f \cref{def:covering}) and an element $\pt_A:f^{-1}(\pt_C)$.  %A
 By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a decidable covering exactly says that the induced function of identity types
 $$g\defequi\ev_0f^=:(\pt_A=_A\pt_A)\to (\pt_C=_C\pt_C)=\zet$$ is injective and decidable.\footnote{say this in a way consistent with the choices of subsets/injections/embeddings}    
 
-We are then left with two situations: either $\pt_A=\pt_A$ is contractible or there is a $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$. 
+Assume LPO.  We are then left with two situations (use that $g$ is injective and decidable): either $\pt_A=_A\pt_A$ is contractible or there is a $p_0:\pt_A=_A\pt_A$ with $g(p_0)$ different from $0$. 
 
 In the former case ($\pt_A=\pt_A$ is contractible), \cref{lem:eqandcovofconntypes} together with the fact that $A$ is connected implies that $A$ itself is contractible.  
-\begin{remark}
-  \label{rem:RtoS1}
-  This manifestation of the contractible type as a covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers forms a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this covering is the exponential function ``$e^{ix}$'' from the reals to the unit circle in the complex plane.
-\end{remark}  
 
-On the other hand, if $A$ is not contractible, either $g(p_0)$ or $g(p_0^{-1})$ is a positive integer.  Hence the set $H^+$ of positive integers in the image of $g$ is nonempty, and so the fact \cref{lem:Nwellordered} that $\NN$ is well ordered implies that $H^+$ has a minimum, \ie there is a $p:\pt_A=\pt_A$ with  $g(p)=m\defequi\min H^+:H^+$.  Furthermore, if $q:\pt_A=\pt_A$ is any element with $0<g(q)$, then  by \cref{cor:arch} there is a $k:\NN$ such that $g(p)k\leq g(q)<g(p)(k+1)$, or equivalently $0\leq g(q)-g(p)k< g(p)$.  Since $g(q)-g(p)k=g(qp^{-k})$ is a nonnegative integer is in the image of $g$ and simultaneously less than the minimum positive value $g(p)$, we must conclude that $g(q)=g(p)k$.
+On the other hand, if $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$, then either $g(p_0)$ or $g(p_0^{-1})$ is a positive integer.  Hence the set $H^+$ of positive integers in the image of $g$ is nonempty, and so the fact \cref{lem:Nwellordered} that $\NN$ is well ordered implies that $H^+$ has a minimum, \ie there is a $p:\pt_A=\pt_A$ with  $g(p)=m\defequi\min H^+:H^+$.  Furthermore, if $q:\pt_A=\pt_A$ is any element with $0<g(q)$, then  by \cref{cor:arch} there is a $k:\NN$ such that $g(p)k\leq g(q)<g(p)(k+1)$, or equivalently $0\leq g(q)-g(p)k< g(p)$.  Since $g(q)-g(p)k=g(qp^{-k})$ is a nonnegative integer is in the image of $g$ and simultaneously less than the minimum positive value $g(p)$, we must conclude that $g(q)=g(p)k$.
 
 Arguing similarly for the negative values, we reach the conclusion that the image of $g$ in $\zet$ is the subset of multiples of $g(p)=\min H^+$.  Hence, the image of $f^=:(\pt_A=\pt_A)\to(\base=_{S^1}\base)$ is uniquely given by the positive integer $\min H^+$, and is not dependent on $\pt_A$.\footnote{how to say this gently without starting to much fuss regarding commutativity?}  Furthermore, if $p_A:A=_{\UU}A'$, $f':A'\to B$ and $p_f:f'p_A=_{A\to B}f$, then tracing through the argument, we see that the positive number reached through arguing with $f':A'\to B$ remains the same, but there \emph{is} a possibility that $g(p_0)$ changes sign, so that the minimum of $H^+$ is now not attained by $g(p_0)$, but by $g(p_0^{-1})$.\footnote{maybe some HoTT guy can say this less classically.  We also want to say something about the connection to pointed coverings, conjugations etc to clear the path for later applications}
 
 \begin{lemma}
   \label{lem:componentsofcoversofS1}
-  Given a connected decidable covering of the circle, there is a unique natural number $m$ so that the connected covering is equal to the connected covering $c^m$ of \cref{ex:listofS1covers}.  This gives an equivalence between $\NN$ and the propositional truncation of the type of connected decidable covering of the circle. 
+  Assume the LPO. Given a connected decidable covering of the circle,  there is a unique natural number $m$ so that the connected covering is equal to the connected covering $c^m$ of \cref{ex:listofS1covers}.  This gives an equivalence between $\NN$ and the propositional truncation of the type of connected decidable covering of the circle. 
 \end{lemma}
 
 
-A natural question is, given $m:\NN$, what does the associated connective covering $f:A\to S^1$ look like?
+% A natural question is, given $m:\NN$, what does the associated connective covering $f:A\to S^1$ look like?
 
-We saw that if $m=0$, then the identity types of $A$ were contractible, and so (in view of \cref{lem:eqandcovofconntypes} since $A$ is connected) $A$ is itself contractible.
+% We saw that if $m=0$, then the identity types of $A$ were contractible, and so (in view of \cref{lem:eqandcovofconntypes} since $A$ is connected) $A$ is itself contractible.
 
 
-If $0<m$, then the injection $g:(\pt_A=\pt_A)\to\zet$ gives an equivalence of $\pt_A=\pt_A$ with the set $m\zet$ of all multiples of $m$.  In particular, if $m=1$, then the injection hits \emph{all} integers, so $g:(\pt_A=\pt_A)\to\zet$ is an equivalence.  Again, by \cref{lem:eqandcovofconntypes} this means that $A\to S^1$ is an equivalence. 
+% If $0<m$, then the injection $g:(\pt_A=\pt_A)\to\zet$ gives an equivalence of $\pt_A=\pt_A$ with the set $m\zet$ of all multiples of $m$.  In particular, if $m=1$, then the injection hits \emph{all} integers, so $g:(\pt_A=\pt_A)\to\zet$ is an equivalence.  Again, by \cref{lem:eqandcovofconntypes} this means that $A\to S^1$ is an equivalence. 
 \begin{remark}
   \label{rem:flipthecircle}
   The reader may wonder how the ``orientation reversing'' $c:S^1\to S^1$ given by $c(\base)=\base$ and $c(\Sloop)=\Sloop^{-1}$ fits into the picture.  In our setting it is equal to the identity on $S^1$ (corresponding to $m=1$): Letting also $c:S^1=S^1$ be the identity given by univalence, we have that $\refl{S^1}=c\cdot c$, so that $c$ itself proves that $\id_{S^1}$ and $c$ are equal.
 \end{remark}
 
 
-More generally, if $0<m$, let $p:\pt_A=\pt_A$ be in the preimage of $m$ under the equivalence induced by $g$  between $\pt_A=\pt_A$ and $m\zet$ (the multiples of $m$).  Define $i:S^1\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
+% More generally, if $0<m$, let $p:\pt_A=\pt_A$ be in the preimage of $m$ under the equivalence induced by $g$  between $\pt_A=\pt_A$ and $m\zet$ (the multiples of $m$).  Define $i:S^1\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
 
-The composite $fi:S^1\to S^1$ is then the decidable covering given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.   
+% The composite $fi:S^1\to S^1$ is then the decidable covering given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.   
 
-\begin{remark}
-  \label{rem:finitecoveringsofS1}
-  Following up our interpretation of the covering $f:A\to S^1$ with contractible $A$ as the exponential function sending a real number $x$ to the point $e^{2\pi i x}$ on the complex unit circle, the analogue of our degree $m$ function is the $m$th power of complex numbers restricted to the unit circle.
-  ((picture!!))
-\end{remark}
 
-Summing up, the type of connected decidable covers of the circle has one component for every $m:\NN$.  The component corresponding to $m=0$ contains the first projection $\sum_{z:S^1}(\base= z)\to S^1$ from the contractible type.  If $0<m$, the component corresponding to $m$ contains the degree $m$ function $-^m:S^1\to S^1$.
-\footnote{fill in the rest of the argument!}
+% Summing up, the type of connected decidable covers of the circle has one component for every $m:\NN$.  The component corresponding to $m=0$ contains the first projection $\sum_{z:S^1}(\base= z)\to S^1$ from the contractible type.  If $0<m$, the component corresponding to $m$ contains the degree $m$ function $-^m:S^1\to S^1$.
+\footnote{Some comments have been commented away}
+
+\subsection{Symmetries of coverings of the circle}
+\label{sec:deckS1}
+
+In this subsection we are going to prove the following result.
+
 \begin{theorem}
   \label{thm:coveringsofS1}
-  The type of decidable coverings of the circle by connected types is a groupoid 
-  The set of components is equivalent to $\NN$.  
-  The deck transformations of a covering in the $m$'th component is a set equivalent to $\zet$ if $m=0$, and to $\bn m$ if $0\neq m$.
+  \begin{enumerate}
+  \item The type of decidable coverings of the circle by connected types is a groupoid.
+  \item Assuming, the LPO the type of decidable coverings of the circle by connected types is the sum of the component containing the universal covering and for each positive integer $m$, the component containing the $m$-fold covering.
+  \item The set of symmetries of the universal covering is equivalent to $\zet$.
+  \item For positive $m$, the set of symmetries of the $m$-fold covering of the circle is equivalent to $\bn m$. 
+  \end{enumerate}
 \end{theorem}
+
+  \begin{proof}
+    \begin{enumerate}
+    \item ((write))
+    \item Ut supra ((reference))
+    \item  ((write))
+    \item 
+    Let $m$ be a positive integer.  We are going to investigate the set 
+$$D_m\defequi\sum_{g:C=C}-^mg=_{C\to C}-^m$$ of symmetries of the $m$-fold covering of the circle, or equivalently, by univalence, $\sum_{t:C\simeq C}-^mt=_{C\to C}-^m$.  Since being contractible is a proposition, $C\simeq C$ is a subtype of $(C\to C)$, which, thanks to the equivalence $c:S^1\to C$ of \cref{thm:S1bysymmetries}, is equivalent to $(S^1\to C)=\sum_{(Y,g,!):C}(Y,g,!)=(Y,g,!)$ .  For the moment we'll investigate the simpler type 
+$$F\defequi\sum_{t:S^1\to C}-^mt=_{S^1\to C}-^mc$$
+and on the way discover that if $(t,Q):F$, then $t$ is an equivalence, so that $F$ actually {\bf is} equivalent to type $D_m$ we are interested in.
+
+Given If $t:S^1\to C$ is given by $t(\base)\defequi (Y,g,!)$ (where $!$ asserts that $(Y,g)$ lies in the component of $(\zet,s)$)  and $t(\Sloop)=(p,!,!):(Y,g,!)=_C(Y,g,!)$, (where $p:Y=Y$ and $pg=gp$ (also in $Y=Y$)), we study the type $-^mt=_{S^1\to C}-^mc$.
+Spelling out the details we see that $a$ is defined by 
+$$-^mc(\base)=(\bn m\times\zet,\sqrt[m]s,!)$$ and 
+$$-^mc(\Sloop)\defequi(\id\times s,!,!):(\bn m\times\zet,\sqrt[m]s,!)=_C(\bn m\times\zet,\sqrt[m]s,!)$$   and $-^mt\defequi-^mt$ is given by $$-^mt(\base)\oldequiv(\bn m\times Y,\sqrt[m]g,!)$$ and 
+$$-^mt(\Sloop)\oldequiv(\id\times p,!,!):(\bn m\times Y,\sqrt[m]g,!)=_C(\bn m\times Y,\sqrt[m]g,!).$$
+
+An element in $Q:-^mc=-^mt$ is then given by a $q:\bn m\times\zet=\bn m\times Y$ so that $\sqrt[m]g\ q=q\sqrt[m]s$ and $q(\id\times s)=(\id\times p)q$ (both in $\bn m\times\zet=\bn m\times Y$). Now, $q^{-1}(\id\times s)q=q^{-1}(\sqrt[m]s^mq=(q^{-1}\sqrt[m]sq)^m$ is both equal to $1\times p$ and equal to $(\sqrt[m]g)^m=\id\times g$, so that $p=g$. 
+
+
+An identity in  $(t,Q)=_F(t',Q')$ consists of an $r:t=t'$ and an $s:(-^mr)Q=_{-^mc=-^mt'}Q'$ (this is a proposition), \ie an $r:Y=Y'$ with 
+$$g'r=_{Y=Y'}rg\text{ and }(\id\times r)q=_{\bn m\times Y=\bn m\times Y'}q'(\id\times r).$$  This shows that every $(t,Q):F$ is equal to one with $(Y,g)$ being $(\zet,s)$ and $p$ being $s$, and we \emph{could} reduce to this case, leaving to $q$ the entire burden of proof.  This also shows another thing: the $t:S^1\to C$ fitting in pairs $(t,Q):F$ are all equivalences, so that $F$ actually is equivalent to the type $\sum_{g:C=C}-^mg=_{C\to C}-^m$ we are trying to understand.
+
+ On the level of equivalences $\zet\simeq Y$, the equation  $\sqrt[m]g\ q=q\sqrt[m]s$ claims that providing $q$ is the same as providing a point $q(0,0):Y$ through the equation  
+$$q(i,n)=q((\sqrt[m]s)^{i+nm}(0,0))=(\sqrt[m]g)^{i+nm}q(0,0).$$  For $(i,k)\in \bn m\times\zet$ define $Q^{(i,k)}$ by setting its first projection to be $q^{(i,k)}=(\sqrt[m]g)^{i+km}q$.  This exhausts all possible $q(0,0):Y$, so we have accounted for all possible $Q$s.
+
+However, there is some redundancy: since $(\sqrt[m]g)^{i+km}=(\sqrt[m]g)^i(\id\times g^k)$, we have that $g^k:Y=Y$ proves that $Q^{i+km}=Q^{i}$.  ((explain why there is no more redundancy)) 
+
+In hindsight we can give concrete descriptions of all the symmetries: for $i=0,\dots m-1$, let $(Y,g)\defequi (\zet,s)$, $p\defequi s$, and $q(0,0)\defequi i$.
+((this does the hardest part (4), but the other cases still need to be written.  Needs to be proofread))
+    \end{enumerate}
+  \end{proof}
 
 
 
@@ -581,7 +645,7 @@ Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$
 
 
 \begin{remark}
-  When considering the identity type $a=_Aa$, the elements $x:A$ with $x$ unequal to $a$ are not relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is always inhabited (c.f.~\cref{def:connected}).  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
+  When considering the identity type $a=_Aa$, only the elements $x:A$ with $x$ equal to $a$ are relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is always inhabited (c.f.~\cref{def:connected}).  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
 \end{remark}
 
 
@@ -638,7 +702,7 @@ For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}\footnote{
 \begin{xca}
   \begin{enumerate}
   \item Compare the definitions of \cref{def:finiteset} and show that if $n:\NN$, then $\Sigma_n=\Sigma_{\bn{n} }$ %is equal to the permutation group on $n$ letters 
-and that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
+and (since $\fin_0=\fin_1=\bn 1$) that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
 %\item Display an element in $\bn{2} =_{\fin_2}\bn{2} $ different from $\refl{\bn{2} }$ in the group $\Sigma_{2}$ of permutations of two letters.  
 \item Prove that the set $\bn{n} =_{\fin_n}\bn{n} $ is finite of cardinality $n!$.
   \end{enumerate} 
@@ -653,17 +717,14 @@ and we will later show that groups are uniquely characterized by these laws.
   The $\isset(a=_Aa)$ is sometimes more of a nuisance, and deleting it gives the simpler concept of \aninftygp, see \cref{sec:inftygps}.
 \end{remark}
 \begin{xca}
-  Given two groups $G$ and $H$.  Prove that $G=H$ is a set.  Conclude that $\typegroup$ is a groupoid.  
-\end{xca}
-\begin{xca}
    Let $\aut_A(a):\typegroup$ and let $b$ be an arbitrary element of $A$.  Prove that the groups $\aut_A(a)$ and $\aut_A(b)$ are equal.  Similarly for \inftygps when you get that far.
 \end{xca}
 \begin{remark}\label{rem:monoidandabsgplarge}
- In \cref{def:typegroup} the first $\sum$ in the definition of the type $\typegroup$ ranges over the entire universe $\UU$.  Hence, $\typegroup$ does not belong to $\UU$, but rather to the next universe. \footnote{where do we explain this?}  This tendency that the ``type of all the types we are interested in'' is a ``large type'' is a regular feature of the theory and since it will not cause any trouble for us, we will not be consistent in pointing it out in the future.
+ In \cref{def:typegroup} the first $\sum$ in the definition of the type $\typegroup$ ranges over the entire universe $\UU$.  Hence, $\typegroup$ does not belong to $\UU$, but rather to the next universe as discussed briefly in \cref{sec:univax}.   This tendency that the ``type of all the types we are interested in'' is a ``large type'' is a regular feature of the theory and since it will not cause any trouble for us, we will not be consistent in pointing it out.
   \end{remark}
 
   \begin{xca}\label{xca:typegroupisgroupoid}
-    Prove that the type of groups is a groupoid.  This means that, given a group $G$, the component of $\typegroup$, containing (and pointed at) $G$, is again a group, which we will call the \emph{group $\aut(G)$ of automorphisms} of $G$.
+    Given two groups $G$ and $H$.  Prove that $G=H$ is a set.   Prove that the type of groups is a groupoid.  This means that, given a group $G$, the component of $\typegroup$, containing (and pointed at) $G$, is again a group, which we will call the \emph{group $\aut(G)$ of automorphisms} of $G$.
   \end{xca}
 
 \section{The identity type as an abstract group }
@@ -815,10 +876,10 @@ $
 \label{sec:homomorphisms}
 
 
-The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an arrow $f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element $p:a=_Bf(b)$:
+The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an function $f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element $p:a=_Bf(b)$:
 \begin{definition}\label{def:grouphomomorphism}
   The type of \emph{group homomorphisms} from $G:\typegroup$ to $H:\typegroup$ is defined to be
-$$\Hom(G,H)=(BG\to_* BH).%\sum_{f:A\to B}f(a)=_Bb.
+$$\Hom(G,H)\defequi(BG\to_* BH).%\sum_{f:A\to B}f(a)=_Bb.
 $$
 \end{definition}
 \begin{example}
@@ -841,24 +902,29 @@ The definition of group homomorphisms in \cref{def:grouphomomorphism} should be 
 
 \begin{definition}\label{def:grouphomomaxioms}
   %((prove/define the standard axioms))
-Let $G$ and $H$ be groups and assume given a group homomorphism $G\to H$, \ie a pointed map from $BG$ to $BH$; or in other words a map of (unpointed) types $f\colon BG_\div\to BH_\div$ and a $p: f(\pt_G)=\pt_H$.  As in \footnote{reference.  I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}, this gives rise to a map $$f:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G)),$$ 
-which is defined by induction by declaring that $f(\refl{\pt_G})\defequi \refl{f(\pt_G)}$.  If $g:\pt_G=\pt_G$, then $f(g)$ is an element of $f(\pt_G)=f(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p: f(\pt_G)=\pt_H$ gives rise to 
-$$\mathrm{ad}_p:(f(\pt_G)=f(\pt_G))=(\pt_H=\pt_H)\footnote{where is this discussed?}$$ (with $\mathrm{ad}_p(\refl{f(\pt_G)})=\refl{\pt_H}$) and so 
-$$\mathrm{ad}_p(f(g)):\pt_H=\pt_H.$$
+Let $G$ and $H$ be groups and assume given a group homomorphism $f:G\to H$, \ie a pointed map from $BG$ to $BH$; or in other words a map of (unpointed) types $Bf\colon BG_\div\to BH_\div$ and a $p: Bf(\pt_G)=\pt_H$.  As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
+, this gives rise to a map $$\ap{Bf}:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G)),$$ 
+which is defined by induction by declaring that $\ap{Bf}(\refl{\pt_G})\defequi \refl{f(\pt_G)}$.  If $g:\pt_G=\pt_G$, then $\ap{Bf}(g)$ is an element of $f(\pt_G)=f(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p: f(\pt_G)=\pt_H$ gives rise to 
+$$\mathrm{ad}_p:(f(\pt_G)=f(\pt_G))=(\pt_H=\pt_H)$$ (with $\mathrm{ad}_p(\refl{f(\pt_G)})=\refl{\pt_H}$, as discussed in \cref{sec:heavy-transport}) and so 
+$$\mathrm{ad}_p(\ap{Bf}(g)):\pt_H=\pt_H.$$
 
-With the shorthand $e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)\oldequiv\abstr(G)$ and $g\cdot_Gg'\defequi\trans_{\pt_G,\pt_G\pt_g}(g,g')$, and likewise with a subscript $H$ we have the following definitions
+We trust it will not lead to any confusion that we simplify the notation and write 
+$$f\defequi\mathrm{ad}_p\ap{Bf}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$ also for the function $g\mapsto\mathrm{ad}_p(\ap{Bf}(g))$.
+
+With the shorthand $$e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)\oldequiv\abstr(G)$$ and 
+$$g\cdot_Gg'\defequi\trans_{\pt_G,\pt_G\pt_G}(g,g'),$$ (and likewise with a subscript $H$) we have the following definitions
   \begin{enumerate}
-  \item Since $f(e_G)\oldequiv f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
-$$\mathrm{ad}_p(f(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
+  \item Since $\ap{Bf}(e_G)\oldequiv \ap{Bf}f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
+$$f(e_G)\oldequiv\mathrm{ad}_p(\ap{Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
       \item 
         \begin{align*}
-          \mathrm{ad}_pf(g\cdot g')
-          \oldequiv&\mathrm{ad}_pf(\trans_{\pt_G,\pt_G,\pt_G}(g)(g'))\\
-          =&\mathrm{ad}_p\trans_{f(\pt_G),f(\pt_G),f(\pt_G)}(f(g))(f(g)')\\
-          =& \trans_{\pt_H,\pt_H,\pt_H}(\mathrm{ad}_pf(g))(\mathrm{ad}_pf(g)')\\
-          =&\mathrm{ad}_pf(g))\cdot\mathrm{ad}_pf(g'))
+          f(g\cdot_Gg')&\defequi %\mathrm{ad}_p\ap{Bf}(g\cdot g)\\\oldequiv&
+            \mathrm{ad}_p\ap{Bf}(\trans_{\pt_G,\pt_G,\pt_G}(g)(g'))\\
+          &=\mathrm{ad}_p\trans_{f(\pt_G),f(\pt_G),f(\pt_G)}(\ap{Bf}(g))(\ap{Bf}(g)')\\
+          &= \trans_{\pt_H,\pt_H,\pt_H}(\mathrm{ad}_p\ap{Bf}(g))(\mathrm{ad}_p\ap{Bf}(g)')\\
+          &=\mathrm{ad}_p\ap{Bf}(g))\cdot_H\mathrm{ad}_p\ap{Bf}(g'))\oldequiv f(g)\cdot_Hf(g')
         \end{align*}
-(Write out fix references etc)
+(Write out fix references to ap and ad commuting with trans etc)\footnote{comeback190108 I will fix up the rest according to Marc's request. Hope you approve of the fix so far BID}
   \end{enumerate}
 \end{definition}
 This proves that a homomorphism of groups give rise to a homomorphism of their associated abstract groups:
