@@ -69,13 +69,18 @@ We introduce the following syntactic definitions.
 % 4 & \defeq S(3)
 \end{align*}
 
-Here is an example of defining a function by recursion using induction for $\NN$.  Assuming that we already have defined multiplication
-(see \cref{sec:more-on-N}), we can define the factorial function $f : \NN \to \NN$ by
-defining $X(m)$ to be $\NN$ for all $m$ and by setting $f(0) \defeq 1$ and setting $f(m+1) \defeq (m+1) \cdot f(m)$.  The latter definition
-applies rule P4 with $1$ for $a$, and the function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$. Application of definition shows, for example,
-that $f(2)$ and $2$ are the same by definition, because they both reduce to $S(S(0))$.
+Here is an example of defining a function by recursion using induction for $\NN$.
+Assuming that we already have defined multiplication
+(see \cref{sec:more-on-N}), we can define the factorial 
+function $\fact : \NN \to \NN$ by defining $X(m)$ to be $\NN$ for all $m$ and 
+by setting $\fact(0) \defeq 1$ and setting $\fact(m+1) \defeq (m+1) \cdot \fact(m)$.
+The latter definition applies rule P4 with $1$ for $a$,
+and the function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$. 
+Application of definition shows, for example,
+that $\fact(2)$ and $2$ are the same by definition,
+because they both reduce to $S(S(0))$.
 
-Before we can write an equation such as $f(2)=2$, 
+Before we can write an equation such as $\fact(2)=2$, 
 we must introduce a formal treatment of equality in type theory.  
 We do that in the next section.
 We finish this section with an example of iteration,
@@ -127,7 +132,8 @@ Here are the rules for constructing equality types.
 We will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$, because there may be more than one of them.  When we know
 that there can be at most of them, we will refer to $i$ as a {\em proof} that $a$ is equal to $b$.
 
-We see from rule E2 that $\refl{S(S(S(S(0))))}$ serves as a proof of $2+2=4$, as do $\refl 4$ and $\refl{2+2}$.  A student might wish for a
+We see from rule E2 that $\refl{S(S(0))}$ serves as a proof of $\fact(2)=2$, 
+as do $\refl{2}$ and $\refl{\fact(2)}$.  A student might wish for a
 more detailed proof of that equation, but as a result of our convention above that definitions are syntactically transparent, the application of
 definitions, including inductive definitions, is regarded as a trivial operation.
 
@@ -145,8 +151,9 @@ type $a=b$, for use in rule E3 above), it suffices to produce an element of $a=a
 
 Transitivity of equality is established the same way.  For each $a,b,c:X$ and for each $p:a=b$ and for each $q:b=c$ we want to produce an
 element of type $a=c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl b$, and we are to produce an element
-of $a=b$.  The element $p$ serves the purpose.  Notice the similarity of this inductive definition with the definition given above of the sum
-$m+n$.
+of $a=b$.  The element $p$ serves the purpose.  
+%Notice the similarity of this inductive definition with the definition given above 
+%of the sum $m+n$. NOT SO (left versus right recursion)
 
 Now we state our symmetry result a little more formally.
 
@@ -1155,16 +1162,16 @@ $-1 \defeq neg(0),\ldots$
 
 The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
 setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
-Like the type $\NN$, the type $\zet$ is a set,
-and we denote its elements often in the usual way as
-$\ldots,-1,0,1,\ldots$, ignoring $i$.
+Like the type $\NN$, the type $\zet$ is a set with decidable equality
+and ordering relations,
+and we denote its elements often in the usual way as $\ldots,-1,0,1,\ldots$.
 
 One well-known equivalence is \emph{negation} ${-}:\zet\to\zet$, 
 also called \emph{complement}, inductively defined by setting 
 $-z_0\defeq z_0$, 
 $-pos(n)\defeq neg(n)$, 
 $-neg(n)\defeq pos(n)$.
-Negation is its own inverse
+Negation is its own inverse.
 
 The \emph{successor} function $s:\zet\to\zet$ is defined inductively setting 
 $s(z_0)\defeq pos(0)$, 
@@ -1191,7 +1198,9 @@ $z + z_0\defeq z$,
 $z + pos(n)\defeq s^{n+1}(z)$, 
 $z + neg(n)\defeq s^{-(n+1)}(z)$.
 Again, addition extends $+$ on the $i$-image of $\NN$,
-see \cref{xca:addition-on-Z-and-N}.
+see \cref{xca:addition-on-Z-and-N}. 
+From addition and unary $-$ one can define a binary
+\emph{substraction} function setting $z-y \defeq z+(-y)$.
 \end{definition}
 
 \begin{xca}\label{xca:addition-on-Z-and-N}
@@ -1199,98 +1208,101 @@ Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 \end{xca}
 
 
-\section{A type of integer numbers - PROPOSAL}
-\label{sec:integers}
+\section{Digression: the integers as a group}
+\label{sec:integers-group}
 
-Preparing for things to come we define a type of integer
-numbers that are unlike the more usual equivalence
-classes of pairs $(n,m)$ of natural numbers representing $n-m$.
-
-\begin{remark} Under UA, any type $T$ that is a set
-whose elements represent the integers is equal to $\NN$
-(as all countable sets are equal under UA). 
-The point here is to define $T$ in such a way that the usual 
-algebraic structure on the set of integers
-(the structure of a free group with one generator)
-arises naturally, which in this book means that this structure
-comes from the symmetries of $T$.
-\end{remark}
-
-\begin{definition}\label{def:one-orbit-int}
-Define $s:\NN\to\NN$ by $s(0) = 1$, $s(2(k+1)) = 2k$,
-and $s(2k + 1) = 2k+3$. 
-Then $s$ is an equivalence. It is helpful to depict iterating $s$
-in both directions:
-\[
-\ldots\mapsto 6 \mapsto 4 \mapsto 2 \mapsto 0 \mapsto 1 \mapsto 3 \mapsto 5 \mapsto\ldots
-\]
-An essential observation here is that this is a doubly infinite
-sequence containing all natural numbers, see below. 
-\end{definition}
-
-\begin{xca}\label{xca:one-orbit-int}
-Give an inductive definition of $s$
-(hint: use $\mu$ from \cref{def:Niswellordered}).
-Prove that $s$ is an equivalence.
-\end{xca}
+In the previous section we first defined the \emph{set}
+of integers $\zet$. Then we defined functions that add
+algebraic stucture to $\zet$ (the structure of a free group 
+with one generator, see \cref{XX}. In this section we
+show that this structure can also be obtained from the
+symmetries of a certain element in a certain type.
+This is one of the keypoints of this book, 
+therefore pointed out early on.
 
 \begin{lemma}\label{lem:one-orbit-int}
-Let $s$ be as in \cref{def:one-orbit-int}, and 
-let $f:\NN\to\NN$ be such that $f\circ s = s\circ f$. 
+Let $s$ be as in \cref{def:integers}, and 
+let $f:\zet\to\zet$ be such that $f\circ s = s\circ f$. 
   \begin{enumerate}
-  \item\label{item-one-orbit} For all $m:\NN$ there is a unique $n:\NN$
-such that either $m=s^{-n}(0)$, or $m=s^{n+1}(0)$.
-  \item\label{item-f(0)-even} If $f(0)=s^{-k}(0)$, then $f=s^{-k}$.
-  \item\label{item-f(0)-odd} If $f(0)=s^{k+1}(0)$, then $f=s^{k+1}$.
+  \item\label{item-one-orbit} For all $z:\zet$ there is a unique $n:\NN$
+such that either $z=s^{-(n+1)}(0)$, or $z=s^{n}(0)$.
+  \item\label{item-f(0)-nonneg} For all $n:\NN$, if $f(0)=s^{n}(0)$, then $f=s^{n}$.
+  \item\label{item-f(0)-nonpos} For all $n:\NN$, if $f(0)=s^{-n}(0)$, then $f=s^{-n}$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
 From $f\circ s = s\circ f$ we get $f\circ s^n = s^n\circ f$
 and $f\circ s^{-n} = s^{-n}\circ f$ by induction on $n:\NN$.
 
-(\ref{item-one-orbit}) Induction on $n:\NN$ proves $s^{-n}(0)=2n$, 
-as well as $s^{n+1}(0)=2n+1$. Uniqueness is easy.
+(\ref{item-one-orbit}) Induction on $n:\NN$ proves $s^{n}(0)=n$, 
+as well as $s^{-n}(0)=-n$. Uniqueness is easy.
 
-(\ref{item-f(0)-even}) Assume $f(0)=s^{-k}(0)$.  
-Given $m$,  let $n$ be such that either $m=s^{-n}(0)$, or $m=s^{n+1}(0)$. 
-In the first case we calculate
+(\ref{item-f(0)-nonneg}) Assume $f(0)=s^{n}(0)$.  
+Given $z:\zet$, let $m$ be such that either $z=s^{m}(0)$, 
+or $z=s^{-(m+1)}(0)$. In the first case we calculate
 \[
-f(m)=f(s^{-n}(0))=s^{-n}(f(0))=s^{-n}(s^{-k}(0))=s^{-k}(s^{-n}(0))= s^{-k}(m),
+f(z)=f(s^{m}(0))=s^{m}(f(0))=s^{m}(s^{n}(0))=s^{n}(s^{m}(0))= s^{n}(z),
 \]
-so that $f=s^{-k}$. 
+so that $f=s^{n}$ by function extensionality. 
 The second case is very similar;
-(\ref{item-f(0)-odd}) goes like (\ref{item-f(0)-even}).
+(\ref{item-f(0)-nonpos}) goes like (\ref{item-f(0)-nonneg}).
 \end{proof}
 
-The above lemma also suggests a way to define integer numbers
-with its natural group structure given by composition.
+\begin{corollary}\label{cor:pre-torsor-int}
+We have $\zet\equiv \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$.
+\end{corollary}
+\begin{proof}
+First observe that $f\circ s = s\circ f$ is a true proposition
+for all $f=s^n$ and $f=s^{-n}$. Recall that proofs of propositions
+may be left out from dependent pairs. Thus we
+define $e : \zet\to \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$ 
+inductively by setting 
+$e(z_0)\defeq \id_\zet$, 
+$e(pos(n))\defeq s^{n+1}$,
+$e(neg(n))\defeq s^{-(n+1)}$.
+By \cref{lem:one-orbit-int}, $e$ is a well-defined equivalence.
+\end{proof}
 
-\begin{definition}\label{def:pre-torsor-int}
+Again by \cref{lem:one-orbit-int}, if $f\circ s = s\circ f$,
+then $f: \zet\to\zet$ is an equivalence. 
+Using UA, we get by \cref{cor:pre-torsor-int} the equivalence
 \[
-\zet\defeq \sum_{f:\NN\to\NN} (f\circ s = s\circ f)
+\zet\equiv \sum_{f:\zet=\zet} (f\circ s \circ f^{-1} = s).
 \]
-\end{definition}
+Recall from \cref{sec:heavy-transport} 
+that $f\circ s \circ f^{-1}$ is transport of $s$ by
+conjugation with $f$. Using the characterization of equality 
+in $\Sigma$-types from \cref{sec:sum-types} we get the equivalence
+\[
+\zet\equiv ((\zet,s) = (\zet,s)).
+\]
+One particular equivalence is $e$ from the proof
+of \cref{cor:pre-torsor-int}, with inverse $e^{-1}$.
+We have $e^{-1}(\id_\zet) = 0$.
+The type $(\zet,s) = (\zet,s)$ of symmetries of $(\zet,s)$
+has a natural algebraic structure induced by
+$\trans$ and $\symm$ from \cref{def:eq-symm}.
+%if $f,g:(\zet,s) = (\zet,s)$, then $f\circ g:(\zet,s) = (\zet,s)$.
+%Moreover, elements of $(\zet,s) = (\zet,s)$ have inverses.
+This algebraic structure is transported by $e^{-1}$ to $\zet$
+and gives exactly the group structure defined by ${+},{-},0$.
+The proof of this observation is postponed until the notion
+of a group has been defined in \cref{ch:groups}.
 
-We make a couple of observations, TBE IF WE GO FOR THIS.
+One important issue has been ignored up to now:
+What is the type of $(\zet,s)$? 
+One possible answer is: $\sum_{X:\UU}(\zet=X)$.
+Another possibility is $\sum_{X:\UU}(X=X)$.
+The following exercise shows that these two candidates
+do not have the property that $X=X$ is equivalent to
+$(\zet,s) = (\zet,s)$ for all $X=(\zet,s)$.
+It is for this reason that in \cref{sec:gsets}
+yet another choice will be made.
 
-First, $f\circ s = s\circ f$ is a proposition.
-
-Second, by \cref{lem:one-orbit-int}, equality on $\zet$ is decidable.
-
-Third, again by \cref{lem:one-orbit-int}, if $(f,\_)$ in $\zet$,
-then $f$ is an equivalence.
-
-Fourth, using UA, 
-$\zet\equiv \sum_{f:\NN=\NN} (s\circ f \circ s^{-1} = f)$.
-
-Fifth, we have $\zet\equiv ((\NN,s) = (\NN,s))$ with
-$(\NN,s)$ so that $\zet$ is a type of symmetries in the
-type  $\sum_{X:\UU} (X=\NN)$. In order to comply with the
-definition of group we should single out the component of  
-$(\NN,s)$, but for now we could point at some other, non-equivalent
-types of symmetries, such as $(\NN,\id_\NN)=(\NN,\id_\NN)$ and 
-$(\NN,s^2)=(\NN,s^2)$.
- 
+\begin{xca}\label{xca:zet-symmetries}
+Figure out the symmetries of $(\zet,\id_\zet)$ (easy) and 
+of $(\zet,s^2)$ (hard).
+\end{xca}
 
 \section{The type of finite types}
 \label{sec:typeFin}
