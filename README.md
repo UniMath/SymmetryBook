@@ -6,7 +6,7 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - Try to be informal.  Use as few formulas as possible, especially for the parts about type theory and logic, to ease the entry into group theory.
 - We call objects in a type *elements* of that type even if the type is not a set.
 - An element of a proposition can be called a *proof*.
-- An element of an identity type is called an *identification*, not a *path*.
+- An element of an identity type is called an *identification*, and otherwise a *path*.
 - Composition of p: a=b and q: b=c is denoted by either p\ct q, or by q\cdot p, qp or q\circ p. The latter is preferred when p and q come from equivalences. The macro \ct currently produces a star.
 - In dependent pairs, components having propositional type may be omitted.
 - If x is a bound variable and c is less bound, then we prefer c = x to x = c. Typically, if c is the center of contraction.
