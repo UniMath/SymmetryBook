@@ -342,11 +342,79 @@ given by sending $g$ to $(g(\base),g(\Sloop))$ is an equivalence.  In particular
   The circle is connected.
 \end{lemma}
 \begin{proof}
-  We need to show that for all $z:S^1$ the proposition $||\base=z||$ is inhabited, or in other words, we need to produce an element  $f:\prod_{z:S^1}||\base=z||$.  By the defining property of $S^1$, giving $f$ is the same as specifying $f(\base)$ and $f(\Sloop)$.  Letting $f(\base)$ be witnessed by $\refl\base$ and $f(\Sloop)$ by $\refl{\refl\base}$ does the trick.
+  We need to show that for all $z:S^1$ the proposition $||\base=z||$ is inhabited, or in other words, we need to produce an element  $f:\prod_{z:S^1}||\base=z||$.    By the defining property of $S^1$, giving $f$ is the same as specifying $f(\base)$ and $f(\Sloop)$.  Letting $f(\base)$ be witnessed by $\refl\base$ and $f(\Sloop)$ the sole symmetry of $f(\base)$.
  %  footnote{The current proof of the circle being connected uses \cref{lem:classicalconnected}.  This must be fixed, eg as suggested in the footnote where \cref{lem:classicalconnected} has been put.  Can also use the version where $\bn 2$ is replaced by an arbitrary finite set}We need to prove that the function $\bn{2} \to(S^1\to\bn{2} )$ of \cref{def:connected} is an equivalence.  In view of \cref{lem:freeloopspace} it is enough to show that the composite
 % $$\bn{2} \to \sum_{a:\bn{2} }(a=_{\bn{2} }a)$$
 % sending $a:\bn{2} $ to $(a,\refl a)$ is an equivalence.  Composing further with the first  projection $\mathrm{pr}_1:\sum_{a:\bn{2} }(a=_{\bn{2} }a)\to\bn{2}$ we get the identity on $\bn 2$, so it suffices to show that $\mathrm{pr}_1$ is an equivalence.  This is true since the fibers $\mathrm{pr}_1^{-1}(a)\simeq (a=_{\bn{2} }a)$ are contractible.
 \end{proof}
+In the proof above, note the propositional truncation $||\base=z||$ imposed by the definition of connectedness; if this truncation were removed we wouldn't know what to do with $f(\Sloop)$.  This said, the family $R:S^1\to\UU$ with $R(z)\defequi (\base=z)$ is extremely important for other purposes: it determines what we will call the ``universal cover'' of the circle and is the key tool in proving that the set of integers and the symmetries of the circle coincide.
+
+In order to do this we should properly define the set of integers and explore the concept of coverings.
+
+
+\section{The integers}
+\label{sec:integers}
+
+We define the type of integers in one of the many possible ways.
+
+\begin{definition}\label{def:integers}
+Let $\zet$ be the inductive type with the following three constructors:
+\begin{enumerate}
+\item $z_0: \zet$ for the integer number zero, 
+$0 \defeq z_0$
+\item $pos: \NN \to \zet$ for positive numbers,
+$1 \defeq pos(0),\ldots$.
+\item $neg: \NN \to \zet$ for negative numbers, 
+$-1 \defeq neg(0),\ldots$
+\end{enumerate}
+
+The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
+setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
+Like the type $\NN$, the type $\zet$ is a set with decidable equality
+and ordering relations,
+and we denote its elements often in the usual way as $\ldots,-1,0,1,\ldots$.
+
+One well-known equivalence is \emph{negation} ${-}:\zet\to\zet$, 
+also called \emph{complement}, inductively defined by setting 
+$-z_0\defeq z_0$, 
+$-pos(n)\defeq neg(n)$, 
+$-neg(n)\defeq pos(n)$.
+Negation is its own inverse.
+
+The \emph{successor} function $s:\zet\to\zet$ is defined inductively setting 
+$s(z_0)\defeq pos(0)$, 
+$s(pos(n))\defeq pos(S(n))$,
+$s(neg(n))\defeq -i(n)$. For example, we have
+$s(-1)\jdeq s(neg(0))\jdeq -i(0) \jdeq z_0 \jdeq 0$.
+By induction on $n:\NN$ one proves $s(i(n))=i(S(n))$, 
+so that one can say that $s$ extends $S$
+on the $i$-image of $\NN$. 
+
+The successor function $s$ is an equivalence.
+It is instructive to depict iterating $s$ in both directions as 
+a doubly infinite sequence containing all integers:
+\[
+\ldots \mapsto neg(1) \mapsto neg(0) \mapsto z_0 \mapsto pos(0) \mapsto pos(1) \mapsto \ldots
+\]
+
+The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
+We recall the $n$-fold iteration $s^n$ from \cref{def:n-fold-iteration},
+the $n$-fold iteration of $s^{-1}$ will be denoted by $s^{-n}$.
+
+Addition of integers is defined inductively by setting
+$z + z_0\defeq z$, 
+$z + pos(n)\defeq s^{n+1}(z)$, 
+$z + neg(n)\defeq s^{-(n+1)}(z)$.
+Again, addition extends $+$ on the $i$-image of $\NN$,
+see \cref{xca:addition-on-Z-and-N}. 
+From addition and unary $-$ one can define a binary
+\emph{substraction} function setting $z-y \defeq z+(-y)$.
+\end{definition}
+
+\begin{xca}\label{xca:addition-on-Z-and-N}
+Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
+\end{xca}
+
 
 
 \begin{lemma}\label{lem:S1groupoid}
