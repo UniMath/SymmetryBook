@@ -419,6 +419,7 @@ In particular, an equivalence (aka.~a family of contractible types) is a coverin
 \end{figure}
 
 
+
 To sum up with a formula, 
 given a type $B$, the type of coverings of $B$ is
 $$\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),$$ 
@@ -431,11 +432,38 @@ $$\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f).$$
 \end{definition}
 %specified by a pair $(p_A,p_f)$ with consisting of a $p_A:A=_{\UU}A'$, a $p_f:f'p_A=_{A\to B}f$.
 
+\begin{remark}
+  \label{xca:coveringsofS1}
+  Let us consider coverings of the circle, most conveniently for the moment in the guise of families 
+$$E:S^1\to\Set.$$
+By the definition of the circle, giving $E$ is the same as specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.  Said more concisely in terms of \cref{lem:freeloopspace}, the type of coverings of the circle is equivalent to 
+$$\sum_{X:\Set}(X=X).$$
+We will ultimately show that the circle $S^1$ is equivalent to the component $C$ of $(\zet,s)$ in $\sum_{X:\Set}(X=X)$,  where $s:\zet=\zet$ is the successor.  This may seem sort of circular: ``the circle is equivalent to a component of the type of coverings of the circle!'' but it really just condenses the idea connected groupoids are uniquely given by their symmetries.
+\end{remark}
+A particularly important example is the following:
+\begin{definition}
+  \label{def:RtoS1}
+  Let 
+$$\exp:\mathbb R\to S^1$$ 
+be the covering of the circle given by $(\zet,s):\sum_{X:\Set}(X=X)$.  
+\end{definition}
+
+In more detail, if $R:S^1\to\Set$ is defined by $R(\base)\defequi\zet$ and $R(\Sloop)\defequi s$, then $\mathbb R\defequi\sum_{z:S^1}Z(z)$ and $\exp:R\to S^1$ is the first projection.
+
+\begin{remark}
+  \label{rem:expforreal}
+  The reason for the name $\exp:\mathbb R\to S^1$ comes from the following visualization.  
+%Consider the real and complex numbers $\mathbb R$ and $\mathbb C$.  
+The complex exponentiation $e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has absolute value $1$ and so defines a continuous function from the real numbers to the unit circle.  
+Choosing any point $z$ on the unit circle, we see that the preimage of $z$ under the exponential function is a shifted copy of the integers inside reals.  
+This connection between the integers and the unit circle is precisely captured in a form that we can take further by the covering $\exp:\mathbb R\to S^1$.
+\end{remark}
+
 \begin{definition}
   \label{def:universalcover}
   Let $(B,b_0)$ be a pointed connected groupoid.  
-The \emph{universal covering} of $B$ is the covering of $B$ given by the family of sets 
-  $$P:B\to\Set,\quad P(b)\defequi (b_0=_Bb),$$
+The \emph{universal covering}\footnote{for $B$ not a groupoid this is total misuse of language.  I feel sort of bad about it, but I did not want to say ``path fibration''} of $B$ is the covering of $B$ given by the family of sets 
+  $$P_{b_0}:B\to\Set,\quad P(b)\defequi (b_0=_Bb),$$
 or alternatively as the first projection from $P_{b_0}B\defequi\sum_{b:B}(b_0=_Bb)$ to $B$. 
 \end{definition}
 Note that $(b_0=_Bb)$ is a family of \emph{sets} exactly when $B$ is a groupoid.  
@@ -443,26 +471,33 @@ This condition is not necessary for the following important lemma:
 
 \begin{lemma}
   \label{lem:thepathspaceiscontractible}
-  Let $(B,b_0)$ be a pointed connected type.  Then $P_{b_0}B\defequi\sum_{b:B}(b_0=_Bb)$ is contractible.
+  Let $(B,b_0)$ be a pointed connected type.  Then 
+$$P_{b_0}B\defequi\sum_{b:B}(b_0=_Bb)$$ is contractible with center of contraction $(b_0,\refl{b_0})$.
 \end{lemma}
 \begin{proof}
   ((write))
 \end{proof}
-This somehow deflates the concept ``universal cover'', since we've just shown that the univesal covering coincides with the constant function $\bn 1\to B$ (with value $b_0$), were it not for the manifold practical value of the formulation that we've given.  
-In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of $b_0$, and ultimately this will show that the study of symmetries coincides with the study of the universal covering.
+\begin{remark}
+  This somehow deflates the concept ``universal cover'' of a pointed connected groupoid $(B,b_0)$, since we've just shown that the universal covering coincides with the constant function $\bn 1\to B$ (with value $b_0$), were it not for the manifold practical value of the formulation that we've given.  
+In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of $b_0$ under the first projection from $P_{b_0}B$ to $B$; ultimately this will show that the study of symmetries coincides with the study of the universal covering.
+\end{remark}
+
 
 \subsection{The symmetries of the circle}
 \label{sec:symcirc}
 
 \begin{lemma}\label{lem:S1groupoid}
-  The circle $S^1$ is a groupoid and $\Sloop^-:\zet\to(\base=_{S^1}\base)$ sending $n$ to $\Sloop^n$ is an equivalence.
+  The circle $S^1$ is a groupoid and the function
+$$\Sloop^-:\zet\to(\base=_{S^1}\base)$$ sending $n$ to $\Sloop^n$ is an equivalence.
 \end{lemma}
 \begin{proof}
   Since the circle is connected, for any $z,w:S^1$ the type $z=_{S^1}w$ is equivalent to $z=_{S^1}\base$, so it is enough to prove the last statement.  
 Define two type families 
-$$P,R:S^1\to\UU$$ (actually, both families have values in sets).  
-The first is the family defined by $P(z)\defequi(z=\base)$ for $z:S^1$ and the second is defined by the induction priciple for the circle by  % $E(\Sloop)(p)=\trans{}_{z,\base,\base}(p)(\Sloop):(z=\base)$
-$R(\base)=\zet$ and $R(\Sloop)=\ua(S):(\zet=\zet)$, where $S$ is the successor function.\footnote{must define.  Shall $\ua$ be visible?}%8.1
+$$P_\base,R:S^1\to\UU$$ (in the end we'll see that, both families have values in sets).  
+The first is the family defined by $P_\base(z)\defequi(\base=z)$ for $z:S^1$. If we knew \`a priori that $S^1$ were a groupoid, we could already say that $P_\base$ represented the universal cover.  Regardless of this we know by \cref{lem:thepathspaceiscontractible} that $P_\base S^1\defequi\sum_{z:S^1}(\base=z)$ is contractible.
+
+The second family is defined by the induction priciple for the circle by  % $E(\Sloop)(p)=\trans{}_{z,\base,\base}(p)(\Sloop):(z=\base)$
+$R(\base)\defequi\zet$ and $R(\Sloop)\defequi s:\zet=\zet$, where $s$ is the successor function.
 Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
 ((finish!!! e.g. as in the book))
 \end{proof}
