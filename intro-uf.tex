@@ -164,10 +164,35 @@ Now we state our symmetry result a little more formally.
 
 Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
 abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p\ct q$, 
-or as $q\cdot p$, $qp$, or $q\circ p$.
+or as $q\cdot p$, $qp$, or $q\circ p$, see \cref{fig:path-concatenation}
 (The latter notation will be used when $a,b,c$ are types and
-$p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.
-MAKE PICTURE)
+$p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.)
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \node (X) at (0,-1.5) {$X$};
+    \draw (0,-1)
+    .. controls ++(200:-1) and ++(180:1) .. (2,-2)
+    .. controls ++(180:-1) and ++(270:1) .. (4,0)
+    .. controls ++(270:-1) and ++(20:2)   .. (2,2)
+    .. controls ++(20:-2)   and ++(90:1)  .. (-3,0)
+    .. controls ++(90:-1)  and ++(200:1) .. (0,-1);
+    \node[fill,circle,inner sep=1pt,label=below:$a$] (a) at (0,0) {};
+    \node[fill,circle,inner sep=1pt,label=below:$b$] (b) at (2,-1) {};
+    \node[fill,circle,inner sep=1pt,label=above:$c$] (c) at (3,1) {};
+    \node (ct) at (1.2,1) {$q\circ p = p\ct q$};
+    \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto] {$p$} (b);
+    \draw[->] (b) .. controls ++(170:-1) and ++(-70:1) .. node[auto] {$q$} (c);
+    \draw[->] (a) .. controls ++(15:1) and ++(210:1) .. (c);
+    \draw (-2,0) arc(210:330:.8 and .5);
+    \draw (-0.91,-.18) arc(60:120:.8 and .7);
+  \end{tikzpicture}
+  
+  \caption{Concatenation of paths in $X$}
+  \label{fig:path-concatenation}
+\end{figure}
+
 
 Associativity of transitivity is formulated and established similarly.  
 We leave that as an exercise.
