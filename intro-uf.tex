@@ -164,8 +164,8 @@ Now we state our symmetry result a little more formally.
 
 Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
 abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p\ct q$, 
-or as $q\cdot p$, $qp$, or $q\circ p$, see \cref{fig:path-concatenation}
-(The latter notation will be used when $a,b,c$ are types and
+or as $q\cdot p$, $qp$, or $q\circ p$, see \cref{fig:path-concatenation}.
+(The notation $q\circ p$ will be used when $a,b,c$ are types and
 $p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.)
 
 \begin{figure}
@@ -181,7 +181,7 @@ $p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.)
     \node[fill,circle,inner sep=1pt,label=below:$a$] (a) at (0,0) {};
     \node[fill,circle,inner sep=1pt,label=below:$b$] (b) at (2,-1) {};
     \node[fill,circle,inner sep=1pt,label=above:$c$] (c) at (3,1) {};
-    \node (ct) at (1.2,1) {$q\circ p = p\ct q$};
+    \node (ct) at (1.2,1) {$q\circ p \jdeq p\ct q$};
     \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto] {$p$} (b);
     \draw[->] (b) .. controls ++(170:-1) and ++(-70:1) .. node[auto] {$q$} (c);
     \draw[->] (a) .. controls ++(15:1) and ++(210:1) .. (c);
@@ -736,7 +736,7 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 
 \begin{proof}
 (\ref{prop-utils-false-true})
-If $p,q : \false$, then $p=q$ is proved by the Ex Falso rule.
+If $p,q : \false$, then $p=q$ holds vacuously.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
 
@@ -1013,7 +1013,7 @@ Show that $X\amalg Y$ is a set if $X$ and $Y$ are sets.
 Define inductively addition on $\NN$,
 by $n+0\defeq n$ and $n+S(m)\defeq S(n+m)$. Define
 multiplication on $\NN$, setting $m\cdot 0\defeq 0$ and 
-$m\cdot(n+1)\defeq (m\cdot n) + m$. 
+$m\cdot S(n)\defeq (m\cdot n) + m$. 
 Another useful function is the \emph{predecessor} $p$ defined by
 $p(0)\defeq 0$ and $p(S(n))\defeq n$.
 Elementary properties of addition, multiplication and predecessor
@@ -1023,10 +1023,10 @@ proofs to the reader.
 
 \begin{definition}
 \label{def:orderonN}
-Let $n,m:\NN$. We say that $n$ is less than or equal to $m$, and write $n\leq m$,
-if there is a $k:\NN$ such that $k+n=m$. This $k$ is unique and we say 
-that $n$ is less than $m$, and write $n<m$, if this $k$ is not $0$.
-Both $n\leq m$ and $n<m$ are propositions for all $m,n:\NN$.
+Let $n,m:\NN$. We say that $m$ is less than or equal to $n$, and write $m\leq n$,
+if there is a $k:\NN$ such that $k+m=n$. Such a $k$ is unique, and if it
+is not $0$, we say that $m$ is less than $n$, denoted by $m<n$.
+Both $m\leq n$ and $m<n$ are propositions for all $n,m:\NN$.
 \end{definition}
 
 \begin{xca}\label{xca:try-your-luck-N}
@@ -1052,7 +1052,7 @@ We will now prove an important property of $\NN$, called the
 \emph{least number principle for decidable, non-empty subsets of} $\NN$.
 We give some more details of the proof, since they illustrate an aspect
 of type theory that has not been very prominent up to know, namely
-the close connection between proving and programming.
+the close connection between proving and computing.
 
 \begin{definition}
 \label{def:Niswellordered}
@@ -1066,7 +1066,7 @@ Then $P_{\min}(n)$ is also a proposition, and all $n$ such that $P_{\min}(n)$
 are equal. Therefore the type $\sum_{n:\NN} P_{\min}(n)$
 is also a proposition. 
 
-For any function $d(n): P(n)\amalg\neg P(n)$ deciding $P(n)$ for each $n:\NN$, 
+Given a function $d(n): P(n)\amalg\neg P(n)$ deciding $P(n)$ for each $n:\NN$, 
 we define a function $\mu_P:\NN\to\NN$ which,
 given input $n$, searches for a $k<n$ such that $P(k)$.
 If such a $k$ exists, $\mu_P$ returns the least such $k$,
@@ -1078,7 +1078,7 @@ $\mu_P(S(n))\defeq \mu_P(n)$ if $\mu_P(n) < n$.
 Otherwise, we set $\mu_P(S(n))\defeq n$ if $P(n)$,
 and $\mu_P(S(n))\defeq S(n)$ else, using $d(n)$ to decide,
 that is, by induction on $d(n):P(n)\amalg\neg P(n)$.
-By design, $\mu_P$ `remembers' where it has found the least $k$.
+By design, $\mu_P$ `remembers' where it has found the least $k$ (if so).
 We are now done with the computational part and the rest
 is a correctness proof.
 
@@ -1087,7 +1087,7 @@ By induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 %((\mu_P(n)\leq n) \times (\mu_P(n)<n \to P(\mu_P(n)))).
 \mu_P(n)\leq n \quad\text{and}\quad \mu_P(n)<n \to P(\mu_P(n)).
 \]
-The base case $n=0$ is by Ex Falso. For the induction step, 
+The base case $n=0$ is easy. For the induction step, 
 review the computation of $\mu_P(S(n))$. If $\mu_P(S(n))=\mu_P(n)$
 since $\mu_P(n) < n$, then we are done by the induction hypothesis.
 Otherwise, either $\mu_P(S(n))=n$ and $P(n)$, or $\mu_P(S(n))=S(n)$.
@@ -1098,11 +1098,13 @@ Also by induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 P(m) \to \mu_P(n)\leq m,~ \text{for all $m$ in $\NN$.}
 \]
 The base case $n=0$ holds since $\mu_P(0)=0$. For the induction step,
-assume $P(m) \to \mu_P(n)\leq m$ for all $m$. 
-We have either $\mu_P(S(n))=\mu_P(n)$, 
-or $\mu_P(n)=n$ and $\neg P(n)$ and $\mu_P(S(n)) = S(n)$. 
-In both cases we are done by using the induction hypothesis.
-From this we get by by contraposition
+assume $P(m) \to \mu_P(n)\leq m$ for all $m$ (IH). Let $m:\NN$
+and assume $P(m)$. We have to prove $\mu_P(S(n))\leq m$.
+If $\mu_P(S(n))=\mu_P(n)$ we are done by IH. Otherwise we have
+$\mu_P(n)=n$ and $\mu_P(S(n)) = S(n)$ and $\neg P(n)$. 
+Then $\mu_P(n)\leq m$ by IH, and $n\neq m$, so $\mu_P(S(n))\leq m$.
+
+By contraposition we get from the previous result
 \[
 \mu_P(n)= n \to \neg P(m),~\text{for all $m<n$.}
 \]
@@ -1138,38 +1140,35 @@ this convention to good use in the proof of a form of the so-called
 \end{remark}
 
 \begin{lemma}\label{lem:PHP}
-For all $k:\NN$ and $f:\NN\to\NN$ such that $f(n)<k$
-for all $n<k+1$, there exist $n,m < k+1$ such that 
-$n\neq m$ and $f(n)=f(m)$.
+For all $N:\NN$ and $f:\NN\to\NN$ such that $f(n)<N$
+for all $n<N+1$, there exist $m < n < N+1$ such that $f(n)=f(m)$.
 \end{lemma}
 \begin{proof}
-By induction on $k$. The base case $k=0$ is by Ex Falso.
-For the induction case $k+1$, assume the lemma proved for $k$
+By induction on $N$. In the base case $N=0$ there is nothing to do.
+For the induction case $N+1$, assume the lemma proved for $N$
 (induction hypothesis, IH, for all $f$). Let $f$ be such 
-that $f(n)<k+1$ for all $n<k+2$. The idea of the proof is
-to search for an $n<k+1$ such that $P(n)\defeq (f(n)=k)$,
-by computing $\mu_P(k+1)$ as in \cref{def:Niswellordered}.
-If $\mu_P(k+1)=k+1$, that is, $f(n)<k$ for all $n<k+1$,
-then we are done by IH. Assume $\mu_P(k+1) < k+1$,
-so $f(\mu_P(k+1))=k$.
-If also $f(k+1)=k$ then we are done.
-If $f(k+1)<k$, then we define $g$ by $g(n)=f(k+1)$
-if $f(n)= k$, and $g(n)=f(n)$ otherwise. 
-Then IH applies to $g$, and we get $n,m < k+1$ such that 
-$n\neq m$ and $g(n)=g(m)$. If $f(n)=f(m)$
-we are of course done. Otherwise, $f(n),f(m)$ cannot both
-be smaller than $k$, as $g(n)=g(m)$. And we are done in both
-remaining cases, $f(n)=g(n)=g(m)=f(k+1)$ and $f(k+1)=g(n)=g(m)=f(m)$.
+that $f(n)<N+1$ for all $n<N+2$. The idea of the proof is
+to search for an $n<N+1$ such that $P(n)\defeq (f(n)=N)$,
+by computing $\mu_P(N+1)$ as in \cref{def:Niswellordered}.
+If $\mu_P(N+1)=N+1$, that is, $f(n)<N$ for all $n<N+1$,
+then we are done by IH. Assume $\mu_P(N+1) < N+1$,
+so $f(\mu_P(N+1))=N$.
+If also $f(N+1)=N$ then we are done.
+If $f(N+1)<N$, then we define $g$ by $g(n)=f(N+1)$
+if $f(n)= N$, and $g(n)=f(n)$ otherwise. 
+Then IH applies to $g$, and we get $m < n < N+1$ with 
+$g(n)=g(m)$. If $f(n)=f(m)$ we are of course done. 
+Otherwise, $f(n),f(m)$ cannot both be smaller than $N$, 
+as $g(n)=g(m)$. In both remaining cases, 
+$f(n)=g(n)=g(m)=f(N+1)$ and $f(N+1)=g(n)=g(m)=f(m)$,
+we are done.
 \end{proof}
 
 We can now rule out the existence of equivalences between finite
 sets of different size.
 \begin{corollary}\label{cor:Fin-n-injective}
-If $n>m$, then $(\sum_{k:\NN} k<n) \neq (\sum_{k:\NN} k<m)$.
+If $m<n$, then $(\sum_{k:\NN} k<m) \neq (\sum_{k:\NN} k<n)$.
 \end{corollary}
-
-
-\footnote{BID: I have stolen the section on integers and put it in the circle chapters as agreed.  The digression below should then be incorporated a bit later when we mature from and start talking about groups more generally.  I think it will fit wonderfully quite early as an example.}
 
 \section{Digression: the integers as a group}
 \label{sec:integers-group}
@@ -1278,7 +1277,7 @@ type of $n$ elements for any $n:\NN$.
 For any type $X$ define $\Succ(X)\defeq X\amalg\true$.
 Define inductively the type family $F(n)$, for each $n:\NN$, by
 setting $F(0)\defeq\bn{0}$ and $F(S(n))\defeq\Succ(F(n))$.
-Now abbreviate $F(n)\defeq\bn{n}$. The type $\bn{n}$ is called
+Now abbreviate $\bn{n}\defeq F(n)$. The type $\bn{n}$ is called
 the type with $n$ elements, and we denote its elements
 by $0,1,\ldots,n-1$ rather than by the corresponding expressions
 using $\inl{}$ and $\inr{}$.
@@ -1289,7 +1288,8 @@ using $\inl{}$ and $\inr{}$.
   \begin{enumerate}
   \item Denote in full all elements of $\bn{0} $, $\bn{1} $, and $\bn{2}$.
   \item Show (using UA) that $\bn{1} =\true$, $\bn{2} =\bool$.
-  \item Show by PHP that $n=m$ if $\bn{m}=\bn{n}$.
+  \item Show (using UA) that $\bn{n} = \sum_{k:\NN} k<n$ for all $n:\NN$.
+  \item Show that $n=m$ if $\bn{m}=\bn{n}$.
   \end{enumerate}
 \end{xca}
   
@@ -1325,7 +1325,7 @@ For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
 \fin_n\defequi \sum_{S:\Set}\Trunc{S=\bn{n}}.
 \]
 \end{definition}
-Observe that $\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n$
+Observe that $\fin_0=\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n$
 by \cref{lem:maxonefinitetype}.
 
 \section{Subtypes and Decidability}
