@@ -967,40 +967,36 @@ if all constituent types are sets.
 \end{theorem}
 
 \begin{proof}
-We only do the case of $\NN$ and leave the other cases to the reader
-(cf.\ \cref{xca:set-sum}). We have to prove that $n=m$ is a proposition
-for all $n,m:\NN$. A simple induction starting with proving that $0=0$
-is a proposition does not work. Instead we define by double induction
-on $n,m:\NN$ a type $\Eq_\NN(n,m)$ that is propositional and equal 
-to the type $n=m$.
-We set $\Eq_\NN(0,0)\defeq\bn{1}$ and 
-$\Eq_\NN(0,S(m))\defeq\Eq_\NN(S(n),0)\defeq\bn{0}$ for all $n,m:\NN$.
-We set $\Eq_\NN(S(n),S(m))\defeq\Eq_\NN(n,m)$. 
-By double induction on $n,m:\NN$ we get that $\Eq_\NN(n,m)$ is a proposition.
-From this definition it also
-follows by induction that $\Eq_\NN(n,n)=\bn{1}$ for all $n$. 
-Again by induction on $n:\NN$ we define $e(n):\Eq_\NN(n,n)$ by 
-setting $e(0)=0$ (well-typed since $0:\bn{1}\jdeq\Eq_\NN(0,0)$
-and $e(S(n))\defeq e(n)$ (also well-typed).
+  We only do the case of $\NN$ and leave the other cases to the reader
+  (cf.\ \cref{xca:set-sum}).  We have to prove that $n=m$ is a
+  proposition for all $n,m:\NN$, i.e., $p = q$ for all $n,m : \NN$ and
+  $p, q : n = m$.  By induction on $q$ it suffices to prove $p = \refl
+  n$ for all $p : n = n$.  Note that we can not simply prove this by
+  induction on $p$.  Instead we first proof an inversion principle for
+  identifications in $\NN$ as follows.  We define a type $T(n,m,p)$
+  for $n, m : \NN$ and $p : n = m$ by induction on $n$ and $m$:
+  \[
+    T(0,0,p) \defeq p = \refl 0%
+    \quad \text{and} \quad%
+    T(S(n), S(m), p) \defeq \sum_{q : n = m} p = \ap S q,%
+  \]
+  and for the other cases we set, say, $T(0, S(m), p) \defeq T(S(n), 0
+  ,p) \defeq \bn{0}$.  Next we prove $T(n,m,p)$ for all $n,m$, and $p$
+  by induction on $p$, leaving us with $T(n,n,\refl{n})$ for all $n :
+  \NN$, which we in turn prove by distinguishing cases on $n$.  Both
+  the case for $0$ and for $S(n)$ hold by reflexivity, where in the
+  successor case we use $\refl{n}$ for $q$ and note that $\ap S
+  \refl{n} \jdeq \refl{S(n)}$.
 
-Now it suffices to give equivalences $f_{n,m}: (n=m)\to\Eq_\NN(n,m)$.
-We define $f$ by induction setting $f_{n,n}(\refl{n})\defeq e(n)$.
-In order to prove that each $f_{n,m}$ is an equivalence, it is
-convenient to define functions $g_{n,m}$ in the other direction. 
-This we do by double induction on $n,m:\NN$. In the base case
-we set $g_{0,0}(\_)=\refl{0}$. In the two cases $0,S(\_)$
-and $S(\_),0$ for $n,m$ we have $\Eq_\NN(n,m)=\bn{0}$ 
-and define $g_{n,m}: \Eq_\NN(n,m)\to (n=m)$ by Ex Falso.
-In the last case we set $g_{S(n),S(m)}(x)=\ap{S} g_{n,m}(x)$,
-well-typed for all $x: \Eq_\NN(S(n),S(m))\defeq\Eq_\NN(n,m)$.
-By induction on $n:\NN$ we get $g_{n,n}(\_)=\refl{n}$.
-By induction on $p: n=m$ we get $g_{n,m}(f_{n,m}(p))=p$.
-By double induction on $n,m:\NN$ we get that $f_{n,m}(g_{n,m}(x))=x$
-for all $x:\Eq_\NN(n,m)$ 
-(all four cases are identifications in a propositional type).
-
-Now it follows by \cref{lem:equivalence-via-inverse} 
-that each $f_{n,m}$ is an equivalence.
+  We can now prove $p = \refl{n}$ for all $p : n = n$ by induction
+  on~$n$.  In the base case this is simply $T(0,0,p)$.  And in case $n
+  \jdeq S(m)$ we get from $T(S(m),S(m),p)$ that $p = \ap{S} q$ for
+  some $q : m = m$.  By induction hypothesis we have $e : q =
+  \refl{m}$ and thus also
+  \[
+    p = \ap{S} q = \ap{S} \refl{m} \jdeq \refl{S (m)}
+  \]
+  using $\ap{\ap{S}} e$, concluding the proof.
 \end{proof}
 
 \begin{xca}\label{xca:set-sum}
