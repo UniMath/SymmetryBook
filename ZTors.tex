@@ -1,0 +1,183 @@
+\documentclass[a4,12pt]{amsart}
+
+\newcounter{chapter}% HACK since amsart has no chapter counter like amsbook
+%and there is \numberwithin{theorem}{chapter} in macros.tex,
+%seemingly overruled by \numberwithin{theorem}{section} in top.tex
+
+\input macros
+\begin{document}
+\input topZTors
+
+\section{The integers}
+\label{sec:integers}
+
+We define the type of integers in one of the many possible ways.
+
+\begin{definition}\label{def:integers}
+Let $\zet$ be the inductive type with the following three constructors:
+\begin{enumerate}
+\item $z_0: \zet$ for the integer number zero, 
+$0 \defeq z_0$
+\item $pos: \NN \to \zet$ for positive numbers,
+$1 \defeq pos(0),\ldots$.
+\item $neg: \NN \to \zet$ for negative numbers, 
+$-1 \defeq neg(0),\ldots$
+\end{enumerate}
+
+The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
+setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
+Like the type $\NN$, the type $\zet$ is a set with decidable equality
+and ordering relations,
+and we denote its elements often in the usual way as $\ldots,-1,0,1,\ldots$.
+
+One well-known equivalence is \emph{negation} ${-}:\zet\to\zet$, 
+also called \emph{complement}, inductively defined by setting 
+$-z_0\defeq z_0$, 
+$-pos(n)\defeq neg(n)$, 
+$-neg(n)\defeq pos(n)$.
+Negation is its own inverse.
+
+The \emph{successor} function $s:\zet\to\zet$ is defined inductively setting 
+$s(z_0)\defeq pos(0)$, 
+$s(pos(n))\defeq pos(S(n))$,
+$s(neg(n))\defeq -i(n)$. For example, we have
+$s(-1)\jdeq s(neg(0))\jdeq -i(0) \jdeq z_0 \jdeq 0$.
+By induction on $n:\NN$ one proves $s(i(n))=i(S(n))$, 
+so that one can say that $s$ extends $S$
+on the $i$-image of $\NN$. 
+
+The successor function $s$ is an equivalence.
+It is instructive to depict iterating $s$ in both directions as 
+a doubly infinite sequence containing all integers:
+\[
+\ldots \mapsto neg(1) \mapsto neg(0) \mapsto z_0 \mapsto pos(0) \mapsto pos(1) \mapsto \ldots
+\]
+
+The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
+We denote the $n$-fold iteration of $s$ as $s^n$, and
+the $n$-fold iteration of $s^{-1}$ as $s^{-n}$.
+
+Addition of integers is defined inductively by setting
+$z + z_0\defeq z$, 
+$z + pos(n)\defeq s^{n+1}(z)$, 
+$z + neg(n)\defeq s^{-(n+1)}(z)$.
+Again, addition extends $+$ on the $i$-image of $\NN$,
+see \cref{xca:addition-on-Z-and-N}. 
+From addition and unary $-$ one can define a binary
+\emph{substraction} function setting $z-y \defeq z+(-y)$.
+\end{definition}
+
+\begin{xca}\label{xca:addition-on-Z-and-N}
+Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
+\end{xca}
+
+
+\section{Digression: the integers as a group}
+\label{sec:integers-group}
+
+In the previous section we first defined the \emph{set}
+of integers $\zet$. Then we defined functions that add
+algebraic stucture to $\zet$ (the structure of a free group 
+with one generator). In this section we
+show that this structure can also be obtained from the
+symmetries of a certain element in a certain type.
+This is one of the keypoints of this book, 
+therefore pointed out early on.
+
+\begin{lemma}\label{lem:one-orbit-int}
+Let $s$ be as in \cref{def:integers}, and 
+let $f:\zet\to\zet$ be such that $f\circ s = s\circ f$. 
+  \begin{enumerate}
+  \item\label{item-one-orbit} For all $z:\zet$ there is a unique $n:\NN$
+such that either $z=s^{-(n+1)}(0)$, or $z=s^{n}(0)$.
+  \item\label{item-f(0)-nonneg} For all $n:\NN$, if $f(0)=s^{n}(0)$, then $f=s^{n}$.
+  \item\label{item-f(0)-nonpos} For all $n:\NN$, if $f(0)=s^{-n}(0)$, then $f=s^{-n}$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+From $f\circ s = s\circ f$ we get $f\circ s^n = s^n\circ f$
+and $f\circ s^{-n} = s^{-n}\circ f$ by induction on $n:\NN$.
+
+(\ref{item-one-orbit}) Induction on $n:\NN$ proves $s^{n}(0)=n$, 
+as well as $s^{-n}(0)=-n$. Uniqueness is easy.
+
+(\ref{item-f(0)-nonneg}) Assume $f(0)=s^{n}(0)$.  
+Given $z:\zet$, let $m$ be such that either $z=s^{m}(0)$, 
+or $z=s^{-(m+1)}(0)$. In the first case we calculate
+\[
+f(z)=f(s^{m}(0))=s^{m}(f(0))=s^{m}(s^{n}(0))=s^{n}(s^{m}(0))= s^{n}(z),
+\]
+so that $f=s^{n}$ by function extensionality. 
+The second case is very similar;
+(\ref{item-f(0)-nonpos}) goes like (\ref{item-f(0)-nonneg}).
+\end{proof}
+
+\begin{corollary}\label{cor:pre-torsor-int}
+We have $\zet\equiv \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$.
+\end{corollary}
+\begin{proof}
+First observe that $f\circ s = s\circ f$ is a true proposition
+for all $f=s^n$ and $f=s^{-n}$. Recall that proofs of propositions
+may be left out from dependent pairs. Thus we
+define $e : \zet\to \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$ 
+inductively by setting 
+$e(z_0)\defeq \id_\zet$, 
+$e(pos(n))\defeq s^{n+1}$,
+$e(neg(n))\defeq s^{-(n+1)}$.
+By \cref{lem:one-orbit-int}, $e$ is a well-defined equivalence.
+\end{proof}
+
+Again by \cref{lem:one-orbit-int}, if $f\circ s = s\circ f$,
+then $f: \zet\to\zet$ is an equivalence. 
+Using UA, we get by \cref{cor:pre-torsor-int} the equivalence
+\[
+\zet\equiv \sum_{f:\zet=\zet} (f\circ s \circ f^{-1} = s).
+\]
+Recall from \cref{sec:heavy-transport} 
+that $f\circ s \circ f^{-1}$ is transport of $s$ by
+conjugation with $f$. Using the characterization of equality 
+in $\Sigma$-types from \cite[Theorem 2.7.2]{hottbook} we get the equivalence
+\[
+\zet\equiv ((\zet,s) = (\zet,s)).
+\]
+One particular equivalence is $e$ from the proof
+of \cref{cor:pre-torsor-int}, with inverse $e^{-1}$.
+We have $e^{-1}(\id_\zet) = 0$.
+The type $(\zet,s) = (\zet,s)$ of symmetries of $(\zet,s)$
+has a natural algebraic structure induced by
+$\trans$ and $\symm$ from \cref{def:eq-symm}.
+%if $f,g:(\zet,s) = (\zet,s)$, then $f\circ g:(\zet,s) = (\zet,s)$.
+%Moreover, elements of $(\zet,s) = (\zet,s)$ have inverses.
+This algebraic structure is transported by $e^{-1}$ to $\zet$
+and gives exactly the group structure defined by ${+},{-},0$.
+The proof of this observation is postponed until the notion
+of a group has been defined in \cref{ch:groups}.
+
+One important issue has been ignored up to now:
+What is the type of $(\zet,s)$? 
+One possible answer is: $\sum_{X:\UU}(X=X)$.
+The following exercise shows that we do not get the 
+property that $(X,f)=(X,f)$ is equivalent to
+$(\zet,s) = (\zet,s)$ for all $(X,f) : \sum_{X:\UU}(X=X)$.
+It is for this reason that in the next section
+another choice will be made.
+
+\begin{xca}\label{xca:zet-symmetries}
+Figure out the symmetries of $(\zet,\id_\zet)$ (easy) and 
+of $(\zet,s^2)$ (hard).
+\end{xca}
+
+\section{Z-Torsors}\label{sec:ZTorsors}
+
+
+
+
+\bibliographystyle{amsplain}
+\bibliography{papers}
+% \printindex
+\end{document}
+% Local Variables:
+% fill-column: 144
+% latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition")
+% TeX-master: t
+% End:
