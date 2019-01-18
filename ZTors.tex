@@ -72,7 +72,7 @@ Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 \end{xca}
 
 
-\section{Digression: the integers as a group}
+\section{The integers as a group}
 \label{sec:integers-group}
 
 In the previous section we first defined the \emph{set}
@@ -133,8 +133,7 @@ Using UA, we get by \cref{cor:pre-torsor-int} the equivalence
 \[
 \zet\equiv \sum_{f:\zet=\zet} (f\circ s \circ f^{-1} = s).
 \]
-Recall from \cref{sec:heavy-transport} 
-that $f\circ s \circ f^{-1}$ is transport of $s$ by
+Recall that $f\circ s \circ f^{-1}$ is transport of $s$ by
 conjugation with $f$. Using the characterization of equality 
 in $\Sigma$-types from \cite[Theorem 2.7.2]{hottbook} we get the equivalence
 \[
@@ -144,14 +143,14 @@ One particular equivalence is $e$ from the proof
 of \cref{cor:pre-torsor-int}, with inverse $e^{-1}$.
 We have $e^{-1}(\id_\zet) = 0$.
 The type $(\zet,s) = (\zet,s)$ of symmetries of $(\zet,s)$
-has a natural algebraic structure induced by
-$\trans$ and $\symm$ from \cref{def:eq-symm}.
+has a natural algebraic structure called path-algebra
+induced by composing and taking inverses (of paths,
+and modulo UA also of equivalences), and $\refl{(\zet,s)}$
+(the identity equivalence).
 %if $f,g:(\zet,s) = (\zet,s)$, then $f\circ g:(\zet,s) = (\zet,s)$.
 %Moreover, elements of $(\zet,s) = (\zet,s)$ have inverses.
 This algebraic structure is transported by $e^{-1}$ to $\zet$
 and gives exactly the group structure defined by ${+},{-},0$.
-The proof of this observation is postponed until the notion
-of a group has been defined in \cref{ch:groups}.
 
 One important issue has been ignored up to now:
 What is the type of $(\zet,s)$? 
@@ -168,6 +167,120 @@ of $(\zet,s^2)$ (hard).
 \end{xca}
 
 \section{Z-Torsors}\label{sec:ZTorsors}
+
+In this section, pairs $(X,f)$ have type $\sum_{X:\UU}(X\to X)$
+without explicitly mentioning this. Moreover, terms of
+propositional type that do not interest us are denoted by $!$,
+or even left out alltogether. Nested pairs may be written as tuples.
+
+\begin{definition}\label{sec:ZTors}
+The pointed type of $\zet$-torsors is defined by
+\[
+\TorZ\defeq \sum_{(X,f)}\Trunc{(X,f)=(\zet,s)}) \text{~with~}
+\pt\defeq ((\zet,s),\trunc{\refl{(\zet,s)}}).
+\]
+\end{definition}
+Note that $\Trunc{(X,f)=(\zet,s)}$ has propositional consequences
+such as $\isset(X)$, $s\circ f = f \circ s$  and $\isEq(f)$.
+
+The aim of this section is to show that $\TorZ$ has the
+universal property of the circle. Fix $A:\UU$, $a:A$ and $p: a=_A a$. 
+We are going to define types and
+functions depending on this input, and will use $p$ in various
+denotations to express this dependence. 
+
+\begin{definition}\label{def:TBN}
+For every $(X,f)$, define
+\begin{align*}\label{eq:TBD}
+P_p(X,f)&\defeq \sum_{a':A}~\sum_{h:X\to a=a'}~\prod_{x:X} h(f(x))=p\ct h(x).
+\end{align*}
+\end{definition}
+
+\begin{lemma}\label{lem:TBN}
+For every $(X,f,t):\TorZ$, the type $P_p(X,f)$ is contractible
+with center $c_p(X,f,\trunc{t})$ defined in the proof.
+\end{lemma}
+\begin{proof}
+Let $(X,f,\trunc{t}):\TorZ$; we may use $t:(X,f)=(\zet,s)$ since we
+are going to prove a proposition. As center of contraction we take
+\[
+c_p(X,f,\trunc{t})\defeq (a, h\defeq(x\mapsto p^{t(x)})),
+\]
+where we 
+abusively denote the equivalence from $X$ to $\zet$ also by $t$.
+We calculate 
+\[
+h(f(x))=p^{(t\circ f)(x)}=p^{(s\circ t)(x)}=p\ct p^{t(x)}=p\ct h(x)
+\]
+to verify that indeed the tuple $(a,h,!)$ is in $P_p(X,f)$.
+
+It remains to prove that $(a,h)=(a',h')$ for all $(a',h')$ such that
+$h'(f(x))=p\ct h'(x)$. Let $i\defeq h'(t^{-1}(0)): a=a'$.
+By transport lemmas we have $i_*\, h = (x\mapsto h(x)\ct i)$.
+We show $h(x)\ct i= h'(x)$ for all $x:X$, hence $i_*\, h = h'$.
+If $t(x)=0$, then this follows by $h(x)=p^{t(x)}=\refl{a}$ and the
+definition of $i$. For $t(x)\geq 0$ we do induction on $t(x)$. 
+Assume $h(x)\ct i= h'(x)$ and let $y:X$ be such that $t(y)=s(t(x))=t(f(x)$.
+Then $h(y) = h(f(x)) = p \ct h(x)$ so 
+$h(y)\ct i= p \ct h(x)\ct i = p\ct h'(x) = h'(f(x)) = h'(y)$.
+The case $t(x)\leq 0$ is done by a similar induction. MAKE PICTURE
+\end{proof}
+
+\begin{definition}\label{def:TBN}
+For every $(X,f,\trunc{t}):\TorZ$, define
+\begin{align*}\label{eq:TBD}
+\hat{p}(X,f,t)&\defeq (a,h), 
+\text{~where $c_p(X,f,\trunc{t})\jdeq (a,h,!)$,}\\
+\bar{p}(X,f,t)&\defeq \pi_1 (\hat{p}(X,f,t)).
+\end{align*}
+\end{definition}
+
+Recall $\pt\defeq (\zet,s,\trunc{\refl{(\zet,s)}})$.
+A straightforward calculation gives 
+$\bar{p}(\pt)\jdeq \pi_1 (c_p(\pt)) \jdeq a$, which is one important
+aspect of the universal property that we are after.
+We also have $\hat{p}(\pt)\jdeq (a,n\mapsto p^n)$. CHECK
+Before we can deal with the other aspect we have to prepare first.
+
+There is a natural path $\pt =_\TorZ \pt$ applying UA to $s$.
+Using \cite[Theorem 2.7.2]{hottbook} we can analyse this path
+componentwise. 
+
+The first component must be a path of type $\zet=\zet$,
+and we denote this path by $ua(s)$. 
+
+The second component must now be
+a path of type $ua(s)_*\, s = s$. The type family in which the transport
+takes place is $X\mapsto (X\to X)$. This means transport by conjugation,
+so we have to prove $s\circ s \circ s^{-1} = s$, which is easy.
+
+The third component is a path in a contractible type, which always exists.
+
+Instead of $(ua(s),!,!)$ we denote the path by $\Zloop$.
+Modulo the equivalence from \cite[Theorem 2.7.2]{hottbook} we can wrap up:
+\[
+\Zloop : \pt =_\TorZ \pt
+%\Zloop : (\zet,s,\trunc{\refl{(\zet,s)}}) = (\zet,s,\trunc{\refl{(\zet,s)}})
+\]
+
+\begin{lemma}\label{lem:TBN}
+The following equation is well-typed and true:
+\[
+\Zloop_*\, (a,n\mapsto p^n) = (a,n\mapsto p^n).
+\]
+\end{lemma}
+\begin{proof}
+We have $\apd{\hat{p}}\Zloop : \Zloop_*\,\hat{p}(\pt) = \hat{p}(\pt)$,
+and $\hat{p}(\pt) \jdeq (a,n\mapsto p^n)$.
+\end{proof}
+
+Another aspect of the universal property that we are after is
+expressed by the following lemma.
+
+\begin{lemma}\label{lem:TBN}
+
+
+\end{lemma}
 
 
 
