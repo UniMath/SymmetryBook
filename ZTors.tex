@@ -196,7 +196,7 @@ P_p(X,f)&\defeq \sum_{a':A}~\sum_{h:X\to a=a'}~\prod_{x:X} h(f(x))=p\ct h(x).
 \end{align*}
 \end{definition}
 
-\begin{lemma}\label{lem:TBN}
+\begin{lemma}\label{lem:guided-null-hmtps}
 For every $(X,f,t):\TorZ$, the type $P_p(X,f)$ is contractible
 with center $c_p(X,f,\trunc{t})$ defined in the proof.
 \end{lemma}
@@ -218,10 +218,11 @@ It remains to prove that $(a,h)=(a',h')$ for all $(a',h')$ such that
 $h'(f(x))=p\ct h'(x)$. Let $i\defeq h'(t^{-1}(0)): a=a'$.
 By transport lemmas we have $i_*\, h = (x\mapsto h(x)\ct i)$.
 We show $h(x)\ct i= h'(x)$ for all $x:X$, 
-see \cref{fig:guidednullhomotopies}, hence $i_*\, h = h'$.
+see \cref{fig:guided-null-hmtps}, hence $i_*\, h = h'$.
 If $t(x)=0$, then this follows by $h(x)=p^{t(x)}=\refl{a}$ and the
 definition of $i$. For $t(x)\geq 0$ we do induction on $t(x)$. 
-Assume $h(x)\ct i= h'(x)$ and let $y:X$ be such that $t(y)=s(t(x))=t(f(x)$.
+Assume $h(x)\ct i= h'(x)$ for $x=t^{-1}(n)$.
+Let $y:X$ be such that $t(y)=s(n)=s(t(x))=t(f(x))$, so $y=f(x)$.
 Then $h(y) = h(f(x)) = p \ct h(x)$ so 
 $h(y)\ct i= p \ct h(x)\ct i = p\ct h'(x) = h'(f(x)) = h'(y)$.
 The case $t(x)\leq 0$ is done by a similar induction.
@@ -247,7 +248,7 @@ The case $t(x)\leq 0$ is done by a similar induction.
 \draw[->] (m-3-4) to[bend left=30] node[near end,left]{$i$} (m-1-4);
 \draw[->] (m-3-6) to[bend left=30] node[near end,left]{$i$} (m-1-6);                     
 \end{tikzpicture}
-\caption{\label{fig:guidednullhomotopies}Guided nullhomotopies}
+\caption{\label{fig:guided-null-hmtps}Guided nullhomotopies}
 \end{figure}
 
 \begin{definition}\label{def:TBN}
@@ -338,10 +339,47 @@ $\ap{e_A(a,p)}(\Zloop)\jdeq\ap{\bar{p}}(\Zloop) = p$.
 The above definition is one half of a universal property.
 The other half is showing that $e_A$ is an equivalence.
 The obvious candidate for an inverse is 
-$f\mapsto (f(\pt),\ap{f}(\Zloop))$.
+$g\mapsto (g(\pt),\ap{g}(\Zloop))$.
 The homotopy for the roundtrip starting in $\sum_{a:A}(a=a)$
-is precisely the justification of \cref{def:TorZrecursor},
-so it remains to show 
+is precisely the justification of \cref{def:TorZrecursor}.
+The other homotopy amounts to showing
+$e_A(g(\pt),\ap{g}(\Zloop)) = g$, for any $g:\TorZ\to A$.
+We know already that both functions agree in $\pt$,
+and that $\TorZ$ is connected, so that all function values
+are merely equal. This simple argument would suffice if
+$A$ is a set but not in general. We are facing the same
+problem as was solved in the proof of \cref{lem:guided-null-hmtps}.
+The idea is to \emph{reprove} \cref{lem:guided-null-hmtps}
+with data depending on $g$. This is not a pointless exercise:
+from the fact that the two proofs of this proposition are equal
+we can get the desired conclusion.
+
+\begin{lemma}\label{lem:redo-g-null-hmtps}
+For all $a:A$, $p:a=a$, $g:\TorZ\to A$,
+$q: g(\pt) = a$, $r: q_*(\ap{g}(\Zloop)) = p$, 
+and $(X,f,\trunc{t}):\TorZ$, the type $P_p(X,f)$ is contractible.
+\end{lemma}
+\begin{proof}
+Applying induction on $q$ means that we only have to consider the
+case in which $g(\pt)\jdeq a$, $q\jdeq\refl{a}$ and
+$\ap{g}(\Zloop) = p$. 
+
+PROOF NOT USING LAST ASSUMPTION --- MUST BE WRONG.
+Let $(X,f,\trunc{t}):\TorZ$; we may use $t:(X,f)=(\zet,s)$ since we
+are going to prove a proposition.
+Extend $t: (X,f)=(\zet,s)$ to a proof of $(X,f,\trunc{t}) = \pt$,
+which we also denote by $t$. Then $\ap{g} t : g(X,f,\trunc{t}) = a$.
+We take as center of contraction $(g(X,f,\trunc{t}),h,!)$
+with $h(x) \defeq p^t(x) \ct \ap{g} t^{-1}$. Indeed $h(f(x))=p\ct h(x)$.
+Now let $(a',h',!) : P_p(X,f)$, that is $h': X\to a=a'$ satisfies
+$h'(f(x)) = p\ct h(x)$. Let 
+$i: \ap{g} t \ct h'(t^{-1}(0)): g(X,f,\trunc{t}) = a'$.
+If $h(x)\ct i = h'(x)$ then we can
+calculate $h(f(x))\ct i = p\ct h(x)\ct i = p\ct h'(x) = h'(f(x))$.
+Adapting \cref{fig:guided-null-hmtps} we get $i_* h = h'$.
+So we get contractibility.
+\end{proof}
+
 
 
 
