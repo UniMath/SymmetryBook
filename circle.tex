@@ -506,29 +506,55 @@ is equal to the family
 $$P_\base:S^1\to\UU,\qquad P_\base(z)\defequi (\base=z)$$
 of \cref{def:universalcover}.
 
-We define two functions, $f:P_\base\to R$ and $\Sloop^-(-):R\to P_\base$ and show that, under univalence, they define inverse equalities.
+We define two functions, $f:P_\base\to R$ and $g:R\to P_\base$ and show that, under univalence, they define inverse equalities.  
+
+To do this we need to recall from \cref{sec:heavy-transport} how transport behaves in the function type of families.  If given a type $A$ and two type families $P,Q:A\to\UU$, then $(P\to Q)= \prod_{a:A}(P(a)\to Q(a)$.  Then transport along $p:a=_Aa'$ of $f:P(a)\to Q(a)$ is $Q(p)\,f\,P(p)^{-1}:P(a')=Q(a')$, in a picture
+$$\xymatrix{
+P(a)\ar[r]^{f}\ar@{=}[d]^{P(p)}&Q(a)\ar@{=}[d]^{Q(p)}\\
+  P(a')&\,Q(a').}
+$$
+If $A$ is $S^1$, then the induction principle for the circle says that giving an $f:P\to Q$ is the same as specifying an $f(\base):P(\base)=Q(\base)$ and an identity $f(\Sloop):Q(\Sloop)\,f(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}f(\base)$, \ie a witness that the composites in 
+$$\xymatrix{
+  P(\base)\ar[r]^{f(\base)}\ar@{=}[d]^{P(\Sloop)}&Q(\base)\ar@{=}[d]^{Q(\Sloop)}\\
+  P(\base)\ar[r]^{f(\base)}&\,Q(\base)}
+$$
+are equal.  If $P,Q$ are families of sets, then $f(\Sloop)$ is in a proposition.
+
 
 \begin{definition}
   \label{def:fPtoR}
   The function $f:\prod_{z:S^1}(P_\base(z)\to R(z))$ is defined by transport: $f(z)(p)\defequi\trp_{R,p}0$.\footnote{picture of transport!}
 \end{definition}
 \begin{definition}
-  \label{def:gRtoP}The function $\Sloop^-(-):\prod_{z:S^1}(R(z)\to P_\base(z))$ is defined by circle induction: $\Sloop(\base)\defequi \Sloop^-:\zet\to(\base=\base)$ and $!: \trp_{R\to P_\base,\Sloop}\Sloop^-=_{\zet\to(\base=\base)}\Sloop^-$ where by the transport $\trp_{R\to P_\base,\Sloop}\Sloop^-$ is $\Sloop\, \Sloop^-\,R(\Sloop)^{-1}:\base=\base$ (in a picture, $!$ demonstrates that
-$$\xymatrix{\zet\ar[r]^{\Sloop^-}\ar@{=}[d]^s&(\base=\base)\ar[d]^\Sloop\\
+  \label{def:gRtoP}The function $g:\prod_{z:S^1}(R(z)\to P_\base(z))$ is defined by circle induction: 
+$$g(\base)\defequi \Sloop^-:\zet\to(\base=\base)$$ and 
+$$g(\Sloop): Q(\Sloop)\, g(\base)\,P(\base)^{-1}=_{Q(\base)\to P_\base(\base)}g(\base)$$ states that if $n:\zet$, then the two elements $Q(\Sloop)\, g(\base)\,P(\base)^{-1}(n)\defequi \Sloop\,\Sloop^{s^{-1}(n)}=\Sloop^{1+n-1}$ and $\Sloop^n$ in $\base=\base$ are equal.
+\end{definition}
+In a picture, $g(\Sloop)$ demonstrates that starting with $n:\zet$ it does not matter what path you take around the square
+$$\xymatrix{\zet\ar[r]^{\Sloop^-}\ar@{=}[d]^s&(\base=\base)\ar@{=}[d]^\Sloop\\
   \zet\ar[r]^{\Sloop^-}&(\base=\base)}
 $$
-\end{definition}
-
 
 
 
 
 \begin{lemma}
   \label{lem:univisexp}
-  The function $f:\prod_{z:S^1}(P_\base(z)\to R(z))$ defined by transport, $f(z)(p)\defequi\trp_{R,p}0$,\footnote{picture of transport!} is an equivalence.  Hence, $P_\base$ defines a connected covering of the circle: if $z:S^1$ then $P_\base(z)\defequi (z=\base)$ is a set and the type $P_\base S^1$ is connected (even contractible).
+  The function $f:P_\base\to R$ defined by transport in \cref{def:fPtoR} is an equivalence with inverse $g:R\to P_\base$ defined by circle induction in \cref{def:gRtoP}.  Hence, 
+$P_\base$ defines a connected covering of the circle: if $z:S^1$ then $P_\base(z)\defequi (z=\base)$ is the set $\zet$ and the type $P_\base S^1$ is connected (even contractible).
 \end{lemma}
 \begin{proof}
-  ((finish!!! e.g. as in the book 8.1))
+  Firstly we need to give an element $H:g\,f=\id_{P_\base}$, or in other words, that for all $z:S^1$ and $p:P_\base(z)\defequi(\base=z)$ an element $H(z,p):g(z)\,f(z)(p)=p$.  By the induction principle for the identity type, it is enough to show this for the case $z\oldequiv\base$ and $p\oldequiv\refl\base$ in which case we can set $H(\base,\refl\base)\defequi\refl{\refl\base}$ since
+$g(\base)\,f(\base)(\refl\base)\defequi g(\base)(0)\defequi\refl\base$.
+
+Secondly, we need an element $G:g\,f=\id_{R}$, or in other words, that for all $z:S^1$ and $n:R(z)\defequi\zet$ an element $G(z,p):f(z)\,g(z)(n)=n$.  By circle induction it is enough to provide information for $\base$ and $\Sloop$, but since $\zet$ is a set the information for $\Sloop$ is redundant.  Hence, we need to show that for all $n:\zet$ that $f(\base)\,g(\base)(n)\oldequiv f(\base)(\Sloop^n)$ is equal to $n$.  We do this by induction on $n$.  The case $n=0$ gives $f(\base)(\Sloop^0)\defequi f(\refl\base)\defequi 0$.  For $n=s(m)$ with $m:\NN$ we have 
+\begin{align*}
+  f(\base)(\Sloop^{s(m)})&\defequi\trp_{R,\Sloop^{s(m)}}0\\
+  &=\trp_{R,\Sloop \Sloop^{m}}0\\
+  &=\trp_{R,\Sloop}(\trp_{R,\Sloop^m}0)\\
+  &=s(\trp_{R,\Sloop^m}0)\footnote{some references needed here}
+\end{align*}
+ (the last equality follows since $R(\Sloop)\defequi s$) and by induction on $\NN$ we are done for all positive integers $n$.  For negative $n$ the proof is similar.
 \end{proof}
 
 
@@ -537,24 +563,7 @@ $$
 $$\Sloop^-:\zet\to(\base=_{S^1}\base)$$ sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
 \begin{proof}
-  Since the circle is connected, for any $y,z:S^1$ the type $y=_{S^1}z$ is equivalent to $base=_{S^1}z$ which is a set since the function $f(z):(\base=z)\to\zet$ of \cref{lem:univisexp} is an equivalence.  All we need to show is that $\Sloop^-$ is an inverse of $f(\base)$.
-
-
-
-
-
-by the last statement of \cref{lem:univisexp} and so we have proven that $S^1$ is a groupoid.  Also, we know from \cref{lem:univisexp} that $f(z):(\base=z)\to\zet$ is an equivalence., so it is enough to prove the last statement.  
-
-Consider the exponential covering $\exp:\mathbb R\to S^1$ of \cref{cor:S1groupoid} and the universal covering, \ie the first projection from $P_\base S^1$ to $S^1$ in \cref{def:universalcover}. We will show that they coincide, and hence that their preimages of $\base:S^1$, namely $\zet$ and $\base=\base$, coincide.  
-
-If we knew \`a priori that $S^1$ were a groupoid, we could already say that the projection $P_\base S^1\to S^1$ represented the universal cover.  Regardless of this, we know from \cref{lem:thepathspaceiscontractible} that $P_\base S^1\defequi\sum_{z:S^1}(\base=z)$ is contractible.
-
-Recall that these could be described in terms of the families 
-$$P_\base,R:S^1\to\UU,$$  
-where $P_\base(z)\defequi(\base=z)$ for $z:S^1$ and where $R$ was defined by setting $R(\base)\defequi\zet$ and $R(\Sloop)\defequi s$, where $s:\zet=\zet$ is the successor function.
-
-Transport defines a function $f:\prod_{z:S^1}(P(z)\to R(z))$, with $f(z)(p)\defequi\trp_{R,p}0$.
-.
+  Since the circle is connected, for any $y,z:S^1$ the type $y=_{S^1}z$ is equivalent to $base=_{S^1}z$ which is a set since the function $g(z):\zet\to(\base=z)$ of \cref{def:gRtoP} is an equivalence by \cref{lem:univisexp}.  Hence $S^1$ is a groupoid, and $g(\base)\defequi\Sloop^-$ is an equivalence.
 \end{proof}
 \subsection{A reinterpretation of the circle and a criterion for equivalence through coverings}
 \label{sec:S1isC}
