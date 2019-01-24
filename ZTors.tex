@@ -201,7 +201,8 @@ For every $(X,f,t):\TorZ$, the type $P_p(X,f)$ is contractible
 with center $c_p(X,f,t)$ defined in the proof.
 \end{lemma}
 \begin{proof}
-  Let $(X,f,t):\TorZ$. Since we are going to prove a proposition, we may assume $t=\trunc e$ for some $e : (X,f)=(\zet,s)$. As center of
+  Let $(X,f,t):\TorZ$. Since we are going to prove a proposition, 
+  we may take $t\jdeq\trunc e$ for some $e : (X,f)=(\zet,s)$. As center of
   contraction we take
 \[
 c_p(X,f,\trunc{e})\defeq (a, h\defeq(x\mapsto p^{e(x)})),
@@ -377,21 +378,34 @@ and the other propositions involved.
 For simplicity, we denote $f^n(x)$ by $x+n$.
 \end{definition}
 
+The following lemma is proved by routine inductions.
 
-
-
-
-
-
-
-\begin{lemma}\label{lem:redo-g-null-hmtps}
-For all $a:A$, $p:a=a$, $g:\TorZ\to A$,
-$q: g(\pt) = a$, $r: q_*(\ap{g}(\Zloop)) = p$, 
-and $(X,f,t):\TorZ$, the type $P^1_p(X,f)$ is contractible.
+\begin{lemma}\label{lem:loop-s-iterated}
+For every $Z\defeq(X,f,t):\TorZ$, $x:X$ and $n:\zet$, 
+we have $s^Z_{x+n} = \Zloop^n \ct s^Z_x$. 
+In particular, we have a function $\varepsilon(n): s^\pt_n = \Zloop^n$.
 \end{lemma}
-\begin{proof}
-TBD
-\end{proof}
+
+The following lemma uses pathovers and their composition, 
+which should be defined somewhere else. 
+
+\begin{lemma}\label{lem:p_loop-iterated}
+For every $P:\TorZ \to \UU$, $p_\pt : P(\pt)$, 
+$p_\Zloop : \pt =^P_\Zloop \pt$ and $n:\zet$, 
+we have $p_\Zloop^n :  \pt =^P_{\Zloop^n} \pt$.
+\end{lemma}
+
+Instead of the conclusion of the last lemma, we want to have
+an inhabitant of $\pt =^P_{s^\pt_n} \pt$. This means we have
+to correct for the error term $\varepsilon(n)$ in \cref{lem:loop-s-iterated}.
+We proceed as follows. From $\varepsilon(n): s^\pt_n = \Zloop^n$ we get
+$\ap{\trp_{P,\varepsilon(n)}}: (s^\pt_n)_* = (\Zloop^n)_*$.
+Applying to $\pt$ gives an inhabitant of $(s^\pt_n)_*(\pt) = (\Zloop^n)_*(\pt)$
+that we denote by $\varepsilon_*(n)$. Thus we get for all $n:\zet$:
+
+\[
+\varepsilon_*(n) \ct p_\Zloop^n : \pt =^P_{s^\pt_n} \pt
+\] 
 
 
 
@@ -405,3 +419,13 @@ TBD
 % latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition")
 % TeX-master: t
 % End:
+
+\begin{lemma}\label{lem:redo-g-null-hmtps}
+For all $a:A$, $p:a=a$, $g:\TorZ\to A$,
+$q: g(\pt) = a$, $r: q_*(\ap{g}(\Zloop)) = p$, 
+and $(X,f,t):\TorZ$, the type $P^1_p(X,f)$ is contractible.
+\end{lemma}
+\begin{proof}
+TBD
+\end{proof}
+
