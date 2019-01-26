@@ -16,32 +16,32 @@ We define the type of integers in one of the many possible ways.
 \begin{definition}\label{def:integers}
 Let $\zet$ be the inductive type with the following three constructors:
 \begin{enumerate}
-\item $z_0: \zet$ for the integer number zero, 
-$0 \defeq z_0$
-\item $pos: \NN \to \zet$ for positive numbers,
-$1 \defeq pos(0),\ldots$.
-\item $neg: \NN \to \zet$ for negative numbers, 
-$-1 \defeq neg(0),\ldots$
+\item $\zzero: \zet$ for the integer number zero, 
+$0 \defeq \zzero$
+\item $\zpos: \NN \to \zet$ for positive numbers,
+$1 \defeq \zpos(0),\ldots$.
+\item $\zneg: \NN \to \zet$ for negative numbers, 
+$-1 \defeq \zneg(0),\ldots$
 \end{enumerate}
 
 The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
-setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
+setting $i(0)\defeq \zzero$, $i(S(n))\defeq \zpos(n)$.
 Like the type $\NN$, the type $\zet$ is a set with decidable equality
 and ordering relations,
 and we denote its elements often in the usual way as $\ldots,-1,0,1,\ldots$.
 
 One well-known equivalence is \emph{negation} ${-}:\zet\to\zet$, 
 also called \emph{complement}, inductively defined by setting 
-$-z_0\defeq z_0$, 
-$-pos(n)\defeq neg(n)$, 
-$-neg(n)\defeq pos(n)$.
+$-\zzero\defeq \zzero$, 
+$-\zpos(n)\defeq \zneg(n)$, 
+$-\zneg(n)\defeq \zpos(n)$.
 Negation is its own inverse.
 
 The \emph{successor} function $s:\zet\to\zet$ is defined inductively setting 
-$s(z_0)\defeq pos(0)$, 
-$s(pos(n))\defeq pos(S(n))$,
-$s(neg(n))\defeq -i(n)$. For example, we have
-$s(-1)\jdeq s(neg(0))\jdeq -i(0) \jdeq z_0 \jdeq 0$.
+$s(\zzero)\defeq \zpos(0)$, 
+$s(\zpos(n))\defeq \zpos(S(n))$,
+$s(\zneg(n))\defeq -i(n)$. For example, we have
+$s(-1)\jdeq s(\zneg(0))\jdeq -i(0) \jdeq \zzero \jdeq 0$.
 By induction on $n:\NN$ one proves $s(i(n))=i(S(n))$, 
 so that one can say that $s$ extends $S$
 on the $i$-image of $\NN$. 
@@ -50,7 +50,7 @@ The successor function $s$ is an equivalence.
 It is instructive to depict iterating $s$ in both directions as 
 a doubly infinite sequence containing all integers:
 \[
-\ldots \mapsto neg(1) \mapsto neg(0) \mapsto z_0 \mapsto pos(0) \mapsto pos(1) \mapsto \ldots
+\ldots \mapsto \zneg(1) \mapsto \zneg(0) \mapsto \zzero \mapsto \zpos(0) \mapsto \zpos(1) \mapsto \ldots
 \]
 
 The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
@@ -58,9 +58,9 @@ We denote the $n$-fold iteration of $s$ as $s^n$, and
 the $n$-fold iteration of $s^{-1}$ as $s^{-n}$.
 
 Addition of integers is defined inductively by setting
-$z + z_0\defeq z$, 
-$z + pos(n)\defeq s^{n+1}(z)$, 
-$z + neg(n)\defeq s^{-(n+1)}(z)$.
+$z + \zzero\defeq z$, 
+$z + \zpos(n)\defeq s^{n+1}(z)$, 
+$z + \zneg(n)\defeq s^{-(n+1)}(z)$.
 Again, addition extends $+$ on the $i$-image of $\NN$,
 see \cref{xca:addition-on-Z-and-N}. 
 From addition and unary $-$ one can define a binary
@@ -121,9 +121,9 @@ for all $f=s^n$ and $f=s^{-n}$. Recall that proofs of propositions
 may be left out from dependent pairs. Thus we
 define $e : \zet\to \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$ 
 inductively by setting 
-$e(z_0)\defeq \id_\zet$, 
-$e(pos(n))\defeq s^{n+1}$,
-$e(neg(n))\defeq s^{-(n+1)}$.
+$e(\zzero)\defeq \id_\zet$, 
+$e(\zpos(n))\defeq s^{n+1}$,
+$e(\zneg(n))\defeq s^{-(n+1)}$.
 By \cref{lem:one-orbit-int}, $e$ is a well-defined equivalence.
 \end{proof}
 
@@ -201,32 +201,37 @@ For every $(X,f,t):\TorZ$, the type $P_p(X,f)$ is contractible
 with center $c_p(X,f,t)$ defined in the proof.
 \end{lemma}
 \begin{proof}
-  Let $(X,f,t):\TorZ$. Since we are going to prove a proposition, 
-  we may take $t\jdeq\trunc e$ for some $e : (X,f)=(\zet,s)$. As center of
-  contraction we take
-\[
-c_p(X,f,\trunc{e})\defeq (a, h\defeq(x\mapsto p^{e(x)})),
-\]
-where we 
-abusively denote the equivalence from $X$ to $\zet$ also by $e$.
-We calculate 
-\[
-h(f(x))=p^{(t\circ f)(x)}=p^{(s\circ e)(x)}=p\ct p^{e(x)}=p\ct h(x)
-\]
-to verify that indeed the tuple $(a,h,!)$ is in $P_p(X,f)$.
+  Let $(X,f,t):\TorZ$. Since we are going to prove a proposition,
+  we may take $t\jdeq\trunc e$ for some $e : (X,f)=(\zet,s)$.
+  By induction in $e$, it suffices to prove that $P_p(\zet,s)$ is contractible.
+  As center of contraction we take
+  \[
+    c_p(\zet,s,\trunc{\refl{(\zet,s)}})\defeq (a, h, q),
+  \]
+  where, for $x : \zet$ we set
+  \[
+    h(x) \defeq p^x : a = a,
+  \]
+  and $q$ is defined in a natural way by induction on $x : \zet$.
 
-It remains to prove that $(a,h)=(a',h')$ for all $(a',h')$ such that
-$h'(f(x))=p\ct h'(x)$. Let $i\defeq h'(e^{-1}(0)): a=a'$.
-By transport lemmas we have $i_*\, h = (x\mapsto h(x)\ct i)$.
-We show $h(x)\ct i= h'(x)$ for all $x:X$, 
-see \cref{fig:guided-null-hmtps}, hence $i_*\, h = h'$.
-If $e(x)=0$, then this follows by $h(x)=p^{e(x)}=\refl{a}$ and the
-definition of $i$. For $e(x)\geq 0$ we do induction on $e(x)$. 
-Assume $h(x)\ct i= h'(x)$ for $x=e^{-1}(n)$.
-Let $y:X$ be such that $e(y)=s(n)=s(e(x))=e(f(x))$, so $y=f(x)$.
-Then $h(y) = h(f(x)) = p \ct h(x)$ so 
-$h(y)\ct i= p \ct h(x)\ct i = p\ct h'(x) = h'(f(x)) = h'(y)$.
-The case $e(x)\leq 0$ is done by a similar induction.
+  It remains to prove that $(a,h,q)=(a',h',q')$ for all $(a',h',q')$,
+  where $q'\,x : h'(f(x))=p\ct h'(x)$.
+  Let $i\defeq h'(0): a=a'$.
+  By transport lemmas we have $i_*\, h = (x\mapsto h(x)\ct i)$.
+  We show $h(x) \ct i = h'(x)$ for all $x:X$, see \cref{fig:guided-null-hmtps},
+  hence $i_*\, h = h'$.
+  If $x \jdeq 0$, then this follows by $h(x)=p^x=p^0=\refl{a}$
+  and the definition of $i$.
+  For $x > 0$ we do induction on $x$,
+  the base case having already been treated.
+  Assume $h(x)\ct i = h'(x)$, and let $y = x+1$.
+  Then $h(y) = h(x+1) = p \ct h(x)$,
+  so $h(y)\ct i = p \ct h(x) \ct i = p\ct h'(x) = h'(f(x)) = h'(y)$.
+  The case $x < 0$ is done by a similar induction.
+
+  We also need to check that relative to this identification of $h$ and $h'$ over $i$
+  we can identify $q$ and $q'$.
+  We leave this for the reader, who may consult our formalization as needed.
 \end{proof}
 
 \begin{figure}
@@ -251,22 +256,6 @@ The case $e(x)\leq 0$ is done by a similar induction.
 \end{tikzpicture}
 \caption{\label{fig:guided-null-hmtps}Guided null homotopies}
 \end{figure}
-
-\begin{remark}\label{rem:TBN}
-OMIT IF OBSOLETE.
-
-It is possible to prove \cref{lem:guided-null-hmtps} by
-induction on $e$ by defining first $c'_p$ 
-setting $c'_p(\pt)\defeq (a,(x\mapsto p^x),!)$. Then 
-$c_p$ is obtained by truncation elimination from $c'_p$,
-with computational rule $c_p(X,f,\trunc e)\jdeq c'_p(X,f,e)$.
-
-One can prove $\pi_1(c'_p(X,f,e)) = a$ for all $e$,
-and $\Trunc{\pi_1(c_p(X,f,t)) = a}$ for all $t$.
-One can in general \emph{not} prove $\pi_1(c_p(X,f,t)) = a$ for all $t$,
-as this is simply not true, for example, when
-$A\defeq \UU$, $a\defeq \bool$ and $p\defeq ua(\twist)$.
-\end{remark}
 
 \begin{definition}\label{def:TBN}
 For every $Z:\TorZ$, define
