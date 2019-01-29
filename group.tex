@@ -13,7 +13,9 @@ In \cref{sec:identity-types} we saw that the identity type was ``reflexive, symm
 With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19'th century that the properties of such symmetries could be codified by saying that they form a \emph{group}.
 
 \begin{example}\label{ex:base=base}
-  We defined the circle $S^1$ in \cref{def:circle} by declaring that it has a point $\base$ and an element $\Sloop:\base=_{S^1}\base$, and we proved in \cref{lem:S1groupoid} that $\base=_{S^1}\base$ is equivalent to the set $\zet$ (of integers), where $n\in\zet$ corresponds to the $n$-fold composition of $\Sloop$ (which works for both positive and negative $n$).  We can think of this as describing the symmetries of $\base$: we have one ``generator'' $\Sloop$, and this can be applied any number of times, giving a new symmetry for each new number.  Here, composition of loops corresponds to usual addition of integers.  Hence, the circle is a very cheap packaging of the ``{group}'' of integers, the declaration of $\base$ and $\Sloop$ not only gives the set $\zet$ of integers, but at the same time the addition.
+  We defined the circle $S^1$ in \cref{def:circle} by declaring that it has a point $\base$ and an element $\Sloop:\base=_{S^1}\base$, and we proved in \cref{cor:S1groupoid} that $\base=_{S^1}\base$ is equivalent to the set $\zet$ (of integers), where $n\in\zet$ corresponds to the $n$-fold composition of $\Sloop$ (which works for both positive and negative $n$).  
+We can think of this as describing the symmetries of $\base$: we have one ``generator'' $\Sloop$, and this can be applied any number of times, giving a new symmetry for each new number.  
+Here, composition of loops corresponds to usual addition of integers.  Hence, the circle is a very cheap packaging of the ``{group}'' of integers, the declaration of $\base$ and $\Sloop$ not only gives the \emph{set} $\zet$ of integers, but at the same time the addition.
 \end{example}
 \begin{example}
   Recall the finite set $\bn{2} =\bool:\fin_2$ from \cref{def:finiteset}, containing two elements.   
@@ -58,7 +60,7 @@ $$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:p
 \end{remark}
 \end{definition}
    \begin{example}\label{excirclegroup}
-   The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid (\cref{lem:circleisconnected}, \cref{lem:S1groupoid}) and is pointed at $\base$. The identity type $\base=_{S^1}\base$ is equivalent to to the set of integers $\zet$ and composition corresponds to addition.  This justifies our definition of the \emph{group of integers} as 
+   The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid (\cref{lem:circleisconnected}, \cref{cor:S1groupoid}) and is pointed at $\base$. The identity type $\base=_{S^1}\base$ is equivalent to to the set of integers $\zet$ and composition corresponds to addition.  This justifies our definition of the \emph{group of integers} as 
 $$\ZZ=\aut_{S^1}(\base).$$
  \end{example}
 
@@ -92,7 +94,7 @@ Note that the cyclic group of order $1$ is the trivial group, the cyclic group o
 $$G\times H\defequi\aut_{BG_\div\times BH_\div}((\pt_G,\pt_H))$$
 (note that $B(G\times H)\oldequiv BG\times BH$ is pointed in $\pt_{G\times H}\oldequiv(\pt_G,\pt_H)$).  
 For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}\footnote{something about symmetries}.
-\item MANY MORE EXAMPLES.  \footnote{We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.}
+\footnote{MANY MORE EXAMPLES.  We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.}
   \end{enumerate}
 \end{example}
 \begin{xca}
@@ -175,7 +177,7 @@ We may add a little meat to the definition of $p_1$: in the definition of the id
   Let $A$ be a type and $a,b,c,d:A$ and $g_3:a=b$, $g_2:b=c$ and $g_1:c=d$ elements.  Then $p_4(a,b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{a=_Ad}(g_1\cdot g_2)\cdot g_3$ is the element defined by induction by saying that $p_4(a,a,a,a,e,e,e,e)$ is $\refl e:e\cdot(e\cdot e)=(e\cdot e)\cdot e$ [which makes sense since $e\cdot e\defequi e$].
 \end{definition}
 \begin{remark}
-  This last definition is somewhat more complicated than the others, in the sense that in order to unravel the induction to exactly the form accepted in the definition of the identity type, we need to apply the rule three times.  ((write out))
+  This last definition is somewhat more complicated than the others, in the sense that in order to unravel the induction to exactly the form accepted in the definition of the identity type, we need to apply the rule three times.  %((write out))
 \end{remark}
 
 \begin{xca}\label{xca:p2}
@@ -481,6 +483,45 @@ $$\typetorsor_G^\abstr\defequi\sum_{S:\Set_G^\abstr}||\princ_G=S||.$$
 Conversely, given a group $G$, then $q_G:G=\concr(\abstr(G))$  is given by (write out).
 \end{lemma}
 In essence we have shown that our ``abstract group'' is indeed the group of symmetries of something.
+\section{Sums of groups}
+((Tentative section sketching that the sum (``free products'' or ``amalgamated sum'') of two groups is given by the wedge.  Write the introduction and introduce the terms used.  Has several applications that we'll explore later.  The proof below also gives a concrete description of the sum and should perchance be extracted.  Also, the definition of the wedge must be written out  -- the formulation I have chosen is not optimal.))
+\label{sec:coprod}
+\begin{lemma}
+  \label{lem:wedgeofgpoidisgpoid}
+  Let $\aut_{A_1}(\pt_{A_1})$ and $\aut_{A_2}(\pt_{A_2})$ be decidable groups, then the wedge sum $\aut_{A_1\vee A_2}(\pt_{A_1\vee A_2})$ is a decidable group.
+\end{lemma}
+\begin{proof}
+That the wedge is connected follows by transitivity of identity, passing through the base point in the wedge.
+
+We must prove that all identity types are sets, which we do by giving an explicit description of the universal covering.  The idea is that an identity in $\pt_{A_1\vee A_2}=x$ can be factored into a string of identities, each lying solely in $A_1$ or in $A_2$.  We define a family of sets consisting of exactly such strings of identities --  it is a set since $A_1$ and $A_2$ are groupoids -- and prove that it is equivalent to the family $P(x)\defequi(\pt_{A_1\vee A_2}=x)$ which consequently must be a family of sets.
+
+  Let $i_1:A_1\to A_1\vee A_2$ and $i_2:A_2\to A_1\vee A_2$ be the two inclusions, let $g:i_1\pt_{A_1}=i_2\pt_{A_2}$ be the imposed identity in the (non-symmetric formulation of the) wedge sum based in $\pt_{A_1\vee A_2}\defequi i_1\pt_{A_1}$.  For ease of notation, let $a_{2k+i}$ denote $\pt_{A_i}$ for $i=1,2$, $k:\NN$.
+Define families of sets
+$$C_i:A_i\to\Set,\qquad i=1,2$$
+by 
+$$C_i(x)\defequi\sum_{n:\NN}(a_i=_{A_i}x)\times\prod_{1\leq k\leq n}\sum_{p_k:a_{i+k}=% _{A_{i+k}}
+  a_{i+k}}(p_k\neq\refl {a_{i+k}})$$
+when $x:A_i$.  Note that $p_k\neq\refl{a_{i+k}}$ makes sense and is a proposition since our groups are decidable.  Define $C_{12}:C_1(a_1)\to C_2(a_2)$ by
+$$C_{12}(n,p_0,\dots,p_n,!)=
+\begin{cases}
+  (n-1,p_1,\dots,p_n,!)& \text{ if }p_0=\refl{a_1}\\
+  (n+1,\refl{a_2},p_0,\dots,p_n,!)& \text{ if }p_0\neq\refl{a_1}.
+\end{cases}
+$$
+$C_{12}$ is ((obviously or write out)) an equivalence, and so the triple $(C_1,C_2,C_{12})$ defines a family
+$$C:A_1\vee A_2\to\Set.$$
+We will show that $C$ is equivalent to $P\defequi P_{\pt_{A_1\vee A_2}}$, which is given by $P(x)=(\pt_{A_1\vee A_2}=x)$, and so that the identity types are sets.
+
+One way is the ``inclusion''; more precisely, 
+$$\alpha:\prod_{x:A_1\vee A_2}(P(x)\to C(x))$$ is given by letting identities be considered as strings of length zero: $\alpha_i(i_ia)(p)=(0,p):C_i(a)$.  This is well defined since $\alpha_2(i_2\pt_{A_2})(gpg^{-1})=C_{12}\alpha_1(i_1\pt_{A_1})(p)$ ((is this how you'd say this?)).
+The other way, 
+$$\beta:\prod_{x:A_1\vee A_2}(C(x)\to P(x))$$ is given by composing the identities, using the glue $g$ to make their ends meet: $\beta_1(n,p_0,\dots,p_n,!)\defequi i_1(p_0)g^{-1}i_2(p_1)gi_1(p_2) g^{-1}\dots $ (ending in $\dots gi_1(p_n)$ if $n$ is even and $\dots g^{-1}i_2(p_n)g$ if $n$ is odd) and likewise for $\beta_2$ and the glue ((write)).
+
+That $\beta\alpha(p)=p$ follows by path induction: it is enough to prove it for 
+$p\defequi\refl{}$ ((here the assymmetry of our definition makes saying this slightly awkward since the basepoint is in $i_1A_1$; fix)).  That $\alpha\beta(n,p_0,\dots,p_n)=(n,p_0,\dots,p_n)$ follows by induction on $n$ ((write)).
+\end{proof}
+
+
 
 \section{structure of identity types}
 \section{automorphism 1-group = fundamental group (hint at higher groups)}
@@ -506,38 +547,40 @@ In essence we have shown that our ``abstract group'' is indeed the group of symm
 %%% TeX-master: "book"
 %%% End:
 
+
+%the below is the illustration used for the n-fold covering in the deck trafo section.
 % Move in place
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    \node (A) at (2,2) {$\sqrt[n]X$};
-    \node (B) at (2,-2) {$\bn{n}$};
-    \draw[->] (A) -- node[auto] {$p$} (B);
-    \foreach \y in {-2,0,1,2}
-    { \begin{scope}[shift={(0,\y)}]
-        \foreach \x in {0,...,4}
-        { \node[fill,circle,inner sep=1pt] at (180+72*\x:1 and .3) {}; }
-        \foreach \x in {0,...,3}
-        { \draw[-stealth] (180+72*\x:1 and .3) arc(180+72*\x:252+72*\x:1 and .3); }
-      \end{scope} }
-    \begin{scope}[shift={(0,-2)}]
-      \draw[-stealth] (108:1 and .3) arc(108:180:1 and .3);
-    \end{scope}
-    \foreach \y in {1,2}
-    { \begin{scope}[shift={(0,\y)}]
-        \draw[-stealth] (108:1 and .3)
-        .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4)
-        .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
-      \end{scope} }
-    \draw[-stealth] (108:1 and .3)
-    .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4);
-    \node (dz) at (-.7,-.7) {\footnotesize $\vdots$};
-    \begin{scope}[shift={(0,3)}]
-      \draw[-stealth] (-.7,-.4)
-      .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
-    \node (da) at (-.7,0) {\footnotesize $\vdots$};
-    \end{scope}
-  \end{tikzpicture}
-  \caption{The $n$'th root of an endomorphism, with projection}
-  \label{fig:rootproj}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \begin{tikzpicture}
+%     \node (A) at (2,2) {$\sqrt[n]X$};
+%     \node (B) at (2,-2) {$\bn{n}$};
+%     \draw[->] (A) -- node[auto] {$p$} (B);
+%     \foreach \y in {-2,0,1,2}
+%     { \begin{scope}[shift={(0,\y)}]
+%         \foreach \x in {0,...,4}
+%         { \node[fill,circle,inner sep=1pt] at (180+72*\x:1 and .3) {}; }
+%         \foreach \x in {0,...,3}
+%         { \draw[-stealth] (180+72*\x:1 and .3) arc(180+72*\x:252+72*\x:1 and .3); }
+%       \end{scope} }
+%     \begin{scope}[shift={(0,-2)}]
+%       \draw[-stealth] (108:1 and .3) arc(108:180:1 and .3);
+%     \end{scope}
+%     \foreach \y in {1,2}
+%     { \begin{scope}[shift={(0,\y)}]
+%         \draw[-stealth] (108:1 and .3)
+%         .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4)
+%         .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
+%       \end{scope} }
+%     \draw[-stealth] (108:1 and .3)
+%     .. controls ++( 5:-.3) and ++(80:.2) .. (-.7,-.4);
+%     \node (dz) at (-.7,-.7) {\footnotesize $\vdots$};
+%     \begin{scope}[shift={(0,3)}]
+%       \draw[-stealth] (-.7,-.4)
+%       .. controls ++(80:-.2) and ++(90:.2) .. (-1,-1);
+%     \node (da) at (-.7,0) {\footnotesize $\vdots$};
+%     \end{scope}
+%   \end{tikzpicture}
+%   \caption{The $n$'th root of an endomorphism, with projection}
+%   \label{fig:rootproj}
+% \end{figure}
