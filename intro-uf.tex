@@ -501,7 +501,7 @@ This follows immediately by induction on $i$.
 Given a function $f : X \to Y$ and an element $y:Y$, 
 the \emph{fiber} (or \emph{inverse image}) $f^{-1}(y)$ consists 
 of elements $x$ such that $y = f(x)$.  
-This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (y = f(x))$.  
+This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} y = f(x)$.  
 In other words, an element of the fiber is a pair $(x,e)$ consisting
 of an element $x$ and an element $e$ of the identity type $y = f(x)$.
 \end{definition}
@@ -529,7 +529,7 @@ function by the principle of extensionality.
 
 Clearly, $f(f^{-1}(y)) = y$ by unfolding all definitions.
 Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x)$,
-with the latter as the \emph{fiber} that $t(f(x))$
+with the latter as the fiber that $t(f(x))$
 proves contractible. Hence the center of contraction
 $\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
 $f^{-1}(f(x))\jdeq(\fst(\fst(t^{-1}(f(x))) = x$.
@@ -656,7 +656,7 @@ $ua(f,p): \iscontr(\idtoeq^{-1}(f,p))$.
 Unfolding $\iscontr$ according to \cref{def:contractible}, 
 $\fst(ua(f,p))$ is the center of contraction 
 of the fiber $\idtoeq^{-1}(f,p)$,
-say a pair $(e,q)$ with $e:X=Y$ and $q: \idtoeq(e)=(f,p)$.
+say a pair $(e,q)$ with $e:X=Y$ and $q: (f,p) = \idtoeq(e)$.
 Then $\fst(\fst(ua(f,p)))\jdeq e$. 
 The function $\fst\circ\fst\circ {\,ua}$ will
 by an abuse of notation also be written as $ua$:
@@ -673,7 +673,7 @@ coming from an equivalence $f : X\to Y$ through UA is just applying $f$.
 \end{quote}
 In order to understand this practical form of UA,
 let $p$ be a proof that $f$ is an equivalence.
-As above, $\fst(ua(e,p)) = (e,q)$ with $q: \idtoeq(e)=(f,p)$.
+As above, $\fst(ua(e,p)) = (e,q)$ with $q: (f,p) = \idtoeq(e)$.
 Using \cref{def:idtoeq}, $\fst(\idtoeq(e))\jdeq\trp_{\id_\UU, e}$,
 so actually $\trp_{\id_\UU, e} =f$ using $q$.
 
@@ -686,7 +686,10 @@ It is, however, important to stress that the above pattern is
 not the only way UA can be applied.
 
 \begin{xca}\label{xca:C2}
-   Prove that $\mathbf 2=\mathbf 2$ has exactly two elements, $\refl{\mathbf 2}$ and $\twist$ (where $\twist$ is given by univalence from the equivalence $\mathbf 2\to\mathbf 2$ exchanging the two elements of $\mathbf 2$), and that $\trans{}_{\mathbf 2,\mathbf 2,\mathbf 2}(\twist)(\twist)=\refl{\mathrm 2}$.
+Prove that $\bool=\bool$ has exactly two elements, 
+$\refl{\bool}$ and $\twist$ (where $\twist$ is given by 
+univalence from the equivalence $\bool\to\bool$ interchanging 
+the two elements of $\bool$), and that $\twist\cdot\twist=\refl{\bool}$.
 \end{xca}
 
 % \begin{remark} % BID
@@ -772,7 +775,7 @@ combining (\ref{prop-utils-implication}) and (\ref{prop-utils-times}).
 \end{proof}
 
 Several remarks can be made here. First, the lemma supports the
-use of $\false,\true$ as truth values, and the use of
+use of $\false$ and $\true$ as truth values, and the use of
 $\to,\prod,\times$ for implication, universal quantification,
 and conjunction, respectively. Since $\false$ is a proposition,
 it follows by (\ref{prop-utils-implication}) above that
@@ -813,7 +816,7 @@ We recall the following definitions.
 \begin{lemma}\label{lem:isX-is-prop}
   For any type $A$, the types 
 $\iscontr(A)$, $\isprop(P)$, $\isset(S)$, $\isgrpd(G)$, etc.\ are propositions.
-(We shall only use the notation $\mathrm{isX}(A)$ for propositions about $A$.)
+(We shall only use the notation $\mathrm{isX}(Y)$ for propositions about $Y$.)
 \end{lemma}
 
 \begin{proof}
@@ -871,6 +874,30 @@ This equation is phrased as `transport by conjugation'.
 Draw a commutative diagram for the above equation. PERHAPS I SHOULD
 \end{xca}
 
+The following lemma is proved by induction on $e: x=x'$.
+
+\begin{lemma}\label{lem:transport-in-Id-type}
+Let $X,Y$ be types, $f,g: X\to Y$ functions, and let
+$Z(x)\defeq (f(x)=g(x))$ for every $x:X$. 
+Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
+\[
+\trp_{Z, e} (i) = \ap{f}(e^{-1}) \ct i \ct \ap{g}(e).
+\]
+\end{lemma}
+
+\begin{xca}\label{xca:transport-in-Id-type}
+Prove the following special cases of \cref{lem:transport-in-Id-type},
+where $Y\jdeq X$ and $a,b$ in $X$:
+\begin{enumerate}
+\item $\trp_{x\mapsto a=b,\,e} (i) = i$;
+\item $\trp_{x\mapsto a=x,\,e} (i) = i*e$;
+\item $\trp_{x\mapsto x=b,\,e} (i) = e^{-1}*i$;
+\item $\trp_{x\mapsto x=x,\,e} (i) = e^{-1}*i*e$ (also called \emph{conjugation}).
+\end{enumerate}
+\end{xca}
+
+
+
 \section{Logical operations on propositions; Propositional truncation}
 \label{sec:logical-operations}
 
@@ -889,7 +916,9 @@ We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
 with distinct elements even though the constituents are
 propositions. In order to enforce that all elements are equal
 we define an operation called propositional truncation.\footnote{%
-Misnomer because ... }
+The name `truncation' is slightly misleading since it suggests leaving
+something out, whereas the correct intuition is one of adding identifications
+such that everything becomes equal.}
 This is the first example of a \emph{higher inductive type}.
 Higher inductive types are inductive types that also have
 constructors for identifications between elements and/or
@@ -920,14 +949,13 @@ for all $x:T$. The function $\hat{\imath}$ warrants that $X$ is a
 proposition so that $f$ maps equal elements of $\Trunc{T}$ to equal
 elements of $X$.
 
-Wanted:
+WANTED:
 \[
 (\Trunc{A} \to B) \equiv (A \to B) \text{for $B$ a proposition}
 \]
-
-
-
 $\Trunc{A \amalg B}$
+
+
 \section{Truncation}
 \label{sec:truncation}
 
@@ -1407,7 +1435,7 @@ f fiberwise map/equivalence, tot(f) equivalent fibers
 
 object classifier stuff
 
-\section{Subtypes and Decidability}
+\section{Subtypes and Decidability --- TBD}
 \label{sec:subtype}
 
 In ordinary sets, an a subset $A$ of a set $B$ can be given concretely by 
@@ -1424,7 +1452,7 @@ proposition for all $t:T$. This leads to the definition of the
 \emph{subtype of $T$ given by $P$} as the sum type $T_P \defeq \sum_{t:T} P(t)$.
 
 Given $f:T\to\bool$ we can now form the 
-subtype $T_f \defeq \sum_{t:T} (f(t) = \yes)$.
+subtype $T_f \defeq \sum_{t:T} \yes = f(t)$.
 The subtype $T_f$ is special: we can prove by
 double induction on $x,y:\bool$ that $(x=y)\amalg\neg(x=y)$
 (even easier than for $\NN$). Hence we have
