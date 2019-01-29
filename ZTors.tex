@@ -72,6 +72,116 @@ Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 \end{xca}
 
 
+\section{Some induction principles for the integers}
+\label{sec:integers-induction}
+
+From the definition of $\zet$ we get the following slightly better induction principle:
+Given $P : \zet \to \UU$, to construct an element of $P(z)$ for every $z : \zet$,
+it suffices to give $P(0)$ and two functions
+$f : \prod_{n:\NN}(P(n) \to P(n+1))$ and
+$g : \prod_{n:\NN}(P(-n) \to P(-n-1))$,
+see \cref{fig:integers-induction-asymmetric}.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \foreach \x in {-2,-1,0,1,2} {
+      \begin{scope}[shift={(\x,0)}]
+        \draw (0,0) ellipse (0.2 and 0.8);
+        \node[fill,circle,inner sep=1pt,label=below:{$\x$}] (P\x) at (0,-1.2) {};
+      \end{scope}
+    }
+    \foreach \x in {0,1,2} {
+      \begin{scope}[shift={(\x,0)}]
+        \draw[->] (0.3,0) -- node[below] {\scriptsize$f\strut$} (0.7,00);
+      \end{scope}
+    }
+    \foreach \x in {-3,-2,-1} {
+      \begin{scope}[shift={(\x,0)}]
+        \draw[->] (0.7,0) -- node[below] {\scriptsize$g\strut$} (0.3,00);
+      \end{scope}
+    }
+    \node[fill,circle,inner sep=.8pt] at (0,0) {};
+    \node at (-4,0) {$P$};
+    \node at (-4,-1.4) {$\ZZ$};
+    \foreach \x in {-3,3.1} {
+      \foreach \y in {0,-1.2} {
+        \node at (\x,\y) {$\cdots$};
+      }
+    }
+  \end{tikzpicture}
+  \caption{Asymmetric integer induction principle}
+  \label{fig:integers-induction-asymmetric}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \foreach \x in {-2,-1,0,1,2} {
+      \begin{scope}[shift={(\x,0)}]
+        \draw (0,0) ellipse (0.2 and 0.8);
+        \node[fill,circle,inner sep=1pt,label=below:{$\x$}] (P\x) at (0,-1.2) {};
+      \end{scope}
+    }
+    \foreach \x in {-3,-2,-1,0,1,2} {
+      \begin{scope}[shift={(\x,0)}]
+        \draw[->] (0.3,0) -- node[above] {\scriptsize$\sim$} node[below] {\scriptsize$f$} (0.7,00);
+      \end{scope}
+    }
+    \node[fill,circle,inner sep=.8pt] at (0,0) {};
+    \node at (-4,0) {$P$};
+    \node at (-4,-1.4) {$\ZZ$};
+    \foreach \x in {-3,3.1} {
+      \foreach \y in {0,-1.2} {
+        \node at (\x,\y) {$\cdots$};
+      }
+    }
+  \end{tikzpicture}
+  \caption{Symmetric integer induction principle}
+  \label{fig:integers-induction-symmetric}
+\end{figure}
+
+It's possible to give a more symmetric, but less general induction principle,
+we if assume that the functions are equivalences,
+but in this case we can reorient that $g$s to point in the same direction as the $f$s,
+so that we just give $f : \prod_{z:\zet}P(z) \equiv P(z+1)$, see \cref{fig:integers-induction-symmetric}.
+
+We shall need that in this case, giving a element $h:\prod_{z:\zet}P(z)$
+such that $h(z+1) = f_z(h(z))$ for all $z:\zet$
+is in fact equivalent to giving the single element $h(0)$.
+
+\begin{theorem}\label{thm:integers-univ-symm}
+  The function
+  \[
+    \varphi : \biggl(\sum_{h:\prod_{z:\zet}P(z)}\prod_{z:\zet}h(z+1) = f_z(h(z))\biggr) \to P(0)
+  \]
+  that sends $(h,q)$ to $h(0)$ is an equivalence.
+\end{theorem}
+\begin{proof}
+  We prove that the fiber over any $p : P(0)$ is contractible.
+  This fiber consists of a pair $(h,q)$ and an identification $r : h(0) = p$.
+  Note that giving $h$ by itself is equivalent to giving $h_0 : P(0)$, $h_+ : \prod_{n:\NN}P(n+1)$,
+  and $h_- : \prod_{n:\NN} P(-n-1)$. Then $r : h_0 = p$,
+  and the pair $(h_0,r)$ contracts away,
+  so we're left with the type
+  \begin{align*}
+    \varphi^{-1}(p)
+    &\equiv
+      \sum_{\substack{h_+ : \prod_{n:\NN}P(n+1) \\ h_- : \prod_{n:\NN}P(-n-1)}}
+    \bigl(h_+(0) = f_0(p)\bigr)
+    \times \bigl(h_0(0) = f_{-1}^{-1}(p)\bigr) \\
+    &\qquad\qquad\qquad
+      \times \biggl(\prod_{n:\NN}h_+(n+1) = f_n(h_+(n))\biggr) \\
+    &\qquad\qquad\qquad
+      \times \biggl(\prod_{n:\NN}h_-(n+1) = f_{-n-2}^{-1}(h_-(n))\biggr).
+  \end{align*}
+  This type is contractible, because it is the product of two contractible types,
+  each specifying a certain function $h_{\pm}:\prod_{n:\NN}Q_{\pm}(n)$,
+  and saying that this function has a certain value at $0$
+  and prescribing the values at successors.
+  But such a specification is unique by the universal property (induction!) of $\NN$.
+\end{proof}
+
 \section{The integers as a group}
 \label{sec:integers-group}
 
@@ -176,15 +286,21 @@ or even left out alltogether. Nested pairs may be written as tuples.
 \begin{definition}\label{sec:ZTors}
 The pointed type of $\zet$-torsors is defined by
 \[
-\TorZ\defeq \sum_{(X,f)}\Trunc{(X,f)=(\zet,s)}) \text{~with~}
+\TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~}
 \pt\defeq ((\zet,s),\trunc{\refl{(\zet,s)}}).
 \]
 \end{definition}
-Note that $\Trunc{(X,f)=(\zet,s)}$ has propositional consequences
-such as $\isset(X)$, $s\circ f = f \circ s$  and $\isEq(f)$.
+Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
+such as $\isset(X)$ and $\isEq(f)$.
+
+Our type $\TorZ$ is equivalent to the more traditionally defined type of $\ZZ$-torsors, $\Xtorsor{\ZZ}$, but is more parsimonious.
+Another way to think of it is as the type of Cayley diagrams for $\ZZ$.
 
 The aim of this section is to show that $\TorZ$ has the
-universal property of the circle. Fix $A:\UU$, $a:A$ and $p: a=_A a$. 
+universal property of the circle.
+Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$ and $p_\Zloop : p_\pt =^P_\Zloop p_\pt$.
+
+Fix $A:\UU$, $a:A$ and $p: a=_A a$. 
 We are going to define types and
 functions depending on this input, and will use $p$ in various
 denotations to express this dependence. 
@@ -202,7 +318,7 @@ with center $c_p(X,f,t)$ defined in the proof.
 \end{lemma}
 \begin{proof}
   Let $(X,f,t):\TorZ$. Since we are going to prove a proposition,
-  we may take $t\jdeq\trunc e$ for some $e : (X,f)=(\zet,s)$.
+  we may take $t\jdeq\trunc e$ for some $e : (\zet,s)=(X,f)$.
   By induction in $e$, it suffices to prove that $P_p(\zet,s)$ is contractible.
   As center of contraction we take
   \[
@@ -231,7 +347,13 @@ with center $c_p(X,f,t)$ defined in the proof.
 
   We also need to check that relative to this identification of $h$ and $h'$ over $i$
   we can identify $q$ and $q'$.
-  We leave this for the reader, who may consult our formalization as needed.
+  We leave this for the reader, who may consult our 
+  formalization as needed.\footnote{%
+     A useful transport lemma in this context is:
+     if $q:a_1=a_2$, $h_i: \zet\to a=a_i$, $r(n): q_*(h_1(n))=h_2(n)$,
+     $hh_i(n): h_i(n+1)=p\ct h_i(n)$, then $(q,r)_*(hh_1(n)): h_2(n+1)=p\ct h_2(n)$
+     is equal to the composite of $r(n+1)^{-1}$, $\ap{q_*}(hh_1(n))$, 
+     use of $q_*(p)=p$, and $\ap{p\ct\_}(r(n))$.} 
 \end{proof}
 
 \begin{figure}
@@ -361,7 +483,7 @@ First some auxiliary notations.
 
 \begin{definition}\label{def:loop-s-iterated}
 For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
-define $s^Z_x: \pt =_\TorZ Z$ by $n\mapsto f^n(x)$ using UA. 
+define $s^Z_x: \pt =_\TorZ Z$ by the equivalence $n\mapsto f^n(x)$ using UA. 
 Using $t$, one can check $\isEq(n\mapsto f^n(x))$
 and the other propositions involved. 
 For simplicity, we denote $f^n(x)$ by $x+n$.
@@ -380,12 +502,12 @@ which should be defined somewhere else.
 
 \begin{lemma}\label{lem:p_loop-iterated}
 For every $P:\TorZ \to \UU$, $p_\pt : P(\pt)$, 
-$p_\Zloop : \pt =^P_\Zloop \pt$ and $n:\zet$, 
-we have $p_\Zloop^n :  \pt =^P_{\Zloop^n} \pt$.
+$p_\Zloop : p_\pt =^P_\Zloop p_\pt$ and $n:\zet$, 
+we have $p_\Zloop^n :  p_\pt =^P_{\Zloop^n} p_\pt$.
 \end{lemma}
 
 Instead of the conclusion of the last lemma, we want to have
-an inhabitant of $\pt =^P_{s^\pt_n} \pt$. This means we have
+an inhabitant of $p_\pt =^P_{s^\pt_n} p_\pt$. This means we have
 to correct for the error term $\varepsilon(n)$ in \cref{lem:loop-s-iterated}.
 This can be done with \cref{lem:pathover-change-path}.
 
@@ -397,7 +519,6 @@ This can be done with \cref{lem:pathover-change-path}.
   induces an equivalence $(b_1 =^B_p b_2) \equiv (b_1 =^B_q b_2)$.
 \end{lemma}
 The proof is by induction on $\alpha$, after which we need to show that the identity is an equivalence, which is clear.
-
 
 
 \bibliographystyle{amsplain}

@@ -29,7 +29,9 @@ when we write $f : X \to Y$, we mean that $f$ is an element of the type $X \to Y
 Functions behave as one would expect, and one can make new ones in the usual way.
 
 To provide an example of making new functions in the usual way, consider functions $f : X \to Y$ and $g : Y \to Z$.  We define their composite
-$g \circ f : X \to Z$ by setting $g \circ f \defeq (a \mapsto g(f(a)))$.  Such definitions are to be regarded as syntactically transparent in
+$g \circ f : X \to Z$ by setting $g \circ f \defeq (a \mapsto g(f(a)))$. 
+A composite $g \circ f$ may also be denoted by $gf$.
+Such definitions are to be regarded as syntactically transparent in
 our formal system, in the sense that two formal expressions will be regarded as being \emph{the same by definition} if they yield the same formal
 expression after the definitions of all the symbols within them are completely expanded.  Given two expressions that are the same by definition,
 we may replace one with the other in any other expression, at will.  Here is an example: consider functions $f : X \to Y$, $g : Y \to Z$, and $h
@@ -475,24 +477,33 @@ is contractible, rather than on the type $X$.
 Any element of a contractible type $X$ can be proved to be a center.) 
 \end{definition}
 
-An important example of a contractible type is the
-\emph{singleton type} $\sum_{x:X} (a=x)$, thought of as
-the subtype of the type $X$ consisting of the element $a$.
-In order to see that singleton types are contractible,
-take as center the element $(a,\refl{a})$. We have
+The following lemma gives an important example of a contractible type.
+\begin{lemma}\label{lem:thepathspaceiscontractible}
+Give a type $X$ and an element $a$ of $X$, 
+the \emph{singleton type} $\sum_{x:X} (a=x)$
+consists of pairs $(x,i)$ with $i: a=x$. If $X$ is a set, it 
+can be viewed as the subset of $X$ consisting of the element $a$.
+For any type $X$ and $a:X$, the type $\sum_{x:X} (a=x)$ is contractible.
+\end{lemma}
+\begin{proof}
+Take as center the pair $(a,\refl{a})$. We have
 to prove for any element $x$ of $X$ and identification
-$e: a=x$ that $(a,\refl{a}) = (x,e)$. This we do componentwise,
+$i: a=x$ that $(a,\refl{a}) = (x,i)$. This we do componentwise,
 as explained in \cref{sec:sum-types}. For the identification of
-the first components we take (of course) $e$. For the second
-components, we have to prove $\trp_{a=\_,e}\refl{a}= e$.
-This follows immediately by induction on $e$.
+the first components we take (of course) $i$. For the second
+components, we have to prove $\trp_{a=\_,i}(\refl{a})= i$.
+This follows immediately by induction on $i$.
 %EASY: for $e\jdeq \refl{a}$ take $\refl{\refl{a}} : trp_{a=\_,e} = e$.
+\end{proof}
 
 \begin{definition}
 \label{def:fiber}
-Given a function $f : X \to Y$ and an element $y:Y$, the \emph{fiber} (or \emph{inverse image}) $f^{-1}(y)$ consists of elements $x$ such that $f(x)
-= y$.  This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (f(x) = y)$.  In other words, an element of the fiber is a pair $(x,e)$ consisting
-of an element $x$ and an element $e$ of the identity type $f(x) = y$.
+Given a function $f : X \to Y$ and an element $y:Y$, 
+the \emph{fiber} (or \emph{inverse image}) $f^{-1}(y)$ consists 
+of elements $x$ such that $y = f(x)$.  
+This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} (y = f(x))$.  
+In other words, an element of the fiber is a pair $(x,e)$ consisting
+of an element $x$ and an element $e$ of the identity type $y = f(x)$.
 \end{definition}
 
 In set theory, a function $f : X \to Y$ is a bijection if and only if
@@ -509,7 +520,7 @@ denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
 Let $t(y): \iscontr(f^{-1}(y))$ for all $y:Y$.
 Using $t$ we can define a canonical inverse function
 %that we (abusively) also denote by $f^{-1}$,
-by setting $f^{-1}(y)\defeq\fst(\fst(t(y)))$.
+by setting $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$.
 Note that we use $f^{-1}$ both for the fibers and
 for the inverse function in case the fibers are contractible.
 The dependency of $f^{-1}$ on $t$ is harmless by the very nature of
@@ -517,11 +528,11 @@ being contractible: different $t$'s would give the same
 function by the principle of extensionality.
 
 Clearly, $f(f^{-1}(y)) = y$ by unfolding all definitions.
-Moreover, we have $(x,refl{f(x)}) : f^{-1}(f(x)$,
+Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x)$,
 with the latter as the \emph{fiber} that $t(f(x))$
 proves contractible. Hence the center of contraction
-$\fst(t(f(x))$ is equal to $(x,refl{f(x)})$, and so
-$f^{-1}(f(x))\jdeq(\fst(\fst(t(f(x))) = x$.
+$\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
+$f^{-1}(f(x))\jdeq(\fst(\fst(t^{-1}(f(x))) = x$.
 
 In the above case we say that the types
 $X$ and $Y$ are \emph{equivalent}, denoted by $X\equiv Y$. 
@@ -534,7 +545,7 @@ between two types, we define the type of equivalences from $X$ to $Y$ by
 
 \begin{xca}\label{xca:fstfstcontractiblefiber}
 Make sure you understand the two applications of $\fst$
-in the definition $f^{-1}(y)\defeq\fst(\fst(t(y)))$ above.
+in the definition $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$ above.
 \end{xca}
 
 \begin{xca}\label{xca:equivalence-invers}
