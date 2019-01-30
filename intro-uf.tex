@@ -586,6 +586,36 @@ For the converse, see
 OK? VVs PROOF IS PERFECT BUT WILL THE LINK BE STABLE?
 \end{proof}
 
+We put \cref{lem:equivalence-via-inverse} immediately to good use.
+
+\begin{lemma}\label{lem:contract-away}
+Let $X$ be a type with element $a$, and let
+$B(x,i)$ be a type for all $x:X$ and $i: a=x$.
+Define $f(x,i): B(x,i) \to B(a,\refl{a})$ by induction on $i$,
+setting $f(a,\refl{a},q) \defeq q$ for all $q:B(a,\refl{a})$.
+Then $f$ defines an equivalence 
+\[
+f: \sum_{x:X} \sum_{i: a=x} B(x,i) \quad \to \quad B(a,\refl{a}).
+\]
+\end{lemma}
+\begin{proof}
+We can also define 
+$g: B(a,\refl{a})\to \sum_{x:X} \sum_{i: a=x} B(x,i)$
+mapping $q: B(a,\refl{a})$ to $(a,\refl{a},q)$.
+Clearly $f(g(q))=q$ for all $q:B(a,\refl{a})$.
+Moreover, $g(f(x,i,q))=(x,i,q)$ can be proved by induction
+on $i$, for all $q:B(x,i)$.
+By \cref{lem:equivalence-via-inverse} if follows that $f$
+is an equivalence.
+\end{proof}
+
+The above lemma is clearly depending on the 
+contractibility of singleton types. For this reason
+we call application of this lemma `to contract away'
+the prefix $\sum_{x:X} \sum_{i: a=x}$, in order
+to obtain a simpler, equivalent type. 
+
+
 \section{Universes and univalence}\label{sec:univax}
 
 Univalence expresses, in a way made precise below, that
@@ -745,6 +775,7 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
 \item\label{prop-utils-eq} $P \liff Q$ is a proposition.
+\item\label{prop-utils-lem} $P \amalg (P\to\false)$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
@@ -772,6 +803,15 @@ is proved componentwise.
 Using \cref{lem:equivalence-via-inverse}, $P \liff Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
 combining (\ref{prop-utils-implication}) and (\ref{prop-utils-times}).
+
+(\ref{prop-utils-lem}) 
+If $p,q : P\amalg (P\to\false)$, then we can distinguish four cases
+based on $\inl{}/\inr{}$, see \cref{sec:sum-types}. In two cases
+we have both $P$ and $P\to\false$ and we are done. In the other two,
+either $p\jdeq \inl{p'}$ and $q\jdeq \inl{q'}$ with $p',q':P$,
+or $p\jdeq \inr{p'}$ and $q\jdeq \inr{q'}$ with $p',q':P\to\false$.
+In both these cases we are done since $P$ and $P\to\false$ 
+are propositions.
 \end{proof}
 
 Several remarks can be made here. First, the lemma supports the
@@ -881,7 +921,7 @@ Let $X,Y$ be types, $f,g: X\to Y$ functions, and let
 $Z(x)\defeq (f(x)=g(x))$ for every $x:X$. 
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \[
-\trp_{Z, e} (i) = \ap{f}(e^{-1}) \ct i \ct \ap{g}(e).
+\trp_{Z, e} (i) = \ap{f}(e)^{-1} \ct i \ct \ap{g}(e).
 \]
 \end{lemma}
 
@@ -896,7 +936,18 @@ where $Y\jdeq X$ and $a,b$ in $X$:
 \end{enumerate}
 \end{xca}
 
+There is also a dependent version of \cref{lem:transport-in-Id-type},
+which can be proved by an additional induction on $i$.
 
+\begin{lemma}\label{lem:transport-in-Id-type}
+Let $X,Y(x)$ be types and $f(x),g(x): Y(x)$ dependent functions, 
+for all $x:X$. Let $Z(x)\defeq (f(x)=g(x))$,
+with the identification in $Y(x)$, for every $x:X$. 
+Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
+\[
+\trp_{Z, e} (i) = \apd{f}(e)^{-1} \ct \ap{\trp_{Y,e}}(i) \ct \apd{g}(e).
+\]
+\end{lemma}
 
 \section{Logical operations on propositions; Propositional truncation}
 \label{sec:logical-operations}
