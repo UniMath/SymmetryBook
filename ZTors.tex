@@ -143,15 +143,16 @@ see \cref{fig:integers-induction-asymmetric}.
 
 It's possible to give a more symmetric, but less general induction principle,
 we if assume that the functions are equivalences,
-but in this case we can reorient that $g$s to point in the same direction as the $f$s,
+but in this case we can reorient the $g$'s to point in the same direction as the $f$'s,
 so that we just give $f : \prod_{z:\zet}P(z) \equiv P(z+1)$, see \cref{fig:integers-induction-symmetric}.
 
 We shall need that in this case, giving a element $h:\prod_{z:\zet}P(z)$
 such that $h(z+1) = f_z(h(z))$ for all $z:\zet$
 is in fact equivalent to giving the single element $h(0)$.
+We formulate this precisely as follows.
 
 \begin{theorem}\label{thm:integers-univ-symm}
-  The function
+  Let $P : \zet \to \UU$ and $f : \prod_{z:\zet}P(z) \equiv P(z+1)$. The function
   \[
     \varphi : \biggl(\sum_{h:\prod_{z:\zet}P(z)}\prod_{z:\zet}h(z+1) = f_z(h(z))\biggr) \to P(0)
   \]
@@ -167,20 +168,29 @@ is in fact equivalent to giving the single element $h(0)$.
   \begin{align*}
     \varphi^{-1}(p)
     &\equiv
-      \sum_{\substack{h_+ : \prod_{n:\NN}P(n+1) \\ h_- : \prod_{n:\NN}P(-n-1)}}
-    \bigl(h_+(0) = f_0(p)\bigr)
-    \times \bigl(h_0(0) = f_{-1}^{-1}(p)\bigr) \\
+      \Biggl(\sum_{h_+ : \prod_{n:\NN}P(n+1)}
+      \bigl(h_+(0) = f_0(p)\bigr) \\
     &\qquad\qquad\qquad
-      \times \biggl(\prod_{n:\NN}h_+(n+1) = f_n(h_+(n))\biggr) \\
+      \times \biggl(\prod_{n:\NN}h_+(n+1) = f_n(h_+(n))\biggr)\Biggr) \\
+    &\quad\times
+      \Biggl(\sum_{h_- : \prod_{n:\NN}P(-n-1)}
+      \bigl(h_-(0) = f_{-1}^{-1}(p)\bigr) \\
     &\qquad\qquad\qquad
-      \times \biggl(\prod_{n:\NN}h_-(n+1) = f_{-n-2}^{-1}(h_-(n))\biggr).
+      \times \biggl(\prod_{n:\NN}h_-(n+1) = f_{-n-2}^{-1}(h_-(n))\biggr)\Biggr).
   \end{align*}
-  This type is contractible, because it is the product of two contractible types,
+  The latter type is contractible, because it is the product of two contractible types,
   each specifying a certain function $h_{\pm}:\prod_{n:\NN}Q_{\pm}(n)$,
   and saying that this function has a certain value at $0$
   and prescribing the values at successors.
   But such a specification is unique by the universal property (induction!) of $\NN$.
 \end{proof}
+Let us analyze the inverse function produced in the proof.
+It maps $p : P(0)$ to the function that takes $z:\zet$ to $f^z(p):P(z)$, where
+\begin{alignat*}2
+  f^0(p) &\defeq p, && \\
+  f^{n+1}(p) &\defeq f_n(f^n(p)),&\quad&\text{for $n:\NN$,} \\
+  f^{-n-1}(p) &\defeq f_{-n-1}^{-1}(f^{-n}(p)),&\quad&\text{for $n:\NN$.}
+\end{alignat*}
 
 \section{The integers as a group}
 \label{sec:integers-group}
@@ -298,62 +308,55 @@ Another way to think of it is as the type of Cayley diagrams for $\ZZ$.
 
 The aim of this section is to show that $\TorZ$ has the
 universal property of the circle.
-Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$ and $p_\Zloop : p_\pt =^P_\Zloop p_\pt$.
+
+Although the same method works to derive both the recursion and the induction principles,
+we opt to do the recursion principle first,
+as it is slightly simpler,
+and prepares the way for the more complicated induction principle.
 
 Fix $A:\UU$, $a:A$ and $p: a=_A a$. 
 We are going to define types and
 functions depending on this input, and will use $p$ in various
 denotations to express this dependence. 
 
+We would like to construct an element of $A$ for every $(X,f,t):\TorZ$ (depending on $a$ and $p$).
+In order to make use of $t:\Trunc{(\zet,s)=(X,f)}$, we need to find a proposition.
+The idea is to expand $A$ to a $\Sigma$-type over $A$ that we can then show to be contractible.
+
 \begin{definition}\label{def:TBN}
 For every $(X,f)$, define
 \begin{align*}\label{eq:TBD}
-P_p(X,f)&\defeq \sum_{a':A}~\sum_{h:X\to a=a'}~\prod_{x:X} h(f(x))=p\ct h(x).
+Q_p(X,f)&\defeq \sum_{a':A}~\sum_{h:X\to a=a'}~\prod_{x:X} h(f(x))=p\ct h(x).
 \end{align*}
 \end{definition}
 
 \begin{lemma}\label{lem:guided-null-hmtps}
-For every $(X,f,t):\TorZ$, the type $P_p(X,f)$ is contractible
+For every $(X,f,t):\TorZ$, the type $Q_p(X,f)$ is contractible
 with center $c_p(X,f,t)$ defined in the proof.
 \end{lemma}
 \begin{proof}
   Let $(X,f,t):\TorZ$. Since we are going to prove a proposition,
   we may take $t\jdeq\trunc e$ for some $e : (\zet,s)=(X,f)$.
-  By induction in $e$, it suffices to prove that $P_p(\zet,s)$ is contractible.
-  As center of contraction we take
-  \[
-    c_p(\zet,s,\trunc{\refl{(\zet,s)}})\defeq (a, h, q),
-  \]
-  where, for $x : \zet$ we set
-  \[
-    h(x) \defeq p^x : a = a,
-  \]
-  and $q$ is defined in a natural way by induction on $x : \zet$.
+  By induction on $e$, it suffices to prove that $Q_p(\zet,s)$ is contractible.
 
-  It remains to prove that $(a,h,q)=(a',h',q')$ for all $(a',h',q')$,
-  where $q'\,x : h'(f(x))=p\ct h'(x)$.
-  Let $i\defeq h'(0): a=a'$.
-  By transport lemmas we have $i_*\, h = (x\mapsto h(x)\ct i)$.
-  We show $h(x) \ct i = h'(x)$ for all $x:X$, see \cref{fig:guided-null-hmtps},
-  hence $i_*\, h = h'$.
-  If $x \jdeq 0$, then this follows by $h(x)=p^x=p^0=\refl{a}$
-  and the definition of $i$.
-  For $x > 0$ we do induction on $x$,
-  the base case having already been treated.
-  Assume $h(x)\ct i = h'(x)$, and let $y = x+1$.
-  Then $h(y) = h(x+1) = p \ct h(x)$,
-  so $h(y)\ct i = p \ct h(x) \ct i = p\ct h'(x) = h'(f(x)) = h'(y)$.
-  The case $x < 0$ is done by a similar induction.
-
-  We also need to check that relative to this identification of $h$ and $h'$ over $i$
-  we can identify $q$ and $q'$.
-  We leave this for the reader, who may consult our 
-  formalization as needed.\footnote{%
-     A useful transport lemma in this context is:
-     if $q:a_1=a_2$, $h_i: \zet\to a=a_i$, $r(n): q_*(h_1(n))=h_2(n)$,
-     $hh_i(n): h_i(n+1)=p\ct h_i(n)$, then $(q,r)_*(hh_1(n)): h_2(n+1)=p\ct h_2(n)$
-     is equal to the composite of $r(n+1)^{-1}$, $\ap{q_*}(hh_1(n))$, 
-     use of $q_*(p)=p$, and $\ap{p\ct\_}(r(n))$.} 
+  Note that $Q_p(\zet,s)$ is the total space of the family $R_p : A \to \UU$ defined by
+  \[
+    R_p(a') \defeq \sum_{h:\zet \to a=a'}~\prod_{z:\zet} h(f(z))=p\ct h(z).
+  \]
+  Thus, to show that $Q_p(\zet,s)$ is contractible,
+  it suffices to define an equivalence
+  \[
+    \varphi_{a'} : \biggl(\sum_{h:\zet \to a=a'}\prod_{z:\zet} h(f(z))=p\ct h(z)\biggr) \xrightarrow{\sim}{} (a=a')
+  \]
+  for each $a':A$.
+  The intention is now to invoke \cref{thm:integers-univ-symm}.
+  Indeed, let us define $S_{a'}\defeq(a=a')$
+  and $g_{a'} : (a=a') \to (a=a')$ by $g_{a'}(q) \defeq p \ct q$.
+  Then $g_{a'}$ is an equivalence (with inverse $q \mapsto p^{-1}\ct q$).
+  Thus, \cref{thm:integers-univ-symm} applied to the constant family at $S_{a'}$ over $\zet$
+  with the equivalences given by $g_{a'}$,
+  shows that $\varphi_{a'}$ is an equivalence,
+  where $\varphi_{a'}(h,q) \defeq h(0)$.
 \end{proof}
 
 \begin{figure}
@@ -382,8 +385,8 @@ with center $c_p(X,f,t)$ defined in the proof.
 \begin{definition}\label{def:TBN}
 For every $Z:\TorZ$, define
 \begin{align*}\label{eq:TBD}
-\hat{p}(Z)&\defeq (a,h), 
-\text{~where $c_p(Z)\jdeq (a,h,!)$;}\\
+\hat{p}(Z)&\defeq (a',h), 
+\text{~where $c_p(Z)\jdeq (a',h,!)$;}\\
 \bar{p}(Z)&\defeq \pi_1 (\hat{p}(Z)).
 \end{align*}
 \end{definition}
@@ -392,7 +395,7 @@ Recall $\pt\defeq (\zet,s,\trunc{\refl{(\zet,s)}})$.
 A straightforward calculation gives 
 $\bar{p}(\pt)\jdeq \pi_1 (c_p(\pt)) \jdeq a$, which is one important
 aspect of the universal property that we are after.
-We also have $\hat{p}(\pt)\jdeq (a,n\mapsto p^n)$. CHECK
+The second component of $\hat p(\pt)$ maps $z$ to $p^z$.
 Before we can deal with the other aspect we have to prepare first.
 
 There is a natural path $\pt =_\TorZ \pt$ obtained from $s$
@@ -492,33 +495,52 @@ For simplicity, we denote $f^n(x)$ by $x+n$.
 The following lemma is proved by routine inductions.
 
 \begin{lemma}\label{lem:loop-s-iterated}
-For every $Z\defeq(X,f,t):\TorZ$, $x:X$ and $n:\zet$, 
-we have $s^Z_{x+n} = \Zloop^n \ct s^Z_x$. 
-In particular, we have a function $\varepsilon(n): s^\pt_n = \Zloop^n$.
+  For every $Z\defeq(X,f,t):\TorZ$, $x:X$ and $n:\zet$, 
+  we have $s^Z_{x+1} = \Zloop \ct s^Z_x$. 
 \end{lemma}
 
 The following lemma uses pathovers and their composition, 
 which should be defined somewhere else. 
 
-\begin{lemma}\label{lem:p_loop-iterated}
-For every $P:\TorZ \to \UU$, $p_\pt : P(\pt)$, 
-$p_\Zloop : p_\pt =^P_\Zloop p_\pt$ and $n:\zet$, 
-we have $p_\Zloop^n :  p_\pt =^P_{\Zloop^n} p_\pt$.
+\begin{lemma}\label{lem:concat-over}
+  For every $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, $p_i : a_i = a_{i+1}$ for $i=1,2$, and $q : b_1 =^B_{p_1} b_2$, the
+  function
+  \[
+    q \cto ({-}) : (b_2 =^B_{p_2} b_3) \to (b_1 =^B_{p_1\ct p_2} b_3)
+  \]
+  is an equivalence.
 \end{lemma}
 
-Instead of the conclusion of the last lemma, we want to have
-an inhabitant of $p_\pt =^P_{s^\pt_n} p_\pt$. This means we have
-to correct for the error term $\varepsilon(n)$ in \cref{lem:loop-s-iterated}.
-This can be done with \cref{lem:pathover-change-path}.
-
-% Move elsewhere
-\begin{lemma}\label{lem:pathover-change-path}
-  For any $A : \UU$, $B : A \to \UU$, $a_1,a_2 : A$, $b_1 : B\,a_1$, $b_2: B\,a_2$,
-  and paths $p,q:a_1=a_2$, and a $2$-dimensional path $\alpha : p = q$,
-  transport along $\alpha$
-  induces an equivalence $(b_1 =^B_p b_2) \equiv (b_1 =^B_q b_2)$.
+Now we are ready to derive the induction principle using the same technique as for the recursion principle.
+Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$, $p_\Zloop : p_\pt =^P_\Zloop p_\pt$.
+\begin{lemma}\label{lem:guided-null-hmtps-dep}
+  For every $Z\defeq(X,f,t):\TorZ$, the type
+  \[
+    \sum_{p : P(Z)} \sum_{h : \prod_{x:X} p_\pt =^P_{s^Z_x} p} \prod_{x:X} h(x+1) =_! p_\Zloop \cto h(x)
+  \]
+  is contractible,
+  where the $!$ denotes the proof of \cref{lem:loop-s-iterated}, a proposition.
 \end{lemma}
-The proof is by induction on $\alpha$, after which we need to show that the identity is an equivalence, which is clear.
+\begin{proof}
+  Let $Z:\TorZ$. Since we are going to prove a proposition
+  depending on the connected type $\TorZ$,
+  we may take $Z\jdeq\pt\jdeq(\zet,s,!)$.
+
+  The type under consideration is then the total space of the family $R : P(\pt) \to \UU$ defined by
+  \[
+    R(p) \defeq \sum_{h : \prod_{x:X} p_\pt =^P_{s^Z_x} p} \prod_{x:X} h(x+1) =_! p_\Zloop \cto h(x).
+  \]
+  Thus, to show that $Q_p(\zet,s)$ is contractible,
+  it suffices to define an equivalence
+  \[
+    \varphi_p : R(p) \xrightarrow{\sim}{} (p_\pt = p)
+  \]
+  for each $p : P(\pt)$.
+  We again invoke \cref{thm:integers-univ-symm},
+  this time with the family $S_p : \zet \to \UU$ given by $S_p(z) \defeq (p_\pt =^P_{s^\pt_z} p)$
+  and the equivalences $g_p : \prod_{z:\zet} S_p(z)\equiv S_p(z+1)$ given by
+  $g_p(z) \defeq (p_\Zloop \cto ({-}))$.
+\end{proof}
 
 
 \bibliographystyle{amsplain}
