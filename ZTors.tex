@@ -141,10 +141,42 @@ see \cref{fig:integers-induction-asymmetric}.
   \label{fig:integers-induction-symmetric}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \foreach \x in {-2,-1,0,1,2} {
+      \begin{scope}[shift={(2*\x,0)}]
+      
+        \node[fill,circle,inner sep=1pt,label=below:{$\x$}] (P\x) at (0,-1.2) {};
+      \end{scope}
+    }
+    \foreach \x in {-3,-2,-1,0,1,2} {
+      \begin{scope}[shift={(2*\x,0)}]
+        \draw[->] (0.6,0) -- node[above] {\scriptsize$f_{\x}$} (1.3,00);
+      \end{scope}
+    }
+    \node at (-4,0) {\scriptsize$h_- (1)$};
+    \node at (-2,0) {\scriptsize$h_- (0)$};
+    \node at (0,0) {\scriptsize$h_0$};
+    \node at (2,0) {\scriptsize$h_+ (0)$};
+    \node at (4,0) {\scriptsize$h_+ (1)$};
+  %  \node at (-8,0) {$h$};
+  %  \node at (-8,-1.4) {$\ZZ$};
+    \foreach \x in {-6,6} {
+      \foreach \y in {0,-1.3} {
+        \node at (\x,\y) {$\cdots$};
+      }
+    }
+  \end{tikzpicture}
+  \caption{Bookkeeping $h=(h_-,h_0,h_+)$}
+  \label{fig:bookkeeping-h-h0h+}
+\end{figure}
+
 It's possible to give a more symmetric, but less general induction principle,
-we if assume that the functions are equivalences,
-but in this case we can reorient the $g$'s to point in the same direction as the $f$'s,
-so that we just give $f : \prod_{z:\zet}P(z) \equiv P(z+1)$, see \cref{fig:integers-induction-symmetric}.
+if assume that the functions are equivalences.
+In that case we can reorient the $g$'s to point in the same direction as the $f$'s,
+so that we just give $f : \prod_{z:\zet}P(z) \equiv P(z+1)$, 
+see \cref{fig:integers-induction-symmetric}.
 
 We shall need that in this case, giving a element $h:\prod_{z:\zet}P(z)$
 such that $h(z+1) = f_z(h(z))$ for all $z:\zet$
@@ -160,11 +192,12 @@ We formulate this precisely as follows.
 \end{theorem}
 \begin{proof}
   We prove that the fiber over any $p : P(0)$ is contractible.
-  This fiber consists of a pair $(h,q)$ and an identification $r : h(0) = p$.
-  Note that giving $h$ by itself is equivalent to giving $h_0 : P(0)$, $h_+ : \prod_{n:\NN}P(n+1)$,
-  and $h_- : \prod_{n:\NN} P(-n-1)$. Then $r : h_0 = p$,
-  and the pair $(h_0,r)$ contracts away,
-  so we're left with the type
+  We simplify notations a bit by leaving out the types of $h$ and $q$.
+  The fiber $\sum_{(h,q)} h(0)=p$ consists of a triples $(h,q,r)$ with $r : h(0) = p$.
+  By case distinction, $h$ can (equivalently) be split in three parts $(h_-,h_0,h_+)$
+  with $h_0 : P(0)$, $h_+ : \prod_{n:\NN}P(n+1)$,  and $h_- : \prod_{n:\NN} P(-n-1)$. 
+  Since $h(0)=p$ only depends on $h_0$ the pair $(h_0,r)$ with  $r : h_0 = p$
+  contracts away, so we're left with the type (MOVE INVERSES TO f's LEFT?) 
   \begin{align*}
     \varphi^{-1}(p)
     &\equiv
