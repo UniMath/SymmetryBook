@@ -499,7 +499,7 @@ The following lemma is proved by routine inductions.
   we have $s^Z_{x+1} = \Zloop \ct s^Z_x$. 
 \end{lemma}
 
-The following lemma uses pathovers and their composition, 
+The following lemmas uses pathovers and their composition, 
 which should be defined somewhere else. 
 
 \begin{lemma}\label{lem:concat-over}
@@ -510,16 +510,23 @@ which should be defined somewhere else.
   \]
   is an equivalence.
 \end{lemma}
+\begin{lemma}\label{lem:pathover-change-path}
+  For any $A : \UU$, $B : A \to \UU$, $a_1,a_2 : A$, $b_1 : B\,a_1$, $b_2: B\,a_2$,
+  and paths $p,q:a_1=a_2$, and a $2$-dimensional path $\alpha : p = q$,
+  transport along $\alpha$
+  induces an equivalence $(b_1 =^B_p b_2) \equiv (b_1 =^B_q b_2)$.
+\end{lemma}
+The proof is by induction on $\alpha$, after which we need to show that the identity is an equivalence, which is clear.
 
 Now we are ready to derive the induction principle using the same technique as for the recursion principle.
 Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$, $p_\Zloop : p_\pt =^P_\Zloop p_\pt$.
 \begin{lemma}\label{lem:guided-null-hmtps-dep}
   For every $Z\defeq(X,f,t):\TorZ$, the type
   \[
-    \sum_{p : P(Z)} \sum_{h : \prod_{x:X} p_\pt =^P_{s^Z_x} p} \prod_{x:X} h(x+1) =_! p_\Zloop \cto h(x)
+    \sum_{p : P(Z)} \sum_{h : \prod_{x:X} p_\pt =^P_{s^Z_x} p} \prod_{x:X} h(x+1) = g_x(p_\Zloop \cto h(x))
   \]
-  is contractible,
-  where the $!$ denotes the proof of \cref{lem:loop-s-iterated}, a proposition.
+  is contractible, where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied to the conclusion of \cref{lem:loop-s-iterated}.
+  % TODO: improve formulation
 \end{lemma}
 \begin{proof}
   Let $Z:\TorZ$. Since we are going to prove a proposition
@@ -528,7 +535,7 @@ Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$, $p_\Zloop : p_\pt =^P_\Zloop p_\pt$.
 
   The type under consideration is then the total space of the family $R : P(\pt) \to \UU$ defined by
   \[
-    R(p) \defeq \sum_{h : \prod_{x:X} p_\pt =^P_{s^Z_x} p} \prod_{x:X} h(x+1) =_! p_\Zloop \cto h(x).
+    R(p) \defeq \sum_{h : \prod_{x:X} p_\pt =^P_{s^Z_x} p} \prod_{x:X} h(x+1) =  g_x(p_\Zloop \cto h(x)).
   \]
   Thus, to show that $Q_p(\zet,s)$ is contractible,
   it suffices to define an equivalence
@@ -538,8 +545,8 @@ Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$, $p_\Zloop : p_\pt =^P_\Zloop p_\pt$.
   for each $p : P(\pt)$.
   We again invoke \cref{thm:integers-univ-symm},
   this time with the family $S_p : \zet \to \UU$ given by $S_p(z) \defeq (p_\pt =^P_{s^\pt_z} p)$
-  and the equivalences $g_p : \prod_{z:\zet} S_p(z)\equiv S_p(z+1)$ given by
-  $g_p(z) \defeq (p_\Zloop \cto ({-}))$.
+  and the equivalences $g'_p : \prod_{z:\zet} S_p(z)\equiv S_p(z+1)$ given by
+  $g'_p(z) \defeq g_z(p_\Zloop \cto ({-}))$.
 \end{proof}
 
 
