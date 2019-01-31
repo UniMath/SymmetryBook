@@ -11,6 +11,8 @@ As an instance of a property that holds in some examples but not in others, we h
 In \cref{sec:identity-types} we saw that the identity type was ``reflexive, symmeric and transitive''.
 
 With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19'th century that the properties of such symmetries could be codified by saying that they form a \emph{group}.
+\section{The type of groups}
+\label{sec:typegroup}
 
 \begin{example}\label{ex:base=base}
   We defined the circle $S^1$ in \cref{def:circle} by declaring that it has a point $\base$ and an element $\Sloop:\base=_{S^1}\base$, and we proved in \cref{cor:S1groupoid} that $\base=_{S^1}\base$ is equivalent to the set $\zet$ (of integers), where $n\in\zet$ corresponds to the $n$-fold composition of $\Sloop$ (which works for both positive and negative $n$).  
@@ -485,7 +487,16 @@ Conversely, given a group $G$, then $q_G:G=\concr(\abstr(G))$  is given by (writ
 In essence we have shown that our ``abstract group'' is indeed the group of symmetries of something.
 \section{Sums of groups}
 \label{sec:coprod}
-((Tentative section sketching that the sum (``free products'' or ``amalgamated sum'') of two groups is given by the wedge.  Write the introduction and introduce the terms used.  Has several applications that we'll explore later.  The proof below also gives a concrete description of the sum and should perchance be extracted.))
+We have seen how the group of integers $\ZZ=(S^1,\base)$ synthesizes the notion of one symmetry with no relations: every symmetry of the circle is of the form $\Sloop^n$ for some unique $n$.  Also, given any group $G=\aut_A(a)$, the set $a=a$ of symmetries of $a$ corresponds to the set of homomorphisms $\ZZ\to G$, \ie to pointed functions $(S^1,\base)\to_*(A,a)$ by evaluation at $\Sloop$.  What happens if we want to study more than one symmetry at the time?  
+
+For instance, is there a group $\ZZ\vee%\boxplus
+\ZZ$ so that for any group $G=\aut_A(a)$ a homomorphism $\ZZ\vee%\boxplus
+\ZZ\to G$ corresponds to {\bf two} symmetries of $a$?  At the very least, $\ZZ\vee\ZZ$ itself would have to have two symmetries and these two can't be have any relation since there is a priori no telling what the relation between the symmetries of $a$ might be.  Now, one symmetry is given by a pointed function $(S^1,\base)\to_*(A,a)$ and so two symmetries is given by a function $f:S^1+S^1\to A$ with the property that $f$ sends each of the base points of the circles to $a$.  But $S^1+S^1$ is not connected, and so not a group, so we take the clue from the requirement that both the base points were to be sent to a common base point to define $S^1\vee S^1$ as what we get from $S^1+S^1$ when we \emph{insert an identity} between the two basepoints.
+$$\xymatrix{\base\ar@(ul,dl)[]|{\Sloop}\ar@{.>}[rr]^{\text{identify!}}&&\base\ar@(ur,dr)[]|{\Sloop}}
+$$
+The amazing thig is that this just works -- an enormous simplification of the classical construction of the ``free products'' or ``amalgamated sum'' of groups.  We need to show that the ``wedge'' $S^1\vee S^1$ is indeed a group, but this proof simultaneously unpacks the classical description.
+
+(( Has several applications that we'll explore later.  The proof below also gives a concrete description of the sum and should perchance be extracted.))
 % \begin{definition}
 %   \label{def:wedge}
 %   Let $(A_1,a_1)$ and $(A_2,a_2)$ be pointed types.  Their wedge is the pointed type $(A_1\vee A_2,a_{12})$ given as a higher inductive type\footnote{how/where discussed?} by
@@ -540,9 +551,11 @@ In essence we have shown that our ``abstract group'' is indeed the group of symm
 % $p\defequi\refl{}$ ((here the assymmetry of our definition makes saying this slightly awkward since the basepoint is in $i_1A_1$; fix)).  That $\alpha\beta(n,p_0,\dots,p_n)=(n,p_0,\dots,p_n)$ follows by induction on $n$ ((write)).
 % \end{proof}
 
+We start by giving a proper definition of the wedge construction which is important for pointed types in general and then prove that the wedge of two groups is a group whose symmertries are arbitrary ``words'' in the original symmetries.
+
 \begin{definition}
   \label{def:wedge}
-  Let $(A_1,a_1)$ and $(A_2,a_2)$ be pointed types.  The wedge is the pointed type $(A_1\vee A_2,a_{12})$ given as a higher inductive type\footnote{how/where discussed?} by
+  Let $(A_1,a_1)$ and $(A_2,a_2)$ be pointed types.  The \emph{wedge}\index{wedge of pointed types} is the pointed type $(A_1\vee A_2,a_{12})$ given as a higher inductive type\footnote{how/where discussed?} by
   \begin{enumerate}
   \item functions $i_1:A_1\to A_1\vee A_2$ and $i_2:A_2\to A_1\vee A_2$
   \item an identity $g:i_1a_1=i_2a_2$.
@@ -552,11 +565,10 @@ We point this type at $a_{12}\defequi i_1a_1$.
 $$i^g_2:(a_2=_{A_2}a_2)\to(a_{12}=_{A_1\vee A_2}a_{12})$$ 
 is defined by $i^g_2(p)\defequi g^{-1}i_2(p)g$, whereas (for notational consistency only) we set $i_1^g\defequi i_1:(a_1=_{A_1}a_1)\to(a_{12}=_{A_1\vee A_2}a_{12})$.
 \end{definition}
-((PICTURE))
 
 \begin{lemma}
   \label{lem:wedgeofgpoidisgpoid}
-  Let $\aut_{A_1}(a_1)$ and $\aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $\aut_{A_1\vee A_2}(a_{12})$ is a decidable group.
+  Let $\aut_{A_1}(a_1)$ and $\aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $\aut_{A_1\vee A_2}(a_{12})$ is a decidable group.  
 \end{lemma}
 \begin{proof}
 That the wedge is connected follows by transitivity of identity, if necessary passing through the identity $g:i_1a_1=i_2a_2$ in the wedge.
