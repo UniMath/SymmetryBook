@@ -916,7 +916,7 @@ Draw a commutative diagram for the above equation. PERHAPS I SHOULD
 
 The following lemma is proved by induction on $e: x=x'$.
 
-\begin{lemma}\label{lem:transport-in-Id-type}
+\begin{lemma}\label{lem:transport-in-fx=Ygx}
 Let $X,Y$ be types, $f,g: X\to Y$ functions, and let
 $Z(x)\defeq (f(x)=g(x))$ for every $x:X$. 
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
@@ -925,8 +925,8 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \]
 \end{lemma}
 
-\begin{xca}\label{xca:transport-in-Id-type}
-Prove the following special cases of \cref{lem:transport-in-Id-type},
+\begin{xca}\label{xca:transport-in-a/x=b/x}
+Prove the following special cases of \cref{lem:transport-in-fx=Ygx},
 where $Y\jdeq X$ and $a,b$ in $X$:
 \begin{enumerate}
 \item $\trp_{x\mapsto a=b,\,e} (i) = i$;
@@ -936,10 +936,10 @@ where $Y\jdeq X$ and $a,b$ in $X$:
 \end{enumerate}
 \end{xca}
 
-There is also a dependent version of \cref{lem:transport-in-Id-type},
+There is also a dependent version of \cref{lem:transport-in-fx=Ygx},
 which can be proved by an additional induction on $i$.
 
-\begin{lemma}\label{lem:transport-in-Id-type}
+\begin{lemma}\label{lem:transport-in-fx=Yxgx}
 Let $X,Y(x)$ be types and $f(x),g(x): Y(x)$ dependent functions, 
 for all $x:X$. Let $Z(x)\defeq (f(x)=g(x))$,
 with the identification in $Y(x)$, for every $x:X$. 
@@ -1141,7 +1141,7 @@ of type theory that has not been very prominent up to know, namely
 the close connection between proving and computing.
 
 \begin{definition}
-\label{def:Niswellordered}
+\label{def:Nwellordered}
 Let $P(n)$ be a proposition for all natural numbers $n$. 
 Define the type $P_{\min}(n)$ expressing that $n$ is the smallest
 natural number such that $P(n)$:
@@ -1219,7 +1219,7 @@ principle for propositional truncation \cref{lem:prop-trunc-elim}:
 In the interest of readability, we do not always make the use
 of witnesses of decidability in computations explicit.
 A typical example is the case distinction on $\mu_P(n) < n$ in
-\cref{def:Niswellordered} above. This remark applies to all
+\cref{def:Nwellordered} above. This remark applies to all
 sets and decidable relations on them. We shall immediately put
 this convention to good use in the proof of a form of the so-called
 \emph{Pigeonhole Principle} (PHP).
@@ -1235,7 +1235,7 @@ For the induction case $N+1$, assume the lemma proved for $N$
 (induction hypothesis, IH, for all $f$). Let $f$ be such 
 that $f(n)<N+1$ for all $n<N+2$. The idea of the proof is
 to search for an $n<N+1$ such that $P(n)\defeq (f(n)=N)$,
-by computing $\mu_P(N+1)$ as in \cref{def:Niswellordered}.
+by computing $\mu_P(N+1)$ as in \cref{def:Nwellordered}.
 If $\mu_P(N+1)=N+1$, that is, $f(n)<N$ for all $n<N+1$,
 then we are done by IH. Assume $\mu_P(N+1) < N+1$,
 so $f(\mu_P(N+1))=N$.
@@ -1256,14 +1256,14 @@ sets of different size.
 If $m<n$, then $(\sum_{k:\NN} k<m) \neq (\sum_{k:\NN} k<n)$.
 \end{corollary}
 
-Another application of \cref{def:Niswellordered} is a
+Another application of \cref{def:Nwellordered} is a
 short proof of Euclidean division. 
 \begin{lemma}\label{lem:euclid-div}
 For all $n,m:\NN$ with $m>0$ there exist $q,r:\NN$ such that $r<m$ and $n=qm+r$.
 \end{lemma}
 \begin{proof}
 Define $P(k)\defeq (n\leq km)$. Since $m>0$ we have $P(n)$.
-Now set $k\defeq\mu_P(n)$ as in \cref{def:Niswellordered}.
+Now set $k\defeq\mu_P(n)$ as in \cref{def:Nwellordered}.
 If $n=km$ and we set $q\defeq k$ and $r\defeq 0$.
 If $n<km$, then $k>0$ and we set $q\defeq k-1$.
 By minimality we have $qm<n<km$ and hence $n=qm+r$ for some $r<m$.
@@ -1484,7 +1484,19 @@ embedding between connected types, surjection???
 
 f fiberwise map/equivalence, tot(f) equivalent fibers
 
-object classifier stuff
+\subsection{Type families and maps}
+\label{sec:typefam}
+
+\begin{lemma}
+\label{lem:typefamiliesandfibrations}
+  Let $A$ be a type.  Then
+$$\mathrm{preim}:\sum_{B:\UU}(B\to A)\quad\to\quad (A\to\UU) 
+$$ 
+given by $\mathrm{preim}(B,f)(a)=f^{-1}(a)$ is an equivalence.\footnote{in some higher universe}
+An inverse equivalence is given by sending $P:A\to\UU$ to $(\sum_{a:A}P(a), \mathrm{pr_1})$.\footnote{extend to families in other settings like sets or propositions or ...}
+\end{lemma}
+
+
 
 \section{Subtypes and Decidability --- TBD}
 \label{sec:subtype}
