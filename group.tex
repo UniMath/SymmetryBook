@@ -398,6 +398,7 @@ $$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this 
 \end{example}
 
 \begin{remark}
+  \label{remark:GsetsareGsets}
   A $G$-type $X$ is often presented by focusing on the underlying type $X(\pt_G)$  and providing it with a structure relating it to $G$ determining the entire function $X\colon BG\to\UU$.
 
 More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors over the component $\UU_{(X)}=\sum_{Y:\UU}||Y=X(\pt_G)||$, which contains the point $X(\pt_G)$.  Hence, without loss of information, $X$ can be considered a homomorphism 
@@ -427,18 +428,44 @@ where $\princ_G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ_G$ -- it represents a group!  Guess which one:
 \end{remark}
 \begin{lemma}\label{lem:BGbytorsor}
-  If $G$ is a group (or \inftygp), then the pointed type $(\typetorsor_G,\princ_G)$ is equal to to $BG$,\footnote{in the appropriate universe} so both represent $G$.
+  If $G$ is a group (or \inftygp), then the pointed type $(\typetorsor_G,\princ_G)$ is equal to to $G=(BG,\pt_G)$,\footnote{in the appropriate universe}. ((must declare the identity in the lemma: used later))
 \end{lemma}
 
 \begin{proof}
   ((write))
 \end{proof}
+This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\UU$'':\footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+\begin{lemma}
+  \label{lem:allgpsarepermutationgps}Let $G$ be a group.  Then remembering the base point in the factorization of the pricipal $G$-torsor $\princ:BG,\pt_G\to \UU_{\pt_G=\pt_G}\subseteq\UU$ (c.f.~\cref{remark:GsetsareGsets}) gives an injective homomorphism
+$$\alpha_G:G\to\Sigma_{\pi_G=\pt_G}$$  
+of $G$ into a permutation group.
+\end{lemma}
+\begin{proof}
+  The type of injective group homomorphism from $G$ to a group $H$ is equivalent ((GIVE REF)) to the type of pointed coverings of $BH$ by $BG$, so we need to show that $\alpha_G:BG\to\UU_{\pt_G=\pt_G}$ is a covering.  
+Under the identity $BG=\typetorsor_G$ of \cref{lem:BGbytorsor} the function $\alpha$ translates to the evaluation map
+$$\xymatrix{
+  \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\pt_G}}\ar@{=}[d]&&\Sigma_{\pt_G=\pt_G}\ar@{=}[d]\\
+  \underset{E:BG\to\Set}\sum\,\underset{x:BG}\prod||(\pt_G=x)=E(x)||\ar@{}[rr]^-{E\mapsto E(\pt_G)}&&
+\,\underset{X:\Set}\sum||(\pt_G=\pt_G)=X||.
+}$$
+We must show that the preimages $\ev_{\pt_G}(X)$ for $X:\Sigma_{\pt_G=\pt_G}$ are sets.  
+This preimage is equivalent to $\sum_{E:BG\to\Set}(X=E(\pt_G))$ (note the absence of a truncation).  We must show that if $(E,p),(F,q):\sum_{E:BG\to\Set}(X=E(\pt_G))$, then 
+$$((E,p)=(F,q))=\prod_{x:BG}\sum_{\phi(x)}\phi(\pt_G)=_{E(\pt_G)=F(\pt_G)}qp^{-1}$$ is a set.  
+Note that if $r:\pt_G=x$, then $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
+$$\xymatrix{&E(pt_G)\ar[r]^{E(r)}_=\ar[dd]_{\phi(pt_G)}^=&E(x)\ar[dd]_{\phi(x)}^=\\
+  X\ar[ur]^p_=\ar[dr]^q_=&&\\
+  &F(\pt_G)\ar[r]^{F(r)}_=&F(x)},$$
+and so $\phi(x)$ (which by nature is independent of such an $r:\pt_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us pin this down in our language.
+If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $x:BG$ both $E(x)$ and $F(x)$ are sets, it is enough to show that the proposition $\phi(x)=\psi(x)$ is inhabited.  Let $f:(\pt_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$ given above.  Since $BG$ is connected, $\pt_G=x$ is inhabited, and we are done.
+\end{proof}
+
+
 
 \begin{xca}\label{xca:BGtotype}
   Let $G$ be a group and $A$ a connected groupoid.  Use the definitions and \cref{xca:freemaps} to show that the types
   \begin{enumerate}
   \item $BG_\div\to A$, 
-  \item $\sum_{a:A}\sum_{f:BG_\div A}(f(\pt_G)=a)$, 
+  \item $\sum_{a:A}\sum_{f:BG_\div \to A}(f(\pt_G)=a)$, 
   \item $\sum_{a:A}(BG\to_*(A,a))$ and 
   \item $\sum_{a:A}\Hom(G,\aut_A(a))$
   \end{enumerate}
@@ -574,20 +601,20 @@ Here is a picture of $i_2^g(p)$: it is the symmetry of the base point $a_{12}\de
 % $$\xy (-20,20)*+{A};(0,20)*+{B}
 % **\crv{}
 % \endxy$$
-$$% \xy (-20,20)*+{i_1a_1\,\,};(0,20)*+{}
-% **\crv{}\endxy
-% \xy (0,20)*+{i_2a_2};(0,20)*+{}
-% **\crv{(20,30)&(0,40)&(-20,30)}
+% $$% \xy (-20,20)*+{i_1a_1\,\,};(0,20)*+{}
+% % **\crv{}\endxy
+% % \xy (0,20)*+{i_2a_2};(0,20)*+{}
+% % **\crv{(20,30)&(0,40)&(-20,30)}
+% % \endxy
+% \xy (-20,20)*+{a_{12}\,\,};(-20,20)*+{}
+% **\crv{(10,20)&(-20,35)&(0,45)&(20,35)&(15,20)&(-10,20)}
+% %?>*\dir{>}
+% ?(.38)*{} *!LD!/^3pt/{>}
+% ?(.95)*{} *!LD!/^-15pt/{g^{-1}}
+% ?(.03)*{} *!LD!/^-5pt/{g}
+% ?(.55)*{} *!LD!/^-7pt/{i_2p}
 % \endxy
-\xy (-20,20)*+{a_{12}\,\,};(-20,20)*+{}
-**\crv{(10,20)&(-20,35)&(0,45)&(20,35)&(10,20)&(-10,20)}
-%?>*\dir{>}
-?(.38)*{} *!LD!/^3pt/{>}
-?(.95)*{} *!LD!/^-15pt/{g^{-1}}
-?(.03)*{} *!LD!/^-5pt/{g}
-?(.55)*{} *!LD!/^-7pt/{i_2p}
-\endxy
-$$
+% $$
 % $$\xy (0,20)*+{A};(60,0)*+{B}
 % **\crv{(20,20)&(30,20)&(50,-20)&(60,-10)}
 %  ?<*\dir{<} ?>*\dir{>}
@@ -597,6 +624,22 @@ $$
 %  +/100pt/*+{P};"q" **\dir{-}
 % \endxy
 % $$
+$$
+\xy (-20,20)*+{};(-20,20)*+{}
+**\crv{(15,20)&(18,20)&(-10,35)&(10,45)&(25,30)&(20,19)&(0,20)}
+%?>*\dir{>}
+?(0)*{} *!LD!/^-20pt/{i_1A_1}
+?(.45)*{} *!LD!/^2pt/{>}
+?(.95)*{} *!LD!/^-15pt/{g^{-1}}
+?(.03)*{} *!LD!/^-5pt/{g}
+?(.55)*{} *!LD!/^-7pt/{i_2p}
+?(.65)*{} *!LD!/^-30pt/{i_2A_2}
+?(.87)*{} *!LD!/^-12pt/{i_2a_2}
+?(.86)*{} *!LD!/^-2pt/{\bullet}
+?(1)*{} *!LD!/^-2pt/{\bullet}
+?(1)*{} *!LD!/^-12pt/{a_{12}}
+\endxy
+$$
 
 We now prove that wedges of decidable groups are decidable groups.   The idea is that an identity in $a_{12}=x$ can be factored into a string of identities, each lying solely in $A_1$ or in $A_2$.  We define a family of sets consisting of exactly such strings of identities --  it is a set since $A_1$ and $A_2$ are groupoids -- and prove that it is equivalent to the family $P(x)\defequi(a_{12}=_{A_1\vee A_2}x)$ which consequently must be a family of sets.
 We need to be able to determine whether a symmetry is reflexivity or not, but once we know that, the symmetries of the base point in the wedge are then given by ``words $p_0p_1\dots p_n$'' where the $p_j$ alternate between being symmetries in the first or the second group, and none of the $p_j$ for positive $j$ are allowed to be reflexivity% : effectively a symmetry in the wedge can be decomposed into composites of symmetries in each of the groups
