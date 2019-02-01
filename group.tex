@@ -380,11 +380,14 @@ If the underlying type is a set, then $X$ is called a \emph{$G$-set}.
 Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\UU)$ and the type of $G$-sets is $\Set_G\defequi(BG\to\Set)$.
 %$$\Type_G\defequi (BG\to\UU),\qquad \Set_G\defequi (BG\to\Set).$$
 \end{definition}
+
+The reader will notice that a $G$-set is nothing but a covering of $BG$.\footnote{we should be careful with having too many official names for the same objects}
 Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
-$$\princ_G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  The name torsor will be explained shortly.
+$$\princ_G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  We've seen this family before in the guise of the ``universal covering $P_{\pt_G}$'' of \cref{def:universalcover}!
+The name torsor will be explained shortly.
 \end{example}
 
 \newcommand{\Ad}{\mathrm{Ad}}
@@ -423,16 +426,26 @@ $$\typetorsor_G\defequi\sum_{X:\Type_G}||\princ_G=X||,$$
 where $\princ_G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
 \begin{remark}
-  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ_G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||\princ_G=X||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||\princ_G=X||.$  
+  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ_G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||\princ_G=X||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||\princ_G=X||.$  Hence, for $G$ a group, the type of $G$-torsors is just another name for the component of the connected covers of $BG$ containing the unversal covering.
 
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ_G$ -- it represents a group!  Guess which one:
 \end{remark}
 \begin{lemma}\label{lem:BGbytorsor}
-  If $G$ is a group (or \inftygp), then the pointed type $(\typetorsor_G,\princ_G)$ is equal to to $G=(BG,\pt_G)$,\footnote{in the appropriate universe}. ((must declare the identity in the lemma: used later))
+  If $G$ is a group (or \inftygp), then the function
+$$T:BG\to\typetorsor_G,\qquad T(z)\defequi(x\mapsto(z=_{BG}x))$$
+is an equivalence.
+
+Hence the groups $(\typetorsor_G,\princ_G)$ and $G=(BG,\pt_G)$ are equal.\footnote{in the appropriate universe}.
 \end{lemma}
 
 \begin{proof}
-  ((write))
+  Since both $\typetorsor_G$ and $BG$ are connected, it suffices by \cref{lem:eqandcovofconntypes} to show that the induced function of identity types
+$$T^=:(y=z)\to(T(y)= T(z))
+$$
+is an equivalence.  But this follows by the very definition of the identity type!  For $q:y=z$ and $p:T(y)(x)\defequi(y=x)$ we have that 
+$$T^=(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ and conversely, by the induction principle for the identity type $%T(y)(x)\defequi (y=x)
+y=x$,  a function $T(y)\to T(z)$ is uniquely given by its value (in $T(z)(y)\defequi (z=y)$) on $\refl y$.
+%the same as giving an element in $T(z)(y)\defequi (z=y)$.
 \end{proof}
 This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\UU$'':\footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
 \begin{lemma}
@@ -450,7 +463,7 @@ $$\xymatrix{
 }$$
 We must show that the preimages $\ev_{\pt_G}(X)$ for $X:\Sigma_{\pt_G=\pt_G}$ are sets.  
 This preimage is equivalent to $\sum_{E:BG\to\Set}(X=E(\pt_G))$ (note the absence of a truncation).  We must show that if $(E,p),(F,q):\sum_{E:BG\to\Set}(X=E(\pt_G))$, then 
-$$((E,p)=(F,q))=\prod_{x:BG}\sum_{\phi(x)}\phi(\pt_G)=_{E(\pt_G)=F(\pt_G)}qp^{-1}$$ is a set.  
+$$((E,p)=(F,q))=\prod_{x:BG}\sum_{\phi(x):E(x)=F(x)}\phi(\pt_G)=_{E(\pt_G)=F(\pt_G)}qp^{-1}$$ is a set.  
 Note that if $r:\pt_G=x$, then $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
 $$\xymatrix{&E(pt_G)\ar[r]^{E(r)}_=\ar[dd]_{\phi(pt_G)}^=&E(x)\ar[dd]_{\phi(x)}^=\\
   X\ar[ur]^p_=\ar[dr]^q_=&&\\
