@@ -332,11 +332,33 @@ The pointed type of $\zet$-torsors is defined by
 \TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~}
 \pt\defeq ((\zet,s),\trunc{\refl{(\zet,s)}}).
 \]
+There is a natural path $\pt =_\TorZ \pt$ obtained from $s$
+by applying UA.
+Using \cite[Theorem 2.7.2]{hottbook} we can analyse this path
+componentwise. 
+
+The first component must be a path of type $\zet=\zet$,
+and we denote this path by $ua(s)$. 
+
+The second component must now be
+a path of type $ua(s)_*\, s = s$. The type family in which the transport
+takes place is $X\mapsto (X\to X)$. This means transport by conjugation,
+so we have to prove $s\circ s \circ s^{-1} = s$, which is easy.
+
+The third component is a path in a contractible type, which always exists.
+
+Instead of $(ua(s),!,!)$ we denote the path by $\Zloop$.
+Modulo the equivalence from \cite[Theorem 2.7.2]{hottbook} we can wrap up:
+\[
+\Zloop : \pt =_\TorZ \pt
+%\Zloop : (\zet,s,\trunc{\refl{(\zet,s)}}) = (\zet,s,\trunc{\refl{(\zet,s)}})
+\]
 \end{definition}
 Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
 such as $\isset(X)$ and $\isEq(f)$.
 
-Our type $\TorZ$ is equivalent to the more traditionally defined type of $\ZZ$-torsors, $\Xtorsor{\ZZ}$, but is more parsimonious.
+Our type $\TorZ$ is equivalent to the more traditionally defined 
+type of $\ZZ$-torsors, $\Xtorsor{\ZZ}$, but is more parsimonious.
 Another way to think of it is as the type of Cayley diagrams for $\ZZ$.
 
 The aim of this section is to show that $\TorZ$ has the
@@ -347,14 +369,25 @@ we opt to do the recursion principle first,
 as it is slightly simpler,
 and prepares the way for the more complicated induction principle.
 
-Fix $A:\UU$, $a:A$ and $p: a=_A a$. 
-We are going to define types and
-functions depending on this input, and will use $p$ in various
-denotations to express this dependence. 
 
-We would like to construct an element of $A$ for every $(X,f,t):\TorZ$ (depending on $a$ and $p$).
-In order to make use of $t:\Trunc{(\zet,s)=(X,f)}$, we need to find a proposition.
-The idea is to expand $A$ to a $\Sigma$-type over $A$ that we can then show to be contractible.
+\subsection{Recursion in $\TorZ$}\label{sec:TorZ-recursion}
+
+Fix $A:\UU$, $a:A$ and $p: a=_A a$.
+We want to construct a function from $\TorZ$ to $A$ 
+that maps $\pt$ to $a$ (definitionally),
+and maps $\Zloop$ to $p$ (by action on paths).
+
+All input data is present in $p$ and its type.
+When defining types and functions depending on the input data, 
+we use $p$ in various denotations to express this dependence. 
+
+Consider an element $(X,f,t)$ of $TorZ$.
+In order to make use of $t:\Trunc{(\zet,s)=(X,f)}$, 
+we need to find a suitable proposition.
+The idea is to expand $A$ to a $\Sigma$-type over $A$,
+and to prove that this $\Sigma$-type is contractible.
+We then obtain a function to $A$ by (double) projection
+of the proof.
 
 \begin{definition}\label{def:TBN}
 For every $(X,f)$, define
@@ -397,9 +430,9 @@ with center $c_p(X,f,t)$ defined in the proof.
    \matrix (m) 
    [matrix of math nodes, row sep=2em, column sep=2em, ampersand replacement=\&]
     { 
-\sum_{a':A} X\to a=a'               \&       \&  A  \\
+\sum_{a':A} (X\to a=a')   \&       \&  A  \\
 \\
-\text{Recursion}\quad\quad\quad     \& \TorZ \&      \\};
+                     \& \TorZ \&      \\};
 
 \draw[->>] (m-1-1) -- (m-3-2);
 \draw[-> ] (m-1-1) -- (m-1-3) node[midway,above]  {$\fst$};
@@ -408,27 +441,9 @@ with center $c_p(X,f,t)$ defined in the proof.
 \draw[->,dotted] (m-3-2) to[bend right=30] node[near end,right]{$c_p$} (m-1-3);
 
 \end{tikzpicture}
-\caption{\label{fig:TorZ-rec-and-ind}Recursion, $X:\TorZ,\, a:A,\, p:a=a$}
+\caption{\label{fig:TorZ-recursion}Recursion, $X:\TorZ,\, a:A,\, p:a=a$}
 \end{figure}
 
-\begin{figure}
-\begin{tikzpicture} %\large
-   \matrix (m) 
-   [matrix of math nodes, row sep=2em, column sep=2em, ampersand replacement=\&]
-    {
-\sum_{a':A(X)} \prod_{x:X} a=^A_{s^X_x} a'\&       \& A(X)\\
-\\
-\text{Induction}\quad\quad\quad\quad  \& \TorZ \& \\};
- 
-\draw[->>] (m-1-1) -- (m-3-2);
-\draw[-> ] (m-1-1) -- (m-1-3) node[midway,above]  {$\fst^X$};
-\draw[->>] (m-1-3) -- (m-3-2);
-\draw[->,dotted] (m-3-2) to[bend left=30] node[near end,left]{$\hat{c}_p$} (m-1-1);
-\draw[->,dotted] (m-3-2) to[bend right=30] node[near end,right]{$c_p$} (m-1-3);
-               
-\end{tikzpicture}
-\caption{\label{fig:TorZ-rec-and-ind}Induction, $X:\TorZ,\, a:A(\pt),\, p:a=^A_{\Zloop} a$}
-\end{figure}
 
 \begin{definition}\label{def:TBN}
 For every $Z:\TorZ$, define
@@ -446,27 +461,7 @@ aspect of the universal property that we are after.
 The second component of $\hat p(\pt)$ maps $z$ to $p^z$.
 Before we can deal with the other aspect we have to prepare first.
 
-There is a natural path $\pt =_\TorZ \pt$ obtained from $s$
-by applying UA.
-Using \cite[Theorem 2.7.2]{hottbook} we can analyse this path
-componentwise. 
 
-The first component must be a path of type $\zet=\zet$,
-and we denote this path by $ua(s)$. 
-
-The second component must now be
-a path of type $ua(s)_*\, s = s$. The type family in which the transport
-takes place is $X\mapsto (X\to X)$. This means transport by conjugation,
-so we have to prove $s\circ s \circ s^{-1} = s$, which is easy.
-
-The third component is a path in a contractible type, which always exists.
-
-Instead of $(ua(s),!,!)$ we denote the path by $\Zloop$.
-Modulo the equivalence from \cite[Theorem 2.7.2]{hottbook} we can wrap up:
-\[
-\Zloop : \pt =_\TorZ \pt
-%\Zloop : (\zet,s,\trunc{\refl{(\zet,s)}}) = (\zet,s,\trunc{\refl{(\zet,s)}})
-\]
 
 \begin{lemma}\label{lem:TBN}
 The following equations are well-typed and true:
@@ -516,7 +511,7 @@ plus $e_A(a,p)(\pt) \jdeq \bar{p}(\pt) \jdeq a$ and
 $\ap{e_A(a,p)}(\Zloop)\jdeq\ap{\bar{p}}(\Zloop) = p$.
 \end{definition}
 
-The above definition is one half of a universal property.
+REWRITE The above definition is one half of a universal property.
 The other half is showing that $e_A$ is an equivalence.
 The obvious candidate for an inverse is 
 $g\mapsto (g(\pt),\ap{g}(\Zloop))$.
@@ -530,7 +525,11 @@ are merely equal. This simple argument would suffice if
 $A$ is a set but not in general. We are facing a similar
 problem as was solved in the proof of \cref{lem:guided-null-hmtps}.
 The idea is to go one dimension up with the null homotopies.
-First some auxiliary notations.
+First some auxiliary notations. END REWRITE
+
+\subsection{Induction in $\TorZ$}\label{sec:TorZ-induction}
+
+Fix $A:\TorZ\to\UU$, $a:A(\pt)$ and $p: a=^A_\Zloop a$. 
 
 \begin{definition}\label{def:loop-s-iterated}
 For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
@@ -596,6 +595,25 @@ Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$, $p_\Zloop : p_\pt =^P_\Zloop p_\pt$.
   and the equivalences $g'_p : \prod_{z:\zet} S_p(z)\equiv S_p(z+1)$ given by
   $g'_p(z) \defeq g_z(p_\Zloop \cto ({-}))$.
 \end{proof}
+
+\begin{figure}
+\begin{tikzpicture} %\large
+   \matrix (m) 
+   [matrix of math nodes, row sep=2em, column sep=2em, ampersand replacement=\&]
+    {
+\sum_{a':A(X)} \prod_{x:X} a=^A_{s^X_x} a'\&       \& A(X)\\
+\\
+\text{Induction}\quad\quad\quad\quad  \& \TorZ \& \\};
+ 
+\draw[->>] (m-1-1) -- (m-3-2);
+\draw[-> ] (m-1-1) -- (m-1-3) node[midway,above]  {$\fst^X$};
+\draw[->>] (m-1-3) -- (m-3-2);
+\draw[->,dotted] (m-3-2) to[bend left=30] node[near end,left]{$\hat{c}_p$} (m-1-1);
+\draw[->,dotted] (m-3-2) to[bend right=30] node[near end,right]{$c_p$} (m-1-3);
+               
+\end{tikzpicture}
+\caption{\label{fig:TorZ-induction}Induction, $X:\TorZ,\, a:A(\pt),\, p:a=^A_{\Zloop} a$}
+\end{figure}
 
 
 \bibliographystyle{amsplain}
