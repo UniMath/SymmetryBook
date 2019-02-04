@@ -353,6 +353,9 @@ Modulo the equivalence from \cite[Theorem 2.7.2]{hottbook} we have
 \Zloop : \pt =_\TorZ \pt.
 %\Zloop : (\zet,s,\trunc{\refl{(\zet,s)}}) = (\zet,s,\trunc{\refl{(\zet,s)}})
 \]
+We may 
+The variables $X,Y,Z$ will be used for elements of $\TorZ$, 
+as well as, by an abuse of notation, for their the first components.
 \end{definition}
 Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
 such as $\isset(X)$ and $\isEq(f)$.
@@ -398,7 +401,7 @@ Q_p(X,f)&\defeq \sum_{a':A}~\sum_{h:X\to a=a'}~\prod_{x:X} h(f(x))=p\ct h(x).
 
 \begin{lemma}\label{lem:guided-null-hmtps}
 For every $(X,f,t):\TorZ$, the type $Q_p(X,f)$ is contractible
-with center $c_p(X,f,t)$ defined in the proof.
+with center $\vec{c}_p(X,f,t)$ defined in the proof.
 \end{lemma}
 \begin{proof}
   Let $(X,f,t):\TorZ$. Since we are going to prove a proposition,
@@ -409,6 +412,7 @@ with center $c_p(X,f,t)$ defined in the proof.
   \[
     R_p(a') \defeq \sum_{h:\zet \to a=a'}~\prod_{z:\zet} h(f(z))=p\ct h(z).
   \]
+  Note furthermore that $\sum_{a':A} a=a'$ is contractible with center $(a,\refl{a})$.
   Thus, to show that $Q_p(\zet,s)$ is contractible,
   it suffices to define an equivalence
   \[
@@ -424,22 +428,33 @@ with center $c_p(X,f,t)$ defined in the proof.
   shows that $\varphi_{a'}$ is an equivalence,
   where $\varphi_{a'}(h,q) \defeq h(0)$.
 
-The center of contraction is implicitly defined and can 
-be found by a careful analysis of all proof-relevant steps.
+For every $Z\defeq(X,f,t):\TorZ$, the center of contraction of $Q_p(X,f)$ 
+is denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
+\end{proof}
+
+The center of contraction of $Q_p(\zet,s)$ is defined in the above proof 
+and can be uncovered by a careful analysis of all proof-relevant steps.
 First, the center of $\sum_{a':A} a=a'$ is $(a,\refl{a})$.
 This center is pulled back by $\varphi_{a}$ to a center
-$(a,c)$ of $Q_p(X,f)$, where $c$ is the center of 
+$(a,c)$ of $Q_p(\zet,s)$, where $c$ is the center of 
 $\varphi_{a}^{-1}(\refl{a})$ coming from the proof
 that $\varphi_{a}$ is an equivalence. The latter proof
 is the above instance of \cref{thm:integers-univ-symm}.
-Unravellig this instance, and using the remark at the
+Unraveling this instance, and using the remark at the
 end of the proof of \cref{thm:integers-univ-symm},
 tells us that $c$ is a pair $(h,q)$ with $h(z)=p^z$
 for all $z:\zet$. Indeed, $\varphi_{a}(h,q) = h(0) = \refl{a}$.
 Moreover, $q$ proves ....
-Wrapping up, $c(X,f,t)\defeq (a,h,q)$.
-\end{proof}
+Wrapping up, $\vec c_p(\pt)\defeq (a,h,q)$.
 
+The analysis in the previous paragraph
+means we have achieved one of our goals,
+namely that the function $c_p$ from $\TorZ$ to $A$ 
+maps $\pt$ to $a$ definitionally.
+The situation is depicted in \cref{fig:TorZ-recursion}.
+Before we deal with the other goal,
+namely that $c_p$ applied to $\Zloop$ yields $p$,
+we prepare by a result that is interesting in itself.
 
 
 \begin{figure}
@@ -454,30 +469,12 @@ Wrapping up, $c(X,f,t)\defeq (a,h,q)$.
 \draw[->>] (m-1-1) -- (m-3-2);
 \draw[-> ] (m-1-1) -- (m-1-3) node[midway,above]  {$\fst$};
 \draw[->>] (m-1-3) -- (m-3-2);
-\draw[->,dotted] (m-3-2) to[bend left=30] node[near end,left]{$\hat{c}_p$} (m-1-1);
+\draw[->,dotted] (m-3-2) to[bend left=30] node[near end,left]{$(c_p,\tilde{c}_p)$} (m-1-1);
 \draw[->,dotted] (m-3-2) to[bend right=30] node[near end,right]{$c_p$} (m-1-3);
 
 \end{tikzpicture}
 \caption{\label{fig:TorZ-recursion}Recursion, $X:\TorZ,\, a:A,\, p:a=a$}
 \end{figure}
-
-
-\begin{definition}\label{def:TBN}
-For every $Z:\TorZ$, define
-\begin{align*}\label{eq:TBD}
-\hat{p}(Z)&\defeq (a',h), 
-\text{~where $c_p(Z)\jdeq (a',h,!)$;}\\
-\bar{p}(Z)&\defeq \pi_1 (\hat{p}(Z)).
-\end{align*}
-\end{definition}
-
-Recall $\pt\defeq (\zet,s,\trunc{\refl{(\zet,s)}})$.
-A straightforward calculation gives 
-$\bar{p}(\pt)\jdeq \pi_1 (c_p(\pt)) \jdeq a$, which is one important
-aspect of the universal property that we are after.
-The second component of $\hat p(\pt)$ maps $z$ to $p^z$.
-Before we can deal with the other aspect we have to prepare first.
-
 
 
 \begin{lemma}\label{lem:TBN}
