@@ -511,9 +511,12 @@ $\ap{e_A(a,p)}(\Zloop) = p$.
 \subsection{Induction in $\TorZ$}\label{sec:TorZ-induction}
 
 Fix $A:\TorZ\to\UU$, $a:A(\pt)$ and $p: a=^A_\Zloop a$.
+On the basis of this input data, we will construct a function of 
+type $\prod_{Z:\TorZ} A(Z)$ that maps $\pt$ to $a$ (definitionally),
+and maps $\Zloop$ to $p$ (by dependent action on paths).
 We follow the pattern of the non-dependent case
-in \cref{sec:TorZ-recursion}, but $A$ is now not constant
-and $p$ is a pathover.
+in \cref{sec:TorZ-recursion}, but keep in mind that 
+$A$ is now not constant and $p$ is a \emph{pathover}.
 
 \begin{definition}\label{def:loop-s-iterated}
 For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
@@ -528,7 +531,7 @@ iff $f^n(x)=y$, for all $n:\zet$, by two inductions.)
 For simplicity, we may denote $f^n(x)$ by $x+n$.
 \end{definition}
 
-The following lemma uses that $\Zloop\jdeq(ua(s),!,!)$.
+The following lemma uses that $\Zloop\defeq(ua(s),!,!)$.
 
 \begin{lemma}\label{lem:loop-s-iterated}
   For every $Z\defeq(X,f,t):\TorZ$, $x:X$ and $n:\zet$, 
@@ -562,36 +565,42 @@ which should be defined somewhere else.
 The proof is by induction on $\alpha$, after which we need to show that the identity is an equivalence, which is clear.
 
 Now we are ready to derive the induction principle using the same 
-technique as for the recursion principle. 
-Recall that $A:\TorZ\to\UU$, $a:A(\pt)$ and $p: a=^A_\Zloop a$.
+technique as for the recursion principle. We reuse notations as much as
+possible, but take care that all types are different.
 %Fix $P : \TorZ \to \UU$, $p_\pt : P(\pt)$, $p_\Zloop : p_\pt =^A_\Zloop p_\pt$.
+
+\begin{definition}\label{def:guided-null-hmtps}
+For every $Z\defeq(X,f,t):\TorZ$, define
+\begin{align*}\label{eq:TBD}
+Q_p(Z)&\defeq \sum_{a' : A(Z)}~\sum_{h : \prod_{x:X} a =^A_{s^Z_x} a'}~\prod_{x:X} h(f(x)) = g_x(p\cto h(x)),
+\end{align*}
+where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied to the conclusion of \cref{lem:loop-s-iterated}.
+\end{definition}
+
+
 \begin{lemma}\label{lem:guided-null-hmtps-dep}
-  For every $Z\defeq(X,f,t):\TorZ$, the type
-  \[
-    \sum_{a' : A(Z)} \sum_{h : \prod_{x:X} a =^A_{s^Z_x} a'} \prod_{x:X} h(f(x)) = g_x(p\cto h(x))
-  \]
-  is contractible, where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied to the conclusion of \cref{lem:loop-s-iterated}.
-  % TODO: improve formulation
+  For every $Z:\TorZ$, the type $Q_p(Z)$ is contractible, 
+  with center $\vec{c}_p(Z)$ defined in the proof.
 \end{lemma}
 \begin{proof}
   Let $Z:\TorZ$. Since we are going to prove a proposition
   depending on the connected type $\TorZ$,
   we may take $Z\jdeq\pt\jdeq(\zet,s,!)$.
 
-  The type under consideration is then the total space of the family $R : P(\pt) \to \UU$ defined by
+  We have $Q_p(\pt)\jdeq \sum_{a':A(\pt)} R(a')$ for $R : P(\pt) \to \UU$ defined by
   \[
-    R(a') \defeq \sum_{h : \prod_{x:X} a =^A_{s^Z_x} a'} \prod_{x:X} h(f(x)) =  g_x(p \cto h(x)).
+    R_p(a') \defeq \sum_{h : \prod_{x:X} a =^A_{s^\pt_x} a'} \prod_{x:X} h(f(x)) =  g_x(p \cto h(x)).
   \]
-  Thus, to show that $Q_p(\zet,s)$ is contractible,
+  Thus, to show that $Q_p(\pt)$ is contractible,
   it suffices to define an equivalence
   \[
-    \varphi_p : R(p) \xrightarrow{\sim}{} (a = p)
+    \varphi_{a'} : R_p(a') \xrightarrow{\sim}{} (a = a')
   \]
-  for each $p : P(\pt)$.
+  for each $a' : A(\pt)$.
   We again invoke \cref{thm:integers-univ-symm},
-  this time with the family $S_p : \zet \to \UU$ given by $S_p(z) \defeq (a =^A_{s^\pt_z} p)$
-  and the equivalences $g'_p : \prod_{z:\zet} S_p(z)\equiv S_p(z+1)$ given by
-  $g'_p(z) \defeq g_z(p_\Zloop \cto ({-}))$.
+  this time with the family $S_{a'} : \zet \to \UU$ given by $S_{a'}(z) \defeq (a =^A_{s^\pt_z} {a'})$
+  and the equivalences $g'_{a'} : \prod_{z:\zet} S_{a'}(z)\equiv S_{a'}(z+1)$ given by
+  $g'_{a'}(z) \defeq g_z(p \cto ({-}))$.
 \end{proof}
 
 \begin{figure}
@@ -599,9 +608,7 @@ Recall that $A:\TorZ\to\UU$, $a:A(\pt)$ and $p: a=^A_\Zloop a$.
    \matrix (m) 
    [matrix of math nodes, row sep=2em, column sep=2em, ampersand replacement=\&]
     {
-\sum\limits_{a' : P(Z)}
-\sum\limits_{h : \prod\limits_{x:X} a =^A_{s^Z_x} a'} 
-\prod\limits_{x:X} h(f(x)) = g_x(p \cto h(x))\&       \& A(X)\\
+\sum\limits_{a':A(Z)} R_p(a')  \&       \& A(Z)\\
 \\
    \& \TorZ \& \\};
  
