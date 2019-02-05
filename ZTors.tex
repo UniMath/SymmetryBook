@@ -487,69 +487,23 @@ and hence this side simplifies to a reflexivity path of
 the correct type, as $\tilde c_p(X,x)$ has type $a=c_p(X)$.
 \end{proof}
 
-\begin{lemma}\label{lem:TBN}
-The following equations are well-typed and true:
-\[
-(a,n\mapsto p^{n-1}) = \Zloop_*\, (a,n\mapsto p^n) = (a,n\mapsto p^n).
-\]
-\end{lemma}
-\begin{proof}
-We have $\apd{\hat{p}}(\Zloop) : \Zloop_*\,\hat{p}(\pt) = \hat{p}(\pt)$,
-and $\hat{p}(\pt) \jdeq (a,n\mapsto p^n)$. This proves the second equation.
-The first equation follows by a careful analysis of the type families
-in which the transport takes place. In constant type families, transport
-is the identity function. In the type family $X\mapsto (X\to a=a)$,
-the transport along $ua(s)$ amounts to precomposition with $s^{-1}$,
-which proves the first equation.
-\end{proof}
-
-For the following lemma we once more 
-invoke \cite[Theorem 2.7.2]{hottbook}, in particular
-the equivalence $pair^=$ and its inverse $f$ from the proof.
-
-\begin{lemma}\label{lem:TBN}
-For all $q:(a,n\mapsto p^{n-1}) = (a,n\mapsto p^n)$ we have $q=pair^=(p,!)$.
-\end{lemma}
-\begin{proof}
-The first component of $f(q)$ is a path $p':a=a$,
-and the second component is a path 
-$p'_*\, (n\mapsto p^{n-1}) = (a,n\mapsto p^n)$.
-Again we must be careful about the type family in which the
-transport takes place. This is the type
-family $x\mapsto \zet\to a=x$. 
-This means the transport along $p'$ is composition with $p'$ on the right.
-Taking $n=0$ yields $p^{-1}\ct p' = \refl{a}$, so $p'=p$.
-It follows that $q=pair^=(p,!)$.
-\end{proof}
-
-Combining several of the previous results with 
-$\bar{p}\jdeq \pi_1 \circ \hat{p}$, and abstracting from the
-parameters, we obtain a recursor for $\TorZ$.
+We apply the above lemma with $X\jdeq Y\jdeq \pt$ and $e\jdeq\Zloop: \pt=\pt$.
+Then we have $e(x)=s(x)=x+1$. We can take $x\defeq 0$ and get by
+the analysis after the proof of \cref{lem:guided-null-hmtps}
+that $\tilde c_p(\pt,1) = p$ and $\tilde c_p(\pt,0) = \refl{a}$.
+It follows that $\ap{c_p} \Zloop = p$ by \cref{lem:ap-c-tilde-c}.
+This means we have achieved our second goal as well.
+We summarize the results in the following recursion principle for $\TorZ$.
+In the next section we will prove an induction principle for $\TorZ$.
 
 \begin{definition}\label{def:TorZrecursor}
-The function $e_A(a,p) \defeq \bar{p}$ has type
+The function $e_A(a,p) \defeq c_p$ as defined in \cref{lem:ap-c-tilde-c} has type
 \[
 e_A : \sum_{a:A}(a=a) \to (\TorZ \to A),
 \]
-plus $e_A(a,p)(\pt) \jdeq \bar{p}(\pt) \jdeq a$ and 
-$\ap{e_A(a,p)}(\Zloop)\jdeq\ap{\bar{p}}(\Zloop) = p$.
+and satisfies $e_A(a,p)(\pt) \jdeq a$ and 
+$\ap{e_A(a,p)}(\Zloop) = p$.
 \end{definition}
-
-REWRITE The above definition is one half of a universal property.
-The other half is showing that $e_A$ is an equivalence.
-The obvious candidate for an inverse is 
-$g\mapsto (g(\pt),\ap{g}(\Zloop))$.
-The homotopy for the roundtrip starting in $\sum_{a:A}(a=a)$
-is precisely the justification of \cref{def:TorZrecursor}.
-The other homotopy amounts to showing
-$e_A(g(\pt),\ap{g}(\Zloop)) = g$, for any $g:\TorZ\to A$.
-We know already that both functions agree in $\pt$,
-and that $\TorZ$ is connected, so that all function values
-are merely equal. This simple argument would suffice if
-$A$ is a set but not in general. We are facing a similar
-problem as was solved in the proof of \cref{lem:guided-null-hmtps}.
-The idea is to go one dimension up with the null homotopies.
-First some auxiliary notations. END REWRITE
 
 \subsection{Induction in $\TorZ$}\label{sec:TorZ-induction}
 
