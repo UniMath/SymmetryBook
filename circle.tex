@@ -1,227 +1,9 @@
 
-%\newcommand{\ev}{\mathrm{ev}}
-\section{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
-The following definitions/exercises/notations/etc is used, but should probably be elsewhere.
-
-\subsection{Request wrt notation}
-\label{sec:requestnotation}
-
-If $f:A\to B$ and $(a,p):f^{-1}(b)$ (for $a:A$, $b:B$ and $p:f(a)=b$), then the function
-$$\mathrm{ad}_p\ap f:(a=a)\to(b=b)$$
-needs a simpler name.  
-I have occasionally sinned and called it $f^=$ (with $p$ implicit).  
-I am now converging to using ``$f^p$'' (superscript since I have needed it in situations with other subscripts).
-
-\subsection{Connected types}
-\label{sec:connectedtypes}
-Recall the definition of a contractible type.  A type is connected essentially by the same definition, with the only difference that we do not have control over a contraction, merely that each point is individually equal to some center.
-\begin{definition}\label{def:connected}
-A type $A$ is \emph{connected} if there is an $a:A$ such that for all $b:B$ the proposition $||a=b||$ is true.  
-\end{definition}
-Note that under this definition, the empty type $\bn{0} $ is not connected, and neither is $\bn{n} $ if $n>1$. However, $\bn{1} $ is connected.
-
-Another way of saying that a type $A$ is connected is to say that the truth-value of a proposition depending on $A$ is constant, a fact which is formalized as follows.
-\footnote{this proof is classical.  Do you object?.   Ulrik \emph{did} object.  
-The only place where I can remember having actually planned to use  this is in \cref{lem:circleisconnected} to show that $S^1$ is connected.  However, that can be replaced by dropping the simplification at the beginning of  \cref{cor:S1groupoid} and use that the $f$ in the proof actually is an equivalence without this. 
-
-\begin{lemma}
-  \label{lem:classicalconnected}
-  A type $A$ is connected if and only if the function 
-$$c:\bn{2} \to(A\to\bn{2} )$$ defined by $c(x)(a)=x$ for $x:\bn{2} $ and $a:A$ 
-%to the constant function with value $x$ 
-is an equivalence. 
-%$||A||%\sum{a,b:A}||a=b||=\bn{1} $.  
-\end{lemma}
-  \begin{proof}    
-    Assume $A$ is connected.  Let $a:A$ be so that for every $b:A$, then $||a=_Ab||$ is true.  If $f:A\to\bn{2} $, then for every $b:A$ we get that $||f(a)=f(b)||$, but since $\bn{2} $ is a set, we get that $f(a)=f(b)$.  Hence, any function $f$ is constant and so $c$ is an equivalence.
-
-Conversely, assume that $c$ is an equivalence.  Then $A$ is nonempty.  Let $a:A$ and let $f:A\to \bn{2} =\bool$ be defined by $f(b)\defequi||a=b||$.  Since $c$ is an equivalence and $f(a)$ is true, we get that $f(b)$ is true for all $b$.   
-  \end{proof}
-}
-
- As a matter of fact, if $A$ has an element $a$, then $A$ is connected if and only if for all $b:A$ the identity type $a=_Ab$ is inhabited, essentially because if $f\colon A\to\bn{2} $ an equality $a=_Ab$ forces $f(a)=_{\bn{2} }f(b)$.  So, a connected type is one that can't be ``torn apart''.  
-\begin{definition}
-    If $A$ is a type and $a:A$, then the \emph{component of $a$ in $A$} is the type
-$$A_{(a)}\defequi \sum_{b:A}||a=b||.$$
-\end{definition}
-\begin{xca}
-  Prove that the component of $a$ in $A$ is connected.  
-
- [\footnote{This tries to say that, nonfunctorially, a space is the disjoint union of its components.  Don't think we need it so it can propably be thrown away.}Assuming the appropriate form of axiom of choice \footnote{someone insert our choice}, prove that the path components define a family $A\to\UU$ factoring as $A\to||A||$ making sense of the equation ``$||A=\sum_{[a]:||A||}A_{[a]}||$''.]
-\end{xca}
-\begin{xca}\label{xca:essentiallysmall} \footnote{Some version of this will probably be needed.  It won't be used in any cases where functoriality is needed.}
-  Let $\UU\subseteq\UU_1$ be universes and let $A:\UU_1$ so that $||A||$ is in $\UU$ and for all $a,b:A$ we have that $(a=_Ab):\UU$.  Then $A$ is \emph{essentially small}, \ie there is an equivalence (in $\UU_1$) to a type in $\UU$.  
-
-Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\cref{def:finiteset}) is essentially small, and more generally that if $S$ is a set, then the component $\Set_{(S)}$ is essentially small.  
-\end{xca}
-\cref{xca:essentiallysmall} has the consequence that in many cases types and essentially small types can be used interchangeably.  Where this may clutter the notation we will gloss over this distinction.
-
-\subsection{Pointed types}
-\label{sec:poitedtypes}
-\begin{definition}\label{def:pointedtypes}
-  A \emph{pointed type} is a pair $(A,a)$ where $A$ is a type and $a$ is an element of $A$, so that the (large) \emph{type of pointed types} is
-$$\UU_*=\sum_{A:\UU}A.$$
-Given a type $A$ we let $A_+$ be the pointed type you get by adding an element: $A_+\defequi(A\coprod\true,\inr{\triv})$, and given a pointed type $B=(A,a)$, the \emph{underlying type} is $B_\div\defequi A$, and the \emph{base point} is $\pt_B=a$ (so that $B\oldequiv (B_\div,\pt_B)$).  
-
-If $(A,a)$ and $(A',a')$ are pointed types,  \emph{pointed map} from  $(A,a)$ to $(A',a')$ is a map $f:A\to A'$ together with an element $p:f(a)=a'$.  In other words, the \emph{type of pointed maps} from a pointed type $B$ to another $B'$ is
-$$(B\to_*B')=\sum_{f:B_\div\to B'{}_\div}f(\pt_B)=\pt_{B'}.$$
-\end{definition}
-\begin{remark}
-  It is customary to be sloppy regarding the distinction between $B$ and $B_\div$  when there is no chance for confusion; for instance, if $B$ is a pointed type ``$b:B$'' is taken to mean $b:B_\div$, and a type family $B_\div\to\UU$ will often be referred to as ``$B\to\UU$''.
-\end{remark}
-
-\begin{xca}\label{xca:plusforgetadjoint}
-  If $A$ is a type and $B$ is a pointed type, prove that $A\to B_\div$ is equivalent to $A_+\to_*B$.
-\end{xca}
-\begin{xca}\label{xca:freemaps}
-  Let $A$ be a pointed type and $B$ a type.  Show that the projection  
-$$\mathrm{pr}_2:\sum_{b:B}(A\to_*(B,b))\to (A_\div\to B)$$
-given by $\mathrm{pr}_2(b,f,p)=f$ (for $b:B$, $f:A_\div\to B$ and $p:f(\pt_A)=b$) is an equivalence.
-Hint: note that 
-$$\sum_{b:B}(A\to_*(B,b))\oldequiv \sum_{b:B}\sum_{f:A_\div\to B}f(\pt_A)=b$$ is equivalent to $\sum_{f:A_\div\to B}\sum_{b:B}f(\pt_A)=b$.
-%Hint: show that the fiber $\sum_{b:B}\sum_{g:A_\div\to B}\sum_{p:g(\pt_A)=b}f=g$ over $f:A_\div\to B$ is equivalent to $\sum_{b:B}f(\pt_A)=b$ which is contractible.
-\end{xca}
-
-
-\footnote{This is going to be deleted as soon as the new version in the reinterpretation of the circle is stable.\tiny
-\subsection{Equivalences and coverings of connected types}
-\label{sec:eqconntypes}
-
-\begin{lemma}
-  \label{lem:eqandcovofconntypes}
-  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function and let $q:f(x_0)=_Yf(x_1)$. Let 
-    $$%f^=_{x_0,x_1}
-\ap f:(x_0=_Xx_1)\to (f(x_0)=_Yf(x_1))$$
-be the function of \cref{def:apd} induced by $f$.  Then the following types are equivalent
-  \begin{enumerate}
-  \item the preimage of $q$ of $\ap f$,  
-  \item $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ and
-  \item $\sum_{p:x_0=x_1}q=\ap f(p)$.
-  \end{enumerate}
-If in addition $X$ and $Y$ are connected, then
-\begin{enumerate}
-\item $f$ is an equivalence if and only $\ap f%f^=_{x_0,x_1}
-$ is an equivalence and
-\item $f$ is a covering if and only if  $\ap f%^=_{x_0,x_1}
-$ is an injection.
-\end{enumerate}
-
-\end{lemma}
-\begin{proof}
-  Steal and adapt the one below (and then delete the below).
-\end{proof}
-
-\begin{lemma}\label{lem:eqofconntypes}\footnote{
-%The argument for a general group and the torsors over its abstract group is VERY similar.  
-Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread}
-  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is an equivalence if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is.\footnote{note to self: try to be consistent in writing equalities with right variance (as I hope I have managed to do here)}
-\end{lemma}
-\begin{proof}
-  If $f$ is an equivalence, it follows automatically that the function of identity types is, so we concentrate on the other implication and assume the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an equivalence.  We want to show that all fibers of $f$ are contractible, but since $Y$ is connected it is enough to consider the fiber $f^{-1}(y_0)\defequi\sum_{x:X}y_0=f(x)$ over $y_0\defequi f(x_0)$.  
-
-Consider the induced map $Pf$ from $\sum_{x:X}x_0=x$ to $\sum_{y:Y}y_0=y$.  Its fiber over $(y_0,\refl{y_0})$ is 
-$$(Pf)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a map of contractible types.  We see that the projection $(Pf)^{-1}(y_0,\refl{y_0})\to f^{-1}(y_0)$ is an equivalence once we notice that the fiber over $(x_1,q:y_0=f(x_1)) $ is equivalent to the fiber $\sum_{p:x_0=x_1}q=f(p)$ over $q$ of the induced function $x_0=x_1$ to $y_0=f(x_1)$.
-\end{proof}
-\begin{lemma}
-  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
-\end{lemma}
 
 
 
-\subsection{Negative numbers}
-This is to be deleted when integers are stable
-%\label{sec:negativenumbers}
-
- \begin{example}%\label{ex:orbitofanelement}
-   Given a pointed type $a:A$ and an element $g: a=_Aa$ we can iterate $g$ any number of times to get a (potentially) new element in $a=_Aa$. More precisely, for $n:\NN$ we define $g^n:a=_Aa$ by declaring that $g^0=\refl a$ and $g^{n+1}=\trans{}_{a,a,a}(g^n)(g)$.  We can also give meaning to $g^{-n}$ by setting it equal to $(\symm{}_{a,a}(g)^n$ (prove that $g^{-n}=(g^n)^{-1}$ and that $g^a\cdot g^b=g^{a+b}$).  \footnote{come back to this example in conjuction with $S^1$, show how to get it as an abstract group, connect it to orbits.}
-
-Note that we can have that $g^n=g^m$ even if $m$ and $n$ are different.  For instance, in $\Sigma_2=\aut_{\fin_2}(\bn{2} )$, consider the element $p:\bn{2} =\bn{2} $ defined by $p(0)=1$ and $p(1)=2$.  Then $p^2(0)=p(1)=0$ and $p^2(1)=p(0)=1$, so that $p^2=e=p^0$.
-   \end{example}
-This example tells us that if we want to start counting symmetries we should extend our type $\NN$ of natural numbers to include negatives.  Rather than ``adjoining negatives'' we do as we do when we define the rationals: heuristically, an integer is the set of pairs $(m,n)$ of natural numbers, subject to the relation that $(m,n)=(m',n')$ if $m+n'=m'+n$.\footnote{picture}.  If $m\geq n$, then $(m,n)=(m-n,0)$ and if $m\leq n$, then $(m,n)=(0,n-m)$.  We include the natural numbers as classes of the form $(m,0)$ and call the ones of the form $(0,n)$ ``negative numbers''.  The formal definition is as follows.
-\begin{definition}
-  %\label{def:zet}
-\footnote{To the one who ports: I \emph{would} have preferred to define $\zet$ as a set quotient of $\NN\times\NN$, but I hoped we could avoid the book discussion (257).  A price is paid when defining the successor.  Given the disclaimer following the formal definition, it is safe to change the definition if you like}
-  The \emph{set of integers} is the set
-$$\zet\defequi \sum_{(m,n):\NN\times\NN}(r(m,n)=_{\NN\times\NN}(m,n)),$$
-where $r:\NN\times\NN\to\NN\times\NN$ is given by
-$$r(m,n)\defequi
-\begin{cases}
-  (m-n,0)&\text{if $m\geq n$}\\
-  (0,n-m)&\text{otherwise.}
-\end{cases}
-$$
-We define the \emph{standard inclusion} 
-$$i:\NN\to\zet$$ by $i(m)=((m,0)\refl {(m,0)})$ (makes sense since $r(m,0)\defequi(m,0)$), the \emph{negative inclusion} $-:\NN\to\zet$ by $-n=((0,n),\refl{(0,n)})$ and the quotient $q:\NN\times\NN\to\zet$ by $q(m,n)=(r(m,n),\refl{r(m,n)})$ (makes sense since $r(r(m,n))\oldequiv r(m,n)$).  
-
-The successor $s:\zet=\zet$ is defined through univalence from $S\colon\NN\times\NN\to\NN\times\NN$ with $S(i(n))=i(S(n))$  and $S(-(Sn))=-n$ for $n:\NN$ (check that $S$ is an equivalence: ``any integer is the successor of exactly one integer'').
-\end{definition}
-
-Not wishing to mystify things more than necessary, we will refer to $i(n):\zet$ for $n:\NN$ as ``$n:\zet$'', so that any element of $\zet$ is ``plus or minus a natural number'', dividing the non-zero integers into the positive and negative integers.  We extend the order relation by saying that positive integers are greater than negative integes and by saying that $-m\leq -n$ if $n\leq m$ for $m,n:\NN$.
-}%endfootnote (Negative integers)
-
-% \subsubsection{Equivalences}
-% \label{sec:equivalences}
-% Two types are equivalent if you can freely translate back and forth between them: 
-% \begin{definition}
-%   Let $A$ and $B$ be types.  The type of \emph{equivalences} from $A$ to $B$ is
-% $$\Eq(A,B)\defequi\sum_{f: A\to B}\left(\sum_{g:B\to A}\prod_{a:A}g(f(a))=a\right)\times\left(\sum_{h:B\to A}\prod_{b:B}f(h(b))=b\right).
-% $$
-% \end{definition}
-% \begin{remark}
-%   You recognize the spirit of ``inverse function'' in the definition of equivalences: an equivalence is a function $f:A\to B$ which has a $g:B\to A$ so that for all $a:A$ we have $g(f(a))=a$ and also an $h:B\to A$ so that for all $b:B$ we have that $f(h(b))=b$.  We will see in Lemma~\ref{lem:leftinvisrightinv} that this forces $g$ and $h$ to be equal, but it is technically convenient not to insist on this in the definition itself.  We refer to $g$ as a \emph{left inverse} of $f$ and $h$ as a \emph{right inverse} of $f$.
-% \end{remark}
-
-
-% \begin{lemma}
-%   Given $f\colon A\to B$, the type of left inverses of $f$, 
-% $$\sum_{g:B\to A}\prod_{a:A}g(f(a))=a,$$ is a proposition.  Consequently, the projection $\Eq(A,B)\to (A\to B)$ is a monomorphism.
-% \end{lemma}
-% \begin{proof}
-%   ((write)) 4.2.9
-% \end{proof}
-% \begin{remark}
-%   In view of this result, we will say that $f:A\to B$ \emph{is an equivalence from $A$ to $B$} if it is the projection of an equivalence from $A$ to $B$.  Occasionally the following alternative notation is more convenient:
-% $$(A\simeq B)\defequi\Eq(A,B),$$
-% and ocasionally we'll be sloppy and write $f:A\simeq B$ instead of the actual tuple $(f,(g,p),(h,q))$, hiding the (unique) choice proving that we actually are talking about an equivalence. 
-% \end{remark}
-
-% \begin{lemma}\label{lem:leftinvisrightinv}
-%   The left and right inverses of an equivalence are equal.\footnote{check compatibility of notation and agree whether the carefree language is ok}
-% \end{lemma}
-% \begin{proof}
-%   Let $(f,(g,p),(h,q)):\Eq(A,B)$. Then, for all $b:B$ we have $g(q_b):g(f(h(b))=g(b)$,  and $p_{h(b)}:g(f(h(b)))=h(b)$, and so, using symmetry and transitivity of the identity type, we have that $g(b)=h(b)$. 
-% \end{proof}
-% \begin{example}
-%   If $A$ is a type, then the identity map $\id_A:A\to A$ (given by $\id_A(a)=a$) is an equivalence: it is its own (left and right) inverse, with $\refl a:\id_A(\id_A(a))=a$ as witness(es).  
-% \end{example}
-
-
-% \begin{remark}
-%   Inspired by sets, one can think of another possible definition of equivalence: namely a function $f:A\to B$ is a bijection if it is one-to-one and onto.  Spelling this out in detail, it means that for evey $b:B$ there is \emph{exactly one} $a:A$ such that $f(a)=b$.  The inverse of $f$ is then constructed by sending $b:B$ to the unique $a:A$ with $f(a)=b$.  The set of $a:A$ with $f(a)=b$ is called the ``preimage'' or ``fiber'' $f^{-1}(b)$ over $b$, and the condition then reads that ``for every $b:B$ the fiber over $b$ contains exactly one element''.  This works in our setting as well.  
-% \end{remark}
-% We must first transcribe these notions to our setting.
-% \begin{definition}
-%   The \emph{fiber} of a function $f:A\to B$ and $b:B$ over an element $b:B$ is the type
-% $$f^{-1}(b)=\sum_{a:A}f(a)=b.$$
-% The type of \emph{contractions} of a type $A$ is
-% $$\iscontr(A)\defequi\sum_{a:A}\prod_{x:A}a=x.$$
-% \end{definition}
-% Note that an element in $\iscontr(A)$ consists of a point $a:A$ and for every $x:A$ a $p_x:a=x$, that is, a proof of the assertion that all elements of $A$ are equal to $a$.  
-
-% If $f:A\to B$ is a function of types, we say that $f$ i a \emph{weak equivalence} if for every $b:B$ there is an $a:A$ such that for all $x:A$ with $f(x)=b$ we have a $p_x:a=x$.  More precisely:
-
-
-% \begin{definition}
-%   If $A$ and $B$ are types, the type of \emph{weak equivalences} from $A$ to $B$ is
-% $$\wEq(A,B)=\sum_{f:A\to B}\prod_{b:B}\sum_{a:A}\prod_{x:A}
-% $$
-% \end{definition}
-
-
-
-
-\section{The circle (NOW it starts)}
-\label{sec:sec:circle}
+%\section{The circle (NOW it starts)}
+\label{sec:sec:circle}\footnote{the desiderata section is moved to the end of the chapter.  There is still some stuff that needs to be ported}
 An enormously effective principle in mathematics is that when you want to study a certain phenomenon you should search for a single type that captures this phenomenon.  Here are two examples
 \begin{enumerate}
 \item The contractible type $\bn 1$ has the property that given \emph{any} type $A$ a function $\bn 1\to A$ provides exactly the same information as picking an element in $A$: the function $A\to (\bn 1\to A)$ sending $a:A$ to the constant function with value $a$ is an equivalence, \ie 
@@ -613,7 +395,7 @@ Essentially it is our version of ``a group homomorphism is an isomorphism iff it
   
 
  Its fiber over $(y_0,\refl{y_0})$ is 
-$$(P_f)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a map of contractible types.  
+$$(P_f)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a function of contractible types.  
 \end{proof}
 \begin{lemma}
   Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
@@ -907,3 +689,225 @@ In hindsight we can give concrete descriptions of all the symmetries: for $i=0,\
   \begin{remark}
     Regarding the deck transformations of the $m$-fold covering of the circle, recall the picture we tried to evoke in \cref{rem:finitecoveringsofS1}.  How can I move my circle with $m$ evenly spaced marked points  (which we now call $0,1,\dots, m-1$ instead of $1,2,\dots 12$ since it fits better with future applications) without disturbing the projection down to the circle (sending all the marked points to $0$).  I can move the marked points, but a marked point has to be sent to a marked point (otherwise the projection down to the circle would be disturbed).  Let's say that mark $0$ is sent to mark $4$.  However, since we have to preserve the projection down to the circle, the arc from $0$ to $1$ must then be sent to the arc from $4$ to $5$.  Continuing in this fashion, we see that we describe a certain rotation of the circle.  Varying $4$ between $0$ and $m-1$ we see that there are exactly $m$ different symmetries of the $m$-fold covering.  Furthemore they are all rotations of the circle by an angle which is a multiple of $2\pi/m$.
   \end{remark}
+
+
+{\color{blue}\small\section{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
+The following definitions/exercises/notations/etc is used freely, but should probably be elsewhere.
+
+\subsection{Request wrt notation}
+\label{sec:requestnotation}
+
+If $f:A\to B$ and $(a,p):f^{-1}(b)$ (for $a:A$, $b:B$ and $p:f(a)=b$), then the function
+$$\mathrm{ad}_p\ap f:(a=a)\to(b=b)$$
+needs a simpler name.  
+I have occasionally sinned and called it $f^=$ (with $p$ implicit).  
+I am now converging to using ``$f^p$'' (superscript since I have needed it in situations with other subscripts).
+
+\subsection{Connected types}
+\label{sec:connectedtypes}
+Recall the definition of a contractible type.  A type is connected essentially by the same definition, with the only difference that we do not have control over a contraction, merely that each point is individually equal to some center.
+\begin{definition}\label{def:connected}
+A type $A$ is \emph{connected} if there is an $a:A$ such that for all $b:B$ the proposition $||a=b||$ is true.  
+\end{definition}
+Note that under this definition, the empty type $\bn{0} $ is not connected, and neither is $\bn{n} $ if $n>1$. However, $\bn{1} $ is connected.
+
+
+% \footnote{TBdeleted  
+% The only place where I can remember having actually planned to use  this is in \cref{lem:circleisconnected} to show that $S^1$ is connected.  However, that can be replaced by dropping the simplification at the beginning of  \cref{cor:S1groupoid} and use that the $f$ in the proof actually is an equivalence without this. 
+
+% Another way of saying that a type $A$ is connected is to say that the truth-value of a proposition depending on $A$ is constant, a fact which is formalized as follows.
+
+% \begin{lemma}
+%   \label{lem:classicalconnected}
+%   A type $A$ is connected if and only if the function 
+% $$c:\bn{2} \to(A\to\bn{2} )$$ defined by $c(x)(a)=x$ for $x:\bn{2} $ and $a:A$ 
+% %to the constant function with value $x$ 
+% is an equivalence. 
+% %$||A||%\sum{a,b:A}||a=b||=\bn{1} $.  
+% \end{lemma}
+%   \begin{proof}    
+%     Assume $A$ is connected.  Let $a:A$ be so that for every $b:A$, then $||a=_Ab||$ is true.  If $f:A\to\bn{2} $, then for every $b:A$ we get that $||f(a)=f(b)||$, but since $\bn{2} $ is a set, we get that $f(a)=f(b)$.  Hence, any function $f$ is constant and so $c$ is an equivalence.
+
+% Conversely, assume that $c$ is an equivalence.  Then $A$ is nonempty.  Let $a:A$ and let $f:A\to \bn{2} =\bool$ be defined by $f(b)\defequi||a=b||$.  Since $c$ is an equivalence and $f(a)$ is true, we get that $f(b)$ is true for all $b$.   
+%   \end{proof}
+% As a matter of fact, if $A$ has an element $a$, then $A$ is connected if and only if for all $b:A$ the identity type $a=_Ab$ is inhabited, essentially because if $f\colon A\to\bn{2} $ an equality $a=_Ab$ forces $f(a)=_{\bn{2} }f(b)$.  So, a connected type is one that can't be ``torn apart''.  }
+
+ 
+\begin{definition}
+    If $A$ is a type and $a:A$, then the \emph{component of $a$ in $A$} is the type
+$$A_{(a)}\defequi \sum_{b:A}||a=b||.$$
+\end{definition}
+\begin{xca}
+  Prove that the component of $a$ in $A$ is connected.  
+
+ [\footnote{This tries to say that, nonfunctorially, a space is the disjoint union of its components.  Don't think we need it so it can probably be thrown away.}Assuming the appropriate form of axiom of choice \footnote{someone insert our choice}, prove that the path components define a family $A\to\UU$ factoring as $A\to||A||$ making sense of the equation ``$||A=\sum_{[a]:||A||}A_{[a]}||$''.]
+\end{xca}
+\begin{xca}\label{xca:essentiallysmall} \footnote{Some version of this will probably be needed.  It won't be used in any cases where functoriality is needed.}
+  Let $\UU\subseteq\UU_1$ be universes and let $A:\UU_1$ so that $||A||$ is in $\UU$ and for all $a,b:A$ we have that $(a=_Ab):\UU$.  Then $A$ is \emph{essentially small}, \ie there is an equivalence (in $\UU_1$) to a type in $\UU$.  
+
+Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\cref{def:finiteset}) is essentially small, and more generally that if $S$ is a set, then the component $\Set_{(S)}$ is essentially small.  
+\end{xca}
+\cref{xca:essentiallysmall} has the consequence that in many cases types and essentially small types can be used interchangeably.  Where this may clutter the notation we will gloss over this distinction.
+
+\subsection{Pointed types}
+\label{sec:poitedtypes}
+\begin{definition}\label{def:pointedtypes}
+  A \emph{pointed type} is a pair $(A,a)$ where $A$ is a type and $a$ is an element of $A$, so that the (large) \emph{type of pointed types} is
+$$\UU_*=\sum_{A:\UU}A.$$
+Given a type $A$ we let $A_+$ be the pointed type you get by adding an element: $A_+\defequi(A\coprod\true,\inr{\triv})$, and given a pointed type $B=(A,a)$, the \emph{underlying type} is $B_\div\defequi A$, and the \emph{base point} is $\pt_B=a$ (so that $B\oldequiv (B_\div,\pt_B)$).  
+
+If $(A,a)$ and $(A',a')$ are pointed types,  \emph{pointed function} from  $(A,a)$ to $(A',a')$ is a function $f:A\to A'$ together with an element $p:f(a)=a'$.  In other words, the \emph{type of pointed functions} from a pointed type $B$ to another $B'$ is
+$$(B\to_*B')=\sum_{f:B_\div\to B'{}_\div}f(\pt_B)=\pt_{B'}.$$
+\end{definition}
+\begin{remark}
+  It is customary to be sloppy regarding the distinction between $B$ and $B_\div$  when there is no chance for confusion; for instance, if $B$ is a pointed type ``$b:B$'' is taken to mean $b:B_\div$, and a type family $B_\div\to\UU$ will often be referred to as ``$B\to\UU$''.
+\end{remark}
+
+\begin{xca}\label{xca:plusforgetadjoint}
+  If $A$ is a type and $B$ is a pointed type, prove that $A\to B_\div$ is equivalent to $A_+\to_*B$.
+\end{xca}
+\begin{xca}\label{xca:freemaps}
+  Let $A$ be a pointed type and $B$ a type.  Show that the projection  
+$$\mathrm{pr}_2:\sum_{b:B}(A\to_*(B,b))\to (A_\div\to B)$$
+given by $\mathrm{pr}_2(b,f,p)=f$ (for $b:B$, $f:A_\div\to B$ and $p:f(\pt_A)=b$) is an equivalence.
+Hint: note that 
+$$\sum_{b:B}(A\to_*(B,b))\oldequiv \sum_{b:B}\sum_{f:A_\div\to B}f(\pt_A)=b$$ is equivalent to $\sum_{f:A_\div\to B}\sum_{b:B}f(\pt_A)=b$.
+%Hint: show that the fiber $\sum_{b:B}\sum_{g:A_\div\to B}\sum_{p:g(\pt_A)=b}f=g$ over $f:A_\div\to B$ is equivalent to $\sum_{b:B}f(\pt_A)=b$ which is contractible.
+\end{xca}
+
+
+\footnote{This is going to be deleted as soon as the new version in the reinterpretation of the circle is stable.\tiny
+\subsection{Equivalences and coverings of connected types}
+\label{sec:eqconntypes}
+
+\begin{lemma}
+  \label{lem:eqandcovofconntypes}
+  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function and let $q:f(x_0)=_Yf(x_1)$. Let 
+    $$%f^=_{x_0,x_1}
+\ap f:(x_0=_Xx_1)\to (f(x_0)=_Yf(x_1))$$
+be the function of \cref{def:apd} induced by $f$.  Then the following types are equivalent
+  \begin{enumerate}
+  \item the preimage of $q$ of $\ap f$,  
+  \item $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ and
+  \item $\sum_{p:x_0=x_1}q=\ap f(p)$.
+  \end{enumerate}
+If in addition $X$ and $Y$ are connected, then
+\begin{enumerate}
+\item $f$ is an equivalence if and only $\ap f%f^=_{x_0,x_1}
+$ is an equivalence and
+\item $f$ is a covering if and only if  $\ap f%^=_{x_0,x_1}
+$ is an injection.
+\end{enumerate}
+
+\end{lemma}
+\begin{proof}
+  Steal and adapt the one below (and then delete the below).
+\end{proof}
+
+\begin{lemma}\label{lem:eqofconntypes}\footnote{
+%The argument for a general group and the torsors over its abstract group is VERY similar.  
+Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is an equivalence if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is.\footnote{note to self: try to be consistent in writing equalities with right variance (as I hope I have managed to do here)}
+\end{lemma}
+\begin{proof}
+  If $f$ is an equivalence, it follows automatically that the function of identity types is, so we concentrate on the other implication and assume the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an equivalence.  We want to show that all fibers of $f$ are contractible, but since $Y$ is connected it is enough to consider the fiber $f^{-1}(y_0)\defequi\sum_{x:X}y_0=f(x)$ over $y_0\defequi f(x_0)$.  
+
+Consider the induced function $Pf$ from $\sum_{x:X}x_0=x$ to $\sum_{y:Y}y_0=y$.  Its fiber over $(y_0,\refl{y_0})$ is 
+$$(Pf)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a function of contractible types.  We see that the projection $(Pf)^{-1}(y_0,\refl{y_0})\to f^{-1}(y_0)$ is an equivalence once we notice that the fiber over $(x_1,q:y_0=f(x_1)) $ is equivalent to the fiber $\sum_{p:x_0=x_1}q=f(p)$ over $q$ of the induced function $x_0=x_1$ to $y_0=f(x_1)$.
+\end{proof}
+\begin{lemma}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
+\end{lemma}
+
+
+
+\subsection{Negative numbers}
+This is to be deleted when integers are stable
+%\label{sec:negativenumbers}
+
+ \begin{example}%\label{ex:orbitofanelement}
+   Given a pointed type $a:A$ and an element $g: a=_Aa$ we can iterate $g$ any number of times to get a (potentially) new element in $a=_Aa$. More precisely, for $n:\NN$ we define $g^n:a=_Aa$ by declaring that $g^0=\refl a$ and $g^{n+1}=\trans{}_{a,a,a}(g^n)(g)$.  We can also give meaning to $g^{-n}$ by setting it equal to $(\symm{}_{a,a}(g)^n$ (prove that $g^{-n}=(g^n)^{-1}$ and that $g^a\cdot g^b=g^{a+b}$).  \footnote{come back to this example in conjuction with $S^1$, show how to get it as an abstract group, connect it to orbits.}
+
+Note that we can have that $g^n=g^m$ even if $m$ and $n$ are different.  For instance, in $\Sigma_2=\aut_{\fin_2}(\bn{2} )$, consider the element $p:\bn{2} =\bn{2} $ defined by $p(0)=1$ and $p(1)=2$.  Then $p^2(0)=p(1)=0$ and $p^2(1)=p(0)=1$, so that $p^2=e=p^0$.
+   \end{example}
+This example tells us that if we want to start counting symmetries we should extend our type $\NN$ of natural numbers to include negatives.  Rather than ``adjoining negatives'' we do as we do when we define the rationals: heuristically, an integer is the set of pairs $(m,n)$ of natural numbers, subject to the relation that $(m,n)=(m',n')$ if $m+n'=m'+n$.\footnote{picture}.  If $m\geq n$, then $(m,n)=(m-n,0)$ and if $m\leq n$, then $(m,n)=(0,n-m)$.  We include the natural numbers as classes of the form $(m,0)$ and call the ones of the form $(0,n)$ ``negative numbers''.  The formal definition is as follows.
+\begin{definition}
+  %\label{def:zet}
+\footnote{To the one who ports: I \emph{would} have preferred to define $\zet$ as a set quotient of $\NN\times\NN$, but I hoped we could avoid the book discussion (257).  A price is paid when defining the successor.  Given the disclaimer following the formal definition, it is safe to change the definition if you like}
+  The \emph{set of integers} is the set
+$$\zet\defequi \sum_{(m,n):\NN\times\NN}(r(m,n)=_{\NN\times\NN}(m,n)),$$
+where $r:\NN\times\NN\to\NN\times\NN$ is given by
+$$r(m,n)\defequi
+\begin{cases}
+  (m-n,0)&\text{if $m\geq n$}\\
+  (0,n-m)&\text{otherwise.}
+\end{cases}
+$$
+We define the \emph{standard inclusion} 
+$$i:\NN\to\zet$$ by $i(m)=((m,0)\refl {(m,0)})$ (makes sense since $r(m,0)\defequi(m,0)$), the \emph{negative inclusion} $-:\NN\to\zet$ by $-n=((0,n),\refl{(0,n)})$ and the quotient $q:\NN\times\NN\to\zet$ by $q(m,n)=(r(m,n),\refl{r(m,n)})$ (makes sense since $r(r(m,n))\oldequiv r(m,n)$).  
+
+The successor $s:\zet=\zet$ is defined through univalence from $S\colon\NN\times\NN\to\NN\times\NN$ with $S(i(n))=i(S(n))$  and $S(-(Sn))=-n$ for $n:\NN$ (check that $S$ is an equivalence: ``any integer is the successor of exactly one integer'').
+\end{definition}
+
+Not wishing to mystify things more than necessary, we will refer to $i(n):\zet$ for $n:\NN$ as ``$n:\zet$'', so that any element of $\zet$ is ``plus or minus a natural number'', dividing the non-zero integers into the positive and negative integers.  We extend the order relation by saying that positive integers are greater than negative integes and by saying that $-m\leq -n$ if $n\leq m$ for $m,n:\NN$.
+}%endfootnote (Negative integers)
+
+% \subsubsection{Equivalences}
+% \label{sec:equivalences}
+% Two types are equivalent if you can freely translate back and forth between them: 
+% \begin{definition}
+%   Let $A$ and $B$ be types.  The type of \emph{equivalences} from $A$ to $B$ is
+% $$\Eq(A,B)\defequi\sum_{f: A\to B}\left(\sum_{g:B\to A}\prod_{a:A}g(f(a))=a\right)\times\left(\sum_{h:B\to A}\prod_{b:B}f(h(b))=b\right).
+% $$
+% \end{definition}
+% \begin{remark}
+%   You recognize the spirit of ``inverse function'' in the definition of equivalences: an equivalence is a function $f:A\to B$ which has a $g:B\to A$ so that for all $a:A$ we have $g(f(a))=a$ and also an $h:B\to A$ so that for all $b:B$ we have that $f(h(b))=b$.  We will see in Lemma~\ref{lem:leftinvisrightinv} that this forces $g$ and $h$ to be equal, but it is technically convenient not to insist on this in the definition itself.  We refer to $g$ as a \emph{left inverse} of $f$ and $h$ as a \emph{right inverse} of $f$.
+% \end{remark}
+
+
+% \begin{lemma}
+%   Given $f\colon A\to B$, the type of left inverses of $f$, 
+% $$\sum_{g:B\to A}\prod_{a:A}g(f(a))=a,$$ is a proposition.  Consequently, the projection $\Eq(A,B)\to (A\to B)$ is a monomorphism.
+% \end{lemma}
+% \begin{proof}
+%   ((write)) 4.2.9
+% \end{proof}
+% \begin{remark}
+%   In view of this result, we will say that $f:A\to B$ \emph{is an equivalence from $A$ to $B$} if it is the projection of an equivalence from $A$ to $B$.  Occasionally the following alternative notation is more convenient:
+% $$(A\simeq B)\defequi\Eq(A,B),$$
+% and ocasionally we'll be sloppy and write $f:A\simeq B$ instead of the actual tuple $(f,(g,p),(h,q))$, hiding the (unique) choice proving that we actually are talking about an equivalence. 
+% \end{remark}
+
+% \begin{lemma}\label{lem:leftinvisrightinv}
+%   The left and right inverses of an equivalence are equal.\footnote{check compatibility of notation and agree whether the carefree language is ok}
+% \end{lemma}
+% \begin{proof}
+%   Let $(f,(g,p),(h,q)):\Eq(A,B)$. Then, for all $b:B$ we have $g(q_b):g(f(h(b))=g(b)$,  and $p_{h(b)}:g(f(h(b)))=h(b)$, and so, using symmetry and transitivity of the identity type, we have that $g(b)=h(b)$. 
+% \end{proof}
+% \begin{example}
+%   If $A$ is a type, then the identity function $\id_A:A\to A$ (given by $\id_A(a)=a$) is an equivalence: it is its own (left and right) inverse, with $\refl a:\id_A(\id_A(a))=a$ as witness(es).  
+% \end{example}
+
+
+% \begin{remark}
+%   Inspired by sets, one can think of another possible definition of equivalence: namely a function $f:A\to B$ is a bijection if it is one-to-one and onto.  Spelling this out in detail, it means that for evey $b:B$ there is \emph{exactly one} $a:A$ such that $f(a)=b$.  The inverse of $f$ is then constructed by sending $b:B$ to the unique $a:A$ with $f(a)=b$.  The set of $a:A$ with $f(a)=b$ is called the ``preimage'' or ``fiber'' $f^{-1}(b)$ over $b$, and the condition then reads that ``for every $b:B$ the fiber over $b$ contains exactly one element''.  This works in our setting as well.  
+% \end{remark}
+% We must first transcribe these notions to our setting.
+% \begin{definition}
+%   The \emph{fiber} of a function $f:A\to B$ and $b:B$ over an element $b:B$ is the type
+% $$f^{-1}(b)=\sum_{a:A}f(a)=b.$$
+% The type of \emph{contractions} of a type $A$ is
+% $$\iscontr(A)\defequi\sum_{a:A}\prod_{x:A}a=x.$$
+% \end{definition}
+% Note that an element in $\iscontr(A)$ consists of a point $a:A$ and for every $x:A$ a $p_x:a=x$, that is, a proof of the assertion that all elements of $A$ are equal to $a$.  
+
+% If $f:A\to B$ is a function of types, we say that $f$ i a \emph{weak equivalence} if for every $b:B$ there is an $a:A$ such that for all $x:A$ with $f(x)=b$ we have a $p_x:a=x$.  More precisely:
+
+
+% \begin{definition}
+%   If $A$ and $B$ are types, the type of \emph{weak equivalences} from $A$ to $B$ is
+% $$\wEq(A,B)=\sum_{f:A\to B}\prod_{b:B}\sum_{a:A}\prod_{x:A}
+% $$
+% \end{definition}
+
+}
