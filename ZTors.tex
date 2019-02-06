@@ -531,7 +531,9 @@ iff $f^n(x)=y$, for all $n:\zet$, by two inductions.)
 For simplicity, we may denote $f^n(x)$ by $x+n$.
 \end{definition}
 
-The following lemma uses that $\Zloop\defeq(ua(s),!,!)$.
+Prefixing $s^Z_x$ by $\Zloop\defeq(ua(s),!,!)$ amounts to
+precomposing the equivalence $e_x$ with $s$,
+and using $f^{n+1}(x)=f^n(x+1)$. Thus we have:
 
 \begin{lemma}\label{lem:loop-s-iterated}
   For every $Z\defeq(X,f,t):\TorZ$, $x:X$ and $n:\zet$, 
@@ -539,11 +541,14 @@ The following lemma uses that $\Zloop\defeq(ua(s),!,!)$.
   $s^Z_{x+1} = \Zloop \ct s^Z_x$. 
 \end{lemma}
 
-\begin{proof}
-Prefixing $s^Z_x$ with $\Zloop$ amounts to
-precomposing the equivalence $e_x$ with $s$,
-and $f^{n+1}(x)=f^n(x+1)$.
-\end{proof}
+Postfixing $s^X_x$ by $e: X=Y$ amounts to
+applying the corresponding equivalence $e: X\to Y$, to be proved
+by induction on $e$. Thus we have:
+
+\begin{lemma}\label{lem:s-X-x-*-e}
+  For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have 
+  $\varepsilon_{e,x} : s^X_x \ct e = s^Y_{e(x)}$.
+\end{lemma}
 
 The following lemmas uses pathovers and their composition, 
 which should be defined somewhere else. 
@@ -602,6 +607,8 @@ where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied t
   $f_{a'}(z) \defeq g_z(p \cto ({-}))$.
 \end{proof}
 
+
+
 \begin{figure}
 \begin{tikzpicture} %\large
    \matrix (m) 
@@ -618,8 +625,27 @@ where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied t
 \draw[->,dotted] (m-3-2) to[bend right=30] node[near end,right]{$c_p$} (m-1-3);
                
 \end{tikzpicture}
-\caption{\label{fig:TorZ-induction}Factoring through a contractible type}
+\caption{\label{fig:TorZ-induction}LET'S HAVE SOMETHING MORE INFORMATIVE}
 \end{figure}
+
+\begin{lemma}\label{lem:apd-c-tilde-c}
+For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have
+$\apd{c_p}(e) = \ldots \tilde c_p(X,x)^{-1}\ct \ldots \ct \tilde c_p(Y,e(x))$.
+\end{lemma}
+\begin{proof}
+The lemma is immediate by induction on $e$.
+We only have to check that the statement is well-typed.
+We have the following typings:
+\begin{align*}
+\apd{c_p}(e) : (c_p(X) =^A_e c_p(Y)) &\jdeq (tr^A_e(c_p(X)) = c_p(Y)),\\
+\tilde c_p(Y,e(x)) :  (a =^A_{s^Y_{e(x)}} c_p(Y))&\jdeq (tr^A_{s^Y_{e(x)}}(a) = c_p(Y))\\
+\tilde c_p(X,x)^{-1} : \ldots & \jdeq (c_p(X) = tr^A_{s^X_x}(a))\\
+\ap{tr^A_e}(\tilde c_p(X,x)^{-1}):\ldots &\jdeq (tr^A_e(c_p(X)) = tr^A_e(tr^A_{s^X_x}(a)))\\
+\end{align*}
+To concatenate the second an the fourth path in order to match the type of (1) we need a
+path $tr^A_e(tr^A_{s^X_x}(a)) = tr^A_{s^Y_{e(x)}}(a)$.
+\end{proof}
+
 
 
 \bibliographystyle{amsplain}
