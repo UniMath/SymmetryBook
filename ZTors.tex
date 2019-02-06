@@ -541,17 +541,8 @@ and using $f^{n+1}(x)=f^n(x+1)$. Thus we have:
   $s^Z_{x+1} = \Zloop \ct s^Z_x$. 
 \end{lemma}
 
-Postfixing $s^X_x$ by $e: X=Y$ amounts to
-applying the corresponding equivalence $e: X\to Y$, to be proved
-by induction on $e$. Thus we have:
-
-\begin{lemma}\label{lem:s-X-x-*-e}
-  For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have 
-  $\varepsilon_{e,x} : s^X_x \ct e = s^Y_{e(x)}$.
-\end{lemma}
-
-The following lemmas uses pathovers and their composition, 
-which should be defined somewhere else. 
+The following lemmas use pathovers and their composition, 
+which should be defined somewhere else.
 
 \begin{lemma}\label{lem:concat-over}
   For every $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, $p_i : a_i = a_{i+1}$ for $i=1,2$, and $q : b_1 =^B_{p_1} b_2$, the
@@ -628,22 +619,37 @@ where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied t
 \caption{\label{fig:TorZ-induction}LET'S HAVE SOMETHING MORE INFORMATIVE}
 \end{figure}
 
+Postfixing $s^X_x$ by $e: X=Y$ amounts to
+applying the corresponding equivalence $e: X\to Y$, to be proved
+by induction on $e$. In evidence:
+
+\begin{lemma}\label{lem:s-X-x-*-e}
+  For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have $s^X_x \ct e = s^Y_{e(x)}$.
+  Thus we have a function $\varepsilon_{e,x} : (s^X_x)^{-1} \ct s^Y_{e(x)} = e$.
+\end{lemma}
+
+
+The following lemma uses pathovers reversal denoted by $\_^{-o}$.
+which should be defined somewhere else.
+
 \begin{lemma}\label{lem:apd-c-tilde-c}
 For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have
-$\apd{c_p}(e) = \ldots \tilde c_p(X,x)^{-1}\ct \ldots \ct \tilde c_p(Y,e(x))$.
+$\apd{c_p}(e) = \overline{\varepsilon_{e,x}}
+(\tilde c_p(X,x)^{-o}\cto \tilde c_p(Y,e(x)))$.
 \end{lemma}
 \begin{proof}
 The lemma is immediate by induction on $e$.
 We only have to check that the statement is well-typed.
-We have the following typings:
+We have the following pathover typings:
 \begin{align*}
-\apd{c_p}(e) : (c_p(X) =^A_e c_p(Y)) &\jdeq (tr^A_e(c_p(X)) = c_p(Y)),\\
-\tilde c_p(Y,e(x)) :  (a =^A_{s^Y_{e(x)}} c_p(Y))&\jdeq (tr^A_{s^Y_{e(x)}}(a) = c_p(Y))\\
-\tilde c_p(X,x)^{-1} : \ldots & \jdeq (c_p(X) = tr^A_{s^X_x}(a))\\
-\ap{tr^A_e}(\tilde c_p(X,x)^{-1}):\ldots &\jdeq (tr^A_e(c_p(X)) = tr^A_e(tr^A_{s^X_x}(a)))\\
+\apd{c_p}(e) &: (c_p(X) =^A_e c_p(Y))\\
+\tilde c_p(Y,e(x)) &:  (a =^A_{s^Y_{e(x)}} c_p(Y))\\
+\tilde c_p(X,x)^{-o} &: (c_p(X) =^A_{(s^X_x)^{-1}} a)\\
+\tilde c_p(X,x)^{-o} \cto c_p(Y,e(x)) &: 
+     (c_p(X) =^A_{(s^X_x)^{-1}\ct s^Y_{e(x)}} c_p(Y))\\
 \end{align*}
-To concatenate the second an the fourth path in order to match the type of (1) we need a
-path $tr^A_e(tr^A_{s^X_x}(a)) = tr^A_{s^Y_{e(x)}}(a)$.
+In order to make ends meet between the first and the fourth typing
+we invoke \cref{lem:s-X-x-*-e} and \cref{lem:pathover-change-path}.
 \end{proof}
 
 
@@ -657,3 +663,12 @@ path $tr^A_e(tr^A_{s^X_x}(a)) = tr^A_{s^Y_{e(x)}}(a)$.
 % latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition")
 % TeX-master: t
 % End:
+OMIT WHEN OBSOLETE
+\begin{align*}
+\apd{c_p}(e) : (c_p(X) =^A_e c_p(Y)) &\jdeq (tr^A_e(c_p(X)) = c_p(Y)),\\
+\tilde c_p(Y,e(x)) :  (a =^A_{s^Y_{e(x)}} c_p(Y))&\jdeq (tr^A_{s^Y_{e(x)}}(a) = c_p(Y))\\
+\tilde c_p(X,x)^{-1} : \ldots & \jdeq (c_p(X) = tr^A_{s^X_x}(a))\\
+\ap{tr^A_e}(\tilde c_p(X,x)^{-1}):\ldots &\jdeq (tr^A_e(c_p(X)) = tr^A_e(tr^A_{s^X_x}(a)))\\
+\end{align*}
+To concatenate the second an the fourth path in order to match the type of (1) we need a
+path $tr^A_e(tr^A_{s^X_x}(a)) = tr^A_{s^Y_{e(x)}}(a)$.
