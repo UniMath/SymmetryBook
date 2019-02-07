@@ -71,6 +71,81 @@ From addition and unary $-$ one can define a binary
 Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 \end{xca}
 
+\section{Pathovers BOOK SECTION?}
+\label{sec:pathovers}
+
+Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2$, and $p : a_1 = a_2$.
+We are interested in identifications of $b_1$ and $b_2$ relative to this data.
+We cannot in general form the type $b_1 = b_2$ as their types may be different.
+There are several ways to solve this problem. One of them is to transport $b_1$ along
+$p$ and form an identity type in $B(a_2)$. Another way would be to consider
+identifications $(a_1,b_1) = (a_2,b_2)$ in $\sum_{x:A} B(x)$ and require that $\fst$
+acting on such identifications is equal to $p$. These two ways are equivalent.
+The latter way has perhaps been the inspiration of the name `pathover'.
+The former way is easier to work with and will be the one we choose here.
+
+\begin{definition}\label{def:pathover}
+Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2$, and $p : a_1 = a_2$.
+A \emph{pathover} from $b_1$ to $b_2$ is an element of the type
+$(b_1 =^B_p b_2) \defeq (\trp_{B,p}(b_1) = b_2)$. 
+Note that $(b_1 =^B_{\refl{a_1}} b_2) \jdeq (b_1 =b_2)$ 
+in the type $B(a_1)\jdeq B(a_2)$.
+\end{definition}
+
+Many of the operations on paths have their counterpart for pathovers.
+We define the unit pathover, composition of pathovers, and pathover reversal.
+
+\begin{definition}\label{def:pathoveralgebra}
+Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, and 
+$p_i : a_i = a_{i+1}$ for $i=1,2$. We define:
+\begin{enumerate}
+\item The \emph{unit pathover} $\refl{b_1} : b_1 =^B_{\refl{a_1}} b_1$;
+\item \emph{Pathover composition} $\cto : b_1 =^B_{p_1} b_2 \to
+b_2 =^B_{p_2} b_3 \to b_1 =^B_{p_1 \ct p_2} b_3$, defined by induction
+on first $p_2$ and then $r: b_2 = b_3$, by
+setting $q \cto \refl{b_2} \defeq q$ for all $q: b_1 =^B_{p_1} b_2$;
+\item \emph{Pathover reversal} $({-})^{-o} : b_1 =^B_{p_1} b_2 \to
+b_2 =^B_{(p_1)^{-1}} b_1$, defined by induction on first $p_1$ and then $r: b_1 = b_2$, by
+setting $\refloi{b_1} \defeq \refl{b_1}$.
+\end{enumerate}
+\end{definition}
+
+The operations of pathover algebra satisfy many of the laws of path algebra,
+but only after some modification. For example, we have
+associativity of composition for paths: $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
+We don't in general have $p_1\ct(p_2\ct p_3) \jdeq (p_1\ct p_2)\ct p_3$.
+If $b_1 =^B_{p_1} b_2 =^B_{p_2} b_3 =^B_{p_3} b_4$, then there are
+two ways to associate, leading to two pathover types:
+$b_1 =^B_{p_1\ct (p_2\ct p_3)} b_4$ and $b_1 =^B_{(p_1\ct p_2) \ct p_3} b_4$.
+These two types are in general not definitionally equal,
+but can easily be proved to be equivalent. Let's call the
+equivalence $\varepsilon$. So if we have pathovers $q_i : b_i =^B_{p_i} b_{i+1}$
+for $i=1,2,3$ we get $\varepsilon(q_1 \cto (q_2 \cto q_3)) = (q_1 \cto q_2)\cto q_3$
+as associativity law. For more information we refer the reader to the
+repositories with formalized proofs. Here we only state two results that
+we will need in the sequel.
+
+\begin{lemma}\label{lem:concat-over}
+  For every $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, $p_i : a_i = a_{i+1}$ for $i=1,2$, and $q : b_1 =^B_{p_1} b_2$, the
+  function
+  \[
+    q \cto ({-}) : (b_2 =^B_{p_2} b_3) \to (b_1 =^B_{p_1\ct p_2} b_3)
+  \]
+  is an equivalence.
+\end{lemma}
+The proof is by induction on first $p_1$, and then on $q$.
+The remaining proof obligation is resolved by an easy equivalence
+correcting for $p_2 = \refl{a_1}\ct p_2$.
+
+\begin{lemma}\label{lem:pathover-change-path}
+  For any $A : \UU$, $B : A \to \UU$, $a_1,a_2 : A$, $b_1 : B\,a_1$, $b_2: B\,a_2$,
+  and paths $p,q:a_1=a_2$, and a $2$-dimensional path $\alpha : p = q$,
+  transport along $\alpha$
+  induces an equivalence $\overline\alpha : (b_1 =^B_p b_2) \equiv (b_1 =^B_q b_2)$.
+\end{lemma}
+The proof is by induction on $\alpha$, after which we need to show that the identity is an equivalence, which is clear.
+
+
 
 \section{Some induction principles for the integers}
 \label{sec:integers-induction}
@@ -540,25 +615,6 @@ and using $f^{n+1}(x)=f^n(x+1)$. Thus we have:
   we have $s^Z_{x+1}(n) = \Zloop \ct s^Z_x(n)$, so actually
   $s^Z_{x+1} = \Zloop \ct s^Z_x$. 
 \end{lemma}
-
-The following lemmas use pathovers and their composition, 
-which should be defined somewhere else.
-
-\begin{lemma}\label{lem:concat-over}
-  For every $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, $p_i : a_i = a_{i+1}$ for $i=1,2$, and $q : b_1 =^B_{p_1} b_2$, the
-  function
-  \[
-    q \cto ({-}) : (b_2 =^B_{p_2} b_3) \to (b_1 =^B_{p_1\ct p_2} b_3)
-  \]
-  is an equivalence.
-\end{lemma}
-\begin{lemma}\label{lem:pathover-change-path}
-  For any $A : \UU$, $B : A \to \UU$, $a_1,a_2 : A$, $b_1 : B\,a_1$, $b_2: B\,a_2$,
-  and paths $p,q:a_1=a_2$, and a $2$-dimensional path $\alpha : p = q$,
-  transport along $\alpha$
-  induces an equivalence $\bar\alpha : (b_1 =^B_p b_2) \equiv (b_1 =^B_q b_2)$.
-\end{lemma}
-The proof is by induction on $\alpha$, after which we need to show that the identity is an equivalence, which is clear.
 
 Now we are ready to derive the induction principle using the same 
 technique as for the recursion principle. We reuse notations as much as
