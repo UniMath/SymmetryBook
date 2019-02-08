@@ -562,7 +562,7 @@ $G\to\abstr(\Sigma_S)$
 from $G$ to the (abstract) permutation group of $S$:
 $$Set_G^\abstr\defequi \sum_{S:\Set}\Hom_\abstr(G,\abstr(\Sigma_S)).$$
 
-The \emph{principal $G$-torsor} $\princ_G^\abstr$ is the $G$-set consisting of the underlying set $\mathrm{under}(G)$ together with the homomorphism $G\to\abstr(\Sigma_{\mathrm{under}(G)})$ given by $g\mapsto \mathrm{ua}(g\cdot)$ ((explain)).
+The \emph{principal $G$-torsor} $\princ_G^\abstr$ is the $G$-set consisting of the underlying set $\mathrm{under}(G)$ together with the homomorphism $G\to\abstr(\Sigma_{\mathrm{under}(G)})$ given by $g\mapsto \mathrm{ua}(\cdot g^{-1})$ ((explain)).
 
 The type of \emph{$G$-torsors} is
 $$\typetorsor_G^\abstr\defequi\sum_{S:\Set_G^\abstr}||\princ_G=S||.$$
@@ -580,7 +580,8 @@ $$\typetorsor_G^\abstr\defequi\sum_{S:\Set_G^\abstr}||\princ_G=S||.$$
 \begin{example}\label{ex:qG}
   If $G$, then for any $x:BG$ the set $\pt_G=x$ has a natural structure of an $\abstr(G)$-torsor by means of 
 $$\preinv:(\pt_G=\pt_G)\to ((\pt_G=x)=(\pt_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\pt_G=x}$ and that for $p,q:\pt_G=\pt_G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \pt_G=x$ we have that 
-$$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  That this $\abstr(G)-set$ is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ^\abstr_{\abstr(G)}$).
+$$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  
+That this $\abstr(G)-set$ is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ^\abstr_{\abstr(G)}$).
 \end{example}
 
 \begin{definition}
@@ -615,7 +616,8 @@ $$(\post,!):(x=y)\to \sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f.$$
 Given an element
 $(f,!):\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f$, the preimage 
 $(\post,!)^{-1}(f,!)$ is equivalent to the set
-$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
+$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  
+To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
 \end{proof}
 
 % \begin{definition}
@@ -626,33 +628,42 @@ $\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then 
 % $\preinv:(y=x)\to ((y=z)=((x=z))$, $\preinv(q)(p)=pq^{-1}$
 % $\post:(y=z)\to ((x=y)=((x=z))$, $$
 %\footnote{how deeply do we want to integrate univalence?}
+\begin{xca}
+  \label{ex:abstrconcrG}
+  Let $G=(S,e,\mu,\iota)$ be an abstract group.  Then that underlying set of $\abstr(\concr(G))$ is $\princ^\abstr_G=_{\typetorsor^\abstr_G}\princ^\abstr_G$.  
+Unraveling the definitions we see that this set is equivalent to
+$$\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
+$$  
+Setting $s\defequi e$ and renaming $t\defequi q^{-1}$ in the last equation, we see that $p(t)=p(e)t$; that is $p$ is simply multiplication with an element $p(e):S$.  in other words, the function 
+$$r_G:S\to  \sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_G(u)\defequi(u\cdot\,,!)
+$$  
+is an equivalence of sets, which we by univalence turn into an equality.  The abstract group structure of $\abstr(\concr(G))$ is given by it being the symmetries of $\princ^\abstr_G$, or translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ that of $S=S$ of the first projection.  
+Hence our identity $r_G$ underlies an identity of abstract groups
+$$r_G:G=_{\typegroup^\abstr}\abstr(\concr(G)).$$
+\end{xca}
 
-Conversely,  $p_G:G\to\abstr(\concr(G))$ is given by \footnote{(write out).}
-
-\begin{lemma}
+We use this this to show that every abstract group encodes the symmetries of something essentially unique.
+\begin{theorem}
   \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  
-For all groups $G$, the $q_G:G\to\concr(\abstr(G))$ 
-is a pointed\footnote{defined where?} equivalence.
-For all abstract groups the $p_G:G\to\abstr(\concr(G))$ is an equivalence.\footnote{not defined.  Fix and write out}
-Hence
+Then
 $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence: \ie the type of groups and the type of abstract groups are equal.
-\end{lemma}
-In essence we have shown that our ``abstract group'' is indeed the group of symmetries of something.
+\end{theorem}
 \begin{proof}
-  First consider $q_G$.  To prove that $q_G$ is an equivalence it is, by \cref{lem:eqandcovofconntypes}, enough to show that if $x,y:BG$ then the induced map
-$$q_G:(x=_{BG}y)\to (q_G(x)=q_G(y))%(\pt_G=x)=_\UU(\pt_G=y))
-$$
-is an equivalence.\footnote{something to be said for the homotopies vs. base point}  Now, $q_G(x)=q_G(y)$ is equivalent to the set 
-\begin{align*}
-  &((\pt_G=x),\preinv)=_{\abstr(G)-set}((\pt_G=y),\preinv)\\
-=&\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f
-\end{align*}
- ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\pt_G=x}\prod_{p:\pt_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by 
-$$(\post,!):(x=y)\to \sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f.$$
-Given an element
-$(f,!):\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f$, the preimage 
-$(\post,!)^{-1}(f,!)$ is equivalent to the set
-$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
+((write))
+ %  First consider $q_G$.  To prove that $q_G$ is an equivalence it is, by \cref{lem:eqandcovofconntypes}, enough to show that if $x,y:BG$ then the induced map
+% $$q_G:(x=_{BG}y)\to (q_G(x)=q_G(y))%(\pt_G=x)=_\UU(\pt_G=y))
+% $$
+% is an equivalence.\footnote{something to be said for the homotopies vs. base point}  Now, $q_G(x)=q_G(y)$ is equivalent to the set 
+% \begin{align*}
+%   &((\pt_G=x),\preinv)=_{\abstr(G)-set}((\pt_G=y),\preinv)\\
+% =&\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f
+% \end{align*}
+%  ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\pt_G=x}\prod_{p:\pt_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by 
+% $$(\post,!):(x=y)\to \sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f.$$
+% Given an element
+% $(f,!):\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f$, the preimage 
+% $(\post,!)^{-1}(f,!)$ is equivalent to the set
+% $\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
 \end{proof}
 
 \section{Sums of groups}
