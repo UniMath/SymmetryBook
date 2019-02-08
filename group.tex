@@ -211,7 +211,7 @@ g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.  The set $S$ is c
   \end{definition}
 
 In conclusion we have proved that groups give rise to abstract groups:
-\newcommand{\abstr}{\mathrm{abstr}}
+\newcommand{\abstr}{\mathrm{abst}}
   \begin{lemma}\label{lem:idtypesgiveabstractgroups}
     If $A$ is a groupoid %(alternatively called a ``$1$-type'') 
 and $a:A$ is an element, then $a=_Aa$, together with $e=\refl a{}$, $g^{-1}=\symm_{a,a}g$ and $g\cdot h=\trans_{a,a,a}(g)(h)$ define an abstract group
@@ -220,7 +220,7 @@ $$(a=_Aa,e,{-}^{-1},\cdot).$$
   \begin{proof}
     The elements $p_1,\dots p_4$ of \cref{def:p1,def:p3,def:p4,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a groupoid) are inhabited, as required.
   \end{proof}
-  \begin{definition}
+  \begin{definition}\label{def:abstrG}
     Given a group $G=\aut_A(a)$, the abstract group $\abstr(G)\defequi (a=_Aa,e,{-}^{-1},\cdot)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
   \end{definition}
 
@@ -291,7 +291,7 @@ Likewise, we get a map $\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to $X\times
 
 In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\Sigma_{mn}$. \footnote{Insert a good description of the sign $\Sigma_n\to\Sigma_2$}
 \item Let $G$ be a group.  Since there is a unique map from $BG$ to $\bn{1} $, we get a unique homomorphism from $G$ to the trivial group.  Likewise, there is a unique morphism from the trivial group to $G$, sending the unique element of $\bn 1$ to $\pt_G$. 
-\item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  Write out.\footnote{Say something about $BG\vee BH$?}
+\item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  \footnote{Elaborate}
   \end{enumerate}
 \end{example}
 \begin{xca}
@@ -302,34 +302,69 @@ The definition of group homomorphisms in \cref{def:grouphomomorphism} should be 
 
 \begin{definition}\label{def:grouphomomaxioms}
   %((prove/define the standard axioms))
-Let $G$ and $H$ be groups and assume given a group homomorphism $f:G\to H$, \ie a pointed map from $BG$ to $BH$; or in other words a map of (unpointed) types $Bf\colon BG_\div\to BH_\div$ and a $p: Bf(\pt_G)=\pt_H$.  As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
-, this gives rise to a map $$\ap{Bf}:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G)),$$ 
-which is defined by induction by declaring that $\ap{Bf}(\refl{\pt_G})\defequi \refl{f(\pt_G)}$.  If $g:\pt_G=\pt_G$, then $\ap{Bf}(g)$ is an element of $f(\pt_G)=f(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p: f(\pt_G)=\pt_H$ gives rise to 
-$$\mathrm{ad}_p:(f(\pt_G)=f(\pt_G))=(\pt_H=\pt_H)$$ (with $\mathrm{ad}_p(\refl{f(\pt_G)})=\refl{\pt_H}$, as discussed in \cref{sec:heavy-transport}) and so 
-$$\mathrm{ad}_p(\ap{Bf}(g)):\pt_H=\pt_H.$$
+Let $G$ and $H$ be groups and assume given a group homomorphism $f:G\to H$.  We now define something that we will call an ``abstract group homomorphism 
+${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from $(\pt_G=\pt_G)$ to $(\pt_H=\pt_H)$ ``preserving'' the group structure, c.f~\cref{def:abstrG}.   
 
-We trust it will not lead to any confusion that we simplify the notation and write 
-$$f\defequi\mathrm{ad}_p\ap{Bf}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$ also for the function $g\mapsto\mathrm{ad}_p(\ap{Bf}(g))$.
+We take the time to develop this from first principles.
+Recall that $f$ consists of a pointed function from $BG$ to $BH$; or in other words a map of (unpointed) types $Bf_\div\colon BG_\div\to BH_\div$ and an identity $p_f: Bf_\div(\pt_G)=\pt_H$.  As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
+, for $z:BG$ this gives rise to a map 
+$$\ap{Bf_\div}:(\pt_G=z)\to (Bf_\div(\pt_G)=Bf_\div(z)),$$ 
+defined by induction by declaring that $\ap{Bf_\div}(\refl{\pt_G})\defequi \refl{Bf_\div(\pt_G)}$.  
+If $g:\pt_G=\pt_G$, then $\ap{Bf_\div}(g)$ is an element of $Bf_\div(\pt_G)=Bf_\div(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p: Bf_\div(\pt_G)=\pt_H$ gives rise to 
+$$\mathrm{ad}_{p_f}:(Bf_\div(\pt_G)=Bf_\div(\pt_G))=(\pt_H=\pt_H)$$ (with $\mathrm{ad}_{p_f}(\refl{Bf_\div(\pt_G)})=\refl{\pt_H}$, as discussed in \cref{sec:heavy-transport}) and so 
+$$\mathrm{ad}_{p_f}(\ap{Bf_\div}(g)):\pt_H=\pt_H.$$
+This defines a function
+$$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$  
+and we depict $f^\abstr(g)$ as the ``up, over and down'' identity of $\pt_H$:
+$$\xymatrix{Bf_\div(\pt_G)\ar@{=}[r]^{\ap{Bf_\div}(g)}_\to\ar@{=}[d]^\downarrow_{p_f}&Bf_\div(\pt_G)\ar@{=}[d]^\downarrow_{p_f}\\
+\pt_H\ar@{:}[r]^{f^\abstr(g)}_\to&\pt_H}.$$
 
-With the shorthand $$e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)\oldequiv\abstr(G)$$ and 
-$$g\cdot_Gg'\defequi\trans_{\pt_G,\pt_G\pt_G}(g,g'),$$ (and likewise with a subscript $H$) we have the following definitions
+
+% Since type-checking removes the ambiguity, we trust it will not lead to any confusion that we simplify the notation and use the symbol $f$ simultaneously for $Bf_\div$, writing $f\colon BG_\div\to BH_\div$ and for $\ap{Bf_\div}$, writing $f:(\pt_G=\pt_g)\to (f(\pt_G)=f(\pt_G))$, while we write
+% $$f^\abstr\defequi \mathrm{ad}_p\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H), \qquad g\mapsto p\,f(g)\,p^{-1}$$  
+% and depicting it as the ``up, over and down'' identity of $\pt_H$:
+% $$\xymatrix{f(\pt_G)\ar@{=}[r]^{f(g)}_\to\ar@{=}[d]^\downarrow_p&f(\pt_G)\ar@{=}[d]^\downarrow_p\\
+% \pt_H&\pt_H}.$$
+% When time comes, even the superscript $\abstr$ will vanish.
+% % (which is defensible, given that $p$ is part of the homomorphism $f$).
+
+With the shorthand $$e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)\oldequiv\abstr(G)$$ and writing (to remind us where things happen)
+$$g\cdot_Gg':(\pt_G=\pt_G)$$
+ for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture 
+$\xymatrix{\pt_G\ar@{=}[r]^{g'}_\to&\pt_G\ar@{=}[r]^{g}_\to&\pt_G}$) %$\trans_{\pt_G,\pt_G\pt_G}(g,g'):$ 
+and likewise with a subscript $H$, we have the following
   \begin{enumerate}
-  \item Since $\ap{Bf}(e_G)\oldequiv \ap{Bf}f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
-$$f(e_G)\oldequiv\mathrm{ad}_p(\ap{Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
-      \item 
+  \item $f^\abstr(e_G)= e_H$ since
+$$f^\abstr(e_G)\oldequiv\mathrm{ad}_{p_f}\ap{BF_\div}(\refl{\pt_G})\oldequiv\mathrm{ap}_{p_f}\refl{f(\pt_G)}\oldequiv\refl{\pt_H}\oldequiv e_H
+$$
+% Since $\ap{Bf}(e_G)\oldequiv \ap{Bf}f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
+% $$f(e_G)\oldequiv\mathrm{ad}_p(\ap{Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
+      \item $f^\abstr(g\cdot_Gg')=f^\abstr(g)\cdot_Hf^\abstr(g')$ since
         \begin{align*}
-          f(g\cdot_Gg')&\defequi %\mathrm{ad}_p\ap{Bf}(g\cdot g)\\\oldequiv&
-            \mathrm{ad}_p\ap{Bf}(\trans_{\pt_G,\pt_G,\pt_G}(g)(g'))\\
-          &=\mathrm{ad}_p\trans_{f(\pt_G),f(\pt_G),f(\pt_G)}(\ap{Bf}(g))(\ap{Bf}(g)')\\
-          &= \trans_{\pt_H,\pt_H,\pt_H}(\mathrm{ad}_p\ap{Bf}(g))(\mathrm{ad}_p\ap{Bf}(g)')\\
-          &=\mathrm{ad}_p\ap{Bf}(g))\cdot_H\mathrm{ad}_p\ap{Bf}(g'))\oldequiv f(g)\cdot_Hf(g')
+          f^\abstr(g\cdot_Gg')&\defequi %\mathrm{ad}_{p_f}\ap{Bf}(g\cdot g)\\\oldequiv&
+            \mathrm{ad}_{p_f}\ap{Bf}(g\, g')\\
+          &=\mathrm{ad}_{p_f}(\ap{Bf}(g)\,\ap{Bf}(g)')\\
+          %&= (\mathrm{ad}_{p_f}\ap{Bf}(g))\,{\mathrm{ad}_{p_f}\ap{Bf}(g)')\\
+          &=\mathrm{ad}_{p_f}\ap{Bf}(g))\cdot_H\mathrm{ad}_{p_f}\ap{Bf}(g'))\oldequiv f^\abstr(g)\cdot_Hf^\abstr(g'),
         \end{align*}
-(Write out fix references to ap and ad commuting with trans etc)\footnote{comeback190108 I will fix up the rest according to Marc's request. Hope you approve of the fix so far BID}
+where we have used that both $\ap{BF_\div}$ and $\mathrm{ad}_{p_f}$ take composites of identities to composites of identities.\footnote{give ref}
+
+If you find it useful, you may consider the following picture:
+$$\xymatrix{
+BF_\div(\pt_G)\ar@{=}[rr]^{\ap{Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{Bf_\div}(g')}_\to\ar@{=}[dd]_{p_f}^\downarrow
+&&BF_\div(\pt_G)\ar@{=}[dd]_{p_f}^\downarrow\\
+&BF_\div(\pt_G)\ar@{=}[d]_{p_f}^\downarrow
+\ar@{=}[ur]^{\ap{Bf_\div}(g)}_\to
+&\\
+\pt_H&\pt_H&\pt_H},$$
+where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\pt_H$ in the middle (and using the composing $p$ with its inverse has no effect).
   \end{enumerate}
 \end{definition}
 This proves that a homomorphism of groups give rise to a homomorphism of their associated abstract groups:
 \begin{definition}
-  If $G=(G,e_G,\mu_G,\iota_G)$ and $H=(H,e_H,\mu_H,\iota_H)$ are two abstract groups, then the set of homomorphisms 
+  If $G=(G_{\Set},e_G,\mu_G,\iota_G)$ and $H=(H_{\Set},e_H,\mu_H,\iota_H)$ are two abstract groups, then the set of homomorphisms from $G$ to $H$ is
+$$\Hom^\abstr(G,H)=\sum_{f:G_{\Set}\to H_{\Set}}(f(e_G)=e_h)\times (f\mu_G=\mu_Hf).
+$$
 \end{definition}
 
 
@@ -491,14 +526,14 @@ If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of picking the underlying abstract group of a group and taking the group represented by the torsors of an abstract group are inverse to each others.
 
-Note that we have not considered an abstract analog of the concept of $\infty$-group, so all we do in theis section is set-based.
+Note that we have not considered an abstract analog of the concept of $\infty$-group, so all we do in this section is set-based.
 
 \begin{definition}
 \label{def:abstrGtorsors}
   If $G$ is an abstract group, a $G$-set is a set $S$ together with a homomorphism
 $G\to\abstr(\Sigma_S)$
 from $G$ to the (abstract) permutation group of $S$:
-$$Set_G^\abstr\defequi \sum_{S:\Set}\Hom_\abstr(G,\abstr(\Sigma_S).$$
+$$Set_G^\abstr\defequi \sum_{S:\Set}\Hom_\abstr(G,\abstr(\Sigma_S)).$$
 
 The \emph{principal $G$-torsor} $\princ_G^\abstr$ is the $G$-set consisting of the underlying set $\mathrm{under}(G)$ together with the homomorphism $G\to\abstr(\Sigma_{\mathrm{under}(G)})$ given by $g\mapsto \mathrm{ua}(g\cdot)$ ((explain)).
 
