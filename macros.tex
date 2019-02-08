@@ -40,6 +40,7 @@
             pdfkeywords={type theory, group theory, univalence axiom}]{hyperref}
 % - except for cleveref!
 \usepackage[capitalize]{cleveref}
+\usepackage{xifthen}
 
 \definecolor{linkcolor}{rgb}{0,0,0.5}
 
@@ -205,6 +206,40 @@
 \newcommand{\zet}{\mathrm{Zet}}%the SET of integers  this is a provocation: fix it if you prefer
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Peter & Benedikt's macros for referring to coqdoc
+% d2c4e86
+% see https://tex.stackexchange.com/a/35314/ for help understanding the following:
+
+\newcommand{\longhash}{e47ce20acce953129e34e021a10976ed27948a39}
+\newcommand{\shorthash}{e47ce20}
+
+%fragile, better to freeze with stable hash
+\newcommand{\coqdocbasebaseurl}{https://unimath.github.io/doc/UniMath/\shorthash/}
+
+%\coqident call are relative to this long path
+\newcommand{\coqdocbaseurl}{\coqdocbasebaseurl UniMath.} 
+\newcommand{\urlhash}{\#}
+
+\newcommand{\coqdocurl}[2]{\coqdocbaseurl #1.html\urlhash #2}
+
+%nolinkurl from url or hyperref package
+\newcommand{\nolinkcoqident}[1]{\nolinkurl{#1}} % TODO: give better def for this?
+\makeatletter
+\newcommand{\coqident}{\begingroup\@makeother\#\@coqident}
+\newcommand{\@coqident}[3][]{% empty default first and optional argument
+  \ifthenelse{\isempty{#2}}% 
+  {\nolinkcoqident{#3}}%           [optional]{}{printme}
+  {\ifthenelse{\isempty{#1}}%
+  {\href{\coqdocurl{#2}{#3}}{\nolinkcoqident{#3}}}% []{file}{identifier+printed}
+  {\href{\coqdocurl{#2}{#3}}{\nolinkcoqident{#1}}}}% [printme]{file}{identifier}
+\endgroup}
+% optional argument allows link text to differ from link url
+\newcommand{\coqfile}[2]{%
+  \ifthenelse{\isempty{#1}}%
+  {\href{\coqdocbaseurl #2.html}{#2.v}}%
+  {\href{\coqdocbaseurl #1.#2.html}{#2.v}}} 
+\makeatother
 
 %%% Local Variables:
 %%% mode: latex
