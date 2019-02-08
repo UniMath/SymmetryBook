@@ -581,9 +581,7 @@ $y:Y$ we have $f(g(y))=y$.
 \begin{proof}
 If $f: X\to Y$ is an equivalence we can take $g=f^{-1}$.
 For the converse, see
-\cite[Chapter 4]{hottbook}, or \coqident{Foundations.PartA}{isweq_iso}
-\href{https://github.com/UniMath/UniMath/}{\url{Unimath/Foundations/PartA.v, isweq_iso}}.
-OK? VVs PROOF IS PERFECT BUT WILL THE LINK BE STABLE?
+\cite[Chapter 4]{hottbook}, or \coqident{Foundations.PartA}{isweq_iso}.
 \end{proof}
 
 We put \cref{lem:equivalence-via-inverse} immediately to good use.
@@ -782,7 +780,7 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \item\label{prop-utils-implication} $A\to P$ is a proposition;
 \item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
-\item\label{prop-utils-eq} $P \liff Q$ is a proposition.
+\item\label{prop-utils-eq} $P \liff Q$ is a proposition;
 \item\label{prop-utils-lem} $P \amalg (P\to\false)$ is a proposition.
 \end{enumerate}
 \end{lemma}
@@ -833,7 +831,7 @@ special case of (\ref{prop-utils-pi}).
 
 Notably absent in the lemma above are disjunction
 and existential quantification. This has a simple reason:
-$\true\amalg \true$ has the distinct elements
+$\true\amalg \true$ has two distinct elements
 $\inl{\triv}$ and $\inr{\triv}$, an is therefore \emph{not} a proposition.
 Similarly, $\sum_{n:\NN} \true$ has infinitely many
 distinct elements $(n,\triv)$ and is not a proposition. We will see later how
@@ -883,6 +881,61 @@ Make sure you understand that $\isprop(P)$ is a proposition,
 using the same lemmas as for $\iscontr(A)$.
 Show that $\isset(S)$ and $\isgrpd(G)$ are propositions.
 \end{xca}
+
+\section{Some important subuniverses}\label{sec:subuniverses}
+
+In this section we define some important subtypes of $\UU$.
+Their elements are types in $\UU$ that satisfy some specific
+property, or that have some specific structure. Their definitions
+are expressed as sum types $\sum_{X:\UU} \ldots$ Such sum types
+are types in a universe one higher than $\UU$.
+
+\begin{definition}\label{def:Prop-Set}
+The type of types that are propositions and the 
+type of types that are sets are defined as:
+\[\Prop\defeq \sum_{X:\UU}\isprop(X)\quad
+\text{and}\quad\Set\defeq \sum_{X:\UU}\isset(X).\]
+\end{definition}
+
+\begin{definition}\label{def:pointedtypes}
+ A \emph{pointed type} is a pair $(A,a)$ where $A$ is a type
+ and $a$ is an element of $A$. The \emph{type of pointed types} is
+\[\UUp \defeq \sum_{A:\UU} A.\]
+Given a type $A$ we let $A_+$ be the pointed type you get 
+by adding an element: $A_+\defequi(A\coprod\true,\inr{\triv})$, 
+and given a pointed type $B\jdeq(A,a)$, the \emph{underlying type} 
+is $B_\div\defeq A$, and the \emph{base point} is $\pt_B\defeq a$, 
+so that $B\jdeq (B_\div,\pt_B)$.  
+
+If $(A,a)$ and $(A',a')$ are pointed types, 
+a \emph{pointed function} from  $(A,a)$ to $(A',a')$ is 
+a function $f:A\to A'$ together with an identification $p:f(a)=a'$. 
+In other words, the \emph{type of pointed functions} from a pointed 
+type $B$ to a pointed type $B'$ is
+\[(B\to_*B')=\sum_{f:B_\div\to B'{}_\div}f(\pt_B)=\pt_{B'}.\]
+\end{definition}
+
+If $B$ is a pointed type, then $B_\div $ is a type, but $B$ itself is
+\emph{not} a type. It is therefore unambiguous, and quite convenient,
+to write $b:B$ for $b:B_\div$, and $B\to\UU$ for $B_\div\to\UU$.
+
+\begin{xca}\label{xca:plusforgetadjoint}
+If $A$ is a type and $B$ is a pointed type, 
+prove that $A\to B_\div$ is equivalent to $A_+\to_*B$.
+\end{xca}
+
+\begin{xca}\label{xca:freemaps}
+  Let $A$ be a pointed type and $B$ a type.  Show that  
+$\sum_{b:B}(A\to_*(B,b))$ and $(A_\div\to B)$ are equivalent.
+%given by $\mathrm{pr}_2(b,f,p)=f$ 
+%(for $b:B$, $f:A_\div\to B$ and $p:f(\pt_A)=b$)
+%Hint: note that 
+%$$\sum_{b:B}(A\to_*(B,b))\oldequiv \sum_{b:B}\sum_{f:A_\div\to B}f(\pt_A)=b$$ 
+%is equivalent to $\sum_{f:A_\div\to B}\sum_{b:B}f(\pt_A)=b$.
+%Hint: show that the fiber $\sum_{b:B}\sum_{g:A_\div\to B}\sum_{p:g(\pt_A)=b}f=g$ 
+%over $f:A_\div\to B$ is equivalent to $\sum_{b:B}f(\pt_A)=b$ which is contractible.
+\end{xca}
+
 
 \section{Heavy transport}
 \label{sec:heavy-transport}
@@ -935,7 +988,7 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 
 \begin{xca}\label{xca:trp-in-a/x=b/x}
 Prove the following special cases of \cref{lem:trp-in-fx=Ygx},
-where $Y\jdeq X$ and $a,b$ in $X$:
+where $Y\jdeq X$ and $a,b$ members of $X$:
 \begin{enumerate}
 \item $\trp_{x\mapsto a=b,\,e} (i) = i$;
 \item\label{xca-trp-in-a=x} $\trp_{x\mapsto a=x,\,e} (i) = i\ct e$;
@@ -1558,7 +1611,7 @@ from the proof of \cref{lem:sum-of-fibers}. It remains
 to show that the transport of $\fst$ along $ua(e)$ equals $f$.
 Note that the transport is in the family $\_\to A$, so that
 \cref{lem:trp-in-function-type} applies. This means that
-the transport of $\fst$ is $\fst\circ e^{-1}$, indeed equal to $f$.
+the transport of $\fst$ is $\fst \circ {e^{-1}}$, indeed equal to $f$.
 \end{proof}
 
 \section{Subtypes and Decidability --- TBD}
