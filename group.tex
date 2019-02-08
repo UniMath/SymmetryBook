@@ -303,7 +303,7 @@ The definition of group homomorphisms in \cref{def:grouphomomorphism} should be 
 \begin{definition}\label{def:grouphomomaxioms}
   %((prove/define the standard axioms))
 Let $G$ and $H$ be groups and assume given a group homomorphism $f:G\to H$.  We now define something that we will call an ``abstract group homomorphism 
-${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from $(\pt_G=\pt_G)$ to $(\pt_H=\pt_H)$ ``preserving'' the group structure, c.f~\cref{def:abstrG}.   
+${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from $(\pt_G=\pt_G)$ to $(\pt_H=\pt_H)$ ``preserving'' the group structure, c.f~\cref{def:abstrG} for the definition of $\abstr(G)$ and \cref{def:abstrisfunctor} for a condensation of what the discussion below end up with concluding that ``preserves'' means.  
 
 We take the time to develop this from first principles.
 Recall that $f$ consists of a pointed function from $BG$ to $BH$; or in other words a map of (unpointed) types $Bf_\div\colon BG_\div\to BH_\div$ and an identity $p_f: Bf_\div(\pt_G)=\pt_H$.  As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
@@ -334,39 +334,53 @@ $$g\cdot_Gg':(\pt_G=\pt_G)$$
 $\xymatrix{\pt_G\ar@{=}[r]^{g'}_\to&\pt_G\ar@{=}[r]^{g}_\to&\pt_G}$) %$\trans_{\pt_G,\pt_G\pt_G}(g,g'):$ 
 and likewise with a subscript $H$, we have the following
   \begin{enumerate}
-  \item $f^\abstr(e_G)= e_H$ since
-$$f^\abstr(e_G)\oldequiv\mathrm{ad}_{p_f}\ap{BF_\div}(\refl{\pt_G})\oldequiv\mathrm{ap}_{p_f}\refl{f(\pt_G)}\oldequiv\refl{\pt_H}\oldequiv e_H
+  \item $\refl{e_H}:f^\abstr(e_G)= e_H$ makes sense since
+$$f^\abstr(e_G)\oldequiv\mathrm{ad}_{p_f}\ap{Bf_\div}(\refl{\pt_G})\oldequiv\mathrm{ap}_{p_f}\refl{f(\pt_G)}\oldequiv\refl{\pt_H}\oldequiv e_H
 $$
 % Since $\ap{Bf}(e_G)\oldequiv \ap{Bf}f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
 % $$f(e_G)\oldequiv\mathrm{ad}_p(\ap{Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
-      \item $f^\abstr(g\cdot_Gg')=f^\abstr(g)\cdot_Hf^\abstr(g')$ since
+      \item the proposition $f^\abstr(g\cdot_Gg')=f^\abstr(g)\cdot_Hf^\abstr(g')$ is inhabited by the composite
         \begin{align*}
           f^\abstr(g\cdot_Gg')&\defequi %\mathrm{ad}_{p_f}\ap{Bf}(g\cdot g)\\\oldequiv&
             \mathrm{ad}_{p_f}\ap{Bf}(g\, g')\\
           &=\mathrm{ad}_{p_f}(\ap{Bf}(g)\,\ap{Bf}(g)')\\
           %&= (\mathrm{ad}_{p_f}\ap{Bf}(g))\,{\mathrm{ad}_{p_f}\ap{Bf}(g)')\\
-          &=\mathrm{ad}_{p_f}\ap{Bf}(g))\cdot_H\mathrm{ad}_{p_f}\ap{Bf}(g'))\oldequiv f^\abstr(g)\cdot_Hf^\abstr(g'),
+          &=\mathrm{ad}_{p_f}\ap{Bf}(g)\cdot_H\mathrm{ad}_{p_f}\ap{Bf}(g')\oldequiv f^\abstr(g)\cdot_Hf^\abstr(g'),
         \end{align*}
-where we have used that both $\ap{BF_\div}$ and $\mathrm{ad}_{p_f}$ take composites of identities to composites of identities.\footnote{give ref}
+where we have used that both $\ap{Bf_\div}$ and $\mathrm{ad}_{p_f}$ take composites of identities to composites of identities.\footnote{give ref}
 
 If you find it useful, you may consider the following picture:
 $$\xymatrix{
-BF_\div(\pt_G)\ar@{=}[rr]^{\ap{Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{Bf_\div}(g')}_\to\ar@{=}[dd]_{p_f}^\downarrow
-&&BF_\div(\pt_G)\ar@{=}[dd]_{p_f}^\downarrow\\
-&BF_\div(\pt_G)\ar@{=}[d]_{p_f}^\downarrow
+Bf_\div(\pt_G)\ar@{=}[rr]^{\ap{Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{Bf_\div}(g')}_\to\ar@{=}[dd]_{p_f}^\downarrow
+&&Bf_\div(\pt_G)\ar@{=}[dd]_{p_f}^\downarrow\\
+&Bf_\div(\pt_G)\ar@{=}[d]_{p_f}^\downarrow
 \ar@{=}[ur]^{\ap{Bf_\div}(g)}_\to
 &\\
 \pt_H&\pt_H&\pt_H},$$
-where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\pt_H$ in the middle (and using the composing $p$ with its inverse has no effect).
+where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\pt_H$ in the middle.
   \end{enumerate}
 \end{definition}
-This proves that a homomorphism of groups give rise to a homomorphism of their associated abstract groups:
-\begin{definition}
-  If $G=(G_{\Set},e_G,\mu_G,\iota_G)$ and $H=(H_{\Set},e_H,\mu_H,\iota_H)$ are two abstract groups, then the set of homomorphisms from $G$ to $H$ is
-$$\Hom^\abstr(G,H)=\sum_{f:G_{\Set}\to H_{\Set}}(f(e_G)=e_h)\times (f\mu_G=\mu_Hf).
-$$
-\end{definition}
+\begin{definition}\label{def:abstrisfunctor}
+  If $(G_{\Set},e_G,\mu_G,\iota_G)$ and $(H_{\Set},e_H,\mu_H,\iota_H)$ are two abstract groups, then the set of homomorphisms from $G$ to $H$ is
+  \begin{align*}
+    \Hom^\abstr&((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))\\
+=&\sum_{f:G_{\Set}\to H_{\Set}}(f(e_G)=e_H)\times (f\mu_G=\mu_Hf).
+  \end{align*} 
+Since $(f(e_G)=e_H)\times (f\mu_G=\mu_Hf)$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
 
+If $G$ and $H$ are groups, the function
+$$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
+is the function $\abstr(f)=(f^\abstr,!)$ defined in \cref{def:grouphomomaxioms}.
+\end{definition}
+\begin{xca}
+  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ then $f(g^{-1})=(f(g))^{-1}$, so it is true without requiring it.
+\end{xca}
+\begin{xca}
+Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
+
+  Prove that if $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ then 
+$$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)}$.
+\end{xca}
 
 
 \section{\inftygps}
@@ -522,6 +536,19 @@ If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $
 
 \section{$G$-sets for abstract groups}
 \label{sec:Gsetforabstract}
+Useful notation:\footnote{move somewhere}
+\newcommand{\pre}{\mathrm{pre}}
+\newcommand{\preinv}{\mathrm{preinv}}
+\newcommand{\post}{\mathrm{post}}
+\newcommand{\adjoint}{\mathrm{ad}}
+\newcommand{\concr}{\mathrm{concr}}
+
+\begin{align*}
+%  \pre:(x=y)\to ((y=z)=(x=z)),\qquad&\pre(q)(p)\defequi pq\\
+  \preinv:(y=x)\to ((y=z)=(x=z)),\qquad&\preinv(q)(p)\defequi\preinv_qp\defequi pq^{-1}\\
+  \post:(y=z)\to ((x=y)=(x=z)),\qquad&\post(p)(q)\defequi\post_pq\defequi qp\\
+  \adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
+\end{align*}
 
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of picking the underlying abstract group of a group and taking the group represented by the torsors of an abstract group are inverse to each others.
@@ -541,25 +568,93 @@ The type of \emph{$G$-torsors} is
 $$\typetorsor_G^\abstr\defequi\sum_{S:\Set_G^\abstr}||\princ_G=S||.$$
 \end{definition}
 \begin{example}
-  If $\aut_A(a)\colon\typegroup$ with underlying abstract group $G$, then for any $b:A$ the set $a=_Ab$ has a natural structure of a $G$-torsor as follows ((write))
+  If $G$ is a group we can unravel the definition and see that an $\abstr(G)$-set consists of
+  \begin{enumerate}
+  \item a set $S$, 
+  \item a function $f:(\pt_G=\pt_G)\to (S=S)$ 
+  \item such that $f(e_G)=\refl{S}$ and for all $p,q:\pt_G=\pt_G$ we have that $f(p\, q)=f(p)\,f(q)$.
+  \end{enumerate}
+
 \end{example}
 
-\newcommand{\concr}{\mathrm{concr}}
+\begin{example}\label{ex:qG}
+  If $G$, then for any $x:BG$ the set $\pt_G=x$ has a natural structure of an $\abstr(G)$-torsor by means of 
+$$\preinv:(\pt_G=\pt_G)\to ((\pt_G=x)=(\pt_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\pt_G=x}$ and that for $p,q:\pt_G=\pt_G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \pt_G=x$ we have that 
+$$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  That this $\abstr(G)-set$ is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ^\abstr_{\abstr(G)}$).
+\end{example}
+
 \begin{definition}
   If $G$ is an abstract group, then the \emph{concrete group $\concr(G)$ associated with $G$} is the group (given by the pointed connected groupoid) $(\typetorsor_G^\abstr,\princ_G)$.
 \end{definition}
+We give the construction of \cref{ex:qG} a short name since it will occur in important places.
+\begin{definition}
+  Let $G$ be a group.  Define the pointed function
+$$q_G:G\oldequiv(BG_\div,\pt_G)\to (\typetorsor^\abstr_{\abstr(G)},\princ_{\abstr(G)})\defequi\concr(\abstr(G))$$
+by $$
+q_G(z)=((\pt_G=z),\preinv%:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))
+,!).$$
+%(the $!$ expresses that $\preinv:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))$ underlies a homomorphism of abstract groups $\abstr(G)\to\Sigma_{\pt_G=z}$, \ie that $\preinv(\refl{\pt_G})=\refl{\pt_G=z}$ and that $\preinv(q_0\,q_1)(p)=p(q_0q_1)^{-1}=pq_1^{-1}q_0^{-1}=\preinv(q_0)(\preinv(q_1)(p))$ (here you see why it was important to include the inverse!) and that the $\abstr(G)$-set $(\pt_G=z,\preinv)$ is in the component of $\princ_{\abstr(G)}$).
+\end{definition}
+
+\begin{lemma}
+  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  
+For all groups $G$, the pointed function $q_G:G\to\concr(\abstr(G))$ 
+is a pointed\footnote{defined where?} equivalence.
+\end{lemma}
+\begin{proof}
+  To prove that $q_G$ is an equivalence it is, by \cref{lem:eqandcovofconntypes}, enough to show that if $x,y:BG$ then the induced map
+$$q_G:(x=_{BG}y)\to (q_G(x)=q_G(y))%(\pt_G=x)=_\UU(\pt_G=y))
+$$
+is an equivalence.\footnote{something to be said for the homotopies vs. base point}  Now, $q_G(x)=q_G(y)$ is equivalent to the set 
+\begin{align*}
+  &((\pt_G=x),\preinv)=_{\abstr(G)-set}((\pt_G=y),\preinv)\\
+=&\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f
+\end{align*}
+ ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\pt_G=x}\prod_{p:\pt_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by 
+$$(\post,!):(x=y)\to \sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f.$$
+Given an element
+$(f,!):\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f$, the preimage 
+$(\post,!)^{-1}(f,!)$ is equivalent to the set
+$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
+\end{proof}
 
 % \begin{definition}
 %   A $G$-torsor is a $G$-set which is isomorphic to the underlying $G$-set of $G$ (write out - avoid conflict of notation wrt $|G|$)
 % \end{definition}
 
-\footnote{how deeply do we want to integrate univalence?}
-\begin{lemma}
-  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  Then $p_G:G=\abstr(\concr(G))$ is given by (write out).
+% $$, $\pre(q)(p)=pq$
+% $\preinv:(y=x)\to ((y=z)=((x=z))$, $\preinv(q)(p)=pq^{-1}$
+% $\post:(y=z)\to ((x=y)=((x=z))$, $$
+%\footnote{how deeply do we want to integrate univalence?}
 
-Conversely, given a group $G$, then $q_G:G=\concr(\abstr(G))$  is given by (write out).
+Conversely,  $p_G:G\to\abstr(\concr(G))$ is given by \footnote{(write out).}
+
+\begin{lemma}
+  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  
+For all groups $G$, the $q_G:G\to\concr(\abstr(G))$ 
+is a pointed\footnote{defined where?} equivalence.
+For all abstract groups the $p_G:G\to\abstr(\concr(G))$ is an equivalence.\footnote{not defined.  Fix and write out}
+Hence
+$$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence: \ie the type of groups and the type of abstract groups are equal.
 \end{lemma}
 In essence we have shown that our ``abstract group'' is indeed the group of symmetries of something.
+\begin{proof}
+  First consider $q_G$.  To prove that $q_G$ is an equivalence it is, by \cref{lem:eqandcovofconntypes}, enough to show that if $x,y:BG$ then the induced map
+$$q_G:(x=_{BG}y)\to (q_G(x)=q_G(y))%(\pt_G=x)=_\UU(\pt_G=y))
+$$
+is an equivalence.\footnote{something to be said for the homotopies vs. base point}  Now, $q_G(x)=q_G(y)$ is equivalent to the set 
+\begin{align*}
+  &((\pt_G=x),\preinv)=_{\abstr(G)-set}((\pt_G=y),\preinv)\\
+=&\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f
+\end{align*}
+ ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\pt_G=x}\prod_{p:\pt_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by 
+$$(\post,!):(x=y)\to \sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f.$$
+Given an element
+$(f,!):\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f$, the preimage 
+$(\post,!)^{-1}(f,!)$ is equivalent to the set
+$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
+\end{proof}
+
 \section{Sums of groups}
 \label{sec:coprod}
 We have seen how the group of integers $\ZZ=(S^1,\base)$ synthesizes the notion of one symmetry with no relations: every symmetry of the circle is of the form $\Sloop^n$ for some unique $n$.  Also, given any group $G=\aut_A(a)$, the set $a=a$ of symmetries of $a$ corresponds to the set of homomorphisms $\ZZ\to G$, \ie to pointed functions $(S^1,\base)\to_*(A,a)$ by evaluation at $\Sloop$.  What happens if we want to study more than one symmetry at the time?  
