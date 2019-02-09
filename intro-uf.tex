@@ -1547,8 +1547,12 @@ f fiberwise map/equivalence, tot(f) equivalent fibers
 
 \section{Type families and maps}
 \label{sec:typefam}
-There is a close relationship between maps and type families
-as expressed in the following lemma.
+
+There is an equivalence between maps into a type $A$
+and type families indexed by $A$. The key idea is that the
+fibers of a map form a type family. We will elaborate this
+idea and some variations.
+
 
 \begin{lemma}\label{lem:fst-fiber(a)=B(a)}
 Let $A:\UU$ and $B:A\to\UU$.
@@ -1598,7 +1602,6 @@ Equivalence now follows by \cref{lem:equivalence-via-inverse}.
 
 \begin{proof}
 We apply \cref{lem:equivalence-via-inverse}, and verify the two conditions.
-
 Let $P:A\to\UU$. We have to prove that $P = \preim(\sum_{a:A}P(a), \fst)$.
 By function extensionality it suffices to prove
 $\preim(\sum_{a:A}P(a), \fst)(a)\jdeq \fst^{-1}(a) = P(a)$.
@@ -1613,6 +1616,41 @@ Note that the transport is in the family $\_\to A$, so that
 \cref{lem:trp-in-function-type} applies. This means that
 the transport of $\fst$ is $\fst \circ {e^{-1}}$, indeed equal to $f$.
 \end{proof}
+
+Let $A$ be a type and consider the subuniverse 
+$\Prop\defeq \sum_{X:\UU}\isprop(X)$ from \cref{sec:subuniverses}.
+A function $P: A\to\Prop$ can be viewed as a family of propositions:
+$\fst\circ P : A\to \UU$ is a type family, and
+$\snd\circ P : \prod_{a:A} \isprop(P(a))$ witnesses
+that each $\fst(P(a))$ is a proposition.
+The inverse equivalence in \cref{lem:typefamiliesandfibrations}
+sends $\fst\circ P$ to $\fst: (\sum_{a:A} \fst(P(a))) \to A$.
+All fibers of this latter function are propositions by
+$\snd\circ P : \prod_{a:A} \isprop(P(a))$. 
+
+Conversely,
+for any function $f: B\to A$ and proof 
+$g:\prod_{a:A} \isprop(f^{-1}(a))$ that all fibers of $f$
+are propositions,
+we can define $P_f : A\to\Prop$ by setting $P_f(a)\defeq (f^{-1}(a),g(a))$.
+
+The above argument can be elaborated for each of the subuniverses
+from \cref{sec:subuniverses}, and one can prove the following
+analogues of \cref{lem:typefamiliesandfibrations}.
+
+\begin{lemma}\label{lem:prop-set-pointed-families}
+Let $A$ be a type. Then
+\begin{enumerate}
+\item $(A\to\Prop) \equiv \sum_{B:\UU}\sum_{f:B\to A}
+\prod_{a:A}\isprop({f^{-1}(a)})$;
+\item $(A\to\Set) \equiv \sum_{B:\UU}\sum_{f:B\to A}
+\prod_{a:A}\isset({f^{-1}(a)})$;
+\item $(A\to\UUp) \equiv \sum_{B:\UU}\sum_{f:B\to A}
+\prod_{a:A}f^{-1}(a)$;
+\end{enumerate}
+\end{lemma}
+
+
 
 \section{Subtypes and Decidability --- TBD}
 \label{sec:subtype}
