@@ -775,7 +775,7 @@ depend on $q$, so all such $q$ are equal. Hence $X$ is a set.
 A more interesting example of a set is $\bool$.
 
 \begin{lemma}\label{lem:isset-bool}
-$\bool$ is a set
+$\bool$ is a set.
 \end{lemma}
 \begin{proof}
 Define by induction $t:\bool\to\UU$, setting $t(\yes)\defeq \true$ and
@@ -786,8 +786,8 @@ Define $g:\prod_{x:\bool}((\yes=x)\to t(x))$ by induction,
 setting $g(\yes)\defeq (p\mapsto \triv)$, and $g(\no)$ vacuously. 
 By induction on $x:\bool$ one proves $g(x,f(x,y))=y$ for all $y:t(x)$. 
 By induction on $p: \yes = x$ one proves $f(x,g(x,p))=p$.
-Now $f(x)\equiv (\yes=x)$ by \cref{lem:weq-iso}.  
-Since each type $f(x)$ is a proposition (see below
+Now $t(x)\equiv (\yes=x)$ by \cref{lem:weq-iso}.  
+Since each type $t(x)$ is a proposition (see below
 \cref{lem:prop-utils}(\ref{prop-utils-false-true}), the same holds
 for $\yes = x$. In a similar way one proves that each
 type $\no = x$ is a proposition. It follows by induction on $y:\bool$
@@ -923,60 +923,49 @@ $B$ is then exactly the preimage of $\yes$ under $\chi_B: A\to\bool$.
 These considerations translate to types, though there are some 
 subtleties. Let $T$ be a type and let $P: T\to\UU$ be a type family.
 The sum type $\sum_{t:T} P(t)$ consists of pairs $(t,p)$ with
-$t:T$ and $p:P(t)$. This is not a good way to carve out a subtype
+$t:T$ and $p:P(t)$. This is \emph{not} a good way to carve out a subtype
 of $T$, as there could be distinct pairs $(t,p)$ and $(t,p')$ in $P(t)$.
 For this reason we require that each $P(t)$ is a proposition.
 
 \begin{definition}\label{def:subtype}
 Let $T$ be a type and let $P: T\to\UU$ be a type family such that
-$P(t)$ is a proposition for each $t:T$. 
+$P(t)$ is a proposition for each $t:T$. Then we also
+call $P$ a \emph{predicate} on $T$.
 The \emph{subtype} of $T$ characterized by $P$ is defined 
 as $T_P\defeq \sum_{t:T} P(t)$. If $T$ is a set, then $T_P$
-is also denoted by $\set{t:T \mid P(t)}$.
+is also denoted by $\set{t:T \mid P(t)}$, indeed again a set.
 \end{definition}
 
-Given a set $A$ and a function $\chi_B: A\to\bool$ we can form
+Given a set $A$ and a function $\chi_B: A\to\bool$,
+\cref{lem:isset-bool} yields that $\chi_B(a) = \yes$ is a
+proposition, and we can form
 the subset $\set{a:A \mid \chi_B(a) = \yes}$. However,
 not every subset as in \cref{def:subtype} can be given
 through a $\chi_B: A\to\bool$. As proved in \cref{sec:finite-types},
-that any element of $\bool$ is equal to $\yes$ or to $\no$.
-We have to require a similar property for each $P(a)$,
+any element of $\bool$ is equal to $\yes$ or to $\no$.
+We formulate a similar property for propositions,
 as we cannot in general decide whether a proposition is empty or not.
 
 \begin{definition}\label{def:decidability}
 A proposition $P$ is called \emph{decidable} if $P\amalg\neg P$.
-A family $P: A\to\UU$ is called \emph{decidable} if 
+A predicate $P: A\to\UU$ is called \emph{decidable} if 
 $P(a)$ is a decidable proposition for each $a:A$.
 \end{definition}
 
-If $P: A\to\UU$ is a decidable family of propositions,
-we can define $\chi_A: A\to\bool$ by induction (actually,
-only case distinction) on $p:P(a)$, by setting $\chi_A(a)=\yes$
-if $p\jdeq\inl{\_}$ and $\chi_A(a)=\no$ if $p\jdeq\inr{\_}$.
+If $P: A\to\UU$ is a decidable predicate, then
+we can define $\chi_P: A\to\bool$ by induction (actually,
+only case distinction) on $p:P(a)$, setting $\chi_P(a)=\yes$
+if $p\jdeq\inl{\_}$ and $\chi_P(a)=\no$ if $p\jdeq\inr{\_}$.
 We will often use a characteristic function $T\to\bool$ to
-specify a decidable family of propositions on a type $T$.
+specify a decidable predicate on a type $T$.
 
-
-
-consider a function $f:T\to\bool$
-and a type family $P: T\to\UU$. One difference is that $\bool$ is 
-a set consisting of two elements, and $P(t)$ is a type.
-The difference becomes smaller when we assume $P(t)$ to be a
-proposition for all $t:T$. This leads to the definition of the 
-\emph{subtype of $T$ given by $P$} as the sum type $T_P \defeq \sum_{t:T} P(t)$.
-
-Given $f:T\to\bool$ we can now form the 
-subtype $T_f \defeq \sum_{t:T} \yes = f(t)$.
-The subtype $T_f$ is special: we can prove by
-double induction on $x,y:\bool$ that $(x=y)\amalg\neg(x=y)$
-(even easier than for $\NN$). Hence we have
-$(f(t) = \yes)\amalg(f(t) = \no)$ for all $t$ in $T$.
-That is, we can decide for every $t$ in $T$ whether $t$ is in the
-subtype defined by $f$ or not. Therefore we call $T_f$ the
-\emph{decidable subtype of $T$ given by $f$}. 
-
-
-in that we have not assumed that any proposition must be equal to either of the sets $\bn 0$ and $\bn 1$.  
+\begin{xca}\label{xca:decidability}
+Show that $f(t)=\yes$ is a decidable predicate on $T$,
+for any type $T$ and function $f:T\to\bool$.
+Show $(P\equiv\true)\amalg(P\equiv\false)$ for every decidable
+proposition $P$. 
+\end{xca}
+  
 \begin{definition}
   \label{def:subtype}
   Let $B$ be a type and $P(b)$ a family of propositions depending on $b:B$.  Then the first projection $\sum_{b:B}P(b)\to B$ is said to be the \emph{inclusion of the subtype $\sum_{b:B}P(b)$ in $B$}.\index{subtype}\footnote{what do you prefer; injection or inclusion?  They don't mean the same thing and personally I'd prefer injection here.}  
