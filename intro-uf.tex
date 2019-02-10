@@ -912,7 +912,7 @@ using the same lemmas as for $\iscontr(A)$.
 Show that $\isset(S)$ and $\isgrpd(G)$ are propositions.
 \end{xca}
 
-\section{Decidability, subtypes, and subuniverses}
+\section{Subtypes, subsets and decidability}
 \label{sec:subtype}
 
 In ordinary sets, a subset $B$ of a set $A$ can be given concretely by 
@@ -927,12 +927,15 @@ $t:T$ and $p:P(t)$. This is \emph{not} a good way to carve out a subtype
 of $T$, as there could be distinct pairs $(t,p)$ and $(t,p')$ in $P(t)$.
 For this reason we require that each $P(t)$ is a proposition.
 
-\begin{definition}\label{def:subtype}
+\begin{definition}\label{def:subtype}\index{subtype}
 Let $T$ be a type and let $P: T\to\UU$ be a type family such that
 $P(t)$ is a proposition for each $t:T$. Then we also
 call $P$ a \emph{predicate} on $T$.
 The \emph{subtype} of $T$ characterized by $P$ is defined 
-as $T_P\defeq \sum_{t:T} P(t)$. If $T$ is a set, then $T_P$
+as $T_P\defeq \sum_{t:T} P(t)$. Then the first projection 
+$T_P\to T$ is said to be \emph{the injection of the subtype $T_P$ in $T$}.
+We say that an element $t':T$ \emph{lies in the subtype} $T_P$ if $P(t')$.
+If $T$ is a set, then $T_P$
 is also denoted by $\set{t:T \mid P(t)}$, indeed again a set.
 \end{definition}
 
@@ -946,7 +949,7 @@ any element of $\bool$ is equal to $\yes$ or to $\no$.
 We formulate a similar property for propositions,
 as we cannot in general decide whether a proposition is empty or not.
 
-\begin{definition}\label{def:decidability}
+\begin{definition}\label{def:decidability}\index{decidable proposition}
 A proposition $P$ is called \emph{decidable} if $P\amalg\neg P$.
 A predicate $P: A\to\UU$ is called \emph{decidable} if 
 $P(a)$ is a decidable proposition for each $a:A$.
@@ -965,34 +968,20 @@ for any type $T$ and function $f:T\to\bool$.
 Show $(P\equiv\true)\amalg(P\equiv\false)$ for every decidable
 proposition $P$. 
 \end{xca}
-  
-\begin{definition}
-  \label{def:subtype}
-  Let $B$ be a type and $P(b)$ a family of propositions depending on $b:B$.  Then the first projection $\sum_{b:B}P(b)\to B$ is said to be the \emph{inclusion of the subtype $\sum_{b:B}P(b)$ in $B$}.\index{subtype}\footnote{what do you prefer; injection or inclusion?  They don't mean the same thing and personally I'd prefer injection here.}  
-
-We say that an element $b':B$ \emph{lies in the subtype} $\sum_{b:B}P(b)$ if $P(b')$.
-\end{definition}
-
-Alternatively, a function $f:A\to B$ in \emph{injective} if all the preimages $f^{-1}(b)$ are propositions.
-
-\begin{definition}
-  \label{def:decidableprop}
-  A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equality}\index{decidable equality}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
-\end{definition}
-
-
-In this section we define some important subtypes of $\UU$.
-Their elements are types in $\UU$ that satisfy some specific
-property, or that have some specific structure. Their definitions
-are expressed as sum types $\sum_{X:\UU} \ldots$ Such sum types
-are types in a universe one higher than $\UU$.
 
 \begin{definition}\label{def:Prop-Set}
 The type of types that are propositions and the 
 type of types that are sets are defined as:
 \[\Prop\defeq \sum_{X:\UU}\isprop(X)\quad
 \text{and}\quad\Set\defeq \sum_{X:\UU}\isset(X).\]
+Both $\Prop$ and $\Set$ are subtypes of $\UU$, and
+both are types in a universe one higher than $\UU$. 
 \end{definition}
+
+Sometimes we need to equip types with additional structure
+that cannot be expressed by a proposition such as
+$\isprop(X)$ and $\isset(X)$ above. 
+Therefore the following is \emph{not} a subtype of $\UU$.
 
 \begin{definition}\label{def:pointedtypes}
  A \emph{pointed type} is a pair $(A,a)$ where $A$ is a type
