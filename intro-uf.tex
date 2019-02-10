@@ -325,7 +325,9 @@ to proving $\triv=\triv$, a proof of which is provided by $\refl{\triv}$.  One m
 There is a function $X \to \true$, for any type $X$, namely: $a \mapsto \triv$.  This corresponds, for propositions, to the statement that an
 implication holds if the conclusion is true.
 
-Thirdly, there will be a type called $\bool$, defined by induction and provided with two elements, $\yes$ and $\no$.  One may prove by induction
+Thirdly, there will be a type called $\bool$, 
+defined by induction and provided with two elements, $\yes$ and $\no$.  
+One may prove by induction
 that any element of $\bool$ is equal to $\yes$ or to $\no$.
 
 We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
@@ -572,7 +574,7 @@ is an equivalence from $T(x)$ to $T(y)$, so $T(x)\equiv T(y)$.
 The following lemma gives an equivalent characterization
 of equivalence that is sometimes easy to use.
 
-\begin{lemma}\label{lem:equivalence-via-inverse}
+\begin{lemma}\label{lem:weq-iso}
 Let $X,Y$ be types. A function $f: X\to Y$ is an equivalence
 if and only if there exists a function $g: Y\to X$ such that
 for all $x:X$ we have $g(f(x))=x$ and for all 
@@ -584,7 +586,7 @@ For the converse, see
 \cite[Chapter 4]{hottbook}, or \coqident{Foundations.PartA}{isweq_iso}.
 \end{proof}
 
-We put \cref{lem:equivalence-via-inverse} immediately to good use.
+We put \cref{lem:weq-iso} immediately to good use.
 
 \begin{lemma}\label{lem:contract-away}
 Let $X$ be a type with element $a$, and let
@@ -603,7 +605,7 @@ mapping $q: B(a,\refl{a})$ to $(a,\refl{a},q)$.
 Clearly $f(g(q))=q$ for all $q:B(a,\refl{a})$.
 Moreover, $g(f(x,i,q))=(x,i,q)$ can be proved by induction
 on $i$, for all $q:B(x,i)$.
-By \cref{lem:equivalence-via-inverse} if follows that $f$
+By \cref{lem:weq-iso} if follows that $f$
 is an equivalence.
 \end{proof}
 
@@ -770,6 +772,34 @@ So $q$ is equal to $f(a,c)\cdot f(a,b)^{-1}$ which doesn't
 depend on $q$, so all such $q$ are equal. Hence $X$ is a set.
 \end{proof}
 
+A more interesting example of a set is $\bool$.
+
+\begin{lemma}\label{lem:isset-bool}
+$\bool$ is a set
+\end{lemma}
+\begin{proof}
+Define by induction $t:\bool\to\UU$, setting $t(\yes)\defeq \true$ and
+$t(\no)\defeq \false$. Define $f:\prod_{x:\bool}(t(x)\to (\yes=x))$ by
+induction, setting $f(\yes)\defeq (y\mapsto \refl{\yes})$ and 
+$f(\no)$ vacuously (as $t(\no)$ is the empty type). 
+Define $g:\prod_{x:\bool}((\yes=x)\to t(x))$ by induction, 
+setting $g(\yes)\defeq (p\mapsto \triv)$, and $g(\no)$ vacuously. 
+By induction on $x:\bool$ one proves $g(x,f(x,y))=y$ for all $y:t(x)$. 
+By induction on $p: \yes = x$ one proves $f(x,g(x,p))=p$.
+Now $f(x)\equiv (\yes=x)$ by \cref{lem:weq-iso}.  
+Since each type $f(x)$ is a proposition (see below
+\cref{lem:prop-utils}(\ref{prop-utils-false-true}), the same holds
+for $\yes = x$. In a similar way one proves that each
+type $\no = x$ is a proposition. It follows by induction on $y:\bool$
+that each type $y = x$ is a proposition, and hence $\bool$ is a set.
+\end{proof}
+
+\begin{xca}\label{xca:isset-bool}
+Make the above proof more self-contained by replacing
+the application of \cref{lem:weq-iso} by a direct argument.
+Hint: prove that $g(\yes)^{-1}(\triv)$ is contractible.
+\end{xca}
+
 In the following lemma we collect a number of useful results on propositions.
 
 \begin{lemma}\label{lem:prop-utils}
@@ -806,7 +836,7 @@ If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
 is proved componentwise. 
 
 (\ref{prop-utils-eq})
-Using \cref{lem:equivalence-via-inverse}, $P \liff Q$ is equivalent to
+Using \cref{lem:weq-iso}, $P \liff Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
 combining (\ref{prop-utils-implication}) and (\ref{prop-utils-times}).
 
@@ -882,7 +912,85 @@ using the same lemmas as for $\iscontr(A)$.
 Show that $\isset(S)$ and $\isgrpd(G)$ are propositions.
 \end{xca}
 
-\section{Some important subuniverses}\label{sec:subuniverses}
+\section{Decidability, subtypes, and subuniverses}
+\label{sec:subtype}
+
+In ordinary sets, a subset $B$ of a set $A$ can be given concretely by 
+considering the \emph{characteristic function} $\chi_B\colon A\to\bool$ 
+which takes the value $\yes$ on $B$ and $\no$ everywhere else: 
+$B$ is then exactly the preimage of $\yes$ under $\chi_B: A\to\bool$.
+
+These considerations translate to types, though there are some 
+subtleties. Let $T$ be a type and let $P: T\to\UU$ be a type family.
+The sum type $\sum_{t:T} P(t)$ consists of pairs $(t,p)$ with
+$t:T$ and $p:P(t)$. This is not a good way to carve out a subtype
+of $T$, as there could be distinct pairs $(t,p)$ and $(t,p')$ in $P(t)$.
+For this reason we require that each $P(t)$ is a proposition.
+
+\begin{definition}\label{def:subtype}
+Let $T$ be a type and let $P: T\to\UU$ be a type family such that
+$P(t)$ is a proposition for each $t:T$. 
+The \emph{subtype} of $T$ characterized by $P$ is defined 
+as $T_P\defeq \sum_{t:T} P(t)$. If $T$ is a set, then $T_P$
+is also denoted by $\set{t:T \mid P(t)}$.
+\end{definition}
+
+Given a set $A$ and a function $\chi_B: A\to\bool$ we can form
+the subset $\set{a:A \mid \chi_B(a) = \yes}$. However,
+not every subset as in \cref{def:subtype} can be given
+through a $\chi_B: A\to\bool$. As proved in \cref{sec:finite-types},
+that any element of $\bool$ is equal to $\yes$ or to $\no$.
+We have to require a similar property for each $P(a)$,
+as we cannot in general decide whether a proposition is empty or not.
+
+\begin{definition}\label{def:decidability}
+A proposition $P$ is called \emph{decidable} if $P\amalg\neg P$.
+A family $P: A\to\UU$ is called \emph{decidable} if 
+$P(a)$ is a decidable proposition for each $a:A$.
+\end{definition}
+
+If $P: A\to\UU$ is a decidable family of propositions,
+we can define $\chi_A: A\to\bool$ by induction (actually,
+only case distinction) on $p:P(a)$, by setting $\chi_A(a)=\yes$
+if $p\jdeq\inl{\_}$ and $\chi_A(a)=\no$ if $p\jdeq\inr{\_}$.
+We will often use a characteristic function $T\to\bool$ to
+specify a decidable family of propositions on a type $T$.
+
+
+
+consider a function $f:T\to\bool$
+and a type family $P: T\to\UU$. One difference is that $\bool$ is 
+a set consisting of two elements, and $P(t)$ is a type.
+The difference becomes smaller when we assume $P(t)$ to be a
+proposition for all $t:T$. This leads to the definition of the 
+\emph{subtype of $T$ given by $P$} as the sum type $T_P \defeq \sum_{t:T} P(t)$.
+
+Given $f:T\to\bool$ we can now form the 
+subtype $T_f \defeq \sum_{t:T} \yes = f(t)$.
+The subtype $T_f$ is special: we can prove by
+double induction on $x,y:\bool$ that $(x=y)\amalg\neg(x=y)$
+(even easier than for $\NN$). Hence we have
+$(f(t) = \yes)\amalg(f(t) = \no)$ for all $t$ in $T$.
+That is, we can decide for every $t$ in $T$ whether $t$ is in the
+subtype defined by $f$ or not. Therefore we call $T_f$ the
+\emph{decidable subtype of $T$ given by $f$}. 
+
+
+in that we have not assumed that any proposition must be equal to either of the sets $\bn 0$ and $\bn 1$.  
+\begin{definition}
+  \label{def:subtype}
+  Let $B$ be a type and $P(b)$ a family of propositions depending on $b:B$.  Then the first projection $\sum_{b:B}P(b)\to B$ is said to be the \emph{inclusion of the subtype $\sum_{b:B}P(b)$ in $B$}.\index{subtype}\footnote{what do you prefer; injection or inclusion?  They don't mean the same thing and personally I'd prefer injection here.}  
+
+We say that an element $b':B$ \emph{lies in the subtype} $\sum_{b:B}P(b)$ if $P(b')$.
+\end{definition}
+
+Alternatively, a function $f:A\to B$ in \emph{injective} if all the preimages $f^{-1}(b)$ are propositions.
+
+\begin{definition}
+  \label{def:decidableprop}
+  A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equality}\index{decidable equality}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
+\end{definition}
+
 
 In this section we define some important subtypes of $\UU$.
 Their elements are types in $\UU$ that satisfy some specific
@@ -1597,11 +1705,11 @@ given by $\preim(B,f)(a)\defeq f^{-1}(a)$ is an equivalence.
 %\footnote{in some higher universe}
 An inverse equivalence is given by sending $P:A\to\UU$ to 
 $(\sum_{a:A}P(a), \fst)$.
-Equivalence now follows by \cref{lem:equivalence-via-inverse}.
+Equivalence now follows by \cref{lem:weq-iso}.
 \end{lemma}
 
 \begin{proof}
-We apply \cref{lem:equivalence-via-inverse}, and verify the two conditions.
+We apply \cref{lem:weq-iso}, and verify the two conditions.
 Let $P:A\to\UU$. We have to prove that $P = \preim(\sum_{a:A}P(a), \fst)$.
 By function extensionality it suffices to prove
 $\preim(\sum_{a:A}P(a), \fst)(a)\jdeq \fst^{-1}(a) = P(a)$.
@@ -1634,66 +1742,21 @@ $g:\prod_{a:A} \isprop(f^{-1}(a))$ that all fibers of $f$
 are propositions,
 we can define $P_f : A\to\Prop$ by setting $P_f(a)\defeq (f^{-1}(a),g(a))$.
 
-The above argument can be elaborated for each of the subuniverses
+The above argument can be refined for each of the subuniverses
 from \cref{sec:subuniverses}, and one can prove the following
 analogues of \cref{lem:typefamiliesandfibrations}.
 
-\begin{lemma}\label{lem:prop-set-pointed-families}
-Let $A$ be a type. Then
+\begin{lemma}\label{lem:Prop-Set-pointed-families}
+Let $A$ be a type. Then we have:
 \begin{enumerate}
 \item $(A\to\Prop) \equiv \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isprop({f^{-1}(a)})$;
 \item $(A\to\Set) \equiv \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isset({f^{-1}(a)})$;
 \item $(A\to\UUp) \equiv \sum_{B:\UU}\sum_{f:B\to A}
-\prod_{a:A}f^{-1}(a)$;
+\prod_{a:A}f^{-1}(a)$.
 \end{enumerate}
 \end{lemma}
-
-
-
-\section{Subtypes and Decidability --- TBD}
-\label{sec:subtype}
-
-In ordinary sets, an a subset $A$ of a set $B$ can be given concretely by 
-considering the \emph{characteristic function} $\chi_A\colon B\to\bool$ 
-which takes the value $\yes$ on $A$ and $\no$ everywhere else: 
-$A$ is then exactly the preimage of $\yes$ under $\chi_A: B\to\bool$.
-
-These considerations translate to types, though there are some 
-subtleties. Let $T$ be a type and consider a function $f:T\to\bool$
-and a type family $P: T\to\UU$. One difference is that $\bool$ is 
-a set consisting of two elements, and $P(t)$ is a type.
-The difference becomes smaller when we assume $P(t)$ to be a
-proposition for all $t:T$. This leads to the definition of the 
-\emph{subtype of $T$ given by $P$} as the sum type $T_P \defeq \sum_{t:T} P(t)$.
-
-Given $f:T\to\bool$ we can now form the 
-subtype $T_f \defeq \sum_{t:T} \yes = f(t)$.
-The subtype $T_f$ is special: we can prove by
-double induction on $x,y:\bool$ that $(x=y)\amalg\neg(x=y)$
-(even easier than for $\NN$). Hence we have
-$(f(t) = \yes)\amalg(f(t) = \no)$ for all $t$ in $T$.
-That is, we can decide for every $t$ in $T$ whether $t$ is in the
-subtype defined by $f$ or not. Therefore we call $T_f$ the
-\emph{decidable subtype of $T$ given by $f$}. 
-
-
-in that we have not assumed that any proposition must be equal to either of the sets $\bn 0$ and $\bn 1$.  
-\begin{definition}
-  \label{def:subtype}
-  Let $B$ be a type and $P(b)$ a family of propositions depending on $b:B$.  Then the first projection $\sum_{b:B}P(b)\to B$ is said to be the \emph{inclusion of the subtype $\sum_{b:B}P(b)$ in $B$}.\index{subtype}\footnote{what do you prefer; injection or inclusion?  They don't mean the same thing and personally I'd prefer injection here.}  
-
-We say that an element $b':B$ \emph{lies in the subtype} $\sum_{b:B}P(b)$ if $P(b')$.
-\end{definition}
-
-Alternatively, a function $f:A\to B$ in \emph{injective} if all the preimages $f^{-1}(b)$ are propositions.
-
-\begin{definition}
-  \label{def:decidableprop}
-  A \emph{decidable proposition}\index{decidable proposition} depending on a type $A$ is a function $P:A\to\bn 2$.  The underlying proposition is then given by considering $0:\bn 2$ as the empty type $\bn 0$ and $1:\bn 2$ as the singleton $\bn 1$.  A set $A$ is \emph{decidable}\index{decidable set} (or \emph{has decidable equality}\index{decidable equality}) if the propositions $a=_Aa'$ are decidable.  A subtype $\sum_{a:A}P(a)$ is \emph{decidable}\index{decidable subtype} if the propositions $P(a)$ are decidable. 
-\end{definition}
-
 
 % Local Variables:
 % fill-column: 144
