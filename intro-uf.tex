@@ -932,9 +932,8 @@ Let $T$ be a type and let $P: T\to\UU$ be a type family such that
 $P(t)$ is a proposition for each $t:T$. Then we also
 call $P$ a \emph{predicate} on $T$.
 The \emph{subtype} of $T$ characterized by $P$ is defined 
-as $T_P\defeq \sum_{t:T} P(t)$. Then the first projection 
-$T_P\to T$ is said to be \emph{the injection of the subtype $T_P$ in $T$}.
-We say that an element $t':T$ \emph{lies in the subtype} $T_P$ if $P(t')$.
+as $T_P\defeq \sum_{t:T} P(t)$.
+%We say that an element $t':T$ \emph{lies in the subtype} $T_P$ if $P(t')$.
 If $T$ is a set, then $T_P$
 is also denoted by $\set{t:T \mid P(t)}$, indeed again a set.
 \end{definition}
@@ -1604,9 +1603,9 @@ equivalence. As a function between sets,
 $f$ is an injection, but not a surjection.
 We need these important concepts for types in general.
 
-\begin{definition}\label{def:embedding}
-A function $f:A\to B$ is an \emph{embedding} if
-$\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence for all $a,a':A$.
+\begin{definition}\label{def:injection}
+A function $f:A\to B$ is an \emph{insurjection}, or \emph{injective}, 
+if $f^{-1}(b)$ is a proposition for all $b:B$.
 
 A function $f:A\to B$ is a \emph{surjection}, or \emph{surjective},
 if for all $b:B$ there exists an $a:A$ such that $b=f(a)$,
@@ -1616,18 +1615,22 @@ that is, $\Trunc{\sum_{a:A} b=f(a)}$.
 %$\sum_{a:A} b=f(a)$.
 \end{definition}
 
-We do have the following result.
-
-\begin{lemma}\label{lem:emb+surj}
-A function $f: A\to B$ is an equivalence 
-if and only if $f$ is an embedding and a surjection.
+\begin{lemma}\label{lem:inj+surj}
+For all types $A,B$, a function $f: A\to B$ is an equivalence 
+if and only if $f$ is an injection and a surjection.
 \end{lemma}
 
 \begin{proof}
-TBD
+If $f: A\to B$ is an equivalence, then all fibers are contractible,
+so $f$ is both an injection and a surjection. Conversely,
+if $f$ is both injective and surjective, we show that
+$f^{-1}(b)$ is contractible, for each $b:B$. 
+Being contractible is a proposition, so by \cref{lem:prop-trunc-elim}
+we can drop the truncation in $\Trunc{\sum_{a:A} b=f(a)}$.
+Now apply injectivity.
 \end{proof}
 
-embedding between connected types, surjection???
+injection between connected types, surjection???
 
 f fiberwise map/equivalence, tot(f) equivalent fibers
 
