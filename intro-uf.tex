@@ -1507,6 +1507,10 @@ true: $f:\bn{1}\to\bn{2}$ sending $0$ to $0$ is not an
 equivalence. As a function between sets,
 $f$ is an injection, but not a surjection.
 We need these important concepts for types in general.
+We formulate them in such that they amount to their
+usual meaning in set theory: a function from $A$ to $B$ is 
+surjective if the preimage of any $b:B$ is non-empty,
+and injective if such preimages contain at most one element.
 
 \begin{definition}\label{def:injection}
 A function $f:A\to B$ is an \emph{insurjection}, or \emph{injective}, 
@@ -1535,9 +1539,17 @@ we can drop the truncation in $\Trunc{\sum_{a:A} b=f(a)}$.
 Now apply injectivity.
 \end{proof}
 
-injection between connected types, surjection???
-
-f fiberwise map/equivalence, tot(f) equivalent fibers
+\begin{corollary}\label{cor:inj+connected}
+Let $A,B$ be types such that $\Trunc{A}$ and $\prod_{x,y:B} \Trunc{x=y}$.
+Then any injection $f: A\to B$ is an equivalence. This holds
+in particular if both $A$ and $B$ are connected. 
+\end{corollary}
+\begin{proof}
+By \cref{lem:inj+surj} it suffices to show that $f$ is surjective.
+This is a propostion, so by \cref{lem:prop-trunc-elim} and $\Trunc{A}$
+we get an element $a$ in $A$, so $f(a):B$. By $\prod_{x,y:B} \Trunc{x=y}$
+we now get that all preimages under $f$ are non-empty.
+\end{proof}
 
 \section{Type families and maps}
 \label{sec:typefam}
@@ -1640,7 +1652,7 @@ Let $A$ be a type. Then we have:
 \item $(A\to\Set) \equiv \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isset({f^{-1}(a)})$;
 \item $(A\to\UUp) \equiv \sum_{B:\UU}\sum_{f:B\to A}
-\prod_{a:A}f^{-1}(a)$.
+\prod_{a:A}f^{-1}(a)$. (Hard!)
 \end{enumerate}
 \end{lemma}
 
