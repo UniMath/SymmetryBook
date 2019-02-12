@@ -737,10 +737,23 @@ the two elements of $\bool$), and that $\twist\cdot\twist=\refl{\bool}$.
 \section{Propositions, sets and groupoids}
 \label{sec:props-sets-grpds}
 
-Let $X$ be a type.  The property that $X$ has at most one element may be expressed by saying that any two elements are equal. Hence it is encoded
-by $\prod_{a,b:X} (a=b)$.  We shall call such a type a \emph{proposition}, and its elements will be called \emph{proofs}.
+Let $X$ be a type.  The property that $X$ has at most one element may 
+be expressed by saying that any two elements are equal. 
+Hence it is encoded by $\prod_{a,b:X} (a=b)$.  
+We shall call such a type a \emph{proposition}, 
+and its elements will be called \emph{proofs}.
+We will use them for doing logic in type theory.
+The reason for doing so is that the most relevant
+thing about a logical proposition is whether it has a proof or not.
+It is therefore reasonable to require for any type representing 
+a logical proposition that all its members are equal.
 
-Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.
+Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity 
+type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.
+The reason for doing so is that the most relevant
+thing about a set is which elements it has; distinct identifications
+of equal elements are not relevant.
+
 Alternatively, we shall say that $X$ is a 0-\emph{type}.\footnote{%
 Sets are thought to consist of points. Points are entities of dimension 0, 
 which explains why the count starts here.
@@ -800,7 +813,7 @@ the application of \cref{lem:weq-iso} by a direct argument.
 Hint: prove that $g(\yes)^{-1}(\triv)$ is contractible.
 \end{xca}
 
-In the following lemma we collect a number of useful results on propositions.
+We now collect a number of useful results on propositions.
 
 \begin{lemma}\label{lem:prop-utils}
 Let $A$ be a type, and let $P$ and $Q$ propositions.
@@ -864,8 +877,9 @@ and existential quantification. This has a simple reason:
 $\true\amalg \true$ has two distinct elements
 $\inl{\triv}$ and $\inr{\triv}$, an is therefore \emph{not} a proposition.
 Similarly, $\sum_{n:\NN} \true$ has infinitely many
-distinct elements $(n,\triv)$ and is not a proposition. We will see later how
-to work with disjunction and existential quantification for propositions.
+distinct elements $(n,\triv)$ and is not a proposition. We will explain 
+in \cref{sec:prop-trunc-logic} how to work with disjunction and 
+existential quantification for propositions.
 
 The lemma above has a generalization from propositions to
 $n$-types which we state without proving.
@@ -1095,62 +1109,75 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \]
 \end{lemma}
 
-\section{Logical operations on propositions; Propositional truncation}
-\label{sec:logical-operations}
+\section{Propositional truncation and logic}
+\label{sec:prop-trunc-logic}
 
-In \cref{sec:props-sets-grpds} we have seen that propositions are
-closed under $\times$, $\to$ and taking products over arbitrary
-index types. Moreover, $\false$ and $\true$ are propositions.
-In this section we explain in detail how to do logic in type theory.
-First, logical propositions are represented by the types that we
-have already called propositions, that is, the types in which all
-elements are equal. The reason for doing so is that the interesting
-thing about a logical proposition is whether it has a proof or not.
-It is therefore reasonable to require for any type representing 
-a logical proposition that all its members are equal.
-
+As explained in \cref{sec:props-sets-grpds}, $\to,\prod,\times$ 
+can be used for the logical operations implication, 
+universal quantification, and conjunction, respectively.
+Moreover, $\true$ and $\false$ can be used as truth values,
+and $\neg A \defeq (A\to\false)$ for negation.
 We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
-with distinct elements even though the constituents are
-propositions. In order to enforce that all elements are equal
-we define an operation called propositional truncation.\footnote{%
+that are not propostions, even though the constituents are
+propositions. This means we are still lacking $\vee$ and $\exists$
+from the standard repertoire of logic.
+
+In this section we explain how to define $\vee$ and $\exists$.
+We define an operation called propositional truncation,\footnote{%
 The name `truncation' is slightly misleading since it suggests leaving
 something out, whereas the correct intuition is one of adding identifications
 such that everything becomes equal.}
-This is the first example of a \emph{higher inductive type}.
-Higher inductive types are inductive types that also have
-constructors for identifications between elements and/or
-identifications between identifications.
+that enforces that all elements of a type become equal.
 
 \begin{definition}\label{def:prop-trunc}
 Let $T$ be a type. The \emph{propositional truncation} of $T$
 is a type  $\Trunc{T}$ defined by the following constructors:
 \begin{enumerate}
-\item an \emph{element} constructor $\trunc{\_} : T \to\Trunc{T}$
-\item an \emph{identification} constructor $i: \prod_{x,y:\Trunc{T}} x=y$
+\item an \emph{element} constructor $\trunc{t} : \Trunc{T}$ for all $t:T$;
+\item an constructor identifying $x=y$  for all $x,y:\Trunc{T}$.
 \end{enumerate}
-\end{definition}
-Analogously to ordinary inductive types, any higher inductive type
-comes with an induction principle that states how to prove something
-about (or to construct something from) every element of the higher inductive type.
-The induction principle should now also take into account 
-the identification constructors. For the moment we limit
-ourselves to giving a recursion principle stating how to define
-a function $f$ of type $\Trunc{T} \to X$. The following data
-suffices to specify such $f$:
-\begin{enumerate}
-\item a function $g$ of type $T\to X$ replacing $\trunc{\_}$; 
-\item a function $\hat{\imath}$ of type $\prod_{x,y:X} x = y$ replacing $i$.
-\end{enumerate}
-These data yield a function $f$ with $f(\trunc{x})\defeq g(x)$ 
-for all $x:T$. The function $\hat{\imath}$ warrants that $X$ is a
-proposition so that $f$ maps equal elements of $\Trunc{T}$ to equal
-elements of $X$.
-
-WANTED:
+The (unnamed) identification constructor enforces $\Trunc{T}$ to be a
+proposition. The recursion principle is: 
+for any proposition $P$, any function $g: T\to P$
+yields a function $f:\Trunc{T}\to P$ 
+satisfying $f(\trunc{t})\jdeq g(t)$ for all $t:T$.\footnote{%
+Note that $f(\trunc{t})$ respects equality since $P$ is a proposition.
+For the same reason we need not specify how $f$ acts on the identifications.}
+A good way to state the recursion is that, for any proposition $P$,
+precomposition with $\trunc{\_}$ is an equivalence
 \[
-(\Trunc{A} \to B) \equiv (A \to B) \text{for $B$ a proposition}
+(T \to P) \quad \to \quad (\Trunc{T} \to P).
 \]
-$\Trunc{A \amalg B}$
+\end{definition}
+
+One may ask about induction. Truncation is special in that
+induction follows from the above recursion principle.
+Proving this is a good illustration of how to use recursion.
+
+\begin{lemma}\label{lem:prop-trunc-elim}
+Let $P: \Trunc{T}\to\UU$ be such that $P(x)$ is a proposition for all $x:\Trunc{T}$.
+If $g(t): P(\trunc{t})$ for all $t:T$, then there is $f: \prod_{x:\Trunc{T}} P(x)$
+with $f(\trunc{t})\jdeq g(t)$ for all $t:T$.
+\end{lemma}
+\begin{proof}
+By \cref{lem:prop-utils}(\ref{prop-utils-pi}), 
+$\prod_{x:\Trunc{T}} P(x)$ is a proposition. We will define
+a map $h: \Trunc{T}\to\prod_{x:\Trunc{T}} P(x)$. 
+Then we set $f(x)\defeq h(x,x)$ and we are done.
+By recursion it suffices to define $k(t,x): P(x)$ 
+for $t:T$ and $x:\Trunc{T}$. Let $t:T$ and $x:\Trunc{T}$,
+then $\trunc{t}: \Trunc{T}$ and $p: \trunc{t}=x$ for some $p$.
+By assumption we have $g(t): P(\trunc{t})$, and we can transport
+$g(t)$ along $p$ in the family $P$. Thus we
+set $k(t,x)\defeq \trp_{P,p} g(\trunc{t}) : P(x)$.
+\end{proof}
+
+Now we are ready to define logical $\vee$ and $\exists$, by
+\[
+(P \vee Q) \defeq \Trunc{P \amalg Q} \quad\text{and}
+\quad (\exists x:T\,P(x)) \defeq \Trunc{\sum_{x:T}P(x)}.
+\]
+
 
 
 \section{Truncation}
