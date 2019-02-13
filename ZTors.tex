@@ -133,9 +133,8 @@ we will need in the sequel.
   \]
   is an equivalence.
 \end{lemma}
-The proof is by induction on first $p_1$, and then on $q$.
-The remaining proof obligation is resolved by an easy equivalence
-correcting for $p_2 = \refl{a_1}\ct p_2$.
+The proof is by induction on first $p_1$, and then $q$, and finally $p_2$.
+Then conclude by reflexivity.
 
 \begin{lemma}\label{lem:pathover-change-path}
   For any $A : \UU$, $B : A \to \UU$, $a_1,a_2 : A$, $b_1 : B\,a_1$, $b_2: B\,a_2$,
@@ -293,7 +292,8 @@ We formulate this precisely as follows.
   But such a specification is unique by the universal property (induction!) of $\NN$.
 \end{proof}
 Let us analyze the inverse function produced in the proof.
-It maps $p : P(0)$ to the function that takes $z:\zet$ to $f^z(p):P(z)$, where
+It maps $p : P(0)$ to a pair whose first component
+is the function that takes $z:\zet$ to $f^z(p):P(z)$, where
 \begin{alignat*}2
   f^0(p) &\defeq p, && \\
   f^{n+1}(p) &\defeq f_n(f^n(p)),&\quad&\text{for $n:\NN$,} \\
@@ -645,7 +645,7 @@ where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied t
   Thus, to show that $Q_p(\pt)$ is contractible,
   it suffices to define an equivalence
   \[
-    \varphi_{a'} : R_p(a') \xrightarrow{\sim}{} (a = a')
+    \varphi_{a'} : R_p(a') \xrightarrow{\sim}{} (a =^A_{s^\pt_0} {a'})
   \]
   for each $a' : A(\pt)$.
   We again invoke \cref{thm:integers-univ-symm},
@@ -708,6 +708,31 @@ In order to make ends meet between the first and the fourth typing
 we invoke \cref{lem:s-X-x-*-e} and \cref{lem:pathover-change-path}.
 \end{proof}
 
+Computing the center.
+First, $s^\pt_0: \pt = \pt$ is based on $(n\mapsto s^n(1)) = \id$, 
+mapped by UA to $\refl{\pt}$. So we have $\varepsilon_0 : \refl{\pt} = s^\pt_0$.
+Similarly, $s^\pt_1: \pt = \pt$ is based on $(n\mapsto s^n(1)) = s$, 
+mapped by UA to $\Zloop$. So we have $\varepsilon_1 : \Zloop = s^\pt_1$.
+
+Second, $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is contractible,
+since $\sum_{a':A(\pt)} (a =^A_{\refl{\pt}} a') \jdeq \sum_{a':A(\pt)} (a = a')$
+is contractible, and changing the pathover type along $\varepsilon_0$
+is an equivalence. The center of $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is the pair
+$(a,r)$ where $r: a =^A_{s^\pt_0} a$ is set to $\overline{\varepsilon_0} \refl{a}$.
+This center is pulled back to a center $(a,c)$ of $Q_p(\pt)$ where $c$ is the
+center of $\varphi_{a}^{-1}(r)$ coming from the proof that $\varphi_{a}$ is
+an equivalence. The latter proof
+is the above instance of \cref{thm:integers-univ-symm}.
+Unraveling this instance, and using the remark at the
+end of the proof of \cref{thm:integers-univ-symm},
+tells us that $c$ DO NOT READ BEYOND
+
+
+is a pair $(h,q)$ with $h(z)=p^z$
+for all $z:\zet$. Indeed, $\varphi_{a}(h,q) = h(0) = \refl{a}$.
+Moreover, $q$ has type $\prod_{z:\zet} h(z+1)=p\ct h(z)$.
+Wrapping up, $\vec c_p(\pt)\defeq (a,h,q)$.
+
 
 \bibliographystyle{amsplain}
 \bibliography{papers}
@@ -718,12 +743,5 @@ we invoke \cref{lem:s-X-x-*-e} and \cref{lem:pathover-change-path}.
 % latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition")
 % TeX-master: t
 % End:
-OMIT WHEN OBSOLETE
-\begin{align*}
-\apd{c_p}(e) : (c_p(X) =^A_e c_p(Y)) &\jdeq (tr^A_e(c_p(X)) = c_p(Y)),\\
-\tilde c_p(Y,e(x)) :  (a =^A_{s^Y_{e(x)}} c_p(Y))&\jdeq (tr^A_{s^Y_{e(x)}}(a) = c_p(Y))\\
-\tilde c_p(X,x)^{-1} : \ldots & \jdeq (c_p(X) = tr^A_{s^X_x}(a))\\
-\ap{tr^A_e}(\tilde c_p(X,x)^{-1}):\ldots &\jdeq (tr^A_e(c_p(X)) = tr^A_e(tr^A_{s^X_x}(a)))\\
-\end{align*}
-To concatenate the second an the fourth path in order to match the type of (1) we need a
-path $tr^A_e(tr^A_{s^X_x}(a)) = tr^A_{s^Y_{e(x)}}(a)$.
+
+
