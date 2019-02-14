@@ -1150,26 +1150,21 @@ for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
 \]
 \end{definition}
 
-One may ask about induction. Truncation is special in that
-induction follows from the above recursion principle.
-Proving this is a good illustration of how to use recursion.
+One may ask about induction. Induction follows from the above recursion principle.
+Proving this is a good illustration of logical reasoning in type theory.
 
 \begin{lemma}\label{lem:prop-trunc-elim}
-Let $P: \Trunc{T}\to\UU$ be such that $P(x)$ is a proposition for all $x:\Trunc{T}$.
-If $g(t): P(\trunc{t})$ for all $t:T$, then there is $f: \prod_{x:\Trunc{T}} P(x)$
-with $f(\trunc{t})\jdeq g(t)$ for all $t:T$.
+Let $P: \Trunc{T}\to\UU$ be a predicate such that $P(\trunc{t})$ for all $t:T$. 
+Then we have $P(x)$ for all $x:\Trunc{T}$. 
 \end{lemma}
 \begin{proof}
-By \cref{lem:prop-utils}(\ref{prop-utils-pi}), 
-$\prod_{x:\Trunc{T}} P(x)$ is a proposition. We will define
-a map $h: \Trunc{T}\to\prod_{x:\Trunc{T}} P(x)$. 
-Then we set $f(x)\defeq h(x,x)$ and we are done.
-By recursion it suffices to define $k(t,x): P(x)$ 
-for $t:T$ and $x:\Trunc{T}$. Let $t:T$ and $x:\Trunc{T}$,
-then $\trunc{t}: \Trunc{T}$ and $p: \trunc{t}=x$ for some $p$.
-By assumption we have $g(t): P(\trunc{t})$, and we can transport
-$g(t)$ along $p$ in the family $P$. Thus we
-set $k(t,x)\defeq \trp_{P,p} g(\trunc{t}) : P(x)$.
+The assumption amounts to having a function $g: \prod_{t:T} P(\trunc{t})$.
+Note that $\sum_{x:\Trunc{T}} P(x)$ is a proposition. 
+We will first define a map $h: \Trunc{T}\to\sum_{x:\Trunc{T}} P(x)$. 
+By recursion it suffices to define $k(t) \defeq (\trunc{t},g(t))$ for all $t:T$.
+Now let $x:\Trunc{T}$ and consider $\fst(h(x)): \Trunc{T}$
+and $\snd(h(x)): P(\fst(h(x)))$. Since $\Trunc{T}$ is a
+proposition, $\fst(h(x)) = x$ and we get $P(x)$ by substitution.
 \end{proof}
 
 Now we are ready to define logical $\vee$ and $\exists$, by
@@ -1178,11 +1173,20 @@ Now we are ready to define logical $\vee$ and $\exists$, by
 \quad (\exists x:T\,P(x)) \defeq \Trunc{\sum_{x:T}P(x)}.
 \]
 
+For example, for all $x:\Trunc{T}$ there exists $t:T$ such that $x=\trunc{t}$
+follows immediately from \cref{lem:prop-trunc-elim}.
 
+We conclude this section with some important notions defined by truncation.
 
-
-\section{Truncation}
-\label{sec:truncation}
+\begin{definition}\label{def:connected}
+Let $A$ be a type. We call $A$ \emph{inhabited},
+or \emph{non-empty}, if $\Trunc{A}$.
+Elements $x,y$ of $A$ are called \emph{connected} if $x=y$ is
+inhabited, that is, if $\Trunc{x=y}$. 
+The type $A$ is called \emph{connected} if it is inhabited
+and all its elements are connected, that is, if 
+$\Trunc{A} \times \prod_{x,y:A} \Trunc{x=y}$.
+\end{definition}
 
 \section{Operations on sets that produce new sets}
 \label{sec:operations-on-sets}
@@ -1575,7 +1579,7 @@ in particular if both $A$ and $B$ are connected.
 \begin{proof}
 By \cref{lem:inj+surj} it suffices to show that $f$ is surjective.
 This is a propostion, so by \cref{lem:prop-trunc-elim} and $\Trunc{A}$
-we get an element $a$ in $A$, so $f(a):B$. By $\prod_{x,y:B} \Trunc{x=y}$
+we may assume $a:A$, so $f(a):B$. By $\prod_{x,y:B} \Trunc{x=y}$
 we now get that all preimages under $f$ are non-empty.
 \end{proof}
 
