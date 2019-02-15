@@ -374,8 +374,9 @@ one would like to express equality in the structured type in terms of
 the equalities in the constituent types. This explains much better
 what it means for two elements of the structured type to be equal.
 This is so important that we give this explanation here and below
-every time we introduce a new structured type, even though not everything
-can be proved yet. For complete proofs we refer to \cite{hottbook}.
+every time we introduce a new structured type. 
+For complete proofs we refer to \cite{hottbook}, or to the
+repositories with formalized proofs. .
 
 An identification between two elements $(a_1,b_1),(a_2,b_2)$ of 
 $\sum _{x:X} Y(x)$ means in the first place, by taking
@@ -392,11 +393,12 @@ of $i'$ depends on $i$, so that we actually have a dependent pair:
 \[
 (i,i'): \sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2
 \]
-Conversely, we can define by induction a function of
+Conversely, we can define by induction a function
 \[
-(\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2) \to (a_1,b_1)=(a_2,b_2).
+(\_\,,\_)^= : (\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2) \to (a_1,b_1)=(a_2,b_2),
 \]
-which often helps proving dependent pairs equal.
+setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$.
+This function often helps proving dependent pairs equal.
 See Theorem 2.7.2 in \cite{hottbook} for a detailed account.
 
 
@@ -603,7 +605,7 @@ We can also define
 $g: B(a,\refl{a})\to \sum_{x:X} \sum_{i: a=x} B(x,i)$
 mapping $q: B(a,\refl{a})$ to $(a,\refl{a},q)$.
 Clearly $f(g(q))=q$ for all $q:B(a,\refl{a})$.
-Moreover, $g(f(x,i,q))=(x,i,q)$ can be proved by induction
+Moreover, $g(f(x,i,q))=(x,i,q)$ is clear by induction
 on $i$, for all $q:B(x,i)$.
 By \cref{lem:weq-iso} if follows that $f$
 is an equivalence.
@@ -623,6 +625,9 @@ With conditions as above, but with $B$ not depending on $i$, we have
 \]
 \end{corollary}
 
+\begin{xca}\label{xca:isEq-pair=}
+Show that the function $(\_\,,\_)^=$ from \cref{sec:sum-types} is an equivalence.
+\end{xca}
 
 \section{Universes and univalence}\label{sec:univax}
 
@@ -1197,10 +1202,10 @@ Then $\sum_{x:T} P(x)$ is also an $n$-type.
 \end{lemma}
 
 \begin{proof}
-If $(x_1,p_1),(x_2,p_2) : \sum_{x:T} P(x)$, then by WHICH LEMMA
+If $(x_1,p_1),(x_2,p_2) : \sum_{x:T} P(x)$, then by \cref{xca:isEq-pair=}
 $(x_1,p_1)=(x_2,p_2)$ is equivalent to 
 $\sum_{q:x_1=x_2} ({\trp}^P q\,p_1 = p_2)$. 
-Since $P(x_2)$ is a proposition, using SEVERAL LEMMAS we get 
+Since $P(x_2)$ is a proposition, we get 
 \[
 %(x_1,p_1)=(x_2,p_2) \equiv
 (\sum_{q:x_1=x_2} {\trp}^P q\,p_1 = p_2) \equiv 

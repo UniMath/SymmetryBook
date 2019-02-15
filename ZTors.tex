@@ -122,11 +122,15 @@ but can easily be proved to be equivalent. Let's call the
 equivalence $\varepsilon$. So if we have pathovers $q_i : b_i =^B_{p_i} b_{i+1}$
 for $i=1,2,3$ we get $\varepsilon(q_1 \cto (q_2 \cto q_3)) = (q_1 \cto q_2)\cto q_3$
 as associativity law. For more information we refer the reader to the
-repositories with formalized proofs. Here we only state two results that
+repositories with formalized proofs. Here we only state some results that
 we will need in the sequel.
 
+In the rest of this section we work in a context with
+$A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, 
+$p_i : a_i = a_{i+1}$ for $i=1,2$,
+
 \begin{lemma}\label{lem:concat-over}
-  For every $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, $p_i : a_i = a_{i+1}$ for $i=1,2$, and $q : b_1 =^B_{p_1} b_2$, the
+  For every $q : b_1 =^B_{p_1} b_2$, the
   function
   \[
     q \cto ({-}) : (b_2 =^B_{p_2} b_3) \to (b_1 =^B_{p_1\ct p_2} b_3)
@@ -136,13 +140,48 @@ we will need in the sequel.
 The proof is by induction on first $p_1$, and then $q$, and finally $p_2$.
 Then conclude by reflexivity.
 
-\begin{lemma}\label{lem:pathover-change-path}
-  For any $A : \UU$, $B : A \to \UU$, $a_1,a_2 : A$, $b_1 : B\,a_1$, $b_2: B\,a_2$,
-  and paths $p,q:a_1=a_2$, and a $2$-dimensional path $\alpha : p = q$,
+If $p=q$, then we can transport paths of $p$ to paths over $q$.
+
+\begin{definition}\label{def:pathover-change-path}
+  For every $p,q:a_1=a_2$ and $2$-dimensional path $\alpha : p = q$,
   transport along $\alpha$
-  induces an equivalence $\overline\alpha : (b_1 =^B_p b_2) \equiv (b_1 =^B_q b_2)$.
+  induces an equivalence $\cp{\alpha}: (b_1 =^B_p b_2) \equiv (b_1 =^B_q b_2)$.
+  The function $\cp{\alpha}$ is called \emph{change path}, and is defined
+  by induction on $\alpha$, setting $\cp{\refl{p}}\defeq \id_{b_1 =^B_p b_2}$.
+\end{definition}
+
+\begin{lemma}\label{lem:functorial-change-path}
+  For every $p,q,r:a_1=a_2$ and 2-paths $\alpha : p = q$, $\beta : q = r$,
+  we have $\cp{\alpha\ct\beta}=\cp{\beta}\circ\cp{\alpha}$.
 \end{lemma}
-The proof is by induction on $\alpha$, after which we need to show that the identity is an equivalence, which is clear.
+
+The proof is by induction on $\beta$ (for right-recursive concatenation).
+
+\begin{lemma}\label{lem:inv-change-path}
+  For every  $p,q:a_1=a_2$ and 2-path $\alpha : p = q$,
+  $\alpha^- \defeq \ap{(\_)^{-1}}(\alpha)$, we have
+  $(\cp{\alpha}(\hat p))^{-o} = \cp{\alpha^-}(\hat p^{-o})$
+  for every $\hat p: b_1=^B_p b_2$.
+\end{lemma}
+ The proof is by induction on $\alpha$.
+
+\begin{definition}\label{lem:concat-ap-ap}
+  For every  $p,p':a_1=a_2$, $q,q':a_2=a_3$ and 2-paths 
+  $\alpha : p = p'$, $\beta : q = q'$, define
+  $\apc(\alpha,\beta): (p\ct q)=(p'\ct q')$ by induction
+  first on $\beta$ and then on $q$, 
+  setting $\apc(\alpha,\refl{\refl{a_2}}) \defeq \alpha$.
+  (This is well-typed for right-recursive concatenation.)
+\end{definition}
+
+\begin{lemma}\label{lem:concat-change-path}
+  For every  $p,p':a_1=a_2$, $q,q':a_2=a_3$ and 2-paths 
+  $\alpha : p = p'$, $\beta : q = q'$, we have
+  $\cp{\apc(\alpha,\beta)}(\hat p \cto \hat q) = 
+   \cp{\alpha}(\hat p) \cto  \cp{\beta}(\hat q),$
+  for every $\hat p: b_1=^B_p b_2$ and $\hat q: b_2=^B_q b_3$.
+\end{lemma}
+ The proof is by induction first on $\beta$ and then on $\hat q$.
 
 
 
@@ -612,20 +651,20 @@ $(e_x\circ s)(n) = e_x(n+1) = f^{n+1}(x) = f^n(f(x)) =e_{f(x)}(n)$,
 so $e_x\circ s = e_{x+1}$, and by applying $ua$ we get:
 
 \begin{lemma}\label{lem:loop-s-iterated}
-  For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
-  $s^Z_{x+1} = \Zloop \ct s^Z_x$. 
+  For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, we have
+  ${\varepsilon^Z_x}: \Zloop \ct s^Z_x = s^Z_{x+1}$. 
 \end{lemma}
 
 Now we are ready to derive the induction principle using the same 
 technique as for the recursion principle. We reuse notations as much as
 possible, but take care that all types are different.
 
-\begin{definition}\label{def:guided-null-hmtps}
+\begin{definition}\label{def:guided-null-hmtps-dep}
 For every $Z\defeq(X,f,t):\TorZ$, define
 \begin{align*}\label{eq:TBD}
-Q_p(Z)&\defeq \sum_{a' : A(Z)}~\sum_{h : \prod_{x:X} a =^A_{s^Z_x} a'}~\prod_{x:X} h(f(x)) = g_x(p\cto h(x)),
+Q_p(Z)&\defeq \sum_{a' : A(Z)}~\sum_{h : \prod_{x:X} a =^A_{s^Z_x} a'}~\prod_{x:X} h(f(x)) = \cp{\varepsilon^Z_x}(p\cto h(x)),
 \end{align*}
-where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied to the conclusion of \cref{lem:loop-s-iterated}.
+where $\varepsilon^Z_x$ comes from \cref{lem:loop-s-iterated}.
 \end{definition}
 
 
@@ -640,8 +679,13 @@ where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied t
 
   We have $Q_p(\pt)\jdeq \sum_{a':A(\pt)} R(a')$ for $R : A(\pt) \to \UU$ defined by
   \[
-    R_p(a') \defeq \sum_{h : \prod_{z:\zet} a =^A_{s^\pt_z} a'}~\prod_{z:\zet} h(z+1) =  g_z(p \cto h(z)).
+    R_p(a') \defeq \sum_{h : \prod_{z:\zet} a =^A_{s^\pt_z} a'}~\prod_{z:\zet} h(z+1) =  
+    \cp{\varepsilon^\pt_z}(p \cto h(z)).
   \]
+  We have that $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} {a'})$ is contractible,
+  since $s^\pt_0 = \refl{\pt}$ and 
+  $\sum_{a':A(\pt)} (a =^A_{\refl{\pt}} a') \jdeq \sum_{a':A(\pt)} (a = a')$
+  is contractible.
   Thus, to show that $Q_p(\pt)$ is contractible,
   it suffices to define an equivalence
   \[
@@ -649,30 +693,21 @@ where $g_x$ denotes the equivalence of \cref{lem:pathover-change-path} applied t
   \]
   for each $a' : A(\pt)$.
   We again invoke \cref{thm:integers-univ-symm},
-  this time with the family $P_{a'} : \zet \to \UU$ given by $P_{a'}(z) \defeq (a =^A_{s^\pt_z} {a'})$
-  and the equivalences $f_{a'} : \prod_{z:\zet} P_{a'}(z)\equiv P_{a'}(z+1)$ given by
-  $f_{a'}(z) \defeq g_z(p \cto ({-}))$.
+  this time with the family $P_{a'} : \zet \to \UU$ given 
+  by $P_{a'}(z) \defeq (a =^A_{s^\pt_z} {a'})$
+  and the equivalences $f_{a'} : \prod_{z:\zet} P_{a'}(z)\equiv P_{a'}(z+1)$ 
+  given by $f_{a'}(z) \defeq \cp{\varepsilon^\pt_z}(p \cto ({-}))$.
+  Thus, applying \cref{thm:integers-univ-symm}
+  shows that $\varphi_{a'}$ is an equivalence,
+  where $\varphi_{a'}(h,q) \defeq h(0)$.
+
+For every $Z\defeq(X,f,t):\TorZ$, the center of contraction of $Q_p(X,f)$ 
+is denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
 \end{proof}
 
 
-
 \begin{figure}
-\begin{tikzpicture} %\large
-   \matrix (m) 
-   [matrix of math nodes, row sep=2em, column sep=2em, ampersand replacement=\&]
-    {
-\sum\limits_{a':A(Z)} R_p(a')  \&       \& A(Z)\\
-\\
-   \& \TorZ \& \\};
- 
-\draw[->>] (m-1-1) -- (m-3-2);
-\draw[-> ] (m-1-1) -- (m-1-3) node[midway,above]  {$\fst^X$};
-\draw[->>] (m-1-3) -- (m-3-2);
-\draw[->,dotted] (m-3-2) to[bend left=30] node[near end,left]{$\vec{c}_p$} (m-1-1);
-\draw[->,dotted] (m-3-2) to[bend right=30] node[near end,right]{$c_p$} (m-1-3);
-               
-\end{tikzpicture}
-\caption{\label{fig:TorZ-induction}LET'S HAVE SOMETHING MORE INFORMATIVE}
+\caption{\label{fig:TorZ-induction}LET'S HAVE SOME INFORMATIVE PICTURE}
 \end{figure}
 
 Postfixing $s^X_x$ by $e: X=Y$ amounts to
@@ -684,13 +719,11 @@ by induction on $e$. In evidence:
   Thus we have a function $\varepsilon_{e,x} : (s^X_x)^{-1} \ct s^Y_{e(x)} = e$.
 \end{lemma}
 
-
-The following lemma uses pathover reversal denoted by $({-})^{-o}$,
-which should be defined somewhere else.
+The following lemma uses pathover reversal denoted by $({-})^{-o}$.
 
 \begin{lemma}\label{lem:apd-c-tilde-c}
 For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have
-$\apd{c_p}(e) = \overline{\varepsilon_{e,x}}
+$\apd{c_p}(e) = \cp{\varepsilon_{e,x}}
 (\tilde c_p(X,x)^{-o}\cto \tilde c_p(Y,e(x)))$.
 \end{lemma}
 \begin{proof}
@@ -705,33 +738,54 @@ We have the following pathover typings:
      (c_p(X) =^A_{(s^X_x)^{-1}\ct s^Y_{e(x)}} c_p(Y))\\
 \end{align*}
 In order to make ends meet between the first and the fourth typing
-we invoke \cref{lem:s-X-x-*-e} and \cref{lem:pathover-change-path}.
+we invoke \cref{lem:s-X-x-*-e} and \cref{def:pathover-change-path}.
 \end{proof}
 
-Computing the center.
-First, $s^\pt_0: \pt = \pt$ is based on $(n\mapsto s^n(1)) = \id$, 
+We compute (at least partially) the center $\vec c_p(\pt)$ of $Q_p(\pt)$.
+First, $s^\pt_0: \pt = \pt$ is based on $(n\mapsto s^n(0)) = \id$, 
 mapped by UA to $\refl{\pt}$. So we have $\varepsilon_0 : \refl{\pt} = s^\pt_0$.
-Similarly, $s^\pt_1: \pt = \pt$ is based on $(n\mapsto s^n(1)) = s$, 
-mapped by UA to $\Zloop$. So we have $\varepsilon_1 : \Zloop = s^\pt_1$.
+The center of $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is the pair
+$(a,r)$ where $r: a =^A_{s^\pt_0} a$ is defined
+by $r\defeq \cp{\varepsilon_0}(\refl{a})$.
+So we have $c_p(\pt)\jdeq a$.
 
-Second, $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is contractible,
-since $\sum_{a':A(\pt)} (a =^A_{\refl{\pt}} a') \jdeq \sum_{a':A(\pt)} (a = a')$
-is contractible, and changing the pathover type along $\varepsilon_0$
-is an equivalence. The center of $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is the pair
-$(a,r)$ where $r: a =^A_{s^\pt_0} a$ is set to $\overline{\varepsilon_0} \refl{a}$.
-This center is pulled back to a center $(a,c)$ of $Q_p(\pt)$ where $c$ is the
-center of $\varphi_{a}^{-1}(r)$ coming from the proof that $\varphi_{a}$ is
-an equivalence. The latter proof
-is the above instance of \cref{thm:integers-univ-symm}.
-Unraveling this instance, and using the remark at the
-end of the proof of \cref{thm:integers-univ-symm},
-tells us that $c$ DO NOT READ BEYOND
+The center $(a,r)$ is pulled back to a center $(a,c)$ of $Q_p(\pt)$ 
+where $c\defeq(h,q)$ is the center of $\varphi_{a}^{-1}(r)$ coming 
+from the proof that $\varphi_{a}$ is an equivalence.
+We know the type of $h$ is $\prod_{z:\zet} a =^A_{s^\pt_z} a$.
+We know $\varphi_{a}(h,q) \defeq h(0) = r$, so $\tilde c_p(\pt,0) = r$.
+Using $q$ we also know that 
+$\tilde c_p(\pt,1) = h(1) = \cp{\varepsilon^\pt_z}(p \cto h(0))$.
+Using \cref{lem:apd-c-tilde-c}, we have enough information to
+compute $\apd{c_p}(\Zloop) = \cp{\varepsilon_{\Zloop,0}}
+(\tilde c_p(\pt,0)^{-o}\cto \tilde c_p(\pt,1)) = p$. This we do now.
 
-
-is a pair $(h,q)$ with $h(z)=p^z$
-for all $z:\zet$. Indeed, $\varphi_{a}(h,q) = h(0) = \refl{a}$.
-Moreover, $q$ has type $\prod_{z:\zet} h(z+1)=p\ct h(z)$.
-Wrapping up, $\vec c_p(\pt)\defeq (a,h,q)$.
+Abbreviate $s_0 \defeq s^\pt_0$, $s_1 \defeq s^\pt_1$, 
+then $\varepsilon_{\Zloop,0} : s_0^{-1} \ct s_1 = \Zloop$.
+We split the latter identity in a sequence:
+\[
+s_0^{-1} \ct s_1 \stackrel{\alpha}{=} 
+\refl{\pt}\ct(\Zloop\ct s_0) \stackrel{\beta}{=} 
+\Zloop\ct\refl{\pt} \stackrel{\gamma}{=}  
+\Zloop 
+\]
+A great simplification is obtained by using that $\TorZ$ is a groupoid:
+any 2-paths are equal, so the change paths only depend on the endpoints.
+Also, as $\cp{\refl{p}}$ is the identity, so is any $\cp{\alpha}$
+when the endpoints of $\alpha$ are definitionally equal. We make extensive use 
+of this and of the lemmas from \cref{sec:pathovers}.
+We use $\rflo$ for a reflexivity path over $\refl{\pt}$ without specifying the point.
+\begin{align*}\small
+\cp{\alpha\ct\beta\ct\gamma}
+((\cp{\refl{\pt} = s_0}(\rflo))^{-o} \cto
+   \cp{\Zloop\ct s_0 = s_1}(p\cto )\cp{\refl{\pt} = s_0}(\refl{a}))=&\\
+\cp{\alpha\ct\beta\ct\gamma}
+((\cp{\refl{\pt} = s_0^{-1}}(\refl{a})) \cto
+   \cp{\Zloop\ct s_0 = s_1}(p\cto )\cp{\refl{\pt} = s_0}(\refl{a}))=&\\
+\cp{\beta\ct\gamma}
+((\cp{\refl{\pt} = s_0^{-1}}(\refl{a})) \cto
+   \cp{\Zloop\ct s_0 = s_1}(p\cto )\cp{\refl{\pt} = s_0}(\refl{a}))=&
+\end{align*}
 
 
 \bibliographystyle{amsplain}
