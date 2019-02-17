@@ -614,7 +614,8 @@ We summarize the results in the following recursion principle for $\TorZ$.
 In the next section we will prove an induction principle for $\TorZ$.
 
 \begin{definition}\label{def:TorZrecursor}
-The function $e_A(a,p) \defeq c_p$ as defined in \cref{lem:ap-c-tilde-c} has type
+The function $e_A(a,p) \defeq c_p$ as defined in 
+\cref{lem:guided-null-hmtps} has type
 \[
 e_A : \sum_{a:A}(a=a) \to (\TorZ \to A),
 \]
@@ -679,8 +680,8 @@ where $\varepsilon^Z_x$ comes from \cref{lem:loop-s-iterated}.
 
   We have $Q_p(\pt)\jdeq \sum_{a':A(\pt)} R(a')$ for $R : A(\pt) \to \UU$ defined by
   \[
-    R_p(a') \defeq \sum_{h : \prod_{z:\zet} a =^A_{s^\pt_z} a'}~\prod_{z:\zet} h(z+1) =  
-    \cp{\varepsilon^\pt_z}(p \cto h(z)).
+    R_p(a') \defeq \sum_{h : \prod_{z:\zet} a =^A_{s^\pt_z} a'}~
+    \prod_{z:\zet} h(z+1) = \cp{\varepsilon^\pt_z}(p \cto h(z)).
   \]
   We have that $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} {a'})$ is contractible,
   since $s^\pt_0 = \refl{\pt}$ and 
@@ -742,50 +743,77 @@ we invoke \cref{lem:s-X-x-*-e} and \cref{def:pathover-change-path}.
 \end{proof}
 
 We compute (at least partially) the center $\vec c_p(\pt)$ of $Q_p(\pt)$.
+The goal is to prove $c_p(\pt)\jdeq a$ and $\apd{c_p}(\Zloop)=p$.
+
 First, $s^\pt_0: \pt = \pt$ is based on $(n\mapsto s^n(0)) = \id$, 
-mapped by UA to $\refl{\pt}$. So we have $\varepsilon_0 : \refl{\pt} = s^\pt_0$.
+mapped by $ua$ to $\refl{\pt}$. So we have $\varepsilon_0 : \refl{\pt} = s^\pt_0$.
+We use $\rrfl$ for the reflexivity path at $a$ over $\refl{\pt}$.
 The center of $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is the pair
-$(a,r)$ where $r: a =^A_{s^\pt_0} a$ is defined
-by $r\defeq \cp{\varepsilon_0}(\refl{a})$.
-So we have $c_p(\pt)\jdeq a$.
+$(a,r)$ where $r \defeq \cp{\varepsilon_0}(\rrfl): a =^A_{s^\pt_0} a$.
+This shows $c_p(\pt)\jdeq a$.
 
 The center $(a,r)$ is pulled back to a center $(a,c)$ of $Q_p(\pt)$ 
 where $c\defeq(h,q)$ is the center of $\varphi_{a}^{-1}(r)$ coming 
 from the proof that $\varphi_{a}$ is an equivalence.
-We know the type of $h$ is $\prod_{z:\zet} a =^A_{s^\pt_z} a$.
+The type of $h$ is $\prod_{z:\zet} a =^A_{s^\pt_z} a$ and
+the type of $q$ is $\prod_{z:\zet} h(z+1) = \cp{\varepsilon^\pt_z}(p \cto h(z))$.
 We know $\varphi_{a}(h,q) \defeq h(0) = r$, so $\tilde c_p(\pt,0) = r$.
 Using $q$ we also know that 
-$\tilde c_p(\pt,1) = h(1) = \cp{\varepsilon^\pt_z}(p \cto h(0))$.
-Using \cref{lem:apd-c-tilde-c}, we have enough information to
-compute $\apd{c_p}(\Zloop) = \cp{\varepsilon_{\Zloop,0}}
-(\tilde c_p(\pt,0)^{-o}\cto \tilde c_p(\pt,1)) = p$. This we do now.
+$\tilde c_p(\pt,1) \defeq h(1) = \cp{\varepsilon^\pt_0}(p \cto h(0))$.
+We now have enough information to verify $\apd{c_p}(\Zloop)=p$,
+which by \cref{lem:apd-c-tilde-c} reduces to 
+\[
+\cp{\varepsilon_{\Zloop,0}}
+((\cp{\varepsilon_0}(\rrfl))^{-o}\cto 
+\cp{\varepsilon^\pt_0}(p \cto \cp{\varepsilon_0}(\rrfl))) = p.
+\]
+
+
+A great simplification is obtained by using that $\TorZ$ is a groupoid:
+all 2-paths having the same endpoints are equal.
+Hence the functions $\cp{\alpha}$ only depend on the (path-)type
+of $\alpha$, and we may replace the subscript $\alpha$ by its type.
+Also, as $\cp{\refl{p}}$ is the identity, so is any $\cp{\alpha}$
+when the endpoints of $\alpha$ are definitionally equal. 
+We make extensive use of this and of the lemmas from \cref{sec:pathovers}.
 
 Abbreviate $s_0 \defeq s^\pt_0$, $s_1 \defeq s^\pt_1$, 
 then $\varepsilon_{\Zloop,0} : s_0^{-1} \ct s_1 = \Zloop$.
-We split the latter identity in a sequence:
+We split the latter identity in a sequence of identities:
 \[
 s_0^{-1} \ct s_1 \stackrel{\alpha}{=} 
 \refl{\pt}\ct(\Zloop\ct s_0) \stackrel{\beta}{=} 
-\Zloop\ct\refl{\pt} \stackrel{\gamma}{=}  
-\Zloop 
+\refl{\pt}\ct(\Zloop\ct\refl{\pt}) 
 \]
-A great simplification is obtained by using that $\TorZ$ is a groupoid:
-any 2-paths are equal, so the change paths only depend on the endpoints.
-Also, as $\cp{\refl{p}}$ is the identity, so is any $\cp{\alpha}$
-when the endpoints of $\alpha$ are definitionally equal. We make extensive use 
-of this and of the lemmas from \cref{sec:pathovers}.
-We use $\rflo$ for a reflexivity path over $\refl{\pt}$ without specifying the point.
-\begin{align*}\small
-\cp{\alpha\ct\beta\ct\gamma}
-((\cp{\refl{\pt} = s_0}(\rflo))^{-o} \cto
-   \cp{\Zloop\ct s_0 = s_1}(p\cto )\cp{\refl{\pt} = s_0}(\refl{a}))=&\\
-\cp{\alpha\ct\beta\ct\gamma}
-((\cp{\refl{\pt} = s_0^{-1}}(\refl{a})) \cto
-   \cp{\Zloop\ct s_0 = s_1}(p\cto )\cp{\refl{\pt} = s_0}(\refl{a}))=&\\
-\cp{\beta\ct\gamma}
-((\cp{\refl{\pt} = s_0^{-1}}(\refl{a})) \cto
-   \cp{\Zloop\ct s_0 = s_1}(p\cto )\cp{\refl{\pt} = s_0}(\refl{a}))=&
+Here $\alpha,\beta$ are constructed with $\apc$ so as to
+enable the application of \cref{lem:concat-change-path}.
+We now calculate:
+
+\begin{align*}
+\cp{\alpha\ct\beta}
+((\cp{\refl{\pt} = s_0}(\rrfl))^{-o} \cto
+   \cp{\Zloop\ct s_0 = s_1}(p\cto\cp{\refl{\pt} = s_0}(\rrfl)))&= \\
+\cp{\beta}(\cp{\alpha}
+((\cp{\refl{\pt} = s_0^{-1}}(\rrfl)) \cto
+   \cp{\Zloop\ct s_0 = s_1}(p\cto\cp{\refl{\pt} = s_0}(\rrfl))))&= \\
+\cp{\beta}
+(\rrfl \cto
+   (p\cto\cp{\refl{\pt} = s_0}(\rrfl)))&= \\
+\rrfl\cto(p\cto\rrfl)&=p\\
 \end{align*}
+
+Summarizing we get the universal property of the circle:
+
+\begin{definition}\label{def:TorZelim}
+The function $e_A(a,p) \defeq c_p$ as defined in 
+\cref{lem:guided-null-hmtps-dep} has type
+\[
+e_A : \sum_{a:A(\pt)}(a=_\Zloop a) \to \prod_{Z:\TorZ} A(Z)),
+\]
+and satisfies $e_A(a,p)(\pt) \jdeq a$ and 
+$\apd{e_A(a,p)}(\Zloop) = p$.
+\end{definition}
+
 
 
 \bibliographystyle{amsplain}
