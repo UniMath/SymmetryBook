@@ -44,15 +44,23 @@ In particular, if $a:A$, the function $((S^1,\base)\to_* (A,a))\to (a=_Aa)$ give
   The circle is connected.
 \end{lemma}
 \begin{proof}
-  We need to show that for all $z:S^1$ the proposition $||\base=z||$ is inhabited, or in other words, we need to produce an element  $f:\prod_{z:S^1}||\base=z||$.    By the defining property of $S^1$, giving $f$ is the same as specifying $f(\base):||\base=\base||$ and $f(\Sloop):f(\base)=_{||\base=\base||}f(\base)$.  Letting $f(\base)$ be represented by $\refl\base:\base=\base$ and $f(\Sloop)$ be the sole symmetry of $f(\base)$ we are done.
- %  footnote{The current proof of the circle being connected uses \cref{lem:classicalconnected}.  This must be fixed, eg as suggested in the footnote where \cref{lem:classicalconnected} has been put.  Can also use the version where $\bn 2$ is replaced by an arbitrary finite set}We need to prove that the function $\bn{2} \to(S^1\to\bn{2} )$ of \cref{def:connected} is an equivalence.  In view of \cref{lem:freeloopspace} it is enough to show that the composite
-% $$\bn{2} \to \sum_{a:\bn{2} }(a=_{\bn{2} }a)$$
-% sending $a:\bn{2} $ to $(a,\refl a)$ is an equivalence.  Composing further with the first  projection $\mathrm{pr}_1:\sum_{a:\bn{2} }(a=_{\bn{2} }a)\to\bn{2}$ we get the identity on $\bn 2$, so it suffices to show that $\mathrm{pr}_1$ is an equivalence.  This is true since the fibers $\mathrm{pr}_1^{-1}(a)\simeq (a=_{\bn{2} }a)$ are contractible.
+It suffices to show $\Trunc{\base=z}$ for all $z:S^1$.
+This we do by induction on the circle \cref{def:circle}.
+For the base case we take $\refl{\base}$.
+The induction step follows immediately as $\Trunc{\base=\base}$
+is a proposition.
 \end{proof}
-In the proof above, note the propositional truncation $||\base=z||$ imposed by the definition of connectedness; if this truncation were removed we wouldn't know what to do with $f(\Sloop)$.  This said, the family $R:S^1\to\UU$ with $R(z)\defequi (\base=z)$ is extremely important for other purposes: it determines what we will call the ``universal cover'' of the circle and is the key tool in proving that the set of integers and the symmetries of the circle coincide.
+
+In the proof above, note the propositional truncation coming 
+from the definition of connectedness is essential.
+If this truncation were removed we wouldn't know what to do in
+the induction step (actually, ${\base=z}$ for all $z:S^1$ contradicts UA).
+This said, the family $R:S^1\to\UU$ with $R(z)\defequi (\base=z)$ is extremely 
+important for other purposes: it determines what we will call the 
+``universal cover'' of the circle and is the key tool in proving that 
+the set of integers and the symmetries of the circle coincide.
 
 In order to do this we should properly define the set of integers and explore the concept of coverings.
-
 
 \section{The integers}
 \label{sec:integers}
@@ -705,43 +713,13 @@ I am now converging to using ``$f^p$'' (superscript since I have needed it in si
 
 \subsection{Connected types}
 \label{sec:connectedtypes}
-Recall the definition of a contractible type.  A type is connected essentially by the same definition, with the only difference that we do not have control over a contraction, merely that each point is individually equal to some center.
-\begin{definition}\label{def:connected}
-A type $A$ is \emph{connected} if there is an $a:A$ such that for all $b:B$ the proposition $||a=b||$ is true.  
-\end{definition}
-Note that under this definition, the empty type $\bn{0} $ is not connected, and neither is $\bn{n} $ if $n>1$. However, $\bn{1} $ is connected.
-
-
-% \footnote{TBdeleted  
-% The only place where I can remember having actually planned to use  this is in \cref{lem:circleisconnected} to show that $S^1$ is connected.  However, that can be replaced by dropping the simplification at the beginning of  \cref{cor:S1groupoid} and use that the $f$ in the proof actually is an equivalence without this. 
-
-% Another way of saying that a type $A$ is connected is to say that the truth-value of a proposition depending on $A$ is constant, a fact which is formalized as follows.
-
-% \begin{lemma}
-%   \label{lem:classicalconnected}
-%   A type $A$ is connected if and only if the function 
-% $$c:\bn{2} \to(A\to\bn{2} )$$ defined by $c(x)(a)=x$ for $x:\bn{2} $ and $a:A$ 
-% %to the constant function with value $x$ 
-% is an equivalence. 
-% %$||A||%\sum{a,b:A}||a=b||=\bn{1} $.  
-% \end{lemma}
-%   \begin{proof}    
-%     Assume $A$ is connected.  Let $a:A$ be so that for every $b:A$, then $||a=_Ab||$ is true.  If $f:A\to\bn{2} $, then for every $b:A$ we get that $||f(a)=f(b)||$, but since $\bn{2} $ is a set, we get that $f(a)=f(b)$.  Hence, any function $f$ is constant and so $c$ is an equivalence.
-
-% Conversely, assume that $c$ is an equivalence.  Then $A$ is nonempty.  Let $a:A$ and let $f:A\to \bn{2} =\bool$ be defined by $f(b)\defequi||a=b||$.  Since $c$ is an equivalence and $f(a)$ is true, we get that $f(b)$ is true for all $b$.   
-%   \end{proof}
-% As a matter of fact, if $A$ has an element $a$, then $A$ is connected if and only if for all $b:A$ the identity type $a=_Ab$ is inhabited, essentially because if $f\colon A\to\bn{2} $ an equality $a=_Ab$ forces $f(a)=_{\bn{2} }f(b)$.  So, a connected type is one that can't be ``torn apart''.  }
 
  
 \begin{definition}
     If $A$ is a type and $a:A$, then the \emph{component of $a$ in $A$} is the type
 $$A_{(a)}\defequi \sum_{b:A}||a=b||.$$
 \end{definition}
-\begin{xca}
-  Prove that the component of $a$ in $A$ is connected.  
 
- [\footnote{This tries to say that, nonfunctorially, a space is the disjoint union of its components.  Don't think we need it so it can probably be thrown away.}Assuming the appropriate form of axiom of choice \footnote{someone insert our choice}, prove that the path components define a family $A\to\UU$ factoring as $A\to||A||$ making sense of the equation ``$||A=\sum_{[a]:||A||}A_{[a]}||$''.]
-\end{xca}
 \begin{xca}\label{xca:essentiallysmall} \footnote{Some version of this will probably be needed.  It won't be used in any cases where functoriality is needed.}
   Let $\UU\subseteq\UU_1$ be universes and let $A:\UU_1$ so that $||A||$ is in $\UU$ and for all $a,b:A$ we have that $(a=_Ab):\UU$.  Then $A$ is \emph{essentially small}, \ie there is an equivalence (in $\UU_1$) to a type in $\UU$.  
 
