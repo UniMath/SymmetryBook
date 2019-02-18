@@ -487,14 +487,17 @@ Given a $G$-set, we may consider it as a $G$-type and will usually not make a no
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
-$$\princ G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  We've seen this family before in the guise of the ``universal covering $P_{\pt_G}$'' of \cref{def:universalcover}!
+$$\princ g:BG\to\UU,\qquad\princ G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  We've seen this family before in the guise of the ``universal covering $P_{\pt_G}$'' of \cref{def:universalcover}!
 The name torsor will be explained shortly.
 \end{example}
 
 \newcommand{\Ad}{\mathrm{Ad}}
 \begin{example}\label{def:adjointrep}
   If $G$ is a group (or \inftygp), then
-$$\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.
+$$\Ad_G:BG\to\UU,\qquad\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.  The name ``adjoint'' comes from how transport works in this case; if $p:y=z$, then $\Ad_G(p):(y=y)=(z=z)$ is given by conjugation: $\Ad_G(p)(q)=p^{-1}qp:z=z$, the picture
+$$\xymatrix{y\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&z\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
+y\ar@{=}[r]^p_\to&z}$$
+is a mnemonic device explaining that it couldn't have been different.  
 \end{example}
 \begin{example}\label{def:trivGset}
   If $G$ is a group (or \inftygp), and $X$ is a set (or type) then
@@ -503,20 +506,27 @@ $$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this 
 
 \begin{remark}
   \label{remark:GsetsareGsets}
-  A $G$-type $X$ is often presented by focusing on the underlying type $X(\pt_G)$  and providing it with a structure relating it to $G$ determining the entire function $X\colon BG\to\UU$.
+  A $G$-type $X$ is often presented by focusing on the \emph{underlying type} $X(\pt_G)$  and providing it with a structure relating it to $G$ determining the entire function $X\colon BG\to\UU$.
 
-More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors over the component $\UU_{(X)}=\sum_{Y:\UU}||Y=X(\pt_G)||$, which contains the point $X(\pt_G)$.  Hence, without loss of information, $X$ can be considered as a homomorphism 
-$$G\to\Sigma_{X(\pt_G)}$$ from $G$ to the automorphism group of $X(\pt_G)$.
+More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors over the component $\UU_{(X(\pt_G))}\defequi\sum_{Y:\UU}||Y=X(\pt_G)||$ which contains the point $X(\pt_G)$.  Since $B\Sigma_{X(\pt_G)}\defequi(\UU_{(X(\pt_G))},X(\pt_G))$ the $G$-type $X$ can, without loss of information, be considered as a homomorphism 
+$$G\to\Sigma_{X(\pt_G)}% \defequi(\UU_{(X(\pt_G))},X(\pt_G))
+$$ from $G$ to the permutation group $\Sigma_{X(\pt_G)}$ of $X(\pt_G)$.
 
-Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to\UU_{(X)}$), then the composite
-$$BG\to \UU_{(X)}\to \UU$$
+Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to B\Sigma_{X(\pt_G)}%\defequi(\UU_{(X(\pt_G))},X(\pt_G)
+$), then the composite
+$$BG\to \UU_{(X(\pt_G))}\to \UU$$
 is a $G$-type with $X$ exactly the value of $\pt_G$.
 
-However, we must be careful not to focus too much on the underlying type.  For instance, even though the underlying type of both $\Ad_G$ and $\princ G$ is $\pt_G=\pt_G$, in general  $\Ad_G$ and $\princ G$  are very different $G$-types.  A third $G$-type with underlying type $\pt_G=\pt_G$ is $\mathrm{triv}_G(\pt_G=\pt_G)$.
+However, we must be careful not to focus too much on the underlying type.  For instance, even though the underlying type of both $\Ad_G$ and $\princ G$ is $\pt_G=\pt_G$, in general  $\Ad_G$ and $\princ G$  are very different $G$-types.  To drive this point home, compare the two illustrations of transport along a $p:\pt_G=\pt_G$ for the two:
+$$\xymatrix{\pt_G\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&\pt_G\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
+\pt_G\ar@{=}[r]^p_\to&\pt_G},\qquad
+\xymatrix{\pt_G\ar@{=}[r]^{\refl{\pt_G}}_\to\ar@{=}[d]_q^\downarrow&\pt_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
+\pt_G\ar@{=}[r]^p_\to&\pt_G}$$
+A third $G$-type with underlying type $\pt_G=\pt_G$ is $\mathrm{triv}_G(\pt_G=\pt_G)$.
 \end{remark}
 
 \begin{xca}
-  Prove that if $G$ is an abelian\footnote{define, or is this our definition?} group, then $\Ad_G=\mathrm{triv}_G(\pt_G=\pt_G)$.
+  Prove that if $G$ is an abelian group, then $\Ad_G=\mathrm{triv}_G(\pt_G=\pt_G)$.
 \end{xca}
 \begin{xca}
   Use that $BG$ is connected to show that if $X$ is a $G$-set, then $X(z)$ is a set for all $z:BG$ (\ie $\prod_{z:BG}\isset(X(z))$).
@@ -527,35 +537,43 @@ $$\typetorsor_G\defequi\sum_{X:\Type_G}||\princ G=X||,$$
 where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
 \begin{remark}
-  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||\princ G=X||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||\princ G=X||.$  Hence, for $G$ a group, the type of $G$-torsors is just another name for the component of the connected covers of $BG$ containing the unversal covering.
+  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||\princ G=X||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||\princ G=X||.$  Hence, for $G$ a group, the type of $G$-torsors is just another name for the component of the connected covers of $BG$ containing the universal covering.
 
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one:
 \end{remark}
 \begin{lemma}\label{lem:BGbytorsor}
   If $G$ is a group (or \inftygp), then the function
-$$T:BG\to\typetorsor_G,\qquad T(z)\defequi(x\mapsto(z=_{BG}x))$$
+$$T:BG\to\typetorsor_G,\qquad T(z)\defequi P_z\defequi(x\mapsto(z=_{BG}x))$$
 is an equivalence.
 
 Hence the groups (or $\infty$-groups) $(\typetorsor_G,\princ G)$ and $G=(BG,\pt_G)$ are equal.\footnote{in the appropriate universe}.
 \end{lemma}
 
 \begin{proof}
-  Since both $\typetorsor_G$ and $BG$ are connected, it suffices by \cref{lem:eqandcovofconntypes} to show that the induced function of identity types
-$$T^=:(y=z)\to(T(y)= T(z))
+  Since both $\typetorsor_G$ and $BG$ are connected, it suffices by \cref{lem:eqandcovofconntypes} to show that the induced function (\ie transport) of identity types
+$$T:(y=z)\to(P_y= P_z)
 $$
-is an equivalence.  But this follows by the very definition of the identity type!  For $q:y=z$ and $p:T(y)(x)\defequi(y=x)$ we have that 
-$$T^=(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ and conversely, by the induction principle for the identity type $%T(y)(x)\defequi (y=x)
+is an equivalence.  But this follows by the very definition of the identity type!  
+
+For $q:y=z$,  the transport $T(q):P_y=P_z$ is given by  sending $p:y=x$ to
+$$T(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ 
+or, in a picture 
+$$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{T(q)(p)}_\downarrow\\
+x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
+
+
+Conversely, by the induction principle for the identity type $%T(y)(x)\defequi (y=x)
 y=x$,  a function $T(y)\to T(z)$ is uniquely given by its value (in $T(z)(y)\defequi (z=y)$) on $\refl y$.
 %the same as giving an element in $T(z)(y)\defequi (z=y)$.
 \end{proof}
 This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\UU$'':\footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
 \begin{lemma}
-  \label{lem:allgpsarepermutationgps}Let $G$ be a group.  Then remembering the base point in the factorization of the pricipal $G$-torsor $\princ:BG,\pt_G\to \UU_{\pt_G=\pt_G}\subseteq\UU$ (c.f.~\cref{remark:GsetsareGsets}) gives an injective homomorphism
-$$\alpha_G:G\to\Sigma_{\pi_G=\pt_G}$$  
+  \label{lem:allgpsarepermutationgps}Let $G$ be a group.  Then remembering the base point in the factorization of the pricipal $G$-torsor $\princ G:BG\to\UU$ through the component $\UU_{(\pt_G=\pt_G)}\subseteq\UU$ (c.f.~\cref{remark:GsetsareGsets}) gives an injective homomorphism
+$$\alpha_G:\Hom(G,\Sigma_{\pi_G=\pt_G})$$  
 of $G$ into a permutation group.
 \end{lemma}
 \begin{proof}
-  The type of injective group homomorphism from $G$ to a group $H$ is equivalent ((GIVE REF)) to the type of pointed coverings of $BH$ by $BG$, so we need to show that $\alpha_G:BG\to\UU_{\pt_G=\pt_G}$ is a covering.  
+  The type of injective group homomorphism from $G$ to a group $H$ is equivalent ((GIVE REF)) to the type of pointed coverings of $BH$ by $BG$, so we need to show that $\alpha_G:BG\to\UU_{(\pt_G=\pt_G)}$ is a covering.  
 Under the identity $BG=\typetorsor_G$ of \cref{lem:BGbytorsor} the function $\alpha$ translates to the evaluation map
 $$\xymatrix{
   \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\pt_G}}\ar@{=}[d]&&\Sigma_{\pt_G=\pt_G}\ar@{=}[d]\\
@@ -588,7 +606,7 @@ If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $
 
 \section{$G$-sets for abstract groups}
 \label{sec:Gsetforabstract}
-Useful notation:\footnote{move somewhere}
+Useful notation:\footnote{move somewhere.  Also, 190218, there are many things that I have not yet had time to improve in the remainder of the chapter}
 \newcommand{\pre}{\mathrm{pre}}
 \newcommand{\preinv}{\mathrm{preinv}}
 \newcommand{\post}{\mathrm{post}}
@@ -603,7 +621,12 @@ Useful notation:\footnote{move somewhere}
 \end{align*}
 
 
-We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of picking the underlying abstract group of a group and taking the group represented by the torsors of an abstract group are inverse to each others.
+We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of
+\begin{enumerate}
+\item forming abstract group of a group and 
+\item taking the group represented by the torsors of an abstract group
+\end{enumerate}
+ are inverse to each others.
 
 Note that we have not considered an abstract analog of the concept of $\infty$-group, so all we do in this section is set-based.
 
