@@ -245,7 +245,6 @@ g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.  The set $S$ is c
   \end{definition}
 
 In conclusion we have proved that groups give rise to abstract groups:
-\newcommand{\abstr}{\mathrm{abst}}
   \begin{lemma}\label{lem:idtypesgiveabstractgroups}
     If $G$ is a group, then $\pt_G=\pt_G$ together with $e\defequi\refl{\pt_G}{}$, $g^{-1}\defequi\symm_{\pt_g,\pt_G}g$ and $g\cdot h\defequi\trans_{\pt_g,\pt_G,\pt_G}(g)(h)$
 %$A$ is a groupoid %(alternatively called a ``$1$-type'') and $a:A$ is an element, then $a=_Aa$, together with $e\defequi\refl a{}$, $g^{-1}\defequi\symm_{a,a}g$ and $g\cdot h\defequi\trans_{a,a,a}(g)(h)$ 
@@ -509,7 +508,6 @@ There is nothing sacred about starting the equality in $\pt_G$: if $y:BG$, then 
 %The name torsor will be explained shortly.
 \end{example}
 
-\newcommand{\Ad}{\mathrm{Ad}}
 \begin{example}\label{def:adjointrep}
   If $G$ is a group (or \inftygp), then
 $$\Ad_G:BG\to\UU,\qquad\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.  The name ``adjoint'' comes from how transport works in this case; if $p:y=z$, then $\Ad_G(p):(y=y)=(z=z)$ is given by conjugation: 
@@ -608,35 +606,21 @@ We must show that the preimages $\ev_{\pt_G}(X)$ for $X:\Sigma_{\pt_G=\pt_G}$ ar
 This preimage is equivalent to $\sum_{E:BG\to\Set}(X=E(\pt_G))$ (note the absence of a truncation).  We must show that if $(E,p),(F,q):\sum_{E:BG\to\Set}(X=E(\pt_G))$, then 
 $$((E,p)=(F,q))=\prod_{x:BG}\sum_{\phi(x):E(x)=F(x)}\phi(\pt_G)=_{E(\pt_G)=F(\pt_G)}qp^{-1}$$ is a set.  
 Note that if $r:\pt_G=x$, then $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
-$$\xymatrix{&E(pt_G)\ar[r]^{E(r)}_=\ar[dd]_{\phi(pt_G)}^=&E(x)\ar[dd]_{\phi(x)}^=\\
-  X\ar[ur]^p_=\ar[dr]^q_=&&\\
-  &F(\pt_G)\ar[r]^{F(r)}_=&F(x)},$$
+$$\xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
+  X\ar@{=}[ur]^p_\to\ar@{=}[dr]^q_\to&&\\
+  &F(\pt_G)\ar@{=}[r]^{F(r)}_\to&F(x)},$$
 and so $\phi(x)$ (which by nature is independent of such an $r:\pt_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us pin this down in our language.
 If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $x:BG$ both $E(x)$ and $F(x)$ are sets, it is enough to show that the proposition $\phi(x)=\psi(x)$ is inhabited.  Let $f:(\pt_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$ given above.  Since $BG$ is connected, $\pt_G=x$ is inhabited, and we are done.
 \end{proof}
 
 
-\section{$G$-sets for abstract groups}
+
+\section{Groups concrete or abstract -- two sides of the same coin}
 \label{sec:Gsetforabstract}
-Useful notation:\footnote{move somewhere. Also, 190218, there are many things that I have not yet had time to improve in the remainder of the chapter}
-\newcommand{\pre}{\mathrm{pre}}
-\newcommand{\preinv}{\mathrm{preinv}}
-\newcommand{\post}{\mathrm{post}}
-\newcommand{\adjoint}{\mathrm{ad}}
-\newcommand{\concr}{\mathrm{concr}}
-
-\begin{align*}
-%  \pre:(x=y)\to ((y=z)=(x=z)),\qquad&\pre(q)(p)\defequi pq\\
-  \preinv:(y=x)\to ((y=z)=(x=z)),\qquad&\preinv(q)(p)\defequi\preinv_qp\defequi pq^{-1}\\
-  \post:(y=z)\to ((x=y)=(x=z)),\qquad&\post(p)(q)\defequi\post_pq\defequi pq\\
-  \adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
-\end{align*}
-((In notation used elsewhere, ``$\preinv(q)(p)=P_q(p)$, $\post(p)(q)=P_x(p)(q)$ and $\adjoint(q)(p)=\Ad(p)(q)$'', but this may be confusing since some of these are seen as secondary (\eg in\footnote{why doesn't xspace work?} $P_x$ the $x$ has been largely fixed before) and some primary))
-
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of
 \begin{enumerate}
-\item forming abstract group of a group and 
+\item forming the abstract group of a group and 
 \item taking the group represented by the torsors of an abstract group
 \end{enumerate}
  are inverse to each others.
@@ -645,15 +629,15 @@ Note that we have not considered an abstract analog of the concept of $\infty$-g
 
 \begin{definition}
 \label{def:abstrGtorsors}
-  If $G$ is an abstract group, a $G$-set is a set $S$ together with a homomorphism
-$G\to\abstr(\Sigma_S)$
-from $G$ to the (abstract) permutation group of $S$:
-$$Set_G^\abstr\defequi \sum_{S:\Set}\Hom_\abstr(G,\abstr(\Sigma_S)).$$
+  If $\agp G$ is an abstract group, a $\agp G$-set is a set $S$ together with a homomorphism
+$\agp G\to\abstr(\Sigma_S)$
+from $\agp G$ to the (abstract) permutation group of $S$:
+$$Set_{\agp G}^\abstr\defequi \sum_{S:\Set}\Hom_\abstr({\agp G},\abstr(\Sigma_S)).$$
 
-The \emph{principal $G$-torsor} $\princ G^\abstr$ is the $G$-set consisting of the underlying set $\mathrm{under}(G)$ together with the homomorphism $G\to\abstr(\Sigma_{\mathrm{under}(G)})$ given by $g\mapsto \mathrm{ua}(\cdot g^{-1})$ ((explain)).
+The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $\mathrm{under}({\agp G})$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{\mathrm{under}({\agp G})})$ given by $g\mapsto \mathrm{ua}(\cdot g^{-1})$ ((explain)).
 
-The type of \emph{$G$-torsors} is
-$$\typetorsor_G^\abstr\defequi\sum_{S:\Set_G^\abstr}||\princ G=S||.$$
+The type of \emph{${\agp G}$-torsors} is
+$$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp G}=S||.$$
 \end{definition}
 \begin{example}
   If $G$ is a group we can unravel the definition and see that an $\abstr(G)$-set consists of
@@ -665,6 +649,18 @@ $$\typetorsor_G^\abstr\defequi\sum_{S:\Set_G^\abstr}||\princ G=S||.$$
 
 \end{example}
 
+Useful notation:\footnote{move somewhere. ((In notation used elsewhere, ``$\preinv(q)(p)=P_q(p)$, $\post(p)(q)=P_x(p)(q)$ and $\adjoint(q)(p)=\Ad(p)(q)$'', but this may be confusing since some of these are seen as secondary (\eg in\footnote{why doesn't xspace work?} $P_x$ the $x$ has been largely fixed before) and some primary))
+
+Also, 190218, there are many things that I have not yet had time to improve in the remainder of the chapter}
+
+\begin{align*}
+%  \pre:(x=y)\to ((y=z)=(x=z)),\qquad&\pre(q)(p)\defequi pq\\
+  \preinv:(y=x)\to ((y=z)=(x=z)),\qquad&\preinv(q)(p)\defequi\preinv_qp\defequi pq^{-1}\\
+  \post:(y=z)\to ((x=y)=(x=z)),\qquad&\post(p)(q)\defequi\post_pq\defequi pq\\
+  \adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
+\end{align*}
+
+
 \begin{example}\label{ex:qG}
   If $G$, then for any $x:BG$ the set $\pt_G=x$ has a natural structure of an $\abstr(G)$-torsor by means of 
 $$\preinv:(\pt_G=\pt_G)\to ((\pt_G=x)=(\pt_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\pt_G=x}$ and that for $p,q:\pt_G=\pt_G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \pt_G=x$ we have that 
@@ -673,7 +669,7 @@ That this $\abstr(G)-set$ is an $\abstr(G)$-torsor then follows since $BG$ is co
 \end{example}
 
 \begin{definition}
-  If $G$ is an abstract group, then the \emph{concrete group $\concr(G)$ associated with $G$} is the group (given by the pointed connected groupoid) $(\typetorsor_G^\abstr,\princ G)$.
+  If ${\agp G}$ is an abstract group, then the \emph{concrete group $\concr({\agp G})$ associated with ${\agp G}$} is the group (given by the pointed connected groupoid) $(\typetorsor_{\agp G}^\abstr,\princ {\agp G})$.
 \end{definition}
 We give the construction of \cref{ex:qG} a short name since it will occur in important places.
 \begin{definition}
@@ -686,7 +682,7 @@ q_G(z)=((\pt_G=z),\preinv%:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))
 \end{definition}
 
 \begin{lemma}
-  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  
+  \label{lem:Groupsareidentitytypes}Let ${\agp G}$ be an abstract group.  
 For all groups $G$, the pointed function $q_G:G\to\concr(\abstr(G))$ 
 is a pointed\footnote{defined where?} equivalence.
 \end{lemma}
@@ -718,21 +714,21 @@ To show that the preimage is contractible, it is enough to construct a function 
 %\footnote{how deeply do we want to integrate univalence?}
 \begin{xca}
   \label{ex:abstrconcrG}
-  Let $G=(S,e,\mu,\iota)$ be an abstract group.  Then that underlying set of $\abstr(\concr(G))$ is $\princ G^\abstr=_{\typetorsor^\abstr_G}\princ G^\abstr$.  
+  Let ${\agp G}=(S,e,\mu,\iota)$ be an abstract group.  Then that underlying set of $\abstr(\concr({\agp G}))$ is $\princ {\agp G}^\abstr=_{\typetorsor^\abstr_{\agp G}}\princ {\agp G}^\abstr$.  
 Unraveling the definitions we see that this set is equivalent to
 $$\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
 $$  
 Setting $s\defequi e$ and renaming $t\defequi q^{-1}$ in the last equation, we see that $p(t)=p(e)t$; that is $p$ is simply multiplication with an element $p(e):S$.  in other words, the function 
-$$r_G:S\to  \sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_G(u)\defequi(u\cdot\,,!)
+$$r_{\agp G}:S\to  \sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_{\agp G}(u)\defequi(u\cdot\,,!)
 $$  
-is an equivalence of sets, which we by univalence turn into an equality.  The abstract group structure of $\abstr(\concr(G))$ is given by it being the symmetries of $\princ G^\abstr$, or translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ that of $S=S$ of the first projection.  
-Hence our identity $r_G$ underlies an identity of abstract groups
-$$r_G:G=_{\typegroup^\abstr}\abstr(\concr(G)).$$
+is an equivalence of sets, which we by univalence turn into an equality.  The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\princ {\agp G}^\abstr$, or translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ that of $S=S$ of the first projection.  
+Hence our identity $r_{\agp G}$ underlies an identity of abstract groups
+$$r_{\agp G}:{\agp G}=_{\typegroup^\abstr}\abstr(\concr({\agp G})).$$
 \end{xca}
 
 We use this this to show that every abstract group encodes the symmetries of something essentially unique.
 \begin{theorem}
-  \label{lem:Groupsareidentitytypes}Let $G$ be an abstract group.  
+  \label{lem:Groupsareidentitytypes}Let ${\agp G}$ be an abstract group.  
 Then
 $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence: \ie the type of groups and the type of abstract groups are equal.
 \end{theorem}
