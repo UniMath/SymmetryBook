@@ -311,6 +311,20 @@ $\prod_{g:\pt_G=\pt_G}
   \begin{xca}\label{xca:typemonoidisgroupoid}
     Prove that the types of monoids and abstract groups are groupoids.
   \end{xca}
+  \begin{xca}
+    \label{xca:cheapgroup}
+    There is a leaner way of characterizing what an abstract group is: define a \emph{sheargroup} to be a set $S$ together with an element $e:S$, a function $S\times S\to S$ sending $(a,b):S\times S$ to $a*b:S$ and the following propositions where we use the shorthand $\bar a\defequi a*e$:
+    \begin{enumerate}
+    \item $e*a=a$,
+    \item $a*a=e$ and
+    \item $c*(b*a)=\overline{(c*\bar b)}*a$,
+    \end{enumerate}
+    for all $a,b,c:S$.
+    Show that the type of abstract groups is equivalent to the type of sheargroups.  
+
+Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a sheargroup and conversely, letting $a*b=b\cdot a^{-1}$ takes you back.  On your way you may need at some point to show that $\overline{\bar a}=a$: setting $c=\bar a$ and $b=a$ in the third formula will do the trick (after you have established that $\bar e=e$).  This exercise may be good to look back to in the many instances where the inverse inserted when ``multiplying from the right by $a$'' is forced by transport considerations. 
+  \end{xca}
+
 
 
 
@@ -500,10 +514,10 @@ Given a $G$-set, we may consider it as a $G$-type and will usually not make a no
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
-$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  We've seen this family before in the guise of the ``universal covering $P_{\pt_G}$'' of \cref{def:universalcover}!  
+$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  We've seen this family before in the guise of the ``universal covering $\pathsp{\pt_G}$'' of \cref{def:universalcover}!  
 The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.
 
-There is nothing sacred about starting the equality in $\pt_G$: if $y:BG$, then $P_y:BG\to\UU$ is also a $G$-set (type) and if $q:y=y'$, then the preferred equality between $P_y$ and $P_{y'}$ sends $p:y=z$ to $pq^{-1}:y'=z$.  As a matter of fact, \cref{lem:BGbytorsor} will identitfy $BG$ and the type of $G$-torsors via the map sending $y:BG$ to $P_y$ using the full transport structure of the identity type $P_yz\defequi(y=z)$.
+There is nothing sacred about starting the equality in $\pt_G$: if $y:BG$, then $\pathsp y:BG\to\UU$ is also a $G$-set (type) and if $q:y=y'$, then the preferred equality between $\pathsp y$ and $\pathsp{y'}$ sends $p:y=z$ to $pq^{-1}:y'=z$.  As a matter of fact, \cref{lem:BGbytorsor} will identify $BG$ and the type of $G$-torsors via the map sending $y:BG$ to $\pathsp y$ using the full transport structure of the identity type $\pathsp yz\defequi(y=z)$.
  
 %The name torsor will be explained shortly.
 \end{example}
@@ -564,7 +578,7 @@ Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedl
 \end{remark}
 \begin{lemma}\label{lem:BGbytorsor}
   If $G$ is a group (or \inftygp), then the function
-$$T:BG\to\typetorsor_G,\qquad T(z)\defequi P_z\defequi(x\mapsto(z=_{BG}x))$$
+$$T:BG\to\typetorsor_G,\qquad T(z)\defequi \pathsp z\defequi(x\mapsto(z=_{BG}x))$$
 is an equivalence.
 
 Hence the groups (or $\infty$-groups) $(\typetorsor_G,\princ G)$ and $G=(BG,\pt_G)$ are equal.\footnote{in the appropriate universe}.
@@ -572,11 +586,11 @@ Hence the groups (or $\infty$-groups) $(\typetorsor_G,\princ G)$ and $G=(BG,\pt_
 
 \begin{proof}
   Since both $\typetorsor_G$ and $BG$ are connected, it suffices by \cref{lem:eqandcovofconntypes} to show that the induced function (\ie transport) of identity types
-$$T:(y=z)\to(P_y= P_z)
+$$T:(y=z)\to(\pathsp y= \pathsp z)
 $$
 is an equivalence.  But this will follow by the very definition of the identity type!  
 
-For $q:y=z$,  the transport $T(q):P_y=P_z$ is given by  sending $p:y=x$ to
+For $q:y=z$,  the transport $T(q):\pathsp y=\pathsp z$ is given by  sending $p:y=x$ to
 $$T(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ 
 or, in a picture 
 $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{T(q)(p)}_\downarrow\\
@@ -584,14 +598,14 @@ x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
 
 
 Conversely, by the induction principle for the identity type, %$T(y)(x)\defequi (y=x)y=x$,  
-a function $f:P_y\to P_z$ is given by its value $f(\refl y):P_zy\defequi (z=y)$ and in general, for $p:y\to x$ we have by transport that $f(p)$ is the composite $p\,f(\refl y)$.  In other words the map $T:(y=z)\to(P_z=P_y)$ is an equivalence.
+a function $f:\pathsp y\to \pathsp z$ is given by its value $f(\refl y):\pathsp zy\defequi (z=y)$ and in general, for $p:y\to x$ we have by transport that $f(p)$ is the composite $p\,f(\refl y)$.  In other words the map $T:(y=z)\to(\pathsp z=\pathsp y)$ is an equivalence.
 %Hence $\bn 1\to T^{-1}(f)=\sum_{p:y=z}T(p)=f$ with value is an equivalence.
 %the same as giving an element in $T(z)(y)\defequi (z=y)$.
 \end{proof}
 This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\UU$'':\footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
 \begin{lemma}
   \label{lem:allgpsarepermutationgps}Let $G$ be a group.  Then remembering the base point in the factorization of the pricipal $G$-torsor $\princ G:BG\to\UU$ through the component $\UU_{(\pt_G=\pt_G)}\subseteq\UU$ (c.f.~\cref{remark:GsetsareGsets}) gives an injective homomorphism
-$$\alpha_G:\Hom(G,\Sigma_{\pi_G=\pt_G})$$  
+$$\alpha_G:\Hom(G,\Sigma_{\pt_G=\pt_G})$$  
 of $G$ into a permutation group.
 \end{lemma}
 \begin{proof}
@@ -615,7 +629,7 @@ If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $
 
 
 
-\section{Groups concrete or abstract -- two sides of the same coin}
+\section{Groups concrete or abstract -- same gem, different wrapping}
 \label{sec:Gsetforabstract}
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of
@@ -629,12 +643,12 @@ Note that we have not considered an abstract analog of the concept of $\infty$-g
 
 \begin{definition}
 \label{def:abstrGtorsors}
-  If $\agp G$ is an abstract group, a $\agp G$-set is a set $S$ together with a homomorphism
-$\agp G\to\abstr(\Sigma_S)$
-from $\agp G$ to the (abstract) permutation group of $S$:
-$$Set_{\agp G}^\abstr\defequi \sum_{S:\Set}\Hom_\abstr({\agp G},\abstr(\Sigma_S)).$$
+  If ${\agp G}=(S,e,\mu,\iota)$ is an abstract group, a \emph{$\agp G$-set}\index{Gset@$\agp G$-set (of abstract group} is a set $\mathcal X$ together with a homomorphism
+$\agp G\to\abstr(\Sigma_{\mathcal X})$
+from $\agp G$ to the (abstract) permutation group of $\mathcal X$:
+$$Set_{\agp G}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\agp G},\abstr(\Sigma_{\mathcal X})).$$
 
-The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $\mathrm{under}({\agp G})$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{\mathrm{under}({\agp G})})$ given by $g\mapsto \mathrm{ua}(\cdot g^{-1})$ ((explain)).
+The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $\mathrm{under}({\agp G})\defequi S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with undelying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mapsto \mathrm{ua}(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
 $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp G}=S||.$$
@@ -649,6 +663,7 @@ $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp
 
 \end{example}
 
+
 Useful notation:\footnote{move somewhere. ((In notation used elsewhere, ``$\preinv(q)(p)=P_q(p)$, $\post(p)(q)=P_x(p)(q)$ and $\adjoint(q)(p)=\Ad(p)(q)$'', but this may be confusing since some of these are seen as secondary (\eg in\footnote{why doesn't xspace work?} $P_x$ the $x$ has been largely fixed before) and some primary))
 
 Also, 190218, there are many things that I have not yet had time to improve in the remainder of the chapter}
@@ -662,10 +677,15 @@ Also, 190218, there are many things that I have not yet had time to improve in t
 
 
 \begin{example}\label{ex:qG}
-  If $G$, then for any $x:BG$ the set $\pt_G=x$ has a natural structure of an $\abstr(G)$-torsor by means of 
+  If $G$ is a group, then for any $x:BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\pt_G=x)$ has a natural structure of an $\abstr(G)$-torsor by means of 
 $$\preinv:(\pt_G=\pt_G)\to ((\pt_G=x)=(\pt_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\pt_G=x}$ and that for $p,q:\pt_G=\pt_G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \pt_G=x$ we have that 
 $$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  
-That this $\abstr(G)-set$ is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ{\abstr(G)}^\abstr$).
+That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ{\abstr(G)}^\abstr$).
+
+Though it sounded like we made a choice ending up with $\preinv$; we really didn't -- it is precisely what happens when you abstract the homomorphism $G\to\Sigma_{\princ G(x)}$: 
+you get the function of identity types 
+$$(\pt_G=\pt_G)\to (\princ G(x)=\princ G(x))$$ 
+which by the very definition of transport for $princ G$ is $\preinv$. 
 \end{example}
 
 \begin{definition}
@@ -676,13 +696,13 @@ We give the construction of \cref{ex:qG} a short name since it will occur in imp
   Let $G$ be a group.  Define the pointed function
 $$q_G:G\oldequiv(BG_\div,\pt_G)\to (\typetorsor^\abstr_{\abstr(G)},\princ {\abstr(G)})\defequi\concr(\abstr(G))$$
 by $$
-q_G(z)=((\pt_G=z),\preinv%:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))
+q_G(z)=(\princ G(z),\preinv%:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))
 ,!).$$
 %(the $!$ expresses that $\preinv:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))$ underlies a homomorphism of abstract groups $\abstr(G)\to\Sigma_{\pt_G=z}$, \ie that $\preinv(\refl{\pt_G})=\refl{\pt_G=z}$ and that $\preinv(q_0\,q_1)(p)=p(q_0q_1)^{-1}=pq_1^{-1}q_0^{-1}=\preinv(q_0)(\preinv(q_1)(p))$ (here you see why it was important to include the inverse!) and that the $\abstr(G)$-set $(\pt_G=z,\preinv)$ is in the component of $\princ {\abstr(G)}$).
 \end{definition}
 
 \begin{lemma}
-  \label{lem:Groupsareidentitytypes}Let ${\agp G}$ be an abstract group.  
+  \label{lem:Groupsareidentitytypes}%Let ${\agp G}$ be an abstract group.  
 For all groups $G$, the pointed function $q_G:G\to\concr(\abstr(G))$ 
 is a pointed\footnote{defined where?} equivalence.
 \end{lemma}
@@ -712,28 +732,30 @@ To show that the preimage is contractible, it is enough to construct a function 
 % $\preinv:(y=x)\to ((y=z)=((x=z))$, $\preinv(q)(p)=pq^{-1}$
 % $\post:(y=z)\to ((x=y)=((x=z))$, $$
 %\footnote{how deeply do we want to integrate univalence?}
-\begin{xca}
+\begin{example}
   \label{ex:abstrconcrG}
-  Let ${\agp G}=(S,e,\mu,\iota)$ be an abstract group.  Then that underlying set of $\abstr(\concr({\agp G}))$ is $\princ {\agp G}^\abstr=_{\typetorsor^\abstr_{\agp G}}\princ {\agp G}^\abstr$.  
+  Let ${\agp G}=(S,e,\mu,\iota)$ be an abstract group.  
+Then the underlying set of $\abstr(\concr({\agp G}))$ is $\princ {\agp G}^\abstr=_{\typetorsor^\abstr_{\agp G}}\princ {\agp G}^\abstr$.  
 Unraveling the definitions we see that this set is equivalent to
 $$\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
 $$  
 Setting $s\defequi e$ and renaming $t\defequi q^{-1}$ in the last equation, we see that $p(t)=p(e)t$; that is $p$ is simply multiplication with an element $p(e):S$.  in other words, the function 
 $$r_{\agp G}:S\to  \sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_{\agp G}(u)\defequi(u\cdot\,,!)
 $$  
-is an equivalence of sets, which we by univalence turn into an equality.  The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\princ {\agp G}^\abstr$, or translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ that of $S=S$ of the first projection.  
+is an equivalence of sets, which we by univalence is converted into an identity.  
+The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\princ {\agp G}^\abstr$; translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ this corresponds via the first projection to the symmetries of $S$. %that of $S=S$ of the first projection.  
+This means that we need to know that if $u,v:S$ and consider the two symmetries $u\cdot,v\cdot:S=S$, then their composite (the operation on the symmetry on $S$) is equal to $(u\cdot v)\cdot:S=S$ (the abstract group operation), but this is true by associativity ($u\cdot(v\cdot s)=(u\cdot v)\cdot s$).  That $r_{\agp G}$ also sends $e:S$ to $\refl S$ is clear.
 Hence our identity $r_{\agp G}$ underlies an identity of abstract groups
 $$r_{\agp G}:{\agp G}=_{\typegroup^\abstr}\abstr(\concr({\agp G})).$$
-\end{xca}
+\end{example}
 
-We use this this to show that every abstract group encodes the symmetries of something essentially unique.
+This to shows that every abstract group encodes the symmetries of something essentially unique.  Summing up the information we get
 \begin{theorem}
   \label{lem:Groupsareidentitytypes}Let ${\agp G}$ be an abstract group.  
 Then
 $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence: \ie the type of groups and the type of abstract groups are equal.
 \end{theorem}
-\begin{proof}
-((write))
+%\begin{proof}
  %  First consider $q_G$.  To prove that $q_G$ is an equivalence it is, by \cref{lem:eqandcovofconntypes}, enough to show that if $x,y:BG$ then the induced map
 % $$q_G:(x=_{BG}y)\to (q_G(x)=q_G(y))%(\pt_G=x)=_\UU(\pt_G=y))
 % $$
@@ -748,7 +770,7 @@ $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence: \ie the type of gro
 % $(f,!):\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f$, the preimage 
 % $(\post,!)^{-1}(f,!)$ is equivalent to the set
 % $\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
-\end{proof}
+%\end{proof}
 
 \section{Sums of groups}
 \label{sec:coprod}
@@ -805,7 +827,7 @@ The amazing thing is that this works -- an enormous simplification of the classi
 % $$
 % $C_{12}$ is ((obviously or write out)) an equivalence, and so the triple $(C_1,C_2,C_{12})$ defines a family
 % $$C:A_1\vee A_2\to\Set.$$
-% We will show that $C$ is equivalent to $P\defequi P_{a_{12}}$, which is given by $P(x)=(a_{12}=x)$, and so that the identity types of the wedge are sets.
+% We will show that $C$ is equivalent to $P\defequi \pathsp{a_{12}}$, which is given by $P(x)=(a_{12}=x)$, and so that the identity types of the wedge are sets.
 
 % One way is the ``inclusion''; more precisely, 
 % $$\alpha:\prod_{x:A_1\vee A_2}(P(x)\to C(x))$$ is given by letting identities be considered as strings of length zero: $\alpha_i(i_ia)(p)=(0,p):C_i(a)$.  This is well defined since $\alpha_2(i_2a_2)(gpg^{-1})=C_{12}\alpha_1(i_1a_1)(p)$ ((is this how you'd say this?  Feel free to fix.  Remember that $C(x)$ is a set)).
@@ -942,7 +964,7 @@ Since $C_{12}$ is an equivalence, the triple $(C_1,C_2,C_{12})$ defines a family
 $$C:A_1\vee A_2\to\Set.$$
 In particular, $C(a_{12})\defequi C_1(a_1)$.
 For $x:A_1$ we let $i^C_1:C_1(x)\to C(i_1(x))$ be the induced equivalence, and likewise for $i^C_2$.
-We will show that $C$ is equivalent to $P\defequi P_{a_{12}}$, where $P(x)\defequi(a_{12}=x)$, and so that the identity types in the wedge are sets.
+We will show that $C$ is equivalent to $P\defequi \pathsp{a_{12}}$, where $P(x)\defequi(a_{12}=x)$, and so that the identity types in the wedge are sets.
 
 One way is by transport in $C$; more precisely, 
 $$\alpha:\prod_{x:A_1\vee A_2}(P(x)\to C(x))$$ is given by transport with $\alpha(a_{12})(\refl{a_{12}})\defequi(\refl{a_{1}},0):C(a_{12})$.  %This is well defined since $\alpha_2(i_2\pt_{A_2})(gpg^{-1})=C_{12}\alpha_1(i_1\pt_{A_1})(p)$ ((is this how you'd say this?)).
