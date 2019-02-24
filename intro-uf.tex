@@ -160,8 +160,10 @@ of $a=b$.  The element $p$ serves the purpose.
 Now we state our symmetry result a little more formally.
 
 \begin{definition}\label{def:eq-symm}
-  For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$ be the function defined by induction by setting
-  $\symm_{a,a}(\refl a) \defeq \refl a$.
+For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$ 
+be the function defined by induction by setting
+$\symm_{a,a}(\refl a) \defeq \refl a$.
+We may abbreviate $\symm_{a,b}(p)$ as $p^{-1}$.
 \end{definition}
 
 Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
@@ -169,6 +171,7 @@ abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p\ct q$,
 or as $q\cdot p$, $qp$, or $q\circ p$, see \cref{fig:path-concatenation}.
 (The notation $q\circ p$ will be used when $a,b,c$ are types and
 $p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.)
+
 
 \begin{figure}
   \centering
@@ -883,7 +886,7 @@ $\true\amalg \true$ has two distinct elements
 $\inl{\triv}$ and $\inr{\triv}$, an is therefore \emph{not} a proposition.
 Similarly, $\sum_{n:\NN} \true$ has infinitely many
 distinct elements $(n,\triv)$ and is not a proposition. We will explain 
-in \cref{sec:prop-trunc-logic} how to work with disjunction and 
+in \cref{sec:prop-trunc} how to work with disjunction and 
 existential quantification for propositions.
 
 The lemma above has a generalization from propositions to
@@ -1115,7 +1118,7 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \end{lemma}
 
 \section{Propositional truncation and logic}
-\label{sec:prop-trunc-logic}
+\label{sec:prop-trunc}
 
 As explained in \cref{sec:props-sets-grpds}, $\to,\prod,\times$ 
 can be used for the logical operations implication, 
@@ -1142,44 +1145,33 @@ is a type  $\Trunc{T}$ defined by the following constructors:
 \item an constructor identifying $x=y$  for all $x,y:\Trunc{T}$.
 \end{enumerate}
 The (unnamed) identification constructor enforces $\Trunc{T}$ to be a
-proposition. The recursion principle is: 
-for any proposition $P$, any function $g: T\to P$
-yields a function $f:\Trunc{T}\to P$ 
+proposition. The induction principle is: 
+for any predicate $P:\Trunc{T}\to\UU$, 
+in order to prove $\prod_{x:\Trunc{T}} P(x)$,
+it suffices to prove $\prod_{t:T} P(\trunc{t})$. In other
+words, in order to define a function $f:\prod_{x:\Trunc{T}} P(x)$,
+it suffices to give a function $g: \prod_{t:T} P(\trunc{t})$.
+Computationally we get $f(\trunc{t})\jdeq g(t)$ for all $t:T$. 
+\end{definition}
+
+In the non-dependent case we get that
+any function $g: T\to P$ yields a (unique) function $f:\Trunc{T}\to P$ 
 satisfying $f(\trunc{t})\jdeq g(t)$ for all $t:T$.\footnote{%
-Note that $f(\trunc{t})$ respects equality since $P$ is a proposition.
-For the same reason we need not specify how $f$ acts on the identifications.}
-A good way to state the recursion principle is that, 
+Note that $f(\trunc{t})$ respects equality since $P$ is a proposition.}
+A good way to state this recursion principle is that, 
 for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
 \[
 (T \to P) \quad \to \quad (\Trunc{T} \to P).
 \]
-\end{definition}
 
-One may ask about induction. Induction follows from the above recursion principle.
-Proving this is a good illustration of logical reasoning in type theory.
-
-\begin{lemma}\label{lem:prop-trunc-elim}
-Let $P: \Trunc{T}\to\UU$ be a predicate such that $P(\trunc{t})$ for all $t:T$. 
-Then we have $P(x)$ for all $x:\Trunc{T}$. 
-\end{lemma}
-\begin{proof}
-The assumption amounts to having a function $g: \prod_{t:T} P(\trunc{t})$.
-Note that $\sum_{x:\Trunc{T}} P(x)$ is a proposition. 
-We will first define a map $h: \Trunc{T}\to\sum_{x:\Trunc{T}} P(x)$. 
-By recursion it suffices to define $k(t) \defeq (\trunc{t},g(t))$ for all $t:T$.
-Now let $x:\Trunc{T}$ and consider $\fst(h(x)): \Trunc{T}$
-and $\snd(h(x)): P(\fst(h(x)))$. Since $\Trunc{T}$ is a
-proposition, $\fst(h(x)) = x$ and we get $P(x)$ by substitution.
-\end{proof}
-
-Now we are ready to define logical $\vee$ and $\exists$, by
+We are now ready to define logical $\vee$ and $\exists$, by
 \[
 (P \vee Q) \defeq \Trunc{P \amalg Q} \quad\text{and}
 \quad (\exists x:T\,P(x)) \defeq \Trunc{\sum_{x:T}P(x)}.
 \]
 
 For example, for all $x:\Trunc{T}$ there exists $t:T$ such that $x=\trunc{t}$
-follows immediately from \cref{lem:prop-trunc-elim}.
+follows immediately from \cref{def:prop-trunc}.
 
 We conclude this section with some important notions defined using truncation.
 
@@ -1201,7 +1193,11 @@ of being contractible --- without direct access to a center and to
 identifications of elements.
 
 \begin{xca}\label{xca:component-connected}
-  Prove that the component of $a$ in $A$ is connected.  
+Show that the component of $a$ in $A$ is connected.
+Show that connected elements have the same 
+\emph{propositional} properties, that is, 
+for any predicate $P:A\to\UU$, $P(x)$ is equivalent
+to $P(y)$ for any connected $x,y:A$. 
 \end{xca}
 \footnote{Stuff on large versus small commented out here.}
 % [\footnote{This tries to say that, nonfunctorially, a space is the disjoint union of its components.  Don't think we need it so it can probably be thrown away.}Assuming the appropriate form of axiom of choice \footnote{someone insert our choice}, prove that the path components define a family $A\to\UU$ factoring as $A\to||A||$ making sense of the equation ``$||A=\sum_{[a]:||A||}A_{[a]}||$''.]
@@ -1409,7 +1405,7 @@ Hence $P_{\min}(\mu_P(S(n)))$.
 
 Since $\sum_{n:\NN} P_{\min}(n)$ is a proposition, 
 we obtain the following function by the induction
-principle for propositional truncation \cref{lem:prop-trunc-elim}:
+principle for propositional truncation \cref{def:prop-trunc}:
 
 \begin{align}\label{eqn:min}%\tag{bla}
 \min(P) : \prod_{n:\NN}(P(n)\amalg\neg P(n)) \to 
@@ -1556,6 +1552,7 @@ By induction it suffices to prove this for $\refl{a}:a=a$,
 that is, we must prove $t(\refl{f^{-1}(f(a))})=\refl{a}$.
 This follows since $t$ is transport by conjugation,
 using $i(a)$ in several ways. The other roundtrip is similar.
+Now apply \cref{lem:weq-iso}.
 \end{proof}
 
 The converse of \cref{lem:ap-equivalence} is not
@@ -1580,6 +1577,11 @@ that is, $\Trunc{\sum_{a:A} b=f(a)}$.
 %$\sum_{a:A} b=f(a)$.
 \end{definition}
 
+\begin{xca}\label{xca:inj-via-ap-f}
+Prove that $f$ above is an injection if and only if
+$\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence for all $a,a':A$.
+\end{xca}
+
 \begin{lemma}\label{lem:inj+surj}
 For all types $A,B$, a function $f: A\to B$ is an equivalence 
 if and only if $f$ is an injection and a surjection.
@@ -1590,7 +1592,7 @@ If $f: A\to B$ is an equivalence, then all fibers are contractible,
 so $f$ is both an injection and a surjection. Conversely,
 if $f$ is both injective and surjective, we show that
 $f^{-1}(b)$ is contractible, for each $b:B$. 
-Being contractible is a proposition, so by \cref{lem:prop-trunc-elim}
+Being contractible is a proposition, so by \cref{def:prop-trunc}
 we can drop the truncation in $\Trunc{\sum_{a:A} b=f(a)}$.
 Now apply injectivity.
 \end{proof}
@@ -1602,10 +1604,21 @@ in particular if both $A$ and $B$ are connected.
 \end{corollary}
 \begin{proof}
 By \cref{lem:inj+surj} it suffices to show that $f$ is surjective.
-This is a propostion, so by \cref{lem:prop-trunc-elim} and $\Trunc{A}$
+This is a propostion, so by \cref{def:prop-trunc} and $\Trunc{A}$
 we may assume $a:A$, so $f(a):B$. By $\prod_{x,y:B} \Trunc{x=y}$
 we now get that all preimages under $f$ are non-empty.
 \end{proof}
+
+Combining \cref{xca:inj-via-ap-f} with \cref{cor:inj+connected}
+we have the following converse of \cref{lem:ap-equivalence}
+for connected types.%\footnote{
+%By \cref{xca:component-connected} we may even take $a'\jdeq a$.}
+
+\begin{lemma}\label{lem:ap-eq-connected-eq}
+Let $A,B$ be connected types, $f:A\to B$, and assume
+$\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence for all $a,a':A$.
+Then $f$ is an equivalence.
+\end{lemma}
 
 \section{Type families and maps}
 \label{sec:typefam}
