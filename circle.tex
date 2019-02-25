@@ -40,46 +40,54 @@ The circle is another example of a \emph{higher inductive type},
 see \cite[Ch. 6]{hottbook} for more information.
 \begin{definition}
   \label{def:circle}
-The circle is a type $\Sc:\UU$ has an element $\base : \Sc$ and an identification
-$\Sloop: \base=\base$. The (higher) induction principle of $\Sc$
-states that, in order to prove $T(x)$ for every element $x$ of $\Sc$,
-it suffices to give an element $b$ of $T(\base)$ together with an
-identification $l$ of type $\trp_{P,\Sloop}(b) = b$. More precisely,
-giving such $b$ and $l$ defines a function $f(x):T(x)$ such that
-$f(\base)\jdeq b$ and $\apd{f}(\Sloop)=l$. 
+The circle is a type $\Sc:\UU$ with an element $\base : \Sc$ and 
+an identification $\Sloop: \base=\base$. For convenience and
+clarity the (higher) induction principle for $\Sc$ is explained
+by first stating a recursion principle for $\Sc$.
+
+Let $A$ be a type. In order to define a function $f:\Sc\to A$,
+it suffices to give an element $a$ of $A$ together with an
+identification $l$ of type $a=a$. The function $f$ defined
+by this data satisfies $f(\base)\jdeq a$ and $\ap{f}(\Sloop)=l$.
+
+Let $A(x)$ be a type for every $x:\Sc$. The induction principle of $\Sc$
+states that, in order to prove $A(x)$ for every element $x$ of $\Sc$,
+it suffices to give an element $a$ of $A(\base)$ together with an
+identification $l$ of type $\trp_{A,\Sloop}(a) = a$. More precisely,
+giving such $a$ and $l$ defines a function $f:\prod_{x:\Sc}T(x)$ such that
+$f(\base)\jdeq a$ and $\apd{f}(\Sloop)=l$. 
 \end{definition}
 
-In the special case of the above definition that $T(x)\defeq A$ for some type $A$,
-we get a function $f:\Sc\to A$ such that $f(\base)\defeq b$ and $f(\Sloop)= l$.
-Here $b : A$ and $l : b=b$, since transport in the TBC.....
-
-As promised, we now demonstrate that a function from the circle exactly picks out an element and a symmetry of that element:
+The choice of $a$ above is referred to as `the base case', and
+the choice of $l$ as `the loop case'.
+As promised, we now demonstrate that a function from the circle exactly 
+picks out an element and a symmetry of that element:
 \begin{lemma}\label{lem:freeloopspace}
-  If $A$ is a type, the function $$(\Sc\to A)\to \sum_{a:A}(a=_Aa)\qquad g\mapsto (g(\base),g(\Sloop))$$
+If $A$ is a type, the function 
+\[
+(\Sc\to A)\to \sum_{a:A}(a=_Aa)\qquad g\mapsto (g(\base),g(\Sloop))
+\]
 is an equivalence.  
-
-In particular, if $a:A$, the function $((\Sc,\base)\to_* (A,a))\to (a=_Aa)$ given by sending $g:\Sc\to A$ to $g(\Sloop)$ is an equivalence. 
+%In particular, if $a:A$, the function $((\Sc,\base)\to_* (A,a))\to (a=_Aa)$ 
+%given by sending $g:\Sc\to A$ to $g(\Sloop)$ is an equivalence. 
 \end{lemma}
 \begin{proof}
   ((write)) 6.2.9
 \end{proof}
 \begin{remark}
-  A function $\gamma:\Sc\to A$ is often referred to as a \emph{loop} in $A$: the picture being that $\gamma$ throws $\Sloop:\base=\base$ as a lasso in the type $A$.
+A function $\gamma:\Sc\to A$ is often referred to as a \emph{loop} in $A$: the picture being that $\gamma$ throws $\Sloop:\base=\base$ as a lasso in the type $A$.
 
   Under univalence, so that $a=_Aa$ is identified with the pointed functions from the circle, this allows for a very graphic interpretation of the symmetries in $a=_Aa$: they are all in the image of a function $g$ from the circle: they are loops in the type $A$ starting and ending at $a$! ((picture!!))
 \end{remark}
 
-
-\
 \begin{lemma}\label{lem:circleisconnected}
   The circle is connected.
 \end{lemma}
 \begin{proof}
-It suffices to show $\Trunc{\base=z}$ for all $z:\Sc$.
-This we do by induction on the circle \cref{def:circle}.
-For the base case we take $\refl{\base}$.
-The induction step follows immediately as $\Trunc{\base=\base}$
-is a proposition.
+We show $\Trunc{\base=z}$ for all $z:\Sc$ by circle induction
+as in \cref{def:circle}.
+For the base case we take $\trunc{\refl{\base}}$.
+The loop case is immediate as $\Trunc{\base=\base}$ is a proposition.
 \end{proof}
 
 In the proof above, note the propositional truncation coming 
