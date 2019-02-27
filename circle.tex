@@ -9,7 +9,7 @@ Here are two examples
 \emph{any} type $A$ a function $\bn 1\to A$ provides exactly the 
 same information as picking an element in $A$: 
 the function $A\to (\bn 1\to A)$ sending $a:A$ to the 
-constant function with value $a$ is an equivalence, \ie, $A=(\bn 1\to A)$.
+constant function with value $a$ is an equivalence, \ie $A=(\bn 1\to A)$.
 \item The type $\Prop$ of propositions has the property that 
 given \emph{any} type $A$ a function $A\to\Prop$ provides exactly 
 the same information as picking a subtype of $A$.
@@ -38,10 +38,11 @@ symmetries of the circle is equivalent to the set of integers.
 Recall the definition of propositional truncation from \cref{sec:prop-trunc}.
 The circle is another example of a \emph{higher inductive type},
 see \cite[Ch. 6]{hottbook} for more information.
+
 \begin{definition}
   \label{def:circle}
-The circle is a type $\Sc:\UU$ with an element $\base : \Sc$ and 
-an identification $\Sloop: \base=\base$. For convenience and
+The circle is a type $\Sc:\UU$ with an element (constructor) $\base : \Sc$ and 
+an identification (constructor) $\Sloop: \base=\base$. For convenience and
 clarity the (higher) induction principle for $\Sc$ is explained
 by first stating a recursion principle for $\Sc$.
 
@@ -58,26 +59,46 @@ giving such $a$ and $l$ defines a function $f:\prod_{x:\Sc}T(x)$ such that
 $f(\base)\jdeq a$ and $\apd{f}(\Sloop)=l$. 
 \end{definition}
 
-The choice of $a$ above is referred to as `the base case', and
-the choice of $l$ as `the loop case'.
+Giving $a$ as above is referred to as `the base case', and
+giving $l$ as `the loop case'.
 As promised, we now demonstrate that a function from the circle exactly 
 picks out an element and a symmetry of that element:
+
 \begin{lemma}\label{lem:freeloopspace}
-If $A$ is a type, the function 
+For all types $A$, the evaluation function 
 \[
-(\Sc\to A)\to \sum_{a:A}(a=_Aa)\qquad g\mapsto (g(\base),g(\Sloop))
+\ev_A : (\Sc\to A)\to \sum_{a:A}(a=_Aa)\text{~defined by~} 
+\ev_A(g)\defeq (g(\base),g(\Sloop))
 \]
-is an equivalence.  
+is an equivalence, with inverse $\el_A$ defined by the recursion principle.  
 %In particular, if $a:A$, the function $((\Sc,\base)\to_* (A,a))\to (a=_Aa)$ 
 %given by sending $g:\Sc\to A$ to $g(\Sloop)$ is an equivalence. 
 \end{lemma}
 \begin{proof}
-  ((write)) 6.2.9
+Fix $A:\UU$. We apply \cref{lem:weq-iso}. 
+For all $a:A$ and $l:a=a$ we have $\ev(\el(a,l))=(a,l)$
+by the recursion principle. It remains to prove
+$\el(\ev(f))=f$ for all $f:\Sc\to A$. This will follow
+from the following more general result. Assume 
+$p: f(\base)= g(\base)$ and $q: f(\Sloop) = p\ct g(\Sloop)\ct p^{-1}$.
+We show $f=g$, for which it suffices to prove by circle induction
+that $P(x)\defeq(f(x)=g(x))$ for all $x:\Sc$.
+For the base case we take $p$.
+For the loop case we have to show $\trp_{P,\Sloop}(p)=p$.
+By $q$ we have $f(\Sloop)^{-1}\ct p\ct g(\Sloop)= p$.
+Now apply \cref{lem:trp-in-fx=Ygx}. To finally get $\el(\ev(f))=f$,
+note that $\ev(\el(\ev(f)))=(f(\base),f(\Sloop))$ with $p\defeq\refl{f(\base)}$
+and $q$ coming from the induction principle.
 \end{proof}
-\begin{remark}
-A function $\gamma:\Sc\to A$ is often referred to as a \emph{loop} in $A$: the picture being that $\gamma$ throws $\Sloop:\base=\base$ as a lasso in the type $A$.
 
-  Under univalence, so that $a=_Aa$ is identified with the pointed functions from the circle, this allows for a very graphic interpretation of the symmetries in $a=_Aa$: they are all in the image of a function $g$ from the circle: they are loops in the type $A$ starting and ending at $a$! ((picture!!))
+\begin{remark}
+A function $f:\Sc\to A$ is often called a \emph{loop} in $A$, 
+the picture being that $f$ throws $\Sloop:\base=\base$ as a lasso in the type $A$.
+
+  Under univalence, so that $a=_Aa$ is identified with the pointed functions 
+from the circle, this allows for a very graphic interpretation of the 
+symmetries in $a=_Aa$: they are all in the image of a function $g$ from 
+the circle: they are loops in the type $A$ starting and ending at $a$! ((picture!!))
 \end{remark}
 
 \begin{lemma}\label{lem:circleisconnected}
@@ -90,7 +111,7 @@ For the base case we take $\trunc{\refl{\base}}$.
 The loop case is immediate as $\Trunc{\base=\base}$ is a proposition.
 \end{proof}
 
-In the proof above, note the propositional truncation coming 
+In the proof above, the propositional truncation coming 
 from the definition of connectedness is essential.
 If this truncation were removed we wouldn't know what to do in
 the induction step (actually, ${\base=z}$ for all $z:\Sc$ contradicts UA).
@@ -99,7 +120,8 @@ important for other purposes: it determines what we will call the
 ``universal cover'' of the circle and is the key tool in proving that 
 the set of integers and the symmetries of the circle coincide.
 
-In order to do this we should properly define the set of integers and explore the concept of coverings.
+In order to do this we should properly define the set of integers 
+and explore the concept of coverings.
 
 \section{The integers}
 \label{sec:integers}
@@ -164,6 +186,9 @@ From addition and unary $-$ one can define a binary
 Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 \end{xca}
 
+Ordering relations $<$ and $\leq$ on $\zet$ are easily defined
+and shown to extend those on $\NN$.
+
 \section{The symmetries of the circle}
 \label{sec:pi1S1isZ}
 
@@ -205,7 +230,6 @@ for all $(x,p),(x',p'):f^{-1}(y)$. This proves the if-part. For the converse,
 note that for any $r: f(x)=f(x')$ we have $(x,\refl{f(x)}),(x',r):f^{-1}(f(x))$.
 SUSPICIOUS: CONNECTED NOT USED.
 \end{proof}
-
 
 \begin{remark}\label{rem:coveringsasfamilies}
   Under the equivalence between the type of type families 
@@ -576,7 +600,7 @@ $$-^m:\sum_{X:\Set}(X=X)\to\sum_{X:\Set}(X=X),\quad -^m((X,f))=(\bn m\times X,\s
 We now focus on  $C$, the component of $\sum_{X:\Set}(X=X)$ containing $(\zet,s)$.
 Note that the function $p:\bn m\times \zet\to\zet$ given by $p(i,n)=i+mn$ is an equivalence and that 
 $$p\sqrt[m]s(i,n)=i+1+mn=sp(i,n).$$  
-Consequently $(\bn m\times\zet,\sqrt[m]s):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$, \ie $(\bn m\times \zet,\sqrt[m]s):C$. % In consequence, if $(X,f):C$ (\ie, $(X,f):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$) then also $(\sqrt[m]X,\sqrt[m]f):C$, giving rise to the 
+Consequently $(\bn m\times\zet,\sqrt[m]s):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$, \ie $(\bn m\times \zet,\sqrt[m]s):C$. % In consequence, if $(X,f):C$ (\ie $(X,f):\sum_{X:\Set}X=_\UU X$ is in the component of $(\zet,s)$) then also $(\sqrt[m]X,\sqrt[m]f):C$, giving rise to the 
 Ultimately, we have defined the
  \emph{degree $m$ function} $$-^m:C\to C,\qquad -^m((X,f))=(\bn m\times X,\sqrt[m]f).$$
 % , where $$\sqrt[m]X=\bn m\times X$$ and $\sqrt[m]f(i,x)=(i+1,x)$ for $i<m-1$ and $\sqrt[m]f(m-1,x)=(1,f(x))$.  We prove that $-^m((X,f))$ is in the component of $(\zet,s)$ (which was a requirement for elements in $C$).
@@ -770,12 +794,7 @@ I am now converging to using ``$f^p$'' (superscript since I have needed it in si
 This is to be deleted when integers are stable
 %\label{sec:negativenumbers}
 
- \begin{example}%\label{ex:orbitofanelement}
-   Given a pointed type $a:A$ and an element $g: a=_Aa$ we can iterate $g$ any number of times to get a (potentially) new element in $a=_Aa$. More precisely, for $n:\NN$ we define $g^n:a=_Aa$ by declaring that $g^0=\refl a$ and $g^{n+1}=\trans{}_{a,a,a}(g^n)(g)$.  We can also give meaning to $g^{-n}$ by setting it equal to $(\symm{}_{a,a}(g)^n$ (prove that $g^{-n}=(g^n)^{-1}$ and that $g^a\cdot g^b=g^{a+b}$).  \footnote{come back to this example in conjuction with $\Sc$, show how to get it as an abstract group, connect it to orbits.}
 
-Note that we can have that $g^n=g^m$ even if $m$ and $n$ are different.  For instance, in $\Sigma_2=\aut_{\fin_2}(\bn{2} )$, consider the element $p:\bn{2} =\bn{2} $ defined by $p(0)=1$ and $p(1)=2$.  Then $p^2(0)=p(1)=0$ and $p^2(1)=p(0)=1$, so that $p^2=e=p^0$.
-   \end{example}
-This example tells us that if we want to start counting symmetries we should extend our type $\NN$ of natural numbers to include negatives.  Rather than ``adjoining negatives'' we do as we do when we define the rationals: heuristically, an integer is the set of pairs $(m,n)$ of natural numbers, subject to the relation that $(m,n)=(m',n')$ if $m+n'=m'+n$.\footnote{picture}.  If $m\geq n$, then $(m,n)=(m-n,0)$ and if $m\leq n$, then $(m,n)=(0,n-m)$.  We include the natural numbers as classes of the form $(m,0)$ and call the ones of the form $(0,n)$ ``negative numbers''.  The formal definition is as follows.
 \begin{definition}
   %\label{def:zet}
 \footnote{To the one who ports: I \emph{would} have preferred to define $\zet$ as a set quotient of $\NN\times\NN$, but I hoped we could avoid the book discussion (257).  A price is paid when defining the successor.  Given the disclaimer following the formal definition, it is safe to change the definition if you like}

@@ -166,7 +166,8 @@ $\symm_{a,a}(\refl a) \defeq \refl a$.
 We may abbreviate $\symm_{a,b}(p)$ as $p^{-1}$.
 \end{definition}
 
-Similarly, transitivity is formulated as an inductive definition for a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
+Similarly, transitivity is formulated as an inductive definition for 
+a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
 abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p\ct q$, 
 or as $q\cdot p$, $qp$, or $q\circ p$, see \cref{fig:path-concatenation}.
 (The notation $q\circ p$ will be used when $a,b,c$ are types and
@@ -198,12 +199,28 @@ $p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.)
   \label{fig:path-concatenation}
 \end{figure}
 
+The types of $\symm_{a,b}$ and $\trans_{a,b,c}$ express that
+equality is symmetric and transitive. Another view on
+$\symm_{a,b}$ and $\trans_{a,b,c}$ is that they are
+operations on identifications, namely reversing an identification
+and concatenating two identifications. As operations, they satisfy
+many algebraic properties, such as $(p^{-1})^{-1} = p$ and
+associativity of concatenation, that are all easy to prove by induction. 
+We leave them as exercises, see \cite[Lemma 2.1.4]{hottbook}. 
 
-Associativity of transitivity is formulated and established similarly.  
-We leave that as an exercise.
+Concatenation can be used to define powers $p^n$ of $p:a=a$
+by induction on $n:\NN$, setting $p^0\defeq\refl{a}$ and
+$p^{n+1}\defeq p^n\ct p$. Negative powers $p^{-n}$ are defined
+as $(p^{-1})^n$.
 
-One frequent use of elements of identity types is in \emph{substitution}.  Let $X$ be a type, and let $T(x)$ be a family of types depending on a
-parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  Then there is a function of type $T(x) \to T(y)$. We define one specific such function by induction, by taking its value to be the identity function on $T(x)$ in the case of $\refl{x}:x=x$.
+One frequent use of elements of identity types is in \emph{substitution}.  
+Let $X$ be a type, and let $T(x)$ be a family of types depending on a
+parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.  
+Then there is a function of type $T(x) \to T(y)$. 
+We define one specific such function by induction, 
+by taking its value to be the identity function on $T(x)$ 
+in the case of $\refl{x}:x=x$.
+
 \begin{definition}\label{def:transport} The function
   \[ 
   \trp_{T,e} : T(x) \to T(y)
@@ -799,27 +816,19 @@ A more interesting example of a set is $\bool$.
 $\bool$ is a set.
 \end{lemma}
 \begin{proof}
-Define by induction $t:\bool\to\UU$, setting $t(\yes)\defeq \true$ and
-$t(\no)\defeq \false$. Define $f:\prod_{x:\bool}(t(x)\to (\yes=x))$ by
-induction, setting $f(\yes)\defeq (y\mapsto \refl{\yes})$ and 
-$f(\no)$ vacuously (as $t(\no)$ is the empty type). 
-Define $g:\prod_{x:\bool}((\yes=x)\to t(x))$ by induction, 
-setting $g(\yes)\defeq (p\mapsto \triv)$, and $g(\no)$ vacuously. 
-By induction on $x:\bool$ one proves $g(x,f(x,y))=y$ for all $y:t(x)$. 
-By induction on $p: \yes = x$ one proves $f(x,g(x,p))=p$.
-Now $t(x)\equiv (\yes=x)$ by \cref{lem:weq-iso}.  
-Since each type $t(x)$ is a proposition (see below
-\cref{lem:prop-utils}(\ref{prop-utils-false-true}), the same holds
-for $\yes = x$. In a similar way one proves that each
-type $\no = x$ is a proposition. It follows by induction on $y:\bool$
-that each type $y = x$ is a proposition, and hence $\bool$ is a set.
+The following elegant, self-contained proof is due to Simon Huber.
+For proving $p=q$ for all $b,b':\bool$ and $p,q: b=b'$,
+it suffices (by induction on $q$) to show
+$p=\refl{b}$ for all $b:\bool$ and $p: b=b$.
+To this end, define by induction on $b,b':\bool$,
+a type $C(b,b',p)$ for all $p: b=b'$, by setting
+$C(\yes,\yes,p)\defeq (p=\refl{\yes})$,
+$C(\no,\no,p)\defeq (p=\refl{\no})$,
+and arbitrary in the other two cases.
+It suffices to prove $C(b,b',p)$ for all $b,b':\bool$
+and $p: b=b'$. By induction on $p$ this reduces to
+$C(b,b,\refl{b})$, which is immediate by induction on $b:\bool$.
 \end{proof}
-
-\begin{xca}\label{xca:isset-bool}
-Make the above proof more self-contained by replacing
-the application of \cref{lem:weq-iso} by a direct argument.
-Hint: prove that $g(\yes)^{-1}(\triv)$ is contractible.
-\end{xca}
 
 We now collect a number of useful results on propositions.
 
@@ -1146,7 +1155,7 @@ is a type  $\Trunc{T}$ defined by the following constructors:
 \end{enumerate}
 The (unnamed) identification constructor enforces $\Trunc{T}$ to be a
 proposition. The induction principle is: 
-for any predicate $P:\Trunc{T}\to\UU$, 
+for any family of propositions $P(x),~x:\Trunc{T}$, 
 in order to prove $\prod_{x:\Trunc{T}} P(x)$,
 it suffices to prove $\prod_{t:T} P(\trunc{t})$. In other
 words, in order to define a function $f:\prod_{x:\Trunc{T}} P(x)$,
@@ -1256,7 +1265,8 @@ if all constituent types are sets.
 
 \begin{proof}
   We only do the case of $\NN$ and leave the other cases to the reader
-  (cf.\ \cref{xca:set-sum}).  We have to prove that $n=m$ is a
+  (cf.\ \cref{xca:set-sum}). The following proof is due to Simon Huber.
+  We have to prove that $n=m$ is a
   proposition for all $n,m:\NN$, i.e., $p = q$ for all $n,m : \NN$ and
   $p, q : n = m$.  By induction on $q$ it suffices to prove $p = \refl
   n$ for all $p : n = n$.  Note that we can not simply prove this by
@@ -1598,9 +1608,8 @@ Now apply injectivity.
 \end{proof}
 
 \begin{corollary}\label{cor:inj+connected}
-Let $A,B$ be types such that $\Trunc{A}$ and $\prod_{x,y:B} \Trunc{x=y}$.
-Then any injection $f: A\to B$ is an equivalence. This holds
-in particular if both $A$ and $B$ are connected. 
+Let $A,B$ be types such that $\Trunc{A}$ and $B$ is connected.
+Then any injection $f: A\to B$ is an equivalence.
 \end{corollary}
 \begin{proof}
 By \cref{lem:inj+surj} it suffices to show that $f$ is surjective.
