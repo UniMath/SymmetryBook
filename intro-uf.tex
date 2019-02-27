@@ -418,7 +418,7 @@ Conversely, we can define by induction a function
 \]
 setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$.
 This function often helps proving dependent pairs equal.
-See Theorem 2.7.2 in \cite{hottbook} for a detailed account.
+We come back to this function in \cref{sec:equivalences}.
 
 
 \subsection{Binary products}
@@ -644,9 +644,27 @@ With conditions as above, but with $B$ not depending on $i$, we have
 \]
 \end{corollary}
 
-\begin{xca}\label{xca:isEq-pair=}
-Show that the function $(\_\,,\_)^=$ from \cref{sec:sum-types} is an equivalence.
-\end{xca}
+We come back to \cref{sec:sum-types} characterizing equality in a sum type.  
+
+\begin{lemma}\label{lem:isEq-pair=}
+Let $A$ be a type and $B(a)$ be a type for all $a:A$.
+Let $a_1:A$ and $b_i:B(a_i)$ for $i=1,2$. The function 
+\[
+(\_\,,\_)^= : 
+(\sum_{i:a_1 = a_2} \trp_{B,i}(b_1)= b_2) \to (a_1,b_1)=(a_2,b_2)
+\] 
+defined by induction by setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$, 
+is an equivalence with inverse $p \mapsto (\ap{\fst}(p),\apd{\snd}(p))$.
+\end{lemma}
+\begin{proof}
+Applying \cref{lem:weq-iso}, it suffices to show
+$p=(\ap{\fst}(p),\apd{\snd}(p))^=$ for all $p:(a_1,b_1)=(a_2,b_2)$ and
+$(q,r)=(\ap{\fst}((q,r)^=),\apd{\snd}((q,r)^=))$ for all $q:a_1=a_2$
+and $r:\trp_{B,q}(b_1)=b_2$. The first is proved by induction on $p$, 
+and the second by induction on, first $q$, and then $r$. To see this,
+recall that $\ap{\fst}(\refl{(a,b)})\jdeq\refl{\fst(a,b)}\jdeq\refl{a}$,
+and likewise $\ap{\snd}(\refl{(a,b)})\jdeq\refl{b}$.
+\end{proof}
 
 \section{Universes and univalence}\label{sec:univax}
 
@@ -1207,7 +1225,6 @@ for any predicate $P:A\to\UU$, $P(x)$ is equivalent
 to $P(y)$ for any connected $x,y:A$. 
 \end{xca}
 \footnote{Stuff on large versus small commented out here.}
-% [\footnote{This tries to say that, nonfunctorially, a space is the disjoint union of its components.  Don't think we need it so it can probably be thrown away.}Assuming the appropriate form of axiom of choice \footnote{someone insert our choice}, prove that the path components define a family $A\to\UU$ factoring as $A\to||A||$ making sense of the equation ``$||A=\sum_{[a]:||A||}A_{[a]}||$''.]
 %\begin{xca}\label{xca:essentiallysmall} 
 %Let $\UU\subseteq\UU_1$ be universes and let $A:\UU_1$ so that $||A||$ is in $\UU$ and for all $a,b:A$ we have that $(a=_Ab):\UU$.  Then $A$ is \emph{essentially small}, \ie there is an equivalence (in $\UU_1$) to a type in $\UU$.  
 %Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\cref{def:finiteset}) is essentially small, and more generally that if $S$ is a set, then the component $\Set_{(S)}$ is essentially small.  
