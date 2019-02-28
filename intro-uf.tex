@@ -210,7 +210,7 @@ We leave them as exercises, see \cite[Lemma 2.1.4]{hottbook}.
 
 Concatenation can be used to define powers $p^n$ of $p:a=a$
 by induction on $n:\NN$, setting $p^0\defeq\refl{a}$ and
-$p^{n+1}\defeq p^n\ct p$. Negative powers $p^{-n}$ are defined
+$p^{n+1}\defeq p\cdot p^n$. Negative powers $p^{-n}$ are defined
 as $(p^{-1})^n$.
 
 One frequent use of elements of identity types is in \emph{substitution}.  
@@ -1115,7 +1115,7 @@ Let $X,Y$ be types, $f,g: X\to Y$ functions, and let
 $Z(x)\defeq (f(x)=g(x))$ for every $x:X$. 
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \[
-\trp_{Z, e} (i) = \ap{f}(e)^{-1} \ct i \ct \ap{g}(e).
+\trp_{Z, e} (i) = \ap{g}(e) \cdot i \cdot \ap{f}(e)^{-1}.
 \]
 \end{lemma}
 
@@ -1124,9 +1124,10 @@ Prove the following special cases of \cref{lem:trp-in-fx=Ygx},
 where $Y\jdeq X$ and $a,b$ members of $X$:
 \begin{enumerate}
 \item $\trp_{x\mapsto a=b,\,e} (i) = i$;
-\item\label{xca-trp-in-a=x} $\trp_{x\mapsto a=x,\,e} (i) = i\ct e$;
-\item $\trp_{x\mapsto x=b,\,e} (i) = e^{-1}\ct i$;
-\item $\trp_{x\mapsto x=x,\,e} (i) = e^{-1}\ct i\ct e$ (also called \emph{conjugation}).
+\item\label{xca-trp-in-a=x} $\trp_{x\mapsto a=x,\,e} (i) = e\cdot i$;
+\item $\trp_{x\mapsto x=b,\,e} (i) = i \cdot e^{-1}$;
+\item $\trp_{x\mapsto x=x,\,e} (i) = e \cdot i\cdot e^{-1}$ 
+(also called \emph{conjugation}).
 \end{enumerate}
 \end{xca}
 
@@ -1139,7 +1140,7 @@ for all $x:X$. Let $Z(x)\defeq (f(x)=g(x))$,
 with the identification in $Y(x)$, for every $x:X$. 
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \[
-\trp_{Z, e} (i) = \apd{f}(e)^{-1} \ct \ap{\trp_{Y,e}}(i) \ct \apd{g}(e).
+\trp_{Z, e} (i) = \apd{g}(e) \cdot \ap{\trp_{Y,e}}(i) \cdot \apd{f}(e)^{-1}.
 \]
 \end{lemma}
 
@@ -1646,7 +1647,7 @@ Put $y_0\defeq f(x_0)$. By \cref{lem:isEq-pair=},
 $(x_0,\refl{y_0})=(x_1,q)$ is equivalent to
 $\sum_{p:x_0=x_1}\trp_{y_0=f(\_),\,p}(\refl{y_0}) = q$.
 By \cref{lem:trp-in-fx=Ygx}, $\trp_{y_0=f(\_),\,p}(\refl{y_0}) =
-\refl{y_0}\ct \ap{f}(p)$. Now the lemma follows.
+\ap{f}(p) \cdot \refl{y_0}$. Now the lemma follows.
 \end{proof}
 
 \begin{corollary}\label{cor:fib-vs-path}
@@ -1660,7 +1661,7 @@ Let $X$ and $Y$ be types and let $f:X\to Y$ be a function. Then we have:
 \begin{proof}
 
 (1) Follows directly from \cref{lem:fib-vs-path} since $(x,p)=(x',p')$ is
-equivalent to $(x,\refl{x}) = (x',p^{-1}\ct p')$.
+equivalent to $(x,\refl{x}) = (x',p'\cdot p^{-1})$.
 
 (2) By (1) and \cref{cor:inj+connected}.
 
