@@ -53,26 +53,42 @@ $G \equiv \Aut(D_G) \to \Sym(\Card G)$
 \label{sec:actions}
 
 If $G$ is any (possibly higher) group and $A$ is any type of objects,
-then we define an \emph{action} by $G$ on an $A$ as a function
+then we define an \emph{action} by $G$ in the world of elements of $A$ as a function
 \[
-  X : BG \to A.
+  X : \B G \to A.
 \]
 The particular $A$ being acted on is $X(\pt):A$,
 and the action itself is given by transport.
+This generalizes our earlier definition of $G$-sets, $X : \B G \to \Set$.
+
+Notice that the type $\B G \to A$ is equivalent to the type
+\[
+  \sum_{a:A}\hom(G,\Aut_A(a)),
+\]
+that is, the type of pairs of an element $a : A$,
+and a homomorphism from $G$ to the automorphism group of $A$.
+The equivalence maps $X:\B G\to A$ to the pair consisting of $X(\pt)$
+and the homomorphism represented by the pointed map arising
+from corestricting $X$ to factor through the component of $A$ containing $a$
+together with the trivial proof that this map takes $\pt:\B G$ to $a$.
+
+Because of this equivalence,
+we define a \emph{$G$-action on $a:A$}
+to be a homomorphism from $G$ to $\Aut_A(a)$.
 
 Many times we are particularly interested in actions on types,
 i.e., $A$ is a universe (or the universe of types-at-large):
 \[
-  X : BG \to \Type.
+  X : \B G \to \Type.
 \]
 
 In this case, we define \emph{orbit type} of the action as
 \[
-  X_G \defeq \sum_{z:BG} X(z),
+  X_G \defeq \sum_{z:\B G} X(z),
 \]
 and the type of \emph{fixed points} as
 \[
-  X^G \defeq \prod_{z:BG} X(z).
+  X^G \defeq \prod_{z:\B G} X(z).
 \]
 The set of orbits is the set-truncation of the orbit type,
 \[
@@ -80,10 +96,29 @@ The set of orbits is the set-truncation of the orbit type,
 \]
 We say that the action is \emph{transitive} if $X / G$ is contractible.
 
+\section{Semidirect products}
+\label{sec:Semidirect-products}
+
+\begin{definition}\label{def:semidirect-product}
+  Given a group $G$ and an action $\tilde H : BG \to \typegroup$ on a group $H \defeq \tilde H(\pt)$, we define a group called the {\em
+    semidirect product}
+  $G \ltimes H$ to be the total space
+  $$\Bop ( G \ltimes H ) \defeq \sum_{t:\B G} \B \tilde H(t)$$
+  equipped with the point $(\pt,\pt)$ as basepoint and equipped with a proof that it is a connected groupoid.
+\end{definition}
+
+FILL IN SOME FACTS ABOUT PATHS ON TOTAL SPACES BEING PAIRS OF PATHS, INCLUDING WHAT PATH COMPOSITION LOOKS LIKE IN TERMS OF THOSE PAIRS.
+
+\begin{exercise}
+  Construct a section of the projection $ \Bop ( G \ltimes H ) \to \B G $ by sending $t$ to $(t,pt)$.
+  Construct an equivalence between the set $\abstrOp (G \ltimes H)$ and the set $\abstrOp G \times \abstrOp H$.  Use the equivalence to work out
+  explicit formulas for multiplication and for the inverse operation in the abstract group $\abstrOp (G \ltimes H)$.
+\end{exercise}
+
 \section{Orbit-stabilizer theorem}
 \label{sec:orbit-stabilizer-theorem}
 
-Given an action $X : BG \to \Type$ and a point $x : X(\pt)$, we define
+Given an action $X : \B G \to \Type$ and a point $x : X(\pt)$, we define
 the \emph{orbit} through $x$ as the subtype of $X(\pt)$ consisting of
 all $y : X(\pt)$ that are merely equal to $x$ in the orbit type:
 \[
@@ -106,7 +141,8 @@ Different points in the same orbit have conjugate stabilizer groups.
 We say that the action is \emph{free} if all stabilizer groups are trivial.
 
 \begin{theorem}[Orbit-stabilizer theorem]
-  There is a canonical action $\tilde G : BG_x \to \Type$,
+  Fix a $G$-type $X$ and a point $x : X(\pt)$.
+  There is a canonical action $\tilde G : \B G_x \to \Type$,
   acting on $\tilde G(\pt)\equiv G$
   with orbit type $\tilde G\dblslash G_x \equiv \mathcal O_x$.
 \end{theorem}
@@ -146,38 +182,52 @@ For every group $G$ (which for the purposes of the discussion
 in this section we allow to be a higher group)
 we have the automorphism group $\Aut(G)$.
 This is of course the group of self-identifications $G = G$ in the type of groups, $\Group$.
-If we represent $G$ by the pointed connected classifying type $BG$,
-then $\Aut(G)$ is the type of pointed self-equivalences of $BG$.
+If we represent $G$ by the pointed connected classifying type $\B G$,
+then $\Aut(G)$ is the type of pointed self-equivalences of $\B G$.
 
-We have a natural forgetful map from groups to the type of connected types.
-Let $\Gerbe$ denote this type.
-Thus, for every group $G$ we have a corresponding gerbe, $\gerbe(G)$.
+We have a natural forgetful map from groups to the type of connected groupoids.
+Define the type $\Bunch$ to be the type of all connected groupoid.
+If $X:\Bunch$, then all the elements of $X$ are merely isomorphic,
+that is, they all look alike,
+so it makes sense to say that $X$ consists of a \emph{bunch} of alike objects.
+
+For every group $G$ we have a corresponding bunch, $\B G_\div$,
+\ie{} the collection of $G$-torsors,
+and if we remember the basepoint $\pt : \B G_\div$,
+then we recover the group $G$.
+Thus, the type of groups equivalent to the type
+$\sum_{X : \Bunch} X$
+of pairs of a bunch together with a chosen element.
+(This is essentially our definition of the type $\Group$.)
+
+Sometimes we want to emphasize that we $\B G_\div$ is a bunch,
+so we define $\bunch(G) \defeq \B G_\div : \Bunch$.
 
 \begin{definition}[The center as an abelian group]
-  Let $Z(G) \defeq \prod_{z : BG}(z = z)$ denote the type of fixed points of the adjoint action of $G$ on itself.
-  This type is equivalent to the automorphism group of the identity of $\gerbe(G)$,
+  Let $Z(G) \defeq \prod_{z : \B G}(z = z)$ denote the type of fixed points of the adjoint action of $G$ on itself.
+  This type is equivalent to the automorphism group of the identity on $\bunch(G)$,
   and hence the loop type of
   \[
-    BZ(G) \defeq \sum_{f : BG \to BG} \merely{f \sim \id}.
+    \B Z(G) \defeq \sum_{f : \B G \to \B G} \merely{f \sim \id}.
   \]
   This type is itself the loop type of the pointed, connected type
   \[
-    B^2Z(G) \defeq \sum_{X : \Gerbe}\Trunc{\gerbe(G) = X}_0,
+    \B^2Z(G) \defeq \sum_{X : \Bunch}\Trunc{\bunch(G) = X}_0,
   \]
   and we use this to give $Z(G)$ the structure of an \emph{abelian} group,
   called the \emph{center} of $G$.
 \end{definition}
 There is a canonical homomorphism from $Z(G)$ to $G$ given by the pointed map
-from $BZ(G)$ to $BG$ that evaluates at the point $\pt$.
-The fiber of the evaluation map $e : BZ(G) \to_\pt BG$ is
+from $\B Z(G)$ to $\B G$ that evaluates at the point $\pt$.
+The fiber of the evaluation map $e : \B Z(G) \to_\pt \B G$ is
 \begin{align*}
   \fiber_e(\pt)
-  &\jdeq \sum_{f : BG \to BG} \merely{f \sim \id} \times (\mathop f \pt = \pt) \\
-  &\equiv \sum_{f : BG \to_\pt BG} \merely{f \sim \id},
+  &\jdeq \sum_{f : \B G \to \B G} \merely{f \sim \id} \times (\mathop f \pt = \pt) \\
+  &\equiv \sum_{f : \B G \to_\pt \B G} \merely{f \sim \id},
 \end{align*}
 and this type is the loop type of the pointed, connected type
 \[
-  \B\Inn(G) \defeq \sum_{H : \Group} \Trunc{\gerbe(G) = \gerbe(H)}_0,
+  \B\Inn(G) \defeq \sum_{H : \Group} \Trunc{\bunch(G) = \bunch(H)}_0,
 \]
 thus giving the homomorphism $Z(G)$ to $G$ a normal structure with
 quotient group $\Inn(G)$, called the \emph{inner automorphism group}.
@@ -185,47 +235,47 @@ quotient group $\Inn(G)$, called the \emph{inner automorphism group}.
 Note that there is a canonical homomorphism from $\Inn(G)$ to $\Aut(G)$
 given by the pointed map $i : \B\Inn(G) \to \B\Aut(G)$ that forgets the component.
 On loops, $i$ gives the inclusion into $\Aut(G)$ of the subtype of automorphisms of $G$
-that become merely equal to the identity automorphism of $\gerbe(G)$.
+that become merely equal to the identity automorphism of $\bunch(G)$.
 The fiber of $i$ is
 \begin{align*}
   \fiber_i(\pt)
-  &\jdeq \sum_{H : \Group} \Trunc{\gerbe(G) = \gerbe(H)}_0 \times (H = G) \\
-  &\equiv \Trunc{\gerbe(G) = \gerbe(G)}_0.
+  &\jdeq \sum_{H : \Group} \Trunc{\bunch(G) = \bunch(H)}_0 \times (H = G) \\
+  &\equiv \Trunc{\bunch(G) = \bunch(G)}_0.
 \end{align*}
-This is evidently the type of loops in the pointed, connected $1$-type
+This is evidently the type of loops in the pointed, connected groupoid
 \[
-  \B\Out(G) \defeq \Trunc*{\sum_{X : \Gerbe}\merely{\gerbe(G) = X}}_1,
+  \B\Out(G) \defeq \Trunc*{\sum_{X : \Bunch}\merely{\bunch(G) = X}}_1,
 \]
 thus giving the homomorphism $\Inn(G)$ to $\Aut(G)$ a normal structure with
 quotient group $\Out(G)$, called the \emph{outer automorphism group}.
 Note that $\Out(G)$ is always a $1$-group,
-and that it is the decategorification of $\Aut(\gerbe(G))$.
+and that it is the decategorification of $\Aut(\bunch(G))$.
 
 \begin{theorem}
   Let two groups $G$ and $H$ be given.
   There is a canonical action of $\Inn(H)$
-  on the set of homomorphisms from $G$ to $H$, $\Trunc{BG \to_\pt BH}_0$.
+  on the set of homomorphisms from $G$ to $H$, $\Trunc{\B G \to_\pt \B H}_0$.
   This gives rise to an equivalence
   \[
-    \Trunc{BG \to BH}_0 \equiv \Trunc*{\Trunc{BG \to_\pt BH}_0 \dblslash \Inn(H)}_0
+    \Trunc{\B G_\div \to \B H_\div}_0 \equiv \Trunc*{\Trunc{\B G \to_\pt \B H}_0 \dblslash \Inn(H)}_0
   \]
-  between the set of maps from $\gerbe(G)$ to $\gerbe(H)$ and the set of
+  between the set of maps from $\bunch(G)$ to $\bunch(H)$ and the set of
   components of the orbit type of this action.
 \end{theorem}
 \begin{proof}
   We give the action by defining a type family $X : \B\Inn(H) \to \Type$ as follows
   \[
-    X\, \angled{K,\phi} \defeq \Trunc{\Hom(G,K)}_0 \jdeq \Trunc{BG \to_\pt BK}_0,
+    X\, \angled{K,\phi} \defeq \Trunc{\Hom(G,K)}_0 \jdeq \Trunc{\B G \to_\pt \B K}_0,
   \]
-  for $\angled{K,\phi} : \B\Inn(H) \jdeq \sum_{K : \Group} \Trunc{\gerbe(H) = \gerbe(K)}_0$.
+  for $\angled{K,\phi} : \B\Inn(H) \jdeq \sum_{K : \Group} \Trunc{\bunch(H) = \bunch(K)}_0$.
   Now we can calculate
   \begin{align*}
     \Trunc{X_{\Inn(H)}}_0
-    &\jdeq \Trunc*{\sum_{K:\Group}\Trunc{\gerbe(H)=\gerbe(K)}_0\times\Trunc{\Hom(G,K)}}_0 \\
-    &\equiv \Trunc*{\sum_{K:\Group}(\gerbe(H)=\gerbe(K))\times\Hom(G,K)}_0 \\
-    &\equiv \Trunc*{\sum_{K:\Gerbe}\sum_{k:K}(\gerbe(H)=K)\times\sum_{f:\Hom(\gerbe(G),K)}\mathop f \pt = k}_0 \\
-    &\equiv \Trunc*{\sum_{K:\Gerbe} (\gerbe(H)=K) \times\Hom(\gerbe(G),K)}_0 \\
-    &\equiv \Trunc*{\Hom(\gerbe(G),\gerbe(H))}_0 \jdeq \Trunc{BG \to BH}_0.\qedhere
+    &\jdeq \Trunc*{\sum_{K:\Group}\Trunc{\bunch(H)=\bunch(K)}_0\times\Trunc{\Hom(G,K)}}_0 \\
+    &\equiv \Trunc*{\sum_{K:\Group}(\bunch(H)=\bunch(K))\times\Hom(G,K)}_0 \\
+    &\equiv \Trunc*{\sum_{K:\Bunch}\sum_{k:K}(\bunch(H)=K)\times\sum_{f:\bunch(G)\to K)}\mathop f \pt = k}_0 \\
+    &\equiv \Trunc*{\sum_{K:\Bunch} (\bunch(H)=K) \times(\bunch(G) \to K)}_0 \\
+    &\equiv \Trunc*{\bunch(G)\to\bunch(H)}_0 \jdeq \Trunc*{\B G_\div \to \B H_\div}_0.\qedhere
   \end{align*}
 \end{proof}
 
