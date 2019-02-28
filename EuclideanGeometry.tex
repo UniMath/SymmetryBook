@@ -10,36 +10,79 @@ space over the real numbers and the notion of inner product.
 
 \section{Euclidean spaces}
 
-\begin{definition}\label{def:EuclideanSpace}
-  A {\em Euclidean space} $E$ is a torsor $\Points E$ for the additive abelian group underlying
-  a real vector space $\Vectors E$ of finite dimension $\dim E$ equipped with an inner product
-  $(x,y) \mapsto \langle x,y \rangle$.
+\begin{definition}\label{def:InnerProductSpace}
+  An {\em inner product space} $V$ is a real vector space of finite dimension
+  equipped with an inner product $H : (x,y) \mapsto H( x,y )$.
 \end{definition}
+
+Let $\OS$ denote the type of inner product spaces.
+
+For each natural number $n$, we may construct the {\em standard} inner product
+space $\VV^n \defeq (V,H)$ of dimension $n$ as follows.  For $V$ we take the
+vector space $\RR^n$, and we equip it with the standard inner product given by
+the dot product
+$$ H ( x , y) \defeq x \cdot y, $$
+where the dot product is defined as usual as
+$$ x \cdot y \defeq \sum_i x_i y_i . $$
+
+\begin{theorem}\label{thm:GramSchmidt}
+  Any inner product space $V$ is merely equal to $\VV^n$, where $n$ is $\dim E$.
+\end{theorem}
+
+\begin{proof}
+  Since any finite dimensional vector space merely has a basis, we may assume
+  we have a basis for $V$.  Now use Gram-Schmidt orthonormalization to show
+  that $V = \VV^n$.
+\end{proof}
+
+\begin{lemma}\label{lem:InnerProductSpace1Type}
+  The type $\OS$ is a $1$-type.
+\end{lemma}
+
+\begin{proof}
+  Given two inner product spaces $V$ and $V'$, we must show that $V=V'$ is a
+  set.  We may assume $\dim V = \dim V'$, since otherwise, $V=V'$ is empty.
+  Since being a set is a proposition, by \cref{thm:GramSchmidt}, we may assume
+  $V$ and $V'$ are both standard, of dimension $n$, say.  In that case the
+  equalities $\VV^n = \VV^n$ correspond to orthogonal $n \times n$ real
+  matrices, which form a set, so we are done.
+\end{proof}
+
+\begin{definition}\label{def:OrthogonalGroup}
+  Given a natural number $n$, we define the {\em orthogonal group} $\OrthGp n$
+  by letting $\B (\OrthGp n)$ be the connected component of $\OS$ containing
+  the point $\VV^n$, and equipping it with the proof that it is a connected
+  groupoid provided by \cref{thm:GramSchmidt} and
+  \cref{lem:InnerProductSpace1Type}.
+\end{definition}
+
+From \cref{thm:GramSchmidt}, we see that $\OS$ is equivalent to the sum
+$\sum_n \B (\OrthGp n)$.
+
+\begin{definition}\label{def:EuclideanSpace}
+  A {\em Euclidean space} $E$ is a torsor $\Points E$ for the additive group
+  underlying an inner product space $\Vectors E$.
+\end{definition}
+
+For each natural number $n$, we may construct the {\em standard} Euclidean
+space $\EE^n$ of dimension $n$ as follows.  For $\Vectors E$ we take the
+standard inner product space $\VV^n$, and for $\Points E$ we take the
+corresponding principal torsor:
+$$ E \defeq \princ \RR^n. $$
 
 We denote the type of all Euclidean spaces by $\ES$.
 
-For $E:\ES$, we let $p:E$ serve as notation for $p:\Points E$.
+For $E:\ES$, we let $P:E$ serve as notation for $P:\Points E$.  These will be
+the {\em points} in the geometry of $E$.
 
-For each natural number $n$, we may construct the {\em standard} Euclidean
-space $\EE^n$ of dimension $n$ as follows.  For $\Vectors E$ we take the vector space $\RR^n$,
-$$ \Vectors E \defeq \RR^n, $$
-equipped with the standard inner product given by the dot product
-$$ \langle x , y \rangle \defeq x \cdot y, $$
-where the dot product is defined as usual as
-$$ x \cdot y \defeq \sum_i x_i y_i . $$
-Then for $\Points E$ we take the corresponding principal torsor:
-$$ E \defeq \princ V. $$
-
-\begin{theorem}\label{thm:GramSchmidt}
+\begin{theorem}\label{thm:EuclideanNormalization}
   Any Euclidean space $E$ is merely equal to $\EE^n$, where $n$ is $\dim E$.
 \end{theorem}
 
 \begin{proof}
-  Since we are proving a proposition and any torsor is merely trivial, we may
-  assume that $\Points E = \princ {\Vectors E}$.  Since any finite dimensional
-  vector space merely has a basis, we may assume we have chosen a basis for
-  $\Vectors E$.  Finally, by Gram-Schmidt orthonormalization we may assume that
-  $\Vectors E$ is $\RR^n$ equipped with the standard inner product.
+  Since we are proving a proposition and any torsor is merely trivial, by
+  \cref{thm:GramSchmidt} we may assume $\Vectors E$ is $\VV^n$.  Similarly, we
+  may assume that $\Points E$ is the trivial torsor.
 \end{proof}
 
 \begin{lemma}\label{lem:EuclideanSpace1Type}
@@ -47,20 +90,26 @@ $$ E \defeq \princ V. $$
 \end{lemma}
 
 \begin{proof}
-  Given two Euclidean spaces $E$ and $E'$, we must show that $E=E'$ is a set.
-  We may assume $\dim E = \dim E'$, since otherwise, $E=E'$ is empty.  Since
-  being a set is a proposition, we may assume $E$ and $E'$ are both standard,
-  of dimension $n$, say.  The equalities $\Vectors E = \Vectors E'$ are
-  correspond to orthogonal $n \times n$ real matrices, which form a set, so we
-  may assume that $E'$ is $E$.  The equalities $\princ{\Vectors E} =
-  \princ{\Vectors E}$ between trivial torsors correspond to translations by
-  elements of the corresponding group $\Vectors E$, and they form a set, so we
-  are done.
+  Observe that $\ES \simeq \sum_n \sum_{V:\B ( \OrthGp n )} \B V$, and that the
+  types $\B ( \OrthGp n )$ and $\B V$ are 1-types.
 \end{proof}
 
-In light of that lemma, we may introduce the following family of groups.
-
 \begin{definition}\label{def:EuclideanGroup}
-  Given a natural number $n$, we define the {\em Euclidean group} $\EucGp n$ to be
-  the connected component of $\ES$ containing the point $\EE^n$.
+  Given a natural number $n$, we define the {\em Euclidean group} $\EucGp n$ by
+  letting $\B (\EucGp n)$ be the connected component of $\ES$ containing the
+  point $\EE^n$, and equipping it with the proof that it is a connected
+  groupoid provided by \cref{thm:EuclideanNormalization} and
+  \cref{lem:EuclideanSpace1Type}.
 \end{definition}
+
+We see that $\ES$ is equivalent to the sum $\sum_n \B (\EucGp n)$.
+
+\begin{theorem}\label{thm:EuclideanGroupSemidirect}
+  For each $n$, the Euclidean group $\EucGp n$ is a semidirect product
+  $\OrthGp n \ltimes \RR^n$.
+\end{theorem}
+
+\begin{proof}
+  Refer to the definition in \cref{def:semidirect-product}, and observe that
+  $\EucGp n \simeq \sum_{V:\B ( \OrthGp n )} \B V$.
+\end{proof}
