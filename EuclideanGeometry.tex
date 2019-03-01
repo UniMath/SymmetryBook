@@ -8,14 +8,15 @@ In this chapter we study Euclidean geometry.  We assume some standard linear
 algebra over real numbers, including the notion of finite dimensional vector
 space over the real numbers and the notion of inner product.
 
-\section{Euclidean spaces}
+\section{Inner product spaces}
 
 \begin{definition}\label{def:InnerProductSpace}
   An {\em inner product space} $V$ is a real vector space of finite dimension
   equipped with an inner product $H : (x,y) \mapsto H( x,y )$.
 \end{definition}
 
-Let $\OS$ denote the type of inner product spaces.
+Let $\OS$ denote the type of inner product spaces.  It is a type of pairs whose
+elements are of the form $(V,H)$.
 
 For each natural number $n$, we may construct the {\em standard} inner product
 space $\VV^n \defeq (V,H)$ of dimension $n$ as follows.  For $V$ we take the
@@ -41,8 +42,8 @@ $$ x \cdot y \defeq \sum_i x_i y_i . $$
 
 \begin{proof}
   Given two inner product spaces $V$ and $V'$, we must show that the type
-  $V=V'$ is a set.  By univalence, its elements correspond to linear
-  isomorphisms $f : V \xrightarrow \simeq V'$ that are compatible with the
+  $V=V'$ is a set.  By univalence, its elements correspond to the linear
+  isomorphisms $f : V \xrightarrow \weq V'$ that are compatible with the
   inner products.  Those form a set.
 \end{proof}
 
@@ -54,23 +55,42 @@ $$ x \cdot y \defeq \sum_i x_i y_i . $$
   \cref{lem:InnerProductSpace1Type}.
 \end{definition}
 
+We may also omit the parentheses and write $\B\OrthGp n$.
+
 From \cref{thm:GramSchmidt}, we see that $\OS$ is equivalent to 
-$\sum_n \B (\OrthGp n)$.
+$\sum_n \B \OrthGp n$.
+
+\section{Euclidean spaces}
 
 \begin{definition}\label{def:EuclideanSpace}
-  A {\em Euclidean space} $E$ is a torsor $\Points E$ for the additive group
-  underlying an inner product space $\Vectors E$.
+  A {\em Euclidean space} $E$ is a torsor $A$ for the additive group
+  underlying an inner product space $V$.
 \end{definition}
 
-For each natural number $n$, we may construct the {\em standard} Euclidean
-space $\EE^n$ of dimension $n$ as follows.  For $\Vectors E$ we take the
-standard inner product space $\VV^n$, and for $\Points E$ we take the
-corresponding principal torsor $\princ {\RR^n}$.
+We will write $V$ also for the additive group underlying $V$.  Thus an
+expression such as $\B V$ will denote the classifying space of the underlying
+additive group\footnote{We are careful not to refer to the group as an Abelian
+  group at this point, even though it is one, because the notation $\B$ may be
+  used in some contexts to denote a different construction on Abelian groups.}
+of $V$.
 
-We denote the type of all Euclidean spaces by $\ES$.
+We denote the type of all Euclidean spaces by $\ES$.  It is a type of pairs
+$E = (V,A) : \sum_{V:\OS} \typetorsor_V$.  We introduce the notation
+$\Vectors E \defeq V$ and $\Points E \defeq A$.
 
 For $E:\ES$, we let $P:E$ serve as notation for $P:\Points E$.  These will be
 the {\em points} in the geometry of $E$.
+
+We will think of the torsor in abstract terms: it is a nonemmpty set upon which
+$V$ acts.  Since $V$ is an additive group, we prefer to write the action
+additively, too: given $v:V$ and $P:E$ we have $v+P:E$.  Moreover, given
+$P,Q:E$, there is a unique $v:V$ such $v+P = Q$; for it we introduce the
+notation $Q-P \defeq v$.
+
+For each natural number $n$, we may construct the {\em standard} Euclidean
+space $\EE^n : \ES$ of dimension $n$ as follows.  For $\Vectors E$ we take the
+standard inner product space $\VV^n$, and for $\Points E$ we take the
+corresponding principal torsor $\princ {\RR^n}$.
 
 \begin{theorem}\label{thm:EuclideanNormalization}
   Any Euclidean space $E$ is merely equal to $\EE^n$, where $n$ is $\dim E$.
@@ -87,20 +107,20 @@ the {\em points} in the geometry of $E$.
 \end{lemma}
 
 \begin{proof}
-  Observe using \cref{lem:BGbytorsor} that $\ES \simeq \sum_n \sum_{V:\B (
-    \OrthGp n )} \B V$, and that the types $\B ( \OrthGp n )$ and $\B V$ are
-  1-types.
+  Observe using \cref{lem:BGbytorsor} that
+  $\ES \weq \sum_n \sum_{V:\B \OrthGp n} \B V$ and that the
+  types $\B \OrthGp n$ and $\B V$ are 1-types.
 \end{proof}
 
 \begin{definition}\label{def:EuclideanGroup}
   Given a natural number $n$, we define the {\em Euclidean group} $\EucGp n$ by
-  letting $\B (\EucGp n)$ be the connected component of $\ES$ containing the
+  letting $\B \EucGp n$ be the connected component of $\ES$ containing the
   point $\EE^n$ and equipping it with the proof that it is a connected
   groupoid provided by \cref{thm:EuclideanNormalization} and
   \cref{lem:EuclideanSpace1Type}.
 \end{definition}
 
-We see that $\ES$ is equivalent to the sum $\sum_n \B (\EucGp n)$.
+We see that $\ES$ is equivalent to the sum $\sum_n \B \EucGp n$.
 
 \begin{theorem}\label{thm:EuclideanGroupSemidirect}
   For each $n$, the Euclidean group $\EucGp n$ is a semidirect product
@@ -108,7 +128,12 @@ We see that $\ES$ is equivalent to the sum $\sum_n \B (\EucGp n)$.
 \end{theorem}
 
 \begin{proof}
-  Recall \cref{def:semidirect-product} and observe that
-  $$\EucGp n \simeq \sum_{V:\B ( \OrthGp n )} \B V,$$
+  Recall \cref{def:semidirect-product} and apply it to the function
+  $\tilde H : \B \OrthGp n \to \typegroup$ that sends an inner product space
+  $V$ of dimension $n$ to its underlying additive group, also written,
+  according to our convention, as $V$.  Thus $\sum_{V:\B \OrthGp n} \B V$ is a
+  semidirect product of groups, and since the value $\tilde H ( \VV^n )$ at the
+  basepoint is $\RR^n$, the notation assigned to it is $\OrthGp n \ltimes \RR^n$.
+  Finally, observe that $$\EucGp n \weq \sum_{V:\B \OrthGp n} \B V,$$
   again using \cref{lem:BGbytorsor}.
 \end{proof}
