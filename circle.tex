@@ -80,13 +80,16 @@ For all $a:A$ and $l:a=a$ we have $\ev(\el(a,l))=(a,l)$
 by the recursion principle. It remains to prove
 $\el(\ev(f))=f$ for all $f:\Sc\to A$. This will follow
 from the following more general result. Assume 
-$p: f(\base)= g(\base)$ and $q: f(\Sloop) = p\ct g(\Sloop)\ct p^{-1}$.
+$p: f(\base)= g(\base)$ and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
 We show $f=g$, for which it suffices to prove by circle induction
 that $P(x)\defeq(f(x)=g(x))$ for all $x:\Sc$.
 For the base case we take $p$.
 For the loop case we have to show $\trp_{P,\Sloop}(p)=p$.
-By $q$ we have $f(\Sloop)^{-1}\ct p\ct g(\Sloop)= p$.
-Now apply \cref{lem:trp-in-fx=Ygx}. To finally get $\el(\ev(f))=f$,
+By \cref{lem:trp-in-fx=Ygx} we have 
+$\trp_{P,\Sloop}(p)=g(loop)\cdot p \cdot f(loop)^{-1}$. 
+By $q$ we have $g(\Sloop) = p\cdot f(\Sloop) \cdot p^{-1}$.
+Hence $\trp_{P,\Sloop}(p)=p$ by easy calculation.
+To finally get $\el(\ev(f))=f$,
 note that $\ev(\el(\ev(f)))=(f(\base),f(\Sloop))$ with $p\defeq\refl{f(\base)}$
 and $q$ coming from the induction principle.
 \end{proof}
@@ -211,28 +214,15 @@ With the set $\zet$ of integers \emph{defined} we are ready to \emph{prove} that
 
 As announced, our investigation of the $\base=\base$ will use the concept of coverings, a concept custom-built for exposing symmetries (and subsymmetries) of types.  Since we are going to return to this concept several times, we take the time for a bit fuller treatment before we continue with the case at hand.
 
-\begin{definition}
-  \label{def:covering}
-  A function $f:A\to B$ between two types is a \emph{covering of $B$}
-if for all $b:B$ the preimage $f^{-1}(b)$ is a  set.  
+\begin{definition}\label{def:covering}
+A \emph{covering of $B$} consist of a type $A$, a function $f:A\to B$
+and a proof that for all $b:B$ the preimage $f^{-1}(b)$ is a  set.  
 We say that the covering is \emph{decidable} if the preimages are 
 decidable sets.\footnote{decidable will be moved to where we need it}
 \end{definition}
 
-\begin{lemma}\label{lem:conn-ap-cov}
-Let $X$ and $Y$ be connected types and let $f:X\to Y$ be a function.  
-Then $f$ is a covering if and only if each induced function 
-$\ap{f}: x=x'\to f(x)=f(x')$ is an injection.
-\end{lemma}
-\begin{proof}
-Let $y:Y$. By \cref{lem:isEq-pair=} and \cref{lem:trp-in-fx=Ygx} we have 
-\[
-((x,p)=(x',p'))\equiv\sum_{q:x=x'}\trp_q(p) = p'\equiv\sum_{q:x=x'}\ap{f}(q)=p^{-1}\ct p'
-\]
-for all $(x,p),(x',p'):f^{-1}(y)$. This proves the if-part. For the converse,
-note that for any $r: f(x)=f(x')$ we have $(x,\refl{f(x)}),(x',r):f^{-1}(f(x))$.
-SUSPICIOUS: CONNECTED NOT USED.
-\end{proof}
+We recall \cref{cor:fib-vs-path} stating that $f$ is a covering if and only if 
+each $\ap{f}: a=a'\to f(a)=f(a')$ is an injection.
 
 \begin{remark}\label{rem:coveringsasfamilies}
   Under the equivalence between the type of type families 

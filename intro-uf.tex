@@ -414,11 +414,12 @@ of $i'$ depends on $i$, so that we actually have a dependent pair:
 \]
 Conversely, we can define by induction a function
 \[
-(\_\,,\_)^= : (\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2) \to (a_1,b_1)=(a_2,b_2),
+(\_\,,\_)^= : \bigl(\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2\bigr) 
+  \to ((a_1,b_1)=(a_2,b_2)),
 \]
 setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$.
 This function often helps proving dependent pairs equal.
-We come back to this function in \cref{sec:equivalences}.
+We come back to this function in \cref{sec:equivalence}.
 
 
 \subsection{Binary products}
@@ -565,32 +566,25 @@ between two types, we define the type of equivalences from $X$ to $Y$ by
 (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
 \]
 
-
-\begin{xca}\label{xca:fstfstcontractiblefiber}
-Make sure you understand the two applications of $\fst$
-in the definition $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$ above.
-\end{xca}
-
-\begin{xca}\label{xca:equivalence-invers}
-Show that $f^{-1}$ is an equivalence from $Y$ to $X$.
-\end{xca}
-
-\begin{xca}\label{xca:equivalencerel-equivalence}
-Show that $\equiv$ is an equivalence relation on types.
-\end{xca}
-
 For any type $X$, the identity function $\id_X$ is an
 equivalence from $X$ to $X$: for every element $a$ in $X$,
 $\id_X^{-1}(a)$ is a singleton type and hence contractible.
 This simple observation combined with the fact that
-$\trp_{T,\refl{x}}\jdeq \id_{T(x)}$ gives us the next
-lemma by induction.
+$\trp_{T,\refl{x}}\jdeq \id_{T(x)}$ gives that
+the function $\trp_{T,e}$ from \cref{def:transport}
+is an equivalence from $T(x)$ to $T(y)$, for all $e: x=y$.
 
-\begin{lemma}\label{lem:equivalence-transport}
-Let $X$ be a type, and let $T(x)$ be a type depending on $x:X$.
-Then for every $x,y$ in $X$ and $e: x=y$, the function $\trp_{T,e}$
-is an equivalence from $T(x)$ to $T(y)$, so $T(x)\equiv T(y)$.
-\end{lemma}
+\begin{xca}\label{xca:equivalence-invers}
+Make sure you understand the two applications of $\fst$
+in the definition $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$ above.
+Show that $f^{-1}$ is an equivalence from $Y$ to $X$.
+Give a function $(X\equiv Y) \to (Y\equiv X)$.
+% and show that our function is an equivalence. Too difficult here.
+\end{xca}
+
+\begin{xca}\label{xca:equivalence-comp}
+Give  a function $(X\equiv Y) \to ((Y\equiv Z) \to (X\equiv Z))$.
+\end{xca}
 
 The following lemma gives an equivalent characterization
 of equivalence that is sometimes easy to use.
@@ -616,7 +610,7 @@ Define $f(x,i): B(x,i) \to B(a,\refl{a})$ by induction on $i$,
 setting $f(a,\refl{a},q) \defeq q$ for all $q:B(a,\refl{a})$.
 Then $f$ defines an equivalence 
 \[
-f: \sum_{x:X} \sum_{i: a=x} B(x,i) \quad \to \quad B(a,\refl{a}).
+f~:~ \sum_{x:X} \sum_{i: a=x} B(x,i) \quad \to \quad B(a,\refl{a}).
 \]
 \end{lemma}
 \begin{proof}
@@ -640,18 +634,19 @@ in the following simpler form.
 \begin{corollary}\label{cor:contract-away}
 With conditions as above, but with $B$ not depending on $i$, we have
 \[
-\sum_{x:X} (a=x)\times B(x) ~~\equiv~~ B(a).
+ B(a)~~\equiv~~\sum_{x:X} ((a=x)\times B(x)).
 \]
 \end{corollary}
 
-We come back to \cref{sec:sum-types} characterizing equality in a sum type.  
+Using \cref{lem:weq-iso}, we can finally prove the characterization of equality 
+in a sum type given in \cref{sec:sum-types}.  
 
 \begin{lemma}\label{lem:isEq-pair=}
 Let $A$ be a type and $B(a)$ be a type for all $a:A$.
 Let $a_1:A$ and $b_i:B(a_i)$ for $i=1,2$. The function 
 \[
 (\_\,,\_)^= : 
-(\sum_{i:a_1 = a_2} \trp_{B,i}(b_1)= b_2) \to (a_1,b_1)=(a_2,b_2)
+\bigl(\sum_{i:a_1 = a_2} \trp_{B,i}(b_1)= b_2\bigr) \to ((a_1,b_1)=(a_2,b_2))
 \] 
 defined by induction by setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$, 
 is an equivalence with inverse $p \mapsto (\ap{\fst}(p),\apd{\snd}(p))$.
@@ -661,7 +656,7 @@ Applying \cref{lem:weq-iso}, it suffices to show
 $p=(\ap{\fst}(p),\apd{\snd}(p))^=$ for all $p:(a_1,b_1)=(a_2,b_2)$ and
 $(q,r)=(\ap{\fst}((q,r)^=),\apd{\snd}((q,r)^=))$ for all $q:a_1=a_2$
 and $r:\trp_{B,q}(b_1)=b_2$. The first is proved by induction on $p$, 
-and the second by induction on, first $q$, and then $r$. To see this,
+and the second by induction on first $q$ and then $r$. To see this,
 recall that $\ap{\fst}(\refl{(a,b)})\jdeq\refl{\fst(a,b)}\jdeq\refl{a}$,
 and likewise $\ap{\snd}(\refl{(a,b)})\jdeq\refl{b}$.
 \end{proof}
@@ -1560,12 +1555,10 @@ by \cref{lem:maxonefinitetype}.
 \label{sec:more-on-equivalences}
 
 In this section we collect a number of useful results on equivalences.
-We recall that any $f:A\to B$ induces a family of functions 
-$\ap{f}: (a=a') \to (f(a)=f(a'))$ for all $a,a':A$.
-In saying `for each $\ap{f}$' we refer to all members of this family. 
 
 \begin{lemma}\label{lem:ap-equivalence}
-If $f:A\to B$ is an equivalence, then so is each $\ap{f}$.
+If $f:A\to B$ is an equivalence, then so is each 
+$\ap{f}: (a=a') \to (f(a)=f(a'))$ for all $a,a':A$.
 \end{lemma}
 \begin{proof}
 Let $f^{-1} : B\to A$ be the inverse of $f$, then we have 
@@ -1634,44 +1627,50 @@ we now get that all preimages under $f$ are non-empty.
 
 \begin{lemma}\label{lem:fib-vs-path}
 Let $X$ and $Y$ be types and let $f:X\to Y$ be a function.
-Let $x_0,x_1:X$, $q:f(x_0)=f(x_1)$ and recall $\ap{f}: x_0=x_1 \to f(x_0)=f(x_1)$.
+Let $x_i:X$, $y_i\defeq f(x_i)$ for $i=0,1$, and $q:y_0 = y_1$.
+Recall $\ap{f}: (x_0=x_1) \to (y_0 = y_1)$ and
+$(\ap{f})^{-1}(q) \defeq \sum_{p:x_0=x_1} q =\ap{f}(p)$.
 Then we have:
 \[
-((x_0,\refl{f(x_0)})=_{f^{-1}(f(x_0))}(x_1,q))\equiv
-(\ap{f})^{-1}(q) \defeq \sum_{p:x_0=x_1} q =\ap{f}(p)
+((x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q))\equiv (\ap{f})^{-1}(q)
 \]
 \end{lemma}
 \begin{proof}
 %Observe that the type on the right is the fiber of $\ap{f}$ at $q$.
-Put $y_0\defeq f(x_0)$. By \cref{lem:isEq-pair=},
+By \cref{lem:isEq-pair=},
 $(x_0,\refl{y_0})=(x_1,q)$ is equivalent to
 $\sum_{p:x_0=x_1}\trp_{y_0=f(\_),\,p}(\refl{y_0}) = q$.
 By \cref{lem:trp-in-fx=Ygx}, $\trp_{y_0=f(\_),\,p}(\refl{y_0}) =
 \ap{f}(p) \cdot \refl{y_0}$. Now the lemma follows.
 \end{proof}
 
+In saying `for each $\ap{f}$' we refer to
+$\ap{f}: (x_0=x_1) \to (f(x_0)=f(x_1))$ for all $x_0,x_1:X$.
+
 \begin{corollary}\label{cor:fib-vs-path}
 Let $X$ and $Y$ be types and let $f:X\to Y$ be a function. Then we have:
 \begin{enumerate}
 \item $f$ is an injection if and only if each $\ap{f}$ is an equivalence;
-\item If $X$ and $Y$ are connected, then $f$ is an equivalence if and only if each $\ap{f}$ is an equivalence;
-\item If $X$ and $Y$ are connected, then all fibers of $f$ are sets if and only if each $\ap{f}$ is an injection.
+\item All fibers of $f$ are sets if and only if all fibers of $\ap{f}$ are propositions;
+\item If $X$ and $Y$ are connected, then $f$ is an equivalence 
+if and only if each $\ap{f}$ is an equivalence.
 \end{enumerate}
 \end{corollary}
 \begin{proof}
-
 (1) Follows directly from \cref{lem:fib-vs-path} since $(x,p)=(x',p')$ is
-equivalent to $(x,\refl{x}) = (x',p'\cdot p^{-1})$.
+equivalent to $(x,\refl{f(x)}) = (x',p'\cdot p^{-1})$, for all $(x,p),(x',p')$
+in the same fiber of $f$.
 
-(2) By (1) and \cref{cor:inj+connected}.
+(2) Similar to the proof of (1).
 
-(3) TBD
+(3) By (1) and \cref{cor:inj+connected}.
 \end{proof}
+
 
 \section{Type families and maps}
 \label{sec:typefam}
 
-There is an equivalence between maps into a type $A$
+There is a natural equivalence between maps into a type $A$
 and type families indexed by $A$. The key idea is that the
 fibers of a map form a type family. We will elaborate this
 idea and some variations.
@@ -1679,28 +1678,30 @@ idea and some variations.
 
 \begin{lemma}\label{lem:fst-fiber(a)=B(a)}
 Let $A:\UU$ and $B:A\to\UU$.
-Consider the function $\fst: (\sum_{a:A} B(a))\to A$.
-Then $\fst^{-1}(a) \equiv B(a)$ for all $a:A$.
+Recall the function $\fst: (\sum_{a:A} B(a))\to A$.
+Then $e_a: B(a) \to \fst^{-1}(a)$ defined by 
+$e_a(b)\defeq ((a,b),\refl{a})$ is an equivalence,
+for all $a:A$.
 \end{lemma}
 \begin{proof}
-We note the $\fst(x,b)\jdeq x$ and that $a=x$ does
+Note that $\fst(x,b)\jdeq x$ and that $a=x$ does
 not depend on $b$. Hence
-$\fst^{-1}(a) \equiv \sum_{x:A}  B(x) \times (a=x)$.
-Applying \cref{cor:contract-away} then proves the lemma.
+$\fst^{-1}(a) \equiv \sum_{x:A}  (B(x) \times (a=x))$
+via rearranging brackets.
+Applying \cref{cor:contract-away} leads indeed to 
+the equivalence $e_a$. 
 \end{proof}
 
 \begin{lemma}\label{lem:sum-of-fibers}
 Let $A,B:\UU$ and $f:B\to A$. 
-Then $\sum_{a:A} f^{-1}(a)\equiv B$ through equivalences
-defined in the proof.
+Then $e: B \to \sum_{a:A} f^{-1}(a)$ defined by
+$e(b)\defeq (f(b),b,\refl{f(b)})$ is an equivalence.
 \end{lemma}
 \begin{proof}
-Define $e: \sum_{a:A} f^{-1}(a) \to B$ by $e(a,b,p)\defeq b$.
-Define $e^{-1}: B \to \sum_{a:A} f^{-1}(a)$ by 
-$e^{-1}(b)\defeq (f(b),b,\refl{f(b)})$.
-Then $e(e^{-1}(b))\jdeq b$ for all $b:B$.
+Define $e^{-1}: \sum_{a:A} f^{-1}(a) \to B$ by $e(a,b,p)\defeq b$.
+Then $e^{-1}(e(b))\jdeq b$ for all $b:B$.
 Let $a:A$, $b:B$ and $p: f(b)=a$.
-Then $e^{-1}(e(a,b,p))\jdeq (f(b),b,\refl{f(b)})$.
+Then $e(e^{-1}(a,b,p))\jdeq (f(b),b,\refl{f(b)})$.
 We have to prove $(f(b),b,\refl{f(b)})=(a,b,p)$.
 We use $p$ as identification of the first components,
 and $\refl{b}$ as identification of the second components
@@ -1708,13 +1709,13 @@ and $\refl{b}$ as identification of the second components
 we use that the transport of $\refl{f(b)}$ along $p$
 in the type family $(f(b)=\_)$ is indeed equal to $p$
 itself by \cref{xca:trp-in-a/x=b/x}(\ref{xca-trp-in-a=x}).
+Now apply \cref{lem:weq-iso}.
 \end{proof}
-
 
 \begin{lemma}\label{lem:typefamiliesandfibrations}
 Let $A$ be a type. Then
 \[
-\preim: \quad\sum_{B:\UU}(B\to A)\quad\to\quad (A\to\UU) 
+\preim ~:~ \sum_{B:\UU}(B\to A) \quad\to\quad (A\to\UU) 
 \] 
 given by $\preim(B,f)(a)\defeq f^{-1}(a)$ is an equivalence.
 %\footnote{in some higher universe}
@@ -1736,7 +1737,7 @@ from the proof of \cref{lem:sum-of-fibers}. It remains
 to show that the transport of $\fst$ along $ua(e)$ equals $f$.
 Note that the transport is in the family $\_\to A$, so that
 \cref{lem:trp-in-function-type} applies. This means that
-the transport of $\fst$ is $\fst \circ {e^{-1}}$, indeed equal to $f$.
+the transport of $\fst$ is ${\fst} \circ {e^{-1}}$, indeed equal to $f$.
 \end{proof}
 
 Let $A$ be a type and consider the subuniverse 
