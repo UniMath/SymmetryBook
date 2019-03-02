@@ -195,8 +195,11 @@ and shown to extend those on $\NN$.
 \section{The symmetries of the circle}
 \label{sec:pi1S1isZ}
 
-With the set $\zet$ of integers \emph{defined} we are ready to \emph{prove} that $\zet$ is equal to the type $\base=\base$ of symmetries of the circle, and that under this identification the successor $s$ corresponds to $\Sloop$.
-
+As mentioned earlier, it is possible to define the integers as the
+symmetries of the circle. However, with the set $\zet$ of integers 
+\emph{defined} as in the previous section, we will now \emph{prove}
+that $\zet$ is equal to the type $\base=\base$ of symmetries of the circle, 
+and that under this \st{identification} proof the successor $s$ corresponds to $\Sloop$.
 
 \subsection{Coverings}\footnote{do we want to say ``cover'' or ``covering''?  I know there are people who feel strongly about this, and if one of us do I think we should do it the way that person wants it.  Google gives 129k hits on ``universal covering'' and 504k hits on ``universal cover''.  We should avoid ``covering space''.  What do we want to call the based path space?}
 \label{sec:covering}
@@ -215,18 +218,43 @@ With the set $\zet$ of integers \emph{defined} we are ready to \emph{prove} that
 As announced, our investigation of the $\base=\base$ will use the concept of coverings, a concept custom-built for exposing symmetries (and subsymmetries) of types.  Since we are going to return to this concept several times, we take the time for a bit fuller treatment before we continue with the case at hand.
 
 \begin{definition}\label{def:covering}
-A \emph{covering of $B$} consist of a type $A$, a function $f:A\to B$
-and a proof that for all $b:B$ the preimage $f^{-1}(b)$ is a  set.  
+A \emph{covering} of a type $B$ consist of a type $A$, a function $f:A\to B$
+and a proof that for all $b:B$ the preimage $f^{-1}(b)$ is a set.
+With a formula, given a type $B$, the type of coverings of $B$ is
+\[
+\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)).
+\]
 We say that the covering is \emph{decidable} if the preimages are 
 decidable sets.\footnote{decidable will be moved to where we need it}
+See \cref{fig:covering} for an example of a covering of the circle.
 \end{definition}
 
-We recall \cref{cor:fib-vs-path} stating that $f$ is a covering if and only if 
-each $\ap{f}: a=a'\to f(a)=f(a')$ is an injection.
+By \cref{lem:isEq-pair=} the identity type  
+$(A,f,!)=(A',f',!)$ of two coverings of the type $B$ is equivalent to 
+\[
+\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f). \text{WHY NOT f LEFT?}
+\]
+Here and below, the $p_A$ in the equation $f'p_A=_{A\to B}f$ is 
+shorthand for the canonical equivalence from $A$ to $A'$ 
+coming from the identification $p_A:A=_{\UU}A'$ by first
+applying $\idtoeq:(A=A')\to (A\equiv A')$, and then
+applying $\fst:(A\equiv A')\to(A\to A')$ to the result,
+in total $\fst(\idtoeq(p_A)): A\to A'$.
 
-\begin{remark}\label{rem:coveringsasfamilies}
-  Under the equivalence between the type of type families 
-$$B\to\UU$$ and functions $\sum_{A:\UU}(A\to B)$ given by sending a type family $E$ to the first projection of $\sum_{a:A}E(a)$ (with inverse sending $f:A\to B$ to the type family $b\mapsto f^{-1}(b)$), we see that we could alternatively have defined a covering to be a type family $B\to\Set$.\footnote{it sounds almost cosa nostra to claim that coverings and families are the same things}  
+\begin{definition}\label{def:decktrafo}\footnote{postpone}
+  Let $f:A\to B$ be a covering.  A symmetry $(A,f,!)=(A,f,!)$ is called a \emph{deck transformation}.
+\end{definition}
+%specified by a pair $(p_A,p_f)$ with consisting of a $p_A:A=_{\UU}A'$, a $p_f:f'p_A=_{A\to B}f$.
+
+
+WHERE THIS REMARK
+We recall \cref{cor:fib-vs-path} stating that all the fibers of $f$ 
+are sets if and only if each $\ap{f}: a=a'\to f(a)=f(a')$ is an injection.
+
+\begin{remark}\label{rem:coveringsasfamilies}  
+Under the equivalence \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-families})
+between the type $B\to\Set$ of families of sets indexed by $B$, and the type
+of coverings of $B$, we see that we could alternatively have defined a covering to be a type family $B\to\Set$.\footnote{it sounds almost cosa nostra to claim that coverings and families are the same things}  
 
 In particular, an equivalence (aka.~a family of contractible types) is a covering.
 \end{remark}
@@ -255,21 +283,6 @@ In particular, an equivalence (aka.~a family of contractible types) is a coverin
   \caption{A visualization of a covering of the circle}
   \label{fig:covering}
 \end{figure}
-
-
-
-To sum up with a formula, 
-given a type $B$, the type of coverings of $B$ is
-$$\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),$$ 
-or equivalently, the type of type families
-$$B\to\Set.$$
-Note that the identity type  $(A,f,!)=(A',f',!)$ of two coverings of the type $B$ is equivalent to 
-$$\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f)$$
-(where, as elsewhere, the $p_A$ in the equation $f'p_A=_{A\to B}f$ is our shorthand for the canonical \emph{function} in $A\to A'$ resulting by applying $\idtoeq:(A=A')\to (A\equiv A')$ and the projection $(A\equiv A')\to(A\to A')$ to $p_A:A=_{\UU}A'$).
-\begin{definition}\label{def:decktrafo}\footnote{postpone}
-  Let $f:A\to B$ be a covering.  A symmetry $(A,f,!)=(A,f,!)$ is called a \emph{deck transformation}.
-\end{definition}
-%specified by a pair $(p_A,p_f)$ with consisting of a $p_A:A=_{\UU}A'$, a $p_f:f'p_A=_{A\to B}f$.
 
 \begin{remark}
   \label{xca:coveringsofS1}
