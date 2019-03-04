@@ -101,11 +101,19 @@ $$\Sigma_X=\aut_{\UU_{(X)}}X,$$
  where $U_{(X)}$ is the component of $\UU$ containing $X$.
 \item In \cref{thm:coveringsofS1} we studied the symmetries of the ``$m$-fold covering'' of the circle for $m$ a positive integer, and showed that there were $m$-different symmetries, but that they were just the powers $f^n$ (for $n=0,1,\dots,m-1$) of one (nonunique) symmery $f$ and that $f^{m+k}=f^k$ for any integer $k$.  This very important symmetry pops up in many situation, and is called the \emph{cyclic group of order $m$}.
 
+Here is another, and occasionally more convenient, way of obtaining the cyclic group of order $n$.  Consider the function $$cy_n:S^1\to\fin_n$$ with $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ the identity corresponding to the equivalence given by cyclic permutation, sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$.  Note that the identity $cy_n\Sloop$ is cyclic in the sense that the $n$-fold iterate $(cy_n\Sloop)^n$ is $\refl{\bn n}$.  Then the $n$-fold covering can be seen as the first projection 
+$$\sum_{z:S^1}cy_n(z)\to S^1.$$
+
+Consider the type 
+$$B_n\defequi\sum_{S:\fin_n}\pi_0(cy_n^{-1}(S)),\footnote{I've used set truncation!!!}$$
+the ``image'' of $cy_n$ except that the truncation is one level higher than we have considered before.  Since $\fin_n$ is a groupoid, $B_n$ is a groupoid.  Remember that $cy_n^{-1}(S)=\sum_{z:S^1}S=cy_nz$.  Let $(S,z,p):B_n$ be any element; we want to show that $(S,z,p)=_{B_n}(\bn n, \base, \refl\base)$ is inhabited, so that $B_n$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_n(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_n(\base)\defequi\bn n$ to compose $p:S=cy_nz$ and $cy_n:cy_nz=cy_n\base$), $B_n$ is connected.  
+Pointing $B_n$ in $(\bn n,!)$ we have a pointed connected groupoid, \ie a group, which we call the {\em cyclic group $C_n$ of order $n$}.  (in hindsight, $B_n=(BC_n)_\div$)
+
 Note that the cyclic group of order $1$ is the trivial group, the cyclic group of order $2$ is equivalent to the permutation group $\Sigma_2$: there are exactly one nontrivial symmetry $f$ and $f^2$ is the identity.  When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.  In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\Sigma_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.
 \item If you have two groups $G$ and $H$, their {\em product} $G\times H$ is given by taking the product of their classifying spaces:
 $$G\times H\defequi\aut_{BG_\div\times BH_\div}((\pt_G,\pt_H))$$
 (note that $B(G\times H)\oldequiv BG\times BH$ is pointed in $\pt_{G\times H}\oldequiv(\pt_G,\pt_H)$).  
-For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}\footnote{something about symmetries}.
+For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}.
 \footnote{MANY MORE EXAMPLES.  We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.}
   \end{enumerate}
 \end{example}
@@ -115,6 +123,11 @@ For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}\footnote{
 and (since $\fin_0=\fin_1=\bn 1$) that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
 %\item Display an element in $\bn{2} =_{\fin_2}\bn{2} $ different from $\refl{\bn{2} }$ in the group $\Sigma_{2}$ of permutations of two letters.  
 \item Prove that the set $\bn{n} =_{\fin_n}\bn{n} $ is finite of cardinality $n!$.
+\item Show that the $n$-fold cover of $S^1$ is equivalent to the first projection $\sum_{z:S^1}cy_n(z)\to S^1$, where $cy_n:S^1\to\fin_n$ is given by $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ is cyclic permutation (sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$).  Hint: for every $z:S^1$, $cy_nz:\fin_n$ is a finite set of cardinality $n$.  Decidability is not an issue, so you can appeal to our classification of the coverings of the circle.
+\item Show that, given a type $X$, the type of functions $BC_n\to X$ is equivalent to the type 
+$$\sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$$ of functions $f:S^1\to X$ such that the two ways around
+$$\xymatrix{S^1\ar[d]_{(-)^n}\ar[dr]^f&\\S^1\ar[r]^f&X}$$
+agree.  Hint: define the function $F_1:(BC_n\to X)\to (S^1\to X)$ by precomposition: $F_1(g)(z)=g(cy_nz,!)$ and observe that since $cy_n(z)=cy_n(z^n)$ we have a function $F:(BC_n\to X)\to \sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$.
   \end{enumerate} 
 \end{xca}
 
@@ -1021,14 +1034,43 @@ Specializing, we return to our initial motivation and see that mapping out of a 
 \end{corollary}
 
 
-
-\section{structure of identity types}
-\section{automorphism 1-group = fundamental group (hint at higher groups)}
-\section{homomorphisms induced by functions (early)}
+%\section{structure of identity types}
+%\section{automorphism 1-group = fundamental group (hint at higher groups)}
+%\section{homomorphisms induced by functions (early)}
 \section{more examples: symmetric groups, integers, cyclic groups and modular arithmetic}
 \section{group actions, orbits and fixed points}
-\section{subgroups}
-\section{Cayley's theorem}
+\section{Subgroup}
+\label{sec:subgroups}
+In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discovered that the ``subsymmetries'' formed a very organized structure.  For each natural number $n$ we obtained a set of subsymmetry the entire identity type $\base=\base$, namely the set of all the iterates $(\Sloop^{n})^m$ where $m$ varies over the integers.  When $n$ was positive this was realized as the $n$-fold covering of $S^1$ , when $n=0$ this was given by the universal covering.  
+
+For other groups the ``subsymmetries'' form more involved structures.  One thing is that our concept of a subtype of $B$ is merely the first projection $\sum_{b:B}P(b)\to B$, where the $P$ is a family of propositions.  Another thing is that for group the ``sub'' refers to the associated abstract groups, so that ``$BH$ is a subgroup of $BG$'' should \emph{not} mean that ``$BH$ is a subtype of $BG$'', but that we have a group homomorphism $f:\Hom(H,G)$ so that the induced function $(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an ``inclusion of a subset''. 
+
+Now, as we've seen, that   $f:(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an injection (preimages are propositions) is equivalent to the preimages of $Bf:BH\to BG$ being sets.  Hence we get the following neat formulation.
+
+    \begin{definition}
+      \label{def:subgroup}
+      Let $G$ be a group.  A subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such that the fibers of $Bf$ are sets.
+    \end{definition}
+
+\section{Cauchy's theorem}
+\footnote{TO BE MOVED TO AFTER Burnside's (\ie a $G$-set splits into orbits) has been covered.}
+
+\begin{definition}
+  \label{def:finitegrd}Let $n:\NN$ be positive.  A \emph{finite group of order $n$} is a group $G$ such that the set $pt_G=\pt_G$ is in $\fin_n$.  If we don't want to specify the order, we say that $G$ is a finite group. 
+\end{definition}
+\begin{lemma}
+  \label{lem:cauchys}
+  Let $p$ be a prime and let $G$ be a finite group of order divisible by $p$.  Then $G$ has a subgroup which is cyclic of order $p$. (do we need decidability - check whether you want to rewrite)
+\end{lemma}
+\begin{proof}
+  Consider  the $p-1$-fold product $(\bn{(p-1)}\to (\pt_G=\pt_G))$ of $\pt_G=\pt_G$ with itself.  We give this set the structure of a $\ZZ/p$-set as follows: ((here it is convenient to say that a $\ZZ/p$-set is the same as a $\ZZ$-set commuting with the $p$-fold cover)) define $X:S^1\to\Set$ by $X(\base)\defequi (\bn{(p-1)}\to (\pt_G=\pt_G))$ and by setting $X(\Sloop)$ to be the element in $X(\base)=(\base)$ sending $(g_1,\dots,g_{p-1})$ to $(g_2,\dots,g_{p-1},(g_1\cdots g_{p-1})^{-1})$.  Note that
+$$\xymatrix{S^1\ar[d]_{(-)^p}\ar[dr]^X&\\S^1\ar[r]_X&\Set}$$
+commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this action is an element of $X(\base)$ of the form $(g,g,\dots,g)$ such that $g^{p-1}=g^{-1}$  (expand)). The choice $g=e$ always gives such a fixed point, but if there is any other point ... (do you need decidability here?), the pointed map $S^1\to BG$ given by sending $\Sloop$ to $g$ gives the desired subgroup. Hence we need to show that $X$ has fixed points.
+
+Now, $X(\base)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $\ZZ/p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
+$$X(\base)= X(\base)^{\ZZ/p}+(\text{free part of }X(\base)).$$
+Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\base)$ \emph{and} of the free part of $X(\base)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+\end{proof}
 \section{Historical remarks}
 \label{sec:grouphistory}
 

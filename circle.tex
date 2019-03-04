@@ -1,3 +1,8 @@
+\newcommand{\covering}{{\color{red}set map}\xspace}
+\newcommand{\coverings}{{\color{red}set maps}\xspace}
+\newcommand{\Covering}{{\color{red}Set map}\xspace}
+\newcommand{\Coverings}{{\color{red}Set maps}\xspace}
+
 
 \label{cha:circle}
 
@@ -120,11 +125,11 @@ If this truncation were removed we wouldn't know what to do in
 the induction step (actually, ${\base=z}$ for all $z:\Sc$ contradicts UA).
 This said, the family $R:\Sc\to\UU$ with $R(z)\defequi (\base=z)$ is extremely 
 important for other purposes: it determines what we will call the 
-``universal cover'' of the circle and is the key tool in proving that 
+``universal \covering'' of the circle and is the key tool in proving that 
 the set of integers and the symmetries of the circle coincide.
 
 In order to do this we should properly define the set of integers 
-and explore the concept of coverings.
+and explore the concept of \coverings.
 
 \section{The integers}
 \label{sec:integers}
@@ -201,7 +206,7 @@ symmetries of the circle. However, with the set $\zet$ of integers
 that $\zet$ is equal to the type $\base=\base$ of symmetries of the circle, 
 and that under this \st{identification} proof the successor $s$ corresponds to $\Sloop$.
 
-\subsection{Coverings}\footnote{do we want to say ``cover'' or ``covering''?  I know there are people who feel strongly about this, and if one of us do I think we should do it the way that person wants it.  Google gives 129k hits on ``universal covering'' and 504k hits on ``universal cover''.  We should avoid ``covering space''.  What do we want to call the based path space?}
+\subsection{\Coverings}% \footnote{do we want to say ``cover'' or ``covering''?  I know there are people who feel strongly about this, and if one of us do I think we should do it the way that person wants it.  Google gives 129k hits on ``universal covering'' and 504k hits on ``universal cover''.  We should avoid ``covering space''.  What do we want to call the based path space?}
 \label{sec:covering}
 % {\color{red}Trying Alternative version:
 % \begin{definition}
@@ -215,60 +220,43 @@ and that under this \st{identification} proof the successor $s$ corresponds to $
 %   }
 
 As announced, our investigation of the type $\base=\base$ will 
-use the concept of coverings, a concept custom-built for 
-exposing symmetries (and subsymmetries) of types.  
+use the concept of \coverings.
+%, a concept custom-built for exposing symmetries (and subsymmetries) of types.  
 Since we are going to return to this concept several times, 
 we take the time for a fuller treatment before we continue with the case at hand.
 
+We should notice that the notion of a \covering is just one step up from the notion of an injection (a function such that all the preimages are propositions).
+
 \begin{definition}\label{def:covering}
-A \emph{covering} of a type $B$ consist of a type $A$, a function $f:A\to B$
-and a proof that for all $b:B$ the preimage $f^{-1}(b)$ is a set.
-With a formula, given a type $B$, the type of coverings of $B$ is
+A \emph{\covering} over a type $B$ 
+is a map $f:A\to B$ such that for each $b:B$ the preimage $f^{-1}(b)$ is a set.
+We say that a \covering $f:A\to B$ over $B$ is
+\begin{itemize}
+\item \emph{connected}\index{connected \covering} if $A$ is connected, 
+\item \emph{universal}\index{universal \covering} if $A$ is contractible, 
+\item \emph{finite}\index{finite \covering} if all preimages are finite sets,
+\item \emph{decidable}\index{decidable \covering} if all preimages are decidable sets.
+\end{itemize}
+If $B$ is a pointed type, a \emph{pointed} \covering is a pointed map $f:A\to_*B$ such that, when forgetting the points, $f_\div:B_\div\to A_\div$ is a \covering.
+%consist of a type $A$, a function $f:A\to B$
+%and a proof that for all $b:B$ the preimage $f^{-1}(b)$ is a set.
+\end{definition}
+With a formula, given a type $B$, the type of \coverings over $B$ is
 \[
 \sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)).
 \]
-We say that the covering is \emph{decidable} if the preimages are 
-decidable sets.\footnote{decidable will be moved to where we need it}
-See \cref{fig:covering} for two examples of coverings of the circle.
-\end{definition}
 
-By \cref{lem:isEq-pair=} the identity type  
-$(A,f,!)=(A',f',!)$ of two coverings of the type $B$ is equivalent to 
-\[
-\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f). \text{WHY NOT f LEFT?}
-\]
-Here and below, the $p_A$ in the equation $f'p_A=_{A\to B}f$ is 
-shorthand for the canonical equivalence from $A$ to $A'$ 
-coming from the identification $p_A:A=_{\UU}A'$ by first
-applying $\idtoeq:(A=A')\to (A\equiv A')$, and then
-applying $\fst:(A\equiv A')\to(A\to A')$ to the result,
-in total $\fst(\idtoeq(p_A)): A\to A'$.
-
-\begin{definition}\label{def:decktrafo}\footnote{postpone}
-  Let $f:A\to B$ be a covering.  A symmetry $(A,f,!)=(A,f,!)$ is called a \emph{deck transformation}.
-\end{definition}
-%specified by a pair $(p_A,p_f)$ with consisting of a $p_A:A=_{\UU}A'$, a $p_f:f'p_A=_{A\to B}f$.
-
-
-WHERE THIS REMARK
-We recall \cref{cor:fib-vs-path} stating that all the fibers of $f$ 
-are sets if and only if each $\ap{f}: a=a'\to f(a)=f(a')$ is an injection.
-
-\begin{remark}\label{rem:coveringsasfamilies}  
-Under the equivalence \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-families})
-between the type $B\to\Set$ of families of sets indexed by $B$, and the type
-of coverings of $B$, we see that we could alternatively have defined a covering to be a type family $B\to\Set$.\footnote{it sounds almost cosa nostra to claim that coverings and families are the same things}  
-
-In particular, an equivalence (aka.~a family of contractible types) is a covering.
-\end{remark}
-
- Figure~\ref{fig:covering} visualizes a non-trivial covering of the circle.  If we let $b$ be the element on the circle marked at the bottom left hand side, then the preimage $f^{-1}(b)$ is marked by the the two dots in $A$ straight above $b$, so that in this case each preimage is equal to $\bn 2$.  However, it is not the constant family $E(z)\defequi\bn 2$ since $\sum_{z}\bn 2=\Sc\times\bn 2=\Sc+\Sc$ is not connected.  Obviously something way more fascinating is going on.
+ Figure~\ref{fig:covering} visualizes two examples of \coverings over the circle.  
+Consider the left hand example first.  
+If we let $b$ be the element on the circle marked at the bottom left hand side, then the preimage $f^{-1}(b)$ is marked by the the two dots in $A$ straight above $b$, so that in this case each preimage contains two points.  
+However, it is not the constant family $\bn 2$ since $A'=\sum_{z}\bn 2=\Sc\times\bn 2=\Sc+\Sc$ is not connected.  
+Obviously something way more fascinating is going on.
 \begin{figure}
   \centering
   \begin{tikzpicture}
     \node (A) at (2,1) {$A$};
-    \node (B) at (2,-2) {$B$};
-    \draw[->] (A) -- node[auto] {$f$} (B);
+    \node (B) at (2,-2) {$S^1$};
+    \draw[->] (A) -- node[auto] {$$} (B);
     \draw (0,-2) ellipse (1 and .3);
     \draw (-1,0)
     .. controls ++( 90:-.3) and ++(210: .4) .. (0,0.15)
@@ -284,9 +272,9 @@ In particular, an equivalence (aka.~a family of contractible types) is a coverin
     \node[fill,circle,inner sep=1pt] at (-1,1) {};
     \node (L) at (1,-3) {(a)};
     \begin{scope}[xshift=6cm]
-    \node (At) at (2,1) {$A$};
-    \node (Bt) at (2,-2) {$B$};
-    \draw[->] (At) -- node[auto] {$f$} (Bt);
+    \node (At) at (2,1) {$S^1+S^1$};
+    \node (Bt) at (2,-2) {$S^1$};
+    \draw[->] (At) -- node[auto] {$$} (Bt);
     \draw (0,-2) ellipse (1 and .3);
     \draw (0,0) ellipse (1 and .3);
     \draw (0,1) ellipse (1 and .3);
@@ -296,24 +284,49 @@ In particular, an equivalence (aka.~a family of contractible types) is a coverin
     \node (Lt) at (1,-3) {(b)};
     \end{scope}
   \end{tikzpicture}
-  \caption{A visualization of two coverings of the circle}
+  \caption{A visualization of two \coverings over the circle}
   \label{fig:covering}
 \end{figure}
 
 \begin{remark}
+  It \emph{is} possible to misunderstand what a ``connected \covering'' is: the other interpretation ``all the preimages are connected'' simply would give us an equivalence and is \emph{not} what is intend (equivalences are \coverings, but not necessarily connected \coverings and connected \coverings are not neccesarily equivalences).  
+
+Likewise, for the other qualifications; for instance in a ``finite covering'' $f:A\to B$, the type $A$ is usually \emph{not} a finite set. % ``pointed \covering'' \emph{could} be misunderstood as a function where all the fibers are pointed sets, that is a \covering with a section. 
+  We trust the reader keeps our definitions in mind and not the other interpretations.
+\end{remark}
+
+\begin{remark}
+  We recall \cref{cor:fib-vs-path} stating that all the fibers of $f$ 
+are sets if and only if each 
+$$\ap{f}: a=a'\to f(a)=f(a')$$ is an injection.
+\end{remark}
+
+% \begin{definition}\label{def:decktrafo}\footnote{postpone}
+%   Let $f:A\to B$ be a \covering.  A symmetry $(A,f,!)=(A,f,!)$ is called a \emph{deck transformation}.
+% \end{definition}
+%specified by a pair $(p_A,p_f)$ with consisting of a $p_A:A=_{\UU}A'$, a $p_f:f'p_A=_{A\to B}f$.
+
+\begin{remark}\label{rem:coveringsasfamilies}  
+Under the equivalence \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-families})
+between the type $B\to\Set$ of families of sets indexed by $B$, and the type
+of \coverings over $B$, we see that we could alternatively have defined a \covering to be a type family $B\to\Set$.\footnote{it sounds almost cosa nostra to claim that \coverings and families are the same things}  
+%In particular, an equivalence (aka.~a family of contractible types) is a \covering.
+\end{remark}
+
+\begin{remark}
   \label{xca:coveringsofS1}
-  Let us consider coverings of the circle, most conveniently for the moment in the guise of families 
+  Let us consider \coverings over the circle, most conveniently for the moment in the guise of families 
 $$E:\Sc\to\Set.$$
-By the definition of the circle, giving $E$ is the same as specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.  Said more concisely in terms of \cref{lem:freeloopspace}, the type of coverings of the circle is equivalent to 
+By the definition of the circle, giving $E$ is the same as specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.  Said more concisely in terms of \cref{lem:freeloopspace}, the type of \coverings over the circle is equivalent to 
 $$\sum_{X:\Set}(X=X).$$
-We will ultimately show that the circle $\Sc$ is equivalent to the component $C$ of $(\zet,s)$ in $\sum_{X:\Set}(X=X)$,  where $s:\zet=\zet$ is the successor.  This may seem sort of circular: ``the circle is equivalent to a component of the type of coverings of the circle!'' but it really just condenses the idea connected groupoids are uniquely given by their symmetries.
+We will ultimately show that the circle $\Sc$ is equivalent to the component $C$ of $(\zet,s)$ in $\sum_{X:\Set}(X=X)$,  where $s:\zet=\zet$ is the successor.  This may seem sort of circular: ``the circle is equivalent to a component of the type of \coverings over the circle!'' but it really just condenses the idea connected groupoids are uniquely given by their symmetries.
 \end{remark}
 A particularly important example is the following:
 \begin{definition}
   \label{def:RtoS1}
-  Let the \emph{exponential covering of the circle}
+  Let the \emph{exponential \covering of the circle}
 $$\exp:\mathbb R\to \Sc$$ 
-be the covering of the circle given by $(\zet,s):\sum_{X:\Set}(X=X)$.  
+be the \covering of the circle given by $(\zet,s):\sum_{X:\Set}(X=X)$.  
 \end{definition}
 
 In more detail, if $R:\Sc\to\Set$ is defined by $R(\base)\defequi\zet$ and $R(\Sloop)\defequi s$, then $\mathbb R\defequi\sum_{z:\Sc}Z(z)$ and $\exp:\mathbb R\to \Sc$ is the first projection.
@@ -325,13 +338,13 @@ In more detail, if $R:\Sc\to\Set$ is defined by $R(\base)\defequi\zet$ and $R(\S
 If $x$ is a real number, then the complex exponentiation $e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has absolute value $1$ and so defines a continuous function from the real numbers to the unit circle.  
 Choosing any point $z$ on the unit circle, we see that the preimage of $z$ under the exponential function is a shifted copy of the integers inside the reals. 
  
-This connection between the integers and the unit circle is precisely captured in a form that we can take further by the covering $\exp:\mathbb R\to \Sc$.
+This connection between the integers and the unit circle is precisely captured in a form that we can take further by the \covering $\exp:\mathbb R\to \Sc$.
 \end{remark}
 
 \begin{definition}
   \label{def:universalcover}
   Let $(B,b_0)$ be a pointed connected groupoid.  
-The \emph{universal covering}\footnote{for $B$ not a groupoid this is total misuse of language.  I feel sort of bad about it, but I did not want to say ``path fibration''} of $B$ is the covering of $B$ given by the family of sets 
+The \emph{universal \covering}\footnote{for $B$ not a groupoid this is total misuse of language.  I feel sort of bad about it, but I did not want to say ``path fibration''} of $B$ is the \covering of $B$ given by the family of sets 
   $$P_{b_0}:B\to\Set,\quad P_{b_0}(b)\defequi (b_0=_Bb),$$
 or alternatively as the first projection from $P_{b_0}B\defequi\sum_{b:B}(b_0=_Bb)$ to $B$. 
 \end{definition}
@@ -339,14 +352,14 @@ Note that $(b_0=_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid
 However, we have \cref{lem:thepathspaceiscontractible} for any type $B$.
 
 \begin{remark}
-  This somehow deflates the concept ``universal cover'' of a pointed connected groupoid $(B,b_0)$, since we've just shown that the universal covering coincides with the constant function $c_{b_0}:\bn 1\to B$ (with value $b_0$), were it not for the manifold practical value of the formulation that we've given.  
-In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of $b_0$ under the first projection from $P_{b_0}B$ to $B$; ultimately this will show that the study of symmetries coincides with the study of the universal covering.
+  This somehow deflates the concept ``universal cover'' of a pointed connected groupoid $(B,b_0)$, since we've just shown that the universal \covering coincides with the constant function $c_{b_0}:\bn 1\to B$ (with value $b_0$), were it not for the manifold practical value of the formulation that we've given.  
+In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of $b_0$ under the first projection from $P_{b_0}B$ to $B$; ultimately this will show that the study of symmetries coincides with the study of the universal \covering.
 
-The first instance of this comes already in the next section, where we show in \cref{cor:S1groupoid} that the symmetries of the circle is given by $\zet$ by showing that the universal covering and the exponential covering (\cref{def:RtoS1}) of the circle coincide.
+The first instance of this comes already in the next section, where we show in \cref{cor:S1groupoid} that the symmetries of the circle is given by $\zet$ by showing that the universal \covering and the exponential \covering (\cref{def:RtoS1}) of the circle coincide.
 \end{remark}
 \begin{remark}
   The constant function $c_{b_0}:\bn 1\to B$, \emph{does} deserve the label universal because if given any function $f:A\to B$ and an $(a_0,p): f^{-1}(b_0)$, then we get a function $c_{a_0}:\bn 1\to A$ and $p:b_0=f(a_0)$ gives an element in $c_{b_0}=_{\bn 1\to B}f\, c_{a_0}$.  In other words, any such $f$ is ``a factor of $c_{b_0}$''.  
-Note, however, that this depends on $f^{-1}(b_0)$ being inhabited (classically, this is often demanded of a covering, but in our setup it is not part of the definition), and the factorization depends on the inhabitant $(a_0,p)$ used. 
+Note, however, that this depends on $f^{-1}(b_0)$ being inhabited (classically, this is often demanded of a \covering, but in our setup it is not part of the definition), and the factorization depends on the inhabitant $(a_0,p)$ used. 
 \end{remark}
 
 
@@ -354,7 +367,7 @@ Note, however, that this depends on $f^{-1}(b_0)$ being inhabited (classically, 
 
 \subsection{The symmetries of the circle}
 \label{sec:symcirc}
-We now proceed to show that the symmetries $\base=\base$ of the circle is equal to $\zet$.  The first step is to prove that the exponential covering \cref{def:RtoS1} in the guise of the family 
+We now proceed to show that the symmetries $\base=\base$ of the circle is equal to $\zet$.  The first step is to prove that the exponential \covering \cref{def:RtoS1} in the guise of the family 
 $$R: \Sc\to\UU,\qquad R(\base)\defequi\zet,\, R(\Sloop)\defequi s$$
 is equal to the family
 $$P_\base:\Sc\to\UU,\qquad P_\base(z)\defequi (\base=z)$$
@@ -395,7 +408,7 @@ $$
 \begin{lemma}
   \label{lem:univisexp}
   The function $f:P_\base\to R$ defined by transport in \cref{def:fPtoR} is an equivalence with inverse $g:R\to P_\base$ defined by circle induction in \cref{def:gRtoP}.  Hence, 
-$P_\base$ defines a connected covering of the circle: $P_\base(z)\defequi (\base=z)$ is a set for all $z:\Sc$ and the type $P_\base \Sc$ is connected (more precisely, by univalence $P_\base(z)$ is equal to the set $R(z)$ and $P_\base \Sc$ is contractible).
+$P_\base$ defines a connected \covering of the circle: $P_\base(z)\defequi (\base=z)$ is a set for all $z:\Sc$ and the type $P_\base \Sc$ is connected (more precisely, by univalence $P_\base(z)$ is equal to the set $R(z)$ and $P_\base \Sc$ is contractible).
 \end{lemma}
 \begin{proof}
   Firstly we need to give an element $H:g\,f=\id_{P_\base}$, or in other words, that for all $z:\Sc$ and $p:P_\base(z)\defequi(\base=z)$ an element $H(z,p):g(z)\,f(z)(p)=p$.  By the induction principle for the identity type, it is enough to show this for the case $z\oldequiv\base$ and $p\oldequiv\refl\base$ in which case we can set $H(\base,\refl\base)\defequi\refl{\refl\base}$ since
@@ -419,7 +432,7 @@ $$\Sloop^-:\zet\to(\base=_{\Sc}\base)$$ sending $n$ to $\Sloop^n$ is an equivale
 \begin{proof}
   Since the circle is connected, for any $y,z:\Sc$ the type $y=_{\Sc}z$ is equivalent to $base=_{\Sc}z$ which is a set since the function $g(z):\zet\to(\base=z)$ of \cref{def:gRtoP} is an equivalence by \cref{lem:univisexp}.  Hence $\Sc$ is a groupoid, and $g(\base)\defequi\Sloop^-$ is an equivalence.
 \end{proof}
-\subsection{A reinterpretation of the circle and a criterion for equivalence through coverings}
+\subsection{A reinterpretation of the circle and a criterion for equivalence through \coverings}
 \label{sec:S1isC}
 In this section we return to the considerations discussed in \cref{xca:coveringsofS1}.
  \footnote{there is duplications here.  Clean it up.}
@@ -456,7 +469,7 @@ $$\ev_0:((\zet,s)=_C(\zet,s))\to \zet$$ given by $\ev_0(p)=p(0)$ is an equivalen
 We are going to prove that $c$ is an equivalence.  The method of proof is quite a general and relies or  \cref{lem:eqofconntypes} below, which we will have occasion to return to on several occasions.  In our case the application of  \cref{lem:eqofconntypes} is greatly simplified by the fact that we already know that both $\Sc$ and $C$ are connected groupoids, since then \cref{lem:eqofconntypes} says that it is enough to show that $c$ induces an equivalence from the set of symmetries of $\base$ to the set of symmetries of $(\zet,s)$.\footnote{OLDREMARK: of course, the proof of \cref{cor:S1groupoid} \emph{could} attack $c$ directly, but that would compound the technicalities already present there: at present I prefer splitting it up like this.  I am open for letting the proof of \cref{cor:S1groupoid} be postponed till the end of a chapter, so as not to disrupt the flow of ideas}
 
 
-\subsubsection{Equivalences and coverings of connected types}
+\subsubsection{Equivalences and \coverings over connected types}
 \label{sec:eqconntypes}
 
 \begin{lemma}
@@ -471,7 +484,7 @@ If in addition $X$ and $Y$ are connected, then
 \begin{enumerate}
 \item $f$ is an equivalence if and only $\ap f%f^=_{x_0,x_1}
 $ is an equivalence and
-\item $f$ is a covering if and only if  $\ap f%^=_{x_0,x_1}
+\item $f$ is a \covering if and only if  $\ap f%^=_{x_0,x_1}
 $ is an injection (\ie if and only if all the preimages of $\ap f$ are propositions).
 \end{enumerate}
 
@@ -491,7 +504,7 @@ via the function sending $(x,p,r,u,v)$ to $(a^{-1}p,\ap f a^{-1}\,vu,x,p,\ap f a
 
 Now, assume that $X$ and $Y$ are connected.   If $f$ is an equivalence, it follows automatically that the function of identity types is, so we concentrate on the other implication and assume the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an equivalence.  We want to show that all fibers of $f$ are contractible, but since $Y$ is connected it is enough to consider the fiber $f^{-1}(y_0)\defequi\sum_{x:X}y_0=f(x)$ over $y_0\defequi f(x_0)$.  Now, $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ are the fiber of a function from a contractible type to $f^{-1}(y_0)$, so $f^{-1}(y_0)$ is contractible if all the $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$'s are contractible, which by the previous result is equivalent to $\ap f$ being an equivalence.  
 
-The statement about coverings is the similar, except that now one desires that the identity types $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ should be propositions (for $f^{-1}(y_0)$ to be a set, which then is equivalent to the preimages $(\ap f)^{-1}(q)$ being propositions.
+The statement about \coverings is the similar, except that now one desires that the identity types $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ should be propositions (for $f^{-1}(y_0)$ to be a set, which then is equivalent to the preimages $(\ap f)^{-1}(q)$ being propositions.
 \end{proof}
 
 \begin{lemma}\label{lem:eqofconntypes}\footnote{
@@ -506,7 +519,7 @@ Essentially it is our version of ``a group homomorphism is an isomorphism iff it
 $$(P_f)^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a function of contractible types.  
 \end{proof}
 \begin{lemma}
-  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a \covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
 \end{lemma}
 
 
@@ -529,46 +542,46 @@ The function $\Sloop^-:\zet\to (\base=_{\Sc}\base)$ sending $n:\zet$ to $\Sloop^
 %   ((TODO))
 % As an illustration of things to come in a simpler setting, we can give the torsor definition of the circle, where Marc makes the simplifying observation that (since the integers is free on one generator) this can be coded in terms of the successor and there is a priori no need to talk about the abstract group.  In short: an (abstract) $\ZZ$-set is uniquely given by a set $X$ with an identity $f: X=_{\Set}X$.  A $\ZZ$-torsor $(X,f)$ is a $\ZZ$-set (merely) equal to $(\zet,S)$ ($S$ is the successor), that, there is a $p:X=\zet$, so that $Sp=_{X=X} pf$.  This is based at (the pricipal $\ZZ$-torsor represented by) $(\zet,S)$ and $(\zet,S)=(\zet,S)$ consists of $f:\zet=\zet$ s.t. $Sf=fS$.  Such an $f$ must be given by addition by the integer $f(0)$.  This gives us an equivalence between $\Sc$ and the type of (secret) $\ZZ$-torsors.  This will be trivial if we have shown that a map of connected groupoids is an equivalence if it induces an equivalence on the identity sets.
 
-\section{Other coverings of the circle}
+\section{Other \coverings over the circle}
 \label{sec:covS1}
 
 \footnote{The below is not fully structured yet, and does contain known nonsense (basepoints, orientations etc need to be straightened out)}
-From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to \Sc$ from a connected type $A$ is a covering if and only if for given $a_0:f^{-1}(\base)$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{\Sc}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{cor:S1groupoid} may be identified with with the set $\zet$ of integers).
+From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to \Sc$ from a connected type $A$ is a \covering if and only if for given $a_0:f^{-1}(\base)$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{\Sc}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{cor:S1groupoid} may be identified with with the set $\zet$ of integers).
 
-So, a classification of coverings of the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.  Using language yet to be introduced, the question would be ``what are the subgroups of the integers?''
+So, a classification of \coverings over the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.  Using language yet to be introduced, the question would be ``what are the subgroups of the integers?''
 
 \begin{example}
   \label{ex:listofS1covers}
   \begin{enumerate}
-  \item The \emph{universal} covering  $$c_\base:\bn 1\to \Sc$$ sends the unique element of $\bn 1$ to $\base$ is a covering. The universal covering corresponds to the trivial subsymmetry of $\base$ (\ie including only $\refl\base$).  
-  \item If $m:\NN$ is positive, consider the \emph{degree $m$ function} $$-^m:\Sc\to \Sc$$ given by $-^m(\base)\defequi\base$ and $-^m(\Sloop)\defequi\Sloop^m$.  On the level of identity types and under the equivalence $\Sloop^-:\zet\simeq(\base=_{\Sc}\base)$, this covering corresponds to the function $\zet\to\zet$ given by multiplication by $m$.  Hence, the subsymmetries in determined by the degree $m$ function are correspond to the integers divisible by $m$.
+  \item The \emph{universal} \covering  $$c_\base:\bn 1\to \Sc$$ sends the unique element of $\bn 1$ to $\base$ is a \covering. The universal \covering corresponds to the trivial subsymmetry of $\base$ (\ie including only $\refl\base$).  
+  \item If $m:\NN$ is positive, consider the \emph{degree $m$ function} $$-^m:\Sc\to \Sc$$ given by $-^m(\base)\defequi\base$ and $-^m(\Sloop)\defequi\Sloop^m$.  On the level of identity types and under the equivalence $\Sloop^-:\zet\simeq(\base=_{\Sc}\base)$, this \covering corresponds to the function $\zet\to\zet$ given by multiplication by $m$.  Hence, the subsymmetries in determined by the degree $m$ function are correspond to the integers divisible by $m$.
   \end{enumerate}
-  In the course of our discussion, we will see that -- under an assumption on the setup called ``LPO'', c.f. \cref{LPO} -- these are all the connected decidable coverings of the circle.
+  In the course of our discussion, we will see that -- under an assumption on the setup called ``LPO'', c.f. \cref{LPO} -- these are all the connected decidable \coverings over the circle.
 \end{example}
 
 \begin{remark}
   \label{rem:RtoS1}
-  The first case, namely the manifestation of the contractible type as a covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers form a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this covering is the exponential function sending the real number $x$ to the point $e^{2\pi ix}$ on the unit circle in the complex plane.
+  The first case, namely the manifestation of the contractible type as a \covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers form a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this \covering is the exponential function sending the real number $x$ to the point $e^{2\pi ix}$ on the unit circle in the complex plane.
 
   \label{rem:finitecoveringsofS1}
   The analogue of our degree $m$ function is the $m$th power of complex numbers restricted to the unit circle.  The following is perhaps more tangible.  Let $m=12$ and picture the circle and mark $12$ evenly spaced points.  This will look like a clock, with marks $1,2,\dots,12$.  You can then make a function from the circle to itself by sending all marks to $12$ and each of the arcs connecting the marks to the entire circle -- (in a continuous manner preserving the orientation).
   ((picture!!))
 \end{remark}
 
-We could be more ambitious and ask: what is the \emph{type} of decidable coverings of the circle?  Since the type of coverings is equivalent to $\Sc\to \Set$, and the fact that if $F,F':\Sc\to\Set$, then $F=_{\Sc\to\Set}F$ is the type $\prod_{z:\Sc}(F(z)=_{\Set}F'(z))$ (which is a set\footnote{reference}), we see that the type of decidable coverings of the circle is a groupoid.  We will pin this groupoid down by first identifying the components (of which there turns out to be one for each natural number), and then analyzing one component at a time.
+We could be more ambitious and ask: what is the \emph{type} of decidable \coverings over the circle?  Since the type of \coverings is equivalent to $\Sc\to \Set$, and the fact that if $F,F':\Sc\to\Set$, then $F=_{\Sc\to\Set}F$ is the type $\prod_{z:\Sc}(F(z)=_{\Set}F'(z))$ (which is a set\footnote{reference}), we see that the type of decidable \coverings over the circle is a groupoid.  We will pin this groupoid down by first identifying the components (of which there turns out to be one for each natural number), and then analyzing one component at a time.
 
- Recall the function $c:\Sc\to C$ of \cref{def:S1toC}.  By \cref{thm:S1bysymmetries} we know that $c$ is an equivalence, so classifying coverings of $\Sc$ is equivalent to classifying coverings of $C$.  
+ Recall the function $c:\Sc\to C$ of \cref{def:S1toC}.  By \cref{thm:S1bysymmetries} we know that $c$ is an equivalence, so classifying \coverings over $\Sc$ is equivalent to classifying \coverings over $C$.  
 We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the element corresponding by \cref{def:S1toC} to $\base:\Sc$), and allowing ourselves to write $s:\pt_C=_C\pt_C$ instead of the more honest $(s,!):\pt_C=_C\pt_C$ (corresponding to $\Sloop:\base=\base$).
 
- Returning to \cref{ex:listofS1covers}, it is instructive to rephraze these connected coverings in terms of $C$.
+ Returning to \cref{ex:listofS1covers}, it is instructive to rephraze these connected \coverings in terms of $C$.
 \begin{example}
  \label{ex:listofCcovers}\label{ex:Cunivcov}
-The universal connected covering is still represented by the constant function
+The universal connected \covering is still represented by the constant function
     $$c_{(\zet,s)}:\bn 1\to C$$ that sends the unique element of $\bn 1$ to $(\zet,s):C$.
     \end{example}
     \begin{example}
       \label{ex:mfoldcov}
-Assume that $m:\NN$ is positive.  We give a description of the $m$-fold covering of the circle in terms of $C$. If $X$ is a set and $f:X\to X$ we define the \emph{ $m$th root}
+Assume that $m:\NN$ is positive.  We give a description of the $m$-fold \covering of the circle in terms of $C$. If $X$ is a set and $f:X\to X$ we define the \emph{ $m$th root}
 $$\sqrt[m]f:\bn m\times X\to\bn m\times X$$ by setting 
 $$\sqrt[m]f(i,x)=
 \begin{cases}
@@ -633,10 +646,11 @@ $$(\id\times p,!):(\bn m\times X,\sqrt[m]f)=(\bn m\times X',\sqrt[m]f')$$
 is given by % $(\id\times p)(i,x)=(i,p(x))$ (and by 
 the fact $!:(\id\times p)\sqrt[m]f=_{\bn m\times X=\bn m\times X'}\sqrt[m]{f'}(\id\times p)$\footnote{$(i,x)$ is taken to $(i+1,px)$ if $i<m-1$ and $(m-1,x)$ is taken to either $(0,f'px)$ or $(1,pfx)$ which are equal by assumption}.  In particular, letting $p\defequi s:\zet=\zet$, we get that $(\id\times s)(i,n)=(i,sn)=(\sqrt[m]s)^m(i,n)$.
 
-This will eventually ((forwardref)) be explained in terms of the \emph{deck transformations} of the degree $m$ covering of the circle being given by the powers of $\sqrt[m]s$ in a nonunique fashion: for any $a:\zet$, the $a$th and the $(a+m)$th power of $\sqrt[m]s$ give rise to the same deck transformation.
+This will eventually ((forwardref)) be explained in terms of the symmetries of the degree $m$ \covering of the circle being given by the powers of $\sqrt[m]s$ in a nonunique fashion: 
+for any $a:\zet$, the $a$th and the $(a+m)$th power of $\sqrt[m]s$ give rise to the same symmetry.
 
 
-Why does this correspond to the $m$-fold covering we defined in \cref{ex:listofS1covers}?  This is ecapsuled by the fact that under the equivalence $c:\Sc\to C$ the two $m$-fold covers agree in the sense that the two functions given as composites in
+Why does this correspond to the $m$-fold \covering we defined in \cref{ex:listofS1covers}?  This is ecapsuled by the fact that under the equivalence $c:\Sc\to C$ the two $m$-fold covers agree in the sense that the two functions given as composites in
 $$\xymatrix{\Sc\ar[r]^c\ar[d]^{-^m}&C\ar[d]^{-^m}\\\Sc\ar[r]^c&C}$$ are equal.  One composite is given by $-^mc(\base)=(\zet,s)$ and $-^mc(\Sloop)=s^m$ and the other is given by $c-^m(\base)=(\bn m\times\zet,\sqrt[m]s)$ and $c-^m(\Sloop)=\id\times s$ and the proof that these two functions are equal is given by the (identity corresponding by univalence to the) equivalence  $p:\bn m\times \zet\to\zet$ with $p(i,n)=i+mn$ we discussed above, since transport of $\sqrt[m]s$ along $p$ is exactly $s^m$ (\ie $p\sqrt[m]s=s^mp$: note the way we formulate this so that we don't need to talk about an inverse of $p$).
 \end{example}
 \begin{xca}
@@ -651,7 +665,7 @@ There are many instance of the $m$-th root construction which is of independent 
 This realizes the cycle $0\mapsto1\mapsto\dots\mapsto m-1\mapsto 0$ in $\bn m$, and so models ``modular arithmetic''.
 
 
-Any (other) textbook will tell you that these are all the connected coverings of the circle (precisely one for each natural number), but the procedure is unfortunately not constructive: we need a further assumption which is not generally present in our setup, namely
+Any (other) textbook will tell you that these are all the connected \coverings over the circle (precisely one for each natural number), but the procedure is unfortunately not constructive: we need a further assumption which is not generally present in our setup, namely
 
 \begin{quote}
   {\bf The Limited Principle of Omniscience} (LPO)\index{LPO}\label{LPO}\footnote{make an environment that principles can fit in and be numbered} If given a function $P:\NN\to\bn 2$, then either $P$ is constant (we have that $\prod_{n:\NN}(P(0)=P(n))$) or there is an $n_0:\NN$ such that $P(n_0)\neq P(0)$.
@@ -659,11 +673,11 @@ Any (other) textbook will tell you that these are all the connected coverings of
 LPO is weaker than the law of excluded middle and we are free to assume it as an axiom -- or not.  We will be explicit about where we will use it.
 
 
-Fix for the moment a connected type $A$ and a decidable covering 
+Fix for the moment a connected type $A$ and a decidable \covering 
 $$f:A\to C$$ (c.f \cref{def:covering}) and an element $\pt_A:f^{-1}(\pt_C)$.  %Assume $(\pt_A,!):f^{-1}(\pt_C)$
 %Recall the element 
 %$$\pt_C\defequi(s,\refl{ss}):(\zet,s)=_C(\zet,s),$$ which by \cref{def:S1toC} corresponds to $\Sloop:\base=\base$.
-By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a decidable covering exactly says that the induced function of identity types
+By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a decidable \covering exactly says that the induced function of identity types
 $$g\defequi\ev_0f^=:(\pt_A=_A\pt_A)\to (\pt_C=_C\pt_C)=\zet$$ is injective and decidable.\footnote{say this in a way consistent with the choices of subsets/injections/embeddings}    
 
 Assume LPO.  We are then left with two situations (use that $g$ is injective and decidable): either $\pt_A=_A\pt_A$ is contractible or there is a $p_0:\pt_A=_A\pt_A$ with $g(p_0)$ different from $0$. 
@@ -674,20 +688,20 @@ On the other hand, if $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$, then e
 
 % \cref{cor:arch} there is a $k:\NN$ such that $g(p)k\leq g(q)<g(p)(k+1)$, or equivalently $0\leq g(q)-g(p)k< g(p)$.  Since $g(q)-g(p)k=g(qp^{-k})$ is a nonnegative integer is in the image of $g$ and simultaneously less than the minimum positive value $g(p)$, we must conclude that $g(q)=g(p)k$.\footnote{rewrite/simplify given that Euclid is now in intro}
 
-Arguing similarly for the negative values, we reach the conclusion that the image of $g$ in $\zet$ is the subset of multiples of $g(p)=\min H^+$.  Hence, the image of $f^=:(\pt_A=\pt_A)\to(\base=_{\Sc}\base)$ is uniquely given by the positive integer $\min H^+$, and is not dependent on $\pt_A$.\footnote{how to say this gently without starting to much fuss regarding commutativity?}  Furthermore, if $p_A:A=_{\UU}A'$, $f':A'\to B$ and $p_f:f'p_A=_{A\to B}f$, then tracing through the argument, we see that the positive number reached through arguing with $f':A'\to B$ remains the same, but there \emph{is} a possibility that $g(p_0)$ changes sign, so that the minimum of $H^+$ is now not attained by $g(p_0)$, but by $g(p_0^{-1})$.\footnote{maybe some HoTT guy can say this less classically.  We also want to say something about the connection to pointed coverings, conjugations etc to clear the path for later applications}
+Arguing similarly for the negative values, we reach the conclusion that the image of $g$ in $\zet$ is the subset of multiples of $g(p)=\min H^+$.  Hence, the image of $f^=:(\pt_A=\pt_A)\to(\base=_{\Sc}\base)$ is uniquely given by the positive integer $\min H^+$, and is not dependent on $\pt_A$.\footnote{how to say this gently without starting to much fuss regarding commutativity?}  Furthermore, if $p_A:A=_{\UU}A'$, $f':A'\to B$ and $p_f:f'p_A=_{A\to B}f$, then tracing through the argument, we see that the positive number reached through arguing with $f':A'\to B$ remains the same, but there \emph{is} a possibility that $g(p_0)$ changes sign, so that the minimum of $H^+$ is now not attained by $g(p_0)$, but by $g(p_0^{-1})$.\footnote{maybe some HoTT guy can say this less classically.  We also want to say something about the connection to pointed \coverings, conjugations etc to clear the path for later applications}
 
 \begin{lemma}
   \label{lem:componentsofcoversofS1}
-  % Assume the LPO. Given a connected decidable covering of the circle,  there is a unique natural number $m$ so that the connected covering is equal to the connected covering $-^m$ of \cref{ex:listofS1covers}.  This gives an equivalence between $\NN$ and the propositional truncation of the type of connected decidable covering of the circle.
+  % Assume the LPO. Given a connected decidable \covering of the circle,  there is a unique natural number $m$ so that the connected \covering is equal to the connected \covering $-^m$ of \cref{ex:listofS1covers}.  This gives an equivalence between $\NN$ and the propositional truncation of the type of connected decidable \covering of the circle.
   \begin{enumerate}
-  \item The type of decidable coverings of the circle by connected types is a groupoid.
-  \item Assuming, the LPO the type of decidable coverings of the circle by connected types is the sum of the component containing the universal covering and for each positive integer $m$, the component containing the $m$-fold covering.
+  \item The type of decidable \coverings over the circle by connected types is a groupoid.
+  \item Assuming, the LPO the type of decidable \coverings over the circle by connected types is the sum of the component containing the universal \covering and for each positive integer $m$, the component containing the $m$-fold \covering.
   \end{enumerate}
 
 \end{lemma}
 
 
-% A natural question is, given $m:\NN$, what does the associated connective covering $f:A\to \Sc$ look like?
+% A natural question is, given $m:\NN$, what does the associated connective \covering $f:A\to \Sc$ look like?
 
 % We saw that if $m=0$, then the identity types of $A$ were contractible, and so (in view of \cref{lem:eqandcovofconntypes} since $A$ is connected) $A$ is itself contractible.
 
@@ -701,29 +715,49 @@ Arguing similarly for the negative values, we reach the conclusion that the imag
 
 % More generally, if $0<m$, let $p:\pt_A=\pt_A$ be in the preimage of $m$ under the equivalence induced by $g$  between $\pt_A=\pt_A$ and $m\zet$ (the multiples of $m$).  Define $i:\Sc\to A$ by $i(\base)\defequi\pt_A$ and $i(\Sloop)\defequi p$.  Then $i$ is an equivalence since the composite of $\Sloop^-:\zet\to (\base=\base)$, $i^=:(\base=\base)\to (\pt_A=\pt_A)$ and $g:(\pt_A=\pt_A)\to m\zet$ is the equivalence sending $k:\zet$ to $mk:\zet$. 
 
-% The composite $fi:\Sc\to \Sc$ is then the decidable covering given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.   
+% The composite $fi:\Sc\to \Sc$ is then the decidable \covering given by $fi(\base)=\base$ and $fi(\Sloop)=\Sloop^m$.   
 
 
 % Summing up, the type of connected decidable covers of the circle has one component for every $m:\NN$.  The component corresponding to $m=0$ contains the first projection $\sum_{z:\Sc}(\base= z)\to \Sc$ from the contractible type.  If $0<m$, the component corresponding to $m$ contains the degree $m$ function $-^m:\Sc\to \Sc$.
 \footnote{Some comments have been commented away}
 
-\section{Deck transformations of the circle are ``cyclic'' }
+\section{Symmetries of \coverings of the circle are ``cyclic'' }
 \label{sec:deckS1}
 
-In this section we prove the following result.  The term ``cyclic'' in the chapter heading refers to the fact that we show that the deck transformations are determined by iterations of a single symmetry.  
+% In this section we prove the following result.  
+The term ``cyclic'' in the chapter heading refers to the fact that we show that the symmetries of \coverings are determined by iterations of a single symmetry.  
+
+
+
+\begin{remark}
+Since we are interested in the symmetries of particular \coverings it is good to spell out some details.
+By \cref{lem:isEq-pair=} the identity type  
+$(A,f,!)=(A',f',!)$ of two \coverings over the type $B$ is equivalent to 
+\[
+\sum_{p_A:A=_{\UU}A'}(f'p_A=_{A\to B}f). \text{WHY NOT f LEFT?}\footnote{BID does not care, but if we change it we must follow up the proofs so that they are changed accordingly.  Not done yet and so the change is postponed}
+\]
+$$\xymatrix{A\ar@{=}[rr]^{p_A}_\to\ar[dr]_f&&A\ar[dl]^{f'}\\&\,B.&}$$
+Here and below, the $p_A$ in the equation $f'p_A=_{A\to B}f$ is 
+shorthand for the canonical equivalence from $A$ to $A'$ 
+coming from the identification $p_A:A=_{\UU}A'$ by first
+applying $\idtoeq:(A=A')\to (A\equiv A')$, and then
+applying $\fst:(A\equiv A')\to(A\to A')$ to the result,
+in total $\fst(\idtoeq(p_A)): A\to A'$.
+\end{remark}
+
 \begin{theorem}
   \label{thm:coveringsofS1}
-  The set $c_\base=c_\base$ of symmetries of the universal covering of the circle is equivalent to $\zet$.  
+  The set $c_\base=c_\base$ of symmetries of the universal \covering of the circle is equivalent to $\zet$.  
 
 Furthermore, there is a symmetry $$Q^1:c_\base=c_\base$$ so that, considered as an element in $\sum_{X:\Set}X=X$ the pair $(c_\base=c_\base,Q^1)$ is equal to $(\zet,s)$
   
-For a positive integer $m$, the set $-^m=-^m$ of symmetries of the $m$-fold covering of the circle is equivalent to $\bn m$.  
+For a positive integer $m$, the set $-^m=-^m$ of symmetries of the $m$-fold \covering of the circle is equivalent to $\bn m$.  
 
 Furthermore, there is a symmetry $$Q^1:-^m=-^m$$ so that considered as an element in $\sum_{X:\Set}X=X$ the pair $(-^m=-^m,Q^1)$ is equal to $\zet/m$ of \cref{def:Zetmodm}.
  \end{theorem}
 \begin{remark}\label{rem:thenonuniquenessofgeneratorsofmodulararithmetic1}
   The symmetries called $Q^1$ in \cref{thm:coveringsofS1} are not uniquely determined by the stated property.  
-In the case of the universal covering there are two candidates and for the $m$-fold covering there are as many as there are positive integers less than $m$ that does not divide $m$.  
+In the case of the universal \covering there are two candidates and for the $m$-fold \covering there are as many as there are positive integers less than $m$ that does not divide $m$.  
 This behavior has number theoretic consequences and origins and will be investigated further when we have the proper machinery to put it to good use.
 \end{remark}
 
@@ -731,7 +765,7 @@ This behavior has number theoretic consequences and origins and will be investig
   ((spell out $Q^1$))
 We are going to investigate the set 
 $$D_0\defequi\sum_{g:\bn 1=\bn 1}c_\bullet g=c_\bullet$$ 
-of symmetries of the universal covering $c_\bullet$ of the circle.  
+of symmetries of the universal \covering $c_\bullet$ of the circle.  
 Our preferred interpretation of $c_\bullet:\bn 1\to C$ is as the first projection from $P\defequi\sum_{(Y,g):C}(\zet,s)=(Y,g)$ to $C$, and the equivalence $c_{((\zet,s),\refl{})}:\bn 1\to P$. % sends the unique point in $\bn 1$ to $(\zet,s):C$ and $\refl{}:(\zet,s)=(\zet,s)$. 
 More generally, for any type $A$ the function $A\to(\bn 1\to A)$ sending $a:A$ to the function $c_a$ sending the unique element in $\bn 1$ to $a$ is an equivalence, and if $A$ is contractible, then every $c_a$ is an equivalence.
 
@@ -753,13 +787,13 @@ Using the equivalence $\ev_0:((\zet,s)=_C(\zet,s))\equiv\zet$ of \cref{lem:IdCis
  reduces to 
 $$D_0\simeq P\times\zet\simeq\zet.$$
     
-((this does most of what is needed for the $m$-fold covering.  Needs to be proofread))
+((this does most of what is needed for the $m$-fold \covering.  Needs to be proofread))
     Let $m$ be a positive integer.  
-Recall the $m$-fold covering, either in the guise $-^m:\Sc\to \Sc$ of \cref{ex:listofS1covers} or $-^m:C\to C$ of \cref{ex:listofCcovers}.
+Recall the $m$-fold \covering, either in the guise $-^m:\Sc\to \Sc$ of \cref{ex:listofS1covers} or $-^m:C\to C$ of \cref{ex:listofCcovers}.
 We are going to investigate the set
 $$D_m\defequi\sum_{g:\Sc=\Sc}-^mg=_{\Sc\to \Sc}-^m$$  
 %$$D_m\defequi\sum_{g:C=C}-^mg=_{C\to C}-^m$$ 
-of symmetries of the $m$-fold covering of the circle% , or equivalently, by univalence, $\sum_{t:C\simeq C}-^mt=_{C\to C}-^m$
+of symmetries of the $m$-fold \covering of the circle% , or equivalently, by univalence, $\sum_{t:C\simeq C}-^mt=_{C\to C}-^m$
 .  
 By univalence and thanks to the equivalence $c:\Sc\to C$ of \cref{thm:S1bysymmetries} $(\Sc= \Sc)$ is equivalent to $(\Sc\simeq C)$.
 Since being contractible is a proposition, $\Sc\simeq C$ is a subtype of $\Sc\to C$,
@@ -795,7 +829,7 @@ In hindsight we can give concrete descriptions of all the symmetries: for $i=0,\
   \end{proof}
 
   \begin{remark}
-    Regarding the deck transformations of the $m$-fold covering of the circle, recall the picture we tried to evoke in \cref{rem:finitecoveringsofS1}.  How can I move my circle with $m$ evenly spaced marked points  (which we now call $0,1,\dots, m-1$ instead of $1,2,\dots 12$ since it fits better with future applications) without disturbing the projection down to the circle (sending all the marked points to $0$).  I can move the marked points, but a marked point has to be sent to a marked point (otherwise the projection down to the circle would be disturbed).  Let's say that mark $0$ is sent to mark $4$.  However, since we have to preserve the projection down to the circle, the arc from $0$ to $1$ must then be sent to the arc from $4$ to $5$.  Continuing in this fashion, we see that we describe a certain rotation of the circle.  Varying $4$ between $0$ and $m-1$ we see that there are exactly $m$ different symmetries of the $m$-fold covering.  Furthemore they are all rotations of the circle by an angle which is a multiple of $2\pi/m$.
+    Regarding the symmetries of the $m$-fold \covering of the circle, recall the picture we tried to evoke in \cref{rem:finitecoveringsofS1}.  How can I move my circle with $m$ evenly spaced marked points  (which we now call $0,1,\dots, m-1$ instead of $1,2,\dots 12$ since it fits better with future applications) without disturbing the projection down to the circle (sending all the marked points to $0$).  I can move the marked points, but a marked point has to be sent to a marked point (otherwise the projection down to the circle would be disturbed).  Let's say that mark $0$ is sent to mark $4$.  However, since we have to preserve the projection down to the circle, the arc from $0$ to $1$ must then be sent to the arc from $4$ to $5$.  Continuing in this fashion, we see that we describe a certain rotation of the circle.  Varying $4$ between $0$ and $m-1$ we see that there are exactly $m$ different symmetries of the $m$-fold \covering.  Furthemore they are all rotations of the circle by an angle which is a multiple of $2\pi/m$.
   \end{remark}
 
 
