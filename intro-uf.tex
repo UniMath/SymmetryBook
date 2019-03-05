@@ -407,7 +407,7 @@ a \emph{dependent} pair. We may refer to $X$ as the \emph{index
   type} of the sum.  
 
 Proving something about (or constructing something from) every 
-element $(a,b)$ of $\sum _{x:X} Y(x)$ is simply done for all $a:X$ and $b: Y(a)$.
+element of $\sum _{x:X} Y(x)$ is done by performing the construction on elements of the form $(a,b)$, for every $a:X$ and $b: Y(a)$.
 Two important examples of such constructions are:
 \begin{enumerate}
 \item \emph{first projection}, 
@@ -417,45 +417,33 @@ $\fst(a,b)\defeq a$;
 $\snd(a,b): Y(a)$,
 $\snd(a,b)\defeq b$.
 \end{enumerate}
-In (2), the type of $\snd$ is in full
+In (2), the type of $\snd$ is, in full,
 $\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
 
-Equality of two elements $(a_1,b_1),(a_2,b_2)$ of $\sum _{x:X} Y(x)$ is 
-inductively defined in \cref{sec:identity-types}, like for any other type.
-In the case of a structured type defined from other types, 
-here $\sum _{x:X} Y(x)$ from $X$ and $Y(x)$ for any $x$,
-one would like to express equality in the structured type in terms of 
-the equalities in the constituent types. This explains much better
-what it means for two elements of the structured type to be equal.
+Equality of two elements $(x,y),(x',y')$ of $\sum _{x:X} Y(x)$ is 
+inductively defined in \cref{sec:identity-types}, as for any other type, but
+one would like to express equality between pairs in terms of 
+equalities in the constituent types.  This would explain better
+what it means for two pairs to be equal.
 This is so important that we give this explanation here and below
-every time we introduce a new structured type. 
+every time we introduce a new structured type, such as the sum. 
 For complete proofs we refer to \cite{hottbook}, or to the
 repositories with formalized proofs. .
 
-An identification between two elements $(a_1,b_1),(a_2,b_2)$ of 
-$\sum _{x:X} Y(x)$ means in the first place, by taking
-the first projection, having an identification $i: a_1=a_2$.
-We cannot expect exactly the same for the second 
-projections $b_1: Y(a_1)$ and $b_2: Y(a_2)$, since they may
-have different types and can therefore not be compared directly.
-However, after transport of $b_1$ in the type family $Y$
-along the identification $i: a_1=a_2$, a direct comparison to $b_2$
-is possible. Thus we obtain that each identification $(a_1,b_1)=(a_2,b_2)$
-can be viewed as a pair of an identification $i: a_1=a_2$ and an
-identification $i' : \trp_{Y,i}(b_1) = b_2$. Note that the type
-of $i'$ depends on $i$, so that we actually have a dependent pair:
-\[
-(i,i'): \sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2
-\]
-Conversely, we can define by induction a function
-\[
-(\_\,,\_)^= : \bigl(\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2\bigr) 
-  \to ((a_1,b_1)=(a_2,b_2)),
-\]
-setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$.
-This function often helps proving dependent pairs equal.
-We come back to this function in \cref{sec:equivalence}.
+Consider the function $$g : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ g(x)(y) \defeq (x,y). $$
+Given points $x,x':X$, $y:Y(x)$, and $y':Y(x')$,
+application of $g$ to paths over paths, defined in \cref{def:applfun2}, yields a function
+$$ \Phi : \sum_{p:x=x} \pathover y Y p {y'} \to (x,y) = (x',y'). $$
+It may be defined by
+$$ \Phi (p,q) \defeq \apap g p q, $$
+or it may be defined directly by induction by setting
+$$ \Phi ( \refl x, \refl y ) \defeq \refl {(x,y)}. $$
+A map the other way, 
+$$ \Psi : (x,y) = (x',y') \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
+can be defined by induction, by setting $$\Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).$$
 
+One proves, by induction on paths, the identities $ \Psi ( \Phi (p,q) ) = (p,q) $ and $ \Phi (\Psi ( r )) = r$, so $\Psi$ and $\Phi$ are inverse functions.
+We come back to these functions in \cref{sec:equivalence}, where we will conclude that they are inverse equivalences.
 
 \subsection{Binary products}
 \label{sec:binprod-types}
@@ -519,8 +507,7 @@ $\inr{y} = \inr{y'}$ are equivalent to identifications $y=y'$ in $Y$.
 
 \section{Equivalences}\label{sec:equivalence}
 
-
-The combination of $\sum$-, $\prod$- and equality types allows
+Using a combination of sum, product, and identity types allows
 us to express important notions, as done in the following
 definitions.
 
@@ -537,22 +524,22 @@ Any element of a contractible type $X$ can be proved to be a center.)
 \end{definition}
 
 The following lemma gives an important example of a contractible type.
-\begin{lemma}\label{lem:thepathspaceiscontractible}
+
 Give a type $X$ and an element $a$ of $X$, 
 the \emph{singleton type} $\sum_{x:X} (a=x)$
 consists of pairs $(x,i)$ with $i: a=x$. If $X$ is a set, it 
-can be viewed as the subset of $X$ consisting of the element $a$.
-For any type $X$ and $a:X$, the type $\sum_{x:X} (a=x)$ is contractible.
+can be viewed as the subset of $X$ consisting of the element $a$, because in that case, the
+type $a=x$ is a proposition.
+
+\begin{lemma}\label{lem:thepathspaceiscontractible}
+For any type $X$ and $a:X$, the singleton type $\sum_{x:X} (a=x)$ is contractible.
 \end{lemma}
+
 \begin{proof}
 Take as center the pair $(a,\refl{a})$. We have
-to prove for any element $x$ of $X$ and identification
-$i: a=x$ that $(a,\refl{a}) = (x,i)$. This we do componentwise,
-as explained in \cref{sec:sum-types}. For the identification of
-the first components we take (of course) $i$. For the second
-components, we have to prove $\trp_{a=\_,i}(\refl{a})= i$.
-This follows immediately by induction on $i$.
-%EASY: for $e\jdeq \refl{a}$ take $\refl{\refl{a}} : trp_{a=\_,e} = e$.
+to prove for any element $x$ of $X$ and for any identification
+$i: a=x$, that $(a,\refl{a}) = (x,i)$.  This is done by induction on $x$ and $i$, which reduces us to showing
+that $(a,\refl{a}) = (a,\refl{a})$.
 \end{proof}
 
 \begin{definition}
@@ -561,7 +548,7 @@ Given a function $f : X \to Y$ and an element $y:Y$,
 the \emph{fiber} (or \emph{preimage}) $f^{-1}(y)$ consists 
 of elements $x$ such that $y = f(x)$.  
 This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} y = f(x)$.  
-In other words, an element of the fiber is a pair $(x,e)$ consisting
+gIn other words, an element of the fiber is a pair $(x,e)$ consisting
 of an element $x$ and an element $e$ of the identity type $y = f(x)$.
 \end{definition}
 
@@ -571,27 +558,10 @@ This we can also express in type theory, in an definition due
 to Voevodsky. 
 
 \begin{definition}
-\label{def:equivalence}
-A function $f : X \to Y$ is called an \emph{equivalence},
-denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
+  \label{def:equivalence}
+  A function $f : X \to Y$ is called an \emph{equivalence},
+  denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
 \end{definition}
-
-Let $t(y): \iscontr(f^{-1}(y))$ for all $y:Y$.
-Using $t$ we can define a canonical inverse function
-%that we (abusively) also denote by $f^{-1}$,
-by setting $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$.
-Note that we use $f^{-1}$ both for the fibers and
-for the inverse function in case the fibers are contractible.
-The dependency of $f^{-1}$ on $t$ is harmless by the very nature of
-being contractible: different $t$'s would give the same
-function by the principle of extensionality.
-
-Clearly, $f(f^{-1}(y)) = y$ by unfolding all definitions.
-Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x)$,
-with the latter as the fiber that $t(f(x))$
-proves contractible. Hence the center of contraction
-$\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
-$f^{-1}(f(x))\jdeq(\fst(\fst(t^{-1}(f(x))) = x$.
 
 In the above case we say that the types
 $X$ and $Y$ are \emph{equivalent}, denoted by $X\equiv Y$. 
@@ -600,6 +570,19 @@ between two types, we define the type of equivalences from $X$ to $Y$ by
 \[
 (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
 \]
+
+Suppose $f:X \to Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility.
+Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.
+
+Clearly, $f(g(y)) = y$ by unfolding all definitions.
+Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x))$,
+with the latter as the fiber that $t(f(x))$
+proves contractible. Hence the center of contraction
+$\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
+$g(f(x))\jdeq(\fst(\fst(t(f(x))) = x$.
+
+We have shown that $f$ and $g$ are inverse functions.  When it won't cause confusion with the notation for the fibers of $f$, we will write
+$f^{-1}$ for $g$.
 
 For any type $X$, the identity function $\id_X$ is an
 equivalence from $X$ to $X$: for every element $a$ in $X$,
@@ -611,7 +594,7 @@ is an equivalence from $T(x)$ to $T(y)$, for all $e: x=y$.
 
 \begin{xca}\label{xca:equivalence-invers}
 Make sure you understand the two applications of $\fst$
-in the definition $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$ above.
+in the definition $f^{-1}(y)\defeq\fst(\fst(t(y)))$ above.
 Show that $f^{-1}$ is an equivalence from $Y$ to $X$.
 Give a function $(X\equiv Y) \to (Y\equiv X)$.
 % and show that our function is an equivalence. Too difficult here.
