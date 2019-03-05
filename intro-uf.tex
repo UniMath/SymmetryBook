@@ -132,7 +132,9 @@ Here are the rules for constructing equality types.
 \end{enumerate}
 
 We will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$, because there may be more than one of them.  When we know
-that there can be at most of them, we will refer to $i$ as a {\em proof} that $a$ is equal to $b$.
+that there can be at most of them, we will refer to $i$ as a {\em proof} that $a$ is equal to $b$.  Since the word ``identification'' is a long
+one, we may also refer to $i$ as a {\em path} from $a$ to $b$---this has the advantage of incorporating the intuition that an
+identification may proceed gradually through intermediate steps.
 
 We see from rule E2 that $\refl{S(S(0))}$ serves as a proof of $\fact(2)=2$, 
 as do $\refl{2}$ and $\refl{\fact(2)}$.  A student might wish for a
@@ -279,19 +281,51 @@ Functions preserve equality, a fact that is frequently used.
 We make this fully precise now, for once and for all, 
 to be used implicitly later on.
 
-\begin{definition}\label{def:apd}
-For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,y:X$, the function
-$\ap{f} : x = y \to f(x) = f(y)$ is defined by induction by setting 
-$\ap{f}(\refl{x})\defeq\refl{f(x)}$. More generally, 
-if $Z(x)$ is a type for every element $x:X$, and $f(x):Z(x)$
-a dependent function, then we define the dependent function
-$\apd{f}$ such that for every $e:x=y$
-\[
- \apd{f}(e): (\trp_{Z,e}(f(x))) = f(y);~\apd{f}(\refl{x})\defeq\refl{f(x)}.
-\]
-This is well-typed since $\trp_{Z,\refl{x}}(f(x)) \jdeq f(x)$.
-Both $\ap{f}(e)$ and $\apd{f}(e)$ may be written as $f(e)$.
+\begin{definition}\label{def:ap}
+For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,x':X$, the function
+$\ap{f} : x = x' \to f(x) = f(x')$ is defined by induction by setting 
+$\ap{f}(\refl{x})\defeq\refl{f(x)}$.
 \end{definition}
+
+The function $\ap f$ is called {\em application} of $f$ to paths.
+
+To handle application of dependent functions $f$ to paths, where $f(x)$ and $f(y)$ are not of the same type, one needs something more general
+than simple paths, which we present in the following definition.
+
+\begin{definition}\label{def:pathsoverpaths}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the points $x$ of $X$.  Given points $x,x':X$, $y:Y(x)$, and
+  $y':Y(x')$ and a path $p : x = x'$ we define a new type $\pathover y Y p {y'}$ by induction on $x'$ and $p$, setting
+  $$\pathover y Y {\refl x} {y'} \defeq (y = y').$$
+\end{definition}
+
+An element $q : \pathover y Y p {y'}$ is called a {\em path} from $y$ to $y'$ {\em over} $p$.
+
+\begin{definition}\label{def:apd}
+  Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the points $x$ of $X$, and a function $f:\prod_x Y(x)$.
+  Given points $x,x':X$ and a path $p : x = x'$, we define $$\apd{f}(p) : \pathover {f(x)} Y p {f(x')}$$ by induction on $x'$ and $p$,
+  setting $$\apd f {(\refl x)} \defeq \refl {f(x)}.$$
+\end{definition}
+
+The function $\apd f$ is called {\em dependent application} of $f$ to paths.
+
+The following construction shows how functions of two variables may be applied to paths over paths.
+
+\begin{definition}\label{def:applfun2}
+  Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the points $x$ of $X$, and a type $Z$.
+  Suppose also we are given a function $g : \prod_{x:X} (Y(x) \to Z)$ of two variables.
+  Given points $x,x':X$, $y:Y(x)$, and
+  $y':Y(x')$, a path $p : x = x'$, and a path $q :\pathover y Y p {y'}$ over $p$,
+  we may construct a path $$\apap g p q : g(x)(y) = g(x')(y')$$ by induction on $x'$, $p$, $y'$ and $q$,
+  setting $$\apap g {\refl x}{\refl y} \defeq \refl {g(x)(y)}.$$
+\end{definition}
+
+The function $p \mapsto q \mapsto \apap g p q$ is called {\em application} of $g$ to paths over paths.
+
+%% premature: sums are defined later
+%% Application of the construction above to the type $Z \defeq \sum_{x:X} Y(x)$ and the function $g$ defined by $g(x)(y) \defeq (x,y)$ yields a
+%% function $$\sum_{p:x=x'} \pathover y Y p {y'} \to ((x,y) = (x',y')).$$
+
+\medskip
 
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, 
 then they have equal values, i.e., for every element $x$ of $X$, 
@@ -304,7 +338,7 @@ f=g \to \prod_{x:X} f(x)=g(x).
 \] 
 \end{xca}
 
-Conversely, a basic principle called `function extensionality'
+Conversely, a basic principle called {\em function extensionality}
 asserts that $f=g$ whenever $f(x) = g(x)$ for every element $x$ of $X$.
 
 \section{Inductive types}
@@ -373,7 +407,7 @@ a \emph{dependent} pair. We may refer to $X$ as the \emph{index
   type} of the sum.  
 
 Proving something about (or constructing something from) every 
-element $(a,b)$ of $\sum _{x:X} Y(x)$ is simply done for all $a:X$ and $b: Y(a)$.
+element of $\sum _{x:X} Y(x)$ is done by performing the construction on elements of the form $(a,b)$, for every $a:X$ and $b: Y(a)$.
 Two important examples of such constructions are:
 \begin{enumerate}
 \item \emph{first projection}, 
@@ -383,45 +417,33 @@ $\fst(a,b)\defeq a$;
 $\snd(a,b): Y(a)$,
 $\snd(a,b)\defeq b$.
 \end{enumerate}
-In (2), the type of $\snd$ is in full
+In (2), the type of $\snd$ is, in full,
 $\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
 
-Equality of two elements $(a_1,b_1),(a_2,b_2)$ of $\sum _{x:X} Y(x)$ is 
-inductively defined in \cref{sec:identity-types}, like for any other type.
-In the case of a structured type defined from other types, 
-here $\sum _{x:X} Y(x)$ from $X$ and $Y(x)$ for any $x$,
-one would like to express equality in the structured type in terms of 
-the equalities in the constituent types. This explains much better
-what it means for two elements of the structured type to be equal.
+Equality of two elements $(x,y),(x',y')$ of $\sum _{x:X} Y(x)$ is 
+inductively defined in \cref{sec:identity-types}, as for any other type, but
+one would like to express equality between pairs in terms of 
+equalities in the constituent types.  This would explain better
+what it means for two pairs to be equal.
 This is so important that we give this explanation here and below
-every time we introduce a new structured type. 
+every time we introduce a new structured type, such as the sum. 
 For complete proofs we refer to \cite{hottbook}, or to the
 repositories with formalized proofs. .
 
-An identification between two elements $(a_1,b_1),(a_2,b_2)$ of 
-$\sum _{x:X} Y(x)$ means in the first place, by taking
-the first projection, having an identification $i: a_1=a_2$.
-We cannot expect exactly the same for the second 
-projections $b_1: Y(a_1)$ and $b_2: Y(a_2)$, since they may
-have different types and can therefore not be compared directly.
-However, after transport of $b_1$ in the type family $Y$
-along the identification $i: a_1=a_2$, a direct comparison to $b_2$
-is possible. Thus we obtain that each identification $(a_1,b_1)=(a_2,b_2)$
-can be viewed as a pair of an identification $i: a_1=a_2$ and an
-identification $i' : \trp_{Y,i}(b_1) = b_2$. Note that the type
-of $i'$ depends on $i$, so that we actually have a dependent pair:
-\[
-(i,i'): \sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2
-\]
-Conversely, we can define by induction a function
-\[
-(\_\,,\_)^= : \bigl(\sum_{i:a_1 = a_2} \trp_{Y,i}(b_1)= b_2\bigr) 
-  \to ((a_1,b_1)=(a_2,b_2)),
-\]
-setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$.
-This function often helps proving dependent pairs equal.
-We come back to this function in \cref{sec:equivalence}.
+Consider the function $$g : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ g(x)(y) \defeq (x,y). $$
+Given points $x,x':X$, $y:Y(x)$, and $y':Y(x')$,
+application of $g$ to paths over paths, defined in \cref{def:applfun2}, yields a function
+$$ \Phi : \sum_{p:x=x} \pathover y Y p {y'} \to (x,y) = (x',y'). $$
+It may be defined by
+$$ \Phi (p,q) \defeq \apap g p q, $$
+or it may be defined directly by induction by setting
+$$ \Phi ( \refl x, \refl y ) \defeq \refl {(x,y)}. $$
+A map the other way, 
+$$ \Psi : (x,y) = (x',y') \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
+can be defined by induction, by setting $$\Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).$$
 
+One proves, by induction on paths, the identities $ \Psi ( \Phi (p,q) ) = (p,q) $ and $ \Phi (\Psi ( r )) = r$, so $\Psi$ and $\Phi$ are inverse functions.
+We come back to these functions in \cref{sec:equivalence}, where we will conclude that they are inverse equivalences.
 
 \subsection{Binary products}
 \label{sec:binprod-types}
@@ -485,40 +507,41 @@ $\inr{y} = \inr{y'}$ are equivalent to identifications $y=y'$ in $Y$.
 
 \section{Equivalences}\label{sec:equivalence}
 
-
-The combination of $\sum$-, $\prod$- and equality types allows
+Using a combination of sum, product, and identity types allows
 us to express important notions, as done in the following
 definitions.
 
+The property that a type $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is equal to it.
+This property is encoded in the following definition.
+
 \begin{definition}
-\label{def:contractible}
-Let $X$ be a type. 
-The property that $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is
-equal to it.  Hence it is encoded by the type $\sum_{c:X} \prod_{x:X} (c=x)$.
-We call a type $X$ having this property \emph{contractible}, 
-denoted by $\iscontr(X)$, and $c$ its \emph{center}. 
-(Note that the notion of center depends on the proof that $X$
-is contractible, rather than on the type $X$. 
-Any element of a contractible type $X$ can be proved to be a center.) 
+  \label{def:contractible}
+  Given a type $X$, define a type $\iscontr(X)$ by setting
+  $$\iscontr(X) \defeq \sum_{c:X} \prod_{x:X} (c=x).$$
 \end{definition}
 
+A type $X$ satisfying $\iscontr(X)$ is called \emph{contractible}.  If $ (c,h) : \iscontr(X) $, then $c$ will be called the {\em center} of the
+the {\em contraction} $h$.
+
+By path composition, one sees that any element $x : X$ can serve as the center of a contraction of a contractible type $X$.
+
 The following lemma gives an important example of a contractible type.
-\begin{lemma}\label{lem:thepathspaceiscontractible}
+
 Give a type $X$ and an element $a$ of $X$, 
 the \emph{singleton type} $\sum_{x:X} (a=x)$
 consists of pairs $(x,i)$ with $i: a=x$. If $X$ is a set, it 
-can be viewed as the subset of $X$ consisting of the element $a$.
-For any type $X$ and $a:X$, the type $\sum_{x:X} (a=x)$ is contractible.
+can be viewed as the subset of $X$ consisting of the element $a$, because in that case, the
+type $a=x$ is a proposition.
+
+\begin{lemma}\label{lem:thepathspaceiscontractible}
+For any type $X$ and $a:X$, the singleton type $\sum_{x:X} (a=x)$ is contractible.
 \end{lemma}
+
 \begin{proof}
 Take as center the pair $(a,\refl{a})$. We have
-to prove for any element $x$ of $X$ and identification
-$i: a=x$ that $(a,\refl{a}) = (x,i)$. This we do componentwise,
-as explained in \cref{sec:sum-types}. For the identification of
-the first components we take (of course) $i$. For the second
-components, we have to prove $\trp_{a=\_,i}(\refl{a})= i$.
-This follows immediately by induction on $i$.
-%EASY: for $e\jdeq \refl{a}$ take $\refl{\refl{a}} : trp_{a=\_,e} = e$.
+to prove for any element $x$ of $X$ and for any identification
+$i: a=x$, that $(a,\refl{a}) = (x,i)$.  This is done by induction on $x$ and $i$, which reduces us to showing
+that $(a,\refl{a}) = (a,\refl{a})$.
 \end{proof}
 
 \begin{definition}
@@ -537,27 +560,10 @@ This we can also express in type theory, in an definition due
 to Voevodsky. 
 
 \begin{definition}
-\label{def:equivalence}
-A function $f : X \to Y$ is called an \emph{equivalence},
-denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
+  \label{def:equivalence}
+  A function $f : X \to Y$ is called an \emph{equivalence},
+  denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
 \end{definition}
-
-Let $t(y): \iscontr(f^{-1}(y))$ for all $y:Y$.
-Using $t$ we can define a canonical inverse function
-%that we (abusively) also denote by $f^{-1}$,
-by setting $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$.
-Note that we use $f^{-1}$ both for the fibers and
-for the inverse function in case the fibers are contractible.
-The dependency of $f^{-1}$ on $t$ is harmless by the very nature of
-being contractible: different $t$'s would give the same
-function by the principle of extensionality.
-
-Clearly, $f(f^{-1}(y)) = y$ by unfolding all definitions.
-Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x)$,
-with the latter as the fiber that $t(f(x))$
-proves contractible. Hence the center of contraction
-$\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
-$f^{-1}(f(x))\jdeq(\fst(\fst(t^{-1}(f(x))) = x$.
 
 In the above case we say that the types
 $X$ and $Y$ are \emph{equivalent}, denoted by $X\equiv Y$. 
@@ -566,6 +572,19 @@ between two types, we define the type of equivalences from $X$ to $Y$ by
 \[
 (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
 \]
+
+Suppose $f:X \to Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility.
+Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.
+
+Clearly, $f(g(y)) = y$ by unfolding all definitions.
+Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x))$,
+with the latter as the fiber that $t(f(x))$
+proves contractible. Hence the center of contraction
+$\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
+$g(f(x))\jdeq(\fst(\fst(t(f(x))) = x$.
+
+We have shown that $f$ and $g$ are inverse functions.  When it won't cause confusion with the notation for the fibers of $f$, we will write
+$f^{-1}$ for $g$.
 
 For any type $X$, the identity function $\id_X$ is an
 equivalence from $X$ to $X$: for every element $a$ in $X$,
@@ -577,7 +596,7 @@ is an equivalence from $T(x)$ to $T(y)$, for all $e: x=y$.
 
 \begin{xca}\label{xca:equivalence-invers}
 Make sure you understand the two applications of $\fst$
-in the definition $f^{-1}(y)\defeq\fst(\fst(t^{-1}(y)))$ above.
+in the definition $f^{-1}(y)\defeq\fst(\fst(t(y)))$ above.
 Show that $f^{-1}$ is an equivalence from $Y$ to $X$.
 Give a function $(X\equiv Y) \to (Y\equiv X)$.
 % and show that our function is an equivalence. Too difficult here.
