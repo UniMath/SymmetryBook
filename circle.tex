@@ -204,28 +204,19 @@ As mentioned earlier, it is possible to define the integers as the
 symmetries of the circle. However, with the set $\zet$ of integers 
 \emph{defined} as in the previous section, we will now \emph{prove}
 that $\zet$ is equal to the type $\base=\base$ of symmetries of the circle, 
-and that under this \st{identification} proof the successor $s$ corresponds to $\Sloop$.
+and that under this identification  $1:\zet$ corresponds to $\Sloop:\base=\base$ 
+(and furthermore, the successor $s:\zet=\zet$ corresponds to composition with $\Sloop$).
 
-\subsection{\Coverings}% \footnote{do we want to say ``cover'' or ``covering''?  I know there are people who feel strongly about this, and if one of us do I think we should do it the way that person wants it.  Google gives 129k hits on ``universal covering'' and 504k hits on ``universal cover''.  We should avoid ``covering space''.  What do we want to call the based path space?}
+\subsection{\Coverings}
 \label{sec:covering}
-% {\color{red}Trying Alternative version:
-% \begin{definition}
-%   \label{def:covering}
-%   Let $B$ be a type.  A \emph{covering of $B$} is a family of sets $F:B\to\Set$.
-%   A function $f:A\to B$ between two types is a \emph{covering} if for all $b:B$. We say that the covering is \emph{decidable} if for all $b:B$ the set $F(b)$ is decidable.
-%   Given a covering $F:B\to\Set$, the identity type $F=_{B\to\Set B}F$ is called the type of \emph{deck transformations}.
-% \end{definition}
 
-% Traditionally, a covering is a function $f:A\to B$ so that for each $b:B$ the preimage $f^{-1}(b)$ is a set.  We see that if $F:B\to\Set$ is a covering in our sense, then the first projection $\mathrm{pr}_1:\sum_{b:B}F(b)\to B$ is a covering in the traditional sense. 
-%   }
-
-As announced, our investigation of the type $\base=\base$ will 
+Our investigation of the type $\base=_{S^1}\base$ will 
 use the concept of \coverings.
 %, a concept custom-built for exposing symmetries (and subsymmetries) of types.  
 Since we are going to return to this concept several times, 
 we take the time for a fuller treatment before we continue with the case at hand.
 
-We should notice that the notion of a \covering is just one step up from the notion of an injection (a function such that all the preimages are propositions).
+We should notice that the notion of a \covering is just one step up from the notion of an injection (a map such that all the preimages are propositions -- following the logic, injections perhaps ought to be called ``proposition maps'').  The formulation we give is not the only one and for some purposes not the optimal one, see \eg \cref{rem:coveringsasfamilies} for an alternative.
 
 \begin{definition}\label{def:covering}
 A \emph{\covering} over a type $B$ 
@@ -243,8 +234,9 @@ If $B$ is a pointed type, a \emph{pointed} \covering is a pointed map $f:A\to_*B
 \end{definition}
 With a formula, given a type $B$, the type of \coverings over $B$ is
 \[
-\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)).
+\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b))
 \]
+with variations according to the flavor.
 
  Figure~\ref{fig:covering} visualizes two examples of \coverings over the circle.  
 Consider the left hand example first.  
@@ -292,13 +284,18 @@ Obviously something way more fascinating is going on.
   It \emph{is} possible to misunderstand what a ``connected \covering'' is: the other interpretation ``all the preimages are connected'' simply would give us an equivalence and is \emph{not} what is intend (equivalences are \coverings, but not necessarily connected \coverings and connected \coverings are not neccesarily equivalences).  
 
 Likewise, for the other qualifications; for instance in a ``finite covering'' $f:A\to B$, the type $A$ is usually \emph{not} a finite set. % ``pointed \covering'' \emph{could} be misunderstood as a function where all the fibers are pointed sets, that is a \covering with a section. 
+Also, given a pointed cover, only the preimage over the basepoint comes with a distinguished point; other preimages are merely sets.
+
   We trust the reader keeps our definitions in mind and not the other interpretations.
 \end{remark}
-
 \begin{remark}
-  We recall \cref{cor:fib-vs-path} stating that all the fibers of $f$ 
-are sets if and only if each 
-$$\ap{f}: a=a'\to f(a)=f(a')$$ is an injection.
+  \Coverings are closely related to a concept from topology called ``covering space'' (or any variant thereof, including Galois theory) and from algebra as sheaves (of sets).  Either way, the concept is useful because it singles out the (sub)symmetries.  
+% \end{remark}
+
+% \begin{remark}
+  \label{rem:setfamloopinj}
+  We recall \cref{cor:fib-vs-path} stating that all the fibers of a map $f:A\to B$ are sets if and only if each 
+$$\ap{f}: (a=a')\to (f(a)=f(a'))$$ is an injection.
 \end{remark}
 
 % \begin{definition}\label{def:decktrafo}\footnote{postpone}
@@ -309,18 +306,20 @@ $$\ap{f}: a=a'\to f(a)=f(a')$$ is an injection.
 \begin{remark}\label{rem:coveringsasfamilies}  
 Under the equivalence \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-families})
 between the type $B\to\Set$ of families of sets indexed by $B$, and the type
-of \coverings over $B$, we see that we could alternatively have defined a \covering to be a type family $B\to\Set$.\footnote{it sounds almost cosa nostra to claim that \coverings and families are the same things}  
+of \coverings over $B$, we see that we could alternatively have defined a \covering to be a type family $E:B\to\Set$.
+%\footnote{it sounds almost cosa nostra to claim that \coverings and families are the same things}  
 %In particular, an equivalence (aka.~a family of contractible types) is a \covering.
 \end{remark}
 
-\begin{remark}
+We use this point of view straight away:
+\begin{example}
   \label{xca:coveringsofS1}
   Let us consider \coverings over the circle, most conveniently for the moment in the guise of families 
 $$E:\Sc\to\Set.$$
 By the definition of the circle, giving $E$ is the same as specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.  Said more concisely in terms of \cref{lem:freeloopspace}, the type of \coverings over the circle is equivalent to 
 $$\sum_{X:\Set}(X=X).$$
 We will ultimately show that the circle $\Sc$ is equivalent to the component $C$ of $(\zet,s)$ in $\sum_{X:\Set}(X=X)$,  where $s:\zet=\zet$ is the successor.  This may seem sort of circular: ``the circle is equivalent to a component of the type of \coverings over the circle!'' but it really just condenses the idea connected groupoids are uniquely given by their symmetries.
-\end{remark}
+\end{example}
 A particularly important example is the following:
 \begin{definition}
   \label{def:RtoS1}
@@ -329,7 +328,9 @@ $$\exp:\mathbb R\to \Sc$$
 be the \covering of the circle given by $(\zet,s):\sum_{X:\Set}(X=X)$.  
 \end{definition}
 
-In more detail, if $R:\Sc\to\Set$ is defined by $R(\base)\defequi\zet$ and $R(\Sloop)\defequi s$, then $\mathbb R\defequi\sum_{z:\Sc}Z(z)$ and $\exp:\mathbb R\to \Sc$ is the first projection.
+In more detail, if $R:\Sc\to\Set$ is defined by letting $R(\base)$ be $\zet$ and $R(\Sloop)$ the successor $s$, then 
+$$\mathbb R\defequi\sum_{z:\Sc}R(z)$$ 
+and $\exp:\mathbb R\to \Sc$ is the first projection.
 
 \begin{remark}
   \label{rem:expforreal}
@@ -341,6 +342,7 @@ Choosing any point $z$ on the unit circle, we see that the preimage of $z$ under
 This connection between the integers and the unit circle is precisely captured in a form that we can take further by the \covering $\exp:\mathbb R\to \Sc$.
 \end{remark}
 
+We already defined a \covering $f:A\to B$ to be universal if $A$ is contractible.  In the situation where $B$ is a pointed groupoid this coincides with the path bundle we have defined more generally.  Since it is going to be such a central figure, let us repeat the definition and give it the local name.
 \begin{definition}
   \label{def:universalcover}
   Let $(B,b_0)$ be a pointed connected groupoid.  
@@ -352,14 +354,15 @@ Note that $(b_0=_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid
 However, we have \cref{lem:thepathspaceiscontractible} for any type $B$.
 
 \begin{remark}
-  This somehow deflates the concept ``universal cover'' of a pointed connected groupoid $(B,b_0)$, since we've just shown that the universal \covering coincides with the constant function $c_{b_0}:\bn 1\to B$ (with value $b_0$), were it not for the manifold practical value of the formulation that we've given.  
+  What's so ``universal'' about this?
+  %This seems to deflates the concept ``universal \covering'' of a pointed connected groupoid $(B,b_0)$, since we've just shown that t
+The universal \covering over the pointed connected groupoid $(B,b_0)$ coincides with the constant function $c_{b_0}:\bn 1\to B$ (with value $b_0$), and seems like an unnecessary complicated representation were it not for the manifold practical value of the formulation that we've given.  
 In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of $b_0$ under the first projection from $P_{b_0}B$ to $B$; ultimately this will show that the study of symmetries coincides with the study of the universal \covering.
 
-The first instance of this comes already in the next section, where we show in \cref{cor:S1groupoid} that the symmetries of the circle is given by $\zet$ by showing that the universal \covering and the exponential \covering (\cref{def:RtoS1}) of the circle coincide.
-\end{remark}
-\begin{remark}
-  The constant function $c_{b_0}:\bn 1\to B$, \emph{does} deserve the label universal because if given any function $f:A\to B$ and an $(a_0,p): f^{-1}(b_0)$, then we get a function $c_{a_0}:\bn 1\to A$ and $p:b_0=f(a_0)$ gives an element in $c_{b_0}=_{\bn 1\to B}f\, c_{a_0}$.  In other words, any such $f$ is ``a factor of $c_{b_0}$''.  
-Note, however, that this depends on $f^{-1}(b_0)$ being inhabited (classically, this is often demanded of a \covering, but in our setup it is not part of the definition), and the factorization depends on the inhabitant $(a_0,p)$ used. 
+The first instance of this comes already in the next section, where we show in \cref{cor:S1groupoid} that the symmetries of the circle is given by the set of integers $\zet$ by showing that the universal \covering and the exponential \covering (\cref{def:RtoS1}) of the circle coincide.
+
+That said, one way to see that the constant function $c_{b_0}:\bn 1\to B$, \emph{does} deserve the label universal because if given any function $f:A\to B$ and an $(a_0,p): f^{-1}(b_0)$, then we get a function $c_{a_0}:\bn 1\to A$ and $p:b_0=f(a_0)$ gives an element in $c_{b_0}=_{\bn 1\to B}f\, c_{a_0}$.  In other words, any such $f$ is ``a factor of $c_{b_0}$''.  
+Note, however, that this depends on $f^{-1}(b_0)$ being inhabited (classically, this is often demanded of a covering, which distinguishes it from our \coverings), and the factorization depends on the inhabitant $(a_0,p)$ used. 
 \end{remark}
 
 
@@ -367,11 +370,10 @@ Note, however, that this depends on $f^{-1}(b_0)$ being inhabited (classically, 
 
 \subsection{The symmetries of the circle}
 \label{sec:symcirc}
-We now proceed to show that the symmetries $\base=\base$ of the circle is equal to $\zet$.  The first step is to prove that the exponential \covering \cref{def:RtoS1} in the guise of the family 
-$$R: \Sc\to\UU,\qquad R(\base)\defequi\zet,\, R(\Sloop)\defequi s$$
+We now proceed to show that the symmetries $\base=\base$ of the circle is equal to the set $\zet$ of integers.  The first step is to prove that the exponential \covering \cref{def:RtoS1} is equal to the universal \covering \cref{def:universalcover}, \ie we prove that the family 
+$$R: \Sc\to\UU,\qquad R(\base)\defequi\zet,\, R(\Sloop)\coloneq s$$
 is equal to the family
-$$P_\base:\Sc\to\UU,\qquad P_\base(z)\defequi (\base=z)$$
-of \cref{def:universalcover}.
+$$P_\base:\Sc\to\UU,\qquad P_\base(z)\defequi (\base=z).$$
 
 We define two functions, $f:P_\base\to R$ and $g:R\to P_\base$ and show that, under univalence, they define inverse equalities.  
 
@@ -625,7 +627,7 @@ Indeed, iterating $\sqrt[m]f$ we get $(\sqrt[m]f)^m(i,x)=(i,f(x))$; hence the te
 
 If $f$ is an equivalence, then so is $\sqrt[m]f$:
 \begin{enumerate}
-\item on one hand $(\sqrt[m]f)(j,y)$ is equal to $(0,x)$ if and only if $j=0$ and $f(y)=x$, so  $(\sqrt[m]f)^{-1}(0,x)$ is equivalent to $f^{-1}(x)$ which is contractible if $f$ is an equivalence, and 
+\item on one hand $(\sqrt[m]f)(j,y)$ is equal to $(0,x)$ if and only if $j=m-1$ and $f(y)=x$, so  $(\sqrt[m]f)^{-1}(0,x)$ is equivalent to $f^{-1}(x)$ which is contractible if $f$ is an equivalence, and 
 \item on the other, if $i:\bn m$ is not $0$, then $(\sqrt[m]f)(j,y)$ is equal to $(i,x)$ if and only $j+1=i$ and and $y=x$, and so  $(\sqrt[m]f)^{-1}(i,x)$ is equivalent to  a singleton.
 \end{enumerate}
 
