@@ -421,31 +421,6 @@ $\snd(a,b)\defeq b$.
 In (2), the type of $\snd$ is, in full,
 $\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
 
-Equality of two elements $(x,y),(x',y')$ of $\sum _{x:X} Y(x)$ is 
-inductively defined in \cref{sec:identity-types}, as for any other type, but
-one would like to express equality between pairs in terms of 
-equalities in the constituent types.  This would explain better
-what it means for two pairs to be equal.
-This is so important that we give this explanation here and below
-every time we introduce a new structured type, such as the sum. 
-For complete proofs we refer to \cite{hottbook}, or to the
-repositories with formalized proofs. .
-
-Consider the function $$g : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ g(x)(y) \defeq (x,y). $$
-Given elements $x,x':X$, $y:Y(x)$, and $y':Y(x')$,
-application of $g$ to paths over paths, defined in \cref{def:applfun2}, yields a function
-$$ \Phi : \sum_{p:x=x'} \pathover y Y p {y'} \to (x,y) = (x',y'). $$
-It may be defined by
-$$ \Phi (p,q) \defeq \apap g p q, $$
-or it may be defined directly by induction by setting
-$$ \Phi ( \refl x, \refl y ) \defeq \refl {(x,y)}. $$
-A map the other way, 
-$$ \Psi : (x,y) = (x',y') \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
-can be defined by induction, by setting $$\Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).$$
-
-One proves, by induction on paths, the identities $ \Psi ( \Phi (p,q) ) = (p,q) $ and $ \Phi (\Psi ( r )) = r$, so $\Psi$ and $\Phi$ are inverse functions.
-We come back to these functions in \cref{sec:equivalence}, where we will conclude that they are inverse equivalences.
-
 \subsection{Binary products}
 \label{sec:binprod-types}
 There is special case of sum types that deserves to be mentioned since
@@ -659,27 +634,28 @@ With conditions as above, but with $B$ not depending on $i$, we have
 \]
 \end{corollary}
 
-Using \cref{lem:weq-iso}, we can finally prove the characterization of equality 
-in a sum type given in \cref{sec:sum-types}.  
+\section{Identifying pairs}\label{sec:pairpaths}
+
+Equality of two elements $(x,y),(x',y')$ of $\sum _{x:X} Y(x)$ is inductively defined in \cref{sec:identity-types}, as for any other type, but
+one would like to express equality between pairs in terms of equalities in the constituent types.  This would explain better what it means for
+two pairs to be equal.  In this case, the following lemma gives the desired characterization.
 
 \begin{lemma}\label{lem:isEq-pair=}
-Let $A$ be a type and $B(a)$ be a type for all $a:A$.
-Let $a_1:A$ and $b_i:B(a_i)$ for $i=1,2$. The function 
-\[
-(\_\,,\_)^= : 
-\bigl(\sum_{i:a_1 = a_2} \trp_{B,i}(b_1)= b_2\bigr) \to ((a_1,b_1)=(a_2,b_2))
-\] 
-defined by induction by setting $(\refl{a},\refl{b})^= \defeq \refl{(a,b)}$, 
-is an equivalence with inverse $p \mapsto (\ap{\fst}(p),\apd{\snd}(p))$.
+  Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Then there is an equivalence of type $$(x,y) = (x',y') \weq \sum_{p:x=x'} \pathover y Y p {y'}.$$
 \end{lemma}
+
 \begin{proof}
-Applying \cref{lem:weq-iso}, it suffices to show
-$p=(\ap{\fst}(p),\apd{\snd}(p))^=$ for all $p:(a_1,b_1)=(a_2,b_2)$ and
-$(q,r)=(\ap{\fst}((q,r)^=),\apd{\snd}((q,r)^=))$ for all $q:a_1=a_2$
-and $r:\trp_{B,q}(b_1)=b_2$. The first is proved by induction on $p$, 
-and the second by induction on first $q$ and then $r$. To see this,
-recall that $\ap{\fst}(\refl{(a,b)})\jdeq\refl{\fst(a,b)}\jdeq\refl{a}$,
-and likewise $\ap{\snd}(\refl{(a,b)})\jdeq\refl{b}$.
+  Consider the function $$g : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ g(x)(y) \defeq (x,y). $$
+  Given elements $x,x':X$, $y:Y(x)$, and $y':Y(x')$, application of $g$ to paths over paths, defined in \cref{def:applfun2}, yields a function
+  $$ \Phi : \sum_{p:x=x'} \pathover y Y p {y'} \to (x,y) = (x',y'). $$
+  It may be defined by $$ \Phi (p,q) \defeq \apap g p q, $$
+  or it may be defined directly by induction by setting $$ \Phi ( \refl x, \refl y ) \defeq \refl {(x,y)}. $$
+  A map the other way, $$ \Psi : (x,y) = (x',y') \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
+  can be defined by induction, by setting $$\Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).$$
+
+  One proves, by induction on paths, the identities $ \Psi ( \Phi (p,q) ) = (p,q) $ and $ \Phi (\Psi ( r )) = r$, so $\Psi$ and $\Phi$ are inverse functions.
+  Applying \cref{lem:weq-iso}, we see that $\Psi$ and $\Psi$ are inverse equivalences, thereby obtaining the desired equivalence.
 \end{proof}
 
 \section{Universes and univalence}\label{sec:univax}
