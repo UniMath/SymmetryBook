@@ -294,8 +294,10 @@ than simple paths, which we present in the following definition.
 
 \begin{definition}\label{def:pathsoverpaths}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.  Given elements $x,x':X$, $y:Y(x)$, and
-  $y':Y(x')$ and a path $p : x = x'$ we define a new type $\pathover y Y p {y'}$ by induction on $x'$ and $p$, setting
-  $$\pathover y Y {\refl x} {y'} \defeq (y = y').$$
+  $y':Y(x')$ and a path $p : x = x'$ we define a new type $\pathover y Y p {y'}$ by induction on $x'$ and $p$, thereby reducing to the case
+  where $x'$ is $x$ and $p$ is $\refl x$,
+  rendering $y$ and $y'$ of the same type,
+  allowing us to set $$\pathoverdisplay y Y {\refl x} {y'} \defeq (y = y').$$
 \end{definition}
 
 An element $q : \pathover y Y p {y'}$ is called a {\em path} from $y$ to $y'$ {\em over} $p$.
@@ -320,7 +322,7 @@ The following construction shows how functions of two variables may be applied t
 \end{definition}
 
 The function $p \mapsto q \mapsto \apap g p q$ is called {\em application} of $g$ to paths over paths.
-For convenience, we may abbreviate $\apap g p q$ to $g(q)$.
+For convenience, we may abbreviate $\apap g p q$ to $g(p)(q)$.
 
 %% premature: sums are defined later
 %% Application of the construction above to the type $Z \defeq \sum_{x:X} Y(x)$ and the function $g$ defined by $g(x)(y) \defeq (x,y)$ yields a
@@ -643,16 +645,18 @@ two pairs to be equal.  In this case, the following lemma gives the desired char
 \begin{lemma}\label{lem:isEq-pair=}
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$,
-  there is an equivalence of type $$(x,y) = (x',y') \weq \sum_{p:x=x'} \pathover y Y p {y'}.$$
+  there is an equivalence of type $$\left ( (x,y) = (x',y') \right ) \weq \sum_{p:x=x'} \pathover y Y p {y'}.$$
 \end{lemma}
+
+Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p {y'}$.
 
 \begin{proof}
   Consider the function $$g : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ g(x)(y) \defeq (x,y). $$
   Application of $g$ to paths over paths, defined in \cref{def:applfun2}, yields a function
-  $$ \Phi : \sum_{p:x=x'} \pathover y Y p {y'} \to (x,y) = (x',y'). $$
+  $$ \Phi : \left ( \sum_{p:x=x'} \pathover y Y p {y'} \right ) \to ((x,y) = (x',y')). $$
   It may be defined by $$ \Phi (p,q) \defeq \apap g p q, $$
   or it may be defined directly by induction by setting $$ \Phi ( \refl x, \refl y ) \defeq \refl {(x,y)}. $$
-  A map the other way, $$ \Psi : (x,y) = (x',y') \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
+  A map the other way, $$ \Psi : ((x,y) = (x',y')) \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
   can be defined by induction, by setting $$\Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).$$
 
   One proves, by induction on paths, the identities $ \Psi ( \Phi (p,q) ) = (p,q) $ and $ \Phi (\Psi ( r )) = r$, so $\Psi$ and $\Phi$ are inverse functions.
@@ -697,13 +701,13 @@ We first define the \emph{function} that
 the univalence axiom postulates to be an equivalence.
 
 \begin{definition}\label{def:idtoeq}
-  For types $X$ and $Y$ in $\UU$ and a path $p : X = Y$, we define an equivalence $\idtoeq_{X,Y} (p) : X\equiv Y$ by induction on $Y$ and $p$, setting
-  $\idtoeq_{X,Y} (\refl X) \defeq \id_X : X \equiv X$.  The result is a function \[ \idtoeq_{X,Y} : (X = Y) \to (X\equiv Y). \]
+  For types $X$ and $Y$ in $\UU$ and a path $p : X = Y$, we define an equivalence $\cast_{X,Y} (p) : X\equiv Y$ by induction on $Y$ and $p$, setting
+  $\cast_{X,Y} (\refl X) \defeq \id_X : X \equiv X$.  The result is a function \[ \cast_{X,Y} : (X = Y) \to (X\equiv Y). \]
 \end{definition}
   
-In expressions such as $\idtoeq_{X,Y}(p)$ we may abbreviate $\idtoeq_{X,Y}$ to $\idtoeq$ if no confusion will result.
+In expressions such as $\cast_{X,Y}(p)$ we may abbreviate $\cast_{X,Y}$ to $\cast$ if no confusion will result.
 
-One may verify that $\idtoeq(p)(x) = \trp_{\id_\UU, p} (x)$, for $x : X$, by induction on $p$.
+One may verify that $\cast(p)(x) = \trp_{\id_\UU, p} (x)$, for $x : X$, by induction on $p$.
 Here $id_\UU$ is the identity function $id_\UU$ on $\UU$, viewed as a family of types on $\UU$. 
 As a corollary, one sees that $\trp_{\id_\UU, p}$, previously defined as a function, is an equivalence.
 
@@ -711,12 +715,16 @@ Now comes the univalence axiom.
 
 \begin{definition}\label{def:univalence}
 Voevodsky's \emph{univalence axiom} (UA) postulates that 
-$\idtoeq_{X,Y}$ above is an equivalence for all $X,Y:\UU$.
-Formally, we postulate the existence of an element \[ \ua_{X,Y} : \isEq(\idtoeq_{X,Y}).\]
+$\cast_{X,Y}$ above is an equivalence for all $X,Y:\UU$.
+Formally, we postulate the existence of an element \[ \ua_{X,Y} : \isEq(\cast_{X,Y}).\]
 \end{definition}
 
-For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\idtoeq_{X,Y}^{-1}(f)$, the result of applying the
-inverse function of $\idtoeq_{X,Y}$ to $f$, if no confusion will result.  Thus the identity $\idtoeq (\ua (f)) = f$ holds.
+For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$, the result of applying the
+inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus the identity $\cast (\ua (f)) = f$ holds.
+
+In certain contexts, we will want to mix paths and equivalences freely, so, if it will not cause confusion, we may abbreviate $\ua(f)$ to $f$
+for $f : X \equiv Y$, and we may abbreviate $\cast(p)$ to $p$ for $p : Y = Z$.  Thus we will be able to write such expressions as $p \cdot f : X
+= Z$ and $p \circ f : X \equiv Z$.
 
 \begin{xca}\label{xca:C2}
 Prove that $\bool=\bool$ has exactly two elements, 
@@ -1133,9 +1141,9 @@ from the standard repertoire of logic.
 
 In this section we explain how to define $\vee$ and $\exists$.
 We define an operation called propositional truncation,\footnote{%
-The name `truncation' is slightly misleading since it suggests leaving
+The name ``truncation'' is slightly misleading since it suggests leaving
 something out, whereas the correct intuition is one of adding identifications
-such that everything becomes equal.}
+so everything becomes equal.}
 that enforces that all elements of a type become equal.
 
 \begin{definition}\label{def:prop-trunc}
@@ -1143,17 +1151,19 @@ Let $T$ be a type. The \emph{propositional truncation} of $T$
 is a type  $\Trunc{T}$ defined by the following constructors:
 \begin{enumerate}
 \item an \emph{element} constructor $\trunc{t} : \Trunc{T}$ for all $t:T$;
-\item an constructor identifying $x=y$  for all $x,y:\Trunc{T}$.
+\item a constructor identifying $x=y$  for all $x,y:\Trunc{T}$.
 \end{enumerate}
-The (unnamed) identification constructor enforces $\Trunc{T}$ to be a
-proposition. The induction principle is: 
-for any family of propositions $P(x),~x:\Trunc{T}$, 
+\end{definition}
+
+The definition is to be understood as follows.
+The (unnamed) identification constructor ensures that $\Trunc{T}$ is a
+proposition. The induction principle states that,
+for any family of propositions $P(x)$ defined for each $x:\Trunc{T}$, 
 in order to prove $\prod_{x:\Trunc{T}} P(x)$,
 it suffices to prove $\prod_{t:T} P(\trunc{t})$. In other
 words, in order to define a function $f:\prod_{x:\Trunc{T}} P(x)$,
 it suffices to give a function $g: \prod_{t:T} P(\trunc{t})$.
-Computationally we get $f(\trunc{t})\jdeq g(t)$ for all $t:T$. 
-\end{definition}
+Computationally, we get $f(\trunc{t})\jdeq g(t)$ for all $t:T$. 
 
 In the non-dependent case we get that
 any function $g: T\to P$ yields a (unique) function $f:\Trunc{T}\to P$ 
@@ -1168,10 +1178,10 @@ for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
 We are now ready to define logical disjunction and existence, by
 \[
 (P \vee Q) \defeq \Trunc{P \amalg Q} \quad\text{and}
-\quad (\exists x:T\,P(x)) \defeq \Trunc{\sum_{x:T}P(x)}.
+\quad (\exists_{x:T} P(x)) \defeq \Trunc{\sum_{x:T}P(x)}.
 \]
 
-For example, from \cref{def:prop-trunc} we deduce that for any $x:\Trunc{T}$ there exists $t:T$ such that $x=\trunc{t}$.
+For example, from \cref{def:prop-trunc}, from $x:\Trunc{T}$ we may deduce $\exists_{t:T} x=\trunc{t}$.
 
 We conclude this section with some important notions defined using truncation.
 
@@ -1199,13 +1209,21 @@ Show that connected elements have the same
 for any predicate $P:A\to\UU$, $P(x)$ is equivalent
 to $P(y)$ for any connected $x,y:A$. 
 \end{xca}
-\footnote{Stuff on large versus small commented out here.}
+
+STUFF ON LARGE VERSUS SMALL COMMENTED OUT HERE.
 %\begin{xca}\label{xca:essentiallysmall} 
 %Let $\UU\subseteq\UU_1$ be universes and let $A:\UU_1$ so that $||A||$ is in $\UU$ and for all $a,b:A$ we have that $(a=_Ab):\UU$.  Then $A$ is \emph{essentially small}, \ie there is an equivalence (in $\UU_1$) to a type in $\UU$.  
 %Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\cref{def:finiteset}) is essentially small, and more generally that if $S$ is a set, then the component $\Set_{(S)}$ is essentially small.  
 %\end{xca}
 %\cref{xca:essentiallysmall} has the consequence that in many cases types and essentially small types can be used interchangeably.  Where this may clutter the notation we will gloss over this distinction.
 
+In the following definition we introduce the adverb {\em merely}.
+
+\begin{definition}\label{def:merely}
+  If {\em A} is an English adjectival phrase encoded by a type $T$, then {\em merely A} is the English adjective encoded by the type $\Trunc A$.
+\end{definition}
+
+For example, a type is inhabited if and only if it {\em merely has an element}, and two elements of a connected type are {\em merely equal}.
 
 \section{Operations on sets that produce new sets}
 \label{sec:operations-on-sets}
