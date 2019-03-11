@@ -5,6 +5,11 @@ Require Import UniMath.MoreFoundations.All.
 Local Set Implicit Arguments.
 (* Local Unset Strict Implicit. *)
 
+Definition cast (X Y:Type) (p:X=Y) : X≃Y.
+Proof.
+  induction p. exact (idweq _).
+Defined.
+
 Lemma foo (X:Type) (x:X) : iscontr (∑ y, x=y).
 Proof.
   use tpair.
@@ -83,12 +88,29 @@ Proof.
   exact q.
 Defined.
 
-Definition sectionPathPair {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
+Definition sectionPathPair_eq {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
+  (PathPair' (x,,f x) (x',,f x')) = ((x=x') × (f x = f x)).
+Proof.
+  unfold PathPair'; cbn.
+  unfold dirprod; cbn.
+  apply maponpaths.
+  apply funextsec; intros p.
+  induction p.
+  reflexivity.
+Defined.
+
+Definition sectionPathPair_weq {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
+  (PathPair' (x,,f x) (x',,f x')) ≃ ((x=x') × (f x = f x)).
+Proof.
+  exact (cast (sectionPathPair_eq f x x')).
+Defined.
+
+Definition sectionPathPair_weq' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   PathPair' (x,,f x) (x',,f x') ≃ (x=x') × (f x = f x).
 Proof.
   unfold PathPair'.
   cbn.
-  apply weqfibtototal.
+  apply weqfibtototal.          (* the proof above avoids weqfibtototal *)
   intros p.
   induction p.
   apply idweq.
@@ -96,7 +118,17 @@ Defined.
 
 Definition sectionPathPairCompute {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A)
            (pq : PathPair' (x,,f x) (x',,f x')) :
-  sectionPathPairMap f pq = sectionPathPair f x x' pq.
+  sectionPathPairMap f pq = sectionPathPair_weq f x x' pq.
+Proof.
+  induction pq as [p q].
+  cbn in *.
+  induction p.
+  Fail reflexivity.             (* the simpler proof doesn't compute as well *)
+Abort.
+
+Definition sectionPathPairCompute {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A)
+           (pq : PathPair' (x,,f x) (x',,f x')) :
+  sectionPathPairMap f pq = sectionPathPair_weq' f x x' pq.
 Proof.
   induction pq as [p q].
   cbn in *.
@@ -104,7 +136,7 @@ Proof.
   reflexivity.
 Defined.
 
-Definition sectionPathPair' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
+Definition sectionPathPair'_weq' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   PathPair' (x,,f x) (x',,f x') ≃ (x=x') × (f x' = f x').
 Proof.
   unfold PathPair'.
@@ -179,7 +211,7 @@ Definition sectionPath {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
 Proof.
   intermediate_weq (PathPair' (x,,f x) (x',,f x')).
   - apply total2_paths_equiv'.
-  - apply sectionPathPair.
+  - apply sectionPathPair_weq'.
 Defined.
 
 Definition sectionPathInvMap {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
@@ -200,7 +232,7 @@ Definition sectionPath' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
 Proof.
   intermediate_weq (PathPair' (x,,f x) (x',,f x')).
   - apply total2_paths_equiv'.
-  - apply sectionPathPair'.
+  - apply sectionPathPair'_weq'.
 Defined.
 
 Definition sectionPathInvMap' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
@@ -259,8 +291,10 @@ Section Composition.
 
   Definition act {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A)
              (q : f x' = f x') (p : x = x')
-    : f x = f x
-    := transportb (λ a, f a = f a) p q.
+    : f x = f x.
+  Proof.
+    induction p. exact q.
+  Defined.
 
   (* We put p to the right of q in the definition above so the equation below has
      the terms in the same order on both sides, namely q p' p.  Thus the action is
