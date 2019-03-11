@@ -294,10 +294,10 @@ than simple paths, which we present in the following definition.
 
 \begin{definition}\label{def:pathsoverpaths}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.  Given elements $x,x':X$, $y:Y(x)$, and
-  $y':Y(x')$ and a path $p : x = x'$ we define a new type $\pathover y Y p {y'}$ by induction on $x'$ and $p$, thereby reducing to the case
+  $y':Y(x')$ and a path $p : x = x'$, we define a new type $\pathover y Y p {y'}$ by induction on $x'$ and $p$, thereby reducing to the case
   where $x'$ is $x$ and $p$ is $\refl x$,
   rendering $y$ and $y'$ of the same type,
-  allowing us to set $$\pathoverdisplay y Y {\refl x} {y'} \defeq (y = y').$$
+  allowing us to set $$\left( \pathoverdisplay y Y {\refl x} {y'} \right) \defeq (y = y').$$
 \end{definition}
 
 An element $q : \pathover y Y p {y'}$ is called a {\em path} from $y$ to $y'$ {\em over} $p$.
@@ -645,7 +645,7 @@ two pairs to be equal.  In this case, the following lemma gives the desired char
 \begin{lemma}\label{lem:isEq-pair=}
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$,
-  there is an equivalence of type $$\left ( (x,y) = (x',y') \right ) \weq \sum_{p:x=x'} \pathover y Y p {y'}.$$
+  there is an equivalence of type $$\left ( (x,y) = (x',y') \right ) \weq \sum_{p:x=x'} \pathoverdisplay y Y p {y'}.$$
 \end{lemma}
 
 Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p {y'}$.
@@ -653,7 +653,7 @@ Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p 
 \begin{proof}
   Consider the function $$g : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ g(x)(y) \defeq (x,y). $$
   Application of $g$ to paths over paths, defined in \cref{def:applfun2}, yields a function
-  $$ \Phi : \left ( \sum_{p:x=x'} \pathover y Y p {y'} \right ) \to ((x,y) = (x',y')). $$
+  $$ \Phi : \left ( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right ) \to ((x,y) = (x',y')). $$
   It may be defined by $$ \Phi (p,q) \defeq \apap g p q, $$
   or it may be defined directly by induction by setting $$ \Phi ( \refl x, \refl y ) \defeq \refl {(x,y)}. $$
   A map the other way, $$ \Psi : ((x,y) = (x',y')) \to \sum_{p:x=x'} \pathover y Y p {y'}, $$

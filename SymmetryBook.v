@@ -1,7 +1,9 @@
+(* This file depends on having installed UniMath, available at https://github.com/UniMath/UniMath *)
+
 Require Import UniMath.Foundations.All.
 Require Import UniMath.MoreFoundations.All.
 Local Set Implicit Arguments.
-Local Unset Strict Implicit.
+(* Local Unset Strict Implicit. *)
 
 Lemma foo (X:Type) (x:X) : iscontr (∑ y, x=y).
 Proof.
@@ -27,7 +29,7 @@ Section Coverings.
   Abort.
 End Coverings.
 
-Theorem total2_paths_equiv {A : UU} (B : A -> UU) (x y : ∑ x, B x) :
+Theorem total2_paths_equiv {A : Type} (B : A -> Type) (x y : ∑ x, B x) :
   x = y  ≃  x ╝ y.
 Proof.
   use tpair.
@@ -54,52 +56,24 @@ Proof.
       reflexivity.
 Defined.
 
-Definition PathPair' {A : UU} {B : A -> UU} (x y : ∑ x, B x) :=
+Definition PathPair' {A : Type} {B : A -> Type} (x y : ∑ x, B x) :=
   ∑ p : pr1 x = pr1 y, PathOver (pr2 x) (pr2 y) p.
 
 Local Open Scope pathsover.
 
-Definition sectionPathOver {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) (p : x = x') :
-  PathOver (f x) (f x') p ≃ (f x = f x).
+Definition sectionPathOver {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) (p : x = x') :
+  PathOver (f x) (f x') p = (f x = f x).
 Proof.
-  use weq_iso.
-  - intros q.
-    induction p.
-    exact q.
-  - intros q.
-    induction p.
-    exact q.
-  - cbn.
-    intros q.
-    induction p.
-    reflexivity.
-  - cbn.
-    intros q.
-    induction p.
-    reflexivity.
+  induction p. reflexivity.
 Defined.
 
-Definition sectionPathOver' {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) (p : x = x') :
-  PathOver (f x) (f x') p ≃ (f x' = f x').
+Definition sectionPathOver' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) (p : x = x') :
+  PathOver (f x) (f x') p = (f x' = f x').
 Proof.
-  use weq_iso.
-  - intros q.
-    induction p.
-    exact q.
-  - intros q.
-    induction p.
-    exact q.
-  - cbn.
-    intros q.
-    induction p.
-    reflexivity.
-  - cbn.
-    intros q.
-    induction p.
-    reflexivity.
+  induction p. reflexivity.
 Defined.
 
-Definition sectionPathPairMap {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) :
+Definition sectionPathPairMap {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   PathPair' (x,,f x) (x',,f x') -> (x=x') × (f x = f x).
 Proof.
   intros [p q].
@@ -109,19 +83,20 @@ Proof.
   exact q.
 Defined.
 
-Definition sectionPathPair {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) :
+Definition sectionPathPair {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   PathPair' (x,,f x) (x',,f x') ≃ (x=x') × (f x = f x).
 Proof.
   unfold PathPair'.
   cbn.
   apply weqfibtototal.
   intros p.
-  apply sectionPathOver.
+  induction p.
+  apply idweq.
 Defined.
 
-Definition sectionPathPairCompute {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A)
+Definition sectionPathPairCompute {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A)
            (pq : PathPair' (x,,f x) (x',,f x')) :
-  sectionPathPairMap pq = sectionPathPair f x x' pq.
+  sectionPathPairMap f pq = sectionPathPair f x x' pq.
 Proof.
   induction pq as [p q].
   cbn in *.
@@ -129,17 +104,18 @@ Proof.
   reflexivity.
 Defined.
 
-Definition sectionPathPair' {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) :
+Definition sectionPathPair' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   PathPair' (x,,f x) (x',,f x') ≃ (x=x') × (f x' = f x').
 Proof.
   unfold PathPair'.
   cbn.
   apply weqfibtototal.
   intros p.
-  apply sectionPathOver'.
+  induction p.
+  apply idweq.
 Defined.
 
-Definition composePathPair' {A : UU} {B : A -> UU} (x y z : ∑ x, B x) :
+Definition composePathPair' {A : Type} {B : A -> Type} (x y z : ∑ x, B x) :
   PathPair' x y -> PathPair' y z -> PathPair' x z.
 Proof.
   induction x as [a b].
@@ -152,7 +128,7 @@ Proof.
   exact (idpath b).
 Defined.
 
-Theorem total2_paths_equiv' {A : UU} (B : A -> UU) (x y : ∑ x, B x) :
+Theorem total2_paths_equiv' {A : Type} (B : A -> Type) (x y : ∑ x, B x) :
   x = y  ≃  PathPair' x y.
 Proof.
   use tpair.
@@ -178,7 +154,7 @@ Proof.
       reflexivity.
 Defined.
 
-Definition toPathPair {A : UU} (B : A -> UU) (x y : ∑ x, B x) : x = y  ->  PathPair' x y.
+Definition toPathPair {A : Type} (B : A -> Type) (x y : ∑ x, B x) : x = y  ->  PathPair' x y.
 Proof.
   intros e.
   induction e.
@@ -187,7 +163,7 @@ Proof.
   exact (idpath (pr2 x)).
 Defined.
 
-Definition toPairPath {A : UU} (B : A -> UU) (x y : ∑ x, B x) : PathPair' x y -> x = y.
+Definition toPairPath {A : Type} (B : A -> Type) (x y : ∑ x, B x) : PathPair' x y -> x = y.
 Proof.
   intros [p q].
   induction x as [a b], y as [a' b'].
@@ -198,7 +174,7 @@ Proof.
   assumption.
 Defined.
 
-Definition sectionPath {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) :
+Definition sectionPath {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   (x,,f x) = (x',,f x') ≃ (x=x') × (f x = f x).
 Proof.
   intermediate_weq (PathPair' (x,,f x) (x',,f x')).
@@ -206,26 +182,20 @@ Proof.
   - apply sectionPathPair.
 Defined.
 
-Definition sectionPathInvMap {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) :
+Definition sectionPathInvMap {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   (x=x') × (f x = f x) -> (x,,f x) = (x',,f x').
 Proof.
-  intros [p q].
-  induction p.
-  apply toPairPath.
-  exists (idpath x).
-  cbn.
-  exact q.
+  intros [p q]. induction p. apply maponpaths. exact q.
 Defined.
 
-Definition sectionPathInvMapCompute {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A)
+Definition sectionPathInvMapCompute {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A)
            (p : x=x') (q : f x = f x) :
-  invmap (sectionPath f x x') (p,,q) = sectionPathInvMap (p,,q).
+  invmap (sectionPath f x x') (p,,q) = sectionPathInvMap f (p,,q).
 Proof.
-  induction p.
-  reflexivity.
+  induction p. reflexivity.
 Defined.
 
-Definition sectionPath' {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) :
+Definition sectionPath' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   (x,,f x) = (x',,f x') ≃ (x=x') × (f x' = f x').
 Proof.
   intermediate_weq (PathPair' (x,,f x) (x',,f x')).
@@ -233,38 +203,33 @@ Proof.
   - apply sectionPathPair'.
 Defined.
 
-Definition sectionPathInvMap' {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A) :
+Definition sectionPathInvMap' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A) :
   (x=x') × (f x' = f x') -> (x,,f x) = (x',,f x').
 Proof.
-  intros [p q].
-  induction p.
-  apply toPairPath.
-  exists (idpath x).
-  cbn.
-  exact q.
+  intros [p q]. induction p. apply maponpaths. exact q.
 Defined.
 
-Definition sectionPathInvMapCompute' {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x':A)
+Definition sectionPathInvMapCompute' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A)
            (p : x=x') (q : f x' = f x') :
-  invmap (sectionPath' f x x') (p,,q) = sectionPathInvMap' (p,,q).
+  invmap (sectionPath' f x x') (p,,q) = sectionPathInvMap' f (p,,q).
 Proof.
   induction p.
   reflexivity.
 Defined.
 
-Lemma toPathPair_isweq{A : UU} (B : A -> UU) (x y : ∑ x, B x) : isweq (@toPairPath A B x y).
+Lemma toPathPair_isweq{A : Type} (B : A -> Type) (x y : ∑ x, B x) : isweq (@toPairPath A B x y).
 Proof.
   intros p.
   use tpair.
   - use tpair.
-    + exact (toPathPair p).
+    + exact (toPathPair B p).
     + cbn beta.
       induction p.
       reflexivity.
   - cbn beta. intros [v r].
 Abort.
 
-Lemma toPathPair_isweq{A : UU} (B : A -> UU) (x y : ∑ x, B x) : isweq (@toPathPair A B x y).
+Lemma toPathPair_isweq{A : Type} (B : A -> Type) (x y : ∑ x, B x) : isweq (@toPathPair A B x y).
 Proof.
   intros p.
   apply iscontraprop1.
@@ -272,86 +237,103 @@ Proof.
     intros [v r] [w s].
 Abort.
 
-Definition transport_f_f' {X : UU} (P : X ->UU) {x y z : X} (e : x = y)
+Definition transport_f_f' {X : Type} (P : X ->Type) {x y z : X} (e : x = y)
            (e' : y = z) (p : P x) :
   transportf P (e @ e') p = transportf P e' (transportf P e p).
 Proof.
   intros. induction e', e. reflexivity.
 Defined.
 
-Theorem total2_paths_composition {A : UU} (B : A -> UU) (x y z : ∑ x, B x)
+Theorem total2_paths_composition {A : Type} (B : A -> Type) (x y z : ∑ x, B x)
         (p : x = y) (q : y = z)
-        (p' := toPathPair p) (q' := toPathPair q) (pq' := toPathPair (p @ q)) :
+        (p' := toPathPair B p) (q' := toPathPair B q) (pq' := toPathPair _ (p @ q)) :
   pq' = composePathPair' p' q'.
 Proof.
   induction q, p.
   reflexivity.
 Defined.
 
-Theorem total2_paths_composition' {A : UU} (B : A -> UU) (x y z : ∑ x, B x)
-        (p : x ╝ y) (q : y ╝ z) : unit.
-Proof.
-  set (r := total2_paths_equiv _ _ (invmap (total2_paths_equiv _ _) p @ invmap (total2_paths_equiv _ _) q)).
-  induction p as [p p'].
-  induction q as [q q'].
-  induction x as [a b].
-  induction y as [a' b'].
-  induction z as [a'' b''].
-  cbn in p, p', q, q'.
-  transparent assert (s : (a,, b ╝ a'',, b'')).
-  { exact ((p @ q),,(transport_f_f' p q b @ maponpaths (transportf B q) p' @ q')). }
-  assert (r = s).
-  { induction p, p', q, q'. reflexivity. }
-Abort.
+Section Composition.
 
-Definition sectionPathsComposition {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x' x'':A)
-           (p : x = x') (q : f x = f x)
-           (p' : x' = x'') (q' : f x' = f x') :
-  sectionPathInvMap (p,,q) @ sectionPathInvMap (p',,q')
-  =
-  sectionPathInvMap ((p @ p'),,(q @ transportb (λ a, f a = f a) p q')).
-Proof.
-  induction p.
-  change (idpath x @ p') with p'.
-  change (transportb (λ a : A, f a = f a) (idpath x) q') with q'.
-  induction p'.
-  cbn.
-  apply pathsinv0.
-  apply maponpathscomp0.
-Defined.
+  Notation "p · q" := (q @ p).  (* notation as in the book *)
 
-Definition sectionPathsComposition1 {A : UU} {B : A -> UU} (f : ∏ x, B x) (x:A)
-           (p : x = x) (q : f x = f x)
-           (p' : x = x) (q' : f x = f x) :
-  sectionPathInvMap (p,,q) @ sectionPathInvMap (p',,q')
-  =
-  sectionPathInvMap ((p @ p'),,(q @ transportb (λ a, f a = f a) p q')).
-Proof.
-  apply sectionPathsComposition.
-Defined.
+  Definition act {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x':A)
+             (q : f x' = f x') (p : x = x')
+    : f x = f x
+    := transportb (λ a, f a = f a) p q.
 
-Definition sectionPathsComposition' {A : UU} {B : A -> UU} (f : ∏ x, B x) (x x' x'':A)
-           (p : x = x') (q : f x' = f x')
-           (p' : x' = x'') (q' : f x'' = f x'') :
-  sectionPathInvMap' (p,,q) @ sectionPathInvMap' (p',,q')
-  =
-  sectionPathInvMap' ((p @ p'),,(transportf (λ a, f a = f a) p' q @ q')).
-Proof.
-  induction p.
-  change (idpath x @ p') with p'.
-  induction p'.
-  change (transportf (λ a : A, f a = f a) (idpath x) q) with q.
-  cbn.
-  apply pathsinv0.
-  apply maponpathscomp0.
-Defined.
+  (* We put p to the right of q in the definition above so the equation below has
+     the terms in the same order on both sides, namely q p' p.  Thus the action is
+     "on the right". *)
 
-Definition sectionPathsComposition1' {A : UU} {B : A -> UU} (f : ∏ x, B x) (x:A)
-           (p : x = x) (q : f x = f x)
-           (p' : x = x) (q' : f x = f x) :
-  sectionPathInvMap' (p,,q) @ sectionPathInvMap' (p',,q')
-  =
-  sectionPathInvMap' ((p @ p'),,(transportf (λ a, f a = f a) p' q @ q')).
-Proof.
-  apply sectionPathsComposition'.
-Defined.
+  Definition act_transitivity {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x' x'':A)
+             (p : x = x') (p' : x' = x'') (q : f x'' = f x'')
+    : act f (act f q p') p = act f q (p' · p).
+  Proof.
+    induction p, p'. reflexivity.
+  Defined.
+
+  Definition sectionPathsComposition {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x' x'':A)
+             (p : x = x') (q : f x = f x)
+             (p' : x' = x'') (q' : f x' = f x') :
+    sectionPathInvMap f (p',,q') · sectionPathInvMap f (p,,q)
+    =
+    sectionPathInvMap f ((p' · p),,(act f q' p · q)).
+  Proof.
+    induction p.
+    change (p' · idpath x) with p'.
+    change (act f q' (idpath x)) with q'.
+    induction p'.
+    cbn.
+    apply pathsinv0.
+    apply maponpathscomp0.
+  Defined.
+
+  Definition sectionPathsComposition1 {A : Type} {B : A -> Type} (f : ∏ x, B x) (x:A)
+             (p : x = x) (q : f x = f x)
+             (p' : x = x) (q' : f x = f x) :
+    sectionPathInvMap f (p',,q') · sectionPathInvMap f (p,,q)
+    =
+    sectionPathInvMap f ((p' · p),,(act f q' p · q)).
+  Proof.
+    apply sectionPathsComposition.
+  Defined.
+
+End Composition.
+
+Section Composition'.
+
+  Definition sectionPathsComposition' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x x' x'':A)
+             (p : x = x') (q : f x' = f x')
+             (p' : x' = x'') (q' : f x'' = f x'') :
+    sectionPathInvMap' f (p,,q) @ sectionPathInvMap' f (p',,q')
+    =
+    sectionPathInvMap' f ((p @ p'),,(transportf (λ a, f a = f a) p' q @ q')).
+  Proof.
+    induction p.
+    change (idpath x @ p') with p'.
+    induction p'.
+    change (transportf (λ a : A, f a = f a) (idpath x) q) with q.
+    cbn.
+    apply pathsinv0.
+    apply maponpathscomp0.
+  Defined.
+
+  Definition sectionPathsComposition1' {A : Type} {B : A -> Type} (f : ∏ x, B x) (x:A)
+             (p : x = x) (q : f x = f x)
+             (p' : x = x) (q' : f x = f x) :
+    sectionPathInvMap' f (p,,q) @ sectionPathInvMap' f (p',,q')
+    =
+    sectionPathInvMap' f ((p @ p'),,(transportf (λ a, f a = f a) p' q @ q')).
+  Proof.
+    apply sectionPathsComposition'.
+  Defined.
+
+End Composition'.
+
+(*
+ Local Variables:
+ coq-prog-args: ("-emacs" "-w" "-notation-overridden" "-type-in-type")
+ compile-command: "coqc -w -notation-overridden -type-in-type SymmetryBook.v "
+ End:
+ *)
