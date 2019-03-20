@@ -289,6 +289,18 @@ $\ap{f}(\refl{x})\defeq\refl{f(x)}$.
 
 The function $\ap f$ is called {\em application} of $f$ to paths.  For convenience, we may abbreviate $\ap f (p)$ to $f(p)$.
 
+The following lemma shows that $\ap f$ is compatible with composition.
+
+\begin{lemma}\label{lem:apcomp}
+  Given a function $f:X\to Y$, and elements $x,x',x'':X$, and paths $p : x = x'$ and $p' : x' = x''$,
+  there is an identity of type $\ap f (p' \cdot p) = ( \ap f p' ) \cdot ( \ap f p )$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $p$ and $p'$, one reduces to showing that $\ap f (\refl x \cdot \refl x) = ( \ap f \refl x ) \cdot ( \ap f \refl x )$, where
+  both sides are equal to $\refl { f(x) }$ by definition.
+\end{proof}  
+
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, 
 then they have equal values, i.e., for every element $x$ of $X$, 
 we may conclude that $f(x) = g(x)$.
@@ -341,6 +353,19 @@ The following construction shows how functions of two variables may be applied t
 
 The function $p \mapsto q \mapsto \apap g p q$ is called {\em application} of $g$ to paths over paths.
 For convenience, we may abbreviate $\apap g p q$ to $g(p)(q)$.
+
+The following simple lemma will be useful later.
+
+\begin{lemma}\label{def:applfun2comp}
+  Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$, and a type $Z$.
+  Suppose also we are given a function $g : \prod_{x:X} (Y(x) \to Z)$ of two variables.
+  Given an element $x:X$, elements $y, y':Y(x)$, and an identity $q : y = y'$, then
+  $\apap g {\refl x} q = \ap {g(x)} q$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $y'$ and $q$, we reduce to the case where $y'$ is $y$ and $q$ is $\refl y$, rendering the two sides equal, by definition, to $\refl {g(x)(y)}$.
+\end{proof}
 
 %% premature: sums are defined later
 %% Application of the construction above to the type $Z \defeq \sum_{x:X} Y(x)$ and the function $g$ defined by $g(x)(y) \defeq (x,y)$ yields a
@@ -645,9 +670,9 @@ one would like to express equality between pairs in terms of equalities in the c
 two pairs to be equal.  In this case, the following lemma gives the desired characterization.
 
 \begin{lemma}\label{lem:isEq-pair=}
-  Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$,
-  there is an equivalence of type $$\left ( (x,y) = (x',y') \right ) \weq \sum_{p:x=x'} \pathoverdisplay y Y p {y'}.$$
+  there is an equivalence $$\left ( (x,y) = (x',y') \right ) \weq \sum_{p:x=x'} \pathoverdisplay y Y p {y'}.$$
 \end{lemma}
 
 Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p {y'}$.
@@ -668,7 +693,7 @@ Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p 
 The lemma above takes a simpler form when $y$ and $y'$ are values of a section $f$ of the family $Y$, as the following lemma shows.
 
 \begin{lemma}\label{lem:pathpairsection}
-  Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
   For any elements $x$ and $x'$ of $X$,
   there is an equivalence of type
@@ -688,6 +713,57 @@ The lemma above takes a simpler form when $y$ and $y'$ are values of a section $
   $$ \left( \pathoverdisplay {f(x)} Y {\refl x} {f(x)} \right) \weq (f(x) = f(x)).$$
   Now the two sides are equal by definition, so the identity equivalence provides what we need.  
 \end{proof}
+
+The lemma above shows how to rewrite certain paths between pairs as pairs of paths.  Now we wish to establish the formula for composition of
+paths, rewritten in terms of pairs of paths, but first we introduce a convenient definition for the transport of loops in $Y(x)$ along paths in
+$X$.
+
+\begin{definition}\label{def:pathsectionaction}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  For any elements $x$ and $x'$ of $X$ and for any identity $p : x = x'$, define a function $(f(x') = f(x')) \to (f(x) = f(x))$, to be denoted
+  by $q' \mapsto q' \star p$, by induction on $p$ and $x'$, reducing to the case where $x'$ is $x$ and $p$ is $\refl x$, allowing us to
+  set $q' \star \refl x \defeq q'$.
+\end{definition}  
+
+The following associativity property holds for the operation $\star$.
+
+\begin{lemma}\label{def:pathsectionactionassoc}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  For any elements $x$, $x'$, and $x''$ of $X$, for any identities $p : x = x'$ and $p' : x' = x''$,
+  and for any $q : f x'' = f x''$,
+  there is an identity of type $ ( q \star p') \star p = q \star (p' \cdot p)$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $p$ and $p'$, it suffices to show that $ ( q \star \refl y) \star \refl y = q \star (\refl y \cdot \refl y)$, in which both sides are
+  equal to $q$ by definition.
+\end{proof}
+
+Observe that the operator $\star$ depends on $f$, but $f$ is not included as part of the notation.
+
+The next lemma contains the formula we are seeking.
+
+\begin{lemma}\label{lem:pathpairsectionmult}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  For any elements $x$, $x'$, and $x''$ of $X$, and for any two identities $e : (x,f(x)) = (x',f(x'))$ and $e' : (x',f(x')) = (x'',f(x''))$,
+  if $e$ corresponds to the pair $(p,q)$ with $p : x = x'$ and $q : f x = f x$ under the equivalence of \cref{lem:pathpairsection},
+  and $e'$ corresponds to the pair $(p',q')$ with $p' : x' = x''$ and $q' : f x' = f x'$,
+  then $e' \cdot e$ corresponds to the pair $(p' \cdot p , (q' \star p) \cdot q)$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $p$ and $p'$ we reduce to the case where $x'$ and $x''$ are $x$ and $p$ and $p'$ are $\refl x$. 
+  It now suffices to show that $e' \cdot e$ corresponds to the pair $(\refl x , q' \cdot q)$.
+  Applying the definition of the map $\Phi$ in the proof of \cref{lem:isEq-pair=} to our three pairs, we see that it suffices to show that
+  $\left( \apap g {\refl x} {q'} \right) \cdot \left( \apap g {\refl x} {q} \right) = \apap g {\refl x} {q' \cdot q}$, with $g$, as there, being the function $ g(x)(y) \defeq (x,y)$.
+  By \cref{def:applfun2comp} it suffices to show that $\left( \ap {g(x)} {q'} \right) \cdot \left( \ap {g(x)} {q} \right) = \ap {g(x)} {(q' \cdot q)}$, which follows from
+  compatibility of $\ap {g(x)}$ with composition, as in \cref{lem:apcomp}.
+\end{proof}
+
+The lemma above will be applied mostly in the case where $x'$ and $x''$ are $x$.
 
 \section{Universes and univalence}\label{sec:univax}
 
