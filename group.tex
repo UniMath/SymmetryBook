@@ -384,7 +384,6 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
 The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon G\to H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_H f(g')=f(g\cdot_G g')$ (where we have set the name of the group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
 
 \begin{definition}\label{def:grouphomomaxioms}
-  %((prove/define the standard axioms))
 Let $G$ and $H$ be groups and assume given a group homomorphism $f:G\to H$.  We now define something that we will call an ``abstract group homomorphism 
 ${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from $(\pt_G=\pt_G)$ to $(\pt_H=\pt_H)$ ``preserving'' the group structure, c.f~\cref{def:abstrG} for the definition of $\abstr(G)$ and \cref{def:abstrisfunctor} for a condensation of what the discussion below end up with concluding that ``preserves'' means.  
 
@@ -460,7 +459,7 @@ $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is the function $\abstr(f)=(f^\abstr,!)$ defined in \cref{def:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
-  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ then $f(g^{-1})=(f(g))^{-1}$, so it is true.
+  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ then $f(g^{-1})=(f(g))^{-1}$, making a separate axiom redundant.  
 \end{xca}
 \begin{xca}
 Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
@@ -522,7 +521,7 @@ Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\UU)$ and the typ
 %$$\Type_G\defequi (BG\to\UU),\qquad \Set_G\defequi (BG\to\Set).$$
 \end{definition}
 
-The reader will notice that a $G$-set is nothing but a covering of $BG$.\footnote{we should be careful with having too many official names for the same objects}
+The reader will notice that the type of $G$-set is equivalent to the type of \covering over $BG$.\footnote{we should be careful with having too many official names for the same objects}
 Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 
 \begin{example}\label{def:principaltorsor}
@@ -784,6 +783,32 @@ $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence: \ie the type of gro
 % $(\post,!)^{-1}(f,!)$ is equivalent to the set
 % $\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
 %\end{proof}
+
+\section{Homomorphisms, abstract vs.~concrete}
+\label{sec:homabsisconcr}
+
+Now that we know that the type of groups is equal to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.  That is, if $G$ and $H$ are groups, then we defined 
+$$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
+in \cref{def:abstrisfunctor} as the function which takes a homomorphism, aka a pointed map $f=(Bf_\div,p_f):BG\to_*BH$ to the induced map of identity types 
+$$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$
+ together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:grouphomomaxioms}.
+
+
+\begin{lemma}
+  If $G$ and $H$ are groups, then 
+$$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
+is an equivalence.
+\end{lemma}
+\begin{proof}
+  If $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$ we define 
+$\concr(\phi,!):\Hom(G,H)$ as follows.  If $X:BG\to\Set$ is a $G$-set, let
+$\phi_*X:BH\to\Set$ be given by sending $z:BH$ to the set 
+$$\phi_*X(z)\defequi(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G). \footnote{here I need set-quotients: $(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G)$ is the coequalizer of the two maps $(\pt_H=z)\times X(\pt_G)\gets (\pt_H=z)\times{(\pt_G=\pt_G)}\times X(\pt_G)$ sending $(p,q,x)$ to $(p\,f(q),x)$ and $(p,X(q) x)$.}$$
+
+We show that this defines an inverse equivalence to $\abstr$.\footnote{write out}
+\end{proof}
+
+
 
 \section{Sums of groups}
 \label{sec:coprod}
