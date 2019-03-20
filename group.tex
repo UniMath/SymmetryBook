@@ -521,7 +521,7 @@ Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\UU)$ and the typ
 %$$\Type_G\defequi (BG\to\UU),\qquad \Set_G\defequi (BG\to\Set).$$
 \end{definition}
 
-The reader will notice that the type of $G$-set is equivalent to the type of \covering over $BG$.\footnote{we should be careful with having too many official names for the same objects}
+The reader will notice that the type of $G$-set is equivalent to the type of \coverings over $BG$.\footnote{we should be careful with having too many official names for the same objects}
 Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 
 \begin{example}\label{def:principaltorsor}
@@ -697,7 +697,7 @@ That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $BG$ is co
 Though it sounded like we made a choice ending up with $\preinv$; we really didn't -- it is precisely what happens when you abstract the homomorphism $G\to\Sigma_{\princ G(x)}$: 
 you get the function of identity types 
 $$(\pt_G=\pt_G)\to (\princ G(x)=\princ G(x))$$ 
-which by the very definition of transport for $princ G$ is $\preinv$. 
+which by the very definition of transport for $\princ G$ is $\preinv$. 
 \end{example}
 
 \begin{definition}
@@ -800,12 +800,39 @@ $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is an equivalence.
 \end{lemma}
 \begin{proof}
-  If $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$ we define 
-$\concr(\phi,!):\Hom(G,H)$ as follows.  If $X:BG\to\Set$ is a $G$-set, let
-$\phi_*X:BH\to\Set$ be given by sending $z:BH$ to the set 
-$$\phi_*X(z)\defequi(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G). \footnote{here I need set-quotients: $(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G)$ is the coequalizer of the two maps $(\pt_H=z)\times X(\pt_G)\gets (\pt_H=z)\times{(\pt_G=\pt_G)}\times X(\pt_G)$ sending $(p,q,x)$ to $(p\,f(q),x)$ and $(p,X(q) x)$.}$$
+\newcommand{\we}{\overset\sim\to}
+  The equivalence of $T_G:BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
+$$T:\Hom(G,H)\oldequiv (BG\to_*BH)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
+$$
+and we see that we have shown the desired result if we prove instead that the map
+$$A:((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)\to \Hom^\abstr(\abstr(G),\abstr(H))$$
+given by letting $A(f,p)$ be the composite 
+$$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{T_G}_\downarrow&&
+  (\pt_H=\pt_H)\ar@{=}[d]^{T_H}_\downarrow\\
+  (\princ G=\princ G)\ar[r]^f&
+  (f\princ G=f\princ G)\ar@{=}[r]^-{q\mapsto p^{-1}qp}_\to&
+  (\princ H=\princ H)
+}$$
+(together with the proof that this is an abstract group homomorphism).  The reason to complicate $\abstr$ this way is that it gets easier to write out a homotopy inverse.
 
-We show that this defines an inverse equivalence to $\abstr$.\footnote{write out}
+  If $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$ and $X:BG\to\Set$ is a $G$-set, let
+$\phi_*X:BH\to\Set$ be the $H$-set given by sending $z:BH$ to the set 
+$$\phi_*X(z)\defequi(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G). \footnote{here I need set-quotients: $(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G)$ is the coequalizer of the two maps $(\pt_H=z)\times X(\pt_G)\gets (\pt_H=z)\times{(\pt_G=\pt_G)}\times X(\pt_G)$ sending $(p,q,x)$ to $(p\,f(q),x)$ and $(p,X(q) x)$. I use $[p,x]$ to denote an element of this type}$$
+For $X$ the principal $G$-torsor we get an identity  $p_\phi:\phi_*\princ G=\princ H$ which, when evaluated at $z:BH$, corresponds under univalence to the equivalence 
+$$(\pt_H=z)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)\to (\pt_H=z)$$ 
+sending $[p,q]:(\pt_H=z)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)$ to $p\,\phi(q):(\pt_H=z)$.
+Let 
+$$B: \Hom^\abstr(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)$$
+be given by $B(\phi,!)=(\phi_*X,p_\phi)$
+
+We show that $A$ and $B$ are inverse equivalences.  Given an abstract group homomorphism $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$, then $AB(\phi,!)$ has as underlying set map
+$$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{T_G}_\downarrow&&
+  (\pt_H=\pt_H)\ar@{=}[d]^{T_H}_\downarrow\\
+  (\princ G=\princ G)\ar[r]^-{\phi_*}&
+  (\phi_*\princ G=\phi_*\princ G)\ar@{=}[r]^-{q\mapsto p_\phi^{-1}qp_\phi}_\to&
+  (\princ H=\princ H),
+}$$
+and if we start with a $g:(\pt_G=\pt_G)$, then $T_G$ sends it to $\preinv (g)$.  Furthermore, $\phi_*\preinv (g)$ is $[\id,\preinv (g)]$ which is sent to $\preinv (\phi(g))$ in $\princ H=\princ H$ which corresponds to $\phi(g):(\pt_H=\pt_H)$ under $T_H$.  In other words, $AB(\phi,!)=(\phi,!)$.  The composite $BA$ is similar.
 \end{proof}
 
 
