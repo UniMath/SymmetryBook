@@ -132,7 +132,7 @@ Here are the rules for constructing equality types.
 \end{enumerate}
 
 We will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$, because there may be more than one of them.  When we know
-that there can be at most of them, we will refer to $i$ as a {\em proof} that $a$ is equal to $b$.  Since the word ``identification'' is a long
+that there can be at most one of them, we will refer to $i$ as a {\em proof} that $a$ is equal to $b$.  Since the word ``identification'' is a long
 one, we may also refer to $i$ as a {\em path} from $a$ to $b$---this has the advantage of incorporating the intuition that an
 identification may proceed gradually through intermediate steps.
 
@@ -667,27 +667,43 @@ With conditions as above, but with $B$ not depending on $i$, we have
 
 Equality of two elements of $\sum _{x:X} Y(x)$ is inductively defined in \cref{sec:identity-types}, as for any other type, but
 one would like to express equality between pairs in terms of equalities in the constituent types.  This would explain better what it means for
-two pairs to be equal.  In this case, the following lemma gives the desired characterization.
+two pairs to be equal.  We start with a definition.
+
+\begin{definition}\label{def:pairtopath}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Consider the function $$\pair : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ \pair(x)(y) \defeq (x,y). $$
+  For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$, we define the map 
+  $$\left( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right) \mapsto \left ( (x,y) = (x',y') \right )$$
+  by $$ (p,q) \mapsto \apap {\pair} p q. $$
+  (Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p {y'}$, and to \cref{def:applfun2} for the definition of $\apap{}{}{}$.)
+  We introduce $\pathpair p q$ as notation for $\apap {\pair} p q$.
+\end{definition}
+
+\begin{lemma}\label{coro:isEq-pair=}
+  In the situation of \cref{def:pairtopath}, if $x'$ is $x$, so that $( \pathover y Y {\refl x} {y'} ) \jdeq ( y = y' )$,
+  then for any $q : y = y'$, the identity $$\pathpair {\refl x} q = \ap {\pair (x)} q$$ holds.
+\end{lemma}
+
+\begin{proof}
+  By induction on $q$ it suffices to establish the identity $$\pathpair {\refl x} {\refl y} = \ap {\pair (x)} (\refl y),$$ both sides of which are
+  equal to $\refl {(x,y)}$ by definition.
+\end{proof}
+
+The following lemma gives the desired characterization of paths between pairs.
 
 \begin{lemma}\label{lem:isEq-pair=}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$,
-  there is an equivalence $$\left ( (x,y) = (x',y') \right ) \weq \sum_{p:x=x'} \pathoverdisplay y Y p {y'}.$$
+  the map defined in \cref{def:pairtopath} defined by $$(p,q) \mapsto \pathpair p q$$ is an equivalence of type
+  $$\left( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right) \weq \left ( (x,y) = (x',y') \right ).$$
 \end{lemma}
 
-Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p {y'}$.
-
 \begin{proof}
-  Consider the function $$g : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ g(x)(y) \defeq (x,y). $$
-  Application of $g$ to paths over paths, defined in \cref{def:applfun2}, yields a function
-  $$ \Phi : \left ( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right ) \to ((x,y) = (x',y')). $$
-  It may be defined by $$ \Phi (p,q) \defeq \apap g p q, $$
-  or it may be defined directly by induction by setting $$ \Phi ( \refl x, \refl y ) \defeq \refl {(x,y)}. $$
+  Call the map $\Phi$.
   A map the other way, $$ \Psi : ((x,y) = (x',y')) \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
   can be defined by induction, by setting $$\Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).$$
-
   One proves, by induction on paths, the identities $ \Psi ( \Phi (p,q) ) = (p,q) $ and $ \Phi (\Psi ( r )) = r$, so $\Psi$ and $\Phi$ are inverse functions.
-  Applying \cref{lem:weq-iso}, we see that $\Psi$ and $\Psi$ are inverse equivalences, thereby obtaining the desired equivalence.
+  Applying \cref{lem:weq-iso}, we see that $\Phi$ and $\Psi$ are inverse equivalences, thereby obtaining the desired result.
 \end{proof}
 
 The lemma above takes a simpler form when $y$ and $y'$ are values of a section $f$ of the family $Y$, as the following lemma shows.
@@ -763,7 +779,8 @@ The next lemma contains the formula we are seeking.
   compatibility of $\ap {g(x)}$ with composition, as in \cref{lem:apcomp}.
 \end{proof}
 
-The lemma above will be applied mostly in the case where $x'$ and $x''$ are $x$.
+The lemma above will be applied mostly in the case where $x'$ and $x''$ are $x$, but if it had been stated only for that case, we would not have
+been able to argue by induction on $p$ and $p'$.
 
 \section{Universes and univalence}\label{sec:univax}
 
