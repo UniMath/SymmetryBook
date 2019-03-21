@@ -1060,9 +1060,10 @@ In ordinary sets, a subset $B$ of a set $A$ can be given concretely by
 considering the \emph{characteristic function} $\chi_B\colon A\to\bool$ 
 which takes the value $\yes$ on $B$ and $\no$ everywhere else: 
 $B$ is then exactly the preimage of $\yes$ under $\chi_B: A\to\bool$.
+Doing so often requires the Law of the Excluded Middle (LEM).
 
-These considerations translate to types, though there are some 
-subtleties. Let $T$ be a type and let $P: T\to\UU$ be a type family.
+In this book we do not assume LEM, and there are some more subtleties. 
+Let $T$ be a type and let $P: T\to\UU$ be a type family.
 The sum type $\sum_{t:T} P(t)$ consists of pairs $(t,p)$ with
 $t:T$ and $p:P(t)$. This is \emph{not} a good way to carve out a subtype
 of $T$, as there could be distinct pairs $(t,p)$ and $(t,p')$ in $P(t)$.
@@ -1086,8 +1087,8 @@ the subset $\set{a:A \mid \chi_B(a) = \yes}$. However,
 not every subset as in \cref{def:subtype} can be given
 through a $\chi_B: A\to\bool$. As proved in \cref{sec:finite-types},
 any element of $\bool$ is equal to $\yes$ or to $\no$.
-We formulate a similar property for propositions,
-as we cannot in general decide whether a proposition is empty or not.
+We formulate a similar property for propositions, since without LEM
+we cannot in general decide whether a proposition is empty or not.
 
 \begin{definition}\label{def:decidability}\index{decidable proposition}
 A proposition $P$ is called \emph{decidable} if $P\amalg\neg P$.
@@ -1254,7 +1255,7 @@ universal quantification, and conjunction, respectively.
 Moreover, $\true$ and $\false$ can be used as truth values,
 and $\neg A \defeq (A\to\false)$ for negation.
 We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
-that are not propostions, even though the constituents are
+that are not propositions, even though the constituents are
 propositions. This means we are still lacking $\vee$ and $\exists$
 from the standard repertoire of logic.
 
@@ -1305,19 +1306,18 @@ For example, from \cref{def:prop-trunc}, from $x:\Trunc{T}$ we may deduce $\exis
 We conclude this section with some important notions defined using truncation.
 
 \begin{definition}\label{def:connected}
-Let $A$ be a type. We call $A$ \emph{inhabited},
-or \emph{non-empty}, if $\Trunc{A}$.
+Let $A$ be a type. We call $A$ \emph{non-empty} if $\Trunc{A}$.
 Elements $x,y$ of $A$ are called \emph{connected} if $x=y$ is
-inhabited, that is, if $\Trunc{x=y}$.
+non-empty, that is, if $\Trunc{x=y}$.
 If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A}\Trunc{a=x}$
 is called the \emph{connected component} of $a$ in $A$.
-The type $A$ is called \emph{connected} if it is inhabited
+The type $A$ is called \emph{connected} if it is non-empty
 and all its elements are connected, that is, if 
 $\Trunc{A} \times \prod_{x,y:A} \Trunc{x=y}$.
 \end{definition}
 
-Note that under this definition, the empty type $\bn{0}$ is not connected
-(since not inhabited). One can view being connected as a weak form
+Note that under this definition the empty type $\bn{0}$ is not connected.
+One can view being connected as a weak form
 of being contractible --- without direct access to a center and to
 identifications of elements.
 
@@ -1327,6 +1327,10 @@ Show that connected elements have the same
 \emph{propositional} properties, that is, 
 for any predicate $P:A\to\UU$, $P(x)$ is equivalent
 to $P(y)$ for any connected $x,y:A$. 
+\end{xca}
+
+\begin{xca}\label{xca:trunc-non-empty}
+Show $\Trunc A \equiv \neg(A\to\bn{0})$ for all types A.
 \end{xca}
 
 STUFF ON LARGE VERSUS SMALL COMMENTED OUT HERE.
@@ -1343,7 +1347,7 @@ In the following definition we introduce the adverb {\em merely}.
 then {\em merely A} is the English adjective encoded by the type $\Trunc T$.
 \end{definition}
 
-For example, a type is inhabited if and only if it {\em merely has an element}, and two elements of a connected type are {\em merely equal}.
+For example, a type is non-empty if and only if it {\em merely has an element}, and two elements of a connected type are {\em merely equal}.
 
 \section{Operations on sets that produce new sets}
 \label{sec:operations-on-sets}
@@ -1464,8 +1468,7 @@ Furthermore, $((m\leq n)\times (n\leq m)) \liff (m=n)$,
 and $((m<n)\times(n<m))\to\false$ (so $<$ is irreflexive).
 \end{xca}
 
-We can prove the following lemma by double induction, avoiding the 
-Law of the Excluded Middle (LEM).
+We can prove the following lemma by double induction.
 
 \begin{lemma}\label{lem:dec-eq+order-N}
 The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
@@ -1699,7 +1702,7 @@ Now apply \cref{lem:weq-iso}.
 The converse of \cref{lem:ap-equivalence} is not
 true: $f:\bn{1}\to\bn{2}$ sending $0$ to $0$ is not an
 equivalence. As a function between sets,
-$f$ is an injection, but not a surjection.
+$f$ is an injection (one-to-one), but not a surjection.
 We need these important concepts for types in general.
 We define them as close as possible to their
 usual meaning in set theory: a function from $A$ to $B$ is 
@@ -1733,12 +1736,12 @@ Now apply injectivity.
 \end{proof}
 
 \begin{corollary}\label{cor:inj+connected}
-Let $A,B$ be types such that $A$ is inhabited and $B$ is connected.
+Let $A,B$ be types such that $A$ is non-empty and $B$ is connected.
 Then any injection $f: A\to B$ is an equivalence.
 \end{corollary}
 \begin{proof}
 By \cref{lem:inj+surj} it suffices to show that $f$ is surjective.
-This is a propostion, so by \cref{def:prop-trunc} and $\Trunc{A}$
+This is a proposition, so by \cref{def:prop-trunc} and $\Trunc{A}$
 we may assume $a:A$, so $f(a):B$. By $\prod_{x,y:B} \Trunc{x=y}$
 we now get that all preimages under $f$ are non-empty.
 \end{proof}
