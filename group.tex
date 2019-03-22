@@ -51,7 +51,7 @@ Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$
 
 
 \begin{remark}
-  When considering the identity type $a=_Aa$, only the elements $x:A$ with $x$ equal to $a$ are relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is always inhabited (c.f.~\cref{def:connected}).  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
+  When considering the identity type $a=_Aa$, only the elements $x:A$ with $x$ equal to $a$ are relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is never empty (c.f.~\cref{def:connected}).  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
 \end{remark}
 
 
@@ -106,7 +106,7 @@ $$\sum_{z:S^1}cy_n(z)\to S^1.$$
 
 Consider the type 
 $$B_n\defequi\sum_{S:\fin_n}\pi_0(cy_n^{-1}(S)),\footnote{I've used set truncation!!!}$$
-the ``image'' of $cy_n$ except that the truncation is one level higher than we have considered before.  Since $\fin_n$ is a groupoid, $B_n$ is a groupoid.  Remember that $cy_n^{-1}(S)=\sum_{z:S^1}S=cy_nz$.  Let $(S,z,p):B_n$ be any element; we want to show that $(S,z,p)=_{B_n}(\bn n, \base, \refl\base)$ is inhabited, so that $B_n$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_n(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_n(\base)\defequi\bn n$ to compose $p:S=cy_nz$ and $cy_n:cy_nz=cy_n\base$), $B_n$ is connected.  
+the ``image'' of $cy_n$ except that the truncation is one level higher than we have considered before.  Since $\fin_n$ is a groupoid, $B_n$ is a groupoid.  Remember that $cy_n^{-1}(S)=\sum_{z:S^1}S=cy_nz$.  Let $(S,z,p):B_n$ be any element; we want to show that $(S,z,p)=_{B_n}(\bn n, \base, \refl\base)$ is not empty, so that $B_n$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_n(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_n(\base)\defequi\bn n$ to compose $p:S=cy_nz$ and $cy_n:cy_nz=cy_n\base$), $B_n$ is connected.  
 Pointing $B_n$ in $(\bn n,!)$ we have a pointed connected groupoid, \ie a group, which we call the {\em cyclic group $C_n$ of order $n$}.  (in hindsight, $B_n=(BC_n)_\div$)
 
 Note that the cyclic group of order $1$ is the trivial group, the cyclic group of order $2$ is equivalent to the permutation group $\Sigma_2$: there are exactly one nontrivial symmetry $f$ and $f^2$ is the identity.  When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.  In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\Sigma_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.
@@ -232,7 +232,7 @@ by exactly the same procedure, completing the list.
 \end{xca}
 
 \begin{remark}
-   One may worry about many things when one sees the list ``right unit law, left unit law, associativity, inverse''.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the left and right unit laws equal?  Since $a=a$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two inhabitants are equal.
+   One may worry about many things when one sees the list ``right unit law, left unit law, associativity, inverse''.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the left and right unit laws equal?  Since $a=a$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two elements are equal.
  \end{remark}
 
 These properties of the identity type are bundled together in the concept of an abstract group, under the additional hypothesis that we are dealing with a set.
@@ -265,7 +265,7 @@ define an abstract group
 $$\abstr(G)\defequi (\pt_G=\pt_G,e,{-}^{-1},\cdot).$$
   \end{lemma}
   \begin{proof}
-    The elements $p_1,\dots p_4$ of \cref{def:p1,def:p4,def:p3,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a groupoid) are inhabited, as required.
+    The elements $p_1,\dots p_4$ of \cref{def:p1,def:p4,def:p3,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a groupoid) are nonempty, as required.
   \end{proof}
   \begin{definition}\label{def:abstrG}
     Given a group $G$, the abstract group $\abstr(G)\defequi (a=_Aa,e,{-}^{-1},\cdot)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
@@ -354,7 +354,9 @@ $$
 \end{definition}
 \begin{example}
   \begin{enumerate}
-  \item   Consider two sets $S$ and $T$.  The map $\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$.
+  \item   Consider two sets $S$ and $T$.  
+Recall that $\Set_{(S)}\defequi\sum_{X:\Set}||S=X||$ is the component of the groupoid $\Set$ containing $S$, and when pointed at $S$ represents the permutation group $\Sigma_S$.  
+The map $\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$.
 Thought of as symmetries, this says that if you have a symmetry of $S$, then we get a symmetry on $S\coprod T$ (which doesn't do anything to $T$).  
 
 Likewise, we get a map $\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to $X\times T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\times T}$. 
@@ -447,19 +449,20 @@ where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\
   \end{enumerate}
 \end{definition}
 \begin{definition}\label{def:abstrisfunctor}
-  If $(G_{\Set},e_G,\mu_G,\iota_G)$ and $(H_{\Set},e_H,\mu_H,\iota_H)$ are two abstract groups, then the set of homomorphisms from $G$ to $H$ is
-  \begin{align*}
-    \Hom^\abstr&((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))\\
-=&\sum_{f:G_{\Set}\to H_{\Set}}(f(e_G)=e_H)\times (f\mu_G=\mu_Hf).
-  \end{align*} 
-Since $(f(e_G)=e_H)\times (f\mu_G=\mu_Hf)$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
+  If $\mathcal G\defequi(\mathcal G_{\Set},e_{\mathcal G},\mu_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(\mathcal H_{\Set},e_{\mathcal H},\mu_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
+ $$  \Hom^\abstr(\mathcal G,\mathcal H)%(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))\\
+=\sum_{f:\mathcal G_{\Set}\to \mathcal H_{\Set}}(f(e_{\mathcal G})=e_{\mathcal H})\times (f\mu_{\mathcal G}=\mu_{\mathcal H}f).
+$$
+Since $(f(e_{\mathcal G})=e_{\mathcal H})\times (f\mu_{\mathcal G}=\mu_{\mathcal H}f)$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
 
 If $G$ and $H$ are groups, the function
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is the function $\abstr(f)=(f^\abstr,!)$ defined in \cref{def:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
-  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ then $f(g^{-1})=(f(g))^{-1}$, making a separate axiom redundant.  
+  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr(\mathcal G,\mathcal H)$
+%(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ 
+then $f(g^{-1})=(f(g))^{-1}$, making a separate axiom redundant.  
 \end{xca}
 \begin{xca}
 Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
@@ -521,12 +524,16 @@ Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\UU)$ and the typ
 %$$\Type_G\defequi (BG\to\UU),\qquad \Set_G\defequi (BG\to\Set).$$
 \end{definition}
 
-The reader will notice that the type of $G$-set is equivalent to the type of \coverings over $BG$.\footnote{we should be careful with having too many official names for the same objects}
+\begin{remark}
+  The reader will notice that the type of $G$-set is equivalent to the type of \coverings over $BG$.\footnote{we should be careful with having too many official names for the same objects}
 Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
+\end{remark}
+
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
-$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  We've seen this family before in the guise of the ``universal \covering $\pathsp{\pt_G}$'' of \cref{def:universalcover}!  
+$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi\pathsp{\pt_G}(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  
+We've seen this family before in the guise of the (fibers of the) ``universal \covering'' of \cref{def:universalcover}!  
 The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.
 
 There is nothing sacred about starting the equality in $\pt_G$: if $y:BG$, then $\pathsp y:BG\to\UU$ is also a $G$-set (type) and if $q:y=y'$, then the preferred equality between $\pathsp y$ and $\pathsp{y'}$ sends $p:y=z$ to $pq^{-1}:y'=z$.  As a matter of fact, \cref{lem:BGbytorsor} will identify $BG$ and the type of $G$-torsors via the map sending $y:BG$ to $\pathsp y$ using the full transport structure of the identity type $\pathsp yz\defequi(y=z)$.
@@ -557,9 +564,9 @@ More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors o
 $$G\to\Sigma_{X(\pt_G)}% \defequi(\UU_{(X(\pt_G))},X(\pt_G))
 $$ from $G$ to the permutation group $\Sigma_{X(\pt_G)}$ of $X(\pt_G)$.
 
-Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to B\Sigma_{X(\pt_G)}%\defequi(\UU_{(X(\pt_G))},X(\pt_G)
+Conversely, if $X$ is any type \emph{and} we have a homomorphism $G\to\Sigma_X$ (in other words, a pointed map $BG\to B\Sigma_{X}%\defequi(\UU_{(X)},X(\pt_G)
 $), then the composite
-$$BG\to \UU_{(X(\pt_G))}\to \UU$$
+$$BG\to \UU_{(X)}\to \UU$$
 is a $G$-type with $X$ exactly the value of $\pt_G$.
 
 However, we must be careful not to focus too much on the underlying type.  
@@ -584,35 +591,62 @@ $$\typetorsor_G\defequi\sum_{X:\Type_G}||\princ G=X||,$$
 where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
 \begin{remark}
-  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||\princ G=X||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||\princ G=X||.$  Hence, for $G$ a group, the type of $G$-torsors is just another name for the component of the connected covers of $BG$ containing the universal \covering.
+  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||\princ G=X||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||\princ G=X||.$  
+Hence, for $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings of $BG$ containing the universal \covering.
 
-Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one:
+Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one!
 \end{remark}
-\begin{lemma}\label{lem:BGbytorsor}
-  If $G$ is a group (or \inftygp), then the function
-$$T:BG\to\typetorsor_G,\qquad T(z)\defequi \pathsp z\defequi(x\mapsto(z=_{BG}x))$$
-is an equivalence.
+\begin{definition}
+  \label{def:BG2TorsG}
+  Let $\pathsp{}\defequi\pathsp{}^G:BG\to(\typetorsor_G,\princ G)$ be the pointed map given by sending $z:BG$ to $\pathsp z$ and $\refl{\pathsp{\pt_G}}:\pathsp{\pt_G}=\princ G$. 
+\end{definition}
 
-Hence the groups (or $\infty$-groups) $(\typetorsor_G,\princ G)$ and $G=(BG,\pt_G)$ are equal.\footnote{in the appropriate universe}.
+\begin{example}\label{ex:pathsptransport}
+  For $y,z:BG$ we make the induced map
+$$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z)
+$$
+explicit.  For $q:y=z$,  the transport $\pathsp q:\pathsp y=\pathsp z\defequi\prod_{x:BG}\pathsp y(x)=\pathsp z(x)$ is given by sending $p:\pathsp y(x)\defequi (y=x)$ to
+$$\pathsp q(p)\defequi pq^{-1}:\pathsp z(x)\defequi(z=x),$$ 
+or, in a picture 
+$$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{\pathsp q(p)}_\downarrow\\
+x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
+\end{example}
+\begin{lemma}\label{lem:pathsptransportiseq}
+  For  $y,z:BG$ the induced map  (\ie transport) of identity types
+$$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z)
+$$
+is an equivalence.
 \end{lemma}
+\begin{proof}
+ By the induction principle for the identity type,  
+a function $f:\pathsp y\to \pathsp z$ is given by its value $f(\refl y):\pathsp zy\defequi (z=y)$ and in general, for $p:y= x$ we have by transport that $f(p)$ is the composite $p\,f(\refl y)=\pathsp{(f(\refl y))^{-1}}(p)$.  
+In other words the map $\pathsp{}:(y=z)\to(\pathsp z=\pathsp y)$ is an equivalence.
+\end{proof}
+
+
+\begin{theorem}\label{lem:BGbytorsor}
+  If $G$ is a group (or \inftygp), then the function
+$$\pathsp{}:BG\to(\typetorsor_G\princ G),\qquad z\mapsto \pathsp z\defequi(x\mapsto(z=_{BG}x))$$
+is an equivalence.
+Univalence then provides us with an identity 
+$$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\footnote{in the appropriate universe}.
+\end{theorem}
 
 \begin{proof}
-  Since both $\typetorsor_G$ and $BG$ are connected, it suffices by \cref{lem:eqandcovofconntypes} to show that the induced function (\ie transport) of identity types
-$$T:(y=z)\to(\pathsp y= \pathsp z)
+  Since both $\typetorsor_G$ and $BG$ are connected, it suffices by \cref{lem:eqandcovofconntypes} to show that the induced map
+$$\pathsp{}:(y=z)\to(\pathsp y= \pathsp z)
 $$
-is an equivalence.  But this will follow by the very definition of the identity type!  
+is an equivalence, which is exactly the contents of \cref{lem:pathsptransportiseq}.  
+%But this will follow by the very definition of the identity type!  
 
-For $q:y=z$,  the transport $T(q):\pathsp y=\pathsp z$ is given by  sending $p:y=x$ to
-$$T(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ 
-or, in a picture 
-$$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{T(q)(p)}_\downarrow\\
-x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
+% For $q:y=z$,  the transport $T(q):\pathsp y=\pathsp z$ is given by  sending $p:y=x$ to
+% $$T(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ 
+% or, in a picture 
+% $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{T(q)(p)}_\downarrow\\
+% x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
 
-
-Conversely, by the induction principle for the identity type, %$T(y)(x)\defequi (y=x)y=x$,  
-a function $f:\pathsp y\to \pathsp z$ is given by its value $f(\refl y):\pathsp zy\defequi (z=y)$ and in general, for $p:y\to x$ we have by transport that $f(p)$ is the composite $p\,f(\refl y)$.  In other words the map $T:(y=z)\to(\pathsp z=\pathsp y)$ is an equivalence.
-%Hence $\bn 1\to T^{-1}(f)=\sum_{p:y=z}T(p)=f$ with value is an equivalence.
-%the same as giving an element in $T(z)(y)\defequi (z=y)$.
+% %Hence $\bn 1\to T^{-1}(f)=\sum_{p:y=z}T(p)=f$ with value is an equivalence.
+% %the same as giving an element in $T(z)(y)\defequi (z=y)$.
 \end{proof}
 This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\UU$'':\footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
 \begin{lemma}
@@ -621,8 +655,8 @@ $$\alpha_G:\Hom(G,\Sigma_{\pt_G=\pt_G})$$
 of $G$ into a permutation group.
 \end{lemma}
 \begin{proof}
-  The type of injective group homomorphism from $G$ to a group $H$ is equivalent ((GIVE REF)) to the type of pointed \coverings of $BH$ by $BG$, so we need to show that $\alpha_G:BG\to\UU_{(\pt_G=\pt_G)}$ is a \covering.  
-Under the identity $BG=\typetorsor_G$ of \cref{lem:BGbytorsor} the function $\alpha$ translates to the evaluation map
+  The type of injective group homomorphism from $G$ to a group $H$ is equivalent\footnote{((GIVE REF))} to the type of pointed \coverings of $BH$ by $BG$, so we need to show that $\alpha_G:BG\to\UU_{(\pt_G=\pt_G)}$ is a \covering.  
+Under the identity $\bar{\pathsp{}}:BG=(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} the function $\alpha$ translates to the evaluation map
 $$\xymatrix{
   \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\pt_G}}\ar@{=}[d]&&\Sigma_{\pt_G=\pt_G}\ar@{=}[d]\\
   \underset{E:BG\to\Set}\sum\,\underset{x:BG}\prod||(\pt_G=x)=E(x)||\ar@{}[rr]^-{E\mapsto E(\pt_G)}&&
@@ -636,12 +670,14 @@ $$\xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x
   X\ar@{=}[ur]^p_\to\ar@{=}[dr]^q_\to&&\\
   &F(\pt_G)\ar@{=}[r]^{F(r)}_\to&F(x)},$$
 and so $\phi(x)$ (which by nature is independent of such an $r:\pt_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us pin this down in our language.
-If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $x:BG$ both $E(x)$ and $F(x)$ are sets, it is enough to show that the proposition $\phi(x)=\psi(x)$ is inhabited.  Let $f:(\pt_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$ given above.  Since $BG$ is connected, $\pt_G=x$ is inhabited, and we are done.
+If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $x:BG$ both $E(x)$ and $F(x)$ are sets, it is enough to show that the proposition $\phi(x)=\psi(x)$ is not empty.  Let $f:(\pt_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$ given above.  
+Since $BG$ is connected, $\pt_G=x$ is not empty, and we are done.
 \end{proof}
 
 
 
-\section{Groups concrete or abstract -- same gem, different wrapping}
+\section{Groups concrete or abstract% -- same gem, different wrapping
+}
 \label{sec:Gsetforabstract}
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of
@@ -660,7 +696,7 @@ $\agp G\to\abstr(\Sigma_{\mathcal X})$
 from $\agp G$ to the (abstract) permutation group of $\mathcal X$:
 $$Set_{\agp G}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\agp G},\abstr(\Sigma_{\mathcal X})).$$
 
-The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $\mathrm{under}({\agp G})\defequi S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mapsto \mathrm{ua}(s\mapsto s\cdot g^{-1})$.
+The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $\mathrm{under}({\agp G})\defequi S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
 $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp G}=S||.$$
@@ -676,20 +712,18 @@ $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp
 \end{example}
 
 
-Useful notation:\footnote{move somewhere. ((In notation used elsewhere, ``$\preinv(q)(p)=P_q(p)$, $\post(p)(q)=P_x(p)(q)$ and $\adjoint(q)(p)=\Ad(p)(q)$'', but this may be confusing since some of these are seen as secondary (\eg in\footnote{why doesn't xspace work?} $P_x$ the $x$ has been largely fixed before) and some primary))
-
-Also, 190218, there are many things that I have not yet had time to improve in the remainder of the chapter}
-
+To help reading the coming proofs we introduce some notation that is redundant, but may aid the memory in cluttered situations:  Let $x,y,z$ be elements in some type, then
 \begin{align*}
 %  \pre:(x=y)\to ((y=z)=(x=z)),\qquad&\pre(q)(p)\defequi pq\\
-  \preinv:(y=x)\to ((y=z)=(x=z)),\qquad&\preinv(q)(p)\defequi\preinv_qp\defequi pq^{-1}\\
-  \post:(y=z)\to ((x=y)=(x=z)),\qquad&\post(p)(q)\defequi\post_pq\defequi pq\\
-  \adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
+  \preinv:(y=x)\to ((y=z)=(x=z)),\quad&\preinv(q)(p)\defequi\pathsp qp\defequi pq^{-1}\\
+  \post:(y=z)\to ((x=y)=(x=z)),\quad&\post(p)(q)\defequi\post_pq\defequi pq\\
+  %\adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
 \end{align*}
+We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of identity types $\pathsp{}\colon (y=z)\to(\pathsp y=\pathsp z)$ evaluated at $x$, while post-composition $\post$ is transport in the family $\pathsp x$, 
 
 
 \begin{example}\label{ex:qG}
-  If $G$ is a group, then for any $x:BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\pt_G=x)$ has a natural structure of an $\abstr(G)$-torsor by means of 
+  If $G$ is a group, then for any $x:BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\pt_G=x)$, has a natural structure of an $\abstr(G)$-torsor by means of 
 $$\preinv:(\pt_G=\pt_G)\to ((\pt_G=x)=(\pt_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\pt_G=x}$ and that for $p,q:\pt_G=\pt_G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \pt_G=x$ we have that 
 $$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  
 That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ{\abstr(G)}^\abstr$).
