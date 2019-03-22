@@ -660,7 +660,7 @@ two pairs to be equal.  We start with a definition.
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   Consider the function $$\pair : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ \pair(x)(y) \defeq (x,y). $$
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$, we define the map 
-  $$\left( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right) \mapsto \left ( (x,y) = (x',y') \right )$$
+  $$\left( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right) \to \left ( (x,y) = (x',y') \right )$$
   by $$ (p,q) \mapsto \apap {\pair} p q. $$
   (Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p {y'}$, and to \cref{def:applfun2} for the definition of $\apap{}{}{}$.)
   We introduce $\pathpair p q$ as notation for $\apap {\pair} p q$.
@@ -1001,13 +1001,15 @@ Let $Z(a)$ be an $n$-type depending on $a:A$. Then we have:
 \end{enumerate}
 \end{lemma}
 
-We recall the following definitions.
+We formalize the definitions from the start of this section.
+\begin{definition}\label{def:isSet}
 \begin{align*}
 \isprop(P) &\defeq\prod\nolimits_{p,q:P}(p=q)\\
 \isset(S) &\defeq\prod\nolimits_{x,y:S}\isprop(x=y)\jdeq
                   \prod\nolimits_{x,y:S}\prod\nolimits_{p,q:(x=y)}(p=q)\\
 \isgrpd(G) &\defeq\prod\nolimits_{g,h:G}\isset(g=h)\jdeq \ldots\\
 \end{align*}
+\end{definition}
 
 \begin{lemma}\label{lem:isX-is-prop}
   For any type $A$, the following types are propositions:
@@ -1052,7 +1054,8 @@ In ordinary sets, a subset $B$ of a set $A$ can be given concretely by
 considering the \emph{characteristic function} $\chi_B\colon A\to\bool$ 
 which takes the value $\yes$ on $B$ and $\no$ everywhere else: 
 $B$ is then exactly the preimage of $\yes$ under $\chi_B: A\to\bool$.
-Doing so often requires the Law of the Excluded Middle (LEM).
+Assuming that every subset has a characteristic function
+requires the Law of the Excluded Middle (LEM).
 
 In this book we do not assume LEM, and there are some more subtleties. 
 Let $T$ be a type and let $P: T\to\UU$ be a type family.
