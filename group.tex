@@ -354,7 +354,9 @@ $$
 \end{definition}
 \begin{example}
   \begin{enumerate}
-  \item   Consider two sets $S$ and $T$.  The map $\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$.
+  \item   Consider two sets $S$ and $T$.  
+Recall that $\Set_{(S)}\defequi\sum_{X:\Set}||S=X||$ is the component of the groupoid $\Set$ containing $S$, and when pointed at $S$ represents the permutation group $\Sigma_S$.  
+The map $\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$.
 Thought of as symmetries, this says that if you have a symmetry of $S$, then we get a symmetry on $S\coprod T$ (which doesn't do anything to $T$).  
 
 Likewise, we get a map $\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to $X\times T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\times T}$. 
@@ -447,19 +449,20 @@ where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\
   \end{enumerate}
 \end{definition}
 \begin{definition}\label{def:abstrisfunctor}
-  If $(G_{\Set},e_G,\mu_G,\iota_G)$ and $(H_{\Set},e_H,\mu_H,\iota_H)$ are two abstract groups, then the set of homomorphisms from $G$ to $H$ is
-  \begin{align*}
-    \Hom^\abstr&((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))\\
-=&\sum_{f:G_{\Set}\to H_{\Set}}(f(e_G)=e_H)\times (f\mu_G=\mu_Hf).
-  \end{align*} 
-Since $(f(e_G)=e_H)\times (f\mu_G=\mu_Hf)$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
+  If $\mathcal G\defequi(\mathcal G_{\Set},e_{\mathcal G},\mu_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(\mathcal H_{\Set},e_{\mathcal H},\mu_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
+ $$  \Hom^\abstr(\mathcal G,\mathcal H)%(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))\\
+=\sum_{f:\mathcal G_{\Set}\to \mathcal H_{\Set}}(f(e_{\mathcal G})=e_{\mathcal H})\times (f\mu_{\mathcal G}=\mu_{\mathcal H}f).
+$$
+Since $(f(e_{\mathcal G})=e_{\mathcal H})\times (f\mu_{\mathcal G}=\mu_{\mathcal H}f)$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
 
 If $G$ and $H$ are groups, the function
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is the function $\abstr(f)=(f^\abstr,!)$ defined in \cref{def:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
-  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr((G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ then $f(g^{-1})=(f(g))^{-1}$, making a separate axiom redundant.  
+  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr(\mathcal G,\mathcal H)$
+%(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ 
+then $f(g^{-1})=(f(g))^{-1}$, making a separate axiom redundant.  
 \end{xca}
 \begin{xca}
 Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
@@ -529,7 +532,8 @@ Given a $G$-set, we may consider it as a $G$-type and will usually not make a no
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
-$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  We've seen this family before in the guise of the ``universal \covering $\pathsp{\pt_G}$'' of \cref{def:universalcover}!  
+$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi\pathsp{\pt_G}(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  
+We've seen this family before in the guise of the (fibers of the) ``universal \covering'' of \cref{def:universalcover}!  
 The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.
 
 There is nothing sacred about starting the equality in $\pt_G$: if $y:BG$, then $\pathsp y:BG\to\UU$ is also a $G$-set (type) and if $q:y=y'$, then the preferred equality between $\pathsp y$ and $\pathsp{y'}$ sends $p:y=z$ to $pq^{-1}:y'=z$.  As a matter of fact, \cref{lem:BGbytorsor} will identify $BG$ and the type of $G$-torsors via the map sending $y:BG$ to $\pathsp y$ using the full transport structure of the identity type $\pathsp yz\defequi(y=z)$.
@@ -608,7 +612,7 @@ $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{\pathsp q(p)
 x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
 \end{example}
 \begin{lemma}\label{lem:pathsptransportiseq}
-  For  $y,z:BG$ we make the induced map  (\ie transport) of identity types
+  For  $y,z:BG$ the induced map  (\ie transport) of identity types
 $$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z)
 $$
 is an equivalence.
@@ -624,7 +628,7 @@ In other words the map $\pathsp{}:(y=z)\to(\pathsp z=\pathsp y)$ is an equivalen
   If $G$ is a group (or \inftygp), then the function
 $$\pathsp{}:BG\to(\typetorsor_G\princ G),\qquad z\mapsto \pathsp z\defequi(x\mapsto(z=_{BG}x))$$
 is an equivalence.
-Univalence then provides an identity 
+Univalence then provides us with an identity 
 $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\footnote{in the appropriate universe}.
 \end{theorem}
 
@@ -672,7 +676,8 @@ Since $BG$ is connected, $\pt_G=x$ is not empty, and we are done.
 
 
 
-\section{Groups concrete or abstract -- same gem, different wrapping}
+\section{Groups concrete or abstract% -- same gem, different wrapping
+}
 \label{sec:Gsetforabstract}
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.  We define totally analogously the type of torsors for an abstract group.  It will then be a relative simple matter to show that the processes of
@@ -707,20 +712,18 @@ $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp
 \end{example}
 
 
-Useful notation:\footnote{move somewhere. ((In notation used elsewhere, ``$\preinv(q)(p)=P_q(p)$, $\post(p)(q)=P_x(p)(q)$ and $\adjoint(q)(p)=\Ad(p)(q)$'', but this may be confusing since some of these are seen as secondary (\eg in\footnote{why doesn't xspace work?} $P_x$ the $x$ has been largely fixed before) and some primary))
-
-Also, 190218, there are many things that I have not yet had time to improve in the remainder of the chapter}
-
+To help reading the coming proofs we introduce some notation that is redundant, but may aid the memory in cluttered situations:  Let $x,y,z$ be elements in some type, then
 \begin{align*}
 %  \pre:(x=y)\to ((y=z)=(x=z)),\qquad&\pre(q)(p)\defequi pq\\
-  \preinv:(y=x)\to ((y=z)=(x=z)),\qquad&\preinv(q)(p)\defequi\preinv_qp\defequi pq^{-1}\\
-  \post:(y=z)\to ((x=y)=(x=z)),\qquad&\post(p)(q)\defequi\post_pq\defequi pq\\
-  \adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
+  \preinv:(y=x)\to ((y=z)=(x=z)),\quad&\preinv(q)(p)\defequi\pathsp qp\defequi pq^{-1}\\
+  \post:(y=z)\to ((x=y)=(x=z)),\quad&\post(p)(q)\defequi\post_pq\defequi pq\\
+  %\adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
 \end{align*}
+We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of identity types $\pathsp{}\colon (y=z)\to(\pathsp y=\pathsp z)$ evaluated at $x$, while post-composition $\post$ is transport in the family $\pathsp x$, 
 
 
 \begin{example}\label{ex:qG}
-  If $G$ is a group, then for any $x:BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\pt_G=x)$ has a natural structure of an $\abstr(G)$-torsor by means of 
+  If $G$ is a group, then for any $x:BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\pt_G=x)$, has a natural structure of an $\abstr(G)$-torsor by means of 
 $$\preinv:(\pt_G=\pt_G)\to ((\pt_G=x)=(\pt_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\pt_G=x}$ and that for $p,q:\pt_G=\pt_G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \pt_G=x$ we have that 
 $$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  
 That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ{\abstr(G)}^\abstr$).
