@@ -28,19 +28,24 @@ when we write $f : X \to Y$, we mean that $f$ is an element of the type $X \to Y
 
 Functions behave as one would expect, and one can make new ones in the usual way.
 
-To provide an example of making new functions in the usual way, consider functions $f : X \to Y$ and $g : Y \to Z$.  We define their composite
-$g \circ f : X \to Z$ by setting $g \circ f \defeq (a \mapsto g(f(a)))$. 
-A composite $g \circ f$ may also be denoted by $gf$.
-Such definitions are to be regarded as syntactically transparent in
-our formal system, in the sense that two formal expressions will be regarded as being \emph{the same by definition} if they yield the same formal
-expression after the definitions of all the symbols within them are completely expanded.  Given two expressions that are the same by definition,
-we may replace one with the other in any other expression, at will.  Here is an example: consider functions $f : X \to Y$, $g : Y \to Z$, and $h
-: Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by definition, since applying the definitions within expands both
-to $a \mapsto h(g(f(a)))$.
+To provide an example of making new functions in the usual way, we first introduce notation for making and for using {\em definitions}.  The
+notation $x \defeq z$ will be an announcement that we are defining the expression $x$ to be the expression $z$; the forms allowed for the
+expression $x$ will be made clear by the examples we give.  The notation $x \jdeq y$ will denote the statement that the expressions $x$ and $y$
+become the same thing if all the subexpressions within $x$ or $y$ are expanded according to their definitions, if any; in that case, we will say
+that $x$ and $y$ are \emph{the same by definition}.  Whenever two expressions are the same by definition, we may replace one with the other
+inside any other expression, at will, because the expansion of definitions is regarded as trivial and transparent.
+
+We proceed now to the promised example.  Consider functions $f : X \to Y$ and $g : Y \to Z$.  We define their composite $g \circ f : X \to Z$ by
+setting $g \circ f \defeq (a \mapsto g(f(a)))$; in other words, it is the function that sends an arbitrary element $a$ of $X$ to $g(f(a))$ in
+$Z$.  The composite $g \circ f$ may also be denoted simply by $gf$.
+
+Now consider functions $f : X \to Y$, $g : Y \to Z$, and $h : Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by
+definition, since applying the definitions within expands both expresssions to $a \mapsto h(g(f(a)))$.  In other
+words, we have established that $(h \circ g) \circ f \jdeq h \circ (g \circ f)$.
 
 One may define the identity function $id_X : X \to X$ by setting $id_X \defeq (a \mapsto a)$.  Application of definitions shows that $f \circ
-id_X$ is the same as $a \mapsto f(a)$, which, by convention, is to be regarded as the same as $f$.  A similar computation applies to $id_Y \circ
-f$.
+id_X$ is the same by definition as $a \mapsto f(a)$, which, by a standard convention, which we adopt, is to be regarded as the same as $f$.  In
+other words, we have established that $f \circ id_X \jdeq f$.  A similar computation applies to $id_Y \circ f$.
 
 In the following sections we will expose various other elementary types and elementary ways to make new types from old ones.
 
@@ -52,7 +57,10 @@ Here are Peano's rules \citep{peano-principia} for constructing the natural numb
 \item[P1:] there is a type called $\NN$ (whose elements will be called natural numbers);
 \item[P2:] there is an element of $\NN$ called $0$;
 \item[P3:] if $m$ is a natural number, then there is also a natural number $S(m)$, called the \emph{successor} of $m$;
-\item[P4:] given a family of types $X(m)$ depending on a parameter
+\item[P4:] given a family of types $X(m)$ depending on a parameter\footnote{
+  Referring to a variable as a {\em parameter} is a turn of phrase that emphasizes that an expression depends on the variable,
+  drawing attention to the results as the variable ranges over elements of its type.
+  }
   $m$ of type $\NN$, in order to define a family $f(m) : X(m)$ of elements of each of them it suffices to provide an element $a$ of $X(0)$ and
   to provide, for each $m$, a function $g_m : X(m) \to X(S(m))$.  (The resulting function $f$ may be regarded as having been defined inductively
   by the two declarations $f(0) \defeq a$ and $f(S(m)) \defeq g_m(f(m))$.)
@@ -66,25 +74,20 @@ We introduce the following syntactic definitions.
 \begin{align*}
  1 & \defeq S(0) \\
  2 & \defeq S(1) \\
- t+1 & \defeq S(t),\text{~for any term $t$ of type $\NN$}
-% 3 & \defeq S(2) \\
-% 4 & \defeq S(3)
+ 3 & \defeq S(2) \\
+ \vdots
 \end{align*}
 
-Here is an example of defining a function by recursion using induction for $\NN$.
-Assuming that we already have defined multiplication
-(see \cref{sec:more-on-N}), we can define the factorial 
-function $\fact : \NN \to \NN$ by defining $X(m)$ to be $\NN$ for all $m$ and 
-by setting $\fact(0) \defeq 1$ and setting $\fact(m+1) \defeq (m+1) \cdot \fact(m)$.
-The latter definition applies rule P4 with $1$ for $a$,
-and the function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$. 
-Application of definition shows, for example,
-that $\fact(2)$ and $2$ are the same by definition,
-because they both reduce to $S(S(0))$.
+Here is an example of defining a function on $\NN$ by recursion.
+We use addition and multiplication of natural numbers, which will be defined
+in \cref{sec:more-on-N}.  Then we define the factorial 
+function $\fact : \NN \to \NN$ by setting $X(m)$ to be $\NN$ for all $m$,
+by setting $\fact(0) \defeq 1$, and by setting $\fact(S(m)) \defeq (m+1) \cdot \fact(m)$.
+This definition applies rule P4 with $1$ for $a$,
+and with the function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$. 
+Application of the definitions shows, for example,
+that $\fact(2) \jdeq 2$, because both sides expand to $S(S(0))$.
 
-Before we can write an equation such as $\fact(2)=2$, 
-we must introduce a formal treatment of equality in type theory.  
-We do that in the next section.
 We finish this section with an example of iteration,
 which is a special case of recursion. 
 
@@ -92,7 +95,7 @@ which is a special case of recursion.
 Let $X$ be a type and $e$ a function from $X$ to $X$. 
 We define by induction the $n$-fold \emph{iteration} of $e$,
 denoted $e^n$, and of the same type as $e$,
-by setting $e^0 \defeq \id_X$ and $e^{n+1}\defeq e\circ e^n$.
+by setting $e^0 \defeq \id_X$ and $e^{S(n)}\defeq e\circ e^n$.
 \end{definition}
 
 The reader may wonder how this definition, 
@@ -123,23 +126,36 @@ the two elements are of the same type; we shall have no need to compare elements
 Here are the rules for constructing equality types.
 \begin{enumerate}
 \item[E1:]
-  for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a=b$;
-\item[E2:] for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a=a$ (the name $\refl{}$ comes from the word
+  for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a =_X b$;
+\item[E2:] for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$ (the name $\refl{}$ comes from the word
   ``reflexivity'')
 \item[E3:] for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
-  $a=b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl a)$.  The resulting
+  $a =_X b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl a)$.  The resulting
   function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl a) \defeq p$.
 \end{enumerate}
 
-We will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$, because there may be more than one of them.  When we know
-that there can be at most one of them, we will refer to $i$ as a {\em proof} that $a$ is equal to $b$.  Since the word ``identification'' is a long
-one, we may also refer to $i$ as a {\em path} from $a$ to $b$---this has the advantage of incorporating the intuition that an
-identification may proceed gradually through intermediate steps.
+When there is no risk of confusion, we will write $a=b$ instead of $a =_X b$.
 
-We see from rule E2 that $\refl{S(S(0))}$ serves as a proof of $\fact(2)=2$, 
-as do $\refl{2}$ and $\refl{\fact(2)}$.  A student might wish for a
-more detailed proof of that equation, but as a result of our convention above that definitions are syntactically transparent, the application of
-definitions, including inductive definitions, is regarded as a trivial operation.
+When we know that there can be at most one element of $a=b$, we will refer to an element $i$ of $a=b$ as a {\em proof} that $a$ is equal to $b$.
+
+When $a=b$ may have more than one element, we will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$.  Since the word
+``identification'' is a long one, we may also refer to $i$ as a {\em path} from $a$ to $b$---this has the advantage of incorporating the
+intuition that an identification may proceed gradually through intermediate steps.
+
+It may come as a surprise that two mathematical objects can be equal in more than one way, especialy since rule E3 above seems to say that the
+trivial proofs of equality are the only relevant ones, but this reflects a situation commonly encountered in geometry, where {\em congruence} of
+geometric figures is considered.  For example, in Euclidean space, two equilateral triangles of the same size are congruent in six (different)
+ways.  The chief novelty of univalent mathematics is that the basic logical notion of equality, as implemented by the types $a=b$, is carefully
+engineered to accommodate notions of congruence and symmetry from diverse areas of mathematics, including geometry.  Exposing that point of view
+in the context of geometry is the main point of this book.
+
+In light of the analogy with geometry just introduced, we will refer to an element $i$ of $a=a$ as a {\em symmetry} of $a$.  Think of a
+congruence of a triangle with itself.  An example of a non-trivial symmetry will be seen in \cref{xca:C2}.
+
+Expansion of the definitions in the type $\fact(2)=2$ simplifies it to $S(S(0)) = S(S(0))$, so we see from rule E2 that $\refl{S(S(0))}$ serves
+as a proof of it.  We may also write $\refl{2}$ and $\refl{\fact(2)}$ for that proof.  A student might want a more detailed proof of the
+equation, but as a result of our convention above that definitions are syntactically transparent, the application of definitions, including
+inductive definitions, is regarded as a trivial operation, and the details are omitted from the proof.
 
 We will refer to rule E3 as ``induction for equality''.  It says that to prove something about (or to construct something from) every proof that
 $a$ is equal to something else, it suffices to consider the special case where the proof is the trivial proof that $a$ is equal to itself, i.e.,
@@ -312,7 +328,7 @@ f=g \to \prod_{x:X} f(x)=g(x).
 \] 
 \end{xca}
 
-Conversely, a basic principle called {\em function extensionality}
+Conversely, a basic logical principle called {\em function extensionality}, which we adopt,
 asserts that $f=g$ whenever $f(x) = g(x)$ for every element $x$ of $X$.
 
 \section{Identifying elements in members of families of types}
@@ -374,31 +390,26 @@ The following simple lemma will be useful later.
 \section{Inductive types}
 \label{sec:inductive-types}
 
-There are other examples of types that are conveniently presented as 
-inductive definitions, in the style we have seen with the natural numbers
-and the equality types.  We start by the finite types, and then
-present several constructions defining new types from old ones.
-For each of these constructions we explain what it means for two 
-elements of the newly constructed type to be equal in terms of
-equality in the constituent types.
+There are other examples of types that are conveniently introduced as we have seen with the natural numbers and the equality types.  A type
+presented in this style shares some common features: there are some ways to create new elements, and there is a way (called {\em induction}) to
+prove something about every element of the type (or family of types).  We will refer to such types as {\em inductive} types, and we present a
+few more of them in this section, including the finite types, and then we present some other constructions for making new types from old ones.
+For each of these constructions we explain what it means for two elements of the newly constructed type to be equal in terms of equality in the
+constituent types.
 
 \subsection{Finite types}
 \label{sec:finite-types}
-Firstly, there is the ``empty'' type, denoted $\bn{0} $, defined inductively, with no way to construct elements provided in the inductive
-definition.  The inductive principle for $\bn{0} $ says that to prove something about (or to construct something from) every element of
-$\bn{0} $, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\bn{0} $ can be proven. (This logical principle is traditionally called {\em Ex falso quod libet}.) As
-an example, we may prove that any two elements $x$ and $y$ of $\bn{0} $ are equal by using induction on $x$.
+Firstly, there is the {\em empty} type, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
+definition.  The inductive principle for $\emptytype$ says that to prove something about (or to construct something from) every element of
+$\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be proven. (This logical principle is traditionally called {\em ex falso quod libet}.) As
+an example, we may prove that any two elements $x$ and $y$ of $\emptytype$ are equal by using induction on $x$.
 
-An element of $\bn{0} $ will be called an \emph{absurdity}, and the negation $\neg P$ of a proposition $P$ will be implemented as the function
-type $P \to \bn{0} $.  This is sensible, because an element of $\neg P$ could be applied to an element of $P$ to produce an element of
-$\bn{0} $, i.e., an absurdity.
-
-Another appropriate name for $\bn{0} $ is $\false$.
-
-We may also construct a function $\false \to X$, for any type $X$, by induction, showing that from an absurdity anything follows.
-
-To encode the property that $X$ has no elements we use the type $X \to \bn{0} $.  To encode the property that elements $a,b:X$ are not equal,
-we use the type $(a=b) \to \bn{0} $, and we let $a \ne b$ denote it.
+An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one expects that there are no real absurdities in mathematics, nor in any
+logical system (such as ours) that attempts to provide a language for mathematics, but it is important to have such a name so we can discuss
+the possibility, which might result inadvertently from the introduction of unwarranted assumptions.  For example, to assert that a type $P$ has
+no elements, it would be sensible to assert that an element of $P$ would lead to an absurdity.  Providing a function of type $P \to \emptytype$ is a
+convenient way to make that assertion.  Hence we define the {\em negation} of a type by setting $\neg P \defeq P \to \emptytype$.  Using it, we
+may define the type $(a \ne b) \defeq \neg (a = b)$; an element of it asserts that $a$ and $b$ cannot be identified.
 
 Secondly, there will also be a type called $\true$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
   ``trivial'').  Its induction principle
@@ -417,14 +428,14 @@ that any element of $\bool$ is equal to $\yes$ or to $\no$.
 We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
 Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.  The definition of $P(b)$ is motivated by the expectation that we will be able
 to prove that $P(b)$ and $b = \yes$ are equivalent.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv :
-P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \bn{0} $,
+P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$,
 establishing the claim.
 
 In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, i.e., for any $n:\NN$ that $0 \ne
 S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
 \defeq \true$ and $P(S(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
 and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
-of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \bn{0} $, establishing the claim.
+of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptytype$, establishing the claim.
 
 In a similar way we will in \cref{sec:typeFin} define types $P(n)$ for any $n$ in $\NN$
 such that $P(n)$ is the type (set) of $n$ elements.
@@ -534,9 +545,7 @@ The following lemma gives an important example of a contractible type.
 
 Give a type $X$ and an element $a$ of $X$, 
 the \emph{singleton type} $\sum_{x:X} (a=x)$
-consists of pairs $(x,i)$ with $i: a=x$. If $X$ is a set, it 
-can be viewed as the subset of $X$ consisting of the element $a$, because in that case, the
-type $a=x$ is a proposition.
+consists of pairs $(x,i)$ with $i: a=x$. The following lemma shows that a singleton type has exactly one element, justifying the name.
 
 \begin{lemma}\label{lem:thepathspaceiscontractible}
 For any type $X$ and $a:X$, the singleton type $\sum_{x:X} (a=x)$ is contractible.
@@ -1319,7 +1328,7 @@ and all its elements are connected, that is, if
 $\Trunc{A} \times \prod_{x,y:A} \Trunc{x=y}$.
 \end{definition}
 
-Note that under this definition the empty type $\bn{0}$ is not connected.
+Note that under this definition the empty type $\emptytype$ is not connected.
 One can view being connected as a weak form
 of being contractible --- without direct access to a center and to
 identifications of elements.
@@ -1415,7 +1424,7 @@ if all constituent types are sets.
     T(S(n), S(m), p) \defeq \sum_{q : n = m} p = \ap S q,%
   \]
   and for the other cases the choice does not matter, say $T(0, S(m),
-  p) \defeq T(S(n), 0 ,p) \defeq \bn{0}$.  Next we prove $T(n,m,p)$
+  p) \defeq T(S(n), 0 ,p) \defeq \emptytype$.  Next we prove $T(n,m,p)$
   for all $n,m$, and $p$ by induction on $p$, leaving us with
   $T(n,n,\refl{n})$ for all $n : \NN$, which we in turn prove by
   distinguishing cases on $n$.  Both the case for $0$ and for $S(n)$
@@ -1618,12 +1627,12 @@ Recall from \cref{sec:finite-types} the types
 $\false$, $\true$ and $\bool$ containing zero, one and two
 elements, respectively. We now define generally the
 type of $n$ elements for any $n:\NN$.
-%$\bn{0} $, $\bn{1} $, $\bn{2} ,\ldots$
+%$\emptytype$, $\bn{1} $, $\bn{2} ,\ldots$
 
 \begin{definition}\label{def:finiteset}
 For any type $X$ define $\Succ(X)\defeq X\amalg\true$.
 Define inductively the type family $F(n)$, for each $n:\NN$, by
-setting $F(0)\defeq\bn{0}$ and $F(S(n))\defeq\Succ(F(n))$.
+setting $F(0)\defeq\emptytype$ and $F(S(n))\defeq\Succ(F(n))$.
 Now abbreviate $\bn{n}\defeq F(n)$. The type $\bn{n}$ is called
 the type with $n$ elements, and we denote its elements
 by $0,1,\ldots,n-1$ rather than by the corresponding expressions
@@ -1633,7 +1642,7 @@ using $\inl{}$ and $\inr{}$.
 \begin{xca}\label{xca:finite-types}
 \hspace{1in}
   \begin{enumerate}
-  \item Denote in full all elements of $\bn{0} $, $\bn{1} $, and $\bn{2}$.
+  \item Denote in full all elements of $\emptytype$, $\bn{1} $, and $\bn{2}$.
   \item Show (using UA) that $\bn{1} =\true$, $\bn{2} =\bool$.
   \item Show (using UA) that $\bn{n} = \sum_{k:\NN} k<n$ for all $n:\NN$.
   \item Show that $n=m$ if $\bn{m}=\bn{n}$.
