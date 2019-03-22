@@ -78,43 +78,21 @@ We introduce the following syntactic definitions.
  \vdots
 \end{align*}
 
-Here is an example of defining a function on $\NN$ by recursion.
-We use addition and multiplication of natural numbers, which will be defined
-in \cref{sec:more-on-N}.  Then we define the factorial 
-function $\fact : \NN \to \NN$ by setting $X(m)$ to be $\NN$ for all $m$,
-by setting $\fact(0) \defeq 1$, and by setting $\fact(S(m)) \defeq (m+1) \cdot \fact(m)$.
-This definition applies rule P4 with $1$ for $a$,
-and with the function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$. 
-Application of the definitions shows, for example,
-that $\fact(2) \jdeq 2$, because both sides expand to $S(S(0))$.
+We may now define addition and multiplication of natural numbers by recursion.  In both cases, the family of types $X(m)$ is defined by setting
+$X(m) \defeq \NN$ for every $m : \NN$.  For natural numbers $n$ and $m$ we define $n+m : \NN$ by induction on $m$ by setting $n+0\defeq n$ and
+$n+S(m)\defeq S(n+m)$.  Application of definitions shows, for example, that $2+2 \jdeq 4$ are the same by definition, because both sides reduce
+to $S(S(S(S(0))))$.  Similarly we define the product $n \cdot m : \NN$ by induction on $m$ by setting setting $n\cdot 0\defeq 0$ and $n\cdot
+S(m)\defeq (n\cdot m) + n$.
 
-We finish this section with an example of iteration,
-which is a special case of recursion. 
+We may also define the factorial function $\fact : \NN \to \NN$ by recursion, setting $\fact(0) \defeq 1$ and setting
+$\fact(S(m)) \defeq (m+1) \cdot \fact(m)$.  This definition applies rule P4 with $1$ for $a$, and with the
+function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$.
+Application of the definitions shows, for example, that $\fact(2) \jdeq 2$, because both sides expand to $S(S(0))$.
 
-\begin{definition}\label{def:n-fold-iteration}
-Let $X$ be a type and $e$ a function from $X$ to $X$. 
-We define by induction the $n$-fold \emph{iteration} of $e$,
-denoted $e^n$, and of the same type as $e$,
-by setting $e^0 \defeq \id_X$ and $e^{S(n)}\defeq e\circ e^n$.
-\end{definition}
-
-The reader may wonder how this definition, 
-which should be clear enough, relates to rule P4.
-We spell this out in full only once, and will take
-the more liberal approach from \cref{def:n-fold-iteration}
-throughout this book.
-Define $X(m)$ to be $X\to X$ for all $m$ in $\NN$.
-Apply rule P4 with the identity function $\id_X$ for $a$
-and the function $d \mapsto e\circ d$ for each
-$g_m : (X\to X)\to(X\to X)$. (Note that $g_m$ does not depend on $m$, 
-which is typical for iteration, but not for recursion.) 
-By rule P4 this defines a function $f: \NN\to(X\to X)$. 
-Now define $e^n \defeq f(n)$ and we get $e^n$ as in
-\cref{def:n-fold-iteration}.
-
-%We may use induction to define the sum $n+m$ of two natural numbers, as a natural number.  We handle the two possible cases for the argument $m$
-%as follows: we define $n+0 \defeq n$, and we define $n+S(m) \defeq S(n+m)$.  Application of definitions shows, for example, that $2+2$ and $4$
-%are the same by definition, because they both reduce to $S(S(S(S(0))))$.
+We finish this section with the definition of iteration by recursion.  Let $X$ be a type, and suppose we have a function $e : X \to X$.  We
+define by induction the $n$-fold \emph{iteration} $e^n : X \to X$ by setting $e^0 \defeq \id_X$ and $e^{S(n)}\defeq e\circ e^n$.
+Here we apply rule P4 with the identity function $\id_X$ for $a$
+and the function $d \mapsto e\circ d$ for $g_m : (X\to X)\to(X\to X)$, for any $m$.
 
 \section{Identity types}
 \label{sec:identity-types}
@@ -793,27 +771,33 @@ been able to argue by induction on $p$ and $p'$.
 
 \section{Universes and univalence}\label{sec:univax}
 
-Univalence expresses, in a way made precise below, that
-equivalent types are equal. Discussing $X = Y$, 
-like any other identity (see \cref{sec:identity-types}),
-requires an ambient type containing the subjects of the identification,
-here the types $X$ and $Y$.
-In other words, we need a type of types.
+At various points in the discussion above we have spoken of a family of types $Y(x)$ ranging over the elements $x$ of a type $X$.  Now we want
+to make that precise by taking $Y$ to be a function from $X$ to a type whose elements are types; one advantage will be that functions can be
+defined by induction.  Until now types and their elements have been different sorts of things, so it might be a bit jarring at first to consider
+a type as an element of some other type. Indeed, some care is required.  The first temptation is to posit a new type $\UU$ called a {\em
+  universe} so that every type is realized as an element of $\UU$, and thus allowing the family $Y$ to be realized as a function $Y : X \to
+\UU$.  This universe would be ``the type of all types'', but introducing it would lead to an absurdity, basically for the same reason that
+introduction of a ``set of all sets'' leads to an absurdity in traditional mathematics.  That was realized by 1900 and is now known as Russell's
+paradox.  The paradox results from constructing the set $W$ of all sets $X$ such that $X$ is not an element of $X$ and then considering whether
+$W$ is an element of $W$.  Some later approaches to set theory included the notion of a {\em class}, where classes are much like sets, but they
+are bigger and there are more of them.  In particular, the collection of all sets was posited to be a class.  Of course, then may wonder what
+sort of thing the collection of all classes would be.
 
-\begin{definition}\label{def:universe}
-There is type, denoted $\UU$ and called a \emph{universe}, that contains
-all types discussed so far, with the exception of $\UU$ itself and the types 
-$X = Y$, where $X$ and $Y$ themselves are types.
-\end{definition}
+The approach in univalent mathematics resolves the issue as follows.
 
-Using $\UU$ we can now also assign a type to type families:
-if $Y(x):\UU$ for all $x:X$, $X:\UU$, then $Y$ has type $X\to\UU$.
-What is the type of $X\to\UU$, and of $\UU$ itself?
-The answer is: the next universe.
-In this book we use, mostly implicitly, as many such universes as we need.
-Note that a countable linear hierarchy of universes achieves
-the foundational ideal of `everything has a type' while
-avoiding the paradoxical $\UU:\UU$.
+\begin{enumerate}
+\item There are some types called {\em universes}.
+\item If $\UU$ is a universe, and $X : \UU$ is an element of $\UU$, then $X$ is a type.
+\item If $X$ is a type, then it appears as an element in some universe $\UU$.
+\item If $\UU$ and $\UU'$ are universes, and $X:\UU$, then also $X:\UU'$.
+\item The types $\emptytype$, $\true$, and $\NN$ are elements of every universe $\UU$.
+\item If $X : \UU$ and $a,b:X$, then $(a = _X b) : \UU$.  
+\item Given a type $X:\UU$ and a family of types $Y(x):\UU$ parametrized by the elements $x$ of $X$, the sum $\sum_{x:X} Y(x)$ and the product
+  $\prod_{x:X} Y(x)$ are also elements of $\UU$.
+\end{enumerate}
+
+It follows from the properties posited above that there are an infinite number of universes: there is at least one, because the type $\NN$ is
+contained in one as an element, there is another one containing that one, and so on, forever.
 
 The univalence axiom is a statement about the universe $\UU$: 
 for all types $X$ and $Y$ in $\UU$ being \emph{equal} in $\UU$ is 
@@ -829,11 +813,12 @@ We first define the \emph{function} that
 the univalence axiom postulates to be an equivalence.
 
 \begin{definition}\label{def:idtoeq}
-  For types $X$ and $Y$ in $\UU$ and a path $p : X = Y$, we define an equivalence $\cast_{X,Y} (p) : X\equiv Y$ by induction on $Y$ and $p$, setting
+  For types $X$ and $Y$ in a universe $\UU$ and a path $p : X = Y$, we define an equivalence $\cast_{X,Y} (p) : X\equiv Y$ by induction on $Y$ and $p$, setting
   $\cast_{X,Y} (\refl X) \defeq \id_X : X \equiv X$.  The result is a function \[ \cast_{X,Y} : (X = Y) \to (X\equiv Y). \]
 \end{definition}
   
 In expressions such as $\cast_{X,Y}(p)$ we may abbreviate $\cast_{X,Y}$ to $\cast$ if no confusion will result.
+We may also write $\cast (p)$ more briefly as $\ptoe p$.
 
 One may verify that $\cast(p)(x) = \trp{\id_\UU, p} (x)$, for $x : X$, by induction on $p$.
 Here $id_\UU$ is the identity function $id_\UU$ on $\UU$, viewed as a family of types on $\UU$. 
@@ -848,11 +833,9 @@ Formally, we postulate the existence of an element \[ \ua_{X,Y} : \isEq(\cast_{X
 \end{definition}
 
 For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$, the result of applying the
-inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus the identity $\cast (\ua (f)) = f$ holds.
+inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus the identities $\cast (\ua (f)) = f$ and $\ua (\cast (p)) = p$ hold.
 
-In certain contexts, we will want to mix paths and equivalences freely, so, if it will not cause confusion, we may abbreviate $\ua(f)$ to $f$
-for $f : X \equiv Y$, and we may abbreviate $\cast(p)$ to $p$ for $p : Y = Z$.  Thus we will be able to write such expressions as $p \cdot f : X
-= Z$ and $p \circ f : X \equiv Z$.
+We may also write $\ua (f)$ more briefly as $\etop f$.  Thus the identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$ hold.
 
 \begin{xca}\label{xca:C2}
 Prove that $\bool=\bool$ has exactly two elements, 
@@ -1446,10 +1429,6 @@ Show that $X\amalg Y$ is a set if $X$ and $Y$ are sets.
 \section{More on natural numbers}
 \label{sec:more-on-N}
 
-Define inductively addition on $\NN$,
-by $n+0\defeq n$ and $n+S(m)\defeq S(n+m)$. Define
-multiplication on $\NN$, setting $m\cdot 0\defeq 0$ and 
-$m\cdot S(n)\defeq (m\cdot n) + m$. 
 Another useful function is the \emph{predecessor} $p$ defined by
 $p(0)\defeq 0$ and $p(S(n))\defeq n$.
 Elementary properties of addition, multiplication and predecessor
