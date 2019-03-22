@@ -674,6 +674,22 @@ If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $
 Since $BG$ is connected, $\pt_G=x$ is not empty, and we are done.
 \end{proof}
 
+\subsection{Homomorphisms and torsors}
+\label{sec:homotor}
+In view of the equivalence $\pathsp{}^G$ between $BG$ and $(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} one might ask what a group homomorphism  $f:\Hom(G,H)$ translates to on the level of torsors.  Off-hand, the answer is $(\pathsp{}^H)Bf(\pathsp{}^G)^{-1}$, but we can be more concrete than that.  We do know that for $x:BG$ the $G$-torsor $\pathsp x^G$ should be sent to $\pathsp {Bf(x)}^H$, but how do I express this for an arbitrary $G$-torsor?
+\begin{definition}
+  \label{def:restrictandinduce}
+  Let $f:\Hom(G,H)$ be a group homomorphism.  If $Y:BH\to\Set$ is an $H$-set then the \emph{restriction} $f^*Y$ of $Y$ to $G$ is the $G$-set given by precomposition $f^*Y\defequi Y\, f:BG\to\Set$.  
+
+If $X:BG\to\Set$ is a $G$-set and $y:BH$ define $f_*X(y)\defequi(\pt_H=y)\times_{\pt_G=\pt_G}X(\pt_G)$ to be the set quotient of $(\pt_H=y)\times X(\pt_G)$ by the relation $(p,x)\sim(p\, f(q)^{-1},X(q)x)$ for all $q:\pt_G=pt_G$.  The \emph{induced} $H$-set $f_*X:BH\to\Set$ has value at $y:BH$ the set $f_*X(y)$.
+\end{definition}
+\begin{lemma}
+  \label{lem:inducedtorsor}
+   Let $f:\Hom(G,H)$ be a group homomorphism.  For each $y:BH$ we have an equivalence $\eta_f(y):f_*\princ G(y)=\princ H(q)$ given by composition $\eta_f([p,q])\defequi p\, f(q)$ for $p:\pt_H=y$ and $q:\pt_G=\pt_G$.
+
+If $X$ is a $G$-torsor, then $f_*X$ is an $H$-torsor. 
+\end{lemma}
+
 
 
 \section{Groups concrete or abstract% -- same gem, different wrapping
@@ -723,9 +739,10 @@ We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of
 
 
 \begin{example}\label{ex:qG}
-  If $G$ is a group, then for any $x:BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\pt_G=x)$, has a natural structure of an $\abstr(G)$-torsor by means of 
+  If $G$ is a group, then for any $x:BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\pt_G=x)$, has a natural structure of an $\abstr(G)$-set by means of 
 $$\preinv:(\pt_G=\pt_G)\to ((\pt_G=x)=(\pt_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\pt_G=x}$ and that for $p,q:\pt_G=\pt_G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \pt_G=x$ we have that 
 $$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  
+
 That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $BG$ is connected (any $\pt_G=x$ will serve as a proof of $(\pt_G=x,\preinv,!)=\princ{\abstr(G)}^\abstr$).
 
 Though it sounded like we made a choice ending up with $\preinv$; we really didn't -- it is precisely what happens when you abstract the homomorphism $G\to\Sigma_{\princ G(x)}$: 
@@ -739,26 +756,24 @@ which by the very definition of transport for $\princ G$ is $\preinv$.
 \end{definition}
 We give the construction of \cref{ex:qG} a short name since it will occur in important places.
 \begin{definition}
-  Let $G$ be a group.  Define the pointed function
-$$q_G:G\oldequiv(BG_\div,\pt_G)\to (\typetorsor^\abstr_{\abstr(G)},\princ {\abstr(G)})\defequi\concr(\abstr(G))$$
-by $$
-q_G(z)=(\princ G(z),\preinv%:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))
-,!).$$
-%(the $!$ expresses that $\preinv:(\pt_G=\pt_G)\to ((\pt_G=z)=(\pt_G=z))$ underlies a homomorphism of abstract groups $\abstr(G)\to\Sigma_{\pt_G=z}$, \ie that $\preinv(\refl{\pt_G})=\refl{\pt_G=z}$ and that $\preinv(q_0\,q_1)(p)=p(q_0q_1)^{-1}=pq_1^{-1}q_0^{-1}=\preinv(q_0)(\preinv(q_1)(p))$ (here you see why it was important to include the inverse!) and that the $\abstr(G)$-set $(\pt_G=z,\preinv)$ is in the component of $\princ {\abstr(G)}$).
+  Let $G$ be a group.  Define the group homomorphism 
+ $$q_G:G\to \concr(\abstr(G))$$ defined in terms of the pointed map by the same name
+$$q_G:BG\to_* (\typetorsor^\abstr_{\abstr(G)},\princ {\abstr(G)}),\quad q_G(z)=(\princ G(z),\preinv,!).$$
 \end{definition}
 
 \begin{lemma}
   \label{lem:Groupsareidentitytypes}%Let ${\agp G}$ be an abstract group.  
 For all groups $G$, the pointed function $q_G:G\to\concr(\abstr(G))$ 
-is a pointed\footnote{defined where?} equivalence.
+is a  equivalence.
 \end{lemma}
 \begin{proof}
   To prove that $q_G$ is an equivalence it is, by \cref{lem:eqandcovofconntypes}, enough to show that if $x,y:BG$ then the induced map
 $$q_G:(x=_{BG}y)\to (q_G(x)=q_G(y))%(\pt_G=x)=_\UU(\pt_G=y))
 $$
-is an equivalence.\footnote{something to be said for the homotopies vs. base point}  Now, $q_G(x)=q_G(y)$ is equivalent to the set 
+is an equivalence.
+  Now, $q_G(x)=q_G(y)$ is equivalent to the set 
 \begin{align*}
-  &((\pt_G=x),\preinv)=_{\abstr(G)-set}((\pt_G=y),\preinv)\\
+  &((\pt_G=x),\preinv)=_{\abstr(G)\text{-set}}((\pt_G=y),\preinv)\\
 =&\sum_{f:(\pt_G=x)=(\pt_G=y)}f\preinv=\preinv f
 \end{align*}
  ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\pt_G=x}\prod_{p:\pt_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by 
@@ -795,11 +810,12 @@ Hence our identity $r_{\agp G}$ underlies an identity of abstract groups
 $$r_{\agp G}:{\agp G}=_{\typegroup^\abstr}\abstr(\concr({\agp G})).$$
 \end{example}
 
-This to shows that every abstract group encodes the symmetries of something essentially unique.  Summing up the information we get
+This shows that every abstract group encodes the symmetries of something essentially unique.  Summing up the information we get
 \begin{theorem}
   \label{lem:Groupsareidentitytypes}Let ${\agp G}$ be an abstract group.  
 Then
-$$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence: \ie the type of groups and the type of abstract groups are equal.
+$$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence% : \ie the type of groups and the type of abstract groups are equal
+.
 \end{theorem}
 %\begin{proof}
  %  First consider $q_G$.  To prove that $q_G$ is an equivalence it is, by \cref{lem:eqandcovofconntypes}, enough to show that if $x,y:BG$ then the induced map
