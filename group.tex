@@ -687,18 +687,27 @@ $$f_*X(y)\defequi(\pt_H=y)\times_{\pt_G=\pt_G}X(\pt_G)$$ to be the set quotient 
 $$f_*X:BH\to\Set$$ has value at $y:BH$ the set $f_*X(y)$.
 \end{definition}
 When $X=\princ G$ we can get a good picture of $f_*X$:  composition gives a map
-$$\eta_f(y):(\pt_H=y)\times (\pt_G=\pt_G)\to (\pt_H=y),\quad \eta_f(p,q)=p\,f(q)$$
-and the fact that $\eta_f(p,q)=\eta_f(p\,f(r)^{-1},r\,q)$ for all $r:\pt_G=\pt_G$ tells us that $\eta_f$ defines a map $\eta'_f(y):f_*\princ G(y)\to\princ H(y)$.  
-The map $\iota:\princ H(y)\to f_*\princ G(y)$ defined by $\iota(p)=[p,e_G]$ is an inverse: $\iota\eta'_f(y)$ sends $[p,q]$ to $[pf(q)^{-1},e_G]$, which is equal to $[p,q]$; and $\eta'_f(y)\iota$ sends $p$ to $p\,f(e_G)^{-1}$, which is equal to $p$.  Hence $\eta'(y)$ is an equivalence.
+$$\eta\defequi:(\pt_H=y)\times (\pt_G=\pt_G)\to (\pt_H=y),\quad \eta(p,q)=p\,f(q)$$
+and the fact that $\eta(p,q)=\eta(p\,f(r)^{-1},r\,q)$ for all $r:\pt_G=\pt_G$ tells us that $\eta$ defines a map $\eta_f(y):f_*\princ G(y)\to\princ H(y)$.  
+The map $\iota:\princ H(y)\to f_*\princ G(y)$ defined by $\iota(p)=[p,e_G]$ is an inverse: $\iota\eta_f(y)$ sends $[p,q]$ to $[pf(q)^{-1},e_G]$, which is equal to $[p,q]$; and $\eta_f(y)\iota$ sends $p$ to $p\,f(e_G)^{-1}$, which is equal to $p$.  Hence $\eta_f(y)$ is an equivalence.
 \begin{lemma}
   \label{lem:inducedtorsor}
-   Let $f:\Hom(G,H)$ be a group homomorphism.  For each $y:BH$ we have an equivalence $\eta_f(y):f_*\princ G(y)\to\princ H(q)$ given by composition $\eta_f([p,q])\defequi p\, f(q)$ for $p:\pt_H=y$ and $q:\pt_G=\pt_G$.
-
-If $X$ is a $G$-torsor, then $f_*X$ is an $H$-torsor. 
+   Let $f:\Hom(G,H)$ be a group homomorphism.  
+If $X$ is a $G$-torsor, then $f_*X$ is an $H$-torsor and the identity $\bar{\eta}_f:f_*\pathsp x^G=\pathsp{Bf(x)}$ associated to the equivalence $\eta_f$ shows that  
+$$\xymatrix{BG\ar[r]^{Bf}\ar[d]^{\pathsp{}^G}&BH\ar[d]^{\pathsp{}^H}\\
+\typetorsor_G\ar[r]^{f_*}&\typetorsor_H}$$ 
+commutes.
 \end{lemma}
 \begin{proof}
-  
+  If $||X=\princ G||$, then $||f_*X=f_*\princ G||$ and $\eta_f:f_*\princ G=\princ H$, so $f_*$ takes $G$-torsors to $H$-torsors.
 \end{proof}
+\begin{remark}
+  \label{rem:inducedGsetfromabstracthomomorphisms}
+  Notice that our construction of the induced $G$-set works equally well for a homomorphism $\phi:\Hom^\abstr(\abstr(G),\abstr(H))$: if $X:BG\to\Set$ is a $G$-set, then we define the $H$-set $\phi_*X:BH\to\Set$ by 
+$$\phi_*X(y)\defequi(\pt_H=y)\times_{\pt_G=\pt_G}X(\pt_G)$$ to be the set quotient of $(\pt_H=y)\times X(\pt_G)$ by the relation $(p,x)\sim(p\, \phi(q)^{-1},X(q)x)$ for all $q:\pt_G=pt_G$. Just as above, for $X$ the principal $G$-torsor we get an identity  $eta_\phi:\phi_*\princ G=\princ H$ which, when evaluated at $y:BH$, corresponds under univalence to the equivalence 
+$$(\pt_H=y)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)\to (\pt_H=y)$$ 
+sending $[p,q]:(\pt_H=y)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)$ to $p\,\phi(q):(\pt_H=y)$.
+\end{remark}
 
 
 \section{Groups concrete or abstract% -- same gem, different wrapping
@@ -860,38 +869,39 @@ is an equivalence.
 \end{lemma}
 \begin{proof}
 \newcommand{\we}{\overset\sim\to}
-  The equivalence of $T_G:BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
-$$T:\Hom(G,H)\oldequiv (BG\to_*BH)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
+  The equivalence of $\pathsp{}^G:BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
+$$\pathsp{}:\Hom(G,H)\oldequiv (BG\to_*BH)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
 $$
-and we see that we have shown the desired result if we prove instead that the map
+Consider the map
 $$A:((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)\to \Hom^\abstr(\abstr(G),\abstr(H))$$
 given by letting $A(f,p)$ be the composite 
-$$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{T_G}_\downarrow&&
-  (\pt_H=\pt_H)\ar@{=}[d]^{T_H}_\downarrow\\
-  (\princ G=\princ G)\ar[r]^f&
-  (f\princ G=f\princ G)\ar@{=}[r]^-{q\mapsto p^{-1}qp}_\to&
+$$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
+  (\pt_H=\pt_H)\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
+  (\princ G=\princ G)\ar[r]^-f&
+  (f\princ G=f\princ G)\ar@{=}[rr]^-{q\mapsto p^{-1}qp}_\to&&
   (\princ H=\princ H)
 }$$
-(together with the proof that this is an abstract group homomorphism).  The reason to complicate $\abstr$ this way is that it gets easier to write out a homotopy inverse.
+(together with the proof that this is an abstract group homomorphism).  We see that we have shown the desired result if we prove instead $A$ is an equivalence.  The reason to complicate $\abstr$ this way is that it gets easier to write out a homotopy inverse.
 
-  If $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$ and $X:BG\to\Set$ is a $G$-set, let
-$\phi_*X:BH\to\Set$ be the $H$-set given by sending $z:BH$ to the set 
-$$\phi_*X(z)\defequi(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G). \footnote{here I need set-quotients: $(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G)$ is the coequalizer of the two maps $(\pt_H=z)\times X(\pt_G)\gets (\pt_H=z)\times{(\pt_G=\pt_G)}\times X(\pt_G)$ sending $(p,q,x)$ to $(p\,f(q),x)$ and $(p,X(q) x)$. I use $[p,x]$ to denote an element of this type}$$
-For $X$ the principal $G$-torsor we get an identity  $p_\phi:\phi_*\princ G=\princ H$ which, when evaluated at $z:BH$, corresponds under univalence to the equivalence 
-$$(\pt_H=z)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)\to (\pt_H=z)$$ 
-sending $[p,q]:(\pt_H=z)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)$ to $p\,\phi(q):(\pt_H=z)$.
+If $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$ and $X:BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{rem:inducedGsetfromabstracthomomorphisms} and the identity $\eta_\phi:\phi_*\princ G=\princ H$. 
+ %  let
+%$\phi_*X:BH\to\Set$ be the $H$-set given by sending $z:BH$ to the set 
+%$$\phi_*X(z)\defequi(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G). \footnote{here I need set-quotients: $(\pt_H=z)\times_{\pt_G=\pt_G}X(\pt_G)$ is the coequalizer of the two maps $(\pt_H=z)\times X(\pt_G)\gets (\pt_H=z)\times{(\pt_G=\pt_G)}\times X(\pt_G)$ sending $(p,q,x)$ to $(p\,f(q),x)$ and $(p,X(q) x)$. I use $[p,x]$ to denote an element of this type}$$
+%For $X$ the principal $G$-torsor we get an identity  $p_\phi:\phi_*\princ G=\princ H$ which, when evaluated at $z:BH$, corresponds under univalence to the equivalence 
+%$$(\pt_H=z)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)\to (\pt_H=z)$$ 
+%sending $[p,q]:(\pt_H=z)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)$ to $p\,\phi(q):(\pt_H=z)$.
 Let 
 $$B: \Hom^\abstr(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)$$
-be given by $B(\phi,!)=(\phi_*X,p_\phi)$
+be given by $B(\phi,!)=(\phi_*X,\eta_\phi)$
 
 We show that $A$ and $B$ are inverse equivalences.  Given an abstract group homomorphism $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$, then $AB(\phi,!)$ has as underlying set map
-$$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{T_G}_\downarrow&&
-  (\pt_H=\pt_H)\ar@{=}[d]^{T_H}_\downarrow\\
+$$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
+  (\pt_H=\pt_H)\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
   (\princ G=\princ G)\ar[r]^-{\phi_*}&
-  (\phi_*\princ G=\phi_*\princ G)\ar@{=}[r]^-{q\mapsto p_\phi^{-1}qp_\phi}_\to&
+  (\phi_*\princ G=\phi_*\princ G)\ar@{=}[rr]^-{q\mapsto \eta_\phi^{-1}q\eta_\phi}_\to&&
   (\princ H=\princ H),
 }$$
-and if we start with a $g:(\pt_G=\pt_G)$, then $T_G$ sends it to $\preinv (g)$.  Furthermore, $\phi_*\preinv (g)$ is $[\id,\preinv (g)]$ which is sent to $\preinv (\phi(g))$ in $\princ H=\princ H$ which corresponds to $\phi(g):(\pt_H=\pt_H)$ under $T_H$.  In other words, $AB(\phi,!)=(\phi,!)$.  The composite $BA$ is similar.
+and if we start with a $g:(\pt_G=\pt_G)$, then $\pathsp{}^G$ sends it to $\pathsp g^G\oldequiv\preinv (g)$.  Furthermore, $\phi_*\preinv (g)$ is $[\id,\preinv (g)]$ which is sent to $\preinv (\phi(g))$ in $\princ H=\princ H$ which corresponds to $\phi(g):(\pt_H=\pt_H)$ under $\pathsp{}^H$.  In other words, $AB(\phi,!)=(\phi,!)$.  The composite $BA$ is similar.
 \end{proof}
 
 
