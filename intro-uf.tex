@@ -672,6 +672,49 @@ With conditions as above, but with $B$ not depending on $i$, we have
 \]
 \end{corollary}
 
+HERE OR ELSEWHERE? We now define fiberwise equivalences.
+
+\begin{definition}\label{def:fiberwise}
+Let $X$ be a type, and let $Y(x),Z(x)$ be families of types indexed 
+by a parameter $x:X$. A map $f$ of type $\prod_{x:X}(Y(x)\to Z(x))$
+can be viewed as a family of maps $f(x): Y(x)\to Z(x)$ and is called a 
+\emph{fiberwise} map. Then the \emph{totaliser} of $f$ is defined as
+\[
+\tot(f) : (\sum_{x:X} Y(x)) \to \sum_{x:X} Z(x),
+\text{ setting } \tot(f)(x,y)\defeq (x,f(x)(y)).
+\]
+
+\end{definition}
+
+\begin{lemma}\label{lem:fiberwise}
+Let conditions be as in \cref{def:fiberwise}. Let $x:X$ and $z:Z(x)$.
+Then the functions $g$ and $h$ defined below are inverse equivalences
+between $f(x)^{-1}(z)$ and $\tot(f)^{-1}(x,z)$.
+
+Define $g: f(x)^{-1}(z) \to \tot(f)^{-1}(x,z)$ as follows.
+For any $y:Y(x)$ and $p: z=f(x)(y)$, define $g(y,p)$ by induction on $p$. 
+This induction instantiates $z$ with $f(x)(y)$ and $p$ with $\refl{f(x)(y)}$.
+Thus it suffices to set $g(y,\refl{f(x)(y)}) \defeq ((x,y),\refl{f(x)(y)})$,
+where the right-hand side has the right type $\tot(f)^{-1}(x,f(x)(y))$ since
+$\tot(f)(x,y)\jdeq (x,f(x)(y))$.
+
+We define $h_t: \tot(f)^{-1}(t) \to f(\fst(t))^{-1}(\snd(t))$ for
+all $t:\prod_{x:X} Z(x)$, then $h$ is obtained as $h_{(x,z)}$.
+It suffices to define $h_t((x,y),q)$ for any $y:Y(x)$ and $q: t= \tot(f)(x,y)$.
+Induction on $q$ instantiates $t$ with $\tot(f)(x,y) \jdeq (x,f(x)(y))$ and 
+we can simply set $h_t$ to take the value $(y,\refl{f(x)(y)})$ 
+of type $f(x)^{-1}(f(x)(y))$ in this case.
+\end{lemma}
+
+\begin{xca}\label{xca:fiberwise}
+bla
+\end{xca}
+
+\begin{corollary}\label{cor:fiberwise}
+bla
+\end{corollary}
+
+
 \section{Identifying pairs}\label{sec:pairpaths}
 
 Equality of two elements of $\sum _{x:X} Y(x)$ is inductively defined in \cref{sec:identity-types}, as for any other type, but
@@ -731,7 +774,7 @@ The lemma above takes a simpler form when $y$ and $y'$ are values of a section $
   $$\left( \sum_{p:x=x'} \pathoverdisplay {f(x)} Y p {f(x')} \right) \weq (x=x') \times (f(x) = f(x)).$$
   Rewriting the right hand side as a sum over a constant family, it suffices to find an equivalence of type
   $$\left( \sum_{p:x=x'} \pathoverdisplay {f(x)} Y p {f(x')} \right) \weq \sum_{p:x=x'} (f(x) = f(x)).$$
-  By \cref{lem:UNKNOWN} it suffices to establish an equivalence of type 
+  By \cref{lem:fiberwise} it suffices to establish an equivalence of type 
   $$ \left( \pathoverdisplay {f(x)} Y p {f(x')} \right) \weq (f(x) = f(x))$$
   for each $p:x=x'$.  By induction on $x'$ and $p$ we reduce to the case where $x'$ is $x$ and $p$ is $\refl x$, and it suffices to establish an
   equivalence of type 
