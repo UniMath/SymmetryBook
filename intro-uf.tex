@@ -653,10 +653,10 @@ With conditions as above, but with $B$ not depending on $i$, we have
 HERE OR ELSEWHERE? We now define fiberwise equivalences.
 
 \begin{definition}\label{def:fiberwise}
-Let $X$ be a type, and let $Y(x),Z(x)$ be families of types indexed 
-by a parameter $x:X$. A map $f$ of type $\prod_{x:X}(Y(x)\to Z(x))$
+Let $X$ be a type, and let $Y(x),Z(x)$ be families of types parameterised
+by $x:X$. A map $f$ of type $\prod_{x:X}(Y(x)\to Z(x))$
 can be viewed as a family of maps $f(x): Y(x)\to Z(x)$ and is called a 
-\emph{fiberwise} map. Then the \emph{totaliser} of $f$ is defined as
+\emph{fiberwise} map. The \emph{totaliser} of such $f$ is defined as
 \[
 \tot(f) : (\sum_{x:X} Y(x)) \to \sum_{x:X} Z(x),
 \text{ setting } \tot(f)(x,y)\defeq (x,f(x)(y)).
@@ -665,33 +665,23 @@ can be viewed as a family of maps $f(x): Y(x)\to Z(x)$ and is called a
 \end{definition}
 
 \begin{lemma}\label{lem:fiberwise}
-Let conditions be as in \cref{def:fiberwise}. Let $x:X$ and $z:Z(x)$.
-Then the functions $g$ and $h$ defined below are inverse equivalences
-between $f(x)^{-1}(z)$ and $\tot(f)^{-1}(x,z)$.
-
-Define $g: f(x)^{-1}(z) \to \tot(f)^{-1}(x,z)$ as follows.
-For any $y:Y(x)$ and $p: z=f(x)(y)$, define $g(y,p)$ by induction on $p$. 
-This induction instantiates $z$ with $f(x)(y)$ and $p$ with $\refl{f(x)(y)}$.
-Thus it suffices to set $g(y,\refl{f(x)(y)}) \defeq ((x,y),\refl{f(x)(y)})$,
-where the right-hand side has the right type $\tot(f)^{-1}(x,f(x)(y))$ since
-$\tot(f)(x,y)\jdeq (x,f(x)(y))$.
-
-We define $h_t: \tot(f)^{-1}(t) \to f(\fst(t))^{-1}(\snd(t))$ for
-all $t:\prod_{x:X} Z(x)$, then $h$ is obtained as $h_{(x,z)}$.
-It suffices to define $h_t((x,y),q)$ for any $y:Y(x)$ and $q: t= \tot(f)(x,y)$.
-Induction on $q$ instantiates $t$ with $\tot(f)(x,y) \jdeq (x,f(x)(y))$ and 
-we can simply set $h_t$ to take the value $(y,\refl{f(x)(y)})$ 
-of type $f(x)^{-1}(f(x)(y))$ in this case.
+Let conditions be as in \cref{def:fiberwise}.
+If $f(x): Y(x) \to Z(x)$ is an equivalence for every $x:X$,
+then $\tot(f)$ is an equivalence,
+called a \emph{fiberwise} equivalence.
 \end{lemma}
 
+\begin{proof}
+If $f(x): Y(x) \to Z(x)$ is an equivalence for all $x$ in $X$,
+then the same is true of all $f(x)^{-1}: Z(x) \to Y(x)$.
+Then we have the totaliser $\tot(x\mapsto f(x)^{-1})$,
+which can easily be proved to be an inverse of $\tot(f)$
+(see the next exercise). Now apply \cref{lem:weq-iso}.
+\end{proof}
+
 \begin{xca}\label{xca:fiberwise}
-bla
+Complete the details of the proof of \cref{lem:fiberwise}.
 \end{xca}
-
-\begin{corollary}\label{cor:fiberwise}
-bla
-\end{corollary}
-
 
 \section{Identifying pairs}\label{sec:pairpaths}
 
