@@ -77,6 +77,9 @@ $$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:p
    \begin{example}\label{excirclegroup}
    The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid (\cref{lem:circleisconnected}, \cref{cor:S1groupoid}) and is pointed at $\base$. The identity type $\base=_{S^1}\base$ is equivalent to to the set of integers $\zet$ and composition corresponds to addition.  This justifies our definition of the \emph{group of integers} as 
 $$\ZZ=\aut_{S^1}(\base).$$
+It is noteworthy that along the way we gave several versions of the circle, each of which has its own merits, the version in \cref{def:S1toC}
+$$C=(\sum_{X:\UU}\sum_{f:X=X}||(\zet,s)=(X,f)||, (\zet,s))$$
+being a very convenient one.
  \end{example}
 
 \begin{example}\label{ex:groups}
@@ -105,8 +108,8 @@ $$\Sigma_X=\aut_{\UU_{(X)}}X,$$
   \end{enumerate}
 \end{example}
 \begin{example}\label{ex:cyclicgroups}
-  In \cref{thm:coveringsofS1} we studied the symmetries of the ``$m$-fold \covering'' of the circle for $m$ a positive integer, and showed that there were $m$-different symmetries, but that they were just the powers $f^n$ (for $n=0,1,\dots,m-1$) of one (nonunique) symmery $f$ and that $f^{m+k}=f^k$ for any integer $k$.  This very important symmetry pops up in many situation, and is called the \emph{cyclic group of order $m$}.  In other words, the cyclic group of order $m$ is the (pointed) component of the type of \coverings of the circle containing the $m$-fold \covering.  We analyzed this in \cref{thm:coveringsofS1} and found that this component was equivalent to $$\sum_{X:\Set}\sum_{p:X=X}||(X,p)=\zet/m||,$$
-which we point in $(\zet/m,!)$.
+  In \cref{thm:coveringsofS1} we studied the symmetries of the ``$m$-fold \covering'' of the circle for $m$ a positive integer, and showed that there were $m$-different symmetries, but that they were just the powers $f^n$ (for $n=0,1,\dots,m-1$) of one (nonunique) symmery $f$ and that $f^{m+k}=f^k$ for any integer $k$.  This very important symmetry pops up in many situation, and is called the \emph{cyclic group of order $m$}.  In other words, the cyclic group of order $m$ is the (pointed) component of the type of \coverings of the circle containing the $m$-fold \covering.  We analyzed this in \cref{thm:coveringsofS1} and found that this (pointed) component was equivalent to 
+$$BC_n\defequi(\sum_{X:\Set}\sum_{p:X=X}||(X,p)=\zet/m||,(\zet/m,!)).$$
 
 Here is another, and occasionally more convenient, way of obtaining the cyclic group of order $n$.  Consider the function $$cy_n:S^1\to\fin_n$$ with $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ the identity corresponding to the equivalence given by cyclic permutation, sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$.  Note that the identity $cy_n\Sloop$ is cyclic in the sense that the $n$-fold iterate $(cy_n\Sloop)^n$ is $\refl{\bn n}$.  Then the $n$-fold \covering can be seen as the first projection 
 $$\sum_{z:S^1}cy_n(z)\to S^1.$$
@@ -1208,6 +1211,25 @@ commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this actio
 Now, $X(\base)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $\ZZ/p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
 $$X(\base)= X(\base)^{\ZZ/p}+(\text{free part of }X(\base)).$$
 Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\base)$ \emph{and} of the free part of $X(\base)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+
+ALTERNATIVELY:
+Recall the cyclic group of order $p$.  For the sake of convenience, we identify $\bn p\times\bn 1$ and $\bn p$, so that elements will be denoted $0,1,2,\dots$ and not $(0,0), (1,0),(2,0)\dots$, and we also write $s$ instead of $\sqrt[p]{\id}$ for the element in $\bn p=\bn p$ that shifts to the successor (mod $p$).  In other words we choose an identification $\zet/p=(\bn p,s)$ once and for all.  If 
+$$(S,j):BC_p\defequi\sum_{S:\UU}\sum_{j:X=X}||(S,j)=(\bn p,s)||,$$ consider the set 
+$$X(S,j)\defequi\sum_{g:S\to (\pt_G=\pt_G)}||\sum_{a:(S,j)=(\bn p,s)}g_{a^{-1}(0)}\cdot\dots\cdot g_{a^{-1}(p-1)}=e_G||.$$ 
+Note that if $g:\bn p\to(\pt_G=\pt_G)$, then we have an equality of propositions
+$$||\sum_{a:(\bn p,s)=(\bn p,s)}g_{a^{-1}(0)}\cdot\dots\cdot g_{a^{-1}(p-1)}=e_G||=g_{0}\cdot\dots\cdot g_{p-1}=e_G$$
+since $(g_1\cdot\dots\cdot g_{p-1}=e_G)=(g_2\cdot\dots\cdot g_{p-1}\cdot g_1=e_G)$,
+and so 
+$$X(\bn p,s)=\sum_{g:\bn p\to (\pt_G=\pt_G)}g_{0}\cdot\dots\cdot g_{p-1}=e_G$$ 
+which is equivalent to the $p-1$-fold product of $\pt_G=\pt_G$ with itself ($g_0=(g_1\cdot\dots\cdot g_{p-1})^{-1}$, but all the other $g_i$s are then chosen arbitrarily).  Consequently, the number of elements in $X(\bn p,s)$ is divisible by $p$.
+
+Now, a $C_p$-fixed point of $X(\bn p,s)$ is an element $(g_0,\dots,g_{p-1},!)$ such that $(g_0,\dots,g_{p-1},!)=(g_1,\dots,g_{p-1},g_0,!)$, \ie $g_0=g_1=g_2=\dots=g_{p-1}$\footnote{if I am allowed to write that}.  In other words, a fixed point is of the form $(g,\dots,g,!)$, where $!$ expresses that $g^p=e_G$:
+$$X(\bn p,s)^{C_p}=\sum_{g:\pt_G=\pt_G}g^p=e_G.$$  If we can show that $(g,!):X(\bn p,s)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point.
+
+ Now, $X(\bn p,s)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
+$$X(\bn p,s)= X(\bn p,s)^{C_p}+(\text{free part of }X(\bn p,s)).$$
+Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\bn p,s)$ \emph{and} of the free part of $X(\bn p,s)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+
 \end{proof}
 \section{Historical remarks}
 \label{sec:grouphistory}
