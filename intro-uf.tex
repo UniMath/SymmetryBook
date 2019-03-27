@@ -884,9 +884,9 @@ the two elements of $\bool$), and that $\twist\cdot\twist=\refl{\bool}$.
 \section{Propositions, sets and groupoids}
 \label{sec:props-sets-grpds}
 
-Let $X$ be a type.  The property that $X$ has at most one element may 
+Let $P$ be a type.  The property that $P$ has at most one element may 
 be expressed by saying that any two elements are equal. 
-Hence it is encoded by $\prod_{a,b:X} (a=b)$.  
+Hence it is encoded by $\prod_{a,b:P} (a=b)$.  
 We shall call such a type a \emph{proposition}, 
 and its elements will be called \emph{proofs}.
 We will use them for doing logic in type theory.
@@ -894,6 +894,11 @@ The reason for doing so is that the most relevant
 thing about a logical proposition is whether it has a proof or not.
 It is therefore reasonable to require for any type representing 
 a logical proposition that all its members are equal.
+
+Suppose $P$ is a proposition.  Then English phrases such as ``$P$ holds'', ``we know $P$'', and ``we have shown $P$'', will all mean that we
+have an element of $P$.  We will not use such phrases for types that are not propositions, nor will we discuss knowing $P$ conditionally with a
+phrase such as ``whether $P$''.  Similarly, if {\em Q} is the English phrase for a statement encoded by the proposition $P$, then the English
+phrases ``{\em Q} holds'', ``we know {\em Q}'', and ``we have shown {\em Q}'', will all mean that we have an element of $P$.
 
 Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity 
 type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.
@@ -1281,14 +1286,21 @@ As explained in \cref{sec:props-sets-grpds}, $\to,\prod,\times$
 can be used for the logical operations implication, 
 universal quantification, and conjunction, respectively.
 Moreover, $\true$ and $\false$ can be used as truth values,
-and $\neg A \defeq (A\to\false)$ for negation.
+and $\neg A \defeq (A\to\false)$ can be used for negation.
 We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
 that are not propositions, even though the constituents are
 propositions. This means we are still lacking $\vee$ and $\exists$
-from the standard repertoire of logic.
+from the standard repertoire of logic, as well as the notion of {\em non-emptiness} of a type.
+In this section we explain how to implement those three notions.
 
-In this section we explain how to define $\vee$ and $\exists$.
-We define an operation called propositional truncation,\footnote{%
+To motivate the construction that follows, consider non-emptiness of a type $T$.  In order to be in a position to encode the mathematical
+assertion expressed by the English phrase ``$T$ is non-empty'', we will need a proposition $P$.  The proposition $P$ will have to be constructed
+somehow from $T$.  Any element of $T$ should somehow give rise to an element of $P$, but, since all elements of propositions are equal to each
+other, all elements of $P$ arising from elements of $T$ should somehow be made to equal each other.  Finally, any proposition $Q$ that is a
+consequence of having an element of $T$ should also be a consequence of $P$.  (We are suppressing the etymology of the word ``non-empty'',
+because the proposition $T \ne \emptytype$ does not satisfy that final condition.)
+
+We define now an operation called propositional truncation,\footnote{%
 The name ``truncation'' is slightly misleading since it suggests leaving
 something out, whereas the correct intuition is one of adding identifications
 so everything becomes equal.}
