@@ -1204,6 +1204,29 @@ Now, as we've seen, that   $f:(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an injection (pr
   Let $p$ be a prime and let $G$ be a finite group of order divisible by $p$.  Then $G$ has a subgroup which is cyclic of order $p$. (do we need decidability - check whether you want to rewrite)
 \end{lemma}
 \begin{proof}
+NOTE: three variants follow.  Have to choose one.  The middle needs some background essentially boiling down to $BC_n$ being the truncation of the $n$th Moore space.
+
+
+Recall the cyclic group $C_p$ of order $p$ given by the pointed connected groupoid
+$$BC_p\defequi(\sum_{S:\Set}\sum_{j:S=S}||(S,j)=\zet/p||,(\zet/p,!)),
+$$
+ where $\zet/p:\sum_{S:\Set}S=S$ was a particular model of a set with $p$ element together with a successor modulo $p$.  Informally, $BC_p$ consists of pairs $(S,j)$, where $S$ is a set of cardinality $p$ and $j:S=S$ is a cyclic permutation in the sense that for $0<k<p$ we have that $j^k$ is not $\refl{}$ while $j^p=\refl{}$.  Note also that $j^?:\bn p\to ((S,j)=(S,j))$ given by $j^?(k)=j^k$ is an equivalence (just as for the integers, a symmetry of $(S,j)$, \ie an $f:S=S$ so that $fj=jf$, must be $j^k$ for some $k:\bn p$, and if $k\neq l$, then $j^k\neq j^l$)
+
+If $(S,j):BC_p$ let 
+$$A(S,j)\defequi ((S,j)=(S,j)\to (\pt_G=\pt_G)).$$  Since we have an equivalence $j^?:\bn p\to ((S,j)=(S,j))$ we get that $J:A(S,j)\to \prod_{\bn p}(\pt_G=\pt_G)$ given by $J(g)=(g_{j^0},g_{j_1},\dots,g_{j^{p-1}})$ is an equivalence.  Define $\mu:\prod_{(S,j):BC_p}(A(S,j)\to(\pt_G=\pt_G))$ by $\mu_{(S,j)}(g)\defequi g_{j^0}\cdot\dots\cdot g_{j^{p-1}}$ and let $X:BC_p\to\Set$ be the $G$-set defined by  
+$$X(S,j)\defequi\sum_{g:A(S,j)}\mu_{(S,j)}g=e_G.$$ 
+The map from $X(S,j)$ to the $p-1$-product of $(\pt_G=\pt_G)$ with itself sending $(g,!)$ to $(g_{j^1},\dots,g_{j^{p-1}})$ is an equivalence ($\mu_{(S,j)}g=e_G$ says exactly that $g_{j^0}$ can be reconstructed as $(g_{j^1}\cdot\dots\cdot g_{j^{p-1}})^{-1}$), so $X(S,j)$ is a set of cardinality $p-1$ times the order of $G$.  In particular, $p$ divides the order of $X(S,j)$.
+
+Specializing to $(S,j)$ being $\zet/p$ and allowing to index the elements in $A(\zet/p)$ with $i:\bn p$ (instead of the very awkward ``$(\sqrt[p]\id)^i$'' as purism would dictate) we proceed as follows.
+
+Now, a $C_p$-fixed point of $X(\zet/p)$ is an element $(g_0,\dots,g_{p-1},!)$ such that $(g_0,\dots,g_{p-1},!)=(g_1,\dots,g_{p-1},g_0,!)$, \ie $g_0=g_1=g_2=\dots=g_{p-1}$\footnote{if I am allowed to write that}.  In other words, a fixed point is of the form $(g,\dots,g,!)$, where $!$ expresses that $g^p=e_G$:
+$X(\zet/p)^{C_p}$ is equivalent to $\sum_{g:\pt_G=\pt_G}g^p=e_G.$  If we can show that $(g,!):X(\zet/p)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point.
+
+ Now, $X(\zet/p)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
+$$X(\zet/p)= X(\zet/p)^{C_p}+(\text{free part of }X(\zet/p)).$$
+Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\zet/p)$ \emph{and} of the free part of $X(\zet/p)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+
+ALTERNATIVELY:
   Consider  the $p-1$-fold product $(\bn{(p-1)}\to (\pt_G=\pt_G))$ of $\pt_G=\pt_G$ with itself.  We give this set the structure of a $\ZZ/p$-set as follows: ((here it is convenient to say that a $\ZZ/p$-set is the same as a $\ZZ$-set commuting with the $p$-fold cover)) define $X:S^1\to\Set$ by $X(\base)\defequi (\bn{(p-1)}\to (\pt_G=\pt_G))$ and by setting $X(\Sloop)$ to be the element in $X(\base)=(\base)$ sending $(g_1,\dots,g_{p-1})$ to $(g_2,\dots,g_{p-1},(g_1\cdots g_{p-1})^{-1})$.  Note that
 $$\xymatrix{S^1\ar[d]_{(-)^p}\ar[dr]^X&\\S^1\ar[r]_X&\Set}$$
 commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this action is an element of $X(\base)$ of the form $(g,g,\dots,g)$ such that $g^{p-1}=g^{-1}$  (expand)). The choice $g=e$ always gives such a fixed point, but if there is any other point ... (do you need decidability here?), the pointed map $S^1\to BG$ given by sending $\Sloop$ to $g$ gives the desired subgroup. Hence we need to show that $X$ has fixed points.
@@ -1211,6 +1234,7 @@ commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this actio
 Now, $X(\base)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $\ZZ/p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
 $$X(\base)= X(\base)^{\ZZ/p}+(\text{free part of }X(\base)).$$
 Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\base)$ \emph{and} of the free part of $X(\base)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+
 
 ALTERNATIVELY:
 Recall the cyclic group of order $p$.  For the sake of convenience, we identify $\bn p\times\bn 1$ and $\bn p$, so that elements will be denoted $0,1,2,\dots$ and not $(0,0), (1,0),(2,0)\dots$, and we also write $s$ instead of $\sqrt[p]{\id}$ for the element in $\bn p=\bn p$ that shifts to the successor (mod $p$).  In other words we choose an identification $\zet/p=(\bn p,s)$ once and for all.  If 
