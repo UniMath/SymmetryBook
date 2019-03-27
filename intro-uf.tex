@@ -327,19 +327,9 @@ element of $Y(x')$ only after identifying $x$ with $x'$.  That is the idea of th
 \end{definition}
 
 An element $q : \pathover y Y p {y'}$ is called a {\em path} from $y$ to $y'$ {\em over} $p$.
-By an easy induction on $p$ we have the following relation with transport.
 
-\begin{definition}\label{lem:pathsover-transport}
-
-Let conditions be as in \cref{def:pathsoverpaths}.
-Then $\pathover y Y p {y'}$ by induction on $x'$ and $p$, thereby reducing to the case
-  where $x'$ is $x$ and $p$ is $\refl x$,
-  rendering $y$ and $y'$ of the same type,
-  allowing us to set $$\left( \pathoverdisplay y Y {\refl x} {y'} \right) \defeq (y = y').$$
-\end{definition}
-
-
-The following lemma shows how to handle application of a dependent function $f$ to paths using the definition above.
+The following construction shows how to handle application of a dependent 
+function $f$ to paths using the definition above.
 
 \begin{definition}\label{def:apd}
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$, and a function $f:\prod_x Y(x)$.
@@ -1282,12 +1272,31 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \]
 \end{lemma}
 
-The following lemma is immediate by induction on $e$.
+The following construction reveals an important equivalence
+relating paths over a path with transport.
 
-\begin{lemma}\label{lem:Dan's-lemma}
+\begin{definition}\label{def:pathsover-transport}
 Let $X,Y(x)$ be types and $f(x): Y(x)$ for all $x:X$.
-Then $(\trp e(f(x))=f(x')) \equiv (f(x)=f(x))$ for all $e: x=x'$ in $X$.
-\end{lemma}
+Given elements $x,x':X$, $y:Y(x)$, and
+  $y':Y(x')$ and a path $p : x = x'$,
+we define an equivalence $(\pathover y Y p {y'}) \equiv (\trp{P,p}(y)=y')$.
+We do this by induction on $p$, using \cref{def:pathsoverpaths} and
+\cref{def:transport}, thereby reducing to the case
+$(y=y') \equiv (y=y')$, for which we have the canonical equivalence
+given by the identity function.
+\end{definition}
+
+The following construction will be used later in the book.
+
+\begin{definition}\label{def:Dan's-lemma}
+Let $X,Y(x)$ be types and $f(x): Y(x)$ for all $x:X$.
+Given elements $x,x':X$ and a path $p : x = x'$, we define an equivalence
+$(\pathover{f(x)}{Y}{e}{f(x')}) \equiv (f(x)=f(x))$.
+We do this by inducion on $p$, using \cref{def:pathsoverpaths},
+thereby reducing to the case $(f(x)=f(x)) \equiv (f(x)=f(x))$, 
+for which we have the canonical equivalence
+given by the identity function.
+\end{definition}
 
 
 \section{Propositional truncation and logic}

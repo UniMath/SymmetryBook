@@ -16,7 +16,7 @@ the same information as picking a subtype of $A$.
 \end{enumerate}
 We are interested in symmetries, and so we should search for a type $X$ which is so that given \emph{any} type $A$ the type of functions $X\to A$ (or $A\to X$, but that's not what we're going to do) picks out exactly the symmetries in $A$.  We will soon see that there is such a type: the circle which is built \emph{exactly} so that this ``universality with respect to symmetries'' holds.  It may be surprising to see how little it takes to define it; especially in hindsight when we eventually discover some the many uses of the circle.
 
-A symmetry in $A$ is an identity $p:a=_Aa$ for some $a:A$.  
+A symmetry in $A$ is an identification $p:a=_Aa$ for some $a:A$.  
 Now, we can take any iteration of $p$ (composing $p$ with itself a number of times), 
 and we can consider the inverse $p^{-1}$ and \emph{its} iterations.  
 So, by giving one symmetry we at the same time give a lot of symmetries.  
@@ -35,8 +35,11 @@ symmetries of the circle is equivalent to the set of integers.
 \section{The circle and its universal property}
 \label{sec:S1}
 
-Recall the definition of propositional truncation from \cref{sec:prop-trunc}.
-The circle is another example of a \emph{higher inductive type},
+Propositional truncation from \cref{sec:prop-trunc} was
+the first \emph{higher inductive type}, that is, an inductive type
+with constructors both for elements and for identifications,
+we introduced. 
+The circle is another example of a higher inductive type,
 see \cite[Ch. 6]{hottbook} for more information.
 
 \begin{definition}
@@ -49,18 +52,21 @@ by first stating a recursion principle for $\Sc$.
 Let $A$ be a type. In order to define a function $f:\Sc\to A$,
 it suffices to give an element $a$ of $A$ together with an
 identification $l$ of type $a=a$. The function $f$ defined
-by this data satisfies $f(\base)\jdeq a$ and $\ap{f}(\Sloop)=l$.
+by this data satisfies $f(\base)\jdeq a$ and 
+the recursion principle provides an element of $\ap{f}(\Sloop)=l$.
 
 Let $A(x)$ be a type for every $x:\Sc$. The induction principle of $\Sc$
 states that, in order to prove $A(x)$ for every element $x$ of $\Sc$,
 it suffices to give an element $a$ of $A(\base)$ together with an
-identification $l$ of type $\trp{A,\Sloop}(a) = a$. More precisely,
-giving such $a$ and $l$ defines a function $f:\prod_{x:\Sc}T(x)$ such that
-$f(\base)\jdeq a$ and $\apd{f}(\Sloop)=l$. 
+identification $l$ of type $\pathover{a}{A}{\Sloop}{a}$. 
+The function $f$ defined by this data satisfies $f(\base)\jdeq a$ and 
+the induction principle provides an element of $\apd{f}(\Sloop)=l$.
 \end{definition}
 
 Giving $a$ as above is referred to as `the base case', and
-giving $l$ as `the loop case'.
+giving $l$ as `the loop case'. Given this input data to define
+a function $f$ will often be abbreviated by writing
+$f(\base)\defeq a$ and $f(\Sloop)\defis l$.
 As promised, we now demonstrate that a function from the circle exactly 
 picks out an element and a symmetry of that element:
 
@@ -199,8 +205,11 @@ As mentioned earlier, it is possible to define the integers as the
 symmetries of the circle. However, with the set $\zet$ of integers 
 \emph{defined} as in the previous section, we will now \emph{prove}
 that $\zet$ is equal to the type $\base=\base$ of symmetries of the circle, 
-and that under this identification  $1:\zet$ corresponds to $\Sloop:\base=\base$ 
-(and furthermore, the successor $s:\zet=\zet$ corresponds to composition with $\Sloop$).
+and that under this identification $0:\zet$ corresponds to 
+$\refl{\base}:\base=\base$, $1:\zet$ corresponds to $\Sloop:\base=\base$,
+and $-1:\zet$ corresponds to $\Sloop^{-1}:\base=\base$. More generally,
+the successor $s:\zet=\zet$ corresponds to composition with $\Sloop$
+and the predecessor corresponds to composition with $\Sloop^{-1}$.
 
 \subsection{\Coverings}
 \label{sec:covering}
@@ -211,7 +220,7 @@ use the concept of \coverings.
 Since we are going to return to this concept several times, 
 we take the time for a fuller treatment before we continue with the case at hand.
 
-We should notice that the notion of a \covering is just one step up from the notion of an injection (a map such that all the preimages are propositions -- following the logic, injections perhaps ought to be called ``proposition maps'').  The formulation we give is not the only one and for some purposes not the optimal one, see \eg \cref{rem:coveringsasfamilies} for an alternative.
+We should notice that the notion of a \covering is just one step up from the notion of an injection (a map such that all the preimages are propositions -- following the logic, injections perhaps ought to be called ``proposition maps''). The formulation we give is not the only one and for some purposes not the optimal one, see \eg \cref{rem:coveringsasfamilies} for an alternative.
 
 \begin{definition}\label{def:covering}
 A \emph{\covering} over a type $B$ 
@@ -219,7 +228,8 @@ is a map $f:A\to B$ such that for each $b:B$ the preimage $f^{-1}(b)$ is a set.
 We say that a \covering $f:A\to B$ over $B$ is
 \begin{itemize}
 \item \emph{connected}\index{connected \covering} if $A$ is connected, 
-\item \emph{universal}\index{universal \covering} if both $A$ and all the identity types $a=_Aa$ (for $a:A$) are connected, 
+\item \emph{universal}\index{universal \covering} if both $A$ and all 
+the identity types $a=_Aa$ (for $a:A$) are connected, 
 \item \emph{finite}\index{finite \covering} if all preimages are finite sets,
 \item \emph{decidable}\index{decidable \covering} if all preimages are decidable sets.
 \end{itemize}
@@ -234,9 +244,11 @@ With a formula, given a type $B$, the type of \coverings over $B$ is
 with variations according to the flavor.
 
  Figure~\ref{fig:covering} visualizes two examples of \coverings over the circle.  
-Consider the left hand example first.  
-If we let $b$ be the element on the circle marked at the bottom left hand side, then the preimage $f^{-1}(b)$ is marked by the the two dots in $A$ straight above $b$, so that in this case each preimage contains two points.  
-However, it is not the constant family $\bn 2$ since $A'=\sum_{z}\bn 2=\Sc\times\bn 2=\Sc+\Sc$ is not connected.  
+Consider the picture on the left first.  
+If we let $b$ be the element on the circle marked at the bottom left hand side, then the preimage $f^{-1}(b)$ is marked by the the two dots in $A$ straight above $b$, 
+so that in this case each preimage contains two points (is \emph{merely equal} to $\bn 2$).  
+However, $A$ is not the constant family like $A'$ depicted on the right, since 
+$A'=\sum_{z:\Sc}\bn 2=\Sc\times\bn 2=\Sc+\Sc$ is not connected.  
 Obviously something way more fascinating is going on.
 \begin{figure}
   \centering
@@ -257,7 +269,7 @@ Obviously something way more fascinating is going on.
     \node[fill,circle,inner sep=1pt] at (-1,-2) {};
     \node[fill,circle,inner sep=1pt] at (-1,0) {};
     \node[fill,circle,inner sep=1pt] at (-1,1) {};
-    \node (L) at (1,-3) {(a)};
+    \node (L) at (1,-3) {(left)};
     \begin{scope}[xshift=6cm]
     \node (At) at (2,1) {$S^1+S^1$};
     \node (Bt) at (2,-2) {$S^1$};
@@ -268,7 +280,7 @@ Obviously something way more fascinating is going on.
     \node[fill,circle,inner sep=1pt] at (-1,-2) {};
     \node[fill,circle,inner sep=1pt] at (-1,0) {};
     \node[fill,circle,inner sep=1pt] at (-1,1) {};
-    \node (Lt) at (1,-3) {(b)};
+    \node (Lt) at (1,-3) {(right)};
     \end{scope}
   \end{tikzpicture}
   \caption{A visualization of two \coverings over the circle}
@@ -276,7 +288,10 @@ Obviously something way more fascinating is going on.
 \end{figure}
 
 \begin{remark}
-  It \emph{is} possible to misunderstand what a ``connected \covering'' is: the other interpretation ``all the preimages are connected'' simply would give us an equivalence and is \emph{not} what is intend (equivalences are \coverings, but not necessarily connected \coverings and connected \coverings are not neccesarily equivalences).  
+  It \emph{is} possible to misunderstand what a ``connected \covering'' is: 
+the other interpretation ``all the preimages are connected'' simply 
+would give us an equivalence (since connected sets are contractible),
+and this is \emph{not} what is intended. (Equivalences are \coverings, but not necessarily connected \coverings and connected \coverings are not neccesarily equivalences.)  
 
 Likewise, for the other qualifications; for instance in a ``finite covering'' $f:A\to B$, the type $A$ is usually \emph{not} a finite set. % ``pointed \covering'' \emph{could} be misunderstood as a function where all the fibers are pointed sets, that is a \covering with a section. 
 Also, given a pointed cover, only the preimage over the basepoint comes with a distinguished point; other preimages are merely sets.
