@@ -112,13 +112,17 @@ Here are the rules for constructing equality types.
   function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl a) \defeq p$.
 \end{enumerate}
 
+The identity type $a =_X b$ may also be called an {\em equation}.
+
 When there is no risk of confusion, we will write $a=b$ instead of $a =_X b$.
 
-When we know that there can be at most one element of $a=b$, we will refer to an element $i$ of $a=b$ as a {\em proof} that $a$ is equal to $b$.
+When we know that there can be at most one element of $a=b$, we will refer to an element $i$ of $a=b$ as a {\em proof}\,\footnote{Here we override
+  the use of the word ``proof'' that is traditional in metamathematics; such a thing would now be a formal expression denoting an
+  element of $a=b$.} that $a$ is equal to $b$.
 
-When $a=b$ may have more than one element, we will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$.  Since the word
-``identification'' is a long one, we may also refer to $i$ as a {\em path} from $a$ to $b$---this has the advantage of incorporating the
-intuition that an identification may proceed gradually through intermediate steps.
+When $a=b$ may have more than one element, we will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$, or simply as an
+{\em identity} or an {\em equality}.  Since the word ``identification'' is a long one, we may also refer to $i$ as a {\em path} from $a$ to
+$b$---this has the advantage of incorporating the intuition that an identification may proceed gradually through intermediate steps.
 
 It may come as a surprise that two mathematical objects can be equal in more than one way, especialy since rule E3 above seems to say that the
 trivial proofs of equality are the only relevant ones, but this reflects a situation commonly encountered in geometry, where {\em congruence} of
@@ -307,7 +311,7 @@ f=g \to \prod_{x:X} f(x)=g(x).
 \end{xca}
 
 Conversely, from a basic logical principle called {\em function extensionality}, which we adopt,
-it follows that $f=g$ whenever $f(x) = g(x)$ for every element $x$ of $X$.
+an identity $f=g$ can be produced from a family of identities of type $f(x) = g(x)$ indexed by the elements $x$ of $X$.
 
 \section{Identifying elements in members of families of types}
 
@@ -762,7 +766,7 @@ $X$.
   set $q' \star \refl x \defeq q'$.
 \end{definition}  
 
-The following associativity property holds for the operation $\star$.
+We turn now to associativity for the operation $\star$.
 
 \begin{lemma}\label{def:pathsectionactionassoc}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
@@ -866,9 +870,9 @@ Formally, we postulate the existence of an element \[ \ua_{X,Y} : \isEq(\cast_{X
 \end{definition}
 
 For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$, the result of applying the
-inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus the identities $\cast (\ua (f)) = f$ and $\ua (\cast (p)) = p$ hold.
+inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus there are identities $\cast (\ua (f)) = f$ and $\ua (\cast (p)) = p$.
 
-We may also write $\ua (f)$ more briefly as $\etop f$.  Thus the identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$ hold.
+We may also write $\ua (f)$ more briefly as $\etop f$.  Thus there are identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$.
 
 \begin{xca}\label{xca:C2}
 Prove that $\bool=\bool$ has exactly two elements, 
@@ -884,9 +888,9 @@ the two elements of $\bool$), and that $\twist\cdot\twist=\refl{\bool}$.
 \section{Propositions, sets and groupoids}
 \label{sec:props-sets-grpds}
 
-Let $X$ be a type.  The property that $X$ has at most one element may 
+Let $P$ be a type.  The property that $P$ has at most one element may 
 be expressed by saying that any two elements are equal. 
-Hence it is encoded by $\prod_{a,b:X} (a=b)$.  
+Hence it is encoded by $\prod_{a,b:P} (a=b)$.  
 We shall call such a type a \emph{proposition}, 
 and its elements will be called \emph{proofs}.
 We will use them for doing logic in type theory.
@@ -894,6 +898,11 @@ The reason for doing so is that the most relevant
 thing about a logical proposition is whether it has a proof or not.
 It is therefore reasonable to require for any type representing 
 a logical proposition that all its members are equal.
+
+Suppose $P$ is a proposition.  Then English phrases such as ``$P$ holds'', ``we know $P$'', and ``we have shown $P$'', will all mean that we
+have an element of $P$.  We will not use such phrases for types that are not propositions, nor will we discuss knowing $P$ conditionally with a
+phrase such as ``whether $P$''.  Similarly, if {\em Q} is the English phrase for a statement encoded by the proposition $P$, then the English
+phrases ``{\em Q} holds'', ``we know {\em Q}'', and ``we have shown {\em Q}'', will all mean that we have an element of $P$.
 
 Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity 
 type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.
@@ -1281,14 +1290,21 @@ As explained in \cref{sec:props-sets-grpds}, $\to,\prod,\times$
 can be used for the logical operations implication, 
 universal quantification, and conjunction, respectively.
 Moreover, $\true$ and $\false$ can be used as truth values,
-and $\neg A \defeq (A\to\false)$ for negation.
+and $\neg A \defeq (A\to\false)$ can be used for negation.
 We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
 that are not propositions, even though the constituents are
 propositions. This means we are still lacking $\vee$ and $\exists$
-from the standard repertoire of logic.
+from the standard repertoire of logic, as well as the notion of {\em non-emptiness} of a type.
+In this section we explain how to implement those three notions.
 
-In this section we explain how to define $\vee$ and $\exists$.
-We define an operation called propositional truncation,\footnote{%
+To motivate the construction that follows, consider non-emptiness of a type $T$.  In order to be in a position to encode the mathematical
+assertion expressed by the English phrase ``$T$ is non-empty'', we will need a proposition $P$.  The proposition $P$ will have to be constructed
+somehow from $T$.  Any element of $T$ should somehow give rise to an element of $P$, but, since all elements of propositions are equal to each
+other, all elements of $P$ arising from elements of $T$ should somehow be made to equal each other.  Finally, any proposition $Q$ that is a
+consequence of having an element of $T$ should also be a consequence of $P$.  (We are suppressing the etymology of the word ``non-empty'',
+because the proposition $T \ne \emptytype$ does not satisfy that final condition.)
+
+We define now an operation called propositional truncation,\footnote{%
 The name ``truncation'' is slightly misleading since it suggests leaving
 something out, whereas the correct intuition is one of adding identifications
 so everything becomes equal.}
@@ -1333,15 +1349,19 @@ For example, from \cref{def:prop-trunc}, from $x:\Trunc{T}$ we may deduce $\exis
 
 We conclude this section with some important notions defined using truncation.
 
+\begin{definition}\label{def:non-empty}
+Let $A$ be a type. We call $A$ \emph{non-empty} if we have an element of $\Trunc{A}$.
+\end{definition}
+
 \begin{definition}\label{def:connected}
-Let $A$ be a type. We call $A$ \emph{non-empty} if $\Trunc{A}$.
-Elements $x,y$ of $A$ are called \emph{connected} if $x=y$ is
-non-empty, that is, if $\Trunc{x=y}$.
-If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A}\Trunc{a=x}$
-is called the \emph{connected component} of $a$ in $A$.
-The type $A$ is called \emph{connected} if it is non-empty
-and all its elements are connected, that is, if 
-$\Trunc{A} \times \prod_{x,y:A} \Trunc{x=y}$.
+  Let $A$ be a type.
+  Elements $x,y$ of $A$ are called \emph{connected} if $x=y$ is
+  non-empty, that is, if we have an element of $\Trunc{x=y}$.
+  If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A}\Trunc{a=x}$
+  is called the \emph{connected component} of $a$ in $A$.
+  The type $A$ is called \emph{connected} if it is non-empty
+  and all its elements are connected, that is, if we have an element of
+  $\Trunc{A} \times \prod_{x,y:A} \Trunc{x=y}$.
 \end{definition}
 
 Note that under this definition the empty type $\emptytype$ is not connected.
@@ -1358,12 +1378,11 @@ to $P(y)$ for any connected $x,y:A$.
 \end{xca}
 
 \begin{xca}\label{xca:trunc-non-empty}
-Show $\Trunc A \equiv \neg(A\to\bn{0})$ for all types $A$.
 Show that $\Trunc P \equiv P$ for any proposition $P$.
 \end{xca}
 
 \begin{xca}\label{xca:connected-loop-contractible}
-Let $A$ be a connected type, and $a:A$ such that $a=a$ is contractible.
+Let $A$ be a connected type, and suppose for every (or for some) $a:A$ that $a=a$ is a proposition.
 Show that $A$ is contractible.
 \end{xca}
 
@@ -1925,6 +1944,74 @@ $(A\to\Set) \equiv \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}f^{-1}(a)$. (Hard!)
 \end{enumerate}
 \end{lemma}
+
+\section{How to deloop a group morphism}
+
+Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
+We suppose given a group morphism
+$$f:a = a\rightarrow b = b$$
+and we explain how to build a map $g:X \rightarrow Y$ with
+a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
+for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+
+\medskip
+
+Let us assume the problem solved. The map $g:X\rightarrow Y$
+will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
+and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
+$$p(\alpha\omega) = g(\alpha)g(\omega)p
+  = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
+for all $\omega:a = a$ and $\alpha : a = x$.
+
+\medskip
+
+This suggests to introduce the following family
+$$
+C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
+ p(\alpha\omega) = p(\alpha)f(\omega)
+$$
+
+ An element of $C(x)$ has three components, the last component being
+ a proof since $Y$ is a $1$-type.
+
+ The type $C(a)$ has a simpler description. An element of $C(a)$ is
+ a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
+ $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
+ can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
+ is completely determined by $p(1_a)$.
+ Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
+
+ \medskip
+
+ It follows that we have
+ $$
+ \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
+ $$
+and so, since $\iscontr~C(x)$ is a proposition
+ $$
+ \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
+ $$
+ Since $X$ is connected, we have
+ $\prod_{x:X}\iscontr~ C(x)$
+ and so, in particular, we have an element of $\prod_{x:X}C(x)$.
+
+ We get in this way a map $g:X\rightarrow Y$
+ together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
+ $p (\alpha\omega) = p(\alpha) f(\omega)$
+ for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
+We have, for $\alpha:a=x$
+$$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
+since this holds for $\lambda = 1_x$.
+In particular, $p(\omega) = g(\omega)p(1_a)$.
+
+We also have $p(\omega) = p(1_a)f(\omega)$, hence 
+$p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
+for all $\alpha:a=a$ and we have found a delooping of $f$.
+
+
+
+
+
 
 % Local Variables:
 % fill-column: 144
