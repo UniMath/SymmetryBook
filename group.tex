@@ -1194,22 +1194,31 @@ Now, as we've seen, that   $f:(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an injection (pr
 
     \begin{definition}
       \label{def:subgroup}
-      Let $G$ be a group.  A subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such that the fibers of $Bf$ are sets.
+      Let $G$ be a group.  A subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such that the fibers of $Bf$ are sets.  A \emph{proper subgroup} $f:\Hom(H,G)$ is one where the fibers of $Bf$ are not propositions.
     \end{definition}
+    \begin{lemma}
+      If $p$ is a prime, then  the cyclic group $C_p$ has no proper subgroups.
+    \end{lemma}
+    \begin{proof}
+      By Lagrange's theorem (\cref{lagrange}) a subgroup has order dividing $p$, \ie either $1$ or $p$.
+    \end{proof}
+
 
 \section{Cauchy's theorem}
 \footnote{TO BE MOVED TO AFTER Burnside's (\ie a $G$-set splits into orbits) has been covered.  Also, the proof is written in a pseudoclassical way just to remind me of the idea.  It is not a typo and will by typied}
 
 \begin{definition}
-  \label{def:finitegrd}Let $n:\NN$ be positive.  A \emph{finite group of order $n$}\index{finite group! of order $n$} is a group $G$ such that the set $pt_G=\pt_G$ is in $\fin_n$. A \emph{finite group}\index{finite group} is a group such that $\pt_G=\pt_G$ is a finite set. 
+  \label{def:finitegrd}Let $n:\NN$ be positive.  
+A \emph{finite group of order $n$}\index{finite group! of order $n$} is a group $G$ such that the set $pt_G=\pt_G$ is in $\fin_n$. 
+A \emph{finite group}\index{finite group} is a group such that $\pt_G=\pt_G$ is a finite set. 
 \end{definition}
 So, the trivial group has order $1$, the cyclic group $C_n$ of order $n$ has order $n$ (which is good) and the permutation group $\Sigma_n$ has order $n!$.
 \begin{lemma}
   \label{lem:fixedptsize}
-  Let $p$ be a prime and $G$ a group of order $p^n$ for some positive $n:\NN$.  If $X:BG\to\Set$ is a non-empty $G$-set such that the cardinality of $X(\pt_G)$ is divisible by $p$, the cardinality of the set of fixed points $X^G\defequi\prod_{z:BG}X(z)$ is divisible by $p$.
+  Let $p$ be a prime and $G$ a group of order $p^n$ for some positive $n:\NN$.  If $X:BG\to\Set$ is a non-empty finite $G$-set such that the cardinality of $X(\pt_G)$ is divisible by $p$, then the cardinality of the set of fixed points $X^G\defequi\prod_{z:BG}X(z)$ is divisible by $p$.
 \end{lemma}
 \begin{proof}
-  Recall that the evaluation at $\pt_G$ gives an injection of sets $X^G\to X(\pt_G)$ through which we identify $X^G$ with the subset of all trivial orbits of $X(\pt_G)$.
+  Recall that the evaluation at $\pt_G$ gives an injection of sets $X^G\to X(\pt_G)$ through which we identify $X^G$ with the subset ``$X(\pt_G)^G$'' of all trivial orbits of $X(\pt_G)$.
  The orbits of $X(\pt_G)$\footnote{or of $X$?  Reference for identification of orbits with quotiens by stabilizers} all have cardinalities that divide the order $p^n$ of $G$.  
 This means that all the the cardinalities of the non-trivial orbits (as well as of $X(\pt_G)$) are positive integers divisible by $p$. 
 
@@ -1233,16 +1242,18 @@ $$
 If $(S,j):BC_p$ let 
 $$A(S,j)\defequi ((S,j)=(S,j)\to (\pt_G=\pt_G)).$$  Since we have an equivalence $j^?:\bn p\to ((S,j)=(S,j))$ we get that $J:A(S,j)\to \prod_{\bn p}(\pt_G=\pt_G)$ given by $J(g)=(g_{j^0},g_{j_1},\dots,g_{j^{p-1}})$ is an equivalence.  Define $\mu:\prod_{(S,j):BC_p}(A(S,j)\to(\pt_G=\pt_G))$ by $\mu_{(S,j)}(g)\defequi g_{j^0}\cdot\dots\cdot g_{j^{p-1}}$ and let $X:BC_p\to\Set$ be the $G$-set defined by  
 $$X(S,j)\defequi\sum_{g:A(S,j)}\mu_{(S,j)}g=e_G.$$ 
-The map from $X(S,j)$ to the $p-1$-product of $(\pt_G=\pt_G)$ with itself sending $(g,!)$ to $(g_{j^1},\dots,g_{j^{p-1}})$ is an equivalence ($\mu_{(S,j)}g=e_G$ says exactly that $g_{j^0}$ can be reconstructed as $(g_{j^1}\cdot\dots\cdot g_{j^{p-1}})^{-1}$), so $X(S,j)$ is a set of cardinality $p-1$ times the order of $G$.  In particular, $p$ divides the order of $X(S,j)$.
+The map from $X(S,j)$ to the $p-1$-fold product of $(\pt_G=\pt_G)$ with itself sending $(g,!)$ to $(g_{j^1},\dots,g_{j^{p-1}})$ is an equivalence ($\mu_{(S,j)}g=e_G$ says exactly that $g_{j^0}$ can be reconstructed as $(g_{j^1}\cdot\dots\cdot g_{j^{p-1}})^{-1}$), so $X(S,j)$ is a set of cardinality $p-1$ times the order of $G$.  In particular, $p$ divides the order of $X(S,j)$.
 
 Specializing to $(S,j)$ being $\zet/p$ and allowing to index the elements in $A(\zet/p)$ with $i:\bn p$ (instead of the very awkward ``$(\sqrt[p]\id)^i$'' as purism would dictate) we proceed as follows.
 
 Now, a $C_p$-fixed point of $X(\zet/p)$ is an element $(g_0,\dots,g_{p-1},!)$ such that $(g_0,\dots,g_{p-1},!)=(g_1,\dots,g_{p-1},g_0,!)$, \ie $g_0=g_1=g_2=\dots=g_{p-1}$\footnote{if I am allowed to write that}.  In other words, a fixed point is of the form $(g,\dots,g,!)$, where $!$ expresses that $g^p=e_G$:
-$X(\zet/p)^{C_p}$ is equivalent to $\sum_{g:\pt_G=\pt_G}g^p=e_G.$  If we can show that $(g,!):X(\zet/p)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point.
+$X(\zet/p)^{C_p}$ is equivalent to $\sum_{g:\pt_G=\pt_G}g^p=e_G.$  If we can show that $(g,!):X(\zet/p)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point, but if $g\neq e_G$ we get a cyclic subgroup of order $p$ of $G$.
 
- Now, $X(\zet/p)$ splits as a disjoint union of its orbits.\footnote{the formulation here depends on things to come: how do we express the decomposition into orbits?}  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
-$$X(\zet/p)= X(\zet/p)^{C_p}+(\text{free part of }X(\zet/p)).$$
-Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\zet/p)$ \emph{and} of the free part of $X(\zet/p)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+ Now, \cref{lem:fixedptsize} claims that $p$ divides the cardinality of $X(\zet/p)^{C_p}$, and since there \emph{are} fixed points, there must be at lest $p$ fixed points.  One of them is the trivial one (given by $g=e_G$ above), but the others are nontrivial.
+
+% $X(\zet/p)$ splits as a disjoint union of its orbits.\footnote{the formulation here depends on things to come: how do we express the decomposition into orbits?}  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
+% $$X(\zet/p)= X(\zet/p)^{C_p}+(\text{free part of }X(\zet/p)).$$
+% Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\zet/p)$ \emph{and} of the free part of $X(\zet/p)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
 
 \footnote{ALTERNATIVELY:
   Consider  the $p-1$-fold product $(\bn{(p-1)}\to (\pt_G=\pt_G))$ of $\pt_G=\pt_G$ with itself.  We give this set the structure of a $\ZZ/p$-set as follows: ((here it is convenient to say that a $\ZZ/p$-set is the same as a $\ZZ$-set commuting with the $p$-fold cover)) define $X:S^1\to\Set$ by $X(\base)\defequi (\bn{(p-1)}\to (\pt_G=\pt_G))$ and by setting $X(\Sloop)$ to be the element in $X(\base)=(\base)$ sending $(g_1,\dots,g_{p-1})$ to $(g_2,\dots,g_{p-1},(g_1\cdots g_{p-1})^{-1})$.  Note that
