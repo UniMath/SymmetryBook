@@ -1184,6 +1184,10 @@ Specializing, we return to our initial motivation and see that mapping out of a 
 %\section{homomorphisms induced by functions (early)}
 \section{more examples: symmetric groups, integers, cyclic groups and modular arithmetic}
 \section{group actions, orbits and fixed points}
+
+\footnote{TO BE MOVED TO AFTER the chapter on symmetry (need Burnside -  a $G$-set splits into orbits - etc) has been covered.  
+Also, some proofs are written in a pseudoclassical way just to remind me of the idea.  It is not a typo and will by typied}
+
 \section{Subgroup}
 \label{sec:subgroups}
 In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discovered that the ``subsymmetries'' formed a very organized structure.  For each natural number $n$ we obtained a set of subsymmetry the entire identity type $\base=\base$, namely the set of all the iterates $(\Sloop^{n})^m$ where $m$ varies over the integers.  When $n$ was positive this was realized as the $n$-fold \covering of $S^1$ , when $n=0$ this was given by the universal \covering.  
@@ -1191,21 +1195,24 @@ In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discove
 For other groups the ``subsymmetries'' form more involved structures.  One thing is that our concept of a subtype of $B$ is merely the first projection $\sum_{b:B}P(b)\to B$, where the $P$ is a family of propositions.  Another thing is that for group the ``sub'' refers to the associated abstract groups, so that ``$BH$ is a subgroup of $BG$'' should \emph{not} mean that ``$BH$ is a subtype of $BG$'', but that we have a group homomorphism $f:\Hom(H,G)$ so that the induced function $(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an ``inclusion of a subset''. 
 
 Now, as we've seen, that   $f:(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an injection (preimages are propositions) is equivalent to the preimages of $Bf:BH\to BG$ being sets.  Hence we get the following neat formulation.
-
+\newcommand{\typesubgroup}{\mathbf{Subgp}}
     \begin{definition}
       \label{def:subgroup}
-      Let $G$ be a group.  A subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such that the fibers of $Bf$ are sets.  A \emph{proper subgroup} $f:\Hom(H,G)$ is one where the fibers of $Bf$ are not propositions.
+      Let $G$ be a group.  
+      The \emph{type of subgroups of $G$}\index{type!subgroup} is the type
+      $$\typesubgroup_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(Bf^{-1}(\pt_G)).$$
+       A subgroup $(H,f,!)$ is
+      \begin{enumerate}
+      \item \emph{non-trivial}\index{non-trivial subgroup} if $BH$ is not contractible
+      \item \emph{proper}\index{proper subgroup} if $Bf$ is not an equivalence.
+      \end{enumerate}
     \end{definition}
-    \begin{lemma}
-      If $p$ is a prime, then  the cyclic group $C_p$ has no proper subgroups.
-    \end{lemma}
-    \begin{proof}
-      By Lagrange's theorem (\cref{lagrange}) a subgroup has order dividing $p$, \ie either $1$ or $p$.
-    \end{proof}
-
-
-\section{Cauchy's theorem}
-\footnote{TO BE MOVED TO AFTER Burnside's (\ie a $G$-set splits into orbits) has been covered.  Also, the proof is written in a pseudoclassical way just to remind me of the idea.  It is not a typo and will by typied}
+In other words, a subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such that the fibers of $Bf$ are sets and an identity between two subgroups $f:\Hom(H,G)$ and $f':\Hom(H',G)$ is an identity $p:H'=_{\typegroup}H$ such that $f'=f\,p$ (a proposition since $\Hom(H',G)$ is a set).
+\begin{remark}
+  If you're familiar with the set-theoretic flavor of things, it is important to distinguish between subgroups and injective group homomorphisms.  
+Our use of ``subgroup'' can be defended as follows.  It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism modulo that precomposing with an isomorphism yields identical subgroups.  
+Set-theory offers the luxury of having a representative in every equivalence class: namely the image of the injection, type theory does not.
+\end{remark}
 
 \begin{definition}
   \label{def:finitegrd}Let $n:\NN$ be positive.  
@@ -1213,6 +1220,15 @@ A \emph{finite group of order $n$}\index{finite group! of order $n$} is a group 
 A \emph{finite group}\index{finite group} is a group such that $\pt_G=\pt_G$ is a finite set. 
 \end{definition}
 So, the trivial group has order $1$, the cyclic group $C_n$ of order $n$ has order $n$ (which is good) and the permutation group $\Sigma_n$ has order $n!$.
+    \begin{lemma}
+      If $p$ is a prime, then  the cyclic group $C_p$ has no non-trivial proper subgroups.
+    \end{lemma}
+    \begin{proof}
+      By Lagrange's theorem (\cref{thm:lagrange}) a subgroup has order dividing $p$, \ie either $1$ or $p$.
+    \end{proof}
+
+
+\section{Cauchy's theorem}
 \begin{lemma}
   \label{lem:fixedptsize}
   Let $p$ be a prime and $G$ a group of order $p^n$ for some positive $n:\NN$.  If $X:BG\to\Set$ is a non-empty finite $G$-set such that the cardinality of $X(\pt_G)$ is divisible by $p$, then the cardinality of the set of fixed points $X^G\defequi\prod_{z:BG}X(z)$ is divisible by $p$.
@@ -1222,14 +1238,14 @@ So, the trivial group has order $1$, the cyclic group $C_n$ of order $n$ has ord
  The orbits of $X(\pt_G)$\footnote{or of $X$?  Reference for identification of orbits with quotiens by stabilizers} all have cardinalities that divide the order $p^n$ of $G$.  
 This means that all the the cardinalities of the non-trivial orbits (as well as of $X(\pt_G)$) are positive integers divisible by $p$. 
 
- Burnside's Lemma \cref{lem:Burnside} states that $X(\pt_G)$ is the sum of its orbits.
+ Burnside's Lemma \cref{lem:burnsides-lemma} states that $X(\pt_G)$ is the sum of its orbits.
 Hence the cardinality of the set of all trivial orbits, \ie of $X^G$, is the difference of two numbers both divisible by $p$.  
 \end{proof}
 
-\begin{lemma}
-  \label{lem:cauchys}
+\begin{theorem}
+  \label{thm:cauchys}
   Let $p$ be a prime and let $G$ be a finite group of order divisible by $p$.  Then $G$ has a subgroup which is cyclic of order $p$. (do we need decidability - check whether you want to rewrite)
-\end{lemma}
+\end{theorem}
 \begin{proof}
 NOTE: three variants follow.  Have to choose one.  The middle needs some background essentially boiling down to $BC_n$ being the truncation of the $n$th Moore space.
 
