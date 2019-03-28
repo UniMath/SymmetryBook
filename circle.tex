@@ -6,15 +6,23 @@ phenomenon you should search for a single type that captures this phenomenon.
 Here are two examples
 \begin{enumerate}
 \item The contractible type $\bn 1$ has the property that given 
-\emph{any} type $A$ a function $\bn 1\to A$ provides exactly the 
-same information as picking an element in $A$: 
-the function $A\to (\bn 1\to A)$ sending $a:A$ to the 
-constant function with value $a$ is an equivalence, \ie $A=(\bn 1\to A)$.
+any type $A$ a function $\bn 1\to A$ provides exactly the 
+same information as picking an element in $A$.
+For, an equivalence from $A$ to $\bn 1\to A$ is provided by
+the function $a \mapsto (x \mapsto a)$.
 \item The type $\Prop$ of propositions has the property that 
-given \emph{any} type $A$ a function $A\to\Prop$ provides exactly 
+given any type $A$ a function $A\to\Prop$ provides exactly 
 the same information as picking a subtype of $A$.
 \end{enumerate}
-We are interested in symmetries, and so we should search for a type $X$ which is so that given \emph{any} type $A$ the type of functions $X\to A$ (or $A\to X$, but that's not what we're going to do) picks out exactly the symmetries in $A$.  We will soon see that there is such a type: the circle which is built \emph{exactly} so that this ``universality with respect to symmetries'' holds.  It may be surprising to see how little it takes to define it; especially in hindsight when we eventually discover some the many uses of the circle.
+We are interested in symmetries, and so we should search for a type $X$ 
+which is so that given \emph{any} type $A$ the type of functions 
+$X\to A$ (or $A\to X$, but that's not what we're going to do) 
+picks out exactly the symmetries in $A$.  
+We will soon see that there is such a type: 
+the circle which is built \emph{exactly} so that this 
+``universality with respect to symmetries'' holds.  
+It may be surprising to see how little it takes to define it; 
+especially in hindsight when we eventually discover some of the many uses of the circle.
 
 A symmetry in $A$ is an identification $p:a=_Aa$ for some $a:A$.  
 Now, we can take any iteration of $p$ (composing $p$ with itself a number of times), 
@@ -53,7 +61,10 @@ Let $A$ be a type. In order to define a function $f:\Sc\to A$,
 it suffices to give an element $a$ of $A$ together with an
 identification $l$ of type $a=a$. The function $f$ defined
 by this data satisfies $f(\base)\jdeq a$ and 
-the recursion principle provides an element of $\ap{f}(\Sloop)=l$.
+the recursion principle provides an (unnamed) element of 
+$\ap{f}(\Sloop)=l$.\footnote{%
+We use $\ap{f}(\Sloop)=l$ and not $\ap{f}(\Sloop)\jdeq l$ because
+$\ap{f}$ has already been defined.}
 
 Let $A(x)$ be a type for every $x:\Sc$. The induction principle of $\Sc$
 states that, in order to prove $A(x)$ for every element $x$ of $\Sc$,
@@ -67,8 +78,12 @@ Giving $a$ as above is referred to as `the base case', and
 giving $l$ as `the loop case'. Given this input data to define
 a function $f$ will often be abbreviated by writing
 $f(\base)\defeq a$ and $f(\Sloop)\defis l$.
-As promised, we now demonstrate that a function from the circle exactly 
-picks out an element and a symmetry of that element:
+
+The following result states that any function from the circle exactly 
+picks out an element and a symmetry of that element.
+This is a ``universal property'' of the circle.
+\footnote{\color{blue}As promised, we now demonstrate that a function from the circle exactly 
+picks out an element and a symmetry of that element}
 
 \begin{lemma}\label{lem:freeloopspace}
 For all types $A$, the evaluation function 
@@ -90,7 +105,7 @@ $p: f(\base)= g(\base)$ and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
 We show $f=g$, for which it suffices to prove by circle induction
 that $P(x)\defeq(f(x)=g(x))$ for all $x:\Sc$.
 For the base case we take $p$.
-For the loop case we have to show $\trp{P,\Sloop}(p)=p$.
+The loop case reduces to $\trp{P,\Sloop}(p)=p$ by \cref{def:pathover-transport}.
 By \cref{lem:trp-in-fx=Ygx} we have 
 $\trp{P,\Sloop}(p)=g(\Sloop)\cdot p \cdot f(\Sloop)^{-1}$. 
 By $q$ we have $g(\Sloop) = p\cdot f(\Sloop) \cdot p^{-1}$.
@@ -198,27 +213,16 @@ Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 Ordering relations $<$ and $\leq$ on $\zet$ are easily defined
 and shown to extend those on $\NN$.
 
-\section{The symmetries of the circle}
-\label{sec:pi1S1isZ}
-
-As mentioned earlier, it is possible to define the integers as the
-symmetries of the circle. However, with the set $\zet$ of integers 
-\emph{defined} as in the previous section, we will now \emph{prove}
-that $\zet$ is equal to the type $\base=\base$ of symmetries of the circle, 
-and that under this identification $0:\zet$ corresponds to 
-$\refl{\base}:\base=\base$, $1:\zet$ corresponds to $\Sloop:\base=\base$,
-and $-1:\zet$ corresponds to $\Sloop^{-1}:\base=\base$. More generally,
-the successor $s:\zet=\zet$ corresponds to composition with $\Sloop$
-and the predecessor corresponds to composition with $\Sloop^{-1}$.
-
-\subsection{\Coverings}
+\section{\Coverings}
 \label{sec:covering}
 
-Our investigation of the type $\base=_{S^1}\base$ will 
-use the concept of \coverings.
+As mentioned earlier, it is possible to define the integers as the
+type $\base=_{S^1}\base$ of symmetries of the circle.
+Our investigation of $\base=_{S^1}\base$ will use the concept of \coverings.
 %, a concept custom-built for exposing symmetries (and subsymmetries) of types.  
 Since we are going to return to this concept several times, 
-we take the time for a fuller treatment before we continue with the case at hand.
+we take the time for a fuller treatment before we continue with
+proving the equivalence of $\base=_{S^1}\base$ and $\zet$.
 
 We should notice that the notion of a \covering is just one step up from the notion of an injection (a map such that all the preimages are propositions -- following the logic, injections perhaps ought to be called ``proposition maps''). The formulation we give is not the only one and for some purposes not the optimal one, see \eg \cref{rem:coveringsasfamilies} for an alternative.
 
@@ -247,10 +251,10 @@ with variations according to the flavor.
 Consider the picture on the left first.  
 If we let $b$ be the element on the circle marked at the bottom left hand side, then the preimage $f^{-1}(b)$ is marked by the the two dots in $A$ straight above $b$, 
 so that in this case each preimage contains two points (is \emph{merely equal} to $\bn 2$).  
-However, $A$ is not the constant family like $A'$ depicted on the right, since 
+However, $A$ is not the constant family, like $A'$ depicted on the right, since 
 $A'=\sum_{z:\Sc}\bn 2=\Sc\times\bn 2=\Sc+\Sc$ is not connected.  
 Obviously something way more fascinating is going on.
-\begin{figure}
+\begin{figure}[hbt]
   \centering
   \begin{tikzpicture}
     \node (A) at (2,1) {$A$};
@@ -298,6 +302,8 @@ Also, given a pointed cover, only the preimage over the basepoint comes with a d
 
   We trust the reader keeps our definitions in mind and not the other interpretations.
 \end{remark}
+
+
 \begin{remark}
   \Coverings are closely related to a concept from topology called ``covering space'' (or any variant thereof, including Galois theory) and from algebra as sheaves (of sets).  Either way, the concept is useful because it singles out the (sub)symmetries.  
 % \end{remark}
@@ -378,10 +384,17 @@ Note, however, that this depends on $f^{-1}(b_0)$ being non-empty (classically, 
 
 
 
+\section{The symmetries of the circle}
+\label{sec:pi1S1isZ}\label{sec:symcirc}
 
-\subsection{The symmetries of the circle}
-\label{sec:symcirc}
-We now proceed to show that the symmetries $\base=\base$ of the circle is equal to the set $\zet$ of integers.  
+With the set $\zet$ of integers \emph{defined} as in \cref{sec:integers}, 
+we will now \emph{prove} that $\zet$ is equivalent to the type 
+$\base=_\Sc\base$, and that under this equivalence $0:\zet$ corresponds to 
+$\refl{\base}:\base=\base$, $1:\zet$ to $\Sloop:\base=\base$,
+and $-1:\zet$ to $\Sloop^{-1}:\base=\base$. More generally,
+the successor $s:\zet=\zet$ corresponds to composition with $\Sloop$
+and the predecessor corresponds to composition with $\Sloop^{-1}$.
+
 The first step is to prove that the exponential \covering \cref{def:RtoS1} is equal to the universal \covering \cref{def:universalcover}, \ie we prove that the family 
 $$R: \Sc\to\UU,\qquad R(\base)\defequi\zet,\, R(\Sloop)\coloneq s$$
 is equal to the family
