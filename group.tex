@@ -564,6 +564,10 @@ y\ar@{=}[r]^p_\to&z}$$
 is a mnemonic device illustrating that it couldn't have been different, and should be contrasted with the picture for $\princ G (p):(\pt_G=y)=(\pt_G=z)$:
 $$\xymatrix{\pt_G\ar@{=}[r]^{\refl{\pt_G}}_\to\ar@{=}[d]_q^\downarrow&\pt_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
 y\ar@{=}[r]^p_\to&\,z.}$$  
+Notice that by the induction principle for the circle,
+$$\sum_{z:BG}\Ad_G(z)=\sum_{z:BG}(z=z)$$
+is equivalent to the type of (unpointed!) maps $S^1\to BG$, known in other contexts as the \emph{free loop space} of $BG$, an apt name given that it is the type of ``all symmetries of $BG$.''  
+The first projection $\sum_{z:BG}\Ad_G(z)\to BG$ correspond to the function $(S^1\to BG)\to BG$ given by evaluating at $\base$. 
 \end{example}
 \begin{example}\label{def:trivGset}
   If $G$ is a group (or \inftygp), and $X$ is a set (or type) then
@@ -1180,6 +1184,10 @@ Specializing, we return to our initial motivation and see that mapping out of a 
 %\section{homomorphisms induced by functions (early)}
 \section{more examples: symmetric groups, integers, cyclic groups and modular arithmetic}
 \section{group actions, orbits and fixed points}
+
+\footnote{TO BE MOVED TO AFTER the chapter on symmetry (need Burnside -  a $G$-set splits into orbits - etc) has been covered.  
+Also, some proofs are written in a pseudoclassical way just to remind me of the idea.  It is not a typo and will by typied}
+
 \section{Subgroup}
 \label{sec:subgroups}
 In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discovered that the ``subsymmetries'' formed a very organized structure.  For each natural number $n$ we obtained a set of subsymmetry the entire identity type $\base=\base$, namely the set of all the iterates $(\Sloop^{n})^m$ where $m$ varies over the integers.  When $n$ was positive this was realized as the $n$-fold \covering of $S^1$ , when $n=0$ this was given by the universal \covering.  
@@ -1187,23 +1195,83 @@ In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discove
 For other groups the ``subsymmetries'' form more involved structures.  One thing is that our concept of a subtype of $B$ is merely the first projection $\sum_{b:B}P(b)\to B$, where the $P$ is a family of propositions.  Another thing is that for group the ``sub'' refers to the associated abstract groups, so that ``$BH$ is a subgroup of $BG$'' should \emph{not} mean that ``$BH$ is a subtype of $BG$'', but that we have a group homomorphism $f:\Hom(H,G)$ so that the induced function $(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an ``inclusion of a subset''. 
 
 Now, as we've seen, that   $f:(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an injection (preimages are propositions) is equivalent to the preimages of $Bf:BH\to BG$ being sets.  Hence we get the following neat formulation.
-
+\newcommand{\typesubgroup}{\mathbf{Subgp}}
     \begin{definition}
       \label{def:subgroup}
-      Let $G$ be a group.  A subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such that the fibers of $Bf$ are sets.
+      Let $G$ be a group.  
+      The \emph{type of subgroups of $G$}\index{type!subgroup} is the type
+      $$\typesubgroup_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(Bf^{-1}(\pt_G)).$$
+       A subgroup $(H,f,!)$ is
+      \begin{enumerate}
+      \item \emph{non-trivial}\index{non-trivial subgroup} if $BH$ is not contractible
+      \item \emph{proper}\index{proper subgroup} if $Bf$ is not an equivalence.
+      \end{enumerate}
     \end{definition}
-
-\section{Cauchy's theorem}
-\footnote{TO BE MOVED TO AFTER Burnside's (\ie a $G$-set splits into orbits) has been covered.  Also, the proof is written in a pseudoclassical way just to remind me of the idea.  It is not a typo and will by typied}
+In other words, a subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such that the fibers of $Bf$ are sets and an identity between two subgroups $f:\Hom(H,G)$ and $f':\Hom(H',G)$ is an identity $p:H'=_{\typegroup}H$ such that $f'=f\,p$ (a proposition since $\Hom(H',G)$ is a set).
+\begin{remark}
+  If you're familiar with the set-theoretic flavor of things, it is important to distinguish between subgroups and injective group homomorphisms.  
+Our use of ``subgroup'' can be defended as follows.  It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism modulo that precomposing with an isomorphism yields identical subgroups.  
+Set-theory offers the luxury of having a representative in every equivalence class: namely the image of the injection, type theory does not.
+\end{remark}
 
 \begin{definition}
-  \label{def:finitegrd}Let $n:\NN$ be positive.  A \emph{finite group of order $n$} is a group $G$ such that the set $pt_G=\pt_G$ is in $\fin_n$.  If we don't want to specify the order, we say that $G$ is a finite group. 
+  \label{def:finitegrd}Let $n:\NN$ be positive.  
+A \emph{finite group of order $n$}\index{finite group! of order $n$} is a group $G$ such that the set $pt_G=\pt_G$ is in $\fin_n$. 
+A \emph{finite group}\index{finite group} is a group such that $\pt_G=\pt_G$ is a finite set. 
 \end{definition}
+So, the trivial group has order $1$, the cyclic group $C_n$ of order $n$ has order $n$ (which is good) and the permutation group $\Sigma_n$ has order $n!$.
+    \begin{lemma}
+      If $p$ is a prime, then  the cyclic group $C_p$ has no non-trivial proper subgroups.
+    \end{lemma}
+    \begin{proof}
+      By Lagrange's theorem (\cref{thm:lagrange}) a subgroup has order dividing $p$, \ie either $1$ or $p$.
+    \end{proof}
+
+
+\section{Cauchy's theorem}
 \begin{lemma}
-  \label{lem:cauchys}
-  Let $p$ be a prime and let $G$ be a finite group of order divisible by $p$.  Then $G$ has a subgroup which is cyclic of order $p$. (do we need decidability - check whether you want to rewrite)
+  \label{lem:fixedptsize}
+  Let $p$ be a prime and $G$ a group of order $p^n$ for some positive $n:\NN$.  If $X:BG\to\Set$ is a non-empty finite $G$-set such that the cardinality of $X(\pt_G)$ is divisible by $p$, then the cardinality of the set of fixed points $X^G\defequi\prod_{z:BG}X(z)$ is divisible by $p$.
 \end{lemma}
 \begin{proof}
+  Recall that the evaluation at $\pt_G$ gives an injection of sets $X^G\to X(\pt_G)$ through which we identify $X^G$ with the subset ``$X(\pt_G)^G$'' of all trivial orbits of $X(\pt_G)$.
+ The orbits of $X(\pt_G)$\footnote{or of $X$?  Reference for identification of orbits with quotiens by stabilizers} all have cardinalities that divide the order $p^n$ of $G$.  
+This means that all the the cardinalities of the non-trivial orbits (as well as of $X(\pt_G)$) are positive integers divisible by $p$. 
+
+ Burnside's Lemma \cref{lem:burnsides-lemma} states that $X(\pt_G)$ is the sum of its orbits.
+Hence the cardinality of the set of all trivial orbits, \ie of $X^G$, is the difference of two numbers both divisible by $p$.  
+\end{proof}
+
+\begin{theorem}
+  \label{thm:cauchys}
+  Let $p$ be a prime and let $G$ be a finite group of order divisible by $p$.  Then $G$ has a subgroup which is cyclic of order $p$. (do we need decidability - check whether you want to rewrite)
+\end{theorem}
+\begin{proof}
+NOTE: three variants follow.  Have to choose one.  The middle needs some background essentially boiling down to $BC_n$ being the truncation of the $n$th Moore space.
+
+
+Recall the cyclic group $C_p$ of order $p$ given by the pointed connected groupoid
+$$BC_p\defequi(\sum_{S:\Set}\sum_{j:S=S}||(S,j)=\zet/p||,(\zet/p,!)),
+$$
+ where $\zet/p:\sum_{S:\Set}S=S$ was a particular model of a set with $p$ element together with a successor modulo $p$.  Informally, $BC_p$ consists of pairs $(S,j)$, where $S$ is a set of cardinality $p$ and $j:S=S$ is a cyclic permutation in the sense that for $0<k<p$ we have that $j^k$ is not $\refl{}$ while $j^p=\refl{}$.  Note also that $j^?:\bn p\to ((S,j)=(S,j))$ given by $j^?(k)=j^k$ is an equivalence (just as for the integers, a symmetry of $(S,j)$, \ie an $f:S=S$ so that $fj=jf$, must be $j^k$ for some $k:\bn p$, and if $k\neq l$, then $j^k\neq j^l$)
+
+If $(S,j):BC_p$ let 
+$$A(S,j)\defequi ((S,j)=(S,j)\to (\pt_G=\pt_G)).$$  Since we have an equivalence $j^?:\bn p\to ((S,j)=(S,j))$ we get that $J:A(S,j)\to \prod_{\bn p}(\pt_G=\pt_G)$ given by $J(g)=(g_{j^0},g_{j_1},\dots,g_{j^{p-1}})$ is an equivalence.  Define $\mu:\prod_{(S,j):BC_p}(A(S,j)\to(\pt_G=\pt_G))$ by $\mu_{(S,j)}(g)\defequi g_{j^0}\cdot\dots\cdot g_{j^{p-1}}$ and let $X:BC_p\to\Set$ be the $G$-set defined by  
+$$X(S,j)\defequi\sum_{g:A(S,j)}\mu_{(S,j)}g=e_G.$$ 
+The map from $X(S,j)$ to the $p-1$-fold product of $(\pt_G=\pt_G)$ with itself sending $(g,!)$ to $(g_{j^1},\dots,g_{j^{p-1}})$ is an equivalence ($\mu_{(S,j)}g=e_G$ says exactly that $g_{j^0}$ can be reconstructed as $(g_{j^1}\cdot\dots\cdot g_{j^{p-1}})^{-1}$), so $X(S,j)$ is a set of cardinality $p-1$ times the order of $G$.  In particular, $p$ divides the order of $X(S,j)$.
+
+Specializing to $(S,j)$ being $\zet/p$ and allowing to index the elements in $A(\zet/p)$ with $i:\bn p$ (instead of the very awkward ``$(\sqrt[p]\id)^i$'' as purism would dictate) we proceed as follows.
+
+Now, a $C_p$-fixed point of $X(\zet/p)$ is an element $(g_0,\dots,g_{p-1},!)$ such that $(g_0,\dots,g_{p-1},!)=(g_1,\dots,g_{p-1},g_0,!)$, \ie $g_0=g_1=g_2=\dots=g_{p-1}$\footnote{if I am allowed to write that}.  In other words, a fixed point is of the form $(g,\dots,g,!)$, where $!$ expresses that $g^p=e_G$:
+$X(\zet/p)^{C_p}$ is equivalent to $\sum_{g:\pt_G=\pt_G}g^p=e_G.$  If we can show that $(g,!):X(\zet/p)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point, but if $g\neq e_G$ we get a cyclic subgroup of order $p$ of $G$.
+
+ Now, \cref{lem:fixedptsize} claims that $p$ divides the cardinality of $X(\zet/p)^{C_p}$, and since there \emph{are} fixed points, there must be at lest $p$ fixed points.  One of them is the trivial one (given by $g=e_G$ above), but the others are nontrivial.
+
+% $X(\zet/p)$ splits as a disjoint union of its orbits.\footnote{the formulation here depends on things to come: how do we express the decomposition into orbits?}  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
+% $$X(\zet/p)= X(\zet/p)^{C_p}+(\text{free part of }X(\zet/p)).$$
+% Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\zet/p)$ \emph{and} of the free part of $X(\zet/p)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+
+\footnote{ALTERNATIVELY:
   Consider  the $p-1$-fold product $(\bn{(p-1)}\to (\pt_G=\pt_G))$ of $\pt_G=\pt_G$ with itself.  We give this set the structure of a $\ZZ/p$-set as follows: ((here it is convenient to say that a $\ZZ/p$-set is the same as a $\ZZ$-set commuting with the $p$-fold cover)) define $X:S^1\to\Set$ by $X(\base)\defequi (\bn{(p-1)}\to (\pt_G=\pt_G))$ and by setting $X(\Sloop)$ to be the element in $X(\base)=(\base)$ sending $(g_1,\dots,g_{p-1})$ to $(g_2,\dots,g_{p-1},(g_1\cdots g_{p-1})^{-1})$.  Note that
 $$\xymatrix{S^1\ar[d]_{(-)^p}\ar[dr]^X&\\S^1\ar[r]_X&\Set}$$
 commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this action is an element of $X(\base)$ of the form $(g,g,\dots,g)$ such that $g^{p-1}=g^{-1}$  (expand)). The choice $g=e$ always gives such a fixed point, but if there is any other point ... (do you need decidability here?), the pointed map $S^1\to BG$ given by sending $\Sloop$ to $g$ gives the desired subgroup. Hence we need to show that $X$ has fixed points.
@@ -1211,6 +1279,7 @@ commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this actio
 Now, $X(\base)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $\ZZ/p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
 $$X(\base)= X(\base)^{\ZZ/p}+(\text{free part of }X(\base)).$$
 Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\base)$ \emph{and} of the free part of $X(\base)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+
 
 ALTERNATIVELY:
 Recall the cyclic group of order $p$.  For the sake of convenience, we identify $\bn p\times\bn 1$ and $\bn p$, so that elements will be denoted $0,1,2,\dots$ and not $(0,0), (1,0),(2,0)\dots$, and we also write $s$ instead of $\sqrt[p]{\id}$ for the element in $\bn p=\bn p$ that shifts to the successor (mod $p$).  In other words we choose an identification $\zet/p=(\bn p,s)$ once and for all.  If 
@@ -1229,8 +1298,31 @@ $$X(\bn p,s)^{C_p}=\sum_{g:\pt_G=\pt_G}g^p=e_G.$$  If we can show that $(g,!):X(
  Now, $X(\bn p,s)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
 $$X(\bn p,s)= X(\bn p,s)^{C_p}+(\text{free part of }X(\bn p,s)).$$
 Since the order of $G$ is divisible by $p$, so is the cardinality of $X(\bn p,s)$ \emph{and} of the free part of $X(\bn p,s)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
-
+}%endfootnote
 \end{proof}
+\begin{lemma}
+  \label{lem:nontrivcenter}
+  Let be $G$ be a finite subgroup of order $p^n$, where $p$ is prime and $n$ a positive integer.  
+Then the center $Z(G)$ of $G$ is nontrivial. 
+(point to center in the symmetry chapter)
+\end{lemma}
+\begin{proof}
+  Recall the $G$-set $\Ad_G:BG\to\Set$ given by $Ad_G(z)=(z=z)$.  Then the map  $$\ev_{\pt_G}:\prod_{z:BG}(z=z)\to(\pt_G=\pt_G),\quad \ev_G(f)=f(\pt_G)$$  
+has the structure of a (n abstract) inclusion of a subgroup; namely the inclusion of the center $Z(G)$ in $G$.  
+The center thus represents the fixed points of the $G$-set $\Ad_G$.  
+Since $G$ has order a power of $p$, all orbits but the fixed points have cardinality divisible by $p$.  
+Consequently, Burnside's lemma states that the number of fixed points, \ie the order of $Z(G)$, must be divisible by $p$.
+\end{proof}
+\begin{corollary}
+  \label{cor:orderpsquaredgroups}
+  If $G$ is a noncyclic group of order $p^2$, then $G$ of the form $C_p\times C_p$.
+\end{corollary}
+\begin{proof}
+  The center $Z(G)$ is by \cref{lem:nontrivcenter} of order $p$ or $p^2$.
+  Since $G$ is not cyclic we have that $g^p=e_G$ for all $g:\pt_G=\pt_G$.    
+((To be continued: the classical proof involves choosing nontrivial elements  -- see what can be done about that))
+\end{proof}
+
 \section{Historical remarks}
 \label{sec:grouphistory}
 
