@@ -233,12 +233,52 @@ Then $\B\varphi$ factors as
 The pointed, connected type in the middle represents a group
 that is called the \emph{image} of $\varphi$, $\Img(\varphi)$.
 
+
 (FIXME: Quotient groups as automorphism groups, normal subgroups/normalizer, subgroup lattice)
 
+\begin{lemma}
+  \label{lem:aut-orbit}
+  The automorphism group of the $G$-set $G/H$ is isomorphic to $\N_G(H)/H$.
+\end{lemma}
 
 \section{(the lemma that is not) Burnside's lemma}
 \label{sec:burnsides-lemma}
 \label{lem:burnsides-lemma}
+
+\begin{lemma}
+  \label{lem:burnside}
+  Let $G$ be a finite group acting on a finite set $X$.
+  Then the set of orbits is finite with cardinality
+  \[
+    \Card(X/G) = \frac1{\Card(G)}\sum_{g:\El G}\Card(X^g),
+  \]
+  where $X^g = \setof{x:X}{gx=x}$ is the set of elements
+  that are fixed by $g$.
+\end{lemma}
+\begin{proof}
+  Since $X$ and $G$ is finite, we can decide equality of their elements.
+  Hence each $X^g$ is a finite set, and since $G$ is finite,
+  we can decide whether $x,y$ are in the same orbit by searching
+  for a $g : \El G$ with $gx = y$.
+  Hence the set of orbits is a finite set as well.
+  
+  Consider now the set $R \defeq \sum_{g:\El G} X^g$,
+  and the function $q : R \to X$
+  defined by $q(g,x) \defeq x$.
+  The map $q^{-1}(x) \to G_x$ that sends $(g,x)$ to $g$ is a bijection.
+  Thus, we get the equivalences
+  \[
+    R \jdeq \sum_{g:\El G} X^g \equiv \sum_{x:X} G_x
+    \equiv \sum_{z:X/G} \sum_{x : \mathcal O_z} G_x,
+  \]
+  where the last step writes $X$ as a union of orbits.
+  Within each orbit $\mathcal O_z$,
+  the stabilizer groups are conjugate,
+  and thus have the same finite cardinality,
+  which from the orbit-stabilizer theorem (\cref{thm:orbit-stabilizer}),
+  is the cardinality of $G$ divided by the cardinality of $\mathcal O_z$.
+  We conclude that $\Card(R) = \Card(X/G)\Card(G)$, as desired.
+\end{proof}
 
 % Where does this go?!
 \section{More about automorphisms}
