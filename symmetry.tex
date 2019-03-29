@@ -99,6 +99,87 @@ We say that the action is \emph{transitive} if $X / G$ is contractible.
 \section{Semidirect products}
 \label{sec:Semidirect-products}
 
+In this section we describe a generalization of the product of two group, called the {\em semidirect} product, which can be constructed from an
+action of a group on a group.  Like the product, it consists of pairs, both at the level of concrete groups and of abstract groups, as we shall
+see.
+
+We start with some preliminaries on paths between pairs. 
+Lemma \cref{lem:isEq-pair=} above takes a simpler form when $y$ and $y'$ are values of a section $f$ of the family $Y$, as the following lemma shows.
+
+\begin{lemma}\label{lem:pathpairsection}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  For any elements $x$ and $x'$ of $X$,
+  there is an equivalence of type
+  $$\left ( (x,f(x)) = (x',f(x')) \right ) \weq (x=x') \times (f(x) = f(x)),$$
+  where the identity type on the left side is between elements of $\sum_{x:X} Y(x)$.
+\end{lemma}
+
+\begin{proof}
+  By \cref{lem:isEq-pair=} and by composition of equivalences, it suffices to establish an equivalence of type
+  $$\left( \sum_{p:x=x'} \pathoverdisplay {f(x)} Y p {f(x')} \right) \weq (x=x') \times (f(x) = f(x)).$$
+  Rewriting the right hand side as a sum over a constant family, it suffices to find an equivalence of type
+  $$\left( \sum_{p:x=x'} \pathoverdisplay {f(x)} Y p {f(x')} \right) \weq \sum_{p:x=x'} (f(x) = f(x)).$$
+  By \cref{lem:fiberwise} it suffices to establish an equivalence of type 
+  $$ \left( \pathoverdisplay {f(x)} Y p {f(x')} \right) \weq (f(x) = f(x))$$
+  for each $p:x=x'$.  By induction on $x'$ and $p$ we reduce to the case where $x'$ is $x$ and $p$ is $\refl x$, and it suffices to establish an
+  equivalence of type 
+  $$ \left( \pathoverdisplay {f(x)} Y {\refl x} {f(x)} \right) \weq (f(x) = f(x)).$$
+  Now the two sides are equal by definition, so the identity equivalence provides what we need.  
+\end{proof}
+
+The lemma above shows how to rewrite certain paths between pairs as pairs of paths.  Now we wish to establish the formula for composition of
+paths, rewritten in terms of pairs of paths, but first we introduce a convenient definition for the transport of loops in $Y(x)$ along paths in
+$X$.
+
+\begin{definition}\label{def:pathsectionaction}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  For any elements $x$ and $x'$ of $X$ and for any identity $p : x = x'$, define a function $(f(x') = f(x')) \to (f(x) = f(x))$, to be denoted
+  by $q' \mapsto q' \star p$, by induction on $p$ and $x'$, reducing to the case where $x'$ is $x$ and $p$ is $\refl x$, allowing us to
+  set $q' \star \refl x \defeq q'$.
+\end{definition}  
+
+We turn now to associativity for the operation $\star$.
+
+\begin{lemma}\label{def:pathsectionactionassoc}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  For any elements $x$, $x'$, and $x''$ of $X$, for any identities $p : x = x'$ and $p' : x' = x''$,
+  and for any $q : f x'' = f x''$,
+  there is an identity of type $ ( q \star p') \star p = q \star (p' \cdot p)$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $p$ and $p'$, it suffices to show that $ ( q \star \refl y) \star \refl y = q \star (\refl y \cdot \refl y)$, in which both sides are
+  equal to $q$ by definition.
+\end{proof}
+
+Observe that the operator $\star$ depends on $f$, but $f$ is not included as part of the notation.
+
+The next lemma contains the formula we are seeking.
+
+\begin{lemma}\label{lem:pathpairsectionmult}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  For any elements $x$, $x'$, and $x''$ of $X$, and for any two identities $e : (x,f(x)) = (x',f(x'))$ and $e' : (x',f(x')) = (x'',f(x''))$,
+  if $e$ corresponds to the pair $(p,q)$ with $p : x = x'$ and $q : f x = f x$ under the equivalence of \cref{lem:pathpairsection},
+  and $e'$ corresponds to the pair $(p',q')$ with $p' : x' = x''$ and $q' : f x' = f x'$,
+  then $e' \cdot e$ corresponds to the pair $(p' \cdot p , (q' \star p) \cdot q)$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $p$ and $p'$ we reduce to the case where $x'$ and $x''$ are $x$ and $p$ and $p'$ are $\refl x$. 
+  It now suffices to show that $e' \cdot e$ corresponds to the pair $(\refl x , q' \cdot q)$.
+  Applying the definition of the map $\Phi$ in the proof of \cref{lem:isEq-pair=} to our three pairs, we see that it suffices to show that
+  $\left( \apap g {\refl x} {q'} \right) \cdot \left( \apap g {\refl x} {q} \right) = \apap g {\refl x} {q' \cdot q}$, with $g$, as there, being the function $ g(x)(y) \defeq (x,y)$.
+  By \cref{def:applfun2comp} it suffices to show that $\left( \ap {g(x)} {q'} \right) \cdot \left( \ap {g(x)} {q} \right) = \ap {g(x)} {(q' \cdot q)}$, which follows from
+  compatibility of $\ap {g(x)}$ with composition, as in \cref{lem:apcomp}.
+\end{proof}
+
+The lemma above will be applied mostly in the case where $x'$ and $x''$ are $x$, but if it had been stated only for that case, we would not have
+been able to argue by induction on $p$ and $p'$.
+
 \begin{definition}\label{def:semidirect-product}
   Given a group $G$ and an action $\tilde H : BG \to \typegroup$ on a group $H \defeq \tilde H(\pt)$, we define a group called the {\em
     semidirect product}
