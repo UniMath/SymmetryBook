@@ -224,12 +224,18 @@ Since we are going to return to this concept several times,
 we take the time for a fuller treatment before we continue with
 proving the equivalence of $\base=_{S^1}\base$ and $\zet$.
 
-Recall first the equivalence \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-families})
+Recall first the equivalence in \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-families})
 between the type $B\to\Set$ of families of sets indexed by $B$, and the type
-$\sum_{B:\UU}\sum_{f:B\to A} \prod_{a:A}\isset({f^{-1}(a)})$.
+\[
+\sum_{B:\UU}\sum_{f:A\to B} \prod_{b:B}\isset({f^{-1}(b)}).
+\]
 We shall frequently use this equivalence, even without explicit mention.
 
-We should notice that the notion of a \covering is just one step up from the notion of an injection (a map such that all the preimages are propositions -- following the logic, injections perhaps ought to be called ``proposition maps''). The formulation we give is not the only one and for some purposes not the optimal one, see \eg \cref{rem:coveringsasfamilies} for an alternative.
+We should notice that the notion of a \covering is just one step up from the notion of an
+injection (a map such that all the preimages are propositions -- 
+following the logic, injections perhaps ought to be called ``proposition maps''). 
+The formulation we give is not the only one and for some purposes a formulation
+based on $B\to\Set$ is more convenient.
 
 \begin{definition}\label{def:covering}
 A \emph{\covering} over a type $B$ 
@@ -427,9 +433,9 @@ Note, however, that this depends on $f^{-1}(b_0)$ being non-empty (classically, 
 
 With the set $\zet$ of integers \emph{defined} as in \cref{sec:integers}, 
 we will now \emph{prove} that $\zet$ is equivalent to the type 
-$\base=_\Sc\base$, and that under this equivalence $0:\zet$ corresponds to 
-$\refl{\base}:\base=\base$, $1:\zet$ to $\Sloop:\base=\base$,
-and $-1:\zet$ to $\Sloop^{-1}:\base=\base$. More generally,
+$\base=_{\Sc}\base$, and that under this equivalence $0:\zet$ corresponds to 
+$\refl{\base}:\base=\base$, $1:\zet$ to $\Sloop$,
+and $-1:\zet$ to $\Sloop^{-1}$. More generally,
 the successor $s:\zet=\zet$ corresponds to composition with $\Sloop$
 and the predecessor corresponds to composition with $\Sloop^{-1}$.
 
@@ -441,12 +447,13 @@ We define two functions, $f:P_\base\to R$ and $g:R\to P_\base$ and show that, un
 
 To do this we need to recall from \cref{sec:heavy-transport} how transport behaves in the function type of families.  If given a type $A$ and two type families $P,Q:A\to\UU$, then $(P\to Q)= \prod_{a:A}(P(a)\to Q(a)$.  Then transport along $p:a=_Aa'$ of $f:P(a)\to Q(a)$ is $Q(p)\,f\,P(p)^{-1}:P(a')=Q(a')$, in a picture
 $$\xymatrix{
-P(a)\ar[r]^{f}\ar@{=}[d]^{P(p)}&Q(a)\ar@{=}[d]^{Q(p)}\\
+P(a)\ar[r]^{f}\ar@{=}[d]^{P(p)}_\downarrow&Q(a)\ar@{=}[d]^{Q(p)}_\downarrow\\
   P(a')&\,Q(a').}
 $$
 If $A$ is $\Sc$, then the induction principle for the circle says that giving an $f:P\to Q$ is the same as specifying an $f(\base):P(\base)=Q(\base)$ and an identity $f(\Sloop):Q(\Sloop)\,f(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}f(\base)$, \ie a witness that the composites in 
 $$\xymatrix{
-  P(\base)\ar[r]^{f(\base)}\ar@{=}[d]^{P(\Sloop)}&Q(\base)\ar@{=}[d]^{Q(\Sloop)}\\
+  P(\base)\ar[r]^{f(\base)}\ar@{=}[d]^{P(\Sloop)}_\downarrow
+ &Q(\base)\ar@{=}[d]^{Q(\Sloop)}_\downarrow\\
   P(\base)\ar[r]^{f(\base)}&\,Q(\base)}
 $$
 are equal.  If $P,Q$ are families of sets, then $f(\Sloop)$ is in a proposition.
@@ -462,8 +469,9 @@ $$g(\base)\defequi \Sloop^-:\zet\to(\base=\base)$$ and
 $$g(\Sloop): Q(\Sloop)\, g(\base)\,P(\base)^{-1}=_{Q(\base)\to P_\base(\base)}g(\base)$$ states that if $n:\zet$, then the two elements $Q(\Sloop)\, g(\base)\,P(\base)^{-1}(n)\defequi \Sloop\,\Sloop^{s^{-1}(n)}=\Sloop^{1+n-1}$ and $\Sloop^n$ in $\base=\base$ are equal.
 \end{definition}
 In a picture, $g(\Sloop)$ demonstrates that starting with $n:\zet$ it does not matter what path you take around the square
-$$\xymatrix{\zet\ar[r]^{\Sloop^-}\ar@{=}[d]^s&(\base=\base)\ar@{=}[d]^\Sloop\\
-  \zet\ar[r]^{\Sloop^-}&(\base=\base)}
+$$\xymatrix{\zet\ar[r]^{\Sloop^-}\ar@{=}[d]^s_\downarrow
+ &(\base=\base)\ar@{=}[d]^{\_\cdot\Sloop}_\downarrow\\
+  \zet\ar[r]^{\Sloop^-}&\,(\base=\base).}
 $$
 
 
