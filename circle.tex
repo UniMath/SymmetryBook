@@ -442,39 +442,67 @@ $$R: \Sc\to\UU,\qquad R(\base)\defequi\zet,\, R(\Sloop)\defis s$$
 is equal to the family
 $$\uc{\base}:\Sc\to\UU,\qquad \uc{\base}(z)\defequi (\base=z).$$
 Using function extensionality and univalence, it suffices to give
-a equivalences from $\uc{\base}(z)$ to $R(z)$, for every $z:\Sc$.
+an equivalence from $\uc{\base}(z)$ to $R(z)$, for every $z:\Sc$.
 
 %We define two functions, $f:\uc{\base}\to R$ and $g:R\to \uc{\base}$ and show that, 
 % under univalence, they define inverse identities.  
 
-To do this we need to recall from \cref{sec:heavy-transport} how transport behaves in the function type of families.  If given a type $A$ and two type families $P,Q:A\to\UU$, then $(P\to Q)= \prod_{a:A}(P(a)\to Q(a)$.  Then transport along $p:a=_Aa'$ of $f:P(a)\to Q(a)$ is $Q(p)\,f\,P(p)^{-1}:P(a')=Q(a')$, in a picture
+We first recall from \cref{sec:heavy-transport} how 
+transport behaves in families of function types.  
+Given a type $A$ and two type families $P,Q:A\to\UU$, 
+%$P\to Q$ is shorthand for the type $(P\to Q) \jdeq \prod_{a:A}(P(a)\to Q(a)$.  
+transport along $p:a=_Aa'$ of $f:P(a)\to Q(a)$ is $Q(p)\,f\,P(p)^{-1}:P(a')=Q(a')$.
+In a picture
+\[
+\xymatrix{
+P(a)\ar[rr]^{f}\ar@{=}[d]^{P(p)}_\downarrow&&
+  Q(a)\ar@{=}[d]^{Q(p)}_\downarrow\\
+P(a')&&\,Q(a').}
+\]
+If $A$ is $\Sc$, then the induction principle for the circle says 
+that giving an $f(z):P(z)\to Q(z)$ for all $z:\Sc$ is the same as 
+specifying an $f(\base):P(\base)=Q(\base)$ and an identity 
+$f(\Sloop):Q(\Sloop)\,f(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}f(\base)$,
+\ie a witness that the composites in 
 $$\xymatrix{
-P(a)\ar[r]^{f}\ar@{=}[d]^{P(p)}_\downarrow&Q(a)\ar@{=}[d]^{Q(p)}_\downarrow\\
-  P(a')&\,Q(a').}
+  P(\base)\ar[rr]^{f(\base)}\ar@{=}[d]^{P(\Sloop)}_\downarrow
+ &&Q(\base)\ar@{=}[d]^{Q(\Sloop)}_\downarrow\\
+  P(\base)\ar[rr]^{f(\base)}&&\,Q(\base)}
 $$
-If $A$ is $\Sc$, then the induction principle for the circle says that giving an $f:P\to Q$ is the same as specifying an $f(\base):P(\base)=Q(\base)$ and an identity $f(\Sloop):Q(\Sloop)\,f(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}f(\base)$, \ie a witness that the composites in 
-$$\xymatrix{
-  P(\base)\ar[r]^{f(\base)}\ar@{=}[d]^{P(\Sloop)}_\downarrow
- &Q(\base)\ar@{=}[d]^{Q(\Sloop)}_\downarrow\\
-  P(\base)\ar[r]^{f(\base)}&\,Q(\base)}
-$$
-are equal.  If $P,Q$ are families of sets, then $f(\Sloop)$ is in a proposition.
+are equal.  If $P,Q$ are families of sets, 
+then the type of $f(\Sloop)$ is a proposition.
 
+We now define two fiberwise maps that will turn out to give
+inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
 
 \begin{definition}
   \label{def:fPtoR}
   The function $f:\prod_{z:\Sc}(\uc{\base}(z)\to R(z))$ is defined by transport: $f(z)(p)\defequi\trp{R,p}0$.\footnote{picture of transport!}
 \end{definition}
+
+In the definition of the second map, 
+take into account that $R(\base)\jdeq \zet$ and $\uc{\base}(\base) \jdeq (\base=\base)$.
+
 \begin{definition}
-  \label{def:gRtoP}The function $g:\prod_{z:\Sc}(R(z)\to \uc{\base}(z))$ is defined by circle induction: 
-$$g(\base)\defequi \Sloop^-:\zet\to(\base=\base)$$ and 
-$$g(\Sloop): Q(\Sloop)\, g(\base)\,P(\base)^{-1}=_{Q(\base)\to \uc{\base}(\base)}g(\base)$$ states that if $n:\zet$, then the two elements $Q(\Sloop)\, g(\base)\,P(\base)^{-1}(n)\defequi \Sloop\,\Sloop^{s^{-1}(n)}=\Sloop^{1+n-1}$ and $\Sloop^n$ in $\base=\base$ are equal.
-\end{definition}
-In a picture, $g(\Sloop)$ demonstrates that starting with $n:\zet$ it does not matter what path you take around the square
-$$\xymatrix{\zet\ar[r]^{\Sloop^-}\ar@{=}[d]^s_\downarrow
- &(\base=\base)\ar@{=}[d]^{\_\cdot\Sloop}_\downarrow\\
-  \zet\ar[r]^{\Sloop^-}&\,(\base=\base).}
+  \label{def:gRtoP}The function $g:\prod_{z:\Sc}(R(z)\to \uc{\base}(z))$ is 
+defined by circle induction: 
+\[
+g(\base)\defequi \Sloop^{-}:\zet\to(\base=\base) : n \mapsto {\Sloop^n}
+\]
+and 
+\[
+g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}=_{\zet\to (\base=\base)} g(\base).
+\]
+So far we have only given the type of $g(\Sloop)$. By definition, $R(\Sloop)$ is $s$
+and $\uc{\base}(\Sloop)$ is composition with $\Sloop$.
+In a picture, $g(\Sloop)$ should prove that it does not matter what 
+path you take around the square
+$$\xymatrix{\zet\ar[rr]^{\Sloop^-}\ar@{=}[d]^s_\downarrow
+ &&(\base=\base)\ar@{=}[d]^{\Sloop\cdot\_}_\downarrow\\
+  \zet\ar[rr]^{\Sloop^-}&&\,(\base=\base).}
 $$
+This follows by a simple calculation: $\Sloop\,\Sloop^{n-1} = \Sloop^n$, for all $n:\zet$. \end{definition}
+
 
 
 
