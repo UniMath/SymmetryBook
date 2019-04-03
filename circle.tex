@@ -355,6 +355,8 @@ be the \covering of the circle given by $(\zet,s):\sum_{X:\Set}(X=X)$.
 In more detail, if $R:\Sc\to\Set$ is defined by letting $R(\base)$ be $\zet$ and $R(\Sloop)$ the successor $s$, then 
 $$\mathbb R\defequi\sum_{z:\Sc}R(z)$$ 
 and $\exp:\mathbb R\to \Sc$ is the first projection.
+Since $\zet$ is a set, and being a set is a propostion,
+one can prove by circle induction that $R$ is indeed a set bundle.
 
 \begin{remark}
   \label{rem:expforreal}
@@ -434,13 +436,13 @@ With the set $\zet$ of integers \emph{defined} as in \cref{sec:integers},
 we will now \emph{prove} that $\zet$ is equivalent to the type 
 $\base=_{\Sc}\base$, and that under this equivalence $0:\zet$ corresponds to 
 $\refl{\base}:\base=\base$, and $1$ to $\Sloop$, and $-1$ to $\Sloop^{-1}$. 
-More generally, the successor $s:\zet=\zet$ corresponds to composition with $\Sloop$
+More generally, the successor $\etop{s}:\zet=\zet$ corresponds to composition with $\Sloop$
 and the predecessor corresponds to composition with $\Sloop^{-1}$.
 
 The first step is to prove that the exponential \covering \cref{def:RtoS1} is equal to the universal \covering in \cref{def:universalcover}, \ie we prove that the family 
-$$R: \Sc\to\UU,\qquad R(\base)\defequi\zet,\, R(\Sloop)\defis s$$
+$$R: \Sc\to\UU,\qquad R(\base)\defeq\zet,\, R(\Sloop)\defis \etop{s}$$
 is equal to the family
-$$\uc{\base}:\Sc\to\UU,\qquad \uc{\base}(z)\defequi (\base=z).$$
+$$\uc{\base}:\Sc\to\UU,\qquad \uc{\base}(z)\defeq (\base=z).$$
 Using function extensionality and univalence, it suffices to give
 an equivalence from $\uc{\base}(z)$ to $R(z)$, for every $z:\Sc$.
 
@@ -525,14 +527,33 @@ node [circle,scale=0.3,fill,pos=0.5] (E) {}; % point (D)
 \label{fig:transportalongloop}
 \end{figure}
 
+\begin{lemma}\label{lem:windingnumber}
+For $f$ as in \cref{def:fPtoR} we have $f(\base)(\Sloop^n)=n$ for all $n:\zet$.
+\end{lemma}
+\begin{proof}
+By induction on $n:\zet$.  In the base case $n=0$ we have
+$f(\base)(\Sloop^0)\defeq f(\refl\base)\defeq 0$.
+For $n=s(m)$ with $m:\NN$ we have\footnote{some references needed here} 
+\begin{align*}
+  f(\base)(\Sloop^{s(m)})&\defeq\trp{R,\Sloop^{s(m)}}(0)\\
+  &=\trp{R,\Sloop \Sloop^{m}}(0)\\
+  &=\trp{R,\Sloop}(\trp{R,\Sloop^m}(0))\\
+  &=s(\trp{R,\Sloop^m}(0)).
+\end{align*}
+The last equality follows from $\etop{s}=R(\Sloop)$ using
+$s=\cast(\ua(s))=\cast(\etop{s})=\trp{\id_\UU,\etop{s}}=\trp{R,\Sloop}$, 
+see \cref{def:idtoeq} and \cref{def:univalence}.
+For negative $n$ the proof is similar.
+\end{proof}
+
 In the definition of the second map, 
 take into account that $R(\base)\jdeq \zet$ and $\uc{\base}(\base) \jdeq (\base=\base)$.
 
-\begin{definition}
-  \label{def:gRtoP}The function $g:\prod_{z:\Sc}(R(z)\to \uc{\base}(z))$ is 
+\begin{definition}\label{def:gRtoP}
+The function $g:\prod_{z:\Sc}(R(z)\to \uc{\base}(z))$ is 
 defined by circle induction: 
 \[
-g(\base)\defequi \Sloop^{-}:\zet\to(\base=\base) : n \mapsto {\Sloop^n}
+g(\base)\defeq {\Sloop^{-}}:\zet\to(\base=\base) : n \mapsto {\Sloop^n}
 \]
 and 
 \[
@@ -546,29 +567,33 @@ $$\xymatrix{\zet\ar[rr]^{\Sloop^-}\ar@{=}[d]^s_\downarrow
  &&(\base=\base)\ar@{=}[d]^{\Sloop\cdot\_}_\downarrow\\
   \zet\ar[rr]^{\Sloop^-}&&\,(\base=\base).}
 $$
-This follows by a simple calculation: $\Sloop\,\Sloop^{n-1} = \Sloop^n$, for all $n:\zet$. \end{definition}
-
-
-
+This follows by a simple calculation: ${\Sloop\,\Sloop^{n-1}} = {\Sloop^n}$, 
+for all $n:\zet$. 
+\end{definition}
 
 
 \begin{lemma}
   \label{lem:univisexp}
-  The function $f:\uc{\base}\to R$ defined by transport in \cref{def:fPtoR} is an equivalence with inverse $g:R\to \uc{\base}$ defined by circle induction in \cref{def:gRtoP}.  Hence, 
-$\uc{\base}$ defines a connected \covering of the circle: $\uc{\base}(z)\defequi (\base=z)$ is a set for all $z:\Sc$ and the type $\uc{\base} \Sc$ is connected (more precisely, by univalence $\uc{\base}(z)$ is equal to the set $R(z)$ and $\uc{\base} \Sc$ is contractible).
+For every $z:\Sc$, the functions $f$ defined in \cref{def:fPtoR} 
+and $g$ in \cref{def:gRtoP} are inverse equivalences between
+$\uc{\base}(z)$ and $R(z)$.
+%$\uc{\base}$ defines a connected \covering of the circle: $\uc{\base}(z)\defeq (\base=z)$ is a set for all $z:\Sc$ and the type $\uc{\base} \Sc$ is connected (more precisely, by univalence $\uc{\base}(z)$ is equal to the set $R(z)$ and $\uc{\base} \Sc$ is contractible).
 \end{lemma}
 \begin{proof}
-  Firstly we need to give an element $H:g\,f=\id_{\uc{\base}}$, or in other words, that for all $z:\Sc$ and $p:\uc{\base}(z)\defequi(\base=z)$ an element $H(z,p):g(z)\,f(z)(p)=p$.  By the induction principle for the identity type, it is enough to show this for the case $z\oldequiv\base$ and $p\oldequiv\refl\base$ in which case we can set $H(\base,\refl\base)\defequi\refl{\refl\base}$ since
-$g(\base)\,f(\base)(\refl\base)\defequi g(\base)(0)\defequi\refl\base$.
+We apply \cref{lem:weq} and verify the two conditions.
+  Firstly, we need to give elements $H(z,p):g(z)(f(z)(p))=p$
+for all $z:\Sc$ and $p:\uc{\base}(z)\defeq(\base=z)$. 
+By induction on $z$ and $p:\base=z$ it suffices to set 
+$H(\base,\refl\base)\defeq\refl{\refl{\base}}$ since
+$g(\base)(f(\base))(\refl\base)\defeq g(\base)(0)\defeq\refl\base$.
 
-Secondly, we need an element $G:g\,f=\id_{R}$, or in other words, that for all $z:\Sc$ and $n:R(z)\defequi\zet$ an element $G(z,p):f(z)\,g(z)(n)=n$.  By circle induction it is enough to provide information for $\base$ and $\Sloop$, but since $\zet$ is a set the information for $\Sloop$ is redundant.  Hence, we need to show that for all $n:\zet$ that $f(\base)\,g(\base)(n)\oldequiv f(\base)(\Sloop^n)$ is equal to $n$.  We do this by induction on $n$.  The case $n=0$ gives $f(\base)(\Sloop^0)\defequi f(\refl\base)\defequi 0$.  For $n=s(m)$ with $m:\NN$ we have\footnote{some references needed here} 
-\begin{align*}
-  f(\base)(\Sloop^{s(m)})&\defequi\trp{R,\Sloop^{s(m)}}0\\
-  &=\trp{R,\Sloop \Sloop^{m}}0\\
-  &=\trp{R,\Sloop}(\trp{R,\Sloop^m}0)\\
-  &=s(\trp{R,\Sloop^m}0)
-\end{align*}
- (the last equality follows since $R(\Sloop)\defequi s$) and by induction on $\NN$ we are done for all positive integers $n$.  For negative $n$ the proof is similar.
+Secondly, we need to give elements $G(z)(n):f(z)\,g(z)(n))=n$
+for all $z:\Sc$ and $n: R(z)$.
+By circle induction it suffices to define $G(\base)$ and $G(\Sloop)$,
+but since $\zet$ is a set the information for $G(\Sloop)$ is redundant.
+Hence, we need to show that for all $n:\zet$ that 
+$f(\base)(g(\base)(n))\jdeq  f(\base)(\Sloop^n)$ is equal to $n$.  
+This follows from \cref{lem:windingnumber}. 
 \end{proof}
 
 
