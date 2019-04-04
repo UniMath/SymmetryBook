@@ -1213,6 +1213,19 @@ In other words, a subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such tha
 Our use of ``subgroup'' can be defended as follows.  It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism modulo that precomposing with an isomorphism yields identical subgroups.  
 Set-theory offers the luxury of having a representative in every equivalence class: namely the image of the injection, type theory does not.
 \end{remark}
+%\newcommand{\ker}{\mathrm{ker}}
+If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism, the kernel of $\phi$ consists of the $g$ in $\mathcal G$ with the property that $\phi(g)=e_{G'}$ and the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.  In our setup with a group homomorphism $f:\Hom(G,G')$ these two definition are joined into one construction we call $F(f)$, where the cokernel is the set of components and the kernel is given as a component of $F(f)$.
+\begin{definition}
+  \label{def:kernel}\label{def:cokernel}
+  Let $f:\Hom(G,G')$ be a homomorphism and let $F(f)$ be the groupoid
+$\sum_{z:BG}(\pt_{G'}=f(z))$.\footnote{where we, as usual, have written ``$f(z)$'' instead of ``$Bf_\div(z)$'' and $p_f:\pt_{G'}=f(\pt_G)$ is part of the data of which $f$ consists} 
+
+The \emph{cokernel}\index{cokernel} of $f$ is the set of components of $F(f)$.  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.
+
+Using the path $p_f:\pt_{G'}=f(\pt_G)$ have an element $\pt_{\ker f}\defequi(\pt_G,p_f):F(f)$.  
+Define the \emph{kernel}\index{kernel} $\ker f$ of $f$ to be the group defined by the component 
+$B\ker f_\div\defequi \sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||$ of $\pt_{\ker f}$ in $F(f)$.  The first projection $B\ker f\to_* BG$ gives a subgroup since the preimages are equivalent to the sets $\sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||$.
+\end{definition}
 
 \begin{definition}
   \label{def:finitegrd}Let $n:\NN$ be positive.  
@@ -1331,10 +1344,11 @@ Consequently, Burnside's lemma states that the number of fixed points, \ie the o
   We prove the result by induction on $n$.  
 If $n=0$ we need to have a subgroup of order $1$, which is witnessed by the trivial subgroup.
 %If $n=1$, this is Cauchy's \cref{thm:cauchys}.  
-If $n>0$, assume by induction that $G$ contains a subgroup $K$ of order $n-1$.  Now, $K$ acts on the set $G/K$.  
+If $n>0$, assume by induction that $G$ contains a subgroup $K$ of order $p^{n-1}$.  
+Now, $K$ acts on the set $G/K$.  
 The cardinality of $G/K$ is divisible by $p$ (since $p^n$ divides the order of $G$), and so by \cref{lem:fixedptsize} the fixed point set $(G/K)^K$ has cardinality divisible by $p$.  
 
-Recall the normalizer subgroup $N_G(K)$ from \cref{sec:noether-theorems}.
+Recall the normalizer subgroup $N_G(K)$ from \cref{sec:noether-theorems} -- the ``largest subgroup of $G$ containing $K$ as a normal subgroup''.
 By \cref{lem:aut-orbit}, the quotient group $N_G(K)/K$ may be identified with $(G/K)^K$, and so has order divisible by $p$.  
 By Cauchy's \cref{thm:cauchys} there is a subgroup $L$ of $N_G(K)/K$ of order $p$.  
 Taking the preimage of $L$ under the projection $\mathrm{pr}:N_G(K)\to N_G(K)/K$ we obtain a subgroup $H$ of $N_G(K)$ of order $p^n$ ($H$ is a free $K$-set with $p$ orbits).  The theorem is proven by considering $H$ as a subgroup of $G$.
