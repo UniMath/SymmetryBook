@@ -1221,7 +1221,9 @@ If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism,
   \label{def:kernel}\label{def:cokernel}
   If $f:\Hom(G,G')$ is a homomorphism, consider the groupoid 
 $$F(f)\defequi\sum_{z:BG}(\pt_{G'}=f(z)).$$\footnote{where we, as usual, have written ``$f(z)$'' instead of ``$Bf_\div(z)$'' and $p_f:\pt_{G'}=f(\pt_G)$ is part of the data of which $f$ consists} 
-The \emph{cokernel}\index{cokernel} of $f$ is the set of components $\coker f\defequi||F(f)||_0$ of $F(f)$.\footnote{set trunctation}  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.  We say that the homomorphism $f$ is a \emph{surjection}\index{surjection! of groups} if the cokernel is trivial.
+The \emph{cokernel}\index{cokernel} of $f$ is the set of components $\coker f\defequi||F(f)||_0$ of $F(f)$.\footnote{set trunctation}  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.  
+
+We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group homomorphism} if $F(f)$ is connected (which is equivalent to $\coker f$ being contractible).
 %, or equivalently if $\image f\to G'$ is an equivalence.
 
 Using the path $p_f:\pt_{G'}=f(\pt_G)$ have an element $\pt_{\ker f}\defequi(\pt_G,p_f):F(f)$.  
@@ -1234,8 +1236,56 @@ The first projection $B\ker f\to_* BG$ displays the kernel $\ker f$ as a subgrou
 The \emph{image}\index{image} of $f$ is the subgroup $\image f\defequi \sum_{x':BG'}||Bf^{-1}(x')||_0$ of $G'$.  
 \end{definition}
 \begin{definition}
-  Let $S$ be a set and consider two subsets $A$, $B$of $S$ given by two families of propositions (for $s:S$) $P(s)$ and $Q(s)$.  The \emph{intersection}\index{intersection of sets} $A\cap B$ of the two subsets is given by the family of propositions $P(s)\times Q(s)$.  
+  \label{def:pullback}
+  Let $f:B\to D$ and $g:C\to D$ be two maps with common target.  The \emph{pullback}\index{pullback} of $f$ and $g$ is the type 
+$$\prod(f,g)\defequi\sum_{(b,c):B\times C}(f(b)=_Dg(c))$$
+together with the two projections $\prod(f,g)\to B$ and $\prod(f,g)\to C$ sending $(b,c,p)$ to $b:B$ or $c:C$.  If $f$ and $g$ are clear from the context, we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
+$$\xymatrix{B\times_DC\ar[r]\ar[d]&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
 \end{definition}
+\begin{xca}
+  Let $f:B\to D$ and $g:C\to D$ be two maps with common target.  If $A$ is a type show that 
+  \begin{align*}
+    (A\to B)\times_{(A\to D)}(A\to C)\to &(A\to B\times_DC)\\ 
+(\beta,\gamma,p:f\beta=g\gamma)\,\mapsto\,&(a\mapsto (f(a),g(a),p(a):f\beta(a)=g\gamma(a)))
+  \end{align*}
+ is an equivalence.
+\end{xca}
+
+\begin{example}
+  If $g:\bn 1\to D$ has value $d:D$ and $f:B\to D$, then $\prod(f,g)\oldequiv B\times_D\bn 1$ is equivalent to the preimage $f^{-1}(d)\defequi\sum_{b:B}d=f(b)$.
+\end{example}
+
+
+\begin{definition}
+  \label{def:intersectionand unionofsets}
+  Let $S$ be a set and consider two subsets $A$, $B$of $S$ given by two families of propositions (for $s:S$) $P(s)$ and $Q(s)$.  The \emph{intersection}\index{intersection! of sets} $A\cap B$ of the two subsets is given by the family of propositions $P(s)\times Q(s)$.  The \emph{union}\index{union of sets} $A\cup B$ is given by the set family of propositions $A(s)+B(s)$.  
+\end{definition}
+\begin{xca}
+  \label{xca:intersectionpullbackofsets}
+  Given two subsets $A$, $B$ of a set $S$, prove that
+  \begin{enumerate}
+  \item The pullback $A\times_SB$ maps by an equivalence to the intersection $A\cap B$,
+  \item The sum of the cardinalities of $A$ and $B$ is equal to the sum of the cardinalities of $A\cup B$ and $A\cap B$.
+  \end{enumerate}
+.  
+
+
+\end{xca}
+
+\begin{definition}
+  \label{def:intersectionofgroups}
+  Let $f:\Hom(H,G)$ and $f':\Hom(H',G)$ be two homomorphisms with common target.  The \emph{pullback}\index{pullback!of groups} $H\times_GH'$ is the group obtained as the (pointed) component of $\pt_{H\times_GH'}\defequi(\pt_H,\pt_{H'},p_{f'}p_f^{-1})$ of the pullback $BH\times_{BG}BH'$ (where $p_f:\pt_G=f(\pt_H)$ is the name we chose for the data displaying $f$ as a pointed map).
+If $f$ and $g$ are injective homomorphisms, then the pullback is called the \emph{intersection}\index{intersection! of subgroups} and if the context is clear denoted simply $H\cap H'$.
+\end{definition}
+\begin{xca}
+  Prove that if $f:\Hom(H,G)$ and $f':\Hom(H',G)$ are homomorphisms, then
+$$(\pt_{H\times_GH'}=\pt_{H\times_GH'})\simeq (\pt_{H}=\pt_{H})\times_{(\pt_{G}=\pt_{G})}(\pt_{H'}=\pt_{H'})
+$$
+\end{xca}
+
+\begin{xca}
+  Prove that $f:\Hom(G,G')$ is a surjective group homomorphism if and only if the induced map of sets $f:^=\pt_G=\pt_G\to\pt_{G'}=\pt_{G'}$ is a surjection.
+\end{xca}
 \begin{xca}
   If $\mathcal G$ is an abstract group and $\mathcal H$ and $\mathcal K$ are abstract subgroups\footnote{define}.  Then the intersection $\mathcal H\cap\mathcal K$ is the abstract subgroup of $\mathcal G$ with underlying set \footnote{COMEBACK}
 \end{xca}
@@ -1247,7 +1297,8 @@ The \emph{image}\index{image} of $f$ is the subgroup $\image f\defequi \sum_{x':
 
 \begin{lemma}
   \label{lem:iso2}
-  Let $f:Hom(G,G')$ be a surjective homomorphism with kernel $N$, and let $H$ be a subgroup of $G$.  Let $i_N$ and $i_H$ be the inclusions of $H$ and $N$ in $G$.  Let $i_{HN}:Hom(H*N,G)$ be the homomorphism from the sum $H*N$\footnote{recall that $B(H\vee H)$ is the pointed sum $BH\vee BN$} to $G$ induced by the inclusions.  Then $F\defequi \sum_{(x,y):BH\times BN}i_H(x)=i_N(y)$ is equivalent to $\coker i_{HN}\times B(H\cap N)$.
+  Let $f:Hom(G,G')$ be a surjective homomorphism with kernel $N$, and let $H$ be a subgroup of $G$.  Let $i_N$ and $i_H$ be the inclusions of $H$ and $N$ in $G$.  Let $i_{HN}:Hom(H*N,G)$ be the homomorphism from the sum $H*N$\footnote{recall that $B(H\vee H)$ is the pointed sum $BH\vee BN$} to $G$ induced by the inclusions.  Then 
+$$F\defequi \sum_{(x,y):BH\times BN}i_H(x)=i_N(y)$$ is equivalent to $\coker i_{HN}\times B(H\cap N)$.
   
 \end{lemma}
 
