@@ -1219,27 +1219,51 @@ If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism,
 \newcommand{\image}{\mathrm{im}\,}
 \begin{definition}
   \label{def:kernel}\label{def:cokernel}
-  If $f:\Hom(G,G')$ is a homomorphism, consider the groupoid 
-$$F(f)\defequi\sum_{z:BG}(\pt_{G'}=f(z)).$$\footnote{where we, as usual, have written ``$f(z)$'' instead of ``$Bf_\div(z)$'' and $p_f:\pt_{G'}=f(\pt_G)$ is part of the data of which $f$ consists} 
-The \emph{cokernel}\index{cokernel} of $f$ is the set of components $\coker f\defequi||F(f)||_0$ of $F(f)$.\footnote{set trunctation}  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.  
+  Let $f:\Hom(G,G')\defequi(BG\to_*BG')$  be a homomorphism.  The preimage $$f^{-1}(\pt_{G'})\defequi\sum_{z:BG}(\pt_{G'}=f(z))$$
+is a groupoid containing important information about $f$.
 
-We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group homomorphism} if $F(f)$ is connected (which is equivalent to $\coker f$ being contractible).
+The \emph{cokernel}\index{cokernel} of $f$ is the $G'$-set
+$$\coker f:BG'\to\Set,\qquad \coker f(z)\defequi  ||f^{-1}(z)||_0.\footnote{set trunctation} $$ 
+The associated $\abstr(G')$-set $\coker f(\pt_{G'})$ is also referred to as the cokernel of $f$.  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.  
+
+
+We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group homomorphism} if $f^{-1}(\pt_{G'})$ is connected (which is equivalent to $\coker f$ being contractible).
 %, or equivalently if $\image f\to G'$ is an equivalence.
 
-Using the path $p_f:\pt_{G'}=f(\pt_G)$ have an element $\pt_{\ker f}\defequi(\pt_G,p_f):F(f)$.  
-Define the \emph{kernel}\index{kernel} $\ker f$ of $f$ to be the group defined by the component 
-$$B\ker f_\div\defequi \sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||$$ of $\pt_{\ker f}$ in $F(f)$.  
+Consider the element $\pt_{\ker f}\defequi(\pt_G,p_f):f^{-1}(\pt_{G'})$ (where $p_f:\pt_{G'}=f(\pt_G)$ is the part of $f$ claiming it is a pointed map). 
+Define the \emph{kernel}\index{kernel}  of $f$ to be the group defined by the pointed component  of $\pt_{\ker f}$ in $f^{-1}(\pt_{G'})$:
+$$\ker f\defequi (f^{-1}(\pt_{G'})_{(\pt_{\ker f})},\pt_{\ker f}).
+$$ 
+Written out,
+$B\ker f_\div\defequi \sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||.$  
 
-The first projection $B\ker f\to_* BG$ displays the kernel $\ker f$ as a subgroup of $G$ (since the preimages are equivalent to the sets $\sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||$).  A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a homomorphism.
+The first projection $B\ker f\to_* BG$ displays the kernel $\ker f$ as a subgroup of $G$ (\emph{sub}group since the preimages are equivalent to the sets $\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||$).  
+
+A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a homomorphism.
 
 
-The \emph{image}\index{image} of $f$ is the subgroup $\image f\defequi \sum_{x':BG'}||Bf^{-1}(x')||_0$ of $G'$.  
+The \emph{image}\index{image} of $f$ is the subgroup $\image f\defequi \sum_{z:BG'}\coker f(z)$ of $G'$.  
 \end{definition}
+% \begin{remark}
+%   \label{rem:cokerasGset}
+%   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi||f^{-1}(\pt_{G'})||_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$BG'\to\Set,\qquad z\mapsto   ||f^{-1}(z)||_0.$$  
+% We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set.
+% \end{remark}
+
+\begin{xca}
+  Prove that $f:\Hom(G,G')$ is a surjective group homomorphism if and only if the induced map of sets $f^=:\pt_G=\pt_G\to\pt_{G'}=\pt_{G'}$ is a surjection.
+\end{xca}
+
+\begin{lemma}
+  \label{lem:kerandcoker}\footnote{((WRITE))}
+  Show the characterizing properties of kernels, images and cokernels.  
+\end{lemma}
+
 \begin{definition}
   \label{def:pullback}
   Let $f:B\to D$ and $g:C\to D$ be two maps with common target.  The \emph{pullback}\index{pullback} of $f$ and $g$ is the type 
 $$\prod(f,g)\defequi\sum_{(b,c):B\times C}(f(b)=_Dg(c))$$
-together with the two projections $\prod(f,g)\to B$ and $\prod(f,g)\to C$ sending $(b,c,p)$ to $b:B$ or $c:C$.  If $f$ and $g$ are clear from the context, we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
+together with the two projections $\prod(f,g)\to B$ and $\prod(f,g)\to C$ sending $(b,c,p):\prod(f,g)$ to $b:B$ or $c:C$.  If $f$ and $g$ are clear from the context, we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
 $$\xymatrix{B\times_DC\ar[r]\ar[d]&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
 \end{definition}
 \begin{xca}
@@ -1252,24 +1276,22 @@ $$\xymatrix{B\times_DC\ar[r]\ar[d]&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
 \end{xca}
 
 \begin{example}
-  If $g:\bn 1\to D$ has value $d:D$ and $f:B\to D$, then $\prod(f,g)\oldequiv B\times_D\bn 1$ is equivalent to the preimage $f^{-1}(d)\defequi\sum_{b:B}d=f(b)$.
+  If $g:\bn 1\to D$ has value $d:D$ and $f:B\to D$ is any map, then $\prod(f,g)\oldequiv B\times_D\bn 1$ is equivalent to the preimage $f^{-1}(d)\defequi\sum_{b:B}d=f(b)$.
 \end{example}
 
 
 \begin{definition}
   \label{def:intersectionand unionofsets}
-  Let $S$ be a set and consider two subsets $A$, $B$of $S$ given by two families of propositions (for $s:S$) $P(s)$ and $Q(s)$.  The \emph{intersection}\index{intersection! of sets} $A\cap B$ of the two subsets is given by the family of propositions $P(s)\times Q(s)$.  The \emph{union}\index{union of sets} $A\cup B$ is given by the set family of propositions $A(s)+B(s)$.  
+  Let $S$ be a set and consider two subsets $A$ and $B$ of $S$ given by two families of propositions (for $s:S$) $P(s)$ and $Q(s)$.  The \emph{intersection}\index{intersection! of sets} $A\cap B$ of the two subsets is given by the family of propositions $P(s)\times Q(s)$.  The \emph{union}\index{union of sets} $A\cup B$ is given by the set family of propositions $A(s)+B(s)$.  
 \end{definition}
 \begin{xca}
   \label{xca:intersectionpullbackofsets}
   Given two subsets $A$, $B$ of a set $S$, prove that
   \begin{enumerate}
   \item The pullback $A\times_SB$ maps by an equivalence to the intersection $A\cap B$,
-  \item The sum of the cardinalities of $A$ and $B$ is equal to the sum of the cardinalities of $A\cup B$ and $A\cap B$.
+  \item\label{xca:cardinalityintersectionunion} 
+    If $S$ is finite, then the sum of the cardinalities of $A$ and $B$ is equal to the sum of the cardinalities of $A\cup B$ and $A\cap B$.
   \end{enumerate}
-.  
-
-
 \end{xca}
 
 \begin{definition}
@@ -1284,17 +1306,8 @@ $$
 \end{xca}
 
 \begin{xca}
-  Prove that $f:\Hom(G,G')$ is a surjective group homomorphism if and only if the induced map of sets $f:^=\pt_G=\pt_G\to\pt_{G'}=\pt_{G'}$ is a surjection.
-\end{xca}
-\begin{xca}
   If $\mathcal G$ is an abstract group and $\mathcal H$ and $\mathcal K$ are abstract subgroups\footnote{define}.  Then the intersection $\mathcal H\cap\mathcal K$ is the abstract subgroup of $\mathcal G$ with underlying set \footnote{COMEBACK}
 \end{xca}
-
-\begin{lemma}
-  \label{lem:kerandcoker}\footnote{((WRITE))}
-  Show the characterizing properties of kernels, images and cokernels.  
-\end{lemma}
-
 \begin{lemma}
   \label{lem:iso2}
   Let $f:Hom(G,G')$ be a surjective homomorphism with kernel $N$, and let $H$ be a subgroup of $G$.  Let $i_N$ and $i_H$ be the inclusions of $H$ and $N$ in $G$.  Let $i_{HN}:Hom(H*N,G)$ be the homomorphism from the sum $H*N$\footnote{recall that $B(H\vee H)$ is the pointed sum $BH\vee BN$} to $G$ induced by the inclusions.  Then 
