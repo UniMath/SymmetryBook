@@ -1212,13 +1212,28 @@ In other words, a subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such tha
   If $G$ is a group, then $\typesubgroup_G$ is a set.
 \end{lemma}
 \begin{proof}
-  By univalence and \cref{lem:eqofconntypes}, if $H$ and $H'$ are groups, then the identity type $H=H'$ is equivalent to the set $\sum_{f:\Hom(H,H')}\isEq(f^=:(\pt_H=\pt_H)\to(\pt_{H'}=\pt_{H'}))$.  If $(H,i_H,!)$ is a subgroup of $G$, then
-$(H,i_H,!)=(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ is such that $i_H^=f^==_{(pt_H=\pt_H)\to(\pt_G=\pt_G)}i_H^=$.  Now, since $(H,i_K,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $f^==\refl{\pt_H=\pt_H}$, which forces $f$ to be the identity homomorphism. 
+  By univalence and \cref{lem:eqofconntypes}, if $H$ and $H'$ are groups, then the identity type $H=H'$ is equivalent to the set 
+$$\sum_{f:\Hom(H,H')}\isEq(f^=:(\pt_H=\pt_H)\to(\pt_{H'}=\pt_{H'})).$$  If $(H,i_H,!)$ is a subgroup of $G$, then
+$(H,i_H,!)=(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ is such that $i_H^=f^==_{(pt_H=\pt_H)\to(\pt_G=\pt_G)}i_H^=$.  Now, since $(H,i_K,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $f^==\refl{\pt_H=\pt_H}$, which forces $f$ to be identical to the identity homomorphism. 
 \end{proof}
 Not only is the type of subgroups  of $G$ a set, it is in a natural way a $G$-set which we denote by the same name
-$$\typesubgroup_G:BG\to\Set,\qquad \typesubgroup_G(x)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(Bf^{-1}(x)).$$
+$$%\typesubgroup_G:BG\to\Set,\qquad 
+\typesubgroup_G(x)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(Bf^{-1}(x)).$$
+\begin{definition}
+  \label{def:conjactonsubgroups}
+  If $G$ is a group, then the action of $G$ on the set of subgroups is called \emph{conjugation}.  An element of the $G$-orbit of a subgroup $(H,i_H,!)$ are called a \emph{conjugate} of $(H,i_H,!)$.  If $(K,i_K,!)$ is another subgroup containing a conjugate of $(H,i_H,!)$, we say that $(H,i_H,!)$ is \emph{subconjugate} to $(K,i_K,!)$.
+\end{definition}
 \newcommand{\we}{\overset\sim\to}
-It is worthwhile to study this action a bit further: given an identity $g:\pt_H=\pt_H$ and a subgroup $(H,i_H,!)$ of $G$.  Now, $g$ induces an equivalence $\tilde g:(Bi_H)^{-1}(\pt_H)\we (Bi_H)^{-1}(\pt_H)$
+\begin{remark}
+  \label{rem:conjactiononsubgroups}
+  It is worthwhile to study this action a bit further: given an identity $g:\pt_H=\pt_H$ and a subgroup $(H,i_H,!)$ of $G$, to what subgroup ``$(gHg^{-1},i_{gHg^{-1}})$'' is $(H,i_H,!)$ taken to by (the equivalence corresponding to) $g$?  
+
+First consider the equivalence $\tilde g:(Bi_H)^{-1}(\pt_H)\we (Bi_H)^{-1}(\pt_H)$ induced by $g$: the image $\tilde g(\pt_H,p_{Bi_H})$ is a pair consisting of a point which we call $\pt_{gHg^{-1}}:BH$ and an identity $p_{Bi_{gHg^{-1}}}:Bi_H(\pt_{gHg^{-1}})=\pt_G$.
+
+In sum, $(gHg{-1},i_{gHg^{-1}},!)$ is our name for the subgroup with 
+$$B(gHg^{-1})_\div\defequi BH_\div$$ pointed at $\pt_{gHg^{-1}}$ with $i_{gHg^{-1}}:\Hom(gHg^{-1},G)$ given by $Bi_H:BH_\div\to BG_\div$ and $p_{Bi_{gHg^{-1}}}:Bi_H(\pt_{gHg^{-1}})=\pt_G$.
+\end{remark}
+
 
 
 \begin{remark}
@@ -1471,6 +1486,15 @@ Taking the preimage of $L$ under the projection $\mathrm{pr}:N_G(K)\to N_G(K)/K$
   \label{def:sylowsubgroup}
   Let $p^n$ be the largest power of $p$ which divides the order of $G$.  A subgroup of $G$ of order $p^n$ is called a \emph{$p$-Sylow subgroup}\index{Sylow subgroup} of $G$.
 \end{definition}
+\begin{lemma}
+  \label{lem:numberofconjofSylow}
+  Let $G$ be a finite group and $P$ a $p$-Sylow subgroup.  Then the number of conjugates of $P$ is not divisible by $p$.
+\end{lemma}
+\begin{proof}
+  Let $X$ be the $G$-set of conjugates of $P$.  Being a $G$-orbit, $X$ is equivalent $G/\mathrm{Stab}_P$, where $P$ is the stabilizer subgroup of $P$.  Now, $P$ is contained in the stabilizer so the highest power of $p$ dividing the order of $G$ also divides the order of $\mathrm{Stab}_P$.
+\end{proof}
+
+
 \begin{lemma}
   \label{lem:sylowsareconjugates}
   Let $G$ be a finite group, $H$ a subgroup of $G$ of order $p^s$ and $P$ a $p$-Sylow subgroup of $G$.  Then $H$ is conjugate to a subgroup of $P$.
