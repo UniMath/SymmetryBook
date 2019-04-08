@@ -901,18 +901,107 @@ $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence% : \ie the type of g
 \section{Homomorphisms, abstract vs.~concrete}
 \label{sec:homabsisconcr}
 
-Now that we know that the type of groups is equal to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.  That is, if $G$ and $H$ are groups, then we defined 
+Now that we know that the type of groups is equal to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.  
+
+They do, and we provide two independent and somewhat different arguments.  Translating from group homomorphisms to abstract group homomorphisms is easy: if $G$ and $H$ are groups, then we defined 
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 in \cref{def:abstrisfunctor} as the function which takes a homomorphism, aka a pointed map $f=(Bf_\div,p_f):BG\to_*BH$ to the induced map of identity types 
 $$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$
  together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:grouphomomaxioms}.
 
 
+Going back is somewhat more involved, and it is here we consider two approaches.
+The first is a compact argument showing directly how to reconstruct a pointed map $Bf:BG\to_*BH$ from an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, the second translates back and forth via our equivalence between abstract and concrete groups.
+
+
+
+The statement we are after is
+
+
 \begin{lemma}
+  \label{lem:homomabstrconcr}
   If $G$ and $H$ are groups, then 
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is an equivalence.
 \end{lemma}
+and the next two subsections offer two proofs.
+
+
+
+\subsection{``Delooping'' a group homomorphism}
+\label{sec:thierrysdelooping}
+We now explore the first approach.\footnote{Note to self: make into a lemma and say ``group'' etc}
+
+\begin{proof}
+  Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
+We suppose given a group morphism
+$$f:a = a\rightarrow b = b$$
+and we explain how to build a map $g:X \rightarrow Y$ with
+a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
+for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+
+\medskip
+
+Let us assume the problem solved. The map $g:X\rightarrow Y$
+will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
+and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
+$$p(\alpha\omega) = g(\alpha)g(\omega)p
+  = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
+for all $\omega:a = a$ and $\alpha : a = x$.
+
+\medskip
+
+This suggests to introduce the following family
+$$
+C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
+ p(\alpha\omega) = p(\alpha)f(\omega)
+$$
+
+ An element of $C(x)$ has three components, the last component being
+ a proof since $Y$ is a $1$-type.
+
+ The type $C(a)$ has a simpler description. An element of $C(a)$ is
+ a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
+ $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
+ can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
+ is completely determined by $p(1_a)$.
+ Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
+
+ \medskip
+
+ It follows that we have
+ $$
+ \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
+ $$
+and so, since $\iscontr~C(x)$ is a proposition
+ $$
+ \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
+ $$
+ Since $X$ is connected, we have
+ $\prod_{x:X}\iscontr~ C(x)$
+ and so, in particular, we have an element of $\prod_{x:X}C(x)$.
+
+ We get in this way a map $g:X\rightarrow Y$
+ together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
+ $p (\alpha\omega) = p(\alpha) f(\omega)$
+ for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
+We have, for $\alpha:a=x$
+$$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
+since this holds for $\lambda = 1_x$.
+In particular, $p(\omega) = g(\omega)p(1_a)$.
+
+We also have $p(\omega) = p(1_a)f(\omega)$, hence 
+$p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
+for all $\alpha:a=a$ and we have found a delooping of $f$.
+\end{proof}
+
+
+\subsection{The concrete vs. abstract homomorphisms via torsors.}
+\label{sec:absconctorsor}
+
+The second approach to \cref{lem:homomabstrconcr} is as follows:
+
+
 \begin{proof}
 \newcommand{\we}{\overset\sim\to}
   The equivalence of $\pathsp{}^G:BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
@@ -949,6 +1038,8 @@ $$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
 }$$
 and if we start with a $g:(\pt_G=\pt_G)$, then $\pathsp{}^G$ sends it to $\pathsp g^G\oldequiv\preinv (g)$.  Furthermore, $\phi_*\preinv (g)$ is $[\id,\preinv (g)]$ which is sent to $\preinv (\phi(g))$ in $\princ H=\princ H$ which corresponds to $\phi(g):(\pt_H=\pt_H)$ under $\pathsp{}^H$.  In other words, $AB(\phi,!)=(\phi,!)$.  The composite $BA$ is similar.
 \end{proof}
+
+
 
 
 
