@@ -151,7 +151,8 @@ ranges over elements of $A$.
 
 Equality is {\em symmetric}, in the sense that an identification of $a$ with $b$ may be reversed to give an identification of $b$ with $a$.  In
 order to produce an element of $b=a$ from an element $p$ of $a=b$, for any $b$ and $p$, we argue by induction.  We let $P(b,e)$ be $b=a$ for any
-$b$ of type $X$ and for any $e$ of type $a=b$, for use in rule E3 above.  This reduces us to the case where $b$ is $a$ and $p$ is $\refl a$, and
+$b$ of type $X$ and for any $e$ of type $a=b$, for use in rule E3 above. 
+This reduces us to the case where $b$ is $a$ and $p$ is $\refl a$, and
 our task is now to produce an element of $a=a$; we choose $\refl a$ for it.
 
 Equality is also {\em transitive}, and is established the same way.  
@@ -813,7 +814,8 @@ Formally, we postulate the existence of an element \[ \ua_{X,Y} : \isEq(\cast_{X
 For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$, the result of applying the
 inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus there are identities $\cast (\ua (f)) = f$ and $\ua (\cast (p)) = p$.
 
-We may also write $\ua (f)$ more briefly as $\etop f$.  Thus there are identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$.
+We may also write $\ua (f)$ more briefly as $\etop f$.  Thus there are identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$. Also, $\overline{\id_X}=\refl{X}$
+and $\overline{g\,f}=\etop{g}\,\etop{f}$ if $g: Y\equiv Z$.
 
 \begin{xca}\label{xca:C2}
 Prove that $\bool=\bool$ has exactly two elements, 
@@ -1205,9 +1207,9 @@ Prove the following special cases of \cref{lem:trp-in-fx=Ygx},
 where $Y\jdeq X$ and $a,b$ members of $X$:
 \begin{enumerate}
 \item $\trp{x\mapsto a=b,\,e} (i) = i$;
-\item\label{xca-trp-in-a=x} $\trp{x\mapsto a=x,\,e} (i) = e\cdot i$;
+\item\label{trp-in-a=x} $\trp{x\mapsto a=x,\,e} (i) = e\cdot i$;
 \item $\trp{x\mapsto x=b,\,e} (i) = i \cdot e^{-1}$;
-\item $\trp{x\mapsto x=x,\,e} (i) = e \cdot i\cdot e^{-1}$ 
+\item \label{trp-in-x=x}$\trp{x\mapsto x=x,\,e} (i) = e \cdot i\cdot e^{-1}$ 
 (also called \emph{conjugation}).
 \end{enumerate}
 \end{xca}
@@ -1228,7 +1230,7 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 The following construction reveals an important equivalence
 relating paths over a path with transport.
 
-\begin{definition}\label{def:pathover-transport}
+\begin{definition}\label{def:pathover-trp}
 Let $X,Y(x)$ be types and $f(x): Y(x)$ for all $x:X$.
 Given elements $x,x':X$, $y:Y(x)$, and
   $y':Y(x')$ and a path $p : x = x'$,
@@ -1285,9 +1287,6 @@ is a type  $\Trunc{T}$ defined by the following constructors:
 \item an \emph{element} constructor $\trunc{t} : \Trunc{T}$ for all $t:T$;
 \item a constructor identifying $x=y$  for all $x,y:\Trunc{T}$.
 \end{enumerate}
-\end{definition}
-
-The definition is to be understood as follows.
 The (unnamed) identification constructor ensures that $\Trunc{T}$ is a
 proposition. The induction principle states that,
 for any family of propositions $P(x)$ defined for each $x:\Trunc{T}$, 
@@ -1296,6 +1295,7 @@ it suffices to prove $\prod_{t:T} P(\trunc{t})$. In other
 words, in order to define a function $f:\prod_{x:\Trunc{T}} P(x)$,
 it suffices to give a function $g: \prod_{t:T} P(\trunc{t})$.
 Computationally, we get $f(\trunc{t})\jdeq g(t)$ for all $t:T$. 
+\end{definition}
 
 In the non-dependent case we get that
 any function $g: T\to P$ yields a (unique) function $f:\Trunc{T}\to P$ 
@@ -1313,7 +1313,8 @@ We are now ready to define logical disjunction and existence, by
 \quad (\exists_{x:T} P(x)) \defeq \Trunc{\sum_{x:T}P(x)}.
 \]
 
-For example, from \cref{def:prop-trunc}, from $x:\Trunc{T}$ we may deduce $\exists_{t:T} x=\trunc{t}$.
+For example, using \cref{def:prop-trunc}, 
+from $x:\Trunc{T}$ we may deduce $\exists_{t:T} x=\trunc{t}$.
 
 We conclude this section with some important notions defined using truncation.
 
@@ -1848,7 +1849,7 @@ and $\refl{b}$ as identification of the second components
 (whose type is constant). For the third component
 we use that the transport of $\refl{f(b)}$ along $p$
 in the type family $(f(b)=\_)$ is indeed equal to $p$
-itself by \cref{xca:trp-in-a/x=b/x}(\ref{xca-trp-in-a=x}).
+itself by \cref{xca:trp-in-a/x=b/x}(\ref{trp-in-a=x}).
 Now apply \cref{lem:weq-iso}.
 \end{proof}
 

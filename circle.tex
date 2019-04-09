@@ -213,6 +213,20 @@ Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 Ordering relations $<$ and $\leq$ on $\zet$ are easily defined
 and shown to extend those on $\NN$.
 
+Like any other inductive type, the type $\zet$ comes with an
+induction principle. Let $T(z)$ be a family of types indexed by $z:\zet$.
+In order to construct an element $f(z)$ of $T(z)$ for all $z:\zet$,
+it suffices to give $f(0): T(0)$ and to give functions $g$ and $h$ such
+that $g(n): T(pos(n))$ and $h(n): T(neg(n))$ for all $n:\NN$.
+Here $g$ and $h$ can be defined by induction on $n:\NN$.
+Instead of defining $g$ and $h$ explicitly, we will often
+define $g'$ and $h'$ such that $g'(z): T(z)\to T(z+1)$ 
+for all $z:\zet$ with $z\geq 0$, and $h'(z): T(z)\to T(z-1)$ 
+for all $z:\zet$ with $z\leq 0$. The function $f$ thus defined
+satisfies $f(z+1)\jdeq g'(z,f(z))$ for all $z\geq 0$,
+and $f(z-1)\jdeq h'(z,f(z))$ for all $z\leq 0$.
+
+
 \section{\Coverings}
 \label{sec:covering}
 
@@ -440,10 +454,13 @@ More generally, the successor $\etop{s}:\zet=\zet$ corresponds to composition wi
 and the predecessor corresponds to composition with $\Sloop^{-1}$.
 
 The first step is to prove that the exponential \covering \cref{def:RtoS1} is equal to the universal \covering in \cref{def:universalcover}, \ie we prove that the family 
-$$R: \Sc\to\UU,\qquad R(\base)\defeq\zet,\, R(\Sloop)\defis \etop{s}$$
+$$R: \Sc\to\Set,\qquad R(\base)\defeq\zet,\, R(\Sloop)\defis \etop{s}$$
 is equal to the family
-$$\uc{\base}:\Sc\to\UU,\qquad \uc{\base}(z)\defeq (\base=z).$$
-Using function extensionality and univalence, it suffices to give
+$$\uc{\base}:\Sc\to\Set,\qquad \uc{\base}(z)\defeq (\base=z).$$
+What does it mean for $\uc{\base}$ and $R$ to be equal?
+They are both functions from $\Sc$ to $\Set$. 
+Function extensionality reduces the question to pointwise equality.
+Using univalence, it suffices to give
 an equivalence from $\uc{\base}(z)$ to $R(z)$, for every $z:\Sc$.
 
 %We define two functions, $f:\uc{\base}\to R$ and $g:R\to \uc{\base}$ and show that, 
@@ -599,7 +616,7 @@ This follows from \cref{lem:windingnumber}.
 
 \begin{corollary}\label{cor:S1groupoid}
   The circle $\Sc$ is a groupoid and the function
-$$\Sloop^{{-}}:\zet\to(\base=_{\Sc}\base)$$ sending $n$ to $\Sloop^n$ is an equivalence.
+$${\Sloop^{-}}:\zet\to(\base=_{\Sc}\base)$$ sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
 \begin{proof}
 For any $z:\Sc$, the type $\uc{\base}(z)\jdeq (base=_{\Sc}z)$ is a set 
@@ -610,26 +627,55 @@ The second statement rephrases that $g(\base)$ from \cref{def:gRtoP} is an equiv
 \end{proof}
 
 
-\section{A reinterpretation of the circle and a criterion for equivalence through \coverings}
+\section{A reinterpretation of the circle}
+% and a criterion for equivalence through \coverings}
 \label{sec:S1isC}
 In this section we return to the considerations discussed in \cref{xca:coveringsofS1}.
- \footnote{there is duplications here.  Clean it up.}
-  Through \cref{lem:freeloopspace} we can get a different perspective on the circle which highlights it as a type classifying very simple symmetries.
-By \cref{lem:freeloopspace} (moving up one universe), a type family $\Sc\to\UU$ is uniquely given by a type $X:\UU$ together with a $p:X=_\UU X$, with no further requirements on $p$.  We have seen one example in \cref{def:zet}, namely the one given by the set $\zet$ of integers together with the element $s:\zet=\zet$ given by the successor.  
+Through \cref{lem:freeloopspace} we can get a different perspective on the circle which highlights it as a type classifying very simple symmetries.
+By \cref{lem:freeloopspace} (moving up one universe), a type family $\Sc\to\UU$ is uniquely given by a type $X:\UU$ together with a $i:X=_\UU X$, with no further requirements on $i$.
+Using UA, any type $X$ and any equivalence $f: X\equiv X$ provides such a pair
+$(X,\etop{f})$. We have seen one example in \cref{def:RtoS1}, 
+namely the set $\zet$ of integers together with the successor $s: \zet\equiv\zet$.
 
-The importance of this example will become apparent when we eventually explain that \emph{the circle is equivalent to the component $C$ of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,s)$}. 
+The importance of the latter example will become apparent when we eventually 
+explain that \emph{the circle is equivalent to the connected component of 
+$(\zet,s)$ in the type $\sum_{X:\UU}(X=_{\UU}X)$}. 
 
-Heading towards this goal, we investigate this component a bit further.  Recall from \cref{sec:identity-types} that, in general, if given elements $x,y,z$ in a type $A$, and two identities $f:x=y$ and $g:y=z$, then transport gives rise to the ``composite identity'' $gf:x=z$ (aka $g\circ f$).    Now, if $(X,f):\sum_{X:\UU}(X=_{\UU}X)$, then an element in the identity type $(\zet,s)=(X,f)$ consists of a $p:\zet=X$ and a proof that the successor $s:\zet=\zet$  is transported along $p$ to $f:X=X$, that is, an element in $psp^{-1}=_{X=X}f$.  Now, by transport, $psp^{-1}=_{X=X}f$ is equivalent to $fp=_{\zet=X}ps$, and so the identity type $(\zet,s)=(X,f)$ is equivalent to
-$$\sum_{p:\zet=X}fp=_{\zet=X}ps.$$ % the equation $fp=ps$ comes from the fact that equality in the identity type means that the transport of $s$ along $p$ is equal to $f$, in other words we have an element in $p^{-1}sp=_{X=X}f$ (which we have translated for convenience to an element in $fp=_{\zet=X}ps$).
-Since $\zet$ is a set, this identity type is a proposition and so our component $C$ is a connected groupoid.  
+Heading towards this goal, we investigate this component a bit further.
+Define the type family $D$ by $D(X) \defeq (X=X)$ for all $X:\UU$.
+Recall from \cref{lem:isEq-pair=} that, given $X:\UU$ and $i: X=X$, 
+the identity type $(\zet,\etop{s}) = (X,i)$
+is equivalent to the type of pairs consisting of a $p:\zet=X$ and 
+a proof of $\pathover{\etop{s}}{D}{p}{i}$. The latter type is
+equivalent to $\trp{D,p}(\etop{s}) = i$ by \cref{def:pathover-trp}.
+The transport is by conjugation,
+\cref{xca:trp-in-a/x=b/x}(\ref{trp-in-x=x}), so that the latter
+type is equivalent to $p\cdot\etop{s}\cdot p^{-1} = i$. 
+and to $p\cdot\etop{s} = i\cdot p$, or $p \etop{s} = i p$ for short. 
+In total, the identity type $(\zet,\etop{s})=(X,i)$ is equivalent to
+\[
+\sum_{p: {\zet = X}} {p \etop{s}} =_{\zet=X} {i p}.
+\] 
+Since $\zet$ is a set, this sum type is a set.
+In particular, the type of symmetries $(\zet,\etop{s})=(\zet,\etop{s})$
+is equivalent to the set $\sum_{p:\zet=\zet}p\etop{s}=\etop{s}p$.  
 
-In particular, the type of symmetries $(\zet,s)=_C(\zet,s)$ is equivalent to $\sum_{p:\zet=\zet}sp=ps$.  
+% and so our component $C$ is a connected groupoid. FOLLOWS FROM C=S1
 
 This discussion tells us that the following definition makes sense:
 
 \begin{definition}\label{def:S1toC}
   Let $C$ be the component of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,s)$.
-  Let $$c:\Sc\to C$$ be defined by $c(\base)\defequi (\zet,s)$ and $c(\Sloop):((\zet,s)=_C(\zet,s))$\footnote{strictly speaking, this $c$ is $\ap c$ -- I have decided not to distinguish between them; ok?} be given by the successor $s:\zet=\zet$ (and $\refl{}:ss=ss$)
+  Define by circle induction
+\[
+c:\Sc\to C \text{~setting~} 
+c(\base)\defequi (\zet,\etop{s},\trunc{\refl{(\zet,\etop{s})}})
+\]
+and $c(\Sloop):(c(\base)=_C c(\base))$ given by the successor 
+$\etop{s}:\zet=\zet$ and trivial proofs of the proposition
+$\etop{s}\etop{s}=\etop{s}\etop{s}$ and for the 
+truncated third component of $c(\base)$.
+We will henceforth the third component.
 \end{definition}
 
 We start by identifying the symmetries of $(\zet,s)$ in $C$:
@@ -645,60 +691,6 @@ $$\ev_0:((\zet,s)=_C(\zet,s))\to \zet$$ given by $\ev_0(p)=p(0)$ is an equivalen
 \end{proof}
 
 We are going to prove that $c$ is an equivalence.  The method of proof is quite a general and relies or  \cref{lem:eqofconntypes} below, which we will have occasion to return to on several occasions.  In our case the application of  \cref{lem:eqofconntypes} is greatly simplified by the fact that we already know that both $\Sc$ and $C$ are connected groupoids, since then \cref{lem:eqofconntypes} says that it is enough to show that $c$ induces an equivalence from the set of symmetries of $\base$ to the set of symmetries of $(\zet,s)$.\footnote{OLDREMARK: of course, the proof of \cref{cor:S1groupoid} \emph{could} attack $c$ directly, but that would compound the technicalities already present there: at present I prefer splitting it up like this.  I am open for letting the proof of \cref{cor:S1groupoid} be postponed till the end of a chapter, so as not to disrupt the flow of ideas}
-
-
-\subsubsection{Equivalences and \coverings over connected types}
-\label{sec:eqconntypes}
-
-\begin{lemma}
-  \label{lem:eqandcovofconntypes}
-  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function.  Set $y_0\defequi f(x_0)$ and $y_1\defequi f(x_1)$. Assume given an identity $q:y_0=_Yy_1$. Let 
-    $$%f^=_{x_0,x_1}
-\ap f:(x_0=_Xx_1)\to (y_0=_Yy_1)$$
-be the function of \cref{def:apd} induced by $f$.  Then the  the preimage 
-$$(\ap f)^{-1}(q)\oldequiv\sum_{p:x_0=x_1}q=\ap f(p)$$ is equivalent to the identity type 
- $$(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q).$$ 
-If in addition $X$ and $Y$ are connected, then
-\begin{enumerate}
-\item $f$ is an equivalence if and only $\ap f%f^=_{x_0,x_1}
-$ is an equivalence and
-\item $f$ is a \covering if and only if  $\ap f%^=_{x_0,x_1}
-$ is an injection (\ie if and only if all the preimages of $\ap f$ are propositions).
-\end{enumerate}
-
-\end{lemma}
-\begin{proof}
-((proofread))
-  Recall the family $\uc{x_0} : X\to\UU$, $\uc{x_0}(x)\defequi (x=x_0)$, giving rise to the contractible type $\uc{x_0}X=\sum_{x:X}(x_0=x)$.  The function $f$ induces a function of types 
-$$\uc{f}:\sum_{x:X}(x_0=x)\to\sum_{y:Y}(y_0=y),\qquad \uc{f}(x,p)=(f(x),\ap f p).$$  Since $\uc{f}$ is a function between contractible types it must be an equivalence.  Hence, the preimage of $(y_0,\refl{y_0})$, 
-$$(\uc{f})^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{r:y_0=f(x)}r=\ap f(p),$$  
-is contractible.  
-Consider the projection 
-$$(\uc{f})^{-1}(y_0,\refl{y_0})\to f^{-1}(y_0)$$ and observe that the preimage over $(x_1,q:y_0=y_1) $ is equivalent to the preimage $(\ap f)^{-1}(q)\defequi\sum_{p:x_0=x_1}q=\ap f(p)$.  Spelling out the last equivalence: the preimage of $(x_1,q:y_0=y_1) $ spelled out in full is
-$$\sum_{x:X}\sum_{p:x_0=x}\sum_{r:y_0=f(x)}r=\ap f(p)\times(\sum_{a:x_1=x}\ap f q=r),$$
-which is equivalent to the reshuffle
-$$\sum_{p':x_0=x}\sum_{s:q=\ap f p'}\left(\sum_{x:X}(x_0=x)\times\sum_{t:y_0=f(x_1)}(q=s)\right)$$
-via the function sending $(x,p,r,u,v)$ to $(a^{-1}p,\ap f a^{-1}\,vu,x,p,\ap f a^{-1}\, r,v)$. ((check))  Now, in the last everything in the parenthesis is contractible, and what is left is exactly $(\ap f)^{-1}(q)$.  Since $(\uc{f})^{-1}(y_0,\refl{y_0})$ is contractible, this shows that $(\ap f)^{-1}(q)$ is equivalent to $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q).$
-
-Now, assume that $X$ and $Y$ are connected.   If $f$ is an equivalence, it follows automatically that the function of identity types is, so we concentrate on the other implication and assume the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an equivalence.  We want to show that all fibers of $f$ are contractible, but since $Y$ is connected it is enough to consider the fiber $f^{-1}(y_0)\defequi\sum_{x:X}y_0=f(x)$ over $y_0\defequi f(x_0)$.  Now, $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ are the fiber of a function from a contractible type to $f^{-1}(y_0)$, so $f^{-1}(y_0)$ is contractible if all the $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$'s are contractible, which by the previous result is equivalent to $\ap f$ being an equivalence.  
-
-The statement about \coverings is the similar, except that now one desires that the identity types $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ should be propositions (for $f^{-1}(y_0)$ to be a set, which then is equivalent to the preimages $(\ap f)^{-1}(q)$ being propositions.
-\end{proof}
-
-\begin{lemma}\label{lem:eqofconntypes}\footnote{
-%The argument for a general group and the torsors over its abstract group is VERY similar.  
-Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread}
-  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is an equivalence if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is.\footnote{note to self: try to be consistent in writing equalities with right variance (as I hope I have managed to do here)}
-\end{lemma}
-\begin{proof}
-  
-
- Its fiber over $(y_0,\refl{y_0})$ is 
-$$(\uc{f})^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a function of contractible types.  
-\end{proof}
-\begin{lemma}
-  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a \covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
-\end{lemma}
 
 
 
@@ -1022,31 +1014,60 @@ I have occasionally sinned and called it $f^=$ (with $p$ implicit).
 I am now converging to using ``$f^p$'' (superscript since I have needed it in situations with other subscripts).
 
 
-\subsection{Negative numbers}
-This is to be deleted when integers are stable
-%\label{sec:negativenumbers}
+\subsection{Duplicated stuff (to be removed)}
+\label{sec:eqconntypes}
+
+\begin{lemma}
+  \label{lem:eqandcovofconntypes}
+  Let $X$ and $Y$ be types, $x_0,x_1:X$, let $f:X\to Y$ be a function.  Set $y_0\defequi f(x_0)$ and $y_1\defequi f(x_1)$. Assume given an identity $q:y_0=_Yy_1$. Let 
+    $$%f^=_{x_0,x_1}
+\ap f:(x_0=_Xx_1)\to (y_0=_Yy_1)$$
+be the function of \cref{def:apd} induced by $f$.  Then the  the preimage 
+$$(\ap f)^{-1}(q)\oldequiv\sum_{p:x_0=x_1}q=\ap f(p)$$ is equivalent to the identity type 
+ $$(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q).$$ 
+If in addition $X$ and $Y$ are connected, then
+\begin{enumerate}
+\item $f$ is an equivalence if and only $\ap f%f^=_{x_0,x_1}
+$ is an equivalence and
+\item $f$ is a \covering if and only if  $\ap f%^=_{x_0,x_1}
+$ is an injection (\ie if and only if all the preimages of $\ap f$ are propositions).
+\end{enumerate}
+
+\end{lemma}
+\begin{proof}
+((proofread))
+  Recall the family $\uc{x_0} : X\to\UU$, $\uc{x_0}(x)\defequi (x=x_0)$, giving rise to the contractible type $\uc{x_0}X=\sum_{x:X}(x_0=x)$.  The function $f$ induces a function of types 
+$$\uc{f}:\sum_{x:X}(x_0=x)\to\sum_{y:Y}(y_0=y),\qquad \uc{f}(x,p)=(f(x),\ap f p).$$  Since $\uc{f}$ is a function between contractible types it must be an equivalence.  Hence, the preimage of $(y_0,\refl{y_0})$, 
+$$(\uc{f})^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{r:y_0=f(x)}r=\ap f(p),$$  
+is contractible.  
+Consider the projection 
+$$(\uc{f})^{-1}(y_0,\refl{y_0})\to f^{-1}(y_0)$$ and observe that the preimage over $(x_1,q:y_0=y_1) $ is equivalent to the preimage $(\ap f)^{-1}(q)\defequi\sum_{p:x_0=x_1}q=\ap f(p)$.  Spelling out the last equivalence: the preimage of $(x_1,q:y_0=y_1) $ spelled out in full is
+$$\sum_{x:X}\sum_{p:x_0=x}\sum_{r:y_0=f(x)}r=\ap f(p)\times(\sum_{a:x_1=x}\ap f q=r),$$
+which is equivalent to the reshuffle
+$$\sum_{p':x_0=x}\sum_{s:q=\ap f p'}\left(\sum_{x:X}(x_0=x)\times\sum_{t:y_0=f(x_1)}(q=s)\right)$$
+via the function sending $(x,p,r,u,v)$ to $(a^{-1}p,\ap f a^{-1}\,vu,x,p,\ap f a^{-1}\, r,v)$. ((check))  Now, in the last everything in the parenthesis is contractible, and what is left is exactly $(\ap f)^{-1}(q)$.  Since $(\uc{f})^{-1}(y_0,\refl{y_0})$ is contractible, this shows that $(\ap f)^{-1}(q)$ is equivalent to $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q).$
+
+Now, assume that $X$ and $Y$ are connected.   If $f$ is an equivalence, it follows automatically that the function of identity types is, so we concentrate on the other implication and assume the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an equivalence.  We want to show that all fibers of $f$ are contractible, but since $Y$ is connected it is enough to consider the fiber $f^{-1}(y_0)\defequi\sum_{x:X}y_0=f(x)$ over $y_0\defequi f(x_0)$.  Now, $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ are the fiber of a function from a contractible type to $f^{-1}(y_0)$, so $f^{-1}(y_0)$ is contractible if all the $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$'s are contractible, which by the previous result is equivalent to $\ap f$ being an equivalence.  
+
+The statement about \coverings is the similar, except that now one desires that the identity types $(x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q)$ should be propositions (for $f^{-1}(y_0)$ to be a set, which then is equivalent to the preimages $(\ap f)^{-1}(q)$ being propositions.
+\end{proof}
+
+\begin{lemma}\label{lem:eqofconntypes}\footnote{
+%The argument for a general group and the torsors over its abstract group is VERY similar.  
+Essentially it is our version of ``a group homomorphism is an isomorphism iff it is a bijection'': proofread}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is an equivalence if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is.\footnote{note to self: try to be consistent in writing equalities with right variance (as I hope I have managed to do here)}
+\end{lemma}
+\begin{proof}
+  
+
+ Its fiber over $(y_0,\refl{y_0})$ is 
+$$(\uc{f})^{-1}(y_0,\refl{y_0})\oldequiv\sum_{x:X}\sum_{p:x_0=x}\sum_{q:y_0=f(x)}q=f(p),$$ and is contractible since it is the fiber of a function of contractible types.  
+\end{proof}
+\begin{lemma}
+  Let $X$ and $Y$ be connected types, $x_0:X$ and let $f:X\to Y$ be a function.  Then $f$ is a \covering if and only if the induced function from $x_0=x_0$ to $f(x_0)=f(x_0)$ is an injection.\footnote{embedding/injection...}
+\end{lemma}
 
 
-\begin{definition}
-  %\label{def:zet}
-\footnote{To the one who ports: I \emph{would} have preferred to define $\zet$ as a set quotient of $\NN\times\NN$, but I hoped we could avoid the book discussion (257).  A price is paid when defining the successor.  Given the disclaimer following the formal definition, it is safe to change the definition if you like}
-  The \emph{set of integers} is the set
-$$\zet\defequi \sum_{(m,n):\NN\times\NN}(r(m,n)=_{\NN\times\NN}(m,n)),$$
-where $r:\NN\times\NN\to\NN\times\NN$ is given by
-$$r(m,n)\defequi
-\begin{cases}
-  (m-n,0)&\text{if $m\geq n$}\\
-  (0,n-m)&\text{otherwise.}
-\end{cases}
-$$
-We define the \emph{standard inclusion} 
-$$i:\NN\to\zet$$ by $i(m)=((m,0)\refl {(m,0)})$ (makes sense since $r(m,0)\defequi(m,0)$), the \emph{negative inclusion} $-:\NN\to\zet$ by $-n=((0,n),\refl{(0,n)})$ and the quotient $q:\NN\times\NN\to\zet$ by $q(m,n)=(r(m,n),\refl{r(m,n)})$ (makes sense since $r(r(m,n))\oldequiv r(m,n)$).  
-
-The successor $s:\zet=\zet$ is defined through univalence from $S : \NN\times\NN\to\NN\times\NN$ with $S(i(n))=i(S(n))$  and $S(-(Sn))=-n$ for $n:\NN$ (check that $S$ is an equivalence: ``any integer is the successor of exactly one integer'').
-\end{definition}
-
-Not wishing to mystify things more than necessary, we will refer to $i(n):\zet$ for $n:\NN$ as ``$n:\zet$'', so that any element of $\zet$ is ``plus or minus a natural number'', dividing the non-zero integers into the positive and negative integers.  We extend the order relation by saying that positive integers are greater than negative integes and by saying that $-m\leq -n$ if $n\leq m$ for $m,n:\NN$.
-}%endfootnote (Negative integers)
 
 % \subsubsection{Equivalences}
 % \label{sec:equivalences}
@@ -1107,6 +1128,8 @@ Not wishing to mystify things more than necessary, we will refer to $i(n):\zet$ 
 % \end{definition}
 
 
+
+}% END COLOR BLUE
 
 %%% Local Variables:
 %%% mode: latex
