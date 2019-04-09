@@ -360,10 +360,12 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
 The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an function $f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element $p:a=_Bf(b)$:
 \begin{definition}\label{def:grouphomomorphism}
   The type of \emph{group homomorphisms} from $G:\typegroup$ to $H:\typegroup$ is defined to be
-$$\Hom(G,H)\defequi(BG\to_* BH).
-\footnote{would you be unhappy if I used $f:G\to_{\typegroup}H$ when it fits better with the typography?}%\sum_{f:A\to B}f(a)=_Bb.
+$$\Hom(G,H)\defequi(BG\to_* BH),
+%\footnote{would you be unhappy if I used $f:G\to_{\typegroup}H$ when it fits better with the typography?}%\sum_{f:A\to B}f(a)=_Bb.
 $$
+in other words, a homomorphism $f:\Hom(G,H)$ is a pair $(Bf_\div,p_f)$ where $Bf_\div:BG_\div\to BH_\div$ and $p_f:\pt_H=Bf_\div(\pt_G)$.
 \end{definition}
+When there is little danger of confusion we may drop the subscript $\div$ even when talking about the unpointed structure.
 \begin{example}
   \begin{enumerate}
   \item   Consider two sets $S$ and $T$.  
@@ -374,14 +376,37 @@ Thought of as symmetries, this says that if you have a symmetry of $S$, then we 
 Likewise, we get a map $\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to $X\times T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\times T}$. 
 
 In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\Sigma_{mn}$. \footnote{find a good description of the sign $\Sigma_n\to\Sigma_2$}
-\item Let $G$ be a group.  Since there is a unique map from $BG$ to $\bn{1} $, we get a unique homomorphism from $G$ to the trivial group.  Likewise, there is a unique morphism from the trivial group to $G$, sending the unique element of $\bn 1$ to $\pt_G$. 
+\item Let $G$ be a group.  Since there is a unique map from $BG$ to $\bn{1} $, we get a unique homomorphism from $G$ to the trivial group.  
+Likewise, there is a unique morphism from the trivial group to $G$, sending the unique element of $\bn 1$ to $\pt_G$. 
 \item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  \footnote{Elaborate}
   \end{enumerate}
 \end{example}
 \begin{xca}
   Let $G$ be a group.  Show that $\Hom(\ZZ,G)=(\pt_G=_{BG}\pt_G)$.  %Show that ((wedges of circle vs multiplication))
 \end{xca}
+\begin{example}
+  We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$ is equivalent to the {\bf set} of ``abstract group homomorphisms'' from $\abstr(G)$ to $\abstr(H)$, but it is instructive to see that $\Hom(G,H)$ is a set directly from the definition.
 
+  Let us spell out the data needed to give an identity between two group homomorphisms $f,f':\Hom(G,H)$.  
+We clearly must have a
+$$J:Bf_\div=Bf_\div'\defequi\prod_{z:BG_\div}Bf_\div(z)=Bf'_\div(z),$$ and transport on $\pt_H=Bf_\div(?)$ shows that in addition we must have $!:J(\pt_G)\,p_f=_{\pt_H=Bf'_\div(\pt_G)}p_{f'}$:
+$$\xymatrix{&\pt_H\ar@{=}[dl]_{p_f}^\gets\ar@{=}[dr]^{p_{f'}}_\to&\\
+Bf_\div(\pt_G)\ar@{=}[rr]^{J(\pt_G)}_\to&&\,Bf_\div(\pt_G);}
+$$
+in other words, we have an equivalence
+$$(f=f')\simeq \sum_{J:Bf_\div=Bf'_\div}J(\pt_G)\,p_f=p_{f'}.
+$$
+Now, $J$ being member of a $\prod$-type implies that if $z:BG$ and $\gamma:\pt_G=z$, then $!:J(z)Bf_\div(\gamma)=Bf'_\div\gamma J(\pt_G)$
+$$\xymatrix{
+Bf_\div(\pt_G)\ar@{=}[r]^{J(\pt_G)}_\to\ar@{=}[d]^\downarrow_{Bf_\div\gamma}&
+Bf'_\div(\pt_G)\ar@{=}[d]^\downarrow_{Bf'_\div\gamma}\\
+Bf_\div(z)\ar@{=}[r]^{J(z)}_\to&Bf'_\div(z)},
+$$
+so that -- since $BG$ is connected and $Bf_\div(z)=Bf'_\div(z)$ is a set -- $J(z)$ is determined by $J(\pt_G)$ which again is determined by $p_f$ and $p_{f'}$.  
+This shows that $f=f'$ is a proposition and that $\Hom(G,H)$ is a set.
+
+% We want to show that $f=f'$ is a proposition.  If $(J,!)$ and $(J',!)$ are elements in $\sum_{J:Bf_\div=Bf'_\div}J(\pt_G)\,p_f=p_{f'}$, then $!:J(\pt_G)=p_{f'}p_f^{-1}=J'(\pt_G)$.  Since $J(z)=J'(z)$ is a proposition for each $z:BG$ it suffices to display a map $(\pt_G=z)\to(J(z)=J'(z))$. 
+\end{example}
 
 
 \begin{xca}\label{xca:BGtotype}
@@ -569,6 +594,22 @@ $$\sum_{z:BG}\Ad_G(z)=\sum_{z:BG}(z=z)$$
 is equivalent to the type of (unpointed!) maps $S^1\to BG$, known in other contexts as the \emph{free loop space} of $BG$, an apt name given that it is the type of ``all symmetries of $BG$.''  
 The first projection $\sum_{z:BG}\Ad_G(z)\to BG$ correspond to the function $(S^1\to BG)\to BG$ given by evaluating at $\base$. 
 \end{example}
+\begin{example}
+  \label{ex:HomHGasGset}
+  Recall that a homomorphism $f:\Hom(H,G)$ consists of an unpointed map $F:BH_\div\to BG_\div$ together with a $p_f:\pt_G=F(\pt_H)$, so if, for $x:BH$ and $y:BG$, we define
+$$\Hom(H,G)(x,y)\defequi\sum_{F:BH_\div\to BG_\div}(y=F(x))$$
+we see that $\Hom(H,G)$ may be considered to be a $H\times G$-set
+$$\Hom(H,G);BH\times BG\to\Set.$$
+We will be particularly be interested in the restriction to $G$ giving a $G$-set for which we recycle the notation: $$\Hom(H,G)(y)\defequi\Hom(H,G)(\pt_H,y)$$ (and similarly for $H$).
+\end{example}
+\begin{xca}
+  \label{xca:HomZGvsAdG}
+  Prove that the $G$-set $\Hom(\ZZ,G):BG\to\Set$ is equivalent to $\Ad_G:BG\to\Set$.
+
+Hint: Use the universal property of the circle to identify the family $\Hom(\ZZ,G)(y)$ with $\sum_{z:BG}\sum_{p:z=z}y=z$ and consider the map to $y=y$ sending $(y,p,q)$ to $q^{-1}p\,q$.
+\end{xca}
+
+
 \begin{example}\label{def:trivGset}
   If $G$ is a group (or \inftygp), and $X$ is a set (or type) then
 $$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets (or $G$-types)}.
@@ -879,18 +920,107 @@ $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence% : \ie the type of g
 \section{Homomorphisms, abstract vs.~concrete}
 \label{sec:homabsisconcr}
 
-Now that we know that the type of groups is equal to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.  That is, if $G$ and $H$ are groups, then we defined 
+Now that we know that the type of groups is equal to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.  
+
+They do, and we provide two independent and somewhat different arguments.  Translating from group homomorphisms to abstract group homomorphisms is easy: if $G$ and $H$ are groups, then we defined 
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 in \cref{def:abstrisfunctor} as the function which takes a homomorphism, aka a pointed map $f=(Bf_\div,p_f):BG\to_*BH$ to the induced map of identity types 
 $$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$
  together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:grouphomomaxioms}.
 
 
+Going back is somewhat more involved, and it is here we consider two approaches.
+The first is a compact argument showing directly how to reconstruct a pointed map $Bf:BG\to_*BH$ from an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, the second translates back and forth via our equivalence between abstract and concrete groups.
+
+
+
+The statement we are after is
+
+
 \begin{lemma}
+  \label{lem:homomabstrconcr}
   If $G$ and $H$ are groups, then 
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is an equivalence.
 \end{lemma}
+and the next two subsections offer two proofs.
+
+
+
+\subsection{``Delooping'' a group homomorphism}
+\label{sec:thierrysdelooping}
+We now explore the first approach.\footnote{Note to self: make into a lemma and say ``group'' etc}
+
+\begin{proof}
+  Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
+We suppose given a group morphism
+$$f:a = a\rightarrow b = b$$
+and we explain how to build a map $g:X \rightarrow Y$ with
+a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
+for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+
+\medskip
+
+Let us assume the problem solved. The map $g:X\rightarrow Y$
+will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
+and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
+$$p(\alpha\omega) = g(\alpha)g(\omega)p
+  = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
+for all $\omega:a = a$ and $\alpha : a = x$.
+
+\medskip
+
+This suggests to introduce the following family
+$$
+C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
+ p(\alpha\omega) = p(\alpha)f(\omega)
+$$
+
+ An element of $C(x)$ has three components, the last component being
+ a proof since $Y$ is a $1$-type.
+
+ The type $C(a)$ has a simpler description. An element of $C(a)$ is
+ a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
+ $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
+ can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
+ is completely determined by $p(1_a)$.
+ Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
+
+ \medskip
+
+ It follows that we have
+ $$
+ \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
+ $$
+and so, since $\iscontr~C(x)$ is a proposition
+ $$
+ \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
+ $$
+ Since $X$ is connected, we have
+ $\prod_{x:X}\iscontr~ C(x)$
+ and so, in particular, we have an element of $\prod_{x:X}C(x)$.
+
+ We get in this way a map $g:X\rightarrow Y$
+ together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
+ $p (\alpha\omega) = p(\alpha) f(\omega)$
+ for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
+We have, for $\alpha:a=x$
+$$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
+since this holds for $\lambda = 1_x$.
+In particular, $p(\omega) = g(\omega)p(1_a)$.
+
+We also have $p(\omega) = p(1_a)f(\omega)$, hence 
+$p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
+for all $\alpha:a=a$ and we have found a delooping of $f$.
+\end{proof}
+
+
+\subsection{The concrete vs. abstract homomorphisms via torsors.}
+\label{sec:absconctorsor}
+
+The second approach to \cref{lem:homomabstrconcr} is as follows:
+
+
 \begin{proof}
 \newcommand{\we}{\overset\sim\to}
   The equivalence of $\pathsp{}^G:BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
@@ -927,6 +1057,15 @@ $$\xymatrix{(\pt_G=\pt_G)\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
 }$$
 and if we start with a $g:(\pt_G=\pt_G)$, then $\pathsp{}^G$ sends it to $\pathsp g^G\oldequiv\preinv (g)$.  Furthermore, $\phi_*\preinv (g)$ is $[\id,\preinv (g)]$ which is sent to $\preinv (\phi(g))$ in $\princ H=\princ H$ which corresponds to $\phi(g):(\pt_H=\pt_H)$ under $\pathsp{}^H$.  In other words, $AB(\phi,!)=(\phi,!)$.  The composite $BA$ is similar.
 \end{proof}
+
+\section{$G$-sets vs $\abstr(G)$-sets}
+\label{sec:Gsetsabstrconcr}
+
+Given a group $G$ it should by now come as no surprise that the type of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
+
+Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-set is
+$$Set_{\abstr(G)}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\abstr(G)},\abstr(\Sigma_{\mathcal X})).$$
+In COMEBACK 190409
 
 
 
@@ -1188,6 +1327,40 @@ Specializing, we return to our initial motivation and see that mapping out of a 
 \footnote{TO BE MOVED TO AFTER the chapter on symmetry (need Burnside -  a $G$-set splits into orbits - etc) has been covered.  
 Also, some proofs are written in a pseudoclassical way just to remind me of the idea.  It is not a typo and will by typied}
 
+% {\color{blue}DELETE
+% \subsection{Actions on preimage}
+% \label{sec:actonfiber}
+% Let $G$ be a group and let $X:BG\to\Set$ be a $G$ set.
+% Assume given an element $x_0:X(\pt_G)$ and that $\sum_{z:BG}X(z)$ is connected.  Let $\pt_H\defequi (\pt_H,x_0)$ and define $BH_\div\defequi\sum_{z:BG}X(z)$, so that the first projection is an inclusion $i:BH\to BG$ of a subgroup.
+
+% % \begin{lemma}
+% %   \label{lem:conjactiontrivontotalspace}
+% %   Let $f:\Hom(H,G)$ be a group homomorphism.  Then the composite
+% %   $$\xymatrix{BH\ar[r]^f& BG\ar[r]^{\coker(G)}&\Set}
+% %   $$
+% % a trivial $H$-set; ``the induced $H$-action on $\coker(f)$ is trivial''.
+% % \end{lemma}
+% % \begin{proof}
+% %   If $g:\pt_G=\pt_G$, then the action on $\coker(f)$ is given by ``$\preinv g$'': considered as an equivalence it sends an element $(x,p)$ (where $x:BH$ and $p:\pt_G=f(x)$) to $(x,p\, g^{-1})$.
+% %   If $h:\pt_H=\pt_H$ we must construct an element in $(x,p)=(x,p\,f(h)^{-1})$.
+
+
+% % the induced identity $\preinv f(h):\coker(f)=\coker(f)$ is $\refl{}$.  Considered as an equivalence, $\preinv g$ sends $(x,p)$ to $(x,p\,g^{-1})$
+% % \end{proof}
+
+
+
+% Let $f:(X,x_0)\to (Y,y_0)$ be a pointed map (where $p_f:y_0=f(x_0)$ is part of the data).  Consider the preimage
+% $$\preim_f:Y\to\UU$$
+% given by $\preim_f(y)=f^{-1}(y)$.
+% Letting $\mathcal G$ be the abstract group given by the identity type $y_0=y_0$ we get that $f^{-1}(y_0)$ is an $\mathcal G$-type via the action $(\y_0=\y_0)\times f^{-1}(y_0)\to f^{-1}(y_0)$ sending $(g,(x,q))$ to $(x,q\, g^{-1})$ (where $x:X$, $q:y_0=f(x)$ and $g:y_0=y_0$). 
+
+% More concretely, if $(Y,y_0)$ is a group,\ie $Y$ is $BG_\div\defequi\concr\mathcal G$ pointed at $\pt_G\defequi y_0$, then $\preim_f:BG\to\UU$ is a $G$-type.
+
+% If $h:x_0=x_0$
+
+% }
+
 \section{Subgroups}
 \label{sec:subgroups}
 In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discovered that the ``subsymmetries'' formed a very organized structure.  For each natural number $n$ we obtained a set of subsymmetry the entire identity type $\base=\base$, namely the set of all the iterates $(\Sloop^{n})^m$ where $m$ varies over the integers.  When $n$ was positive this was realized as the $n$-fold \covering of $S^1$ , when $n=0$ this was given by the universal \covering.  
@@ -1202,7 +1375,7 @@ Now, as we've seen, that   $f:(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an injection (pr
       $$\typesubgroup_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(Bf^{-1}(\pt_G)).$$
        A subgroup $(H,f,!)$ is
       \begin{enumerate}
-      \item \emph{non-trivial}\index{non-trivial subgroup} if $BH$ is not contractible
+      \item \emph{trivial}\index{trivial subgroup} if $BH$ is contractible
       \item \emph{proper}\index{proper subgroup} if $Bf$ is not an equivalence.
       \end{enumerate}
     \end{definition}
@@ -1214,30 +1387,39 @@ In other words, a subgroup of $G$ is a group homomorphism $f:\Hom(H,G)$ such tha
 \begin{proof}
   By univalence and \cref{lem:eqofconntypes}, if $H$ and $H'$ are groups, then the identity type $H=H'$ is equivalent to the set 
 $$\sum_{f:\Hom(H,H')}\isEq(f^=:(\pt_H=\pt_H)\to(\pt_{H'}=\pt_{H'})).$$  If $(H,i_H,!)$ is a subgroup of $G$, then
-$(H,i_H,!)=(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ is such that $i_H^=f^==_{(pt_H=\pt_H)\to(\pt_G=\pt_G)}i_H^=$.  Now, since $(H,i_K,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $f^==\refl{\pt_H=\pt_H}$, which forces $f$ to be identical to the identity homomorphism. 
+$(H,i_H,!)=(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ which are such that $i_H^=f^==i_H^=$ (which is a proposition since ${(pt_H=\pt_H)\to(\pt_G=\pt_G)}$ is a set).  Now, since $(H,i_K,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $f^==\refl{\pt_H=\pt_H}$, which forces $f$ to be identical to the identity homomorphism. 
 \end{proof}
-Not only is the type of subgroups  of $G$ a set, it is in a natural way a $G$-set which we denote by the same name
+Not only is the type of subgroups  of $G$ a set, it is in a natural way (the value at $\pt_G$ of) a $G$-set which we denote by the same name
 $$%\typesubgroup_G:BG\to\Set,\qquad 
-\typesubgroup_G(x)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(Bf^{-1}(x)).$$
+\typesubgroup_G(y)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)(y)}\isset(Bf^{-1}(\pt_G)),$$
+where $\Hom(H,G)(y)\defequi\sum_{F:BH_\div\to BG_\div}(y=F(\pt_H))$ as in \cref{ex:HomHGasGset}.  
 \begin{definition}
-  \label{def:conjactonsubgroups}
-  If $G$ is a group, then the action of $G$ on the set of subgroups is called \emph{conjugation}.  An element of the $G$-orbit of a subgroup $(H,i_H,!)$ are called a \emph{conjugate} of $(H,i_H,!)$.  If $(K,i_K,!)$ is another subgroup containing a conjugate of $(H,i_H,!)$, we say that $(H,i_H,!)$ is \emph{subconjugate} to $(K,i_K,!)$.
+  \label{def:conjactonsubgroups}\label{def:normalizer}
+  If $G$ is a group, then the action of $G$ on the set of subgroups is called \emph{conjugation}.  
+
+An element of the $G$-orbit of a subgroup $(H,i_H,!)$ are called a \emph{conjugate} of $(H,i_H,!)$.   The stabilizer group of a subgroup $(H,i_H,!)$ is called the \emph{normalizer $N_G(H)$ of $H$ in $G$}.\index{normalizer}
+
+If $(K,i_K,!)$ is another subgroup containing a conjugate of $(H,i_H,!)$, we say that $(H,i_H,!)$ is \emph{subconjugate} to $(K,i_K,!)$.
 \end{definition}
+\begin{remark}
+  \label{rem:whyconjugate}
+  The term ``conjugation'' may seem confusing as the (abstract) action of $g:\pt_G=\pt_G$ on $(H,F,p,!):\typesubgroup_G(\pt_G)$ is simply $(H,F,p\,g^{-1},!)$ (where $p:x=F(\pt_H)$), which does not seem much like conjugation.  We have seen this sort of phenomenon before in \cref{xca:HomZGvsAdG} which gave an equivalence between the $G$-sets $\Hom(\ZZ,G)$ and $\Ad_G$ (where the action is very visibly by conjugation).
+\end{remark}
+
 \newcommand{\we}{\overset\sim\to}
 \begin{remark}
   \label{rem:conjactiononsubgroups}
-  It is worthwhile to study this action a bit further: given an identity $g:\pt_H=\pt_H$ and a subgroup $(H,i_H,!)$ of $G$, to what subgroup ``$(gHg^{-1},i_{gHg^{-1}})$'' is $(H,i_H,!)$ taken to by (the equivalence corresponding to) $g$?  
+  It is worthwhile to study this action a bit further.  Let $H$ be a group, $i_H:\Hom(H,G)$ (with second projection $p_{i_H}:\pt_G=Bi_{H}(\pt_H)$) a group homomorphism such that $(H,i_H,!)$ is a subgroup of $G$.  An identity $g:\pt_G=\pt_G$ acts on $\Hom(H,G)$ and sends $i_H$ to $i^g_H$ which is characterized by $(Bi^g_H)_\div\defequi(Bi_H)_\div$ and $p_{i^g_H}\defequi p_{i_H}g^{-1}:(\pt_G=Bi_H(\pt_H))$.  Hence the action of $g$ sends our subgroup $(H,i_H,!)$ to $g\cdot(H,i^g_H,!)\defequi (H,i^g_H,!)$.
 
-First consider the equivalence $\tilde g:(Bi_H)^{-1}(\pt_H)\we (Bi_H)^{-1}(\pt_H)$ induced by $g$: the image $\tilde g(\pt_H,p_{Bi_H})$ is a pair consisting of a point which we call $\pt_{gHg^{-1}}:BH$ and an identity $p_{Bi_{gHg^{-1}}}:Bi_H(\pt_{gHg^{-1}})=\pt_G$.
 
-In sum, $(gHg{-1},i_{gHg^{-1}},!)$ is our name for the subgroup with 
-$$B(gHg^{-1})_\div\defequi BH_\div$$ pointed at $\pt_{gHg^{-1}}$ with $i_{gHg^{-1}}:\Hom(gHg^{-1},G)$ given by $Bi_H:BH_\div\to BG_\div$ and $p_{Bi_{gHg^{-1}}}:Bi_H(\pt_{gHg^{-1}})=\pt_G$.
+
+% Now, if $g$ comes from $H$, say, $\i_H(h)$
 \end{remark}
 
 
 
 \begin{remark}
-  If you're familiar with the set-theoretic flavor of things, it is important to distinguish between subgroups and injective group homomorphisms.  
+  If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.  
 Our use of ``subgroup'' can be defended as follows.  It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism modulo that precomposing with an isomorphism yields identical subgroups.  
 Set-theory offers the luxury of having a representative in every equivalence class: namely the image of the injection, type theory does not.
 \end{remark}
