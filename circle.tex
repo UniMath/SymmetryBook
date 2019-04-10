@@ -675,32 +675,74 @@ and $c(\Sloop):(c(\base)=_C c(\base))$ given by the successor
 $\etop{s}:\zet=\zet$ and trivial proofs of the proposition
 $\etop{s}\etop{s}=\etop{s}\etop{s}$ and for the 
 truncated third component of $c(\base)$.
-We will henceforth the third component.
 \end{definition}
 
-We start by identifying the symmetries of $(\zet,s)$ in $C$:
+We will henceforth leave out the third component from the denotation
+of elements of $C$, since its type is propositional and does not convey 
+any information beyond its mere existence. We may write a ``!'' in order
+to remind the reader of hidden information of propositional type.
+  
+We start by identifying the symmetries of $(\zet,\etop{s})$ in $C$:
 
 \begin{lemma}
   \label{lem:IdCisZet}
-  Any element in $(\zet,s)=_C(\zet,s)$ is of the form $(s^k,!)$ for some unique $k:\zet$.  In other words,
-  the function 
-$$\ev_0:((\zet,s)=_C(\zet,s))\to \zet$$ given by $\ev_0(p)=p(0)$ is an equivalence.
+Any element in $(\zet,\etop{s})=_C(\zet,\etop{s})$ is of 
+the form $\pathpair{\etop{s}^k}{!}$ for some unique $k:\zet$.  
+In other words, the function 
+\[
+\ev_0:((\zet,\etop{s})=_C(\zet,\etop{s}))\to \zet 
+\text{~defined by~} \ev_0(\pathpair{p}{!}) \defeq \ptoe{p}(0)
+\]
+is an equivalence.
 \end{lemma}
 \begin{proof}
-  Given $(p,!):(\zet,s)=_C(\zet,s)$ we must determine $p:\zet=_{\Set}\zet$, which by univalence amounts to giving all the values $p(n)$ for $n:\zet$.  However, since $sp=ps$ we get that $p(n+1)=p(n)+1$ and so induction on $n$ (induction for positive and negative $n$ separately) gives that $p(n)=n+p(0)$.  Hence, $p=s^{p(0)}$ (uniquely since $\zet:\Set$).
+  Given $\pathpair{p}{!}:(\zet,\etop{s})=_C(\zet,\etop{s})$ we must determine 
+$p:\zet=\zet$. By univalence this amounts to giving all the values 
+$\ptoe{p}(n)$ for $n:\zet$.  However, since $s\ptoe{p}=\ptoe{p}s$ we 
+get that $\ptoe{p}(n+1)=\ptoe{p}(n)+1$ for all $n:\zet$. 
+Induction on $n:\zet$ (positive and negative $n$ separately) gives that 
+$\ptoe{p}(n)=n+\ptoe{p}(0)$. Hence $\ptoe{p}=s^{\ptoe(0)}$, so $p=\etop{s}^k$
+for some unique $k:\zet$.
 \end{proof}
 
-We are going to prove that $c$ is an equivalence.  The method of proof is quite a general and relies or  \cref{lem:eqofconntypes} below, which we will have occasion to return to on several occasions.  In our case the application of  \cref{lem:eqofconntypes} is greatly simplified by the fact that we already know that both $\Sc$ and $C$ are connected groupoids, since then \cref{lem:eqofconntypes} says that it is enough to show that $c$ induces an equivalence from the set of symmetries of $\base$ to the set of symmetries of $(\zet,s)$.\footnote{OLDREMARK: of course, the proof of \cref{cor:S1groupoid} \emph{could} attack $c$ directly, but that would compound the technicalities already present there: at present I prefer splitting it up like this.  I am open for letting the proof of \cref{cor:S1groupoid} be postponed till the end of a chapter, so as not to disrupt the flow of ideas}
+We are going to prove that $c$ is an equivalence.
+The method of proof will be used on several occasions.
+Therefore we isolate the following general result first.
 
-
+\begin{lemma}\label{lem:conn-eq-f-ap-f-x}
+Let $X$ and $Y$ be connected types, $x$ an element of $X$,
+and $f$ a function from $X$ to $Y$. Then $f$ is an equivalence
+if and only if $\ap{f}: (x=x) \to (f(x)=f(x))$ is an equivalence.
+\end{lemma} 
+\begin{proof}
+Using \cref{cor:fib-vs-path}(\ref{conn-fib-vs-path}) it suffices to show that 
+each $\ap{f}$ is an equivalence if and only if the specific $\ap{f}$ with 
+domain $x=x$ is an equivalence. Being an equivalence is a proposition, 
+so this follows in two easy steps from $X$ being connected,
+using \cref{xca:component-connected}.
+\end{proof}
 
 \begin{theorem}\label{thm:S1bysymmetries}
   The function $c:\Sc\to C$ is an equivalence.
 \end{theorem}
 \begin{proof}
-  In view of \cref{lem:eqofconntypes} we only need to show that the induced function of symmetries $c:(\base=_{\Sc}\base)\to((\zet,s)=_C(\zet,s))$ is an equivalence.\footnote{ ((can we call equivalences between sets bijections?)).}  
-
-The function $\Sloop^-:\zet\to (\base=_{\Sc}\base)$ sending $n:\zet$ to $\Sloop^n$ is an equivalence by  \cref{cor:S1groupoid} and the function  $\ev_0:((\zet,s)=_C(\zet,s))\to \zet$ given by $\ev_0(p)=p(0)$ is an equivalence by \cref{lem:IdCisZet}.  Tracing through the composite function $\ev_0\,c\,\Sloop^-:\zet\to\zet$ we see that $\ev_0\,c\,\Sloop^n=\ev_0\,s^n=n$, (\ie $\ev_0\,c\,\Sloop^-=\id_\zet$) giving that $c$ is an equivalence. 
+  In view of \cref{lem:conn-eq-f-ap-f-x} we only need to show that 
+$\ap{c}:(\base=_{\Sc}\base)\to((\zet,s)=_C(\zet,s))$ is an equivalence.
+\footnote{ ((can we call equivalences between sets bijections?)). YES, BUT NOT NEEDED}
+Note that both the domain and the co-domain of $\ap{c}$ is equivalent to $\zet$.
+Consider the following diagram in which we compose $c$ with the equivalences
+from \cref{cor:S1groupoid} and \cref{lem:IdCisZet}:
+\[
+\xymatrix{
+\zet\ar[rr]^-{\Sloop^{{-}}}&&
+(\base=\base)\ar[rr]^-{\ap{c}}&&
+((\zet,s)=_C(\zet,s))\ar[rr]^-{\ev_0}&&
+\zet}
+\]
+For $c$ to be an equivalence, it suffices to show that the composition
+is the identity on $\zet$. This follows from the definition of 
+$\ap{c}(\Sloop) = \pathpair{\etop{s}}{!}$ and induction on $n:\zet$
+proving  $\ev_0(\ap{c}(\Sloop^n))=\ev_0(\pathpair{\etop{s}^n}{!}) = s^n(0) = n$. 
 % The composition with the functions $\Sloop^-:\zet\to (\base=_{\Sc}\base)$ sending $n:\zet$ to $\Sloop^n$ and $\ev_0:((\zet,s)=_C(zet,s))\to \zet$ of \cref{lem:IdCisZet} given by $\ev_0(p)=p(0)$ gives us a function $w:\zet\to\zet$ with $w(n)=s^n(0)$.  From \cref{cor:S1groupoid} we know that $\Sloop^-$ is an equivalence, so we only need to show that $w$ is an equivalence
 \footnote{I may have used 2-out-of-3 before, we probably need to include it somewhere, though by univalence it hardly seems necessary}% .  If $p:\zet=\zet$ with $!:sp=ps$, we get by induction on $n:\zet$ (induction for positive and negative $n$ separately) that $p(n)=n+p(0)$.  Hence, all the elements in the preimage $w^{-1}(p,!:sp=ps)$ are equal to $(p(0),!)$.  
 \end{proof}
