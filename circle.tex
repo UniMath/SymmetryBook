@@ -273,8 +273,13 @@ following the logic, injections perhaps ought to be called ``proposition bundles
 The formulation we give is not the only one and for some purposes a formulation
 based on $B\to\Set$ is more convenient.
 
+\begin{xca}\label{xca:constant-cover}
+Let $A$ and $B$ be types, and let $b$ be an element of $B$.
+Show that the function that is constant $b$ is a \covering
+if and only if both $A$ and $b=b$ are sets. SPLIT AND EXTEND WITH COMPOSITION
+\end{xca}
 
- Figure~\ref{fig:covering} visualizes two examples of \coverings over the circle.  
+Figure~\ref{fig:covering} visualizes two examples of \coverings over the circle.  
 Consider the picture on the left first.  
 If we let $b$ be the element on the circle marked at the bottom left hand side, then the preimage $f^{-1}(b)$ is marked by the the two dots in $A$ straight above $b$, 
 so that in this case each preimage contains two points (is \emph{merely equal} to $\bn 2$).  
@@ -723,7 +728,7 @@ using \cref{xca:component-connected}.
 \end{proof}
 
 \begin{theorem}\label{thm:S1bysymmetries}
-  The function $c:\Sc\to C$ is an equivalence.
+  The function $c:\Sc\to C$ from \cref{def:S1toC} is an equivalence.
 \end{theorem}
 \begin{proof}
   In view of \cref{lem:conn-eq-f-ap-f-x} we only need to show that 
@@ -740,9 +745,9 @@ from \cref{cor:S1groupoid} and \cref{lem:IdCisZet}:
 \zet}
 \]
 For $c$ to be an equivalence, it suffices to show that the composition
-is the identity on $\zet$. This follows from the definition of 
-$\ap{c}(\Sloop) = \pathpair{\etop{s}}{!}$ and induction on $n:\zet$
-proving  $\ev_0(\ap{c}(\Sloop^n))=\ev_0(\pathpair{\etop{s}^n}{!}) = s^n(0) = n$. 
+is the identity on $\zet$. By definition $\ap{c}(\Sloop) = \pathpair{\etop{s}}{!}$, 
+and by induction on $n:\zet$
+one shows  $\ev_0(\ap{c}(\Sloop^n))=\ev_0(\pathpair{\etop{s}^n}{!}) = s^n(0) = n$. 
 % The composition with the functions $\Sloop^-:\zet\to (\base=_{\Sc}\base)$ sending $n:\zet$ to $\Sloop^n$ and $\ev_0:((\zet,s)=_C(zet,s))\to \zet$ of \cref{lem:IdCisZet} given by $\ev_0(p)=p(0)$ gives us a function $w:\zet\to\zet$ with $w(n)=s^n(0)$.  From \cref{cor:S1groupoid} we know that $\Sloop^-$ is an equivalence, so we only need to show that $w$ is an equivalence
 \footnote{I may have used 2-out-of-3 before, we probably need to include it somewhere, though by univalence it hardly seems necessary}% .  If $p:\zet=\zet$ with $!:sp=ps$, we get by induction on $n:\zet$ (induction for positive and negative $n$ separately) that $p(n)=n+p(0)$.  Hence, all the elements in the preimage $w^{-1}(p,!:sp=ps)$ are equal to $(p(0),!)$.  
 \end{proof}
@@ -757,19 +762,48 @@ proving  $\ev_0(\ap{c}(\Sloop^n))=\ev_0(\pathpair{\etop{s}^n}{!}) = s^n(0) = n$.
 \section{Other \coverings over the circle}
 \label{sec:covS1}
 
-\footnote{The below is not fully structured yet, and does contain known nonsense (basepoints, orientations etc need to be straightened out)}
-From \cref{lem:eqandcovofconntypes} we know that a function $f:A\to \Sc$ from a connected type $A$ is a \covering if and only if for given $a_0:f^{-1}(\base)$ the induced function from $a_0=_Aa_0$ to $(f(a_0)=f(a_0))=(\base=_{\Sc}\base)$ is injective; or in words, if the symmetries of $a_0$ inject into the symmetries of $\base$ (which by \cref{cor:S1groupoid} may be identified with with the set $\zet$ of integers).
+Let $A$ be a type and $f:A\to \Sc$ a function.
+By \cref{cor:fib-vs-path}(\ref{set-fib-vs-path}), $f$ is a \covering
+over $\Sc$ if and only if each $\ap{f}$ is injective.
+Assume that $f:A\to \Sc$ is a \covering with $A$ is connected.
+Let $(a_0,p)$ be an element of $f^{-1}(\base)$. 
+By \cref{xca:component-connected}
+the condition that \emph{each} $\ap{f}$ is injective
+can be relaxed to $\ap{f}: (a_0=a_0)\to(f(a_0)=f(a_0))$ being injective.
+Now look at the following subset:
+\[
+\set{~ l: \base = \base \mid {\ap{f}}^{-1}(plp^{-1})~ }.
+\]
+Clearly, a classification of connected \coverings over the circle
+also classifies certain subsets of symmetries of $\base$.
+Such subsets are closed under concatenation and inverses,
+since $\ap{f}$ preserves these operations.\footnote{%
+Using language yet to be introduced, we actually classify the subgroups of the integers.}
+We start by listing examples of connected \coverings of the circle.
 
-So, a classification of \coverings over the circle amounts to answering the question of what ``subsymmetries'' $\base$ posesses.  Using language yet to be introduced, the question would be ``what are the subgroups of the integers?''
-
-\begin{example}
-  \label{ex:listofS1covers}
-  \begin{enumerate}
-  \item The \emph{universal} \covering  $$c_\base:\bn 1\to \Sc$$ sends the unique element of $\bn 1$ to $\base$ is a \covering. The universal \covering corresponds to the trivial subsymmetry of $\base$ (\ie including only $\refl\base$).  
-  \item If $m:\NN$ is positive, consider the \emph{degree $m$ function} $$-^m:\Sc\to \Sc$$ given by $-^m(\base)\defequi\base$ and $-^m(\Sloop)\defequi\Sloop^m$.  On the level of identity types and under the equivalence $\Sloop^-:\zet\simeq(\base=_{\Sc}\base)$, this \covering corresponds to the function $\zet\to\zet$ given by multiplication by $m$.  Hence, the subsymmetries in determined by the degree $m$ function are correspond to the integers divisible by $m$.
-  \end{enumerate}
-  In the course of our discussion, we will see that -- under an assumption on the setup called ``LPO'', c.f. \cref{LPO} -- these are all the connected decidable \coverings over the circle.
+\begin{example}\label{ex:univS1cover}
+The \emph{universal} \covering from \cref{def:universalcover}
+is the map $c_\base:\bn 1\to \Sc$ 
+sending the unique element of $\bn 1$ to $\base$. 
+(It takes this simple form since the circle is a pointed connected
+groupoid, see the discussion before \cref{def:universalcover}.)
+The universal \covering corresponds to the subset consisting 
+of $\refl\base : \base=\base$ only.  
 \end{example}
+
+\begin{definition}\label{def:m-fold-cover}
+For $m:\NN$ positive, define the \emph{degree $m$ function} by circle induction
+\[
+-^m:\Sc\to \Sc, \text{~~setting~} 
+-^m(\base)\defeq\base \text{~and~} 
+-^m(\Sloop)\defis{\Sloop}^m.
+\]
+This \covering corresponds to the subset consisting 
+of ${\Sloop}^{mn} : \base=\base$ for all $n:\zet$.
+\end{definition}
+
+  In the course of our discussion, we will see that -- under an assumption on the setup called ``LPO'', c.f. \cref{LPO} -- these are all the connected decidable \coverings over the circle.
+
 
 \begin{remark}
   \label{rem:RtoS1}
