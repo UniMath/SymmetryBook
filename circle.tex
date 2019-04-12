@@ -105,7 +105,7 @@ $p: f(\base)= g(\base)$ and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
 We show $f=g$, for which it suffices to prove by circle induction
 that $P(x)\defeq(f(x)=g(x))$ for all $x:\Sc$.
 For the base case we take $p$.
-The loop case reduces to $\trp{P,\Sloop}(p)=p$ by \cref{def:pathover-transport}.
+The loop case reduces to $\trp{P,\Sloop}(p)=p$ by \cref{def:pathover-trp}.
 By \cref{lem:trp-in-fx=Ygx} we have 
 $\trp{P,\Sloop}(p)=g(\Sloop)\cdot p \cdot f(\Sloop)^{-1}$. 
 By $q$ we have $g(\Sloop) = p\cdot f(\Sloop) \cdot p^{-1}$.
@@ -350,41 +350,46 @@ Likewise, for the other qualifications; for instance in a ``finite covering'' $f
 % \end{definition}
 %specified by a pair $(p_A,p_f)$ with consisting of a $p_A:A=_{\UU}A'$, a $p_f:f'p_A=_{A\to B}f$.
 
-\begin{example}
-  \label{xca:coveringsofS1}
-  Let us consider \coverings over the circle, most conveniently for the moment in the guise of families 
+\begin{example}\label{xca:coveringsofS1}
+Let us consider \coverings over the circle, most conveniently 
+for the moment in the guise of families 
 $$E:\Sc\to\Set.$$
-By the definition of the circle, giving $E$ is the same as specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.  Said more concisely in terms of \cref{lem:freeloopspace}, the type of \coverings over the circle is equivalent to 
-$$\sum_{X:\Set}(X=X).$$
+By circle induction, giving such an $E$ is the same as 
+specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.  
+Said more concisely in terms of \cref{lem:freeloopspace}, 
+the type of \coverings over the circle is equivalent to 
+$$\sum_{X:\Set}(X=X).$$ \footnote{\color{blue}%
+DUPLICATE, BETTER LATER
 We will ultimately show that the circle $\Sc$ is equivalent to the 
-component (see \cref{def:connected}) $C$ of $(\zet,s)$ in $\sum_{X:\Set}(X=X)$,  
-where $s:\zet=\zet$ is the successor.  This may seem circular: ``the circle is equivalent to a component of the type of \coverings over the circle!'' 
+component (see \cref{def:connected}) $C$ of $(\zet,\etop{s})$ in $\sum_{X:\Set}(X=X)$,  
+where $s:\zet\to\zet$ is the successor.  This may seem circular: ``the circle is equivalent to a component of the type of \coverings over the circle!'' 
 (MB WHY CIRCULAR: $\sum_{X:\Set}(X=X)$ EXISTS ALSO INDEP OF CIRCLE?)
 but it really just condenses the idea that connected groupoids are uniquely 
-given by their symmetries.
+given by their symmetries.}
 \end{example}
 A particularly important example is the following:
-\begin{definition}
-  \label{def:RtoS1}
-  Let the \emph{exponential \covering of the circle}
-$$\exp:\mathbb R\to \Sc$$ 
-be the \covering of the circle given by $(\zet,s):\sum_{X:\Set}(X=X)$.  
+\begin{definition}\label{def:RtoS1}
+Define $R:\Sc\to\UU$ by circle induction by setting 
+$R(\base)\defeq\zet$ and $R(\Sloop)\defis \etop{s}$.
+Since $\zet$ is a set, and being a set is a proposition,
+one can prove by circle induction that $R(z)$ is a set for all $z:\Sc$.
+(Abusing notation we also write $R:\Sc\to\Set$.) Now define
+$$\RR\defeq\sum_{z:\Sc}R(z)$$
+and let the first projection denoted by
+$$\exp:\RR\to \Sc$$
+be the \emph{exponential \covering of the circle}.
 \end{definition}
-
-In more detail, if $R:\Sc\to\Set$ is defined by letting $R(\base)$ be $\zet$ and $R(\Sloop)$ the successor $s$, then 
-$$\mathbb R\defequi\sum_{z:\Sc}R(z)$$ 
-and $\exp:\mathbb R\to \Sc$ is the first projection.
-Since $\zet$ is a set, and being a set is a propostion,
-one can prove by circle induction that $R$ is indeed a set bundle.
 
 \begin{remark}
   \label{rem:expforreal}
-  The reason for the name $\exp:\mathbb R\to \Sc$ comes from the following visualization.  
-%Consider the real and complex numbers $\mathbb R$ and $\mathbb C$.  
-If $x$ is a real number, then the complex exponentiation $e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has absolute value $1$ and so defines a continuous function from the real numbers to the unit circle.  
+  The reason for the name $\exp:\RR\to \Sc$ comes from the following visualization.  
+%Consider the real and complex numbers $\RR$ and $\mathbb C$.  
+If $x$ is a real number, then the complex exponentiation 
+$e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has absolute value $1$ and 
+so defines a continuous function from the real numbers to the unit circle.  
 Choosing any point $z$ on the unit circle, we see that the preimage of $z$ under the exponential function is a shifted copy of the integers inside the reals. 
  
-This connection between the integers and the unit circle is precisely captured in a form that we can take further by the \covering $\exp:\mathbb R\to \Sc$.
+This connection between the integers and the unit circle is precisely captured in a form that we can take further by the \covering $\exp:\RR\to \Sc$.
 \end{remark}
 
 We already defined a \covering $f:A\to B$ to be universal if $A$ is connected
@@ -458,13 +463,20 @@ $\refl{\base}:\base=\base$, and $1$ to $\Sloop$, and $-1$ to $\Sloop^{-1}$.
 More generally, the successor $\etop{s}:\zet=\zet$ corresponds to composition with $\Sloop$
 and the predecessor corresponds to composition with $\Sloop^{-1}$.
 
-The first step is to prove that the exponential \covering \cref{def:RtoS1} is equal to the universal \covering in \cref{def:universalcover}, \ie we prove that the family 
-$$R: \Sc\to\Set,\qquad R(\base)\defeq\zet,\, R(\Sloop)\defis \etop{s}$$
+The first step is to prove that the exponential \covering \cref{def:RtoS1} 
+is equal to the universal \covering in \cref{def:universalcover}, 
+\ie we prove that the family 
+\[
+R: \Sc\to\UU,\qquad R(\base)\defeq\zet,\, R(\Sloop)\defis \etop{s}
+\]
 is equal to the family
-$$\uc{\base}:\Sc\to\Set,\qquad \uc{\base}(z)\defeq (\base=z).$$
-What does it mean for $\uc{\base}$ and $R$ to be equal?
-They are both functions from $\Sc$ to $\Set$. 
-Function extensionality reduces the question to pointwise equality.
+\[
+\uc{\base}:\Sc\to\UU,\qquad \uc{\base}(z)\defeq (\base=z).
+\]
+What does it mean for the families $\uc{\base}$ and $R$ to be equal?
+Type families are a special case of functions. 
+Function extensionality reduces the question to pointwise equality
+of $\uc{\base}$ and $R$ as functions.
 Using univalence, it suffices to give
 an equivalence from $\uc{\base}(z)$ to $R(z)$, for every $z:\Sc$.
 
@@ -596,8 +608,8 @@ for all $n:\zet$.
 
 \begin{lemma}
   \label{lem:univisexp}
-For every $z:\Sc$, the functions $f$ defined in \cref{def:fPtoR} 
-and $g$ in \cref{def:gRtoP} are inverse equivalences between
+For every $z:\Sc$, the functions $f(z)$ defined in \cref{def:fPtoR} 
+and $g(z)$ in \cref{def:gRtoP} are inverse equivalences between
 $\uc{\base}(z)$ and $R(z)$.
 %$\uc{\base}$ defines a connected \covering of the circle: $\uc{\base}(z)\defeq (\base=z)$ is a set for all $z:\Sc$ and the type $\uc{\base} \Sc$ is connected (more precisely, by univalence $\uc{\base}(z)$ is equal to the set $R(z)$ and $\uc{\base} \Sc$ is contractible).
 \end{lemma}
@@ -620,15 +632,19 @@ This follows from \cref{lem:windingnumber}.
 
 
 \begin{corollary}\label{cor:S1groupoid}
-  The circle $\Sc$ is a groupoid and the function
-$${\Sloop^{-}}:\zet\to(\base=_{\Sc}\base)$$ sending $n$ to $\Sloop^n$ is an equivalence.
+The circle $\Sc$ is a groupoid, and the function
+%$\uc{\base}$ is a \covering, NOT NEEDED
+\[
+{\Sloop}^{-} : \zet\to(\base=_{\Sc}\base) %\text{sending $n$ to ${\Sloop}^n$}
+\]
+sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
 \begin{proof}
 For any $z:\Sc$, the type $\uc{\base}(z)\jdeq (base=_{\Sc}z)$ is a set 
 since $R(z)$ is a set and $\uc{\base}(z) \equiv R(z)$.
 Since the circle is connected and being a set is a proposition, it follows
 that $y=_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
-The second statement rephrases that $g(\base)$ from \cref{def:gRtoP} is an equivalence.
+By \cref{def:gRtoP}, ${\Sloop}^{-}\jdeq g(\base)$ is an equivalence.
 \end{proof}
 
 
@@ -644,7 +660,7 @@ namely the set $\zet$ of integers together with the successor $s: \zet\equiv\zet
 
 The importance of the latter example will become apparent when we eventually 
 explain that \emph{the circle is equivalent to the connected component of 
-$(\zet,s)$ in the type $\sum_{X:\UU}(X=_{\UU}X)$}. 
+$(\zet,\etop{s})$ in the type $\sum_{X:\UU}(X=_{\UU}X)$}. 
 
 Heading towards this goal, we investigate this component a bit further.
 Define the type family $D$ by $D(X) \defeq (X=X)$ for all $X:\UU$.
@@ -655,7 +671,7 @@ a proof of $\pathover{\etop{s}}{D}{p}{i}$. The latter type is
 equivalent to $\trp{D,p}(\etop{s}) = i$ by \cref{def:pathover-trp}.
 The transport is by conjugation,
 \cref{xca:trp-in-a/x=b/x}(\ref{trp-in-x=x}), so that the latter
-type is equivalent to $p\cdot\etop{s}\cdot p^{-1} = i$. 
+type is equivalent to $p\cdot\etop{s}\cdot p^{-1} = i$, 
 and to $p\cdot\etop{s} = i\cdot p$, or $p \etop{s} = i p$ for short. 
 In total, the identity type $(\zet,\etop{s})=(X,i)$ is equivalent to
 \[
@@ -665,20 +681,20 @@ Since $\zet$ is a set, this sum type is a set.
 In particular, the type of symmetries $(\zet,\etop{s})=(\zet,\etop{s})$
 is equivalent to the set $\sum_{p:\zet=\zet}p\etop{s}=\etop{s}p$.  
 
-% and so our component $C$ is a connected groupoid. FOLLOWS FROM C=S1
+% and so our component $C$ is a connected groupoid. LATER FROM C=S1
 
 This discussion tells us that the following definition makes sense:
 
 \begin{definition}\label{def:S1toC}
-  Let $C$ be the component of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,s)$.
-  Define by circle induction
+Let $C$ be the component of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,\etop{s})$.
+Define by circle induction
 \[
 c:\Sc\to C \text{~setting~} 
 c(\base)\defequi (\zet,\etop{s},\trunc{\refl{(\zet,\etop{s})}})
 \]
-and $c(\Sloop):(c(\base)=_C c(\base))$ given by the successor 
+and $c(\Sloop): c(\base)=_C c(\base)$ given by the successor 
 $\etop{s}:\zet=\zet$ and trivial proofs of the proposition
-$\etop{s}\etop{s}=\etop{s}\etop{s}$ and for the 
+$\etop{s}\etop{s}=\etop{s}\etop{s}$ and the proposition for the 
 truncated third component of $c(\base)$.
 \end{definition}
 
@@ -777,11 +793,15 @@ Now look at the following subset:
 Clearly, a classification of connected \coverings over the circle
 also classifies certain subsets of symmetries of $\base$.
 Such subsets are closed under concatenation and inverses,
-since $\ap{f}$ preserves these operations.\footnote{%
+since $\ap{f}$ is compatible with these operations,
+see \cref{lem:apcomp}.\footnote{%
 Using language yet to be introduced, we actually classify the subgroups of the integers.}
-We start by listing examples of connected \coverings of the circle.
+We start by giving some examples of connected \coverings of the circle.
+In the course of our discussion, we will see that -- assuming a weak form
+of the Law of the Excluded Middle -- these are all the decidable connected 
+\coverings over the circle.
 
-\begin{example}\label{ex:univS1cover}
+\begin{example}\label{exa:univS1cover}
 The \emph{universal} \covering from \cref{def:universalcover}
 is the map $c_\base:\bn 1\to \Sc$ 
 sending the unique element of $\bn 1$ to $\base$. 
@@ -791,53 +811,90 @@ The universal \covering corresponds to the subset consisting
 of $\refl\base : \base=\base$ only.  
 \end{example}
 
-\begin{definition}\label{def:m-fold-cover}
+\begin{example}\label{exa:mfoldS1cover}
 For $m:\NN$ positive, define the \emph{degree $m$ function} by circle induction
 \[
 -^m:\Sc\to \Sc, \text{~~setting~} 
--^m(\base)\defeq\base \text{~and~} 
+-^m(\base)\defeq\base \text{~~and~} 
 -^m(\Sloop)\defis{\Sloop}^m.
 \]
 This \covering corresponds to the subset consisting 
 of ${\Sloop}^{mn} : \base=\base$ for all $n:\zet$.
-\end{definition}
+\end{example}
 
-  In the course of our discussion, we will see that -- under an assumption on the setup called ``LPO'', c.f. \cref{LPO} -- these are all the connected decidable \coverings over the circle.
-
+Note that the degree $0$ function would be constant,
+and hence not a \covering since the domain is not a set,
+see \cref{xca:constant-cover}
 
 \begin{remark}
   \label{rem:RtoS1}
-  The first case, namely the manifestation of the contractible type as a \covering of the circle is important in many applications.  Classically it corresponds to the trigonometric functions sending the real number $x$ (the real numbers form a contractible space) to the point $(\cos x,\sin x)$ on the unit circle in the plane.  If you're familiar with complex numbers, you may want to say that this \covering is the exponential function sending the real number $x$ to the point $e^{2\pi ix}$ on the unit circle in the complex plane.
+The universal \covering is essentially the same as defined in \cref{def:RtoS1}
+and explained in \cref{rem:expforreal}
+since the real numbers form a contractible space.
 
-  \label{rem:finitecoveringsofS1}
-  The analogue of our degree $m$ function is the $m$th power of complex numbers restricted to the unit circle.  The following is perhaps more tangible.  Let $m=12$ and picture the circle and mark $12$ evenly spaced points.  This will look like a clock, with marks $1,2,\dots,12$.  You can then make a function from the circle to itself by sending all marks to $12$ and each of the arcs connecting the marks to the entire circle -- (in a continuous manner preserving the orientation).
+\label{rem:finitecoveringsofS1}
+The analogue of our degree $m$ function is the $m$-th power of complex numbers 
+restricted to the unit circle. % mapping $z$ to $z^m$ if $|z|=1$.  
+The following visualization is perhaps more tangible.  
+Let $m=12$ and picture the circle and mark $12$ evenly spaced points.
+This will look like a clock, with marks $1,2,\dots,12$. 
+You can then make a function from the circle to itself by sending 
+all marks to $12$ and each of the arcs connecting the marks to the entire circle 
+-- (in a continuous manner preserving the orientation).
   ((picture!!))
 \end{remark}
 
-We could be more ambitious and ask: what is the \emph{type} of decidable \coverings over the circle?  Since the type of \coverings is equivalent to $\Sc\to \Set$, and the fact that if $F,F':\Sc\to\Set$, then $F=_{\Sc\to\Set}F$ is the type $\prod_{z:\Sc}(F(z)=_{\Set}F'(z))$ (which is a set\footnote{reference}), we see that the type of decidable \coverings over the circle is a groupoid.  We will pin this groupoid down by first identifying the components (of which there turns out to be one for each natural number), and then analyzing one component at a time.
+We could be more ambitious and ask: what is the \emph{type} of decidable 
+\coverings over the circle?  Since the type of \coverings is 
+equivalent to $\Sc\to \Set$, and $\Set$ is a groupoid
+(\cref{lem:Set-is-groupoid}),
+\cref{lem:level-n-utils}(\ref{level-n-utils-codom}) gives
+that the type of decidable \coverings over the circle is a groupoid.  
+We will pin this groupoid down by first identifying the components 
+(of which there turns out to be one for each natural number), 
+and then analyzing one component at a time.
 
- Recall the function $c:\Sc\to C$ of \cref{def:S1toC}.  By \cref{thm:S1bysymmetries} we know that $c$ is an equivalence, so classifying \coverings over $\Sc$ is equivalent to classifying \coverings over $C$.  
-We simplify the notation slightly, letting $\pt_C\defequi(\zet,s):C$ (the element corresponding by \cref{def:S1toC} to $\base:\Sc$), and allowing ourselves to write $s:\pt_C=_C\pt_C$ instead of the more honest $(s,!):\pt_C=_C\pt_C$ (corresponding to $\Sloop:\base=\base$).
+Recall the function $c:\Sc\to C$ of \cref{def:S1toC}. 
+By \cref{thm:S1bysymmetries} we know that $c$ is an equivalence, 
+so classifying \coverings over $\Sc$ is equivalent to 
+classifying \coverings over $C$.  
+We simplify the notation slightly, letting $\pt_C\defeq(\zet,\etop{s}):C$ 
+(so that $\pt_C \jdeq c(\base)$ with $c$ from \cref{def:S1toC}), 
+and allowing ourselves to write $s:\pt_C=_C\pt_C$ instead of the 
+more honest $\pathpair{\etop{s}}{!}:\pt_C=_C\pt_C$ 
+(equal to the $c$-image of ${\Sloop}:\base=\base$).
 
- Returning to \cref{ex:listofS1covers}, it is instructive to rephraze these connected \coverings in terms of $C$.
-\begin{example}
- \label{ex:listofCcovers}\label{ex:Cunivcov}
-The universal connected \covering is still represented by the constant function
-    $$c_{(\zet,s)}:\bn 1\to C$$ that sends the unique element of $\bn 1$ to $(\zet,s):C$.
-    \end{example}
-    \begin{example}
-      \label{ex:mfoldcov}
-Assume that $m:\NN$ is positive.  We give a description of the $m$-fold \covering of the circle in terms of $C$. If $X$ is a set and $f:X\to X$ we define the \emph{ $m$th root}
-$$\sqrt[m]f:\bn m\times X\to\bn m\times X$$ by setting 
-$$\sqrt[m]f(i,x)=
+It is instructive to rephrase the examples of connected \coverings over $\Sc$ in 
+terms of $C$.
+\begin{example}\label{exa:univCcover}
+The universal \covering is represented by the constant function
+$c_{(\zet,\etop{s})}:\bn 1\to C$ sending the unique element 
+of $\bn 1$ to $(\zet,\etop{s}):C$.
+\end{example}
+
+\begin{example}\label{exa:mfoldCcover}
+Assume that $m:\NN$ is positive.  We give a description of 
+the $m$-fold \covering over the circle in terms of $C$. 
+If $X$ is a set and $f:X\to X$ we define the $m$-th \emph{root}
+\[
+{\sqrt[m]f} : {\bn m\times X} \to {\bn m\times X}
+\]
+by setting 
+\[
+\sqrt[m]f(i,x)\defeq
 \begin{cases}
-  (i+1,x)& \text{for $i<m-1$ and}\\(0,f(x))& \text{for $i=m-1$}.\footnote{this indexing uses the incarnation $\bn m=\{0,1,\dots m-1\}$ and not $\{1,\dots,m\}$: if this is a problem we should change $\bn m$ since the indexing chosen is very convenient later.}
-\end{cases}$$ 
-Only one $m$th of the time does $\sqrt[m]f$ use $f$ on $X$ (the rest of the time it increases the element in $\bn m$).  This is illustrated in \cref{fig:root} with the shift by $f$ being vertical and the movement along $\bn m$ going around a circle.  
-\begin{figure}
+  (i+1,x)& \text{for $i<m-1$ and}\\
+  (0,f(x))& \text{for $i=m-1$}.
+\end{cases}
+\] 
+Only one $m$-th of the time does $\sqrt[m]f$ use $f:X\to X$,
+the rest of the time it increases the element in $\bn m$).
+This is illustrated in \cref{fig:root} with the shift by $f$ being 
+vertical and the movement along $\bn m$ going around a circle.  
+\begin{figure}[bt]
   \centering
   \begin{tikzpicture}
-    \node (A) at (4,1) {\quad$\sqrt[m]f:\bn m\times X\to\bn m\times X$};
+    \node (A) at (4,1) {\quad$\sqrt[m]f:{\bn m\times X}\to{\bn m\times X}$};
     \foreach \y in {0,1,2}
     { \begin{scope}[shift={(0,\y)}]
         \foreach \x in {0,...,4}
@@ -864,10 +921,10 @@ Only one $m$th of the time does $\sqrt[m]f$ use $f$ on $X$ (the rest of the time
     \draw [decorate,decoration={brace,amplitude=10pt}]
     (1,-1) -- (-1,-1) node [black,midway,yshift=-15pt] {\footnotesize $\bn{m}$};
   \end{tikzpicture}
-  \caption{The $m$'th root of an endomorphism}
+  \caption{The $m$-th root of a function $f: X\to X$}
   \label{fig:root}
 \end{figure}
-Indeed, iterating $\sqrt[m]f$ we get $(\sqrt[m]f)^m(i,x)=(i,f(x))$; hence the term ``$m$th root'' is apt.
+Indeed, iterating $\sqrt[m]f$ we get $(\sqrt[m]f)^m(i,x)=(i,f(x))$; hence the term ``$m$-th root'' is apt.
 
 If $f$ is an equivalence, then so is $\sqrt[m]f$:
 \begin{enumerate}
@@ -876,7 +933,7 @@ If $f$ is an equivalence, then so is $\sqrt[m]f$:
 \end{enumerate}
 
 
-Using univalence, the $m$th root construction applies not only to equivalences, but equally well to identities $f:X=_{\Set}X$; resulting in a function 
+Using univalence, the $m$-th root construction applies not only to equivalences, but equally well to identities $f:X=_{\Set}X$; resulting in a function 
 $$-^m:\sum_{X:\Set}(X=X)\to\sum_{X:\Set}(X=X),\quad -^m((X,f))=(\bn m\times X,\sqrt[m]f).$$
 We now focus on  $C$, the component of $\sum_{X:\Set}(X=X)$ containing $(\zet,s)$.
 Note that the function $p:\bn m\times \zet\to\zet$ given by $p(i,n)=i+mn$ is an equivalence and that 
@@ -896,12 +953,14 @@ This will eventually ((forwardref)) be explained in terms of the symmetries of t
 for any $a:\zet$, the $a$th and the $(a+m)$th power of $\sqrt[m]s$ give rise to the same symmetry.
 
 
-Why does this correspond to the $m$-fold \covering we defined in \cref{ex:listofS1covers}?  This is ecapsuled by the fact that under the equivalence $c:\Sc\to C$ the two $m$-fold covers agree in the sense that the two functions given as composites in
+Why does this correspond to the $m$-fold \covering we defined in \cref{exa:mfoldS1cover}?  This is ecapsuled by the fact that under the equivalence $c:\Sc\to C$ the two $m$-fold covers agree in the sense that the two functions given as composites in
 $$\xymatrix{\Sc\ar[r]^c\ar[d]^{-^m}&C\ar[d]^{-^m}\\\Sc\ar[r]^c&C}$$ are equal.  One composite is given by $-^mc(\base)=(\zet,s)$ and $-^mc(\Sloop)=s^m$ and the other is given by $c-^m(\base)=(\bn m\times\zet,\sqrt[m]s)$ and $c-^m(\Sloop)=\id\times s$ and the proof that these two functions are equal is given by the (identity corresponding by univalence to the) equivalence  $p:\bn m\times \zet\to\zet$ with $p(i,n)=i+mn$ we discussed above, since transport of $\sqrt[m]s$ along $p$ is exactly $s^m$ (\ie $p\sqrt[m]s=s^mp$: note the way we formulate this so that we don't need to talk about an inverse of $p$).
 \end{example}
+
 \begin{xca}
-  Check the implicit claims in \cref{ex:listofCcovers}.  ((perhaps best to make them explicit?))
+  Check the implicit claims in \cref{exa:mfoldCcover}.  ((perhaps best to make them explicit?))
 \end{xca}
+
 There are many instance of the $m$-th root construction which is of independent interest.  We record the following for future reference.
 \begin{definition}
   \label{def:Zetmodm}
@@ -939,7 +998,7 @@ Arguing similarly for the negative values, we reach the conclusion that the imag
 
 \begin{lemma}
   \label{lem:componentsofcoversofS1}
-  % Assume the LPO. Given a connected decidable \covering of the circle,  there is a unique natural number $m$ so that the connected \covering is equal to the connected \covering $-^m$ of \cref{ex:listofS1covers}.  This gives an equivalence between $\NN$ and the propositional truncation of the type of connected decidable \covering of the circle.
+  % Assume the LPO. Given a connected decidable \covering of the circle,  there is a unique natural number $m$ so that the connected \covering is equal to the connected \covering $-^m$ of \cref{exa:listofS1covers}.  This gives an equivalence between $\NN$ and the propositional truncation of the type of connected decidable \covering of the circle.
   \begin{enumerate}
   \item The type of decidable \coverings over the circle by connected types is a groupoid.
   \item Assuming, the LPO the type of decidable \coverings over the circle by connected types is the sum of the component containing the universal \covering and for each positive integer $m$, the component containing the $m$-fold \covering.
@@ -1031,7 +1090,7 @@ $$D_0\simeq P\times\zet\simeq\zet.$$
     
 ((this does most of what is needed for the $m$-fold \covering.  Needs to be proofread))
     Let $m$ be a positive integer.  
-Recall the $m$-fold \covering, either in the guise $-^m:\Sc\to \Sc$ of \cref{ex:listofS1covers} or $-^m:C\to C$ of \cref{ex:listofCcovers}.
+Recall the $m$-fold \covering, either in the guise $-^m:\Sc\to \Sc$ of \cref{exa:mfoldS1cover} or $-^m:C\to C$ of \cref{exa:mfoldCcover}.
 We are going to investigate the set
 $$D_m\defequi\sum_{g:\Sc=\Sc}-^mg=_{\Sc\to \Sc}-^m$$  
 %$$D_m\defequi\sum_{g:C=C}-^mg=_{C\to C}-^m$$ 

@@ -297,13 +297,16 @@ The following lemma shows that $\ap f$ is compatible with composition.
 
 \begin{lemma}\label{lem:apcomp}
   Given a function $f:X\to Y$, and elements $x,x',x'':X$, and paths $p : x = x'$ and $p' : x' = x''$,
-  there is an identity of type $\ap f (p' \cdot p) = ( \ap f p' ) \cdot ( \ap f p )$.
+  there is an identity of type $\ap f (p' \cdot p) =  \ap f (p') \cdot  \ap f (p)$.
 \end{lemma}
 
 \begin{proof}
-  By induction on $p$ and $p'$, one reduces to showing that $\ap f (\refl x \cdot \refl x) = ( \ap f \refl x ) \cdot ( \ap f \refl x )$, where
+  By induction on $p$ and $p'$, one reduces to showing that $\ap f (\refl x \cdot \refl x) =  \ap f ( \refl x ) \cdot  \ap f ( \refl x )$, where
   both sides are equal to $\refl { f(x) }$ by definition.
-\end{proof}  
+\end{proof}
+
+In a similar way one shows that $\ap f$ is compatible with inverse,
+$\ap f(p^{-1}) =  (\ap f (p))^{-1}$, and that $\ap \id$ is the identity on paths. 
 
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal, 
 then they have equal values, i.e., for every element $x$ of $X$, 
@@ -911,7 +914,7 @@ Let $A$ be a type, and let $P$ and $Q$ propositions.
 Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \begin{enumerate}
 \item\label{prop-utils-false-true} $\false$ and $\true$ are propositions;
-\item\label{prop-utils-implication} $A\to P$ is a proposition;
+\item\label{prop-utils-codom} $A\to P$ is a proposition;
 \item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
 \item\label{prop-utils-eq} $P \liff Q$ is a proposition;
@@ -925,7 +928,7 @@ If $p,q : \false$, then $p=q$ holds vacuously.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
 
-(\ref{prop-utils-implication})
+(\ref{prop-utils-codom})
 If $p,q : A\to P$, then $p=q$ is proved by first observing that $p$ and $q$
 are functions which, by function extensionality, are equal if they have
 equal values $p(x) = q(x)$ in $P$ for all $x$ in $A$. This is
@@ -942,7 +945,7 @@ is proved componentwise.
 (\ref{prop-utils-eq})
 Using \cref{lem:weq-iso}, $P \liff Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
-combining (\ref{prop-utils-implication}) and (\ref{prop-utils-times}).
+combining (\ref{prop-utils-codom}) and (\ref{prop-utils-times}).
 
 (\ref{prop-utils-lem}) 
 If $p,q : P\amalg (P\to\false)$, then we can distinguish four cases
@@ -958,9 +961,9 @@ Several remarks can be made here. First, the lemma supports the
 use of $\false$ and $\true$ as truth values, and the use of
 $\to,\prod,\times$ for implication, universal quantification,
 and conjunction, respectively. Since $\false$ is a proposition,
-it follows by (\ref{prop-utils-implication}) above that
+it follows by (\ref{prop-utils-codom}) above that
 $\neg A$ as defined by $A\to\false$ is a proposition for any type $A$.
-As noted before, (\ref{prop-utils-implication}) is a
+As noted before, (\ref{prop-utils-codom}) is a
 special case of (\ref{prop-utils-pi}).
 
 Notably absent in the lemma above are disjunction
@@ -980,7 +983,7 @@ Let $A$ be a type, and let $X$ and $Y$ be $n$-types.
 Let $Z(a)$ be an $n$-type depending on $a:A$. Then we have:
 
 \begin{enumerate}
-\item\label{level-n-utils-implication} $A\to X$ is an $n$-type;
+\item\label{level-n-utils-codom} $A\to X$ is an $n$-type;
 \item\label{level-n-utils-pi} $\prod_{a:A} Z(a)$ is an $n$-type;
 \item\label{level-n-utils-times} $X\times Y$ is an $n$-type.
 \end{enumerate}
@@ -1397,7 +1400,7 @@ In the special case that $T$ is set we call
 $\sum_{x:T} P(x)$ a subset which we denote by 
 $\set{x:T \mid P(x)}$.
 
-\begin{lemma}\label{lem:eq_of_sets-is-set}
+\begin{lemma}\label{lem:Set-is-groupoid}
 If $X$ and $Y$ are sets, then $X=Y$ is a set. 
 In other words, $\Set$ is a groupoid.
 \end{lemma}
