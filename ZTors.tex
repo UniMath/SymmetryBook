@@ -8,6 +8,49 @@
 \begin{document}
 \input topZTors
 
+\section{Abstract}
+We define a type $\TorZ$ of $\ZZ$-torsors and show that it has the dependent
+universal property of the circle. We use Voevodsky's Univalence Axiom
+as well as propositional truncation. We do not use the circle itself.
+
+\section{Introduction}
+As a prerequisite we require working knowledge of homotopy type theory
+as described in, for example, the first four chapter of \cite{hottbook}.
+One crucial extra piece of knowledge is the \emph{dependent} elimination
+principle for propositional truncation, not mentioned in \cite[3.7]{hottbook},
+and qualified as `not really useful' in \cite[6.9]{hottbook}.
+\footnote{The dependent elimination principle appears to 
+be used later in \cite{hottbook}, though.}
+In \cref{sec:XXX} we give this dependent elimination property some extra
+attention, as it is crucial for the computational properties of our proof.
+
+One simple extension of the abovementioned prerequisites is the inductive
+definition of the set of integers. We give that definition below
+in \cref{sec:integers}. For now it suffices to have a set
+of integers $\zet$ and a successor function $s:\zet\to\zet$,
+which actually is an equivalence. We can then define \emph{the 
+pointed type of $\zet$-torsors} by
+\[
+\TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~}
+\pt\defeq ((\zet,s),\trunc{\refl{(\zet,s)}}).
+\]
+Here and below, pairs $(X,f)$ have type $\sum_{X:\UU}(X\to X)$
+without explicitly mentioning this. It is not difficult to see 
+that $\pt =_\TorZ \pt$ is equivalent to $\zet$. First, observe that
+every bijection $f:\zet\to\zet$ commuting with $s$
+is extensionally equal to $s^{f(0)}$. Then, the first projection
+acting on any $p : \pt =_\TorZ \pt$ gives rise to such a bijection,
+which we can evaluate in $0$. Let's denote the composite as
+$\ev_0 : (\pt =_\TorZ \pt) \to \zet$. Combining these observations,
+using UA, one proves that $\ev_0$ is an equivalence.
+
+The preimage of $s(0)$ under the equivalence $\ev_0$ is a
+natural generator path of $\pt =_\TorZ \pt$, so we define
+$\Zloop\defeq ev_0^{-1}(s(0))$, which we call the \emph{loop}
+of $\TorZ$. Alternatively, we could have obtained $\Zloop$
+directly from $s: \zet\equiv\zet$ by applying UA
+(with some easy add-ons, e.g., proving that $s$ commutes with itself).
+
 \section{The integers}
 \label{sec:integers}
 
