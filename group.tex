@@ -81,6 +81,7 @@ It is noteworthy that along the way we gave several versions of the circle, each
 $$C=(\sum_{X:\UU}\sum_{f:X=X}||(\zet,s)=(X,f)||, (\zet,s))$$
 being a very convenient one.
  \end{example}
+\sususe{Test}
 
 \begin{example}\label{ex:groups}
   % Since any pointed connected groupoid is a group, there is no shortage of examples, but perhaps i
@@ -165,7 +166,10 @@ We can envision $g$ commuting with $h$ by the picture
 $$\xymatrix{a\ar@{=}[r]^g_\to\ar@{=}[d]^\downarrow_h&a\ar@{=}[d]^\downarrow_h\\
 a\ar@{=}[r]^g_\to&a}$$
 and saying that going from (upper left hand corner) $a$ to (lower right hand corner) $a$ by either composition gives the same result.
-
+\begin{remark}
+  \label{rem:whatAREabeliangroups}
+  The reference to $\mathbf{isAb}$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} (it is the sum of $X$ and $Y$ where the base points are identified); \cref{xca:whatAREabeliangroups} offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $BG\vee BG\to BG$ factors over the inclusion $BG\vee BG\to BG\times BG$.
+\end{remark}
 \begin{remark}
   The condition $\isset(a=_Aa)$ in the definition of the type of groups is sometimes more of a nuisance, and deleting it gives the simpler concept of \aninftygp, see \cref{sec:inftygps}.
 \end{remark}
@@ -1376,6 +1380,16 @@ Specializing, we return to our initial motivation and see that mapping out of a 
   $$\Hom(\ZZ\vee\ZZ,G)\to \Hom(\ZZ,G)\times\Hom(\ZZ,G)\to G\times G$$
   are equivalences.((fix language))
 \end{corollary}
+\begin{xca}
+This leads to the following characterization of abelian groups formulated purely in terms of pointed connected groupoids (no reference to the identity types).
+  \label{xca:whatAREabeliangroups}
+  A group $G$ is abelian if and only if the canonical map 
+$$+:G\vee G\to G$$ 
+(given via \cref{lem:sumofgroupsISsum} by $G\oldequiv G$) extends over the inclusion 
+$$i:G\vee G\to G\times G$$ 
+(given by the inclusions $\mathrm{in}_1,\mathrm{in}_2:G\to G\times G$).\footnote{I haven't written out a formalization myself}
+\end{xca}
+
 
 
 %\section{structure of identity types}
@@ -1404,7 +1418,12 @@ Now, as we've seen, that   $f:(\pt_H=\pt_H)\to(\pt_G=\pt_G)$ is an injection (pr
       \item \emph{proper}\index{proper subgroup} if $Bf$ is not an equivalence.
       \end{enumerate}
     \end{definition}
-A note on notation is in order.  If $(H,i,!)$ is a subgroup of a group $G$ tradition often relax the burden of notation; we may write ``a subgroup $i:H\subseteq G$'', or, if we don't need the name of $i:\Hom(H,G)$ in what follows, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
+    \begin{remark}
+      \label{rem:notationsubgroup}
+      A note on notation is in order.  
+If $(H,i,!)$ is a subgroup of a group $G$ tradition often permits us to relax the burden of notation; we may write ``a subgroup $i:H\subseteq G$'', or, if we don't need the name of $i:\Hom(H,G)$ in what follows, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
+    \end{remark}
+
 \begin{lemma}
   \label{lem:setofsubgroups}
   If $G$ is a group, then the type $\typesubgroup_G$ of subgroups is a set.
@@ -1421,8 +1440,8 @@ Now, since $(H,i_K,!)$ is a subgroup, $i_H^=$ is an injection of sets, which for
 Not only is the type of subgroups  of $G$ a set, it is in a natural way (equivalent to the value at $\pt_G$ of) a $G$-set which we denote by the same name
 $$%\typesubgroup_G:BG\to\Set,\qquad 
 \typesubgroup_G(y)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)(y)}\isset(Bf^{-1}(\pt_G)),$$
-where 
-$$\Hom(H,G)(y)\defequi\sum_{F:BH_\div\to BG_\div}(y=F(\pt_H))$$ as in \cref{ex:HomHGasGset}.  
+where  as in \cref{ex:HomHGasGset}  
+$$\Hom(H,G)(y)\defequi\sum_{F:BH_\div\to BG_\div}(y=F(\pt_H)).$$
 % In this interpretation, $(H,F,p,!):\typesubgroup_G(\pt_G)$ represents a subgroup of $G$ (so that $p:\pt_G=F(\pt_H)$).  An identity $g:\pt_G=\pt_G$ acts on $\typesubgroup_G(\pt_G)$ by sending $(H,F,p,!)$ to $(H,F,p\,g^{-1},!)$.
 
 \begin{definition}
@@ -1432,7 +1451,8 @@ $$\Hom(H,G)(y)\defequi\sum_{F:BH_\div\to BG_\div}(y=F(\pt_H))$$ as in \cref{ex:H
 \begin{remark}
   \label{rem:whyconjugate}
   The term ``conjugation'' may seem confusing as the %(abstract) 
-action of $g:\pt_G=\pt_G$ on a subgroup $(H,F,p,!):\typesubgroup_G(\pt_G)$ is simply $(H,F,p\,g^{-1},!)$ (where $p:x=F(\pt_H)$), which does not seem much like conjugation.  However, as we saw in \cref{ex:abstrandconj}, the equivalence $\abstr:\Hom(H,G)\we\Hom^\abstr(\abstr(H),\abstr(G))$, the corresponding action on $\Hom^\abstr(\abstr(H),\abstr(G))$ is exactly (postcomposition with) conjugation $c^g:\abstr(G)=\abstr(G)$.  
+action of $g:\pt_G=\pt_G$ on a subgroup $(H,F,p,!):\typesubgroup_G(\pt_G)$ (where $p:x=F(\pt_H)$) is simply $(H,F,p\,g^{-1},!)$, which does not seem much like conjugation.  
+However, as we saw in \cref{ex:abstrandconj}, under the equivalence $\abstr:\Hom(H,G)\we\Hom^\abstr(\abstr(H),\abstr(G))$, the corresponding action on $\Hom^\abstr(\abstr(H),\abstr(G))$ is exactly (postcomposition with) conjugation $c^g:\abstr(G)=\abstr(G)$.  
 \footnote{The same phenomenon appeared in \cref{xca:HomZGvsAdG} where we gave an equivalence between the $G$-sets $\Hom(\ZZ,G)$ and $\Ad_G$ (where the action is very visibly by conjugation).}
 % \end{remark}
 
@@ -1459,23 +1479,22 @@ $$\sum_{H:\typegroup}\sum_{\phi:\Hom^\abstr(\abstr(H),\abstr(G))}\isprop(\phi^{-
 
 \begin{remark}
   If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.  
-Our use of ``subgroup'' can be defended as follows.  It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism modulo that precomposing with an isomorphism yields identical subgroups.  
+Our use of ``subgroup'' can be defended as follows.  
+It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism \emph{modulo} the relation forcing that precomposing with an isomorphism yields identical subgroups.  
 Set-theory offers the luxury of having a representative in every equivalence class: namely the image of the injection, type theory does not.
 \end{remark}
 %\newcommand{\ker}{\mathrm{ker}}
-If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism, the kernel of $\phi$ consists of the $g$ in $\mathcal G$ with the property that $\phi(g)=e_{G'}$ and the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.  
-
+If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism, the preimage $\phi^{-1}(e_G)$ is a classically called the kernel of $\phi$ and the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.  
 In our setup with a group homomorphism 
 $$f:\Hom(G,G')\defequi(BG\to_*BG'),$$ the kernel and cokernel are just two aspects of the preimage 
 $$(Bf)^{-1}(\pt_{G'})\defequi\sum_{z:BG}(\pt_{G'}=Bf(z)):$$
- the cokernel is the set of components and the kernel is a component.
+ the cokernel is the set of components and the kernel is a component.  This point of view makes it clear that the kernel is a subgroup whereas there is no particular reason for the cokernel to be more than a ($G'$-) set.
 \newcommand{\coker}{\mathrm{coker}\,}
 \newcommand{\image}{\mathrm{im}\,}
 \begin{definition}
   \label{def:kernel}\label{def:cokernel}
   Let $f:\Hom(G,G')\defequi(BG\to_*BG')$  be a homomorphism. %  The preimage $$f^{-1}(\pt_{G'})\defequi\sum_{z:BG}(\pt_{G'}=f(z))$$
 % is a groupoid containing important information about $f$.
-
 The \emph{cokernel}\index{cokernel} of $f$ is the $G'$-set
 $$\coker f:BG'\to\Set,\qquad \coker f(z)\defequi  ||(Bf)^{-1}(z)||_0.\footnote{set trunctation} $$ 
 The associated $\abstr(G')$-set $\coker f(\pt_{G'})$ is also referred to as the cokernel of $f$.  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.  
@@ -1507,8 +1526,9 @@ The \emph{image}\index{image} of $f$ is the subgroup of $G'$ given by $B\image f
 \begin{xca}
   Prove that $f:\Hom(G,G')$ is
   \begin{enumerate}
-  \item a surjective group homomorphism (\ie the cokernel is trivial) if and only if the induced map of sets $f^=:\pt_G=\pt_G\to\pt_{G'}=\pt_{G'}$ is a surjection
-  \item an injective group homomorphism (\ie the induced map of sets $f^=:\pt_G=\pt_G\to\pt_{G'}=\pt_{G'}$ is an injection) if and only if the kernel is trivial.
+  \item a surjective group homomorphism (\ie the cokernel is trivial) if and only if the induced map of sets 
+$$f^=:(\pt_G=\pt_G)\to(\pt_{G'}=\pt_{G'})$$ is a surjection
+  \item an injective group homomorphism (\ie the induced map of sets $f^=:(\pt_G=\pt_G)\to(\pt_{G'}=\pt_{G'})$ is an injection) if and only if the kernel is trivial.
   \end{enumerate}
 \end{xca}
 
@@ -1523,7 +1543,8 @@ Show the characterizing properties of kernels, images and cokernels.   Also show
 
 \begin{definition}
   \label{def:pullback}
-  Let $f:B\to D$ and $g:C\to D$ be two maps with common target.  The \emph{pullback}\index{pullback} of $f$ and $g$ is the type 
+  Let $B, C, D$ be types and let $f:B\to D$ and $g:C\to D$ be two maps.  
+The \emph{pullback}\index{pullback} of $f$ and $g$ is the type 
 $$\prod(f,g)\defequi\sum_{(b,c):B\times C}(f(b)=_Dg(c))$$
 together with the two projections $\prod(f,g)\to B$ and $\prod(f,g)\to C$ sending $(b,c,p):\prod(f,g)$ to $b:B$ or $c:C$.  If $f$ and $g$ are clear from the context, we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
 $$\xymatrix{B\times_DC\ar[r]\ar[d]&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
@@ -1558,8 +1579,10 @@ $$\xymatrix{B\times_DC\ar[r]\ar[d]&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
 
 \begin{definition}
   \label{def:intersectionofgroups}
-  Let $f:\Hom(H,G)$ and $f':\Hom(H',G)$ be two homomorphisms with common target.  The \emph{pullback}\index{pullback!of groups} $H\times_GH'$ is the group obtained as the (pointed) component of $\pt_{H\times_GH'}\defequi(\pt_H,\pt_{H'},p_{f'}p_f^{-1})$ of the pullback $BH\times_{BG}BH'$ (where $p_f:\pt_G=f(\pt_H)$ is the name we chose for the data displaying $f$ as a pointed map).
-If $f$ and $g$ are injective homomorphisms, then the pullback is called the \emph{intersection}\index{intersection! of subgroups} and if the context is clear denoted simply $H\cap H'$.
+  Let $f:\Hom(H,G)$ and $f':\Hom(H',G)$ be two homomorphisms with common target.  The \emph{pullback}\index{pullback!of groups} $H\times_GH'$ is the group obtained as the (pointed) component of 
+$$\pt_{H\times_GH'}\defequi(\pt_H,\pt_{H'},p_{f'}p_f^{-1})$$ of the pullback $BH\times_{BG}BH'$ (where $p_f:\pt_G=f(\pt_H)$ is the name we chose for the data displaying $f$ as a pointed map, so that $p_{f'}p_f^{-1}:f(\pt_H)=f'(\pt_{H'})$).
+
+If $(H,f,!)$ and $(H',f',!)$ are subgroups of $G$, then the pullback is called the \emph{intersection}\index{intersection! of subgroups} and if the context is clear denoted simply $H\cap H'$.
 \end{definition}
 \begin{xca}
   Prove that if $f:\Hom(H,G)$ and $f':\Hom(H',G)$ are homomorphisms, then
@@ -1577,7 +1600,7 @@ the pullback $BN\times_{BG}BH$
 is equivalent to $G/{HN}\times B(H\cap N)$.\footnote{display the equivalence}
 \end{lemma}
 \begin{proof}
-  ((WRITE))
+  ((WRITE)) Can alternatively be phrased as the fiber of $B(H\ltimes N)\to BG$ once semi-direct product has been discussed.
 \end{proof}
 
 \begin{lemma}
