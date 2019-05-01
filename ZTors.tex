@@ -30,8 +30,10 @@
 %\tableofcontents
 
 \begin{abstract}
-We show that the type $\TorZ$ of $\ZZ$-torsors has the dependent universal property of the circle, which characterizes it up to a unique
-homotopy equivalence.  The proof uses Voevodsky's Univalence Axiom and propositional truncation, yielding a stand-alone construction of the
+We show that the type $\TorZ$ of $\ZZ$-torsors has the dependent universal property of the circle, 
+which characterizes it up to a unique homotopy equivalence.  
+The proof uses Voevodsky's Univalence Axiom and propositional truncation, 
+yielding a stand-alone construction of the
 circle not using higher inductive types.
 \end{abstract}
 
@@ -59,12 +61,14 @@ pointed type of $\zet$-torsors} by
 \]
 Here and below, such pairs $(X,f)$ are of type $\sum_{X:\UU}(X\to X)$.
 It is not difficult to see 
-that $\pt =_\TorZ \pt$ is equivalent to $\zet$.  To see that, begin by observing that
-every function $f:\zet\to\zet$ commuting with $s$
+that $\pt =_\TorZ \pt$ is equivalent to $\zet$.  To see that, 
+begin by observing that every function $f:\zet\to\zet$ commuting with $s$
 is propositionally equal to $s^{f(0)}$.  The first projection
-acting on any $p : \pt =_\TorZ \pt$ gives rise to such a bijection,
-which we can evaluate at $0$.  We let $\ev_0$ denote the composite function of
-type $(\pt =_\TorZ \pt) \to \zet$.  Combining these observations,
+acting on $p : \pt =_\TorZ \pt$ gives a path $\mathsf{pr}_1(p) : \zet=\zet$
+such that the corresponding transport function $\mathsf{pr}_1(p)_* : \zet\to\zet$
+is a bijection commuting with $s$. We evaluate this bijection in $0$.
+Let $\ev_0(p) \defeq \mathsf{pr}_1(p)_*(0)$ for all $p : \pt =_\TorZ \pt$,
+then $\ev_0 : (\pt =_\TorZ \pt) \to \zet$.  Combining these observations,
 using the univalence axiom, one proves that $\ev_0$ is an equivalence.
 
 The preimage of $s(0)$ under the equivalence $\ev_0$ is a
@@ -74,7 +78,7 @@ of $\TorZ$. Alternatively, we could have obtained $\Zloop$
 directly from $s: \zet\equiv\zet$ by applying UA
 (with some easy add-ons, e.g., proving that $s$ commutes with itself).
 
-In this context we can formulate a recursion principle for $\TorZ$.
+With this in hand, we can formulate a recursion principle for $\TorZ$.
 It states that, given a type $A$, an element $a$ of $A$ and a
 path $l:a=_A a$, one can construct a function $f:\TorZ\to A$
 such that $f(\pt)\jdeq a$ and $f(\Zloop)=l$.
@@ -105,7 +109,7 @@ proved and formalized is
 \prod_{l: a=^A_{\Zloop} a}~
 \sum_{f: \prod_{z:\TorZ} A(z)}~
 \sum_{r: f(\pt)= a}~
-{f(\Zloop) = r\cdot l \cdot r^{-1}}.
+{f(\Zloop) = r\ct l \ct r^{-1}}.
 \]
 
 If the underlying type theory has propositional truncation with a dependent eliminator 
@@ -166,16 +170,16 @@ $s(\zpos(n))\defeq \zpos(S(n))$,
 $s(\zneg(n))\defeq -i(n)$. For example, we have
 $s(-1)\jdeq s(\zneg(0))\jdeq -i(0) \jdeq \zzero \jdeq 0$.
 By induction on $n:\NN$ one proves $s(i(n))=i(S(n))$, 
-so that one can say that $s$ extends $S$
-on the $i$-image of $\NN$. 
+so that one can say that $s$ extends $S$ on the $i$-image of $\NN$. 
+From now on we will identify $i(n):\zet$ with $n$,
+and $-i(n):\zet$ with $-n$, for all $n:\NN$.
 
 The successor function $s$ is an equivalence.
-It is instructive to depict iterating $s$ in both directions as 
-a doubly infinite sequence containing all integers:
-\[
-\ldots \mapsto \zneg(1) \mapsto \zneg(0) \mapsto \zzero \mapsto \zpos(0) \mapsto \zpos(1) \mapsto \ldots
-\]
-
+%It is instructive to depict iterating $s$ in both directions as 
+%a doubly infinite sequence containing all integers:
+%\[
+%\ldots \mapsto \zneg(1) \mapsto \zneg(0) \mapsto \zzero \mapsto \zpos(0) \mapsto \zpos(1) \mapsto \ldots
+%\]
 The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
 We denote the $n$-fold iteration of $s$ as $s^n$, and
 the $n$-fold iteration of $s^{-1}$ as $s^{-n}$.
@@ -189,12 +193,26 @@ $z + \zneg(n)\defeq s^{-(n+1)}(z)$.
 From addition and unary $-$ one can define a binary
 \emph{substraction} function setting $z-y \defeq z+(-y)$.
 
-From now on we will denote $i(n):\zet$ by $n$
-and $-i(n)$ by $-n$, for all $n:\NN$.
-
 %\begin{xca}\label{xca:addition-on-Z-and-N}
 %Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 %\end{xca}
+
+Recall the equivalence $\ev_0 : (\pt=_\TorZ \pt)\to\zet$ from the introduction.
+We have $\refl{\pt} : \pt=_\TorZ \pt$, as well as the operations
+of \emph{path reversal} and \emph{path concatenation} as defined
+in \cite[Ch. 2.1]{hottbook}. These satisfy the laws as stated
+and proved in \cite[Lemma 2.1.4]{hottbook}, equipping $\pt=_\TorZ \pt$
+with a group structure.
+The equivalence $\ev_0$ maps $\refl{\pt}$ via $\id_\zet : \zet\to\zet$ to $0$.
+As explained in the introduction, $\ev_0$ maps any $p : \pt=_\TorZ \pt$
+via $s^k : \zet\to\zet$ to some $k:\zet$. Since $(s^k)^{-1} = s^{-k}$
+and $s^k \circ s^l = s^{k+l}$, $\ev_0$ transports path reversal 
+and path concatenation to negation and addition, respectively.
+This means that the entire group structure of $\pt=_\TorZ \pt$
+is transported to the usual group structure on $\zet$,
+including all the proofs of the group laws in $\zet$.
+(The fact that we do not have to reprove the group laws
+is one of the benefits of the univalent approach.)
 
 
 \section{Some induction principles for the integers}
@@ -210,7 +228,7 @@ see \cref{fig:integers-induction-asymmetric}.
 The function $h:\prod_{z:\ZZ}(P(z)$ thus defined satisfies
 $h(n+1)\jdeq f(n,h(n))$ and $h(-n-1)\jdeq g(n,h(-n))$ for all $n:\NN$.
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}
     \foreach \x in {-2,-1,0,1,2} {
@@ -242,7 +260,14 @@ $h(n+1)\jdeq f(n,h(n))$ and $h(-n-1)\jdeq g(n,h(-n))$ for all $n:\NN$.
   \label{fig:integers-induction-asymmetric}
 \end{figure}
 
-\begin{figure}
+
+It is possible to give a more symmetric, but less general induction principle,
+if assume that the functions are equivalences.
+In that case we can reorient the $g$'s to point in the same direction as the $f$'s,
+so that we just give $f : \prod_{z:\zet}P(z) \equiv P(z+1)$, 
+see \cref{fig:integers-induction-symmetric}.
+
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}
     \foreach \x in {-2,-1,0,1,2} {
@@ -269,13 +294,6 @@ $h(n+1)\jdeq f(n,h(n))$ and $h(-n-1)\jdeq g(n,h(-n))$ for all $n:\NN$.
   \label{fig:integers-induction-symmetric}
 \end{figure}
 
-
-It's possible to give a more symmetric, but less general induction principle,
-if assume that the functions are equivalences.
-In that case we can reorient the $g$'s to point in the same direction as the $f$'s,
-so that we just give $f : \prod_{z:\zet}P(z) \equiv P(z+1)$, 
-see \cref{fig:integers-induction-symmetric}.
-
 We shall need that in this case, giving a element $h:\prod_{z:\zet}P(z)$
 such that $h(z+1) = f_z(h(z))$ for all $z:\zet$
 is in fact equivalent to giving the single element $h(0)$.
@@ -291,7 +309,7 @@ We formulate this precisely as follows.
 \begin{proof}
   We prove that the fiber over any $p : P(0)$ is contractible.
   We simplify notations a bit by leaving out the types of $h$ and $q$.
-  The fiber $\sum_{(h,q)} h(0)=p$ consists of a triples $(h,q,r)$ with $r : h(0) = p$.
+  The fiber $\sum_{(h,q)} h(0)=p$ consists of triples $(h,q,r)$ with $r : h(0) = p$.
   By case distinction, $h$ can (equivalently) be split in three parts $(h_-,h_0,h_+)$
   with $h_0 : P(0)$, $h_+ : \prod_{n:\NN}P(n+1)$,  and $h_- : \prod_{n:\NN} P(-n-1)$. 
   Since $h(0)=p$ only depends on $h_0$ the pair $(h_0,r)$ with  $r : h_0 = p$
@@ -324,130 +342,44 @@ is the function that takes $z:\zet$ to $f^z(p):P(z)$, where
   f^{-n-1}(p) &\defeq f_{-n-1}^{-1}(f^{-n}(p)),&\quad&\text{for $n:\NN$.}
 \end{alignat*}
 
-\section{The integers as a group}
-\label{sec:integers-group}
 
-In the previous section we first defined the \emph{set}
-of integers $\zet$. Then we defined functions that add
-algebraic stucture to $\zet$ (the structure of a free group 
-with one generator). In this section we
-show that this structure can also be obtained from the
-symmetries of a certain element in a certain type.
-This is one of the key points of this book, 
-and therefore is pointed out early.
-
-\begin{lemma}\label{lem:one-orbit-int}
-Let $s$ be as in \cref{def:integers}, and 
-let $f:\zet\to\zet$ be such that $f\circ s = s\circ f$. 
-  \begin{enumerate}
-  \item\label{item-one-orbit} For all $z:\zet$ there is a unique $n:\NN$
-such that either $z=s^{-(n+1)}(0)$, or $z=s^{n}(0)$.
-  \item\label{item-f(0)-nonneg} For all $n:\NN$, if $f(0)=s^{n}(0)$, then $f=s^{n}$.
-  \item\label{item-f(0)-nonpos} For all $n:\NN$, if $f(0)=s^{-n}(0)$, then $f=s^{-n}$.
-  \end{enumerate}
-\end{lemma}
-\begin{proof}
-From $f\circ s = s\circ f$ we get $f\circ s^n = s^n\circ f$
-and $f\circ s^{-n} = s^{-n}\circ f$ by induction on $n:\NN$.
-
-(\ref{item-one-orbit}) Induction on $n:\NN$ proves $s^{n}(0)=n$, 
-as well as $s^{-n}(0)=-n$. Uniqueness is easy.
-
-(\ref{item-f(0)-nonneg}) Assume $f(0)=s^{n}(0)$.  
-Given $z:\zet$, let $m$ be such that either $z=s^{m}(0)$, 
-or $z=s^{-(m+1)}(0)$. In the first case we calculate
-\[
-f(z)=f(s^{m}(0))=s^{m}(f(0))=s^{m}(s^{n}(0))=s^{n}(s^{m}(0))= s^{n}(z),
-\]
-so that $f=s^{n}$ by function extensionality. 
-The second case is very similar;
-(\ref{item-f(0)-nonpos}) goes like (\ref{item-f(0)-nonneg}).
-\end{proof}
-
-\begin{corollary}\label{cor:pre-torsor-int}
-We have $\zet\equiv \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$.
-\end{corollary}
-\begin{proof}
-First observe that $f\circ s = s\circ f$ is a true proposition
-for all $f=s^n$ and $f=s^{-n}$. Recall that proofs of propositions
-may be left out from dependent pairs. Thus we
-define $e : \zet\to \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$ 
-inductively by setting 
-$e(\zzero)\defeq \id_\zet$, 
-$e(\zpos(n))\defeq s^{n+1}$,
-$e(\zneg(n))\defeq s^{-(n+1)}$.
-By \cref{lem:one-orbit-int}, $e$ is a well-defined equivalence.
-\end{proof}
-
-Again by \cref{lem:one-orbit-int}, if $f\circ s = s\circ f$,
-then $f: \zet\to\zet$ is an equivalence. 
-Using UA, we get by \cref{cor:pre-torsor-int} the equivalence
-\[
-\zet\equiv \sum_{f:\zet=\zet} (f\circ s \circ f^{-1} = s).
-\]
-Recall that $f\circ s \circ f^{-1}$ is transport of $s$ by
-conjugation with $f$. Using the characterization of equality 
-in $\Sigma$-types from \cite[Theorem 2.7.2]{hottbook} we get the equivalence
-\[
-\zet\equiv ((\zet,s) = (\zet,s)).
-\]
-One particular equivalence is $e$ from the proof
-of \cref{cor:pre-torsor-int}, with inverse $e^{-1}$.
-We have $e^{-1}(\id_\zet) = 0$.
-The type $(\zet,s) = (\zet,s)$ of symmetries of $(\zet,s)$
-has a natural algebraic structure called path-algebra
-induced by composing and taking inverses (of paths,
-and modulo UA also of equivalences), and $\refl{(\zet,s)}$
-(the identity equivalence).
-%if $f,g:(\zet,s) = (\zet,s)$, then $f\circ g:(\zet,s) = (\zet,s)$.
-%Moreover, elements of $(\zet,s) = (\zet,s)$ have inverses.
-This algebraic structure is transported by $e^{-1}$ to $\zet$
-and gives exactly the group structure defined by ${+},{-},0$.
-
-One important issue has been ignored up to now:
-What is the type of $(\zet,s)$? 
-One possible answer is: $\sum_{X:\UU}(X=X)$.
-The following exercise shows that we do not get the 
-property that $(X,f)=(X,f)$ is equivalent to
-$(\zet,s) = (\zet,s)$ for all $(X,f) : \sum_{X:\UU}(X=X)$.
-It is for this reason that in the next section
-another choice will be made.
-
-\begin{xca}\label{xca:zet-symmetries}
-Figure out the symmetries of $(\zet,\id_\zet)$ (easy) and 
-of $(\zet,s^2)$ (hard).
-\end{xca}
-
-\section{Pathovers BOOK SECTION?}
+\section{Identifying elements in members of families of types}
 \label{sec:pathovers}
+
+In this section we present some addiational results that are needed in the sequel.
+% and that cannot be found in \cite{hottbook}.
 
 Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2$, and $p : a_1 = a_2$.
 We are interested in identifications of $b_1$ and $b_2$ relative to this data.
 We cannot in general form the type $b_1 = b_2$ as their types may be different.
 There are several ways to solve this problem. One of them is to transport $b_1$ along
 $p$ and form an identity type in $B(a_2)$. Another way would be to consider
-identifications $(a_1,b_1) = (a_2,b_2)$ in $\sum_{x:A} B(x)$ and require that $\fst$
-acting on such identifications is equal to $p$. These two ways are equivalent.
-The latter way has perhaps been the inspiration of the name `pathover'.
+identifications $(a_1,b_1) = (a_2,b_2)$ in $\sum_{x:A} B(x)$ and require that the
+action of the first projection on such identifications is equal to $p$. 
+These two ways are equivalent.
+%The latter way has perhaps been the inspiration of the name `pathover'.
 The former way is easier to work with and will be the one we choose here.
 
 \begin{definition}\label{def:pathover}
 Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2$, and $p : a_1 = a_2$.
-A \emph{pathover} from $b_1$ to $b_2$ is an element of the type
-$(b_1 =^B_p b_2) \defeq (\trp{B,p}(b_1) = b_2)$. 
-Note that $(b_1 =^B_{\refl{a_1}} b_2) \jdeq (b_1 =b_2)$ 
-in the type $B(a_1)\jdeq B(a_2)$.
+Define the transport function $\trp{B,p} : B(a_1)\to B(a_2)$ by induction on $p$,
+setting $\trp{B,\refl{a_1}}(b_1)\defeq b_1$. This is indeed well-typed since
+$B(a_1)\jdeq B(a_2)$ in this case.
+Now define the type $b_1 =^B_p b_2$ as $\trp{B,p}(b_1) = b_2$.
+An element of $b_1 =^B_p b_2$ is called
+a \emph{path} from $b_1$ to $b_2$ \emph{over} $p$, or \emph{pathover} for short.
+Note that $(b_1 =^B_{\refl{a_1}} b_2) \jdeq (b_1 =_{B(a_1)}  b_2)$.
 \end{definition}
 
 Many of the operations on paths have their counterpart for pathovers.
-We define the unit pathover, composition of pathovers, and pathover reversal.
+We define the unit pathover, concatenation of pathovers, and pathover reversal.
 
 \begin{definition}\label{def:pathoveralgebra}
 Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, and 
 $p_i : a_i = a_{i+1}$ for $i=1,2$. We define:
 \begin{enumerate}
 \item The \emph{unit pathover} $\refl{b_1} : b_1 =^B_{\refl{a_1}} b_1$;
-\item \emph{Pathover composition} $\cto : b_1 =^B_{p_1} b_2 \to
+\item \emph{Pathover concatenation} $\cto : b_1 =^B_{p_1} b_2 \to
 b_2 =^B_{p_2} b_3 \to b_1 =^B_{p_1 \ct p_2} b_3$, defined by induction
 on first $p_2$ and then $r: b_2 = b_3$, by
 setting $q \cto \refl{b_2} \defeq q$ for all $q: b_1 =^B_{p_1} b_2$;
@@ -459,7 +391,7 @@ setting $\refloi{b_1} \defeq \refl{b_1}$.
 
 The operations of pathover algebra satisfy many of the laws of path algebra,
 but only after some modification. For example, we have
-associativity of composition for paths: $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
+associativity of concatenation for paths: $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
 We don't in general have $p_1\ct(p_2\ct p_3) \jdeq (p_1\ct p_2)\ct p_3$.
 If $b_1 =^B_{p_1} b_2 =^B_{p_2} b_3 =^B_{p_3} b_4$, then there are
 two ways to associate, leading to two pathover types:
@@ -927,4 +859,96 @@ $\apd{e_A(a,p)}(\Zloop) = p$.
 % TeX-master: t
 % End:
 
+
+\section{The integers as a group}
+\label{sec:integers-group}
+
+In \cref{sec:integers} we first defined the \emph{set}
+of integers $\zet$. Then we defined functions that add
+algebraic stucture to $\zet$ (the structure of a free group 
+with one generator). In this section we
+show that this structure can also be obtained from the
+symmetries of a certain element in a certain type.
+
+\begin{lemma}\label{lem:one-orbit-int}
+Let $s$ be as in \cref{def:integers}, and 
+let $f:\zet\to\zet$ be such that $f\circ s = s\circ f$. 
+  \begin{enumerate}
+  \item\label{item-one-orbit} For all $z:\zet$ there is a unique $n:\NN$
+such that either $z=s^{-(n+1)}(0)$, or $z=s^{n}(0)$.
+  \item\label{item-f(0)-nonneg} For all $n:\NN$, if $f(0)=s^{n}(0)$, then $f=s^{n}$.
+  \item\label{item-f(0)-nonpos} For all $n:\NN$, if $f(0)=s^{-n}(0)$, then $f=s^{-n}$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+From $f\circ s = s\circ f$ we get $f\circ s^n = s^n\circ f$
+and $f\circ s^{-n} = s^{-n}\circ f$ by induction on $n:\NN$.
+
+(\ref{item-one-orbit}) Induction on $n:\NN$ proves $s^{n}(0)=n$, 
+as well as $s^{-n}(0)=-n$. Uniqueness is easy.
+
+(\ref{item-f(0)-nonneg}) Assume $f(0)=s^{n}(0)$.  
+Given $z:\zet$, let $m$ be such that either $z=s^{m}(0)$, 
+or $z=s^{-(m+1)}(0)$. In the first case we calculate
+\[
+f(z)=f(s^{m}(0))=s^{m}(f(0))=s^{m}(s^{n}(0))=s^{n}(s^{m}(0))= s^{n}(z),
+\]
+so that $f=s^{n}$ by function extensionality. 
+The second case is very similar;
+(\ref{item-f(0)-nonpos}) goes like (\ref{item-f(0)-nonneg}).
+\end{proof}
+
+\begin{corollary}\label{cor:pre-torsor-int}
+We have $\zet\equiv \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$.
+\end{corollary}
+\begin{proof}
+First observe that $f\circ s = s\circ f$ is a true proposition
+for all $f=s^n$ and $f=s^{-n}$. Recall that proofs of propositions
+may be left out from dependent pairs. Thus we
+define $e : \zet\to \sum_{f:\zet\to\zet} (f\circ s = s\circ f)$ 
+inductively by setting 
+$e(\zzero)\defeq \id_\zet$, 
+$e(\zpos(n))\defeq s^{n+1}$,
+$e(\zneg(n))\defeq s^{-(n+1)}$.
+By \cref{lem:one-orbit-int}, $e$ is a well-defined equivalence.
+\end{proof}
+
+Again by \cref{lem:one-orbit-int}, if $f\circ s = s\circ f$,
+then $f: \zet\to\zet$ is an equivalence. 
+Using UA, we get by \cref{cor:pre-torsor-int} the equivalence
+\[
+\zet\equiv \sum_{f:\zet=\zet} (f\circ s \circ f^{-1} = s).
+\]
+Recall that $f\circ s \circ f^{-1}$ is transport of $s$ by
+conjugation with $f$. Using the characterization of equality 
+in $\Sigma$-types from \cite[Theorem 2.7.2]{hottbook} we get the equivalence
+\[
+\zet\equiv ((\zet,s) = (\zet,s)).
+\]
+One particular equivalence is $e$ from the proof
+of \cref{cor:pre-torsor-int}, with inverse $e^{-1}$.
+We have $e^{-1}(\id_\zet) = 0$.
+The type $(\zet,s) = (\zet,s)$ of symmetries of $(\zet,s)$
+has a natural algebraic structure called path-algebra
+induced by composing and taking inverses (of paths,
+and modulo UA also of equivalences), and $\refl{(\zet,s)}$
+(the identity equivalence).
+%if $f,g:(\zet,s) = (\zet,s)$, then $f\circ g:(\zet,s) = (\zet,s)$.
+%Moreover, elements of $(\zet,s) = (\zet,s)$ have inverses.
+This algebraic structure is transported by $e^{-1}$ to $\zet$
+and gives exactly the group structure defined by ${+},{-},0$.
+
+One important issue has been ignored up to now:
+What is the type of $(\zet,s)$? 
+One possible answer is: $\sum_{X:\UU}(X=X)$.
+The following exercise shows that we do not get the 
+property that $(X,f)=(X,f)$ is equivalent to
+$(\zet,s) = (\zet,s)$ for all $(X,f) : \sum_{X:\UU}(X=X)$.
+It is for this reason that in the next section
+another choice will be made.
+
+\begin{xca}\label{xca:zet-symmetries}
+Figure out the symmetries of $(\zet,\id_\zet)$ (easy) and 
+of $(\zet,s^2)$ (hard).
+\end{xca}
 
