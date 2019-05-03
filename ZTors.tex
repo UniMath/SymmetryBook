@@ -45,8 +45,8 @@ principle for propositional truncation, not mentioned in \cite[Ch. 3.7]{hottbook
 and qualified as `not really useful' in \cite[Ch. 6.9]{hottbook}.
 \footnote{The dependent elimination principle appears to 
 be used later in \cite{hottbook}, though. ULRIK HAS SPOTTED A PLACE}
-In \cref{sec:XXX} we give this dependent elimination property some extra
-attention, as it is crucial for the computational properties of our proof.
+%In \cref{sec:XXX} we give this dependent elimination property some extra
+%attention, as it is crucial for the computational properties of our proof.
 
 For convenience we give a direct inductive
 definition of the set of integers 
@@ -73,7 +73,7 @@ using the univalence axiom, one proves that $\ev_0$ is an equivalence.
 
 The preimage of $s(0)$ under the equivalence $\ev_0$ is a
 natural generating path of $\pt =_\TorZ \pt$, so we define
-$\Zloop\defeq ev_0^{-1}(s(0))$, which we call the \emph{loop}
+${\Zloop}\defeq ev_0^{-1}(s(0))$, which we call the \emph{loop}
 of $\TorZ$. Alternatively, we could have obtained $\Zloop$
 directly from $s: \zet\equiv\zet$ by applying UA
 (with some easy add-ons, e.g., proving that $s$ commutes with itself).
@@ -401,8 +401,8 @@ but can easily be proved to be equivalent. Let's call the
 equivalence $\varepsilon$. So if we have pathovers $q_i : b_i =^B_{p_i} b_{i+1}$
 for $i=1,2,3$ we get $\varepsilon(q_1 \cto (q_2 \cto q_3)) = (q_1 \cto q_2)\cto q_3$
 as associativity law. For more information we refer the reader to the
-repositories with formalized proofs. Here we only state some results that
-we will need in the sequel.
+repositories with formalized proofs \cite{XXX}. 
+Here we only state some results that we will need in the sequel.
 
 In the rest of this section we work in a context with
 $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, 
@@ -467,44 +467,31 @@ The proof is by induction on $\beta$ (for right-recursive concatenation).
 
 \section{Z-Torsors}\label{sec:ZTorsors}
 
-In this section, pairs $(X,f)$ have type $\sum_{X:\UU}(X\to X)$
+Recall that pairs $(X,f)$ have type $\sum_{X:\UU}(X\to X)$
 without explicitly mentioning this. Moreover, terms of
-propositional type that do not interest us are denoted by $!$,
-or even left out alltogether. Nested pairs may be written as tuples.
+propositional type that do not interest us are denoted by ``$!$''.
+%or even left out alltogether. 
+Nested pairs may be written as tuples.
+With these notational simplifications, we rephrase
+some definitions from the introduction.
 
 \begin{definition}\label{sec:ZTors}
 The pointed type of $\zet$-torsors is defined by
 \[
-\TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~}
-\pt\defeq ((\zet,s),\trunc{\refl{(\zet,s)}}).
+\TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~} \pt\defeq (\zet,s,!).
 \]
 The variables $X,Y,Z$ will be used for elements of $\TorZ$, 
 as well as, by an abuse of notation, for their the first components.
-
-There is a natural path $\pt =_\TorZ \pt$ obtained from $s$
-by applying UA.
-Applying the equivalence from \cite[Theorem 2.7.2]{hottbook} 
-we can analyse this path componentwise. 
-
-The first component must be a path of type $\zet=\zet$,
-and we denote this path by $ua(s)$. 
-
-The second component must now be
-a path of type $ua(s)_*\, s = s$. The type family in which the transport
-takes place is $X\mapsto (X\to X)$. This means transport by conjugation,
-so we have to prove $s\circ s \circ s^{-1} = s$, which is easy.
-
-The third component is a path in a contractible type, which always exists.
-
-Denote the equivalence from \cite[Theorem 2.7.2]{hottbook}
-by $trip^=$ (we have to deal with two $\sum$'s here). Define
+The equivalence $\ev_0$ is defined by
 \[
-\Zloop \defeq trip^= (ua(s),!,!): \pt =_\TorZ \pt.
-%\Zloop : (\zet,s,\trunc{\refl{(\zet,s)}}) = (\zet,s,\trunc{\refl{(\zet,s)}})
+\ev_0: (\pt =_\TorZ \pt)\to\zet: p \mapsto \mathsf{pr}_1(p)_*(0).
 \]
+The loop of $\TorZ$ is defined as ${\Zloop}\defeq\ev_0^{-1}(1)$,
+such that $\mathsf{pr}_1(p)_* = s$.
 \end{definition}
-Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
-such as $\isset(X)$ and $\isEq(f)$.
+
+%Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
+%such as $\isset(X)$ and $\isEq(f)$. PERHAPS INFORMATIVE, BUT NOT NEEDED HERE
 
 Our type $\TorZ$ is equivalent to the more traditionally defined 
 type of $\ZZ$-torsors, $\Xtorsor{\ZZ}$, but is more parsimonious.
@@ -517,7 +504,6 @@ Although the same method works to derive both the recursion and the induction pr
 we opt to do the recursion principle first,
 as it is slightly simpler,
 and prepares the way for the more complicated induction principle.
-
 
 \subsection{Recursion in $\TorZ$}\label{sec:TorZ-recursion}
 
@@ -678,7 +664,7 @@ iff $f^n(x)=y$, for all $n:\zet$, by two inductions.)
 For simplicity, we may denote $f^n(x)$ by $x+n$.
 \end{definition}
 
-Prefixing $s^Z_x$ by $\Zloop\defeq trip^= (ua(s),!,!)$ amounts to
+Prefixing $s^Z_x$ by ${\Zloop}\defeq trip^= (ua(s),!,!)$ amounts to
 precomposing the equivalence $e_x$ with $s$. We have
 $(e_x\circ s)(n) = e_x(n+1) = f^{n+1}(x) = f^n(f(x)) =e_{f(x)}(n)$,
 so $e_x\circ s = e_{x+1}$, and by applying $ua$ we get:
