@@ -496,22 +496,26 @@ The equivalence $\ev_0$ is defined by
 \ev_0: (\pt =_\TorZ \pt)\to\zet: p \mapsto \mathsf{pr}_1(p)_*(0).
 \]
 The loop of $\TorZ$ is defined as ${\Zloop}\defeq\ev_0^{-1}(1)$,
-such that $\mathsf{pr}_1(p)_* = s$.
+satisfying $\mathsf{pr}_1(\Zloop)_* = s$.
 \end{definition}
 
-%Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
-%such as $\isset(X)$ and $\isEq(f)$. PERHAPS INFORMATIVE, BUT NOT NEEDED HERE
 
 Our type $\TorZ$ is equivalent to the more traditionally defined 
 type of $\ZZ$-torsors, $\Xtorsor{\ZZ}$, but is more parsimonious.
 Another way to think of it is as the type of Cayley diagrams for $\ZZ$.
 
+We note in passing that $\TorZ$, being the connected component of $(\zet,s)$
+in $\sum_{X:\UU}(X\to X)$, is by definition connected. This means that,
+if $P(Z)$ is a proposition for all $Z:\TorZ$, proving $P(Z)$ for all $Z:\TorZ$
+can be reduced to proving $P(\pt)$.
+%Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
+%such as $\isset(X)$ and $\isEq(f)$. PERHAPS INFORMATIVE, BUT NOT NEEDED HERE
+
 The aim of this section is to show that $\TorZ$ has the
 universal property of the circle.
 
 Although the same method works to derive both the recursion and the induction principles,
-we opt to do the recursion principle first,
-as it is slightly simpler,
+we opt to do the recursion principle first, as it is slightly simpler,
 and prepares the way for the more complicated induction principle.
 
 \subsection{Recursion in $\TorZ$}\label{sec:TorZ-recursion}
@@ -525,8 +529,7 @@ All input data is present in $p$ and its type.
 When defining types and functions depending on the input data, 
 we use $p$ in various denotations to express this dependence. 
 
-Consider an element $(X,f,t)$ of $\TorZ$.
-In order to make use of $t:\Trunc{(\zet,s)=(X,f)}$, 
+In order to make use of $\TorZ$ being a pointed connected type, 
 we need to find a suitable proposition.
 The idea is to expand $A$ to a $\Sigma$-type over $A$
 (\cref{def:guided-null-hmtps}), 
@@ -568,9 +571,9 @@ For every $(X,f,t):\TorZ$, the type $Q_p(X,f)$ is contractible
 with center $\vec{c}_p(X,f,t)$ defined in the proof.
 \end{lemma}
 \begin{proof}
-  Let $(X,f,t):\TorZ$. Since we are going to prove a proposition,
-  we may take $t\jdeq\trunc e$ for some $e : (\zet,s)=(X,f)$.
-  By induction on $e$, it suffices to prove that $Q_p(\zet,s)$ is contractible.
+  Let $(X,f,t):\TorZ$. Since we are going to prove a proposition
+  depending on the connected type $\TorZ$,
+  it suffices to prove that $Q_p(\zet,s)$ is contractible.
 
   Note that $Q_p(\zet,s)$ is the total space of the family $R_p : A \to \UU$ defined by
   \[
@@ -617,25 +620,26 @@ namely that the function $c_p$ from $\TorZ$ to $A$
 maps $\pt$ to $a$ definitionally.
 %The situation is depicted in \cref{fig:TorZ-recursion}.
 We will now deal with the other goal,
-namely that $c_p$ applied to $\Zloop$ yields $p$.
+namely that $c_p$ acting on $\Zloop$ yields $p$.
 
 \begin{lemma}\label{lem:ap-c-tilde-c}
 For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have
-$\ap{c_p} e = \tilde c_p(X,x)^{-1}\ct \tilde c_p(Y,e(x))$.
+$\ap{c_p}(e) = \tilde c_p(X,x)^{-1}\ct \tilde c_p(Y,\ptoe{e}(x))$,
+where $\ptoe{e}\defeq \mathsf{pr}_1(e)_* : X\to Y$.
 \end{lemma}
 \begin{proof}
 By using induction on $e$ we only have to check the case where
-$X\jdeq Y$ and $e\jdeq\refl{X}$. In this case $\ap{c_p} e$ is
-$\refl{c_p(X)}$. On the right-hand side we get $e(x)\jdeq x$,
+$X\jdeq Y$ and $e\jdeq\refl{X}$. In this case $\ap{c_p}(e)$ is
+$\refl{c_p(X)}$. On the right-hand side we get $\ptoe{e}(x)\jdeq x$,
 and hence this side simplifies to a reflexivity path of
 the correct type, as $\tilde c_p(X,x)$ has type $a=c_p(X)$.
 \end{proof}
 
-We apply the above lemma with $X\jdeq Y\jdeq \pt$ and $e\jdeq\Zloop: \pt=\pt$.
-Then we have $e(x)=s(x)=x+1$. We can take $x\defeq 0$ and get by
+We apply the above lemma with $X\jdeq Y\jdeq \pt$ and $e\jdeq{\Zloop}: \pt=\pt$.
+Then we have $\ptoe{e}(x)=s(x)=x+1$. We can take $x\defeq 0$ and get by
 the analysis after the proof of \cref{lem:guided-null-hmtps}
 that $\tilde c_p(\pt,1) = p$ and $\tilde c_p(\pt,0) = \refl{a}$.
-It follows that $\ap{c_p} \Zloop = p$ by \cref{lem:ap-c-tilde-c}.
+It follows that $\ap{c_p}(\Zloop) = p$ by \cref{lem:ap-c-tilde-c}.
 This means we have achieved our second goal as well.
 We summarize the results in the following recursion principle for $\TorZ$.
 In the next section we will prove an induction principle for $\TorZ$.
@@ -652,7 +656,7 @@ $\ap{e_A(a,p)}(\Zloop) = p$.
 
 \subsection{Induction in $\TorZ$}\label{sec:TorZ-induction}
 
-Fix $A:\TorZ\to\UU$, $a:A(\pt)$ and $p: a=^A_\Zloop a$.
+Fix $A:\TorZ\to\UU$, $a:A(\pt)$ and $p: a=^A_{\Zloop} a$.
 On the basis of this input data, we will construct a function of 
 type $\prod_{Z:\TorZ} A(Z)$ that maps $\pt$ to $a$ (definitionally),
 and maps $\Zloop$ to $p$ (by dependent action on paths).
@@ -680,7 +684,7 @@ so $e_x\circ s = e_{x+1}$, and by applying $ua$ we get:
 
 \begin{lemma}\label{lem:loop-s-iterated}
   For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, we have
-  ${\varepsilon^Z_x}: \Zloop \ct s^Z_x = s^Z_{x+1}$. 
+  ${\varepsilon^Z_x}: {\Zloop} \ct s^Z_x = s^Z_{x+1}$. 
 \end{lemma}
 
 Now we are ready to derive the induction principle using the same 
