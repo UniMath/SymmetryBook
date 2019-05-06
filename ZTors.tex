@@ -484,7 +484,7 @@ Nested pairs may be written as tuples.
 With these notational simplifications, we rephrase
 some definitions from the introduction.
 
-\begin{definition}\label{sec:ZTors}
+\begin{definition}\label{def:TorZ}
 The pointed type of $\zet$-torsors is defined by
 \[
 \TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~} \pt\defeq (\zet,s,!).
@@ -499,17 +499,31 @@ The loop of $\TorZ$ is defined as ${\Zloop}\defeq\ev_0^{-1}(1)$,
 satisfying $\mathsf{pr}_1(\Zloop)_* = s$.
 \end{definition}
 
-
 Our type $\TorZ$ is equivalent to the more traditionally defined 
 type of $\ZZ$-torsors, $\Xtorsor{\ZZ}$, but is more parsimonious.
 Another way to think of it is as the type of Cayley diagrams for $\ZZ$.
 
-We note in passing that $\TorZ$, being the connected component of $(\zet,s)$
-in $\sum_{X:\UU}(X\to X)$, is by definition connected. This means that,
-if $P(Z)$ is a proposition for all $Z:\TorZ$, proving $P(Z)$ for all $Z:\TorZ$
-can be reduced to proving $P(\pt)$.
-%Note that $\Trunc{(\zet,s)=(X,f)}$ has propositional consequences
-%such as $\isset(X)$ and $\isEq(f)$. PERHAPS INFORMATIVE, BUT NOT NEEDED HERE
+\begin{lemma}\label{lem:dep-elim-TorZ}
+%The pointed type $\TorZ$ is connected, that is, $\Trunc{\pt=Z}$ for all $Z:\TorZ$.
+If $P(Z)$ is a proposition for all $Z:\TorZ$, then we have $P(Z)$ for all $Z:\TorZ$
+whenever we have $P(\pt)$.
+\end{lemma}
+
+\begin{proof}
+Let $P(Z)$ be a proposition for all $Z:\TorZ$, and assume we have a proof
+$p:P(\pt)$. Let $(X,f,t):\TorZ$, then $t :\Trunc{(\zet,s)=(X,f)}$.
+Since $P(X,f,t)$ is a proposition, it suffices by truncation elimination
+to prove $P(X,f,\trunc{e})$ for all $e:(\zet,s)=(X,f)$. 
+We do induction on $e$, reducing the task to proving $P(\zet,s,\trunc{\refl{(Z,s)}})$.
+Observing that $(\zet,s,\trunc{\refl{(Z,s)}})\jdeq\pt$, we can simply set the proof to $p$.
+
+Note that the proof $q: \prod_{Z:\TorZ} P(Z)$ constructed in this way
+has the property that $q(\pt)\jdeq p$ only if 
+the proof of $P(\zet,s,\trunc{\refl{(Z,s)}})$ is definitionally invariant
+under the truncation elimination.
+This is true for the propositional truncation in \cite[Ch. 6.9]{hottbook},
+but not in \emph{Unimath}.
+\end{proof}
 
 The aim of this section is to show that $\TorZ$ has the
 universal property of the circle.
@@ -571,10 +585,7 @@ For every $(X,f,t):\TorZ$, the type $Q_p(X,f)$ is contractible
 with center $\vec{c}_p(X,f,t)$ defined in the proof.
 \end{lemma}
 \begin{proof}
-  Let $(X,f,t):\TorZ$. Since we are going to prove a proposition
-  depending on the connected type $\TorZ$,
-  it suffices to prove that $Q_p(\zet,s)$ is contractible.
-
+  By \cref{lem:dep-elim-TorZ} it suffices to prove that $Q_p(\zet,s)$ is contractible.
   Note that $Q_p(\zet,s)$ is the total space of the family $R_p : A \to \UU$ defined by
   \[
     R_p(a') \defeq \sum_{h:\zet \to a=a'}~\prod_{z:\zet} h(z+1)=p\ct h(z).
@@ -666,7 +677,7 @@ $A$ is now not constant and $p$ is a \emph{pathover}.
 
 The following lemma follows from the fact that $\zet$ is a set
 and $s: \zet\to\zet$ is an equivalence.
-\begin{lemma}\label{lem:loop-s-iterated}
+\begin{lemma}\label{lem:paths-in-TorZ}
 For every $p: (\zet,s)=(X,f)$ we have that $X$ is a set
 and $f: X\to X$ is an equivalence.
 Morever, with $\ptoe{p}\defeq \mathsf{pr}_1(p)_*$ the equivalence induced by $p$, we have 
@@ -675,22 +686,30 @@ for all $n:\zet$ and $x:X$.
 \end{lemma}
 Note that for fixed $x:X$ the expression $\ptoe{p}^{-1}(x)+n$ can be seen as 
 the function shifting $n:\zet$ by $\ptoe{p}^{-1}(x)$ positions, indeed an equivalence.
-This justifies the following definition.
+Hence $f^n(x)$ as a function of $n$ is an equivalence from $Z$ to $X$.
+For simplicity, we may denote $f^n(x)$ by $x+n$.
 
 \begin{definition}\label{def:loop-s-iterated}
 For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
-define $s^Z_x: \pt =_\TorZ Z$ by the equivalence 
-$e_x(n)\defeq f^n(x)$ using UA. 
-Indeed, $f\circ e_x = e_x \circ s$, as both functions
-map $n$ to $f^{n+1}(x)$. 
-
-For simplicity, we may denote $f^n(x)$ by $x+n$.
+define $s^Z_x: \pt =_\TorZ Z$ by the equivalence
+$e_x(n)\defeq f^n(x)$ using UA. Indeed, 
+$f\circ e_x = e_x \circ s$, as both functions map $n$ to $f^{n+1}(x)$. 
 \end{definition}
 
-Prefixing $s^Z_x$ by ${\Zloop}$ amounts to
-precomposing the equivalence $e_x$ with $s$. We have
-$(e_x\circ s)(n) = e_x(n+1) = f^{n+1}(x) = f^n(f(x)) =e_{f(x)}(n)$,
-so $e_x\circ s = e_{x+1}$, and by applying UA we get:
+In the sequel we will need two auxiliary results about the paths $s^\pt_x$,
+one for $x=0$ and one reflecting the symmetric induction step in \cref{thm:integers-univ-symm}.
+In \cref{def:loop-s-iterated}, if $Z\jdeq\pt$ and $x=0$, we get $e_0 = \id$.
+Applying UA gives the first result.
+
+\begin{lemma}\label{lem:s-pt-zero}
+  There is a path $\delta_0 : \refl{\pt} = s^\pt_0$. 
+\end{lemma}
+
+For the second result, note that prefixing $s^Z_x$ by ${\Zloop}$ 
+amounts to precomposing the equivalence $e_x$ with $s$. 
+We have $(e_x\circ s)(n) = e_x(n+1) = f^{n+1}(x) = f^n(f(x)) =e_{f(x)}(n)$,
+so $e_x\circ s = e_{x+1}$. Applying UA we get the next general result
+(which we only need for $Z\jdeq\pt$).
 
 \begin{lemma}\label{lem:loop-s-iterated}
   For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, we have
@@ -715,10 +734,7 @@ where $\varepsilon^Z_x$ comes from \cref{lem:loop-s-iterated}.
   with center $\vec{c}_p(Z)$ defined in the proof.
 \end{lemma}
 \begin{proof}
-  Let $Z:\TorZ$. Since we are going to prove a proposition
-  depending on the connected type $\TorZ$,
-  we may take $Z\jdeq\pt\jdeq(\zet,s,!)$.
-
+  By \cref{lem:dep-elim-TorZ} it suffices to prove that $Q_p(\pt)$ is contractible.
   We have $Q_p(\pt)\jdeq \sum_{a':A(\pt)} R(a')$ for $R : A(\pt) \to \UU$ defined by
   \[
     R_p(a') \defeq \sum_{h : \prod_{z:\zet} a =^A_{s^\pt_z} a'}~
@@ -788,10 +804,10 @@ We compute (at least partially) the center $\vec c_p(\pt)$ of $Q_p(\pt)$.
 The goal is to prove $c_p(\pt)\jdeq a$ and $\apd{c_p}(\Zloop)=p$.
 
 First, $s^\pt_0: \pt = \pt$ is based on $(n\mapsto s^n(0)) = \id$, 
-mapped by $ua$ to $\refl{\pt}$. So we have $\varepsilon_0 : \refl{\pt} = s^\pt_0$.
+mapped by $ua$ to $\refl{\pt}$. So we have $\delta_0 : \refl{\pt} = s^\pt_0$.
 We use $\rrfl$ for the reflexivity path at $a$ over $\refl{\pt}$.
 The center of $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is the pair
-$(a,r)$ where $r \defeq \cp{\varepsilon_0}(\rrfl): a =^A_{s^\pt_0} a$.
+$(a,r)$ where $r \defeq \cp{\delta_0}(\rrfl): a =^A_{s^\pt_0} a$.
 This shows $c_p(\pt)\jdeq a$.
 
 The center $(a,r)$ is pulled back to a center $(a,c)$ of $Q_p(\pt)$ 
@@ -806,8 +822,8 @@ We now have enough information to verify $\apd{c_p}(\Zloop)=p$,
 which by \cref{lem:apd-c-tilde-c} reduces to 
 \[
 \cp{\varepsilon_{\Zloop,0}}
-((\cp{\varepsilon_0}(\rrfl))^{-o}\cto 
-\cp{\varepsilon^\pt_0}(p \cto \cp{\varepsilon_0}(\rrfl))) = p.
+((\cp{\delta_0}(\rrfl))^{-o}\cto 
+\cp{\varepsilon^\pt_0}(p \cto \cp{\delta_0}(\rrfl))) = p.
 \]
 
 
