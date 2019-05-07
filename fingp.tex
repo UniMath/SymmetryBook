@@ -19,9 +19,25 @@ Lagrange's \cref{thm:lagrange} gives the first example: if $H$ is a subgroup of 
 
 
 Further examples come from considering the $G$-set $\typesubgroup_G$ of subgroups of $G$ from \cref{sec:subgroups}.  Knowledge about the $G$-set of subgroups is of vital importance for many applications and Sylow's theorems in  \cref{sec:sylow} give the first restriction on what subgroups are possible and how they can interact.  The first step is Cauchy's \cref{thm:cauchys} which says that if $|G|$ is divisible by a prime $p$, then $G$ contains a cyclic subgroup of order $p$.  Sylow's theorems goes further, analyzing subgroups that have cardinality powers of $p$, culminating in very detailed and useful information about the structure of the subgroups with cardinality the maximal possible power of $p$.
+\begin{example}
+  For instance, for the permutation group $\Sigma_3$, Sylow's theorems will deduce from the simple fact $|\Sigma_3|=6$ that $\Sigma_3$ contains a unique subgroup $|H|$ with $|H|=3$.  Since it is unique, $H$ must be a normal subgroup.  
+
+On the other hand, for $\Sigma_4$ the information $|\Sigma_4|=24$ only suffices to tell us that there are either $1$ or $4$ subgroups $K$ with $|K|=3$, but that all of them are conjugate.  However, the inclusion of $\Sigma_3$ in $\Sigma_4$ shows that the $H\subseteq\Sigma_3$ above (which is given by the cyclic permutations of three letters) can be viewed as a subgroup of $\Sigma_4$, and elementary inspection gives that this subgroup is not normal.  Hence there must be more than one subgroup $K$ with $|K|=3$, pinning the number of such subgroups down to $4$. 
+
+Indeed, $\Sigma_n$ has $n(n-1)(n-2)/6$ subgroups of order $3$ (for $n>2$), but when $n>5$ something like a phase transformation happens: the subgroups of order $3$ are no longer all conjugate.  This can either be seen as a manifestation of the fact that $3^2=9$ divides $n!=|\Sigma_n|$ for $n>5$ or more concretely by observing that there is room for ``disjoint'' cyclic permutations.  For instance the subgroup of cyclic permutations of $\{1,2,3\}$ will not be conjugate to the subgroup of cyclic permutations of $\{4,5,6\}$.  Together these two cyclic subgroups give a subgroup $K$ with $|K|=9$ and there are $10$ of these (one for each subset of $\{1,2,3,4,5,6\}$ of cardinality $3$). 
+\end{example}
+
+\begin{remark}
+  \label{rem:noofsubgps}
+  One should observe that the number of subgroups is often very large and the structure is often quite involved, even for groups with a fairly manageable size and transparent structure (for instance, the number of subgroups of the group you get by taking the product of the cyclic group $C_2$ with itself $n$ times grows approximately as $7\cdot2^{n^2/4}$ -- \eg $C_2^{\times 18}$ has $17741753171749626840952685$ subgroups, see
+\url{https://oeis.org/A006116}).
+\end{remark}
+
+% One should observe that the number of subgroups is usually very large and the structure is often quite involved, even for groups with a fairly manageable size (for instance, $\Sigma_6$ has $1455$ subgroups distributed over $56$ conjugacy classes).  Getting a full description is most often a hopeless endeavor; the good thing is that partial information often leads to stunning results.  The importance of the Sylow's theorems is that they provide us with with an inroad to the most important building blocks, even for groups where we have a much less concrete description than for instance permutation groups. 
 
 
-\subsection{Lagrange's theorem, counting version}
+
+\section{Lagrange's theorem, counting version}
 \label{sec:Lagrangecounting}
 
 We start our investigation by giving the version of Lagrange's theorem which has to do with counting, but first we pin down some language.
@@ -32,7 +48,8 @@ A \emph{finite group}\index{finite group} is a group such that the set $\pt_G=\p
 % A \emph{finite group of \gporder $n$}\index{finite group! of \gporder $n$} is a group $G$ such that the set $\pt_G=\pt_G$ is in $\fin_n$. 
 \end{definition}
 \begin{example}
-  The trivial group has \gporder $1$, the cyclic group $C_n$ of order $n$ has \gporder $n$ (which is good) and the permutation group $\Sigma_n$ has \gporder $n!$.
+  The trivial group has \gporder $1$, the cyclic group $C_n$ of order $n$ has \gporder $n$ %(which is good) 
+and the permutation group $\Sigma_n$ has \gporder $n!$.
 \end{example}
 
 
@@ -73,6 +90,13 @@ Finally, since we are considering a subgroup, the preimage $Bi^{-1}(\pt)$ is equ
   Let $i:\Hom(H,G)$ be the inclusion.  By \cref{lem:whatSylow2needs} the intersection $N\cap H$ is the kernel of the composite $fi:\Hom(H,G')$.  Let $H'$ be the image of $fi$. Now, Lagrange's counting \cref{lem:Lagrangeascounting} gives that $|H|=|H'|\cdot |N\cap H|$ and $|G'|=|G'/H'|\cdot|H'|$.  This means that $|H'|$ divides both $|H|$ and $|G'|$, but since these numbers are coprime we must have that $|H'|=1$, and finally that $|H|=|N\cap H|$.  This imples that $N\cap H=H$, or in other words, that $H$ is a subgroup of $N$ ((elaborate)).
 \end{proof}
 
+\begin{corollary}
+  If $G$ and $G'$ are finite groups, then the \gporder $|G\times G'|$ of the product is the product $|G|\cdot| G'|$ of the \gporders.
+\end{corollary}
+\begin{remark}
+  Hence the \gporder of the $n$-fold product of \cref{rem:noofsubgps} of $C_2$ with itself is ($2^n$ and so grows quickly, but is still) dwarfed by the number of subgroups as $n$ grows.
+\end{remark}
+
 
 \section{Cauchy's theorem}
 \begin{lemma}
@@ -94,7 +118,6 @@ Hence the cardinality of the set of all trivial orbits, \ie of $X^G$, is the dif
 Then $G$ has a subgroup which is cyclic of \gporder $p$. 
 \end{theorem}
 \begin{proof}
-\footnote{NOTE: three variants follow.  Have to choose one.  The middle needs some background essentially boiling down to $BC_n$ being the truncation of the $n$th Moore space.}
 Recall the cyclic group $C_p$ of \gporder $p$ given by the pointed connected groupoid
 $$BC_p\defequi(\sum_{S:\Set}\sum_{j:S=S}||(S,j)=\zet/p||,(\zet/p,!)),
 $$
@@ -116,7 +139,8 @@ $X(\zet/p)^{C_p}$ is equivalent to $\sum_{g:\pt_G=\pt_G}g^p=e_G.$  If we can sho
 % $$X(\zet/p)= X(\zet/p)^{C_p}+(\text{free part of }X(\zet/p)).$$
 % Since the \gporder of $G$ is divisible by $p$, so is the cardinality of $X(\zet/p)$ \emph{and} of the free part of $X(\zet/p)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
 
-\footnote{Slight variations commented away% ALTERNATIVELY:
+\footnote{Two slight variations commented away.  Have to choose one.  The first needs some background essentially boiling down to $BC_n$ being the truncation of the $n$th Moore space.
+% ALTERNATIVELY:
 %   Consider  the $p-1$-fold product $(\bn{(p-1)}\to (\pt_G=\pt_G))$ of $\pt_G=\pt_G$ with itself.  We give this set the structure of a $\ZZ/p$-set as follows: ((here it is convenient to say that a $\ZZ/p$-set is the same as a $\ZZ$-set commuting with the $p$-fold cover)) define $X:S^1\to\Set$ by $X(\base)\defequi (\bn{(p-1)}\to (\pt_G=\pt_G))$ and by setting $X(\Sloop)$ to be the element in $X(\base)=(\base)$ sending $(g_1,\dots,g_{p-1})$ to $(g_2,\dots,g_{p-1},(g_1\cdots g_{p-1})^{-1})$.  Note that
 % $$\xymatrix{S^1\ar[d]_{(-)^p}\ar[dr]^X&\\S^1\ar[r]_X&\Set}$$
 % commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this action is an element of $X(\base)$ of the form $(g,g,\dots,g)$ such that $g^{p-1}=g^{-1}$  (expand)). The choice $g=e$ always gives such a fixed point, but if there is any other point ... (do you need decidability here?), the pointed map $S^1\to BG$ given by sending $\Sloop$ to $g$ gives the desired subgroup. Hence we need to show that $X$ has fixed points.
@@ -152,7 +176,9 @@ Then the center $Z(G)$ of $G$ is nontrivial.
 (point to center in the symmetry chapter)
 \end{lemma}
 \begin{proof}
-  Recall the $G$-set $\Ad_G:BG\to\Set$ given by $Ad_G(z)=(z=z)$.  Then the map  $$\ev_{\pt_G}:\prod_{z:BG}(z=z)\to(\pt_G=\pt_G),\quad \ev_G(f)=f(\pt_G)$$  
+  Recall the $G$-set $\Ad_G:BG\to\Set$ given by $\Ad_G(z)=(z=z)$.  
+Then the map  
+$$\ev_{\pt_G}:\prod_{z:BG}(z=z)\to(\pt_G=\pt_G),\quad \ev_G(f)=f(\pt_G)$$  
 has the structure of a (n abstract) inclusion of a subgroup; namely the inclusion of the center $Z(G)$ in $G$.  
 The center thus represents the fixed points of the $G$-set $\Ad_G$.  
 Since $G$ has \gporder a power of $p$, all orbits but the fixed points have cardinality divisible by $p$.  
@@ -165,7 +191,7 @@ Consequently, Burnside's lemma states that the number of fixed points, \ie the \
 \begin{proof}
   The center $Z(G)$ is by \cref{lem:nontrivcenter} of \gporder $p$ or $p^2$.
   Since $G$ is not cyclic we have that $g^p=e_G$ for all $g:\pt_G=\pt_G$.    
-((To be continued: the classical proof involves choosing nontrivial elements  -- see what can be done about that))
+\footnote{((To be continued: the classical proof involves choosing nontrivial elements  -- see what can be done about that.  At present this corollary is not used anywhere))}
 \end{proof}
 \section{Sylow's Theorems}
 \label{sec:sylow}
@@ -173,7 +199,8 @@ Consequently, Burnside's lemma states that the number of fixed points, \ie the \
   \label{thm:sylow1}
   If $p$ is a prime, $n:\NN$ and $G$ a finite group whose \gporder divides $p^n$, then $G$ has a subgroup of \gporder $p^n$.
 \end{theorem}
-\begin{proof}\footnote{In this proof I refer to \cref{lem:aut-orbit} (which says that $N_G(K)/K$ is equivalent to the set of automorphisms of $G/K$ in the orbit category) to claim that the $K$-fixed points of $G/K$ may be identified with $N_G(K)/K$.   Also I use that the \gporder of a pullback of a subgroup $L$ along a surjection is the product of the \gporder of the kernel and the \gporder of $L$}
+\begin{proof}\footnote{In this proof I refer to \cref{lem:aut-orbit} (which says that $N_G(K)/K$ is equivalent to the set of automorphisms of $G/K$ in the orbit category) to claim that the $K$-fixed points of $G/K$ may be identified with $N_G(K)/K$.   %Also I use that the \gporder of a pullback of a subgroup $L$ along a surjection is the product of the \gporder of the kernel and the \gporder of $L$
+}
   We prove the result by induction on $n$.  
 If $n=0$ we need to have a subgroup of \gporder $1$, which is witnessed by the trivial subgroup.
 %If $n=1$, this is Cauchy's \cref{thm:cauchys}.  
