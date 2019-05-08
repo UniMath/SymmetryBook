@@ -1450,7 +1450,7 @@ $$%\typesubgroup_G:BG\to\Set,\qquad
 \typesubgroup_G(y)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)(y)}\isset(Bf^{-1}(\pt_G)),$$
 where  as in \cref{ex:HomHGasGset}  
 $$\Hom(H,G)(y)\defequi\sum_{F:BH_\div\to BG_\div}(y=F(\pt_H))$$
-is the $G$-set of homomrophisms from $H$ to $G$.
+is the $G$-set of homomorphisms from $H$ to $G$.
 % In this interpretation, $(H,F,p,!):\typesubgroup_G(\pt_G)$ represents a subgroup of $G$ (so that $p:\pt_G=F(\pt_H)$).  An identity $g:\pt_G=\pt_G$ acts on $\typesubgroup_G(\pt_G)$ by sending $(H,F,p,!)$ to $(H,F,p\,g^{-1},!)$.
 
 \begin{definition}
@@ -1482,16 +1482,69 @@ $$\sum_{H:\typegroup}\sum_{\phi:\Hom^\abstr(\abstr(H),\abstr(G))}\isprop(\phi^{-
 \end{lemma}
 
 
-
-
-
-
 \begin{remark}
   If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.  
 Our use of ``subgroup'' can be defended as follows.  
 It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism \emph{modulo} the relation forcing that precomposing with an isomorphism yields identical subgroups.  
 Set-theory offers the luxury of having a representative in every equivalence class: namely the image of the injection, type theory does not.
 \end{remark}
+
+\sususe{The geometry of subgroups: some small examples}
+\label{smallsubgpex}
+
+As a teaser, and in order to get a geometric feel for the subgroups and their intricate interplay, it can be useful to have some fairly manageable examples to stare at.  
+Some of the main tools for analyzing the geometry of subgroups are collected in \cref{sec:fingp} on finite groups, and we hope the reader will be intrigued by our mysterious claims and go on to study \cref{sec:fingp}.
+That said, the examples we'll present are possible to muddle through by hand without any fancy machinery, but brute force is generally not an option and even for the present examples it is not something you want to show publicly.
+
+When presenting the subgroups of a group $G$, three types are especially revealing: the set of subgroups $\typesubgroup_G(\pt_G)$, the \emph{groupoid of subgroups} $\typesubgroup(G)\defequi\sum_{y:BG}\typesubgroup_G(y)$ and what we for now call the ``set of normal subgroups'' $\prod_{y:BG}\typesubgroup_G(y)$.   Our local use of ``normal subgroup'' is equivalent to the official definition to come.  
+
+The first projection $\typesubgroup(G)\to BG$ is referred to as the \emph{\covering of subgroups}.
+
+\footnote{Write out and fix the concrete examples (cyclic groups and $\Sigma_3$) commented out}
+% \begin{remark}
+% In  \cref{cha:circle} we studied the subgroups of the group of integers $G=\ZZ$ through \coverings over the circle $S^1$ (which we showed was equivalent to $B\ZZ$).
+% We discovered a subgroup $n\ZZ$ for each natural number $n:\NN$ and in the groupoid $\typesubgroup({\ZZ})$ these sit as elements in separate components.  Each of these components are contractible (because addition is commutative: $\ZZ$ is an abelian group).
+
+% In general, a component $K$ of the groupoid $\sum_{y:BG}\typesubgroup_G(y)$ of subgroups of a group $G$ may be much more interesting. For one thing the, $K$ can contain many subgroups in the sense that the preimage of the first projection $K\to BG$ is a set that may have many different elements; each representing a subgroup.  However, this set of subgroup will be a \emph{conjugacy class} of subgroups: the different subgroups are related by the conjugation action of $G$.  
+
+% If $G$ is abelian this action is trivial, and $\sum_{y:BG}\typesubgroup_G(y)$ consists of contractible components indexed over the subgroups of $G$.  Otherwise different subgroups may live in the same component of the groupoid of subgroups -- we'll see examples in a moment.
+
+% In addition, the components will not in general be contractible, revealing the symmetries of the subgroups under the conjugation action.
+% \end{remark}
+
+
+% \begin{example}
+%   The trivial group only has itself as a subgroup; the groupoid of subgroups and the set of normal subgroups are singletons.
+% \end{example}
+% \begin{example}
+%   The cyclic group $C_p$ of prime order $p$ has only two subgroups, the trivial and the full subgroup itself and both are normal.  In fact, all subgroups of abelian groups are normal.  
+
+% In general, the cyclic group $C_n$ of order $n$ has exactly one subgroup for each divisor $i$ of $n$.
+% \end{example}
+
+
+% \begin{example}
+%   The group $C_2\times C_2$ has has no less than five subgroups: the trivial one, three subgroups that as groups (as opposed as \emph{sub}groups) are equivalent to $C_2$ and the full group $C_4$ itself.
+% \end{example}
+% \begin{remark}
+%   The permutation group $\Sigma_3$ has four nontrivial proper subgroups.  Three conjugate subgroups isomorphic as groups to $C_2$ and one normal one which is as a group is isomorphic to $C_3$.  The component containing the copies of $C_2$ is equivalent to a circle.
+% \end{remark}
+\sususe{Subgroups through $G$-sets}
+Occasionally it is useful to define ``subgroups'' slightly differently.
+As we've defined it a subgroup of a group $G$ of the form $(H,f,!)$ where $H$ is a group (pointed connected groupoid  $BH$), $f:BH\to_* BG$ is a pointed map whose fibers are sets (a pointed \covering).  There is really no need to specify that $H$ is a group: if $F:T\to_BG$ is a \covering, then $T$ is automatically a groupoid.  on the other hand,  the type of \coverings over $BG$ is equivalent to $G$-sets: if $X:BG\to\Set$ is a $G$-set, then the covering is given by the first projection $\tilde X\to BG$ where $\tilde X\defequi\sum_{y:BG}X(y)$.
+\begin{definition}
+  If $X\colon Y\to\Set$ is a \covering, then $\mathrm{isConn}(X)$ is the proposition claiming that $\tilde X\defequi\sum_{y:Y}X(y)$ is connected.
+\end{definition}
+\newcommand{\typenormal}{\mathbf{Nor}}
+\begin{definition}
+  Let $G$ be a group and $y:BG$, then the $G$-set of \emph{subgroups' of $G$} is
+  $$\typesubgroup_G':BG\to\Set,\qquad\typesubgroup_G'(y)\defequi\sum_{X:BG\to\Set}\sum_{\pt_y:X(y)}\mathrm{isConn}(X)$$
+and the type of \emph{normal subgroups'} is the set of fixed points
+$$\typenormal_G'\defequi\prod_{y:BG}\typesubgroup_G'(y).$$
+%A \emph{normal subgroup'} of $G$ is an element in $\typenormal_G'$.
+\end{definition}
+By the above we may use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably, and under the equivalence, normal subgroups correspond to normal subgroups'.
+
 \sususe{Kernels and cokernels}
 \label{subsec:ker}
 %\newcommand{\ker}{\mathrm{ker}}
