@@ -3,26 +3,76 @@
 \label{sec:fingp}
 \newcommand{\gporder}{cardinality\xspace}
 \newcommand{\gporders}{cardinalities\xspace}
+Objects having only a finite number of symmetries can be analyzed through counting arguments.  The strength of this approach is stunning.  The orbit-stabilizer theorem \cref{sec:orbit-stabilizer-theorem} is at the basis of this analysis: if $G$ is a group and $X:BG\to\Set$ is a $G$-set, then
+$$X(\pt_G)\simeq \coprod_{x:X/G}\mathcal O_x$$
+and each orbit set $\mathcal O_x$ is equivalent to the cokernel of the inclusion $G_x\subseteq G$ of the stabilizer subgroup of $x$.
+Consequently, if $X(\pt_G)$ is a finite set, then its cardinality is the sum of the cardinality of these cokernels.  If also the set $\pt_G=\pt_G$ is finite much more can be said and simple arithmetical considerations often allow us to deduce deep statements like the size of a certain subset of $X(\pt_G)$ and in particular whether or not there are any fixed points.
+
+\begin{example}
+  A typical application could go like this.  
+If $X(\pt_G)$ is a finite set with $13$ elements and for some reason we know that all the orbits have cardinalities dividing $8$ -- which we'll see happens if $\pt_G=\pt_G$ has $8$ elements -- then we must have that some orbits are singletons (for a sum of positive integers dividing $8$ to add up to $13$, some of them must be $1$).
+That is, $X$ has fixed points.
+\end{example}
+
+The classical theory of finite groups is all about symmetries coupled with simple counting arguments. 
+Lagrange's \cref{thm:lagrange} gives the first example: if $H$ is a subgroup of $G$, then the cardinality ``$|G|$'' of $\pt_G=\pt_G$ is divisible by $|H|$, putting severe restrictions on the possible subgroups.  For instance, if $|G|$ is a prime number, then $G$ has no notrivial proper subgroups! (actually, $G$ is necessarily a cyclic group).  To prove this result we interpret $G$ as an $H$-set.
+
+
+Further examples come from considering the $G$-set $\typesubgroup_G$ of subgroups of $G$ from \cref{sec:subgroups}.  Knowledge about the $G$-set of subgroups is of vital importance for many applications and Sylow's theorems in  \cref{sec:sylow} give the first restriction on what subgroups are possible and how they can interact.  The first step is Cauchy's \cref{thm:cauchys} which says that if $|G|$ is divisible by a prime $p$, then $G$ contains a cyclic subgroup of order $p$.  Sylow's theorems goes further, analyzing subgroups that have cardinality powers of $p$, culminating in very detailed and useful information about the structure of the subgroups with cardinality the maximal possible power of $p$.
+\begin{example}
+  For instance, for the permutation group $\Sigma_3$, Sylow's theorems will deduce from the simple fact $|\Sigma_3|=6$ that $\Sigma_3$ contains a unique subgroup $|H|$ with $|H|=3$.  Since it is unique, $H$ must be a normal subgroup.  
+
+On the other hand, for $\Sigma_4$ the information $|\Sigma_4|=24$ only suffices to tell us that there are either $1$ or $4$ subgroups $K$ with $|K|=3$, but that all of them are conjugate.  However, the inclusion of $\Sigma_3$ in $\Sigma_4$ shows that the $H\subseteq\Sigma_3$ above (which is given by the cyclic permutations of three letters) can be viewed as a subgroup of $\Sigma_4$, and elementary inspection gives that this subgroup is not normal.  Hence there must be more than one subgroup $K$ with $|K|=3$, pinning the number of such subgroups down to $4$. 
+
+Indeed, $\Sigma_n$ has $n(n-1)(n-2)/6$ subgroups of order $3$ (for $n>2$), but when $n>5$ something like a phase transformation happens: the subgroups of order $3$ are no longer all conjugate.  This can either be seen as a manifestation of the fact that $3^2=9$ divides $n!=|\Sigma_n|$ for $n>5$ or more concretely by observing that there is room for ``disjoint'' cyclic permutations.  For instance the subgroup of cyclic permutations of $\{1,2,3\}$ will not be conjugate to the subgroup of cyclic permutations of $\{4,5,6\}$.  Together these two cyclic subgroups give a subgroup $K$ with $|K|=9$ and there are $10$ of these (one for each subset of $\{1,2,3,4,5,6\}$ of cardinality $3$). 
+\end{example}
+
+\begin{remark}
+  \label{rem:noofsubgps}
+  One should observe that the number of subgroups is often very large and the structure is often quite involved, even for groups with a fairly manageable size and transparent structure (for instance, the number of subgroups of the group you get by taking the product of the cyclic group $C_2$ with itself $n$ times grows approximately as $7\cdot2^{n^2/4}$ -- \eg $C_2^{\times 18}$ has $17741753171749626840952685$ subgroups, see
+\url{https://oeis.org/A006116}).
+\end{remark}
+
+% One should observe that the number of subgroups is usually very large and the structure is often quite involved, even for groups with a fairly manageable size (for instance, $\Sigma_6$ has $1455$ subgroups distributed over $56$ conjugacy classes).  Getting a full description is most often a hopeless endeavor; the good thing is that partial information often leads to stunning results.  The importance of the Sylow's theorems is that they provide us with with an inroad to the most important building blocks, even for groups where we have a much less concrete description than for instance permutation groups. 
+
+
+
+\section{Lagrange's theorem, counting version}
+\label{sec:Lagrangecounting}
+
+We start our investigation by giving the version of Lagrange's theorem which has to do with counting, but first we pin down some language.
 \begin{definition}
-  \label{def:finitegrd}Let $n:\NN$ be positive.  
-A \emph{finite group of \gporder $n$}\index{finite group! of \gporder $n$} is a group $G$ such that the set $pt_G=\pt_G$ is in $\fin_n$. 
-A \emph{finite group}\index{finite group} is a group such that $\pt_G=\pt_G$ is a finite set. 
+  \label{def:finitegrd}
+A \emph{finite group}\index{finite group} is a group such that the set $\pt_G=\pt_G$ is finite.   If $G$ is a finite group, then the \emph{\gporder}\index{\gporder} $|G|$ is the cardinality of the finite set $\pt_G=\pt_G$ (\ie $(\pt_G=\pt_G):\fin_{|G|}$).
+% Let $n:\NN$ be positive.  
+% A \emph{finite group of \gporder $n$}\index{finite group! of \gporder $n$} is a group $G$ such that the set $\pt_G=\pt_G$ is in $\fin_n$. 
 \end{definition}
-So, the trivial group has \gporder $1$, the cyclic group $C_n$ of order $n$ has \gporder $n$ (which is good) and the permutation group $\Sigma_n$ has \gporder $n!$.
+\begin{example}
+  The trivial group has \gporder $1$, the cyclic group $C_n$ of order $n$ has \gporder $n$ %(which is good) 
+and the permutation group $\Sigma_n$ has \gporder $n!$.
+\end{example}
+
+
+In the literature, ``order'' and ``cardinality'' are used interchangeabley for groups.
+
 
 For finite groups, Lagrange's \cref{thm:lagrange} takes on the form of a counting argument
 \begin{lemma}[Lagrange's theorem: counting version]
   \label{lem:Lagrangeascounting}
-  Let $i:\Hom(H,G)$ be a subgroup of a finite group $G$.  Then $|G|=|G/H|\cdot|H|$.
-
+  Let $i:\Hom(H,G)$ be a subgroup of a finite group $G$.  Then 
+$$|G|=|G/H|\cdot|H|.$$
 If $|H|=|G|$, then $H=G$ (as subgroups of $G$).
 \end{lemma}
 \begin{proof}
-  Consider the $H$ action of $H$ on $G$, \ie the $H$-set $\tilde G:BH\to\Set$ with $\tilde G(x)\defequi(\pt_G=Bi(x))$.  Note that composing with the structure identity $p_i:\pt_G=Bi(\pt_H)$ gives an equivalence $\tilde G(\pt_H)\equiv (\pt_G=\pt_G)$.
-  Lagrange's \cref{thm:lagrange} says that the action of $H$ is free \footnote{\cref{thm:lagrange} doesn't say this at present: fix it} (and so all orbits are equivalent to the $H$-set $\tilde H(x)=(\pt_H=x$) the equivalence $X(\pt_H)\simeq\sum_{x:\tilde G/H}\mathcal O_x$ gives that $G/H\defequi \tilde G/H$ and $H$ are finite (as sets) and that $|G|=|G/H|\cdot|H|$.\footnote{somewhere: prove that if $A$ is a finite set and $B(a)$ is a family of finite sets indexed over $a:A$, then $\sum_{a:A}B(a)$ is a finite set of cardinality $\sum_{i:\bn n}|B(f(i))|$ for any $f:\bn n=A$, hence if $m=|B(a)|$ for all $a$ then $|\sum_AB(a)|=n\cdot m$.}
+  Consider the $H$ action of $H$ on $G$, \ie the $H$-set $i^*G:BH\to\Set$ with $i^*G(x)\defequi(\pt_G=Bi(x))$, so that $G/H$ is just another name for the orbits $i^*G/H\defequi \sum_{x:BH}i^*G(x)$.  Note that composing with the structure identity $p_i:\pt_G=Bi(\pt_H)$ gives an equivalence $i^*G(\pt_H)\equiv (\pt_G=\pt_G)$, so that $|i^*G(\pt_H)|= |G|$.
+
+  Lagrange's \cref{thm:lagrange} says that $i^*G$ is a free $H$-set \footnote{\cref{thm:lagrange} doesn't say this at present: fix it} and so all orbits $\mathcal O_x$ are equivalent to the $H$-set $\tilde H(x)=(\pt_H=x$).
+Consequently, the equivalence 
+$$i^*G(\pt_H)\simeq\sum_{x:i^*G/H}\mathcal O_x$$ 
+of \cref{sec:orbit-stabilizer-theorem} gives that $G/H$ and $H$ are finite and that $|G|=|G/H|\cdot|H|$.\footnote{somewhere: prove that if $A$ is a finite set and $B(a)$ is a family of finite sets indexed over $a:A$, then $\sum_{a:A}B(a)$ is a finite set of cardinality $\sum_{i:\bn n}|B(f(i))|$ for any $f:\bn n=A$, hence if $m=|B(a)|$ for all $a$ then $|\sum_AB(a)|=n\cdot m$.}
 
 
-Finally, if $|H|=|G|$, then $|G/N|=1$ and so the set $G/N$ is contractible.  Since we were considering a subgroup, the preimage $Bi^{-1}(\pt)$ is equivalent to the set $G/H$.\end{proof}
+Finally, since we are considering a subgroup, the preimage $Bi^{-1}(\pt)$ is equivalent to the set $G/H$.  If $|H|=|G|$, then $|G/H|=1$ and so the set $G/H$ is contractible.\end{proof}
 
 
     \begin{corollary}
@@ -37,10 +87,15 @@ Finally, if $|H|=|G|$, then $|G/N|=1$ and so the set $G/N$ is contractible.  Sin
   \label{cor:whatSylow2needs}Let $f:\Hom(G,G')$ be a surjective homomorphism with kernel $N$ and let $H$ be a subgroup of $G$.  If $H$ and $G'$ are finite with coprime cardinalities, then $H$ is a subgroup of $N$.
 \end{corollary}
 \begin{proof}
-  By \cref{lem:whatSylow2needs} the induced homomorphism from $H/N\cap H$ to $G'$ is injective, and so Lagrange's counting \cref{lem:Lagrangeascounting} gives that the cardinality of $H/N\cap H$ divides the cardinality of $G'$.  
-
-Since $|H|$ and $|G'|$ are coprime this implies that $|H|$ and $|H/N\cap H|=|H|/|N\cap H|$ are coprime, which implies that $|N\cap H|=|H|$.  Since $N\cap H$ is a subgroup of $H$ this implies that $N\cap H=H$, or in other words, that $H$ is a subgroup of $N$ ((elaborate)).
+  Let $i:\Hom(H,G)$ be the inclusion.  By \cref{lem:whatSylow2needs} the intersection $N\cap H$ is the kernel of the composite $fi:\Hom(H,G')$.  Let $H'$ be the image of $fi$. Now, Lagrange's counting \cref{lem:Lagrangeascounting} gives that $|H|=|H'|\cdot |N\cap H|$ and $|G'|=|G'/H'|\cdot|H'|$.  This means that $|H'|$ divides both $|H|$ and $|G'|$, but since these numbers are coprime we must have that $|H'|=1$, and finally that $|H|=|N\cap H|$.  This imples that $N\cap H=H$, or in other words, that $H$ is a subgroup of $N$ ((elaborate)).
 \end{proof}
+
+\begin{corollary}
+  If $G$ and $G'$ are finite groups, then the \gporder $|G\times G'|$ of the product is the product $|G|\cdot| G'|$ of the \gporders.
+\end{corollary}
+\begin{remark}
+  Hence the \gporder of the $n$-fold product of \cref{rem:noofsubgps} of $C_2$ with itself is ($2^n$ and so grows quickly, but is still) dwarfed by the number of subgroups as $n$ grows.
+\end{remark}
 
 
 \section{Cauchy's theorem}
@@ -63,7 +118,6 @@ Hence the cardinality of the set of all trivial orbits, \ie of $X^G$, is the dif
 Then $G$ has a subgroup which is cyclic of \gporder $p$. 
 \end{theorem}
 \begin{proof}
-\footnote{NOTE: three variants follow.  Have to choose one.  The middle needs some background essentially boiling down to $BC_n$ being the truncation of the $n$th Moore space.}
 Recall the cyclic group $C_p$ of \gporder $p$ given by the pointed connected groupoid
 $$BC_p\defequi(\sum_{S:\Set}\sum_{j:S=S}||(S,j)=\zet/p||,(\zet/p,!)),
 $$
@@ -85,33 +139,34 @@ $X(\zet/p)^{C_p}$ is equivalent to $\sum_{g:\pt_G=\pt_G}g^p=e_G.$  If we can sho
 % $$X(\zet/p)= X(\zet/p)^{C_p}+(\text{free part of }X(\zet/p)).$$
 % Since the \gporder of $G$ is divisible by $p$, so is the cardinality of $X(\zet/p)$ \emph{and} of the free part of $X(\zet/p)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
 
-\footnote{ALTERNATIVELY:
-  Consider  the $p-1$-fold product $(\bn{(p-1)}\to (\pt_G=\pt_G))$ of $\pt_G=\pt_G$ with itself.  We give this set the structure of a $\ZZ/p$-set as follows: ((here it is convenient to say that a $\ZZ/p$-set is the same as a $\ZZ$-set commuting with the $p$-fold cover)) define $X:S^1\to\Set$ by $X(\base)\defequi (\bn{(p-1)}\to (\pt_G=\pt_G))$ and by setting $X(\Sloop)$ to be the element in $X(\base)=(\base)$ sending $(g_1,\dots,g_{p-1})$ to $(g_2,\dots,g_{p-1},(g_1\cdots g_{p-1})^{-1})$.  Note that
-$$\xymatrix{S^1\ar[d]_{(-)^p}\ar[dr]^X&\\S^1\ar[r]_X&\Set}$$
-commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this action is an element of $X(\base)$ of the form $(g,g,\dots,g)$ such that $g^{p-1}=g^{-1}$  (expand)). The choice $g=e$ always gives such a fixed point, but if there is any other point ... (do you need decidability here?), the pointed map $S^1\to BG$ given by sending $\Sloop$ to $g$ gives the desired subgroup. Hence we need to show that $X$ has fixed points.
+\footnote{Two slight variations commented away.  Have to choose one.  The first needs some background essentially boiling down to $BC_n$ being the truncation of the $n$th Moore space.
+% ALTERNATIVELY:
+%   Consider  the $p-1$-fold product $(\bn{(p-1)}\to (\pt_G=\pt_G))$ of $\pt_G=\pt_G$ with itself.  We give this set the structure of a $\ZZ/p$-set as follows: ((here it is convenient to say that a $\ZZ/p$-set is the same as a $\ZZ$-set commuting with the $p$-fold cover)) define $X:S^1\to\Set$ by $X(\base)\defequi (\bn{(p-1)}\to (\pt_G=\pt_G))$ and by setting $X(\Sloop)$ to be the element in $X(\base)=(\base)$ sending $(g_1,\dots,g_{p-1})$ to $(g_2,\dots,g_{p-1},(g_1\cdots g_{p-1})^{-1})$.  Note that
+% $$\xymatrix{S^1\ar[d]_{(-)^p}\ar[dr]^X&\\S^1\ar[r]_X&\Set}$$
+% commutes and so we get a $\ZZ/p$-action ((expand)).  A fixed point of this action is an element of $X(\base)$ of the form $(g,g,\dots,g)$ such that $g^{p-1}=g^{-1}$  (expand)). The choice $g=e$ always gives such a fixed point, but if there is any other point ... (do you need decidability here?), the pointed map $S^1\to BG$ given by sending $\Sloop$ to $g$ gives the desired subgroup. Hence we need to show that $X$ has fixed points.
 
-Now, $X(\base)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $\ZZ/p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
-$$X(\base)= X(\base)^{\ZZ/p}+(\text{free part of }X(\base)).$$
-Since the \gporder of $G$ is divisible by $p$, so is the cardinality of $X(\base)$ \emph{and} of the free part of $X(\base)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+% Now, $X(\base)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $\ZZ/p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
+% $$X(\base)= X(\base)^{\ZZ/p}+(\text{free part of }X(\base)).$$
+% Since the \gporder of $G$ is divisible by $p$, so is the cardinality of $X(\base)$ \emph{and} of the free part of $X(\base)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
 
 
-ALTERNATIVELY:
-Recall the cyclic group of order $p$.  For the sake of convenience, we identify $\bn p\times\bn 1$ and $\bn p$, so that elements will be denoted $0,1,2,\dots$ and not $(0,0), (1,0),(2,0)\dots$, and we also write $s$ instead of $\sqrt[p]{\id}$ for the element in $\bn p=\bn p$ that shifts to the successor (mod $p$).  In other words we choose an identification $\zet/p=(\bn p,s)$ once and for all.  If 
-$$(S,j):BC_p\defequi\sum_{S:\UU}\sum_{j:X=X}||(S,j)=(\bn p,s)||,$$ consider the set 
-$$X(S,j)\defequi\sum_{g:S\to (\pt_G=\pt_G)}||\sum_{a:(S,j)=(\bn p,s)}g_{a^{-1}(0)}\cdot\dots\cdot g_{a^{-1}(p-1)}=e_G||.$$ 
-Note that if $g:\bn p\to(\pt_G=\pt_G)$, then we have an equality of propositions
-$$||\sum_{a:(\bn p,s)=(\bn p,s)}g_{a^{-1}(0)}\cdot\dots\cdot g_{a^{-1}(p-1)}=e_G||=g_{0}\cdot\dots\cdot g_{p-1}=e_G$$
-since $(g_1\cdot\dots\cdot g_{p-1}=e_G)=(g_2\cdot\dots\cdot g_{p-1}\cdot g_1=e_G)$,
-and so 
-$$X(\bn p,s)=\sum_{g:\bn p\to (\pt_G=\pt_G)}g_{0}\cdot\dots\cdot g_{p-1}=e_G$$ 
-which is equivalent to the $p-1$-fold product of $\pt_G=\pt_G$ with itself ($g_0=(g_1\cdot\dots\cdot g_{p-1})^{-1}$, but all the other $g_i$s are then chosen arbitrarily).  Consequently, the number of elements in $X(\bn p,s)$ is divisible by $p$.
+% ALTERNATIVELY:
+% Recall the cyclic group of order $p$.  For the sake of convenience, we identify $\bn p\times\bn 1$ and $\bn p$, so that elements will be denoted $0,1,2,\dots$ and not $(0,0), (1,0),(2,0)\dots$, and we also write $s$ instead of $\sqrt[p]{\id}$ for the element in $\bn p=\bn p$ that shifts to the successor (mod $p$).  In other words we choose an identification $\zet/p=(\bn p,s)$ once and for all.  If 
+% $$(S,j):BC_p\defequi\sum_{S:\UU}\sum_{j:X=X}||(S,j)=(\bn p,s)||,$$ consider the set 
+% $$X(S,j)\defequi\sum_{g:S\to (\pt_G=\pt_G)}||\sum_{a:(S,j)=(\bn p,s)}g_{a^{-1}(0)}\cdot\dots\cdot g_{a^{-1}(p-1)}=e_G||.$$ 
+% Note that if $g:\bn p\to(\pt_G=\pt_G)$, then we have an equality of propositions
+% $$||\sum_{a:(\bn p,s)=(\bn p,s)}g_{a^{-1}(0)}\cdot\dots\cdot g_{a^{-1}(p-1)}=e_G||=g_{0}\cdot\dots\cdot g_{p-1}=e_G$$
+% since $(g_1\cdot\dots\cdot g_{p-1}=e_G)=(g_2\cdot\dots\cdot g_{p-1}\cdot g_1=e_G)$,
+% and so 
+% $$X(\bn p,s)=\sum_{g:\bn p\to (\pt_G=\pt_G)}g_{0}\cdot\dots\cdot g_{p-1}=e_G$$ 
+% which is equivalent to the $p-1$-fold product of $\pt_G=\pt_G$ with itself ($g_0=(g_1\cdot\dots\cdot g_{p-1})^{-1}$, but all the other $g_i$s are then chosen arbitrarily).  Consequently, the number of elements in $X(\bn p,s)$ is divisible by $p$.
 
-Now, a $C_p$-fixed point of $X(\bn p,s)$ is an element $(g_0,\dots,g_{p-1},!)$ such that $(g_0,\dots,g_{p-1},!)=(g_1,\dots,g_{p-1},g_0,!)$, \ie $g_0=g_1=g_2=\dots=g_{p-1}$\footnote{if I am allowed to write that}.  In other words, a fixed point is of the form $(g,\dots,g,!)$, where $!$ expresses that $g^p=e_G$:
-$$X(\bn p,s)^{C_p}=\sum_{g:\pt_G=\pt_G}g^p=e_G.$$  If we can show that $(g,!):X(\bn p,s)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point.
+% Now, a $C_p$-fixed point of $X(\bn p,s)$ is an element $(g_0,\dots,g_{p-1},!)$ such that $(g_0,\dots,g_{p-1},!)=(g_1,\dots,g_{p-1},g_0,!)$, \ie $g_0=g_1=g_2=\dots=g_{p-1}$\footnote{if I am allowed to write that}.  In other words, a fixed point is of the form $(g,\dots,g,!)$, where $!$ expresses that $g^p=e_G$:
+% $$X(\bn p,s)^{C_p}=\sum_{g:\pt_G=\pt_G}g^p=e_G.$$  If we can show that $(g,!):X(\bn p,s)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point.
 
- Now, $X(\bn p,s)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
-$$X(\bn p,s)= X(\bn p,s)^{C_p}+(\text{free part of }X(\bn p,s)).$$
-Since the \gporder of $G$ is divisible by $p$, so is the cardinality of $X(\bn p,s)$ \emph{and} of the free part of $X(\bn p,s)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
+%  Now, $X(\bn p,s)$ splits as a disjoint union of its orbits.  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
+% $$X(\bn p,s)= X(\bn p,s)^{C_p}+(\text{free part of }X(\bn p,s)).$$
+% Since the \gporder of $G$ is divisible by $p$, so is the cardinality of $X(\bn p,s)$ \emph{and} of the free part of $X(\bn p,s)$.  Hence, the number of fixed points is divisible by $p$, and it is not zero, so there must be nontrivial fixed points.
 }%endfootnote
 \end{proof}
 \begin{lemma}
@@ -121,7 +176,9 @@ Then the center $Z(G)$ of $G$ is nontrivial.
 (point to center in the symmetry chapter)
 \end{lemma}
 \begin{proof}
-  Recall the $G$-set $\Ad_G:BG\to\Set$ given by $Ad_G(z)=(z=z)$.  Then the map  $$\ev_{\pt_G}:\prod_{z:BG}(z=z)\to(\pt_G=\pt_G),\quad \ev_G(f)=f(\pt_G)$$  
+  Recall the $G$-set $\Ad_G:BG\to\Set$ given by $\Ad_G(z)=(z=z)$.  
+Then the map  
+$$\ev_{\pt_G}:\prod_{z:BG}(z=z)\to(\pt_G=\pt_G),\quad \ev_G(f)=f(\pt_G)$$  
 has the structure of a (n abstract) inclusion of a subgroup; namely the inclusion of the center $Z(G)$ in $G$.  
 The center thus represents the fixed points of the $G$-set $\Ad_G$.  
 Since $G$ has \gporder a power of $p$, all orbits but the fixed points have cardinality divisible by $p$.  
@@ -134,7 +191,7 @@ Consequently, Burnside's lemma states that the number of fixed points, \ie the \
 \begin{proof}
   The center $Z(G)$ is by \cref{lem:nontrivcenter} of \gporder $p$ or $p^2$.
   Since $G$ is not cyclic we have that $g^p=e_G$ for all $g:\pt_G=\pt_G$.    
-((To be continued: the classical proof involves choosing nontrivial elements  -- see what can be done about that))
+\footnote{((To be continued: the classical proof involves choosing nontrivial elements  -- see what can be done about that.  At present this corollary is not used anywhere))}
 \end{proof}
 \section{Sylow's Theorems}
 \label{sec:sylow}
@@ -142,7 +199,8 @@ Consequently, Burnside's lemma states that the number of fixed points, \ie the \
   \label{thm:sylow1}
   If $p$ is a prime, $n:\NN$ and $G$ a finite group whose \gporder divides $p^n$, then $G$ has a subgroup of \gporder $p^n$.
 \end{theorem}
-\begin{proof}\footnote{In this proof I refer to \cref{lem:aut-orbit} (which says that $N_G(K)/K$ is equivalent to the set of automorphisms of $G/K$ in the orbit category) to claim that the $K$-fixed points of $G/K$ may be identified with $N_G(K)/K$.   Also I use that the \gporder of a pullback of a subgroup $L$ along a surjection is the product of the \gporder of the kernel and the \gporder of $L$}
+\begin{proof}\footnote{In this proof I refer to \cref{lem:aut-orbit} (which says that $N_G(K)/K$ is equivalent to the set of automorphisms of $G/K$ in the orbit category) to claim that the $K$-fixed points of $G/K$ may be identified with $N_G(K)/K$.   %Also I use that the \gporder of a pullback of a subgroup $L$ along a surjection is the product of the \gporder of the kernel and the \gporder of $L$
+}
   We prove the result by induction on $n$.  
 If $n=0$ we need to have a subgroup of \gporder $1$, which is witnessed by the trivial subgroup.
 %If $n=1$, this is Cauchy's \cref{thm:cauchys}.  
