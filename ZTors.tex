@@ -110,7 +110,8 @@ recursion principle, Buchholtz and Bezem found the construction
 presented in this paper, which has subsequently been formalized
 by Grayson \cite{circleind-Dan,circleind-Dan-theorem} in {\em UniMath}.  
 
-The precise statement of the induction principle is that there is a function of the following type:
+The precise statement of the induction principle is that there is a 
+function of the following type, with $\apd{\_}$ from \cite[Ch. 2.3]{hottbook}:
 
 \[
 \prod_{A: \TorZ\to\UU}~
@@ -118,17 +119,22 @@ The precise statement of the induction principle is that there is a function of 
 \prod_{l: a=^A_{\Zloop} a}~
 \sum_{f: \prod_{z:\TorZ} A(z)}~
 \sum_{r: f(\pt)= a}~
-{\ap{f}(\Zloop) = r\ct l \ct r^{-1}}.
+{\apd{f}(\Zloop) = r\cto' l \cto r^{-1}}.
 \]
 
+Note that $r$ above is a path between two elements of the same fiber $A(\pt)$.
+Hence both $r$ and $r^{-1}$ are paths over $\refl{\pt}$ and can be composed with $l$.
+To simplify the statement, we use both \emph{left recursive} pathover 
+composition $\cto'$ and \emph{right recursive} $\cto$.
 If the underlying type theory has propositional truncation with a dependent eliminator 
 that computes judgmentally on the point constructor, such as in \cite[Ch. 6.9]{hottbook},
-then the same is true for our circle, i.e., the path $r : f(\pt)= a$ above is a reflexivity path.  
+then the same is true for our circle, i.e., the path $r : f(\pt)= a$ above is a reflexivity path.
+In that case $r\cto' l \cto r^{-1}$ is judgmentally equal to $l$.   
+
 %The \emph{UniMath} project lacks dependent elimination for propositional truncation, so
 The convention in {\em UniMath} is to avoid higher inductive types, and thus
 the formalization in \cite{circleind-Dan} is 
 somewhat different from the construction presented below.
-
 The formalized construction does not use higher inductive types, nor does it 
 %PROOF IN PAPER USES \Trunc AS HIT
 depend on the previous existence of a type satisfying the induction principle of the circle. 
@@ -469,7 +475,7 @@ The proof is by induction on $\beta$ (for right-recursive concatenation).
    \cp{\alpha}(\hat p) \cto  \cp{\beta}(\hat q),$
   for every $\hat p: b_1=^B_p b_2$ and $\hat q: b_2=^B_q b_3$.
 \end{lemma}
- The proof is by induction first on $\beta$ and then on $\hat q$.
+ The proof is by induction first on $\beta$, then on $q$, and finally on $\hat q$.
 
 
 
@@ -581,8 +587,9 @@ Q_p(X,f)&\defeq \sum_{a':A}~\sum_{h:X\to a=a'}~\prod_{x:X} h(f(x))=p\ct h(x).
 \end{definition}
 
 \begin{lemma}\label{lem:guided-null-hmtps}
-For every $(X,f,t):\TorZ$, the type $Q_p(X,f)$ is contractible
-with center $\vec{c}_p(X,f,t)$ defined in the proof.
+For every $Z\defeq(X,f,t):\TorZ$, the type $Q_p(X,f)$ is contractible, 
+with the center of contraction of $Q_p(X,f)$ 
+denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
 \end{lemma}
 \begin{proof}
   By \cref{lem:dep-elim-TorZ} it suffices to prove that $Q_p(\zet,s)$ is contractible.
@@ -605,9 +612,6 @@ with center $\vec{c}_p(X,f,t)$ defined in the proof.
   Thus, applying \cref{thm:integers-univ-symm}
   shows that $\varphi_{a'}$ is an equivalence,
   where $\varphi_{a'}(h,q) \defeq h(0)$.
-
-For every $Z\defeq(X,f,t):\TorZ$, the center of contraction of $Q_p(X,f)$ 
-is denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
 \end{proof}
 
 The center of contraction of $Q_p(\zet,s)$ is defined in the above proof 
@@ -702,7 +706,7 @@ In \cref{def:loop-s-iterated}, if $Z\jdeq\pt$ and $x=0$, we get $e_0 = \id$.
 Applying UA gives the first result.
 
 \begin{lemma}\label{lem:s-pt-zero}
-  There is a path $\delta_0 : \refl{\pt} = s^\pt_0$. 
+  There is a path $\gamma_0 : \refl{\pt} = s^\pt_0$. 
 \end{lemma}
 
 For the second result, note that prefixing $s^Z_x$ by ${\Zloop}$ 
@@ -712,8 +716,8 @@ so $e_x\circ s = e_{x+1}$. Applying UA we get the next general result
 (which we only need for $Z\jdeq\pt$).
 
 \begin{lemma}\label{lem:loop-s-iterated}
-  For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, we have
-  ${\varepsilon^Z_x}: {\Zloop} \ct s^Z_x = s^Z_{x+1}$. 
+  For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, we have a path
+  ${\delta^Z_x}: {\Zloop} \ct s^Z_x = s^Z_{x+1}$. 
 \end{lemma}
 
 Now we are ready to derive the induction principle using the same 
@@ -723,27 +727,29 @@ possible, but take care that all types are different.
 \begin{definition}\label{def:guided-null-hmtps-dep}
 For every $Z\defeq(X,f,t):\TorZ$, define
 \begin{align*}\label{eq:TBD}
-Q_p(Z)&\defeq \sum_{a' : A(Z)}~\sum_{h : \prod_{x:X} a =^A_{s^Z_x} a'}~\prod_{x:X} h(f(x)) = \cp{\varepsilon^Z_x}(p\cto h(x)),
+Q_p(Z)&\defeq \sum_{a' : A(Z)}~\sum_{h : \prod_{x:X} a =^A_{s^Z_x} a'}~\prod_{x:X} h(f(x)) = \cp{\delta^Z_x}(p\cto h(x)),
 \end{align*}
-where $\varepsilon^Z_x$ comes from \cref{lem:loop-s-iterated}.
+where $\delta^Z_x$ comes from \cref{lem:loop-s-iterated}.
 \end{definition}
 
 
 \begin{lemma}\label{lem:guided-null-hmtps-dep}
-  For every $Z:\TorZ$, the type $Q_p(Z)$ is contractible, 
-  with center $\vec{c}_p(Z)$ defined in the proof.
+  For every $Z:\TorZ$, the type $Q_p(Z)$ is contractible.
 \end{lemma}
 \begin{proof}
   By \cref{lem:dep-elim-TorZ} it suffices to prove that $Q_p(\pt)$ is contractible.
   We have $Q_p(\pt)\jdeq \sum_{a':A(\pt)} R(a')$ for $R : A(\pt) \to \UU$ defined by
   \[
     R_p(a') \defeq \sum_{h : \prod_{z:\zet} a =^A_{s^\pt_z} a'}~
-    \prod_{z:\zet} h(z+1) = \cp{\varepsilon^\pt_z}(p \cto h(z)).
+    \prod_{z:\zet} h(z+1) = \cp{\delta^\pt_z}(p \cto h(z)).
   \]
-  We have that $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} {a'})$ is contractible,
-  since $s^\pt_0 = \refl{\pt}$ and 
-  $\sum_{a':A(\pt)} (a =^A_{\refl{\pt}} a') \jdeq \sum_{a':A(\pt)} (a = a')$
-  is contractible.
+  We show that $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} {a'})$ is contractible.
+  Let $\rrfl$ be the reflexivity path at $a$ over $\refl{\pt}$.
+  Note that $\sum_{a':A(\pt)} (a =^A_{\refl{\pt}} a') \jdeq \sum_{a':A(\pt)} (a = a')$
+  is contractible with center $(a,\rrfl)$. By \cref{lem:s-pt-zero}
+  $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} {a'})$ is contractible with center
+  $\cp{\gamma_0}(a,\rrfl)$.
+
   Thus, to show that $Q_p(\pt)$ is contractible,
   it suffices to define an equivalence
   \[
@@ -754,31 +760,31 @@ where $\varepsilon^Z_x$ comes from \cref{lem:loop-s-iterated}.
   this time with the family $P_{a'} : \zet \to \UU$ given 
   by $P_{a'}(z) \defeq (a =^A_{s^\pt_z} {a'})$
   and the equivalences $f_{a'} : \prod_{z:\zet} P_{a'}(z)\equiv P_{a'}(z+1)$ 
-  given by $f_{a'}(z) \defeq \cp{\varepsilon^\pt_z}(p \cto ({-}))$.
+  given by $f_{a'}(z) \defeq \cp{\delta^\pt_z}(p \cto ({-}))$.
   Thus, applying \cref{thm:integers-univ-symm}
   shows that $\varphi_{a'}$ is an equivalence,
   where $\varphi_{a'}(h,q) \defeq h(0)$.
-
-For every $Z\defeq(X,f,t):\TorZ$, the center of contraction of $Q_p(X,f)$ 
-is denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
 \end{proof}
+Note that, in the proof above, the center of $Q_p(\pt)$ is 
+$\varphi_{a}^{-1}(\cp{\gamma_0}(a,\rrfl))$, which is a triple $(a,h,q)$.
+For every $Z:\TorZ$, the center of contraction of $Q_p(Z)$
+is denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
 
+%\begin{figure}
+%\caption{\label{fig:TorZ-induction}LET'S HAVE SOME INFORMATIVE PICTURE}
+%\end{figure}
 
-\begin{figure}
-\caption{\label{fig:TorZ-induction}LET'S HAVE SOME INFORMATIVE PICTURE}
-\end{figure}
-
-Postfixing $s^X_x$ by $e: X=Y$ amounts to
-applying the corresponding equivalence $e: X\to Y$, to be proved
-by induction on $e$. In evidence:
+Postcomposing $s^X_x$ by $e: X=Y$ amounts to
+applying the corresponding equivalence $\ptoe{e}: X\to Y$ to $x$, 
+to be proved by induction on $e$. In evidence:
 
 \begin{lemma}\label{lem:s-X-x-*-e}
-  For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have $s^X_x \ct e = s^Y_{e(x)}$.
-  Thus we have a function $\varepsilon_{e,x} : (s^X_x)^{-1} \ct s^Y_{e(x)} = e$.
+  For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have $s^X_x \ct e = s^Y_{\ptoe{e}(x)}$.
+  Thus we have a path $\varepsilon_{e,x} : (s^X_x)^{-1} \ct s^Y_{\ptoe{e}(x)} = e$.
 \end{lemma}
 
-The following lemma uses pathover reversal denoted by $({-})^{-o}$.
-The function $\apd{\_}$ is the dependent action on paths from \cite[Ch. XX]{hottbook}.
+%The following lemmas use pathover reversal denoted by $({-})^{-o}$.
+The function $\apd{\_}$ is the dependent action on paths from \cite[Ch. 2.3]{hottbook}.
 
 \begin{lemma}\label{lem:apd-c-tilde-c}
 For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have
@@ -804,36 +810,38 @@ We compute (at least partially) the center $\vec c_p(\pt)$ of $Q_p(\pt)$.
 The goal is to prove $c_p(\pt)\jdeq a$ and $\apd{c_p}(\Zloop)=p$.
 
 First, $s^\pt_0: \pt = \pt$ is based on $(n\mapsto s^n(0)) = \id$, 
-mapped by $ua$ to $\refl{\pt}$. So we have $\delta_0 : \refl{\pt} = s^\pt_0$.
-We use $\rrfl$ for the reflexivity path at $a$ over $\refl{\pt}$.
+mapped by $ua$ to $\refl{\pt}$. So we have $\gamma_0 : \refl{\pt} = s^\pt_0$.
+
 The center of $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is the pair
-$(a,r)$ where $r \defeq \cp{\delta_0}(\rrfl): a =^A_{s^\pt_0} a$.
+$(a,r)$ where $r \defeq \cp{\gamma_0}(\rrfl): a =^A_{s^\pt_0} a$.
 This shows $c_p(\pt)\jdeq a$.
 
 The center $(a,r)$ is pulled back to a center $(a,c)$ of $Q_p(\pt)$ 
 where $c\defeq(h,q)$ is the center of $\varphi_{a}^{-1}(r)$ coming 
 from the proof that $\varphi_{a}$ is an equivalence.
 The type of $h$ is $\prod_{z:\zet} a =^A_{s^\pt_z} a$ and
-the type of $q$ is $\prod_{z:\zet} h(z+1) = \cp{\varepsilon^\pt_z}(p \cto h(z))$.
+the type of $q$ is $\prod_{z:\zet} h(z+1) = \cp{\delta^\pt_z}(p \cto h(z))$.
 We know $\varphi_{a}(h,q) \defeq h(0) = r$, so $\tilde c_p(\pt,0) = r$.
 Using $q$ we also know that 
-$\tilde c_p(\pt,1) \defeq h(1) = \cp{\varepsilon^\pt_0}(p \cto h(0))$.
+$\tilde c_p(\pt,1) \defeq h(1) = \cp{\delta^\pt_0}(p \cto h(0))$.
 We now have enough information to verify $\apd{c_p}(\Zloop)=p$,
 which by \cref{lem:apd-c-tilde-c} reduces to 
 \[
 \cp{\varepsilon_{\Zloop,0}}
-((\cp{\delta_0}(\rrfl))^{-o}\cto 
-\cp{\varepsilon^\pt_0}(p \cto \cp{\delta_0}(\rrfl))) = p.
+((\cp{\gamma_0}(\rrfl))^{-o}\cto 
+\cp{\delta^\pt_0}(p \cto \cp{\gamma_0}(\rrfl))) = p.
 \]
-
 
 A great simplification is obtained by using that $\TorZ$ is a groupoid:
 all 2-paths having the same endpoints are equal.
 Hence the functions $\cp{\alpha}$ only depend on the (path-)type
 of $\alpha$, and we may replace the subscript $\alpha$ by its type.
+However, if $\alpha$ is shorter than its type we may 
+prefer to keep $\alpha$ in $\cp{\alpha}$.
 Also, as $\cp{\refl{p}}$ is the identity, so is any $\cp{\alpha}$
 when the endpoints of $\alpha$ are definitionally equal. 
-We make extensive use of this and of the lemmas from \cref{sec:pathovers}.
+We make extensive use of this and of the functions and
+lemmas from \cref{sec:pathovers}.
 
 Abbreviate $s_0 \defeq s^\pt_0$, $s_1 \defeq s^\pt_1$, 
 then $\varepsilon_{\Zloop,0} : s_0^{-1} \ct s_1 = \Zloop$.
@@ -872,6 +880,10 @@ and satisfies $e_A(a,p)(\pt) \jdeq a$ and
 $\apd{e_A(a,p)}(\Zloop) = p$.
 \end{definition}
 
+\section{Acknowledgement}
+The authors acknowledge the support of the Centre for Advanced Study (CAS)
+at the Norwegian Academy of Science and Letters
+in Oslo, Norway, which funded and hosted the research project Homotopy Type Theory and Univalent Foundations during the academic year 2018/19. 
 
 
 \bibliographystyle{amsplain}
