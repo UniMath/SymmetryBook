@@ -583,12 +583,11 @@ Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\UU)$ and the typ
 \end{definition}
 
 \begin{remark}
-  The reader will notice that the type of $G$-set is equivalent to the type of \coverings over $BG$.%\footnote{we should be careful with having too many official names for the same objects}
+  The reader will notice that the type of $G$-set is equivalent to the type of \coverings over $BG$. %\footnote{we should be careful with having too many official names for the same objects}
 The reason we have allowed ourselves two names is that our focus is different: for a $G$-set $X:BG\to\Set$ we focus on the sets $X(z)$, whereas when talking about \coverings the first projection $\sum_{z:BG}X(z)\to BG$ takes center stage.  Each focus has its advantages.
 
 Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 \end{remark}
-
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group (or \inftygp), then
@@ -665,6 +664,46 @@ A third $G$-type with underlying type $\pt_G=\pt_G$ is $\mathrm{triv}_G(\pt_G=\p
 \begin{xca}
   Use that $BG$ is connected to show that if $X$ is a $G$-set, then $X(z)$ is a set for all $z:BG$ (\ie $\prod_{z:BG}\isset(X(z))$).
 \end{xca}
+
+\sususe{Transitive $G$-sets}
+\label{sec:transitiveGsets}
+We end the section with some observations regarding so-called transitive $G$-sets which will be valuable when we move on to discussing subgroups.
+Classically, an $\abstr(G)$-set $\mathcal X$ is said to be \emph{transitive} if for all $a,b:\mathcal X$ there is a $g:\mathcal X$ such that $a=g\cdot b$.  In our world this translates to
+\begin{definition}
+  \label{def:connectedGset}\label{def:transitiveGset}
+  A $G$-set $X:BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
+$$\mathrm{isTrans}(X)\defequi\prod_{y:BG}\prod_{a,b:X(y)}||\sum_{g:y=y}a=g\cdot b||
+$$
+holds.
+\end{definition}
+Note that the mention of $y$ is redundant in the definition: by transport it is enough to demand $\prod_{a,b:X(\pt_G)}||\sum_{g:\pt_G=\pt_G}a=g\cdot b||$, and furthermore, if the proposition holds for one $b$ it holds for all others by composition.  
+
+In other words, $X$ is transitive if and only if there is a $b:X(\pt_G)$ such that %for all $a:X(\pt_G)$ 
+the map $-\cdot b:(\pt_G=\pt_G)\to X(\pt_G)$ is surjective.
+
+In the other direction we have
+\begin{lemma}
+  \label{lem:conistrans}
+  A $G$-set  is transitive if and only if the associated set bundle is connected.
+\end{lemma}
+\begin{proof}
+  Consider a $G$-set $X:BG\to\Set$ and the associated \covering $f:\tilde X\to BG$ where $\tilde X\defequi\sum_{y:Y}X(y)$ and $f$ is the first projection.  Now, $\tilde X$ is connected if and only if there is a $y:BG$ and a $b:X(y)$ such that for all $z:BG$ and $a:X(z)$ there is a $g:z=y$ such that $a=X(g)b$.  Since $BG$ is connected, this is equivalent to asserting that there is a $b:X(\pt_G)$ such that for all $a:X(\pt_G)$ there is a $g:\pt_G=\pt_G$ such that $a=g\cdot b\defequi X(g)b$.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:evisinjwhentransitive}
+  Let $X:BG\to\Set$ be a transitive $G$-set, $y:BG$ and $b:X(y)$.  Then the evaluation map
+$$\mathrm{ev}:(X=X)\to X(y),\qquad \mathrm{ev}(f)\defequi f_y(b)$$
+is injective.
+\end{lemma}
+\begin{proof}
+  For $a:X(y)$, consider an $f:X=X$ with $f_y(b)=a$.  Let $z:BG$ and $c:X(z)$.
+For any $g:y=z$ such that $X(g)b=c$ we have $f_z(c)=f_z(X(g)b)=X(g)f_y(b)=X(g)a$: the value does not depend on $f$.  Since we try to prove a proposition we are done. 
+\end{proof}
+
+
+
+
 \subsection{The classifying space is the type of torsors}
 \label{sec:torsors}
 \begin{definition}
@@ -1529,22 +1568,6 @@ The first projection $\typesubgroup(G)\to BG$ is referred to as the \emph{\cover
 % \begin{remark}
 %   The permutation group $\Sigma_3$ has four nontrivial proper subgroups.  Three conjugate subgroups isomorphic as groups to $C_2$ and one normal one which is as a group is isomorphic to $C_3$.  The component containing the copies of $C_2$ is equivalent to a circle.
 % \end{remark}
-\sususe{Subgroups through $G$-sets}
-Occasionally it is useful to define ``subgroups'' slightly differently.
-As we've defined it a subgroup of a group $G$ of the form $(H,f,!)$ where $H$ is a group (pointed connected groupoid  $BH$), $f:BH\to_* BG$ is a pointed map whose fibers are sets (a pointed \covering).  There is really no need to specify that $H$ is a group: if $F:T\to_BG$ is a \covering, then $T$ is automatically a groupoid.  on the other hand,  the type of \coverings over $BG$ is equivalent to $G$-sets: if $X:BG\to\Set$ is a $G$-set, then the covering is given by the first projection $\tilde X\to BG$ where $\tilde X\defequi\sum_{y:BG}X(y)$.
-\begin{definition}
-  If $X\colon Y\to\Set$ is a \covering, then $\mathrm{isConn}(X)$ is the proposition claiming that $\tilde X\defequi\sum_{y:Y}X(y)$ is connected.
-\end{definition}
-\newcommand{\typenormal}{\mathbf{Nor}}
-\begin{definition}
-  Let $G$ be a group and $y:BG$, then the $G$-set of \emph{subgroups' of $G$} is
-  $$\typesubgroup_G':BG\to\Set,\qquad\typesubgroup_G'(y)\defequi\sum_{X:BG\to\Set}\sum_{\pt_y:X(y)}\mathrm{isConn}(X)$$
-and the type of \emph{normal subgroups'} is the set of fixed points
-$$\typenormal_G'\defequi\prod_{y:BG}\typesubgroup_G'(y).$$
-%A \emph{normal subgroup'} of $G$ is an element in $\typenormal_G'$.
-\end{definition}
-By the above we may use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably, and under the equivalence, normal subgroups correspond to normal subgroups'.
-
 \sususe{Kernels and cokernels}
 \label{subsec:ker}
 %\newcommand{\ker}{\mathrm{ker}}
@@ -1635,6 +1658,46 @@ To the extent that it is needed, show the characterizing properties of kernels, 
   An example from linear algebra: let $A$ be any $n\times n$-matrix with nonzero determinant and with integer entries, considered as a homomorphism $A:\Hom(\ZZ^n,\ZZ^n)$.  Then the cokernel of $A$ is a finite set with cardinality the absolute value of the determinant of $A$.  You might want to picture this as a $|\det(A)|$-fold \covering of the $n$-fold torus $(S^1)^{\times n}$ by itself.
 \end{example}
 
+
+\sususe{Subgroups through $G$-sets}
+Occasionally it is useful to define ``subgroups'' slightly differently.
+As we've defined it a subgroup of a group $G$ of the form $(H,f,!)$ where $H$ is a group (pointed connected groupoid  $BH$), $f:BH\to_* BG$ is a pointed map whose fibers are sets (a pointed \covering).  There is really no need to specify that $H$ is a group: if $F:T\to BG$ is a \covering, then $T$ is automatically a groupoid.  
+
+On the other hand,  the type of \coverings over $BG$ is equivalent to the type of $G$-sets: if $X:BG\to\Set$ is a $G$-set, then the covering is given by the first projection $\tilde X\to BG$ where $\tilde X\defequi\sum_{y:BG}X(y)$ and the inverse is obtained by considering the fibers of a \covering.  Furthermore, we saw in \cref{lem:conistrans} that $\tilde X$ being connected is equivalent to the condition $\mathrm{isTrans}(X)$ of \cref{def:connectedGset} claiming that the $G$-set $X$ is transitive. 
+
+Hence, the type (set, really) $\typesubgroup_G$ of subgroups of $G$ is equivalent to the type of pointed connected \coverings over $BG$, which again is equivalent to the type $\typesubgroup_G'$ of transitive $G$-sets $X:BG\to\Set$ together with a point in $X(\pt_G)$.  
+
+The family of sets $\typesubgroup_G(y)$ where we let the element $y:BG$ vary is by the same reasoning equivalent to the family $\typesubgroup_G'(y)$ which we for reference spell out in symbols.
+
+\newcommand{\typenormal}{\mathbf{Nor}}
+\begin{definition}
+  Let $G$ be a group and $y:BG$, then the $G$-set of \emph{subgroups' of $G$} is
+  $$\typesubgroup_G':BG\to\Set,\qquad\typesubgroup_G'(y)\defequi\sum_{X:BG\to\Set}\sum_{\pt_y:X(y)}\mathrm{isTrans}(X)$$
+and the type of \emph{normal subgroups'} is the set of fixed points
+$$\typenormal_G'\defequi\prod_{y:BG}\typesubgroup_G'(y).$$
+%A \emph{normal subgroup'} of $G$ is an element in $\typenormal_G'$.
+\end{definition}
+Since the families are equivalent we use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably.  There is, however, a little explanation needed in order to see that the type of normal subgroups is equivalent to $\typenormal'_G$.
+
+\begin{lemma}
+  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\defequi (X_y,\pt_y,!)$ for $y:BG$ with $X_y:BG\to\Set$, $\pt_y:X_y(y)$ and $!:\mathrm{isTrans}(X_y)$.  Define a subgroup $(\mathrm{ass}(N),i_N,!)$ of $G$ as follows:
+  \begin{enumerate}
+  \item the connected groupoid $B\mathrm{ass}(N)_\div\defequi\sum_{z:BG}X_{\pt_G}(z)$,
+  \item together with the point $\pt_N\defequi(\pt_G,\pt_{\pt_G})$,
+  \item the first projection $Bi:B\mathrm{ass}(N)\to_*BG$
+  \item together with the assertion that the preimages of $Bi$ (which are equivalent to $X_{\pt_G}(z)$ for varying $z:BG$) are sets. 
+  \end{enumerate}
+  Then $(\mathrm{ass}(N),i_N,!)$ is a normal subgroup of $G$ in the sense that it is the kernel of a homomorphism.
+\end{lemma}
+\begin{proof}
+  Let $G/N$ be the group defined as the component of the groupoid of $G$-sets containing and pointed in $X_{\pt_G}$.  Let $f:\Hom(G,G/N)$ be the homomorphism defined by $Bf(z)=X_z$.  Consider the kernel of $f$,
+$$B\ker f_\div\defequi\sum_{z:BG}(X_z=X_{\pt_G})$$
+pointed in $(\pt_G,\refl{X_{\pt_G}})$ and with $i_{\ker f}:B\ker f\to_*BG$ given by the first projection.  Consider the map
+$$\mathrm{ev}:B\ker f_\div\to B\mathrm{ass}(N)_\div,\qquad \mathrm{ev}(z,f)\defequi(z,f(\pt_z)),$$
+which is (strictly) pointed since $\mathrm{ev}(\pt_G,\refl{X_{\pt_G}})\defequi (\pt_G,\pt_{\pt_G})$.  We claim that $\mathrm{ev}$ is an equivalence.  Since $B\mathrm{ass}(N)$ is connected it is enough to sow that the preimage of $(\pt_G,\pt_{\pt_G})$ is contractible.  Since $\mathrm{ev}$ agrees with the projections to $BG$, the preimage is equivalent to $\sum_{f:X_{\pt_G}=X_{\pt_G}}f(\pt_{\pt_G})=\pt_{\pt_G}$, the preimage of the evaluation map 
+$\mathrm{ev}_{X_{\pt_G}}:(X_{\pt_G}=X_{\pt_G})\to X_{\pt_G}(\pt_G)$ which we in \cref{lem:conistrans} proved was an equivalence since $X_{\pt_G}$ is transitive.  Evoking univalence we get an identification of subgroups between the kernel and $(\mathrm{ass}(N),i_N,!)$.
+\end{proof}
+\footnote{COMEBACK 190509 Do the converse and elevate constructions to definitions}
 \sususe{The pullback}
 \label{sec:pullback}
 
