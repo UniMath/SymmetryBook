@@ -214,7 +214,7 @@ From addition and unary $-$ one can define a binary
 
 Recall the equivalence $\ev_0 : (\pt=_\TorZ \pt)\to\zet$ from the introduction.
 We have $\refl{\pt} : \pt=_\TorZ \pt$, as well as the operations
-of \emph{path reversal} and \emph{path concatenation} as defined
+of \emph{path reversal} and \emph{path composition} as defined
 in \cite[Ch. 2.1]{hottbook}. These satisfy the laws as stated
 and proved in \cite[Lemma 2.1.4]{hottbook}, equipping $\pt=_\TorZ \pt$
 with a group structure.
@@ -222,7 +222,7 @@ The equivalence $\ev_0$ maps $\refl{\pt}$ via $\id_\zet : \zet\to\zet$ to $0$.
 As explained in the introduction, $\ev_0$ maps any $p : \pt=_\TorZ \pt$
 via $s^k : \zet\to\zet$ to some $k:\zet$. Since $(s^k)^{-1} = s^{-k}$
 and $s^k \circ s^l = s^{k+l}$, $\ev_0$ transports path reversal 
-and path concatenation to negation and addition, respectively.
+and path composition to negation and addition, respectively.
 This means that the entire group structure of $\pt=_\TorZ \pt$
 is transported to the usual group structure on $\zet$,
 including all the proofs of the group laws in $\zet$.
@@ -387,14 +387,14 @@ Note that $(b_1 =^B_{\refl{a_1}} b_2) \jdeq (b_1 =_{B(a_1)}  b_2)$.
 \end{definition}
 
 Many of the operations on paths have their counterpart for pathovers.
-We define the unit pathover, concatenation of pathovers, and pathover reversal.
+We define the unit pathover, composition of pathovers, and pathover reversal.
 
 \begin{definition}\label{def:pathoveralgebra}
 Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, and 
 $p_i : a_i = a_{i+1}$ for $i=1,2$. We define:
 \begin{enumerate}
 \item The \emph{unit pathover} $\refl{b_1} : b_1 =^B_{\refl{a_1}} b_1$;
-\item \emph{Pathover concatenation} $\cto : b_1 =^B_{p_1} b_2 \to
+\item \emph{Pathover composition} $\cto : b_1 =^B_{p_1} b_2 \to
 b_2 =^B_{p_2} b_3 \to b_1 =^B_{p_1 \ct p_2} b_3$, defined by induction
 on first $p_2$ and then $r: b_2 = b_3$, by
 setting $q \cto \refl{b_2} \defeq q$ for all $q: b_1 =^B_{p_1} b_2$;
@@ -406,7 +406,7 @@ setting $\refloi{b_1} \defeq \refl{b_1}$.
 
 The operations of pathover algebra satisfy many of the laws of path algebra,
 but only after some modification. For example, we have
-associativity of concatenation for paths: $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
+associativity of composition for paths: $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
 We don't in general have $p_1\ct(p_2\ct p_3) \jdeq (p_1\ct p_2)\ct p_3$.
 If $b_1 =^B_{p_1} b_2 =^B_{p_2} b_3 =^B_{p_3} b_4$, then there are
 two ways to associate, leading to two pathover types:
@@ -423,7 +423,7 @@ In the rest of this section we work in a context with
 $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, 
 $p_i : a_i = a_{i+1}$ for $i=1,2$,
 
-\begin{lemma}\label{lem:concat-over}
+\begin{lemma}\label{lem:compo-over}
   For every $q : b_1 =^B_{p_1} b_2$, the
   function
   \[
@@ -434,7 +434,7 @@ $p_i : a_i = a_{i+1}$ for $i=1,2$,
 The proof is by induction on first $p_1$, and then $q$, and finally $p_2$.
 Then conclude by reflexivity.
 
-If $p=q$, then we can transport paths of $p$ to paths over $q$.
+If $p=q$, then we can transport paths over $p$ to paths over $q$.
 
 \begin{definition}\label{def:pathover-change-path}
   For every $p,q:a_1=a_2$ and $2$-dimensional path $\alpha : p = q$,
@@ -449,26 +449,35 @@ If $p=q$, then we can transport paths of $p$ to paths over $q$.
   we have $\cp{\alpha\ct\beta}=\cp{\beta}\circ\cp{\alpha}$.
 \end{lemma}
 
-The proof is by induction on $\beta$ (for right-recursive concatenation).
+The proof is by induction on $\beta$ (for right-recursive composition).
 
-\begin{lemma}\label{lem:inv-change-path}
-  For every  $p,q:a_1=a_2$ and 2-path $\alpha : p = q$,
+\begin{lemma}\label{lem:inv2-change-path}
+  For every  $p,q:a_1=a_2$ and 2-path $\alpha : p = q$, taking
   $\alpha^- \defeq \ap{(\_)^{-1}}(\alpha)$, we have
   $(\cp{\alpha}(\hat p))^{-o} = \cp{\alpha^-}(\hat p^{-o})$
   for every $\hat p: b_1=^B_p b_2$.
 \end{lemma}
  The proof is by induction on $\alpha$.
 
-\begin{definition}\label{lem:concat-ap-ap}
+\begin{lemma}\label{lem:invlaw-change-path}
+  For every  $p :a_1 = a_2$ define $\iota(p): p^{-1}\ct p = \refl{a_2}$
+  by induction on $p$, by setting $\iota(\refl{a_1})\defeq \refl{\refl{a_1}}$.
+  Then we have $\cp{\iota(p)}(\hat p^{-o} \cto {\hat p}) = \refl{b_2}$
+  for every $\hat p: b_1=^B_p b_2$.
+\end{lemma}
+ The proof is by induction on first $p$, and then on $\hat p$.
+
+
+\begin{definition}\label{lem:compo-ap-ap}
   For every  $p,p':a_1=a_2$, $q,q':a_2=a_3$ and 2-paths 
   $\alpha : p = p'$, $\beta : q = q'$, define
   $\apc(\alpha,\beta): (p\ct q)=(p'\ct q')$ by induction
   first on $\beta$ and then on $q$, 
   setting $\apc(\alpha,\refl{\refl{a_2}}) \defeq \alpha$.
-  (This is well-typed for right-recursive concatenation.)
+  (This is well-typed for right-recursive composition.)
 \end{definition}
 
-\begin{lemma}\label{lem:concat-change-path}
+\begin{lemma}\label{lem:compo-change-path}
   For every  $p,p':a_1=a_2$, $q,q':a_2=a_3$ and 2-paths 
   $\alpha : p = p'$, $\beta : q = q'$, we have
   $\cp{\apc(\alpha,\beta)}(\hat p \cto \hat q) = 
@@ -852,7 +861,7 @@ s_0^{-1} \ct s_1 \stackrel{\alpha}{=}
 \refl{\pt}\ct(\Zloop\ct\refl{\pt}) 
 \]
 Here $\alpha,\beta$ are constructed with $\apc$ so as to
-enable the application of \cref{lem:concat-change-path}.
+enable the application of \cref{lem:compo-change-path}.
 We now calculate:
 
 \begin{align*}
