@@ -690,6 +690,9 @@ In the other direction we have
   Consider a $G$-set $X:BG\to\Set$ and the associated \covering $f:\tilde X\to BG$ where $\tilde X\defequi\sum_{y:Y}X(y)$ and $f$ is the first projection.  Now, $\tilde X$ is connected if and only if there is a $y:BG$ and a $b:X(y)$ such that for all $z:BG$ and $a:X(z)$ there is a $g:z=y$ such that $a=X(g)b$.  Since $BG$ is connected, this is equivalent to asserting that there is a $b:X(\pt_G)$ such that for all $a:X(\pt_G)$ there is a $g:\pt_G=\pt_G$ such that $a=g\cdot b\defequi X(g)b$.
 \end{proof}
 
+
+
+
 \begin{lemma}
   \label{lem:evisinjwhentransitive}
   Let $X:BG\to\Set$ be a transitive $G$-set, $y:BG$ and $b:X(y)$.  Then the evaluation map
@@ -700,7 +703,6 @@ is injective.
   For $a:X(y)$, consider an $f:X=X$ with $f_y(b)=a$.  Let $z:BG$ and $c:X(z)$.
 For any $g:y=z$ such that $X(g)b=c$ we have $f_z(c)=f_z(X(g)b)=X(g)f_y(b)=X(g)a$: the value does not depend on $f$.  Since we try to prove a proposition we are done. 
 \end{proof}
-
 
 
 
@@ -1600,7 +1602,7 @@ $B\ker f_\div\defequi \sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||.$
 
 The first projection $B\ker f\to_* BG$ displays the kernel $\ker f$ as a subgroup of $G$ (\emph{sub}group since the preimages are equivalent to the sets $\sum_{p:\pt_{G'}=Bf(z)}||\pt_{\ker f}=(z,p)||$).  
 
-A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism.
+A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism.\footnote{clarify the relation between the surjective homomorphism and the subgroup}
 \end{definition}
 
 \begin{definition}
@@ -1662,6 +1664,23 @@ To the extent that it is needed, also show the characterizing properties of kern
 
 
 \sususe{Subgroups through $G$-sets}
+{\color{blue}I need this and must put it somewhere.  Current proof somewhat unsatisfactory.
+\begin{lemma}
+  If $f:\Hom(G,G')$ is surjective, then $f^*:(G'\text{-}\Set)\to(G\text{-}\Set)$ is ``fully faithful'' in the sense that if $X,Y$ are $G'$-sets, then
+$$f^*:(X=Y)\to(f^*X=f^*Y)
+$$
+is an equivalence.
+\end{lemma}
+\begin{proof}
+  Evaluation at $\pt_G$  yields an injective map $\mathrm{ev}_{\pt_G}:(f^*X=f^*Y)\to(X(f(\pt_G)=Y(f(\pt_G)))$ and the composite $\mathrm{ev}_{\pt_G}f^*=\mathrm{ev}_{f(\pt_G)}:(X=Y)\to(X(f(\pt_G)=Y(f(\pt_G)))$ is the likewise injective, so $f^*:(X=Y)\to(f^*X=f^*Y)$ is injective.  Now, by the equivalence between $G'$-sets and $\abstr(G')$-sets; $F:X=Y$ is in the preimage of $a:X(f(\pt_G)=Y(f(\pt_G))$ if and only if $a=F_{f(\pt_G)}$ and for all $g':f(\pt_G)=f(\pt_G)$ the diagram
+$$\xymatrix{X(f(\pt_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F_{f(\pt_G)}}&
+  X(f(\pt_G))\ar@{=}[d]_{F_{f(\pt_G)}}\\
+  Y(f(\pt_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\pt_G))}
+$$
+commutes.  However, since $f$ is surjective there is a $g:\pt_G=\pt_G$ so that $g'=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
+\end{proof}
+}%endcolor
+
 Occasionally it is useful to define ``subgroups'' slightly differently.
 As we've defined it a subgroup of a group $G$ of the form $(H,f,!)$ where $H$ is a group (pointed connected groupoid  $BH$), $f:BH\to_* BG$ is a pointed map whose fibers are sets (a pointed \covering).  There is really no need to specify that $H$ is a group: if $F:T\to BG$ is a \covering, then $T$ is automatically a groupoid.  
 
@@ -1681,36 +1700,81 @@ $$\typenormal_G'\defequi\prod_{y:BG}\typesubgroup_G'(y).$$
 \end{definition}
 Since the families are equivalent we use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably.  There is, however, a little explanation needed in order to see that the type of normal subgroups is equivalent to $\typenormal'_G$.
 
-\begin{lemma}
-  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\defequi (X_y,\pt_y,!)$ for $y:BG$ with $X_y:BG\to\Set$, $\pt_y:X_y(y)$ and $!:\mathrm{isTrans}(X_y)$.  Define a subgroup $(\mathrm{ass}(N),i_N,!)$ of $G$ as follows:
+\begin{definition}
+  \label{def:associatednormal}
+  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$ with $X_y:BG\to\Set$, $\pt_y:X_y(y)$ and $!:\mathrm{isTrans}(X_y)$.  Define a subgroup $(\mathrm{ass}(N),i_N,!)$ of $G$, called the \emph{associated normal subgroup}, as follows:
   \begin{enumerate}
   \item the connected groupoid $B\mathrm{ass}(N)_\div\defequi\sum_{z:BG}X_{\pt_G}(z)$,
   \item together with the point $\pt_N\defequi(\pt_G,\pt_{\pt_G})$,
   \item the first projection $Bi:B\mathrm{ass}(N)\to_*BG$
   \item together with the assertion that the preimages of $Bi$ (which are equivalent to $X_{\pt_G}(z)$ for varying $z:BG$) are sets. 
   \end{enumerate}
-  Then $(\mathrm{ass}(N),i_N,!)$ is a normal subgroup of $G$ in the sense that it is the kernel of a homomorphism.
+\end{definition}
+We obviously need to show that the ``normal'' in the name is warranted.
+We start with a small, but crucial observation.
+\begin{lemma}
+  \label{lem:evaliseqwhennormal}
+  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$.  Then for any $y,z:BG$ the evaluation map
+$$\mathrm{ev}_{yz}:(X_y=X_z)\to X_z(y),\qquad \mathrm{ev}_{yz}(f)=f_y(\pt_y)$$
+is an equivalence.
 \end{lemma}
 \begin{proof}
-  Let $G/N$ be the group defined as the component of the groupoid of $G$-sets containing and pointed in $X_{\pt_G}$.  Let $f:\Hom(G,G/N)$ be the homomorphism defined by $Bf(z)=X_z$.  Consider the kernel of $f$,
-$$B\ker f_\div\defequi\sum_{z:BG}(X_z=X_{\pt_G})$$
-pointed in $(\pt_G,\refl{X_{\pt_G}})$ and with $i_{\ker f}:B\ker f\to_*BG$ given by the first projection.  Consider the map
-$$\mathrm{ev}:B\ker f_\div\to B\mathrm{ass}(N)_\div,\qquad \mathrm{ev}(z,f)\defequi(z,f(\pt_z)),$$
-which is (strictly) pointed since $\mathrm{ev}(\pt_G,\refl{X_{\pt_G}})\defequi (\pt_G,\pt_{\pt_G})$.  We claim that $\mathrm{ev}$ is an equivalence.  Since $B\mathrm{ass}(N)$ is connected it is enough to sow that the preimage of $(\pt_G,\pt_{\pt_G})$ is contractible.  Since $\mathrm{ev}$ agrees with the projections to $BG$, the preimage is equivalent to $\sum_{f:X_{\pt_G}=X_{\pt_G}}f(\pt_{\pt_G})=\pt_{\pt_G}$, the preimage of the evaluation map 
-$\mathrm{ev}_{X_{\pt_G}}:(X_{\pt_G}=X_{\pt_G})\to X_{\pt_G}(\pt_G)$ which we in \cref{lem:conistrans} proved was an equivalence since $X_{\pt_G}$ is transitive. Evoking univalence we get an identification of subgroups between the kernel of $f$ and $(\mathrm{ass}(N),i_N,!)$.
-\end{proof}
+To see this we need to do induction independently on $y:BG$ and $z:BG$ in $X_y(z)$ at the same time as we observe that it suffices (since $BG$ is connected) to show that $\mathrm{ev}_{yy}$ is an equivalence.
 
-There are many valuable constructions to be extracted from this proof.
+Induction on the index gives rise to the map $X:(y=z)\to(X_y=X_z)$ ($X_{\refl y}\defequi\refl{X_y}$) and the composite 
+$$\mathrm{ev}_{yy}X:(y=y)\to X_yy$$ is determined by $\mathrm{ev}_{yy}X(\refl y)\oldequiv \pt_y$. 
+By transitivity of $X_y$ this composite is surjective, hence $\mathrm{ev}_{yy}$ is surjective too.  
+
+On the other hand, in  \cref{lem:evisinjwhentransitive} we used the transitivity of $X_y$ to deduce that $\mathrm{ev}_{yy}$ was injective.  Consequently $\mathrm{ev}_{yy}$ is an equivalence.  
+\end{proof}
 \begin{definition}
-  \label{def:associatedquotient}
+\label{def:normalquotient}
+  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$.  The \emph{quotient group}\index{quotient group} $G/N$ is the group defined as the component of the groupoid of $G$-sets containing and pointed in $X_{\pt_G}$.  
+
+The \emph{quotient homomorphism}\index{quotient homomorphism} is the homomorphism $q_N:\Hom(G,G/N)$  defined by $Bq_N(z)=X_z$ (strictly pointed).
 \end{definition}
-\footnote{COMEBACK 190509 Do the converse and elevate constructions to definitions}
+
+\begin{lemma}
+  \label{lem:normalsarekernels}
+  The associated normal subgroup of $N:\typenormal_G'$ is a normal subgroup; more precisely $N(\pt_G)$ is the kernel of the quotient homomorphism $q_N:\Hom(G,G/N)$.
+  % Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\defequi (X_y,\pt_y,!)$ for $y:BG$ with $X_y:BG\to\Set$, $\pt_y:X_y(y)$ and $!:\mathrm{isTrans}(X_y)$.  Define a subgroup $(\mathrm{ass}(N),i_N,!)$ of $G$ as follows:
+  % \begin{enumerate}
+  % \item the connected groupoid $B\mathrm{ass}(N)_\div\defequi\sum_{z:BG}X_{\pt_G}(z)$,
+  % \item together with the point $\pt_N\defequi(\pt_G,\pt_{\pt_G})$,
+  % \item the first projection $Bi:B\mathrm{ass}(N)\to_*BG$
+  % \item together with the assertion that the preimages of $Bi$ (which are equivalent to $X_{\pt_G}(z)$ for varying $z:BG$) are sets. 
+  % \end{enumerate}
+  % Then $(\mathrm{ass}(N),i_N,!)$ is a normal subgroup of $G$ in the sense that it is the kernel of a homomorphism.
+\end{lemma}
+\begin{proof}
+  % Let $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$.  Let $G/N$ be the group defined as the component of the groupoid of $G$-sets containing and pointed in $X_{\pt_G}$.  Let $f:\Hom(G,G/N)$ be the homomorphism defined by $Bf(z)=X_z$.
+  Consider the kernel of the quotient homomorphism $q_N:\Hom(G,G/N)$ of \cref{def:normalquotient},
+$$(B\ker q_N)_\div\defequi\sum_{z:BG}(X_z=X_{\pt_G})$$
+pointed in $(\pt_G,\refl{X_{\pt_G}})$ and with $i_{\ker f}:B\ker q_N\to_*BG$ given by the first projection.  Consider the map
+$$\mathrm{ev}:B\ker q_N\to B\mathrm{ass}(N)_\div,\qquad \mathrm{ev}(z,f)\defequi(z,f(\pt_z)),$$
+which is (strictly) pointed since $\mathrm{ev}(\pt_G,\refl{X_{\pt_G}})\defequi (\pt_G,\pt_{\pt_G})$.  
+
+We claim that $\mathrm{ev}$ is an equivalence.  Since $B\mathrm{ass}(N)$ is connected it is enough to show that the preimage of $(\pt_G,\pt_{\pt_G})$ is contractible.  
+Since $\mathrm{ev}$ agrees with the projections to $BG$, the preimage is equivalent to $\sum_{f:X_{\pt_G}=X_{\pt_G}}f(\pt_{\pt_G})=\pt_{\pt_G}$.  We recognize this as the preimage $\mathrm{ev}_{{\pt_G}{\pt_G}}^{-1}(\pt_{\pt_G})$
+of the evaluation map 
+$\mathrm{ev}_{{\pt_G}{\pt_G}}:(X_{\pt_G}=X_{\pt_G})\to X_{\pt_G}(\pt_G)$ which is an equivalence by \cref{lem:evaliseqwhennormal}.  
+% the preimage $\mathrm{ev}_{X_{\pt_G}}^{-1}(\pt_{\pt_G})$
+% of the evaluation map 
+% $\mathrm{ev}_{X_{\pt_G}}:(X_{\pt_G}=X_{\pt_G})\to X_{\pt_G}(\pt_G)$.  
+% In \cref{lem:evisinjwhentransitive} %{lem:conistrans} 
+% we proved that (since $X_{\pt_G}$ is transitive) $\mathrm{ev}_{X_{\pt_G}}$ is an injection.  Hence the preimage is a proposition, but since it contains $(\refl{X_{\pt_G}},\refl{\pt_{\pt_G}})$ it is contractible. 
+
+Evoking univalence we get an identification of subgroups between the kernel of $f$ and $(\mathrm{ass}(N),i_N,!)$.
+\end{proof}
 
 
 \begin{remark}
-  Where did we use that $N$ was a fixed point of the $G$-set $\typesubgroup_G'$?  If $Y:BG\to\Set$ is a transitive $G$-set and $\pt_H:Y(\pt_G)$, then surely we could consider the group $W$ defined as the component of the groupoid of $G$-sets containing and pointed at $Y$.  The problem is that we wouldn't know how to construct a homomorphism from $G$ to $W$ which we then could consider the kernel of.  
+  Where did we use that $N$ was a fixed point of the $G$-set $\typesubgroup_G'$?  If $Y:BG\to\Set$ is a transitive $G$-set and $\pt_H:Y(\pt_G)$, then surely we could consider the group $W$ defined as the component of the groupoid of $G$-sets containing and pointed at $Y$.  The first problem is that we wouldn't know how to construct a homomorphism from $G$ to $W$ which we then could consider the kernel of.  The second problem is that we'd be stuck at the very end where we 
+used \cref{lem:evaliseqwhennormal} to show that the evaluation map is an equivalencs; if we only had transitivity we could use \cref{lem:evisinjwhentransitive} to pin down injectivity, but surjectivity needed the extra induction freedom. 
+\end{remark}
 
-It is also instructive to see how $Bf:BG\to BG/N$ is defined in the torsor interpretation of $BG$.  If $Y\colon BG\to\UU$ is a $G$-type we can define the quotient as
+\begin{remark}
+It is instructive to see how the quotient homomorphism $Bq_N:BG\to BG/N$ is defined in the torsor interpretation of $BG$.  If $Y\colon BG\to\UU$ is a $G$-type we can define the quotient as
 $$
 Y/N:BG\to\UU,\qquad Y/N(y)\defequi\sum_{z:BG}Y(z)\times X_z(y).
 $$
@@ -1721,9 +1785,55 @@ $
 $
 is equivalent to $X_{\pt_G}$.  Consequently, if $Y$ is a $G$-torsor, then $Y/N$ is in the component of $X_{\pt_G}$ and we have
 $$-/N:\typetorsor_G\defequi (G\text{-set})_{(\princ G)}\to (G\text{-set})_{(X_{\pt_G})}.
-$$ Our $f:\Hom(G,G/N)$ is the composite of the equivalence $\pathsp{}^G:BG\we\typetorsor_G$ of \cref{lem:BGbytorsor} and the quotient map $-/N$.
+$$ Our quotient homomorphism $q_N:\Hom(G,G/N)$ is the composite of the equivalence $\pathsp{}^G:BG\we\typetorsor_G$ of \cref{lem:BGbytorsor} and the quotient map $-/N$.
 \end{remark}
 
+The associated normal subgroup defines an equivalence from $\typenormal_G'$ to the type $\typenormal_G$ of kernels of surjective homomorphism. To see this we construct an inverse.
+
+\begin{definition}
+  \label{def:kerneltofixedpoint}
+  Let $f:\Hom(G,G')$ be a surjective homomorphism.  For $y,z:BG$ consider the set $X_y^f(z)\defequi (f(z)=f(y))$ and the element $\pt^f_y\defequi\refl{f(y)}:X_y(y)$.  The $G$-set $X_y:BG\to\Set$ is transitive since $f$ is surjective and so we have a map 
+$$\mathrm{ssa}:\typenormal_G\to\typenormal_G',\qquad \mathrm{ssa}(f)(y)\defequi(X_y^f,\pt_y^f,!).$$
+\end{definition}
+
+\begin{lemma}
+  \label{lem:characterizations of normal}
+  Let $G$ be a group, then the associated normal subgroup is an equivalence
+  $$\mathrm{ass}:\typenormal_G'\to\typenormal_G$$
+with inverse $\mathrm{ssa}$.  Summing up the following sets are equivalent
+\begin{enumerate}
+\item The set $\typenormal_G$ of kernels of surjections from $G$,
+\item the set $\typenormal_G'$ of fixed points of the $G$-set $\typesubgroup_G'$,
+\item the set of fixed points of the $G$-set $\typesubgroup_G$
+\item the set of fixed points of the $G$-set of abstract subgroups of $\abstr(G)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+  The last three entries are equivalent since they are the fixed points of equivalent $G$-sets, so we only need to comment on the first assertion.
+
+Let $f:\Hom(G,G')$ be a surjective homomorphism.  
+The kernel $N\oldequiv \ker f$ is then given by the first projection 
+$$\text{pr}:\sum_{z:BG}\pt_{G'}=Bf(z)\to_*BG.$$
+Then $\mathrm{ass\,ssa}(\ker f)$ defined to be
+$$
+(\sum_{z:BG}\prod_{y:BG}
+(\pathsp{f(\pt_G)}^{G'}{f(y)}=\pathsp{f(z)}^{G'}{f(y)},
+\text{pr}, (\pt_G,\refl{\pathsp{f(\pt_G)}^{G'}{f(\pt_G)}},!),$$
+where $\pathsp{a}^{G'}{b}\defequi (a=b)$ for $a,b:BG'$.
+The desired identification between $\ker f$ and $\mathrm{ass\,ssa}(\ker f)$ is then given by composing the identifications
+$\preinv(p_f):(\pt_{G'}=f(z))=(f(\pt_G)=f(z))$ and 
+$$\preinv:(f(\pt_G)=f(z))=
+\prod_{y:BG}(\pathsp{f(\pt_G)}^{G'}{f(y)}=\pathsp{f(z)}^{G'}{f(y)})$$
+\footnote{((find ref where this was demonstrated: slight modification since we only claim naturality in $G$)).}
+\end{proof}
+
+
+
+% There are many valuable constructions to be extracted from the proof of \cref{lem:normalsarekernels}.
+% \begin{definition}
+%   \label{def:associatedquotient}
+% \end{definition}
+% \footnote{COMEBACK 190509 Do the converse and elevate constructions to definitions}
 
 
 
