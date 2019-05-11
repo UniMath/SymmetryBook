@@ -50,12 +50,12 @@ base point and the canonical loop at the base point (corresponding to the elemen
 As a prerequisite we require working knowledge of homotopy type theory
 as described in, for example, the first four chapters of \cite{hottbook}.
 One extra piece of knowledge we use here is the \emph{dependent} elimination
-principle for propositional truncation, not mentioned in \cite[Ch. 3.7]{hottbook},
-and qualified as `not really useful' in \cite[Ch. 6.9]{hottbook}.
+principle for propositional truncation, mentioned in \cite[Ch. 6.9]{hottbook},
+and qualified as `not really useful'.
 \footnote{The dependent elimination principle appears to 
 be used later in \cite{hottbook}, though. ULRIK HAS SPOTTED A PLACE}
-In \cref{sec:XXX} we give this dependent elimination property some extra
-attention, as it is crucial for the computational properties of our construction.
+We use this principle in \cref{lem:dep-elim-TorZ}, and the last paragraph
+of its proof gives this some extra attention to the computational aspect.
 
 For convenience we give a direct inductive
 definition of the set of integers 
@@ -96,7 +96,7 @@ in 2014, see \cite{circlerec-Dan}; our construction here uses the
 same basic idea but manages the computations involved in establishing the
 induction principle better.)  We call the resulting function
 \[
-{\rec}_A : \sum_{a:A}(a=a) \to (\TorZ \to A).
+{\rec}_A : \sum_{a:A}(a=a) ~~\to~~ (\TorZ \to A).
 \]
 
 The universal property of the circle for $\TorZ$
@@ -542,7 +542,6 @@ but not in \emph{Unimath}.
 
 The aim of this section is to show that $\TorZ$ has the
 universal property of the circle.
-
 Although the same method works to derive both the recursion and the induction principles,
 we opt to do the recursion principle first, as it is slightly simpler,
 and prepares the way for the more complicated induction principle.
@@ -558,7 +557,7 @@ All input data is present in $p$ and its type.
 When defining types and functions depending on the input data, 
 we use $p$ in various denotations to express this dependence. 
 
-In order to make use of $\TorZ$ being a pointed connected type, 
+To be able to apply \cref{lem:dep-elim-TorZ}, 
 we need to find a suitable proposition.
 The idea is to expand $A$ to a $\Sigma$-type over $A$
 (\cref{def:guided-null-hmtps}), 
@@ -596,9 +595,9 @@ Q_p(X,f)&\defeq \sum_{a':A}~\sum_{h:X\to a=a'}~\prod_{x:X} h(f(x))=p\ct h(x).
 \end{definition}
 
 \begin{lemma}\label{lem:guided-null-hmtps}
-For every $Z\defeq(X,f,t):\TorZ$, the type $Q_p(X,f)$ is contractible, 
-with the center of contraction of $Q_p(X,f)$ 
-denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
+The type $Q_p(X,f)$ is contractible for all $(X,f,t):\TorZ$.
+%with the center of contraction of $Q_p(X,f)$ 
+%denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
 \end{lemma}
 \begin{proof}
   By \cref{lem:dep-elim-TorZ} it suffices to prove that $Q_p(\zet,s)$ is contractible.
@@ -623,7 +622,8 @@ denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
   where $\varphi_{a'}(h,q) \defeq h(0)$.
 \end{proof}
 
-The center of contraction of $Q_p(\zet,s)$ is defined in the above proof 
+The center of contraction $\vec{c}_p(\pt)$ of $Q_p(\zet,s)$ is 
+implicitly defined in the above proof 
 and can be uncovered by a careful analysis of all proof-relevant steps.
 First, the center of $\sum_{a':A} a=a'$ is $(a,\refl{a})$.
 This center is pulled back by $\varphi_{a}$ to a center
@@ -636,7 +636,8 @@ end of the proof of \cref{thm:integers-univ-symm},
 tells us that $c$ is a pair $(h,q)$ with $h(z)=p^z$
 for all $z:\zet$. Indeed, $\varphi_{a}(h,q) = h(0) = \refl{a}$.
 Moreover, $q$ has type $\prod_{z:\zet} h(z+1)=p\ct h(z)$.
-Wrapping up, $\vec c_p(\pt)\defeq (a,h,q)$.
+Wrapping up, $\vec c_p(\pt)\defeq (a,h,q)$. In general we write
+$\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
 
 The analysis in the previous paragraph
 means we have achieved one of our goals,
@@ -669,13 +670,13 @@ We summarize the results in the following recursion principle for $\TorZ$.
 In the next section we will prove an induction principle for $\TorZ$.
 
 \begin{definition}\label{def:TorZrecursor}
-The function $e_A(a,p) \defeq c_p$ as defined in 
+The function ${\rec}_A(a,p) \defeq c_p$ as defined after 
 \cref{lem:guided-null-hmtps} has type
 \[
-e_A : \sum_{a:A}(a=a) \to (\TorZ \to A),
+{\rec}_A : \sum_{a:A}(a=a) ~~\to~~ (\TorZ \to A),
 \]
-and satisfies $e_A(a,p)(\pt) \jdeq a$ and 
-$\ap{e_A(a,p)}(\Zloop) = p$.
+and satisfies ${\rec}_A(a,p)(\pt) \jdeq a$ and 
+$\ap{{\rec}_A(a,p)}(\Zloop) = p$.
 \end{definition}
 
 \subsection{Induction in $\TorZ$}\label{sec:TorZ-induction}
@@ -709,10 +710,11 @@ $e_x(n)\defeq f^n(x)$ using UA. Indeed,
 $f\circ e_x = e_x \circ s$, as both functions map $n$ to $f^{n+1}(x)$. 
 \end{definition}
 
-In the sequel we will need two auxiliary results about the paths $s^\pt_x$,
-one for $x=0$ and one reflecting the symmetric induction step in \cref{thm:integers-univ-symm}.
+Applying \cref{thm:integers-univ-symm} we will need two auxiliary 
+results about the paths $s^\pt_x$, one for $x=0$ and 
+the other for the (symmetric) induction step.
 In \cref{def:loop-s-iterated}, if $Z\jdeq\pt$ and $x=0$, we get $e_0 = \id$.
-Applying UA gives the first result.
+Applying UA gives thus the first result.
 
 \begin{lemma}\label{lem:s-pt-zero}
   There is a path $\gamma_0 : \refl{\pt} = s^\pt_0$. 
@@ -721,8 +723,7 @@ Applying UA gives the first result.
 For the second result, note that prefixing $s^Z_x$ by ${\Zloop}$ 
 amounts to precomposing the equivalence $e_x$ with $s$. 
 We have $(e_x\circ s)(n) = e_x(n+1) = f^{n+1}(x) = f^n(f(x)) =e_{f(x)}(n)$,
-so $e_x\circ s = e_{x+1}$. Applying UA we get the next general result
-(which we only need for $Z\jdeq\pt$).
+so $e_x\circ s = e_{x+1}$. Applying UA we get:
 
 \begin{lemma}\label{lem:loop-s-iterated}
   For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, we have a path
@@ -774,23 +775,31 @@ where $\delta^Z_x$ comes from \cref{lem:loop-s-iterated}.
   shows that $\varphi_{a'}$ is an equivalence,
   where $\varphi_{a'}(h,q) \defeq h(0)$.
 \end{proof}
-Note that, in the proof above, the center of $Q_p(\pt)$ is 
-$\varphi_{a}^{-1}(\cp{\gamma_0}(a,\rrfl))$, which is a triple $(a,h,q)$.
-For every $Z:\TorZ$, the center of contraction of $Q_p(Z)$
-is denoted by $\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
+
+The center of contraction $\vec{c}_p(\pt)$ of $Q_p(\pt)$ is 
+defined in the above proof as $\varphi_{a}^{-1}(\cp{\gamma_0}(a,\rrfl))$, 
+which is again a triple $(a,h,q)$. In general we write
+$\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
+We immediately get $c_p(\pt)\defeq a$ and will proceed to
+elaborate $\apd{c_p}(\Zloop)$.
 
 %\begin{figure}
 %\caption{\label{fig:TorZ-induction}LET'S HAVE SOME INFORMATIVE PICTURE}
 %\end{figure}
 
-Postcomposing $s^X_x$ by $e: X=Y$ amounts to
-applying the corresponding equivalence $\ptoe{e}: X\to Y$ to $x$, 
-to be proved by induction on $e$. In evidence:
-
 \begin{lemma}\label{lem:s-X-x-*-e}
-  For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have $s^X_x \ct e = s^Y_{\ptoe{e}(x)}$.
-  Thus we have a path $\varepsilon_{e,x} : (s^X_x)^{-1} \ct s^Y_{\ptoe{e}(x)} = e$.
+  For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have a path 
+  $\varepsilon_{e,x} : (s^X_x)^{-1} \ct s^Y_{\ptoe{e}(x)} = e$,
+  where $\ptoe{e}\defeq \mathsf{pr}_1(e)_* : X\to Y$.
+% Moreover, $\varepsilon_{\refl{X},x} \defeq \iota(s^X_x)$.
 \end{lemma}
+\begin{proof}
+By induction on $e$ it suffices to give
+$\varepsilon_{\refl{X},x} : (s^X_x)^{-1} \ct s^X_x = \refl{X}$,
+since $\mathsf{pr}_1(\refl{X})_*(x) \jdeq x$.
+Hence we set $\varepsilon_{\refl{X},x} \defeq \iota(s^X_x)$,
+with $\iota$ as in \cref{lem:invlaw-change-path}. 
+\end{proof}
 
 %The following lemmas use pathover reversal denoted by $({-})^{-o}$.
 The function $\apd{\_}$ is the dependent action on paths from \cite[Ch. 2.3]{hottbook}.
@@ -883,7 +892,7 @@ Summarizing we get the universal property of the circle:
 The function $e_A(a,p) \defeq c_p$ as defined in 
 \cref{lem:guided-null-hmtps-dep} has type
 \[
-e_A : \sum_{a:A(\pt)}(a=_\Zloop a) \to \prod_{Z:\TorZ} A(Z)),
+e_A : \sum_{a:A(\pt)}(a=_\Zloop a) ~~\to~~ \prod_{Z:\TorZ} A(Z)),
 \]
 and satisfies $e_A(a,p)(\pt) \jdeq a$ and 
 $\apd{e_A(a,p)}(\Zloop) = p$.
