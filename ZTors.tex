@@ -758,7 +758,7 @@ where $\delta^Z_x$ comes from \cref{lem:loop-s-iterated}.
   Note that $\sum_{a':A(\pt)} (a =^A_{\refl{\pt}} a') \jdeq \sum_{a':A(\pt)} (a = a')$
   is contractible with center $(a,\rrfl)$. By \cref{lem:s-pt-zero}
   $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} {a'})$ is contractible with center
-  $\cp{\gamma_0}(a,\rrfl)$.
+  $(a,\cp{\gamma_0}(\rrfl))$.
 
   Thus, to show that $Q_p(\pt)$ is contractible,
   it suffices to define an equivalence
@@ -777,11 +777,12 @@ where $\delta^Z_x$ comes from \cref{lem:loop-s-iterated}.
 \end{proof}
 
 The center of contraction $\vec{c}_p(\pt)$ of $Q_p(\pt)$ is 
-defined in the above proof as $\varphi_{a}^{-1}(\cp{\gamma_0}(a,\rrfl))$, 
+defined in the above proof as $\varphi_{a}^{-1}(a,\cp{\gamma_0}(\rrfl))$, 
 which is again a triple $(a,h,q)$. In general we write
-$\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$.
+$\vec{c}_p(Z)\defeq(c_p(Z),\tilde{c}_p(Z),\hat{c}_p(Z))$
+for the center of contraction of $Q_p(Z)$.
 We immediately get $c_p(\pt)\defeq a$ and will proceed to
-elaborate $\apd{c_p}(\Zloop)$.
+elaborate $\apd{c_p}(\Zloop)$ (see \cite[Ch. 2.3]{hottbook} for $\apd{\_}$).
 
 %\begin{figure}
 %\caption{\label{fig:TorZ-induction}LET'S HAVE SOME INFORMATIVE PICTURE}
@@ -802,7 +803,6 @@ with $\iota$ as in \cref{lem:invlaw-change-path}.
 \end{proof}
 
 %The following lemmas use pathover reversal denoted by $({-})^{-o}$.
-The function $\apd{\_}$ is the dependent action on paths from \cite[Ch. 2.3]{hottbook}.
 
 \begin{lemma}\label{lem:apd-c-tilde-c}
 For all $X,Y:\TorZ$, $e: X=Y$ and $x:X$ we have
@@ -810,8 +810,9 @@ $\apd{c_p}(e) = \cp{\varepsilon_{e,x}}
 (\tilde c_p(X,x)^{-o}\cto \tilde c_p(Y,e(x)))$.
 \end{lemma}
 \begin{proof}
-The lemma is immediate by induction on $e$.
-We only have to check that the statement is well-typed.
+Induction on $e$ reduces the proof to the case $e\jdeq\refl{X}: X=X$,
+which follows from \cref{lem:invlaw-change-path} and \cref{lem:s-X-x-*-e}.
+We only have to check that the general statement of the lemma is well-typed.
 We have the following pathover typings:
 \begin{align*}
 \apd{c_p}(e) &: (c_p(X) =^A_e c_p(Y))\\
@@ -824,24 +825,14 @@ In order to make ends meet between the first and the fourth typing
 we invoke \cref{lem:s-X-x-*-e} and \cref{def:pathover-change-path}.
 \end{proof}
 
-We compute (at least partially) the center $\vec c_p(\pt)$ of $Q_p(\pt)$.
-The goal is to prove $c_p(\pt)\jdeq a$ and $\apd{c_p}(\Zloop)=p$.
-
-First, $s^\pt_0: \pt = \pt$ is based on $(n\mapsto s^n(0)) = \id$, 
-mapped by $ua$ to $\refl{\pt}$. So we have $\gamma_0 : \refl{\pt} = s^\pt_0$.
-
-The center of $\sum_{a':A(\pt)} (a =^A_{s^\pt_0} a')$ is the pair
-$(a,r)$ where $r \defeq \cp{\gamma_0}(\rrfl): a =^A_{s^\pt_0} a$.
-This shows $c_p(\pt)\jdeq a$.
-
-The center $(a,r)$ is pulled back to a center $(a,c)$ of $Q_p(\pt)$ 
-where $c\defeq(h,q)$ is the center of $\varphi_{a}^{-1}(r)$ coming 
-from the proof that $\varphi_{a}$ is an equivalence.
-The type of $h$ is $\prod_{z:\zet} a =^A_{s^\pt_z} a$ and
-the type of $q$ is $\prod_{z:\zet} h(z+1) = \cp{\delta^\pt_z}(p \cto h(z))$.
-We know $\varphi_{a}(h,q) \defeq h(0) = r$, so $\tilde c_p(\pt,0) = r$.
+Recall the center of contraction $\varphi_{a}^{-1}(a,\cp{\gamma_0}(\rrfl))$
+of $Q_p(\pt)$, denoted by $(c_p(\pt),\tilde{c}_p(\pt),\hat{c}_p(\pt))$.
+The type of $h\defeq\tilde{c}_p(\pt)$ is $\prod_{z:\zet} a =^A_{s^\pt_z} a$ and
+the type of $q\defeq\hat{c}_p(\pt)$ is $\prod_{z:\zet} h(z+1) = \cp{\delta^\pt_z}(p \cto h(z))$.
+We know $\varphi_{a}(h,q) \jdeq h(0) = \cp{\gamma_0}(\rrfl)$, 
+so $\tilde c_p(\pt,0) = \cp{\gamma_0}(\rrfl)$.
 Using $q$ we also know that 
-$\tilde c_p(\pt,1) \defeq h(1) = \cp{\delta^\pt_0}(p \cto h(0))$.
+$\tilde c_p(\pt,1) \jdeq h(1) = \cp{\delta^\pt_0}(p \cto h(0))$.
 We now have enough information to verify $\apd{c_p}(\Zloop)=p$,
 which by \cref{lem:apd-c-tilde-c} reduces to 
 \[
@@ -856,13 +847,13 @@ Hence the functions $\cp{\alpha}$ only depend on the (path-)type
 of $\alpha$, and we may replace the subscript $\alpha$ by its type.
 However, if $\alpha$ is shorter than its type we may 
 prefer to keep $\alpha$ in $\cp{\alpha}$.
-Also, as $\cp{\refl{p}}$ is the identity, so is any $\cp{\alpha}$
+Also, as $\cp{\refl{}}$ is the identity, so is any $\cp{\alpha}$
 when the endpoints of $\alpha$ are definitionally equal. 
 We make extensive use of this and of the functions and
 lemmas from \cref{sec:pathovers}.
 
 Abbreviate $s_0 \defeq s^\pt_0$, $s_1 \defeq s^\pt_1$, 
-then $\varepsilon_{\Zloop,0} : s_0^{-1} \ct s_1 = \Zloop$.
+then $\varepsilon_{\Zloop,0} : s_0^{-1} \ct s_1 = {\Zloop}$.
 We split the latter identity in a sequence of identities:
 \[
 s_0^{-1} \ct s_1 \stackrel{\alpha}{=} 
@@ -886,16 +877,16 @@ We now calculate:
 \rrfl\cto(p\cto\rrfl)&=p\\
 \end{align*}
 
-Summarizing we get the universal property of the circle:
+In total, we have proved the induction principle of the circle for $\TorZ$:
 
 \begin{definition}\label{def:TorZelim}
-The function $e_A(a,p) \defeq c_p$ as defined in 
+The function ${\ind}_A$ mapping $(a,p)$ to $c_p$ as defined in 
 \cref{lem:guided-null-hmtps-dep} has type
 \[
-e_A : \sum_{a:A(\pt)}(a=_\Zloop a) ~~\to~~ \prod_{Z:\TorZ} A(Z)),
+{\ind}_A : \sum_{a:A(\pt)}(a=_\Zloop a) ~~\to~~ \prod_{Z:\TorZ} A(Z)),
 \]
-and satisfies $e_A(a,p)(\pt) \jdeq a$ and 
-$\apd{e_A(a,p)}(\Zloop) = p$.
+and satisfies ${\ind}_A(a,p)(\pt) \jdeq a$ and 
+$\apd{{\ind}_A(a,p)}(\Zloop) = p$.
 \end{definition}
 
 \section{Acknowledgement}
