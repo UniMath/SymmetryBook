@@ -56,13 +56,14 @@ For convenience we give a direct inductive
 definition of the set of integers in \cref{sec:integers}.
 Thus we get a set of integers $\zet$, a constant $0:\zet$,
 and a successor function $s:\zet\to\zet$
-that is an equivalence. We can then define \emph{the 
-pointed type of $\zet$-torsors} by
-\[
-\TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~}
-\pt\defeq ((\zet,s),\trunc{\refl{(\zet,s)}}).
-\]
-Here and below, such pairs $(X,f)$ are of type $\sum_{X:\UU}(X\to X)$.
+that is an equivalence.
+Considering pairs $(X,f)$ of type $\sum_{X:\UU}(X\to X)$,
+we can introduce \emph{the 
+pointed type of $\zet$-torsors} by adopting the following definitions.
+\begin{align*}
+  \TorZ &\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)}  \\
+  \pt & \defeq ((\zet,s),\trunc{\refl{(\zet,s)}}) : \TorZ
+\end{align*}
 It is not difficult to see 
 that $\pt =_\TorZ \pt$ is equivalent to $\zet$.  To see that, 
 begin by observing that every function $f:\zet\to\zet$ commuting with $s$
@@ -74,11 +75,12 @@ Let $\ev_0(p) \defeq \mathsf{pr}_1(p)_*(0)$ for all $p : \pt =_\TorZ \pt$,
 then $\ev_0 : (\pt =_\TorZ \pt) \to \zet$.  Combining these observations,
 using the univalence axiom, one proves that $\ev_0$ is an equivalence.
 
-The preimage of $s(0)$ under the equivalence $\ev_0$ is a
+We define $1 \defeq s(0)$.
+The preimage of $1$ under the equivalence $\ev_0$ is a
 natural generating path of $\pt =_\TorZ \pt$, so we define
-${\Zloop}\defeq ev_0^{-1}(s(0))$, which we call the \emph{loop}
+${\Zloop}\defeq ev_0^{-1}(1)$, which we call the \emph{loop}
 of $\TorZ$. Alternatively, we could have obtained $\Zloop$
-directly from $s: \zet\equiv\zet$ by applying UA
+directly from $s: \zet\equiv\zet$ by applying the univalence axiom
 (with some easy add-ons, e.g., proving that $s$ commutes with itself).
 
 With this in hand, we can formulate a recursion principle for $\TorZ$.
@@ -98,30 +100,33 @@ states that ${\rec}_A$ above is an equivalence, for all types $A$.
 In order to prove this universal property one needs an induction
 principle, in which $A$ is not a type but a type family over $\TorZ$.
 On the basis of Grayson's construction of the recursion principle,
-Shulman sketched a possible approach to the induction principle, see \cite{circleind-Mike}. 
+Shulman sketched an approach to the induction principle, see \cite{circleind-Mike}. 
 Independently of this, but also departing from Grayson's proof of the 
 recursion principle, Buchholtz and Bezem found the construction
 presented in this paper, which has subsequently been formalized
 by Grayson \cite{circleind-Dan,circleind-Dan-theorem} in {\em UniMath}.  
 
 The precise statement of the induction principle is that there is a 
-function of the following type, with $\apd{}$ from \cite[Ch. 2.3]{hottbook}:
-
+function of the following type.
 \[
-\prod_{A: \TorZ\to\UU}~
-\prod_{a: A(\pt)}~
-\prod_{l: a=^A_{\Zloop} a}~
-\sum_{f: \prod_{z:\TorZ} A(z)}~
-\sum_{r: f(\pt)= a}~
-{\apd{f}(\Zloop) = r\cto' l \cto r^{-1}}.
+  \thinmuskip=10mu              % this is better than inserting tildes
+  \prod_{A: \TorZ\to\UU}
+  \prod_{a: A(\pt)}
+  \prod_{l: a=^A_{\Zloop} a}
+  \sum_{f: \prod_{z:\TorZ} A(z)}
+  \sum_{r: f(\pt)= a}
+  {\apd{f}(\Zloop) = r\cto' l \cto r^{-1}}
 \]
+Here $\apd{}$ is as defined in \cite[Ch. 2.3]{hottbook}.
+Note that $r$ above is a path between two elements of the same fiber $A(pt)$.
+Hence $r$ and $r^{-1}$ are paths over $\refl{\pt}$ and can be composed with $l$.
+To simplify the statement, we use the \emph{left recursive} 
+composition $\cto'$ of paths over paths and the \emph{right recursive} $\cto$ composition of paths over paths.
+(A composition operation is called \emph{left recursive} if it computes to its right-hand argument when its
+ left-hand argument is given by reflexivity; similarly with \emph{left} replaced by \emph{right}.)
 
-Note that $r$ above is a path between two elements of the same fiber $A(\pt)$.
-Hence both $r$ and $r^{-1}$ are paths over $\refl{\pt}$ and can be composed with $l$.
-To simplify the statement, we use both \emph{left recursive} pathover 
-composition $\cto'$ and \emph{right recursive} $\cto$.
 If the underlying type theory has propositional truncation with a dependent eliminator 
-that computes judgmentally on the point constructor, such as in \cite[Ch. 6.9]{hottbook},
+that computes judgmentally on the point constructor, as in \cite[Ch. 6.9]{hottbook},
 then the same is true for our circle, i.e., the path $r : f(\pt)= a$ above is a reflexivity path.
 In that case $r\cto' l \cto r^{-1}$ is judgmentally equal to $l$.   
 
@@ -141,7 +146,7 @@ are pointed connected types with loop spaces equivalent to $\zet$.
 to reduce to action on paths. Then use connectedness to strengthen
 this result from embeddings to equivalences. 
 Finally, again using connectedness, reduce to the loop spaces
-of the respective points, indeed both equivalent to $\zet$.) 
+of the respective points, and show they are equivalent to $\zet$ and thus to each other.) 
 
 \section{The integers}
 \label{sec:integers}
@@ -495,9 +500,10 @@ some definitions from the introduction.
 
 \begin{definition}\label{def:TorZ}
 The pointed type of $\zet$-torsors is defined by
-\[
-\TorZ\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)} \text{~with~} \pt\defeq (\zet,s,!).
-\]
+\begin{align*}
+  \TorZ &\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)}  \\
+  \pt & \defeq ((\zet,s),\trunc{\refl{(\zet,s)}}) : \TorZ
+\end{align*}
 The variables $X,Y,Z$ will be used for elements of $\TorZ$, 
 as well as, by an abuse of notation, for their the first components.
 The equivalence $\ev_0$ is defined by
@@ -700,7 +706,7 @@ For simplicity, we may denote $f^n(x)$ by $x+n$.
 \begin{definition}\label{def:loop-s-iterated}
 For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
 define $s^Z_x: \pt =_\TorZ Z$ by the equivalence
-$e_x(n)\defeq f^n(x)$ using UA. Indeed, 
+$e_x(n)\defeq f^n(x)$ using the univalence axiom. Indeed, 
 $f\circ e_x = e_x \circ s$, as both functions map $n$ to $f^{n+1}(x)$. 
 \end{definition}
 
@@ -708,7 +714,7 @@ Applying \cref{thm:integers-univ-symm} we will need two auxiliary
 results about the paths $s^\pt_x$, one for $x=0$ and 
 the other for the (symmetric) induction step.
 In \cref{def:loop-s-iterated}, if $Z\jdeq\pt$ and $x=0$, we get $e_0 = \id$.
-Applying UA gives thus the first result.
+Applying the univalence axiom gives thus the first result.
 
 \begin{lemma}\label{lem:s-pt-zero}
   There is a path $\gamma_0 : \refl{\pt} = s^\pt_0$. 
@@ -717,7 +723,7 @@ Applying UA gives thus the first result.
 For the second result, note that prefixing $s^Z_x$ by ${\Zloop}$ 
 amounts to precomposing the equivalence $e_x$ with $s$. 
 We have $(e_x\circ s)(n) = e_x(n+1) = f^{n+1}(x) = f^n(f(x)) =e_{f(x)}(n)$,
-so $e_x\circ s = e_{x+1}$. Applying UA we get:
+so $e_x\circ s = e_{x+1}$. Applying the univalence axiom we get:
 
 \begin{lemma}\label{lem:loop-s-iterated}
   For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, we have a path
