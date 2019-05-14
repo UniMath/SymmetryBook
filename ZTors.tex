@@ -19,7 +19,8 @@
     \email{danielrichardgrayson@gmail.com}
     \urladdr{http://dangrayson.com/}
 }
-\date{April 29, 2019}
+
+\date{May 14, 2019}
 
 \begin{abstract}
 We show that the type $\TorZ$ of $\ZZ$-torsors has the dependent universal property of the circle, 
@@ -30,6 +31,8 @@ circle not using higher inductive types.
 \end{abstract}
 
 \maketitle
+\markleft{BEZEM BUCHHOLTZ GRAYSON}
+\markright{CONSTRUCTION OF THE CIRCLE}
 \tableofcontents
 
 \section{Introduction}
@@ -232,12 +235,12 @@ is one of the benefits of the univalent approach.)
 \section{Some induction principles for the integers}
 \label{sec:integers-induction}
 
-From the definition of $\zet$ we get the following slightly better induction principle:
+The definition of $\zet$ yields the following induction principle.
 Given $P : \zet \to \UU$, to construct elements $h(z) : P(z)$ for every $z : \zet$,
-it suffices to give $h(0): P(0)$ and two functions
+it suffices to give $h(0): P(0)$ and functions
 $f : \prod_{n:\NN}(P(n) \to P(n+1))$ and
 $g : \prod_{n:\NN}(P(-n) \to P(-n-1))$, 
-see \cref{fig:integers-induction-asymmetric}.
+as illustrated in \cref{fig:integers-induction-asymmetric}.
 
 The function $h:\prod_{z:\ZZ}(P(z)$ thus defined satisfies
 $h(n+1)\jdeq f(n,h(n))$ and $h(-n-1)\jdeq g(n,h(-n))$ for all $n:\NN$.
@@ -276,10 +279,10 @@ $h(n+1)\jdeq f(n,h(n))$ and $h(-n-1)\jdeq g(n,h(-n))$ for all $n:\NN$.
 
 
 It is possible to give a more symmetric, but less general induction principle,
-if assume that the functions are equivalences.
+if we assume that the functions are equivalences.
 In that case we can reorient the $g$'s to point in the same direction as the $f$'s,
-so that we just give $f : \prod_{z:\zet}P(z) \equiv P(z+1)$, 
-see \cref{fig:integers-induction-symmetric}.
+allowing us to combine them into a single family $f : \prod_{z:\zet}P(z) \equiv P(z+1)$ of equivalences, 
+as illustrated in \cref{fig:integers-induction-symmetric}.
 
 \begin{figure}[h]
   \centering
@@ -308,9 +311,9 @@ see \cref{fig:integers-induction-symmetric}.
   \label{fig:integers-induction-symmetric}
 \end{figure}
 
-We shall need that in this case, giving a element $h:\prod_{z:\zet}P(z)$
-such that $h(z+1) = f_z(h(z))$ for all $z:\zet$
-is in fact equivalent to giving the single element $h(0)$.
+We shall need that in this case, giving an element $h:\prod_{z:\zet}P(z)$
+together with identities of type $h(z+1) = f_z(h(z))$ for all $z:\zet$
+is equivalent to giving the single element $h(0)$.
 We formulate this precisely as follows.
 
 \begin{theorem}\label{thm:integers-univ-symm}
@@ -381,42 +384,40 @@ setting $\trp{B,\refl{a_1}}(b_1)\defeq b_1$. This is indeed well-typed since
 $B(a_1)\jdeq B(a_2)$ in this case.
 Now define the type $b_1 =^B_p b_2$ as $\trp{B,p}(b_1) = b_2$.
 An element of $b_1 =^B_p b_2$ is called
-a \emph{path} from $b_1$ to $b_2$ \emph{over} $p$, or \emph{pathover} for short.
+a \emph{path} from $b_1$ to $b_2$ \emph{over} $p$.
 Note that $(b_1 =^B_{\refl{a_1}} b_2) \jdeq (b_1 =_{B(a_1)}  b_2)$.
 \end{definition}
 
-Many of the operations on paths have their counterpart for pathovers.
-We define the unit pathover, composition of pathovers, and pathover reversal.
+Many of the operations on paths have their counterpart for paths over paths.
+We define the unit path over a path, composition of paths over paths, and reversal of paths over paths.
 
 \begin{definition}\label{def:pathoveralgebra}
-Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, and 
-$p_i : a_i = a_{i+1}$ for $i=1,2$. We define:
-\begin{enumerate}[topsep=3pt]
-\item The \emph{unit pathover} $\refl{b_1} : b_1 =^B_{\refl{a_1}} b_1$;
-\item \emph{Pathover composition} $\cto : b_1 =^B_{p_1} b_2 \to
-b_2 =^B_{p_2} b_3 \to b_1 =^B_{p_1 \ct p_2} b_3$, defined by induction
-on first $p_2$ and then $r: b_2 = b_3$, by
-setting $q \cto \refl{b_2} \defeq q$ for all $q: b_1 =^B_{p_1} b_2$;
-\item \emph{Pathover reversal} $({-})^{-o} : b_1 =^B_{p_1} b_2 \to
-b_2 =^B_{(p_1)^{-1}} b_1$, defined by induction on first $p_1$ and then $r: b_1 = b_2$, by
-setting $\refloi{b_1} \defeq \refl{b_1}$.
-\end{enumerate}
+  Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, and 
+  $p_i : a_i = a_{i+1}$ for $i=1,2$. We define:
+  \begin{enumerate}[topsep=3pt]
+  \item \emph{Unit} $\refl{b_1} : b_1 =^B_{\refl{a_1}} b_1$;
+  \item \emph{Composition of paths over paths} $\cto : b_1 =^B_{p_1} b_2 \to b_2 =^B_{p_2} b_3 \to b_1 =^B_{p_1 \ct p_2} b_3$,
+    defined by induction first on $p_2$ and then on $r: b_2 = b_3$, by
+    setting $q \cto \refl{b_2} \defeq q$ for all $q: b_1 =^B_{p_1} b_2$;
+  \item \emph{Reversal of paths over paths} $({-})^{-o} : b_1 =^B_{p_1} b_2 \to b_2 =^B_{(p_1)^{-1}} b_1$,
+    defined by induction first on $p_1$ and then on $r: b_1 = b_2$, by
+    setting $\refloi{b_1} \defeq \refl{b_1}$.
+  \end{enumerate}
 \end{definition}
 
-The operations of pathover algebra satisfy many of the laws of path algebra,
-but only after some modification. For example, we have
-associativity of composition for paths: $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
-We don't in general have $p_1\ct(p_2\ct p_3) \jdeq (p_1\ct p_2)\ct p_3$.
-If $b_1 =^B_{p_1} b_2 =^B_{p_2} b_3 =^B_{p_3} b_4$, then there are
-two ways to associate, leading to two pathover types:
-$b_1 =^B_{p_1\ct (p_2\ct p_3)} b_4$ and $b_1 =^B_{(p_1\ct p_2) \ct p_3} b_4$.
-These two types are in general not definitionally equal,
-but can easily be proved to be equivalent. Let's call the
-equivalence $\varepsilon$. So if we have pathovers $q_i : b_i =^B_{p_i} b_{i+1}$
-for $i=1,2,3$ we get $\varepsilon(q_1 \cto (q_2 \cto q_3)) = (q_1 \cto q_2)\cto q_3$
-as associativity law. For more information we refer the reader to the
-repositories with formalized proofs \cite{XXX}. 
-Here we only state some results that we will need in the sequel.
+These operations on paths over paths satisfy many of the laws satisfied by the corresponding operations on paths, after some modification.  We
+illustrate the modification required to treat composition.  Suppose we have elements $a_i : A$ for $1 \le i \le 4$, paths $p_i : a_i = a_{i+1}$
+for $1 \le i \le 3$, elements $b_i:B(a_i)$ for $1 \le i \le 4$, and paths $q_i : b_i =^B_{p_i} b_{i+1}$ over $p_i$ for $1 \le i \le 3$.
+Then we the following two paths over paths.
+\begin{align*}
+   q_1 \cto (q_2 \cto q_3) & : b_1 =^B_{p_1\ct (p_2\ct p_3)} b_4 \\
+  (q_1 \cto q_2) \cto q_3  & : b_1 =^B_{(p_1\ct p_2) \ct p_3} b_4
+\end{align*}
+Since they are of different types, they cannot be compared directly, but there is an
+equivalence $\varepsilon$ of type $b_1 =^B_{p_1\ct (p_2\ct p_3)} b_4 \equiv b_1 =^B_{(p_1\ct p_2) \ct p_3} b_4$
+constructed from the associativity law for paths of type $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
+The associativity law for composition of paths over paths is an easily constructed identity of type $\varepsilon(q_1 \cto (q_2 \cto q_3)) = (q_1 \cto q_2)\cto q_3$.
+For more information we refer the reader to the repositories with formalized proofs \cite{circleind-Dan}. 
 
 In the rest of this section we work in a context with
 $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, 
@@ -687,7 +688,7 @@ type $\prod_{Z:\TorZ} A(Z)$ that maps $\pt$ to $a$ (definitionally),
 and maps $\Zloop$ to $p$ (by dependent action on paths).
 We follow the pattern of the non-dependent case
 in \cref{sec:TorZ-recursion}, but keep in mind that 
-$A$ is now not constant and $p$ is a \emph{pathover}.
+$A$ is now not constant and $p$ is a \emph{path over a path}.
 
 The following lemma follows from the fact that $\zet$ is a set
 and $s: \zet\to\zet$ is an equivalence.
@@ -813,7 +814,7 @@ $\apd{c_p}(e) = \cp{\varepsilon_{e,x}}
 Induction on $e$ reduces the proof to the case $e\jdeq\refl{X}: X=X$,
 which follows from \cref{lem:invlaw-change-path} and \cref{lem:s-X-x-*-e}.
 It remains to check that the general statement of the lemma is well-typed.
-We have the following pathover typings:
+We have the following paths over paths.
 \begin{align*}
 \apd{c_p}(e) &: (c_p(X) =^A_e c_p(Y))\\
 \tilde c_p(Y,e(x)) &:  (a =^A_{s^Y_{e(x)}} c_p(Y))\\
