@@ -500,23 +500,25 @@ With these notational simplifications, we rephrase
 some definitions from the introduction.
 
 \begin{definition}\label{def:TorZ}
-The pointed type of $\zet$-torsors is defined by
-\begin{align*}
-  \TorZ &\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)}  \\
-  \pt & \defeq ((\zet,s),\trunc{\refl{(\zet,s)}}) : \TorZ
-\end{align*}
-The variables $X,Y,Z$ will be used for elements of $\TorZ$, 
-as well as, by an abuse of notation, for their the first components.
-The equivalence $\ev_0$ is defined by
-\[
-\ev_0: (\pt =_\TorZ \pt)\to\zet: p \mapsto \mathsf{pr}_1(p)_*(0).
-\]
-The loop of $\TorZ$ is defined as ${\Zloop}\defeq\ev_0^{-1}(1)$,
-satisfying $\mathsf{pr}_1(\Zloop)_* = s$.
+  The pointed type of $\zet$-torsors is defined by
+  \begin{align*}
+    \TorZ &\defeq \sum_{(X,f)}\Trunc{(\zet,s)=(X,f)}  \\
+    \pt & \defeq ((\zet,s),\trunc{\refl{(\zet,s)}}) : \TorZ
+  \end{align*}
+  The variables $X,Y,Z$ will be used for elements of $\TorZ$, 
+  as well as, by an abuse of notation, for their the first components.
+  The equivalence $\ev_0$ is defined by
+  \begin{align*}
+    \ev_0: (\pt =_\TorZ \pt) & \to\zet \\
+    p & \mapsto \mathsf{pr}_1(p)_*(0).
+  \end{align*}
+  The loop of $\TorZ$ is defined as ${\Zloop}\defeq\ev_0^{-1}(1)$,
+  satisfying $\mathsf{pr}_1(\Zloop)_* = s$.
 \end{definition}
 
-Our type $\TorZ$ is equivalent to the more traditionally defined 
-type of $\ZZ$-torsors, $\Xtorsor{\ZZ}$, but is more parsimonious.
+The type $\TorZ$ is equivalent to the more traditionally defined 
+type of $\ZZ$-torsors, but is more parsimonious.
+(Traditionally, a $\ZZ$-torsor is defined as a nonempty set upon which the group $\ZZ$ acts freely and transitively.)
 Another way to think of it is as the type of Cayley diagrams for $\ZZ$.
 
 \begin{lemma}\label{lem:dep-elim-TorZ}
@@ -572,9 +574,9 @@ of this proof, as illustrated in \cref{fig:TorZ-recursion}.
    \matrix (m) 
    [matrix of math nodes, row sep=2em, column sep=2em, ampersand replacement=\&]
     { 
-\sum\limits_{a':A} 
-\prod\limits_{h: X\to a=a'}
-\prod\limits_{x:X} h(f(x))=p\ct h(x)  \&       \&  A  \\
+\sum\limits_{a':A} ~
+\prod\limits_{h: X\to a=a'} ~
+\prod\limits_{x:X} ~ h(f(x))=p\ct h(x)  \&       \&  A  \\
 \\
                      \& \TorZ \&      \\};
 
@@ -671,18 +673,18 @@ We summarize the results in the following recursion principle for $\TorZ$.
 In the next section we will prove an induction principle for $\TorZ$.
 
 \begin{definition}\label{def:TorZrecursor}
-The function ${\rec}_A(a,p) \defeq c_p$ as defined after 
-\cref{lem:guided-null-hmtps} has type
-\[
-{\rec}_A : \sum_{a:A}(a=a) ~~\to~~ (\TorZ \to A),
-\]
-and satisfies ${\rec}_A(a,p)(\pt) \jdeq a$ and 
-$\ap{{\rec}_A(a,p)}(\Zloop) = p$.
+  The function ${\rec}_A(a,p) \defeq c_p$ as defined after 
+  \cref{lem:guided-null-hmtps} has type
+  \[
+    {\rec}_A : \sum_{a:A}(a=a) ~~\to~~ (\TorZ \to A),
+  \]
+  and satisfies ${\rec}_A(a,p)(\pt) \jdeq a$ and 
+  $\ap{{\rec}_A(a,p)}(\Zloop) = p$.
 \end{definition}
 
 \subsection{Induction in $\TorZ$}\label{sec:TorZ-induction}
 
-Fix $A:\TorZ\to\UU$, $a:A(\pt)$ and $p: a=^A_{\Zloop} a$.
+Fix $A:\TorZ\to\UU$, $a:A(\pt)$, and $p: a=^A_{\Zloop} a$.
 On the basis of this input data, we will construct a function of 
 type $\prod_{Z:\TorZ} A(Z)$ that maps $\pt$ to $a$ (definitionally),
 and maps $\Zloop$ to $p$ (by dependent action on paths).
@@ -692,23 +694,24 @@ $A$ is now not constant and $p$ is a \emph{path over a path}.
 
 The following lemma follows from the fact that $\zet$ is a set
 and $s: \zet\to\zet$ is an equivalence.
+
 \begin{lemma}\label{lem:paths-in-TorZ}
-For every $p: (\zet,s)=(X,f)$ we have that $X$ is a set
-and $f: X\to X$ is an equivalence.
-Morever, with $\ptoe{p}\defeq \mathsf{pr}_1(p)_*$ the equivalence induced by $p$, we have 
-$f^n(x) = (\ptoe{p}\circ s^n \circ \ptoe{p}^{-1})(x) = \ptoe{p}(\ptoe{p}^{-1}(x)+n)$, 
-for all $n:\zet$ and $x:X$.
+  Suppose $p : (\zet,s)=(X,f)$.  Then $X$ is a set and $f: X\to X$ is an equivalence.
+  Morever, with $\ptoe{p}\defeq \mathsf{pr}_1(p)_*$ the equivalence induced by $p$, we have 
+  $f^n(x) = (\ptoe{p}\circ s^n \circ \ptoe{p}^{-1})(x) = \ptoe{p}(\ptoe{p}^{-1}(x)+n)$, 
+  for all $n:\zet$ and $x:X$.
 \end{lemma}
+
 Note that for fixed $x:X$ the expression $\ptoe{p}^{-1}(x)+n$ can be seen as 
 the function shifting $n:\zet$ by $\ptoe{p}^{-1}(x)$ positions, indeed an equivalence.
 Hence $f^n(x)$ as a function of $n$ is an equivalence from $Z$ to $X$.
 For simplicity, we may denote $f^n(x)$ by $x+n$.
 
 \begin{definition}\label{def:loop-s-iterated}
-For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
-define $s^Z_x: \pt =_\TorZ Z$ by the equivalence
-$e_x(n)\defeq f^n(x)$ using the univalence axiom. Indeed, 
-$f\circ e_x = e_x \circ s$, as both functions map $n$ to $f^{n+1}(x)$. 
+  For every $Z\defeq(X,f,t):\TorZ$ and $x:X$, 
+  define $s^Z_x: \pt =_\TorZ Z$ by the equivalence
+  $e_x(n)\defeq f^n(x)$ using the univalence axiom. Indeed, 
+  $f\circ e_x = e_x \circ s$, as both functions map $n$ to $f^{n+1}(x)$. 
 \end{definition}
 
 Applying \cref{thm:integers-univ-symm} we will need two auxiliary 
@@ -886,16 +889,15 @@ We have proved the induction principle of the circle for $\TorZ$:
 with ${\ind}_A$ mapping $(a,p)$ to $c_p$ satisfying $c_p(\pt) \jdeq a$ 
 and $\apd{c_p}(\Zloop) = p$.
 
-It would be interesting to see if and how our method can be generalised
-from $\TorZ$ to the type of $G$-torsors where $G$ is any free group with
-a decidable set of generators.
-
+It would be interesting to see whether our method can be generalised
+from $\TorZ$ to the type of $G$-torsors, where $G$ is a free group with
+a set of generators with decidable equality.
 
 \section{Acknowledgement}
 The authors acknowledge the support of the Centre for Advanced Study (CAS)
 at the Norwegian Academy of Science and Letters
 in Oslo, Norway, which funded and hosted the research project Homotopy Type Theory and Univalent Foundations during the academic year 2018/19. 
-
+Grayson also acknowledges the support of the Air Force Office of Scientific Research, through a grant to Carnegie Mellon University.
 
 \bibliographystyle{amsplain}
 \bibliography{papers}
