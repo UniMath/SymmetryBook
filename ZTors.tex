@@ -1,7 +1,8 @@
 \documentclass[a4,12pt]{amsart}
 \input macros
 \begin{document}
-\title{Construction of the circle in UniMath}
+\newcommand{\UniMath}{\emph{UniMath}}
+\title{Construction of the circle in \UniMath}
 {
     \author{Marc Bezem}
     \address{Department of Informatics, University of Bergen}
@@ -51,9 +52,9 @@ One extra piece of knowledge we use here is the \emph{dependent} elimination
 principle for propositional truncation, mentioned in \cite[Ch. 6.9]{hottbook},
 and qualified as `not really useful'%
 \footnote{The dependent elimination principle appears to 
-be used later in \cite{hottbook}, though. ULRIK HAS SPOTTED A PLACE}.
-We use this principle in \cref{lem:dep-elim-TorZ}, and the last paragraph
-of its proof gives this some extra attention to the computational aspect.
+be used later in \cite{hottbook}, though. ULRIK HAS SPOTTED A PLACE.  FIND IT.}.
+We use this principle in \cref{lem:dep-elim-TorZ}, and the paragraph after
+its proof gives some extra attention to the computational aspect.
 
 For convenience we give a direct inductive
 definition of the set of integers in \cref{sec:integers}.
@@ -107,7 +108,7 @@ Shulman sketched an approach to the induction principle, see \cite{circleind-Mik
 Independently of this, but also departing from Grayson's proof of the 
 recursion principle, Buchholtz and Bezem found the construction
 presented in this paper, which has subsequently been formalized
-by Grayson \cite{circleind-Dan,circleind-Dan-theorem} in {\em UniMath}.  
+by Grayson \cite{circleind-Dan,circleind-Dan-theorem} in \UniMath.  
 
 The precise statement of the induction principle is that there is a 
 function of the following type.
@@ -133,8 +134,7 @@ that computes judgmentally on the point constructor, as in \cite[Ch. 6.9]{hottbo
 then the same is true for our circle, i.e., the path $r : f(\pt)= a$ above is a reflexivity path.
 In that case $r\cto' l \cto r^{-1}$ is judgmentally equal to $l$.   
 
-%The \emph{UniMath} project lacks dependent elimination for propositional truncation, so
-The convention in {\em UniMath} is to avoid higher inductive types, and thus
+The convention in {\UniMath} is to avoid higher inductive types, and thus
 the formalization in \cite{circleind-Dan} is 
 somewhat different from the construction presented below.
 The formalized construction does not use higher inductive types, nor does it 
@@ -491,13 +491,10 @@ The proof is by induction on $\beta$ (for right-recursive composition).
 
 \section{Z-Torsors}\label{sec:ZTorsors}
 
-Recall that pairs $(X,f)$ have type $\sum_{X:\UU}(X\to X)$
-without explicitly mentioning this. Moreover, terms of
-propositional type that do not interest us are denoted by ``$!$''.
-%or even left out alltogether. 
+Recall that pairs $(X,f)$ will be taken implicitly to be of type $\sum_{X:\UU}(X\to X)$.
+Moreover, terms of propositional type whose precise form does not interest us are denoted by ``$!$''.
 Nested pairs may be written as tuples.
-With these notational simplifications, we rephrase
-some definitions from the introduction.
+With these notational simplifications, we rephrase some definitions from the introduction.
 
 \begin{definition}\label{def:TorZ}
   The pointed type of $\zet$-torsors is defined by
@@ -521,10 +518,20 @@ type of $\ZZ$-torsors, but is more parsimonious.
 (Traditionally, a $\ZZ$-torsor is defined as a nonempty set upon which the group $\ZZ$ acts freely and transitively.)
 Another way to think of it is as the type of Cayley diagrams for $\ZZ$.
 
+We remark that the pointed type $\TorZ$ is connected, that is, $\Trunc{\pt=Z}$ for all $Z:\TorZ$.
+
+We introduce the induction principal for propositional truncation in the following form (compare with \cite[Ch. 6.9]{hottbook}).
+
+\begin{definition}\label{def:proptruncind}
+  If $A$ is a type and $B(x)$ is a family of propositions parametrized by the elements $a$ of $\Trunc A$,
+  and given $g : \prod_{a:A} B(\trunc a)$, then there is a function $f : \prod_{x:\Trunc A} B(x)$.
+  The \emph{computation rule} asserts that $f (\trunc a) \jdeq g(a)$ for all $a:A$.
+\end{definition}
+
+In {\UniMath} the induction principal holds, but not the computation rule for it.
+
 \begin{lemma}\label{lem:dep-elim-TorZ}
-%The pointed type $\TorZ$ is connected, that is, $\Trunc{\pt=Z}$ for all $Z:\TorZ$.
-If $P(Z)$ is a proposition for all $Z:\TorZ$, then we have $P(Z)$ for all $Z:\TorZ$
-whenever we have $P(\pt)$.
+If $P(Z)$ is a proposition for all $Z:\TorZ$, then $P(\pt)$ implies that $P(Z)$ holds for all $Z:\TorZ$.
 \end{lemma}
 
 \begin{proof}
@@ -532,16 +539,12 @@ Let $P(Z)$ be a proposition for all $Z:\TorZ$, and assume we have a proof
 $p:P(\pt)$. Let $(X,f,t):\TorZ$, then $t :\Trunc{(\zet,s)=(X,f)}$.
 Since $P(X,f,t)$ is a proposition, it suffices by truncation elimination
 to prove $P(X,f,\trunc{e})$ for all $e:(\zet,s)=(X,f)$. 
-We do induction on $e$, reducing the task to proving $P(\zet,s,\trunc{\refl{(Z,s)}})$.
+By induction on $e$ we reduce the task to proving $P(\zet,s,\trunc{\refl{(Z,s)}}) \jdeq \pt$.
 Observing that $(\zet,s,\trunc{\refl{(Z,s)}})\jdeq\pt$, we can simply set the proof to $p$.
-
-Note that the proof $q: \prod_{Z:\TorZ} P(Z)$ constructed in this way
-has the property that $q(\pt)\jdeq p$ only if 
-the proof of $P(\zet,s,\trunc{\refl{(Z,s)}})$ is definitionally invariant
-under the truncation elimination.
-This is true for the propositional truncation in \cite[Ch. 6.9]{hottbook},
-but not in \emph{Unimath}.
 \end{proof}
+
+The proof $q: \prod_{Z:\TorZ} P(Z)$ constructed above has the property that $q(\pt)\jdeq p$ if the computation rule for the induction principal
+for propositional truncation holds.
 
 The aim of this section is to show that $\TorZ$ has the
 universal property of the circle.
@@ -893,7 +896,7 @@ It would be interesting to see whether our method can be generalised
 from $\TorZ$ to the type of $G$-torsors, where $G$ is a free group with
 a set of generators with decidable equality.
 
-\section{Acknowledgement}
+\section{Acknowledgements}
 The authors acknowledge the support of the Centre for Advanced Study (CAS)
 at the Norwegian Academy of Science and Letters
 in Oslo, Norway, which funded and hosted the research project Homotopy Type Theory and Univalent Foundations during the academic year 2018/19. 
