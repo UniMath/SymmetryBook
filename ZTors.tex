@@ -1,4 +1,4 @@
-\documentclass[a4,12pt]{amsart}
+\documentclass[a4paper,12pt]{amsart}
 \input macros
 \begin{document}
 \newcommand{\UniMath}{\emph{UniMath}}
@@ -7,11 +7,11 @@
     \author{Marc Bezem}
     \address{Department of Informatics, University of Bergen}
     \email{marc.bezem@uib.no}
-    \urladdr{https://www.uib.no/en/persons/Marcus.Aloysius.Bezem}
+    % \urladdr{https://www.uib.no/en/persons/Marcus.Aloysius.Bezem}
 }
 {
     \author{Ulrik Buchholtz}
-    \address{Department of Mathematics, Technische Universität Darmstadt}
+    \address{Department of Mathematics, Technische Universit\"at Darmstadt}
     \email{ulrikbuchholtz@gmail.com}
     \urladdr{https://www2.mathematik.tu-darmstadt.de/~buchholtz/}
 }
@@ -126,7 +126,8 @@ by Grayson \cite{circleind-Dan,circleind-Dan-theorem} in \UniMath.
 
 The precise statement of the induction principle is that there is a 
 function of the following type.
-\[
+\begin{equation}
+  \label{circleinductionequation}
   \thinmuskip=10mu              % this is better than inserting tildes
   \prod_{A: \TorZ\to\UU}
   \prod_{a: A(\pt)}
@@ -134,7 +135,7 @@ function of the following type.
   \sum_{f: \prod_{z:\TorZ} A(z)}
   \sum_{r: f(\pt)= a}
   {\apd{f}(\Zloop) = r\cto' l \cto r^{-1}}
-\]
+\end{equation}
 Here $\apd{}$ is as defined in \cite[Ch. 2.3]{hottbook}.
 Note that $r$ above is a path between two elements of the same fiber $A(pt)$.
 Hence $r$ and $r^{-1}$ are paths over $\refl{\pt}$ and can be composed with $l$.
@@ -144,9 +145,9 @@ composition $\cto'$ of paths over paths and the \emph{right recursive} $\cto$ co
  left-hand argument is given by reflexivity; similarly with \emph{left} replaced by \emph{right}.)
 
 If the underlying type theory has propositional truncation with a dependent eliminator that computes judgmentally on the point constructor, as
-in \cite[Ch. 6.9]{hottbook}, then the same is true for our circle, i.e., the path $r : f(\pt)= a$ above is a reflexivity path, and it follows
+in \cite[Ch. 6.9]{hottbook}, then the path $r : f(\pt)= a$ above is a reflexivity path.  It follows
 from the care with which we chose the expression $r\cto' l \cto r^{-1}$, that it has the same type as $l$, and, moreover, the two terms are
-judgmentally equal.
+judgmentally equal.  Thus the right side of the equation \ref{circleinductionequation} can be replaced by $l$.
 
 Because convention in {\UniMath} is to avoid higher inductive types, 
 the formalization in \cite{circleind-Dan} is 
@@ -377,7 +378,7 @@ is the function that takes $z:\zet$ to $f^z(p):P(z)$, where
 \section{Identifying elements in members of families of types}
 \label{sec:pathovers}
 
-In this section we present some addiational results that are needed in the sequel.
+In this section we present some additional results that are needed in the sequel.
 % and that cannot be found in \cite{hottbook}.
 
 Let $A : \UU$, $B : A \to \UU$, $a_i:A$, $b_i:B(a_i)$ for $i=1,2$, and $p : a_1 = a_2$.
@@ -428,7 +429,7 @@ Then we the following two paths over paths.
   (q_1 \cto q_2) \cto q_3  & : b_1 =^B_{(p_1\ct p_2) \ct p_3} b_4
 \end{align*}
 Since they are of different types, they cannot be compared directly, but there is an
-equivalence $\varepsilon$ of type $b_1 =^B_{p_1\ct (p_2\ct p_3)} b_4 \equiv b_1 =^B_{(p_1\ct p_2) \ct p_3} b_4$
+equivalence $\varepsilon$ of type $\left( b_1 =^B_{p_1\ct (p_2\ct p_3)} b_4 \right) \equiv \left( b_1 =^B_{(p_1\ct p_2) \ct p_3} b_4 \right)$
 constructed from the associativity law for paths of type $p_1\ct(p_2\ct p_3) = (p_1\ct p_2)\ct p_3$.
 The associativity law for composition of paths over paths is an easily constructed identity of type $\varepsilon(q_1 \cto (q_2 \cto q_3)) = (q_1 \cto q_2)\cto q_3$.
 For more information we refer the reader to the repositories with formalized proofs \cite{circleind-Dan}. 
@@ -591,14 +592,21 @@ of this proof, as illustrated in \cref{fig:TorZ-recursion}.
    \matrix (m) 
    [matrix of math nodes, row sep=2em, column sep=2em, ampersand replacement=\&]
     { 
-\sum\limits_{a':A} ~
-\prod\limits_{h: X\to a=a'} ~
-\prod\limits_{x:X} ~ h(f(x))=p\ct h(x)  \&       \&  A  \\
+    \sum\limits_{a':A} ~
+    \prod\limits_{h: X\to a=a'} ~
+    \prod\limits_{x:X} ~ h(f(x))=p\ct h(x)
+    \&
+    \&  
+    \vphantom{\sum\limits_{a':A} ~
+      \prod\limits_{h: X\to a=a'} ~
+      \prod\limits_{x:X} ~ h(f(x))=p\ct h(x)}
+    A
+\\
 \\
                      \& \TorZ \&      \\};
 
 \draw[->>] (m-1-1) -- (m-3-2);
-\draw[-> ] (m-1-1) -- (m-1-3) node[midway,above]  {$\fst$};
+\draw[-> ] ( [xshift=-10pt] m-1-1) -- (m-1-3) node[midway,above]  {$\fst$};
 \draw[->>] (m-1-3) -- (m-3-2);
 \draw[->,dotted] (m-3-2) to[bend left=30] node[near end,left]{$\vec c_p$} (m-1-1);
 \draw[->,dotted] (m-3-2) to[bend right=30] node[near end,right]{$c_p$} (m-1-3);
