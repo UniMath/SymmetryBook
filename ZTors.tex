@@ -38,13 +38,23 @@ circle not using higher inductive types.
 
 \section{Introduction}
 
-In topology it is well known that the classifying space of the group $\ZZ$ of integers is homotopy equivalent to the circle.  In homotopy type
-theory and univalent foundations, the {\em types} are the fundamental objects, and they behave much like spaces.  The traditional algebraic
-notion of $\ZZ$-torsor yields a category all of whose arrows are isomorphisms, all of whose objects are isomorphic to each other, and a trivial
-$\ZZ$-torsor whose automorphism group is $\ZZ$.  Due to univalence, the type $B\ZZ$ of all $\ZZ$-torsors is a connected pointed type whose
-fundamental group is $\ZZ$; we may call it the {\em classifying type} of $\ZZ$.  In this paper we show that $B\ZZ$ behaves the way a circle
-ought to behave, by establishing that maps from it to other types (or families of types) are freely determined by the destinations of the base
-point and the canonical loop at the base point (corresponding to the element $1$ of $\ZZ$.)
+In set theoretic foundations of mathematics, the {\em sets} have no interesting internal structure, aside from the identity of their elements.
+By contrast, in homotopy type theory and Voevodsky's univalent foundations, the {\em types} are the fundamental objects, serving to classify the
+objects of mathematics.  More general than sets, they behave much like spaces, due to the promotion of isomorphisms between objects to
+equalities, together with the intuition that an equality between two objects of the same type is like a path between two points in the same
+space.
+
+{\em Synthetic homotopy theory} is the study of the homotopy theoretic properties of types.  It is a fruitful one, because it turns out that
+many of the most basic results of standard homotopy theory have true analogues for types, even though the framework, based purely on logical
+principles, is devoid of the features one normally associates with topology, such as the topology of the real numbers.
+
+In standard homotopy theory it is well known that the {\em classifying space} of the group $\ZZ$ of integers is homotopy equivalent to the
+circle.  The traditional algebraic notion of $\ZZ$-torsor yields a category all of whose arrows are isomorphisms, all of whose objects are
+isomorphic to each other, and a trivial $\ZZ$-torsor whose automorphism group is $\ZZ$.  Due to univalence, the type $B\ZZ$ of all $\ZZ$-torsors
+is a connected pointed type whose fundamental group is $\ZZ$; we may call it the {\em classifying type} of $\ZZ$.  In this paper we show that
+$B\ZZ$ behaves the way a circle ought to behave, by establishing that maps from it to other types (or families of types) are freely determined
+by the destinations of the base point and the canonical loop at the base point (corresponding to the element $1$ of $\ZZ$.)  The proof is
+constructive, in that it does not appeal to the axiom of choice or the law of the excluded middle.
 
 There are various types equivalent to the type of $\ZZ$-torsors, and thus they also provide constructions of circles: all one needs is a
 connected pointed type whose automorphism groups are isomorphic to $\ZZ$.  For example, if one arising from geometry is desired, one may
@@ -53,12 +63,15 @@ consider the type consisting of all frieze patterns in a Euclidean plane\footnot
 linear collection of evenly spaced copies of the letter $F$.
 $$ \cdots FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF \cdots $$
 
-We have formalized the result in \UniMath{}, a name which refers to a (univalent) foundation of mathematics based on a formal type theoretic
-language, as well as to a particular repository \cite{UniMath} of formalized proofs, encoded in the language of the proof assistant {\em Coq}.
+We have formalized the result in \UniMath{}, a name which refers both to a (univalent) foundation of mathematics based on a formal type theoretic
+language and to a particular repository \cite{UniMath} of formalized proofs, encoded in the language of the proof assistant {\em Coq}.
+
 The other standard way to construct a circle in type theory uses {\em higher inductive types}, where one posits a new type, an element of it, a
 path from the element to itself, and nothing more.  Since {\UniMath}, by a conservative convention aimed at minimizing the burden of proving
 consistency of the formal system, does not use higher inductive types, the construction presented here is the only way to construct a circle in
-\UniMath{}.
+\UniMath{}.  Adding higher inductive types to the system would give another construction of the circle, equivalent to the one described above.
+
+Now we give a few more details.
 
 As a prerequisite we require, of the reader, a working knowledge of homotopy type theory
 as described in, for example, the first four chapters of \cite{hottbook}.
@@ -545,7 +558,7 @@ We introduce the induction principle for propositional truncation in the followi
   The \emph{computation rule} asserts that $f (\trunc a) \jdeq g(a)$ for all $a:A$.
 \end{definition}
 
-In {\UniMath} the induction principal holds, but not the computation rule for it.
+In {\UniMath} the induction principle holds, but not the computation rule for it.
 
 \begin{lemma}\label{lem:dep-elim-TorZ}
 If $P(Z)$ is a proposition for all $Z:\TorZ$, then $P(\pt)$ implies that $P(Z)$ holds for all $Z:\TorZ$.
