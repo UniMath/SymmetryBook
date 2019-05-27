@@ -110,8 +110,11 @@ By \cref{lem:trp-in-fx=Ygx} we have
 $\trp{P,\Sloop}(p)=g(\Sloop)\cdot p \cdot f(\Sloop)^{-1}$. 
 By $q$ we have $g(\Sloop) = p\cdot f(\Sloop) \cdot p^{-1}$.
 Hence $\trp{P,\Sloop}(p)=p$ by easy calculation.
-To finally get $\el(\ev(f))=f$,
-note that $\ev(\el(\ev(f)))=(f(\base),f(\Sloop))$ with $p\defeq\refl{f(\base)}$
+Using \cref{lem:isEq-pair=} we can phrase the result
+as: if $\ev(f)=\ev(g)$, then  $f=g$.
+
+Now we get $\el(\ev(f))=f$, as
+$\ev(\el(\ev(f)))=(f(\base),f(\Sloop))\jdeq\ev(f)$ with $p\defeq\refl{f(\base)}$
 and $q$ coming from the induction principle.
 \end{proof}
 
@@ -258,7 +261,7 @@ to be pointed types.
 \end{definition}
 With a formula, given a type $B$, the type of \coverings over $B$ is
 \[
-\sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),
+\SetBundle{B} \defeq \sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),
 \]
 with variations according to the flavor.
 
@@ -266,6 +269,18 @@ Recall the equivalence in \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-fami
 between the type $B\to\Set$ of families of sets indexed by $B$, and the type
 of set bundles over $B$ given above.
 We shall frequently use this equivalence, even without explicit mention.
+
+\begin{lemma}\label{lem:set-bundle-is-groupoid}
+For any type $B$, $\SetBundle{B}$ is a groupoid.
+\end{lemma}
+\begin{proof}
+By \cref{lem:Set-is-groupoid} we have that $\Set$ is a groupoid, 
+and hence $B\to\Set$ is a groupoid by \cref{lem:level-n-utils}(\ref{level-n-utils-codom}).
+Moreover, by \cref{lem:subtype-same-level}, all variations in \cref{def:covering}
+defined by a predicate are groupoids as well.
+\end{proof}
+One notable exception to the above lemma is the type of \emph{pointed} set bundles:
+a point is extra structure, not a property.
 
 We should notice that the notion of a \covering is just one step up from the notion of an
 injection (a map such that all the preimages are propositions -- 
@@ -1028,7 +1043,7 @@ and the composite $-^mc$ is given by
 %$-^mc(\base)\oldequiv(\bn m\times\zet,\sqrt[m]s)$ and $-^mc(\Sloop)=\id\times s$
 $((\bn m\times\zet,\sqrt[m]s),\id\times s)$: we must produce an element in 
 $$((\bn m\times\zet,\sqrt[m]s),\id\times s)=((\zet,s),s^m).$$
-Consider the equivalence  $\mZ: (\bn m\times \zet)\to\zet$ with $\mZ(i,n)=i+mn$ discussed above.  Since transport of $\sqrt[m]s$ along $\mZ$ is exactly $s$ (\ie, $\mZ\cdot\sqrt[m]s=s\cdot\mZ$; 
+Consider the equivalence  $\mZ: (\bn m\times \zet)\to\zet$ with $\mZ(i,n)=i+mn$ discussed above.  Since transport of $\sqrt[m]s$ along $\mZ$ is exactly $s$ (\ie $\mZ\cdot\sqrt[m]s=s\cdot\mZ$; 
 note the way we formulate this so that we don't need to talk about an inverse of $\mZ$) we get an identification which we also call $\mZ:((\bn m\times\zet,\sqrt[m]s))=_C((\zet,s))$.  Likewise, transport of $\id\times s$ along $m$ is $s^m$, so that $\mZ$ lifts to an element in
 $((\bn m\times\zet,\sqrt[m]s),\id\times s)=((\zet,s),s^m)$.  Translating back via the equivalence to $S^1\to C$ we get the desired commutativity.
 \footnote{Are you happy with it now?   % ({\color{red} I think $\sqrt[m]s$ should twice be $(\sqrt[m]s)^m$, and that the cicle induction requires that $\mZ$ is invariant under $\Sloop$. That appears to be the same
@@ -1041,7 +1056,7 @@ $((\bn m\times\zet,\sqrt[m]s),\id\times s)=((\zet,s),s^m)$.  Translating back vi
 % above to commute.
 % \end{xca}
 
-There are many instances of the $m$-th root construction which is of independent interest.  
+There are many instances of the $m$-th root construction, which is of independent interest.  
 We record the following for future reference.
 \begin{definition} \label{def:Zetmodm}
 Let $m$ be a positive integer.
