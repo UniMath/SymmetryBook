@@ -1185,6 +1185,7 @@ For reference we list the conclusion of this example as a lemma''
 If $f:\Hom(G,G')$ is a homomorphism, then precomposition with $Bf:BG\to BG'$ defines a map $$f^*:(G'\text{-}\Set)\to(G\text{-}\Set).$$
 We will have the occasion to use the following result which essentially says that if $f:\Hom(G,G')$ is a ``surjective homomorphism'', then $f^*$ imbeds the type of $G'$-sets as some of the components of the type of $G$-sets.
 \begin{lemma}
+  \label{lem:epifullyfaithful}
   Let $G$ and $G'$ be groups and let $f:\Hom(G,G')$ be a homomorphism.  If the induced map $f:(\pt_G=\pt_G)\to(\pt_{G'}=\pt_{G'})$ is surjective (c.f.~\cref{def:injection}), then the map $f^*:(G'\text{-}\Set)\to(G\text{-}\Set)$ (induced by precomposition with $Bf:BG\to BG'$) is ``fully faithful'' in the sense that if $X,Y$ are $G'$-sets, then
 $$f^*:(X=Y)\to(f^*X=f^*Y)
 $$
@@ -1812,7 +1813,41 @@ is equivalent to $X_{\pt_G}$.  Consequently, if $Y$ is a $G$-torsor, then $Y/N$ 
 $$-/N:\typetorsor_G\defequi (G\text{-set})_{(\princ G)}\to (G\text{-set})_{(X_{\pt_G})}.
 $$ Our quotient homomorphism $q_N:\Hom(G,G/N)$ is the composite of the equivalence $\pathsp{}^G:BG\we\typetorsor_G$ of \cref{lem:BGbytorsor} and the quotient map $-/N$.
 \end{remark}
+\begin{lemma}
+  \label{lem:qeq}
+  The map $\ker':\epi_G\to\typenormal_G'$ is an equivalence with inverse $q:\typenormal_G'\to\epi_G$.
+\end{lemma}
+\begin{proof}
+  Assume $N:\typenormal_G'$ with $N(y)\defequi(X_y,\pt_y,!)$ for $y:BG$.  Then $\ker' q(N):BG\to\Set$ takes $y:BG$ to $(\ker' q(N))(y)\oldequiv(Y_y,\refl{X_y},!)$, where $Y_y(z)\defequi (X_y=X_z)$.  Noting that the equivalence $\mathrm{ev}_{yz}:(X_y=X_z)\we X_z(y)$ of \cref{lem:evaliseqwhennormal} has $\mathrm{ev}_{yy}(\refl{X_y})\defequi \pt_y$ we see that univalence gives us the desired identity $\ker' q(N)=N$.\footnote{fix so that it adhers to dogmatic language and naturality in $N$ is clear}
 
+Conversely, consider a surjective homomorphism $f:\Hom(G,G')$.  
+For $x:BG$ and $z:BG'$ let $Q^f_z(x)\defequi (z=f(x))$.  
+Then the quotient group $G/\ker'(f)$ is the component  of the groupoid of $G$-sets containing and pointed at $Q^f_{f(pt_G)}$ and the quotient homomorphism $q_{\ker' f}:BG\to_* BG/\ker' f$ is given by  $q_{\ker' f}(y)\defequi Q^f_{f(y)}$ (strictly pointed -- \ie by $\refl{Q^f_{f(\pt_G)}}$). 
+Observe that by using the identification of the basepoint $Q^f_{f(\pt_G)}$ of $BG/\ker'f$ with $Q^f_{\pt_{G'}}$ given by $p_f:\pt_{G'}=f(\pt_G)$ we have defined a homomorphism $Q^f:\Hom(G',G/\ker'f$) such that 
+ $$\xymatrix{&BG\ar[dl]_f\ar[dr]^{q_{\ker'f}}&\\
+ BG'\ar[rr]_{Q^f}&&BG/\ker'f
+}$$
+commutes.
+We are done if we can show that $Q^f$ is an equivalence.
+The preimage of the base point $Q^f_{f(\pt_G)}$ is
+$$\sum_{z:BG'}\prod_{y:BG}(z=f(y))=(f(\pt_G)=f(y))$$ 
+which by 
+\cref{lem:epifullyfaithful} is equivalent to
+$$\sum_{z:BG'}\prod_{v:BG'}(z=v)=(f(\pt_G)=v)$$
+which by \cref{lem:pathsptransportiseq} is equivalent to the contractible type $\sum_{z:BG'}z=f(\pt_G)$.
+\end{proof}
+
+\begin{corollary}
+  \label{cor:normalisnormal}
+  The kernel $\ker:\epi_G\to \typenormal_G$ is an equivalence of sets.
+\end{corollary}
+\begin{proof}
+  Since $\ker':\epi_G\to\typenormal_G'$ and $E:\typesubgroup_G\to\typesubgroup_G'$ are equivalences and the diagram in \cref{lem:diagfornormal} commutes, the kernel from $\epi_G$ to $\typesubgroup_G$ is an injection.  Hence, given a normal subgroup, the type of epimorphisms of which it is the kernel is contractible.
+\end{proof}
+
+With this much effort in proving that our two perspectives on the concept of normal subgroups are the same, it can be worthwhile to make the composite equivalence
+$$\ker\,q:\typenormal_G'\we\typenormal_G$$
+explicit.
 
 \begin{definition}
   \label{def:associatednormal}
