@@ -1182,6 +1182,46 @@ For reference we list the conclusion of this example as a lemma''
   If $H$ and $G$ are groups, then the equivalence of \cref{lem:actionsconcreteandabstract} sends the $G$-set $\Hom(H,G)$ to the $\abstr(G)$-set $\Hom^\abstr(\abstr(H),\abstr(G))$ with action given by postcomposing with conjugation by elements of $\abstr(G)$.
 \end{lemma}
 
+If $f:\Hom(G,G')$ is a homomorphism, then precomposition with $Bf:BG\to BG'$ defines a map $$f^*:(G'\text{-}\Set)\to(G\text{-}\Set).$$
+We will have the occasion to use the following result which essentially says that if $f:\Hom(G,G')$ is a ``surjective homomorphism'', then $f^*$ imbeds the type of $G'$-sets as some of the components of the type of $G$-sets.
+\begin{lemma}
+  Let $G$ and $G'$ be groups and let $f:\Hom(G,G')$ be a homomorphism.  If the induced map $f:(\pt_G=\pt_G)\to(\pt_{G'}=\pt_{G'})$ is surjective (c.f.~\cref{def:injection}), then the map $f^*:(G'\text{-}\Set)\to(G\text{-}\Set)$ (induced by precomposition with $Bf:BG\to BG'$) is ``fully faithful'' in the sense that if $X,Y$ are $G'$-sets, then
+$$f^*:(X=Y)\to(f^*X=f^*Y)
+$$
+is an equivalence.
+\end{lemma}
+\begin{proof}
+  Evaluation at $\pt_G$  yields an injective map 
+$$\mathrm{ev}_{\pt_G}:(f^*X=f^*Y)\to(X(f(\pt_G)=Y(f(\pt_G)))$$ and the composite 
+$$\mathrm{ev}_{\pt_G}f^*=\mathrm{ev}_{f(\pt_G)}:(X=Y)\to(X(f(\pt_G)=Y(f(\pt_G)))$$
+ is the likewise injective, so $f^*:(X=Y)\to(f^*X=f^*Y)$ is injective. 
+
+For surjectivity, let $F':f^*X=f^*Y$ and write, for typographical convenience, $a:X(f(\pt_G)=Y(f(\pt_G))$ for $\mathrm{ev}_{\pt_G}F'\defequi F'_{\pt_G}$.  
+By the equivalence between $G$-sets and $\abstr(G)$-sets, $F'$ is uniquely pinned down by $a$ and the requirement that for all $g'=f(g)$ with $g:\pt_G=\pt_G$ the diagram 
+$$\xymatrix{X(f(\pt_G))\ar@{=}[r]^{X({g'})}\ar@{=}[d]_{a}&
+  X(f(\pt_G))\ar@{=}[d]_{a}\\
+  Y(f(\pt_G))\ar@{=}[r]^{Y({g'})}&Y(f(\pt_G))}
+$$
+commutes.  Likewise, (using transport along the identity $p_f:\pt_{G'}=f(\pt_G)$) an $F:X=Y$ in the preimage of $a$ is pinned down by the commutativity of the same diagram, but with $g':f(\pt_G)=f(\pt_G)$ arbitrary (an a priori more severe requirement, again reflecting injectivity).   However, when $f:(\pt_G=\pt_G)\to(\pt_{G'}=\pt_{G'})$ is surjective these requirements coincide, showing that $f^*$ is an equivalence.
+
+
+% Fix for the moment an  $a:X(f(\pt_G)=Y(f(\pt_G))$
+
+% Now, by transport along the identity $p_f:\pt_{G'}=f(\pt_G)$ and the equivalence between $G'$-sets and $\abstr(G')$-sets, an identity $F':X=Y$ of $G'$-sets is uniquely pinned down by an identity $F'_{f(\pt_G)}:X(f(\pt_G)=Y(f(\pt_G))$ together with the proposition that for all $g':f(\pt_G)=f(\pt_G)$ the diagram $$\xymatrix{X(f(\pt_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F'_{f(\pt_G)}}&
+%   X(f(\pt_G))\ar@{=}[d]_{F'_{f(\pt_G)}}\\
+%   Y(f(\pt_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\pt_G))}
+% $$
+% commutes.  Likewise, an identity $F:f^*X=f^*Y$ is given by exactly the same data, except that the diagram is only required to commute for $g'=f(g)$ for all $g:\pt_G=\pt_G$.  But when $f:(\pt_G=\pt_G)\to(\pt_{G'}=\pt_{G'})$ these requirements coincide.
+
+
+% ; $F:X=Y$ is in the preimage of $a:X(f(\pt_G)=Y(f(\pt_G))$ if and only if $a=F_{f(\pt_G)}$ and for all $g':f(\pt_G)=f(\pt_G)$ the diagram
+% $$\xymatrix{X(f(\pt_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F_{f(\pt_G)}}&
+%   X(f(\pt_G))\ar@{=}[d]_{F_{f(\pt_G)}}\\
+%   Y(f(\pt_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\pt_G))}
+% $$
+% commutes.  However, since $f$ is surjective there is a $g:\pt_G=\pt_G$ so that $g'=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
+\end{proof}
+
 
 
 \section{Sums of groups}
@@ -1620,8 +1660,12 @@ We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group ho
 %   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi||f^{-1}(\pt_{G'})||_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$BG'\to\Set,\qquad z\mapsto   ||f^{-1}(z)||_0.$$  
 % We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set.
 % \end{remark}
-
+In view of \cref{ex:charsurinj} below, the families  
+$$\mathrm{issurj},\mathrm{isinj}:\Hom(G,G')\to\Prop
+$$
+of propositions that a given homomorphism is surjective or injective have several useful interpretations.
 \begin{xca}
+  \label{ex:charsurinj}
   Let $f:\Hom(G,G')$ Prove that
   \begin{enumerate}
   \item the following are equivalent
@@ -1643,10 +1687,13 @@ is an injection)
     \end{enumerate}
   \end{enumerate}
 \end{xca}
+
+
+
 Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion (first projection) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
 
 \begin{lemma}
-  \label{lem:kerandcoker}\footnote{((WRITE))}
+  \label{lem:kerandcoker}
   \label{lem:countinggps}
   Let $f:\Hom(G,G')$ be a group homomorphism.  The induced homomorphism $\tilde f:\Hom(G,\image f)$ is a surjective homomorphims and $f$ factors as $\tilde f$ followed by the inclusion of the image of $f$ in $G'$.  The induced map $(B\tilde f)^{-1}(\pt_{\image f})\to (Bf)^{-1}(\pt_{G'})$ induces an equivalence $B\ker\tilde f\simeq B\ker f$.
 \end{lemma}
@@ -1664,22 +1711,7 @@ To the extent that it is needed, also show the characterizing properties of kern
 
 
 \sususe{Subgroups through $G$-sets}
-{\color{blue}I need this and must put it somewhere.  Current proof somewhat unsatisfactory.
-\begin{lemma}
-  If $f:\Hom(G,G')$ is surjective, then $f^*:(G'\text{-}\Set)\to(G\text{-}\Set)$ is ``fully faithful'' in the sense that if $X,Y$ are $G'$-sets, then
-$$f^*:(X=Y)\to(f^*X=f^*Y)
-$$
-is an equivalence.
-\end{lemma}
-\begin{proof}
-  Evaluation at $\pt_G$  yields an injective map $\mathrm{ev}_{\pt_G}:(f^*X=f^*Y)\to(X(f(\pt_G)=Y(f(\pt_G)))$ and the composite $\mathrm{ev}_{\pt_G}f^*=\mathrm{ev}_{f(\pt_G)}:(X=Y)\to(X(f(\pt_G)=Y(f(\pt_G)))$ is the likewise injective, so $f^*:(X=Y)\to(f^*X=f^*Y)$ is injective.  Now, by the equivalence between $G'$-sets and $\abstr(G')$-sets; $F:X=Y$ is in the preimage of $a:X(f(\pt_G)=Y(f(\pt_G))$ if and only if $a=F_{f(\pt_G)}$ and for all $g':f(\pt_G)=f(\pt_G)$ the diagram
-$$\xymatrix{X(f(\pt_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F_{f(\pt_G)}}&
-  X(f(\pt_G))\ar@{=}[d]_{F_{f(\pt_G)}}\\
-  Y(f(\pt_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\pt_G))}
-$$
-commutes.  However, since $f$ is surjective there is a $g:\pt_G=\pt_G$ so that $g'=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
-\end{proof}
-}%endcolor
+
 
 Occasionally it is useful to define ``subgroups'' slightly differently.
 As we've defined it a subgroup of a group $G$ of the form $(H,f,!)$ where $H$ is a group (pointed connected groupoid  $BH$), $f:BH\to_* BG$ is a pointed map whose fibers are sets (a pointed \covering).  There is really no need to specify that $H$ is a group: if $F:T\to BG$ is a \covering, then $T$ is automatically a groupoid.  
@@ -1698,7 +1730,73 @@ and the type of \emph{normal subgroups'} is the set of fixed points
 $$\typenormal_G'\defequi\prod_{y:BG}\typesubgroup_G'(y).$$
 %A \emph{normal subgroup'} of $G$ is an element in $\typenormal_G'$.
 \end{definition}
-Since the families are equivalent we use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably.  There is, however, a little explanation needed in order to see that the type of normal subgroups is equivalent to $\typenormal'_G$.
+Likewise, in symbols, the above described equivalence between the families $\typesubgroup_G$ and $\typesubgroup_G'$ is provided by the map 
+$$E(y):\typesubgroup_G(y)\to\typesubgroup_G'(y),\qquad E(H,F,p_F,!)=(F^{-1}, (\pt_H,p_F),!)
+$$
+(where $H$ is a group, $F:BH_\div\to BG_\div$ is a map and $p_F:y=F(\pt_H)$ an identity in $BG$; and $F^{-1}:BG\to\Set$ is $G$-set given by the preimages of $F$ and $(\pt_H,p_F):F^{-1}(y)\defequi \sum_{x:BH}y=F(x)$ is the base point).  If $y$ is $\pt_G$ we follow our earlier convention of dropping it from the notation.
+
+
+Since the families are equivalent we may use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably.  
+There is, however, a little explanation needed in order to see that the type $\typenormal_G$ of normal subgroups is equivalent to $\typenormal'_G$.
+We do this by using the intermediate set of surjections from $G$:
+\newcommand{\epi}{\mathrm{epi}}
+\begin{definition}
+  \label{def:typeepi}
+  If $G$ is a group, then the \emph{set of surjections from $G$} is the set
+$$\epi_G\defequi\sum_{G':\typegroup}\sum_{f:\Hom(G,G')}\mathrm{issurj}(f).$$
+\end{definition}
+Note that if $f:\Hom(G,G')$ is a surjective homomorphism and $e:G'=G''$ is an identity of groups, then $(G',f,!)$ and $(G'',f',!)$ are identitified via $e$, where $f':\Hom(G,G'')$ is the homomorphism given by the composite of $f$ and the homomorphism corresponding to $e$.
+
+\begin{definition}
+  \label{def:ker2}
+  If $f:\Hom(G,G')$ is a homomorphism and $x,y:BG$, set $P^f_y(x)\defequi (f(y)=f(x))$.
+  Define $$\ker':\epi_G\to\typenormal_G'$$
+  by $\ker'(G',f,!)(y)\defequi(P^f_y,\refl{f(y)},!)$.
+\end{definition}
+
+\begin{lemma}
+  \label{lem:diagfornormal}
+  The diagram
+  $$\xymatrix{
+  &\typenormal_G\ar[r]^{\subseteq}&\typesubgroup_G\ar[dd]_{\simeq}^{E}\\
+  \epi_G\ar[ur]^{\ker}\ar[dr]_{ker'}&&\\
+  &\typenormal_G'\ar[r]^{\subseteq}&\typesubgroup_G'}
+$$
+commutes, where the top composite is the image factorization of the kernel and the bottom incluison is the inclusion of fixed points.
+\end{lemma}
+\begin{proof}
+  Following $(G',f,!):\epi_G$ around the top to $\typesubgroup_G'$ yields the transitive $G$-set sending $y:BG$ to the set $\pt_{G'}=f(y)$ together with the point $p_f:\pt_{G'}=f(\pt_G)$ while around the bottom we get the transitive $G$-set sending $y:BG$ to the set $f(\pt_G)=f(y)$ together with the point $\refl{f(\pt_G)}:f(\pt_G)=f(\pt_G)$.  Hence, precomposition by $p_f$ gives the identity proving that the diagram commutes. 
+\end{proof}
+We will prove that both $\ker$ and $\ker'$ in the diagram of \cref{lem:diagfornormal} are equivalences, leading to the desired conclusion that the equivalence $E:\typesubgroup_G\we\typesubgroup_G'$ takes the subset $\typenormal_G$ identically to $\typenormal_G'$.  Actually, by the uniqueness of the image factorization\footnote{where is that written down?} it is enough to show that $\ker'$ is an equivalence; we'll spell out the details.
+
+We start with a small, but crucial observation.
+\begin{lemma}
+  \label{lem:evaliseqwhennormal}
+  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$.  Then for any $y,z:BG$
+  \begin{enumerate}
+  \item the evaluation map
+$$\mathrm{ev}_{yz}:(X_y=X_z)\to X_z(y),\qquad \mathrm{ev}_{yz}(f)=f_y(\pt_y)$$
+is an equivalence and
+  \item  the map $X:(y=z)\to(X_y=X_z)$ (given by induction via $X_{\refl y}\defequi\refl{X_y}$) is surjective.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+To establish the first fact we need to do induction independently on $y:BG$ and $z:BG$ in $X_y(z)$ at the same time as we observe that it suffices (since $BG$ is connected) to show that $\mathrm{ev}_{yy}$ is an equivalence.
+
+% Induction on the index gives rise to the map $X:(y=z)\to(X_y=X_z)$ ($X_{\refl y}\defequi\refl{X_y}$) and t
+The composite 
+$$\mathrm{ev}_{yy}X:(y=y)\to X_yy$$ is determined by $\mathrm{ev}_{yy}X(\refl y)\oldequiv \pt_y$. 
+By transitivity of $X_y$ this composite is surjective, hence $\mathrm{ev}_{yy}$ is surjective too.  
+
+On the other hand, in  \cref{lem:evisinjwhentransitive} we used the transitivity of $X_y$ to deduce that $\mathrm{ev}_{yy}$ was injective.  Consequently $\mathrm{ev}_{yy}$ is an equivalence.  But since $\mathrm{ev}_{yy}$ is an equivalence and $\mathrm{ev}_{yy}X$ is surjective we conclude that $X$ is surjective
+\end{proof}
+\begin{definition}
+\label{def:normalquotient}
+  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$.  The \emph{quotient group}\index{quotient group} $G/N$ is the group defined as the component of the groupoid of $G$-sets containing and pointed in $X_{\pt_G}$.  
+
+The \emph{quotient homomorphism}\index{quotient homomorphism} is the homomorphism $q_N:\Hom(G,G/N)$  defined by $Bq_N(z)=X_z$ (strictly pointed).  By \cref{lem:evaliseqwhennormal} $q_N$ is surjective and we have defined a map
+$$q:\typenormal_G'\to\epi_G,\qquad q(N)=(G/N,q_N,!).$$
+\end{definition}
 
 \begin{definition}
   \label{def:associatednormal}
@@ -1711,29 +1809,6 @@ Since the families are equivalent we use $\typesubgroup_G$ or $\typesubgroup_G'$
   \end{enumerate}
 \end{definition}
 We obviously need to show that the ``normal'' in the name is warranted.
-We start with a small, but crucial observation.
-\begin{lemma}
-  \label{lem:evaliseqwhennormal}
-  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$.  Then for any $y,z:BG$ the evaluation map
-$$\mathrm{ev}_{yz}:(X_y=X_z)\to X_z(y),\qquad \mathrm{ev}_{yz}(f)=f_y(\pt_y)$$
-is an equivalence.
-\end{lemma}
-\begin{proof}
-To see this we need to do induction independently on $y:BG$ and $z:BG$ in $X_y(z)$ at the same time as we observe that it suffices (since $BG$ is connected) to show that $\mathrm{ev}_{yy}$ is an equivalence.
-
-Induction on the index gives rise to the map $X:(y=z)\to(X_y=X_z)$ ($X_{\refl y}\defequi\refl{X_y}$) and the composite 
-$$\mathrm{ev}_{yy}X:(y=y)\to X_yy$$ is determined by $\mathrm{ev}_{yy}X(\refl y)\oldequiv \pt_y$. 
-By transitivity of $X_y$ this composite is surjective, hence $\mathrm{ev}_{yy}$ is surjective too.  
-
-On the other hand, in  \cref{lem:evisinjwhentransitive} we used the transitivity of $X_y$ to deduce that $\mathrm{ev}_{yy}$ was injective.  Consequently $\mathrm{ev}_{yy}$ is an equivalence.  
-\end{proof}
-\begin{definition}
-\label{def:normalquotient}
-  Let $N:\typenormal'_G$ be a normal subgroup' with $N(y)\oldequiv (X_y,\pt_y,!)$ for $y:BG$.  The \emph{quotient group}\index{quotient group} $G/N$ is the group defined as the component of the groupoid of $G$-sets containing and pointed in $X_{\pt_G}$.  
-
-The \emph{quotient homomorphism}\index{quotient homomorphism} is the homomorphism $q_N:\Hom(G,G/N)$  defined by $Bq_N(z)=X_z$ (strictly pointed).
-\end{definition}
-
 \begin{lemma}
   \label{lem:normalsarekernels}
   The associated normal subgroup of $N:\typenormal_G'$ is a normal subgroup; more precisely $N(\pt_G)$ is the kernel of the quotient homomorphism $q_N:\Hom(G,G/N)$.
