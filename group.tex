@@ -1653,7 +1653,7 @@ A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a su
 
 \begin{definition}
 \label{def:image}\label{def:surjective}
-The \emph{image}\index{image} of $f$ is the subgroup of $G'$ given by $B\image f\defequi \sum_{z:BG'}\coker f(z)$ and the first projection $B\image f\to BG'$ (plus the fact that $\coker f(z)$ is a set).  
+The \emph{image}\index{image} of $f$ is the subgroup of $G'$ given by $B\image f\defequi \sum_{z:BG'}\coker f(z)$ pointed at $\pt_{\image f}\defequi (\pt_{G'},|\pt_G,p_f|)$ together with the first projection $B\image f\to BG'$ (plus the fact that $\coker f(z)$ is a set).  
 
 The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:BG$ to 
 $$B\tilde f(x)\defequi (Bf(x),|x,\refl{Bf(x)}|).$$ 
@@ -1704,12 +1704,27 @@ Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\ti
   Let $f:\Hom(G,G')$ be a group homomorphism.  The induced homomorphism $\tilde f:\Hom(G,\image f)$ is a surjective homomorphims and $f$ factors as $\tilde f$ followed by the inclusion of the image of $f$ in $G'$.  The induced map $(B\tilde f)^{-1}(\pt_{\image f})\to (Bf)^{-1}(\pt_{G'})$ induces an equivalence $B\ker\tilde f\simeq B\ker f$.
 \end{lemma}
 \begin{proof}
-  \footnote{((WRITE))\color{blue}
-To the extent that it is needed, also show the characterizing properties of kernels, images and cokernels. Some done in the next section. % In particular, a subgroup is normal iff it is a fixed point under the conjugate action.  
+Only the last part needs further comment, but follows since since for $x:BG$ the first projection from $\pt_{\image f}=(Bf,|x,\refl{Bfx}|)$ to $\pt_{G'}=f(x)$ is an equivalence (the fibers are true propositions).
+  \footnote{\color{blue}  
  Also show counting results for the finite group part somewhere.} 
 \end{proof}
 
+Finally, the image factorization would have been useless were it not for the fact that it is unique:
+\begin{lemma}
+  \label{lem:uniquenessofimagefactorizationforgroups}
+  Let $G,H,G'$ be groups, let $h:\Hom(G,H)$ and $j:\Hom(H,G')$ be homomorphisms and let $!:f=j\,h$.  If $h$ is surjective there is a unique homomorphism $t:\Hom(H,\image f)$ so that $\tilde f=t\, h$ and $j$ is $t$ composed with the first projection from $\image f$ to $ G'$.
+\end{lemma}
+\begin{proof}
+  We've used that we're operating with groupoids to simplify the statement, but a similar statement follows generally by essentially the proof below if you keep track of the element in $f=j\,h$.  To simplify we drop the ``$B$''s from the notation, writing ``$f$'' instead of ``$Bf$''.  
 
+That $h$ is a surjective homomorphism amounts to saying that for $y:BH$, then the set truncation $||h^{-1}(y)||_0$ of the preimage is contractible, and so the first projection $\mathrm{pr_1}:\sum_{y:BH}|h^{-1}(y)||_0\to BH$ is an equivalence.
+
+For $y:BH$, consider the map 
+$$T_y:h^{-1}(y)\to f^{-1}(j y),\qquad T_y(x,p)\defequi (x,!_xj(p))$$ where $x:BG$, $p:y=h(x)$ and $!_xj(p):j(y)=f(x)$ is the composite of $j(p):j(y)=j\,h(x)$ and $!:j\,h=f$ (as applied to $x$).  Performing set-truncation on $T_y$ and precomposing with the inverse of the first projection, we get a map
+$$t:BH%\sum_{y:BH}||h^{-1}(y)||_0
+\to\sum_{z:BG'}||f^{-1}(z)||_0\oldequiv B\image f,\qquad Bt(y)\defequi(jy,|T_y|(q_y))$$
+where $q_y:||h^{-1}(y)||_0$ is the second projection of the inverse of the first projection.  The agreement of $t$ with $\tilde f$ and $j$ follows by construction.
+\end{proof}
 
 \begin{example}
   An example from linear algebra: let $A$ be any $n\times n$-matrix with nonzero determinant and with integer entries, considered as a homomorphism $A:\Hom(\ZZ^n,\ZZ^n)$.  Then the cokernel of $A$ is a finite set with cardinality the absolute value of the determinant of $A$.  You might want to picture this as a $|\det(A)|$-fold \covering of the $n$-fold torus $(S^1)^{\times n}$ by itself.
@@ -1773,7 +1788,7 @@ commutes, where the top composite is the image factorization of the kernel and t
 \begin{proof}
   Following $(G',f,!):\epi_G$ around the top to $\typesubgroup_G'$ yields the transitive $G$-set sending $y:BG$ to the set $\pt_{G'}=f(y)$ together with the point $p_f:\pt_{G'}=f(\pt_G)$ while around the bottom we get the transitive $G$-set sending $y:BG$ to the set $f(\pt_G)=f(y)$ together with the point $\refl{f(\pt_G)}:f(\pt_G)=f(\pt_G)$.  Hence, precomposition by $p_f$ gives the identity proving that the diagram commutes. 
 \end{proof}
-We will prove that both $\ker$ and $\ker'$ in the diagram of \cref{lem:diagfornormal} are equivalences, leading to the desired conclusion that the equivalence $E:\typesubgroup_G\we\typesubgroup_G'$ takes the subset $\typenormal_G$ identically to $\typenormal_G'$.  Actually, by the uniqueness of the image factorization\footnote{where is that written down?} it is enough to show that $\ker'$ is an equivalence; we'll spell out the details.
+We will prove that both $\ker$ and $\ker'$ in the diagram of \cref{lem:diagfornormal} are equivalences, leading to the desired conclusion that the equivalence $E:\typesubgroup_G\we\typesubgroup_G'$ takes the subset $\typenormal_G$ identically to $\typenormal_G'$.  Actually, by the uniqueness of the image factorization shown in \cref{lem:uniquenessofimagefactorizationforgroups} it is enough to show that $\ker'$ is an equivalence; we'll spell out the details.
 
 We start with a small, but crucial observation.
 \begin{lemma}
