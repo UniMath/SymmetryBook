@@ -1046,7 +1046,7 @@ $$((\bn m\times\zet,\sqrt[m]s),\id\times s)=((\zet,s),s^m).$$
 Consider the equivalence  $\mZ: (\bn m\times \zet)\to\zet$ with $\mZ(i,n)=i+mn$ discussed above.  Since transport of $\sqrt[m]s$ along $\mZ$ is exactly $s$ (\ie $\mZ\cdot\sqrt[m]s=s\cdot\mZ$; 
 note the way we formulate this so that we don't need to talk about an inverse of $\mZ$) we get an identification which we also call $\mZ:((\bn m\times\zet,\sqrt[m]s))=_C((\zet,s))$.  Likewise, transport of $\id\times s$ along $m$ is $s^m$, so that $\mZ$ lifts to an element in
 $((\bn m\times\zet,\sqrt[m]s),\id\times s)=((\zet,s),s^m)$.  Translating back via the equivalence to $S^1\to C$ we get the desired commutativity.
-\footnote{Are you happy with it now?   % ({\color{red} I think $\sqrt[m]s$ should twice be $(\sqrt[m]s)^m$, and that the cicle induction requires that $\mZ$ is invariant under $\Sloop$. That appears to be the same
+\footnote{Are you happy with it now? Yes, even more so with the last sentence removed. % ({\color{red} I think $\sqrt[m]s$ should twice be $(\sqrt[m]s)^m$, and that the cicle induction requires that $\mZ$ is invariant under $\Sloop$. That appears to be the same
 % square read vertically instead of horizontally. Funny! Let's talk about this.})
 }
 \end{example}
@@ -1063,19 +1063,8 @@ Let $m$ be a positive integer.
 The element $\zet/m:\sum_{X:\Set}(X=X)$ has first projection $\bn m\times\bn 1$ and 
 second projection $\sqrt[m]{\id}$.
 \end{definition}
+\noindent
 This realizes the cycle $0\mapsto1\mapsto\dots\mapsto m-1\mapsto 0$ in $\bn m$, and so models ``modular arithmetic''.
-
-
-Any (other) textbook will tell you that these are all the connected \coverings over the circle (precisely one for each natural number), but the procedure is unfortunately not constructive: we need a further assumption which is not generally present in our setup, namely
-
-\begin{principle}
-  \label{LPO}
-  {\bf The Limited Principle of Omniscience} (LPO)\index{LPO}
-  If given a function $P:\NN\to\bn 2$, then either $P$ is constant (we have that $\prod_{n:\NN}(P(0)=P(n))$) or there is an $n_0:\NN$ such that $P(n_0)\neq P(0)$.
-\end{principle}
-
-LPO is weaker than the law of excluded middle and we are free to assume it as an axiom -- or not.
-We will be explicit about where we will use it.
 
 \def\codesebuC{\hat{C}} %ad hoc definition
 Let $\codesebuC$ be the type of connected decidable \coverings over $C$.
@@ -1084,18 +1073,47 @@ being a subtype of $\SetBundle(C)$, is a groupoid. We are interested
 in the structure of the connected components of $\codesebuC$.
 Let $\codesebuC_0$ be the component of the universal set bundle
 from \cref{exa:univCcover}. For any $m>0$, let $\codesebuC_m$ be the component of 
-the $m$-fold set bundle from \cref{exa:mfoldCcover}. LPO makes possible to define
+the $m$-fold set bundle from \cref{exa:mfoldCcover}. 
+Any (other) textbook will tell you that these are all the connected \coverings over 
+the circle (precisely one for each natural number), but the proof is unfortunately not constructive: 
+we need a further assumption which is not generally present in our setup, namely
+
+\begin{principle}
+  \label{LPO}
+  {\bf The Limited Principle of Omniscience} (LPO)\index{LPO}
+  Any function $P:\NN\to\bn 2$ is either constant (we have that $\prod_{n:\NN}(P(0)=P(n))$),
+  or there is a smallest $n_0:\NN$ such that $P(n_0)\neq P(0)$.
+\end{principle}
+
+LPO is weaker than the law of excluded middle and we are free to assume it as an axiom -- or not.
+We will be explicit about where we will use it.
+LPO makes it possible to define
 an equivalence from $\codesebuC$ to $\sum_{m:\NN} \codesebuC_m$.
 We will elaborate this equivalence in the next paragraphs.
 
+Fix for the moment an element $(A,f,!)$ of $\codesebuC$, that is,
+a connected type $A$ and a decidable \covering  $f:A\to C$ (see \cref{def:covering}).
+Using LPO we can define the unique $m:\NN$ such that $(A,f,!)$ is in $\codesebuC_m$.
+Since this goal is propositional, we may pick a point $\pt_A$ in 
+the non-empty type $A$. Then $f(pt_A) : C$. Again, since $C$ is connected
+and the goal is propositional, we may assume $p: f(\pt_A) = \pt_C$.
 
-Fix for the moment a connected type $A$ and a decidable \covering 
-$$f:A\to C$$ (c.f \cref{def:covering}) and an element $\pt_A:f^{-1}(\pt_C)$.  %Assume $(\pt_A,!):f^{-1}(\pt_C)$
+%Assume $(\pt_A,!):f^{-1}(\pt_C)$
 %Recall the element 
 %$$\pt_C\defequi(s,\refl{ss}):(\zet,s)=_C(\zet,s),$$ which by \cref{def:S1toC} corresponds to $\Sloop:\base=\base$.
-By \cref{lem:eqandcovofconntypes}, the fact that $f$ is a decidable \covering exactly says that the induced function of identity types
-$$g\defequi\ev_0f^=:(\pt_A=_A\pt_A)\to (\pt_C=_C\pt_C)=\zet$$ is 
-injective and (the preimages are) decidable.    
+
+Define $g: (\pt_A=\pt_A)\to\zet$ as the following composite:
+\[
+\xymatrix{
+(\pt_A=\pt_A)\ar[r]^-{\ap{f}}&
+(f(\pt_A)=f(\pt_A))\ar[r]^-{\trp{p}}&
+(\pt_C=\pt_C)\ar[r]^-{\ev_0}&
+\zet}
+\]
+Here $\trp{p}$ and $\ev_0$ are equivalences, and $\ap{f}$ is injective
+since $f$ is a \covering (use \cref{cor:fib-vs-path}(\ref{set-fib-vs-path})).
+Since $f$ is a decidable \covering exactly, we have that the preimages $g^{-1}(m)$
+are decidable propositions.
 
 Assume LPO (\cref{LPO}).  We are then left with two situations (use that $g$ is injective and decidable): either $\pt_A=_A\pt_A$ is contractible or there is a $p_0:\pt_A=_A\pt_A$ with $g(p_0)$ different from $0$. 
 
