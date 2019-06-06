@@ -261,7 +261,7 @@ to be pointed types.
 \end{definition}
 With a formula, given a type $B$, the type of \coverings over $B$ is
 \[
-\SetBundle{B} \defeq \sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),
+\SetBundle(B) \defeq \sum_{A:\UU}\sum_{f:A\to B}\prod_{b:B}\isset(f^{-1}(b)),
 \]
 with variations according to the flavor.
 
@@ -270,7 +270,7 @@ between the type $B\to\Set$ of families of sets indexed by $B$, and the type
 of set bundles over $B$ given above.
 We shall frequently use this equivalence, even without explicit mention.
 
-\begin{lemma}\label{lem:SetBundle(B)-is-groupoid}
+\begin{lemma}\label{lem:setbundle-is-groupoid}
 For any type $B$, $\SetBundle(B)$ is a groupoid.
 \end{lemma}
 \begin{proof}
@@ -1081,8 +1081,8 @@ we need a further assumption which is not generally present in our setup, namely
 \begin{principle}
   \label{LPO}
   {\bf The Limited Principle of Omniscience} (LPO)\index{LPO}
-  Any function $P:\NN\to\bn 2$ is either constant (we have that $\prod_{n:\NN}(P(0)=P(n))$),
-  or there is a smallest $n_0:\NN$ such that $P(n_0)\neq P(0)$.
+  Any function $P:\NN\to\bn 2$ is either constant $0$,
+  or there is a smallest $n_0:\NN$ such that $P(n_0)=1$.
 \end{principle}
 
 LPO is weaker than the law of excluded middle and we are free to assume it as an axiom -- or not.
@@ -1108,14 +1108,16 @@ Define $g: (\pt_A=\pt_A)\to\zet$ as the following composite:
 (\pt_A=\pt_A)\ar[r]^-{\ap{f}}&
 (f(\pt_A)=f(\pt_A))\ar[r]^-{\trp{p}}&
 (\pt_C=\pt_C)\ar[r]^-{\ev_0}&
-\zet}
+\zet.}
 \]
 Here $\trp{p}$ and $\ev_0$ are equivalences, and $\ap{f}$ is injective
 since $f$ is a \covering (use \cref{cor:fib-vs-path}(\ref{set-fib-vs-path})).
-Since $f$ is a decidable \covering exactly, we have that the preimages $g^{-1}(m)$
-are decidable propositions.
+Hence $\pt_A=\pt_A$ is equivalent to the image of $g$.
+Since $f$ is a decidable \covering, we have that the preimages $g^{-1}(m)$
+are decidable propositions. Note that $g^{-1}(0)$ is true since $g(\refl{})=0$.
 
-Assume LPO (\cref{LPO}).  We are then left with two situations (use that $g$ is injective and decidable): either $\pt_A=_A\pt_A$ is contractible or there is a $p_0:\pt_A=_A\pt_A$ with $g(p_0)$ different from $0$. 
+Now apply LPO (\cref{LPO}) with $P(m)\defeq 1$ if $g^{-1}(m+1)$ and $0$ otherwise.
+We are then left with two situations (use that $g$ is injective and decidable): either $\pt_A=_A\pt_A$ is contractible or there is a $p_0:\pt_A=_A\pt_A$ with $g(p_0)$ different from $0$. 
 
 In the former case ($\pt_A=\pt_A$ is contractible), \cref{lem:eqandcovofconntypes} together with the fact that $A$ is connected implies that $A$ itself is contractible.  
 
