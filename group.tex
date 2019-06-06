@@ -1737,7 +1737,7 @@ where $q_y:||h^{-1}(y)||_0$ is the second projection of the inverse of the first
 Occasionally it is useful to define ``subgroups'' slightly differently.
 As we've defined it a subgroup of a group $G$ of the form $(H,f,!)$ where $H$ is a group (pointed connected groupoid  $BH$), $f:BH\to_* BG$ is a pointed map whose fibers are sets (a pointed \covering).  There is really no need to specify that $H$ is a group: if $F:T\to BG$ is a \covering, then $T$ is automatically a groupoid.  
 
-On the other hand,  the type of \coverings over $BG$ is equivalent to the type of $G$-sets: if $X:BG\to\Set$ is a $G$-set, then the covering is given by the first projection $\tilde X\to BG$ where $\tilde X\defequi\sum_{y:BG}X(y)$ and the inverse is obtained by considering the fibers of a \covering.  Furthermore, we saw in \cref{lem:conistrans} that $\tilde X$ being connected is equivalent to the condition $\mathrm{isTrans}(X)$ of \cref{def:connectedGset} claiming that the $G$-set $X$ is transitive. 
+On the other hand,  the type of \coverings over $BG$ is equivalent to the type of $G$-sets: if $X:BG\to\Set$ is a $G$-set, then the \covering is given by the first projection $\tilde X\to BG$ where $\tilde X\defequi\sum_{y:BG}X(y)$ and the inverse is obtained by considering the fibers of a \covering.  Furthermore, we saw in \cref{lem:conistrans} that $\tilde X$ being connected is equivalent to the condition $\mathrm{isTrans}(X)$ of \cref{def:connectedGset} claiming that the $G$-set $X$ is transitive. 
 
 Hence, the type (set, really) $\typesubgroup_G$ of subgroups of $G$ is equivalent to the type of pointed connected \coverings over $BG$, which again is equivalent to the type $\typesubgroup_G'$ of transitive $G$-sets $X:BG\to\Set$ together with a point in $X(\pt_G)$.  
 
@@ -1788,7 +1788,7 @@ commutes, where the top composite is the image factorization of the kernel and t
 \begin{proof}
   Following $(G',f,!):\epi_G$ around the top to $\typesubgroup_G'$ yields the transitive $G$-set sending $y:BG$ to the set $\pt_{G'}=f(y)$ together with the point $p_f:\pt_{G'}=f(\pt_G)$ while around the bottom we get the transitive $G$-set sending $y:BG$ to the set $f(\pt_G)=f(y)$ together with the point $\refl{f(\pt_G)}:f(\pt_G)=f(\pt_G)$.  Hence, precomposition by $p_f$ gives the identity proving that the diagram commutes. 
 \end{proof}
-We will prove that both $\ker$ and $\ker'$ in the diagram of \cref{lem:diagfornormal} are equivalences, leading to the desired conclusion that the equivalence $E:\typesubgroup_G\we\typesubgroup_G'$ takes the subset $\typenormal_G$ identically to $\typenormal_G'$.  Actually, by the uniqueness of the image factorization shown in \cref{lem:uniquenessofimagefactorizationforgroups} it is enough to show that $\ker'$ is an equivalence; we'll spell out the details.
+We will prove that both $\ker$ and $\ker'$ in the diagram of \cref{lem:diagfornormal} are equivalences, leading to the desired conclusion that the equivalence $E:\typesubgroup_G\we\typesubgroup_G'$ takes the subset $\typenormal_G$ identically to $\typenormal_G'$.  Actually, by the uniqueness of the image factorization shown in \cref{lem:uniquenessofimagefactorizationforgroups}, it is enough to show that $\ker'$ is an equivalence; we'll spell out the details.
 
 We start with a small, but crucial observation.
 \begin{lemma}
@@ -2112,7 +2112,26 @@ is equivalent to $G/{HN}\times B(H\cap N)$.\footnote{display the equivalence}
 \end{proof}
 }%endcolor
 
+
+Recall that if $X:BG\to\Set$ is a $G$-set, then the set of fixed points is the set $\prod_{v:BG}X(v)$, which is a subset of $X(\pt_G)$ via the evaluation map.  If a homomorphism from a group $H$ to $G$ is given by $F:BH_\div\to BG_\div$ and $p_F:\pt_G=F(\pt_H)$, then precomposition (``restriction of scalars'') by $F$ an $H$-set 
+$$F^*X\defequi X\,F:BH\to\Set.$$  
+In the case of inclusions of subgroups (or other situations where the homomorphism is clear from the context) it is not uncommon to talk about ``the $H$-set $X$'' rather than ``$F^*X$''.  
+This can be somewhat confusing when it comes to fixed points: the fixed points of $F^*X$ are given by $\prod_{v:BH}XF(v)$ which evaluates nicely to $XF(\pt_H)$, but in order to considered  these as elements in $X(\pt_G)$ we need to apply $X(p_F^{-1}):X(F(\pt_H))=X(\pt_G)$.  
+
+Consequently, we'll say that $x:X(\pt_G)$ is an \emph{$H$-fixed point} if there is an $f:\prod_{v:BH}XF(v)$ such that $x=X(p_F^{-1})f(\pt_H)$.
+
+
+
 \begin{lemma}
+  \label{lem:thereisaconjugate}
+  Let $G$ be a group, $X:BG\to Set$ a $G$-set, $x:X(\pt_G)$, $g:\pt_G=\pt_G$ and $H=(H,F,p,!):\typesubgroup_G$ a subgroup of $G$ ($F:BH_\div\to BG_\div$ and $p:\pt_G=F(\pt_H)$).  
+Then $g\,x$ is a fixed point for the $H$-action on $X$ if and only if $x$ is a fixed point for the action  of the conjugate subgroup $g\,H\defequi(H,F,g^{-1}p_F,!)$ on $X$.
+\end{lemma}
+\begin{proof}
+  Consider an $f:\prod_{v:BH}XF(v)$.  Then $g\cdot x=X(p_F^{-1})(f(\pt_H))$ if and only if $x=g^{-1}\cdot X(p_F^{-1})(f(\pt_H))\oldequiv X((g^{-1}p_F)^{-1}(f(\pt_H))$.
+\end{proof}
+
+{\color{blue}Remove when lemma above gets stable \begin{lemma}
   \label{lem:thereisaconjugate}
   Let $G$ be a group, $X$ a $G$-set, $x:X$ and $H=(H,i,!)$ a subgroup of $G$.  If $y$ is an element in the orbit of $x$ s.t. $H\subseteq Stab_y$  (\ie $y$ is an $H$-fixed point), then there is a conjugate $H'=(H',i',!)$ of $H$ with $H'\subseteq Stab_x$.
 \end{lemma}
@@ -2120,8 +2139,7 @@ is equivalent to $G/{HN}\times B(H\cap N)$.\footnote{display the equivalence}
   CLASSICAL: There is a $g:G$ s.t. $y=g\cdot x$ and for all $h:H$ we have $h\cdot y=y$.  Define $H'=g^{-1}Hg$.  If $h':H'$, then $h'=g^{-1}hg$ for a unique $h:H$ and
 $$h'\cdot x=(g^{-1}hg)\cdot x = g^{-1}\cdot(h\cdot (g\cdot x))=g^{-1}\cdot(h\cdot y)=g^{-1}\cdot y = x.$$
 \end{proof}
-
-
+}
 
 \begin{definition}
   \label{def:normalizer}
