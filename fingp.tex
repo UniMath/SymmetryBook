@@ -199,8 +199,9 @@ Consequently, Burnside's lemma states that the number of fixed points, \ie the \
   \label{thm:sylow1}
   If $p$ is a prime, $n:\NN$ and $G$ a finite group whose \gporder divides $p^n$, then $G$ has a subgroup of \gporder $p^n$.
 \end{theorem}
-\begin{proof}\footnote{In this proof I refer to \cref{lem:aut-orbit} (which says that $N_G(K)/K$ is equivalent to the set of automorphisms of $G/K$ in the orbit category) to claim that the $K$-fixed points of $G/K$ may be identified with $N_G(K)/K$.   %Also I use that the \gporder of a pullback of a subgroup $L$ along a surjection is the product of the \gporder of the kernel and the \gporder of $L$
-}
+\begin{proof}
+%\footnote{In this proof I refer to \cref{lem:aut-orbit} (which says that $N_G(K)/K$ is equivalent to the set of automorphisms of $G/K$ in the orbit category) to claim that the $K$-fixed points of $G/K$ may be identified with $N_G(K)/K$.   %Also I use that the \gporder of a pullback of a subgroup $L$ along a surjection is the product of the \gporder of the kernel and the \gporder of $L$
+%}
   We prove the result by induction on $n$.  
 If $n=0$ we need to have a subgroup of \gporder $1$, which is witnessed by the trivial subgroup.
 %If $n=1$, this is Cauchy's \cref{thm:cauchys}.  
@@ -208,10 +209,23 @@ If $n>0$, assume by induction that $G$ contains a subgroup $K$ of \gporder $p^{n
 Now, $K$ acts on the set $G/K$.  
 The cardinality of $G/K$ is divisible by $p$ (since $p^n$ divides the \gporder of $G$), and so by \cref{lem:fixedptsize} the fixed point set $(G/K)^K$ has cardinality divisible by $p$.  
 
-Recall the normalizer subgroup $N_G(K)$ from \cref{sec:noether-theorems} -- the ``largest subgroup of $G$ containing $K$ as a normal subgroup''.
-By \cref{lem:aut-orbit}, the quotient group $N_G(K)/K$ may be identified with $(G/K)^K$, and so has \gporder divisible by $p$.  
-By Cauchy's \cref{thm:cauchys} there is a subgroup $L$ of $N_G(K)/K$ of \gporder $p$.  
-Taking the preimage of $L$ under the projection $\mathrm{pr}:N_G(K)\to N_G(K)/K$ we obtain a subgroup $H$ of $N_G(K)$ of \gporder $p^n$ ($H$ is a free $K$-set with $p$ orbits).  The theorem is proven by considering $H$ as a subgroup of $G$.
+Recall the Weyl group $W_GK$.
+By \cref{lem:WGHisHfixofG/H}, 
+$$|W_GK|=|(G/K)^K|,$$
+% cardinality of the (Weyl) group $W_GH$ is the same as the cardinality of $(G/K)^K$,
+ and so $W_GK$  has \gporder divisible by $p$.  
+
+Recall the normalizer subgroup $N_G(K)$ of $G$ from \cref{def:normalizer} and \cref{sec:noether-theorems} %-- the ``largest subgroup of $G$ containing $K$ as a normal subgroup'' --  
+and the surjective homomorphism $p_G^H$ from $N_GH$ to $W_GH$, %$:\Hom(N_GH,W_GH)$ 
+whose kernel may be identified with $H$ so that $|N_GH|=|W_GH|\cdot|H|$ by Lagrange's theorem.
+
+
+By Cauchy's \cref{thm:cauchys} there is a subgroup $L$ of $W_GK$ of \gporder $p$.  
+Taking the preimage of $L$ under the projection $p_G^H:\Hom(N_GH,W_GH)$, %$\mathrm{pr}:N_G(K)\to N_G(K)/K$ 
+or, equivalently, the pullback
+%that is, considering the pullback 
+$$BH\defequi BL\times_{BW_GK}BN_GK,$$
+we obtain a subgroup $H$ of $N_G(K)$ of \gporder $p^n$ ($H$ is a free $K$-set with $p$ orbits).  The theorem is proven by considering $H$ as a subgroup of $G$.
 \end{proof}
 \begin{definition}
   \label{def:sylowsubgroup}
@@ -225,17 +239,21 @@ Taking the preimage of $L$ under the projection $\mathrm{pr}:N_G(K)\to N_G(K)/K$
   Let $X$ be the $G$-set of conjugates of $P$.  Being a $G$-orbit, $X$ is equivalent $G/\mathrm{Stab}_P$, where $P$ is the stabilizer subgroup of $P$.  Now, $P$ is contained in the stabilizer so the highest power of $p$ dividing the \gporder of $G$ also divides the \gporder of $\mathrm{Stab}_P$.
 \end{proof}
 
-\begin{lemma}
+\begin{theorem}
+  \label{thm:sylow2}%\begin{lemma}
   \label{lem:sylowsareconjugates}
-  Let $G$ be a finite group, $H$ a subgroup of $G$ of \gporder $p^s$ and $P$ a $p$-Sylow subgroup of $G$.  Then $H$ is conjugate to a subgroup of $P$.
-\end{lemma}
+  Let $G$ be a finite group.  Then any two $p$-Sylow subgroups are conjugate.
+Furthermore, if $H$ a subgroup of $G$ of \gporder $p^s$ and $P$ a $p$-Sylow subgroup of $G$.  Then $H$ is conjugate to a subgroup of $P$.
+\end{theorem}
+
 \begin{proof}
-  CLASSICAL:
-  Consider the set $\mathcal O_P$ of conjugates of $P$ as an $H$-set.  Since the cardinality of $\mathcal O_P\simeq G/Stab_P$ is prime to $p$ there must be an $H$-fixed point $Q$.  In other words, $H\subseteq Stab_Q$.  By \cref{lem:thereisaconjugate} there is a conjugate $H'$ of $H$ with $H'\subseteq Stab_P$.  Now, $P\subseteq Stab_P$ (ref) is a normal subgroup and so by \cref{lem:iso2} 
+  (SET LEVEL)  
+  We prove the last claim first.
+  Consider the set $\mathcal O_P$ of conjugates of $P$ as an $H$-set.  Since the cardinality of $\mathcal O_P\simeq G/Stab_P$ is prime to $p$ there must be an $H$-fixed point $Q$.  In other words, $H\subseteq Stab_Q$.  By \cref{lem:thereisaconjugate} there is a conjugate $H'$ of $H$ with $H'\subseteq Stab_P$.  Now, $P\subseteq Stab_P$ (ref) is a normal subgroup and so by \cref{lem:iso2}.
+
+The first claim now follows, since if both $H$ and $P$ are $p$-Sylow subgroup, then a conjugate of $H$ is a subgroup of $P$, but since these have the same cardinalities they must be equal. 
 \end{proof}
 
 
-\begin{theorem}
-  \label{thm:sylow2}
-\end{theorem}
+
 
