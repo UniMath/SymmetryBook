@@ -267,7 +267,7 @@ with variations according to the flavor.
 
 Recall the equivalence in \cref{lem:Prop-Set-pointed-families}(\ref{lem:Set-families})
 between the type $B\to\Set$ of families of sets indexed by $B$, and the type
-of set bundles over $B$ given above.
+of \coverings over $B$ given above.
 We shall frequently use this equivalence, even without explicit mention.
 
 \begin{lemma}\label{lem:setbundle-is-groupoid}
@@ -279,7 +279,7 @@ and hence $B\to\Set$ is a groupoid by \cref{lem:level-n-utils}(\ref{level-n-util
 Moreover, by \cref{lem:subtype-same-level}, all variations in \cref{def:covering}
 defined by a predicate are groupoids as well.
 \end{proof}
-One notable exception to the above lemma is the type of \emph{pointed} set bundles:
+One notable exception to the above lemma is the type of \emph{pointed} \coverings:
 a point is extra structure, not just a property.
 
 We should notice that the notion of a \covering is just one step up from the notion of an
@@ -662,6 +662,20 @@ that $y=_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
 By \cref{def:gRtoP}, ${\Sloop}^{-}\jdeq g(\base)$ is an equivalence.
 \end{proof}
 
+\begin{lemma}\label{lem:S1-loops}
+Let $A$ be a connected type and $a:A$. 
+Assume we have an equivalence $e:(\base=_{\Sc}\base) \to (a=a)$
+of symmetries such that $e(\refl{\base})=\refl{a}$
+and $e(p\cdot q)=e(p)\cdot e(q)$, for all $p,q:(\base=_{\Sc}\base)$.
+Then $\check e : \Sc\to A$ defined by circle recursion by setting
+$\check e(\base)\defeq a$ and $\check e(\Sloop)\defis e(\Sloop)$
+is an equivalence.
+\end{lemma}
+\begin{proof}
+We have $\ap{\check e} = e$ since they produce equal values when applied
+to $\Sloop^n$, for all $n:\zet$. Now use that $A$ and $\Sc$ are connected and
+apply \cref{cor:fib-vs-path}(\ref{conn-fib-vs-path}).
+\end{proof}
 
 \section{A reinterpretation of the circle}
 % and a criterion for equivalence through \coverings}
@@ -1064,17 +1078,21 @@ The element $\zet/m:\sum_{X:\Set}(X=X)$ has first projection $\bn m\times\bn 1$ 
 second projection $\sqrt[m]{\id}$.
 \end{definition}
 \noindent
-This realizes the cycle $0\mapsto1\mapsto\dots\mapsto m-1\mapsto 0$ in $\bn m$, and so models ``modular arithmetic''.
+This realizes the cycle $0\mapsto1\mapsto\dots\mapsto m-1\mapsto 0$ in $\bn m$, 
+and so models ``modular arithmetic''.
 
-\def\codesebuC{\hat{C}} %ad hoc definition
-Let $\codesebuC$ be the type of connected decidable \coverings over $C$.
-It follows from \cref{lem:SetBundle(B)-is-groupoid} that $\codesebuC$, 
-being a subtype of $\SetBundle(C)$, is a groupoid. We are interested
-in the structure of the connected components of $\codesebuC$.
-Let $\codesebuC_0$ be the component of the universal set bundle
-from \cref{exa:univCcover}. For any $m>0$, let $\codesebuC_m$ be the component of 
-the $m$-fold set bundle from \cref{exa:mfoldCcover}. 
-Any (other) textbook will tell you that these are all the connected \coverings over 
+\begin{definition} \label{def:hatC}
+Let $\hat C$ be the type of connected decidable \coverings over $C$.
+It follows from \cref{lem:setbundle-is-groupoid} that $\hat C$, 
+being a subtype of $\SetBundle(C)$, is a groupoid.
+Let $\hat C_0$ be the component of the universal \covering
+from \cref{exa:univCcover}. For any $m>0$, let $\hat C_m$ be the component of 
+the $m$-fold \covering from \cref{exa:mfoldCcover}.
+\end{definition}
+
+We are interested in the structure of the connected components of $\hat C$. 
+Any (other) textbook will tell you that \cref{exa:univCcover} and \cref{exa:mfoldCcover}
+are all the connected \coverings over 
 the circle (precisely one for each natural number), but the proof is unfortunately not constructive: 
 we need a further assumption which is not generally present in our setup, namely
 
@@ -1087,13 +1105,13 @@ we need a further assumption which is not generally present in our setup, namely
 
 LPO is weaker than the law of excluded middle and we are free to assume it as an axiom -- or not.
 We will be explicit about where we will use it.
-LPO makes it possible to define
-an equivalence from $\codesebuC$ to $\sum_{m:\NN} \codesebuC_m$.
+LPO makes it possible to prove that the canonical map $(\sum_{m:\NN} \hat C_m) \to \hat C$,
+mapping $(m,c,!)$ to $c$, is an equivalence.
 We will elaborate this equivalence in the next paragraphs.
 
-Fix for the moment an element $(A,f,!)$ of $\codesebuC$, that is,
+Fix for the moment an element $(A,f,!)$ of $\hat C$, that is,
 a connected type $A$ and a decidable \covering  $f:A\to C$ (see \cref{def:covering}).
-Using LPO we can define the unique $m:\NN$ such that $(A,f,!)$ is in $\codesebuC_m$.
+Using LPO we can define the unique $m:\NN$ such that $(A,f,!)$ is in $\hat C_m$.
 Since this goal is propositional, we may pick a point $\pt_A$ in 
 the non-empty type $A$. Then $f(pt_A) : C$. Again, since $C$ is connected
 and the goal is propositional, we may assume $p: f(\pt_A) = \pt_C$.
@@ -1116,12 +1134,17 @@ Hence $\pt_A=\pt_A$ is equivalent to the image of $g$.
 Since $f$ is a decidable \covering, we have that the preimages $g^{-1}(m)$
 are decidable propositions. Note that $g^{-1}(0)$ is true since $g(\refl{})=0$.
 
-Now apply LPO (\cref{LPO}) with $P(m)\defeq 1$ if $g^{-1}(m+1)$ and $0$ otherwise.
-We are then left with two situations (use that $g$ is injective and decidable): either $\pt_A=_A\pt_A$ is contractible or there is a $p_0:\pt_A=_A\pt_A$ with $g(p_0)$ different from $0$. 
+Now apply LPO (\cref{LPO}) with $P(m)\defeq 1$ if $g^{-1}(m+1)$ and $P(m)\defeq 0$ otherwise.
+We are then left with two cases.
+One is that $P$ is constant $0$, so the image of $g$ consists of only $0$, 
+and $\pt_A=_A\pt_A$ is contractible. By \cref{xca:connected-trivial}
+we get that $A$ is contractible, and hence $(A,f,!)$ is the universal \covering.
 
-In the former case ($\pt_A=\pt_A$ is contractible), \cref{lem:eqandcovofconntypes} together with the fact that $A$ is connected implies that $A$ itself is contractible.  
-
-On the other hand, if $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$, then either $g(p_0)$ or $g(p_0^{-1})$ is a positive integer.  Hence the set $H^+$ of positive integers in the image of $g$ is nonempty, and so the fact \cref{def:Nwellordered} that $\NN$ is well ordered implies that $H^+$ has a minimum, \ie there is a $p:\pt_A=\pt_A$ with  $g(p)=m\defequi\min H^+:H^+$.  Furthermore, if $q:\pt_A=\pt_A$ is any element with $0<g(q)$, then  by Euclidean division of \cref{lem:euclid-div}, there exist $k,r:\NN$ with $r<m$ so that $g(q)=km+r$.  Now, the natural number $r$ is in the image of $g$ (because $r=g(q)-km=g(qp^{-k})$) and is less than the minimal positive value $m=g(p)$, and so we must conclude that $r=0$, or in other words, $g(q)$ is a multiple $g(p)k$ of the minimal positive value $g(p)$.
+In the other case we get the smallest $n_0: \NN$ such that $g^{-1}(n_0 + 1)$.
+This means that we get a $p_0:\pt_A=_A\pt_A$ with $g(p_0)>0$. 
+\footnote{OBSOLETE: On the other hand, if $p_0:\pt_A=\pt_A$ with $g(p_0)$ different from $0$, then either $g(p_0)$ or $g(p_0^{-1})$ is a positive integer.  Hence the set $H^+$ of positive integers in the image of $g$ is nonempty, and so the fact \cref{def:Nwellordered} that $\NN$ is well ordered implies that $H^+$ has a minimum, \ie there is a $p:\pt_A=\pt_A$ with  $g(p)=m\defequi\min H^+:H^+$.}
+Let $m=g(p_0)=n_0 +1$.
+Furthermore, if $q:\pt_A=\pt_A$ is any element with $0<g(q)$, then  by Euclidean division of \cref{lem:euclid-div}, there exist $k,r:\NN$ with $r<m$ so that $g(q)=km+r$.  Now, the natural number $r$ is in the image of $g$ (because $r=g(q)-km=g(qp^{-k})$) and is less than the minimal positive value $m=g(p)$, and so we must conclude that $r=0$, or in other words, $g(q)$ is a multiple $g(p)k$ of the minimal positive value $g(p)$.
 
 % \cref{cor:arch} there is a $k:\NN$ such that $g(p)k\leq g(q)<g(p)(k+1)$, or equivalently $0\leq g(q)-g(p)k< g(p)$.  Since $g(q)-g(p)k=g(qp^{-k})$ is a nonnegative integer is in the image of $g$ and simultaneously less than the minimum positive value $g(p)$, we must conclude that $g(q)=g(p)k$.\footnote{rewrite/simplify given that Euclid is now in intro}
 
