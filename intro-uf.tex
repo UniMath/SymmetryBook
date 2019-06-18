@@ -1782,6 +1782,16 @@ Being contractible is a proposition, so by \cref{def:prop-trunc}
 we can drop the truncation in $\Trunc{\sum_{a:A} b=f(a)}$.
 Now apply injectivity.
 \end{proof}
+\begin{remark}
+  \label{rem:injectionsurjectionisnotwhatyouthink}
+  Our definitions of injections and surjections are lifted directly from the intuition about sets.  However, types need not be sets, and thinking of types as spaces may at this point lead to a slight confusion.  
+
+The real line is contractible and the inclusion of the discrete subspace $\{0,1\}$ is, well, an inclusion (of sets, which is the same thing as an inclusion of spaces).  However, $\{0,1\}$ is not connected, seemingly contradicting the next result.
+
+  This apparent contradiction is resolved once one recalls the myopic nature of our setup: the contractibility of the real line means that ``all real numbers are identical'', and \emph{our} ``preimage of $3.25$'' is not a proposition: it contains \emph{both} $0$ and $1$.  Hence ``$\{0,1\}\subseteq\mathbf R$'' would not count as an injection in our sense.  
+%
+%On one hand, there is no injection of $\{0,1\}$ into $\{0\}$, and on the other, any injection of a nonempty space into the one-point space \emph{is} an equivalence.  
+\end{remark}
 
 \begin{corollary}\label{cor:inj+connected}
 Let $A,B$ be types such that $A$ is non-empty and $B$ is connected.
@@ -1792,6 +1802,16 @@ By \cref{lem:inj+surj} it suffices to show that $f$ is surjective.
 This is a proposition, so by \cref{def:prop-trunc} and $\Trunc{A}$
 we may assume $a:A$, so $f(a):B$. By $\prod_{x,y:B} \Trunc{x=y}$
 we now get that all preimages under $f$ are non-empty.
+\end{proof}
+\begin{lemma}
+  \label{lem:whenisbasespaceconnected}
+  Let $f:X\to Y$ be a surjective map from a connected type $X$. Then $Y$ is connected too.  
+
+More precisely, for any map $f:X\to Y$ between arbitrary types, if $y,y':Y$ and we are given $x,x':X$, $p:y=f(x)$, $p':y'=f(x')$ and $q:x=x'$, then we have an identity between $y$ and $y'$ given by the composite
+$$\xymatrix{y\ar@{=}[r]^-p&f(x)\ar@{=}[r]^{f(q)}&f(x')\ar@{=}[r]^-{p'{}^{-1}}&y'}.$$
+\end{lemma}
+\begin{proof}
+  The first statement results from the propositional truncation of the last statement/definition.
 \end{proof}
 
 \begin{lemma}\label{lem:fib-vs-path}
