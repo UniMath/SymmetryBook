@@ -54,7 +54,7 @@ Hence, the circle is a very cheap packaging of the ``{group}'' of integers, the 
 \end{example}
 \begin{example}
   Recall the finite set $\bn{2} =\bool:\fin_2$ from \cref{def:finiteset}, containing two elements.   
-According to \cref{xca:C2}, $\bn{2} =\bn{2} $ has exactly two elements, $\refl{\mathrm 2}$ and $\twist$, and doing $\twist$ twice gives you back $\refl{\bn{2} }$.  
+According to \cref{xca:C2}, $\bn{2} =\bn{2} $ has exactly two distinct elements, $\refl{\mathrm 2}$ and $\twist$, and doing $\twist$ twice gives you back $\refl{\bn{2} }$.  
 We see that this is exactly all the symmetries you'd expect to have in a two point set: you can let everything be ($\refl{\bn{2} }$) or you could swap the two elements ($\twist$); and if you swap twice everything is let be.  
 The type $\fin_2$ (of ``finite sets with two elements'') is our embodyment of these symmetries.  
 
@@ -70,12 +70,18 @@ However, in elementary texts it is customary to restrict the notion of a group t
 See \cref{sec:grouphistory} for a brief summary of the early history of groups.
 \begin{remark}
   The reader may wonder about the status of the identity type $a=_Aa'$ where $a,a':A$ are different elements.  One problem is of course that if $p,q:(a=_Aa')$ there is no obvious way of composing $p$ and $q$, and another is that $a=_Aa'$ does not have a distinguished element such as $\mathrm{refl{}_a}:a=_Aa$.
-Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent existence and choice of such an $f$ the identity types $a=_Aa'$ and $a=_Aa$ are different animals.  We will return to this example when we've defined torsors.
+Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent the existence and choice of such an $f$ the identity types $a=_Aa'$ and $a=_Aa$ are different animals.  
+We will return to this example when we've defined torsors.
 \end{remark}
 
 
 \begin{remark}
-  When considering the identity type $a=_Aa$, only the elements $x:A$ with $x$ equal to $a$ are relevant, and we are free to consider only \emph{connected} $A$, \ie where $x=_Aa$ is never empty (c.f.~\cref{def:connected}).  Also, our preference for $a=_Aa$ to be a set indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
+  \label{rem:whypointedconngpoid}
+  In \cref{xca:component-same-loops} you were asked to show that if $A$ is a type and $a:A$, then the inclusion of the component $A_{(a)}\defequi\sum_{x:A}||a=x||$ into $A$ (\ie the first projection) induces an equivalence of identity types
+from $(a,!)=_{A_{(a)}}(a,!)$ to $a=_Aa$.
+  This means that, when considering the identity type $a=_Aa$, ``only the elements $x:A$ with $x$ equal to $a$ are relevant'', and we to avoid artificial extra copies of our object of interest we should consider only \emph{connected} $A$ (c.f.~\cref{def:connected}).  
+
+Also, our preference for $a=_Aa$ to be a \emph{set} indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
 \end{remark}
 
 
@@ -86,16 +92,21 @@ With this established, we let the \emph{type} of groups be defined as follows:
   A \emph{group} is a pointed connected groupoid; the \emph{type of groups} is the type 
 %$$\typegroup=\sum_{A:\UU}A\times\isonetype(A)\times \conn_0A.$$
 $$\typegroup\defequi\sum_{A:\UU}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$
-of pointed connected groupoids.
+of pointed connected groupoids.\footnote{how do we want to deal with the fact that in many of our examples $A$ is not in the chosen universe?} 
 %We refer to an element of $\typegroup$ as a \emph{group}.  
-A group $G=(A,a,p,q):\typegroup$ will be referred to simply as $$\aut_A(a).$$  The underlying pointed type $$BG\defequi(A,a)$$ is referred to as the \emph{classifying space of $G$}.  The element $\pt_G\defequi a$ will be referred to as the \emph{base point}. 
+A group $G=(A,a,p,q):\typegroup$ will be referred to simply as $$\aut_A(a).$$  The underlying pointed type $$BG\defequi(A,a)$$ is referred to as the \emph{classifying space of $G$}.  The element $\pt_G\defequi a$ will be referred to as the \emph{base point}.
 \end{definition}
 Informally, we may also refer to the type $BG_\div\defequi A$ as the classifying space of $G$.
 \begin{remark}\label{rem:aut}
 There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a connected groupoid is asserted by 
-$$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:props-are-props}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying space is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{G}).$$
+$$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying space is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{G}).$$
 \end{remark}
 \end{definition}
+\begin{remark}
+  \label{rem:symmetriesofnonconnectedgroupoids}
+  It is not infrequent that we want to consider the symmetries of some element $a$ in some type $A$ which unfortunately is not connected, but where the component $A_{(a)}$ of $a$ is a groupoid.  It will notationally be convenient to define ``$\aut_A(a)$'' to be shorthand for $\aut_{A_{(a)}}(a,!)$.  
+\end{remark}
+
 \subsection{First examples}
 \label{sec:firstgroupexamples}
    \begin{example}\label{excirclegroup}
@@ -114,8 +125,13 @@ being a very convenient one.
   \item Recall that the set $\bn{1} =\true$ has the single element which we can call $*$. Then $\aut_{\bn{1} }(*)$ is a group called the \emph{trivial group}.
   \item If $n:\NN$, then the \emph{permutation group of $n$ letters} is 
 $$\Sigma_n\defequi\aut_{\fin_n}(\bn{n} ),$$ 
-where $\fin_n$ is the groupoid of sets of cardinality $n$ (c.f.~\ref{def:finiteset}).  Note that even though the sets $\bn{n} =_{\fin}\bn{n} $ and $\bn{n} =_{\fin_n}\bn{n} $ are equal, we must use the component $\fin_n$ rather than the entire groupoid $\fin$ of finite sets to keep the underlying pointed groupoid $B\Sigma_n=(\fin_n,\bn{n} )$ connected.
-  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  Again, the only thing wrong with ``$\aut_{\Set}(S)$'' (apart from $\Set$ being large\footnote{how do we deal with that?}) is that $\Set$ is not connected. 
+where $\fin_n$ is the groupoid of sets of cardinality $n$ (c.f.~\ref{def:finiteset}).  
+The classifying space is thus $B\Sigma_n\defequi (\fin_n,\bn{n})$.
+With our convention of \cref{rem:symmetriesofnonconnectedgroupoids} we can tolerate $\aut_{\fin}(\bn n)$, $\aut_{\Set}(\bn n)$ or even $\aut_{\UU}(\bn n)$ as synonyms for the group $\Sigma_n$.  
+
+If the reader starts worrying about size issues, that is quite legitimate; see \cref{rem:groupsarebig}.
+% DELETE Note that even though the sets $\bn{n} =_{\fin}\bn{n} $ and $\bn{n} =_{\fin_n}\bn{n} $ are equal, we must use the component $\fin_n$ rather than the entire groupoid $\fin$ of finite sets to keep the underlying pointed groupoid $B\Sigma_n=(\fin_n,\bn{n} )$ connected.
+  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  Again, the only thing wrong with the groupoid $\Set$ of set (apart from $\Set$ being large) is that $\Set$ is not connected. 
 %}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  To be precise, the component of $S$ is
 %$$A\defequi\sum_{X\in\Set}||S=X||.$$  
 %The connected groupoid $\sum_{X\in\Set}||S=X||$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    
@@ -123,35 +139,50 @@ where $\fin_n$ is the groupoid of sets of cardinality $n$ (c.f.~\ref{def:finites
 % $$(S=_AS)=(S=_{\Set}S)$$ 
 % (in the identity type of a $\Sigma$-type both the first and the second projections must be equal, but for $A\oldequiv\sum_{X:\Set}||S=X||$ the second projection is a proposition).  
 %
- So, 
-the \emph{group of permutations of $S$} is defined to be $\Sigma_{S}=\aut_{\Set_{(S)}}(S)$.  
-
-Likewise, if $X$ is any type, the \emph{group of automorphism} or \emph{permutations} of $X$ is defined to be 
-$$\Sigma_X=\aut_{\UU_{(X)}}X,$$
- where $U_{(X)}$ is the component of $\UU$ containing $X$.
+ The \emph{group of permutations of $S$} is defined to be 
+$$\Sigma_{S}\defequi\aut_{\Set}(S),$$  
+with classifying space $B\Sigma_S\defequi(\Set_{(S)},S)$.
+% DELETE SINCE WERE NOT TALKING ABT INFTYGPS Likewise, if $X$ is any type, the \emph{group of automorphism} or \emph{permutations} of $X$ is defined to be 
+% $$\Sigma_X=\aut_{\UU_{(X)}}X,$$
+%  where $U_{(X)}$ is the component of $\UU$ containing $X$.
   \end{enumerate}
 \end{example}
+
+\begin{remark}
+  \label{rem:groupsarebig}
+  This is only for those who worry about size issues - a theme we systematically ignore in our exposition.  If we start with a base universe $\UU_0$, the groupoid of sets of cardinality $n$, $\fin_n$ is a $\Sigma$-type $\sum_{A:\UU_0}||A=n||$ over $\UU_0$ and so without any massage will lie in a bigger universe $\UU_1$.  In order to accomodate for the finite permutation groups, the universe ``$\UU$'' appearing as a subscript for the first $\Sigma$ in the definition of groups needs to be at least as big as $\UU_1$.  If so, the type $\typegroup$ will not be in $\UU_1$, but in some bigger universe $\UU_2$, so if I choose some group $G$ and look at \emph{its} group of automorphisms, this will will be a group only if the universe is at least as big as $\UU_2$.  Luckily, our convention is that the universes are nested, and so at any point we'll just be somewhere big enough for our purposes, see \cref{sec:univax}.  This is not to say that these questions are trivial or unimportant; they are nontrivial and important, but not what this text is about.
+\end{remark}
+
 \begin{example}\label{ex:cyclicgroups}
   In \cref{thm:coveringsofS1} we studied the symmetries of the ``$m$-fold \covering'' of the circle for $m$ a positive integer, and showed that there were $m$-different symmetries, but that they were just the powers $f^n$ (for $n=0,1,\dots,m-1$) of one (nonunique) symmery $f$ and that $f^{m+k}=f^k$ for any integer $k$.  This very important symmetry pops up in many situation, and is called the \emph{cyclic group of order $m$}.  In other words, the cyclic group of order $m$ is the (pointed) component of the type of \coverings of the circle containing the $m$-fold \covering.  We analyzed this in \cref{thm:coveringsofS1} and found that this (pointed) component was equivalent to 
 $$BC_n\defequi(\sum_{X:\Set}\sum_{p:X=X}||(X,p)=\zet/m||,(\zet/m,!)).$$
 
 Here is another, and occasionally more convenient, way of obtaining the cyclic group of order $n$.  Consider the function $$cy_n:S^1\to\fin_n$$ with $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ the identity corresponding to the equivalence given by cyclic permutation, sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$.  Note that the identity $cy_n\Sloop$ is cyclic in the sense that the $n$-fold iterate $(cy_n\Sloop)^n$ is $\refl{\bn n}$.  Then the $n$-fold \covering can be seen as the first projection 
-$$\sum_{z:S^1}cy_n(z)\to S^1.$$
-
+$$\sum_{z:S^1}cy_n(z)\to S^1$$
+(you are asked to write this out in \cref{xca:somedetailsonfinitegroupstocheck}).
 Consider the type 
 $$B_n\defequi\sum_{S:\fin_n}||cy_n^{-1}(S)||_0,\footnote{I've used set truncation!!!}$$
-the ``image'' of $cy_n$ except that the truncation is one level higher than we have considered before.  
-Since $\fin_n$ is a groupoid, $B_n$ is a groupoid. Remember that $cy_n^{-1}(S)\defequi\sum_{z:S^1}S=cy_nz$, and the map 
-$$e:\sum_{S:\fin_n}cy_n^{-1}(S)\to S^1,\qquad e(S,z,p)=z$$ is an equivalence fitting into a commuting diagram
+the ``image'' of $cy_n$ except that the truncation is one level higher than we have considered before.
+Since $\fin_n$ is a groupoid, $B_n$ is a groupoid. 
+  
+If we focus on the point $\pt_{C_n}\defequi(\bn n,|\base,\refl{\bn n}|)$ and write out the identity type $\pt_{C_n}=\pt_{C_n}$ of the $\Sigma$-type $B_n$, we see that it consists of those $p:\bn n=\bn n$ such that there is a $q:\base=\base$ with $p=cy_n(q)$: the ``permutations that come from rotating $n$ points on the circle'' -- exactly what the cyclic group of order $n$ should be!
+
+We define {\em cyclic group of order $n$} to be the group 
+$$C_n\defequi\aut_{B_n}(\pt_{C_n}).$$
+
+It is good to know that $B_n$ is connected, so that $(B_n,\pt_{C_n})$ is actually the classifying space $BC_n$. Remember that 
+$cy_n^{-1}(S)\defequi\sum_{z:S^1}(S=cy_nz)$, and notice that the map 
+$$e:\sum_{S:\fin_n}cy_n^{-1}(S)\to S^1,\qquad e(S,z,p)=z$$ 
+is an equivalence fitting in a commuting diagram
 $$\xymatrix{
 \sum_{S:\fin_n}cy_n^{-1}(S)\ar[d]^e_\simeq\ar[rr]^-{\text{projection}}&&
 \sum_{S:\fin_n}||cy_n^{-1}(S)||_0\ar[d]^{\text{first projection}}&\oldequiv B_n\\
-S^1\ar[rr]^{cy_n}&&\fin_n}.$$
+S^1\ar[rr]^{cy_n}&&\,\fin_n.}$$
 All preimages of of the top map are all inhabited, and since $S^1$ is connected, the source is connected.  Hence \cref{lem:whenisbasespaceconnected} tells us that $B_n$ is connected too.
 
 
 % .  Let $(S,z,p):B_n$ be any element; we want to show that $(S,z,p)=_{B_n}(\bn n, \base, \refl\base)$ is not empty, so that $B_n$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_n(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_n(\base)\defequi\bn n$ to compose $p:S=cy_nz$ and $cy_n:cy_nz=cy_n\base$), $B_n$ is connected.  
-Pointing $B_n$ in $(\bn n,!)$ we have a pointed connected groupoid, \ie a group, which we call the {\em cyclic group $C_n$ of order $n$}.  (in hindsight, $B_n=(BC_n)_\div$)
+% DELETE Pointing $B_n$ in $\pt_{C_n}$ we have a pointed connected groupoid, \ie a group, which we call the {\em cyclic group $C_n$ of order $n$}  (and in hindsight $B_n=(BC_n)_\div$).
 
 Note that the cyclic group of order $1$ is the trivial group, the cyclic group of order $2$ is equivalent to the permutation group $\Sigma_2$: there are exactly one nontrivial symmetry $f$ and $f^2$ is the identity.  When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.  In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\Sigma_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.
 \end{example}
@@ -163,14 +194,18 @@ $$G\times H\defequi\aut_{BG_\div\times BH_\div}((\pt_G,\pt_H))$$
 For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}.
 \end{example}
 
-\footnote{MANY MORE EXAMPLES.  We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.}
+\footnote{We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.}
 \begin{xca}
+  \label{xca:somedetailsonfinitegroupstocheck}
   \begin{enumerate}
   \item Compare the definitions of \cref{def:finiteset} and show that if $n:\NN$, then $\Sigma_n=\Sigma_{\bn{n} }$ %is equal to the permutation group on $n$ letters 
 and (since $\fin_0=\fin_1=\bn 1$) that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
 %\item Display an element in $\bn{2} =_{\fin_2}\bn{2} $ different from $\refl{\bn{2} }$ in the group $\Sigma_{2}$ of permutations of two letters.  
 \item Prove that the set $\bn{n} =_{\fin_n}\bn{n} $ is finite of cardinality $n!$.
-\item Show that the $n$-fold cover of $S^1$ is equivalent to the first projection $\sum_{z:S^1}cy_n(z)\to S^1$, where $cy_n:S^1\to\fin_n$ is given by $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ is cyclic permutation (sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$).  Hint: for every $z:S^1$, $cy_nz:\fin_n$ is a finite set of cardinality $n$.  Decidability is not an issue, so you can appeal to our classification of the \coverings of the circle.
+\item Give an identification of the $n$-fold \covering of $S^1$ of \cref{exa:mfoldS1cover} with the first projection $\sum_{z:S^1}cy_n^{-1}(z)\to S^1$ of \cref{ex:cyclicgroups}.
+%, where $cy_n:S^1\to\fin_n$ is given by $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ is cyclic permutation (sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$).  
+
+Hint: for every $z:S^1$, $cy_nz:\fin_n$ is a finite set of cardinality $n$.  Decidability is not an issue, so you can appeal to our classification of the \coverings of the circle.
 \item Show that, given a type $X$, the type of functions $BC_n\to X$ is equivalent to the type 
 $$\sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$$ of functions $f:S^1\to X$ such that the two ways around
 $$\xymatrix{S^1\ar[d]_{(-)^n}\ar[dr]^f&\\S^1\ar[r]^f&X}$$
@@ -179,7 +214,7 @@ agree.  Hint: define the function $F_1:(BC_n\to X)\to (S^1\to X)$ by precomposit
 \end{xca}
 
 \begin{remark}
-In \cref{lem:idtypesgiveabstractgroups} we will see that groups satisfy a set of laws justifying the name ``group''
+In \cref{lem:idtypesgiveabstractgroups} we will see that the identity type of a group satisfies a list of laws justifying the name ``group''
 %we may associate an abstract group $(a=_Aa,e,{-}^{-1},\cdot)$
 and we will later show that groups are uniquely characterized by these laws.
 \end{remark}
@@ -200,6 +235,8 @@ We can envision $g$ commuting with $h$ by the picture
 $$\xymatrix{a\ar@{=}[r]^g_\to\ar@{=}[d]^\downarrow_h&a\ar@{=}[d]^\downarrow_h\\
 a\ar@{=}[r]^g_\to&a}$$
 and saying that going from (upper left hand corner) $a$ to (lower right hand corner) $a$ by either composition gives the same result.
+
+Abelian groups have the amazing property that the classifying spaces are themselves identity types (of certain $2$-types).  This can be used to give a very important characterization of what it means to be abelian.  We will\footnote{hopefully} return to this point later.
 \begin{remark}
   \label{rem:whatAREabeliangroups}
   The reference to $\mathbf{isAb}$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} (it is the sum of $X$ and $Y$ where the base points are identified); \cref{xca:whatAREabeliangroups} offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $BG\vee BG\to BG$ factors over the inclusion $BG\vee BG\to BG\times BG$.
@@ -208,7 +245,7 @@ and saying that going from (upper left hand corner) $a$ to (lower right hand cor
   The condition $\isset(a=_Aa)$ in the definition of the type of groups is sometimes more of a nuisance, and deleting it gives the simpler concept of \aninftygp, see \cref{sec:inftygps}.
 \end{remark}
 \begin{xca}
-   Let $\aut_A(a):\typegroup$ and let $b$ be an arbitrary element of $A$.  Prove that the groups $\aut_A(a)$ and $\aut_A(b)$ are equal.  Similarly for \inftygps when you get that far.
+   Let $\aut_A(a):\typegroup$ and let $b$ be an arbitrary element of $A$.  Prove that the groups $\aut_A(a)$ and $\aut_A(b)$ are identical, in the sense that $||\aut_A(a)=\aut_A(b)||$ is true.  Similarly for \inftygps when you get that far.
 \end{xca}
 \begin{remark}\label{rem:monoidandabsgplarge}
  In \cref{def:typegroup} the first $\sum$ in the definition of the type $\typegroup$ ranges over the entire universe $\UU$.  Hence, $\typegroup$ does not belong to $\UU$, but rather to the next universe as discussed briefly in \cref{sec:univax}.   This tendency that the ``type of all the types we are interested in'' is a ``large type'' is a regular feature of the theory and since it will not cause any trouble for us, we will not be consistent in pointing it out.
@@ -222,7 +259,7 @@ and saying that going from (upper left hand corner) $a$ to (lower right hand cor
 \label{sec:identity-type-as-abstract}
 
 Studying the identity type leads one to the definition of what a group should be:
-Let $A$ be a type, and for the moment let $a=b$ be shorthand for $a=_Ab$ when $a,b:A$.  In \cref{sec:identity-types} we saw that
+Let $A$ be a type, and let $a=b$ be shorthand for $a=_Ab$ when $a,b:A$.  In \cref{sec:identity-types} we saw that
 \begin{enumerate}
 \item[R] {\bf Reflexivity.} For any $a:A$ there is an element
 $$\refl a{}:a=a$$ 
@@ -318,7 +355,7 @@ $$\abstr(G)\defequi (\pt_G=\pt_G,e,{-}^{-1},\cdot).$$
     The elements $p_1,\dots p_4$ of \cref{def:p1,def:p4,def:p3,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a groupoid) are nonempty, as required.
   \end{proof}
   \begin{definition}\label{def:abstrG}
-    Given a group $G$, the abstract group $\abstr(G)\defequi (a=_Aa,e,{-}^{-1},\cdot)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
+    Given a group $G$, the abstract group $\abstr(G)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
   \end{definition}
 
   \begin{remark}
@@ -344,19 +381,11 @@ The
 \emph{type of abstract groups} is
 $$%\typeabsgp
 \typegroup^\abstr\defequi
-\sum_{(M,e,\mu):\typemonoid}\sum_{\iota\colon M\to M}\prod_{g:M}(\mu{}(\iota{}(g))(g)=e).$$
-% where
-% $$\mathrm{Grouplaws}(G,e,\mu,\iota)\defequi\mathrm{Monoidlaws}(G,e,\mu)\times \mathrm{Invlaws}(G,\iota{},\mu{},e)$$
-% and
-% $$\mathrm{Invlaws}(G,e,\mu{},\iota{})\defequi
-% \prod_{g:G}(\mu{}(\iota{}(g))(g)=e)\times
-% (\mu{}(g)(\iota{}(g))=e)\times
-% (\iota{}(\iota{}(g))=g).$$
-We will typically refer to a monoid as a triple $(M,e,\mu)$, omitting the names for the (true) $\isset$ and unit and associativity laws, and likewise, an abstract group will be referred to as a quadruple $(M,e,\mu,\iota)$.  The \emph{underlying set} of a group is defined by setting 
-$$\mathrm{under}(M,e,\mu,\iota)=M.$$
+\sum_{(M,e,\mu,!):\typemonoid}\sum_{\iota\colon M\to M}\prod_{g:M}(\mu{}(\iota{}(g))(g)=e).$$
+We will typically refer to a monoid as a triple $(M,e,\mu)$, omitting the names for the (true) $\isset$ and unit and associativity laws, and likewise, an abstract group will be referred to as a quadruple $(M,e,\mu,\iota)$.  With this notation, the set $M$ is referred to as \emph{underlying set}.
 \end{remark}
 \begin{remark}
-  That the concept of an abstract group synthesizes the idea of symmetries will be manifested shortly when we prove that 
+  That the concept of an abstract group synthesizes the idea of symmetries will be justified in \cref{sec:Gsetforabstract} where we prove that 
 $$\abstr:\typegroup\to\typegroup^\abstr$$
 is an equivalence.
 \end{remark}
@@ -369,12 +398,12 @@ is an equivalence.
 \end{xca}
 
   \begin{remark}
-Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the case when $g$ is $e$, the unit law of \cref{def:abstractgroup} (or alternatively $\mathrm{Unitlaws}(G,\mu{},e)(e)$ in \cref{rem:typemonoidabstrgp}) would provide \emph{two} (potentially different) proofs that $e=e\cdot e$ and we would have to separately insist that they agree.  This problem vanishes in the setup we adopt below for \inftygps.
+Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the case when $g$ is $e$, the unit law of \cref{def:abstractgroup} (or alternatively $\mathrm{Unitlaws}(S,\mu{},e)(e)$ in \cref{rem:typemonoidabstrgp}) would provide \emph{two} (potentially different) proofs that $e=e\cdot e$ and we would have to separately insist that they agree.  This problem vanishes in the setup we adopt below for \inftygps.
   \end{remark}
 
   \begin{xca}
-    For an element $g$ in an abstract group $(G,e,\mu,\iota)$, prove that $e=g\cdot g^{-1}$ and $g=(g^{-1})^{-1}$ (for the machines among us: ``give an element in the proposition
-$\prod_{g:\pt_G=\pt_G}
+    For an element $g$ in an abstract group $(S,e,\mu,\iota)$, prove that $e=g\cdot g^{-1}$ and $g=(g^{-1})^{-1}$ (for the machines among us: ``give an element in the proposition
+$\prod_S
 (e=\mu{}(g)(\iota{}(g)))\times
 (g=\iota{}(\iota{}(g)))$'').
   \end{xca}
@@ -903,7 +932,7 @@ $\agp G\to\abstr(\Sigma_{\mathcal X})$
 from $\agp G$ to the (abstract) permutation group of $\mathcal X$:
 $$Set_{\agp G}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\agp G},\abstr(\Sigma_{\mathcal X})).$$
 
-The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $\mathrm{under}({\agp G})\defequi S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
+The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
 $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp G}=S||.$$
