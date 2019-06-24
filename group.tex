@@ -649,27 +649,29 @@ One of the goals of the next section is to prove that, in a precise sense, any a
 Before we handle the more complex case of abstract groups, let us see what this looks like for groups.
 
 \begin{definition}
-  For $G$ a group (or \inftygp), a \emph{$G$-type} is a function
-  $$X\colon BG\to\UU,$$
-%($\BG_\div$ was defined to be the underlying type of $BG$)
-and $X(\pt_G)$ is referred to as the \emph{underlying type}.
+  For $G$ a group, a \emph{$G$-set} is a function
+  $$X\colon BG_\div\to\Set,$$
+and $X(\pt_G)$ is referred to as the \emph{underlying set}.
 If the underlying type is a set, then $X$ is called a \emph{$G$-set}.
 
-Otherwise said, the type of $G$-types is $\Type_G\defequi(BG\to\UU)$ and the type of $G$-sets is $\Set_G\defequi(BG\to\Set)$.
+The type of $G$-sets is $$\Set_G\defequi(BG\to\Set).$$
 %$$\Type_G\defequi (BG\to\UU),\qquad \Set_G\defequi (BG\to\Set).$$
 \end{definition}
+\begin{remark}
+  Much of what follows will work equally well for $\infty$-groups; if $G$ is an infinity group, a \emph{$G$-type} is a function $X\colon BG_\div\to\UU.$
+\end{remark}
 
 \begin{remark}
   The reader will notice that the type of $G$-set is equivalent to the type of \coverings over $BG$. %\footnote{we should be careful with having too many official names for the same objects}
 The reason we have allowed ourselves two names is that our focus is different: for a $G$-set $X:BG\to\Set$ we focus on the sets $X(z)$, whereas when talking about \coverings the first projection $\sum_{z:BG}X(z)\to BG$ takes center stage.  Each focus has its advantages.
 
-Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
+%Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 \end{remark}
 
 \begin{example}\label{def:principaltorsor}
-  If $G$ is a group (or \inftygp), then
-$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi\pathsp{\pt_G}(z)\defequi(\pt_G=z)$$ is a $G$-set (or $G$-type) called the \emph{principal $G$-torsor}.  
-We've seen this family before in the guise of the (fibers of the) ``universal \covering'' of \cref{def:universalcover}!  
+  If $G$ is a group, then
+$$\princ G:BG\to\UU,\qquad\princ G(z)\defequi\pathsp{\pt_G}(z)\defequi(\pt_G=z)$$ is a $G$-set called the \emph{principal $G$-torsor}.  
+We've seen this family before in the guise of the (preimages of the) ``universal \covering'' of \cref{def:universalcover}!  
 The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.
 
 There is nothing sacred about starting the equality in $\pt_G$: if $y:BG$, then $\pathsp y:BG\to\UU$ is also a $G$-set (type) and if $q:y=y'$, then the preferred equality between $\pathsp y$ and $\pathsp{y'}$ sends $p:y=z$ to $pq^{-1}:y'=z$.  As a matter of fact, \cref{lem:BGbytorsor} will identify $BG$ and the type of $G$-torsors via the map sending $y:BG$ to $\pathsp y$ using the full transport structure of the identity type $\pathsp yz\defequi(y=z)$.
@@ -697,19 +699,23 @@ The first projection $\sum_{z:BG}\Ad_G(z)\to BG$ correspond to the function $(S^
 $$\Hom(H,G)(x,y)\defequi\sum_{F:BH_\div\to BG_\div}(y=F(x))$$
 we see that $\Hom(H,G)$ may be considered to be a $H\times G$-set
 $$\Hom(H,G);BH\times BG\to\Set.$$
-We will be particularly be interested in the restriction to $G$ giving a $G$-set for which we recycle the notation: $$\Hom(H,G)(y)\defequi\Hom(H,G)(\pt_H,y)$$ (and similarly for $H$).
+We will be particularly interested in the restriction to $G$, giving a $G$-set for which we recycle the notation: 
+$$\Hom(H,G)(y)\defequi\Hom(H,G)(\pt_H,y)\defequi \sum_{F:BH_\div\to BG_\div}(y=F(\pt_H)).$$ 
 \end{example}
 \begin{xca}
   \label{xca:HomZGvsAdG}
-  Prove that the $G$-set $\Hom(\ZZ,G):BG\to\Set$ is equivalent to $\Ad_G:BG\to\Set$.
+  Provide an identification between the $G$-sets 
+$\Ad_G$  and $\Hom(\ZZ,G)$ 
+of \cref{def:adjointrep} and \cref{ex:HomHGasGset}.
 
-Hint: Use the universal property of the circle to identify the family $\Hom(\ZZ,G)(y)$ with $\sum_{z:BG}\sum_{p:z=z}y=z$ and consider the map to $y=y$ sending $(y,p,q)$ to $q^{-1}p\,q$.
+Hint: This is similar to \cref{ex:Zinitial}: identify $\Hom(\ZZ,G)(y)$ with $\sum_{z:BG}\sum_{p:z=z}(y=z)$ and consider the map to $y=y$ sending $(z,p,q)$ to $q^{-1}p\,q$.
 \end{xca}
 
 
 \begin{example}\label{def:trivGset}
-  If $G$ is a group (or \inftygp), and $X$ is a set (or type) then
-$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set (or $G$-type).  Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets (or $G$-types)}.
+  If $G$ is a group and $X$ is a set, then
+$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set.  
+Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets}.
 \end{example}
 
 \begin{remark}
@@ -736,7 +742,7 @@ A third $G$-type with underlying type $\pt_G=\pt_G$ is $\mathrm{triv}_G(\pt_G=\p
 \end{remark}
 
 \begin{xca}
-  Prove that if $G$ is an abelian group, then $\Ad_G=\mathrm{triv}_G(\pt_G=\pt_G)$.
+  Prove that a group $G$ is abelian group if and only if the $G$-sets $\Ad_G$ and $\mathrm{triv}_G(\pt_G=\pt_G)$ are identical.
 \end{xca}
 \begin{xca}
   Use that $BG$ is connected to show that if $X$ is a $G$-set, then $X(z)$ is a set for all $z:BG$ (\ie $\prod_{z:BG}\isset(X(z))$).
@@ -745,7 +751,7 @@ A third $G$-type with underlying type $\pt_G=\pt_G$ is $\mathrm{triv}_G(\pt_G=\p
 \sususe{Transitive $G$-sets}
 \label{sec:transitiveGsets}
 We end the section with some observations regarding so-called transitive $G$-sets which will be valuable when we move on to discussing subgroups.
-Classically, an $\abstr(G)$-set $\mathcal X$ is said to be \emph{transitive} if for all $a,b:\mathcal X$ there is a $g:\mathcal X$ such that $a=g\cdot b$.  In our world this translates to
+Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if for all $a,b:\mathcal X$ there is a $g:\mathcal X$ such that $a=g\cdot b$.  In our world this translates to
 \begin{definition}
   \label{def:connectedGset}\label{def:transitiveGset}
   A $G$-set $X:BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
@@ -764,7 +770,9 @@ In the other direction we have
   A $G$-set  is transitive if and only if the associated set bundle is connected.
 \end{lemma}
 \begin{proof}
-  Consider a $G$-set $X:BG\to\Set$ and the associated \covering $f:\tilde X\to BG$ where $\tilde X\defequi\sum_{y:Y}X(y)$ and $f$ is the first projection.  Now, $\tilde X$ is connected if and only if there is a $y:BG$ and a $b:X(y)$ such that for all $z:BG$ and $a:X(z)$ there is a $g:z=y$ such that $a=X(g)b$.  Since $BG$ is connected, this is equivalent to asserting that there is a $b:X(\pt_G)$ such that for all $a:X(\pt_G)$ there is a $g:\pt_G=\pt_G$ such that $a=g\cdot b\defequi X(g)b$.
+  Consider a $G$-set $X:BG\to\Set$ and the associated \covering $f:\tilde X\to BG$ where $\tilde X\defequi\sum_{y:Y}X(y)$ and $f$ is the first projection.  
+Now, $\tilde X$ is connected if and only if there is (in the propositional sense) a $y:BG$ and a $b:X(y)$ such that for all $z:BG$ and $a:X(z)$ there is a $g:z=y$ such that $a=X(g)b$.  
+Since $BG$ is connected, this is equivalent to asserting that there is a $b:X(\pt_G)$ such that for all $a:X(\pt_G)$ there is a $g:\pt_G=\pt_G$ such that $a=g\cdot b\defequi X(g)b$.
 \end{proof}
 
 
@@ -777,35 +785,43 @@ $$\mathrm{ev}:(X=X)\to X(y),\qquad \mathrm{ev}(f)\defequi f_y(b)$$
 is injective.
 \end{lemma}
 \begin{proof}
+In view of function extensionality, our claim is that the evaluation map $\ev_y:\prod_{x:BG}(X(x)=X(x))\to X(y)$ given by the same formula is injective; that is all $f$s with the same value at $y$ are identical.
+
   For $a:X(y)$, consider an $f:X=X$ with $f_y(b)=a$.  Let $z:BG$ and $c:X(z)$.
 For any $g:y=z$ such that $X(g)b=c$ we have $f_z(c)=f_z(X(g)b)=X(g)f_y(b)=X(g)a$: the value does not depend on $f$.  Since we try to prove a proposition we are done. 
 \end{proof}
 
 
 
-\subsection{The classifying space is the type of torsors}
+\section{The classifying space is the type of torsors}
 \label{sec:torsors}
 \begin{definition}
-  Given a group (or \inftygp) $G$, the type of {\em$G$-torsors} is
-$$\typetorsor_G\defequi\sum_{X:\Type_G}||\princ G=X||,$$
+  Given a group  $G$, the type of {\em$G$-torsors} is
+$$\typetorsor_G\defequi\sum_{X:\Set_G}||\princ G=X||,$$
 where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
 \begin{remark}
-  Note that if $G$ is a group (as opposed to \aninftygp), then $\princ G$ is a $G${\em-set}, and so for $G$-types $X$, the proposition $||\princ G=X||$ will be empty unless $X$ is a $G$-set too, and so in this case we could more simply have said $\typetorsor_G\defequi\sum_{X:\Set_G}||\princ G=X||.$  
-Hence, for $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings of $BG$ containing the universal \covering.
+  This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor.  There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.
+\end{remark}
+
+\begin{remark}
+  For $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings of $BG$ containing the universal \covering.
 
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one!
 \end{remark}
 \begin{definition}
   \label{def:BG2TorsG}
-  Let $\pathsp{}\defequi\pathsp{}^G:BG\to(\typetorsor_G,\princ G)$ be the pointed map given by sending $z:BG$ to $\pathsp z$ and $\refl{\pathsp{\pt_G}}:\pathsp{\pt_G}=\princ G$. 
+  For $z:BG$ let $\pathsp z:BG\to\Set$ be the $G$-set with $\pathsp z(y)\defequi(z=y)$ (so that $\princ G\defequi\pathsp{\id_G}$).
+
+  Let $\pathsp{}:BG\to_*(\typetorsor_G,\princ G)$ be the pointed map given by sending $z:BG$ to $\pathsp z$ and by the identification $\refl{\pathsp{\pt_G}}:\pathsp{\pt_G}=\princ G$. 
 \end{definition}
+If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ instead of $\pathsp{}$.
 
 \begin{example}\label{ex:pathsptransport}
   For $y,z:BG$ we make the induced map
 $$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z)
 $$
-explicit.  For $q:y=z$,  the transport $\pathsp q:\pathsp y=\pathsp z\defequi\prod_{x:BG}\pathsp y(x)=\pathsp z(x)$ is given by sending $p:\pathsp y(x)\defequi (y=x)$ to
+explicit.  For $q:y=z$,  the transport $\pathsp q:\pathsp y=\pathsp z$ is given (as conveniently expressed by function extensionality in the equivalent type $\prod_{x:BG}\pathsp y(x)=\pathsp z(x)$)  by sending $p:\pathsp y(x)\defequi (y=x)$ to
 $$\pathsp q(p)\defequi pq^{-1}:\pathsp z(x)\defequi(z=x),$$ 
 or, in a picture 
 $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{\pathsp q(p)}_\downarrow\\
