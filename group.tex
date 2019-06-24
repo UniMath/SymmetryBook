@@ -127,7 +127,7 @@ being a very convenient one.
 $$\Sigma_n\defequi\aut_{\fin_n}(\bn{n} ),$$ 
 where $\fin_n$ is the groupoid of sets of cardinality $n$ (c.f.~\ref{def:finiteset}).  
 The classifying space is thus $B\Sigma_n\defequi (\fin_n,\bn{n})$.
-With our convention of \cref{rem:symmetriesofnonconnectedgroupoids} we can tolerate $\aut_{\fin}(\bn n)$, $\aut_{\Set}(\bn n)$ or even $\aut_{\UU}(\bn n)$ as synonyms for the group $\Sigma_n$.  
+With our convention of \cref{rem:symmetriesofnonconnectedgroupoids} we can tolerate $\aut_{\fin}(\bn n)$, $\aut_{\Set}(\bn n)$ or even $\aut_{\UU}(\bn n)$ as synonyms for the group $\Sigma_n$ (where $\fin$ and $\Set$ are the subtypes of $\UU$ of finite sets and sets).  
 
 If the reader starts worrying about size issues, that is quite legitimate; see \cref{rem:groupsarebig}.
 % DELETE Note that even though the sets $\bn{n} =_{\fin}\bn{n} $ and $\bn{n} =_{\fin_n}\bn{n} $ are equal, we must use the component $\fin_n$ rather than the entire groupoid $\fin$ of finite sets to keep the underlying pointed groupoid $B\Sigma_n=(\fin_n,\bn{n} )$ connected.
@@ -455,15 +455,27 @@ Likewise, there is a unique morphism from the trivial group to $G$, sending the 
 \item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  \footnote{Elaborate}
   \end{enumerate}
 \end{example}
-\begin{xca}
-  Let $G$ be a group.  Show that $\Hom(\ZZ,G)=(\pt_G=_{BG}\pt_G)$.  %Show that ((wedges of circle vs multiplication))
-\end{xca}
 \begin{example}
-  We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$ is equivalent to the {\bf set} of ``abstract group homomorphisms'' from $\abstr(G)$ to $\abstr(H)$, but it is instructive to see that $\Hom(G,H)$ is a set directly from the definition.
+  \label{ex:Zinitial}
+  \cref{cha:circle} was all about the circle $S^1$ and its role as a ``universal symmetry'' and how it related to the integers.  
+In our current language, $\ZZ\defequi\aut_{S^1}(\base)$ and large parts of the universality is found in the following observation. 
+If $G$ is a group then the evaluation equivalence $\ev_{BG_\div}:(S^1\to BG_\div)\we \sum_{y:BG}(y=y)$ of \cref{lem:freeloopspace} yields an equivalence 
+$$\ev_{BG}:\Hom(\ZZ,G)\defequi((S^1,\base)\to_*BF)\we (\pt_G=\pt_G).$$
+
+  %Show that ((wedges of circle vs multiplication))
+\end{example}
+\begin{example}
+  We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$ is equivalent to the {\bf set} of ``abstract group homomorphisms'' from $\abstr(G)$ to $\abstr(H)$, but it is instructive to see that 
+$$\Hom(G,H)\defequi(BG\to_*BH)\defequi\sum_{F:BG_\div\to BH_\div}(\pt_H=F(\pt_G))$$ 
+is a set directly from the definition.  Recall our notation; $f:\Hom(G,H)$ is recorded as the pair $(Bf_\div,p_f):\sum_{F:BG_\div\to BH_\div}(\pt_H=F(\pt_G))$.
 
   Let us spell out the data needed to give an identity between two group homomorphisms $f,f':\Hom(G,H)$.  
 We clearly must have a
-$$J:Bf_\div=Bf_\div'\defequi\prod_{z:BG_\div}Bf_\div(z)=Bf'_\div(z),$$ and transport on $\pt_H=Bf_\div(?)$ shows that in addition we must have $!:J(\pt_G)\,p_f=_{\pt_H=Bf'_\div(\pt_G)}p_{f'}$:
+$$J:Bf_\div=Bf_\div',$$
+which by function extensionality \cref{def:funext} is equivalently uniquely given by its image given by the element  (with the same name) in the $\Pi$-type
+$$J:\prod_{z:BG_\div}Bf_\div(z)=Bf'_\div(z).
+$$ 
+Transport on $\pt_H=Bf_\div(?)$ shows that in addition we must have $!:J(\pt_G)\,p_f=_{\pt_H=Bf'_\div(\pt_G)}p_{f'}$:
 $$\xymatrix{&\pt_H\ar@{=}[dl]_{p_f}^\gets\ar@{=}[dr]^{p_{f'}}_\to&\\
 Bf_\div(\pt_G)\ar@{=}[rr]^{J(\pt_G)}_\to&&\,Bf_\div(\pt_G);}
 $$
@@ -494,7 +506,7 @@ This shows that $f=f'$ is a proposition and that $\Hom(G,H)$ is a set.
  are all equivalent.
 \end{xca}
 
-The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon G\to H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_H f(g')=f(g\cdot_G g')$ (where we have set the name of the group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
+The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon \mathcal G\to \mathcal H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_{\mathcal H} f(g')=f(g\cdot_{\mathcal G} g')$ (where we have set the name of the abstract group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
 
 \begin{definition}\label{def:grouphomomaxioms}
 Let $G$ and $H$ be groups and assume given a group homomorphism $f:G\to H$.  We now define something that we will call an ``abstract group homomorphism 
@@ -516,7 +528,7 @@ This defines a function
 $$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$  
 and we depict $f^\abstr(g)$ as the ``up, over and down'' identity of $\pt_H$:
 $$\xymatrix{Bf_\div(\pt_G)\ar@{=}[r]^{\ap{Bf_\div}(g)}_\to\ar@{=}[d]^\downarrow_{p_f}&Bf_\div(\pt_G)\ar@{=}[d]^\downarrow_{p_f}\\
-\pt_H\ar@{:}[r]^{f^\abstr(g)}_\to&\pt_H}.$$
+\pt_H\ar@{:}[r]^{f^\abstr(g)}_\to&\,\pt_H.}$$
 
 
 % Since type-checking removes the ambiguity, we trust it will not lead to any confusion that we simplify the notation and use the symbol $f$ simultaneously for $Bf_\div$, writing $f\colon BG_\div\to BH_\div$ and for $\ap{Bf_\div}$, writing $f:(\pt_G=\pt_g)\to (f(\pt_G)=f(\pt_G))$, while we write
@@ -527,14 +539,14 @@ $$\xymatrix{Bf_\div(\pt_G)\ar@{=}[r]^{\ap{Bf_\div}(g)}_\to\ar@{=}[d]^\downarrow_
 % When time comes, even the superscript $\abstr$ will vanish.
 % % (which is defensible, given that $p$ is part of the homomorphism $f$).
 
-With the shorthand $$e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)\oldequiv\abstr(G)$$ and writing (to remind us where things happen)
+With the shorthand $$e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)$$ and writing (to remind us where things happen)
 $$g\cdot_Gg':(\pt_G=\pt_G)$$
  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture 
 $\xymatrix{\pt_G\ar@{=}[r]^{g'}_\to&\pt_G\ar@{=}[r]^{g}_\to&\pt_G}$) %$\trans_{\pt_G,\pt_G\pt_G}(g,g'):$ 
 and likewise with a subscript $H$, we have the following
   \begin{enumerate}
   \item $\refl{e_H}:f^\abstr(e_G)= e_H$ makes sense since
-$$f^\abstr(e_G)\oldequiv\mathrm{ad}_{p_f}\ap{Bf_\div}(\refl{\pt_G})\oldequiv\mathrm{ap}_{p_f}\refl{f(\pt_G)}\oldequiv\refl{\pt_H}\oldequiv e_H
+$$f^\abstr(e_G)\defequi\mathrm{ad}_{p_f}\ap{Bf_\div}(\refl{\pt_G})\oldequiv\mathrm{ap}_{p_f}\refl{f(\pt_G)}\oldequiv\refl{\pt_H}\oldequiv e_H
 $$
 % Since $\ap{Bf}(e_G)\oldequiv \ap{Bf}f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
 % $$f(e_G)\oldequiv\mathrm{ad}_p(\ap{Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
@@ -546,7 +558,7 @@ $$
           %&= (\mathrm{ad}_{p_f}\ap{Bf}(g))\,{\mathrm{ad}_{p_f}\ap{Bf}(g)')\\
           &=\mathrm{ad}_{p_f}\ap{Bf}(g)\cdot_H\mathrm{ad}_{p_f}\ap{Bf}(g')\oldequiv f^\abstr(g)\cdot_Hf^\abstr(g'),
         \end{align*}
-where we have used that both $\ap{Bf_\div}$ and $\mathrm{ad}_{p_f}$ take composites of identities to composites of identities.\footnote{give ref}
+where we have used that both $\ap{Bf_\div}$ and $\mathrm{ad}_{p_f}$ take composites of identities to composites of identities.
 
 If you find it useful, you may consider the following picture:
 $$\xymatrix{
@@ -560,11 +572,12 @@ where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\
   \end{enumerate}
 \end{definition}
 \begin{definition}\label{def:abstrisfunctor}
-  If $\mathcal G\defequi(\mathcal G_{\Set},e_{\mathcal G},\mu_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(\mathcal H_{\Set},e_{\mathcal H},\mu_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
- $$  \Hom^\abstr(\mathcal G,\mathcal H)%(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))\\
-=\sum_{f:\mathcal G_{\Set}\to \mathcal H_{\Set}}(f(e_{\mathcal G})=e_{\mathcal H})\times (f\mu_{\mathcal G}=\mu_{\mathcal H}f).
+  If $\mathcal G\defequi(S,e_{\mathcal G},\mu_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\mu_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
+ $$\Hom^\abstr(\mathcal G,\mathcal H)
+\defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times 
+(f\mu_{\mathcal G}=_{S\times S\to T}\mu_{\mathcal H}(f\times f)).
 $$
-Since $(f(e_{\mathcal G})=e_{\mathcal H})\times (f\mu_{\mathcal G}=\mu_{\mathcal H}f)$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
+Since $(e_{\mathcal H}=f(e_{\mathcal G}))\times (f\mu_{\mathcal G}=\mu_{\mathcal H}(f\times f))$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
 
 If $G$ and $H$ are groups, the function
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
@@ -604,7 +617,7 @@ Disregarding the set-condition we get the simpler notion of \inftygps:
 \end{definition}
 
 \begin{remark}\label{rem:pointedtypes}
-  Just as ``group'' is a synonym for ``pointed, connected groupoid'', ``$\infty$-group'' is synonym for ``pointed, connected type''.  As for groups, we suppress the propositional information from the notation and write $\aut_A(a)$ isntead of $(A,a,!)$ for an $\infty$-group.
+  Just as ``group'' is a synonym for ``pointed, connected groupoid'', ``$\infty$-group'' is synonym for ``pointed, connected type''.  As for groups, we suppress the propositional information from the notation and write $\aut_A(a)$ instead of $(A,a,!)$ for an $\infty$-group.
 % ;  the type of \emph{pointed types} being
 % $$\pttype\defequi\sum_{A:\UU}A,$$
 % and given two pointed types $(A,a)$ and $(B,b)$, the type of \emph{pointed maps} from $(A,a)$ to $(B,b)$ is
