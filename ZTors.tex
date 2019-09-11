@@ -161,27 +161,95 @@ composition $\cto'$ of paths over paths and the \emph{right recursive} $\cto$ co
 (A composition operation is called \emph{left recursive} if it computes to its right-hand argument when its
  left-hand argument is given by reflexivity; similarly with \emph{left} replaced by \emph{right}.)
 
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \foreach \x in {0,2,4}
+    { \begin{scope}[shift={(\x,0)}]
+        \foreach \y in {0,1,3}
+        { \begin{scope}[shift={(0,\y)}]
+            \draw (0,0) .. controls ++(170:-.3) and ++(210: .4) .. (1,0)
+                        .. controls ++(210:-.4) and ++(170: .3) .. (2,0);
+          \end{scope} }
+        \node[fill,circle,inner sep=1pt,label=below:$\pt$] at (1,0) {};
+        \node[fill,circle,inner sep=1pt,label=below left:$a$] at (1,1.6) {};
+        \node[fill,circle,inner sep=1pt] at (1,2.5) {};
+        \draw (1,1) -- (1,3);
+        \node at (1,3.5) {$A(\pt)$};
+        \draw[dashed] (0,2.4) .. controls ++(150:-.5) and ++(190: .3) .. (1,2.5)
+                              .. controls ++(190:-.3) and ++(150: .5) .. (2,2.4);
+        \draw[thick,dashed] (1,2.5) -- (1,1.6);
+        \node at (1.2,2) {$r$};
+      \end{scope} }
+    \foreach \x in {0,2}
+    { \begin{scope}[shift={(\x,0)}]
+        \draw (1,1.6) .. controls ++(140:-.4) and ++(190:.3) .. (2,1.8)
+                      .. controls ++(190:-.3) and ++(140:.4) .. (3,1.6);
+        \node at (2,1.5) {$l$};
+        \node at (2,-.3) {$\Zloop$};
+      \end{scope} }
+    \foreach \y in {0,2} {
+      \node at (-.5,\y) {$\cdots$};
+      \node at (6.5,\y) {$\cdots$};
+    }
+    \node (T) at (-1.5,0) {$\TorZ$};
+    \node (A) at (-1.5,2) {$A$};
+    \node (f) at (0.3,2.6) {$f$};
+  \end{tikzpicture}
+  \caption{A visualization of circle induction principle}
+  \label{fig:circle-induction}
+\end{figure}
+
+The type in \cref{circleinductionequation} is illustrated in \cref{fig:circle-induction}.
+We think of $\TorZ$ as a circle (and prove that it is),
+but we illustrate it (and objects depending on it) as periodically recurring,
+in order to make clearer diagrams.
+The type $\apd{f}(\Zloop) = r\cto' l \cto r^{-1}$ is equivalent to
+$\apd{f}(\Zloop) =^{\lambda z, z=^A_{\Zloop}z}_r l$,
+and corresponds to filling the inside of the curvilinear quadrilateral in \cref{fig:circle-induction}.
+
 If the underlying type theory has propositional truncation with a dependent eliminator that computes judgmentally on the point constructor, as
-in \cite[Ch. 6.9]{hottbook}, then the path $r : f(\pt)= a$ above is a reflexivity path.  It follows
+in \cite[Ch. 6.9]{hottbook}, then the path $r : f(\pt)= a$ above is a reflexivity path.
+It then follows
 from the care with which we chose the expression $r\cto' l \cto r^{-1}$, that it has the same type as $l$, and, moreover, the two terms are
 judgmentally equal.  Thus the right side of the equation \ref{circleinductionequation} can be replaced by $l$.
 
 Because the convention in {\UniMath} is to avoid higher inductive types,
-the formalization in \cite{circleind-Dan} is 
-somewhat different from the construction presented below.
-The formalized construction does not use higher inductive types, nor does it 
-%PROOF IN PAPER USES \Trunc AS HIT
+the formalization in \cite{circleind-Dan} is
+slightly different from the construction presented below.
+The formalized construction does not use any higher inductive types,
+relying instead on the construction of propositional truncation as
+(the propositional resizing of)
+$\Trunc X \defeq prod_{P:\Prop}((X \to P) \to P)$.
+Nor of course, and this is the whole point, do we
 depend on the previous existence of a type satisfying the induction principle of the circle. 
-However, in a type theory where higher inductive types are admitted,
+
+In a type theory where higher inductive types are admitted,
 one can introduce a circle $\Sc$ as a higher inductive type, 
-as in \cite[Ch. 6.1]{hottbook}, and it will be equivalent to $\TorZ$. 
+as in \cite[Ch. 6.1]{hottbook}, and it will easily be shown to be equivalent to $\TorZ$.
 The equivalence can be established by observing that $\TorZ$ and $\Sc$ 
 are pointed connected types with loop spaces equivalent to $\zet$.
 (For the interested reader: apply \cite[Lemma 7.6.2]{hottbook} with $n=-2$
 to reduce to action on paths. Then use connectedness to strengthen
 this result from embeddings to equivalences. 
 Finally, again using connectedness, reduce to the loop spaces
-of the respective points, and show they are equivalent to $\zet$ and thus to each other.) 
+of the respective points, and show they are equivalent to $\zet$ and thus to each other.)
+The induction principle \cref{circleinductionequation} for $\TorZ$ then follows directly.
+
+One can construct models of type theory with univalent universes and propositional resizing
+(viz., essentially of \UniMath{})
+that do not have higher inductive types, not even suspensions.
+Indeed, we can take any model and restrict the $n$th universe, $n=0,1,\dots$,
+to consist of homotopy $n$-types:
+the new zeroth universe $\UU'_0$ consists of the sets of the old universe $\UU_0$,
+the new universe $\UU'_1$ consists of the groupoids of $\UU_1$ (hence including $\UU'_0$),
+etc.
+This construction keeps all the propositions, so it preserves propositional resizing.
+By our construction, $\UU'_1$ will contain a circle $\TorZ$,
+but it cannot contain the $2$-sphere (the suspension of the circle),
+as this is not a groupoid.
+And, assuming we can verify that the $2$-sphere is not an $n$-type for any $n$,
+then no universe in the new model will contain a $2$-sphere.
 
 \section{The integers}
 \label{sec:integers}
