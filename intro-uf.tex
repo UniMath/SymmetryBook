@@ -620,6 +620,21 @@ Formulate and prove all variations of this problem that
 cannot be obtained by simply permuting $A,B,C$.
 \end{xca}
 
+
+The following construction reveals an important equivalence
+relating paths over a path with transport.
+
+\begin{definition}\label{def:pathover-trp}
+Let $X,Y(x)$ be types and $f(x): Y(x)$ for all $x:X$.
+Given elements $x,x':X$, $y:Y(x)$, and
+  $y':Y(x')$ and a path $p : x = x'$,
+we define an equivalence from $\pathover y Y p {y'}$ to $\trp{Y,p}(y)=y'$.
+We do this by induction on $p$, using \cref{def:pathsoverpaths} and
+\cref{def:transport}, thereby reducing to the case
+$(y=y') \equiv (y=y')$, for which we have the canonical equivalence
+given by the identity function.
+\end{definition}
+
 The following lemma gives an equivalent characterization
 of equivalence that is sometimes easy to use.
 
@@ -1018,25 +1033,28 @@ We formalize the definitions from the start of this section.
 
 \begin{lemma}\label{lem:isX-is-prop}
   For any type $A$, the following types are propositions:
-  \begin{itemize}
+  \begin{enumerate}
     \item $\iscontr(A)$;
     \item $\isprop(A)$;
-    \item $\isset(A)$;
-    \item $\isgrpd(A)$;
+  %  \item $\isset(A)$;
+  %  \item $\isgrpd(A)$;
     \item the type that encodes whether $A$ is an $n$-type, for $n \ge 0$.
-  \end{itemize}
+  \end{enumerate}
 \end{lemma}
 
 Consistent with that, we will use identifiers starting with ``is'' only for names of types 
-that are propositions. A case in point is $\isEq(f)$.
+that are propositions. Examples are $\isset(A)$ and $\isgrpd(A)$,
+and also $\isEq(f)$.
 
 \begin{proof}
-Recall that $\iscontr(A)$ is $\sum_{a:A} \prod_{b:A} (a=b)$.
+Recall that $\iscontr(A)$ is $\sum_{a:A} \prod_{y:A} (a=y)$.
 Let $(a,f)$ and $(b,g)$ be elements of the type $\iscontr(A)$.
-For $(a,f) = (b,g)$ we need an $e : a=b$ and an $e' : \trp e f = g$.
-For $e$ we can take $f(b)$. Clearly, $A$ is a proposition and hence
+By \cref{def:pairtopath}, to give an element of $(a,f) = (b,g)$ it suffices 
+to give an $e : a=b$ and an $e' : \pathover{f}{x\mapsto\prod_{y:A} (x=y)}{e}{g}$.
+For $e$ we can take $f(b)$; for $e'$ it suffices by \cref{def:pathover-trp}
+to give an $e'' : \trp e f = g$. Clearly, $A$ is a proposition and hence
 a set by \cref{lem:prop-is-set}. Hence the type of $g$ is a proposition
-by \cref{lem:prop-utils}(\ref{prop-utils-pi}), which gives us $e'$.
+by \cref{lem:prop-utils}(\ref{prop-utils-pi}), which gives us $e''$.
 
 We leave the other cases as exercises.
 \end{proof}
@@ -1265,20 +1283,6 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \trp{Z, e} (i) = \apd{g}(e) \cdot \ap{\trp{Y,e}}(i) \cdot \apd{f}(e)^{-1}.
 \]
 \end{lemma}
-
-The following construction reveals an important equivalence
-relating paths over a path with transport.
-
-\begin{definition}\label{def:pathover-trp}
-Let $X,Y(x)$ be types and $f(x): Y(x)$ for all $x:X$.
-Given elements $x,x':X$, $y:Y(x)$, and
-  $y':Y(x')$ and a path $p : x = x'$,
-we define an equivalence from $\pathover y Y p {y'}$ to $\trp{Y,p}(y)=y'$.
-We do this by induction on $p$, using \cref{def:pathsoverpaths} and
-\cref{def:transport}, thereby reducing to the case
-$(y=y') \equiv (y=y')$, for which we have the canonical equivalence
-given by the identity function.
-\end{definition}
 
 The following construction will be used later in the book.
 
