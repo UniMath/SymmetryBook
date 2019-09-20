@@ -1347,7 +1347,7 @@ Note that $f(\trunc{t})$ respects equality since $P$ is a proposition.}
 A good way to state this recursion principle is that, 
 for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
 \[
-(T \to P) \quad \to \quad (\Trunc{T} \to P).
+(\Trunc{T} \to P) \quad \to \quad (T \to P).
 \]
 
 We are now ready to define logical disjunction and existence, by
@@ -1499,15 +1499,22 @@ is a type  $\Trunc{T}_0$ defined by the following constructors:
 \item a \emph{identification} $p=q$ for all $x,y:\Trunc{T}_0$ and $p,q: x=y$.
 \end{enumerate}
 The (unnamed) second constructor ensures that $\Trunc{T}_0$ is a
-set. ASK ULRIK FOR SUGGESTION
-%for any family of sets $S(x)$ defined for each $x:\Trunc{T}_0$, 
-%in order to prove $\prod_{x:\Trunc{T}_0} S(x)$,
-%it suffices to prove $\prod_{t:T} S(\trunc{t}_0)$. In other
-%words, in order to define a function $f:\prod_{x:\Trunc{T}} P(x)$,
-%it suffices to give a function $g: \prod_{t:T} P(\trunc{t})$.
-%Computationally, we get $f(\trunc{t})\jdeq g(t)$ for all $t:T$. 
+set. The induction principle states that,
+for any family of sets $S(x)$ defined for each $x:\Trunc{T}_0$, 
+in order to define a function $f:\prod_{x:\Trunc{T}_0} S(x)$,
+it suffices to give a function $g: \prod_{t:T} S(\trunc{t}_0)$.
+Computationally, we get $f(\trunc{t}_0)\jdeq g(t)$ for all $t:T$. 
 \end{definition}
 
+In the non-dependent case we get that for any set $S$ and
+any function $g: T\to S$ there is a (unique) function $f:\Trunc{T}_0\to S$ 
+satisfying $f(\trunc{t}_0)\jdeq g(t)$ for all $t:T$.\footnote{%
+Remark on case $\trunc{t}_0 = \trunc{t'}_0$?}
+A good way to state this recursion principle is that, 
+for any set $S$, precomposition with $\trunc{\_}_0$ is an equivalence
+\[
+(\Trunc{T}_0 \to S) \quad \to \quad (T \to S).
+\]
 
 \section{More on natural numbers}
 \label{sec:more-on-N}
@@ -1955,12 +1962,19 @@ This follows directly from \cref{lem:fst-fiber(a)=B(a)} and UA.
 
 Let $f: B\to A$. We have to prove that $(\sum_{a:A} f^{-1}(a), \fst)=(B,f)$.
 Using UA, we get an identification
-$\ua(e) : \sum_{a:A} f^{-1}(a) = B$, where $e$ is the equivalence
-from the proof of \cref{lem:sum-of-fibers}. It remains
-to show that the transport of $\fst$ along $\ua(e)$ equals $f$.
-Note that the transport is in the family $\_\to A$, so that
-\cref{lem:trp-in-function-type} applies. This means that
-the transport of $\fst$ is ${\fst} \circ {e^{-1}}$, indeed equal to $f$.
+$\etop{e} : \sum_{a:A} f^{-1}(a) = B$, where $e$ is the equivalence
+from the proof of \cref{lem:sum-of-fibers}. Using \cref{lem:isEq-pair=},
+it remains to give an element of the type $\pathover{\fst}{\_\to A}{\etop{e}}{f}$.
+
+As an auxiliary step we note that for any $p: X=Y$ and $g:X\to A$,
+$h:Y\to A$, the type $\pathover{g}{\_\to A}{p}{h}$ of paths over $p$
+is equal to the type $g = h\circ{\ptoe{p}}$, since the two
+types are definitionally equal for $p\jdeq\refl{X}$.
+Applying this here means that we must give an element of
+$\fst = f\circ{\ptoe{\etop{e}}}$. This in turn means that
+we must give an element of $\fst = f\circ e$,
+which follows by function extensionality from the definition 
+of $e$ in \cref{lem:sum-of-fibers}.
 \end{proof}
 
 Let $A$ be a type and consider the subuniverse 
