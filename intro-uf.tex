@@ -324,7 +324,22 @@ Let $f,g:\prod_{x:X} Y(x)$. Define by induction the function
 
 Conversely, from a basic axiom called \emph{function extensionality}, 
 postulated in \cref{def:funext}, an identity $f=g$ can be produced from a 
-family of identities of type $f(x) = g(x)$ indexed by the elements $x$ of $X$. 
+family of identities of type $f(x) = g(x)$ indexed by the elements $x$ of $X$.
+
+\begin{definition}\label{def:natural-homotopy}
+Let $X,Y$ be types and $f,g: X\to Y$ functions.
+Elements of $\prod_{x:X} f(x)=g(x)$ are called \emph{homotopies}.
+Given such a homotopy $h$, and elements $x,x'$ of $X$ as well as a path $p: x=x'$,
+we can define by induction on $p$ an element
+\[ 
+ns(h,p): ((h(x')\cdot \ap{f}(p)) =_{f(x)=g(x')} (\ap{g}(p)\cdot h(x))),
+\]
+by setting $ns(h,\refl{x})$ to be some previously
+constructed element of $h(x) \cdot \refl{f(x)} = h(x)$.
+The type of $ns(h,p)$ can be depicted as a square (MAKE PICTURE)
+and $ns(h,p)$ is called a \emph{naturality square}.%\footnote{%
+%This terminology comes from category theory.}
+\end{definition}
 
 \section{Identifying elements in members of families of types}
 
@@ -1509,7 +1524,8 @@ Computationally, we get $f(\trunc{t}_0)\jdeq g(t)$ for all $t:T$.
 In the non-dependent case we get that for any set $S$ and
 any function $g: T\to S$ there is a (unique) function $f:\Trunc{T}_0\to S$ 
 satisfying $f(\trunc{t}_0)\jdeq g(t)$ for all $t:T$.\footnote{%
-Remark on case $\trunc{t}_0 = \trunc{t'}_0$?}
+Lemma \cite[7.3.12]{hottbook} give an equivalence from 
+$\trunc{t}_0 = \trunc{t'}_0$ to $t=t'$ for all $t,t:T$.}
 A good way to state this recursion principle is that, 
 for any set $S$, precomposition with $\trunc{\_}_0$ is an equivalence
 \[
@@ -1764,17 +1780,22 @@ Let $f^{-1} : B\to A$ be the inverse of $f$, then we have
 $\ap{f^{-1}}: (b=b') \to (f^{-1}(b)=f^{-1}(b'))$ for all $b,b':B$.
 Consider $\ap{f^{-1}}$ for $b\defeq f(a)$ and $b'\defeq f(a')$.
 Then the codomain is $f^{-1}(f(a))=f^{-1}(f(a'))$, and not $a=a'$.
-However, we have $i(x):f^{-1}(f(x))=x$ for every $x:A$, so the 
+However, we have $h(x):f^{-1}(f(x))=x$ for every $x:A$, so the 
 codomain of $\ap{f^{-1}}$ is equivalent to the domain of $\ap{f}$.
 
-We take the prospective inverse of $\ap{f}$ to be $\ap{f^{-1}}$
-followed by a transport function $t$ based on $i$. 
-We have to prove $t(\ap{f^{-1}}(\ap{f}(p)))=p$ for all $p:a=a'$.
-By induction it suffices to prove this for $\refl{a}:a=a$,
-that is, we must prove $t(\refl{f^{-1}(f(a))})=\refl{a}$.
-This follows since $t$ is transport by conjugation,
-using $i(a)$ in several ways. The other roundtrip is similar.
-Now apply \cref{lem:weq-iso}.
+We apply \cref{lem:weq-iso}.
+We take the inverse of $\ap{f}$ to map $q: f(a)=f(a')$
+to $h(a')\cdot{\ap{f^{-1}}(q)}\cdot {h(a)^{-1}} : a=a'$.
+We then have to prove $h(a')\cdot{\ap{f^{-1}}(\ap{f}(p))}\cdot {h(a)^{-1}} = p$
+for all $p: a=a'$, as well as 
+$\ap{f}(h(a'))\cdot\ap{f^{-1}}(q)\cdot {h(a)^{-1}})=q$ for all $q: f(a)=f(a')$.
+
+The first roundtrip is easy by induction on $p$. The reader may also recognize a 
+naturality square as in \cref{def:natural-homotopy} based on the homotopy $h$.
+The second roundtrip also uses the other homotopy $i(y):f(f^{-1}(y))=y$ for all $y:B$.
+This case is more involved and uses several applications of \cref{def:natural-homotopy}.
+We refrain from giving all details.\footnote{%
+A short proof can be obtained from \cref{lem:fib-vs-path}.}
 \end{proof}
 
 The converse of \cref{lem:ap-equivalence} is not
@@ -1797,6 +1818,13 @@ that is, $\Trunc{\sum_{a:A} b=f(a)}$.
 %A function $f:A\to B$ is a \emph{split surjection} if for all $b:B$
 %$\sum_{a:A} b=f(a)$.
 \end{definition}
+
+\begin{xca}\label{xca:subtype-to-type-injection}
+Let $T$ be a type and $P$ a predicate on $T$.
+Show that $\fst : T_P \to T$ is an injection.
+Give an equivalence from $(t,p)=(t',p')$ to $t=t'$, for all $t,t':T$ and
+$p:P(t)$, $p':P(t')$.
+\end{xca}
 
 \begin{lemma}\label{lem:inj+surj}
 For all types $A,B$, a function $f: A\to B$ is an equivalence 
@@ -1875,7 +1903,7 @@ Let $X$ and $Y$ be types and let $f:X\to Y$ be a function. Then we have:
 \item\label{prop-fib-vs-path} 
 $f$ is an injection if and only if each $\ap{f}$ is an equivalence;
 \item\label{set-fib-vs-path} 
-All fibers of $f$ are sets if and only if all fibers of $\ap{f}$ are propositions;
+All fibers of $f$ are sets if and only if all fibers of each $\ap{f}$ are propositions;
 \item\label{conn-fib-vs-path} 
 If $X$ and $Y$ are connected, then $f$ is an equivalence 
 if and only if each $\ap{f}$ is an equivalence.
