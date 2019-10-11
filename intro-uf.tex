@@ -238,7 +238,15 @@ The function thus defined may be called
  We may also simplify the notation to just $\trp e$.
 The transport functions behave as expected: transport along the composition
 $e\cdot e'$ is the composition of the two transport functions (to be
- proved by induction).
+proved by induction). Yet another example of good behavior is given
+in the following exercise.
+
+\begin{xca}\label{xca:trp-ap}
+Let $X$ be a type, and let $T(x)$ be a family of types depending on a
+parameter $x:X$. Furthermore, let $A$ be a type, $f:A\to X$ a function, 
+and $p: a=a'$ a path. Show that $\trp{T\circ f, p} = \trp{T,\ap{f}(p)}$. 
+\end{xca}
+
 
 When the types $T(x)$ may have more than one element, 
 we may regard an element of $T(x)$ as providing additional {\em structure} on $x$. 
@@ -255,7 +263,6 @@ as providing a proof of a property of $x$. In that case, the transport
 function $T(x) \to T(y)$ provides a way to establish a claim about $y$ 
 from a claim about $x$, so we will refer to it as \emph{substitution}.  In
 other words, elements that can be identified have the same properties.
-
 
 
 \section{Product types}
@@ -355,6 +362,15 @@ element of $Y(x')$ only after identifying $x$ with $x'$.  That is the idea of th
 \end{definition}
 
 An element $q : \pathover y Y p {y'}$ is called a {\em path} from $y$ to $y'$ {\em over} $p$.
+
+The following exercise identifies the type of paths over with the type 
+of paths using transport.
+
+\begin{xca}\label{def:pathover-trp}\label{xca:pathover-trp}
+In the context above, define by induction on $p$ an element of
+$\left(\pathover y Y p {y'}\right) = \left( \trp{Y,p}(y)=y'\right)$.
+\end{xca}
+
 
 The following construction shows how to handle application of a dependent 
 function $f$ to paths using the definition above.
@@ -635,21 +651,6 @@ Formulate and prove all variations of this problem that
 cannot be obtained by simply permuting $A,B,C$.
 \end{xca}
 
-
-The following construction reveals an important equivalence
-relating paths over a path with transport.
-
-\begin{definition}\label{def:pathover-trp}
-Let $X,Y(x)$ be types and $f(x): Y(x)$ for all $x:X$.
-Given elements $x,x':X$, $y:Y(x)$, and
-  $y':Y(x')$ and a path $p : x = x'$,
-we define an equivalence from $\pathover y Y p {y'}$ to $\trp{Y,p}(y)=y'$.
-We do this by induction on $p$, using \cref{def:pathsoverpaths} and
-\cref{def:transport}, thereby reducing to the case
-$(y=y') \equiv (y=y')$, for which we have the canonical equivalence
-given by the identity function.
-\end{definition}
-
 The following lemma gives an equivalent characterization
 of equivalence that is sometimes easy to use.
 
@@ -671,7 +672,7 @@ We put \cref{lem:weq-iso} immediately to good use.
 Let $X$ be a type with element $a$, and let
 $B(x,i)$ be a type for all $x:X$ and $i: a=x$.
 Define $f(x,i): B(x,i) \to B(a,\refl{a})$ by induction on $i$,
-setting $f(a,\refl{a},q) \defeq q$ for all $q:B(a,\refl{a})$.
+setting $f(a,\refl{a},b) \defeq q$ for all $b:B(a,\refl{a})$.
 Then $f$ defines an equivalence 
 \[
 f~:~ \sum_{x:X} \sum_{i: a=x} B(x,i) \quad \to \quad B(a,\refl{a}).
@@ -680,11 +681,11 @@ f~:~ \sum_{x:X} \sum_{i: a=x} B(x,i) \quad \to \quad B(a,\refl{a}).
 \begin{proof}
 We can also define 
 $g: B(a,\refl{a})\to \sum_{x:X} \sum_{i: a=x} B(x,i)$
-mapping $q: B(a,\refl{a})$ to $(a,\refl{a},q)$.
-Clearly $f(g(q))=q$ for all $q:B(a,\refl{a})$.
-Moreover, $g(f(x,i,q))=(x,i,q)$ is clear by induction
+mapping $b: B(a,\refl{a})$ to $(a,\refl{a},b)$.
+Clearly $f(g(b))=b$ for all $b:B(a,\refl{a})$.
+Moreover, $g(f(x,i,b))=(x,i,b)$ is clear by induction
 on $i$, for all $q:B(x,i)$.
-By \cref{lem:weq-iso} if follows that $f$
+By \cref{lem:weq-iso} it follows that $f$
 is an equivalence.
 \end{proof}
 
@@ -1115,13 +1116,19 @@ is also denoted by $\set{t:T \mid P(t)}$, indeed again a set.
 \end{definition}
 
 \begin{lemma}\label{lem:subtype-same-level}
-Let conditions be as in \cref{def:subtype}.
+Let conditions be as in \cref{def:subtype}. Consider $\fst: T_P \to T$.
+and let $(x_1,p_1),(x_2,p_2) : \sum_{x:T} P(x)$.
+Then $\ap{\fst}: ((x_1,p_1) = (x_2,p_2)) \to (x_1 = x_2)$ is an equivalence.
 If $T$ is a set, then $T_P$ is again a set, which we may
 denote by $\set{t:T \mid P(t)}$. More generally, for each natural number $n$,
 if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
 \end{lemma}
 
 \begin{proof}
+We apply \cref{lem:weq-iso}. Consider $q: x_1 = x_2$.
+By induction on $q$ we get that each $\pathover {p_1} P q {p_2}$ is contractible,
+say with center $c_q$. Mapping $q$ to $\pathpair q c_q$ defines an inverse of $\ap{\fst}$.
+Clearly $\ap{\fst}\pathpair q c_q = q$. Also ...
 If $(x_1,p_1),(x_2,p_2) : \sum_{x:T} P(x)$, then by \cref{lem:isEq-pair=}
 $(x_1,p_1)=(x_2,p_2)$ is equivalent to 
 $\sum_{q:x_1=x_2} \pathover {p_1} P q {p_2}$.
@@ -1912,9 +1919,9 @@ if and only if each $\ap{f}$ is an equivalence.
 \begin{proof}
 (1) Follows from \cref{lem:fib-vs-path}: if $f$ is an injection,
 then $f^{-1}(y_0)$ is a proposition, and hence identities in $f^{-1}(y_0)$
-are contractible. For the converse, use that $(x,p)=(x',p')$ is
-equivalent to $(x,\refl{f(x)}) = (x',p'\cdot p^{-1})$, for all $(x,p),(x',p')$
-in the same fiber of $f$.
+are contractible. For the converse, use that $(x,p)=_{f^{-1}(y)}(x',p')$ is
+equivalent to $(x,\refl{f(x)}) =_{f^{-1}(f(x))} (x',p'\cdot p^{-1})$, 
+for all $(x,p),(x',p') : f^{-1}(y)$.
 
 (2) Similar to the proof of (1).
 
