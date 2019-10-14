@@ -1119,9 +1119,6 @@ is also denoted by $\set{t:T \mid P(t)}$, indeed again a set.
 Let conditions be as in \cref{def:subtype}. Consider $\fst: T_P \to T$
 and let $(x_1,p_1),(x_2,p_2) : T_P$.
 Then $\ap{\fst}: ((x_1,p_1) = (x_2,p_2)) \to (x_1 = x_2)$ is an equivalence.
-If $T$ is a set, then $T_P$ is again a set, which we may
-denote by $\set{t:T \mid P(t)}$. More generally, for each natural number $n$,
-if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
 \end{lemma}
 
 \begin{proof}
@@ -1132,9 +1129,15 @@ mapping $q$ to $\pathpair q {c_q}$ defines an inverse of $\ap{\fst}$,
 applying \cref{lem:isEq-pair=} and the remarks after its proof.
 These give $\ap{\fst}\pathpair q {c_q} = q$ for all $q: x_1 = x_2$.
 Also, for any $r: (x_1,p_1)=(x_2,p_2)$, $r=\pathpair{\fst(r)}{\snd(r)}$.
-The latter pair is equal to $\pathpair{\fst(r)}{c}$ for any $c$
+The latter pair is equal to $\pathpair{\ap{\fst(r)}}{c}$ for any $c$
 in the contractible type $\pathover {p_1} P {\fst(r)} {p_2}$.
 \end{proof}
+The above lemma has several important consequences.
+First of all, it confirms that $\fst: T_P \to T$ is an injection.
+Moreover, for each natural number $n$,
+if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
+In particular, if $T$ is a set, then $T_P$ is again a set; 
+we may denote this subset by $\set{t:T \mid P(t)}$. 
 
 Given a set $A$ and a function $\chi_B: A\to\bool$,
 \cref{lem:isset-bool} yields that $\chi_B(a) = \yes$ is a
@@ -1185,22 +1188,24 @@ Therefore the following is \emph{not} a subtype of $\UU$.
  and $a$ is an element of $A$. The \emph{type of pointed types} is
 \[\UUp \defeq \sum_{A:\UU} A.\]
 Given a type $A$ we let $A_+$ be the pointed type you get 
-by adding an element: $A_+\defequi(A\coprod\true,\inr{\triv})$, 
-and given a pointed type $B\jdeq(A,a)$, the \emph{underlying type} 
-is $B_\div\defeq A$, and the \emph{base point} is $\pt_B\defeq a$, 
-so that $B\jdeq (B_\div,\pt_B)$.  
+by adding a default element: $A_+\defequi(A\coprod\true,\inr{\triv})$. 
+Given a pointed type $X\jdeq(A,a)$, the \emph{underlying type} 
+is $X_\div\defeq A$, and the \emph{base point} is $\pt_X\defeq a$, 
+so that $X\jdeq (X_\div,\pt_X)$.  
 
-If $(A,a)$ and $(A',a')$ are pointed types, 
-a \emph{pointed function} from  $(A,a)$ to $(A',a')$ is 
-a function $f:A\to A'$ together with an identification $p:f(a)=a'$. 
-In other words, the \emph{type of pointed functions} from a pointed 
-type $B$ to a pointed type $B'$ is
-\[(B\to_*B')=\sum_{f:B_\div\to B'{}_\div}f(\pt_B)=\pt_{B'}.\]
+Let $X \defeq (A,a)$ and $Y\defeq(B,b)$ be pointed types. 
+Define $\ev_a : (A\to B)\to B$ by $\ev_a(f)\defeq f(a)$. 
+Then the fiber of $\ev_a$ at $b$ is the type 
+$\ev_a^{-1}\jdeq\sum_{f:A\to B} b=f(a)$. The latter type is also
+called the type of \emph{pointed functions} from  $X$ to $Y$
+and denoted by $X\to_*Y$. In the notation above
+\[(X\to_*Y)\quad\jdeq\quad\sum_{f:X_\div\to Y_\div}\pt_{Y}=f(\pt_X).\]
 \end{definition}
 
-If $B$ is a pointed type, then $B_\div $ is a type, but $B$ itself is
+If $X$ is a pointed type, then $X_\div $ is a type, but $X$ itself is
 \emph{not} a type. It is therefore unambiguous, and quite convenient,
-to write $b:B$ for $b:B_\div$, and $B\to\UU$ for $B_\div\to\UU$.
+to write $x:X$ for $x:X_\div$, and $X\to\UU$ for $X_\div\to\UU$.
+We may also tacitly coerce $f:X\to_*Y$ to $f:X_\div \to Y_\div$.
 
 \begin{xca}\label{xca:plusforgetadjoint}
 If $A$ is a type and $B$ is a pointed type, 
@@ -1402,13 +1407,6 @@ Show that connected elements have the same
 \emph{propositional} properties, that is, 
 for any predicate $P:A\to\UU$, $P(x)$ is equivalent
 to $P(y)$ for any connected $x,y:A$. 
-\end{xca}
-
-The following exercise is a special case of the proof of \cref{lem:subtype-same-level}.
-
-\begin{xca}\label{xca:component-same-loops}
-Let $A$ be a type and $a:A$. Show that $\fst: A_{(a)} \to A$
-induces an equivalence $((a,\trunc{\refl{a}})=(a,\trunc{\refl{a}})) \to (a=a)$.
 \end{xca}
 
 \begin{xca}\label{xca:prop-set-trivia}

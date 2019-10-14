@@ -53,7 +53,7 @@ see \cite[Ch. 6]{hottbook} for more information.
 \begin{definition}
   \label{def:circle}
 The circle is a type $\Sc:\UU$ with an element (constructor) $\base : \Sc$ and 
-an identification (constructor) $\Sloop: \base=\base$. For convenience and
+an identification (constructor) ${\Sloop}: \base=\base$. For convenience and
 clarity the (higher) induction principle for $\Sc$ is explained
 by first stating a recursion principle for $\Sc$.
 
@@ -89,7 +89,7 @@ For all types $A$, the evaluation function
 \]
 is an equivalence, with inverse $\el_A$ defined by the recursion principle.  
 In particular, if $a:A$, the function $((\Sc,\base)\to_* (A,a))\to (a=_Aa)$
-given by sending $g:\Sc\to_* A$ to $g(\Sloop)$ is an equivalence.
+sending $(g,p)$ to $p^{-1}\cdot g(\Sloop)\cdot p$ is an equivalence.
 \end{lemma}
 \begin{proof}
 Fix $A:\UU$. We apply \cref{lem:weq-iso}. 
@@ -177,6 +177,12 @@ $1 \defeq pos(0),\ldots$.
 \item $neg: \NN \to \zet$ for negative numbers, 
 $-1 \defeq neg(0),\ldots$
 \end{enumerate}
+Like any other inductive type, the type $\zet$ comes with an
+induction principle. Let $T(z)$ be a family of types indexed by $z:\zet$.
+In order to construct an element $f(z)$ of $T(z)$ for all $z:\zet$,
+it suffices to give $f(0): T(0)$ and to give functions $g$ and $h$ such
+that $g(n): T(pos(n))$ and $h(n): T(neg(n))$ for all $n:\NN$.
+Here $g$ and $h$ can be defined by induction on $n:\NN$.
 
 The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
 setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
@@ -228,12 +234,7 @@ Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
 Ordering relations $<$ and $\leq$ on $\zet$ are easily defined
 and shown to extend those on $\NN$.
 
-Like any other inductive type, the type $\zet$ comes with an
-induction principle. Let $T(z)$ be a family of types indexed by $z:\zet$.
-In order to construct an element $f(z)$ of $T(z)$ for all $z:\zet$,
-it suffices to give $f(0): T(0)$ and to give functions $g$ and $h$ such
-that $g(n): T(pos(n))$ and $h(n): T(neg(n))$ for all $n:\NN$.
-Here $g$ and $h$ can be defined by induction on $n:\NN$.
+Recall the induction principle for $\zet$ above.
 Instead of defining $g$ and $h$ explicitly, we will often
 define $g'$ and $h'$ such that $g'(z): T(z)\to T(z+1)$ 
 for all $z:\zet$ with $z\geq 0$, and $h'(z): T(z)\to T(z-1)$ 
@@ -628,7 +629,7 @@ $\uc{\base}(z)$ and $R(z)$.
 We apply \cref{lem:weq-iso} and verify the two conditions.
   Firstly, we need to give elements $H(z,p):g(z)(f(z)(p))=p$
 for all $z:\Sc$ and $p:\uc{\base}(z)\defeq(\base=z)$. 
-By induction on $z$ and $p:\base=z$ it suffices to set 
+By induction on $p:\base=z$ it suffices to set 
 $H(\base,\refl\base)\defeq\refl{\refl{\base}}$ since
 $g(\base)(f(\base)(\refl{\base}))\jdeq g(\base)(0)\jdeq\refl{\base}$.
 
