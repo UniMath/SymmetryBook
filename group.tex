@@ -79,7 +79,7 @@ We will return to this example when we've defined torsors.
   \label{rem:whypointedconngpoid}
 % In \cref{xca:component-same-loops} you were asked to show that if $A$ is a type and $a:A$, then 
 As a consequence of \cref{lem:subtype-eq-=},
-the inclusion of the component $A_{(a)}\defequi\sum_{x:A}||a=x||$ into $A$ (\ie the first projection) induces an equivalence of identity types
+the inclusion of the component $A_{(a)}\defequi\sum_{x:A}\Trunc{a=x}$ into $A$ (\ie the first projection) induces an equivalence of identity types
 from $(a,!)=_{A_{(a)}}(a,!)$ to $a=_Aa$.
   This means that, when considering the identity type $a=_Aa$, ``only the elements $x:A$ with $x$ equal to $a$ are relevant'', and we to avoid artificial extra copies of our object of interest we should consider only \emph{connected} $A$ (c.f.~\cref{def:connected}).  
 
@@ -93,7 +93,7 @@ With this established, we let the \emph{type} of groups be defined as follows:
 %\footnote{we must define  $\isset$ and propositional truncation.  Alternatively we must define $\isonetype$ and $\conn$}
   A \emph{group} is a pointed connected groupoid; the \emph{type of groups} is the type 
 %$$\typegroup=\sum_{A:\UU}A\times\isonetype(A)\times \conn_0A.$$
-$$\typegroup\defequi\sum_{A:\UU}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$
+$$\typegroup\defequi\sum_{A:\UU}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}\Trunc{x=_Aa}$$
 of pointed connected groupoids.\footnote{how do we want to deal with the fact that in many of our examples $A$ is not in the chosen universe?} 
 %We refer to an element of $\typegroup$ as a \emph{group}.  
 A group $G=(A,a,p,q):\typegroup$ will be referred to simply as $$\aut_A(a).$$  The underlying pointed type $$BG\defequi(A,a)$$ is referred to as the \emph{classifying space of $G$}.  The element $\pt_G\defequi a$ will be referred to as the \emph{base point}.
@@ -101,7 +101,7 @@ A group $G=(A,a,p,q):\typegroup$ will be referred to simply as $$\aut_A(a).$$  T
 Informally, we may also refer to the type $BG_\div\defequi A$ as the classifying space of $G$.
 \begin{remark}\label{rem:aut}
 There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a connected groupoid is asserted by 
-$$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying space is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{G}).$$
+$$\isset(a=_Aa)\times\prod_{x:A}\Trunc{x=_Aa}$$ which is a proposition  (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying space is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{G}).$$
 \end{remark}
 \end{definition}
 \begin{remark}
@@ -115,7 +115,7 @@ $$\isset(a=_Aa)\times\prod_{x:A}||x=_Aa||$$ which is a proposition  (\cref{lem:p
    The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid (\cref{lem:circleisconnected}, \cref{cor:S1groupoid}) and is pointed at $\base$. The identity type $\base=_{S^1}\base$ is equivalent to to the set of integers $\zet$ and composition corresponds to addition.  This justifies our definition of the \emph{group of integers} as 
 $$\ZZ=\aut_{S^1}(\base).$$
 It is noteworthy that along the way we gave several versions of the circle, each of which has its own merits, the version in \cref{def:S1toC}
-$$C=(\sum_{X:\UU}\sum_{f:X=X}||(\zet,s)=(X,f)||, (\zet,s))$$
+$$C=(\sum_{X:\UU}\sum_{f:X=X}\Trunc{(\zet,s)=(X,f)}, (\zet,s))$$
 being a very convenient one.
  \end{example}
 
@@ -135,11 +135,11 @@ If the reader starts worrying about size issues, that is quite legitimate; see \
 % DELETE Note that even though the sets $\bn{n} =_{\fin}\bn{n} $ and $\bn{n} =_{\fin_n}\bn{n} $ are equal, we must use the component $\fin_n$ rather than the entire groupoid $\fin$ of finite sets to keep the underlying pointed groupoid $B\Sigma_n=(\fin_n,\bn{n} )$ connected.
   \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  Again, the only thing wrong with the groupoid $\Set$ of set (apart from $\Set$ being large) is that $\Set$ is not connected. 
 %}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  To be precise, the component of $S$ is
-%$$A\defequi\sum_{X\in\Set}||S=X||.$$  
-%The connected groupoid $\sum_{X\in\Set}||S=X||$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    
+%$$A\defequi\sum_{X\in\Set}\Trunc{S=X}.$$  
+%The connected groupoid $\sum_{X\in\Set}\Trunc{S=X}$ is pointed at $S$ (and the fact that $S=S$ is nonempty since $\refl S:S=S$).    
 % Then 
 % $$(S=_AS)=(S=_{\Set}S)$$ 
-% (in the identity type of a $\Sigma$-type both the first and the second projections must be equal, but for $A\oldequiv\sum_{X:\Set}||S=X||$ the second projection is a proposition).  
+% (in the identity type of a $\Sigma$-type both the first and the second projections must be equal, but for $A\oldequiv\sum_{X:\Set}\Trunc{S=X}$ the second projection is a proposition).  
 %
  The \emph{group of permutations of $S$} is defined to be 
 $$\Sigma_{S}\defequi\aut_{\Set}(S),$$  
@@ -152,18 +152,18 @@ with classifying space $B\Sigma_S\defequi(\Set_{(S)},S)$.
 
 \begin{remark}
   \label{rem:groupsarebig}
-  This is only for those who worry about size issues - a theme we systematically ignore in our exposition.  If we start with a base universe $\UU_0$, the groupoid of sets of cardinality $n$, $\fin_n$ is a $\Sigma$-type $\sum_{A:\UU_0}||A=n||$ over $\UU_0$ and so without any massage will lie in a bigger universe $\UU_1$.  In order to accomodate for the finite permutation groups, the universe ``$\UU$'' appearing as a subscript for the first $\Sigma$ in the definition of groups needs to be at least as big as $\UU_1$.  If so, the type $\typegroup$ will not be in $\UU_1$, but in some bigger universe $\UU_2$, so if I choose some group $G$ and look at \emph{its} group of automorphisms, this will will be a group only if the universe is at least as big as $\UU_2$.  Luckily, our convention is that the universes are nested, and so at any point we'll just be somewhere big enough for our purposes, see \cref{sec:univax}.  This is not to say that these questions are trivial or unimportant; they are nontrivial and important, but not what this text is about.
+  This is only for those who worry about size issues - a theme we systematically ignore in our exposition.  If we start with a base universe $\UU_0$, the groupoid of sets of cardinality $n$, $\fin_n$ is a $\Sigma$-type $\sum_{A:\UU_0}\Trunc{A=n}$ over $\UU_0$ and so without any massage will lie in a bigger universe $\UU_1$.  In order to accomodate for the finite permutation groups, the universe ``$\UU$'' appearing as a subscript for the first $\Sigma$ in the definition of groups needs to be at least as big as $\UU_1$.  If so, the type $\typegroup$ will not be in $\UU_1$, but in some bigger universe $\UU_2$, so if I choose some group $G$ and look at \emph{its} group of automorphisms, this will will be a group only if the universe is at least as big as $\UU_2$.  Luckily, our convention is that the universes are nested, and so at any point we'll just be somewhere big enough for our purposes, see \cref{sec:univax}.  This is not to say that these questions are trivial or unimportant; they are nontrivial and important, but not what this text is about.
 \end{remark}
 
 \begin{example}\label{ex:cyclicgroups}
   In \cref{thm:coveringsofS1} we studied the symmetries of the ``$m$-fold \covering'' of the circle for $m$ a positive integer, and showed that there were $m$-different symmetries, but that they were just the powers $f^n$ (for $n=0,1,\dots,m-1$) of one (nonunique) symmery $f$ and that $f^{m+k}=f^k$ for any integer $k$.  This very important symmetry pops up in many situation, and is called the \emph{cyclic group of order $m$}.  In other words, the cyclic group of order $m$ is the (pointed) component of the type of \coverings of the circle containing the $m$-fold \covering.  We analyzed this in \cref{thm:coveringsofS1} and found that this (pointed) component was equivalent to 
-$$BC_n\defequi(\sum_{X:\Set}\sum_{p:X=X}||(X,p)=\zet/m||,(\zet/m,!)).$$
+$$BC_n\defequi(\sum_{X:\Set}\sum_{p:X=X}\Trunc{(X,p)=\zet/m},(\zet/m,!)).$$
 
 Here is another, and occasionally more convenient, way of obtaining the cyclic group of order $n$.  Consider the function $$cy_n:S^1\to\fin_n$$ with $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ the identity corresponding to the equivalence given by cyclic permutation, sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$.  Note that the identity $cy_n\Sloop$ is cyclic in the sense that the $n$-fold iterate $(cy_n\Sloop)^n$ is $\refl{\bn n}$.  Then the $n$-fold \covering can be seen as the first projection 
 $$\sum_{z:S^1}cy_n(z)\to S^1$$
 (you are asked to write this out in \cref{xca:somedetailsonfinitegroupstocheck}).
 Consider the type 
-$$B_n\defequi\sum_{S:\fin_n}||cy_n^{-1}(S)||_0,\footnote{I've used set truncation!!!}$$
+$$B_n\defequi\sum_{S:\fin_n}\Trunc{cy_n^{-1}(S)}_0$$
 the ``image'' of $cy_n$ except that the truncation is one level higher than we have considered before.
 Since $\fin_n$ is a groupoid, $B_n$ is a groupoid. 
   
@@ -178,7 +178,7 @@ $$e:\sum_{S:\fin_n}cy_n^{-1}(S)\to S^1,\qquad e(S,z,p)=z$$
 is an equivalence fitting in a commuting diagram
 $$\xymatrix{
 \sum_{S:\fin_n}cy_n^{-1}(S)\ar[d]^e_\simeq\ar[rr]^-{\text{projection}}&&
-\sum_{S:\fin_n}||cy_n^{-1}(S)||_0\ar[d]^{\text{first projection}}&\oldequiv B_n\\
+\sum_{S:\fin_n}\Trunc{cy_n^{-1}(S)}_0\ar[d]^{\text{first projection}}&\oldequiv B_n\\
 S^1\ar[rr]^{cy_n}&&\,\fin_n.}$$
 All preimages of of the top map are all inhabited, and since $S^1$ is connected, the source is connected.  Hence \cref{lem:whenisbasespaceconnected} tells us that $B_n$ is connected too.
 
@@ -247,7 +247,7 @@ Abelian groups have the amazing property that the classifying spaces are themsel
   The condition $\isset(a=_Aa)$ in the definition of the type of groups is sometimes more of a nuisance, and deleting it gives the simpler concept of \aninftygp, see \cref{sec:inftygps}.
 \end{remark}
 \begin{xca}
-   Let $\aut_A(a):\typegroup$ and let $b$ be an arbitrary element of $A$.  Prove that the groups $\aut_A(a)$ and $\aut_A(b)$ are identical, in the sense that $||\aut_A(a)=\aut_A(b)||$ is true.  Similarly for \inftygps when you get that far.
+   Let $\aut_A(a):\typegroup$ and let $b$ be an arbitrary element of $A$.  Prove that the groups $\aut_A(a)$ and $\aut_A(b)$ are identical, in the sense that $\Trunc{\aut_A(a)=\aut_A(b)}$ is true.  Similarly for \inftygps when you get that far.
 \end{xca}
 \begin{remark}\label{rem:monoidandabsgplarge}
  In \cref{def:typegroup} the first $\sum$ in the definition of the type $\typegroup$ ranges over the entire universe $\UU$.  Hence, $\typegroup$ does not belong to $\UU$, but rather to the next universe as discussed briefly in \cref{sec:univax}.   This tendency that the ``type of all the types we are interested in'' is a ``large type'' is a regular feature of the theory and since it will not cause any trouble for us, we will not be consistent in pointing it out.
@@ -445,7 +445,7 @@ When there is little danger of confusion we may drop the subscript $\div$ even w
 \begin{example}
   \begin{enumerate}
   \item   Consider two sets $S$ and $T$.  
-Recall that $\Set_{(S)}\defequi\sum_{X:\Set}||S=X||$ is the component of the groupoid $\Set$ containing $S$, and when pointed at $S$ represents the permutation group $\Sigma_S$.  
+Recall that $\Set_{(S)}\defequi\sum_{X:\Set}\Trunc{S=X}$ is the component of the groupoid $\Set$ containing $S$, and when pointed at $S$ represents the permutation group $\Sigma_S$.  
 The map $\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$.
 Thought of as symmetries, this says that if you have a symmetry of $S$, then we get a symmetry on $S\coprod T$ (which doesn't do anything to $T$).  
 
@@ -615,7 +615,7 @@ $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)
 
 Disregarding the set-condition we get the simpler notion of \inftygps:
 \begin{definition}The type of $\infty$-groups is
-  $$\typeinftygp\defequi \sum_{A:\UU}\sum_{a:A}\prod_{x:A}||x=_Aa||.$$
+  $$\typeinftygp\defequi \sum_{A:\UU}\sum_{a:A}\prod_{x:A}\Trunc{x=_Aa}.$$
 \end{definition}
 
 \begin{remark}\label{rem:pointedtypes}
@@ -724,7 +724,7 @@ Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets}.
   \label{remark:GsetsareGsets}
   A $G$-type $X$ is often presented by focusing on the \emph{underlying type} $X(\pt_G)$  and providing it with a structure relating it to $G$ determining the entire function $X\colon BG\to\UU$.
 
-More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors over the component $\UU_{(X(\pt_G))}\defequi\sum_{Y:\UU}||Y=X(\pt_G)||$ which contains the point $X(\pt_G)$.  Since $B\Sigma_{X(\pt_G)}\defequi(\UU_{(X(\pt_G))},X(\pt_G))$ the $G$-type $X$ can, without loss of information, be considered as a homomorphism 
+More precisely, since $BG$ is connected, a $G$-type $X\colon BG\to\UU$ factors over the component $\UU_{(X(\pt_G))}\defequi\sum_{Y:\UU}\Trunc{Y=X(\pt_G)}$ which contains the point $X(\pt_G)$.  Since $B\Sigma_{X(\pt_G)}\defequi(\UU_{(X(\pt_G))},X(\pt_G))$ the $G$-type $X$ can, without loss of information, be considered as a homomorphism 
 $$G\to\Sigma_{X(\pt_G)}% \defequi(\UU_{(X(\pt_G))},X(\pt_G))
 $$ from $G$ to the permutation group $\Sigma_{X(\pt_G)}$ of $X(\pt_G)$.
 
@@ -757,11 +757,10 @@ Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\math
 \begin{definition}
   \label{def:connectedGset}\label{def:transitiveGset}
   A $G$-set $X:BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
-$$\mathrm{isTrans}(X)\defequi\prod_{y:BG}\prod_{a,b:X(y)}||\sum_{g:y=y}a=g\cdot b||
-$$
+$$\mathrm{isTrans}(X)\defequi\prod_{y:BG}\prod_{a,b:X(y)}\Trunc{\sum_{g:y=y}a=g\cdot b}$$
 holds.
 \end{definition}
-Note that the mention of $y$ is redundant in the definition: by transport it is enough to demand $\prod_{a,b:X(\pt_G)}||\sum_{g:\pt_G=\pt_G}a=g\cdot b||$, and furthermore, if the proposition holds for one $b$ it holds for all others by composition.  
+Note that the mention of $y$ is redundant in the definition: by transport it is enough to demand $\prod_{a,b:X(\pt_G)}\Trunc{\sum_{g:\pt_G=\pt_G}a=g\cdot b}$, and furthermore, if the proposition holds for one $b$ it holds for all others by composition.  
 
 In other words, $X$ is transitive if and only if there is a $b:X(\pt_G)$ such that %for all $a:X(\pt_G)$ 
 the map $-\cdot b:(\pt_G=\pt_G)\to X(\pt_G)$ is surjective.
@@ -799,7 +798,7 @@ For any $g:y=z$ such that $X(g)b=c$ we have $f_z(c)=f_z(X(g)b)=X(g)f_y(b)=X(g)a$
 \label{sec:torsors}
 \begin{definition}
   Given a group  $G$, the type of {\em$G$-torsors} is
-$$\typetorsor_G\defequi\sum_{X:\Set_G}||\princ G=X||,$$
+$$\typetorsor_G\defequi\sum_{X:\Set_G}\Trunc{\princ G=X},$$
 where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
 \begin{remark}
@@ -889,8 +888,8 @@ of $G$ into a permutation group.
 Under the identity $\bar{\pathsp{}}:BG=(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} the function $\alpha$ translates to the evaluation map
 $$\xymatrix{
   \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\pt_G}}\ar@{=}[d]&&\Sigma_{\pt_G=\pt_G}\ar@{=}[d]\\
-  \underset{E:BG\to\Set}\sum\,\underset{x:BG}\prod||(\pt_G=x)=E(x)||\ar@{}[rr]^-{E\mapsto E(\pt_G)}&&
-\,\underset{X:\Set}\sum||(\pt_G=\pt_G)=X||.
+  \underset{E:BG\to\Set}\sum\,\underset{x:BG}\prod\Trunc{(\pt_G=x)=E(x)}\ar@{}[rr]^-{E\mapsto E(\pt_G)}&&
+\,\underset{X:\Set}\sum\Trunc{(\pt_G=\pt_G)=X}.
 }$$
 We must show that the preimages $\ev_{\pt_G}(X)$ for $X:\Sigma_{\pt_G=\pt_G}$ are sets.  
 This preimage is equivalent to $\sum_{E:BG\to\Set}(X=E(\pt_G))$ (note the absence of a truncation).  We must show that if $(E,p),(F,q):\sum_{E:BG\to\Set}(X=E(\pt_G))$, then 
@@ -939,7 +938,7 @@ $$\xymatrix{BG\ar[r]^{Bf}\ar[d]^{\pathsp{}^G}&BH\ar[d]^{\pathsp{}^H}\\
 commutes.
 \end{lemma}
 \footnote{OLS: \begin{proof}
-  If $||X=\princ G||$, then $||f_*X=f_*\princ G||$ and $\eta_f:f_*\princ G=\princ H$, so $f_*$ takes $G$-torsors to $H$-torsors.
+  If $\Trunc{X=\princ G}$, then $\Trunc{f_*X=f_*\princ G}$ and $\eta_f:f_*\princ G=\princ H$, so $f_*$ takes $G$-torsors to $H$-torsors.
 \end{proof}
 }
 \begin{remark}
@@ -974,7 +973,7 @@ $$Set_{\agp G}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\agp G},\abstr(
 The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
-$$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}||\princ {\agp G}=S||.$$
+$$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}\Trunc{\princ {\agp G}=S}.$$
 \end{definition}
 \begin{example}
   If $G$ is a group we can unravel the definition and see that an $\abstr(G)$-set consists of
@@ -1734,7 +1733,7 @@ $$(Bf)^{-1}(\pt_{G'})\defequi\sum_{z:BG}(\pt_{G'}=Bf(z)):$$
   Let $f:\Hom(G,G')\defequi(BG\to_*BG')$  be a homomorphism. %  The preimage $$f^{-1}(\pt_{G'})\defequi\sum_{z:BG}(\pt_{G'}=f(z))$$
 % is a groupoid containing important information about $f$.
 The \emph{cokernel}\index{cokernel} of $f$ is the $G'$-set
-$$\coker f:BG'\to\Set,\qquad \coker f(z)\defequi  ||(Bf)^{-1}(z)||_0.\footnote{set trunctation} $$ 
+$$\coker f:BG'\to\Set,\qquad \coker f(z)\defequi  \Trunc{(Bf)^{-1}(z)}_0.\footnote{set trunctation} $$ 
 The associated $\abstr(G')$-set $\coker f(\pt_{G'})$ is also referred to as the cokernel of $f$.  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.  
 
 \end{definition}
@@ -1747,9 +1746,9 @@ Define the \emph{kernel}\index{kernel}  of $f$ to be the group defined by the po
 $$\ker f\defequi ((Bf)^{-1}(\pt_{G'})_{(\pt_{\ker f})},\pt_{\ker f}).
 $$ 
 Written out,
-$B\ker f_\div\defequi \sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}||\pt_{\ker f}=(z,p)||.$  
+$B\ker f_\div\defequi \sum_{z:BG}\sum_{p:\pt_{G'}=f(z)}\Trunc{\pt_{\ker f}=(z,p)}.$  
 
-The first projection $B\ker f\to_* BG$ displays the kernel $\ker f$ as a subgroup of $G$ (\emph{sub}group since the preimages are equivalent to the sets $\sum_{p:\pt_{G'}=Bf(z)}||\pt_{\ker f}=(z,p)||$).  
+The first projection $B\ker f\to_* BG$ displays the kernel $\ker f$ as a subgroup of $G$ (\emph{sub}group since the preimages are equivalent to the sets $\sum_{p:\pt_{G'}=Bf(z)}\Trunc{\pt_{\ker f}=(z,p)}$).  
 
 A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism.\footnote{clarify the relation between the surjective homomorphism and the subgroup}
 \end{definition}
@@ -1766,7 +1765,7 @@ We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group ho
 \end{definition}
 % \begin{remark}
 %   \label{rem:cokerasGset}
-%   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi||f^{-1}(\pt_{G'})||_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$BG'\to\Set,\qquad z\mapsto   ||f^{-1}(z)||_0.$$  
+%   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\pt_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$  
 % We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set.
 % \end{remark}
 In view of \cref{ex:charsurinj} below, the families  
@@ -1820,13 +1819,13 @@ Finally, the image factorization would have been useless were it not for the fac
 \begin{proof}
   We've used that we're operating with groupoids to simplify the statement, but a similar statement follows generally by essentially the proof below if you keep track of the element in $f=j\,h$.  To simplify we drop the ``$B$''s from the notation, writing ``$f$'' instead of ``$Bf$''.  
 
-That $h$ is a surjective homomorphism amounts to saying that for $y:BH$, then the set truncation $||h^{-1}(y)||_0$ of the preimage is contractible, and so the first projection $\mathrm{pr_1}:\sum_{y:BH}|h^{-1}(y)||_0\to BH$ is an equivalence.
+That $h$ is a surjective homomorphism amounts to saying that for $y:BH$, then the set truncation $\Trunc{h^{-1}(y)}_0$ of the preimage is contractible, and so the first projection $\mathrm{pr_1}:\sum_{y:BH}\Trunc{h^{-1}(y)}_0\to BH$ is an equivalence.
 
 For $y:BH$, consider the map 
 $$T_y:h^{-1}(y)\to f^{-1}(j y),\qquad T_y(x,p)\defequi (x,!_xj(p))$$ where $x:BG$, $p:y=h(x)$ and $!_xj(p):j(y)=f(x)$ is the composite of $j(p):j(y)=j\,h(x)$ and $!:j\,h=f$ (as applied to $x$).  Performing set-truncation on $T_y$ and precomposing with the inverse of the first projection, we get a map
-$$t:BH%\sum_{y:BH}||h^{-1}(y)||_0
-\to\sum_{z:BG'}||f^{-1}(z)||_0\oldequiv B\image f,\qquad Bt(y)\defequi(jy,|T_y|(q_y))$$
-where $q_y:||h^{-1}(y)||_0$ is the second projection of the inverse of the first projection.  The agreement of $t$ with $\tilde f$ and $j$ follows by construction.
+$$t:BH%\sum_{y:BH}\Trunc{h^{-1}(y)}_0
+\to\sum_{z:BG'}\Trunc{f^{-1}(z)}_0\oldequiv B\image f,\qquad Bt(y)\defequi(jy,|T_y|(q_y))$$
+where $q_y:\Trunc{h^{-1}(y)}_0$ is the second projection of the inverse of the first projection.  The agreement of $t$ with $\tilde f$ and $j$ follows by construction.
 \end{proof}
 
 \begin{example}
@@ -2238,7 +2237,7 @@ Then $g\,x$ is a fixed point for the $H$-action on $X$ if and only if $x$ is a f
 
 In \cref{def:normalquotient} defined the quotient group of a normal subgroup.  The definition itself never used that the subgroup was normal (but the quotient homomorphism did) and is important in this more general context.
 
-Recall the equivalence between the set $\typesubgroup_G$ of subgroups and the set $\typesubgroup_G'$ of pointed transitive $G$-sets: The pair $(X,\pt_X)$ where $X:BG\to\Set$ is a transitive $G$-set and $\pt_X:X(\pt_G)$ corresponds to the subgroup $(H,i_H,!)$ defined by  $BH_\div\defequi\sum_{y:BG}X(y)$ pointed at $\pt_H\defequi (\pt_G,\pt_X)$ together with the first projection $Bi_H:BH\to_*BG$.  Conversely, if $(H,i_H,!):\typesubgroup_G$, then the corresponding transitive $G$-set is $G/H\defequi\coker i_H$ pointed at $|\pt_H,p_{i_H}|:\coker i_H(\pt_G)\defequi||\sum_{x:BH}\pt_G=BiH(x)||_0$.  
+Recall the equivalence between the set $\typesubgroup_G$ of subgroups and the set $\typesubgroup_G'$ of pointed transitive $G$-sets: The pair $(X,\pt_X)$ where $X:BG\to\Set$ is a transitive $G$-set and $\pt_X:X(\pt_G)$ corresponds to the subgroup $(H,i_H,!)$ defined by  $BH_\div\defequi\sum_{y:BG}X(y)$ pointed at $\pt_H\defequi (\pt_G,\pt_X)$ together with the first projection $Bi_H:BH\to_*BG$.  Conversely, if $(H,i_H,!):\typesubgroup_G$, then the corresponding transitive $G$-set is $G/H\defequi\coker i_H$ pointed at $|\pt_H,p_{i_H}|:\coker i_H(\pt_G)\defequi\Trunc{\sum_{x:BH}\pt_G=BiH(x)}_0$.  
 
 For the remainder of the section we'll consider a fixed group $G$ with subgroup given by $i_H:\Hom(H,G)$ and $(X,\pt_X,!)$ will be the associated pointed transitive $G$-set.
 
@@ -2254,10 +2253,10 @@ $$N_GH\defequi\Aut_{\sum_{y:BG}\typesubgroup_G'(y)}(\pt_G,X,\pt_X)$$ is defined 
 \end{definition}
 
 Unpacking, we find that
-$$BN_GH_\div\oldequiv \sum_{y:BG}\sum_{Y:BG\to\Set}\sum_{\pt^y_Y:Y(y)} ||(\pt_G,X,\pt_X)=(y,Y,\pt^y_Y)||.$$
-While the projection $((\pt_G,X,\pt_X)=(y,Y,\pt^y_Y))\to (X=Y)$ may not be an equivalence, the transitivity of $X$ tells us that for any $\beta:X=Y$ there is a $g:\pt_G=y$ such that $X(g)\,p^y_Y=\beta^{-1}_y\pt_X$, and so the propositional truncation $||(\pt_G,X,\pt_X)=(y,Y,\pt^y_Y)||\to ||X=Y||$ is an equivalence.
+$$BN_GH_\div\oldequiv \sum_{y:BG}\sum_{Y:BG\to\Set}\sum_{\pt^y_Y:Y(y)} \Trunc{(\pt_G,X,\pt_X)=(y,Y,\pt^y_Y)}.$$
+While the projection $((\pt_G,X,\pt_X)=(y,Y,\pt^y_Y))\to (X=Y)$ may not be an equivalence, the transitivity of $X$ tells us that for any $\beta:X=Y$ there is a $g:\pt_G=y$ such that $X(g)\,p^y_Y=\beta^{-1}_y\pt_X$, and so the propositional truncation $\Trunc{(\pt_G,X,\pt_X)=(y,Y,\pt^y_Y)} \to \Trunc{X=Y}$ is an equivalence.
 Consequently, the projection
-$$BN_GH_\div\to \sum_{y:BG}\sum_{Y:BG\to\Set}Y(y)\times||X=Y||$$
+$$BN_GH_\div\to \sum_{y:BG}\sum_{Y:BG\to\Set}Y(y)\times\Trunc{X=Y}$$
 is an equivalence.  With an innocent rewriting, we see that we have provided an equivalence 
 $$e:BN_GH_\div\we\sum_{(y\times Y):BG\times BW_GH}Y(y)\qquad e(y,Y,\pt^y_Y,!)\defequi (y,Y,\pt^y_Y,!).$$
 This formulation has the benefit of simplifying the analysis of the ``inclusion'' 
