@@ -96,12 +96,18 @@ With this established, we let the \emph{type} of groups be defined as follows:
 $$\typegroup\defequi\sum_{A:\UU}\sum_{a:A}\isset(a=_Aa)\times\prod_{x:A}\Trunc{x=_Aa}$$
 of pointed connected groupoids.\footnote{how do we want to deal with the fact that in many of our examples $A$ is not in the chosen universe?} 
 %We refer to an element of $\typegroup$ as a \emph{group}.  
-A group $G=(A,a,p,q):\typegroup$ will be referred to simply as $$\aut_A(a).$$  The underlying pointed type $$BG\defequi(A,a)$$ is referred to as the \emph{classifying space of $G$}.  The element $\pt_G\defequi a$ will be referred to as the \emph{base point}.
+A group $G=(A,a,p,q):\typegroup$ will be referred to simply as $$\aut_A(a).$$  The underlying pointed type $$BG\defequi(A,a)$$ is referred to as the \emph{classifying type of $G$}.  The element $\pt_G\defequi a$ will be referred to as the \emph{base point}.
+Informally, we may also refer to the type $BG_\div\defequi A$ as the classifying type of $G$.
 \end{definition}
-Informally, we may also refer to the type $BG_\div\defequi A$ as the classifying space of $G$.
+
+The following exercise reconciliates the words of the above definition with the type.
+\begin{xca}\label{xca:defgroup}
+Show that $A$ is a groupoid for any $\aut_A(a)$.
+\end{xca}
+
 \begin{remark}\label{rem:aut}
 There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a connected groupoid is asserted by 
-$$\isset(a=_Aa)\times\prod_{x:A}\Trunc{x=_Aa}$$ which is a proposition  (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying space is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{G}).$$
+$$\isset(a=_Aa)\times\prod_{x:A}\Trunc{x=_Aa}$$ which is a proposition  (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying type is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{G}).$$
 \end{remark}
 \end{definition}
 \begin{remark}
@@ -113,7 +119,7 @@ $$\isset(a=_Aa)\times\prod_{x:A}\Trunc{x=_Aa}$$ which is a proposition  (\cref{l
 \label{sec:firstgroupexamples}
    \begin{example}\label{excirclegroup}
    The circle $S^1$, which we defined in \cref{def:circle}, is a connected groupoid (\cref{lem:circleisconnected}, \cref{cor:S1groupoid}) and is pointed at $\base$. The identity type $\base=_{S^1}\base$ is equivalent to to the set of integers $\zet$ and composition corresponds to addition.  This justifies our definition of the \emph{group of integers} as 
-$$\ZZ=\aut_{S^1}(\base).$$
+$$\ZZ \defeq \aut_{S^1}(\base).$$
 It is noteworthy that along the way we gave several versions of the circle, each of which has its own merits, the version in \cref{def:S1toC}
 $$C=(\sum_{X:\UU}\sum_{f:X=X}\Trunc{(\zet,s)=(X,f)}, (\zet,s))$$
 being a very convenient one.
@@ -128,7 +134,7 @@ being a very convenient one.
   \item If $n:\NN$, then the \emph{permutation group of $n$ letters} is 
 $$\Sigma_n\defequi\aut_{\fin_n}(\bn{n} ),$$ 
 where $\fin_n$ is the groupoid of sets of cardinality $n$ (c.f.~\ref{def:finiteset}).  
-The classifying space is thus $B\Sigma_n\defequi (\fin_n,\bn{n})$.
+The classifying type is thus $B\Sigma_n\defequi (\fin_n,\bn{n})$.
 With our convention of \cref{rem:symmetriesofnonconnectedgroupoids} we can tolerate $\aut_{\fin}(\bn n)$, $\aut_{\Set}(\bn n)$ or even $\aut_{\UU}(\bn n)$ as synonyms for the group $\Sigma_n$ (where $\fin$ and $\Set$ are the subtypes of $\UU$ of finite sets and sets).  
 
 If the reader starts worrying about size issues, that is quite legitimate; see \cref{rem:groupsarebig}.
@@ -143,7 +149,7 @@ If the reader starts worrying about size issues, that is quite legitimate; see \
 %
  The \emph{group of permutations of $S$} is defined to be 
 $$\Sigma_{S}\defequi\aut_{\Set}(S),$$  
-with classifying space $B\Sigma_S\defequi(\Set_{(S)},S)$.
+with classifying type $B\Sigma_S\defequi(\Set_{(S)},S)$.
 % DELETE SINCE WERE NOT TALKING ABT INFTYGPS Likewise, if $X$ is any type, the \emph{group of automorphism} or \emph{permutations} of $X$ is defined to be 
 % $$\Sigma_X=\aut_{\UU_{(X)}}X,$$
 %  where $U_{(X)}$ is the component of $\UU$ containing $X$.
@@ -152,14 +158,19 @@ with classifying space $B\Sigma_S\defequi(\Set_{(S)},S)$.
 
 \begin{remark}
   \label{rem:groupsarebig}
-  This is only for those who worry about size issues - a theme we systematically ignore in our exposition.  If we start with a base universe $\UU_0$, the groupoid of sets of cardinality $n$, $\fin_n$ is a $\Sigma$-type $\sum_{A:\UU_0}\Trunc{A=n}$ over $\UU_0$ and so without any massage will lie in a bigger universe $\UU_1$.  In order to accomodate for the finite permutation groups, the universe ``$\UU$'' appearing as a subscript for the first $\Sigma$ in the definition of groups needs to be at least as big as $\UU_1$.  If so, the type $\typegroup$ will not be in $\UU_1$, but in some bigger universe $\UU_2$, so if I choose some group $G$ and look at \emph{its} group of automorphisms, this will will be a group only if the universe is at least as big as $\UU_2$.  Luckily, our convention is that the universes are nested, and so at any point we'll just be somewhere big enough for our purposes, see \cref{sec:univax}.  This is not to say that these questions are trivial or unimportant; they are nontrivial and important, but not what this text is about.
+  This is only for those who worry about size issues - a theme we systematically ignore in our exposition.  If we start with a base universe $\UU_0$, the groupoid of sets of cardinality $n$, $\fin_n$ is a $\Sigma$-type $\sum_{A:\UU_0}\Trunc{A=\bn{n}}$ over $\UU_0$ and so without any massage will lie in a bigger universe $\UU_1$.  In order to accomodate for the finite permutation groups, the universe ``$\UU$'' appearing as a subscript for the first $\Sigma$ in the definition of groups needs to be at least as big as $\UU_1$.  If so, the type $\typegroup$ will not be in $\UU_1$, but in some bigger universe $\UU_2$, so if I choose some group $G$ and look at \emph{its} group of automorphisms, this will will be a group only if the universe is at least as big as $\UU_2$.  Luckily, our convention is that the universes are nested, and so at any point we'll just be somewhere big enough for our purposes, see \cref{sec:univax}.  This is not to say that these questions are trivial or unimportant; they are nontrivial and important, but not what this text is about.
 \end{remark}
 
 \begin{example}\label{ex:cyclicgroups}
   In \cref{thm:coveringsofS1} we studied the symmetries of the ``$m$-fold \covering'' of the circle for $m$ a positive integer, and showed that there were $m$-different symmetries, but that they were just the powers $f^n$ (for $n=0,1,\dots,m-1$) of one (nonunique) symmery $f$ and that $f^{m+k}=f^k$ for any integer $k$.  This very important symmetry pops up in many situation, and is called the \emph{cyclic group of order $m$}.  In other words, the cyclic group of order $m$ is the (pointed) component of the type of \coverings of the circle containing the $m$-fold \covering.  We analyzed this in \cref{thm:coveringsofS1} and found that this (pointed) component was equivalent to 
 $$BC_n\defequi(\sum_{X:\Set}\sum_{p:X=X}\Trunc{(X,p)=\zet/m},(\zet/m,!)).$$
 
-Here is another, and occasionally more convenient, way of obtaining the cyclic group of order $n$.  Consider the function $$cy_n:S^1\to\fin_n$$ with $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ the identity corresponding to the equivalence given by cyclic permutation, sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$.  Note that the identity $cy_n\Sloop$ is cyclic in the sense that the $n$-fold iterate $(cy_n\Sloop)^n$ is $\refl{\bn n}$.  Then the $n$-fold \covering can be seen as the first projection 
+Here is another, and occasionally more convenient, way of obtaining the cyclic group of order $n$.  Consider the function $$cy_n:S^1\to\fin_n$$ with $cy_n(\base)\defequi\bn n$ and 
+$cy_n(\Sloop):\bn n=\bn n$ the identity corresponding to the equivalence given by cyclic permutation,
+sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$.  
+Note that the symmetry $cy_n(\Sloop)$ is cyclic in the sense that 
+the $n$-fold iterate $cy_n(\Sloop)^n$ is $\refl{\bn n}$.
+Then the $n$-fold \covering can be seen as the first projection 
 $$\sum_{z:S^1}cy_n(z)\to S^1$$
 (you are asked to write this out in \cref{xca:somedetailsonfinitegroupstocheck}).
 Consider the type 
@@ -167,30 +178,38 @@ $$B_n\defequi\sum_{S:\fin_n}\Trunc{cy_n^{-1}(S)}_0$$
 the ``image'' of $cy_n$ except that the truncation is one level higher than we have considered before.
 Since $\fin_n$ is a groupoid, $B_n$ is a groupoid. 
   
-If we focus on the point $\pt_{C_n}\defequi(\bn n,|\base,\refl{\bn n}|)$ and write out the identity type $\pt_{C_n}=\pt_{C_n}$ of the $\Sigma$-type $B_n$, we see that it consists of those $p:\bn n=\bn n$ such that there is a $q:\base=\base$ with $p=cy_n(q)$: the ``permutations that come from rotating $n$ points on the circle'' -- exactly what the cyclic group of order $n$ should be!
+If we focus on the point $\pt_{C_n}\defequi(\bn n,\trunc{(\base,\refl{\bn n})}_0)$ and 
+write out the identity type $\pt_{C_n}=\pt_{C_n}$ of the $\Sigma$-type $B_n$, 
+we see that it consists of those $p:\bn n=\bn n$ such that there is 
+a $q:\base=\base$ with $p=cy_n(q)$: 
+the ``permutations that come from rotating $n$ points on the circle'' -- 
+exactly what the cyclic group of order $n$ should be!
 
 We define {\em cyclic group of order $n$} to be the group 
 $$C_n\defequi\aut_{B_n}(\pt_{C_n}).$$
 
-It is good to know that $B_n$ is connected, so that $(B_n,\pt_{C_n})$ is actually the classifying space $BC_n$. Remember that 
-$cy_n^{-1}(S)\defequi\sum_{z:S^1}(S=cy_nz)$, and notice that the map 
+It is good to know that $B_n$ is connected, so that $(B_n,\pt_{C_n})$ is actually 
+the classifying type $BC_n$. Remember that 
+$cy_n^{-1}(S)\defequi\sum_{z:S^1}(S=cy_n(z))$, and notice that the map 
 $$e:\sum_{S:\fin_n}cy_n^{-1}(S)\to S^1,\qquad e(S,z,p)=z$$ 
 is an equivalence fitting in a commuting diagram
 $$\xymatrix{
 \sum_{S:\fin_n}cy_n^{-1}(S)\ar[d]^e_\simeq\ar[rr]^-{\text{projection}}&&
 \sum_{S:\fin_n}\Trunc{cy_n^{-1}(S)}_0\ar[d]^{\text{first projection}}&\oldequiv B_n\\
 S^1\ar[rr]^{cy_n}&&\,\fin_n.}$$
-All preimages of of the top map are all inhabited, and since $S^1$ is connected, the source is connected.  Hence \cref{lem:whenisbasespaceconnected} tells us that $B_n$ is connected too.
+All preimages of of the top map are all inhabited, and since $S^1$ is connected, 
+the source is connected.  
+Hence \cref{lem:whenisbasespaceconnected} tells us that $B_n$ is connected too.
 
 
-% .  Let $(S,z,p):B_n$ be any element; we want to show that $(S,z,p)=_{B_n}(\bn n, \base, \refl\base)$ is not empty, so that $B_n$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_n(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_n(\base)\defequi\bn n$ to compose $p:S=cy_nz$ and $cy_n:cy_nz=cy_n\base$), $B_n$ is connected.  
+% .  Let $(S,z,p):B_n$ be any element; we want to show that $(S,z,p)=_{B_n}(\bn n, \base, \refl\base)$ is not empty, so that $B_n$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_n(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_n(\base)\defequi\bn n$ to compose $p:S=cy_n(z)$ and $cy_n:cy_n(z)=cy_n\base$), $B_n$ is connected.  
 % DELETE Pointing $B_n$ in $\pt_{C_n}$ we have a pointed connected groupoid, \ie a group, which we call the {\em cyclic group $C_n$ of order $n$}  (and in hindsight $B_n=(BC_n)_\div$).
 
 Note that the cyclic group of order $1$ is the trivial group, the cyclic group of order $2$ is equivalent to the permutation group $\Sigma_2$: there are exactly one nontrivial symmetry $f$ and $f^2$ is the identity.  When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.  In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\Sigma_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.
 \end{example}
 
 \begin{example}\label{ex:productofgroups}
-  If you have two groups $G$ and $H$, their {\em product} $G\times H$ is given by taking the product of their classifying spaces:
+  If you have two groups $G$ and $H$, their {\em product} $G\times H$ is given by taking the product of their classifying types:
 $$G\times H\defequi\aut_{BG_\div\times BH_\div}((\pt_G,\pt_H))$$
 (note that $B(G\times H)\oldequiv BG\times BH$ is pointed at $\pt_{G\times H}\oldequiv(\pt_G,\pt_H)$).  
 For instance, $\Sigma_2\times\Sigma_2$ is called the {\em Klein group}.
@@ -207,12 +226,15 @@ and (since $\fin_0=\fin_1=\bn 1$) that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
 \item Give an identification of the $n$-fold \covering of $S^1$ of \cref{exa:mfoldS1cover} with the first projection $\sum_{z:S^1}cy_n^{-1}(z)\to S^1$ of \cref{ex:cyclicgroups}.
 %, where $cy_n:S^1\to\fin_n$ is given by $cy_n(\base)\defequi\bn n$ and $cy_n(\Sloop):\bn n=\bn n$ is cyclic permutation (sending $n-1$ to $0$ and, for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$).  
 
-Hint: for every $z:S^1$, $cy_nz:\fin_n$ is a finite set of cardinality $n$.  Decidability is not an issue, so you can appeal to our classification of the \coverings of the circle.
+Hint: for every $z:S^1$, $cy_n(z):\fin_n$ is a finite set of cardinality $n$.  
+Decidability is not an issue, so you can appeal to our classification of the \coverings of the circle.
 \item Show that, given a type $X$, the type of functions $BC_n\to X$ is equivalent to the type 
 $$\sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$$ of functions $f:S^1\to X$ such that the two ways around
 $$\xymatrix{S^1\ar[d]_{(-)^n}\ar[dr]^f&\\S^1\ar[r]^f&X}$$
-agree.  Hint: define the function $F_1:(BC_n\to X)\to (S^1\to X)$ by precomposition: $F_1(g)(z)=g(cy_nz,!)$ and observe that since $cy_n(z)=cy_n(z^n)$ we have a function $F:(BC_n\to X)\to \sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$.
-  \end{enumerate} 
+agree. Hint: define the function $F_1:(BC_n\to X)\to (S^1\to X)$ by precomposition:
+$F_1(g)(z)=g(cy_n(z),!)$ and observe that since $cy_n(z)=cy_n(z^n)$ we have a 
+function $F:(BC_n\to X)\to \sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$.
+\end{enumerate} 
 \end{xca}
 
 \begin{remark}
@@ -238,7 +260,7 @@ $$\xymatrix{a\ar@{=}[r]^g_\to\ar@{=}[d]^\downarrow_h&a\ar@{=}[d]^\downarrow_h\\
 a\ar@{=}[r]^g_\to&a}$$
 and saying that going from (upper left hand corner) $a$ to (lower right hand corner) $a$ by either composition gives the same result.
 
-Abelian groups have the amazing property that the classifying spaces are themselves identity types (of certain $2$-types).  This can be used to give a very important characterization of what it means to be abelian.  We will\footnote{hopefully} return to this point later.
+Abelian groups have the amazing property that the classifying types are themselves identity types (of certain $2$-types).  This can be used to give a very important characterization of what it means to be abelian.  We will\footnote{hopefully} return to this point later.
 \begin{remark}
   \label{rem:whatAREabeliangroups}
   The reference to $\mathbf{isAb}$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} (it is the sum of $X$ and $Y$ where the base points are identified); \cref{xca:whatAREabeliangroups} offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $BG\vee BG\to BG$ factors over the inclusion $BG\vee BG\to BG\times BG$.
@@ -348,7 +370,7 @@ g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.  The set $S$ is c
 
 In conclusion we have proved that groups give rise to abstract groups:
   \begin{lemma}\label{lem:idtypesgiveabstractgroups}
-    If $G$ is a group, then $\pt_G=\pt_G$ together with $e\defequi\refl{\pt_G}{}$, $g^{-1}\defequi\symm_{\pt_g,\pt_G}g$ and $g\cdot h\defequi\trans_{\pt_g,\pt_G,\pt_G}(g)(h)$
+    If $G$ is a group, then $\pt_G=\pt_G$ together with $e\defequi\refl{\pt_G}{}$, $g^{-1}\defequi\symm_{\pt_G,\pt_G}g$ and $g\cdot h\defequi\trans_{\pt_G,\pt_G,\pt_G}(g)(h)$
 %$A$ is a groupoid %(alternatively called a ``$1$-type'') and $a:A$ is an element, then $a=_Aa$, together with $e\defequi\refl a{}$, $g^{-1}\defequi\symm_{a,a}g$ and $g\cdot h\defequi\trans_{a,a,a}(g)(h)$ 
 define an abstract group
 $$\abstr(G)\defequi (\pt_G=\pt_G,e,{-}^{-1},\cdot).$$
@@ -533,7 +555,7 @@ $$\xymatrix{Bf_\div(\pt_G)\ar@{=}[r]^{\ap{Bf_\div}(g)}_\to\ar@{=}[d]^\downarrow_
 \pt_H\ar@{:}[r]^{f^\abstr(g)}_\to&\,\pt_H.}$$
 
 
-% Since type-checking removes the ambiguity, we trust it will not lead to any confusion that we simplify the notation and use the symbol $f$ simultaneously for $Bf_\div$, writing $f\colon BG_\div\to BH_\div$ and for $\ap{Bf_\div}$, writing $f:(\pt_G=\pt_g)\to (f(\pt_G)=f(\pt_G))$, while we write
+% Since type-checking removes the ambiguity, we trust it will not lead to any confusion that we simplify the notation and use the symbol $f$ simultaneously for $Bf_\div$, writing $f\colon BG_\div\to BH_\div$ and for $\ap{Bf_\div}$, writing $f:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G))$, while we write
 % $$f^\abstr\defequi \mathrm{ad}_p\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H), \qquad g\mapsto p\,f(g)\,p^{-1}$$  
 % and depicting it as the ``up, over and down'' identity of $\pt_H$:
 % $$\xymatrix{f(\pt_G)\ar@{=}[r]^{f(g)}_\to\ar@{=}[d]^\downarrow_p&f(\pt_G)\ar@{=}[d]^\downarrow_p\\
@@ -629,11 +651,11 @@ Disregarding the set-condition we get the simpler notion of \inftygps:
 
 \footnote{Let $\typeset\defequi \sum_{A:\UU}\isset(A)$.}
 \begin{definition}\label{def:classifyingspace}
-  If $G\oldequiv\Aut_A(a):\typeinftygp$, then the underlying pointed type $BG\defequi (A,a)\colon\pttype$ is called the  \emph{classifying space} and $\pt_G\defequi a$ is the \emph{base point}.  
-%We retain the same language also for ordinary groups in which case the classifying space is a groupoid (\ie a $1$-type).   %For \inftygps the definition is identical.
+  If $G\oldequiv\Aut_A(a):\typeinftygp$, then the underlying pointed type $BG\defequi (A,a)\colon\pttype$ is called the  \emph{classifying type} and $\pt_G\defequi a$ is the \emph{base point}.  
+%We retain the same language also for ordinary groups in which case the classifying type is a groupoid (\ie a $1$-type).   %For \inftygps the definition is identical.
 \end{definition}
 \begin{definition}
-  A homomorphism of $\infty$ groups is a pointed function of classifying spaces, \ie
+  A homomorphism of $\infty$ groups is a pointed function of classifying types, \ie
   given two $\infty$-groups $G$ and $H$ we define
 $$\Hom(G,H)\defequi(BG\to_*BH).$$
 % If $G$ is \aninftygp, we let $\pt_G:BG$ (and sometimes simply $\pt$ if $G$ is clear from the context) be the distinguished point (so that $G\oldequiv\aut_{BG}(\pt_G)$).
@@ -794,7 +816,7 @@ For any $g:y=z$ such that $X(g)b=c$ we have $f_z(c)=f_z(X(g)b)=X(g)f_y(b)=X(g)a$
 
 
 
-\section{The classifying space is the type of torsors}
+\section{The classifying type is the type of torsors}
 \label{sec:torsors}
 \begin{definition}
   Given a group  $G$, the type of {\em$G$-torsors} is
