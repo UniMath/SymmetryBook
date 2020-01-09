@@ -667,11 +667,6 @@ that $y=_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
 By \cref{def:gRtoP}, ${\Sloop}^{-}\jdeq g(\base)$ is an equivalence.
 \end{proof}
 
-\begin{xca}\label{xca:S1=S1-eqv-S1+S1}
-Give an equivalence from $\Sc\equiv\Sc$ to $\Sc\amalg\Sc$.
-Hint: find first the symmetries of the identity function on $\Sc$.
-\end{xca}
-
 The following lemma is a simple example of a technique later called `delooping'.
 \begin{lemma}\label{lem:S1-delooping}
 Let $A$ be a connected type and $a:A$. 
@@ -756,7 +751,7 @@ Then $\pathpair {p_2}{q_2} \cdot \pathpair {p_1}{q_1} = \pathpair {p_2 \cdot p_1
 By induction on first $p_2$ and then $q_2$.
 \end{proof}
 
-The above lemma yields, for example, that $\pathpair{\etop{s}}{!} ^n = \pathpair{\etop{s^n}}{!}$.
+The above lemma yields, for example, that $\pathpair{\etop{s}}{!} ^n = \pathpair{\etop{s}^n}{!}$.
 
 \begin{lemma}
   \label{lem:IdCisZet}
@@ -1326,6 +1321,82 @@ With respect to the identification of the component of the $m$-fold covering.  T
   \begin{remark}
     Regarding the symmetries of the $m$-fold \covering of the circle, recall the picture we tried to evoke in \cref{rem:finitecoveringsofS1}.  How can I move my circle with $m$ evenly spaced marked points  (which we now call $0,1,\dots, m-1$ instead of $1,2,\dots 12$ since it fits better with future applications) without disturbing the projection down to the circle (sending all the marked points to $0$).  I can move the marked points, but a marked point has to be sent to a marked point (otherwise the projection down to the circle would be disturbed).  Let's say that mark $0$ is sent to mark $4$.  However, since we have to preserve the projection down to the circle, the arc from $0$ to $1$ must then be sent to the arc from $4$ to $5$.  Continuing in this fashion, we see that we describe a certain rotation of the circle.  Varying $4$ between $0$ and $m-1$ we see that there are exactly $m$ different symmetries of the $m$-fold \covering.  Furthemore they are all rotations of the circle by an angle which is a multiple of $2\pi/m$.
   \end{remark}
+
+
+\subsection*{Marc's proof}
+
+\begin{xca}\label{xca:S1=S1-components}
+Let $-\id_\Sc : \Sc\to\Sc$ be defined by $-\id_\Sc(\base)\defeq\base$ 
+and $-\id_\Sc(\Sloop)\defis{\Sloop}^{-1}$. Show $-\id_\Sc \neq \id_\Sc$.
+Prove the following proposition:
+\[
+\prod_{t:\Sc\equiv\Sc}{\Trunc{\id_\Sc = t}\amalg \Trunc{-\id_\Sc = t}}.
+\]
+\end{xca}
+
+\begin{proof}
+Let $m>0$ and recall $D_m\defequi\sum_{t:\Sc\equiv\Sc} -^m =_{\Sc\to \Sc} -^m t$.
+Define 
+\[
+f: \bn{m} \to D_m: k \mapsto (\id_\Sc,{\Sloop}^k)\quad\text{for all $k=0,\ldots,m-1$}.
+\]
+(The above definition of $f$ is simplified in that we mean $\id_\Sc$
+as an equivalence. Moreover, the proof of $-^m = -^m \id_\Sc$ is only given
+as ${\Sloop}^k : \base=\base$;
+stability of ${\Sloop}^k$ under $\Sloop$ is a true proposition that has been left out.)
+
+Claim: for all $t:\Sc\equiv\Sc$ and $Q : -^m = -^m t$ we have
+\[
+\iscontr(\sum_{k:\bn{m}} (t,Q) = f(k)).
+\]
+This claim is a proposition and means that $f$ is an equivalence.
+In view of \cref{xca:S1=S1-components} it suffices to prove the claim
+for $t\jdeq\id_\Sc$ and for $t\jdeq -\id_\Sc$. The latter case can be discarded
+since $-^m \neq -^m (-\id_\Sc)$ (for $m=1$ this is again \cref{xca:S1=S1-components}).
+In the remaining paragraphs we deal with the case $t\jdeq\id_\Sc$.
+We use the equivalence $w: (\base=\base)\to\zet$ that sends ${\Sloop}^k$ to $k:\zet$.
+
+Let $Q: -^m = -^m$, then we have $Q(\base): \base=\base$,
+and we can ignore $Q(\Sloop)$ which proves a proposition. 
+We have to give a center, and prove that it is a center of contraction.
+
+For the center, we apply Euclidean Division \cref{lem:euclid-div}, albeit for integers.
+Write $w(Q(\base)) = ml+k$ with $k:\bn{m}$ and $l:\zet$, both unique.
+We take $k$ as the first component of the center.
+For the second component of the center it suffices to give an inhabitant of 
+$(\id_\Sc,Q(\base))=(\id_\Sc,{\Sloop}^k)\jdeq f(k)$. 
+We take ${\Sloop}^{-l} : \id_\Sc = \id_\Sc$.
+In the following picture we analyse transport in the family $R(t)\defeq(-^m = -^m t)$ (left)
+and specialize to the situation at hand (right).
+
+\[
+\xymatrix{
+t\ar@{=}[d]^{p}_\downarrow
+& -^m\ar@{=}[r]^{X}_\rightarrow 
+&-^m t \ar@{=}[d]^{(-^m \_)(p)}_\downarrow &&
+&\id_\Sc\ar@{=}[d]^{{\Sloop}^{-l}}_\downarrow
+& \base\ar@{=}[r]^{Q(\base)}_\rightarrow 
+& \base\ar@{=}[d]^{{\Sloop}^{-ml}}_\downarrow 
+\\
+t'&&-^m t' &&
+&\id_\Sc   &&\base{\vphantom{t}}}
+\]
+Clearly, the transport of $Q(\base)$ along ${\Sloop}^{-l}$ is 
+equal to ${\Sloop}^{k}$ because of $w(Q(\base)) = ml+k$.
+This completes the construction of the center.
+
+The last step is to show that the center is indeed a center of contraction.
+Let $p': (\id_\Sc,Q(\base))=(\id_\Sc,{\Sloop}^{k'})\jdeq f(k')$ for $k':\bn{m}$.
+Then ${\Sloop}^{-l'} : \id_\Sc = \id_\Sc$ for some $l':\zet$. By exactly
+the same analysis as above we get $w(Q(\base)) = ml'+k'$. Since Euclidean Division
+is unique, we get $k'=k$ and $l'=l$. Hence the pair $(k',p')$ is equal to the center. 
+\end{proof}
+
+
+\begin{xca}\label{xca:S1=S1-eqv-S1+S1}
+Give an equivalence from $\Sc\amalg\Sc$ to $\Sc\equiv\Sc$.
+Hint: use \cref{xca:S1=S1-components}.
+\end{xca}
 
 
 {\color{blue}\small\section{desiderata}\footnote{the exercises/definitions of this section should go in a previous chapter}
