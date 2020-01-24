@@ -101,11 +101,11 @@ $p: f(\base)= g(\base)$ and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
 We show $f=g$, for which it suffices to prove by circle induction
 that $P(x)\defeq(f(x)=g(x))$ for all $x:\Sc$.
 For the base case we take $p$.
-The loop case reduces to $\trp{P,\Sloop}(p)=p$ by \cref{def:pathover-trp}.
+The loop case reduces to $\trp[P]{\Sloop}(p)=p$ by \cref{def:pathover-trp}.
 By \cref{lem:trp-in-fx=Ygx} we have 
-$\trp{P,\Sloop}(p)=g(\Sloop)\cdot p \cdot f(\Sloop)^{-1}$. 
+$\trp[P]{\Sloop}(p)=g(\Sloop)\cdot p \cdot f(\Sloop)^{-1}$. 
 By $q$ we have $g(\Sloop) = p\cdot f(\Sloop) \cdot p^{-1}$.
-Hence $\trp{P,\Sloop}(p)=p$ by easy calculation.
+Hence $\trp[P]{\Sloop}(p)=p$ by easy calculation.
 Using \cref{lem:isEq-pair=} we can phrase the result
 as: if $\ev(f)=\ev(g)$, then  $f=g$.
 
@@ -540,7 +540,7 @@ give inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
 
 \begin{definition}
   \label{def:fPtoR}
-  The function $f:\prod_{z:\Sc}(\uc{\base}(z)\to R(z))$ is defined by transport: $f(z)(p)\defequi\trp{R,p}(0)$.
+  The function $f:\prod_{z:\Sc}(\uc{\base}(z)\to R(z))$ is defined by transport: $f(z)(p)\defequi\trp[R]{p}(0)$.
 \end{definition}
 
 In Figure~\ref{fig:transportalongloop}, the transport in the definition
@@ -600,13 +600,13 @@ For $n=s(m)$ with $m:\NN$ we have
 \begin{align*}
   f(\base)(\Sloop^{s(m)})&\jdeq\trp{R,\Sloop^{s(m)}}(0)\\
   &=\trp{R,\Sloop \Sloop^{m}}(0)\\
-  &=\trp{R,\Sloop}(\trp{R,\Sloop^m}(0))\\
-  &\jdeq \trp{R,\Sloop}(f(\base)(\Sloop^{m}))\\
+  &=\trp[R]{\Sloop}(\trp{R,\Sloop^m}(0))\\
+  &\jdeq \trp[R]{\Sloop}(f(\base)(\Sloop^{m}))\\
   &= s(f(\base)(\Sloop^{m})).
 \end{align*}
 The last step follows from $\etop{s}=R(\Sloop)$ 
 and $s=\trp{\id_\UU,\etop{s}}$, see \cref{def:univalence},
-and hence $s=\trp{\id_\UU,R(\Sloop)}=\trp{\id_\UU R,\Sloop}=\trp{R,\Sloop}$. 
+and hence $s=\trp[\id_\UU]{R(\Sloop)}=\trp[\id_\UU R]{\Sloop}=\trp[R]{\Sloop}$. 
 This completes the induction step for positive $n$.
 For negative $n$ the proof is similar.
 \end{proof}
@@ -714,7 +714,7 @@ Recall from \cref{lem:isEq-pair=} that, given $X:\UU$ and $i: X=X$,
 the identity type $(\zet,\etop{s}) = (X,i)$
 is equivalent to the type of pairs consisting of a $p:\zet=X$ and 
 a proof of $\pathover{\etop{s}}{D}{p}{i}$. The latter type is
-equivalent to $\trp{D,p}(\etop{s}) = i$ by \cref{def:pathover-trp}.
+equivalent to $\trp[D]{p}(\etop{s}) = i$ by \cref{def:pathover-trp}.
 The transport is by conjugation,
 \cref{xca:trp-in-a/x=b/x}(\ref{trp-in-x=x}), so that the latter
 type is equivalent to $p\cdot\etop{s}\cdot p^{-1} = i$, 
@@ -1613,33 +1613,34 @@ by function extensionality and the universal property of the circle for
 the type family $T(x)\defeq (-^m(x) = -^m(x))$, to the type 
 $\sum_{p: \base=\base} (\Sloop^m p = p \Sloop^m)$.
 The latter type is equivalent to $\base=\base$, and therefore
-we can give an element of $-^m =_{\Sc\to\Sc} -^m \id_\Sc$ as $\Sloop^z$ for some $z:\zet$.
-Finally, we tacitly coerce any element $k:\bn{m}$ to $k:\zet$
-and we give the element as $\Sloop^k$. We use these simplifications also below.)
+we can give any element of $-^m =_{\Sc\to\Sc} -^m \id_\Sc$ as $\Sloop^z$ for some $z:\zet$.
+Finally, we tacitly coerce any element $k:\bn{m}$ to $k:\zet$.
+We will frequently use such simplifications in the sequel.)
 
-Claim: for all $t:\Sc\equiv\Sc$ and $Q : -^m = -^m t$ we have
+Claim: for all $t:\Sc\equiv\Sc$ and $Q : -^m =_{\Sc\to\Sc} -^m t$ we have
 \[
 \iscontr(\sum_{k:\bn{m}} (t,Q) = f(k)).
 \]
 This claim is a proposition and means that $f$ is an equivalence.
 In view of \cref{xca:S1=S1-components} it suffices to prove the claim
 for $t\jdeq\id_\Sc$ and for $t\jdeq -\id_\Sc$. The latter case can be discarded
-since $-^m \neq -^m (-\id_\Sc)$ (for $m=1$ this is again \cref{xca:S1=S1-components}).
+since $-^m \neq -^m (-\id_\Sc)$ (cf.\ $id_\Sc \neq -\id_\Sc$ in \cref{xca:S1=S1-components}).
 In the remaining paragraphs we deal with the case $t\jdeq\id_\Sc$.
-We use the equivalence $w: (\base=\base)\to\zet$ that sends ${\Sloop}^k$ to $k:\zet$.
+We will use the equivalence $w: (\base=\base)\to\zet$ that sends ${\Sloop}^k$ to $k:\zet$.
 
-Let $Q: -^m = -^m$, then we have $Q(\base): \base=\base$,
+Consider a $Q: -^m =_{\Sc\to\Sc} -^m$; then we have $Q(\base): \base=\base$,
 and we can ignore $Q(\Sloop)$ which proves a proposition. 
-We have to give a center, and prove that it is a center of contraction.
+We have to propose a center of $\sum_{k:\bn{m}} (\id_\Sc,Q) = f(k)$, 
+and prove that it is a center of contraction.
 
 For the center, we apply Euclidean Division \cref{lem:euclid-div}, albeit for integers.
 Write $w(Q(\base)) = ml+k$ with $k:\bn{m}$ and $l:\zet$, both unique.
 We take $k$ as the first component of the center.
-For the second component of the center it suffices to give an inhabitant of 
+For the second component of the center it suffices to give an element of 
 $(\id_\Sc,Q(\base))=(\id_\Sc,{\Sloop}^k)\jdeq f(k)$. 
-We take ${\Sloop}^{-l} : \id_\Sc = \id_\Sc$.
-In the following picture we analyse transport in the family $R(t)\defeq(-^m = -^m t)$ (left)
-and specialize to the situation at hand (right).
+We take ${\Sloop}^{-l}$ as (simplified) element of $\id_\Sc = \id_\Sc$.
+In the following picture we analyze transport in the family $R(t)\defeq(-^m = -^m t)$ 
+(left half) and specialize to the situation at hand (right half).
 
 \[
 \xymatrix{
@@ -1659,9 +1660,10 @@ This completes the construction of the center.
 
 The last step is to show that the center is indeed a center of contraction.
 Let $p': (\id_\Sc,Q(\base))=(\id_\Sc,{\Sloop}^{k'})\jdeq f(k')$ for $k':\bn{m}$.
-Then ${\Sloop}^{-l'} : \id_\Sc = \id_\Sc$ for some $l':\zet$. By exactly
+Then $\fst(p') = {\Sloop}^{-l'}$ for some $l':\zet$. By exactly
 the same analysis as above we get $w(Q(\base)) = ml'+k'$. Since Euclidean Division
-is unique, we get $k'=k$ and $l'=l$. Hence the pair $(k',p')$ is equal to the center. 
+is unique, we get $k'=k$ and $l'=l$. The type of $\snd(p')$ is a proposition.
+Hence the pair $(k',p')$ is equal to the center. 
 \end{proof}
 
 

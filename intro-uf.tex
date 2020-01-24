@@ -228,7 +228,7 @@ in the case of $\refl{x}:x=x$.
 
 \begin{definition}\label{def:transport} The function
   \[ 
-  \trp{T,e} : T(x) \to T(y)
+  \trp[T]{e} : T(x) \to T(y)
   \]
   is defined by induction setting $\trp{T,\refl{x}} (t) \defeq t$.
 \end{definition} 
@@ -244,7 +244,7 @@ in the following exercise.
 \begin{xca}\label{xca:trp-ap}
 Let $X$ be a type, and let $T(x)$ be a family of types depending on a
 parameter $x:X$. Furthermore, let $A$ be a type, $f:A\to X$ a function, 
-and $p: a=a'$ a path. Show that $\trp{T\circ f, p} = \trp{T,\ap{f}(p)}$. 
+and $p: a=a'$ a path. Show that $\trp[T\circ f]{ p} = \trp{T,\ap{f}(p)}$. 
 \end{xca}
 
 
@@ -367,7 +367,7 @@ of paths using transport along $p$.
 
 \begin{definition}\label{def:pathover-trp}
 In the context of \cref{def:pathsoverpaths}, define by induction on $p$ an
-identification $po(p): \left(\pathover y Y p {y'}\right) = \left( \trp{Y,p}(y)=y'\right)$,
+identification $po(p): \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$,
 by setting $po(\refl{x}) \defeq \refl{y=y'}$.
 \end{definition}
 
@@ -643,7 +643,7 @@ equivalence from $X$ to $X$: for every element $a$ in $X$,
 $\id_X^{-1}(a)$ is a singleton type and hence contractible.
 This simple observation combined with the fact that
 $\trp{T,\refl{x}}\jdeq \id_{T(x)}$ gives that
-the function $\trp{T,e}$ from \cref{def:transport}
+the function $\trp[T]{e}$ from \cref{def:transport}
 is an equivalence from $T(x)$ to $T(y)$, for all $e: x=y$.
 
 \begin{xca}\label{xca:equivalence-invers}
@@ -864,9 +864,9 @@ In expressions such as $\cast_{X,Y}(p)$ we may abbreviate $\cast_{X,Y}$ to $\cas
 no confusion will result. We may also write $\cast (p)$ more briefly as $\ptoe p$, 
 which we also use to denote only the function from $X$ to $Y$.
 
-One may verify that $\cast(p)(x) = \trp{\id_\UU, p} (x)$, for $x : X$, by induction on $p$.
+One may verify that $\cast(p)(x) = \trp[\id_\UU]{ p} (x)$, for $x : X$, by induction on $p$.
 Here $id_\UU$ is the identity function $id_\UU$ on $\UU$, viewed as a family of types on $\UU$. 
-As a corollary, one sees that $\trp{\id_\UU, p}$, previously defined as a function, is an equivalence.
+As a corollary, one sees that $\trp[\id_\UU]{ p}$, previously defined as a function, is an equivalence.
 
 Now comes the univalence axiom.
 
@@ -1260,7 +1260,7 @@ equivalence for all $x:X$.
 Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
 Then we have for every $x,x':X$, $e: x=x'$, $f: Y(x)\to Z(x)$, and $y':Y(x')$:
 \[
-\trp{Y\to Z, e} (f)(y') = \trp{Z,e} (f(\trp{Y, e^{-1}}(y')).
+\trp[Y\to Z]{ e} (f)(y') = \trp[Z]{e} (f(\trp{Y, e^{-1}}(y')).
 \]
 \end{lemma}
 \begin{proof}
@@ -1275,7 +1275,7 @@ if $A:\UU$ and $e: A=A$ comes by UA from some equivalence
 $g:A\to A$, then the above lemma combined with function extensionality 
 yields that for any $f: A\to A$
 \[
-%\trp{X \mapsto (X\to X), e} (f) = g\circ f \circ g^{-1}.
+%\trp[X \mapsto (X\to X)]{ e} (f) = g\circ f \circ g^{-1}.
 \trp{X\mapsto(X\to X),\,e} (f) = g\circ f \circ g^{-1}.
 \]
 This equation is phrased as `transport by conjugation'.
@@ -1291,7 +1291,7 @@ Let $X,Y$ be types, $f,g: X\to Y$ functions, and let
 $Z(x)\defeq (f(x)=g(x))$ for every $x:X$. 
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \[
-\trp{Z, e} (i) = \ap{g}(e) \cdot i \cdot \ap{f}(e)^{-1}.
+\trp[Z]{ e} (i) = \ap{g}(e) \cdot i \cdot \ap{f}(e)^{-1}.
 \]
 \end{lemma}
 
@@ -1316,7 +1316,7 @@ Let $Z(x)\defeq (f(x)=g(x))$,
 with the identification in $Y(x)$, for every $x:X$. 
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \[
-\trp{Z, e} (i) = \apd{g}(e) \cdot \ap{\trp{Y,e}}(i) \cdot \apd{f}(e)^{-1}.
+\trp[Z]{ e} (i) = \apd{g}(e) \cdot \ap{\trp[Y]{e}}(i) \cdot \apd{f}(e)^{-1}.
 \]
 \end{lemma}
 
