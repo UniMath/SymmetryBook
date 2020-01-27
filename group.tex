@@ -369,28 +369,106 @@ by exactly the same procedure, completing the list.
 
 These properties of the identity type are bundled together in the concept of an abstract group, under the additional hypothesis that we are dealing with a set.
 
-  \begin{definition}\label{def:abstractgroup}
-    An \emph{abstract group} is a set $S$ together with
-\begin{enumerate}
-\item an element $e:S$,
-\item a function taking a
- pair of elements $g_1,g_2:S$ to a third element which we call $g_1\cdot g_2:S$ such that
+\begin{definition}\label{def:abstractgroup}
+  An \emph{abstract group} is a set $S$ together with
   \begin{enumerate}
-  \item %$e$ is a ``neutral element'':
-if $g:S$, then $g\cdot e=e\cdot g=g$ and
-  \item %satisfying ``associativity'':
-if $g_1,g_2,g_3:S$, then
-$$g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3,$$
+  \item an element $e:S$,
+  \item a function taking a
+    pair of elements $g_1,g_2:S$ to a third element which we call $g_1\cdot g_2:S$ such that
+    \begin{enumerate}
+    \item %$e$ is a ``neutral element'':
+      if $g:S$, then $g\cdot e=e\cdot g=g$ and
+    \item %satisfying ``associativity'':
+      if $g_1,g_2,g_3:S$, then
+      $$g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3,$$
+    \end{enumerate}
+  \item %inverses:
+    for every $g:S$, there merely exist an element $h:S$ such that $e=h\cdot g$.
   \end{enumerate}
-\item %inverses:
-to every $g:S$ there is a $g^{-1}:S$ such that $%g\cdot g^{-1}=
-e=g^{-1}\cdot g$.
-\end{enumerate}
-We refer to $e$ as the \emph{unit element}, $g_1\cdot g_2$ as the \emph{product of $g_1$ and $g_2$} and $g^{-1}$ as the \emph{inverse of $g$}.  The \emph{unit laws} will then be $g\cdot e=e\cdot g=g$, the \emph{associativity law} is $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ and $%g\cdot g^{-1}=
-g^{-1}\cdot g=e$ is referred to as the \emph{law of inverses}.  The set $S$ is called the \emph{underlying set} of the abstract group.
-  \end{definition}
+\end{definition} 
+The set $S$ is called the \emph{underlying set} of the abstract group.
+We refer to $e$ as the \emph{unit element}, and to $g_1\cdot g_2$ as
+the {\em product of $g_1$ and $g_2$}. The \emph{unit laws} will then
+be $g\cdot e=e\cdot g=g$, and the \emph{associativity law} is
+$g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$. However, contrary to
+groups in ordinary mathematics, it makes no sense, a priori, to talk
+about ``the \emph{inverse of $g$}'' and about the law of inverses. %
+Indeed, in the last item, $h$ exists only merely and ``the inverse of
+$g$'' can only be mentioned when targeting propositional goal. %
+Hopefully, the following lemma copes with this issue:
+\begin{lemma}%
+  \label{lem:group-inv-operation}%
+  Given an abstract group $(S,e,\cdot,!)$, there is a function
+  $\inv\blank: S \to S$ such that, for every $g:S$, it holds
+  $e = \inv g \cdot g$.
+\end{lemma}
+\begin{proof}
+  Consider the function $\mu: S \to (S \to S)$ defined as
+  $g\mapsto (h \mapsto h\cdot g)$. We claim that $\mu(g)$ is an
+  equivalence for any $g:S$. Indeed, given $x:S$, and when targeting
+  the proposition $\iscontr(\inv{\mu(g)}(x))$, one can assume the
+  existence of $h$ such that $h\cdot g = e$. Then
+  $(x\cdot h)\cdot g = x$ through the associativity and unit
+  laws. This produces a element $(x\cdot h,!)$ of the fiber
+  $\inv{\mu(g)}(x)$. For any other element $(y,!)$, we want to prove
+  $(x\cdot h,!) = (y,!)$ which is equivalent to $x\cdot h=y$. Because
+  the equation $y\cdot g = x$ implies that
+  $(y\cdot g) \cdot h = x \cdot h$, the associativity laws allow to
+  simply prove $g\cdot h = e$ to conclude: this is a proposition so we
+  can assume a $h':S$ such that $h'\cdot h = e$, and by multiplying by
+  $g$, one obtains $h' = g$; this yields the result, as now
+  $g\cdot h = h'\cdot h = e$. Denote $c_{g,x}$ for the center of
+  contraction of $\inv{\mu(g)}(x)$.
 
-In conclusion we have proved that groups give rise to abstract groups:
+  The wanted function $\inv\blank$ is then given by $g\mapsto c_{g,e}$.  
+\end{proof}
+Now we can refer to $\inv g$ as {\em the inverse of $g$}, and to the
+equations $g\cdot g^{-1}= g^{-1}\cdot g=e$ as the \emph{law of
+  inverses}. From now on, we might refer to an abstract group
+$(S,e,\cdot,!)$ as a element of the form $(S,e,\cdot,\inv\blank,!)$
+where $\inv\blank$ is constructed as above. 
+
+\begin{remark}
+  It is sometimes handy to break up the rather long
+  \cref{def:abstractgroup} by saying that the right and left unit law
+  together with associativity define a \emph{monoid}, and if we, in
+  addition, have inverses satisfying the law of inverses, then we have
+  an abstract group.%
+  \label{rem:typemonoidabstrgp}
+  Summing up in language a machine (and the occasional mad scientist)
+  can handle, the \emph{type of monoids} is
+  $$\typemonoid\defequi \sum_{M:\UU}\sum_{e:M}\sum_{\mu{}:M\to M\to M}
+  \isset{(M)}\times\mathrm{Monoidlaws}(M,e,\mu)
+  $$
+  where
+  $$\mathrm{Monoidlaws}(M,e,\mu)\defequi\mathrm{Unitlaws}(M,e,\mu)\times\mathrm{Assoclaw}(M,\mu{})$$
+  and
+  \begin{align*}
+    \mathrm{Unitlaws}(M,e,\mu)\defequi\prod_{g:M}
+    & (g=\mu{}(g)(e))\times(g=\mu{}(e)(g)),
+    \\
+    \mathrm{Assoclaw}(M,\mu{})\defequi\prod_{g_1,g_2,g_3:M}
+    & \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3).
+  \end{align*}
+  In the human language we used above, with $\mu(g)(h)=g\cdot h$,
+  $\mathrm{Unitlaws}$ and $\mathrm{Assoclaw}$ spell out to the machine
+  that the unit behaves like a unit and that the multiplication is
+  associative.
+
+  \cref{lem:group-inv-operation} then proves that the \emph{type $\typegroup^\abstr$ of abstract groups} is equivalent to
+  \begin{displaymath}
+    \sum_{(M,e,\mu,!):\typemonoid} \sum_{\iota\colon M\to M} \prod_{g:M}(e=\mu(\iota(g))(g)).
+  \end{displaymath}
+
+  We will typically refer to a monoid as a triple $(M,e,\mu)$,
+  omitting the names for the (true) $\isset$ and unit and
+  associativity laws, and likewise, an abstract group will be referred
+  to as a quadruple $(M,e,\mu,\iota)$.  With this notation, the set
+  $M$ is referred to as \emph{underlying set}.
+\end{remark}
+
+In conclusion, in that section we have proved that groups give rise to
+abstract groups:
   \begin{lemma}\label{lem:idtypesgiveabstractgroups}
     If $G$ is a group, then $\pt_G=\pt_G$ together with $e\defequi\refl{\pt_G}{}$, $g^{-1}\defequi\symm_{\pt_G,\pt_G}g$ and $h\cdot h\defequi\trans_{\pt_G,\pt_G,\pt_G}(g)(h)$
 %$A$ is a groupoid %(alternatively called a ``$1$-type'') and $a:A$ is an element, then $a=_Aa$, together with $e\defequi\refl a{}$, $g^{-1}\defequi\symm_{a,a}g$ and $g\cdot h\defequi\trans_{a,a,a}(g)(h)$ 
@@ -404,34 +482,7 @@ $$\abstr(G)\defequi (\pt_G=\pt_G,e,\cdot,{-}^{-1}).$$
     Given a group $G$, the abstract group $\abstr(G)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
   \end{definition}
 
-  \begin{remark}
-    It is sometimes handy to break up the rather long \cref{def:abstractgroup}  by saying that the right and left unit law together with associativity define a \emph{monoid}, and if we, in addition, have inverses satisfying the law of inverses, then we have an abstract group.
-    % \end{remark}
-
-
-    % \begin{remark}
-      \label{rem:typemonoidabstrgp}
-        Summing up in language a machine (and the occasional mad scientist) can handle, the \emph{type of monoids} is
-$$\typemonoid\defequi \sum_{M:\UU}\sum_{e:M}\sum_{\mu{}:M\to M\to M}
-\isset{(M)}\times\mathrm{Monoidlaws}(M,e,\mu)
-$$
-where
-$$\mathrm{Monoidlaws}(M,e,\mu)\defequi\mathrm{Unitlaws}(M,e,\mu)\times\mathrm{Assoclaw}(M,\mu{})$$and
-\begin{align*}
-  \mathrm{Unitlaws}(M,e,\mu)\defequi\prod_{g:M}
-&(g=\mu{}(g)(e))\times(g=\mu{}(e)(g)),\\
-\mathrm{Assoclaw}(M,\mu{})\defequi\prod_{g_1,g_2,g_3:M}&\mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3).
-\end{align*}
-In the human language we used above, with $\mu(g)(h)=g\cdot h$, 
-$\mathrm{Unitlaws}$ and $\mathrm{Assoclaw}$ spell out to the machine 
-that the unit behaves like a unit and that the multiplication is associative.
-
-The\emph{type of abstract groups} is
-$$%\typeabsgp
-\typegroup^\abstr\defequi
-\sum_{(M,e,\mu,!):\typemonoid}\sum_{\iota\colon M\to M}\prod_{g:M}(\mu{}(\iota{}(g))(g)=e).$$
-We will typically refer to a monoid as a triple $(M,e,\mu)$, omitting the names for the (true) $\isset$ and unit and associativity laws, and likewise, an abstract group will be referred to as a quadruple $(M,e,\mu,\iota)$.  With this notation, the set $M$ is referred to as \emph{underlying set}.
-\end{remark}
+ 
 \begin{remark}
   That the concept of an abstract group synthesizes the idea of symmetries will be justified in \cref{sec:Gsetforabstract} where we prove that 
 $$\abstr:\typegroup\to\typegroup^\abstr$$
