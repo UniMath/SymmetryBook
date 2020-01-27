@@ -230,7 +230,7 @@ in the case of $\refl{x}:x=x$.
   \[ 
   \trp[T]{e} : T(x) \to T(y)
   \]
-  is defined by induction setting $\trp{T,\refl{x}} (t) \defeq t$.
+  is defined by induction setting $\trp[T]{\refl{x}} (t) \defeq t$.
 \end{definition} 
 The function thus defined may be called 
 \emph{the transport function in the type family $T$ along the path $e$}, 
@@ -244,7 +244,7 @@ in the following exercise.
 \begin{xca}\label{xca:trp-ap}
 Let $X$ be a type, and let $T(x)$ be a family of types depending on a
 parameter $x:X$. Furthermore, let $A$ be a type, $f:A\to X$ a function, 
-and $p: a=a'$ a path. Show that $\trp[T\circ f]{ p} = \trp{T,\ap{f}(p)}$. 
+and $p: a=a'$ a path. Show that $\trp[T\circ f]{ p} = \trp[T]{\ap{f}(p)}$. 
 \end{xca}
 
 
@@ -642,7 +642,7 @@ For any type $X$, the identity function $\id_X$ is an
 equivalence from $X$ to $X$: for every element $a$ in $X$,
 $\id_X^{-1}(a)$ is a singleton type and hence contractible.
 This simple observation combined with the fact that
-$\trp{T,\refl{x}}\jdeq \id_{T(x)}$ gives that
+$\trp[T]{\refl{x}}\jdeq \id_{T(x)}$ gives that
 the function $\trp[T]{e}$ from \cref{def:transport}
 is an equivalence from $T(x)$ to $T(y)$, for all $e: x=y$.
 
@@ -1260,7 +1260,7 @@ equivalence for all $x:X$.
 Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
 Then we have for every $x,x':X$, $e: x=x'$, $f: Y(x)\to Z(x)$, and $y':Y(x')$:
 \[
-\trp[Y\to Z]{ e} (f)(y') = \trp[Z]{e} (f(\trp{Y, e^{-1}}(y')).
+\trp[Y\to Z]{ e} (f)(y') = \trp[Z]{e} (f(\trp[Y]{ e^{-1}}(y')).
 \]
 \end{lemma}
 \begin{proof}
@@ -1275,8 +1275,7 @@ if $A:\UU$ and $e: A=A$ comes by UA from some equivalence
 $g:A\to A$, then the above lemma combined with function extensionality 
 yields that for any $f: A\to A$
 \[
-%\trp[X \mapsto (X\to X)]{ e} (f) = g\circ f \circ g^{-1}.
-\trp{X\mapsto(X\to X),\,e} (f) = g\circ f \circ g^{-1}.
+\trp[X \mapsto (X\to X)]{e} (f) = g\circ f \circ g^{-1}.
 \]
 This equation is phrased as `transport by conjugation'.
 
@@ -1299,10 +1298,10 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 Prove the following special cases of \cref{lem:trp-in-fx=Ygx},
 where $Y\jdeq X$ and $a,b$ members of $X$:
 \begin{enumerate}
-\item $\trp{x\mapsto a=b,\,e} (i) = i$;
-\item\label{trp-in-a=x} $\trp{x\mapsto a=x,\,e} (i) = e\cdot i$;
-\item $\trp{x\mapsto x=b,\,e} (i) = i \cdot e^{-1}$;
-\item \label{trp-in-x=x}$\trp{x\mapsto x=x,\,e} (i) = e \cdot i\cdot e^{-1}$ 
+\item $\trp[x\mapsto a=b]{e} (i) = i$;
+\item\label{trp-in-a=x} $\trp[x\mapsto a=x]{e} (i) = e\cdot i$;
+\item $\trp[x\mapsto x=b]{e} (i) = i \cdot e^{-1}$;
+\item \label{trp-in-x=x}$\trp[x\mapsto x=x]{e} (i) = e \cdot i\cdot e^{-1}$ 
 (also called \emph{conjugation}).
 \end{enumerate}
 \end{xca}
@@ -1904,7 +1903,7 @@ By \cref{lem:isEq-pair=},
 $(x_0,\refl{y_0})=(x_1,q)$ is equivalent to
 $\sum_{p:x_0=x_1} \pathover {\refl{y_0}} {y_0=f(\_)} p q$.
 (DAN WILL FIX THIS)
-By \cref{lem:trp-in-fx=Ygx}, $\trp{y_0=f(\_),\,p}(\refl{y_0}) =
+By \cref{lem:trp-in-fx=Ygx}, $\trp[y_0=f(\_)]{p}(\refl{y_0}) =
 \ap{f}(p) \cdot \refl{y_0}$. Now the lemma follows.
 \end{proof}
 
