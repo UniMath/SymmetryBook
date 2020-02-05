@@ -372,23 +372,27 @@ These properties of the identity type are bundled together in the concept of an 
 \begin{definition}\label{def:abstractgroup}
   An \emph{abstract group} consists of the following data:
   \begin{enumerate}
-  \item a set $S$ called the \emph{underlying set} of the abstract group
+  \item a set $S$ called the \emph{underlying set} of the abstract group;
   \item an element $e:S$ called the \emph{unit} or the \emph{neutral element};
   \item a function ${\cdot}: S\to S\to S$ called the \emph{multiplication},
     taking two elements $g_1,g_2:S$ to their \emph{product} denoted by $g_1\cdot g_2:S$;
 \footnote{The types $S\to S\to S$ and $(S\times S)\to S$ are equivalent
 and will be used interchangeably.}
-  \item a function ${}^{-1}: S\to S$ called the \emph{inverse operation},
-    taking an element $g:S$ to its \emph{inverse} denoted by $g^{-1}$.
 
-Moreover, the above data should satisfy the following properties, for all $g,g_1,g_2,g_3:S$ :
+\noindent The above data should satisfy the following properties, for all $g,g_1,g_2,g_3:S$ :
     \begin{enumerate}
     \item %$e$ is a ``neutral element'':
       $g\cdot e=e\cdot g=g$ called the \emph{unit laws};
     \item %satisfying ``associativity'':
-      $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ called the \emph{associativity laws};
+      $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ called the \emph{associativity law};
+  \end{enumerate}
+  \item a function ${}^{-1}: S\to S$ called the \emph{inverse operation},
+    taking an element $g:S$ to its \emph{inverse} denoted by $g^{-1}$.
+
+\noindent Moreover, the inverse operation should satisfy the following property, for all $g:S$ :
+\begin{enumerate}\setcounter{enumii}{2}
     \item %inverse
-      $g^{-1}\cdot g =e = g\cdot g^{-1}$ called the \emph{inverse laws}.
+      $ e = g\cdot g^{-1}$ called the \emph{law of inverses}.
     \end{enumerate}
 %  \item %inverses:
 %    for every $g:S$, there merely exist an element $h:S$ such that $e=h\cdot g$.
@@ -399,42 +403,41 @@ Moreover, the above data should satisfy the following properties, for all $g,g_1
 Instead of including the inverse operation as part (4) of the structure
 and assuming the property (c),
 some authors assume the existence of inverses as a property:
-
-(d) for all $g:S$ there exists an $h:S$ such that $g\cdot h =e = h\cdot g$.
-Using the properties (a) and (b) one proves that such inverses are unique:
-$h =  h\cdot e = h\cdot(g\cdot h') = (h\cdot g) \cdot h' = e \cdot h' = h'$.
+\begin{quote}
+(d) for all $g:S$ there exists an $h:S$ such that $e = g \cdot h$.
+\end{quote}
+Using the properties (a) and (b) one easily proves that such inverses are unique.
 We will now compare (d) to (4) plus (c).
 
 First, \cref{def:abstractgroup} requires that $S$ is a set.
 Consequently, the properties (a)--(c) are propositions.
-In a more general approach, $S$ is an object of a suitable category,
-and multiplication and the inverse operation are morphisms in this category.
 Property (d) instead of (4) plus (c) does not require the inverse operation 
-to be a morphism. %In the next paragraphs we explain why we prefer (4) plus (c). 
+to be a function. 
 
 Property (d) contains the quantification ``there exists''.
 The faithful translation of (d) into type theory would be with
-$\exists$, ``there merely exists''. Then, contrary to
-groups in ordinary mathematics, it makes no sense, a priori, to talk
-about ``the \emph{inverse of $g$}'' and about the law of inverses.
+$\exists$, ``there merely exists'', see \cref{sec:prop-trunc}. 
+Under this translation, contrary to groups in ordinary mathematics, 
+it makes no sense, a priori, to talk
+about ``the inverse of $g$'' and about the law of inverses.
 Indeed, ``the inverse of $g$'' could only be mentioned when targeting
 a propositional goal. 
 
 However, the following lemma proves that we can define an inverse
 operation as in (4) satisfying (c) from a witness of (d).
-This means that, a posteriori, we can talk about 
-``the \emph{inverse of $g$}'' also if the goal is not a proposition. 
-We prefer to avoid such intricacies, and
-include the inverse operation in the structure right from the start.
-DISCUSS
+This means that, a posteriori, we \emph{can} talk about 
+``the inverse of $g$'' also if the goal is not a proposition. 
+We choose to include the inverse operation in the structure right from the start.
 \end{remark} 
 
 \begin{lemma}%
   \label{lem:group-inv-operation}%
-  Given an abstract group $(S,e,\cdot,!)$, there is a function
-  $\inv\blank: S \to S$ such that, for every $g:S$, it holds
-  $e = \inv g \cdot g$.
+  Given a set $S$ together with $e$ and $\cdot$ as in
+  \cref{def:abstractgroup} satifying the unit laws,
+  the associativity law, and property (d), there is a function
+  $\inv{}: S \to S$ having property (c) of an abstract group.
 \end{lemma}
+
 \begin{proof}
   Consider the function $\mu: S \to (S \to S)$ defined as
   $g\mapsto (h \mapsto h\cdot g)$. We claim that $\mu(g)$ is an
