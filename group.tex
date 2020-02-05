@@ -373,11 +373,13 @@ These properties of the identity type are bundled together in the concept of an 
   An \emph{abstract group} consists of the following data:
   \begin{enumerate}
   \item a set $S$ called the \emph{underlying set} of the abstract group
-  \item an element $e:S$ called the \emph{unit};
+  \item an element $e:S$ called the \emph{unit} or the \emph{neutral element};
   \item a function ${\cdot}: S\to S\to S$ called the \emph{multiplication},
     taking two elements $g_1,g_2:S$ to their \emph{product} denoted by $g_1\cdot g_2:S$;
-  \item a function ${\blank}^{-1}: S\to S$ called the \emph{inverse operation},
-    taking an element $g:S$ to its inverse denoted by $g^{-1}$.
+\footnote{The types $S\to S\to S$ and $(S\times S)\to S$ are equivalent
+and will be used interchangeably.}
+  \item a function ${}^{-1}: S\to S$ called the \emph{inverse operation},
+    taking an element $g:S$ to its \emph{inverse} denoted by $g^{-1}$.
 
 Moreover, the above data should satisfy the following properties, for all $g,g_1,g_2,g_3:S$ :
     \begin{enumerate}
@@ -394,29 +396,32 @@ Moreover, the above data should satisfy the following properties, for all $g,g_1
 \end{definition} 
 
 \begin{remark}\label{rem:inverses-as-property}
-Instead of including the inverse operation as part (3) of the structure
+Instead of including the inverse operation as part (4) of the structure
 and assuming the property (c),
-some authors only assume the existence of inverses as a property:
+some authors assume the existence of inverses as a property:
 
 (d) for all $g:S$ there exists an $h:S$ such that $g\cdot h =e = h\cdot g$.
+Using the properties (a) and (b) one proves that such inverses are unique:
+$h =  h\cdot e = h\cdot(g\cdot h') = (h\cdot g) \cdot h' = e \cdot h' = h'$.
+We will now compare (d) to (4) plus (c).
 
-(Using the properties (a) and (b) one proves that such inverses are unique:
-$h =  h\cdot e = h\cdot(g\cdot h') = (h\cdot g) \cdot h' = e \cdot h' = h'$.)
-Note that \cref{def:abstractgroup} requires that $S$ is a set.
+First, \cref{def:abstractgroup} requires that $S$ is a set.
+Consequently, the properties (a)--(c) are propositions.
 In a more general approach, $S$ is an object of a suitable category,
 and multiplication and the inverse operation are morphisms in this category.
-Property (d) instead of (3) plus (c) does not require the inverse operation to be a morphism. In the next paragraphs we explain why we prefer (3) plus (c). 
+Property (d) instead of (4) plus (c) does not require the inverse operation 
+to be a morphism. %In the next paragraphs we explain why we prefer (4) plus (c). 
 
 Property (d) contains the quantification ``there exists''.
-The faithful translation of (d) would translate this with
+The faithful translation of (d) into type theory would be with
 $\exists$, ``there merely exists''. Then, contrary to
 groups in ordinary mathematics, it makes no sense, a priori, to talk
 about ``the \emph{inverse of $g$}'' and about the law of inverses.
-Indeed, ``the inverse of $g$'' can only be mentioned when targeting
+Indeed, ``the inverse of $g$'' could only be mentioned when targeting
 a propositional goal. 
 
-The following lemma proves that we can define an inverse
-operation as in (3) satisfying (c) from a witness of (d).
+However, the following lemma proves that we can define an inverse
+operation as in (4) satisfying (c) from a witness of (d).
 This means that, a posteriori, we can talk about 
 ``the \emph{inverse of $g$}'' also if the goal is not a proposition. 
 We prefer to avoid such intricacies, and
@@ -424,7 +429,6 @@ include the inverse operation in the structure right from the start.
 DISCUSS
 \end{remark} 
 
-Hopefully, the following lemma copes with this issue:
 \begin{lemma}%
   \label{lem:group-inv-operation}%
   Given an abstract group $(S,e,\cdot,!)$, there is a function
