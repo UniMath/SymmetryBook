@@ -168,63 +168,88 @@ such symmetries. Moreover we showed that these symmetries were the powers $f^n$ 
 of one (nonunique) symmery $f$ and that $f^{m+k}=f^k$ for any integer $k$.
 This very important phenomenon pops up in many situations, 
 and is called the \emph{cyclic group of order $m$}.
-In other words, the cyclic group of order $m$ is the (pointed) component of the type of \coverings of the circle containing the $m$-fold \covering.
-We analyzed this in \cref{thm:coveringsofS1} and found that this (pointed) component was equivalent to 
-$$(\sum_{X:\Set}\sum_{p:X=X}\Trunc{\zet/m = (X,p)},\zet/m).$$
+In other words, the cyclic group of order $m$ is the (pointed) component of the type $\SetBundle(\Sc)$ of \coverings of the circle containing the $m$-fold \covering.
+We analyzed this in \cref{thm:coveringsofS1} and found that this (pointed) component was equivalent to the connected groupoid
+$$B\ZZ/m_\div\defequi\conncomp{(\sum_{X:\Set}X=X)}{\zet/m}$$
+pointed in $\zet/m = (\bn{m},s_n),$
+where 
+$$s_n :\bn{m}=\bn{m}$$ is (the identity corresponding to the equivalence given by) 
+the cyclic permutation of $\bn{m}$, sending $m-1$ to $0$ and, 
+for $0\leq i<m-1$, sending $i:\bn m$ to $i+1$ (strictly speaking, $\zet/m$ when first presented in Definition~\ref{def:Zetmodm} represented a symmetry of $\bn m\times\bn 1$, but we trust we'll be forgiven for retaining the names of the symmetry under identification provided by univalence and the projection from $\bn m\times \bn1$ to $\bn m$). The role
+the successor function plays in $C$ is played by the successor modulo $m$ in $\ZZ/m$. 
 
-There are other, occasionally more convenient, ways of obtaining the cyclic group $C_n$ of order $n$.
+It is this modular behavior which inspires the ``$\ZZ/m$'' in the expression above: we are talking about the ``integers modulo $m$''.
+We make this our (first) definition of the cyclic group of order $m$:
+\end{example}
+\begin{definition}\label{def:Z/mgroup}
+  If $m$ is a positive integer, the cyclic group of order $m$ is the group
+  $$\ZZ/m\defequi\aut_{B\ZZ/m}(\zet/m).$$
+\end{definition}
+
+
+\begin{example}
+
+There are other (beside the symmetries of the $m$-fold \covering and Definition~\ref{def:Z/mgroup}) ways of obtaining the cyclic group of order $m$, which occasionally are more convenient.  The prime other interpretation is as the group of ``cyclic permutations of $m$ points on a circle''; \ie as the ``set of $m$th roots of unity in the complex plane'' equipped with complex multiplication.  
+
+We know the group {\bf all} permutations of a set with $m$ elements, but how do we select the ``subgroup'' of cyclic permutations?  
+The key insight is the provided by function 
+$$cy_m:S^1\to\fin_m$$ 
+with $cy_m(\base)\defequi\bn n$ and 
+$cy_m(\Sloop)\defis s_m$, picking out exactly the cyclic permutation $s_m\colon\bn m=\bn m$ (and its iterates) among all permutations.  Set truncation of Definition~\ref{def:set-truncation} provides us with a tool for capturing only the symmetries of $\fin_m$ hit by $f$: the (in language to come) subgroup of the permutation group of cyclic permutations is the group
+$$C_m\defequi\aut_{BC_m}(\pt_{C_m}),$$
+where $(BC_m)_\div\defequi \sum_{S:\fin_m}\Trunc{cy_m^{-1}(S)}_0$ and $\pt_{C_m}\defequi (\bn m,\trunc{(\base,\refl{\bn m})}_0))$.  We must prove that $BC_m$ is a pointed connected groupoid for it to eqrn the name ``group'', but since we will provide a pointed equivalence beween $B\ZZ/m$ and $BC_m$, this will follow automatically.
+
+
+
 Staying close to the type $C$ above is perhaps the simplest: %\cref{def:S1toC}
-$$BC_n\defequi(\sum_{X:\Set}\sum_{p:X=X}\Trunc{(\bn{n},s_n)=(X,p)},(\bn{n},s_n)),$$
-where $s_n :\bn{n}=\bn{n}$ is (the identity corresponding to the equivalence given by) 
-the cyclic permutation of $\bn{n}$, sending $n-1$ to $0$ and, 
-for $0\leq i<n-1$, sending $i:\bn n$ to $i+1$. The role
-the successor function plays in $C$ is played by the successor modulo $n$ in $C_n$. 
+$$BC_m\defequi(\sum_{X:\Set}\sum_{p:X=X}\Trunc{(\bn{n},s_m)=(X,p)},(\bn{n},s_m)),$$
 
-For yet another way of obtaining $C_n$, consider the function 
-$$cy_n:S^1\to\fin_n$$ 
-with $cy_n(\base)\defequi\bn n$ and 
-$cy_n(\Sloop)\defis s_n$.  
-Note that the symmetry $cy_n(\Sloop)$ is cyclic in the sense that 
-the $n$-fold iterate $cy_n(\Sloop)^n$ is $\refl{\bn n}$.
+
+For yet another way of obtaining $C_m$, consider the function 
+$$cy_m:S^1\to\fin_m$$ 
+with $cy_m(\base)\defequi\bn n$ and 
+$cy_m(\Sloop)\defis s_m$.  
+Note that the symmetry $cy_m(\Sloop)$ is cyclic in the sense that 
+the $n$-fold iterate $cy_m(\Sloop)^n$ is $\refl{\bn n}$.
 Then the $n$-fold \covering can be seen as the first projection 
-$$\sum_{z:S^1}cy_n(z)\to S^1$$
+$$\sum_{z:S^1}cy_m(z)\to S^1$$
 (you are asked to write this out in \cref{xca:somedetailsonfinitegroupstocheck}).
 Consider the pointed type 
 \[
-B_n\defequi(\sum_{S:\fin_n}\Trunc{cy_n^{-1}(S)}_0 ~,~ 
+B_m\defequi(\sum_{S:\fin_m}\Trunc{cy_m^{-1}(S)}_0 ~,~ 
 (\bn n,\trunc{(\base,\refl{\bn n})}_0))
 \]
-where the type can be viewed as the ``image'' of $cy_n$,
+where the type can be viewed as the ``image'' of $cy_m$,
 except that the truncation is one level higher than we have considered before.
-Since $\fin_n$ is a groupoid, $B_n$ is a groupoid. 
+Since $\fin_m$ is a groupoid, $B_m$ is a groupoid. 
   
-If we focus on the point $\pt_{B_n}\defequi(\bn n,\trunc{(\base,\refl{\bn n})}_0)$ and 
-write out the identity type $\pt_{B_n}=\pt_{B_n}$ of the $\Sigma$-type $B_n$, 
+If we focus on the point $\pt_{B_m}\defequi(\bn n,\trunc{(\base,\refl{\bn n})}_0)$ and 
+write out the identity type $\pt_{B_m}=\pt_{B_m}$ of the $\Sigma$-type $B_m$, 
 we see that it consists of those $p:\bn n=\bn n$ such that there is 
-a $q:\base=\base$ with $p=cy_n(q)$: 
+a $q:\base=\base$ with $p=cy_m(q)$: 
 the ``permutations that come from rotating $n$ points on the circle'' -- 
 exactly what the cyclic group of order $n$ should be!
 
 We DOUBLY define {\em cyclic group of order $n$} to be the group (DELETE?)
-$$C_n\defequi\aut_{B_n}(\pt_{B_n}).$$
+$$C_m\defequi\aut_{B_m}(\pt_{B_m}).$$
 
-It is good to know that $B_n$ is connected, so that $(B_n,\pt_{B_n})$ is actually 
-AAAthe classifying type [DELETE $BC_n$. NOT YET PROVED: ISOMORPHIC ABSTRACT
+It is good to know that $B_m$ is connected, so that $(B_m,\pt_{B_m})$ is actually 
+AAAthe classifying type [DELETE $BC_m$. NOT YET PROVED: ISOMORPHIC ABSTRACT
  GROUPS HAVE EQUIVALENT CLASSIFYING TYPES] Remember that 
-$cy_n^{-1}(S)\defequi\sum_{z:S^1}(S=cy_n(z))$, and notice that the map 
-$$e:\sum_{S:\fin_n}cy_n^{-1}(S)\to S^1,\qquad e(S,z,p)=z$$ 
+$cy_m^{-1}(S)\defequi\sum_{z:S^1}(S=cy_m(z))$, and notice that the map 
+$$e:\sum_{S:\fin_m}cy_m^{-1}(S)\to S^1,\qquad e(S,z,p)=z$$ 
 is an equivalence fitting in a commuting diagram [CHECK LOOP?]
 $$\xymatrix{
-\sum_{S:\fin_n}cy_n^{-1}(S)\ar[d]^e_\simeq\ar[rr]^-{\text{set truncation}}&&
-\sum_{S:\fin_n}\Trunc{cy_n^{-1}(S)}_0\ar[d]^{\text{first projection}}&\oldequiv B_n\\
-S^1\ar[rr]^{cy_n}&&\,\fin_n.}$$
+\sum_{S:\fin_m}cy_m^{-1}(S)\ar[d]^e_\simeq\ar[rr]^-{\text{set truncation}}&&
+\sum_{S:\fin_m}\Trunc{cy_m^{-1}(S)}_0\ar[d]^{\text{first projection}}&\oldequiv B_m\\
+S^1\ar[rr]^{cy_m}&&\,\fin_m.}$$
 All preimages of of the top map are all inhabited, and since $S^1$ is connected, 
 the source is connected.  
-Hence \cref{lem:whenisbasespaceconnected} tells us that $B_n$ is connected too.
+Hence \cref{lem:whenisbasespaceconnected} tells us that $B_m$ is connected too.
 
 
-% .  Let $(S,z,p):B_n$ be any element; we want to show that $(S,z,p)=_{B_n}(\bn n, \base, \refl\base)$ is not empty, so that $B_n$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_n(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_n(\base)\defequi\bn n$ to compose $p:S=cy_n(z)$ and $cy_n:cy_n(z)=cy_n\base$), $B_n$ is connected.  
-% DELETE Pointing $B_n$ in $\pt_{C_n}$ we have a pointed connected groupoid, \ie a group, which we call the {\em cyclic group $C_n$ of order $n$}  (and in hindsight $B_n=(BC_n)_\div$).
+% .  Let $(S,z,p):B_m$ be any element; we want to show that $(S,z,p)=_{B_m}(\bn n, \base, \refl\base)$ is not empty, so that $B_m$ is connected. Since $S^1$ is connected there is a $q:z=_{S^1}\base$ so $(cy_m(q)\,p,q,!):(S,z,p)=(\bn n,\base,\refl\base)$ (using that $cy_m(\base)\defequi\bn n$ to compose $p:S=cy_m(z)$ and $cy_m:cy_m(z)=cy_m\base$), $B_m$ is connected.  
+% DELETE Pointing $B_m$ in $\pt_{C_m}$ we have a pointed connected groupoid, \ie a group, which we call the {\em cyclic group $C_m$ of order $n$}  (and in hindsight $B_m=(BC_m)_\div$).
 
 Note that the cyclic group of order $1$ is the trivial group, the cyclic group of order $2$ is equivalent to the permutation group $\Sigma_2$: there are exactly one nontrivial symmetry $f$ and $f^2$ is the identity.  When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.  In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\Sigma_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.
 \end{example}
