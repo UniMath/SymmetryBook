@@ -395,27 +395,32 @@ by exactly the same procedure, completing the list.
 These properties of the identity type are bundled together in the concept of an abstract group, under the additional hypothesis that we are dealing with a set.
 
 \begin{definition}\label{def:abstractgroup}
+  %% local redefinition of \ref to nested item 
+  \makeatletter %
+  \renewcommand\p@enumii{}%
+  \makeatother%
   An \emph{abstract group} consists of the following data:
   \begin{enumerate}
   \item a set $S$ called the \emph{underlying set} of the abstract group;
   \item an element $e:S$ called the \emph{unit} or the \emph{neutral element};
-  \item a function ${\cdot}: S\to S\to S$ called the \emph{multiplication},
+  \item\label{struc:mult-op} a function ${\cdot}: S\to S\to S$ called the \emph{multiplication},
     taking two elements $g_1,g_2:S$ to their \emph{product} denoted by $g_1\cdot g_2:S$;
 \footnote{The types $S\to S\to S$ and $(S\times S)\to S$ are equivalent
 and will be used interchangeably.}
 \noindent The above data should satisfy the following properties, for all $g,g_1,g_2,g_3:S$ :
     \begin{enumerate}
-    \item %$e$ is a ``neutral element'':
+    \item\label{axiom:unit-laws} %$e$ is a ``neutral element'':
       $g\cdot e=e\cdot g=g$ called the \emph{unit laws};
-    \item %satisfying ``associativity'':
+    \item\label{axiom:ass-law} %satisfying ``associativity'':
       $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ called the \emph{associativity law};
   \end{enumerate}
-  \item a function ${}^{-1}: S\to S$ called the \emph{inverse operation},
+  \item\label{struc:inv-op} a function ${}^{-1}: S\to S$ called the \emph{inverse operation},
     taking an element $g:S$ to its \emph{inverse} denoted by $g^{-1}$.
 
-\noindent Moreover, the inverse operation should satisfy the following property, for all $g:S$ :
+    \noindent Moreover, the inverse operation should satisfy the
+    following property, for all $g:S$ :
 \begin{enumerate}\setcounter{enumii}{2}
-    \item %inverse
+    \item\label{axiom:inv-law} %inverse
       $ e = g\cdot g^{-1}$ called the \emph{law of inverses}.
     \end{enumerate}
 %  \item %inverses:
@@ -424,63 +429,85 @@ and will be used interchangeably.}
 \end{definition} 
 
 \begin{remark}\label{rem:inverses-as-property}
-Instead of including the inverse operation as part (3) of the structure
-and assuming the property (c),
-some authors assume the existence of inverses as a property:
-\begin{quote}
-(d) for all $g:S$ there exists an $h:S$ such that $e = g \cdot h$.
-\end{quote}
-Using the properties (a) and (b) one easily proves that such inverses are unique.
-We will now compare (d) to (4) plus (c).
+  %% local redefinition of \ref to nested item 
+  \makeatletter % 
+  \renewcommand\p@enumii{}%
+  \makeatother%
+  Instead of including the inverse operation as part
+  (\ref{struc:inv-op}) of the structure and assuming the property
+  (\ref{axiom:inv-law}), some authors assume the existence of inverses
+  as a property:
+  \begin{enumerate}
+  \item[]\begin{enumerate}\setcounter{enumii}{3}%
+    \item\label{axiom:mere-inverse} for all $g:S$ there exists an
+      $h:S$ such that $e = g \cdot h$.
+    \end{enumerate}
+  \end{enumerate}
+  Using the properties (\ref{axiom:unit-laws}) and
+  (\ref{axiom:ass-law}) one easily proves that such inverses are
+  unique. We will now compare (\ref{axiom:mere-inverse}) to (\ref{struc:inv-op}) plus
+  (\ref{axiom:inv-law}).
 
-First, \cref{def:abstractgroup} requires that $S$ is a set.
-Consequently, the properties (a)--(c) are propositions.
-Property (d) instead of (4) plus (c) does not require the inverse operation 
-to be a function. 
+  First, \cref{def:abstractgroup} requires that $S$ is a set.
+  Consequently, the properties
+  (\ref{axiom:unit-laws})--(\ref{axiom:inv-law}) are propositions.
+  Property (\ref{axiom:mere-inverse}) instead of (\ref{struc:inv-op}) plus
+  (\ref{axiom:inv-law}) does not require the inverse operation to be a
+  function.
 
-Property (d) contains the quantification ``there exists''.
-The faithful translation of (d) into type theory would be with
-$\exists$, ``there merely exists'', see \cref{sec:prop-trunc}. 
-Under this translation, contrary to groups in ordinary mathematics, 
-it makes no sense, a priori, to talk
-about ``the inverse of $g$'' and about the law of inverses.
-Indeed, ``the inverse of $g$'' could only be mentioned when targeting
-a propositional goal. 
+  Property (\ref{axiom:mere-inverse}) contains the quantification
+  ``there exists''.  The faithful translation of
+  (\ref{axiom:mere-inverse}) into type theory would be with $\exists$,
+  ``there merely exists'', see \cref{sec:prop-trunc}.  Under this
+  translation, contrary to groups in ordinary mathematics, it makes no
+  sense, a priori, to talk about ``the inverse of $g$'' and about the
+  law of inverses.  Indeed, ``the inverse of $g$'' could only be
+  mentioned when targeting a propositional goal.
 
-However, the following lemma proves that we can define an inverse
-operation as in (4) satisfying (c) from a witness of (d).
-This means that, a posteriori, we \emph{can} talk about 
-``the inverse of $g$'' also if the goal is not a proposition. 
-We choose to include the inverse operation in the structure right from the start.
+  However, the following lemma proves that we can define an inverse
+  operation as in (\ref{struc:inv-op}) satisfying
+  (\ref{axiom:inv-law}) from a witness of (\ref{axiom:mere-inverse}).
+  This means that, a posteriori, we \emph{can} talk about ``the
+  inverse of $g$'' also if the goal is not a proposition.  We choose
+  to include the inverse operation in the structure right from the
+  start.
 \end{remark} 
 
 \begin{lemma}%
   \label{lem:group-inv-operation}%
   Given a set $S$ together with $e$ and $\cdot$ as in
-  \cref{def:abstractgroup} satifying the unit laws,
-  the associativity law, and property (d), there is a function
-  $\inv{}: S \to S$ having property (c) of an abstract group.
+  \cref{def:abstractgroup} satifying the unit laws, the associativity
+  law, and property (\ref{axiom:mere-inverse}), there is a function
+  $\inv{\blank}: S \to S$ having property (\ref{axiom:inv-law}) of an
+  abstract group.
 \end{lemma}
 
 \begin{proof}
   Consider the function $\mu: S \to (S \to S)$ defined as
-  $g\mapsto (h \mapsto h\cdot g)$. We claim that $\mu(g)$ is an
-  equivalence for any $g:S$. Indeed, given $x:S$, and when targeting
-  the proposition $\iscontr(\inv{\mu(g)}(x))$, one can assume the
-  existence of $h$ such that $h\cdot g = e$. Then
-  $(x\cdot h)\cdot g = x$ through the associativity and unit
-  laws. This produces a element $(x\cdot h,!)$ of the fiber
-  $\inv{\mu(g)}(x)$. For any other element $(y,!)$, we want to prove
-  $(x\cdot h,!) = (y,!)$ which is equivalent to $x\cdot h=y$. Because
-  the equation $y\cdot g = x$ implies that
-  $(y\cdot g) \cdot h = x \cdot h$, the associativity laws allow to
-  simply prove $g\cdot h = e$ to conclude: this is a proposition so we
-  can assume a $h':S$ such that $h'\cdot h = e$, and by multiplying by
-  $g$, one obtains $h' = g$; this yields the result, as now
-  $g\cdot h = h'\cdot h = e$. Denote $c_{g,x}$ for the center of
-  contraction of $\inv{\mu(g)}(x)$.
-
-  The wanted function $\inv\blank$ is then given by $g\mapsto c_{g,e}$.  
+  $g\mapsto (h \mapsto g\cdot h)$. We claim that the fiber
+  $\inv{\mu(g)}(e)$ is contractible. This is a proposition, hence to
+  prove it from (\ref{axiom:mere-inverse}), one can as well assume the
+  actual existence of $h$ such that $g\cdot h = e$. Then $(h,!)$ is an
+  element of the fiber $\inv{\mu(g)}(e)$. We will now prove that it is
+  a center of contraction. For any other element $(h',!)$, we want to
+  prove $(h,!) = (h',!)$ which is equivalent to the type $h=h'$. In
+  order to prove the latter, we show that $h$ is also an inverse on
+  the left of $g$, meaning that $h\cdot g=e$: this is again a
+  proposition so we can assume from (\ref{axiom:mere-inverse}) an
+  actual element $k:S$ such that $h\cdot k = e$, and by multiplying by
+  $g$ on the left, one obtains
+  \begin{displaymath}
+    k = (g\cdot h)\cdot k = g\cdot (h\cdot k) = g\cdot e = g.
+  \end{displaymath}
+  From there it follows that
+  \begin{displaymath}
+    h = h \cdot e = h \cdot (g\cdot h') = (h \cdot g) \cdot h' = e\cdot
+    h' = h'
+  \end{displaymath}
+  as required. Hence $\inv{\mu(g)}(e)$ is contractible with center
+  $c_g \defequi (h,!)$. This argument works for an arbitrary $g:S$,
+  hence we can craft the function $\inv\blank : g \mapsto c_g$. By
+  definition it satisfies the law of inverses (\ref{axiom:inv-law}).
 \end{proof}
 Now we can refer to $\inv g$ as {\em the inverse of $g$}, and to the
 equations $g\cdot g^{-1}= g^{-1}\cdot g=e$ as the \emph{law of
@@ -515,9 +542,10 @@ where $\inv\blank$ is constructed as above.
   that the unit behaves like a unit and that the multiplication is
   associative.
 
-  \cref{lem:group-inv-operation} then proves that the \emph{type $\typegroup^\abstr$ of abstract groups} is equivalent to
+  In other words, the \emph{type $\typegroup^\abstr$ of abstract
+    groups} is equivalent to
   \begin{displaymath}
-    \sum_{(M,e,\mu,!):\typemonoid} \sum_{\iota\colon M\to M} \prod_{g:M}(e=\mu(\iota(g))(g)).
+    \sum_{(M,e,\mu,!):\typemonoid} \sum_{\iota\colon M\to M} \prod_{g:M}(e=\mu(g)(\iota(g))).
   \end{displaymath}
 
   We will typically refer to a monoid as a triple $(M,e,\mu)$,
@@ -536,7 +564,7 @@ define an abstract group
 $$\abstr(G)\defequi (\pt_G=\pt_G,e,\cdot,{-}^{-1}).$$
   \end{lemma}
   \begin{proof}
-    The elements $p_1,\dots p_4$ of \cref{def:p1,def:p4,def:p3,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a groupoid) are nonempty, as required.
+    The elements $p_1,\dots, p_4$ of \cref{def:p1,def:p4,def:p3,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a groupoid) are nonempty, as required.
   \end{proof}
   \begin{definition}\label{def:abstrG}
     Given a group $G$, the abstract group $\abstr(G)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
@@ -549,7 +577,7 @@ $$\abstr:\typegroup\to\typegroup^\abstr$$
 is an equivalence.
 \end{remark}
 \begin{remark}
-  If $\mathcal G=(S,e,\mu,\iota)$ and $\mathcal G'=(S',e',\mu',\iota')$ are abstract groups, an element of the identity type $\mathcal G=\mathcal G'$ consists of quite a lot of information.  First and foremost, we need an identity $p:S=S'$ of sets, but from there on the information is a list of elements in propositions (this is more interesting for \inftygps).  An analysis shows that this list can be shortened to ``$e'=p(e)$ and $\mu'(p(s),p(t))=p(\mu(s,t))$''.  The most convenient way of obtaining such an identity is to dream up a function $f:S\to S'$ that preserve the group structure (\ie what will shortly be called an abstract homomorphism) and then show that $f$ is an equivalence and  under univalence gives rise to an identity.
+  If $\mathcal G=(S,e,\mu,\iota)$ and $\mathcal G'=(S',e',\mu',\iota')$ are abstract groups, an element of the identity type $\mathcal G=\mathcal G'$ consists of quite a lot of information.  First and foremost, we need an identity $p:S=S'$ of sets, but from there on the information is a list of elements in propositions (this is more interesting for \inftygps).  An analysis shows that this list can be shortened to ``$e'=p(e)$ and $\mu'(p(s),p(t))=p(\mu(s,t))$''.  The most convenient way of obtaining such an identity is to dream up a function $f:S\to S'$ that preserves the group structure (\ie what will shortly be called an abstract homomorphism) and then show that $f$ is an equivalence and  under univalence gives rise to an identity.
 \end{remark}
 \begin{xca}
   \label{xca:conj}
@@ -561,10 +589,14 @@ Without the demand that the underlying type of an abstract group or monoid is a 
   \end{remark}
 
   \begin{xca}
-    For an element $g$ in an abstract group $(S,e,\mu,\iota)$, prove that $e=g\cdot g^{-1}$ and $g=(g^{-1})^{-1}$ (for the machines among us: ``give an element in the proposition
-$\prod_S
-(e=\mu{}(g)(\iota{}(g)))\times
-(g=\iota{}(\iota{}(g)))$'').
+    For an element $g$ in an abstract group, prove that
+    $e=\inv g\cdot g$ and $g=(g^{-1})^{-1}$. In other words (for the
+    machines among us), given an abstract group $(S,e,\mu,\iota)$,
+    give an element in the proposition
+    \begin{displaymath}
+      \prod_{g:S} (e=\mu(\iota(g))(g))\times
+      (g=\iota(\iota(g))).
+    \end{displaymath}
   \end{xca}
   \begin{xca}\label{xca:typemonoidisgroupoid}
     Prove that the types of monoids and abstract groups are groupoids.
@@ -590,30 +622,100 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
 \label{sec:homomorphisms}
 
 
-The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$ is simple: it is an function $f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element $p:a=_Bf(b)$:
+The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$
+is simple: it is a pointed function $A\ptdto B$, that is a function
+$f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element
+$p:b=_Bf(a)$:
 \begin{definition}\label{def:grouphomomorphism}
-  The type of \emph{group homomorphisms} from $G:\typegroup$ to $H:\typegroup$ is defined to be
-$$\Hom(G,H)\defequi(BG\to_* BH),
+  The type of \emph{group homomorphisms} from $G:\typegroup$ to
+  $H:\typegroup$ is defined to be
+  $$\Hom(G,H)\defequi(\clf G\ptdto \clf H),
 %\footnote{would you be unhappy if I used $f:G\to_{\typegroup}H$ when it fits better with the typography?}%\sum_{f:A\to B}f(a)=_Bb.
 $$
-in other words, a homomorphism $f:\Hom(G,H)$ is a pair $(Bf_\div,p_f)$ where $Bf_\div:BG_\div\to BH_\div$ and $p_f:\pt_H=Bf_\div(\pt_G)$.
+in other words, a homomorphism $f:\Hom(G,H)$ is a pair $({\clf f}_\div,p_f)$ where ${\clf f}_\div:{\clf G}_\div\to {\clf H}_\div$ and $p_f:\pt_H={\clf f}_\div(\pt_G)$.
 \end{definition}
-When there is little danger of confusion we may drop the subscript $\div$ even when talking about the unpointed structure.
-\begin{example}
+When there is little danger of confusion we may drop the subscript
+$\div$ even when talking about the unpointed structure.
+\begin{example}%
+  \label{ex:groups-morphisms}%
+  ~%
   \begin{enumerate}
-  \item   Consider two sets $S$ and $T$.  
-Recall that $\Set_{(S)}\defequi\sum_{X:\Set}\Trunc{S=X}$ is the component of the groupoid $\Set$ containing $S$, and when pointed at $S$ represents the permutation group $\Sigma_S$.  
-The map $\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$.
-Thought of as symmetries, this says that if you have a symmetry of $S$, then we get a symmetry on $S\coprod T$ (which doesn't do anything to $T$).  
+  \item Consider two sets $S$ and $T$.  Recall from \cref{ex:groups}
+    that $\Set_{(S)}\defequi\sum_{X:\Set}\Trunc{S=X}$ is the component
+    of the groupoid $\Set$ containing $S$, and when pointed at $S$
+    represents the permutation group $\Sigma_S$.  The map
+    $\blank\coprod T:\Set_{(S)}\to\Set_{(S\coprod T)}$ sending $X$ to $X\coprod T$
+    induces a group homomorphism $\Sigma_S\to\Sigma_{S\coprod T}$,
+    pointed by the path $\refl {S\coprod T}:S\coprod T = (\blank\coprod T)(S)$.
+    Thought of as symmetries, this says that if you have a symmetry of
+    $S$, then we get a symmetry on $S\coprod T$ (which doesn't do
+    anything to $T$).
 
-Likewise, we get a map $\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to $X\times T$ induces a group homomorphism $\Sigma_S\to\Sigma_{S\times T}$. 
+    Likewise, we get a map
+    $\blank\times T:\Set_{(S)}\to\Set_{(S\times T)}$ sending $X$ to
+    $X\times T$ induces a group homomorphism
+    $\Sigma_S\to\Sigma_{S\times T}$, pointed by the path
+    $\refl {S\times T}: {S\times T} = (\blank \times T)(S)$.
 
 In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\Sigma_{mn}$. \footnote{find a good description of the sign $\Sigma_n\to\Sigma_2$}
-\item Let $G$ be a group.  Since there is a unique map from $BG$ to $\bn{1} $, we get a unique homomorphism from $G$ to the trivial group.  
-Likewise, there is a unique morphism from the trivial group to $G$, sending the unique element of $\bn 1$ to $\pt_G$. 
+\item Let $G$ be a group.  Since there is a unique map from $BG$ to
+  $\bn{1} $ (obviously pointed by the reflexivity path of the unique
+  element of $\bn 1$), we get a unique homomorphism from $G$ to the
+  trivial group.  Likewise, there is a unique morphism from the
+  trivial group to $G$, sending the unique element of $\bn 1$ to
+  $\pt_G$, and pointed by $\refl {\pt_G}$.
 \item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv BG\times BH$ and $BG$ and $BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  \footnote{Elaborate}
   \end{enumerate}
 \end{example}
+
+\begin{remark}
+  In the last examples, we insisted on the path pointing a group
+  homomorphism even when this path was a reflexivity path. We now take
+  the convention to not specify the path in this case. Thus, given
+  $f:A \to B$ is a map between connected groupoids and $a:A$, the
+  group homomorphism $\Aut_A(a) \to \Aut_B(f(a))$ defined
+  $(f,\refl{f(a)})$ will simply be referred by $f$.
+
+  However, it is important to understand that different homomorphisms
+  can have the same underlying unpointed function. Consider, for
+  example, the group $\permgrp 3$ and the path
+  $\tau:\pt_{\permgrp 3}=\pt_{\permgrp 3}$ that is defined (through
+  univalence) as
+  \begin{displaymath}
+    0\mapsto 1,\quad 1\mapsto 0,\quad 2 \mapsto 2 
+  \end{displaymath}
+  Then the function $\id: \fin_3 \to \fin_3$ gives rise to two
+  elements of $\Hom(\permgrp 3,\permgrp 3)$: the first one is
+  $(\id,\refl{\bn 3})$, which is simply denoted $\id_{\permgrp 3}$;
+  the second one is $(\id,\tau)$, that we will denote $\tilde\tau$
+  temporarily. Let us prove $\id_{\permgrp 3} \neq \tilde \tau$, that
+  is suppose a path $\id_{\permgrp 3}= \tilde \tau$ and derive a
+  contradiction. Such a path is the data of a path $p:\id = \id$ such
+  that $\pathover {\refl{\bn 3}} {T} {p} \tau$ where the type family
+  $T:(\fin_3\to\fin_3) \to \UU$ is given by
+  $f\mapsto \pt_{\permgrp 3} = f(\pt_{\permgrp 3})$. It is easy to
+  determine the transport in that type family $T$ and we find that
+  $(\pathover {\refl{\bn 3}} {T} {p} \tau) \weq (p(\pt_{\permgrp
+    3})=\tau)$. Now, by induction on $q:\id=f$ for
+  $f:\permgrp 3 \to \permgrp 3$, one shows that
+  \begin{displaymath}
+    \ap f : (\pt_{\permgrp 3} = \pt_{\permgrp 3}) \to
+    (f(\pt_{\permgrp 3}) = f(\pt_{\permgrp 3}))
+  \end{displaymath}
+  is equal to
+  $q(\pt_{\permgrp 3})\cdot {\blank}\cdot \inv{q(\pt_{\permgrp
+      3})}$. In particular, when $f\jdeq \id$ and $q\jdeq p$, it means
+  that conjugating by $p(\pt_{\permgrp 3})$ is trivial. But by
+  hypothesis $p(\pt_{\permgrp 3}) = \tau$, so it means that $\tau$
+  commutes with every other element of
+  $\pt_{\permgrp 3} = \pt_{\permgrp 3}$. One can check that it
+  actually fails to be the case for the element $\theta$ defined by
+  \begin{displaymath}
+    0\mapsto 0,\quad 1\mapsto 2,\quad 2\mapsto 1 .
+  \end{displaymath}
+  Indeed, $\theta\tau(0) = 2$ while $\tau\theta(0) = 1$.
+\end{remark}
+
 \begin{example}
   \label{ex:Zinitial}
   \cref{cha:circle} was all about the circle $S^1$ and its role as a ``universal symmetry'' and how it related to the integers.  
