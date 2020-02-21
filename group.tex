@@ -696,7 +696,8 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
 
   However, it is important to understand that different homomorphisms
   can have the same underlying unpointed function. Consider, for
-  example, the group $\permgrp 3$ and the path
+  example, the group $\permgrp 3$, whose classifying space is
+  $\clf \permgrp 3\defequi (\fin_3,\bn 3)$, and the path
   $\tau:\pt_{\permgrp 3}=\pt_{\permgrp 3}$ that is defined (through
   univalence) as
   \begin{displaymath}
@@ -711,7 +712,7 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   contradiction. Such a path is the data of a path $p:\id = \id$ such
   that $\pathover {\refl{\bn 3}} {T} {p} \tau$ where the type family
   $T:(\fin_3\to\fin_3) \to \UU$ is given by
-  $f\mapsto \pt_{\permgrp 3} = f(\pt_{\permgrp 3})$. It is easy to
+  $f\mapsto (\pt_{\permgrp 3} = f(\pt_{\permgrp 3}))$. It is easy to
   determine the transport in that type family $T$ and we find that
   $(\pathover {\refl{\bn 3}} {T} {p} \tau) \weq (p(\pt_{\permgrp
     3})=\tau)$. Now, by induction on $q:\id=f$ for
@@ -731,51 +732,96 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   \begin{displaymath}
     0\mapsto 0,\quad 1\mapsto 2,\quad 2\mapsto 1 .
   \end{displaymath}
-  Indeed, $\theta\tau(0) = 2$ while $\tau\theta(0) = 1$.
+  Indeed, $\theta\tau(0) = 2$ while $\tau\theta(0) = 1$. (See also
+  \cref{exer:first examples}.)
 \end{remark}
 
 \begin{example}
   \label{ex:Zinitial}
-  \cref{cha:circle} was all about the circle $S^1$ and its role as a ``universal symmetry'' and how it related to the integers.  
-In our current language, $\ZZ\defequi\aut_{S^1}(\base)$ and large parts of the universality is found in the following observation. 
-If $G$ is a group then the evaluation equivalence $\ev_{BG_\div}:(S^1\to BG_\div)\we \sum_{y:BG}(y=y)$ of \cref{lem:freeloopspace} yields an equivalence 
-$$\ev_{BG}:\Hom(\ZZ,G)\defequi((S^1,\base)\to_*BF)\we (\pt_G=\pt_G).$$
-
-  %Show that ((wedges of circle vs multiplication))
+  \cref{cha:circle} was all about the circle $S^1$ and its role as a
+  ``universal symmetry'' and how it related to the integers.  In our
+  current language, $\ZZ\defequi\aut_{S^1}(\base)$ and large parts of
+  the universality is found in the following observation.  If $G$ is a
+  group then the evaluation equivalence
+  $\ev_{BG_\div}:(S^1\to BG_\div)\we \sum_{y:BG_\div}(y=y)$ of
+  \cref{lem:freeloopspace} yields an equivalence
+  $$\ev_{BG}:\left((S^1,\base)\ptdto BG\right)\we (\pt_G=\pt_G).$$
+  The domain of this equivalence $\ev_{BG}$ is nothing else that the
+  definition of $\Hom(\ZZ,G)$. Hence, $\ev_{BG}$ provides a way to
+  identify $\Hom(\ZZ,G)$ with the abstract group $\pt_G=\pt_G$.
+  % Show that ((wedges of circle vs multiplication))
 \end{example}
 \begin{example}
-  We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$ is equivalent to the {\bf set} of ``abstract group homomorphisms'' from $\abstr(G)$ to $\abstr(H)$, but it is instructive to see that 
-$$\Hom(G,H)\defequi(BG\to_*BH)\defequi\sum_{F:BG_\div\to BH_\div}(\pt_H=F(\pt_G))$$ 
-is a set directly from the definition.  Recall our notation; $f:\Hom(G,H)$ is recorded as the pair $(Bf_\div,p_f):\sum_{F:BG_\div\to BH_\div}(\pt_H=F(\pt_G))$.
+  We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$
+  is equivalent to the {\bf set} of ``abstract group homomorphisms''
+  from $\abstr(G)$ to $\abstr(H)$ (cf.\ \cref{lem:homomabstrconcr}),
+  but it is instructive to prove that
+  $$\Hom(G,H)\defequi(BG\ptdto BH)\defequi\sum_{F:BG_\div\to BH_\div}(\pt_H=F(\pt_G))$$ 
+  is a set directly from the definition. Recall our notation: a
+  homomorphism $f:\Hom(G,H)$ is recorded as the pair
+  \begin{displaymath}
+    (Bf_\div,p_f):\sum_{F:BG_\div\to BH_\div}(\pt_H=F(\pt_G)).
+  \end{displaymath}
+  Let us spell out the data needed to give an identity between two
+  group homomorphisms $f,f':\Hom(G,H)$.  We clearly must have a
+  $$J:Bf_\div=Bf_\div',$$
+  which by function extensionality \cref{def:funext} is equivalently
+  uniquely given by its image given by the element (with the same
+  name) in the $\Pi$-type
+  $$J:\prod_{z:BG_\div}Bf_\div(z)=Bf'_\div(z).$$ 
+  Transport over $J$ of $p_f:\pt_H=Bf_\div(\pt_G)$ shows that in
+  addition we must have a path $!:J(\pt_G)\cdot p_f=p_{f'}$ in the
+  type ${\pt_H=Bf'_\div(\pt_G)}$:
+  \begin{displaymath}
+    \xymatrix{&\pt_H\ar@{=}[dl]_{p_f}^{\rotatebox{35}{\footnotesize$\gets$}}
+      \ar@{=}[dr]^{p_{f'}}_{\rotatebox{-35}{\footnotesize$\to$}}&\\
+      Bf_\div(\pt_G)\ar@{=}[rr]^{J(\pt_G)}_\to&&\,Bf'_\div(\pt_G).}
+  \end{displaymath}
+  In other words, we have an equivalence
+  $$(f=f')\simeq \sum_{J:Bf_\div=Bf'_\div}J(\pt_G)p_f=p_{f'}.$$
+  Now, take $(J,!)$ and $(K,!)$ of the latter type. Then
+  $(J,!) = (K,!)$ is equivalent to $J=K$, that is in turn equivalent
+  to $\prod_{z:BG_\div}J(z)=K(z)$. Because $Bf_\div(z)=Bf'_\div(z)$ is
+  a set for every $z$ ($BH_\div$ being a groupoid), the type
+  $J(z)=K(z)$ is a proposition. One can now use the connectedness of
+  $BG_\div$, and only check the equality on a given point, say
+  $\pt_G$. However, from the previous diagram, it follows that
+  \begin{displaymath}
+    J(\pt_G) = p_{f'}\inv{p_f} = K(\pt_G).
+  \end{displaymath}
+  This concludes the proof that $f=f'$ is a proposition, or in other
+  words that $\Hom(G,H)$ is a set.
 
-  Let us spell out the data needed to give an identity between two group homomorphisms $f,f':\Hom(G,H)$.  
-We clearly must have a
-$$J:Bf_\div=Bf_\div',$$
-which by function extensionality \cref{def:funext} is equivalently uniquely given by its image given by the element  (with the same name) in the $\Pi$-type
-$$J:\prod_{z:BG_\div}Bf_\div(z)=Bf'_\div(z).
-$$ 
-Transport on $\pt_H=Bf_\div(?)$ shows that in addition we must have $!:J(\pt_G)\,p_f=_{\pt_H=Bf'_\div(\pt_G)}p_{f'}$:
-$$\xymatrix{&\pt_H\ar@{=}[dl]_{p_f}^\gets\ar@{=}[dr]^{p_{f'}}_\to&\\
-Bf_\div(\pt_G)\ar@{=}[rr]^{J(\pt_G)}_\to&&\,Bf_\div(\pt_G);}
-$$
-in other words, we have an equivalence
-$$(f=f')\simeq \sum_{J:Bf_\div=Bf'_\div}J(\pt_G)\,p_f=p_{f'}.
-$$
-Now, $J$ being member of a $\prod$-type implies that if $z:BG$ and $\gamma:\pt_G=z$, then $!:J(z)Bf_\div(\gamma)=Bf'_\div\gamma J(\pt_G)$
-$$\xymatrix{
-Bf_\div(\pt_G)\ar@{=}[r]^{J(\pt_G)}_\to\ar@{=}[d]^\downarrow_{Bf_\div\gamma}&
-Bf'_\div(\pt_G)\ar@{=}[d]^\downarrow_{Bf'_\div\gamma}\\
-Bf_\div(z)\ar@{=}[r]^{J(z)}_\to&Bf'_\div(z)},
-$$
-so that -- since $BG$ is connected and $Bf_\div(z)=Bf'_\div(z)$ is a set -- $J(z)$ is determined by $J(\pt_G)$ which again is determined by $p_f$ and $p_{f'}$.  
-This shows that $f=f'$ is a proposition and that $\Hom(G,H)$ is a set.
+  %% ---------------------------------------------------------------
+  %% P.Cagne (Feb. 20th 2020)
+  %%
+  %% We can roll back to this end of the proof but it uses loose
+  %% vocabulary ('is determined by') and it does not provide clear
+  %% propositional targets that would allow to use actual paths as
+  %% gamma instead of mere ones.
+  %%
+  %% (Unless I miss something of course, just tell me then.)
+  %% ---------------------------------------------------------------
+  %%
+  % Now, $J$ being member of a $\prod$-type implies that if $z:BG$ and
+  % $\gamma:\pt_G=z$, then $!:J(z)Bf_\div(\gamma)=Bf'_\div(\gamma) J(\pt_G)$
+  % $$\xymatrix{
+  %   Bf_\div(\pt_G)\ar@{=}[r]^{J(\pt_G)}_\to\ar@{=}[d]^\downarrow_{Bf_\div(\gamma)}&
+  %   Bf'_\div(\pt_G)\ar@{=}[d]^\downarrow_{Bf'_\div(\gamma)}\\
+  %   Bf_\div(z)\ar@{=}[r]^{J(z)}_\to&Bf'_\div(z)},
+  % $$
+  % so that -- since $BG$ is connected and $Bf_\div(z)=Bf'_\div(z)$ is a
+  % set -- $J(z)$ is determined by $J(\pt_G)$ which again is determined
+  % by $p_f$ and $p_{f'}$.  This shows that $f=f'$ is a proposition and
+  % that $\Hom(G,H)$ is a set.
 
 % We want to show that $f=f'$ is a proposition.  If $(J,!)$ and $(J',!)$ are elements in $\sum_{J:Bf_\div=Bf'_\div}J(\pt_G)\,p_f=p_{f'}$, then $!:J(\pt_G)=p_{f'}p_f^{-1}=J'(\pt_G)$.  Since $J(z)=J'(z)$ is a proposition for each $z:BG$ it suffices to display a map $(\pt_G=z)\to(J(z)=J'(z))$. 
 \end{example}
 
 
 \begin{xca}\label{xca:BGtotype}
-  Let $G$ be a group and $A$ a connected groupoid.  Use the definitions and \cref{xca:freemaps} to show that the types
+  Let $G$ be a group and $A$ a groupoid.  Use the definitions and
+  \cref{xca:freemaps} to show that the types
   \begin{enumerate}
   \item $BG_\div\to A$, 
   \item $\sum_{a:A}\sum_{f:BG_\div \to A}(f(\pt_G)=a)$, 
@@ -787,29 +833,48 @@ This shows that $f=f'$ is a proposition and that $\Hom(G,H)$ is a set.
 
 The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon \mathcal G\to \mathcal H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_{\mathcal H} f(g')=f(g\cdot_{\mathcal G} g')$ (where we have set the name of the abstract group as a subscript to $e$ and $\cdot$).  In our setup this is simply true:
 
-\begin{definition}\label{def:grouphomomaxioms}
-Let $G$ and $H$ be groups and assume given a group homomorphism $f:G\to H$.  We now define something that we will call an ``abstract group homomorphism 
-${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from $(\pt_G=\pt_G)$ to $(\pt_H=\pt_H)$ ``preserving'' the group structure, c.f~\cref{def:abstrG} for the definition of $\abstr(G)$ and \cref{def:abstrisfunctor} for a condensation of what the discussion below end up with concluding that ``preserves'' means.  
+\begin{remark}\label{def:grouphomomaxioms}
+  Let $G$ and $H$ be groups and assume given a group homomorphism
+  $f:G\to H$.  We now define something that we will later call an
+  ``abstract group homomorphism
+  ${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from
+  $(\pt_G=\pt_G)$ to $(\pt_H=\pt_H)$ ``preserving'' the abstract group
+  structure, cf.\ \cref{def:abstrG} for the definition of $\abstr(G)$
+  and \cref{def:abstrisfunctor} for a condensation of what the
+  discussion below end up with concluding that ``preserves'' means.
 
-We take the time to develop this from first principles.
-Recall that $f$ is nothing but a pointed function from $BG$ to $BH$; or in other words a map of (unpointed) types 
-$$Bf_\div\colon BG_\div\to BH_\div$$ 
-and an identity 
-$$p_f: Bf_\div(\pt_G)=\pt_H.$$  
-As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
-, for $z:BG$ this gives rise to a map 
-$$\ap{Bf_\div}:(\pt_G=z)\to (Bf_\div(\pt_G)=Bf_\div(z)),$$ 
-defined by induction by declaring that $\ap{Bf_\div}(\refl{\pt_G})\defequi \refl{Bf_\div(\pt_G)}$.  
-If $g:\pt_G=\pt_G$, then $\ap{Bf_\div}(g)$ is an element of $Bf_\div(\pt_G)=Bf_\div(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p_f: Bf_\div(\pt_G)=\pt_H$ gives rise to 
-$$\mathrm{ad}_{p_f}:(Bf_\div(\pt_G)=Bf_\div(\pt_G))=(\pt_H=\pt_H)$$ (with $\mathrm{ad}_{p_f}(\refl{Bf_\div(\pt_G)})=\refl{\pt_H}$, as discussed in \cref{sec:heavy-transport}) and so 
-$$\mathrm{ad}_{p_f}(\ap{Bf_\div}(g)):\pt_H=\pt_H.$$
-This defines a function
-$$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$  
-and we depict $f^\abstr(g)$ as the ``up, over and down'' identity of $\pt_H$:
-$$\xymatrix{Bf_\div(\pt_G)\ar@{=}[r]^{\ap{Bf_\div}(g)}_\to\ar@{=}[d]^\downarrow_{p_f}&Bf_\div(\pt_G)\ar@{=}[d]^\downarrow_{p_f}\\
-\pt_H\ar@{:}[r]^{f^\abstr(g)}_\to&\,\pt_H.}$$
-
-
+  Recall that such a $f:\Hom(G,H)$ is recorded as a pair
+  \begin{displaymath}
+    (Bf_\div,p_f):\sum_{F:BG_\div\to BH_\div}(\pt_H=F(\pt_G)),
+  \end{displaymath}
+  and define the function
+  \begin{displaymath}
+    f^\abstr : (\pt_G=\pt_G) \xrightarrow{\ap {Bf_\div}}
+    (f(\pt_G)=f(\pt_G)) \xrightarrow{\trp {\inv{p_f}}} (\pt_H=pt_H)
+  \end{displaymath}
+  We take the time to develop from first principles the properties
+  that $f^\abstr$ satisfies.
+  % As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
+% , for $z:BG$ this gives rise to a map 
+% $$\ap{Bf_\div}:(\pt_G=z)\to (Bf_\div(\pt_G)=Bf_\div(z)),$$ 
+% defined by induction by declaring that $\ap{Bf_\div}(\refl{\pt_G})\defequi \refl{Bf_\div(\pt_G)}$.  
+% If $g:\pt_G=\pt_G$, then $\ap{Bf_\div}(g)$ is an element of $Bf_\div(\pt_G)=Bf_\div(\pt_G)$, while we want something in $\pt_H=\pt_H$.  However, this is not an obstacle since conjugation by $p_f: Bf_\div(\pt_G)=\pt_H$ gives rise to 
+% $$\mathrm{ad}_{p_f}:(Bf_\div(\pt_G)=Bf_\div(\pt_G))\weq(\pt_H=\pt_H)$$ (with $\mathrm{ad}_{p_f}(\refl{Bf_\div(\pt_G)})=\refl{\pt_H}$, as discussed in \cref{sec:heavy-transport}) and so 
+% $$\mathrm{ad}_{p_f}(\ap{Bf_\div}(g)):\pt_H=\pt_H.$$
+% This defines a function
+% $$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H)$$
+  One proves easily (by induction) that
+  $\trp {\inv{p_f}} = \inv{p_f} \cdot \blank \cdot p_f$. It means that
+  the element $f^\abstr(g)$ is the ``up, over and down'' identity of
+  $\pt_H$ depicted in the following diagram:
+  \begin{displaymath}
+    \xymatrix{%
+      Bf_\div(\pt_G)\ar@{=}[r]^{\ap{Bf_\div}(g)}_\to \ar@{=}[d]^\uparrow_{p_f} &
+      Bf_\div(\pt_G)\ar@{=}[d]^\uparrow_{p_f}
+      \\
+      \pt_H\ar@{:}[r]^{f^\abstr(g)}_\to & \pt_H.%
+    }
+  \end{displaymath}
 % Since type-checking removes the ambiguity, we trust it will not lead to any confusion that we simplify the notation and use the symbol $f$ simultaneously for $Bf_\div$, writing $f\colon BG_\div\to BH_\div$ and for $\ap{Bf_\div}$, writing $f:(\pt_G=\pt_G)\to (f(\pt_G)=f(\pt_G))$, while we write
 % $$f^\abstr\defequi \mathrm{ad}_p\ap{Bf_\div}:(\pt_G=\pt_G)\to(\pt_H=\pt_H), \qquad g\mapsto p\,f(g)\,p^{-1}$$  
 % and depicting it as the ``up, over and down'' identity of $\pt_H$:
@@ -822,50 +887,72 @@ With the shorthand $$e_G\defequi\refl{\pt_G}:(\pt_G=\pt_G)$$ and writing (to rem
 $$g\cdot_Gg':(\pt_G=\pt_G)$$
  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture 
 $\xymatrix{\pt_G\ar@{=}[r]^{g'}_\to&\pt_G\ar@{=}[r]^{g}_\to&\pt_G}$) %$\trans_{\pt_G,\pt_G\pt_G}(g,g'):$ 
-and likewise with a subscript $H$, we have the following
+and likewise with a subscript $H$, we have the following:
   \begin{enumerate}
-  \item $\refl{e_H}:f^\abstr(e_G)= e_H$ makes sense since
-$$f^\abstr(e_G)\defequi\mathrm{ad}_{p_f}\ap{Bf_\div}(\refl{\pt_G})\oldequiv\mathrm{ap}_{p_f}\refl{f(\pt_G)}\oldequiv\refl{\pt_H}\oldequiv e_H
-$$
+  \item the proposition $f^\abstr(e_G)= e_H$ holds through the
+    composite:
+    \begin{displaymath}
+      f^\abstr(e_G)\defequi\trp {\inv{p_f}}\ap{Bf_\div}(\refl{\pt_G})
+      = \inv{p_f} \cdot \refl{\pt_H} \cdot p_f = e_H
+    \end{displaymath}
 % Since $\ap{Bf}(e_G)\oldequiv \ap{Bf}f(\refl{\pt_G})\oldequiv\refl{f(\pt_G)}$ and $e_H\oldequiv\refl{\pt_H}$, 
 % $$f(e_G)\oldequiv\mathrm{ad}_p(\ap{Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\pt_G)})\oldequiv \refl{\pt_H}\oldequiv e_H$$
-      \item the proposition $f^\abstr(g\cdot_Gg')=f^\abstr(g)\cdot_Hf^\abstr(g')$ is inhabited by the composite
-        \begin{align*}
-          f^\abstr(g\cdot_Gg')&\defequi %\mathrm{ad}_{p_f}\ap{Bf}(g\cdot g)\\\oldequiv&
-            \mathrm{ad}_{p_f}\ap{Bf}(g\, g')\\
-          &=\mathrm{ad}_{p_f}(\ap{Bf}(g)\,\ap{Bf}(g)')\\
-          %&= (\mathrm{ad}_{p_f}\ap{Bf}(g))\,{\mathrm{ad}_{p_f}\ap{Bf}(g)')\\
-          &=\mathrm{ad}_{p_f}\ap{Bf}(g)\cdot_H\mathrm{ad}_{p_f}\ap{Bf}(g')\oldequiv f^\abstr(g)\cdot_Hf^\abstr(g'),
-        \end{align*}
-where we have used that both $\ap{Bf_\div}$ and $\mathrm{ad}_{p_f}$ take composites of identities to composites of identities.
+  \item the proposition
+    $f^\abstr(g\cdot_Gg')=f^\abstr(g)\cdot_Hf^\abstr(g')$ contains an
+    element given by the composite:
+    \begin{align*}
+      f^\abstr(g\cdot_Gg')
+      &\defequi \trp{\inv{p_f}}\left(\ap{Bf_\div}(g\, g')\right)
+      \\
+      &=\trp{\inv{p_f}}(\ap{Bf_\div}(g)\,\ap{Bf_\div}(g)')
+      \\
+      &=\inv{p_f}\ap{Bf_\div}(g)\ap{Bf_\div}(g'){p_f}
+      \\
+      &=\inv{p_f}\ap{Bf_\div}(g)p_f\inv{p_f}\ap{Bf_\div}(g'){p_f}
+      \\
+      &=\trp{\inv{p_f}}\left(\ap{Bf_\div}(g)\right)
+        \cdot_H\trp{\inv{p_f}}\left(\ap{Bf_\div}(g')\right)
+      \\
+      &\jdeq f^\abstr(g)\cdot_Hf^\abstr(g'),
+    \end{align*}
+    where we have used that $\ap{Bf_\div}$ takes composites of
+    identities to composites of identities.
 
 If you find it useful, you may consider the following picture:
-$$\xymatrix{
-Bf_\div(\pt_G)\ar@{=}[rr]^{\ap{Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{Bf_\div}(g')}_\to\ar@{=}[dd]_{p_f}^\downarrow
-&&Bf_\div(\pt_G)\ar@{=}[dd]_{p_f}^\downarrow\\
-&Bf_\div(\pt_G)\ar@{=}[d]_{p_f}^\downarrow
-\ar@{=}[ur]^{\ap{Bf_\div}(g)}_\to
+\begin{displaymath}
+  \xymatrix{
+Bf_\div(\pt_G)\ar@{=}[rr]^{\ap{Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{Bf_\div}(g')}_{\rotatebox{-35}{\footnotesize$\to$}} \ar@{=}[dd]_{p_f}^\uparrow
+&&Bf_\div(\pt_G)\ar@{=}[dd]_{p_f}^\uparrow\\
+&Bf_\div(\pt_G)\ar@{=}[d]_{p_f}^\uparrow
+\ar@{=}[ur]^{\ap{Bf_\div}(g)}_{\rotatebox{35}{\footnotesize$\to$}}
 &\\
-\pt_H&\pt_H&\pt_H},$$
+\pt_H&\pt_H&\pt_H},
+\end{displaymath}
 where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\pt_H$ in the middle.
   \end{enumerate}
-\end{definition}
+\end{remark}
 \begin{definition}\label{def:abstrisfunctor}
-  If $\mathcal G\defequi(S,e_{\mathcal G},\mu_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\mu_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
+  If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
  $$\Hom^\abstr(\mathcal G,\mathcal H)
 \defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times 
-(f\mu_{\mathcal G}=_{S\times S\to T}\mu_{\mathcal H}(f\times f)).
+\prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
 $$
-Since $(e_{\mathcal H}=f(e_{\mathcal G}))\times (f\mu_{\mathcal G}=\mu_{\mathcal H}(f\times f))$ is a proposition, a homomorphism of abstract group is uniquely determined by its underlying function of sets, and unless there is danger of confusion we may write $f$ instead of $(f,!)$. 
+Since $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
+$f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ for $s:S$ are
+propositions, a homomorphism of abstract group is uniquely determined
+by its underlying function of sets, and unless there is danger of
+confusion we may write $f$ instead of $(f,!)$.
 
 If $G$ and $H$ are groups, the function
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
-is the function $\abstr(f)=(f^\abstr,!)$ defined in \cref{def:grouphomomaxioms}.
+is defined as the function $f\mapsto \abstr(f)\defequi(f^\abstr,!)$
+made explicit in \cref{def:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
   Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr(\mathcal G,\mathcal H)$
 %(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$ 
-then $f(g^{-1})=(f(g))^{-1}$, making a separate axiom redundant.  
+  then the proposition $f(g^{-1})=(f(g))^{-1}$ for all $g:\mathcal
+  G$, so that we don't have to require it separately.
 \end{xca}
 \begin{example}
   \label{ex:conjhomo}
