@@ -777,41 +777,30 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   \end{displaymath}
   In other words, we have an equivalence
   $$(f=f')\simeq \sum_{J:Bf_\div=Bf'_\div}J(\pt_G)p_f=p_{f'}.$$
-  Now, take $(J,!)$ and $(K,!)$ of the latter type. Then
-  $(J,!) = (K,!)$ is equivalent to $J=K$, that is in turn equivalent
-  to $\prod_{z:BG_\div}J(z)=K(z)$. Because $Bf_\div(z)=Bf'_\div(z)$ is
-  a set for every $z$ ($BH_\div$ being a groupoid), the type
-  $J(z)=K(z)$ is a proposition. One can now use the connectedness of
-  $BG_\div$, and only check the equality on a given point, say
-  $\pt_G$. However, from the previous diagram, it follows that
+  Now, take elements $(J,!)$ and $(K,!)$ of the type in the right-hand
+  side of the previous equivalence and prove that $(J,!) = (K,!)$ has
+  an element. Notice that, for any $H:Bf_\div = Bf'_\div$, one can
+  prove by induction on $\gamma:\pt_G=x$ that the following diagram
+  commutes:
+  $$\xymatrix{
+    Bf_\div(\pt_G)\ar@{=}[r]^{H(\pt_G)}_\to\ar@{=}[d]^\downarrow_{Bf_\div(\gamma)}&
+    Bf'_\div(\pt_G)\ar@{=}[d]^\downarrow_{Bf'_\div(\gamma)}\\
+    Bf_\div(z)\ar@{=}[r]^{H(z)}_\to&Bf'_\div(z)},
+  $$
+  It means in particular that, for propositional goals, $H$ is
+  entirely determined by $H(\pt_G)$. More precisely, the remark
+  applies to $J$ and $K$ when we try to prove $(J,!) = (K,!)$. Indeed,
+  this type is equivalent to $J=K$, which is in turn equivalent to
+  $\prod_{z:BG_\div}J(z)=K(z)$, and because $Bf_\div(z)=Bf'_\div(z)$
+  is a set for every $z$ ($BH_\div$ being a groupoid), the type
+  $J(z)=K(z)$ is a proposition. Hence, with the propositional goal
+  $(J,!) = (K,!)$, one can now use connectedness of $BG_\div$, and
+  only check the equality on the point $\pt_G$. By definition,
   \begin{displaymath}
     J(\pt_G) = p_{f'}\inv{p_f} = K(\pt_G).
   \end{displaymath}
   This concludes the proof that $f=f'$ is a proposition, or in other
   words that $\Hom(G,H)$ is a set.
-
-  %% ---------------------------------------------------------------
-  %% P.Cagne (Feb. 20th 2020)
-  %%
-  %% We can roll back to this end of the proof but it uses loose
-  %% vocabulary ('is determined by') and it does not provide clear
-  %% propositional targets that would allow to use actual paths as
-  %% gamma instead of mere ones.
-  %%
-  %% (Unless I miss something of course, just tell me then.)
-  %% ---------------------------------------------------------------
-  %%
-   Now, $J$ being member of a $\prod$-type implies that if $z:BG$ and
-   $\gamma:\pt_G=z$, then $!:J(z)Bf_\div(\gamma)=Bf'_\div(\gamma) J(\pt_G)$
-   $$\xymatrix{
-     Bf_\div(\pt_G)\ar@{=}[r]^{J(\pt_G)}_\to\ar@{=}[d]^\downarrow_{Bf_\div(\gamma)}&
-     Bf'_\div(\pt_G)\ar@{=}[d]^\downarrow_{Bf'_\div(\gamma)}\\
-     Bf_\div(z)\ar@{=}[r]^{J(z)}_\to&Bf'_\div(z)},
-   $$
-   so that -- since $BG$ is connected and $Bf_\div(z)=Bf'_\div(z)$ is a
-   set -- $J(z)$ is determined by $J(\pt_G)$ which again is determined
-   by $p_f$ and $p_{f'}$.  This shows that $f=f'$ is a proposition and
-   that $\Hom(G,H)$ is a set.
 
 % We want to show that $f=f'$ is a proposition.  If $(J,!)$ and $(J',!)$ are elements in $\sum_{J:Bf_\div=Bf'_\div}J(\pt_G)\,p_f=p_{f'}$, then $!:J(\pt_G)=p_{f'}p_f^{-1}=J'(\pt_G)$.  Since $J(z)=J'(z)$ is a proposition for each $z:BG$ it suffices to display a map $(\pt_G=z)\to(J(z)=J'(z))$. 
 \end{example}
@@ -914,7 +903,10 @@ and likewise with a subscript $H$, we have the following:
       &\jdeq f^\abstr(g)\cdot_Hf^\abstr(g'),
     \end{align*}
     where we have used that $\ap{Bf_\div}$ takes composites of
-    identities to composites of identities.
+    identities to composites of identities in the first
+    equalities. The other equalities are either path algebra or using
+    that $\trp {\inv{p_f}}$ is equal to the function mapping $x$ to
+    $\inv{p_f} x {p_f}$.
 
 If you find it useful, you may consider the following picture:
 \begin{displaymath}
@@ -988,8 +980,6 @@ Disregarding the set-condition we get the simpler notion of \inftygps:
 % $$((A,a)\to_*(B,b))\defequi\sum_{f\colon A\to B}f(a)=b.$$
 \end{remark}
 
-
-\footnote{Let $\typeset\defequi \sum_{A:\UU}\isset(A)$.}
 \begin{definition}\label{def:classifyingspace}
   If $G\oldequiv\Aut_A(a):\typeinftygp$, then the underlying pointed type $BG\defequi (A,a)\colon\pttype$ is called the  \emph{classifying type} and $\pt_G\defequi a$ is the \emph{base point}.  
 %We retain the same language also for ordinary groups in which case the classifying type is a groupoid (\ie a $1$-type).   %For \inftygps the definition is identical.
@@ -1014,7 +1004,7 @@ Before we handle the more complex case of abstract groups, let us see what this 
 
 \begin{definition}
   For $G$ a group, a \emph{$G$-set} is a function
-  $$X\colon BG_\div\to\Set,$$
+  $$X\colon BG\to\Set,$$
 and $X(\pt_G)$ is referred to as the \emph{underlying set}.
 If $p:x=y$ in $BG$, then the transport function $X(x))\to X(y)$ induced
 by $X(p)\defeq\ap{X}(p) : X(x)=X(y)$ is also denoted by $X(p)$.
@@ -1031,7 +1021,7 @@ The type of $G$-sets is $$\GSet\defequi(BG\to\Set).$$
 %$$\Type_G\defequi (BG\to\UU),\qquad \GSet\defequi (BG\to\Set).$$
 \end{definition}
 \begin{remark}
-  Much of what follows will work equally well for $\infty$-groups; if $G$ is an infinity group, a \emph{$G$-type} is a function $X\colon BG_\div\to\UU.$
+  Much of what follows will work equally well for $\infty$-groups; if $G$ is an infinity group, a \emph{$G$-type} is a function $X\colon BG\to\UU.$
 \end{remark}
 
 \begin{remark}
@@ -1148,28 +1138,37 @@ Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\math
 \begin{definition}
   \label{def:connectedGset}\label{def:transitiveGset}
   A $G$-set $X:BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
-$$\mathrm{isTrans}(X)\defequi\prod_{y:BG}\prod_{a,b:X(y)}\Trunc{\sum_{g:y=y}a=g\cdot b}$$
+$$\mathrm{isTrans}(X)\defequi\prod_{y:BG}\Trunc{\sum_{b:X(y)}\prod_{a:X(y)}\sum_{g:y=y}a=g\cdot b}$$
 holds.
 \end{definition}
-Note that the mention of $y$ is redundant in the definition: by transport it is enough to demand $\prod_{a,b:X(\pt_G)}\Trunc{\sum_{g:\pt_G=\pt_G}a=g\cdot b}$, and furthermore, if the proposition holds for one $b$ it holds for all others by composition.  
+Note that the mention of $y$ is redundant in the definition: by
+connectedness (cf.~\cref{xca:component-connected}) it is enough to
+demand
+\begin{displaymath}
+  \Trunc{\sum_{b:X(\pt_G)}\prod_{a:X(\pt_G)}\sum_{g:\pt_G=\pt_G}a=g\cdot b},
+\end{displaymath}
+In other words, $X$ is transitive if and only if there merely is a
+$b:X(\pt_G)$ such that the map $-\cdot b:(\pt_G=\pt_G)\to X(\pt_G)$ is
+surjective.
 
-In other words, $X$ is transitive if and only if there is a $b:X(\pt_G)$ such that %for all $a:X(\pt_G)$ 
-the map $-\cdot b:(\pt_G=\pt_G)\to X(\pt_G)$ is surjective.
-
-In the other direction we have
 \begin{lemma}
   \label{lem:conistrans}
   A $G$-set  is transitive if and only if the associated set bundle is connected.
 \end{lemma}
 \begin{proof}
-  Consider a $G$-set $X:BG\to\Set$ and the associated \covering $f:\tilde X\to BG$ where $\tilde X\defequi\sum_{y:Y}X(y)$ and $f$ is the first projection.  
-Now, $\tilde X$ is connected if and only if there is (in the propositional sense) a $y:BG$ and a $b:X(y)$ such that for all $z:BG$ and $a:X(z)$ there is a $g:z=y$ such that $a=X(g)b$.  
-Since $BG$ is connected, this is equivalent to asserting that there is a $b:X(\pt_G)$ such that for all $a:X(\pt_G)$ there is a $g:\pt_G=\pt_G$ such that $a=g\cdot b\defequi X(g)b$.
+  Consider a $G$-set $X:BG\to\Set$ and the associated \covering
+  $f:\tilde X\to BG$ where $\tilde X\defequi\sum_{y:BG}X(y)$ and $f$
+  is the first projection.  Now, $\tilde X$ is connected if and only
+  if there {\em merely} exists a $y:BG$ and a $b:X(y)$ such that for
+  all $z:BG$ and $a:X(z)$ there is a $g:y=z$ such that $a=g\cdot b$.
+  Since $BG$ is connected, this is equivalent to asserting that there
+  merely is is a $b:X(\pt_G)$ such that for all $a:X(\pt_G)$ there is
+  a $g:\pt_G=\pt_G$ such that $a=g\cdot b$.
 \end{proof}
 
-
-
-
+Recall that for type families $X,X':T\to\UU$, and
+$f:\prod_{y:T}X(y)\to X'(y)$, we write $f_y:X(y)\to X'(y)$ (instead of
+the more correct $f(y)$) for its evaluation at $y:T$.
 \begin{lemma}
   \label{lem:evisinjwhentransitive}
   Let $X:BG\to\Set$ be a transitive $G$-set, $y:BG$ and $b:X(y)$.  Then the evaluation map
@@ -1177,10 +1176,15 @@ $$\mathrm{ev}:(X=X)\to X(y),\qquad \mathrm{ev}(f)\defequi f_y(b)$$
 is injective.
 \end{lemma}
 \begin{proof}
-In view of function extensionality, our claim is that the evaluation map $\ev_y:\prod_{x:BG}(X(x)=X(x))\to X(y)$ given by the same formula is injective; that is all $f$s with the same value at $y$ are identical.
+  In view of function extensionality, our claim is that the evaluation
+  map $\ev:\prod_{x:BG}(X(x)=X(x))\to X(y)$ given by the same formula
+  is injective; that is all $f$s with the same value $f_y(b)$ are
+  identical.
 
-  For $a:X(y)$, consider an $f:X=X$ with $f_y(b)=a$.  Let $z:BG$ and $c:X(z)$.
-For any $g:y=z$ such that $X(g)b=c$ we have $f_z(c)=f_z(X(g)b)=X(g)f_y(b)=X(g)a$: the value does not depend on $f$.  Since we try to prove a proposition we are done. 
+  For $a:X(y)$, consider an $f:X=X$ with $f_y(b)=a$.  Let $z:BG$ and
+  $c:X(z)$.  For any $g:y=z$ such that $g\cdot b=c$ we have
+  $f_z(c)=f_z(g\cdot b)=g \cdot f_y(b)=g \cdot a$: the value does not
+  depend on $f$. Since we try to prove a proposition we are done.
 \end{proof}
 
 
@@ -1201,12 +1205,14 @@ where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one!
 \end{remark}
-\begin{definition}
+\begin{remark}
   \label{def:BG2TorsG}
-  For $z:BG$ let $\pathsp z:BG\to\Set$ be the $G$-set with $\pathsp z(y)\defequi(z=y)$ (so that $\princ G\defequi\pathsp{\id_G}$).
+  For $z:BG$, recall the definition of $\pathsp z:BG\to\Set$ as the
+  $G$-set with $\pathsp z(y)\defequi(z=y)$ (so that in particular
+  $\princ G\defequi\pathsp{\pt_G}$).
 
   Let $\pathsp{}:BG\to_*(\typetorsor_G,\princ G)$ be the pointed map given by sending $z:BG$ to $\pathsp z$ and by the identification $\refl{\pathsp{\pt_G}}:\pathsp{\pt_G}=\princ G$. 
-\end{definition}
+\end{remark}
 If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ instead of $\pathsp{}$.
 
 \begin{example}\label{ex:pathsptransport}
@@ -1226,35 +1232,53 @@ x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
 \end{example}
 \begin{lemma}\label{lem:pathsptransportiseq}
   For  $y,z:BG$ the induced map  (\ie transport) of identity types
-$$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z)
-$$
+$$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z)$$
 is an equivalence.
 \end{lemma}
 \begin{proof}
-The composite of $\pathsp{}$ with the evaluation $\ev_{y,z}:(\pathsp y=\pathsp z)\to \pathsp z(y)$ given by $\ev(f)=f(\refl y)$ sends $q:(y=z)$ to its inverse $q^{-1}:P_z(y)\defequi (z=y)$.  Since inversion is an equivalence we only need to show that $\ev_{y,z}$ is an equivalence.  However, since inversion is an equivalence we must have that $\ev_{y,z}$ is a surjection and we must show that $\ev_{y,z}$ is injective.  
-
-Now, $\pathsp y$ is transitive, so we \emph{do} know by \cref{lem:evisinjwhentransitive} with $X\defequi\pathsp y$ that $\ev_{y,y}$ is injective and so an equivalence.  Since being an equivalence is a proposition and $BG$ is connected, we deduce that $\ev_{y,z}$ is an equivalence.  
- % By the induction principle for the identity type,  
-% a function $f:\pathsp y\to \pathsp z$ is given by its value $f(\refl y):\pathsp zy\defequi (z=y)$ and in general, for $p:y= x$ we have by transport that $f(p)$ is the composite $p\,f(\refl y)=\pathsp{(f(\refl y))^{-1}}(p)$.  
-% In other words the map $\pathsp{}:(y=z)\to(\pathsp z=\pathsp y)$ is an equivalence.
+  We craft an inverse $Q:(\pathsp y=\pathsp z) \to (y=z)$ for
+  $\pathsp{}$. Given an identity $f:\pathsp y = \pathsp z$, the map
+  $f_y: (y=y) \to (z=y)$ maps the reflexivity path $\refl y$ to a path
+  $f_y(\refl y):z=y$, and we define
+  \begin{displaymath}
+    Q(f) \defequi \inv{f_y(\refl y)}
+  \end{displaymath}
+  First, $Q$ is an inverse on the right for $\pathsp{}$ as
+  $\pathsp {Q(f)}$ is equal to the map $p \mapsto p f_y(\refl y)$, and
+  by induction on $p:y=x$, $p f_y(\refl y) = f_x(p)$ (indeed this is
+  true for $p\jdeq \refl y$). This means that $\pathsp {Q(f)} =
+  f$. Next, we show that $Q$ is an inverse on the left for
+  $\pathsp{}$: indeed for any $q:y=z$
+  $\inv{\pathsp{q}(\refl y)} = \inv{\refl y \inv q} = q$; in other
+  words $Q(\pathsp q)=q$.
 \end{proof}
 
 
 \begin{theorem}\label{lem:BGbytorsor}
   If $G$ is a group (or \inftygp), then the function
-$$\pathsp{}:BG\to(\typetorsor_G\princ G),\qquad z\mapsto \pathsp z\defequi(x\mapsto(z=_{BG}x))$$
+$$\pathsp{}:BG\to(\typetorsor_G,\princ G),\qquad z\mapsto \pathsp z\defequi(x\mapsto(z=_{BG}x))$$
 is an equivalence.
 Univalence then provides us with an identity 
 $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\footnote{in the appropriate universe}.
 \end{theorem}
 
 \begin{proof}
-  Since both $\typetorsor_G$ and $BG$ are connected, it suffices by \cref{lem:eqandcovofconntypes} to show that the induced map
-$$\pathsp{}:(y=z)\to(\pathsp y= \pathsp z)
-$$
-is an equivalence, which is exactly the contents of \cref{lem:pathsptransportiseq}.  
-%But this will follow by the very definition of the identity type!  
-
+  Since both $\typetorsor_G$ and $BG$ are connected, it suffices by
+  \cref{cor:fib-vs-path} to show that each
+  $\ap {\pathsp{}}:(y=z)\to(\pathsp y=\pathsp z)$ is an
+  equivalence. One prove first that $\ap {\pathsp{}}$ is indeed equal
+  to the function
+  $$\pathsp{}:(y=z)\to(\pathsp y= \pathsp z)$$
+  made explicit in \cref{ex:pathsptransport}. It is done by induction
+  on $q:y=z$, as indeed
+  \begin{displaymath}
+    \ap {\pathsp{}}(\refl y) = \refl {\pathsp y} = (p\mapsto p\inv{\refl y}).
+  \end{displaymath}
+  Then \cref{lem:pathsptransportiseq} states exactly that $\ap P$ is
+  an equivalence.
+%
+% But this will follow by the very definition of the identity type!  
+%
 % For $q:y=z$,  the transport $T(q):\pathsp y=\pathsp z$ is given by  sending $p:y=x$ to
 % $$T(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ 
 % or, in a picture 
@@ -1268,30 +1292,59 @@ is an equivalence, which is exactly the contents of \cref{lem:pathsptransportise
 \label{sec:groupssubperm}
 
 
-This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\Set$'':\footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\Set$''.
+% \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+In the following, we should call {\em monomorphism} a homomorphism
+$f:\Hom(G,H)$ for which $\abstr(f):(\pt_G=\pt_G)\to(\pt_H=\pt_H)$ is
+injective\footnote{What will later be simply called a subgroup.}.
 \begin{lemma}
-  \label{lem:allgpsarepermutationgps}Let $G$ be a group.  Then remembering the base point in the factorization of the pricipal $G$-torsor $\princ G:BG\to\Set$ through the component $\Set_{(\pt_G=\pt_G)}\subseteq\Set$ (c.f.~\cref{remark:GsetsareGsets}) gives an injective homomorphism
-$$\alpha_G:\Hom(G,\Sigma_{\pt_G=\pt_G})$$  
-of $G$ into a permutation group.
+  \label{lem:allgpsarepermutationgps}Let $G$ be a group. Then
+  remembering the base point in the factorization of the principal
+  $G$-torsor $\princ G:BG\to\Set$ through the component
+  $\Set_{(\pt_G=\pt_G)}$ of $\Set$ (c.f.~\cref{remark:GsetsareGsets})
+  gives an monomorphism
+  $$\alpha_G:\Hom(G,\Sigma_{\pt_G=\pt_G})$$  
+  of $G$ into a permutation group.
 \end{lemma}
 \begin{proof}
-  The type of injective group homomorphism from $G$ to a group $H$ is equivalent\footnote{((GIVE REF))} to the type of pointed \coverings of $BH$ by $BG$, so we need to show that $\alpha_G:BG\to\UU_{(\pt_G=\pt_G)}$ is a \covering.  
-Under the identity $\bar{\pathsp{}}:BG=(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} the function $\alpha$ translates to the evaluation map
-$$\xymatrix{
-  \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\pt_G}}\ar@{=}[d]&&\Sigma_{\pt_G=\pt_G}\ar@{=}[d]\\
-  \underset{E:BG\to\Set}\sum\,\underset{x:BG}\prod\Trunc{(\pt_G=x)=E(x)}\ar@{}[rr]^-{E\mapsto E(\pt_G)}&&
-\,\underset{X:\Set}\sum\Trunc{(\pt_G=\pt_G)=X}.
-}$$
-We must show that the preimages $\ev_{\pt_G}(X)$ for $X:\Sigma_{\pt_G=\pt_G}$ are sets.  
-This preimage is equivalent to $\sum_{E:BG\to\Set}(X=E(\pt_G))$ (note the absence of a truncation).  We must show that if $(E,p),(F,q):\sum_{E:BG\to\Set}(X=E(\pt_G))$, then 
-$$((E,p)=(F,q))=\prod_{x:BG}\sum_{\phi(x):E(x)=F(x)}\phi(\pt_G)=_{E(\pt_G)=F(\pt_G)}qp^{-1}$$ is a set.  
-Note that if $r:\pt_G=x$, then $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
-$$\xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
-  X\ar@{=}[ur]^p_\to\ar@{=}[dr]^q_\to&&\\
-  &F(\pt_G)\ar@{=}[r]^{F(r)}_\to&F(x)},$$
-and so $\phi(x)$ (which by nature is independent of such an $r:\pt_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us pin this down in our language.
-If $\phi,\psi:((E,p)=(F,q))$, we must show that $\phi=\psi$ and since that for $x:BG$ both $E(x)$ and $F(x)$ are sets, it is enough to show that the proposition $\phi(x)=\psi(x)$ is not empty.  Let $f:(\pt_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$ given above.  
-Since $BG$ is connected, $\pt_G=x$ is not empty, and we are done.
+  The type of monomorphisms from $G$ to a group $H$ is
+  equivalent\footnote{((GIVE REF)) but it will be a forward ref...} to
+  the type of pointed \coverings over $BH$ with total space $BG$, so
+  we need to show that $\alpha_G:BG\to\UU_{(\pt_G=\pt_G)}$ is a
+  \covering.  Under the identity
+  $\bar{\pathsp{}}:BG=(\typetorsor_G,\princ G)$ of
+  \cref{lem:BGbytorsor} the function $\alpha$ translates to the
+  evaluation map
+  $$\xymatrix{
+    \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\pt_G}}\ar@{=}[d]&&\Sigma_{\pt_G=\pt_G}\ar@{=}[d]\\
+    \conncomp{(BG\to\Set)}{\princ G}\ar@{}[rr]^-{E\mapsto E(\pt_G)}&&
+    \,\conncomp{\Set}{\pt_G=\pt_G}.  }$$ We must show that the fibers
+  $\inv{\ev_{\pt_G}}(X)$ for $X:\Sigma_{\pt_G=\pt_G}$ are sets.  This
+  fiber is equivalent to
+  $\sum_{E:\conncomp{(BG\to\Set)}{\princ G}}(X=E(\pt_G))$ which is a
+  set precisely when $\sum_{E:BG\to\Set}(X=E(\pt_G))$ is a set.  We
+  must then show that if $(E,p),(F,q):\sum_{E:BG\to\Set}(X=E(\pt_G))$,
+  then the type $(E,p)=(F,q)$, which is equivalent
+  to
+  $$\prod_{x:BG}\sum_{\phi(x):E(x)=F(x)}\phi(\pt_G)=qp^{-1}$$
+  is a proposition.  Note that if $r:\pt_G=x$, then
+  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
+  \begin{displaymath}
+    \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
+      X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
+      &F(\pt_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
+  \end{displaymath}
+  and so $\phi(x)$ (which by nature is independent of such an
+  $r:\pt_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us
+  pin this down in our language.  If $\phi,\psi:((E,p)=(F,q))$, we
+  must show that $\phi=\psi$ and since that for $x:BG$ both $E(x)$ and
+  $F(x)$ are sets, it is enough to show that the proposition
+  $\phi(x)=\psi(x)$ is not empty.  Let
+  $f:(\pt_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
+  composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
+  given above.  Since $BG$ is connected, and $\phi(x)=\psi(x)$ is a
+  proposition, one can consider that $\pt_G=x$ is not empty, and we
+  are done.
 \end{proof}
 
 \subsection{Homomorphisms and torsors}
