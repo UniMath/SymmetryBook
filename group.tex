@@ -665,7 +665,217 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
   \end{xca}
 
 
+\section{Abelian groups}
+\label{sec:abelian-groups}
 
+Recall that given a pointed type $X$, we coerce it silently to its
+underlying unpointed type $X_\div$ whenever this coercion can be
+inferred from context. For example, given a group $G$, the type
+$BG=BG$ can not possibly mean anything but $BG_\div=BG_\div$ as the
+operator ``='' acts on bare types. In a similar way, $A\to BG$ for a
+type $A$ has no other meaning that the function type $A \to
+BG_\div$. This kind of coercion is used all over the place in this
+section to avoid notation explosion. One more subtle example is
+$\id_{BG}$, which can have two different meanings: either the identity
+function $BG_\div \to BG_\div$ pointed by the reflexivity path, or the
+bare unpointed identity function. If the context is ambiguous, we will
+write properly $\id_{BG_\div}$ when necessary.
+
+\begin{definition}
+  Let $G$ be a group. The {\em center} of $G$, denoted
+  $\grpcenter(G)$, is the group
+  $\Aut_{BG=BG}(\id_{BG})$.
+\end{definition}
+
+There is a natural map $\ev_{\pt_G} : (BG=BG) \to BG$
+defined by $\ev_{\pt_G}(\varphi)\defequi \varphi(\pt_G)$. The
+restriction of this map to the connected component of $\id_{BG_\div}$
+defines a map
+\begin{displaymath}
+  \grpcenterinc G : \grpcenter(G) \to BG.
+\end{displaymath}
+This map justifies the name {\em center} for $\grpcenter(G)$, and it
+connects it to the notion of center for abstract groups in ordinary
+mathematics. To understand how, notice first that
+$\grpcenterinc G (\id_{BG}) \defequi \pt_G$, and one can then study the
+map
+\begin{displaymath}
+  \ap{\grpcenterinc G}: (\id_{BG}=\id_{BG}) \to (\pt_G = \pt_G)
+\end{displaymath}
+induced between the abstract groups of $\grpcenter(G)$ and $G$. By
+induction on $p:\id_{BG} = \varphi$ for $\varphi:BG=BG$, one proves
+that $\ap{\grpcenterinc G}(p) = p(\pt_G)$: indeed, this is true when
+$p\jdeq \refl {\id_{BG}}$. One prove furthermore, again by induction
+on $p:\id_{BG} = \varphi$, that
+$\ap \varphi = (x\mapsto \inv{p(\pt_G)} x p(\pt_G))$. In particular,
+when $\varphi \jdeq \id_{BG}$, it shows that for every
+$p:\id_{BG}=\id_{BG}$, the following proposition holds:
+\begin{displaymath}
+  \prod_{g:\pt_G=\pt_G }p(\pt_G) g = g p(\pt_G)
+\end{displaymath}
+In other words, $\ap {\grpcenterinc G}$ maps elements of
+$\id_{BG}=\id_{BG}$ to elements of $\abstr(G)$ that commutes with
+every other elements. (The set of these elements is usually called the
+center of the group in ordinary group theory.)
+
+The following lemma, or more precisely its corollary, explains that
+$\ap{\grpcenterinc G}$ never picks twice the same element in the
+``abstract center'' of $G$.
+\begin{lemma}
+  \label{lemma:center-is-subgroup}%
+  The map $\grpcenterinc G$ is a \covering over $G$. 
+\end{lemma}
+\begin{proof}
+  One wants to prove the proposition
+  $\isset(\inv{\grpcenterinc G}(x))$ for each $x:G$. By connectedness
+  of $G$, one can show the proposition only at $x\jdeq
+  \pt_G$. However,
+  \begin{displaymath}
+    \begin{aligned}
+      \inv{\grpcenterinc G}(\pt_G) &\weq \sum_{\varphi:\grpcenter(G)}{\pt_G = \varphi(\pt_G)}
+      \\
+      &\weq \sum_{\varphi:BG=BG}{\pt_G = \varphi(\pt_G)}
+      \\
+      &\weq \sum_{\varphi:BG=BG}{\pt_G = \varphi(\pt_G)}
+    \end{aligned}
+  \end{displaymath}
+  If $(\varphi,p)$ and $(\psi,q)$ are two elements of this type, their
+  identity type $(\varphi,p)=(\psi,q)$ is equivalent to
+  $\sum_{\pi:\varphi=\psi}\pi(\pt_G) p = q$. We shall prove that this
+  type is a proposition, and it goes as follows:
+  \begin{enumerate}
+  \item for $\pi:\varphi=\psi$, the type $\pi(\pt_G) p = q$ is a
+    proposition; hence for two such elements $(\pi,!)$ and $(\pi',!)$,
+    one has $(\pi,!)=(\pi',!)$ equivalent to $\pi=\pi'$,
+  \item for all $x:G$, $\varphi(x)=\psi(x)$ is a set, hence for
+    $\pi,\pi':\varphi=\psi$, the type $\pi=\pi'$ is a proposition,
+  \item connectedness of $G$ proves then that $\pi=\pi'$ is equivalent
+    to $\pi(\pt_G)=\pi'(\pt_G)$,
+  \item finally the propositional condition on $\pi$ and $\pi'$ allows
+    us to conclude as $\pi(\pt_G)= q\inv p = \pi'(\pt_G)$.
+  \end{enumerate} 
+\end{proof}
+
+\begin{corollary}
+  \label{lemma:center-inc-inj-on-paths}%
+  The induced map
+  $\ap {\grpcenterinc G}: (\id_{BG}=\id_{BG}) \to (\pt_G = \pt_G)$ is
+  injective.
+\end{corollary}
+
+The following result explains how every element of the ``abstract
+center'' of $G$ is picked out by $\ap{\grpcenterinc G}$.
+\begin{lemma}
+  \label{lemma:center-inc-surj-on-paths}%
+  Let $g:\pt_G = \pt_G$ and supppose that $gh=hg$ for every
+  $h:\pt_G=\pt_G$. The fiber $\inv{\ap {\grpcenterinc G}}(g)$ contains
+z  an element.
+\end{lemma}
+\begin{proof}
+  One must construct an element $\hat g:\id_{BG} = \id_{BG}$ such that
+  $\hat g(\pt_G)=g$. We shall use function extensionality and produce
+  an element $\hat g(x):x=x$ for all $x:G$ instead. Note that $x=x$ is
+  a set, and that connectedness of $BG$ is not helpful yet. We will
+  use a technique that will prove useful in many situation in the
+  book, along the lines of the following sketch (where we denote
+  $U(x)\defequi x=x$):
+  \begin{enumerate}
+  \item for a given $x:G$, if such a $\hat g(x):U(x)$ existed, it would
+    produce an element of the type $T(\hat g(x))$ for a carefully chosen type
+    family $T$,
+  \item aim to prove $\iscontr(\sum_{u:U(x)}T(u))$ for any $x:G$,
+  \item this is a proposition, so connectedness of $BG$ can be applied
+    and only $\iscontr(\sum_{u:U(\pt_G)}T(\pt_G))$ need to be proved,
+  \item hopefully, $\sum_{u:U(\pt_G)}T(\pt_G)$ reduces to an obvious
+    singleton type.
+  \end{enumerate}
+  Here, for any $x:G$, we define the type family
+  \begin{displaymath}
+    T(q) \defequi \prod_{p:\pt_G=x} (pg=qp)
+  \end{displaymath}
+  for $q:x=x$. And we claim that $\sum_{q:x=x}T(q)$ is contractible
+  for any $x:G$. Because this is a proposition, one only need to check
+  its veracity on one point of the connected type $BG$, say
+  $x\jdeq pt_G$. Now,
+  \begin{displaymath}
+    \begin{aligned}
+      \sum_{q:\pt_G=\pt_G}T(q) &\jdeq \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(pg=qp)
+      \\
+      &\weq \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(g=q)
+      \\
+      &\weq \sum_{q:\pt_G=\pt_G}(\pt_G=\pt_G)\to (g=q)
+      \\
+      &\weq \sum_{q:\pt_G=\pt_G} (g=q)
+      \\
+      &\weq 1
+    \end{aligned}
+  \end{displaymath}
+  The first equivalence is using that $g$ commutes with every other
+  element $p:\pt_G=\pt_G$, so that $pg \inv p = g$. The second
+  equivalence acknowledges the fact that $(g=q)$ does not depend on
+  $p$ anymore. The third equivalence makes two reductions at the same
+  time: first it recognizes a proposition in the type $g=q$ and then
+  uses that the propositional truncation of $\pt_G=\pt_G$ is indeed
+  inhabited (by $\trunc{\refl {\pt_G}}$).
+
+  We have just shown that for all $x:G$, the type $\sum_{q:x=x}T(q)$
+  is contractible. We define now $\hat g(x):x=x$ as the chosen center
+  of contraction of that type. In particular, in the previous proof
+  that $\sum_{q:\pt_G=\pt_G}T(q)$ is connected, we chose $g$ as
+  center, so that $\hat g (\pt_G) = g$ as wanted.
+\end{proof}
+
+Together, \cref{lemma:center-inc-inj-on-paths} and
+\cref{lemma:center-inc-surj-on-paths} show that $\ap{\grpcenterinc G}$
+establishes an equivalence
+\begin{equation}
+  \left( \id_{BG} = \id_{BG} \right) \weq \sum_{g:\pt_G=\pt_G}\prod_{h:\pt_G=\pt_G}gh=hg
+\end{equation}
+In yet other words,
+$B\grpcenter(G)\defequi \conncomp{(id_{BG}=id_{BG})}{BG=BG}$ is
+(equivalent to) the delooping of the ``abstract center'' of the
+abstract group $\abstr(G)$.
+
+The definition of an abelian group naturally follows:
+\begin{definition}
+  A group $G$ is said to be {\em abelian} (or {\em commutative}) when
+  $\grpcenterinc G$ is an equivalence.
+\end{definition}
+
+Directly from the definition and the computations above, one see that
+a group $G$ is abelian if and only if it satisfies the following
+property:
+\begin{displaymath}
+  \prod_{g,h:\pt_G=\pt_G}gh=hg
+\end{displaymath}
+which is the ordinary definition of an abstract abelian group in
+ordinary group theory. We shall now give another characterization of
+the type of abelian groups, more in line with the geometrical
+intuition we are trying to build in this chapter.
+
+Recall to this end the following definition that are standard in
+homotopy theory:
+\begin{itemize}
+\item for any pointed type $X$, the pointed type $\loopspace X$ is
+  defined as $(\pt_X = \pt_X)$ with designated point $\refl {\pt_X}$,
+\item the {\em abstract fundamental group} $\fundgrp(X)$ of a pointed type
+  $X$ is the set truncation $\setTrunc{\loopspace X}$,
+\item equivalently, in presence of groupoid truncations
+  $\grpdTrunc{\blank}$, the {\em (concrete) fundamental group}
+  $\fundgrpd(X)$ of a pointed type $X$ is the pointed type
+  $\conncomp{\left(\grpdTrunc X\right)}{\grpdtrunc{\pt_X}}$,
+\item a simply connected type is a type $X$ such that $\pi_1(X)$
+  (equivalently $\fundgrpd(X)$) is contractible.
+\end{itemize}
+
+
+\begin{theorem}
+  The type $\typeabgroup$ of abelian group is equivalent to the type
+  of simply connected $2$-types.
+\end{theorem}
+\begin{proof}
+  
+\end{proof}
 
 \section{Homomorphisms}
 \label{sec:homomorphisms}
