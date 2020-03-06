@@ -1535,6 +1535,80 @@ $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\f
 % %Hence $\bn 1\to T^{-1}(f)=\sum_{p:y=z}T(p)=f$ with value is an equivalence.
 % %the same as giving an element in $T(z)(y)\defequi (z=y)$.
 \end{proof}
+
+\subsubsection{Monomorphisms (experimental)}
+
+\begin{definition}\label{def:monomorphism}
+Given groups $G$ and $H$, an $f: \Hom(G,H)$ is called a 
+\emph{monomorphism} if it satisfies the \emph{left cancellation law}, 
+that is, if for all groups $F$ and $g,h:\Hom(F,G)$ we have that $fg=fh$ implies $g=h$.
+\end{definition}
+
+Since types $\Hom(\_,\_)$ are sets, being a monomorphism is a proposition.
+We have the following equivalent characterizations.
+
+\begin{lemma}\label{lem:eq-mono-cover}
+Let $G$ and $H$ be groups and $f: \Hom(G,H)$ a homomorphism.
+The following propositions are equivalent: %(with $f$ also for $f_\div$):
+\begin{enumerate}
+\item\label{it:mono} $f$ is a monomorphism;
+\item\label{it:cover} $f$ is a \covering;
+\item\label{it:injection} $\abstr(f)$ is an injection.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Recall that a homomorphism $f: \Hom(G,H)$ is a pointed map $f: BG\ptdto BH$.
+This means we have a function $f$ and a pointing path $f_0 : \pt_H = f(\pt_G)$. 
+Similarly for homomorphisms $g,h$ below, whose pointing paths will be denoted $g_0,h_0$.
+
+The equivalence of (\ref{it:cover}) and (\ref{it:injection}) follows
+immediately from \cref{cor:fib-vs-path}(\ref{set-fib-vs-path}) and the
+fact that $BG$ is connected.
+In the following we first prove that (\ref{it:mono}) implies (\ref{it:cover}),
+and then the converse.
+
+Assume (\ref{it:mono}) $f$ is a monomorphism. 
+We have to prove that the fibers of $f$ are sets.
+Since $BH$ is connected it suffices to prove that $f^{-1}(\pt_H)$ is a set. 
+This means that for all $x,y:BG$, $p: pt_H = f(x)$,
+$q: pt_H = f(y)$ and $r,s : (x,p) = (y,q)$, we have $r=s$.
+Again it suffices to verify this for $x\jdeq y\jdeq\pt_G$.
+We can view $r$ as the pair $(g,r')$ and and $s$ as $(g',s')$, 
+with $g,g': pt_G = \pt_G$ and $r' : f(g)p = q$
+and $s' : f(g')p = q$ (the latter two path types come from transport
+in the family $\pt_H = f(\_)$). Thus we see that $f(g)=qp^{-1}=f(g')$.
+We now use the assumption (\ref{it:mono}) that $f$ is a monomorphism.
+Let $F$ be the free group with one generator, that is,
+$BF \jdeq (\Sc,\base)$. Define $h,h': \Hom(F,G) \defeq (BF\ptdto BG)$
+by circle induction, setting $h(\base)\jdeq h'(\base)\jdeq\pt_G$
+and $h(\Sloop)\defis g$ and $h'(\Sloop)\defis g'$. Both $h$ and $h'$
+are trivially pointed by $\refl{\pt_G}$. Using $f(g)=f(g')$ one
+proves $fh=fh'$ by circle induction. Cancelling $f$ we get $h=h'$,
+and so $g=g'$. Since $r'$ and $s'$ are of propositional type,
+we can conclude $r=s$.
+
+Assume (\ref{it:cover}) $f$ is a \covering. We show that $f$ is a monomorphism.
+Let $F$ be a group and let $g,h : \Hom(F,G)$ be homomorphisms.
+Assume $p: fg=fh$. We have to prove $g=h$. The assumption $p$
+gives rise to several data. One is a family of paths $p_x : f(g(x)) = f(h(x))$
+for every $x:BF$. The other is a path of type $p_{\pt_F} f(g_0) f_0 = f(h_0) f_0$.
+The latter path ensures that the transport of the path pointing $fg$ is 
+equal to the path pointing $fh$, and yields a path $p': p_{\pt_F} = f(h_0 g_0^{-1})$.
+In a similar way, the goal $g=h$ requires a family $q_x : g(x) = h(x)$
+such that $q_{\pt_F} = h_0 g_0^{-1}$. With these considerations in mind
+we shift the goal to proving $(g(x),\refl{f(g(x))})=(h(x),p_x)$ for all $x:BF$.
+The latter equality is in the fiber of $f$ at $f(g(x))$, and is a proposition
+by the assumption (\ref{it:cover}) that $f$ is a \covering. Since $BF$ is connected, 
+it suffices to prove $(g(\pt_F),\refl{f(g(\pt_F))})=(h(\pt_F),p_{\pt_F})$.
+For this we take $q_{\pt_F} \defeq h_0 g_0^{-1}: g(\pt_F) = h(\pt_F)$. 
+Since the transport is in the family $f(g(\pt_F))=f(\_)$,
+we also need a proof of $f(h_0 g_0^{-1}) = p_{\pt_F}$, 
+for which we take the inverse of $p'$. From these data we easily obtain
+the family $q_x$ with the desired property, so $g=h$.
+\end{proof}
+
+
+
 \subsection{Any group is a subgroup of a permutation group}
 \label{sec:groupssubperm}
 
