@@ -838,6 +838,7 @@ abstract group $\abstr(G)$.
 
 The definition of an abelian group naturally follows:
 \begin{definition}
+  \label{def:abelian-groups}%
   A group $G$ is said to be {\em abelian} (or {\em commutative}) when
   $\grpcenterinc G$ is an equivalence.
 \end{definition}
@@ -853,7 +854,7 @@ ordinary group theory. We shall now give another characterization of
 the type of abelian groups, more in line with the geometrical
 intuition we are trying to build in this chapter.
 
-Recall to this end the following definition that are standard in
+Recall to this end the following definitions that are standard in
 homotopy theory:
 \begin{itemize}
 \item for any pointed type $X$, the pointed type $\loopspace X$ is
@@ -864,18 +865,214 @@ homotopy theory:
   $\grpdTrunc{\blank}$, the {\em (concrete) fundamental group}
   $\fundgrpd(X)$ of a pointed type $X$ is the pointed type
   $\conncomp{\left(\grpdTrunc X\right)}{\grpdtrunc{\pt_X}}$,
-\item a simply connected type is a type $X$ such that $\pi_1(X)$
-  (equivalently $\fundgrpd(X)$) is contractible.
+\item a simply connected type is a connected pointed type $X$ such
+  that $\pi_1(X)$ (equivalently $\fundgrpd(X)$) is contractible.
+\end{itemize}
+We also settle some notations that should ease the reading of the
+proof of the next result. For any type $A:\UU$, we define
+\begin{displaymath}
+  \univcover \UU A \defequi \sum_{X:\UU}\setTrunc{A=X}.
+\end{displaymath}
+This is the analog of the connected component of $\UU$ at $A$ but with
+a set truncation involved. In particular, $\univcover \UU A$ is {\em
+  not} a subtype of $\UU$. To understand identity types better in this
+type $\univcover \UU A$, let us introduce the following function for
+any types $X,Y,Z:\UU$:
+\begin{displaymath}
+  \blank\cdot\blank : \setTrunc{Y=Z} \times \setTrunc{X=Y} \to \setTrunc{X=Z}.
+\end{displaymath}
+It is defined as follows: given $a: \setTrunc{Y=Z}$, we want to define
+$a\cdot\blank$ in the set $\setTrunc{X=Y} \to \setTrunc{X=Z}$, hence
+we can suppose $a\jdeq\settrunc p$ for some $p:Y=Z$; now given
+$b:\setTrunc{X=Y}$, one want to define $\settrunc p \cdot b$ in the
+set $\setTrunc{X=Z}$, hence one can suppose $b\jdeq\settrunc q$ for some
+$q:X=Y$; finally, we define
+\begin{displaymath}
+  \settrunc{q} \cdot \settrunc{p} \defequi \settrunc{q\cdot p}.
+\end{displaymath}
+Then one proves, by induction on $\varphi:X=Y$, that
+$\trp[\setTrunc{A=\blank}]\varphi$ is equal to the function
+$a\mapsto \settrunc{\varphi}\cdot a$. In particular, one gets an
+equivalence between the type $(X,a) = (Y,b)$ of identities between
+elements $(X,a), (Y,b): \univcover\UU A$ and the type
+$\sum_{\varphi:X=Y}\settrunc{\varphi} \cdot a = b$.
+
+From this, we deduce two important properties of $\univcover\UU A$:
+\begin{itemize}
+\item The type $\univcover\UU A$ is connected. Indeed, for any
+  $(X,a):\univcover \UU A$, one wants to prove the proposition
+  $\Trunc{(A,\refl A) = (X,a)}$. A proposition being in particular a
+  set, one can suppose that $a\jdeq \settrunc p$ for some
+  $p:A=X$. Then
+  \begin{displaymath}
+    !:\settrunc p \cdot \settrunc{\refl A} = \settrunc{p},
+  \end{displaymath}
+  and the pair $(p,!)$ is an element of $(A,\refl A) = (X,a)$ whose
+  propositional truncation allows us to conclude.
+\item Consider $\univcover \UU A$ as pointed at
+  $(A,\settrunc{\refl A})$. Then $\univcover\UU A$ is simply
+  connected. Indeed, one has an equivalence:
+  \begin{displaymath}
+    \loopspace {\univcover\UU A} 
+    \weq \sum_{\varphi:A=A}\left( \settrunc{\varphi} = \settrunc{\refl A}\right)
+    \weq \sum_{\varphi:A=A}\Trunc{\varphi = \refl A}
+  \end{displaymath}
+  which proves that $\loopspace {\univcover\UU A}$ is the connected
+  component of $\refl A$ in $A=A$. 
 \end{itemize}
 
-
+We are now ready to prove the following characterization of abelian
+groups.
 \begin{theorem}
   The type $\typeabgroup$ of abelian group is equivalent to the type
-  of simply connected $2$-types.
+  of pointed simply connected $2$-types.
 \end{theorem}
-\begin{proof}
-  
+\begin{proof}%
+  \newcommand{\BB}{B^2}%
+  \newcommand{\UUptd}{\UU_\ast}%
+  Define the map $\BB : \typeabgroup \to \UUptd$ by
+  $\BB G\defequi \univcover{\UU}{BG}$. Proving that $\BB G$ is a
+  $2$-type is equivalent to proving the proposition $\isset(p=q$) for
+  all $p,q:x=y$ and all $x,y:\BB G$. One can then use connectedness of
+  $\BB G$ and restrict to only show that $p=q$ is a set for all path
+  $p,q:(BG,\settrunc{\refl {BG}})=(BG,\settrunc{\refl {BG}})$. As part
+  of the definition of the group $G$, the type $BG$ is a $1$-type,
+  hence $BG=BG$ is also a $1$-type through univalence. Moreover,
+  $\trp p {(\settrunc{\refl {BG}}}) = \settrunc{\refl {BG}}$ and
+  $\trp q {(\settrunc{\refl {BG}}}) = \settrunc{\refl {BG}}$ both are
+  propositions, as they are identity types in the set
+  $\setTrunc{BG=BG}$. Hence $\isset(p=q)$ holds.
+
+  So one gets a map, denoted again $\BB$ abusively,
+  \begin{displaymath}
+    \BB : \typeabgroup \to \sum_{(A,a):\UUptd}\left(
+      \isconn(A) \times \isconn(a=a) \times \prod_{p,q:a=a}\isset(p=q)
+    \right)
+  \end{displaymath}
+  We shall now provide a pseudo-inverse for this map. Given a pointed
+  simply connected $2$-type $(A,a)$, one can construct a pointed
+  connected $1$-type, \ie a group, namely $\loopspace (A,a)$. It is
+  connected because $(A,a)$ is simply connected, and it is a $1$-type
+  because $A$ is a $2$-type. Moreover, this group is abelian. To see
+  it, let us use the characterization of abelian groups explained
+  after \cref{def:abelian-groups}. We shall then prove that for any
+  element $g,h:\refl a=\refl a$, the proposition $gh=hg$ holds. This
+  property holds in even more generality and is usually called
+  ``Eckmann-Hilton's argument''. It goes as follows: for $x,y,z:A$,
+  for $p,q:x=y$ and $r,s:y=z$ and for $g:p=q$ and $h:r=s$, one want to
+  prove
+  \begin{displaymath}
+    \ap{\blank\cdot q}(h) \cdot \ap{r\cdot\blank}(g)
+    = \ap{s\cdot \blank}(g) \cdot \ap{\blank\cdot p}(h).
+  \end{displaymath}
+  This equality takes place in $r\cdot p = s\cdot q$ and is better
+  represented by the following diagram (where the dotted vertical
+  lines means composition):
+  \begin{displaymath}
+    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
+      \node[] (x1) {$x$};
+      \node[right of=x1] (y1) {$y$};
+      \node[right of=y1] (z1) {$z$};
+      \node[below of=x1] (x2) {$x$};
+      \node[right of=x2] (y2) {$y$};
+      \node[right of=y2] (z2) {$z$};
+      \draw[bend left] (x1) to node[above] (p) {\footnotesize$p$} (y1);
+      \draw[bend right] (x1) to  node[below] (q1) {\footnotesize$q$} (y1);
+      \draw[bend left] (y1) to node[above] (r1) {\footnotesize$r$} (z1);
+      \draw[bend left] (y2) to node[above] (r2) {\footnotesize$r$} (z2);
+      \draw[bend right] (y2) to  node[below] (s) {\footnotesize$s$} (z2);
+      \draw[bend right] (x2) to node[below] (q2) {\footnotesize$q$} (y2);
+      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
+      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
+      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
+    \end{tikzpicture}%
+    =%
+    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
+      \node[] (x1) {$x$};
+      \node[right of=x1] (y1) {$y$};
+      \node[right of=y1] (z1) {$z$};
+      \node[below of=x1] (x2) {$x$};
+      \node[right of=x2] (y2) {$y$};
+      \node[right of=y2] (z2) {$z$};
+      \draw[bend left] (x2) to node[above] (p) {\footnotesize$p$} (y2);
+      \draw[bend right] (x2) to  node[below] (q1) {\footnotesize$q$} (y2);
+      \draw[bend right] (y2) to node[above] (r1) {\footnotesize$s$} (z2);
+      \draw[bend left] (y1) to node[above] (r2) {\footnotesize$r$} (z1);
+      \draw[bend right] (y1) to  node[below] (s) {\footnotesize$s$} (z1);
+      \draw[bend left] (x1) to node[above] (p2) {\footnotesize$p$} (y1);
+      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
+      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
+      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
+    \end{tikzpicture}%
+  \end{displaymath}
+  One prove such a result by induction on $h$. Indeed, when
+  $h\jdeq \refl r$, then both sides of the equation reduces through
+  path algebra to $\ap {r\cdot\blank} (g)$. Now we are interested in
+  this result when $x,y,z$ are all definitionally $a$, and $p,q,r,s$
+  are all definitionally $\refl a$. In that case, one has that
+  $\ap {\refl a\cdot \blank}$ and $\ap {\blank\cdot\refl a}$ acts
+  trivially, and the equation becomes: $h\cdot g = g \cdot h$.
+
+  One still has to prove that this construction
+  $(A,a) \mapsto \loopspace (A,a)$ is an inverse for $\BB$. Given an
+  abelian group $G$, the discussion before the theorem proves that
+  $\loopspace {(\BB G)}$ is equivalent to the connected component of
+  $\refl {BG}$ in $BG=BG$, which is the definition of
+  $\grpcenter(G)$. Being abelian, $G$ is equivalent to its center,
+  hence $\loopspace {(\BB G)} \simeq G$. Conversely, take a pointed
+  simply connected $2$-type $(A,a)$. One wants to prove
+  $\BB (\loopspace {(A,a)}) \weq (A,a)$. To this end, we define first
+  a pointed map
+  \begin{displaymath}
+    \Phi : (A,a) \ptdto \BB {\loopspace {(A,a)}}
+  \end{displaymath}
+  which we will prove is an equivalence afterwards. To be able to
+  express $\Phi$, we need a small gadget about truncations of function
+  types: for types $X,Y:\UU$, given an element
+  $f_0:\setTrunc{X\to Y}$, one constructs a map
+  $\lceil f_0 \rceil : \setTrunc X \to \setTrunc Y$; the type of
+  $\lceil f_0 \rceil$ being a set, one might as well suppose that
+  $f_0 \jdeq \settrunc f$ for some $f:X\to Y$; then we set
+  $\lceil f_0 \rceil (\settrunc x) = \settrunc{f(x)}$, which suffices
+  in order to define $\lceil f_0 \rceil$ entirely because its codomain
+  $\setTrunc Y$ is a set. If we assume the axiom of
+  choice\footnote{What is the status of AC in this book??}, then
+  $\lceil \blank \rceil$ is injective when $Y$ is a set. Let
+  $T : A \to \UU$ be the type family define by
+  \begin{displaymath}
+    T(a') \defequi \sum_{\alpha:\setTrunc{(a=a)\weq(a'=a')}}\prod_{p:a=a'}
+    \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}.
+  \end{displaymath}
+  We claim that $T(a')$ is contractible for all $a':A$. By
+  connectedness of $A$, it is equivalent to showing that $T(a)$ is
+  contractible. For any $x:\setTrunc{a=a}$ and any $p:a=a$, one can
+  prove that $\settrunc p \cdot x = x\cdot \settrunc p$. Indeed, the
+  goal is an identity type in the set $\fundgrp(A,a)$, so we can
+  suppose $x \jdeq \settrunc q$ for some $q:a=a$, and one wants to
+  prove
+  $\settrunc p \cdot \settrunc q = \settrunc q \cdot \settrunc p$, or
+  in other words $\Trunc{pq=qp}$. By hypothesis, $(A,a)$ is simply
+  connected, so that every path of $a=a$ is merely equal to every
+  other. Hence:
+  \begin{align*}
+    T(a)
+    &\jdeq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
+      \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}
+    \\
+    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
+      \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x 
+    \\ 
+    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}(a=a) \to 
+      \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
+    \\
+    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \lceil \alpha \rceil = \left\lceil {\settrunc{\id_{a=a}}} \right\rceil
+    \\
+    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \alpha = \settrunc{\id_{a=a}}
+    \\
+    &\weq 1
+  \end{align*}
 \end{proof}
+
 
 \section{Homomorphisms}
 \label{sec:homomorphisms}
