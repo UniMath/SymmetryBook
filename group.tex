@@ -1024,53 +1024,98 @@ groups.
   $\BB (\loopspace {(A,a)}) \weq (A,a)$. To this end, we define first
   a pointed map
   \begin{displaymath}
-    \Phi : (A,a) \ptdto \BB {\loopspace {(A,a)}}
+    \Phi : (A,a) \ptdto \BB {(\loopspace {(A,a)})}
   \end{displaymath}
-  which we will prove is an equivalence afterwards. To be able to
-  express $\Phi$, we need a small gadget about truncations of function
-  types: for types $X,Y:\UU$, given an element
-  $f_0:\setTrunc{X\to Y}$, one constructs a map
-  $\lceil f_0 \rceil : \setTrunc X \to \setTrunc Y$; the type of
-  $\lceil f_0 \rceil$ being a set, one might as well suppose that
-  $f_0 \jdeq \settrunc f$ for some $f:X\to Y$; then we set
-  $\lceil f_0 \rceil (\settrunc x) = \settrunc{f(x)}$, which suffices
-  in order to define $\lceil f_0 \rceil$ entirely because its codomain
-  $\setTrunc Y$ is a set. If we assume the axiom of
-  choice\footnote{What is the status of AC in this book??}, then
-  $\lceil \blank \rceil$ is injective when $Y$ is a set. Let
-  $T : A \to \UU$ be the type family define by
+  which we will prove is an equivalence afterwards.
+  % To be able to
+  % express $\Phi$, we need a small gadget about truncations of
+  % function
+  % types: for types $X,Y:\UU$, given an element
+  % $f_0:\setTrunc{X\to Y}$, one constructs a map
+  % $\lceil f_0 \rceil : \setTrunc X \to \setTrunc Y$; the type of
+  % $\lceil f_0 \rceil$ being a set, one might as well suppose that
+  % $f_0 \jdeq \settrunc f$ for some $f:X\to Y$; then we set
+  % $\lceil f_0 \rceil (\settrunc x) = \settrunc{f(x)}$, which
+  % suffices
+  % in order to define $\lceil f_0 \rceil$ entirely because its
+  % codomain
+  % $\setTrunc Y$ is a set. If we assume the axiom of
+  % choice\footnote{What is the status of AC in this book??}, then
+  % $\lceil \blank \rceil$ is injective when $Y$ is a set.
+  Let $T : A \to \UU$ be the type family define by
   \begin{displaymath}
     T(a') \defequi \sum_{\alpha:\setTrunc{(a=a)\weq(a'=a')}}\prod_{p:a=a'}
-    \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}.
+    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}.
+    \alpha = \settrunc{p\cdot \blank \cdot \inv p}
   \end{displaymath}
   We claim that $T(a')$ is contractible for all $a':A$. By
   connectedness of $A$, it is equivalent to showing that $T(a)$ is
-  contractible. For any $x:\setTrunc{a=a}$ and any $p:a=a$, one can
-  prove that $\settrunc p \cdot x = x\cdot \settrunc p$. Indeed, the
-  goal is an identity type in the set $\fundgrp(A,a)$, so we can
-  suppose $x \jdeq \settrunc q$ for some $q:a=a$, and one wants to
-  prove
-  $\settrunc p \cdot \settrunc q = \settrunc q \cdot \settrunc p$, or
-  in other words $\Trunc{pq=qp}$. By hypothesis, $(A,a)$ is simply
-  connected, so that every path of $a=a$ is merely equal to every
-  other. Hence:
+  contractible. Indeed, for any $p:a=a$, we shall prove the
+  proposition
+  $\settrunc{p\cdot \blank \cdot \inv p} = \settrunc{\id_{a=a}}$, or
+  equivalently $\Trunc{p\cdot\blank\inv p = \id_{a=a}}$. Because the
+  goal is propositional, one can use the connectedness of $a=a$ and
+  restrict to show the proposition only for $p \jdeq \refl a$. In this
+  case, path algebra gives an element of
+  $p\cdot\blank \cdot \inv p = \id_{a=a}$ whose truncation provides us
+  with the wanted proof.
+  % For any $x:\setTrunc{a=a}$ and any $p:a=a$, one can
+  % prove that $\settrunc p \cdot x = x\cdot \settrunc p$. Indeed, the
+  % goal is an identity type in the set $\fundgrp(A,a)$, so we can
+  % suppose $x \jdeq \settrunc q$ for some $q:a=a$, and one wants to
+  % prove
+  % $\settrunc p \cdot \settrunc q = \settrunc q \cdot \settrunc p$,
+  % or
+  % in other words $\Trunc{pq=qp}$. By hypothesis, $(A,a)$ is simply
+  % connected, so that every path of $a=a$ is merely equal to every
+  % other.
+  Hence:
   \begin{align*}
     T(a)
     &\jdeq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
-      \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}
+    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}
+      \alpha = \settrunc{p\cdot \blank \cdot \inv p}
     \\
     &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
-      \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x 
+    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
+      \alpha = \settrunc{\id_{a=a}}
     \\ 
     &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}(a=a) \to 
-      \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
-    \\
-    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \lceil \alpha \rceil = \left\lceil {\settrunc{\id_{a=a}}} \right\rceil
-    \\
-    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \alpha = \settrunc{\id_{a=a}}
-    \\
-    &\weq 1
+    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
+      (\alpha = \settrunc{\id_{a=a}})
   \end{align*}
+  Note that $\alpha = \settrunc{\id_{a=a}}$ is a proposition, so that,
+  $a=a$ having $\refl a$ as an element, the type
+  $(a=a) \to (\alpha = \settrunc{\id_{a=a}})$ is equivalent to
+  $\alpha = \settrunc{\id_{a=a}}$ itself. It follows that:
+  \begin{displaymath}
+    T(a)
+    \weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}( \alpha =
+    \settrunc{\id_{a=a}} )
+    \weq 1
+  \end{displaymath}
+  Let then $\Phi (a')$ be the element
+  $(a'=a', \kappa_{a'}):\univcover \UU {a=a}$ where $\kappa_{a'}$ is
+  the first projection of the center of contraction of $T(a')$. In
+  particular, following the chain of equivalences above, $\Phi(a)$ is
+  defined as $(a=a, \settrunc{\refl {a=a}})$, hence $\Phi(a)$ is a
+  pointed map with trivial path. To verify that $\Phi$, thus defined,
+  is an equivalence, one can use connectedness of
+  $\BB(\loopspace (A,a))$ and only check that
+  $\inv\Phi(a=a,\settrunc{\refl {a=a}})$ is contractible. However,
+  \begin{displaymath}
+    \inv\Phi(a=a,\settrunc{\refl {a=a}}) \simeq \sum_{a':A}
+    \sum_{\varphi : (a=a) \weq (a'=a')}\settrunc{\varphi} = \kappa_{a'}.
+  \end{displaymath}
+  For an element $a':A$ together with $\varphi: (a=a) \weq (a'=a')$
+  such that the proposition $\settrunc \varphi = \kappa_{a'}$ holds, a
+  path between $(a,\id_{a=a},!)$ and $(a',\varphi,!)$ consists of a
+  path $p:a=a'$ and a path $q:\varphi = (x\mapsto p x \inv p)$.
+
+  {\color{red} Not sure how to conclude... We should target a
+    proposition if we ever want to have an actual path $p:a=a'$. But
+    even then, we only have a mere equality between $\varphi$ and
+    $p\blank\inv p$...}
 \end{proof}
 
 
