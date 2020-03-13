@@ -1275,8 +1275,8 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
 % We want to show that $f=f'$ is a proposition.  If $(J,!)$ and $(J',!)$ are elements in $\sum_{J:Bf_\div=Bf'_\div}J(\pt_G)\,p_f=p_{f'}$, then $!:J(\pt_G)=p_{f'}p_f^{-1}=J'(\pt_G)$.  Since $J(z)=J'(z)$ is a proposition for each $z:BG$ it suffices to display a map $(\pt_G=z)\to(J(z)=J'(z))$. 
 \end{example}
 
-The following example expresses that $\ZZ$ is a free group 
-with one generator. (DISCUSS)
+The following example expresses that $\ZZ$ is a ``free group 
+with one generator''. %(DISCUSS) added quotations so that we do not need to discuss, but rather say that the example illustartes the (undefined) concept
 
 \begin{example}
   \label{ex:Zinitial}
@@ -1289,7 +1289,7 @@ with one generator. (DISCUSS)
   \cref{lem:freeloopspace} yields an equivalence of sets
   $$\ev_{BG}:\left((S^1,\base)\ptdto BG\right)\we (\pt_G=\pt_G)
             : (f,f_0)\mapsto f_0^{-1}f(\Sloop)f_0.$$
-  The domain of this equivalence $\ev_{BG}$ is nothing else than the
+  The domain of this equivalence $\ev_{BG}$ is nothing but the
   definition of $\Hom(\ZZ,G)$. Hence, $\ev_{BG}$ provides a way to
   identify $\Hom(\ZZ,G)$ with the abstract group $\pt_G=\pt_G$.
   % Show that ((wedges of circle vs multiplication))
@@ -1784,6 +1784,46 @@ $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\f
 
 \subsubsection{Monomorphisms (experimental)}
 
+(I write a short experimental tirade on injections to be moved to the intro which hopefully helps understand what an injection is.  It will mean that we can shorten the monomorphism discussion a _lot_.  I'm by no means finished and it is safest to ignore this just for now).
+
+Usually, we say that a function $f:B\to C$ of sets is an injection if for all $b,b':B$ we have that $p:f(b)=f(b')$ gives rise to a $\sigma(p):b=b'$.
+This continues to be true in type theory, but since equality needs not be unique, we should in addition require that the two identities $p, f(\sigma(p)):f(b)=f(b')$ are equal.
+
+Note that a term $b:B$ can be interpreted as a function $c_b:\bn 1\to B$, and it turns out that we can replace $\bn 1$ by any type $A$ in the definition of an injection:
+\footnote{(Are you ok with this?  Do we want to write out a proof or leave it as an exercise?
+  Perhaps only in the set case where it is much easier?
+  I was sort of surprised to see how it panned out: it stops just short of saying that any injection has a retraction - and perhaps I have messed up the truncation for types that are not sets)}
+\begin{lemma} Let $f:B\to C$ be a function.
+  The following propositions are equivalent
+  \begin{enumerate}
+  \item $f$ is an injection, \ie $\prod_{c:C}\prod_{(b,p),(b',p'):\Sigma_{b'':B}c=f(b'')}(b,p)=(b',p')$
+  \item $\prod_{b,b':B}\Trunc{\Sigma_{\sigma:\prod_{f(b)=f(b')}b=b'}f(\sigma)=\id}$
+  \item $\prod_{A:\UU}\prod_{g,h:A\to B}\Trunc{\sum_{\sigma:\prod_{fg=fh}g=h}f(\sigma(p))=p}$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  Deducing from $x:\prod_{b,b':B}\sum_{\sigma:\prod_{f(b)=f(b')}b=b'}f(\sigma(p))=p$ that $f$ is an injection is easy: if $c:C$ and $(b,p),(b',p'):f^{-1}(c)$, then $p'p^{-1}:f(b)=f(b')$ and the first projection of $x(b,b')$ as applied to $p'p^{-1}$ is an element $q:b=b'$ so that $f(q)=p'p^{-1}$, \ie a term in $(b,p)=(b',p')$.
+
+  Conversely, if $f$ is an injection, as witnessed by
+  $$y:\prod_{c:C}\prod_{(b,p),(b',p'):\Sigma_{b'':B}c=f(b'')}(b,p)=(b',p'),$$
+  and $b,b':B$ and $q:f(b)=f(b')$, let $y_1(b,b')(q):b=b'$ and  $y_2(b,b')(q):f(\beta_1(q))=q$ be shorthand for the first and second projection of $$y(f(b))((b,\refl{f(b)}),(b',q)):(b,\refl{f(b)})=(b',q).$$
+  Then $(b,b')\mapsto (y_1(b,b'),y_2(b,b')):\prod_{b,b':B}\Sigma_{\sigma:\prod_{f(b)=f(b')}b=b'}f(\sigma(p))=p$.
+
+  
+  % The critical observation is the function
+  % $$\alpha:\prod_{c:C}\prod_{(b,p),(b',p'):\Sigma_{b'':B}c=f(b'')}(b,p)=(b',p')\to \prod_{b,b':B}\sum_{{\sigma:\prod_{f(b)=f(b')}b=b'}} f(\sigma(p))=p$$
+  % defined as follows. If $\beta:\prod_{c:C}\prod_{(b,p),(b',p'):\Sigma_{b'':B}c=f(b'')}(b,p)=(b',p')$,
+  % $b,b':B$ and $q:f(b)=f(b')$, let $\beta_1(q):b=b'$ and  $\beta_2(q):f(\beta_1(q))=q$ be shorthand for the first and second projection of $$\beta(f(b))((b,\refl{f(b)}),(b',q)):(b,\refl{f(b)})=(b',q).$$
+  % Then $\alpha(\beta)(b,b')=(\beta_1,\beta_2)$.  Reengineering we see that $\alpha$ is an equivalence.
+
+  The second proposition clearly follows from the third by letting $A$ be $\bn 1$.  Conversely, since functions from any $A$ to $B$ is uniquely determined by what they do on points in $A$, the second proposition implies the third.
+\end{proof}
+
+In other words, an injection is a function $f:B\to C$ such that for all types $A$ and all functions $g,h:A\to B$ such that $fg=fh:A\to C$ 
+$$\xymatrix{A\ar[r]^f&B\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&C}$$
+we necessarily have $g=h$.
+
+
 \begin{definition}\label{def:monomorphism}
 Given groups $G$ and $H$, an $f: \Hom(G,H)$ is called a 
 \emph{monomorphism} if it satisfies the \emph{left cancellation law}, 
@@ -1999,7 +2039,7 @@ sending $[p,q]:(\pt_H=y)\times_{\pt_G=\pt_G}(\pt_G=\pt_G)$ to $p\,\phi(q):(\pt_H
 \end{remark}
 
 
-\section{Groups concrete or abstract% -- same gem, different wrapping
+\section{Groups; concrete vs.~abstract% -- same gem, different wrapping
 }
 \label{sec:Gsetforabstract}
 
@@ -2065,14 +2105,16 @@ which by the very definition of transport for $\princ G$ is $\preinv$.
 \end{definition}
 We give the construction of \cref{ex:qG} a short name since it will occur in important places.
 \begin{definition}
-  Let $G$ be a group.  Define the group homomorphism 
- $$q_G:G\to \concr(\abstr(G))$$ defined in terms of the pointed map by the same name
+  Let $G$ be a group.
+  The group homomorphism 
+  $$q_G:\Hom(G,\concr(\abstr(G)))$$
+  is defined in terms of the pointed map by the same name
 $$q_G:BG\to_* (\typetorsor^\abstr_{\abstr(G)},\princ {\abstr(G)}),\quad q_G(z)=(\princ G(z),\preinv,!).$$
 \end{definition}
 
 \begin{lemma}
   \label{lem:Groupsareidentitytypes}%Let ${\agp G}$ be an abstract group.  
-For all groups $G$, the pointed function $q_G:G\to\concr(\abstr(G))$ 
+For all groups $G$, the pointed function $q_G:G\to_*\concr(\abstr(G))$ 
 is a  equivalence.
 \end{lemma}
 \begin{proof}
@@ -2143,10 +2185,10 @@ $$\abstr:\typegroup\to\typegroup^\abstr$$ is an equivalence% : \ie the type of g
 % $\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\pt_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.  To show that the preimage is contractible, it is enough to construct a function $(\pt_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
 %\end{proof}
 
-\section{Homomorphisms, abstract vs.~concrete}
+\section{Homomorphisms; abstract vs.~concrete}
 \label{sec:homabsisconcr}
 
-Now that we know that the type of groups is equal to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.  
+Now that we know that the type of groups is identical to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.  
 
 They do, and we provide two independent and somewhat different arguments.  Translating from group homomorphisms to abstract group homomorphisms is easy: if $G$ and $H$ are groups, then we defined 
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
