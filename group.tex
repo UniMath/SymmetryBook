@@ -1868,7 +1868,9 @@ $$\xymatrix{A\ar[r]^f&B\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&C},$$  then $fg=fh:A\to C$ 
 % \end{proof}
 
 We've seen (provide refs) that for any group $G$, the underlying set $\pt_G=\pt_G$ of $\abstr(G)$ is equivalent to $\Hom(\ZZ,G)$ which in turn is equivalent to $\Hom^{\abstr}(\abstr(\ZZ),\abstr(G))$ and that abstraction preserves composition.  Hence, if $f:\Hom(G,H)$ is a group homomorphism, then saying that the induced function
-$\abstr(f)$ is an injection is equivalent to saying that if $g,h:\Hom(\ZZ,G)$ satisfies $fg=fh$ then $g=h$.  In this observation, the integers $\ZZ$ plays no more of a r\^ole than $\bn 1$ does in \cref{lem:injofsetsaremono}; we can let the source vary over any group $F$: 
+$\abstr(f)$ is an injection is equivalent to saying that the induced function $\Hom(\ZZ,G)\to\Hom(\ZZ,H)$ is an injection.
+% if $g,h:\Hom(\ZZ,G)$ satisfies $fg=fh$ then $g=h$.
+In this observation, the integers $\ZZ$ plays no more of a r\^ole than $\bn 1$ does in \cref{lem:injofsetsaremono}; we can let the source vary over any group $F$: 
 
 
 \begin{definition}\label{def:monomorphism}
@@ -1876,6 +1878,7 @@ Given groups $G$ and $H$, an $f: \Hom(G,H)$ is called a
 \emph{monomorphism} if it satisfies the \emph{left cancellation law}, 
 that is, if for all groups $F$ and $g,h:\Hom(F,G)$ we have that $fg=fh$ implies $g=h$.
 \end{definition}
+{\color{blue} In other words, $f:\Hom(G,H)$ is a monomorphism if for any group $F$ postcomposition with $f$ $\Hom(F,G)\to\Hom(F,H)$ is an injection.}
 
 Since types $\Hom(\_,\_)$ are sets, being a monomorphism is a proposition.
 We have the following equivalent characterizations.
@@ -1890,8 +1893,25 @@ The following propositions are equivalent: %(with $f$ also for $f_\div$):
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-  {\color{blue}We first prove that \cref{it:mono} is equivalent to \cref{it:injection}.
-    We have already seen that condition \cref{it:injection} is equivalent to saying that for any $g,h:\Hom(\ZZ,G)$ (\ie in the underlying set of $\abstr(G)$) we have that $fg=fh$ implies that $g=h$.  Hence \cref{it:injection} is a special case of \cref{it:mono}.  Conversely, suppose that \cref{it:injection} holds, $F$ is a group and $g,h:\Hom(F,G)$.  Then $fg=fh$ implies that for all $p:\Hom(\ZZ,F)$ we have that $f(gp)=(fg)p=(fh)p=f(hp)$, and so by assumption that $gp=hp$.  Again, by function extensionality (of functions $\Hom(\ZZ,F)\to\Hom(\ZZ,G)$, this is exactly saying that $g^\abstr$ is identical to $h^\abstr$.}
+  {\color{blue}We first prove that (\ref{it:mono}) is equivalent to (\ref{it:injection}).
+    We have already seen that condition (\ref{it:injection}) is equivalent to (\ref{it:mono}) in the special case where $F$ is $\ZZ$.
+    % saying that postcomposition by $f$ $\Hom(\ZZ,G)\to\Hom(\ZZ,H)$ is an injection.  %for any $g,h:\Hom(\ZZ,G)$ (\ie in the underlying set of $\abstr(G)$) we have that $fg=fh$ implies that $g=h$.
+  %  Hence (\ref{it:injection}) is a special case of (\ref{it:mono}).
+    Conversely, suppose that (\ref{it:injection}) holds and $F$ is a group.  Consider the commutative dagram
+$$\xymatrix{\Hom(F,G)\ar[r]\ar[d]&\Hom(F,H)\ar[d]\\
+  (\Hom(\ZZ,F)\to\Hom(\ZZ,G))\ar[r]&(\Hom(\ZZ,F)\to\Hom(\ZZ,H)),}$$
+where the vertical maps are the injections from the set of (abstract) homomorphism to functions of underlying sets and the horizontal maps are postcomposition with $f$.  Since the bottom function is by assumption is an injection, so is the upper one.
+\footnote{ Alternatively:  and $g,h:\Hom(F,G)$.  Then $fg=fh$ implies that for all $p:\Hom(\ZZ,F)$ we have by associativity that $f(gp)=(fg)p=(fh)p=f(hp)$, and so, by assumption, that $gp=hp$.
+  Again, by function extensionality (of functions $\Hom(\ZZ,F)\to\Hom(\ZZ,G)$), this is exactly saying that $g^\abstr$ is identical to $h^\abstr$.}
+%\footnote{A more elegant way of saying this, but which requires more machinery is to use that the type of groups ``has enough points'': \ie consider the square
+      % $$\xymatrix{\Hom(F,G)\ar[r]\ar[d]&\Hom(F,H)\ar[d]\\
+      %   \prod_{t:\Hom(\ZZ,F)}\Hom(\ZZ,G)\ar[r]&\prod_{t:\Hom(\ZZ,F)}\Hom(\ZZ,H)}$$ (the vertical maps are the injections sending $g$ to $t\mapsto gt$).}
+
+  The equivalence of (\ref{it:cover}) and (\ref{it:injection}) follows
+immediately from \cref{cor:fib-vs-path}(\ref{set-fib-vs-path}), using
+that $BG$ is connected and $f$ is pointed and the equivalence between $\Hom(G,H)$ and $BG\ptdto BH$.}
+
+  
 Recall that a homomorphism $f: \Hom(G,H)$ is a pointed map $f: BG\ptdto BH$.
 This means we have a function $f$ and a pointing path $f_0 : \pt_H = f(\pt_G)$. 
 Similarly for homomorphisms $g,h$ below, whose pointing paths will be denoted $g_0,h_0$.
