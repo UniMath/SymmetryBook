@@ -1784,15 +1784,25 @@ $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\f
 
 \subsubsection{Monomorphisms (experimental)}
 
-(I write a short experimental tirade on injections to be moved to the intro which hopefully helps understand what an injection is.  It will mean that we can shorten the monomorphism discussion a {\bf lot}.  I'm by no means finished and it is safest to ignore this just for now).
+(I write a short experimental tirade on injections to be moved to the intro which hopefully helps understand what an injection is.
+It will mean that we can shorten the monomorphism discussion a {\bf lot}.
+I'm by no means finished and it is safest to ignore this just for now).
 
 Usually, we say that a function $f:B\to C$ of sets is an injection if for all $b,b':B$ we have that $p:f(b)=f(b')$ gives rise to a $\sigma(p):b=b'$.
-This continues to be true in type theory, but since equality needs not be unique, we should in addition require that the two identities $p, f(\sigma(p)):f(b)=f(b')$ are equal.
+\footnote{This continues to be true in type theory, but since equality needs not be unique, we should in addition require that the two identities $p, f(\sigma(p)):f(b)=f(b')$ are equal.}
 
 Note that a term $b:B$ can be interpreted as a function $c_b:\bn 1\to B$, and it turns out that we can replace $\bn 1$ by any type $A$ in the definition of an injection:
+\begin{lemma} Let $f:B\to C$ be a function between sets.
+  The following propositions are equivalent
+  \begin{enumerate}
+  \item $f$ is an injection, \ie $\prod_{c:C}\prod_{(b,p),(b',p'):\Sigma_{b'':B}c=f(b'')}(b,p)=(b',p')$
+  \item $\prod_{b,b':B}{\prod_{f(b)=f(b')}b=b'}$
+  \item $\prod_{A:\UU}\prod_{g,h:A\to B}\sigma:\prod_{fg=fh}g=h$.
+  \end{enumerate}
+\end{lemma}
 \footnote{(Are you ok with this?  Do we want to write out a proof or leave it as an exercise?
-  Perhaps only in the set case where it is much easier?
-  I was sort of surprised to see how it panned out: it stops just short of saying that any injection has a retraction - and perhaps I have messed up the truncation for types that are not sets)}
+  The below is the general case and should perhaps go.
+  I was sort of surprised to see how it panned out: it stops just short of saying that any injection has a retraction - and perhaps I have messed up the truncation for types that are not sets)
 \begin{lemma} Let $f:B\to C$ be a function.
   The following propositions are equivalent
   \begin{enumerate}
@@ -1806,7 +1816,7 @@ Note that a term $b:B$ can be interpreted as a function $c_b:\bn 1\to B$, and it
 
   Conversely, if $f$ is an injection, as witnessed by
   $$y:\prod_{c:C}\prod_{(b,p),(b',p'):\Sigma_{b'':B}c=f(b'')}(b,p)=(b',p'),$$
-  and $b,b':B$ and $q:f(b)=f(b')$, let $y_1(b,b')(q):b=b'$ and  $y_2(b,b')(q):f(\beta_1(q))=q$ be shorthand for the first and second projection of $$y(f(b))((b,\refl{f(b)}),(b',q)):(b,\refl{f(b)})=(b',q).$$
+  and $b,b':B$ and $q:f(b)=f(b')$, let $y_1(q)(b,b'):b=b'$ and  $y_2(q)(b,b'):f(y_1(q))=q$ be shorthand for the first and second projection of $$y(f(b))((b,\refl{f(b)}),(b',q)):(b,\refl{f(b)})=(b',q).$$
   Then $(b,b')\mapsto (y_1(b,b'),y_2(b,b')):\prod_{b,b':B}\Sigma_{\sigma:\prod_{f(b)=f(b')}b=b'}f(\sigma)=\id$.
 
   
@@ -1818,10 +1828,11 @@ Note that a term $b:B$ can be interpreted as a function $c_b:\bn 1\to B$, and it
 
   The second proposition clearly follows from the third by letting $A$ be $\bn 1$.  Conversely, since functions from any $A$ to $B$ is uniquely determined by what they do on points in $A$, the second proposition implies the third.
 \end{proof}
+}
 
-In other words, an injection is a function $f:B\to C$ such that for all types $A$ and all functions $g,h:A\to B$ such that $fg=fh:A\to C$ 
+In other words, an injection between sets is a function $f:B\to C$ such that for all types $A$ and all functions $g,h:A\to B$ such that $fg=fh:A\to C$ 
 $$\xymatrix{A\ar[r]^f&B\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&C}$$
-we necessarily have $g=h$.
+we necessarily have that $g=h$.
 
 
 \begin{definition}\label{def:monomorphism}
