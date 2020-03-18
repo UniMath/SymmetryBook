@@ -1424,7 +1424,6 @@ Let $A$ be a type. We call $A$ \emph{non-empty} if we have an element of $\Trunc
   all elements in the same component, that is, if
   $\Trunc{A} \times \prod_{x,y:A} \Trunc{x=y}$.
 \end{definition}
-
 Note that under this definition the empty type $\emptytype$ is not connected.
 One can view being connected as a weak form
 of being contractible --- without direct access to a center and to
@@ -1443,17 +1442,29 @@ Show that $\Trunc P \equiv P$ for any proposition $P$.
 Show that any connected set is contractible.
 \end{xca}
 
+\begin{definition}\label{def:prop-image}
+  Let $A,B$ be types and let $f : A \to B$. We define the \emph{image} of $f$ as
+  \[
+    \im(f) \defeq \sum_{y:B}\exists_{x:A}(y = f\,x).
+  \]
+\end{definition}
+
+\begin{xca}\label{xca:unique-fact-image}
+  Show that the image of $f : A \to B$ induces a factorization $f = i\circ p$
+  \[
+    \begin{tikzcd}
+      A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
+      & \im(f)\ar[ur,"i"'] &
+    \end{tikzcd}
+  \]
+  where $p$ is surjective and $i$ is injective, and that each such factorization
+  is equivalent to the image factorization.
+\end{xca}
+
 \begin{xca}\label{xca:connected-trivia}
 Let $A$ be a connected type, and suppose that $a=a$ is a proposition for every $a:A$. 
 Show that $A$ is contractible.
 \end{xca}
-
-STUFF ON LARGE VERSUS SMALL COMMENTED OUT HERE.
-%\begin{xca}\label{xca:essentiallysmall} 
-%Let $\UU\subseteq\UU_1$ be universes and let $A:\UU_1$ so that $||A||$ is in $\UU$ and for all $a,b:A$ we have that $(a=_Ab):\UU$.  Then $A$ is \emph{essentially small}, \ie there is an equivalence (in $\UU_1$) to a type in $\UU$.  
-%Prove that if $n:\NN$ then the type $\fin_n$ of sets of cardinality $n$  (c.f.~\cref{def:finiteset}) is essentially small, and more generally that if $S$ is a set, then the component $\Set_{(S)}$ is essentially small.  
-%\end{xca}
-%\cref{xca:essentiallysmall} has the consequence that in many cases types and essentially small types can be used interchangeably.  Where this may clutter the notation we will gloss over this distinction.
 
 In the following definition we introduce the adverb {\em merely}.
 
@@ -1559,6 +1570,74 @@ for any set $S$, precomposition with $\trunc{\_}_0$ is an equivalence
 \[
 (\Trunc{T}_0 \to S) \quad \to \quad (T \to S).
 \]
+
+\section{The replacement principle}
+\label{sec:replacement}
+
+In this section we fix a universe $\UU$. Often we run into types that are not
+in $\UU$ directly, but are nevertheless equivalent to types in $\UU$.
+\begin{definition}\label{def:ess-loc-small}
+  We say that a type $A$ is \emph{essentially $\UU$-small} if there
+  (purely) is a small type $X:\UU$ and an equivalence $A \equiv
+  X$. And $A$ is \emph{locally $\UU$-small} if all its identity types
+  are essentially $\UU$-small.
+\end{definition}
+Note that $\sum_{X:\UU}(A \equiv X)$ is a proposition by the univalence axiom for $\UU$.
+Of course, any $A:\UU$ is essentially $\UU$-small.
+
+To show that a type is locally $\UU$-small we have to give a reflexive relation
+$\mathrm{Eq}_A : A \to A \to \UU$ inducing equivalences
+$(x=_Ay) \equiv \mathrm{Eq}_A\,x\,y$ by path induction.
+
+\begin{xca}
+  Show that $\UU$ is locally $\UU$-small, and investigate
+  the closure properties of locally $\UU$-small types.
+  (For instance, show that if $A:\UU$ and $B(x)$ is a family of locally $\UU$-small
+  types indexed by $x:A$, then $\prod_{x:A}B(x)$ is locally $\UU$-small.)
+\end{xca}
+
+Sometimes we make use of the following: %MOVE TO SOMEWHERE ELSE?
+\begin{principle}
+  \label{pri:prop-resizing}
+  {\bf Propositional Resizing} \index{Propositional resizing}
+  For any pair of nested universes $\UU:\UU'$, the injection
+  $\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.
+\end{principle}
+\begin{remark}
+  %ARE WE ALWAYS ASSUMING IMPREDICATIVITY? IF SO, WHERE DO WE SAY THIS?
+  This principle equivalently says that any proposition is essentially $\UU$-small,
+  where we may take $\UU$ to be the smallest universe $\UU_0$.
+  It also implies that any set is locally $\UU_0$-small.
+\end{remark}
+\begin{xca}\label{xca:lem-prop-sizing}
+  Show that if the principle of the excluded middle holds for all propositions,
+  then propositional resizing holds.
+\end{xca}
+
+We will make use of the following (recall the definition of the image, \cref{def:prop-image}):
+\begin{principle}
+  \label{pri:replacement}
+  {\bf The Replacement Principle} \index{Replacement principle}
+  For any map $f : A \to B$
+  from an essentially $\UU$-small type $A$
+  to a locally $\UU$-small type $B$,
+  the image $\im(f)$ is essentially $\UU$-small.
+\end{principle}
+This is reminiscent of the replacement principle of set theory which states
+that for a large (class-sized) function with domain a small set,
+the image is again a small set.
+This follows from our replacement principle,
+assuming propositional resizing, or the even stronger principle of the excluded middle.
+
+The replacement principle can be proved using the join construction of the image,
+cf.~\cite{Rijke-Join}.
+In particular, it is provable from our assumption that the universes
+are closed under pushouts.
+\begin{xca}\label{xca:comp-loc-small-ess-small}
+  Show that the replacement principle implies that for any locally $\UU$-small type $A$,
+  and any element $a:A$,
+  the connected component $A_{(a)}$ is essentially $\UU$-small.
+\end{xca}
 
 \section{More on natural numbers}
 \label{sec:more-on-N}
@@ -1874,8 +1953,12 @@ Now apply injectivity.
 
 The real line is contractible and the inclusion of the discrete subspace $\{0,1\}$ is, well, an inclusion (of sets, which is the same thing as an inclusion of spaces).  However, $\{0,1\}$ is not connected, seemingly contradicting the next result.
 
-  This apparent contradiction is resolved once one recalls the myopic nature of our setup: the contractibility of the real line means that ``all real numbers are identical'', and \emph{our} ``preimage of $3.25$'' is not a proposition: it contains \emph{both} $0$ and $1$.  Hence ``$\{0,1\}\subseteq\mathbf R$'' would not count as an injection in our sense.  
-%
+  This apparent contradiction is resolved once one recalls the myopic nature of our setup: the contractibility of the real line means that ``all real numbers are identical'', and \emph{our} ``preimage of $3.25$'' is not a proposition: it contains \emph{both} $0$ and $1$.  Hence ``$\{0,1\}\subseteq\mathbf R$'' would not count as an injection in our sense.
+
+  We should actually have been more precise above: we were referring to the \emph{homotopy type} of the real line, rather than the real line itself.
+  We shall later (in the chapters on geometry) make plenty of use of the latter,
+  which is as usual a set with uncountably many elements.
+% 
 %On one hand, there is no injection of $\{0,1\}$ into $\{0\}$, and on the other, any injection of a nonempty space into the one-point space \emph{is} an equivalence.  
 \end{remark}
 
