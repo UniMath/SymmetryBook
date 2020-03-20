@@ -1,6 +1,5 @@
 %% packages
 \usepackage{amssymb,amsthm}
-\usepackage[numbers]{natbib}
 \usepackage{mathtools}          %to get \vcentcolon
 \usepackage{thmtools}
 \usepackage{letltxmacro}        %to rename \equiv
@@ -11,6 +10,7 @@
 \pgfplotsset{compat=newest}
 %\usepackage{soul} % for striking out, can be removed in the end
 \usepackage{enumitem}
+\usepackage{xifthen}
 
 \usetikzlibrary{decorations.markings,decorations.pathreplacing,matrix,arrows,chains,positioning,scopes} 
         %,hobby} % for hobby splines
@@ -32,20 +32,32 @@
 %      decorate
 %    }}}
 
+% bibliography
+\usepackage{hyphenat}
+\usepackage[backref=true,
+            style=verbose,
+            autocite=footnote,
+            backend=biber]{biblatex}
+\addbibresource{papers.bib}
+\let\cite\autocite
+\DefineBibliographyStrings{english}{%
+  backrefpage = {page},% originally "cited on page"
+  backrefpages = {pages},% originally "cited on pages"
+}
+
 % hyperref should be the package loaded last
-\usepackage[backref=page,
-            colorlinks,
+\usepackage[colorlinks,
             citecolor=linkcolor,
             linkcolor=linkcolor,
             urlcolor=linkcolor,
             unicode,
+            pdfborderstyle=,
             pdfauthor={CAS},
             pdftitle={Symmetry},
             pdfsubject={Mathematics},
             pdfkeywords={type theory, group theory, univalence axiom}]{hyperref}
 % - except for cleveref!
 \usepackage[capitalize]{cleveref}
-\usepackage{xifthen}
 \definecolor{linkcolor}{rgb}{0,0,0.5}
 
 %% macros
@@ -55,7 +67,8 @@
 \newcommand{\DELETE}[1]{}
 
 %%% Headers
-\pagestyle{headings}
+%\pagestyle{headings}
+\setcounter{secnumdepth}{1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% THEOREMS
