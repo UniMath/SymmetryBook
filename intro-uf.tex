@@ -1475,6 +1475,83 @@ then {\em merely A} is the English adjective encoded by the type $\Trunc T$.
 
 For example, a type is non-empty if and only if it {\em merely has an element}, and two elements of a connected type are {\em merely equal}.
 
+\section{The replacement principle}
+\label{sec:replacement}
+
+In this section we fix a universe $\UU$.
+We think of types $A:\UU$ as \emph{small} compared to arbitrary types,
+which are then \emph{large} in comparison.\footnote{%
+  The terminology \emph{small}/\emph{large} is also known from set theory,
+  where classes are large collections,
+  and sets are small collections.}
+Often we run into types that are not in $\UU$ (small) directly,
+but are nevertheless equivalent to types in $\UU$.
+\begin{definition}\label{def:ess-loc-small}
+  We say that a type $A$ is \emph{essentially $\UU$-small} if there
+  (purely) is a type $X:\UU$ and an equivalence $A \equiv
+  X$. And $A$ is \emph{locally $\UU$-small} if all its identity types
+  are essentially $\UU$-small.
+\end{definition}
+Note that $\sum_{X:\UU}(A \equiv X)$ is a proposition by the univalence axiom for $\UU$.
+Of course, any $A:\UU$ is essentially $\UU$-small,
+and any essentially $\UU$-small type is locally $\UU$-small.
+
+To show that a type is locally $\UU$-small
+we have to give a reflexive relation
+$\mathrm{Eq}_A : A \to A \to \UU$
+that induces, by path induction, a family of equivalences
+$(x=_Ay) \equiv \mathrm{Eq}_A\,x\,y$.
+
+\begin{xca}
+  Show that $\UU$ is locally $\UU$-small, and investigate
+  the closure properties of essentially and locally $\UU$-small types.
+  (For instance, show that if $A:\UU$ and $B(x)$ is a family of locally $\UU$-small
+  types indexed by $x:A$, then $\prod_{x:A}B(x)$ is locally $\UU$-small.)
+\end{xca}
+
+Sometimes we make use of the following: %MOVE TO SOMEWHERE ELSE?
+\begin{principle}
+  \label{pri:prop-resizing}
+  {\bf Propositional Resizing} \index{Propositional resizing}
+  For any pair of nested universes $\UU:\UU'$, the injection
+  $\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.
+\end{principle}
+\begin{remark}
+  This principle equivalently says that any proposition is essentially $\UU$-small,
+  where we may take $\UU$ to be the smallest universe $\UU_0$.
+  It also implies that any set is locally $\UU_0$-small.
+\end{remark}
+\begin{xca}\label{xca:lem-prop-sizing}
+  Show that if the principle of the excluded middle holds for all propositions,
+  then propositional resizing holds.
+\end{xca}
+
+We will make use of the following (recall the definition of the image, \cref{def:prop-image}):
+\begin{principle}[Replacement]
+  \label{pri:replacement}
+  {\bf The Replacement Principle} \index{Replacement principle}
+  For any map $f : A \to B$
+  from an essentially $\UU$-small type $A$
+  to a locally $\UU$-small type $B$,
+  the image $\im(f)$ is essentially $\UU$-small.
+\end{principle}
+This is reminiscent of the replacement principle of set theory which states
+that for a large (class-sized) function with domain a small set,
+the image is again a small set.
+This follows from our replacement principle,
+assuming propositional resizing, or the even stronger principle of the excluded middle.
+
+The replacement principle can be proved using the join construction of the image\cite{Rijke-Join}.
+In particular, it is provable from our assumption that the universes
+are closed under pushouts.
+\begin{xca}\label{xca:comp-loc-small-ess-small}
+  Show that the replacement principle implies that for any locally $\UU$-small type $A$,
+  and any element $a:A$,
+  the connected component $A_{(a)}$ is essentially $\UU$-small.
+\end{xca}
+Another consequence is that the type of finite sets, which we'll define below
+in~\cref{def:groupoidFin}, is essentially small.
+
 \section{Operations that produce sets}
 \label{sec:operations-on-sets}
 
@@ -1570,74 +1647,6 @@ for any set $S$, precomposition with $\trunc{\_}_0$ is an equivalence
 \[
 (\Trunc{T}_0 \to S) \quad \to \quad (T \to S).
 \]
-
-\section{The replacement principle}
-\label{sec:replacement}
-
-In this section we fix a universe $\UU$. Often we run into types that are not
-in $\UU$ directly, but are nevertheless equivalent to types in $\UU$.
-\begin{definition}\label{def:ess-loc-small}
-  We say that a type $A$ is \emph{essentially $\UU$-small} if there
-  (purely) is a small type $X:\UU$ and an equivalence $A \equiv
-  X$. And $A$ is \emph{locally $\UU$-small} if all its identity types
-  are essentially $\UU$-small.
-\end{definition}
-Note that $\sum_{X:\UU}(A \equiv X)$ is a proposition by the univalence axiom for $\UU$.
-Of course, any $A:\UU$ is essentially $\UU$-small.
-
-To show that a type is locally $\UU$-small we have to give a reflexive relation
-$\mathrm{Eq}_A : A \to A \to \UU$ inducing equivalences
-$(x=_Ay) \equiv \mathrm{Eq}_A\,x\,y$ by path induction.
-
-\begin{xca}
-  Show that $\UU$ is locally $\UU$-small, and investigate
-  the closure properties of locally $\UU$-small types.
-  (For instance, show that if $A:\UU$ and $B(x)$ is a family of locally $\UU$-small
-  types indexed by $x:A$, then $\prod_{x:A}B(x)$ is locally $\UU$-small.)
-\end{xca}
-
-Sometimes we make use of the following: %MOVE TO SOMEWHERE ELSE?
-\begin{principle}
-  \label{pri:prop-resizing}
-  {\bf Propositional Resizing} \index{Propositional resizing}
-  For any pair of nested universes $\UU:\UU'$, the injection
-  $\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.
-\end{principle}
-\begin{remark}
-  %ARE WE ALWAYS ASSUMING IMPREDICATIVITY? IF SO, WHERE DO WE SAY THIS?
-  This principle equivalently says that any proposition is essentially $\UU$-small,
-  where we may take $\UU$ to be the smallest universe $\UU_0$.
-  It also implies that any set is locally $\UU_0$-small.
-\end{remark}
-\begin{xca}\label{xca:lem-prop-sizing}
-  Show that if the principle of the excluded middle holds for all propositions,
-  then propositional resizing holds.
-\end{xca}
-
-We will make use of the following (recall the definition of the image, \cref{def:prop-image}):
-\begin{principle}
-  \label{pri:replacement}
-  {\bf The Replacement Principle} \index{Replacement principle}
-  For any map $f : A \to B$
-  from an essentially $\UU$-small type $A$
-  to a locally $\UU$-small type $B$,
-  the image $\im(f)$ is essentially $\UU$-small.
-\end{principle}
-This is reminiscent of the replacement principle of set theory which states
-that for a large (class-sized) function with domain a small set,
-the image is again a small set.
-This follows from our replacement principle,
-assuming propositional resizing, or the even stronger principle of the excluded middle.
-
-The replacement principle can be proved using the join construction of the image,
-cf.~\cite{Rijke-Join}.
-In particular, it is provable from our assumption that the universes
-are closed under pushouts.
-\begin{xca}\label{xca:comp-loc-small-ess-small}
-  Show that the replacement principle implies that for any locally $\UU$-small type $A$,
-  and any element $a:A$,
-  the connected component $A_{(a)}$ is essentially $\UU$-small.
-\end{xca}
 
 \section{More on natural numbers}
 \label{sec:more-on-N}
@@ -1872,6 +1881,10 @@ For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
 \end{definition}
 Observe that $\fin_0=\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n$
 by \cref{lem:maxonefinitetype}.
+
+Note that $\fin$ is the image of the map $F : \NN \to \UU$
+from~\cref{def:finiteset}, and is hence essentially $\UU$-small
+(for any universe $\UU$), by~\cref{pri:replacement}.
 
 \section{More equivalences}
 \label{sec:more-on-equivalences}
