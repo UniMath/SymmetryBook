@@ -1041,77 +1041,22 @@ groups.
   pointed simply connected $2$-type $(A,a)$. One wants to prove
   $\BB (\loopspace {(A,a)}) \weq_\ast (A,a)$. One should first notice
   that, because $\loopspace (A,a)$ is an abelian group,
-  \begin{displaymath}
+  \begin{equation}
+    \label{eq:loopspace-A-abelian}%
     \loopspace \left( \BB (\loopspace {(A,a)}) \right)
     \weq \conncomp{((a=a)=(a=a))}{\refl{a=a}} \weq (a=a).
-  \end{displaymath}
+  \end{equation}
   This equivalence maps a path
   $(p,!):(a=a,\settrunc{\refl{a=a}})=(a=a,\settrunc{\refl{a=a}})$ to
   the evaluation $p(\refl a): a=a$.
 
+  %% OLD MATERIAL, can still be useful.
+  %%
   % We will now provide
   % \begin{displaymath}
   %   \Phi : \BB {(\loopspace {(A,a)})} \ptdto (A,a)
   % \end{displaymath}
   % such that $\loopspace(\Phi)$ is the previous equivalence.
-
-  % Suppose one has a equivalence $f:(x=x) \to (y=y)$ where $x$ and $y$
-  % are the designated points of simply connected 2-types $X$ and
-  % $Y$. Then $\Phi:X\to Y$ such that $\Trunc{\loopspace\Phi = f}$?
-  % Consequence if this is true: if $f$ is an equivalence then
-  % $\loopspace \Phi$ also and then $\Phi$ is an equivalence. For all
-  % $x':X$, one can consider the type of all those $y':Y$ and those
-  % elements $f':(x=x') \to (y=y')$ such that taking any $p:x=x'$, one
-  % gets that $f'$ is $f$ skewed by $p$: more precisely there is a
-  % $2$-path $\alpha_p:f'(p \blank) = f'(p)f(\blank)$. We can try to
-  % prove that this is contractible for every $x':X$, which by
-  % connectedness of $X$ boils down to the contractibility at $x$ only.
-  % \begin{align*}
-  %   T(x') &\weq \sum_{y':Y}\sum_{f':(x=x')\to(y=y')}
-  %           \sum_{\alpha:\prod_{p:x=x'} f'(p\blank) = f'(p)f(\blank)}
-  %           \\ &\prod_{p,p':x=x'}\prod_{\chi:p=p'}
-  %           \alpha_{p'}(f'(\chi)\cdot f(\blank)) \alpha_p = f'(\chi\cdot\blank)
-  %   \\
-  %   T(x)  &\weq \sum_{y':Y}\sum_{f':\setTrunc{(x=x)\to(y=y')}}
-  %           f'(\blank)=f'(\settrunc{\refl x})\settrunc{f(\blank)} \\
-  %         &\weq \sum_{y':Y}\setTrunc{(y=y')}
-  % \end{align*}
-  % \begin{align*}
-  %   &\hphantom{\weq} \sum_{y':Y}\sum_{f':(x=x)\to(y=y')}
-  %     \prod_{p:x=x}\prod_{\ell:x=x}\Trunc{f'(p\ell)=f'(p)f(\ell)}\\
-  %   &\weq \sum_{y':Y}\sum_{f':(x=x)\to(y=y')}
-  %     \prod_{p:x=x}\prod_{\ell:x=x}\Trunc{f'(\ell)=f'(\refl x)f(\ell)}\\
-  %   &\weq \sum_{y':Y}\sum_{f':(x=x)\to(y=y')}
-  %     (x=x) \to \prod_{\ell:x=x}\Trunc{f'(\ell)=f'(\refl x)f(\ell)}\\
-  %   &\weq \sum_{y':Y}\sum_{f':(x=x)\to(y=y')} \prod_{\ell:x=x}\Trunc{f'(\ell)=f'(\refl x)f(\ell)}\\
-  % \end{align*}
-  % Two elements $(y', f')$ and $(y'',f'')$ in the last type. Their identity type is equivalent to
-  % $\sum_{q:y'=y''}q\cdot f'(\blank) = f''(\blank)$ and we can prove there is an inhabitant
-  
-  
-  % Let $T : \BB {(\loopspace {(A,a)})} \to \UU$ be the type family define by
-  % \begin{displaymath}
-  %   T(X,\varphi) \defequi
-  %   \sum_{a':A}    \left(
-  %     \sum_{\alpha:\setTrunc{(a'=a')=X}} \left(
-  %       \prod_{p:a=a'}
-  %       \varphi = \alpha \cdot \settrunc{p\cdot \blank \cdot \inv p}
-  %     \right)
-  %   \right)
-  % \end{displaymath}
-  % Let us prove that $T(X,\varphi)$ is contractible for any
-  % $(X,\varphi):\BB(\loopspace (A,a))$. By connectedness of
-  % $\BB(\loopspace (A,a))$, we only have to prove the contractibility of
-  % $T(a=a,\settrunc{\refl{a=a}})$. However,
-  % \begin{displaymath}
-  %   T(a=a,\settrunc{\refl{a=a}}) \jdeq
-  %   \sum_{a':A} \left(
-  %     \sum_{\alpha:\setTrunc{(a'=a')=(a=a)}} \left(
-  %       \prod_{p:a=a'}
-  %       \alpha = \settrunc{\inv p\cdot \blank \cdot p}
-  %     \right)
-  %   \right)
-  % \end{displaymath}
   % To be able to
   % express $\Phi$, we need a small gadget about truncations of
   % function
@@ -1127,35 +1072,18 @@ groups.
   % $\setTrunc Y$ is a set. If we assume the axiom of
   % choice\footnote{What is the status of AC in this book??}, then
   % $\lceil \blank \rceil$ is injective when $Y$ is a set.
-
-  Let $T : A \to \UU$ be the type family define by
+  %%
+  We will now define a pointed map
+  $\Phi : (A,a) \ptdto \loopspace \left( \BB (\loopspace {(A,a)})
+  \right)$, and prove subsequently that this is an equivalence. Let
+  $T : A \to \UU$ be the type family define by
   \begin{displaymath}
     T(a') \defequi \sum_{\alpha:\setTrunc{(a=a)\weq(a=a')}}
     \prod_{p:a=a'}\alpha=\settrunc {p\cdot\blank}
   \end{displaymath}
   We claim that $T(a')$ is contractible for all $a':A$. By
   connectedness of $A$, it is equivalent to showing that $T(a)$ is
-  contractible.
-  % Indeed, for any $p:a=a$, we shall prove the
-  % proposition
-  % $\settrunc{p\cdot \blank \cdot \inv p} = \settrunc{\id_{a=a}}$, or
-  % equivalently $\Trunc{p\cdot\blank\inv p = \id_{a=a}}$. Because the
-  % goal is propositional, one can use the connectedness of $a=a$ and
-  % restrict to show the proposition only for $p \jdeq \refl a$. In this
-  % case, path algebra gives an element of
-  % $p\cdot\blank \cdot \inv p = \id_{a=a}$ whose truncation provides us
-  % with the wanted proof.
-  % For any $x:\setTrunc{a=a}$ and any $p:a=a$, one can
-  % prove that $\settrunc p \cdot x = x\cdot \settrunc p$. Indeed, the
-  % goal is an identity type in the set $\fundgrp(A,a)$, so we can
-  % suppose $x \jdeq \settrunc q$ for some $q:a=a$, and one wants to
-  % prove
-  % $\settrunc p \cdot \settrunc q = \settrunc q \cdot \settrunc p$,
-  % or
-  % in other words $\Trunc{pq=qp}$. By hypothesis, $(A,a)$ is simply
-  % connected, so that every path of $a=a$ is merely equal to every
-  % other.
-  However
+  contractible. However
   \begin{align*}
     T(a)
     &\jdeq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
@@ -1164,20 +1092,7 @@ groups.
     &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \alpha = \settrunc{\id_{a=a}}
     \\
     &\weq 1
-    % &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}(a=a) \to 
-    % % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
-    %   (\alpha = \settrunc{\id_{a=a}})
   \end{align*}
-  % Note that $\alpha = \settrunc{\id_{a=a}}$ is a proposition, so that,
-  % $a=a$ having $\refl a$ as an element, the type
-  % $(a=a) \to (\alpha = \settrunc{\id_{a=a}})$ is equivalent to
-  % $\alpha = \settrunc{\id_{a=a}}$ itself. It follows that:
-  % \begin{displaymath}
-  %   T(a)
-  %   \weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}( \alpha =
-  %   \settrunc{\id_{a=a}} )
-  %   \weq 1
-  % \end{displaymath}
   Let then $\Phi (a')$ be the element
   $(a=a', \kappa_{a'}):\univcover \UU {a=a}$ where $\kappa_{a'}$ is
   the first projection of the center of contraction of $T(a')$. In
@@ -1194,15 +1109,20 @@ groups.
   For an element $a':A$ together with $\varphi: (a=a) \weq (a'=a')$
   such that the proposition $\settrunc \varphi = \kappa_{a'}$ holds, a
   path between $(a,\id_{a=a},!)$ and $(a',\varphi,!)$ consists of a
-  path $p:a=a'$ and a path $q:\varphi = (x\mapsto p x)$. We have a
-  good candidate for $p$, namely $\varphi(\refl a):a=a'$. However we
-  don't have quite $q$, only an element of
-  $\Trunc{\varphi=(x\mapsto px)}$. But, for any $a'$ there is a function
+  path $p:a=a'$ and a path $q:(x\mapsto p x) = \varphi$. We have a
+  good candidate for $p$, namely $p\defequi \varphi(\refl
+  a):a=a'$. However we don't have quite $q$ yet. However, for any
+  $a'$, there is a function
   \begin{displaymath}
-    \ev : ((a=a)\weq (a=a')) \to (a=a'), \phi \mapsto \phi(\refl a) 
+    \ev_{\refl a}^{a'} : ((a=a)\weq (a=a')) \to (a=a'),\quad \psi \mapsto \psi(\refl a) 
   \end{displaymath}
-  The proposition $\isEq(\ev)$ is true because is true for
-  $a'\jdeq a$ and $A$ is connected.
+  Note that $\ev_{\refl a}^{a}$ is precisely the equivalence
+  $\loopspace{(\BB\loopspace(A,a))}\weq (a=a)$ described
+  in~\cref{eq:loopspace-A-abelian}. Hence, by connectedness of $A$,
+  one gets that the proposition $\isEq(\ev_{\refl a}^{a'})$ holds for
+  all $a':A$. In particular, both $\ev_{\refl a}^{a'}(\varphi)$ and
+  $\ev_{\refl a}^{a'}(x\mapsto px)$ are equal to $p$, which provides a
+  path $q:(x\mapsto px)=\varphi$.
 \end{proof}
 
 
