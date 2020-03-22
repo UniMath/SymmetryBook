@@ -671,50 +671,67 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
 Recall that given a pointed type $X$, we coerce it silently to its
 underlying unpointed type $X_\div$ whenever this coercion can be
 inferred from context. For example, given a group $G$, the type
-$BG=BG$ can not possibly mean anything but $BG_\div=BG_\div$ as the
-operator ``='' acts on bare types. In a similar way, $A\to BG$ for a
-type $A$ has no other meaning that the function type $A \to
-BG_\div$. This kind of coercion is used all over the place in this
-section to avoid notation explosion. One more subtle example is
-$\id_{BG}$, which can have two different meanings: either the identity
-function $BG_\div \to BG_\div$ pointed by the reflexivity path, or the
+${\clf G}\weq {\clf G}$ can not possibly mean anything but ${\clf G}_\div\simeq {\clf G}_\div$
+as the operator ``$\weq$'' acts on bare types. In a similar way,
+$A\to {\clf G}$ for a type $A$ has no other meaning that the function type
+$A \to {\clf G}_\div$. This kind of coercion is used all over the place in
+this section to avoid notation explosion. One more subtle example is
+$\id_{\clf G}$, which can have two different meanings: either the identity
+function ${\clf G}_\div \to {\clf G}_\div$ pointed by the reflexivity path, or the
 bare unpointed identity function. If the context is ambiguous, we will
-write properly $\id_{BG_\div}$ when necessary.
+write properly $\id_{{\clf G}_\div}$ when necessary.
+
+Note that for a pointed type $X$, the type $X=X$ should normally be
+interpreted as the type of symmetries of $X$ in the type $\UU_\ast$
+of pointed types. However, because we work transparently though
+univalence, it makes sense to let $X=X$ denote the type of
+symmetries of $X_\div$ in the universe $\UU$. This way, we can still
+use the silent equivalence
+\begin{displaymath}
+  (X=X) \weq (X\weq X).
+\end{displaymath}
+To lift any ambiguity, we shall write $X=_\ast X$ for the type of
+symmetries of $X$ in $\UU_\ast$. If one writes also $X\weq_\ast X$ for
+the type of pointed maps whose underlying map is an equivalence, then
+one gets, through univalence, an equivalence:
+\begin{displaymath}
+  (X=_\ast X) \weq (X\weq_\ast X).
+\end{displaymath}
 
 \begin{definition}
   Let $G$ be a group. The {\em center} of $G$, denoted
   $\grpcenter(G)$, is the group
-  $\Aut_{BG=BG}(\id_{BG})$.
+  $\Aut_{{\clf G}={\clf G}}(\id_{\clf G})$.
 \end{definition}
 
-There is a natural map $\ev_{\pt_G} : (BG=BG) \to BG$
+There is a natural map $\ev_{\pt_G} : ({\clf G}={\clf G}) \to {\clf G}$
 defined by $\ev_{\pt_G}(\varphi)\defequi \varphi(\pt_G)$. The
-restriction of this map to the connected component of $\id_{BG_\div}$
+restriction of this map to the connected component of $\id_{\clf G}$
 defines a map
 \begin{displaymath}
-  \grpcenterinc G : \grpcenter(G) \to BG.
+  \grpcenterinc G : \grpcenter(G) \ptdto {\clf G}.
 \end{displaymath}
 This map justifies the name {\em center} for $\grpcenter(G)$, and it
 connects it to the notion of center for abstract groups in ordinary
 mathematics. To understand how, notice first that
-$\grpcenterinc G (\id_{BG}) \defequi \pt_G$, and one can then study the
+$\grpcenterinc G (\id_{\clf G}) \defequi \pt_G$, and one can then study the
 map
 \begin{displaymath}
-  \ap{\grpcenterinc G}: (\id_{BG}=\id_{BG}) \to (\pt_G = \pt_G)
+  \ap{\grpcenterinc G}: (\id_{\clf G}=\id_{\clf G}) \to (\pt_G = \pt_G)
 \end{displaymath}
 induced between the abstract groups of $\grpcenter(G)$ and $G$. By
-induction on $p:\id_{BG} = \varphi$ for $\varphi:BG=BG$, one proves
+induction on $p:\id_{\clf G} = \varphi$ for $\varphi:{\clf G}={\clf G}$, one proves
 that $\ap{\grpcenterinc G}(p) = p(\pt_G)$: indeed, this is true when
-$p\jdeq \refl {\id_{BG}}$. One prove furthermore, again by induction
-on $p:\id_{BG} = \varphi$, that
+$p\jdeq \refl {\id_{\clf G}}$. One prove furthermore, again by induction
+on $p:\id_{\clf G} = \varphi$, that
 $\ap \varphi = (x\mapsto \inv{p(\pt_G)} x p(\pt_G))$. In particular,
-when $\varphi \jdeq \id_{BG}$, it shows that for every
-$p:\id_{BG}=\id_{BG}$, the following proposition holds:
+when $\varphi \jdeq \id_{\clf G}$, it shows that for every
+$p:\id_{\clf G}=\id_{\clf G}$, the following proposition holds:
 \begin{displaymath}
   \prod_{g:\pt_G=\pt_G }p(\pt_G) g = g p(\pt_G)
 \end{displaymath}
 In other words, $\ap {\grpcenterinc G}$ maps elements of
-$\id_{BG}=\id_{BG}$ to elements of $\abstr(G)$ that commutes with
+$\id_{\clf G}=\id_{\clf G}$ to elements of $\abstr(G)$ that commutes with
 every other elements. (The set of these elements is usually called the
 center of the group in ordinary group theory.)
 
@@ -731,18 +748,18 @@ $\ap{\grpcenterinc G}$ never picks twice the same element in the
   of $G$, one can show the proposition only at $x\jdeq
   \pt_G$. However,
   \begin{displaymath}
-    \begin{aligned}
-      \inv{\grpcenterinc G}(\pt_G) &\weq \sum_{\varphi:\grpcenter(G)}{\pt_G = \varphi(\pt_G)}
-      \\
-      &\weq \sum_{\varphi:BG=BG}{\pt_G = \varphi(\pt_G)}
-      \\
-      &\weq \sum_{\varphi:BG=BG}{\pt_G = \varphi(\pt_G)}
-    \end{aligned}
+    \inv{\grpcenterinc G}(\pt_G) \weq \sum_{\varphi:_\clf\grpcenter(G)}{\pt_G = \varphi(\pt_G)}
   \end{displaymath}
-  If $(\varphi,p)$ and $(\psi,q)$ are two elements of this type, their
-  identity type $(\varphi,p)=(\psi,q)$ is equivalent to
-  $\sum_{\pi:\varphi=\psi}\pi(\pt_G) p = q$. We shall prove that this
-  type is a proposition, and it goes as follows:
+  Recall that $\clf\grpcenter(G)$ is the connected component of
+  $\id_{\clf G}$ in $\clf G = \clf G$. In particular, if $(\varphi,p)$
+  and $(\psi,q)$ are two elements of the type on the right hand-side
+  above, their identity type $(\varphi,p)=(\psi,q)$ is equivalent to
+  their identity type in $\clf G = \clf G$, or in other words:
+  \begin{displaymath}
+    ((\varphi,p) = (\psi,q)) \weq \sum_{\pi:\varphi=\psi}\pi(\pt_G) p = q.
+  \end{displaymath}
+  We shall prove that this type is a proposition, and it goes as
+  follows:
   \begin{enumerate}
   \item for $\pi:\varphi=\psi$, the type $\pi(\pt_G) p = q$ is a
     proposition; hence for two such elements $(\pi,!)$ and $(\pi',!)$,
@@ -759,7 +776,7 @@ $\ap{\grpcenterinc G}$ never picks twice the same element in the
 \begin{corollary}
   \label{lemma:center-inc-inj-on-paths}%
   The induced map
-  $\ap {\grpcenterinc G}: (\id_{BG}=\id_{BG}) \to (\pt_G = \pt_G)$ is
+  $\ap {\grpcenterinc G}: (\id_{\clf G}=\id_{\clf G}) \to (\pt_G = \pt_G)$ is
   injective.
 \end{corollary}
 
@@ -769,37 +786,38 @@ center'' of $G$ is picked out by $\ap{\grpcenterinc G}$.
   \label{lemma:center-inc-surj-on-paths}%
   Let $g:\pt_G = \pt_G$ and supppose that $gh=hg$ for every
   $h:\pt_G=\pt_G$. The fiber $\inv{\ap {\grpcenterinc G}}(g)$ contains
-z  an element.
+  an element.
 \end{lemma}
 \begin{proof}
-  One must construct an element $\hat g:\id_{BG} = \id_{BG}$ such that
-  $\hat g(\pt_G)=g$. We shall use function extensionality and produce
+  One must construct an element $\hat g:\id_{\clf G} = \id_{\clf G}$ such that
+  $g=\hat g(\pt_G)$. We shall use function extensionality and produce
   an element $\hat g(x):x=x$ for all $x:G$ instead. Note that $x=x$ is
-  a set, and that connectedness of $BG$ is not helpful yet. We will
-  use a technique that will prove useful in many situation in the
-  book, along the lines of the following sketch (where we denote
-  $U(x)\defequi x=x$):
+  a set, and that connectedness of $\clf G$ is not directly applicable
+  here. We will use a technique that will prove useful in many
+  situations in the book, along the lines of the following sketch
+  (where we denote $U(x)\defequi (x=x)$):
   \begin{enumerate}
   \item for a given $x:G$, if such a $\hat g(x):U(x)$ existed, it would
     produce an element of the type $T(\hat g(x))$ for a carefully chosen type
     family $T$,
   \item aim to prove $\iscontr(\sum_{u:U(x)}T(u))$ for any $x:G$,
-  \item this is a proposition, so connectedness of $BG$ can be applied
-    and only $\iscontr(\sum_{u:U(\pt_G)}T(\pt_G))$ need to be proved,
-  \item hopefully, $\sum_{u:U(\pt_G)}T(\pt_G)$ reduces to an obvious
+  \item this is a proposition, so connectedness of ${\clf G}$ can be applied
+    and only $\iscontr(\sum_{u:U(\pt_G)}T(u))$ needs to be proved,
+  \item hopefully, $\sum_{u:U(\pt_G)}T(u)$ reduces to an obvious
     singleton type.
   \end{enumerate}
-  Here, for any $x:G$, we define the type family
+  Here, for any $x:G$, we define the type family $T: (x=x) \to \UU$ by
   \begin{displaymath}
-    T(q) \defequi \prod_{p:\pt_G=x} (pg=qp)
+    T(q) \defequi \prod_{p:\pt_G=x} (pg=qp).
   \end{displaymath}
-  for $q:x=x$. And we claim that $\sum_{q:x=x}T(q)$ is contractible
-  for any $x:G$. Because this is a proposition, one only need to check
-  its veracity on one point of the connected type $BG$, say
-  $x\jdeq pt_G$. Now,
+  And we claim that $\sum_{q:x=x}T(q)$ is contractible for any
+  $x:G$. Because this is a proposition, one only need to check its
+  veracity on one point of the connected type ${\clf G}$, say $x\jdeq
+  pt_G$. Now,
   \begin{displaymath}
     \begin{aligned}
-      \sum_{q:\pt_G=\pt_G}T(q) &\jdeq \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(pg=qp)
+      \sum_{q:\pt_G=\pt_G}T(q) &\jdeq
+      \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(pg=qp)
       \\
       &\weq \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(g=q)
       \\
@@ -829,10 +847,10 @@ Together, \cref{lemma:center-inc-inj-on-paths} and
 \cref{lemma:center-inc-surj-on-paths} show that $\ap{\grpcenterinc G}$
 establishes an equivalence
 \begin{equation}
-  \left( \id_{BG} = \id_{BG} \right) \weq \sum_{g:\pt_G=\pt_G}\prod_{h:\pt_G=\pt_G}gh=hg
+  \left( \id_{\clf G} = \id_{\clf G} \right) \weq \sum_{g:\pt_G=\pt_G}\prod_{h:\pt_G=\pt_G}gh=hg
 \end{equation}
 In yet other words,
-$B\grpcenter(G)\defequi \conncomp{(id_{BG}=id_{BG})}{BG=BG}$ is
+$\clf \grpcenter(G)\defequi \conncomp{(\clf G=\clf G)}{\id_{\clf G}}$ is
 (equivalent to) the delooping of the ``abstract center'' of the
 abstract group $\abstr(G)$.
 
@@ -931,17 +949,17 @@ groups.
   \newcommand{\BB}{B^2}%
   \newcommand{\UUptd}{\UU_\ast}%
   Define the map $\BB : \typeabgroup \to \UUptd$ by
-  $\BB G\defequi \univcover{\UU}{BG}$. Proving that $\BB G$ is a
+  $\BB G\defequi \univcover{\UU}{\clf G}$. Proving that $\BB G$ is a
   $2$-type is equivalent to proving the proposition $\isset(p=q$) for
   all $p,q:x=y$ and all $x,y:\BB G$. One can then use connectedness of
   $\BB G$ and restrict to only show that $p=q$ is a set for all path
-  $p,q:(BG,\settrunc{\refl {BG}})=(BG,\settrunc{\refl {BG}})$. As part
-  of the definition of the group $G$, the type $BG$ is a $1$-type,
-  hence $BG=BG$ is also a $1$-type through univalence. Moreover,
-  $\trp p {(\settrunc{\refl {BG}}}) = \settrunc{\refl {BG}}$ and
-  $\trp q {(\settrunc{\refl {BG}}}) = \settrunc{\refl {BG}}$ both are
+  $p,q:({\clf G},\settrunc{\refl {\clf G}})=({\clf G},\settrunc{\refl {\clf G}})$. As part
+  of the definition of the group $G$, the type ${\clf G}$ is a $1$-type,
+  hence ${\clf G}={\clf G}$ is also a $1$-type through univalence. Moreover,
+  $\trp p {(\settrunc{\refl {\clf G}}}) = \settrunc{\refl {\clf G}}$ and
+  $\trp q {(\settrunc{\refl {\clf G}}}) = \settrunc{\refl {\clf G}}$ both are
   propositions, as they are identity types in the set
-  $\setTrunc{BG=BG}$. Hence $\isset(p=q)$ holds.
+  $\setTrunc{{\clf G}={\clf G}}$. Hence $\isset(p=q)$ holds.
 
   So one gets a map, denoted again $\BB$ abusively,
   \begin{displaymath}
@@ -1017,16 +1035,83 @@ groups.
   $(A,a) \mapsto \loopspace (A,a)$ is an inverse for $\BB$. Given an
   abelian group $G$, the discussion before the theorem proves that
   $\loopspace {(\BB G)}$ is equivalent to the connected component of
-  $\refl {BG}$ in $BG=BG$, which is the definition of
+  $\refl {\clf G}$ in ${\clf G}={\clf G}$, which is the definition of
   $\grpcenter(G)$. Being abelian, $G$ is equivalent to its center,
-  hence $\loopspace {(\BB G)} \simeq G$. Conversely, take a pointed
-  simply connected $2$-type $(A,a)$. One wants to prove
-  $\BB (\loopspace {(A,a)}) \weq (A,a)$. To this end, we define first
-  a pointed map
+  hence $\loopspace {(\BB G)} \simeq_\ast G$. Conversely, take a
+  pointed simply connected $2$-type $(A,a)$. One wants to prove
+  $\BB (\loopspace {(A,a)}) \weq_\ast (A,a)$. One should first notice
+  that, because $\loopspace (A,a)$ is an abelian group,
   \begin{displaymath}
-    \Phi : (A,a) \ptdto \BB {(\loopspace {(A,a)})}
+    \loopspace \left( \BB (\loopspace {(A,a)}) \right)
+    \weq \conncomp{((a=a)=(a=a))}{\refl{a=a}} \weq (a=a).
   \end{displaymath}
-  which we will prove is an equivalence afterwards.
+  This equivalence maps a path
+  $(p,!):(a=a,\settrunc{\refl{a=a}})=(a=a,\settrunc{\refl{a=a}})$ to
+  the evaluation $p(\refl a): a=a$.
+
+  % We will now provide
+  % \begin{displaymath}
+  %   \Phi : \BB {(\loopspace {(A,a)})} \ptdto (A,a)
+  % \end{displaymath}
+  % such that $\loopspace(\Phi)$ is the previous equivalence.
+
+  % Suppose one has a equivalence $f:(x=x) \to (y=y)$ where $x$ and $y$
+  % are the designated points of simply connected 2-types $X$ and
+  % $Y$. Then $\Phi:X\to Y$ such that $\Trunc{\loopspace\Phi = f}$?
+  % Consequence if this is true: if $f$ is an equivalence then
+  % $\loopspace \Phi$ also and then $\Phi$ is an equivalence. For all
+  % $x':X$, one can consider the type of all those $y':Y$ and those
+  % elements $f':(x=x') \to (y=y')$ such that taking any $p:x=x'$, one
+  % gets that $f'$ is $f$ skewed by $p$: more precisely there is a
+  % $2$-path $\alpha_p:f'(p \blank) = f'(p)f(\blank)$. We can try to
+  % prove that this is contractible for every $x':X$, which by
+  % connectedness of $X$ boils down to the contractibility at $x$ only.
+  % \begin{align*}
+  %   T(x') &\weq \sum_{y':Y}\sum_{f':(x=x')\to(y=y')}
+  %           \sum_{\alpha:\prod_{p:x=x'} f'(p\blank) = f'(p)f(\blank)}
+  %           \\ &\prod_{p,p':x=x'}\prod_{\chi:p=p'}
+  %           \alpha_{p'}(f'(\chi)\cdot f(\blank)) \alpha_p = f'(\chi\cdot\blank)
+  %   \\
+  %   T(x)  &\weq \sum_{y':Y}\sum_{f':\setTrunc{(x=x)\to(y=y')}}
+  %           f'(\blank)=f'(\settrunc{\refl x})\settrunc{f(\blank)} \\
+  %         &\weq \sum_{y':Y}\setTrunc{(y=y')}
+  % \end{align*}
+  % \begin{align*}
+  %   &\hphantom{\weq} \sum_{y':Y}\sum_{f':(x=x)\to(y=y')}
+  %     \prod_{p:x=x}\prod_{\ell:x=x}\Trunc{f'(p\ell)=f'(p)f(\ell)}\\
+  %   &\weq \sum_{y':Y}\sum_{f':(x=x)\to(y=y')}
+  %     \prod_{p:x=x}\prod_{\ell:x=x}\Trunc{f'(\ell)=f'(\refl x)f(\ell)}\\
+  %   &\weq \sum_{y':Y}\sum_{f':(x=x)\to(y=y')}
+  %     (x=x) \to \prod_{\ell:x=x}\Trunc{f'(\ell)=f'(\refl x)f(\ell)}\\
+  %   &\weq \sum_{y':Y}\sum_{f':(x=x)\to(y=y')} \prod_{\ell:x=x}\Trunc{f'(\ell)=f'(\refl x)f(\ell)}\\
+  % \end{align*}
+  % Two elements $(y', f')$ and $(y'',f'')$ in the last type. Their identity type is equivalent to
+  % $\sum_{q:y'=y''}q\cdot f'(\blank) = f''(\blank)$ and we can prove there is an inhabitant
+  
+  
+  % Let $T : \BB {(\loopspace {(A,a)})} \to \UU$ be the type family define by
+  % \begin{displaymath}
+  %   T(X,\varphi) \defequi
+  %   \sum_{a':A}    \left(
+  %     \sum_{\alpha:\setTrunc{(a'=a')=X}} \left(
+  %       \prod_{p:a=a'}
+  %       \varphi = \alpha \cdot \settrunc{p\cdot \blank \cdot \inv p}
+  %     \right)
+  %   \right)
+  % \end{displaymath}
+  % Let us prove that $T(X,\varphi)$ is contractible for any
+  % $(X,\varphi):\BB(\loopspace (A,a))$. By connectedness of
+  % $\BB(\loopspace (A,a))$, we only have to prove the contractibility of
+  % $T(a=a,\settrunc{\refl{a=a}})$. However,
+  % \begin{displaymath}
+  %   T(a=a,\settrunc{\refl{a=a}}) \jdeq
+  %   \sum_{a':A} \left(
+  %     \sum_{\alpha:\setTrunc{(a'=a')=(a=a)}} \left(
+  %       \prod_{p:a=a'}
+  %       \alpha = \settrunc{\inv p\cdot \blank \cdot p}
+  %     \right)
+  %   \right)
+  % \end{displaymath}
   % To be able to
   % express $\Phi$, we need a small gadget about truncations of
   % function
@@ -1042,23 +1127,24 @@ groups.
   % $\setTrunc Y$ is a set. If we assume the axiom of
   % choice\footnote{What is the status of AC in this book??}, then
   % $\lceil \blank \rceil$ is injective when $Y$ is a set.
+
   Let $T : A \to \UU$ be the type family define by
   \begin{displaymath}
-    T(a') \defequi \sum_{\alpha:\setTrunc{(a=a)\weq(a'=a')}}\prod_{p:a=a'}
-    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}.
-    \alpha = \settrunc{p\cdot \blank \cdot \inv p}
+    T(a') \defequi \sum_{\alpha:\setTrunc{(a=a)\weq(a=a')}}
+    \prod_{p:a=a'}\alpha=\settrunc {p\cdot\blank}
   \end{displaymath}
   We claim that $T(a')$ is contractible for all $a':A$. By
   connectedness of $A$, it is equivalent to showing that $T(a)$ is
-  contractible. Indeed, for any $p:a=a$, we shall prove the
-  proposition
-  $\settrunc{p\cdot \blank \cdot \inv p} = \settrunc{\id_{a=a}}$, or
-  equivalently $\Trunc{p\cdot\blank\inv p = \id_{a=a}}$. Because the
-  goal is propositional, one can use the connectedness of $a=a$ and
-  restrict to show the proposition only for $p \jdeq \refl a$. In this
-  case, path algebra gives an element of
-  $p\cdot\blank \cdot \inv p = \id_{a=a}$ whose truncation provides us
-  with the wanted proof.
+  contractible.
+  % Indeed, for any $p:a=a$, we shall prove the
+  % proposition
+  % $\settrunc{p\cdot \blank \cdot \inv p} = \settrunc{\id_{a=a}}$, or
+  % equivalently $\Trunc{p\cdot\blank\inv p = \id_{a=a}}$. Because the
+  % goal is propositional, one can use the connectedness of $a=a$ and
+  % restrict to show the proposition only for $p \jdeq \refl a$. In this
+  % case, path algebra gives an element of
+  % $p\cdot\blank \cdot \inv p = \id_{a=a}$ whose truncation provides us
+  % with the wanted proof.
   % For any $x:\setTrunc{a=a}$ and any $p:a=a$, one can
   % prove that $\settrunc p \cdot x = x\cdot \settrunc p$. Indeed, the
   % goal is an identity type in the set $\fundgrp(A,a)$, so we can
@@ -1069,33 +1155,31 @@ groups.
   % in other words $\Trunc{pq=qp}$. By hypothesis, $(A,a)$ is simply
   % connected, so that every path of $a=a$ is merely equal to every
   % other.
-  Hence:
+  However
   \begin{align*}
     T(a)
     &\jdeq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
-    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) = \settrunc p \cdot x \cdot \settrunc{\inv p}
-      \alpha = \settrunc{p\cdot \blank \cdot \inv p}
+      \alpha = \settrunc {p\cdot \blank}
     \\
-    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
-    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
-      \alpha = \settrunc{\id_{a=a}}
-    \\ 
-    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}(a=a) \to 
-    % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
-      (\alpha = \settrunc{\id_{a=a}})
+    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \alpha = \settrunc{\id_{a=a}}
+    \\
+    &\weq 1
+    % &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}(a=a) \to 
+    % % \prod_{x:\setTrunc{a=a}}\lceil \alpha \rceil (x) =  x
+    %   (\alpha = \settrunc{\id_{a=a}})
   \end{align*}
-  Note that $\alpha = \settrunc{\id_{a=a}}$ is a proposition, so that,
-  $a=a$ having $\refl a$ as an element, the type
-  $(a=a) \to (\alpha = \settrunc{\id_{a=a}})$ is equivalent to
-  $\alpha = \settrunc{\id_{a=a}}$ itself. It follows that:
-  \begin{displaymath}
-    T(a)
-    \weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}( \alpha =
-    \settrunc{\id_{a=a}} )
-    \weq 1
-  \end{displaymath}
+  % Note that $\alpha = \settrunc{\id_{a=a}}$ is a proposition, so that,
+  % $a=a$ having $\refl a$ as an element, the type
+  % $(a=a) \to (\alpha = \settrunc{\id_{a=a}})$ is equivalent to
+  % $\alpha = \settrunc{\id_{a=a}}$ itself. It follows that:
+  % \begin{displaymath}
+  %   T(a)
+  %   \weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}( \alpha =
+  %   \settrunc{\id_{a=a}} )
+  %   \weq 1
+  % \end{displaymath}
   Let then $\Phi (a')$ be the element
-  $(a'=a', \kappa_{a'}):\univcover \UU {a=a}$ where $\kappa_{a'}$ is
+  $(a=a', \kappa_{a'}):\univcover \UU {a=a}$ where $\kappa_{a'}$ is
   the first projection of the center of contraction of $T(a')$. In
   particular, following the chain of equivalences above, $\Phi(a)$ is
   defined as $(a=a, \settrunc{\refl {a=a}})$, hence $\Phi(a)$ is a
@@ -1105,17 +1189,20 @@ groups.
   $\inv\Phi(a=a,\settrunc{\refl {a=a}})$ is contractible. However,
   \begin{displaymath}
     \inv\Phi(a=a,\settrunc{\refl {a=a}}) \simeq \sum_{a':A}
-    \sum_{\varphi : (a=a) \weq (a'=a')}\settrunc{\varphi} = \kappa_{a'}.
+    \sum_{\varphi : (a=a) \weq (a=a')}\settrunc{\varphi} = \kappa_{a'}.
   \end{displaymath}
   For an element $a':A$ together with $\varphi: (a=a) \weq (a'=a')$
   such that the proposition $\settrunc \varphi = \kappa_{a'}$ holds, a
   path between $(a,\id_{a=a},!)$ and $(a',\varphi,!)$ consists of a
-  path $p:a=a'$ and a path $q:\varphi = (x\mapsto p x \inv p)$.
-
-  {\color{red} Not sure how to conclude... We should target a
-    proposition if we ever want to have an actual path $p:a=a'$. But
-    even then, we only have a mere equality between $\varphi$ and
-    $p\blank\inv p$...}
+  path $p:a=a'$ and a path $q:\varphi = (x\mapsto p x)$. We have a
+  good candidate for $p$, namely $\varphi(\refl a):a=a'$. However we
+  don't have quite $q$, only an element of
+  $\Trunc{\varphi=(x\mapsto px)}$. But, for any $a'$ there is a function
+  \begin{displaymath}
+    \ev : ((a=a)\weq (a=a')) \to (a=a'), \phi \mapsto \phi(\refl a) 
+  \end{displaymath}
+  The proposition $\isEq(\ev)$ is true because is true for
+  $a'\jdeq a$ and $A$ is connected.
 \end{proof}
 
 
