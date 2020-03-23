@@ -3,9 +3,8 @@
 \usepackage[numbers]{natbib}
 \usepackage{mathtools}          %to get \vcentcolon
 \usepackage{thmtools}
-\usepackage{letltxmacro}        %to rename \equiv
-\LetLtxMacro{\oldequiv}{\equiv}
 \usepackage{xspace}
+\usepackage{scalerel}           % to scale \div
 \usepackage[all]{xy}
 \usepackage{pgfplots,tikz,tikz-cd}
 \pgfplotsset{compat=newest}
@@ -55,10 +54,10 @@
 \synctex=1
 
 %% macros
-\newcommand{\mytitle}{Symmetry}
-\newcommand{\myauthor}{}
+\newcommand*{\mytitle}{Symmetry}
+\newcommand*{\myauthor}{}
 
-\newcommand{\DELETE}[1]{}
+\newcommand{\DELETE}[1]{} % no star on purpose: argument may contain \par
 
 %%% Headers
 \pagestyle{headings}
@@ -84,275 +83,258 @@
 %% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\arxiv}[1]{preprint available at \href{http://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand*{\arxiv}[1]{preprint available at \href{http://arxiv.org/abs/#1}{arXiv:#1}}
 
+% save old div and equiv
+\let\olddiv\div
+\renewcommand*{\div}{{\mathord{\scaleobj{.5}{\olddiv}}}} %experimental
 
-% Should these be sans serif, roman or italic?!
-% Rule (under discussion): constructors italic, defined elements roman, typeformers sf
+% Meta-macros for:
+\newcommand*{\constant}[1]{\mathrm{#1}} % defined constants / functions : roman
+\newcommand*{\constructor}[1]{\mathrm{#1}} % constructors : roman
+\newcommand*{\typeformer}[1]{\mathrm{#1}} % (uppercase) typeformers : roman
+\newcommand*{\btypeformer}[1]{\mathbf{#1}} % other type formers : bold roman
+\newcommand*{\UU}{{\mathcal{U}}} % universes (special case) : calligraphic
+\newcommand*{\UUp}{{\mathcal{U}_*}}
 
-\newcommand{\constructor}[1]{\mathit{#1}}
-\newcommand{\function}[1]{\mathrm{#1}}
-\newcommand{\typeformer}[1]{\mathsf{#1}}
+\newcommand*{\bn}[1]{\mathbf{#1}} % bold numerals (types)
+
+% our version of \operatorname with a font change (so we can use the appropriate meta-macro)
+\makeatletter
+\newcommand*{\casop}[1]{\mathop{\newmcodes@\kern\z@ #1}\nolimits@}
+\makeatother
 
 % Typeformers
-\newcommand{\bool}{\typeformer{Bool}}
+\newcommand*{\bool}{\typeformer{Bool}}
+\newcommand*{\true}{\typeformer{True}}
+\newcommand*{\false}{\typeformer{False}}
+\newcommand*{\Prop}{\typeformer{Prop}}
+\newcommand*{\Set}{\typeformer{Set}}
+\newcommand*{\FinSet}{\typerformer{FinSet}}
+\newcommand*{\GSet}[1][G]{\mathord{#1\textrm{-}\Set}}
+\newcommand*{\Group}{\typeformer{Group}}
+\newcommand*{\AbGroup}{\typeformer{AbGroup}}
+\newcommand*{\Bunch}{\typeformer{Bunch}}
+\newcommand*{\AbBunch}{\typeformer{AbBunch}}
+\newcommand*{\Band}{\typeformer{Band}}
+\newcommand*{\AbBand}{\typeformer{AbBand}}
+\newcommand*{\Monoid}{\typeformer{Monoid}}
+\newcommand*{\Tors}{\typeformer{Torsor}}
 
+\newcommand*{\zet}{\typeformer{Z}} % the SET of integers
+\newcommand*{\QQ}{\mathbb{Q}}
+\newcommand*{\ZZ}{\mathbb{Z}}
+\newcommand*{\NN}{\mathbb{N}}
+\newcommand*{\CC}{\mathbb{C}}
+\newcommand*{\RR}{\mathbb{R}}
+\newcommand*{\emptytype}{\emptyset}
 
 % Constructors
-
-\newcommand{\yes}{\constructor{yes}}
-\newcommand{\no}{\constructor{no}}
-\newcommand{\refl}[1]{\mathop{\mathit{refl}_{#1}}}
-
-% Functions and defined elements
-
-\let\olddiv\div
-\renewcommand{\div}{{\mathord{\scalebox{.5}{$\olddiv$}}}} %experimental
-
-\newcommand{\refloi}[1]{\mathop{\mathit{refl}^{-o}_{#1}}} % exception
-\newcommand{\inl}[1]{\mathop{{\it inl}_{#1}}}
-\newcommand{\inr}[1]{\mathop{{\it inr}_{#1}}}
-\newcommand{\true}{\mathop{\mathit{True}}}
-\newcommand{\false}{\mathop{\mathit{False}}}
-\newcommand{\triv}{\mathop{\mathit{triv}}}
-
+\newcommand*{\yes}{\constructor{yes}}
+\newcommand*{\no}{\constructor{no}}
+\newcommand*{\triv}{\constructor{triv}}
+\newcommand*{\refl}[1]{\casop{\constructor{refl}_{#1}}}
+\newcommand*{\rrfl}{\constructor{rrfl}}
+\newcommand*{\inl}[1]{\casop{\constructor{inl}_{#1}}}
+\newcommand*{\inr}[1]{\casop{\constructor{inr}_{#1}}}
 
 % Functions and defined elements
+\newcommand*{\refloi}[1]{\casop{\constant{refl}^{-o}_{#1}}} % exception
+\newcommand*{\fact}{\casop{\constant{fact}}}
+\newcommand*{\id}{\mathord{\constant{id}}}
+\newcommand*{\pt}{\constant{pt}}
+\newcommand*{\ad}{\constant{ad}}
+\newcommand*{\symm}{\casop{\constant{symm}}}
+\newcommand*{\trans}{\casop{\constant{trans}}}
+\newcommand*{\trp}[2][]{\casop{\constant{trp}^{#1}_{#2}}}
+\newcommand*{\fst}{\casop{\constant{fst}}}
+\newcommand*{\snd}{\casop{\constant{snd}}}
+\newcommand*{\zpos}{\casop{\constant{pos}}}
+\newcommand*{\zneg}{\casop{\constant{neg}}}
+\newcommand*{\zzero}{\casop{\constant{zero}}}
+\newcommand*{\mZ}{\casop{\constant{m}}}
+\newcommand*{\preim}{\casop{\constant{preim}}}
+\newcommand*{\tot}{\casop{\constant{tot}}}
+\newcommand*{\funext}{\casop{\constant{funext}}}
+\newcommand*{\ptw}{\casop{\constant{ptw}}}
+\newcommand*{\ap}[1]{\casop{\constant{ap}_{#1}}}
+\newcommand*{\apd}[1]{\casop{\constant{apd}_{#1}}}
+\newcommand*{\apap}[3]{\casop{\constant{apap}_{#1}(#2)(#3)}}
+\newcommand*{\apc}{\casop{\constant{ap}{\ct}}}
+\newcommand*{\ev}{\casop{\constant{ev}}}
+\newcommand*{\ve}{\casop{\constant{ve}}} % cute: the inverse of \ev
+\newcommand*{\el}{\mathrm{elim}} % another inverse of \ev ?!
+\newcommand*{\permgrp}[1]{\Sigma_{{#1}}}%
+\newcommand*{\cast}{\casop{\constant{cast}}}
+\newcommand*{\etop}[1]{\bar {#1}}   % equivalence to path
+\newcommand*{\ptoe}[1]{\tilde {#1}} % path to equivalence
+\newcommand*{\ua}{\casop{\constant{ua}}} % univalence
+\newcommand*{\cst}[1]{\casop{\constant{cst}}_{#1}} % constant function at
+\newcommand*{\N}{\constant{N}} % normalizer
 
-\newcommand{\fact}{\mathop{\mathrm{fact}}}
-\newcommand{\id}{\mathord{\function{id}}}
-\newcommand{\pt}{\function{pt}}
-\newcommand{\symm}{\mathop{\mathrm{symm}}}
-\newcommand{\trans}{\mathop{\mathrm{trans}}}
-\newcommand{\trp}[2][]{\mathop{\mathrm{trp}^{#1}_{#2}}}
-\newcommand{\dg}[1]{\mathop{\color{red}\delta_{#1}}}
-\newcommand{\fst}{\mathop{\mathrm{fst}}}
-\newcommand{\snd}{\mathop{\mathrm{snd}}}
-\newcommand{\zpos}{\mathop{\mathrm{pos}}}
-\newcommand{\zneg}{\mathop{\mathrm{neg}}}
-\newcommand{\zzero}{\mathop{\mathrm{zero}}}
-\newcommand{\mZ}{\mathop{\mathrm{m}}}
-\newcommand{\preim}{\mathop{\mathrm{preim}}}
-\newcommand{\tot}{\mathop{\mathrm{tot}}}
-\newcommand{\funext}{\mathop{\mathrm{funext}}}
-\newcommand{\ptw}{\mathop{\mathrm{ptw}}}
-\newcommand{\ap}[1]{\mathop{\mathrm{ap}_{#1}}}
-\newcommand{\apd}[1]{\mathop{\mathrm{apd}_{#1}}}
-\newcommand{\apap}[3]{\mathop{\mathrm{apap}_{#1}(#2)(#3)}}
-\newcommand{\apc}{\mathop{\mathrm{ap}{\ct}}}
+\newcommand*{\Aut}{\casop{\constant{Aut}}}
+\newcommand*{\aut}{\Aut}
+\newcommand*{\Out}{\casop{\constant{Out}}}
+\newcommand*{\Inn}{\casop{\constant{Inn}}}
+\newcommand*{\Ker}{\casop{\constant{Ker}}}
+\renewcommand*{\ker}{\Ker}
+\newcommand*{\Img}{\casop{\constant{Im}}}
+\newcommand*{\image}{\Img}
+\newcommand*{\Coker}{\casop{\constant{Coker}}}
+\newcommand*{\coker}{\Coker}
+\newcommand*{\Hom}{\casop{\mathrm{Hom}}}
+\newcommand*{\Nor}{\constant{Nor}}
+\newcommand*{\Sym}{\casop{\constant{Sym}}}
+\newcommand*{\Card}{\casop{\constant{Card}}}
+\newcommand*{\bunch}{\casop{\constant{bunch}}}
+\newcommand*{\Ad}{\casop{\constant{Ad}}}
+\newcommand*{\band}{\casop{\constant{band}}}
+\newcommand*{\fiber}{\casop{\constant{fiber}}}
+\newcommand*{\Succ}{\casop{\constant{succ}}}
+\newcommand*{\fin}{\casop{\constant{Fin}}} % This is the operator, not the type, which is \FinSet
+\newcommand*{\El}{\casop{\constant{El}}}
+\newcommand*{\clf}{\casop{\constant{B}}} % classifying space operator (adds space)
+\newcommand*{\B}{\constant{B}}            % without extra space
+\newcommand*{\grpcenter}{\casop{\constant{Z}}}
+\newcommand*{\im}{\casop{\constant{im}}}
+\newcommand*{\iscontr}{\mathrm{isContr}}
+\newcommand*{\isprop}{\mathrm{isProp}}
+\newcommand*{\isset}{\mathrm{isSet}}
+\newcommand*{\isgrpd}{\mathrm{isGrpd}}
+\newcommand*{\isEq}{\mathrm{isEquiv}}
+\newcommand*{\isonetype}{\mathrm{is1Type}}
+\newcommand*{\isconn}{\mathrm{isConn}}
 
+\newcommand*{\fundgrp}{\casop{\pi_1}}
+\newcommand*{\fundgrpd}{\casop{\Pi_1}}
 
+\newcommand*{\dg}[1]{\casop{\textcolor{red}{\delta_{#1}}}} % what is this?
 
+% Latin abbreviations and initialisms
+\newcommand*{\ie}{i.e.,\xspace}
+\newcommand*{\eg}{e.g.,\xspace}
+\newcommand*{\viz}{viz.,\xspace}
 
+% disputed phrases
+\newcommand*{\covering}{set bundle\xspace}
+\newcommand*{\coverings}{set bundles\xspace}
+\newcommand*{\Covering}{Set bundle\xspace}
+\newcommand*{\Coverings}{Set bundles\xspace}
+\newcommand*{\inftygp}{$\infty$-group\xspace}
+\newcommand*{\aninftygp}{an $\infty$-group\xspace}
+\newcommand*{\inftygps}{$\infty$-groups\xspace}
 
+% relations
+\let\oldequiv\equiv
+\renewcommand*{\equiv}{\simeq}
+\newcommand*{\weq}{\simeq}
+\newcommand*{\we}{\xrightarrow{\sim}}
+\newcommand*{\isom}{\cong}
+\newcommand*{\liff}{\weq}
+\newcommand*{\jdeq}{\oldequiv}
+\newcommand*{\defeq}{\mathrel{\vcentcolon\jdeq}}
+\newcommand*{\defequi}{\defeq} % definitionally equal
+\newcommand*{\defis}{\mathrel{\vcentcolon=}}
 
-% misc, not yet sorted out
-
-\newcommand{\set}[1]{\{#1\}}
-
-%\renewcommand{\div}{{\mathrm t}} %experimental
-
-\newcommand{\Type}{\mathord{\mathrm{Type}}}
-\newcommand{\Prop}{\mathord{\mathrm{Prop}}}
-\newcommand{\Set}{\mathord{\mathrm{Set}}}
-\newcommand{\FinSet}{\mathord{\mathrm{FinSet}}}
-\newcommand{\GSet}[1][G]{\mathord{#1\text{-}\mathrm{Set}}}
-\newcommand{\Group}{\mathord{\mathrm{Group}}}
-\newcommand{\AbGroup}{\mathord{\mathrm{AbGroup}}}
-\newcommand{\Bunch}{\mathord{\mathrm{Bunch}}}
-\newcommand{\AbBunch}{\mathord{\mathrm{AbBunch}}}
-\newcommand{\Band}{\mathord{\mathrm{Band}}}
-\newcommand{\AbBand}{\mathord{\mathrm{AbBand}}}
-
-\DeclareMathOperator\Bop{B}         % with extra space
-\newcommand{\B}{\mathrm B}          % without extra space
-\newcommand{\N}{\mathrm N}
-\newcommand{\weq}{\simeq}
-\newcommand{\QQ}{\mathbb{Q}}
-\newcommand{\ZZ}{\mathbb{Z}}
-\newcommand{\NN}{\mathbb{N}}
-\newcommand{\CC}{\mathbb{C}}
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\isom}{\cong}
-\newcommand{\ct}{*}
-\newcommand{\cto}{*_{\mathrm{o}}}
-\newcommand{\rrfl}{\mathit{rrfl}}
-\newcommand{\cp}[1]{\mathit{cp}_{#1}}
+% binary operations
+\newcommand*{\ct}{*}
+\newcommand*{\cto}{*_{\constant{o}}}
 \newcommand*{\dblslash}{\mathbin{/\kern-3pt/}}
 
-\renewcommand{\equiv}{\simeq}
-\newcommand{\liff}{\equiv}
-\newcommand{\jdeq}{\oldequiv}
-\newcommand{\defeq}{\vcentcolon\jdeq}
-\newcommand{\defequi}{\defeq}%definitionally equal}
-\newcommand{\defis}{\vcentcolon=}
-
-\DeclareMathOperator\Aut{Aut}
-\DeclareMathOperator\Out{Out}
-\DeclareMathOperator\Inn{Inn}
-\DeclareMathOperator\Ker{Ker}
-\DeclareMathOperator\Img{Im}
-\DeclareMathOperator\Sym{Sym}
-\DeclareMathOperator\Card{Card}
-\DeclareMathOperator\bunch{bunch}
-\DeclareMathOperator\band{band}
-\DeclareMathOperator\fiber{fiber}
-\DeclareMathOperator\Succ{Succ}
-\DeclareMathOperator\fin{Fin} % This is the operator, not the type of finite sets, \FinSet
-\DeclareMathOperator\El{El}
-\DeclareMathOperator\clf{B}
-\DeclareMathOperator\im{im}
-
-
-\DeclarePairedDelimiter\Trunc{\lVert}{\rVert}
-\DeclarePairedDelimiter\trunc{\lvert}{\rvert} % truncation
+% paired delimiters (can change size via optional argument)
+\DeclarePairedDelimiter\Trunc{\lVert}{\rVert} % truncated type
+\DeclarePairedDelimiter\trunc{\lvert}{\rvert} % truncation constructor
 \DeclarePairedDelimiter\merely{\lVert}{\rVert_{-1}}
 \DeclarePairedDelimiter\angled{\langle}{\rangle}
 \DeclarePairedDelimiter\Fin[]
+\DeclarePairedDelimiter\set\lbrace\rbrace
 \DeclarePairedDelimiterX\setof[2]\lbrace\rbrace{#1 \mid #2}
 
-\newcommand{\nonempty}[1]{\Trunc{#1}}
-\newcommand{\setTrunc}[1]{{\Trunc{#1}}_0}
-\newcommand{\settrunc}[1]{{\trunc{#1}}_0}
-\newcommand{\grpdTrunc}[1]{{\Trunc{#1}}_1}
-\newcommand{\grpdtrunc}[1]{{\trunc{#1}}_1}
-\newcommand{\nTrunc}[2]{{\Trunc{#1}}_{#2}}
-\newcommand{\ntrunc}[2]{{\trunc{#1}}_{#2}}
+% special truncations and truncation constructors
+\newcommand*{\nonempty}[1]{\Trunc{#1}}
+\newcommand*{\setTrunc}[1]{{\Trunc{#1}}_0}
+\newcommand*{\settrunc}[1]{{\trunc{#1}}_0}
+\newcommand*{\grpdTrunc}[1]{{\Trunc{#1}}_1}
+\newcommand*{\grpdtrunc}[1]{{\trunc{#1}}_1}
 
-\DeclareMathOperator\fundgrp{\pi_1}
-\DeclareMathOperator\fundgrpd{\Pi_1}
-
+% footnote without number, no star: may contain \par
 \newcommand\blfootnote[1]{%
   \begingroup
   \renewcommand\thefootnote{}\footnote{#1}%
   \addtocounter{footnote}{-1}%
   \endgroup}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%from circle on
-\newcommand{\covering}{set bundle\xspace}
-\newcommand{\coverings}{set bundles\xspace}
-\newcommand{\Covering}{Set bundle\xspace}
-\newcommand{\Coverings}{Set bundles\xspace}
+% deprecated macros
+\newcommand*{\princ}[1]{\constant{Pr}_{{#1}}}
+\newcommand*{\pathsp}[1]{\constant{P}_{\!#1}} % NB negative thin space
+\newcommand*{\uc}[1]{{\color{red}\pathsp{#1}}}%universal set bundle
+\newcommand*{\abstrOp}{\casop{\constant{abst}}}
+\newcommand*{\abstr}{\constant{abs}}
+\newcommand*{\agp}[1]{\mathcal #1} %generic abstract group
+\newcommand{\grpcenterinc}[1]{\mathfrak z_{{#1}}} % really ?!
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% these arise from the group theory chapter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%originates in group.tex (BID)
-\newcommand{\ie}{{\it i.e.},\xspace}%\xspace}fixlater
-\newcommand{\eg}{{\it e.g.},\xspace}%\xspace}fixlater
-\newcommand{\ev}{\mathrm{ev}}
-\newcommand{\ve}{\mathrm{ve}}
-\newcommand{\el}{\mathrm{elim}}
-\newcommand{\we}{\overset\sim\to}
-
-
-
-\newcommand{\iscontr}{\mathrm{isContr}}
-\newcommand{\isprop}{\mathrm{isProp}}
-\newcommand{\isset}{\mathrm{isSet}}
-\newcommand{\isgrpd}{\mathrm{isGrpd}}
-\newcommand{\isEq}{\mathrm{isEquiv}}
-\newcommand{\isonetype}{\mathrm{1Type}}
-\newcommand{\isconn}{\mathrm{isConn}}
-
-\newcommand{\conn}{\mathrm{conn}}
-\newcommand{\aut}{\mathrm{Aut}}
-\newcommand{\Hom}{\mathrm{Hom}}
-\newcommand{\setgroup}[1]{||#1||}
-\newcommand{\inftygp}{$\infty$-group\xspace}
-\newcommand{\aninftygp}{an $\infty$-group\xspace}
-\newcommand{\inftygps}{$\infty$-groups\xspace}
-\newcommand{\princ}[1]{\mathrm{Pr}_{{#1}}}%{\mathrm{Princ}}
-\newcommand{\pathsp}[1]{\mathrm{P}_{\!#1}} % NB negative thin space
-\newcommand{\uc}[1]{{\color{red}\pathsp{#1}}}%universal set bundle
-\DeclareMathOperator\abstrOp{abst}
-\newcommand{\abstr}{\mathrm{abs}}
-\newcommand{\Ad}{\mathrm{Ad}}
-\newcommand{\agp}[1]{\mathcal #1}%generic abstract group
-\newcommand{\grpcenter}{\operatorname{Z}}
-\newcommand{\grpcenterinc}[1]{\mathfrak z_{{#1}}}
-
-\newcommand{\pre}{\mathrm{pre}}%these may be open for discussion
-\newcommand{\preinv}{\mathrm{preinv}}
-\newcommand{\post}{\mathrm{post}}
-\newcommand{\adjoint}{\mathrm{ad}}
-\newcommand{\concr}{\mathrm{concr}}
+\newcommand*{\pre}{\constant{pre}}%these may be open for discussion
+\newcommand*{\preinv}{\constant{preinv}}
+\newcommand*{\post}{\constant{post}}
+\newcommand*{\adjoint}{\ad}
+\newcommand*{\concr}{\constant{concr}}
 
 %some special types
-\newcommand{\Gtorsor}{\mathrm{tors}_G}
-\newcommand{\Xtorsor}[1]{\mathrm{tors}_{#1}}%      added by MAB
-\newcommand{\Ztorsor}{\Xtorsor{\zet}}
-\newcommand{\TorZ}{{\mathrm{T}\ZZ}} % {\mathbf{TorZor}}% alternative: BZ.   
-\DeclareMathOperator\SetBundle{\mathrm{SetBundle}}             % end MAB
-\newcommand{\typegroup}{\mathbf{Group}}
-\newcommand{\typeabgroup}{\mathbf{AbGroup}}
-\newcommand{\typesubgroup}{\mathbf{Sub}}%"gp" removed - is evident from the type of the subscript G
-\newcommand{\typeset}{\Set}
-\newcommand{\typeinftygp}{{\infty}\mathbf{Group}}
-\newcommand{\UU}{{\mathcal{U}}}
-\newcommand{\UUp}{\UU_*}
-\newcommand{\pttype}{\UUp}
-\newcommand{\typeabsgp}{\mathbf{Group}_{\mathrm{Abstract}}}
-\newcommand{\typemonoid}{\mathbf{Monoid}}
-\newcommand{\typetorsor}{\mathbf{Tors}}
-\newcommand{\permgrp}[1]{\Sigma_{{#1}}}%
-\newcommand{\BSigma}{B\Sigma}%previously \Set_{(S)} - the component of S:\Set
-\newcommand{\revers}{\mathit{r}}
-\newcommand{\twist}{\mathit{twist}}%loop in BC_2
-\newcommand{\Sc}{{S^1}}%the circle
+\newcommand*{\Gtorsor}{\Tors_G}
+\newcommand*{\Xtorsor}[1]{\Tors_{#1}}%      added by MAB
+\newcommand*{\Ztorsor}{\Xtorsor{\zet}}
+\newcommand*{\TorZ}{{\constant{T}\ZZ}} % {\mathbf{TorZor}}% alternative: BZ.   
+\newcommand*{\SetBundle}{\constant{SetBundle}}             % end MAB
+\newcommand*{\typegroup}{\Group}
+\newcommand*{\typeabgroup}{\AbGroup}
+\newcommand*{\typesubgroup}{\constant{Sub}}%"gp" removed - is evident from the type of the subscript G
+\newcommand*{\typenormal}{\constant{Nor}}
+\newcommand*{\typeset}{\Set}
+\newcommand*{\typeinftygp}{{\infty}\Group}
+\newcommand*{\typemonoid}{\Monoid} 
+\newcommand*{\typetorsor}{\Tors}
+\newcommand*{\pttype}{\UUp}
+\newcommand*{\typeabsgp}{\Group_{\textup{Abstract}}}
+\newcommand*{\BSigma}{\B\Sigma}%previously \Set_{(S)} - the component of S:\Set
+\newcommand*{\revers}{\constant{r}}
+\newcommand*{\twist}{\constant{twist}}%loop in BC_2
+\newcommand*{\Sc}{{\typeformer{S}^1}}%the circle
 %\newcommand{\sbt}{\begin{picture}(-1,1)(-1,-3)\circle*{2}\end{picture}}%
-\newcommand{\sbt}{\tikz[anchor=base,baseline]{\node[scale=.7,inner
+\newcommand*{\sbt}{\tikz[anchor=base,baseline]{\node[scale=.7,inner
     sep=0, outer sep=0, circle]%
     {$\bullet$};}}%
-\newcommand{\base}{{\sbt}}%point in circle
-\newcommand{\Zloop}{\circlearrowleft} %was \mathrm{loop}}%MAB: loop TorZor
-\newcommand{\Sloop}{\circlearrowleft}%loop in circle
-\newcommand{\bn}[1]{\mathbf{#1}} \newcommand{\Eq}{\mathrm{Eq}}
-\newcommand{\emptytype}{\emptyset}
+\newcommand*{\base}{{\sbt}}%point in circle
+\newcommand*{\Zloop}{\circlearrowleft} %was \mathrm{loop}}%MAB: loop TorZor
+\newcommand*{\Sloop}{\circlearrowleft}%loop in circle
 
-\newcommand{\etop}[1]{\bar {#1}}
-\newcommand{\ptoe}[1]{\tilde {#1}}
-\newcommand{\cast}{\mathrm{cast}}
-\newcommand{\ua}{\mathrm{ua}}%univalence inverse
-\newcommand{\zet}{\mathrm{Z}}%the SET of integers
+\newcommand*{\conncomp}[2]{{{#1}_{\left(#2\right)}}}%
+\newcommand*{\univcover}[2]{{{#1}^0_{\left(#2\right)}}}%
 
-\newcommand{\cst}[1]{\operatorname{\mathit{c}}_{#1}}%
-\newcommand{\weqto}{\xrightarrow{\sim}}%
-\newcommand{\conncomp}[2]{{{#1}_{\left(#2\right)}}}%
-\newcommand{\univcover}[2]{{{#1}^0_{\left(#2\right)}}}%
-
-\newcommand{\blank}{\_}%
-\newcommand{\inv}[1]{{#1}^{-1}}%
-\newcommand{\ptdto}{\to_\ast}%
-
-\newcommand{\loopspace}[1][\null]{\operatorname{\Omega^{#1}}}
+\newcommand*{\blank}{\_}%
+\newcommand*{\inv}[1]{{#1}^{-1}}%
+\newcommand*{\ptdto}{\to_\ast}%
+\newcommand*{\loopspace}[1][\null]{\operatorname{\Omega^{#1}}}
 
 %% paths over paths
+\newcommand*{\pathoverdisplay}[4]{{#1} \overset{#2}{\underset{#3}=} #4}
+\newcommand*{\pathover}[4]{#1 =^{#2}_{#3} #4}
 
-%% \newcommand{\pathover}[4]{#1 \overset{#2}{\underset{#3}=} #4}
-\newcommand{\pathoverdisplay}[4]{{#1} \overset{#2}{\underset{#3}=} #4}
-\newcommand{\pathover}[4]{#1 =^{#2}_{#3} #4}
-
-\newcommand{\pair}{\mathop{\mathrm{pair}}}
-\newcommand{\rec}{\mathop{\mathrm{rec}}}
-\newcommand{\ind}{\mathop{\mathrm{ind}}}
-\newcommand\pathpair[2]{\overline{({#1},{#2})}}
+\newcommand*{\pair}{\casop{\constructor{pair}}}
+\newcommand*{\rec}{\casop{\constant{rec}}}
+\newcommand*{\ind}{\casop{\constant{ind}}}
+\newcommand*\pathpair[2]{\overline{({#1},{#2})}}
 
 %% Euclidean geometry
 
-\newcommand\EE{\mathbb E}
-\newcommand\VV{\mathbb V}
-\newcommand\ES{{\tilde \EE}}
-\newcommand\OS{{\tilde \VV}}
-\newcommand\OrthGp[1]{\mathrm O(#1)}
-\newcommand\EucGp[1]{\mathrm E(#1)}
-\DeclareMathOperator\Vectors{Vec}
-\DeclareMathOperator\Points{Pts}
-\newcommand{\typeRealVectorSpace}{\mathbf{Vect}_\RR}
+\newcommand*{\EE}{\mathbb E}
+\newcommand*{\VV}{\mathbb V}
+\newcommand*{\ES}{{\tilde \EE}}
+\newcommand*{\OS}{{\tilde \VV}}
+\newcommand*{\OrthGp}[1]{\constant{O}(#1)}
+\newcommand*{\EucGp}[1]{\constant{E}(#1)}
+\newcommand*{\Vectors}{\casop{\constant{Vec}}}
+\newcommand*{\Points}{\casop{\constant{Pts}}}
+\newcommand*{\typeRealVectorSpace}{\constant{Vect}_\RR}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
