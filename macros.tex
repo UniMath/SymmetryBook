@@ -32,7 +32,35 @@
 %      decorate
 %    }}}
 \tikzset{
-  dot/.style={fill,circle,inner sep=1pt}
+  dot/.style={fill,circle,inner sep=1pt},
+  double line with arrow/.style args={#1,#2}{decorate,decoration={markings,%
+    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
+      \coordinate (ta-base-2) at (0,-1pt);},%
+    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
+      \draw[#2] (ta-base-2) -- (0,-1pt);}%
+  }},
+  double line with arrow left/.style args={#1,#2}{decorate,decoration={markings,%
+    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
+      \coordinate (ta-base-2) at (0,-1pt);},%
+    mark=at position 0.3 with {\coordinate (ta-mid) at (0,4pt);},%
+    mark=at position 0.7 with {\draw[->] (ta-mid) -- (0,4pt);},%
+    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
+      \draw[#2] (ta-base-2) -- (0,-1pt);}%
+  }},
+  double line with arrow right/.style args={#1,#2}{decorate,decoration={markings,%
+    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
+      \coordinate (ta-base-2) at (0,-1pt);},%
+    mark=at position 0.3 with {\coordinate (ta-mid) at (0,-4pt);},%
+    mark=at position 0.7 with {\draw[->] (ta-mid) -- (0,-4pt);},%
+    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
+      \draw[#2] (ta-base-2) -- (0,-1pt);}%
+  }},
+  eq/.style={-,double line with arrow={-,-},outer sep=2pt.},
+  eql/.style={-,double line with arrow left={-,-},outer sep=2pt,},
+  eqr/.style={-,double line with arrow right={-,-},outer sep=2pt,}
+}
+\tikzcdset{
+  arrow style=math font
 }
 
 % bibliography
@@ -183,6 +211,7 @@
 \newcommand*{\apd}[1]{\casop{\constant{apd}_{#1}}}
 \newcommand*{\apap}[3]{\casop{\constant{apap}_{#1}(#2)(#3)}}
 \newcommand*{\apc}{\casop{\constant{ap}{\ct}}}
+\newcommand*{\ns}{\casop{\constant{ns}}}
 \newcommand*{\ev}{\casop{\constant{ev}}}
 \newcommand*{\ve}{\casop{\constant{ve}}} % cute: the inverse of \ev
 \newcommand*{\el}{\mathrm{elim}} % another inverse of \ev ?!

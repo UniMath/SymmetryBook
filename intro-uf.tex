@@ -314,7 +314,9 @@ of appropriate types.
 %TODO decide on terminology "map" and "section"
 
 A function $f : X \to Y$ is essentially the same thing as a function $f$ 
-of type $\prod_{x:X} Y$, where the product is formed using a constant family of types.
+of type $\prod_{x:X} Y$, where the product is formed using a constant family of types.\footnote{%
+  For this reason, the type $\prod_{x:X} Y(x)$ is also called a \emph{dependent product type}.
+  It's also called a \emph{Pi-type}.}
 
 The basic way of constructing an element of a product type
 is by explicit definition, as we have seen before.
@@ -329,7 +331,9 @@ $\ap{f} : x = x' \to f(x) = f(x')$ is defined by induction by setting
 $\ap{f}(\refl{x})\defeq\refl{f(x)}$.
 \end{definition}
 
-The function $\ap f$ is called {\em application} of $f$ to paths.  For convenience, we may abbreviate $\ap f (p)$ to $f(p)$.
+The function $\ap f$ is called {\em application} of $f$ to paths.\footnote{%
+  Another name is the \emph{action on paths} of $f$.}
+For convenience, we may abbreviate $\ap f (p)$ to $f(p)$.
 
 The following lemma shows that $\ap f$ is compatible with composition.
 
@@ -339,8 +343,11 @@ The following lemma shows that $\ap f$ is compatible with composition.
 \end{lemma}
 
 \begin{proof}
-  By induction on $p$ and $p'$, one reduces to showing that $\ap f (\refl x \cdot \refl x) =  \ap f ( \refl x ) \cdot  \ap f ( \refl x )$, where
-  both sides are equal to $\refl { f(x) }$ by definition.
+  By induction on $p$ and $p'$, one reduces to showing that
+  \[
+    \ap f (\refl x \cdot \refl x) =  \ap f ( \refl x ) \cdot  \ap f ( \refl x ),
+  \]
+  where both sides are equal to $\refl { f(x) }$ by definition.
 \end{proof}
 
 In a similar way one shows that $\ap f$ is compatible with inverse,
@@ -353,9 +360,13 @@ $f$ and $g$ are \emph{pointwise equal}).
 This can be proven by induction or by substitution.
 
 \begin{definition}\label{def:ptw}
-Let $f,g:\prod_{x:X} Y(x)$. Define by induction the function
+  Let $f,g:\prod_{x:X} Y(x)$. Define by induction the function\footnote{%
+    Alternatively, we can consider for any $x:X$ the evaluation function
+    $\ev_x : \big(\prod_{x:X} Y(x)\bigr) \to Y(x)$, defined by
+    $\ev_x(f) \defeq f(x)$. Then we have
+    ${\ptw}_{f,g}(p)(x) = \ap{\ev_x}(p)$, but not definitionally.}
 \[ 
-{\ptw}_{f,g}: f=g \to \prod_{x:X} f(x)=g(x) 
+{\ptw}_{f,g}: f=g \to \prod_{x:X} f(x)=g(x)
 \text{,~setting ${\ptw}_{f,f}(\refl{f},x)\defeq\refl{f(x)}$.}
 \] 
 \end{definition}
@@ -370,12 +381,20 @@ Elements of $\prod_{x:X} f(x)=g(x)$ are called \emph{homotopies}.
 Given such a homotopy $h$, and elements $x,x'$ of $X$ as well as a path $p: x=x'$,
 we can define by induction on $p$ an element
 \[ 
-ns(h,p): ((h(x')\cdot \ap{f}(p)) =_{f(x)=g(x')} (\ap{g}(p)\cdot h(x))),
+  \ns(h,p): ((h(x')\cdot \ap{f}(p)) =_{f(x)=g(x')} (\ap{g}(p)\cdot h(x))),
 \]
-by setting $ns(h,\refl{x})$ to be some previously
+by setting $\ns(h,\refl{x})$ to be some previously
 constructed element of $h(x) \cdot \refl{f(x)} = h(x)$.
-The type of $ns(h,p)$ can be depicted as a square (MAKE PICTURE)
-and $ns(h,p)$ is called a \emph{naturality square}.%\footnote{%
+The type of $\ns(h,p)$ can be depicted as a square\footnote{%
+  Like this, where we add little arrows to the equal signs to indicate their direction:\par
+  % \normalsize
+  \[
+    \begin{tikzcd}[sep=huge,ampersand replacement=\&]
+      f(x) \ar[r,eqr,"\ap f(p)"]\ar[d,eql,"h(x)"'] \& f(x')\ar[d,eqr,"h(x')"] \\
+      g(x) \ar[r,eql,"\ap g(p)"'] \& g(x')
+    \end{tikzcd}
+  \]}
+and $\ns(h,p)$ is called a \emph{naturality square}.%\footnote{%
 %This terminology comes from category theory.}
 \end{definition}
 
