@@ -5,19 +5,24 @@
 \label{sec:what-is-a-type}
 
 In some computer programming languages, all variables are introduced along with a declaration of the type of thing they will refer to.  For example,
-one may encounter types such as $bool$, $string$, $int$, and $real$, describing Boolean values, character strings, 32 bit integers, and 64 bit
+one may encounter types such as $\bool$, $\charstring$, $\integer$, and $\real$, describing Boolean values, character strings, 32 bit integers, and 64 bit
 floating point numbers.  The types are used to determine which statements of the programming language are grammatically well-formed.
-For example, if $s$ of type $string$ and $x$ is of type $real$, we may write $1/x$, but we may not write $1/s$.
+For example, if $s$ of type $\charstring$ and $x$ is of type $\real$, we may write $1/x$, but we may not write $1/s$.\footnote{%
+  In a programming language, the well-formed expression $1/x$ may of course
+  produce a run-time error if $x$ happens to have the value $0{.}0$.}
 
 Types occur in mathematics, too, and are used in the same way: all variables are introduced along with a declaration of the type of thing they
 will refer to.  For example, one may say ``consider a point $P$ of the plane'', ``consider a line $L$ of the plane'', ``consider a hexagon
 $H$'', or ``consider a graph $G$''.  The types are used to determine which mathematical statements are grammatically well-formed.  For example,
-one may write ``$P$ lies on $L$'' or ``$L$ passes through $P$'', but not ``$L$ lies on $P$''.
+one may write ``$P$ lies on $L$'' or ``$L$ passes through $P$'', but not ``$L$ lies on $P$''.\footnote{%
+  Coming back to our example from above, in mathematics there is no ``run-time''
+  and the expression $1/x$ is only well-formed if we know that $x$ is a non-zero
+  real number.}
 
 In \emph{univalent mathematics}, types are used to classify all mathematical objects.  Every mathematical object is an element of some (unique)
 type.
 
-One expresses the statement that an ``element'' $a$ is of ``type'' $X$ by writing $a:X$.  Using that notation, each variable is introduced along
+One expresses the statement that an \emph{element} $a$ is of \emph{type} $X$ by writing $a:X$.  Using that notation, each variable is introduced along
 with a declaration of the type of thing it will refer to, and the declared types of the variables are used to determine which statements of the
 theory are grammatically well-formed.
 
@@ -45,9 +50,9 @@ Now consider functions $f : X \to Y$, $g : Y \to Z$, and $h : Z \to W$.  Then $(
 definition, since applying the definitions within expands both expresssions to $a \mapsto h(g(f(a)))$.  In other
 words, we have established that $(h \circ g) \circ f \jdeq h \circ (g \circ f)$.
 
-One may define the identity function $id_X : X \to X$ by setting $id_X \defeq (a \mapsto a)$.  Application of definitions shows that $f \circ
-id_X$ is the same by definition as $a \mapsto f(a)$, which, by a standard convention, which we adopt, is to be regarded as the same as $f$.  In
-other words, we have established that $f \circ id_X \jdeq f$.  A similar computation applies to $id_Y \circ f$.
+One may define the identity function $\id_X : X \to X$ by setting $\id_X \defeq (a \mapsto a)$.  Application of definitions shows that $f \circ
+]id_X$ is the same by definition as $a \mapsto f(a)$, which, by a standard convention, which we adopt, is to be regarded as the same as $f$.  In
+other words, we have established that $f \circ \id_X \jdeq f$.  A similar computation applies to $\id_Y \circ f$.
 
 In the following sections we will expose various other elementary types and elementary ways to make new types from old ones.
 
@@ -55,17 +60,16 @@ In the following sections we will expose various other elementary types and elem
 \label{sec:natural-numbers}
 
 Here are Peano's rules\cite{peano-principia} for constructing the natural numbers in the form that is used in type theory.
-\begin{enumerate}
-\item[P1:] there is a type called $\NN$ (whose elements will be called natural numbers);
-\item[P2:] there is an element of $\NN$ called $0$;
-\item[P3:] if $m$ is a natural number, then there is also a natural number $S(m)$, called the \emph{successor} of $m$;
-\item[P4:] given a family of types $X(m)$ depending on a parameter\footnote{
-  Referring to a variable as a {\em parameter} is a turn of phrase that emphasizes that an expression depends on the variable,
-  drawing attention to the results as the variable ranges over elements of its type.
-  }
+\begin{enumerate}[label=P\arabic*:]
+\item there is a type called $\NN$ (whose elements will be called natural numbers);
+\item there is an element of $\NN$ called $0$;
+\item if $m$ is a natural number, then there is also a natural number $\Succ(m)$, called the \emph{successor} of $m$;
+\item given a family of types $X(m)$ depending on a parameter\footnote{%
+  Referring to a variable as a \emph{parameter} is a turn of phrase that emphasizes that an expression depends on the variable,
+  drawing attention to the results as the variable ranges over elements of its type.}
   $m$ of type $\NN$, in order to define a family $f(m) : X(m)$ of elements of each of them it suffices to provide an element $a$ of $X(0)$ and
-  to provide, for each $m$, a function $g_m : X(m) \to X(S(m))$.  (The resulting function $f$ may be regarded as having been defined inductively
-  by the two declarations $f(0) \defeq a$ and $f(S(m)) \defeq g_m(f(m))$.)
+  to provide, for each $m$, a function $g_m : X(m) \to X(\Succ(m))$.  (The resulting function $f$ may be regarded as having been defined inductively
+  by the two declarations $f(0) \defeq a$ and $f(\Succ(m)) \defeq g_m(f(m))$.)
 \end{enumerate}
 \nopagebreak
 You may recognize rule P4 as ``the principle of mathematical induction'' or as ``defining a function by recursion''.  We may also refer to it
@@ -74,22 +78,22 @@ $\NN$ via the use of rules P2 and P3.
 
 We introduce the following syntactic definitions.
 \begin{align*}
- 1 & \defeq S(0) \\
- 2 & \defeq S(1) \\
- 3 & \defeq S(2) \\
- \vdots
+ 1 & \defeq \Succ(0) \\
+ 2 & \defeq \Succ(1) \\
+ 3 & \defeq \Succ(2) \\
+   & \quad \vdots
 \end{align*}
 
 We may now define addition and multiplication of natural numbers by recursion.  In both cases, the family of types $X(m)$ is defined by setting
 $X(m) \defeq \NN$ for every $m : \NN$.  For natural numbers $n$ and $m$ we define $n+m : \NN$ by induction on $m$ by setting $n+0\defeq n$ and
-$n+S(m)\defeq S(n+m)$.  Application of definitions shows, for example, that $2+2 \jdeq 4$ are the same by definition, because both sides reduce
-to $S(S(S(S(0))))$.  Similarly we define the product $n \cdot m : \NN$ by induction on $m$ by setting setting $n\cdot 0\defeq 0$ and $n\cdot
-S(m)\defeq (n\cdot m) + n$.
+$n+\Succ(m)\defeq \Succ(n+m)$.  Application of definitions shows, for example, that $2+2 \jdeq 4$ are the same by definition, because both sides reduce
+to $\Succ(\Succ(\Succ(\Succ(0))))$.  Similarly we define the product $n \cdot m : \NN$ by induction on $m$ by setting setting $n\cdot 0\defeq 0$ and $n\cdot
+\Succ(m)\defeq (n\cdot m) + n$.
 
 We may also define the factorial function $\fact : \NN \to \NN$ by recursion, setting $\fact(0) \defeq 1$ and setting
-$\fact(S(m)) \defeq (m+1) \cdot \fact(m)$.  This definition applies rule P4 with $1$ for $a$, and with the
+$\fact(\Succ(m)) \defeq (m+1) \cdot \fact(m)$.  This definition applies rule P4 with $1$ for $a$, and with the
 function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$.
-Application of the definitions shows, for example, that $\fact(2) \jdeq 2$, because both sides expand to $S(S(0))$.
+Application of the definitions shows, for example, that $\fact(2) \jdeq 2$, because both sides expand to $\Succ(\Succ(0))$.
 
 We finish this section with the definition of iteration by recursion.  Let $X$ be a type, and suppose we have a function $e : X \to X$.  We
 define by induction the $n$-fold \emph{iteration} $e^n : X \to X$ by setting $e^0 \defeq \id_X$ and $e^{S(n)}\defeq e\circ e^n$.
@@ -104,39 +108,47 @@ comfortable if we call it the \emph{equality type}, at least initially.  Identit
 the two elements are of the same type; we shall have no need to compare elements of different types.
 
 Here are the rules for constructing equality types.
-\begin{enumerate}
-\item[E1:]
+\begin{enumerate}[label=E\arabic*:]
+\item
   for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a =_X b$;
-\item[E2:] for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$ (the name $\refl{}$ comes from the word
+\item for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$ (the name $\refl{}$ comes from the word
   ``reflexivity'')
-\item[E3:] for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
+\item for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
   $a =_X b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl a)$.  The resulting
   function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl a) \defeq p$.
 \end{enumerate}
 
-The identity type $a =_X b$ may also be called an {\em equation}.
+The identity type $a =_X b$ may also be called an \emph{equation}.
 
 When there is no risk of confusion, we will write $a=b$ instead of $a =_X b$.
 
-When we know that there can be at most one element of $a=b$, we will refer to an element $i$ of $a=b$ as a {\em proof}\,\footnote{Here we override
+When we know that there can be at most one element of $a=b$, we will refer to an element $i$ of $a=b$ as a \emph{proof}\,\footnote{Here we override
   the use of the word ``proof'' that is traditional in metamathematics; such a thing would now be a formal expression denoting an
   element of $a=b$.} that $a$ is equal to $b$.
 
-When $a=b$ may have more than one element, we will refer to an element $i$ of $a=b$ as an {\em identification} of $a$ with $b$, or simply as an
-{\em identity} or an {\em equality}.  Since the word ``identification'' is a long one, we may also refer to $i$ as a {\em path} from $a$ to
+When $a=b$ may have more than one element, we will refer to an element $i$ of $a=b$ as an \emph{identification} of $a$ with $b$, or simply as an
+\emph{identity} or an \emph{equality}.  Since the word ``identification'' is a long one, we may also refer to $i$ as a \emph{path} from $a$ to
 $b$---this has the advantage of incorporating the intuition that an identification may proceed gradually through intermediate steps.
 
 It may come as a surprise that two mathematical objects can be equal in more than one way, especialy since rule E3 above seems to say that the
-trivial proofs of equality are the only relevant ones, but this reflects a situation commonly encountered in geometry, where {\em congruence} of
+trivial proofs of equality are the only relevant ones, but this reflects a situation commonly encountered in geometry, where \emph{congruence} of
 geometric figures is considered.  For example, in Euclidean space, two equilateral triangles of the same size are congruent in six (different)
-ways.  The chief novelty of univalent mathematics is that the basic logical notion of equality, as implemented by the types $a=b$, is carefully
+ways.\footnote{Six, since we allow reflections, otherwise there are only three.\par
+  \begin{tikzpicture}[tri/.style={draw,regular polygon,regular polygon sides=3,minimum height=6em}]
+    \node[tri,rotate=-15]{};
+    \begin{scope}[xshift=7em]
+      \node[tri,rotate=15]{};
+    \end{scope}
+  \end{tikzpicture}
+}
+The chief novelty of univalent mathematics is that the basic logical notion of equality, as implemented by the types $a=b$, is carefully
 engineered to accommodate notions of congruence and symmetry from diverse areas of mathematics, including geometry.  Exposing that point of view
 in the context of geometry is the main point of this book.
 
-In light of the analogy with geometry just introduced, we will refer to an element $i$ of $a=a$ as a {\em symmetry} of $a$.  Think of a
+In light of the analogy with geometry just introduced, we will refer to an element $i$ of $a=a$ as a \emph{symmetry} of $a$.  Think of a
 congruence of a triangle with itself.  An example of a non-trivial symmetry will be seen in \cref{xca:C2}.
 
-Expansion of the definitions in the type $\fact(2)=2$ simplifies it to $S(S(0)) = S(S(0))$, so we see from rule E2 that $\refl{S(S(0))}$ serves
+Expansion of the definitions in the type $\fact(2)=2$ simplifies it to $\Succ(\Succ(0)) = \Succ(\Succ(0))$, so we see from rule E2 that $\refl{\Succ(\Succ(0))}$ serves
 as a proof of it.  We may also write $\refl{2}$ and $\refl{\fact(2)}$ for that proof.  A student might want a more detailed proof of the
 equation, but as a result of our convention above that definitions are syntactically transparent, the application of definitions, including
 inductive definitions, is regarded as a trivial operation, and the details are omitted from the proof.
@@ -147,7 +159,22 @@ where the proof is $\refl a : a=a$.  Notice that the single case in such an indu
 equality types via rule E2, and compare that with P4, which dealt with the two ways of introducing elements of $\NN$.
 %% ???
 Intuitively, the induction principle for equality amounts to saying that the element $\refl a$ ``generates'' the system of types $a=b$, as $b$
-ranges over elements of $A$.
+ranges over elements of $A$.\footnote{%
+  We can also use a geometric intuition: when be ``freely ranges'' over elements of $A$,
+  while we keep the element $a$ fixed, we can picture a path $p : a=b$ as a piece of string
+  winding through $A$, and the ``freeness'' of the element $b$ allows us to pull the string,
+  and $b$ with it, until we have the constant path at $a$, $\refl a$.\par
+  \begin{tikzpicture}
+    \draw plot [smooth cycle] coordinates {(0,0) (1.5,0) (1.3,1) (0,1.5)};
+    \node[dot,label=above:$a$] (a) at (0.1,0.1) {};
+    \node[dot,label=below:$b$] (b) at (1.3,0.8) {};
+    \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto] {$p$} (b);
+    \begin{scope}[xshift=3cm]
+    \draw plot [smooth cycle] coordinates {(0,0) (1.5,0) (1.3,1) (0,1.5)};
+    \node[dot,label=above:$a$] at (0.1,0.1) {};
+    \node at (0.5,0.2) {$\refl a$};
+    \end{scope}
+  \end{tikzpicture}}
 
 Equality is {\em symmetric}, in the sense that an identification of $a$ with $b$ may be reversed to give an identification of $b$ with $a$.  In
 order to produce an element of $b=a$ from an element $p$ of $a=b$, for any $b$ and $p$, we argue by induction.  We let $P(b,e)$ be $b=a$ for any
@@ -1679,21 +1706,21 @@ weak constancy of $f : A \to B$ is a proposition.
 \begin{proof}
   Consider the image factorization of $f : A \xrightarrow{p}{} \im(f)
   \xrightarrow{i}{} B$,
-  where $p\,x \defeq (f\,x,\trunc{(x,\refl{f\,x})})$
-  and $i\,(y,!) \defeq y$.
+  where $p(x) \defeq (f(x),\trunc{(x,\refl{f(x)})})$
+  and $i(y,!) \defeq y$.
 
-  The key point is that $\im(f)$ is a proposition: Suppose
+  The key point is that $\im(f)$ is a proposition: Let
   $(y_1,z_1),(y_2,z_2):\im(f)$. Since $B$ is a set, the type $y_1=_B
   y_2$ is a proposition. Hence we may hypothesize (by induction on $z_i$)
   that we have $x_1,x_2:A$ with
-  $f\,x_i\jdeq y_i$ for $i=1,2$. By concatenation, we get
+  $f\,x_i = y_i$ for $i=1,2$. By concatenation, we get
   $y_1=f\,x_1=f\,x_2=y_2$ and hence $(y_1,z_1)=(y_2,z_2)$.
 
   Thus, by the universal property of the truncation,
   we get $g' : \Trunc A \to \im(f)$ such
-  that $g'\,\trunc x \jdeq p\,x \jdeq (f\,x,\trunc{(x,\refl{f\,x})})$.
+  that $g'(\trunc x) \jdeq p(x) \jdeq (f(x),\trunc{(x,\refl{f(x)})})$.
   Composing with $i$ we get $g\defeq i\circ g' : \Trunc A \to B$
-  with $g(\trunc x) \defeq f\,x$, as desired.
+  with $g(\trunc x) \defeq f(x)$, as desired.
 \end{proof}
 
 \subsection{Set quotients}
