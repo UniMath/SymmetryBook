@@ -61,10 +61,10 @@ In the following sections we will expose various other elementary types and elem
 
 Here are Peano's rules\cite{peano-principia} for constructing the natural numbers in the form that is used in type theory.
 \begin{enumerate}[label=P\arabic*:]
-\item there is a type called $\NN$ (whose elements will be called natural numbers);
-\item there is an element of $\NN$ called $0$;
-\item if $m$ is a natural number, then there is also a natural number $\Succ(m)$, called the \emph{successor} of $m$;
-\item given a family of types $X(m)$ depending on a parameter\footnote{%
+\item\label{P1} there is a type called $\NN$ (whose elements will be called natural numbers);
+\item\label{P2} there is an element of $\NN$ called $0$;
+\item\label{P3} if $m$ is a natural number, then there is also a natural number $\Succ(m)$, called the \emph{successor} of $m$;
+\item\label{P4} given a family of types $X(m)$ depending on a parameter\footnote{%
   Referring to a variable as a \emph{parameter} is a turn of phrase that emphasizes that an expression depends on the variable,
   drawing attention to the results as the variable ranges over elements of its type.}
   $m$ of type $\NN$, in order to define a family $f(m) : X(m)$ of elements of each of them it suffices to provide an element $a$ of $X(0)$ and
@@ -72,9 +72,9 @@ Here are Peano's rules\cite{peano-principia} for constructing the natural number
   by the two declarations $f(0) \defeq a$ and $f(\Succ(m)) \defeq g_m(f(m))$.)
 \end{enumerate}
 \nopagebreak
-You may recognize rule P4 as ``the principle of mathematical induction'' or as ``defining a function by recursion''.  We may also refer to it
+You may recognize rule \ref{P4} as ``the principle of mathematical induction'' or as ``defining a function by recursion''.  We may also refer to it
 simply as ``induction for $\NN$''.  Notice that the two cases in an inductive definition correspond to the two ways of introducing elements of
-$\NN$ via the use of rules P2 and P3.
+$\NN$ via the use of rules \ref{P2} and \ref{P3}.
 
 We introduce the following syntactic definitions.
 \begin{align*}
@@ -91,13 +91,13 @@ to $\Succ(\Succ(\Succ(\Succ(0))))$.  Similarly we define the product $n \cdot m 
 \Succ(m)\defeq (n\cdot m) + n$.
 
 We may also define the factorial function $\fact : \NN \to \NN$ by recursion, setting $\fact(0) \defeq 1$ and setting
-$\fact(\Succ(m)) \defeq (m+1) \cdot \fact(m)$.  This definition applies rule P4 with $1$ for $a$, and with the
+$\fact(\Succ(m)) \defeq (m+1) \cdot \fact(m)$.  This definition applies rule \ref{P4} with $1$ for $a$, and with the
 function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$.
 Application of the definitions shows, for example, that $\fact(2) \jdeq 2$, because both sides expand to $\Succ(\Succ(0))$.
 
 We finish this section with the definition of iteration by recursion.  Let $X$ be a type, and suppose we have a function $e : X \to X$.  We
 define by induction the $n$-fold \emph{iteration} $e^n : X \to X$ by setting $e^0 \defeq \id_X$ and $e^{S(n)}\defeq e\circ e^n$.
-Here we apply rule P4 with the identity function $\id_X$ for $a$
+Here we apply rule \ref{P4} with the identity function $\id_X$ for $a$
 and the function $d \mapsto e\circ d$ for $g_m : (X\to X)\to(X\to X)$, for any $m$.
 
 \section{Identity types}
@@ -109,11 +109,11 @@ the two elements are of the same type; we shall have no need to compare elements
 
 Here are the rules for constructing equality types.
 \begin{enumerate}[label=E\arabic*:]
-\item
+\item\label{E1}
   for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a =_X b$;
-\item for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$ (the name $\refl{}$ comes from the word
+\item\label{E2} for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$ (the name $\refl{}$ comes from the word
   ``reflexivity'')
-\item for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
+\item\label{E3} for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
   $a =_X b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl a)$.  The resulting
   function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl a) \defeq p$.
 \end{enumerate}
@@ -130,7 +130,7 @@ When $a=b$ may have more than one element, we will refer to an element $i$ of $a
 \emph{identity} or an \emph{equality}.  Since the word ``identification'' is a long one, we may also refer to $i$ as a \emph{path} from $a$ to
 $b$---this has the advantage of incorporating the intuition that an identification may proceed gradually through intermediate steps.
 
-It may come as a surprise that two mathematical objects can be equal in more than one way, especialy since rule E3 above seems to say that the
+It may come as a surprise that two mathematical objects can be equal in more than one way, especialy since rule \ref{E3} above seems to say that the
 trivial proofs of equality are the only relevant ones, but this reflects a situation commonly encountered in geometry, where \emph{congruence} of
 geometric figures is considered.  For example, in Euclidean space, two equilateral triangles of the same size are congruent in six (different)
 ways.\footnote{Six, since we allow reflections, otherwise there are only three.\par
@@ -148,41 +148,44 @@ in the context of geometry is the main point of this book.
 In light of the analogy with geometry just introduced, we will refer to an element $i$ of $a=a$ as a \emph{symmetry} of $a$.  Think of a
 congruence of a triangle with itself.  An example of a non-trivial symmetry will be seen in \cref{xca:C2}.
 
-Expansion of the definitions in the type $\fact(2)=2$ simplifies it to $\Succ(\Succ(0)) = \Succ(\Succ(0))$, so we see from rule E2 that $\refl{\Succ(\Succ(0))}$ serves
+Expansion of the definitions in the type $\fact(2)=2$ simplifies it to $\Succ(\Succ(0)) = \Succ(\Succ(0))$, so we see from rule \ref{E2} that $\refl{\Succ(\Succ(0))}$ serves
 as a proof of it.  We may also write $\refl{2}$ and $\refl{\fact(2)}$ for that proof.  A student might want a more detailed proof of the
 equation, but as a result of our convention above that definitions are syntactically transparent, the application of definitions, including
 inductive definitions, is regarded as a trivial operation, and the details are omitted from the proof.
 
-We will refer to rule E3 as ``induction for equality''.  It says that to prove something about (or to construct something from) every proof that
+We will refer to rule \ref{E3} as ``induction for equality''.  It says that to prove something about (or to construct something from) every proof that
 $a$ is equal to something else, it suffices to consider the special case where the proof is the trivial proof that $a$ is equal to itself, i.e.,
 where the proof is $\refl a : a=a$.  Notice that the single case in such an induction corresponds to the single way of introducing elements of
-equality types via rule E2, and compare that with P4, which dealt with the two ways of introducing elements of $\NN$.
+equality types via rule \ref{E2}, and compare that with \ref{P4}, which dealt with the two ways of introducing elements of $\NN$.
 %% ???
 Intuitively, the induction principle for equality amounts to saying that the element $\refl a$ ``generates'' the system of types $a=b$, as $b$
 ranges over elements of $A$.\footnote{%
-  We can also use a geometric intuition: when be ``freely ranges'' over elements of $A$,
-  while we keep the element $a$ fixed, we can picture a path $p : a=b$ as a piece of string
-  winding through $A$, and the ``freeness'' of the element $b$ allows us to pull the string,
+  We can also use a geometric intuition: when $b$ ``freely ranges'' over elements of $A$,
+  together with a path $e : a=b$,
+  while we keep the element $a$ fixed, we can picture $e$ as a piece of string
+  winding through $A$, and the ``freeness'' of the pair $(b,e)$ allows us to pull the string $e$,
   and $b$ with it, until we have the constant path at $a$, $\refl a$.\par
   \begin{tikzpicture}
     \draw plot [smooth cycle] coordinates {(0,0) (1.5,0) (1.3,1) (0,1.5)};
     \node[dot,label=above:$a$] (a) at (0.1,0.1) {};
     \node[dot,label=below:$b$] (b) at (1.3,0.8) {};
+    \node (A1) at (1.5,1.5) {$A$};
     \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto] {$p$} (b);
-    \begin{scope}[xshift=3cm]
+    \begin{scope}[xshift=2.5cm]
     \draw plot [smooth cycle] coordinates {(0,0) (1.5,0) (1.3,1) (0,1.5)};
     \node[dot,label=above:$a$] at (0.1,0.1) {};
     \node at (0.5,0.2) {$\refl a$};
+    \node (A2) at (1.5,1.5) {$A$};
     \end{scope}
   \end{tikzpicture}}
 
-Equality is {\em symmetric}, in the sense that an identification of $a$ with $b$ may be reversed to give an identification of $b$ with $a$.  In
+Equality is \emph{symmetric}, in the sense that an identification of $a$ with $b$ may be reversed to give an identification of $b$ with $a$.  In
 order to produce an element of $b=a$ from an element $p$ of $a=b$, for any $b$ and $p$, we argue by induction.  We let $P(b,e)$ be $b=a$ for any
-$b$ of type $X$ and for any $e$ of type $a=b$, for use in rule E3 above. 
+$b$ of type $X$ and for any $e$ of type $a=b$, for use in rule \ref{E3} above. 
 This reduces us to the case where $b$ is $a$ and $p$ is $\refl a$, and
 our task is now to produce an element of $a=a$; we choose $\refl a$ for it.
 
-Equality is also {\em transitive}, and is established the same way.  
+Equality is also \emph{transitive}, and is established the same way.  
 For each $a,b,c:X$ and for each $p:a=b$ and for each $q:b=c$ we want to produce an
 element of type $a=c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl b$, and we are to produce an element
 of $a=b$.  The element $p$ serves the purpose.  
@@ -205,8 +208,7 @@ or as $q\cdot p$, $qp$, or $q\circ p$, see \cref{fig:path-concatenation}.
 (The notation $q\circ p$ will be used when $a,b,c$ are types and
 $p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.)
 
-
-\begin{figure}
+\begin{marginfigure}
   \centering
   \begin{tikzpicture}
     \node (X) at (0,-1.5) {$X$};
@@ -214,22 +216,22 @@ $p$ and $q$ come from equivalences $a\to b$ and $b\to c$, respectively.)
     .. controls ++(200:-1) and ++(180:1) .. (2,-2)
     .. controls ++(180:-1) and ++(270:1) .. (4,0)
     .. controls ++(270:-1) and ++(20:2)   .. (2,2)
-    .. controls ++(20:-2)   and ++(90:1)  .. (-3,0)
+    .. controls ++(20:-2)   and ++(90:1)  .. (-1,0)
     .. controls ++(90:-1)  and ++(200:1) .. (0,-1);
-    \node[fill,circle,inner sep=1pt,label=below:$a$] (a) at (0,0) {};
-    \node[fill,circle,inner sep=1pt,label=below:$b$] (b) at (2,-1) {};
-    \node[fill,circle,inner sep=1pt,label=above:$c$] (c) at (3,1) {};
+    \node[dot,label=below:$a$] (a) at (0,0) {};
+    \node[dot,label=below:$b$] (b) at (2,-1) {};
+    \node[dot,label=above:$c$] (c) at (3,1) {};
     \node (ct) at (1.2,1) {$q\circ p \jdeq p\ct q$};
-    \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto] {$p$} (b);
-    \draw[->] (b) .. controls ++(170:-1) and ++(-70:1) .. node[auto] {$q$} (c);
+    \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto,swap] {$p$} (b);
+    \draw[->] (b) .. controls ++(170:-1) and ++(-70:1) .. node[auto,swap] {$q$} (c);
     \draw[->] (a) .. controls ++(15:1) and ++(210:1) .. (c);
-    \draw (-2,0) arc(210:330:.8 and .5);
-    \draw (-0.91,-.18) arc(60:120:.8 and .7);
+    %\draw (1,0) arc(210:330:.8 and .5);
+    %\draw (2.09,-.18) arc(60:120:.8 and .7);
   \end{tikzpicture}
   
   \caption{Concatenation of paths in $X$}
   \label{fig:path-concatenation}
-\end{figure}
+\end{marginfigure}
 
 The types of $\symm_{a,b}$ and $\trans_{a,b,c}$ express that
 equality is symmetric and transitive. Another view on
@@ -238,12 +240,14 @@ operations on identifications, namely reversing an identification
 and concatenating two identifications. As operations, they satisfy
 many algebraic properties, such as $(p^{-1})^{-1} = p$ and
 associativity of concatenation, that are all easy to prove by induction. 
-We leave them as exercises, see \cite[Lemma 2.1.4]{hottbook}. 
+We leave them as exercises, see Lemma 2.1.4 the HoTT book\cite{hottbook}. 
 
 Concatenation can be used to define powers $p^n$ of $p:a=a$
 by induction on $n:\NN$, setting $p^0\defeq\refl{a}$ and
 $p^{n+1}\defeq p\cdot p^n$. Negative powers $p^{-n}$ are defined
-as $(p^{-1})^n$.
+as $(p^{-1})^n$.\footnote{For now, this is just a convention,
+  but after we introduce the set of integers $\zet$ below in~\cref{def:zet},
+  we'll be justified in writing $p^z$ for any $z:\zet$.}
 
 One frequent use of elements of identity types is in \emph{substitution}.  
 Let $X$ be a type, and let $T(x)$ be a family of types depending on a
@@ -302,7 +306,7 @@ $Y(a)$, one for each $a:X$. We may refer to $X$ as the
 \emph{index type} of the product.
 
 We have actually seen such functions already, for example,
-in P4 in \cref{sec:natural-numbers}, where
+in \ref{P4} in \cref{sec:natural-numbers}, where
 we called $f(m):X(m)$ a `family of elements'. We can now
 also say $f: \prod_{m:\NN} X(m)$. However, we will continue to use
 phrases with `family' and `for all' as well, always referring to functions
