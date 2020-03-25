@@ -31,6 +31,16 @@
 %      },
 %      decorate
 %    }}}
+
+%% mathtools does not define an extensible equal sign, so we do so here:
+\makeatletter
+\def\Equalfill@{\arrowfill@\Relbar\Relbar\Relbar}
+\MHInternalSyntaxOn
+\providecommand*\xEqual[2][]{%
+  \ext@arrow 0055{\Equalfill@}{#1}{#2}}
+\MHInternalSyntaxOff
+\makeatother
+
 %% mathpazo does not define mapsfrom, so we do so here:
 \def\mapsfrom{\pgfpicture\pgfsetbaseline{+0pt}\pgftransformxscale{-1}\pgftext[base]{$\mapsto$}\endpgfpicture}
 
@@ -371,7 +381,7 @@
 \newcommand*{\loopspace}[1][\null]{\operatorname{\Omega^{#1}}}
 
 %% paths over paths
-\newcommand*{\pathoverdisplay}[4]{{#1} \overset{#2}{\underset{#3}=} #4}
+\newcommand*{\pathoverdisplay}[4]{{#1} \xEqual[#3]{#2} #4}
 \newcommand*{\pathover}[4]{#1 =^{#2}_{#3} #4}
 
 \newcommand*{\pair}{\casop{\constructor{pair}}}
