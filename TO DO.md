@@ -17,3 +17,8 @@ We'll start working on this bit:
    - group actions, orbits and fixed points
    - subgroups
    - Cayley's theorem
+
+Speed-up:
+
+Start: 1:18 sec
+-quiet: 1:16 sec
