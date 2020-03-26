@@ -2,7 +2,13 @@
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{amssymb,amsthm}
+\usepackage[largesc,osf]{newpxtext}
+\usepackage{newpxmath}
+\let\pxopenbox\openbox % pxmath already has openbox but amsthm also defines it
+\let\openbox\relax
+\usepackage{amsmath} % must be before amsthm
+\usepackage{amsthm}
+\renewcommand*{\openbox}{\pxopenbox}
 \usepackage{mathtools}          %to get \vcentcolon
 \usepackage{thmtools}
 \usepackage{xspace}
@@ -128,8 +134,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% THEOREMS
-\declaretheoremstyle[headfont=\normalfont\bfseries,bodyfont=\itshape]{cas-thm}
-\declaretheoremstyle[headfont=\normalfont\bfseries]{cas-def}
+\declaretheoremstyle[headfont=\normalfont\scshape,bodyfont=\slshape]{cas-thm}
+\declaretheoremstyle[headfont=\normalfont\scshape]{cas-def}
 \declaretheorem[parent=section,style=cas-thm]{theorem}
 \declaretheorem[sibling=theorem,style=cas-thm]{lemma}
 \declaretheorem[sibling=theorem,style=cas-thm]{corollary}
@@ -379,7 +385,7 @@
 \newcommand*{\univcover}[2]{{{#1}^0_{\left(#2\right)}}}%
 
 \newcommand*{\blank}{\_}%
-\newcommand*{\inv}[1]{{#1}^{-1}}%
+\newcommand*{\inv}[1]{#1^{-1}}%
 \newcommand*{\ptdto}{\to_\ast}%
 \newcommand*{\loopspace}[1][\null]{\operatorname{\Omega^{#1}}}
 
