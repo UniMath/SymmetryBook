@@ -17,5 +17,5 @@ BOOKFILES :=						\
 	symmetry.tex					\
 	EuclideanGeometry.tex			
 
-TAGS : Makefile *.tex
+TAGS : Makefile $(BOOKFILES)
 	etags $(BOOKFILES)
