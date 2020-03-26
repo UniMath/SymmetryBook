@@ -50,6 +50,59 @@
 \MHInternalSyntaxOff
 \makeatother
 
+%% resolve the long equal rendering issue with tikz-cd:
+\makeatletter
+\def\tikzcdequalsignoffset{0.1em}
+% This helper macro finds the start and endpoints of a line between
+% the source and target nodes and stores them in \sourcecoordinate and
+% \targetcoordinate.
+%
+% #1 -- source node
+% #2 -- target node
+\def\findedgesourcetarget#1#2{
+    \let\sourcecoordinate\pgfutil@empty
+    \ifx\tikzcd@startanchor\pgfutil@empty % Check that the source doesn't have a specified anchor
+        \def\tempa{\pgfpointanchor{#1}{center}}% if so, start by taking the center of that coordinate
+    \else
+        \edef\tempa{\noexpand\pgfpointanchor{#1}{\expandafter\@gobble\tikzcd@startanchor}} % If it has an anchor, use that
+        \let\sourcecoordinate\tempa
+    \fi
+    \ifx\tikzcd@endanchor\pgfutil@empty % check that the target doesn't have a specified anchor
+        \def\tempb{\pgfpointshapeborder{#2}{\tempa}}% if so, our end point is the point on the boundary of node b that is in the direction of our initial start coordinate
+    \else
+        \edef\tempb{\noexpand\pgfpointanchor{#2}{\expandafter\@gobble\tikzcd@endanchor}}% If it has a specified anchor, use that
+    \fi
+    \let\targetcoordinate\tempb
+    \ifx\sourcecoordinate\pgfutil@empty%
+        \def\sourcecoordinate{\pgfpointshapeborder{#1}{\tempb}}%
+    \fi
+}
+
+\tikzset{myequal/.style = {
+    -,
+    to path={\pgfextra{
+        \findedgesourcetarget{\tikzcd@ar@start}{\tikzcd@ar@target} % find endpoints
+        % Rotate coordinate system so that line goes in x direction
+        \ifx\tikzcd@startanchor\pgfutil@empty
+            \def\tikzcd@startanchor{.center}
+        \fi
+        \ifx\tikzcd@endanchor\pgfutil@empty
+            \def\tikzcd@endanchor{.center}
+        \fi
+        \pgfmathanglebetweenpoints{\pgfpointanchor{\tikzcd@ar@start}{\expandafter\@gobble\tikzcd@startanchor}}{\pgfpointanchor{\tikzcd@ar@target}{\expandafter\@gobble\tikzcd@endanchor}}
+        \pgftransformrotate{\pgfmathresult}
+        % Draw the two lines 
+        \pgfpathmoveto{\pgfpointadd{\sourcecoordinate}{\pgfpoint{0}{\tikzcdequalsignoffset}}}
+        \pgfpathlineto{\pgfpointadd{\targetcoordinate}{\pgfpoint{0}{\tikzcdequalsignoffset}}}
+        \pgfpathmoveto{\pgfpointadd{\sourcecoordinate}{\pgfpoint{0}{-\tikzcdequalsignoffset}}}
+        \pgfpathlineto{\pgfpointadd{\targetcoordinate}{\pgfpoint{0}{-\tikzcdequalsignoffset}}}
+        \pgfusepath{draw}
+}}}}
+
+\makeatother
+%%%
+
+
 %% mathpazo does not define mapsfrom, so we do so here:
 \def\mapsfrom{\pgfpicture\pgfsetbaseline{+0pt}\pgftransformxscale{-1}\pgftext[base]{$\mapsto$}\endpgfpicture}
 
