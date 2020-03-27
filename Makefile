@@ -1,5 +1,5 @@
 all: book.pdf TAGS
-book.pdf:always; latexmk -pdf -quiet book
+book.pdf:always; latexmk -pdf -quiet -halt-on-error book
 always:
 clean:; rm -f *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf
 veryclean:clean; rm -f *.pdf

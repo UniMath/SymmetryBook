@@ -1,0 +1,92 @@
+\usetikzlibrary{decorations.markings,decorations.pathreplacing,
+  shapes.geometric,matrix,arrows,chains,positioning,scopes} 
+
+\pgfdeclarearrow{
+  name = pxto,
+  setup code = {
+    % The different end values:
+    \pgfarrowssettipend{1.5\pgflinewidth}
+    \pgfarrowssetbackend{-2.5508\pgflinewidth}
+    \pgfarrowssetlineend{-.25\pgflinewidth}
+    \pgfarrowssetvisualbackend{-0.021\pgflinewidth}
+    % The hull
+    \pgfarrowsupperhullpoint{1.5\pgflinewidth}{0\pgflinewidth}
+    \pgfarrowsupperhullpoint{-2.0085\pgflinewidth}{3.6525\pgflinewidth}
+    \pgfarrowsupperhullpoint{-2.5508\pgflinewidth}{3.0763\pgflinewidth}
+    % No saves
+  },
+  drawing code = {
+    \pgfsetdash{}{0pt}%
+    \pgfpathmoveto{\pgfpoint{1.5\pgflinewidth}{0.0254\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-2.0085\pgflinewidth}{3.6525\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-2.5508\pgflinewidth}{3.0763\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-0.4322\pgflinewidth}{0.5\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-0.4322\pgflinewidth}{-0.5\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-2.5508\pgflinewidth}{-3.0763\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-2.0085\pgflinewidth}{-3.6525\pgflinewidth}}%
+    \pgfpathclose%
+    \pgfusepathqfill
+  }
+}
+\pgfdeclarearrow{
+  name = mdbchbar,
+  setup code = {
+    \pgfarrowssettipend{0.5\pgflinewidth}
+    \pgfarrowssetbackend{-0.5\pgflinewidth}
+    \pgfarrowsupperhullpoint{0.5\pgflinewidth}{3.6525\pgflinewidth}
+    \pgfarrowsupperhullpoint{-0.5\pgflinewidth}{3.6525\pgflinewidth}
+  },
+  drawing code = {
+    \pgfsetdash{}{0pt}%
+    \pgfpathmoveto{\pgfpoint{0.5\pgflinewidth}{3.6525\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-0.5\pgflinewidth}{3.6525\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{-0.5\pgflinewidth}{-3.6525\pgflinewidth}}%
+    \pgfpathlineto{\pgfpoint{0.5\pgflinewidth}{-3.6525\pgflinewidth}}%
+    \pgfpathclose%
+    \pgfusepathqfill
+  }
+}
+
+\tikzset{
+  dot/.style={fill,circle,inner sep=1pt},
+  double line with arrow/.style args={#1,#2}{decorate,decoration={markings,%
+    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
+      \coordinate (ta-base-2) at (0,-1pt);},%
+    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
+      \draw[#2] (ta-base-2) -- (0,-1pt);}%
+  }},
+  double line with arrow left/.style args={#1,#2}{decorate,decoration={markings,%
+    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
+      \coordinate (ta-base-2) at (0,-1pt);},%
+    mark=at position 0.3 with {\coordinate (ta-mid) at (0,4pt);},%
+    mark=at position 0.7 with {\draw[->] (ta-mid) -- (0,4pt);},%
+    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
+      \draw[#2] (ta-base-2) -- (0,-1pt);}%
+  }},
+  double line with arrow right/.style args={#1,#2}{decorate,decoration={markings,%
+    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
+      \coordinate (ta-base-2) at (0,-1pt);},%
+    mark=at position 0.3 with {\coordinate (ta-mid) at (0,-4pt);},%
+    mark=at position 0.7 with {\draw[->] (ta-mid) -- (0,-4pt);},%
+    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
+      \draw[#2] (ta-base-2) -- (0,-1pt);}%
+  }},
+  eq/.style={-,double line with arrow={-,-},outer sep=2pt,},
+  eql/.style={-,double line with arrow left={-,-},outer sep=2pt,},
+  eqr/.style={-,double line with arrow right={-,-},outer sep=2pt,},
+}
+
+\tikzset{>=pxto}
+\tikzset{every picture/.style={line width=0.59pt}}
+\tikzcdset{arrow style=tikz,%
+  invisible/.style={/tikz/draw=none}}
+
+\tikzcdset{
+  equal/.add code={\PackageError{cas}{Please don't use the TikZ-cd equal style}{}}{},
+  equals/.add code={\PackageError{cas}{Please don't use the TikZ-cd equals style}{}}{}
+}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "book"
+%%% End:

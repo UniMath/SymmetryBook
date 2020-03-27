@@ -20,26 +20,7 @@
 \usepackage{enumitem}
 \usepackage{xifthen}
 
-\usetikzlibrary{decorations.markings,decorations.pathreplacing,
-  shapes.geometric,matrix,arrows,chains,positioning,scopes} 
-        %,hobby} % for hobby splines
-%% useful for debugging bezier paths
-%\tikzset{%
-%  show curve controls/.style={
-%    postaction={
-%      decoration={
-%        show path construction,
-%        curveto code={
-%          \draw [blue] 
-%            (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
-%            (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
-%          \fill [red, opacity=0.5] 
-%            (\tikzinputsegmentsupporta) circle [radius=.5ex]
-%            (\tikzinputsegmentsupportb) circle [radius=.5ex];
-%        }
-%      },
-%      decorate
-%    }}}
+\input tikzsetup
 
 %% mathtools does not define an extensible equal sign, so we do so here:
 \makeatletter
@@ -49,41 +30,6 @@
   \ext@arrow 0055{\Equalfill@}{#1}{#2}}
 \MHInternalSyntaxOff
 \makeatother
-
-%% mathpazo does not define mapsfrom, so we do so here:
-\def\mapsfrom{\pgfpicture\pgfsetbaseline{+0pt}\pgftransformxscale{-1}\pgftext[base]{$\mapsto$}\endpgfpicture}
-
-\tikzset{
-  dot/.style={fill,circle,inner sep=1pt},
-  double line with arrow/.style args={#1,#2}{decorate,decoration={markings,%
-    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
-      \coordinate (ta-base-2) at (0,-1pt);},%
-    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
-      \draw[#2] (ta-base-2) -- (0,-1pt);}%
-  }},
-  double line with arrow left/.style args={#1,#2}{decorate,decoration={markings,%
-    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
-      \coordinate (ta-base-2) at (0,-1pt);},%
-    mark=at position 0.3 with {\coordinate (ta-mid) at (0,4pt);},%
-    mark=at position 0.7 with {\draw[->] (ta-mid) -- (0,4pt);},%
-    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
-      \draw[#2] (ta-base-2) -- (0,-1pt);}%
-  }},
-  double line with arrow right/.style args={#1,#2}{decorate,decoration={markings,%
-    mark=at position 0 with {\coordinate (ta-base-1) at (0,1pt);%
-      \coordinate (ta-base-2) at (0,-1pt);},%
-    mark=at position 0.3 with {\coordinate (ta-mid) at (0,-4pt);},%
-    mark=at position 0.7 with {\draw[->] (ta-mid) -- (0,-4pt);},%
-    mark=at position 1 with {\draw[#1] (ta-base-1) -- (0,1pt);%
-      \draw[#2] (ta-base-2) -- (0,-1pt);}%
-  }},
-  eq/.style={-,double line with arrow={-,-},outer sep=2pt},
-  eql/.style={-,double line with arrow left={-,-},outer sep=2pt,},
-  eqr/.style={-,double line with arrow right={-,-},outer sep=2pt,}
-}
-\tikzcdset{
-  arrow style=math font
-}
 
 % bibliography
 \usepackage{hyphenat}
