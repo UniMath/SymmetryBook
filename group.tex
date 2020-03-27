@@ -664,468 +664,6 @@ Without the demand that the underlying type of an abstract group or monoid is a 
 Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a sheargroup and conversely, letting $a*b=b\cdot a^{-1}$ takes you back.  On your way you may need at some point to show that $\overline{\bar a}=a$: setting $c=\bar a$ and $b=a$ in the third formula will do the trick (after you have established that $\bar e=e$).  This exercise may be good to look back to in the many instances where the inverse inserted when ``multiplying from the right by $a$'' is forced by transport considerations. 
   \end{xca}
 
-
-\section{Abelian groups}
-\label{sec:abelian-groups}
-
-Recall that given a pointed type $X$, we coerce it silently to its
-underlying unpointed type $X_\div$ whenever this coercion can be
-inferred from context. For example, given a group $G$, the type
-${\clf G}\weq {\clf G}$ can not possibly mean anything but ${\clf G}_\div\simeq {\clf G}_\div$
-as the operator ``$\weq$'' acts on bare types. In a similar way,
-$A\to {\clf G}$ for a type $A$ has no other meaning that the function type
-$A \to {\clf G}_\div$. This kind of coercion is used all over the place in
-this section to avoid notation explosion. One more subtle example is
-$\id_{\clf G}$, which can have two different meanings: either the identity
-function ${\clf G}_\div \to {\clf G}_\div$ pointed by the reflexivity path, or the
-bare unpointed identity function. If the context is ambiguous, we will
-write properly $\id_{{\clf G}_\div}$ when necessary.
-
-Note that for a pointed type $X$, the type $X=X$ should normally be
-interpreted as the type of symmetries of $X$ in the type $\UU_\ast$
-of pointed types. However, because we work transparently though
-univalence, it makes sense to let $X=X$ denote the type of
-symmetries of $X_\div$ in the universe $\UU$. This way, we can still
-use the silent equivalence
-\begin{displaymath}
-  (X=X) \weq (X\weq X).
-\end{displaymath}
-To lift any ambiguity, we shall write $X=_\ast X$ for the type of
-symmetries of $X$ in $\UU_\ast$. If one writes also $X\weq_\ast X$ for
-the type of pointed maps whose underlying map is an equivalence, then
-one gets, through univalence, an equivalence:
-\begin{displaymath}
-  (X=_\ast X) \weq (X\weq_\ast X).
-\end{displaymath}
-
-\begin{definition}
-  Let $G$ be a group. The {\em center} of $G$, denoted
-  $\grpcenter(G)$, is the group
-  $\Aut_{{\clf G}={\clf G}}(\id_{\clf G})$.
-\end{definition}
-
-There is a natural map $\ev_{\pt_G} : ({\clf G}={\clf G}) \to {\clf G}$
-defined by $\ev_{\pt_G}(\varphi)\defequi \varphi(\pt_G)$. The
-restriction of this map to the connected component of $\id_{\clf G}$
-defines a map
-\begin{displaymath}
-  \grpcenterinc G : \grpcenter(G) \ptdto {\clf G}.
-\end{displaymath}
-This map justifies the name {\em center} for $\grpcenter(G)$, and it
-connects it to the notion of center for abstract groups in ordinary
-mathematics. To understand how, notice first that
-$\grpcenterinc G (\id_{\clf G}) \defequi \pt_G$, and one can then study the
-map
-\begin{displaymath}
-  \ap{\grpcenterinc G}: (\id_{\clf G}=\id_{\clf G}) \to (\pt_G = \pt_G)
-\end{displaymath}
-induced between the abstract groups of $\grpcenter(G)$ and $G$. By
-induction on $p:\id_{\clf G} = \varphi$ for $\varphi:{\clf G}={\clf G}$, one proves
-that $\ap{\grpcenterinc G}(p) = p(\pt_G)$: indeed, this is true when
-$p\jdeq \refl {\id_{\clf G}}$. One prove furthermore, again by induction
-on $p:\id_{\clf G} = \varphi$, that
-$\ap \varphi = (x\mapsto \inv{p(\pt_G)} x p(\pt_G))$. In particular,
-when $\varphi \jdeq \id_{\clf G}$, it shows that for every
-$p:\id_{\clf G}=\id_{\clf G}$, the following proposition holds:
-\begin{displaymath}
-  \prod_{g:\pt_G=\pt_G }p(\pt_G) g = g p(\pt_G)
-\end{displaymath}
-In other words, $\ap {\grpcenterinc G}$ maps elements of
-$\id_{\clf G}=\id_{\clf G}$ to elements of $\abstr(G)$ that commutes with
-every other elements. (The set of these elements is usually called the
-center of the group in ordinary group theory.)
-
-The following lemma, or more precisely its corollary, explains that
-$\ap{\grpcenterinc G}$ never picks twice the same element in the
-``abstract center'' of $G$.
-\begin{lemma}
-  \label{lemma:center-is-subgroup}%
-  The map $\grpcenterinc G$ is a \covering over $G$. 
-\end{lemma}
-\begin{proof}
-  One wants to prove the proposition
-  $\isset(\inv{\grpcenterinc G}(x))$ for each $x:G$. By connectedness
-  of $G$, one can show the proposition only at $x\jdeq
-  \pt_G$. However,
-  \begin{displaymath}
-    \inv{\grpcenterinc G}(\pt_G) \weq \sum_{\varphi:_{\clf\grpcenter(G)}}{\pt_G = \varphi(\pt_G)}
-  \end{displaymath}
-  Recall that $\clf\grpcenter(G)$ is the connected component of
-  $\id_{\clf G}$ in $\clf G = \clf G$. In particular, if $(\varphi,p)$
-  and $(\psi,q)$ are two elements of the type on the right hand-side
-  above, their identity type $(\varphi,p)=(\psi,q)$ is equivalent to
-  their identity type in $\clf G = \clf G$, or in other words:
-  \begin{displaymath}
-    ((\varphi,p) = (\psi,q)) \weq \sum_{\pi:\varphi=\psi}\pi(\pt_G) p = q.
-  \end{displaymath}
-  We shall prove that this type is a proposition, and it goes as
-  follows:
-  \begin{enumerate}
-  \item for $\pi:\varphi=\psi$, the type $\pi(\pt_G) p = q$ is a
-    proposition; hence for two such elements $(\pi,!)$ and $(\pi',!)$,
-    one has $(\pi,!)=(\pi',!)$ equivalent to $\pi=\pi'$,
-  \item for all $x:G$, $\varphi(x)=\psi(x)$ is a set, hence for
-    $\pi,\pi':\varphi=\psi$, the type $\pi=\pi'$ is a proposition,
-  \item connectedness of $G$ proves then that $\pi=\pi'$ is equivalent
-    to $\pi(\pt_G)=\pi'(\pt_G)$,
-  \item finally the propositional condition on $\pi$ and $\pi'$ allows
-    us to conclude as $\pi(\pt_G)= q\inv p = \pi'(\pt_G)$.
-  \end{enumerate} 
-\end{proof}
-
-\begin{corollary}
-  \label{lemma:center-inc-inj-on-paths}%
-  The induced map
-  $\ap {\grpcenterinc G}: (\id_{\clf G}=\id_{\clf G}) \to (\pt_G = \pt_G)$ is
-  injective.
-\end{corollary}
-
-The following result explains how every element of the ``abstract
-center'' of $G$ is picked out by $\ap{\grpcenterinc G}$.
-\begin{lemma}
-  \label{lemma:center-inc-surj-on-paths}%
-  Let $g:\pt_G = \pt_G$ and suppose that $gh=hg$ for every
-  $h:\pt_G=\pt_G$. The fiber $\inv{\ap {\grpcenterinc G}}(g)$ contains
-  an element.
-\end{lemma}
-\begin{proof}
-  One must construct an element $\hat g:\id_{\clf G} = \id_{\clf G}$ such that
-  $g=\hat g(\pt_G)$. We shall use function extensionality and produce
-  an element $\hat g(x):x=x$ for all $x:G$ instead. Note that $x=x$ is
-  a set, and that connectedness of $\clf G$ is not directly applicable
-  here. We will use a technique that will prove useful in many
-  situations in the book, along the lines of the following sketch
-  (where we denote $U(x)\defequi (x=x)$):
-  \begin{enumerate}
-  \item for a given $x:G$, if such a $\hat g(x):U(x)$ existed, it would
-    produce an element of the type $T(\hat g(x))$ for a carefully chosen type
-    family $T$,
-  \item aim to prove $\iscontr(\sum_{u:U(x)}T(u))$ for any $x:G$,
-  \item this is a proposition, so connectedness of ${\clf G}$ can be applied
-    and only $\iscontr(\sum_{u:U(\pt_G)}T(u))$ needs to be proved,
-  \item hopefully, $\sum_{u:U(\pt_G)}T(u)$ reduces to an obvious
-    singleton type.
-  \end{enumerate}
-  Here, for any $x:G$, we define the type family $T: (x=x) \to \UU$ by
-  \begin{displaymath}
-    T(q) \defequi \prod_{p:\pt_G=x} (pg=qp).
-  \end{displaymath}
-  And we claim that $\sum_{q:x=x}T(q)$ is contractible for any
-  $x:G$. Because this is a proposition, one only need to check its
-  veracity on one point of the connected type ${\clf G}$, say $x\jdeq
-  pt_G$. Now,
-  \begin{displaymath}
-    \begin{aligned}
-      \sum_{q:\pt_G=\pt_G}T(q) &\jdeq
-      \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(pg=qp)
-      \\
-      &\weq \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(g=q)
-      \\
-      &\weq \sum_{q:\pt_G=\pt_G}(\pt_G=\pt_G)\to (g=q)
-      \\
-      &\weq \sum_{q:\pt_G=\pt_G} (g=q)
-      \\
-      &\weq 1
-    \end{aligned}
-  \end{displaymath}
-  The first equivalence is using that $g$ commutes with every other
-  element $p:\pt_G=\pt_G$, so that $pg \inv p = g$. The second
-  equivalence acknowledges the fact that $(g=q)$ does not depend on
-  $p$ anymore. The third equivalence makes two reductions at the same
-  time: first it recognizes a proposition in the type $g=q$ and then
-  uses that the propositional truncation of $\pt_G=\pt_G$ is indeed
-  inhabited (by $\trunc{\refl {\pt_G}}$).
-
-  We have just shown that for all $x:G$, the type $\sum_{q:x=x}T(q)$
-  is contractible. We define now $\hat g(x):x=x$ as the chosen center
-  of contraction of that type. In particular, in the previous proof
-  that $\sum_{q:\pt_G=\pt_G}T(q)$ is connected, we chose $g$ as
-  center, so that $\hat g (\pt_G) = g$ as wanted.
-\end{proof}
-
-Together, \cref{lemma:center-inc-inj-on-paths} and
-\cref{lemma:center-inc-surj-on-paths} show that $\ap{\grpcenterinc G}$
-establishes an equivalence
-\begin{equation}
-  \left( \id_{\clf G} = \id_{\clf G} \right) \weq \sum_{g:\pt_G=\pt_G}\prod_{h:\pt_G=\pt_G}gh=hg
-\end{equation}
-In yet other words,
-$\clf \grpcenter(G)\defequi \conncomp{(\clf G=\clf G)}{\id_{\clf G}}$ is
-(equivalent to) the delooping of the ``abstract center'' of the
-abstract group $\abstr(G)$.
-
-The definition of an abelian group naturally follows:
-\begin{definition}
-  \label{def:abelian-groups}%
-  A group $G$ is said to be {\em abelian} (or {\em commutative}) when
-  $\grpcenterinc G$ is an equivalence.
-\end{definition}
-
-Directly from the definition and the computations above, one see that
-a group $G$ is abelian if and only if it satisfies the following
-property:
-\begin{displaymath}
-  \prod_{g,h:\pt_G=\pt_G}gh=hg
-\end{displaymath}
-which is the ordinary definition of an abstract abelian group in
-ordinary group theory. We shall now give another characterization of
-the type of abelian groups, more in line with the geometrical
-intuition we are trying to build in this chapter.
-
-Recall to this end the following definitions that are standard in
-homotopy theory:
-\begin{itemize}
-\item for any pointed type $X$, the pointed type $\loopspace X$ is
-  defined as $(\pt_X = \pt_X)$ with designated point $\refl {\pt_X}$,
-\item the {\em abstract fundamental group} $\fundgrp(X)$ of a pointed type
-  $X$ is the set truncation $\setTrunc{\loopspace X}$,
-\item equivalently, in presence of groupoid truncations
-  $\grpdTrunc{\blank}$, the {\em (concrete) fundamental group}
-  $\fundgrpd(X)$ of a pointed type $X$ is the pointed type
-  $\conncomp{\left(\grpdTrunc X\right)}{\grpdtrunc{\pt_X}}$,
-\item a simply connected type is a connected pointed type $X$ such
-  that $\pi_1(X)$ (equivalently $\fundgrpd(X)$) is contractible.
-\end{itemize}
-We also settle some notations that should ease the reading of the
-proof of the next result. For any type $A:\UU$, we define
-\begin{displaymath}
-  \univcover \UU A \defequi \sum_{X:\UU}\setTrunc{A=X}.
-\end{displaymath}
-This is the analog of the connected component of $\UU$ at $A$ but with
-a set truncation involved. In particular, $\univcover \UU A$ is {\em
-  not} a subtype of $\UU$. To understand identity types better in this
-type $\univcover \UU A$, let us introduce the following function for
-any types $X,Y,Z:\UU$:
-\begin{displaymath}
-  \blank\cdot\blank : \setTrunc{Y=Z} \times \setTrunc{X=Y} \to \setTrunc{X=Z}.
-\end{displaymath}
-It is defined as follows: given $a: \setTrunc{Y=Z}$, we want to define
-$a\cdot\blank$ in the set $\setTrunc{X=Y} \to \setTrunc{X=Z}$, hence
-we can suppose $a\jdeq\settrunc p$ for some $p:Y=Z$; now given
-$b:\setTrunc{X=Y}$, one want to define $\settrunc p \cdot b$ in the
-set $\setTrunc{X=Z}$, hence one can suppose $b\jdeq\settrunc q$ for some
-$q:X=Y$; finally, we define
-\begin{displaymath}
-  \settrunc{q} \cdot \settrunc{p} \defequi \settrunc{q\cdot p}.
-\end{displaymath}
-Then one proves, by induction on $\varphi:X=Y$, that
-$\trp[\setTrunc{A=\blank}]\varphi$ is equal to the function
-$a\mapsto \settrunc{\varphi}\cdot a$. In particular, one gets an
-equivalence between the type $(X,a) = (Y,b)$ of identities between
-elements $(X,a), (Y,b): \univcover\UU A$ and the type
-$\sum_{\varphi:X=Y}\settrunc{\varphi} \cdot a = b$.
-
-From this, we deduce two important properties of $\univcover\UU A$:
-\begin{itemize}
-\item The type $\univcover\UU A$ is connected. Indeed, for any
-  $(X,a):\univcover \UU A$, one wants to prove the proposition
-  $\Trunc{(A,\refl A) = (X,a)}$. A proposition being in particular a
-  set, one can suppose that $a\jdeq \settrunc p$ for some
-  $p:A=X$. Then
-  \begin{displaymath}
-    !:\settrunc p \cdot \settrunc{\refl A} = \settrunc{p},
-  \end{displaymath}
-  and the pair $(p,!)$ is an element of $(A,\refl A) = (X,a)$ whose
-  propositional truncation allows us to conclude.
-\item Consider $\univcover \UU A$ as pointed at
-  $(A,\settrunc{\refl A})$. Then $\univcover\UU A$ is simply
-  connected. Indeed, one has an equivalence:
-  \begin{displaymath}
-    \loopspace {\univcover\UU A} 
-    \weq \sum_{\varphi:A=A}\left( \settrunc{\varphi} = \settrunc{\refl A}\right)
-    \weq \sum_{\varphi:A=A}\Trunc{\varphi = \refl A}
-  \end{displaymath}
-  which proves that $\loopspace {\univcover\UU A}$ is the connected
-  component of $\refl A$ in $A=A$. 
-\end{itemize}
-
-We are now ready to prove the following characterization of abelian
-groups.
-\begin{theorem}
-  The type $\typeabgroup$ of abelian group is equivalent to the type
-  of pointed simply connected $2$-types.
-\end{theorem}
-\begin{proof}%
-  \newcommand{\BB}{B^2}%
-  \newcommand{\UUptd}{\UU_\ast}%
-  Define the map $\BB : \typeabgroup \to \UUptd$ by
-  $\BB G\defequi \univcover{\UU}{\clf G}$. Proving that $\BB G$ is a
-  $2$-type is equivalent to proving the proposition $\isset(p=q$) for
-  all $p,q:x=y$ and all $x,y:\BB G$. One can then use connectedness of
-  $\BB G$ and restrict to only show that $p=q$ is a set for all path
-  $p,q:({\clf G},\settrunc{\refl {\clf G}})=({\clf G},\settrunc{\refl {\clf G}})$. As part
-  of the definition of the group $G$, the type ${\clf G}$ is a $1$-type,
-  hence ${\clf G}={\clf G}$ is also a $1$-type through univalence. Moreover,
-  $\trp p {(\settrunc{\refl {\clf G}}}) = \settrunc{\refl {\clf G}}$ and
-  $\trp q {(\settrunc{\refl {\clf G}}}) = \settrunc{\refl {\clf G}}$ both are
-  propositions, as they are identity types in the set
-  $\setTrunc{{\clf G}={\clf G}}$. Hence $\isset(p=q)$ holds.
-
-  So one gets a map, denoted again $\BB$ abusively,
-  \begin{fullwidth}\begin{displaymath}
-    \BB : \typeabgroup \to \sum_{(A,a):\UUptd}\left(
-      \isconn(A) \times \isconn(a=a) \times \prod_{p,q:a=a}\isset(p=q)
-    \right)
-  \end{displaymath}\end{fullwidth}
-  We shall now provide a pseudo-inverse for this map. Given a pointed
-  simply connected $2$-type $(A,a)$, one can construct a pointed
-  connected $1$-type, \ie a group, namely $\loopspace (A,a)$. It is
-  connected because $(A,a)$ is simply connected, and it is a $1$-type
-  because $A$ is a $2$-type. Moreover, this group is abelian. To see
-  it, let us use the characterization of abelian groups explained
-  after \cref{def:abelian-groups}. We shall then prove that for any
-  element $g,h:\refl a=\refl a$, the proposition $gh=hg$ holds. This
-  property holds in even more generality and is usually called
-  ``Eckmann-Hilton's argument''. It goes as follows: for $x,y,z:A$,
-  for $p,q:x=y$ and $r,s:y=z$ and for $g:p=q$ and $h:r=s$, one want to
-  prove
-  \begin{displaymath}
-    \ap{\blank\cdot q}(h) \cdot \ap{r\cdot\blank}(g)
-    = \ap{s\cdot \blank}(g) \cdot \ap{\blank\cdot p}(h).
-  \end{displaymath}
-  This equality takes place in $r\cdot p = s\cdot q$ and is better
-  represented by the following diagram (where the dotted vertical
-  lines means composition):
-  \begin{displaymath}
-    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
-      \node[] (x1) {$x$};
-      \node[right of=x1] (y1) {$y$};
-      \node[right of=y1] (z1) {$z$};
-      \node[below of=x1] (x2) {$x$};
-      \node[right of=x2] (y2) {$y$};
-      \node[right of=y2] (z2) {$z$};
-      \draw[bend left] (x1) to node[above] (p) {\footnotesize$p$} (y1);
-      \draw[bend right] (x1) to  node[below] (q1) {\footnotesize$q$} (y1);
-      \draw[bend left] (y1) to node[above] (r1) {\footnotesize$r$} (z1);
-      \draw[bend left] (y2) to node[above] (r2) {\footnotesize$r$} (z2);
-      \draw[bend right] (y2) to  node[below] (s) {\footnotesize$s$} (z2);
-      \draw[bend right] (x2) to node[below] (q2) {\footnotesize$q$} (y2);
-      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
-      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
-      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
-    \end{tikzpicture}%
-    =%
-    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
-      \node[] (x1) {$x$};
-      \node[right of=x1] (y1) {$y$};
-      \node[right of=y1] (z1) {$z$};
-      \node[below of=x1] (x2) {$x$};
-      \node[right of=x2] (y2) {$y$};
-      \node[right of=y2] (z2) {$z$};
-      \draw[bend left] (x2) to node[above] (p) {\footnotesize$p$} (y2);
-      \draw[bend right] (x2) to  node[below] (q1) {\footnotesize$q$} (y2);
-      \draw[bend right] (y2) to node[above] (r1) {\footnotesize$s$} (z2);
-      \draw[bend left] (y1) to node[above] (r2) {\footnotesize$r$} (z1);
-      \draw[bend right] (y1) to  node[below] (s) {\footnotesize$s$} (z1);
-      \draw[bend left] (x1) to node[above] (p2) {\footnotesize$p$} (y1);
-      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
-      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
-      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
-    \end{tikzpicture}%
-  \end{displaymath}
-  One prove such a result by induction on $h$. Indeed, when
-  $h\jdeq \refl r$, then both sides of the equation reduces through
-  path algebra to $\ap {r\cdot\blank} (g)$. Now we are interested in
-  this result when $x,y,z$ are all definitionally $a$, and $p,q,r,s$
-  are all definitionally $\refl a$. In that case, one has that
-  $\ap {\refl a\cdot \blank}$ and $\ap {\blank\cdot\refl a}$ acts
-  trivially, and the equation becomes: $h\cdot g = g \cdot h$.
-
-  One still has to prove that this construction
-  $(A,a) \mapsto \loopspace (A,a)$ is an inverse for $\BB$. Given an
-  abelian group $G$, the discussion before the theorem proves that
-  $\loopspace {(\BB G)}$ is equivalent to the connected component of
-  $\refl {\clf G}$ in ${\clf G}={\clf G}$, which is the definition of
-  $\grpcenter(G)$. Being abelian, $G$ is equivalent to its center,
-  hence $\loopspace {(\BB G)} \simeq_\ast G$. Conversely, take a
-  pointed simply connected $2$-type $(A,a)$. One wants to prove
-  $\BB (\loopspace {(A,a)}) \weq_\ast (A,a)$. One should first notice
-  that, because $\loopspace (A,a)$ is an abelian group,
-  \begin{equation}
-    \label{eq:loopspace-A-abelian}%
-    \loopspace \left( \BB (\loopspace {(A,a)}) \right)
-    \weq \conncomp{((a=a)=(a=a))}{\refl{a=a}} \weq (a=a).
-  \end{equation}
-  This equivalence maps a path
-  $(p,!):(a=a,\settrunc{\refl{a=a}})=(a=a,\settrunc{\refl{a=a}})$ to
-  the evaluation $p(\refl a): a=a$.
-
-  %% OLD MATERIAL, can still be useful.
-  %%
-  % We will now provide
-  % \begin{displaymath}
-  %   \Phi : \BB {(\loopspace {(A,a)})} \ptdto (A,a)
-  % \end{displaymath}
-  % such that $\loopspace(\Phi)$ is the previous equivalence.
-  % To be able to
-  % express $\Phi$, we need a small gadget about truncations of
-  % function
-  % types: for types $X,Y:\UU$, given an element
-  % $f_0:\setTrunc{X\to Y}$, one constructs a map
-  % $\lceil f_0 \rceil : \setTrunc X \to \setTrunc Y$; the type of
-  % $\lceil f_0 \rceil$ being a set, one might as well suppose that
-  % $f_0 \jdeq \settrunc f$ for some $f:X\to Y$; then we set
-  % $\lceil f_0 \rceil (\settrunc x) = \settrunc{f(x)}$, which
-  % suffices
-  % in order to define $\lceil f_0 \rceil$ entirely because its
-  % codomain
-  % $\setTrunc Y$ is a set. If we assume the axiom of
-  % choice\footnote{What is the status of AC in this book??}, then
-  % $\lceil \blank \rceil$ is injective when $Y$ is a set.
-  %%
-  We will now define a pointed map
-  $\Phi : (A,a) \ptdto \loopspace \left( \BB (\loopspace {(A,a)})
-  \right)$, and prove subsequently that this is an equivalence. Let
-  $T : A \to \UU$ be the type family define by
-  \begin{displaymath}
-    T(a') \defequi \sum_{\alpha:\setTrunc{(a=a)\weq(a=a')}}
-    \prod_{p:a=a'}\alpha=\settrunc {p\cdot\blank}
-  \end{displaymath}
-  We claim that $T(a')$ is contractible for all $a':A$. By
-  connectedness of $A$, it is equivalent to showing that $T(a)$ is
-  contractible. However
-  \begin{align*}
-    T(a)
-    &\jdeq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
-      \alpha = \settrunc {p\cdot \blank}
-    \\
-    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \alpha = \settrunc{\id_{a=a}}
-    \\
-    &\weq 1
-  \end{align*}
-  Let then $\Phi (a')$ be the element
-  $(a=a', \kappa_{a'}):\univcover \UU {a=a}$ where $\kappa_{a'}$ is
-  the first projection of the center of contraction of $T(a')$. In
-  particular, following the chain of equivalences above, $\Phi(a)$ is
-  defined as $(a=a, \settrunc{\refl {a=a}})$, hence $\Phi(a)$ is a
-  pointed map with trivial path. To verify that $\Phi$, thus defined,
-  is an equivalence, one can use connectedness of
-  $\BB(\loopspace (A,a))$ and only check that
-  $\inv\Phi(a=a,\settrunc{\refl {a=a}})$ is contractible. However,
-  \begin{displaymath}
-    \inv\Phi(a=a,\settrunc{\refl {a=a}}) \simeq \sum_{a':A}
-    \sum_{\varphi : (a=a) \weq (a=a')}\settrunc{\varphi} = \kappa_{a'}.
-  \end{displaymath}
-  For an element $a':A$ together with $\varphi: (a=a) \weq (a'=a')$
-  such that the proposition $\settrunc \varphi = \kappa_{a'}$ holds, a
-  path between $(a,\id_{a=a},!)$ and $(a',\varphi,!)$ consists of a
-  path $p:a=a'$ and a path $q:(x\mapsto p x) = \varphi$. We have a
-  good candidate for $p$, namely $p\defequi \varphi(\refl
-  a):a=a'$. However we don't have quite $q$ yet. However, for any
-  $a'$, there is a function
-  \begin{displaymath}
-    \ev_{\refl a}^{a'} : ((a=a)\weq (a=a')) \to (a=a'),\quad \psi \mapsto \psi(\refl a) 
-  \end{displaymath}
-  Note that $\ev_{\refl a}^{a}$ is precisely the equivalence
-  $\loopspace{(\BB\loopspace(A,a))}\weq (a=a)$ described
-  in~\cref{eq:loopspace-A-abelian}. Hence, by connectedness of $A$,
-  one gets that the proposition $\isEq(\ev_{\refl a}^{a'})$ holds for
-  all $a':A$. In particular, both $\ev_{\refl a}^{a'}(\varphi)$ and
-  $\ev_{\refl a}^{a'}(x\mapsto px)$ are equal to $p$, which provides a
-  path $q:(x\mapsto px)=\varphi$.
-\end{proof}
-
-
 \section{Homomorphisms}
 \label{sec:homomorphisms}
 
@@ -1317,9 +855,9 @@ $(f,f_0)(\_)$ denotes the function mapping $g:pt_G = pt_G$ to $f_0^{-1} f(g) f_0
 
 \[
 \begin{tikzcd} 
-\Hom(\ZZ,G) \arrow[r, equal, "\ev_{BG}"] \arrow[d, "{(f,f_0)\_}"] & 
+\Hom(\ZZ,G) \arrow[r, eq, "\ev_{BG}"] \arrow[d, "{(f,f_0)\_}"] & 
 \pt_G = \pt_G \arrow[d, "{(f,f_0)(\_)}"]\\ 
-\Hom(\ZZ,H) \arrow[r, equal, "\ev_{BH}"] & \pt_H = \pt_H \\
+\Hom(\ZZ,H) \arrow[r, eq, "\ev_{BH}"] & \pt_H = \pt_H \\
 \end{tikzcd}
 \]
 
@@ -1973,9 +1511,9 @@ for every $x:BF$. The other is a path of type $p_{\pt_F} f(g_0) f_0 = f(h_0) f_0
 which means that the following diagram commutes.
 \[
 \begin{tikzcd} 
-           &f(\pt_G) \arrow[r, equal, "f(g_0)"] & f(g(\pt_F)) \arrow[dd, equal, "p_{\pt_F}"]\\
-\pt_H \arrow[ur, equal, "f_0"] \arrow[dr, equal, "f_0"']\\
-           &f(\pt_G) \arrow[r, equal, "f(h_0)"]& f(h(\pt_F))\\
+           &f(\pt_G) \arrow[r, eq, "f(g_0)"] & f(g(\pt_F)) \arrow[dd, eq, "p_{\pt_F}"]\\
+\pt_H \arrow[ur, equal, "f_0"] \arrow[dr, eq, "f_0"']\\
+           &f(\pt_G) \arrow[r, eq, "f(h_0)"]& f(h(\pt_F))\\
 \end{tikzcd}
 \]
 The latter diagram comes from transport along $p_{\pt_F}$,
@@ -2572,6 +2110,617 @@ The desired statement is ``$\rho_G$ is a monomorphism'': by \cref{lem:eq-mono-co
   are done.
 \end{proof}
 
+
+\section{Abelian groups}
+\label{sec:abelian-groups}
+
+Recall that given a pointed type $X$, we coerce it silently to its
+underlying unpointed type $X_\div$ whenever this coercion can be
+inferred from context. For example, given a group $G$, the type
+${\B G}\weq {\B G}$ can not possibly mean anything but
+${\B G}_\div\simeq {\B G}_\div$ as the operator ``$\weq$'' acts on
+bare types. To refer to the type of pointed equivalences (that is the
+pointed function whose underlying function is an equivalence), we
+shall use the notation ${\B G} \ptdweq {\B G}$.%
+% In a similar way, $A\to {\B G}$ for a type $A$ has no
+% other meaning that the function type $A \to {\B G}_\div$.  This
+% kind of coercion is used all over the place in this section to avoid
+% notation explosion. One more subtle example is $\id_{\B G}$, which
+% can have two different meanings: either the identity function
+% ${\B G}_\div \to {\B G}_\div$ pointed by the reflexivity path,
+% or the bare unpointed identity function. If the context is
+% ambiguous, we will write properly $\id_{{\B G}_\div}$ when
+% necessary.
+%
+% Note that for a pointed type $X$, the type $X=X$ should normally be
+% interpreted as the type of symmetries of $X$ in the type $\UU_\ast$
+% of pointed types. However, because we work transparently though
+% univalence, it makes sense to let $X=X$ denote the type of
+% symmetries of $X_\div$ in the universe $\UU$. This way, we can still
+% use the silent equivalence
+% \begin{displaymath}
+%   (X=X) \weq (X\weq X).
+% \end{displaymath}
+% To lift any ambiguity, we shall write $X=_\ast X$ for the type of
+% symmetries of $X$ in $\UU_\ast$. If one writes also $X\weq_\ast X$ for
+% the type of pointed maps whose underlying map is an equivalence, then
+% one gets, through univalence, an equivalence:
+% \begin{displaymath}
+%   (X=_\ast X) \weq (X\weq_\ast X).
+% \end{displaymath}
+
+\subsection{Center of a group}
+\label{sec:center-group}
+
+\begin{definition}
+  Let $G$ be a group. The {\em center} of $G$, denoted
+  $\grpcenter(G)$, is the group
+  $\Aut_{({\B G}_\div={\B G}_\div)}(\id_{{\B G}_\div})$.%
+  \marginnote{%
+    We work transparently through the equivalence
+    \begin{displaymath}
+      ({\B G}_\div={\B G}_\div) \weq (\B G \weq \B G)
+    \end{displaymath}
+    so that $\id_{{\B G}_\div}$ is freely used in place of
+    $\refl {{\B G}_\div}$ when convenient.%
+  }%
+\end{definition}
+
+There is a natural map
+$\ev_{\pt_G} : ({\B G}_\div={\B G}_\div) \to {\B G}_\div$ defined by
+$\ev_{\pt_G}(\varphi)\defequi \varphi(\pt_G)$. In particular,
+$\ev_{\pt_G}(\id_{{\B G}_\div}) \jdeq \pt_G$. It makes the restriction
+of this map to the connected component of $\id_{{\B G}_\div}$ a
+pointed map, hence it defines a homomorphism
+\begin{displaymath}
+  \grpcenterinc G : \Hom(\grpcenter(G), G).
+\end{displaymath}
+We will now justifiy the name {\em center} for $\grpcenter(G)$, and
+connect it to the notion of center for abstract groups in ordinary
+mathematics. The homomorphism $\grpcenterinc G$ induces a homomorphism
+of abstract groups from $\abstr(\grpcenter(G))$ to $\abstr(G)$. By
+induction on $p:\id_{{\B G}_\div} = \varphi$ for
+$\varphi:{\B G}_\div={\B G}_\div$, one proves that
+$\ap{\B \grpcenterinc G}(p) = p(\pt_G)$: indeed, this is true when
+$p\jdeq \refl {\id_{{\B G}_\div}}$. One proves furthermore, again by
+induction on $p:\id_{{\B G}_\div} = \varphi$, that
+$\ap \varphi = (q\mapsto \inv{p(\pt_G)} q p(\pt_G))$. In particular,
+when $\varphi \jdeq \id_{{\B G}_\div}$, it shows that for every
+$p:\id_{{\B G}_\div}=\id_{{\B G}_\div}$, the following proposition
+holds:
+\begin{displaymath}
+  \prod_{g:\pt_G=\pt_G }p(\pt_G) g = g p(\pt_G)
+\end{displaymath}
+In other words, $\abstr{(\grpcenterinc G)}$ maps elements of
+$\abstr(Z(G))$ to elements of $\abstr(G)$ that commute with every
+other elements. (The set of these elements is usually called the
+center of the group $\abstr(G)$ in ordinary group theory.)
+
+\begin{lemma}
+  \label{lemma:center-is-subgroup}%
+  The map $\B \grpcenterinc G$ is a \covering over $\B G$. 
+\end{lemma}
+\begin{proof}
+  One wants to prove the proposition
+  $\isset(\inv{(\B\grpcenterinc G)}(x))$ for each $x:\B G$. By connectedness
+  of $\B G$, one can show the proposition only at $x\jdeq
+  \pt_G$. However,
+  \begin{displaymath}
+    \inv{(\B\grpcenterinc G)}(\pt_G) \weq \sum_{\varphi:{\B\grpcenter(G)}}{\pt_G = \varphi(\pt_G)}
+  \end{displaymath}
+  Recall that $\B\grpcenter(G)$ is the connected component of
+  $\id_{{\B G}_\div}$ in ${\B G}_\div = {\B G}_\div$. In particular, if $(\varphi,p)$
+  and $(\psi,q)$ are two elements of the type on the right hand-side
+  above, their identity type $(\varphi,p)=(\psi,q)$ is equivalent to
+  their identity type in ${\B G}_\div = {\B G}_\div$, or in other words:
+  \begin{displaymath}
+    ((\varphi,p) = (\psi,q)) \weq \sum_{\pi:\varphi=\psi}\pi(\pt_G) p = q.
+  \end{displaymath}
+  We shall prove that this type is a proposition, and it goes as
+  follows:
+  \begin{enumerate}
+  \item for $\pi:\varphi=\psi$, the type $\pi(\pt_G) p = q$ is a
+    proposition; hence for two such elements $(\pi,!)$ and $(\pi',!)$,
+    one has $(\pi,!)=(\pi',!)$ equivalent to $\pi=\pi'$,
+  \item for all $x:\B G$, $\varphi(x)=\psi(x)$ is a set, hence for
+    $\pi,\pi':\varphi=\psi$, the type $\pi=\pi'$ is a proposition,
+  \item connectedness of $\B G$ proves then that $\pi=\pi'$ is equivalent
+    to $\pi(\pt_G)=\pi'(\pt_G)$,
+  \item finally the propositional condition on $\pi$ and $\pi'$ allows
+    us to conclude as $\pi(\pt_G)= q\inv p = \pi'(\pt_G)$.
+  \end{enumerate} 
+\end{proof}
+
+\begin{corollary}
+  \label{lemma:center-inc-inj-on-paths}%
+  The induced map
+  $\abstr {(\grpcenterinc G)}: \abstr(\grpcenter(G)) \to \abstr(G)$ is
+  injective.
+\end{corollary}
+
+The following result explains how every element of the ``abstract
+center'' of $G$ is picked out by $\abstr{(\grpcenterinc G)}$.
+\begin{lemma}
+  \label{lemma:center-inc-surj-on-paths}%
+  Let $g:\pt_G = \pt_G$ and suppose that $gh=hg$ for every
+  $h:\pt_G=\pt_G$. The fiber $\inv{(\ap {\B\grpcenterinc G})}(g)$ contains
+  an element.
+\end{lemma}
+\begin{proof}
+  One must construct an element $\hat g:\id_{{\B G}_\div} = \id_{{\B G}_\div}$ such that
+  $g=\hat g(\pt_G)$. We shall use function extensionality and produce
+  an element $\hat g(x):x=x$ for all $x:\B G$ instead. Note that $x=x$ is
+  a set, and that connectedness of $\B G$ is not directly applicable
+  here. We will use a technique that will prove useful in many
+  situations in the book, along the lines of the following sketch
+  (where we denote $U(x)\defequi (x=x)$):
+  \begin{enumerate}
+  \item for a given $x:\B G$, if such a $\hat g(x):U(x)$ existed, it would
+    produce an element of the type $T(\hat g(x))$ for a carefully chosen type
+    family $T$,
+  \item aim to prove $\iscontr(\sum_{u:U(x)}T(u))$ for any $x:\B G$,
+  \item this is a proposition, so connectedness of ${\B G}$ can be applied
+    and only $\iscontr(\sum_{u:U(\pt_G)}T(u))$ needs to be proven,
+  \item hopefully, $\sum_{u:U(\pt_G)}T(u)$ reduces to an obvious
+    singleton type.
+  \end{enumerate}
+  Here, for any $x:\B G$, we define the type family $T: (x=x) \to \UU$
+  by
+  \begin{displaymath}
+    T(q) \defequi \prod_{p:\pt_G=x} (pg=qp).
+  \end{displaymath}
+  And we claim that $\sum_{q:x=x}T(q)$ is contractible for any
+  $x:\B G$. Because this is a proposition, one only need to check that
+  it holds on one point of the connected type ${\B G}$, say
+  $x\jdeq pt_G$. Now,
+  \begin{displaymath}%
+    \begin{aligned}
+      \sum_{q:\pt_G=\pt_G}T(q) &\jdeq
+      \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(pg=qp)
+      \\
+      &\weq \sum_{q:\pt_G=\pt_G}\prod_{p:\pt_G=\pt_G}(g=q)
+      \\
+      &\weq \sum_{q:\pt_G=\pt_G}(\pt_G=\pt_G)\to (g=q)
+      \\
+      &\weq \sum_{q:\pt_G=\pt_G} (g=q)
+      \\
+      &\weq 1
+    \end{aligned}
+  \end{displaymath}%
+  \marginnote[-10\baselineskip]{%
+    The first equivalence is using that $g$ commutes with every other
+    element $p:\pt_G=\pt_G$, so that $pg \inv p = g$. The second
+    equivalence acknowledges the fact that $(g=q)$ does not depend on
+    $p$ anymore. The third equivalence makes two reductions at the
+    same time: first it recognizes a proposition in the type $g=q$ and
+    then uses that the propositional truncation of $\pt_G=\pt_G$ is
+    indeed inhabited (by $\trunc{\refl {\pt_G}}$).%
+  }%
+  We have just shown that for all $x:\B G$, the type
+  $\sum_{q:x=x}T(q)$ is contractible. We define now $\hat g(x):x=x$ as
+  the chosen center of contraction of that type. In particular, in the
+  previous proof that $\sum_{q:\pt_G=\pt_G}T(q)$ is connected, we
+  chose $g$ as center of contraction, so that $\hat g (\pt_G) = g$ as
+  wanted.
+\end{proof}
+
+Together, \cref{lemma:center-inc-inj-on-paths} and
+\cref{lemma:center-inc-surj-on-paths} show that
+$\abstr{(\grpcenterinc G)}$ establishes an equivalence
+\begin{equation}
+  \left( \id_{{\B G}_\div} = \id_{{\B G}_\div} \right) \weq \sum_{g:\pt_G=\pt_G}\prod_{h:\pt_G=\pt_G}gh=hg
+\end{equation}
+In yet other words,
+$\B \grpcenter(G)\defequi \conncomp{({\B G}_\div = {\B G}_\div)}
+{\id_{{\B G}_\div}}$ is (equivalent to) the classifying type of a
+group whose abstract group is the ``abstract center'' of $\abstr(G)$.
+
+The following lemma is then immediate:
+\begin{lemma}
+  \label{def:abelian-groups}%
+  A group $G$ is {\em abelian} if and only if $\grpcenterinc G$ is an
+  isomorphism of groups.
+\end{lemma}
+
+%% TRANSFORM AS REMARK ON ALTERNATIVE DEF:
+%%
+% Directly from the definition and the computations above, one see that
+% a group $G$ is abelian if and only if it satisfies the following
+% property:
+% \begin{displaymath}
+%   \prod_{g,h:\pt_G=\pt_G}gh=hg
+% \end{displaymath}
+% which is the ordinary definition of an abstract abelian group in
+% ordinary group theory. 
+\begin{remark}
+  In the style of this book, we could have
+  used~\cref{def:abelian-groups} directly as the definition of abelian
+  groups. However, the definition of $\grpcenterinc G$ would have been
+  to intricate to give properly as early as~\cref{def:abgp}.
+\end{remark}
+
+\subsection{Universal cover and simple connectedness}
+\label{sec:univ-cover-simple}
+%% TO BE MOVED?
+
+%% CHANGE THAT:
+% \begin{itemize}
+% \item for any pointed type $X$, the pointed type $\loopspace X$ is
+%   defined as $(\pt_X = \pt_X)$ with designated point $\refl {\pt_X}$,
+% \item the {\em abstract fundamental group} $\fundgrp(X)$ of a pointed type
+%   $X$ is the set truncation $\setTrunc{\loopspace X}$,
+% \item equivalently, in presence of groupoid truncations
+%   $\grpdTrunc{\blank}$, the {\em (concrete) fundamental group}
+%   $\fundgrpd(X)$ of a pointed type $X$ is the pointed type
+%   $\conncomp{\left(\grpdTrunc X\right)}{\grpdtrunc{\pt_X}}$,
+% \item a simply connected type is a connected pointed type $X$ such
+%   that $\pi_1(X)$ (equivalently $\fundgrpd(X)$) is contractible.
+% \end{itemize}
+%%
+Let us say that a pointed type $(A,a)$ is {\em simply connected} when
+both $A$ and $a=a$ are connected types.
+
+\begin{definition}
+  Let $A$ be a type and $a:A$ an element. The {\em universal cover} of
+  $A$ at $a$ is the type
+  \begin{displaymath}
+    \univcover A a \defequi \sum_{x:A}\setTrunc{a=x}.
+  \end{displaymath}
+\end{definition}
+When needed, we will consider $\univcover A a$ as a pointed type, with
+distinguished point $(a,\settrunc{\refl a})$. Note that when $A$ is a
+groupoid, then the set truncation is redundant and the universal cover
+of $A$ at $a$ is then the singleton at $a$. In particular, groupoids
+have contractible universal covers.
+
+The identity types in $\univcover A a$ can be understood easily once
+we introduce the following function for elements $x,y,z:A$:
+\begin{displaymath}
+  \blank\cdot\blank : \setTrunc{y=z} \times \setTrunc{x=y} \to \setTrunc{x=z}.
+\end{displaymath}
+It is defined as follows: given $\chi : \setTrunc{y=z}$, we want to
+define $\chi\cdot\blank$ in the set
+$\setTrunc{x=y} \to \setTrunc{x=z}$, hence we can suppose
+$\chi\jdeq\settrunc q$ for some $q:y=z$; now given
+$\pi:\setTrunc{x=y}$, one want to define $\settrunc q \cdot \pi$ in
+the set $\setTrunc{x=z}$, hence one can suppose $\pi\jdeq\settrunc p$
+for some $p:x=y$; finally, we define
+\begin{displaymath}
+  \settrunc{q} \cdot \settrunc{p} \defequi \settrunc{q\cdot p}.
+\end{displaymath}
+Then one proves, by induction on $p:x=y$, that
+$\trp[\setTrunc{a=\blank}]p$ is equal to the function
+$\alpha\mapsto \settrunc{p}\cdot \alpha$. In particular, one gets an
+equivalence for the type of path between two points $(x,\alpha)$ and
+$(y,\beta)$ of the universal cover $\univcover A a$:
+\begin{equation}
+  \label{eq:id-types-universal-cover}%
+  \left((x,\alpha) = (y,\beta)\right)
+  \weq \sum_{p:x=y}\settrunc{p} \cdot \alpha = \beta.
+\end{equation}
+
+This description allows us to prove the following lemma.
+\begin{lemma}
+  \label{lemma:universal-cover-simply-connected}%
+  Let $A$ be a type and $a:A$ an element. The universal cover
+  $\univcover A a$ is simply connected.
+\end{lemma}
+\begin{proof}
+  First, we prove that $\univcover A a$ is connected. It has a point
+  $(a,\refl a)$ and, for every $(x,\alpha):\univcover A a$, one wants
+  $\Trunc{(a,\refl a) = (x,\alpha)}$. This is proposition, hence a
+  set, so that one can suppose $\alpha = \settrunc p$ for a path
+  $p:a=x$. Now, the proposition
+  $\settrunc p \cdot \settrunc {\refl a} = \settrunc p$ holds. So one
+  can use~\cref{eq:id-types-universal-cover} to produce a path
+  $(a,\settrunc{\refl a}) = (x,\alpha)$.
+
+  Next, we prove that
+  $(a,\settrunc{\refl a}) = (a,\settrunc{\refl a})$ is connected. One
+  uses again~\cref{eq:id-types-universal-cover} to compute:
+  \begin{align*}
+    \left((a,\settrunc{\refl a}) = (a,\settrunc{\refl a})\right)
+    &\weq \sum_{p:a=a}\left( \settrunc p = \settrunc{\refl a} \right)
+    \\
+    &\weq \sum_{p:a=a}\left( \Trunc {p = \refl a} \right) 
+  \end{align*}
+  In other words, $(a,\settrunc{\refl a}) = (a,\settrunc{\refl a})$ is
+  equivalent to the connected component of $\refl a$ in $a=a$. In
+  particular, it is connected.
+\end{proof}
+
+\subsection{Abelian groups and simply connected $2$-types}
+\label{sec:abel-groups-simply}
+
+We will now give an alternative characterization of the type of
+abelian groups, more in line with the geometrical intuition we are
+trying to build in this chapter. Recall that a type $A$ is called a
+{\em $2$-truncated type}, or {\em $2$-type} for short, when every
+identity type $x=y$ is a groupoid for $x,y:A$.
+
+%% OLD
+%%
+% We also settle some notations that should ease the reading of the
+% proof of the next result. For any type $A:\UU$, we define
+% \begin{displaymath}
+%   \univcover \UU A \defequi \sum_{X:\UU}\setTrunc{A=X}.
+% \end{displaymath}
+% This is the analog of the connected component of $\UU$ at $A$ but with
+% a set truncation involved. In particular, $\univcover \UU A$ is {\em
+%   not} a subtype of $\UU$. To understand identity types better in this
+% type $\univcover \UU A$, let us introduce the following function for
+% any types $X,Y,Z:\UU$:
+% \begin{displaymath}
+%   \blank\cdot\blank : \setTrunc{Y=Z} \times \setTrunc{X=Y} \to \setTrunc{X=Z}.
+% \end{displaymath}
+% It is defined as follows: given $a: \setTrunc{Y=Z}$, we want to define
+% $a\cdot\blank$ in the set $\setTrunc{X=Y} \to \setTrunc{X=Z}$, hence
+% we can suppose $a\jdeq\settrunc p$ for some $p:Y=Z$; now given
+% $b:\setTrunc{X=Y}$, one want to define $\settrunc p \cdot b$ in the
+% set $\setTrunc{X=Z}$, hence one can suppose $b\jdeq\settrunc q$ for some
+% $q:X=Y$; finally, we define
+% \begin{displaymath}
+%   \settrunc{q} \cdot \settrunc{p} \defequi \settrunc{q\cdot p}.
+% \end{displaymath}
+% Then one proves, by induction on $\varphi:X=Y$, that
+% $\trp[\setTrunc{A=\blank}]\varphi$ is equal to the function
+% $a\mapsto \settrunc{\varphi}\cdot a$. In particular, one gets an
+% equivalence between the type $(X,a) = (Y,b)$ of identities between
+% elements $(X,a), (Y,b): \univcover\UU A$ and the type
+% $\sum_{\varphi:X=Y}\settrunc{\varphi} \cdot a = b$.
+
+% From this, we deduce two important properties of $\univcover\UU A$:
+% \begin{itemize}
+% \item The type $\univcover\UU A$ is connected. Indeed, for any
+%   $(X,a):\univcover \UU A$, one wants to prove the proposition
+%   $\Trunc{(A,\refl A) = (X,a)}$. A proposition being in particular a
+%   set, one can suppose that $a\jdeq \settrunc p$ for some
+%   $p:A=X$. Then
+%   \begin{displaymath}
+%     !:\settrunc p \cdot \settrunc{\refl A} = \settrunc{p},
+%   \end{displaymath}
+%   and the pair $(p,!)$ is an element of $(A,\refl A) = (X,a)$ whose
+%   propositional truncation allows us to conclude.
+% \item Consider $\univcover \UU A$ as pointed at
+%   $(A,\settrunc{\refl A})$. Then $\univcover\UU A$ is simply
+%   connected. Indeed, one has an equivalence:
+%   \begin{displaymath}
+%     \loopspace {\univcover\UU A} 
+%     \weq \sum_{\varphi:A=A}\left( \settrunc{\varphi} = \settrunc{\refl A}\right)
+%     \weq \sum_{\varphi:A=A}\Trunc{\varphi = \refl A}
+%   \end{displaymath}
+%   which proves that $\loopspace {\univcover\UU A}$ is the connected
+%   component of $\refl A$ in $A=A$. 
+% \end{itemize}
+
+\begin{theorem}
+  The type $\typeabgroup$ of abelian group is equivalent to the type
+  of pointed simply connected $2$-types.
+\end{theorem}
+\begin{proof}%
+  % may be put in macros.tex at some point
+  \newcommand{\BB}{\B^2}%
+  \newcommand{\UUsctwo}{\UU_\ast^{=2}}%
+  % local macro
+  \renewcommand{\loopspace}[1][]{\constructor{Aut}^2_{#1}}
+  Define the map $\BB : \typeabgroup \to \UUp$ by
+  $\BB G\defequi \univcover{\UU}{{\B G}_\div}$. Proving that $\BB G$ is a
+  $2$-type is equivalent to proving the proposition $\isset(p=q$) for
+  all $p,q:x=y$ and all $x,y:\BB G$. One can then use connectedness of
+  $\BB G$ and restrict to only show that $p=q$ is a set for all path
+  $p,q:({\B G}_\div,\settrunc{\id_{{\B G}_\div}})=({\B
+    G}_\div,\settrunc{\id_{{\B G}_\div}})$. As part of the definition
+  of the group $G$, the type ${\B G}$ is a $1$-type, hence
+  ${\B G}_\div={\B G}_\div$ is also a $1$-type through
+  univalence. Moreover,
+  $\trp p {(\settrunc{\id_{{\B G}_\div}})} = \settrunc{\id_{{\B G}_\div}}$ and
+  $\trp q {(\settrunc{\id_{{\B G}_\div}})} = \settrunc{\id_{{\B G}_\div}}$ both
+  are propositions, as they are identity types in the set
+  $\setTrunc{{\B G}_\div={\B G}_\div}$. Hence $\isset(p=q)$ holds.
+
+  So one gets a map, denoted again $\BB$ abusively,
+  \begin{displaymath}
+    \BB : \typeabgroup \to \UUsctwo 
+  \end{displaymath}
+  where the codomain $\UUsctwo$ is the type of pointed simply
+  connected $2$-types, that is
+  \begin{displaymath}
+    \UUsctwo \defequi \sum_{(A,a):\UUp}\left(
+      \isconn(A) \times \isconn(a=a) \times \isgrpd(a=a)
+    \right)
+  \end{displaymath}
+  We shall now provide an inverse for this map. Given a pointed simply
+  connected $2$-type $(A,a)$, one can construct a group, denoted
+  $\loopspace (A,a)$, with classifying type:
+  \begin{displaymath}
+    \B\loopspace (A,a) \defequi (a=a,\refl a).
+  \end{displaymath}
+  Indeed, this pointed type is connected because $(A,a)$ is simply
+  connected, and it is a $1$-type because $A$ is a $2$-type. Moreover,
+  $\loopspace (A,a)$ is abelian. To see it, let us use the bare
+  definition of abelian groups (cf.\ ~\cref{def:abgp}). We shall then
+  prove that for all elements $g,h:\refl a=\refl a$, the proposition
+  $gh=hg$ holds. This property holds in even more generality and is
+  usually called ``Eckmann-Hilton's argument''. It goes as follows:
+  for $x,y,z:A$, for $p,q:x=y$ and $r,s:y=z$ and for $g:p=q$ and
+  $h:r=s$, one prove
+  \begin{equation}
+    \label{eq:horizontal-comp}%
+    \ap{\blank\cdot q}(h) \cdot \ap{r\cdot\blank}(g)
+    = \ap{s\cdot \blank}(g) \cdot \ap{\blank\cdot p}(h).
+  \end{equation}
+  \begin{marginfigure}
+    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
+      \node[] (x1) {$x$};
+      \node[right of=x1] (y1) {$y$};
+      \node[right of=y1] (z1) {$z$};
+      \node[below of=x1] (x2) {$x$};
+      \node[right of=x2] (y2) {$y$};
+      \node[right of=y2] (z2) {$z$};
+      \draw[bend left] (x1) to node[above] (p) {\footnotesize$p$} (y1);
+      \draw[bend right] (x1) to  node[below] (q1) {\footnotesize$q$} (y1);
+      \draw[bend left] (y1) to node[above] (r1) {\footnotesize$r$} (z1);
+      \draw[bend left] (y2) to node[above] (r2) {\footnotesize$r$} (z2);
+      \draw[bend right] (y2) to  node[below] (s) {\footnotesize$s$} (z2);
+      \draw[bend right] (x2) to node[below] (q2) {\footnotesize$q$} (y2);
+      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
+      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
+      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
+    \end{tikzpicture}%
+    =%
+    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
+      \node[] (x1) {$x$};
+      \node[right of=x1] (y1) {$y$};
+      \node[right of=y1] (z1) {$z$};
+      \node[below of=x1] (x2) {$x$};
+      \node[right of=x2] (y2) {$y$};
+      \node[right of=y2] (z2) {$z$};
+      \draw[bend left] (x2) to node[above] (p) {\footnotesize$p$} (y2);
+      \draw[bend right] (x2) to  node[below] (q1) {\footnotesize$q$} (y2);
+      \draw[bend right] (y2) to node[above] (r1) {\footnotesize$s$} (z2);
+      \draw[bend left] (y1) to node[above] (r2) {\footnotesize$r$} (z1);
+      \draw[bend right] (y1) to  node[below] (s) {\footnotesize$s$} (z1);
+      \draw[bend left] (x1) to node[above] (p2) {\footnotesize$p$} (y1);
+      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
+      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
+      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
+    \end{tikzpicture}%
+    \caption{\label{fig:horizontal-comp}%
+      Visual representation of~\cref{eq:horizontal-comp}. The vertical
+      dotted lines denotes composition.%
+    }
+  \end{marginfigure}%
+  This equality takes place in $r\cdot p = s\cdot q$ and is better
+  represented by the diagram in~\cref{fig:horizontal-comp}. %
+  One prove such a result by induction on $h$. Indeed, when
+  $h\jdeq \refl r$, then both sides of the equation reduces through
+  path algebra to $\ap {r\cdot\blank} (g)$. Now we are interested in
+  this result when $x,y,z$ are all definitionally $a$, and $p,q,r,s$
+  are all definitionally $\refl a$. In that case, one has that
+  $\ap {\refl a\cdot \blank}$ and $\ap {\blank\cdot\refl a}$ both act
+  trivially, and the equation becomes: $h\cdot g = g \cdot h$.
+
+  One still has to prove that the function $\loopspace$ is an inverse
+  for $\BB$. Given an abelian group $G$, the proof
+  of~\cref{lemma:universal-cover-simply-connected} gives an
+  equivalence between $\B\loopspace {(\BB G)}$ and the connected
+  component of $\id_{{\B G}_\div}$ in ${\B G}_\div={\B G}_\div$. By
+  definition, this is the classifying type of $\grpcenter(G)$. Being
+  abelian, $G$ is isomorphic to its center
+  (\cref{def:abelian-groups}), and so it yields an element of
+  $\loopspace {(\BB G)} =_{\typegroup} G$. %
+  \marginnote[-1.5\baselineskip]{%
+    If $X \ptdweq Y$ denote the type of pointed equivalences between
+    pointed types $X,Y:\UUp$, then the univalence axiom implies that
+    there is an equivalence
+    \begin{displaymath}
+      (X=Y) \weq (X \ptdweq Y).
+    \end{displaymath}%
+  }%
+  Conversely, take a pointed simply connected $2$-type $(A,a)$. One
+  wants to prove $\BB (\loopspace {(A,a)}) \weq_\ast (A,a)$. One
+  should first notice that, because $\loopspace (A,a)$ is an abelian
+  group,
+  \begin{fullwidth}
+  \begin{equation}
+    \label{eq:loopspace-A-abelian}%
+    {\B\loopspace \left( \BB (\loopspace {(A,a)}) \right)}
+    \weq \conncomp{((a=a)=(a=a))}{\refl{a=a}} \weq (a=a,\refl a).
+  \end{equation}
+\end{fullwidth}
+  This equivalence maps a path
+  \begin{displaymath}
+    (p,!):(a=a,\settrunc{\refl{a=a}})=(a=a,\settrunc{\refl{a=a}})
+  \end{displaymath}
+  to the evaluation $p(\refl a): a=a$.
+
+  %% OLD MATERIAL, can still be useful.
+  %%
+  % We will now provide
+  % \begin{displaymath}
+  %   \Phi : \BB {(\loopspace {(A,a)})} \ptdto (A,a)
+  % \end{displaymath}
+  % such that $\loopspace(\Phi)$ is the previous equivalence.
+  % To be able to
+  % express $\Phi$, we need a small gadget about truncations of
+  % function
+  % types: for types $X,Y:\UU$, given an element
+  % $f_0:\setTrunc{X\to Y}$, one constructs a map
+  % $\lceil f_0 \rceil : \setTrunc X \to \setTrunc Y$; the type of
+  % $\lceil f_0 \rceil$ being a set, one might as well suppose that
+  % $f_0 \jdeq \settrunc f$ for some $f:X\to Y$; then we set
+  % $\lceil f_0 \rceil (\settrunc x) = \settrunc{f(x)}$, which
+  % suffices
+  % in order to define $\lceil f_0 \rceil$ entirely because its
+  % codomain
+  % $\setTrunc Y$ is a set. If we assume the axiom of
+  % choice\footnote{What is the status of AC in this book??}, then
+  % $\lceil \blank \rceil$ is injective when $Y$ is a set.
+  %%
+  We will now define a pointed map
+  $\Phi : (A,a) \ptdto \BB (\loopspace {(A,a)})$, and prove
+  subsequently that this is an equivalence. Let $T : A \to \UU$ be the
+  type family define by
+  \begin{displaymath}
+    T(a') \defequi \sum_{\alpha:\setTrunc{(a=a)\weq(a=a')}}
+    \prod_{p:a=a'}\alpha=\settrunc {p\cdot\blank}
+  \end{displaymath}
+  We claim that $T(a')$ is contractible for all $a':A$. By
+  connectedness of $A$, it is equivalent to showing that $T(a)$ is
+  contractible. However
+  \begin{align*}
+    T(a)
+    &\jdeq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}}\prod_{p:a=a}
+      \alpha = \settrunc {p\cdot \blank}
+    \\
+    &\weq \sum_{\alpha:\setTrunc{(a=a)\weq(a=a)}} \alpha = \settrunc{\id_{a=a}}
+    \\
+    &\weq 1
+  \end{align*}
+  Let then $\Phi (a')$ be the element
+  $(a=a', \kappa_{a'}):\univcover \UU {a=a}$ where $\kappa_{a'}$ is
+  the first projection of the center of contraction of $T(a')$. In
+  particular, following the chain of equivalences above, $\Phi(a)$ is
+  defined as $(a=a, \settrunc{\refl {a=a}})$, hence $\Phi(a)$ is
+  trivially pointed by a reflexivity path. To verify that $\Phi$, thus
+  defined, is an equivalence, one can use connectedness of
+  $\BB(\loopspace (A,a))$ and only check that
+  $\inv\Phi(a=a,\settrunc{\refl {a=a}})$ is contractible. However,
+  \begin{displaymath}
+    \inv\Phi(a=a,\settrunc{\refl {a=a}}) \simeq \sum_{a':A}
+    \sum_{\varphi : (a=a) \weq (a=a')}\settrunc{\varphi} = \kappa_{a'}.
+  \end{displaymath}
+  For an element $a':A$ together with $\varphi: (a=a) \weq (a=a')$
+  such that the proposition $\settrunc \varphi = \kappa_{a'}$ holds, a
+  path between $(a,\id_{a=a},!)$ and $(a',\varphi,!)$ consists of a
+  path $p:a=a'$ and a path $q:(x\mapsto p x) = \varphi$. We have a
+  good candidate for $p$, namely $p\defequi \varphi(\refl
+  a):a=a'$. However we don't have quite $q$ yet. Consider, for any
+  $a':A$, the function
+  \begin{fullwidth}
+    \begin{displaymath}
+      \ev_{\refl a}^{a'} :
+      \left(
+        (a=a, \settrunc{\refl{a=a}} ) =
+        (a=a', \kappa_{a'} )
+      \right)
+      \to (a=a'),\quad (\psi,!) \mapsto \psi(\refl a) 
+    \end{displaymath}
+  \end{fullwidth}
+  Note that $\ev_{\refl a}^{a}$ is precisely the equivalence
+  $\loopspace{(\BB\loopspace(A,a))}\weq (a=a)$ described
+  in~\cref{eq:loopspace-A-abelian}. Hence, by connectedness of $A$,
+  one gets that the proposition $\isEq(\ev_{\refl a}^{a'})$ holds for
+  all $a':A$. In particular, because the propositions
+  $\settrunc \varphi = \kappa_{a'}$ and
+  $\settrunc {p\cdot\blank} = \kappa_{a'}$ holds, one gets elements
+  $(\varphi,!)$ and $(x\mapsto px,!)$ in the domain of
+  $\ev_{\refl a}^{a'}$. Their image $\ev_{\refl a}^{a'}(\varphi,!)$
+  and $\ev_{\refl a}^{a'}(x\mapsto px,!)$ are both equal to $p$, which
+  provides a path $(x\mapsto px,!)=(\varphi,!)$ in the domain. The
+  first component is the path $q:(x\mapsto px) = \varphi$ that we
+  wanted.
+\end{proof}
 
 
 \section{$G$-sets vs $\abstr(G)$-sets}
