@@ -266,7 +266,49 @@ in the case of $\refl{x}:x=x$.
 \end{definition} 
 The function thus defined may be called 
 \emph{the transport function in the type family $T$ along the path $e$}, 
- or, less verbosely, \emph{transport}.
+or, less verbosely, \emph{transport}.\footnote{%
+  We sometimes picture this schematically as follows:
+  We draw $X$ as a (mostly horizontal) line,
+  and we draw each type $T(x)$ as a vertical line lying over $x:X$.
+  As $x$ moves around in $X$, these lines can change shape,
+  and taken all together they form a $2$-dimensional blob lying over $X$.
+  The transport functions map points between the vertical lines.\par
+  \begin{tikzpicture}
+    % Name the coordinates so they are easy to change
+    % first: X
+    \coordinate (X-left) at (-1,-1);
+    \node[dot,label=below:$x$] (X-x) at (0,-1.2) {};
+    \node[dot,label=below:$x'$] (X-xp) at (1.5,-.9) {};
+    \coordinate (X-right) at (2.8,-1);
+    \node (X) at (3,-1) {$X$};
+    % then: T top and bottom
+    \coordinate (T-top-left) at (-1,1.5);
+    \coordinate (T-bot-left) at (-1,0.5);
+    \coordinate[label=above:$T(x)$] (T-top-x) at (0,1.9);
+    \coordinate (T-bot-x) at (0,-.1);
+    \coordinate[label=above:$T(x')$] (T-top-xp) at (1.5,2.1);
+    \coordinate (T-bot-xp) at (1.5,.2);
+    \coordinate (T-top-right) at (2.8,1.3);
+    \coordinate (T-bot-right) at (2.8,0.8);
+    \draw (T-bot-left) .. controls +(-90:.5) and +(0:-.5) .. (T-bot-x)
+    .. controls +(0:.5) and +(-10:-.5) .. (T-bot-xp)
+    .. controls +(-10:.5) and +(90:-.5) .. (T-bot-right)
+    -- (T-top-right)
+    .. controls +(90:.5) and +(0:.5) .. (T-top-xp)
+    .. controls +(0:-.5) and +(-10:.4) .. (T-top-x)
+    .. controls +(-10:-.4) and +(90:.5) .. (T-top-left)
+    -- (T-bot-left);
+    \draw[dashed] (T-bot-x) -- (T-top-x);
+    \draw[dashed] (T-bot-xp) -- (T-top-xp);
+    \draw (X-left) .. controls +(-10:.3) and +(0:-.3) .. (X-x);
+    \draw[->] (X-x) .. controls +(0:.3) and +(-10:-.5) ..
+      node[anchor=north] {$e$} (X-xp);
+    \draw (X-xp) .. controls +(-10:.5) and +(0:-.1) .. (X-right);
+    % Now the specifics: a point t and its transport to T(x')
+    \node[dot,label=left:$t$] (t) at (0,0.9) {};
+    \node[dot,label=right:${\trp[T]e(t)}$] (tp) at (1.5,1.1) {};
+    \draw[mapsto] (t) .. controls +(0:.5) and +(0:-.5) .. (tp);
+  \end{tikzpicture}}
  We may also simplify the notation to just $\trp e$.
 The transport functions behave as expected: transport along the composition
 $e\cdot e'$ is the composition of the two transport functions (to be
@@ -382,7 +424,7 @@ Elements of $\prod_{x:X} f(x)=g(x)$ are called \emph{homotopies}.
 Given such a homotopy $h$, and elements $x,x'$ of $X$ as well as a path $p: x=x'$,
 we can define by induction on $p$ an element
 \[ 
-  \ns(h,p): ((h(x')\cdot \ap{f}(p)) =_{f(x)=g(x')} (\ap{g}(p)\cdot h(x))),
+  \ns(h,p): h(x')\cdot \ap{f}(p) =_{f(x)=g(x')} \ap{g}(p)\cdot h(x),
 \]
 by setting $\ns(h,\refl{x})$ to be some previously
 constructed element of $h(x) \cdot \refl{f(x)} = h(x)$.
@@ -408,8 +450,51 @@ element of $Y(x')$ only after identifying $x$ with $x'$.  That is the idea of th
   $y':Y(x')$ and a path $p : x = x'$, we define a new type $\pathover y Y p {y'}$ by induction on $p$, thereby reducing to the case
   where $x'$ is $x$ and $p$ is $\refl x$,
   rendering $y$ and $y'$ of the same type,
-  allowing us to set $$\left( \pathoverdisplay y Y {\refl x} {y'} \right) \defeq (y = y').$$
-An element $q : \pathover y Y p {y'}$ is called a {\em path} from $y$ to $y'$ {\em over} $p$.
+  allowing us to set
+  \[
+    \left( \pathover y Y {\refl x} {y'} \right) \defeq (y = y').
+  \]
+  An element $q : \pathover y Y p {y'}$ is called a \emph{path} from $y$ to $y'$ \emph{over} $p$.\footnote{%
+    We picture this simply as follows: the path from $y$ to $y'$ over $p$ winds
+    through the vertical lines representing the types $Y(x'')$ as $x'':X$
+    moves along the path $p$ in $X$ from $x$ to $x'$:\par
+  \begin{tikzpicture}
+    % Name the coordinates so they are easy to change
+    % first: X
+    \coordinate (X-left) at (-1,-1);
+    \node[dot,label=below:$x$] (X-x) at (0,-1.2) {};
+    \node[dot,label=below:$x'$] (X-xp) at (1.5,-.9) {};
+    \coordinate (X-right) at (2.8,-1);
+    \node (X) at (3,-1) {$X$};
+    % then: Y top and bottom
+    \coordinate (Y-top-left) at (-1,1.5);
+    \coordinate (Y-bot-left) at (-1,0.5);
+    \coordinate[label=above:$Y(x)$] (Y-top-x) at (0,1.9);
+    \coordinate (Y-bot-x) at (0,-.1);
+    \coordinate[label=above:$Y(x')$] (Y-top-xp) at (1.5,2.1);
+    \coordinate (Y-bot-xp) at (1.5,.2);
+    \coordinate (Y-top-right) at (2.8,1.3);
+    \coordinate (Y-bot-right) at (2.8,0.8);
+    \draw (Y-bot-left) .. controls +(-90:.5) and +(0:-.5) .. (Y-bot-x)
+    .. controls +(0:.5) and +(-10:-.5) .. (Y-bot-xp)
+    .. controls +(-10:.5) and +(90:-.5) .. (Y-bot-right)
+    -- (Y-top-right)
+    .. controls +(90:.5) and +(0:.5) .. (Y-top-xp)
+    .. controls +(0:-.5) and +(-10:.4) .. (Y-top-x)
+    .. controls +(-10:-.4) and +(90:.5) .. (Y-top-left)
+    -- (Y-bot-left);
+    \draw[dashed] (Y-bot-x) -- (Y-top-x);
+    \draw[dashed] (Y-bot-xp) -- (Y-top-xp);
+    \draw (X-left) .. controls +(-10:.3) and +(0:-.3) .. (X-x);
+    \draw[->] (X-x) .. controls +(0:.3) and +(-10:-.5) ..
+      node[anchor=north] {$p$} (X-xp);
+    \draw (X-xp) .. controls +(-10:.5) and +(0:-.1) .. (X-right);
+    % Now the specifics: two points y,y' and the pathover
+    \node[dot,label=left:$y$] (y) at (0,0.9) {};
+    \node[dot,label=right:$y'$] (yp) at (1.5,1.1) {};
+    \draw (y) .. controls +(0:.5) and +(0:-.5) ..
+      node[anchor=south] {$q$} (yp);
+  \end{tikzpicture}}
 \end{definition}
 
 The following definition identifies the type of paths over $p$ with a type 
@@ -417,8 +502,8 @@ of paths using transport along $p$.
 
 \begin{definition}\label{def:pathover-trp}
 In the context of \cref{def:pathsoverpaths}, define by induction on $p$ an
-identification $po(p): \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$,
-by setting $po(\refl{x}) \defeq \refl{y=y'}$.
+identification $\po(p): \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$,
+by setting $\po(\refl{x}) \defeq \refl{y=y'}$.
 \end{definition}
 
 Many of the operations on paths have their counterpart for paths over paths.
@@ -427,15 +512,20 @@ We define composition of paths over paths.
 \begin{definition}\label{def:pathovercomposition}
 Suppose we are given a type $A$ and a family of types $B(a)$ parametrized by the elements $a$ of $A$. 
 Let $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, and $p_i : a_i = a_{i+1}$ for $i=1,2$. 
-We define the function $\cdot^o$ of type 
+We define the function $\cdoto$ of type
 $\pathover {b_2} B {p_2} {b_3} \to \pathover {b_1} B {p_1} {b_2} \to 
  \pathover {b_1} B {p_2 \cdot p_1} {b_3}$ by induction, first on $p_2$ and then on $r: b_2 = b_3$,
-by setting $(\refl{b_2} \cdot^o q) \defeq q$ for all $q: b_1 =^B_{p_1} b_2$.
+by setting $(\refl{b_2} \cdoto q) \defeq q$ for all $q: \pathover {b_1} B {p_1} {b_2}$.
 \end{definition}
 
-Similarly, one can define reversal of paths over paths. These operations on paths over paths 
+Similarly, one can define reversal of paths over paths,
+writing $\invo q : \pathover {b'} B {\inv p} b$ for the inverse
+of $q : \pathover b B p {b'}$.
+These operations on paths over paths
 satisfy many of the laws satisfied by the corresponding operations on paths, 
-after some modification. We will state these laws when we need them. 
+after some modification.
+We will state these laws when we need them.\footnote{%
+  Exercise: Try to state some of these laws yourself.}
 
 The following construction shows how to handle application of a dependent 
 function $f$ to paths using the definition above.
@@ -446,7 +536,54 @@ function $f$ to paths using the definition above.
   setting $$\apd f {(\refl x)} \defeq \refl {f(x)}.$$
 \end{definition}
 
-The function $\apd f$ is called {\em dependent application} of $f$ to paths.  For convenience, we may abbreviate $\apd f (p)$ to $f(p)$.
+The function $\apd f$ is called \emph{dependent application} of $f$ to paths.\footnote{%
+  We picture $f$ via its \emph{graph} of the values $f(x)$
+  as $x$ varies in $X$.
+  The dependent application of $f$ to $p$ is then the piece of the graph
+  that lies over $p$:\par
+  \begin{tikzpicture}
+    % Name the coordinates so they are easy to change
+    % first: X
+    \coordinate (X-left) at (-1,-1);
+    \node[dot,label=below:$x$] (X-x) at (0,-1.2) {};
+    \node[dot,label=below:$x'$] (X-xp) at (1.5,-.9) {};
+    \coordinate (X-right) at (2.8,-1);
+    \node (X) at (3,-1) {$X$};
+    % then: Y top and bottom
+    \coordinate (Y-top-left) at (-1,1.5);
+    \coordinate (Y-bot-left) at (-1,0.5);
+    \coordinate[label=above:$Y(x)$] (Y-top-x) at (0,1.9);
+    \coordinate (Y-bot-x) at (0,-.1);
+    \coordinate[label=above:$Y(x')$] (Y-top-xp) at (1.5,2.1);
+    \coordinate (Y-bot-xp) at (1.5,.2);
+    \coordinate (Y-top-right) at (2.8,1.3);
+    \coordinate (Y-bot-right) at (2.8,0.8);
+    \draw (Y-bot-left) .. controls +(-90:.5) and +(0:-.5) .. (Y-bot-x)
+    .. controls +(0:.5) and +(-10:-.5) .. (Y-bot-xp)
+    .. controls +(-10:.5) and +(90:-.5) .. (Y-bot-right)
+    -- (Y-top-right)
+    .. controls +(90:.5) and +(0:.5) .. (Y-top-xp)
+    .. controls +(0:-.5) and +(-10:.4) .. (Y-top-x)
+    .. controls +(-10:-.4) and +(90:.5) .. (Y-top-left)
+    -- (Y-bot-left);
+    \draw[dashed] (Y-bot-x) -- (Y-top-x);
+    \draw[dashed] (Y-bot-xp) -- (Y-top-xp);
+    \draw (X-left) .. controls +(-10:.3) and +(0:-.3) .. (X-x);
+    \draw[->] (X-x) .. controls +(0:.3) and +(-10:-.5) ..
+      node[anchor=north] {$p$} (X-xp);
+    \draw (X-xp) .. controls +(-10:.5) and +(0:-.1) .. (X-right);
+    % Now the specifics: two points y,y' and the pathover
+    \coordinate (y-left) at (-1,1.2);
+    \node[dot,label=below left:$f(x)$] (y) at (0,0.9) {};
+    \node[dot,label=below right:$f(x')$] (yp) at (1.5,1.1) {};
+    \coordinate (y-right) at (2.8,1);
+    \draw[dotted] (y-left) .. controls +(-10:.3) and +(0:-.5) .. (y);
+    \draw (y) .. controls +(0:.5) and +(0:-.5) ..
+      node[anchor=south] {$\apd f(p)$} (yp);
+    \draw[dotted] (yp) .. controls +(0:.5) and +(120:.1) .. (y-right);
+  \end{tikzpicture}}
+For convenience, we may abbreviate $\apd f (p)$ to $f(p)$,
+when there is no risk of confusion.
 
 The following construction shows how functions of two variables may be applied to paths over paths.
 
@@ -828,7 +965,7 @@ two pairs to be equal.  We start with a definition.
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   Consider the function $$\pair : \prod_{x:X} ( Y(x) \to \sum _{x:X} Y(x) ) $$ defined by $$ \pair(x)(y) \defeq (x,y). $$
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$, we define the map 
-  $$\left( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right) \to \left ( (x,y) = (x',y') \right )$$
+  $$\left( \sum_{p:x=x'} \pathover y Y p {y'} \right) \to \left ( (x,y) = (x',y') \right )$$
   by $$ (p,q) \mapsto \apap {\pair} p q. $$
   (Refer to \cref{def:pathsoverpaths} for the meaning of the type $\pathover y Y p {y'}$, and to \cref{def:applfun2} for the definition of $\apap{}{}{}$.)
   We introduce $\pathpair p q$ as notation for $\apap {\pair} p q$.
@@ -850,7 +987,7 @@ The following lemma gives the desired characterization of paths between pairs.
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$,
   the map defined in \cref{def:pairtopath} defined by $$(p,q) \mapsto \pathpair p q$$ is an equivalence of type
-  $$\left( \sum_{p:x=x'} \pathoverdisplay y Y p {y'} \right) \weq \left ( (x,y) = (x',y') \right ).$$
+  $$\left( \sum_{p:x=x'} \pathover y Y p {y'} \right) \weq \left ( (x,y) = (x',y') \right ).$$
 \end{lemma}
 
 \begin{proof}
