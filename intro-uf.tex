@@ -907,7 +907,9 @@ to Voevodsky.
 \begin{definition}
   \label{def:equivalence}
   A function $f : X \to Y$ is called an \emph{equivalence},
-  denoted by $\isEq(f)$, if $\iscontr(f^{-1}(y))$ for all $y:Y$.
+  denoted by $\isEq(f)$, if $\inv f(y)$ is contractible for
+  all $y:Y$.\footnote{%
+    I.e., we define $\isEq(f) \defeq \prod_{y:Y}\iscontr(f^{-1}(y))$.}
 \end{definition}
 
 In the above case we say that the types
@@ -915,11 +917,13 @@ $X$ and $Y$ are \emph{equivalent}, denoted by $X\equiv Y$.
 More precisely, since there could be more than one equivalence
 between two types, we define the type of equivalences from $X$ to $Y$ by
 \[
-(X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f) 
+  (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f).
 \]
 
 Suppose $f:X \to Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility.
-Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.
+Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.\footnote{%
+  Note that $\fst(t(y)) : \inv f(y)$, so $\fst(\fst(t(y))) : X$ with
+  $\snd(\fst(t(y))) : y = f(\fst(\fst(t(y)))).$}
 
 Clearly, $f(g(y)) = y$ by unfolding all definitions.
 Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x))$,
@@ -1017,9 +1021,9 @@ We now define  a fiberwise equivalences.
 Let $X$ be a type, and let $Y(x),Z(x)$ be families of types parameterised
 by $x:X$. A map $f$ of type $\prod_{x:X}(Y(x)\to Z(x))$
 can be viewed as a family of maps $f(x): Y(x)\to Z(x)$ and is called a 
-\emph{fiberwise} map. The \emph{totaliser} of such $f$ is defined as
+\emph{fiberwise} map. The \emph{totalization} of $f$ is defined as
 \[
-\tot(f) : (\sum_{x:X} Y(x)) \to \sum_{x:X} Z(x),
+\tot(f) : \Bigl(\sum_{x:X} Y(x)\Bigr) \to \sum_{x:X} Z(x),
 \text{ setting } \tot(f)(x,y)\defeq (x,f(x)(y)).
 \]
 
@@ -1027,16 +1031,16 @@ can be viewed as a family of maps $f(x): Y(x)\to Z(x)$ and is called a
 
 \begin{lemma}\label{lem:fiberwise}
 Let conditions be as in \cref{def:fiberwise}.
-If $f(x): Y(x) \to Z(x)$ is an equivalence for every $x:X$,
-in which case we also call the family $f$ an equivalence,
-then $\tot(f)$ is an equivalence,
-called a \emph{fiberwise} equivalence.
+If $f(x): Y(x) \to Z(x)$ is an equivalence for every $x:X$
+(we say that $f$ is a \emph{fiberwise} equivalence),
+%in which case we also call the family $f$ an equivalence,
+then $\tot(f)$ is an equivalence.
 \end{lemma}
 
 \begin{proof}
 If $f(x): Y(x) \to Z(x)$ is an equivalence for all $x$ in $X$,
 then the same is true of all $f(x)^{-1}: Z(x) \to Y(x)$.
-Then we have the totaliser $\tot(x\mapsto f(x)^{-1})$,
+Then we have the totalization $\tot(x\mapsto f(x)^{-1})$,
 which can easily be proved to be an inverse of $\tot(f)$
 (see the next exercise). Now apply \cref{lem:weq-iso}.
 \end{proof}
@@ -1044,6 +1048,7 @@ which can easily be proved to be an inverse of $\tot(f)$
 \begin{xca}\label{xca:fiberwise}
 Complete the details of the proof of \cref{lem:fiberwise}.
 \end{xca}
+The converse to \cref{lem:fiberwise} also holds: If $\tot(f)$ is an equivalence, then $f$ is a fiberwise equivalence, cf.~Theorem~4.7.7 of the HoTT Book\footcite{hottbook}.
 
 Yet another application of  equivalence is to postulate axioms.
 
@@ -1052,7 +1057,9 @@ The axiom of \emph{function extensionality} postulates that the function
 $\ptw_{f,g}: f=g \to \prod_{x:X} f(x)=g(x)$ in \cref{def:ptw} is an equivalence.
 Formally, we postulate the existence of an element $\funext : \isEq(\ptw_{f,g})$.
 Thus we get a function 
-\[{\ptw}^{-1}_{f,g}: (\prod_{x:X} f(x)=g(x)) \to f=g.\]
+\[
+  \inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x)=g(x)\Bigr) \to f=g.
+\]
 \end{definition}
 
 
