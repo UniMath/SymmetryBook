@@ -60,7 +60,7 @@ In the following sections we will expose various other elementary types and elem
 \label{sec:natural-numbers}
 
 Here are Peano's rules\cite{peano-principia} for constructing the natural numbers in the form that is used in type theory.
-\begin{enumerate}[label=P\arabic*:]
+\begin{enumerate}[label=(P\arabic*),ref=(P\arabic*)]
 \item\label{P1} there is a type called $\NN$ (whose elements will be called natural numbers);
 \item\label{P2} there is an element of $\NN$ called $0$;
 \item\label{P3} if $m$ is a natural number, then there is also a natural number $\Succ(m)$, called the \emph{successor} of $m$;
@@ -108,7 +108,7 @@ comfortable if we call it the \emph{equality type}, at least initially.  Identit
 the two elements are of the same type; we shall have no need to compare elements of different types.
 
 Here are the rules for constructing equality types.
-\begin{enumerate}[label=E\arabic*:]
+\begin{enumerate}[label=(E\arabic*),ref=(E\arabic*)]
 \item\label{E1}
   for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a =_X b$;
 \item\label{E2} for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$ (the name $\refl{}$ comes from the word
@@ -130,7 +130,7 @@ When $a=b$ may have more than one element, we will refer to an element $i$ of $a
 \emph{identity} or an \emph{equality}.  Since the word ``identification'' is a long one, we may also refer to $i$ as a \emph{path} from $a$ to
 $b$---this has the advantage of incorporating the intuition that an identification may proceed gradually through intermediate steps.
 
-It may come as a surprise that two mathematical objects can be equal in more than one way, especialy since rule \ref{E3} above seems to say that the
+It may come as a surprise that two mathematical objects can be equal in more than one way, especially since rule \ref{E3} above seems to say that the
 trivial proofs of equality are the only relevant ones, but this reflects a situation commonly encountered in geometry, where \emph{congruence} of
 geometric figures is considered.  For example, in Euclidean space, two equilateral triangles of the same size are congruent in six (different)
 ways.\footnote{Six, since we allow reflections, otherwise there are only three.\par
@@ -615,25 +615,29 @@ The following simple lemma will be useful later.
 \section{Inductive types}
 \label{sec:inductive-types}
 
-There are other examples of types that are conveniently introduced as we have seen with the natural numbers and the equality types.  A type
-presented in this style shares some common features: there are some ways to create new elements, and there is a way (called {\em induction}) to
-prove something about every element of the type (or family of types).  We will refer to such types as {\em inductive} types, and we present a
+There are other examples of types that are conveniently introduced
+in the same way as we have seen with the natural numbers and the equality types.
+A type
+presented in this style shares some common features: there are some ways to create new elements, and there is a way (called \emph{induction}) to
+prove something about every element of the type (or family of types).  We will refer to such types as \emph{inductive} types, and we present a
 few more of them in this section, including the finite types, and then we present some other constructions for making new types from old ones.
 For each of these constructions we explain what it means for two elements of the newly constructed type to be equal in terms of equality in the
 constituent types.
 
 \subsection{Finite types}
 \label{sec:finite-types}
-Firstly, there is the {\em empty} type, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
-definition.  The inductive principle for $\emptytype$ says that to prove something about (or to construct something from) every element of
-$\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be proven. (This logical principle is traditionally called {\em ex falso quod libet}.) As
+Firstly, there is the \emph{empty} type, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
+definition.  The induction principle for $\emptytype$ says that to prove something about (or to construct something from) every element of
+$\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be proven. (This logical principle is traditionally called \emph{ex falso quodlibet}.\footnote{%
+  Sometimes also \emph{ex falso sequitur quodlibet}:
+  From falsehood, anything follows.}) As
 an example, we may prove that any two elements $x$ and $y$ of $\emptytype$ are equal by using induction on $x$.
 
 An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one expects that there are no real absurdities in mathematics, nor in any
 logical system (such as ours) that attempts to provide a language for mathematics, but it is important to have such a name so we can discuss
 the possibility, which might result inadvertently from the introduction of unwarranted assumptions.  For example, to assert that a type $P$ has
 no elements, it would be sensible to assert that an element of $P$ would lead to an absurdity.  Providing a function of type $P \to \emptytype$ is a
-convenient way to make that assertion.  Hence we define the {\em negation} of a type by setting $\neg P \defeq P \to \emptytype$.  Using it, we
+convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting $\neg P \defeq P \to \emptytype$.  Using it, we
 may define the type $(a \ne b) \defeq \neg (a = b)$; an element of it asserts that $a$ and $b$ cannot be identified.
 
 Secondly, there will also be a type called $\true$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
@@ -651,26 +655,61 @@ One may prove by induction
 that any element of $\bool$ is equal to $\yes$ or to $\no$.
 
 We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
-Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.  The definition of $P(b)$ is motivated by the expectation that we will be able
+Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.\footnote{%
+  This definition uses the induction principle.}
+The definition of $P(b)$ is motivated by the expectation that we will be able
 to prove that $P(b)$ and $b = \yes$ are equivalent.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv :
 P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$,
 establishing the claim.
 
-In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, i.e., for any $n:\NN$ that $0 \ne
-S(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
-\defeq \true$ and $P(S(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
-and $i = 0$ are equivalent.  If there were an element $e: 0 = S(n)$, we could substitute $S(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
-of $P(S(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=S(n)) \to \emptytype$, establishing the claim.
+In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne
+\Succ(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
+\defeq \true$ and $P(\Succ(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
+and $i = 0$ are equivalent.  If there were an element $e: 0 = \Succ(n)$, we could substitute $\Succ(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
+of $P(\Succ(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=\Succ(n)) \to \emptytype$, establishing the claim.
 
-In a similar way we will in \cref{sec:typeFin} define types $P(n)$ for any $n$ in $\NN$
-such that $P(n)$ is the type (set) of $n$ elements.
+In a similar way we will in \cref{sec:typeFin} define types $\bn n$ for any $n$ in $\NN$
+such that $\bn n$ is the type (set) of $n$ elements.
 
 \subsection{Sum types}
 \label{sec:sum-types}
 There are \emph{sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
 there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$. Since the type of $b$ may depend on $a$ we also call such a pair
 a \emph{dependent} pair. We may refer to $X$ as the \emph{index
-  type} of the sum.  
+  type} of the sum.\footnote{%
+  We also call $\sum_{x:X}Y(x)$ the \emph{total type} of the family,
+  and we picture it, in the style of the pictures above,
+  as the entire blob lying over $X$. (Each $Y(x)$ is a vertical line over $x:X$,
+  and a point $y:Y(x)$ becomes a point $(x,y)$ in the blob.)\par
+  \begin{tikzpicture}
+    % Name the coordinates so they are easy to change
+    % first: X
+    \coordinate (X-left) at (-1,-1);
+    \node[dot,label=below:$x$] (X-x) at (1,-1.2) {};
+    \coordinate (X-right) at (2.8,-1);
+    \node (X) at (3,-1) {$X$};
+    \node (SXY) at (3,2) {${\sum_{x:X}Y(x)}$};
+    % then: Y top and bottom
+    \coordinate (Y-top-left) at (-1,1.5);
+    \coordinate (Y-bot-left) at (-1,0.5);
+    \coordinate[label=above:$Y(x)$] (Y-top-x) at (1,1.9);
+    \coordinate (Y-bot-x) at (1,-.1);
+    \coordinate (Y-top-right) at (2.8,1.3);
+    \coordinate (Y-bot-right) at (2.8,0.8);
+    \draw (Y-bot-left) .. controls +(-90:.5) and +(0:-.5) .. (Y-bot-x)
+    .. controls +(0:.5) and +(90:-.5) .. (Y-bot-right)
+    -- (Y-top-right)
+    .. controls +(90:.5) and +(-10:.4) .. (Y-top-x)
+    .. controls +(-10:-.4) and +(90:.5) .. (Y-top-left)
+    -- (Y-bot-left);
+    \draw[dotted] (Y-bot-x) -- (Y-top-x);
+    \draw (X-left) .. controls +(10:.3) and +(0:-.3) .. (X-x);
+    \draw (X-x) .. controls +(0:.3) and +(0:-.1) .. (X-right);
+    % Now the specifics: the pair (x,y) and the projection
+    \node[dot,label=left:${(x,y)}$] (y) at (1,0.9) {};
+    \draw[->,shorten <=.1cm,shorten >=.1cm] (Y-bot-x)
+    -- node[anchor=west] {${\fst}$} (X-x);
+  \end{tikzpicture}}
 
 Proving something about (or constructing something from) every 
 element of $\sum _{x:X} Y(x)$ is done by performing the construction on elements of the form $(a,b)$, for every $a:X$ and $b: Y(a)$.
@@ -679,11 +718,11 @@ Two important examples of such constructions are:
 \item \emph{first projection}, 
 $\fst:(\sum _{x:X} Y(x)) \to X$, 
 $\fst(a,b)\defeq a$;
-\item \emph{second projection},
+\item\label{it:second-projection} \emph{second projection},
 $\snd(a,b): Y(a)$,
 $\snd(a,b)\defeq b$.
 \end{enumerate}
-In (2), the type of $\snd$ is, in full,
+In \ref{it:second-projection}, the type of $\snd$ is, in full,
 $\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
 
 \subsection{Binary products}
@@ -692,9 +731,45 @@ There is special case of sum types that deserves to be mentioned since
 it occurs quite often. Let $X$ and $Y$ be types, and consider the constant
 family of types $Y(x)\defeq Y$. In other words, $Y(x)$ is a type that depends
 on an element $x$ of $X$ that happens to be $Y$ for any such $x$.
-Then we can form the sum type $\sum_{x:X} Y(x)$ as in the previous
-section \ref{sec:sum-types}. Elements of this sum type are pairs $(x,y)$
-with $x$ in $X$ and $y$ in $Y(x)\jdeq Y$. In this case the type of $y$
+Then we can form the sum type $\sum_{x:X} Y(x)$ as above.
+Elements of this sum type are pairs $(x,y)$
+with $x$ in $X$ and $y$ in $Y(x)\jdeq Y$.\footnote{%
+  These \emph{cartesian} products we illustrate as usual
+  by rectangles where one side represents $X$ and the other $Y$.\par
+  \begin{tikzpicture}
+    % X
+    \coordinate (X-left) at (-.5,-1);
+    \node[dot,label=below:$x$] (X-x) at (1.2,-1) {};
+    \coordinate (X-right) at (2.5,-1);
+    \node (X) at (2.9,-1) {$X$};
+    \draw (X-left) -- (X-right);
+    % Y
+    \coordinate (Y-bot) at (3.5,0);
+    \node[dot,label=right:$y$] (Y-y) at (3.5,1) {};
+    \coordinate (Y-top) at (3.5,2);
+    \node (Y) at (3.5,-.4) {$Y$};
+    \draw (Y-top) -- (Y-bot);
+    % XY
+    \node (SXY) at (.4,.5) {${X\times Y}$};
+    \coordinate (XY-top-left) at (-.5,2);
+    \coordinate (XY-bot-left) at (-.5,0);
+    \coordinate (XY-top-x) at (1,2);
+    \coordinate (XY-bot-x) at (1,0);
+    \coordinate (XY-y-left) at (0,1);
+    \coordinate (XY-y-right) at (2.5,1);
+    \coordinate (XY-top-right) at (2.5,2);
+    \coordinate (XY-bot-right) at (2.5,0);
+    \draw (XY-bot-left) -- (XY-bot-right) -- (XY-top-right)
+    -- (XY-top-left) --cycle;
+    \draw[dashed] (1.2,0) -- (1.2,2);
+    \draw[dashed] (-.5,1) -- (2.5,1);
+    \node[dot,label=above left:${(x,y)}$] (xy) at (1.2,1) {};
+    \draw[->,shorten <=.1cm,shorten >=.1cm] (1.2,0)
+    -- node[anchor=east] {${\fst}$} (X-x);
+    \draw[->,shorten <=.1cm,shorten >=.1cm] (2.5,1)
+    -- node[anchor=south] {${\snd}$} (Y-y);
+  \end{tikzpicture}}
+In this case the type of $y$
 doesn't depend on $x$, and in this special case the sum type is called
 the \emph{binary product}, or \emph{cartesian product} of the types $X$ and $Y$,
 denoted by $X \times Y$.
@@ -725,10 +800,24 @@ that sends $(x,x')$ to $(f(x),f(x'))$.
 \label{sec:binsum-types}
 If a sum type is of the form $\sum_{b:\bool} T(b)$, with $T(b)$
 a type depending on $b$ in $\bool$, there is a simpler way of
-describing it. After all, the type family $T(b)$ is fully determined
+describing it.\footnote{%
+  In a case like this, we can thicken up the lines denoting
+  $T(\no)$ and $T(\yes)$ in our picture, if we like:\par
+  \begin{tikzpicture}
+    \node[dot,label=below:${\no}$] (no) at (0,-.8) {};
+    \node[dot,label=below:${\yes}$] (yes) at (1.5,-.8) {};
+    \node (Bool) at (2.5,-.8) {$\bool$};
+    \draw (0,0.9) ellipse (.25 and 1);
+    \node (Tno) at (0,2.2) {$T(\no)$};
+    \draw (1.5,1.1) ellipse (.4 and 0.8);
+    \node (Tyes) at (1.5,2.2) {$T(\yes)$};
+    \node[dot,label=above:$x$] (x-no) at (0,0.8) {};
+    \node[dot,label=below:$y$] (y-yes) at (1.5,1.2) {};
+  \end{tikzpicture}}
+After all, the type family $T(b)$ is fully determined
 by two types, namely by the types $T(\no)$ and $T(\yes)$.
-The elements of $\sum_{b:\bool} Y(b)$ are dependent pairs $(\no,a)$ with
-$a$ in $T(\no)$ and $(\yes,b)$ with $b$ in $T(\yes)$. The resulting
+The elements of $\sum_{b:\bool} T(b)$ are dependent pairs $(\no,x)$ with
+$x$ in $T(\no)$ and $(\yes,y)$ with $y$ in $T(\yes)$. The resulting
 type can be viewed as the \emph{disjoint union} of $T(\no)$ and $T(\yes)$:
 from an element of $T(\no)$ or an element of $T(\yes)$ 
 we can produce an element of $\sum_{b:\bool} T(b)$.  
@@ -736,7 +825,20 @@ we can produce an element of $\sum_{b:\bool} T(b)$.
 Such types can be described more clearly in the following way.
 The \emph{binary sum} of two types $X$ and $Y$, denoted $X \amalg Y$,
 is an inductive type with two constructors: $\inl{} : X \to X \amalg Y$ and
-$\inr{} : Y \to X \amalg Y$. Proving a property of any element of $X \amalg Y$
+$\inr{} : Y \to X \amalg Y$.\footnote{%
+  Be aware that in a picture, the same point may refer
+  either to $x$ in $X$ or to $\inl x$ in the sum $X \amalg Y$:\par
+  \begin{tikzpicture}
+    \draw (0,0.9) ellipse (.25 and 1);
+    \node (X) at (0,2.1) {$X$};
+    \draw (1,1.1) ellipse (.4 and 0.8);
+    \node (Y) at (1,2.1) {$Y$};
+    \node[dot,label=above:$x$] (x) at (0,0.8) {};
+    \node[dot,label=below:$y$] (y) at (1,1.2) {};
+    \draw[dashed] (0.5,1.1) ellipse (1.2 and 1.6);
+    \node (XY) at (-0.75,2.35) {$X \amalg Y$};
+  \end{tikzpicture}}
+Proving a property of any element of $X \amalg Y$
 means proving that this property holds of any $\inl{x}$ with $x:X$ and any
 $\inr{y}$ with $y:Y$. In general, constructing a function $f$ of type
 $\prod_{z: X \amalg Y} T(z)$, where $T(z)$ is a type depending on 
@@ -791,8 +893,8 @@ that $(a,\refl{a}) = (a,\refl{a})$.
 \label{def:fiber}
 Given a function $f : X \to Y$ and an element $y:Y$, 
 the \emph{fiber} (or \emph{preimage}) $f^{-1}(y)$ consists 
-of elements $x$ such that $y = f(x)$.  
-This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X} y = f(x)$.  
+of elements $x$ such that $y = f(x)$.
+This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X}(y = f(x))$.
 In other words, an element of the fiber is a pair $(x,e)$ consisting
 of an element $x$ and an element $e$ of the identity type $y = f(x)$.
 \end{definition}
@@ -868,8 +970,7 @@ $y:Y$ we have $f(g(y))=y$.
 \end{lemma}
 \begin{proof}
 If $f: X\to Y$ is an equivalence we can take $g=f^{-1}$.
-For the converse, see
-\cite[Chapter 4]{hottbook}, or \coqident{Foundations.PartA}{isweq_iso}.
+For the converse, see Chapter~4 of the HoTT Book,\footcite{hottbook} or \coqident{Foundations.PartA}{isweq_iso}.
 \end{proof}
 
 We put \cref{lem:weq-iso} immediately to good use.
@@ -1177,31 +1278,31 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \end{lemma}
 
 \begin{proof}
-(\ref{prop-utils-false-true})
+\ref{prop-utils-false-true}
 If $p,q : \false$, then $p=q$ holds vacuously.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
 
-(\ref{prop-utils-codom})
+\ref{prop-utils-codom}
 If $p,q : A\to P$, then $p=q$ is proved by first observing that $p$ and $q$
 are functions which, by function extensionality, are equal if they have
 equal values $p(x) = q(x)$ in $P$ for all $x$ in $A$. This is
 actually the case since $P$ is a proposition.
 
-(\ref{prop-utils-pi})
+\ref{prop-utils-pi}
 If $p,q : \prod_{a:A} R(a)$ one can use the same argument as for $A\to P$
 but now with \emph{dependent} functions $p,q$.
 
-(\ref{prop-utils-times})
+\ref{prop-utils-times}
 If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
 is proved componentwise. 
 
-(\ref{prop-utils-eq})
+\ref{prop-utils-eq}
 Using \cref{lem:weq-iso}, $P \liff Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
-combining (\ref{prop-utils-codom}) and (\ref{prop-utils-times}).
+combining~\ref{prop-utils-codom} and~\ref{prop-utils-times}.
 
-(\ref{prop-utils-lem}) 
+\ref{prop-utils-lem}
 If $p,q : P\amalg (P\to\false)$, then we can distinguish four cases
 based on $\inl{}/\inr{}$, see \cref{sec:sum-types}. In two cases
 we have both $P$ and $P\to\false$ and we are done. In the other two,
@@ -1215,10 +1316,10 @@ Several remarks can be made here. First, the lemma supports the
 use of $\false$ and $\true$ as truth values, and the use of
 $\to,\prod,\times$ for implication, universal quantification,
 and conjunction, respectively. Since $\false$ is a proposition,
-it follows by (\ref{prop-utils-codom}) above that
+it follows by \ref{prop-utils-codom} above that
 $\neg A$ as defined by $A\to\false$ is a proposition for any type $A$.
-As noted before, (\ref{prop-utils-codom}) is a
-special case of (\ref{prop-utils-pi}).
+As noted before, \ref{prop-utils-codom} is a
+special case of \ref{prop-utils-pi}.
 
 Notably absent in the lemma above are disjunction
 and existential quantification. This has a simple reason:
@@ -1276,7 +1377,7 @@ to give an $e : a=b$ and an $e' : \pathover{f}{x\mapsto\prod_{y:A} (x=y)}{e}{g}$
 For $e$ we can take $f(b)$; for $e'$ it suffices by \cref{def:pathover-trp}
 to give an $e'' : \trp e f = g$. Clearly, $A$ is a proposition and hence
 a set by \cref{lem:prop-is-set}. Hence the type of $g$ is a proposition
-by \cref{lem:prop-utils}(\ref{prop-utils-pi}), which gives us $e''$.
+by \cref{lem:prop-utils}\ref{prop-utils-pi}, which gives us $e''$.
 
 We leave the other cases as exercises.
 \end{proof}
@@ -2424,7 +2525,7 @@ and $\refl{b}$ as identification of the second components
 (whose type is constant). For the third component
 we use that the transport of $\refl{f(b)}$ along $p$
 in the type family $(f(b)=\_)$ is indeed equal to $p$
-itself by \cref{xca:trp-in-a/x=b/x}(\ref{trp-in-a=x}).
+itself by \cref{xca:trp-in-a/x=b/x}\ref{trp-in-a=x}.
 Now apply \cref{lem:weq-iso}.
 \end{proof}
 
