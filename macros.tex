@@ -1,9 +1,11 @@
+%% document class
+\documentclass[10pt,oneside,openright]{memoir}
 %% packages
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[largesc,osf]{newpxtext}
-\usepackage[vvarbb,smallerops]{newpxmath}
+\usepackage[osf]{newpxtext} % largesc
+\usepackage[vvarbb]{newpxmath} % smallerops
 \usepackage[scr=zapfc,scrscaled=1.2]{mathalfa}
 \let\pxopenbox\openbox % pxmath already has openbox but amsthm also defines it
 \let\openbox\relax
@@ -16,7 +18,6 @@
 \usepackage[all]{xy}
 \usepackage{pgfplots,tikz,tikz-cd}
 \pgfplotsset{compat=newest}
-%\usepackage{soul} % for striking out, can be removed in the end
 \usepackage{enumitem}
 \usepackage{xifthen}
 
@@ -30,6 +31,7 @@
   \ext@arrow 0055{\Equalfill@}{#1}{#2}}
 \MHInternalSyntaxOff
 \makeatother
+\mathtoolsset{mathic}
 
 % bibliography
 \usepackage{hyphenat}
@@ -77,10 +79,6 @@
 
 \newcommand{\DELETE}[1]{} % no star on purpose: argument may contain \par
 
-%%% Headers
-%\pagestyle{headings}
-\setcounter{secnumdepth}{2}
-
 %%% Lists (uses enumitem)
 \setlist{itemsep=0.5ex}
 \setlist[1]{labelindent=\parindent}
@@ -109,7 +107,130 @@
 %% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%% Layout
+\stockaiv
+\pageaiv
+\settypeblocksize{*}{26pc}{*}
+\setlrmargins{1in}{*}{*}
+\setulmarginsandblock{1in}{2in}{*}
+\setheadfoot{\baselineskip}{2\baselineskip}
+\setheaderspaces{*}{2\baselineskip}{*}
+\setmarginnotes{2pc}{11pc}{\baselineskip}
+\checkandfixthelayout
+\raggedbottom
+\setlength{\parindent}{1em}
+
+%%% Tufte margins
+\footnotesinmargin
+\renewcommand*{\thefootnote}{\arabic{footnote}}
+\sideparmargin{right}
+\setlength{\footmarkwidth}{-1sp}
+\setlength{\footmarksep}{0pt}
+\renewcommand{\foottextfont}{\footnotesize\raggedright}
+\newlength{\extrawidth}
+\setlength{\extrawidth}{\marginparsep}
+\addtolength{\extrawidth}{\marginparwidth}
+\newenvironment{fullwidth}{\begin{adjustwidth*}{0mm}{-\extrawidth}}%
+  {\end{adjustwidth*}}
+\newcommand*{\marginnote}[2][]{#2}
 \newcommand*{\arxiv}[1]{preprint available at \href{http://arxiv.org/abs/#1}{arXiv:#1}}
+
+%%% Space after period
+\DeclareMathSymbol{.}{\mathpunct}{letters}{"3A}
+\DeclareMathSymbol{\decimalperiod}{\mathord}{letters}{"3A}
+
+%%% Palatino line width
+\setlength{\normalrulethickness}{0.59pt}
+
+%%% Tufte font size
+%%
+% Set the font sizes and baselines to match Tufte's books
+\makeatletter
+\renewcommand\normalsize{%
+   \@setfontsize\normalsize\@xpt{14}%
+   \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\normalbaselineskip=14pt
+\normalsize
+\renewcommand\small{%
+   \@setfontsize\small\@ixpt{12}%
+   \abovedisplayskip 8.5\p@ \@plus3\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus2\p@
+   \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 4\p@ \@plus2\p@ \@minus2\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\renewcommand\footnotesize{%
+   \@setfontsize\footnotesize\@viiipt{10}%
+   \abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus\p@
+   \belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 3\p@ \@plus\p@ \@minus\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\renewcommand\scriptsize{\@setfontsize\scriptsize\@viipt\@viiipt}
+\renewcommand\tiny{\@setfontsize\tiny\@vpt\@vipt}
+\renewcommand\large{\@setfontsize\large\@xipt{15}}
+\renewcommand\Large{\@setfontsize\Large\@xiipt{16}}
+\renewcommand\LARGE{\@setfontsize\LARGE\@xivpt{18}}
+\renewcommand\huge{\@setfontsize\huge\@xxpt{30}}
+\renewcommand\Huge{\@setfontsize\Huge{24}{36}}
+\makeatother
+
+%%% Title page
+\newcommand{\thetitlepage}{{%
+    \thispagestyle{empty}
+    \vfill
+    {\huge \textls[250]{SYMMETRY}}
+    \vfill
+    {\Large Version of \today}
+    \vfill\clearpage}}
+
+%%% Table of contents
+\renewcommand{\cftchapterleader}{}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionleader}{}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionleader}{}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{0pt plus 1fil}
+\setlength{\cftsectionnumwidth}{3em}
+\setlength{\cftsubsectionnumwidth}{2em}
+\setlength{\cftsubsectionindent}{5em}
+\setpnumwidth{2.55em}
+
+%%% Headers
+\setlength{\normalrulethickness}{0.59pt}
+\setlength{\headwidth}{\textwidth}
+\addtolength{\headwidth}{\marginparsep}
+\addtolength{\headwidth}{\marginparwidth}
+\makepagestyle{cas}
+\makerunningwidth{cas}{\headwidth}
+\makeheadposition{cas}{flushright}{flushleft}{}{}
+\newcommand*{\headtitle}{\normalfont\scshape\textls{symmetry}}
+\makeevenhead{cas}{\thepage\kern2pc\headtitle}{}{}
+\makeoddhead{cas}{}{}{\headtitle\kern2pc\thepage}
+\pagestyle{cas}
+
+%%% Sectioning
+\chapterstyle{wilsondob}
+\setcounter{secnumdepth}{2}
+\setsecheadstyle{\normalfont\Large\itshape}
+\setsubsecheadstyle{\normalfont\large\itshape}
+\setsubsubsecheadstyle{\normalfont\itshape}
+
+% deprecated!!
+\renewcommand*{\sc}{\scshape}
+\renewcommand*{\bf}{}
 
 % save old div and equiv
 \let\olddiv\div
@@ -412,7 +533,7 @@
 %\vspace{.5\baselineskip}\par\medskip\noindent%
 %{\normalfont\normalsize\bfseries{\thetheorem. #1}}%
 %\vspace{.5\baselineskip}\newline}
-\let\sususe\newthought
+\let\sususe\subsubsection
 
 %%% Local Variables:
 %%% mode: latex
