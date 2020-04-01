@@ -21,6 +21,8 @@
 \usepackage{mathtools}          %to get \vcentcolon
 \usepackage{thmtools}
 \usepackage{xspace}
+\usepackage{ragged2e}           % to hyphenate marginals
+\usepackage{marginfix}          % to get \mparshift
 \usepackage{scalerel}           % to scale \div
 \usepackage[all]{xy}
 \usepackage{pgfplots,tikz,tikz-cd}
@@ -56,6 +58,7 @@
   backrefpage = {page},% originally "cited on page"
   backrefpages = {pages},% originally "cited on pages"
 }
+\newcommand*{\arxiv}[1]{preprint available at \href{http://arxiv.org/abs/#1}{arXiv:#1}}
 
 % hyperref should be the package loaded last
 \usepackage[colorlinks,
@@ -158,6 +161,23 @@
 \renewcommand\Huge{\@setfontsize\Huge{24}{36}}
 \makeatother
 
+%%% Tufte margins
+\marginparmargin{right}
+\footnotesinmargin
+\renewcommand*{\thefootnote}{\arabic{footnote}}
+\setlength{\footmarkwidth}{-1sp}
+\setlength{\footmarksep}{0pt}
+\renewcommand{\foottextfont}{\footnotesize\raggedright}
+\newlength{\extrawidth}
+\setlength{\extrawidth}{\marginparsep}
+\addtolength{\extrawidth}{\marginparwidth}
+\newenvironment{fullwidth}{\begin{adjustwidth*}{0mm}{-\extrawidth}}%
+  {\end{adjustwidth*}}
+\setmpjustification{\RaggedLeft}{\RaggedRight}
+\newcommand*{\marginnote}[2][]{%
+  \ifthenelse{\isempty{#1}}{\relax}{\mparshift{#1}}%
+  \marginpar{\mpjustification\normalfont\footnotesize #2}}
+
 %%% Layout
 \stockaiv
 \pageaiv
@@ -170,21 +190,6 @@
 \checkandfixthelayout
 \raggedbottom
 \setlength{\parindent}{1em}
-
-%%% Tufte margins
-\footnotesinmargin
-\renewcommand*{\thefootnote}{\arabic{footnote}}
-\sideparmargin{right}
-\setlength{\footmarkwidth}{-1sp}
-\setlength{\footmarksep}{0pt}
-\renewcommand{\foottextfont}{\footnotesize\raggedright}
-\newlength{\extrawidth}
-\setlength{\extrawidth}{\marginparsep}
-\addtolength{\extrawidth}{\marginparwidth}
-\newenvironment{fullwidth}{\begin{adjustwidth*}{0mm}{-\extrawidth}}%
-  {\end{adjustwidth*}}
-\newcommand*{\marginnote}[2][]{#2}
-\newcommand*{\arxiv}[1]{preprint available at \href{http://arxiv.org/abs/#1}{arXiv:#1}}
 
 %%% Space after period
 \DeclareMathSymbol{.}{\mathpunct}{letters}{"3A}
