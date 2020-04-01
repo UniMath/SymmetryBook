@@ -4,9 +4,16 @@
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[osf]{newpxtext} % largesc
-\usepackage[vvarbb]{newpxmath} % smallerops
-\usepackage[scr=zapfc,scrscaled=1.2]{mathalfa}
+\renewcommand{\rmdefault}{pplx}
+\renewcommand{\oldstylenums}[1]{%
+  {\fontfamily{pplj}\selectfont #1}}
+\usepackage[vvarbb]{newpxmath}
+\DeclareSymbolFont{largesymbols}  {OMX}{zplm}{m}{n}
+\makeatletter
+\re@DeclareMathSymbol{\sumop}{\mathop}{largesymbols}{"50}
+\re@DeclareMathSymbol{\prodop}{\mathop}{largesymbols}{"51}
+\makeatother
+\usepackage[cal=cm,scr=zapfc,scrscaled=1.2,frak=euler]{mathalfa}
 \let\pxopenbox\openbox % pxmath already has openbox but amsthm also defines it
 \let\openbox\relax
 \usepackage{amsthm}
@@ -17,7 +24,7 @@
 \usepackage{scalerel}           % to scale \div
 \usepackage[all]{xy}
 \usepackage{pgfplots,tikz,tikz-cd}
-\pgfplotsset{compat=newest}
+\pgfplotsset{compat=1.11}
 \usepackage{enumitem}
 \usepackage{xifthen}
 
@@ -74,9 +81,6 @@
 \synctex=1
 
 %% macros
-\newcommand*{\mytitle}{Symmetry}
-\newcommand*{\myauthor}{}
-
 \newcommand{\DELETE}[1]{} % no star on purpose: argument may contain \par
 
 %%% Lists (uses enumitem)
@@ -106,38 +110,6 @@
 \numberwithin{equation}{section}
 %% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%% Layout
-\stockaiv
-\pageaiv
-\settypeblocksize{*}{26pc}{*}
-\setlrmargins{1in}{*}{*}
-\setulmarginsandblock{1in}{2in}{*}
-\setheadfoot{\baselineskip}{2\baselineskip}
-\setheaderspaces{*}{2\baselineskip}{*}
-\setmarginnotes{2pc}{11pc}{\baselineskip}
-\checkandfixthelayout
-\raggedbottom
-\setlength{\parindent}{1em}
-
-%%% Tufte margins
-\footnotesinmargin
-\renewcommand*{\thefootnote}{\arabic{footnote}}
-\sideparmargin{right}
-\setlength{\footmarkwidth}{-1sp}
-\setlength{\footmarksep}{0pt}
-\renewcommand{\foottextfont}{\footnotesize\raggedright}
-\newlength{\extrawidth}
-\setlength{\extrawidth}{\marginparsep}
-\addtolength{\extrawidth}{\marginparwidth}
-\newenvironment{fullwidth}{\begin{adjustwidth*}{0mm}{-\extrawidth}}%
-  {\end{adjustwidth*}}
-\newcommand*{\marginnote}[2][]{#2}
-\newcommand*{\arxiv}[1]{preprint available at \href{http://arxiv.org/abs/#1}{arXiv:#1}}
-
-%%% Space after period
-\DeclareMathSymbol{.}{\mathpunct}{letters}{"3A}
-\DeclareMathSymbol{\decimalperiod}{\mathord}{letters}{"3A}
 
 %%% Palatino line width
 \setlength{\normalrulethickness}{0.59pt}
@@ -186,6 +158,38 @@
 \renewcommand\Huge{\@setfontsize\Huge{24}{36}}
 \makeatother
 
+%%% Layout
+\stockaiv
+\pageaiv
+\settypeblocksize{*}{26pc}{*}
+\setlrmargins{1in}{*}{*}
+\setulmarginsandblock{1in}{2in}{*}
+\setheadfoot{\baselineskip}{2\baselineskip}
+\setheaderspaces{*}{2\baselineskip}{*}
+\setmarginnotes{2pc}{11pc}{\baselineskip}
+\checkandfixthelayout
+\raggedbottom
+\setlength{\parindent}{1em}
+
+%%% Tufte margins
+\footnotesinmargin
+\renewcommand*{\thefootnote}{\arabic{footnote}}
+\sideparmargin{right}
+\setlength{\footmarkwidth}{-1sp}
+\setlength{\footmarksep}{0pt}
+\renewcommand{\foottextfont}{\footnotesize\raggedright}
+\newlength{\extrawidth}
+\setlength{\extrawidth}{\marginparsep}
+\addtolength{\extrawidth}{\marginparwidth}
+\newenvironment{fullwidth}{\begin{adjustwidth*}{0mm}{-\extrawidth}}%
+  {\end{adjustwidth*}}
+\newcommand*{\marginnote}[2][]{#2}
+\newcommand*{\arxiv}[1]{preprint available at \href{http://arxiv.org/abs/#1}{arXiv:#1}}
+
+%%% Space after period
+\DeclareMathSymbol{.}{\mathpunct}{letters}{"3A}
+\DeclareMathSymbol{\decimalperiod}{\mathord}{letters}{"3A}
+
 %%% Title page
 \newcommand{\thetitlepage}{{%
     \thispagestyle{empty}
@@ -209,7 +213,6 @@
 \setpnumwidth{2.55em}
 
 %%% Headers
-\setlength{\normalrulethickness}{0.59pt}
 \setlength{\headwidth}{\textwidth}
 \addtolength{\headwidth}{\marginparsep}
 \addtolength{\headwidth}{\marginparwidth}

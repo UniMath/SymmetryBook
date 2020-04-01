@@ -6,7 +6,6 @@ veryclean:clean; rm -f *.pdf
 
 BOOKFILES :=						\
 	book.tex					\
-	top.tex						\
 	macros.tex					\
 	intro.tex					\
 	intro-uf.tex					\
