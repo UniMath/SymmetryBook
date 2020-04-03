@@ -675,7 +675,9 @@ such that $\bn n$ is the type (set) of $n$ elements.
 \subsection{Sum types}
 \label{sec:sum-types}
 There are \emph{sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
-there will be a type $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$. Since the type of $b$ may depend on $a$ we also call such a pair
+there will be a type\footnote{%
+  Also known as a \emph{Sigma-type}.}
+$\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$. Since the type of $b$ may depend on $a$ we also call such a pair
 a \emph{dependent} pair. We may refer to $X$ as the \emph{index
   type} of the sum.\footnote{%
   We also call $\sum_{x:X}Y(x)$ the \emph{total type} of the family,
@@ -852,6 +854,59 @@ Thus $\inl{x} = \inr{y}$ is always empty, and identifications
 $\inl{x} = \inl{x'}$ are equivalent to identifications $x=x'$ in $X$,
 and identifications
 $\inr{y} = \inr{y'}$ are equivalent to identifications $y=y'$ in $Y$.
+
+\subsection{Unary sums}\label{sec:unary-sum-types}
+
+Sometimes it is useful to be able to make a copy of a type $X$:
+A new type that behaves just like $X$,
+though it is not definitionally equal to $X$.
+The \emph{unary sum} or \emph{wrapped copy} of $X$ is an inductive type $\Copy(X)$
+with a single constructor $\inc{} : X \to \Copy(X)$.\footnote{%
+  A point $x:X$ corresponds to the point $\inc{x}:\Copy(X)$:\par
+  \begin{tikzpicture}
+    \draw (0,1) ellipse (.3 and .8);
+    \draw[dashed] (-.1,1) ellipse (.6 and 1.1);
+    \node[dot,label=above:$x$] (x) at (0,0.8) {};
+    \node (X) at (-.45,.7) {$X$};
+    \node (c) at (.75,1) {$\leftrightarrow$};
+    \draw[dashed] (1.7,1) ellipse (.3 and .8);
+    \draw (1.6,1) ellipse (.6 and 1.1);
+    \node[dot,label=above:$\inc{x}$] (inx) at (1.7,0.8) {};
+    \node (Xdashed) at (2.6,.1) {$\Copy(X)$};
+  \end{tikzpicture}}
+Constructing a function $f : \prod_{z:\Copy(X)}T(z)$,
+where $T(z)$ is a type depending on $z : \Copy(X)$,
+is done by defining $f(\inc{x})$ for all $x:X$.
+Taking $T(z)$ to be the constant family at $X$,
+we get a function $\out : \Copy(X) \to X$,
+called the \emph{destructor},
+with $\out(\inc{x}) \defeq x$ for $x:X$,
+and the induction principle implies that $\inc{\out(z)} = z$
+for all $z:\Copy(X)$, so $\Copy(X)$ and $X$ are equivalent, as expected.
+In fact, we will assume that the latter equation even holds definitionally.
+It follows that identifications $\inc{x}=\inc{x'}$ in $\Copy(X)$ are equivalent
+to identifications $x=x'$ in $X$, and identifications $\out z=\out z'$ in $X$
+are equivalent to identifications $z=z'$ in $\Copy(X)$.
+
+Here's an example to illustrate why it can useful to make such a wrapped type.
+We introduced the natural numbers $\NN$ in \cref{sec:natural-numbers}.
+Suppose we want a type consisting of negations of naturals numbers,
+$\set{\cdots,-2,-1,0}$,
+perhaps as an intermediate step towards building the set of integers
+$\set{\cdots,-2,-1,0,1,2,\cdots}$.\footnote{%
+  (FIX) Maybe we'll actually do just that!}
+Of course, the type $\NN$ itself would do,
+but then we would need to pay extra attention to whether $n:\NN$
+is supposed to represent $n$ as an integer or its negation.
+So instead we take the wrapped copy $\NNN\defeq\Copy(\NN)$
+and write $- \defeq \inc{} : \NN \to \NNN$ for the constructor.
+There is then no harm in also writing $- \defeq \out : \NNN \to \NN$
+for the destructor.
+This means that $\NNN$ is a type equivalent to $\NN$,
+whose elements are exactly $-n$ for $n:\NN$,
+indeed, $-(-n) \jdeq n$ for $n$ an element of either $\NN$ or $\NNN$,
+and identifications $-n = -n'$ are equivalent to
+identifications $n=n'$.
 
 \section{Equivalences}\label{sec:equivalence}
 
