@@ -3,7 +3,15 @@
 
 
 %\section{Now it starts}
-The identity type is not just any type:  in the previous sections we have seen that the identity type $a=_Aa$ reflects the ``symmetries'' of an element $a$ in a type $A$.  
+The identity type is not just any type:  in the previous sections we have seen that the identity type $a=_Aa$ reflects the ``symmetries'' of an element $a$ in a type $A$.\footnote{%
+  Since the symmetries $p : a=_A a$ are paths that start and end
+  at the point $a:A$, we also call them \emph{loops} at $a$.\par
+  \begin{tikzpicture}
+    \draw plot [smooth cycle] coordinates {(0,0) (2.3,0) (2,1.9) (0,2.1)};
+    \node[dot,label=left:$a$] (a) at (0.5,0.3) {};
+    \node (A) at (2.5,2.1) {$A$};
+    \draw[->] (a) .. controls ++(-10:3) and ++(100:2.5) .. node[auto,swap] {$p$} (a);
+  \end{tikzpicture}}
 Symmetries have special properties; for instance you can rotate a square by $90\mathdegree$, and you can rotate it by $-90\mathdegree$, undoing the first rotation.
 Symmetries can also be composed, and this composition respects certain rules that holds in all examples.  One way to study the concept of ``symmetries'', would be to isolate the common rules for all our examples, but also show, conversely, that anything satisfying these rules actually \emph{is} an example. 
 
@@ -11,12 +19,17 @@ Symmetries can also be composed, and this composition respects certain rules tha
 
 %As an instance of a property that holds in \emph{some} examples but not in others, we have seen that sometimes the order in which we use our symmetries matters, and sometimes it does not, see \cref{ch:intro}.  Hence, the concept of a group should not have a rule allowing you to change the order arbitrarily.
 
-With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19'th century that the properties of such symmetries could be codified by saying that they form an abstract \emph{group}. 
+With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19\textsuperscript{th} century that the properties of such symmetries could be codified by saying that they form an abstract \emph{group}.
 In \cref{sec:identity-types} we saw that the identity type was ``reflexive, symmetric and transitive'' -- and an abstract group is just a set with such operations satisfying certain rules.
 
 %This is the purpose of the mathematical term ``group''.
 
-We attack the issue more concretely; instead of focusing on the abstract properties we promote the type exhibiting the symmetries, and the axioms for an abstract group follow from the rules for identity types without needing us to worry about them.  However, we \emph{will} show that the two approaches give the same end result.  
+We attack the issue more concretely;
+instead of focusing on the abstract properties,
+we promote the type exhibiting the symmetries,
+and the axioms for an abstract group follow from the rules for identity types
+without needing us to worry about them.
+However, we \emph{will} show that the two approaches give the same end result.
 
 In this chapter we lay the foundations and provide some basic examples of groups.  
 
@@ -31,11 +44,14 @@ This section should remind the reader very much of what happened in \cref{cha:ci
 More generally, connected \coverings now reappear in the guise of ``transitive $G$-sets'', laying the groundwork for our later discussion of the set of subgroups.  
 
 Another important thing which is discussed in \cref{sec:gsets} is the type of ``$G$-torsors'', which at first glance can appear frightening.  
-However, a $G$-torsor correspond to \emph{a} universal \covering and the important step is to consider the \emph{type} of these: this idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
+However, a $G$-torsor correspond to \emph{a} universal \covering and the important step is to consider the \emph{type} of these:
+This idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
 
-With all this in place, the structure of the type of groups is in the large in many aspects similar to the universe in the sense that many of the constructions we're used to from the universe have their analog for groups.  The functions replaced by the homomorphisms.  
+With all this in place, the structure of the type of groups is in the large in many aspects similar to the universe in the sense that many of the constructions we're used to from the universe have their analog for groups.
+The functions are replaced by the homomorphisms.
 Products stay ``the same'' as we will see already in \cref{ex:productofgroups} (and more generally, $\Pi$-types over sets).  
-The sum of two groups is simple enough: it is the sum of the underlying types with the base points identified, as defined more precisely in \cref{def:wedge}.  
+The sum of two groups is simple enough:
+It is the sum of the underlying types with the base points identified, as defined more precisely in \cref{def:wedge}.
 In the usual treatment this is a somewhat more difficult subject involving ``words'' taken from the two groups.  This reappears in our setting when we show that homomorphisms out of a sum correspond to pairs of homomorphisms (just as for sum and functions in types).
 
 \footnote{((THEN SUBGROUPS TAKE CENTRAL STAGE, BUT I POSTPONE DISCUSSING THESE IN CASE THIS CHAPTER IS ALREADY OVERLY LONG AND WE WANT TO PUT THEM IN A SEPARATE CHAPTER))}
@@ -46,31 +62,62 @@ In the usual treatment this is a somewhat more difficult subject involving ``wor
 \section{The type of groups}
 \label{sec:typegroup}
 
+\begin{definition}
+  Given a pointed type $X\jdeq(A,a)$, we define its type of \emph{loops}
+  by $\loops X \jdeq \loops(A,a) \defeq (a =_A a)$.
+\end{definition}
 \begin{example}\label{ex:base=base}
-  We defined the circle $S^1$ in \cref{def:circle} by declaring that it has a point $\base$ and an identification (``symmetry'') $\Sloop:\base=_{S^1}\base$, and we proved in \cref{cor:S1groupoid} that $\base=_{S^1}\base$ is equivalent to the set $\zet$ (of integers), where $n\in\zet$ corresponds to the $n$-fold composition of $\Sloop$ with itself (which works for both positive and negative $n$).  
-We can think of this as describing the symmetries of $\base$: we have one ``generating symmetry'' $\Sloop$, and this can be applied any number of times, giving a new symmetry for each new number.  
-Here, composition of loops corresponds to usual addition of integers.  
+  We defined the circle $\Sc$ in \cref{def:circle} by declaring
+  that it has a point $\base$ and an identification (``symmetry'')
+  $\Sloop:(\base=\base) \jdeq \loops\Sc$,
+  and we proved in \cref{cor:S1groupoid} that $\loops\Sc$ is equivalent
+  to the set $\zet$ (of integers),
+  where $n\in\zet$ corresponds to the $n$-fold composition of $\Sloop$ with itself
+  (which works for both positive and negative $n$).
+  We can think of this as describing the symmetries of $\base$:
+  we have one ``generating symmetry'' $\Sloop$,
+  and this can be applied any number of times,
+  giving a new symmetry for each new number.
+  Here, composition of loops corresponds to usual addition of integers.
 
 Hence, the circle is a very cheap packaging of the ``{group}'' of integers, the declaration of $\base$ and $\Sloop$ not only gives the \emph{set} $\zet$ of integers, but at the same time the addition.
 \end{example}
 \begin{example}
   Recall the finite set $\bn{2}:\fin_2$ from \cref{def:finiteset}, containing two elements.   
-According to \cref{xca:C2}, $\bn{2} =\bn{2} $ has exactly two distinct elements, $\refl{\mathrm 2}$ and $\twist$, and doing $\twist$ twice gives you back $\refl{\bn{2} }$.  
-We see that this is exactly all the symmetries you'd expect to have in a two point set: you can let everything be ($\refl{\bn{2} }$) or you could swap the two elements ($\twist$); and if you swap twice everything is let be.  
-The type $\fin_2$ (of ``finite sets with two elements'') is our embodiment of these symmetries.  
+  According to \cref{xca:C2}, $\bn{2} =\bn{2} $ has exactly two distinct elements,
+  $\refl{\bn{2}}$ and $\twist$,
+  and doing $\twist$ twice gives you back $\refl{\bn{2}}$.
+  We see that this is exactly all the symmetries
+  you'd expect to have of a two point set:
+  You can let everything stay in place ($\refl{\bn{2}}$),
+  or you can swap the two elements ($\twist$);
+  and if you swap twice, everything is let be.
+  The pointed type $\fin_2$ (of ``finite sets with two elements''),
+  with $\bn{2}$ as the base point,
+  is our embodiment of these symmetries,\ie $\loops\fin_2$.
 
-Observe that (by the definition of $S^1$) there is an interesting function $S^1\to\fin_2$, sending $\base:S^1$ to $\bn{2} :\fin_2$ and $\Sloop$ to $\twist$.
+  Observe that (by the definition of $\Sc$)
+  there is an interesting function $\Sc\to\fin_2$,
+  sending $\base:\Sc$ to $\bn{2} :\fin_2$ and $\Sloop$ to $\twist$.
 \end{example}
 
-
-The examples Klein and Lie were interested in were of a type making it admissible to say that a group is the identity type $a=_Aa$ for \emph{some} type $A$ and \emph{some} element $a:A$.
-However, in elementary texts it is customary to restrict the notion of a group to the case when $a=_Aa$ is a \emph{set} as we will do, starting in \cref{sec:identity-type-as-abstract}.  This makes some proofs easier, since if are we given two elements $g,h:a=_Aa$, then the identity type $g=h$ is a proposition, \ie $g$ can be equal to $h$ in at most one way.  Hence questions relating to uniqueness will never be a problem.
-
+The examples Klein and Lie were interested in were of a type making it admissible to say that a group is the loops $\loops(A,a) \jdeq (a=_Aa)$ for \emph{some} type $A$ and \emph{some} element $a:A$.
+However, in elementary texts it is customary to restrict the notion of a group to the case when $a=_Aa$ is a \emph{set} as we will do, starting in \cref{sec:identity-type-as-abstract}.
+This makes some proofs easier, since if are we given two elements $g,h:a=_Aa$, then the identity type $g=h$ is a proposition, \ie $g$ can be equal to $h$ in at most one way.  Hence questions relating to uniqueness will never be a problem.
 
 
 See \cref{sec:grouphistory} for a brief summary of the early history of groups.
 \begin{remark}
-  The reader may wonder about the status of the identity type $a=_Aa'$ where $a,a':A$ are different elements.  One problem is of course that if $p,q:(a=_Aa')$ there is no obvious way of composing $p$ and $q$, and another is that $a=_Aa'$ does not have a distinguished element such as $\mathrm{refl{}_a}:a=_Aa$.
+  The reader may wonder about the status of the identity type $a=_Aa'$ where $a,a':A$ are different elements.
+  One problem is of course that if $p,q:a=_Aa'$,
+  there is no obvious way of composing $p$ and $q$
+  to get another element in $a=_A a'$,
+  and another is that $a=_Aa'$ does not have a distinguished element,
+  such as $\refl{a}:a=_Aa$.\footnote{%
+    The type $a=_A a'$ does have an interesting \emph{ternary}
+    composition, mapping $p,q,r$ to $p\inv{q}r$.
+    A set with this kind of operation is called a \emph{heap},
+    and we'll return to heaps in \cref{sec:heaps}.}
 Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent the existence and choice of such an $f$ the identity types $a=_Aa'$ and $a=_Aa$ are different animals.  
 We will return to this example when we've defined torsors.
 \end{remark}
@@ -79,50 +126,173 @@ We will return to this example when we've defined torsors.
 \begin{remark}
   \label{rem:whypointedconngpoid}
 % In \cref{xca:component-same-loops} you were asked to show that if $A$ is a type and $a:A$, then 
-As a consequence of \cref{lem:subtype-eq-=},
-the inclusion of the component $A_{(a)}\defequi\sum_{x:A}\Trunc{a=x}$ into $A$ (\ie the first projection) induces an equivalence of identity types
-from $(a,!)=_{A_{(a)}}(a,!)$ to $a=_Aa$.
-  This means that, when considering the identity type $a=_Aa$, ``only the elements $x:A$ with $x$ equal to $a$ are relevant'', and we to avoid artificial extra copies of our object of interest we should consider only \emph{connected} $A$ (c.f.~\cref{def:connected}).  
+  As a consequence of \cref{lem:subtype-eq-=},\marginnote{%
+    \begin{tikzpicture}
+      \draw plot [smooth cycle] coordinates {(0,0) (2.8,0) (2.5,1.9) (0,2.1)};
+      \draw[dashed] plot [smooth cycle] coordinates
+      {(.1,.1) (1.2,.1) (1,1.5) (.1,1.7)};
+      \node[dot,label=left:$a$] (a) at (0.5,.3) {};
+      \node[dot,label=right:$b$] (b) at (1.8,.3) {};
+      \node (cdots) at (1.8,1.4) {$\cdots$};
+      \node (A) at (2.6,2.1) {$A$};
+      \node (Aa) at (.7,1.9) {$A_{(a)}$};
+      \draw[->] (a) .. controls ++(-10:1) and ++(110:1.6) .. node[auto,swap] {$p$} (a);
+      \draw[dashed] plot [smooth cycle] coordinates
+      {(1.5,.1) (2.5,.2) (2.6,.8) (1.5,.9)};
+      \draw[dashed] plot [smooth cycle] coordinates
+      {(1.5,1.1) (2.5,1.2) (2.4,1.8) (1.2,2)};
+    \end{tikzpicture}}
+  the inclusion of the component $A_{(a)}\defequi\sum_{x:A}\Trunc{a=x}$ into $A$
+  (\ie the first projection)
+  induces an equivalence of identity types
+  from $(a,!)=_{A_{(a)}}(a,!)$ to $a=_Aa$,
+  and thus from $\loops(A_{(a)},(a,!))$ to $\loops(A,a)$.
+  This means that, when considering the loop type $\loops(A,a)$,
+  ``only the elements $x:A$ with $x$ merely equal to $a$ are relevant'',
+  and to avoid artificial extra components,
+  we should consider only \emph{connected} types $A$ (c.f.~\cref{def:connected}).
 
-Also, our preference for $a=_Aa$ to be a \emph{set} indicates that we should consider only the connected types $A$ that are \emph{groupoids}.
+  Also, our preference for $\loops(A,a)$ to be a \emph{set}
+  indicates that we should consider only the connected types $A$
+  that are \emph{groupoids}.
 \end{remark}
 
-
-With this established, we let the \emph{type} of groups be defined as follows:
-
-\begin{definition}\label{def:typegroup}
-  A \emph{group} is a pointed connected groupoid; the \emph{type of groups} is the type 
+\begin{definition}\label{def:pt-conn-groupoid}
+  The type of \emph{pointed connected groupoids} is the type\marginnote{%
+    The meaning of the superscript ``${=1}$'' can be explained as follows:
+    We also define
+    \begin{align*}
+      \UU^{\le1}&\defeq\Groupoid\\
+      &\defeq
+        \sum_{A:\UU}\prod_{x,y:A}\isset(x=_Ay),
+    \end{align*}
+    to emphasize that groupoids are $1$-types;
+    the type of connected types is denoted
+    \[
+      \UU^{>0} \defeq \sum_{A:\UU}\Trunc{A}\times
+    \prod_{x,y:A}\Trunc{x=_ay}.\]
+    Similar notations with a subscript ``$*$'' indicate pointed types.}
   \[
-    \typegroup \defequi \sum_{A:\UU}\sum_{a:A} \isset(a=_Aa)
-    \times \prod_{x:A}\Trunc{x=_Aa}
+    \UUscone \defeq \sum_{A:\UU}\sum_{a:A} \isset(a=_Aa)
+    \times \prod_{x:A}\Trunc{a=_Ax}.
   \]
-  of pointed connected groupoids.
-  A group $G=(A,a,p,q):\typegroup$ will be referred to simply as
-  \[
-    \aut_A(a).
-  \]
-  The underlying pointed type
-  \[
-    BG\defequi(A,a)
-  \]
-  is referred to as the \emph{classifying type of $G$}.
-  The element $\pt_G\defequi a$ will be referred to as the \emph{base point}.
-  Informally, we may also refer to the type $BG_\div\defequi A$ as the classifying type of $G$.
 \end{definition}
-
 The following exercise reconciles the words of the above definition with the type.
 \begin{xca}\label{xca:defgroup}
-Show that $A$ is a groupoid for any group $\aut_A(a)$.
+  Show that $A$ is indeed a groupoid for $(A,a,p,q):\UUscone$.
 \end{xca}
+\begin{remark}
+  We shall refer to a pointed connected groupoid $(A,a,p,q)$ simply
+  by the pointed type $X \defeq (A,a)$.
+  There is no essential ambiguity in this:
+  Being a connected groupoid is asserted (for a pointed type) by
+  \[
+    \isset(a=_Aa)\times\prod_{x:A}\Trunc{a=_Ax},
+  \]
+  which is a proposition (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}),
+  and so the witness $(p,q)$ is unique.
 
-\begin{remark}\label{rem:aut}
-There is no ambiguity in writing $\aut_A(a)$ instead of $(A,a,p,q)$: being a connected groupoid is asserted by 
-$$\isset(a=_Aa)\times\prod_{x:A}\Trunc{x=_Aa}$$ which is a proposition  (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}) and so the witness $(p,q)$  is unique.  In this sense, once you know that the classifying type is a connected groupoid, $BG$ carries all the information about $G$: $$G\oldequiv\aut_{BG_\div}(pt_{G}).$$
+  We also write $\pt_X \defeq a$ for the \emph{base point} of the pointed type.
 \end{remark}
 
+We are now ready to define the \emph{type} of groups:
+\begin{definition}\label{def:typegroup}
+  A \emph{group} is given by pointed connected groupoid $X\jdeq(A,a)$
+  via the loop type $\loops(A,a)$;
+  the \emph{type of groups},
+  \[
+    \typegroup \defequi \Copy(\UUscone),
+  \]
+  is a wrapped copy (cf.~\cref{sec:unary-sum-types})
+  of the type of pointed connected groupoids $\UUscone$.
+  We rename the constructor $\mkgroup : \UUscone \to \typegroup$,
+  so a group $G\jdeq\inc X:\typegroup$ will be referred to simply as
+  $\mkgroup X$.
+  We rename the destructor $\clf : \typegroup \to \UUscone$, and
+  \[
+    \clf G \jdeq \clf(\mkgroup X) \defequi X \jdeq (A,a)
+  \]
+  is referred to as the \emph{classifying type of $G$}.
+  The element $\p_G\defequi \pt_{\clf G} \jdeq a$ will be referred to as the \emph{base point}.
+  Informally, we may also refer to the type $\clf G_\div \jdeq A$ itself
+  as the classifying type of $G$.
+\end{definition}
+
+\begin{definition}\label{def:group-symmetries}% or elements
+  We define the \emph{symmetries} of a group $G \jdeq \mkgroup X$,
+  to be the set $\USym G \defeq \loops X$. In this way we have defined a
+  map
+  \[
+    \USym : \Group \to \Set, \qquad
+    \mkgroup X \mapsto \loops X.
+  \]
+\end{definition}
+\begin{remark}\label{rem:aut}
+  We are emphasizing that the essential feature of a group
+  is the symmetries of the base point.
+  And that is why we defined $\Group$ to be a copy of $\UUscone$,
+  and not $\UUscone$ itself:\marginnote{%
+    Recall also the example of the negated natural numbers $\NNN$
+    from \cref{sec:unary-sum-types}:
+    Its elements are $-n$ for $n:\NN$ to remind us how to think about them.
+    And the same applies to $\Group$:
+    Its elements are $\mkgroup X$ for $X : \UUscone$
+    to remind us how to think about them.}
+  The type most often associated to a group $G$ is the set $\USym G$,
+  so we use a special notation for the classifying type $\clf G$.
+  However, as noted in \cref{sec:unary-sum-types},
+  the constructor and destructor pair forms an equivalence $\Group \weq \UUscone$.
+  And $\UUscone$ is a subtype of $\UUp$, so in this sense,
+  once you know that a pointed type $X$ is a connected groupoid,
+  this pointed type gives a classifying type for a group $G\defeq\mkgroup X$,
+  and $X$ carries all the information about the group $G$.
+\end{remark}
+\begin{remark}\label{rem:BG-convention}
+  To define a function $f : \prod_{G:\Group}T(G)$,
+  where $T(G)$ is a type family indexed by $G:\Group$,
+  it suffices to consider the case $G\jdeq\mkgroup X$,
+  where $X$ is a pointed connected groupoid.
+  Since $X\jdeq\clf G$, we shall make a convention to
+  always use the variable name $BG$ instead of $X$,
+  and similarly, for a variable $H:\Group$,
+  when we use the induction principle for $\Group$,
+  we use the variable $BH:\UUscone$, etc.
+  And whenever we introduce a variable $G$ of type $\Group$,
+  we immediately and silently use the induction principle
+  to get a variable $BG:\UUscone$ such that $G\jdeq\mkgroup BG$
+  and $BG \jdeq \clf(\mkgroup BG) \jdeq \clf G$.\footnote{%
+    You see immediately the typographical reason behind this convention:
+    The italic letters $B$,$G$ get along nicely,
+    while the roman $\clf$ distances itself a bit from its italic friend $G$.}
+
+  Also note that identifications $G=H$ of groups are equivalent
+  to identifications $BG = BH$ of pointed types.
+\end{remark}
+
+It is not infrequent that we want to consider the symmetries $\loops(A,a)$
+of some element $a$ in some groupoid $A$:
+\begin{definition}\label{def:automorphism-group}
+  % Previously, this allowed for A to not necessarily be a groupoid,
+  % as long as the component of A is. That seems like unnecessary generality?!
+  For a groupoid $A$ with a specified point $a$,
+  we define the \emph{automorphism group} of $a:A$ by
+  \[
+    \Aut_A(a) \defeq \mkgroup (A_{(a)},(a,!)),
+  \]
+  \ie $\Aut_A(a)$ is the group with classifying type
+  $\BAut_A(a) \jdeq (A_{(a)},(a,!))$,
+  the connected component of $A$ containing $a$, pointed at $a$.
+\end{definition}
 \begin{remark}
   \label{rem:symmetriesofnonconnectedgroupoids}
-  It is not infrequent that we want to consider the symmetries of some element $a$ in some type $A$ which unfortunately is not connected, but where the component $A_{(a)}$ of $a$ is a groupoid.  It will notationally be convenient to define ``$\aut_A(a)$'' to be shorthand for $\aut_{A_{(a)}}(a,!)$.  
+  For any $G \jdeq \mkgroup(A,a) : \Group$, we have an identification
+  $G = \Aut_A(a)$,
+  because we have an identification of pointed types $(A_{(a)},(a,!)) = (A,a)$,
+  since $A$ is connected.
+
+  In other words, for any $G \jdeq \mkgroup BG$, we have
+  an identification $G = \Aut_{BG_\div}(\p_G)$, of $G$ with the automorphism
+  group of the base point $p_G : BG$.
 \end{remark}
 
 \subsection{First examples}
@@ -2509,10 +2679,8 @@ identity type $x=y$ is a groupoid for $x,y:A$.
 \end{theorem}
 \begin{proof}%
   % may be put in macros.tex at some point
-  \newcommand{\BB}{\B^2}%
-  \newcommand{\UUsctwo}{\UU_\ast^{=2}}%
   % local macro
-  \renewcommand{\loopspace}[1][]{\constructor{Aut}^2_{#1}}
+  \newcommand{\loopspace}[1][]{\constructor{Aut}^2_{#1}}
   Define the map $\BB : \typeabgroup \to \UUp$ by
   $\BB G\defequi \univcover{\UU}{{\B G}_\div}$. Proving that $\BB G$ is a
   $2$-type is equivalent to proving the proposition $\isset(p=q$) for
