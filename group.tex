@@ -843,21 +843,47 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
 \section{Homomorphisms}
 \label{sec:homomorphisms}
 
-
-The notion of a group homomorphism from $G=\aut_A(a)$ to $H=\aut_B(b)$
-is simple: it is a pointed function $A\ptdto B$, that is a function
-$f:A\to B$ that ``sends $a$ to $b$'', \ie together with an element
-$p:b=_Bf(a)$:
+The notion of a group homomorphism from $G\jdeq\mkgroup BG$ to $H\jdeq\mkgroup BH$
+is simple:
+it is a pointed function of classifying types $BG\ptdto BH$, that is a function
+$Bf : BG\to BH$ that ``sends $\p_G$ to $p_H$'',
+\ie together with an identification $p:\p_H=_{BH}Bf(\p_G)$:
 \begin{definition}\label{def:grouphomomorphism}
   The type of \emph{group homomorphisms} from $G:\typegroup$ to
-  $H:\typegroup$ is defined to be
-  $$\Hom(G,H)\defequi(\clf G\ptdto \clf H),
-%\footnote{would you be unhappy if I used $f:G\to_{\typegroup}H$ when it fits better with the typography?}%\sum_{f:A\to B}f(a)=_Bb.
-$$
-in other words, a homomorphism $f:\Hom(G,H)$ is a pair $({\clf f}_\div,p_f)$ where ${\clf f}_\div:{\clf G}_\div\to {\clf H}_\div$ and $p_f:\pt_H={\clf f}_\div(\pt_G)$.
+  $H:\typegroup$ is defined to be\marginnote{%
+    Sometimes we write $f : G\to_\Group H$ instead of $f : \Hom(G,H)$
+    to emphasize that $f$ is a map of groups.
+    When it is clear from context that a homomorphism is intended,
+    we even write $f : G \to H$.}
+  \[
+    \Hom(G,H)\defequi\Copy(BG\ptdto BH),
+  \]
+  \ie a wrapped copy of the type of pointed maps of classifying spaces.
+  Just as for groups, we rename the constructor
+  $\mkhom : (BG \ptdto BH) \to \Hom(G,H)$,
+  and the destructor $\clf : \Hom(G,H) \to (BG \ptdto BH)$.
+  We call $\clf f$ is \emph{classifying map} of the homomorphism.
 \end{definition}
-When there is little danger of confusion we may drop the subscript
-$\div$ even when talking about the unpointed structure.
+Recall from \cref{sec:pointedtypes},
+that when there is little danger of confusion, we may drop the subscript
+$\div$ when talking about the unpointed structure.
+\begin{remark}\label{rem:Bf-convention}
+  We shall use a parallel convention for homomorphisms
+  as we use for groups. Recall, that because
+  $\Hom(G,H)$ is a wrapped copy of $\BG\ptdto\BH$,
+  to construct a function $\varphi : \prod_{f:\Hom(G,H)}T(f)$,
+  where $T(f)$ is a family of types indexed by $f:\Hom(G,H)$,
+  it suffices to consider the case $f \jdeq \mkhom\Bf$,
+  where we deliberately use the variable name $\Bf : \BG\ptdto\BH$.
+
+  Also, remember that identifications of homomorphisms $f=_{\Hom(G,H)}h$
+  are equivalent to identifications of pointed maps
+  $\mathit{\Bf} =_{\BG\ptdto\BH} \mathit{\Bh}$,
+  and that the latter are pairs of an identification of (unpointed) maps
+  $H : \Bf_\div =_{(\BG_\div \to \BH_\div)} \Bh_\div$ with an identification
+  $K : H(\p_G)\Bf_0 =_{(\p_H=\Bh(\p_G))} \Bh_0$.
+\end{remark}
+
 \begin{example}%
   \label{ex:groups-morphisms}%
   ~%
@@ -940,6 +966,26 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   \cref{exer:first examples}.)
 \end{remark}
 
+We would like to understand the effect of a homomorphism $f : \Hom(G,H)$
+on the underlying symmetries $\USym G$, $\USym H$.
+Since the underlying symmetries are obtained by taking loops,
+we should first study how pointed maps affect loops:
+\begin{definition}
+  If $X,Y$ are pointed types,
+  and $f : X \ptdto Y$ is a pointed map,
+  then we get an induced map
+  \[
+    \loops f : \loops X \to \loops Y,
+  \]
+  mapping $q : \pt_X = \pt_X$
+  to $\inv{f_0}f(q)f_0 : \pt_Y = \pt_Y$.
+\end{definition}
+\begin{definition}
+  Any group homomorphism $f : \Hom(G,H)$
+  induces a map $\USym f \defeq \loops B\!f : \USym G \to \USym H$.
+  In other words, the homomorphism $\mkhom Bf$
+  induces $\loops Bf$ as the map on underlying symmetries.
+\end{definition}
 \begin{example}
   We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$
   is equivalent to the {\bf set} of ``abstract group homomorphisms''
