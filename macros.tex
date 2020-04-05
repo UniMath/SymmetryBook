@@ -281,7 +281,11 @@
 \newcommand*{\UU}{{\mathscr{U}}} % universes (special case) : calligraphic
 \newcommand*{\UUp}{{\mathscr{U}_*}}
 
-\newcommand*{\bn}[1]{\mathbb{#1}} % bold numerals (types)
+\newcommand*{\fakeslant}[1]{%
+  \pdfliteral{1 0 0.167 1 0 0 cm}#1\pdfliteral{1 0 -0.167 1 0 0 cm}}
+\newcommand*{\bn}[1]{{%
+  \if!\ifnum9<1#1!\else_\fi%
+  \mathbb{#1}\else\fakeslant{\mathbb{#1}}\fi}}
 
 % our version of \operatorname with a font change (so we can use the appropriate meta-macro)
 \makeatletter
@@ -518,7 +522,11 @@
 \newcommand*{\twist}{\constant{twist}}%loop in BC_2
 \newcommand*{\Sc}{{\typeformer{S}^1}}%the circle
 %\newcommand{\sbt}{\begin{picture}(-1,1)(-1,-3)\circle*{2}\end{picture}}%
-\newcommand*{\sbt}{\mathop{\bullet}}
+\newcommand*{\sbt}{\mathchoice%
+  {\vcenter{\hbox{\scriptsize\textbullet}}}%
+  {\vcenter{\hbox{\scriptsize\textbullet}}}%
+  {\vcenter{\hbox{\tiny\textbullet}}}%
+  {\vcenter{\hbox{\fontsize{4}{5}\selectfont\textbullet}}}}% {\mathop{\bullet}}
 %{\tikz[anchor=base,baseline]{\node[scale=.7,inner
 %    sep=0, outer sep=0, circle]%
 %    {$\bullet$};}}%
