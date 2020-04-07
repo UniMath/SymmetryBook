@@ -1783,7 +1783,7 @@ for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
 We are now ready to define logical disjunction and existence, by
 \[
 (P \vee Q) \defeq \Trunc{P \amalg Q} \quad\text{and}
-\quad (\exists_{x:T} P(x)) \defeq \Trunc{\sum_{x:T}P(x)}.
+\quad\textstyle (\exists_{x:T} P(x)) \defeq \Trunc*{\sum_{x:T}P(x)}.
 \]
 
 For example, using \cref{def:prop-trunc}, 
@@ -2359,19 +2359,32 @@ using $\inl{}$ and $\inr{}$.
 \begin{xca}\label{xca:finite-types}
 \hspace{1in}
   \begin{enumerate}
-  \item Denote in full all elements of $\emptytype$, $\bn{1} $, and $\bn{2}$.
-  \item Show (using UA) that $\bn{1} =\true$, $\bn{2} =\bool$.
-  \item Show (using UA) that $\bn{n} = \sum_{k:\NN} k<n$ for all $n:\NN$.
-  \item Show that $n=m$ if $\bn{m}=\bn{n}$.
+  \item Denote in full all elements of $\bn{0}$, $\bn{1} $, and $\bn{2}$.
+  \item Show (using univalence) that $\bn{1} =\true$, $\bn{2} =\bool$.
+  \item Show (using univalence) that $\bn{n} = \sum_{k:\NN} k<n$ for all $n:\NN$.
+  \item Show that $m=n$ if $\bn{m}=\bn{n}$.
   \end{enumerate}
 \end{xca}
-  
+\begin{definition}\label{def:is-finite}
+  Given a type $X$, we define the proposition
+  \[
+    \textstyle
+    \isfinset(X) \defeq \Trunc*{\sum_{n:\NN}X=\bn{n}}
+    \jdeq \exists_{n:\NN}(X=\bn{n})
+  \]
+  to express that $X$ \emph{is a finite set}.\footnote{%
+    When moving beyond sets, there are two different ways
+    in which a type can be finite: an \emph{additive}
+    way and a \emph{multiplicative} way, but
+    it would take us too far afield to define these notions
+    here.} % And then to prove that their intersection is finite sets
+\end{definition}
 \begin{lemma}\label{lem:maxonefinitetype}
-\hspace{1in}%BAD STYLE?
+\leavevmode
 \begin{enumerate}
   \item $\sum_{n:\NN}\Trunc{X=\bn{n}}$ is a proposition, for all types $X$.
   \item 
-$\sum_{X:\UU}\sum_{n:\NN}\Trunc{X=\bn{n}} =\sum_{X:\UU}\Trunc{\sum_{n:\NN}X=\bn{n}}.$
+$\sum_{X:\UU}\sum_{n:\NN}\Trunc{X=\bn{n}} =\sum_{X:\UU}\isfinset(X)$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -2385,23 +2398,25 @@ so $\Trunc{n=m}=(n=m)$. It follows that $(n,p)=(m,q)$.
 which is easily proved by giving functions in both directions and using UA.
 \end{proof}
 
-The above lemma remains of course true if $X$ ranges over $\Set$.
+The above lemma remains true if $X$ ranges over $\Set$.
 If a set $S$ is in the same component in $\Set$ as $\bn{n}$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
 
 \begin{definition}\label{def:groupoidFin}
 The \emph{groupoid of finite sets} is defined by
 \[
-\fin\defeq\sum_{S:\Set}\Trunc{\sum_{n:\NN}S=\bn{n}}.
+  \FinSet\defeq\sum_{S:\Set}\isfinset(S).
 \]
 For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
 \[
-\fin_n\defequi \sum_{S:\Set}\Trunc{S=\bn{n}}.
+  \FinSet_n\defequi \sum_{S:\Set}\Trunc{S=\bn{n}}.
 \]
 \end{definition}
-Observe that $\fin_0=\fin_1=\bn{1} $ and $\fin=\sum_{n:\NN}\fin_n$
+Observe that $\FinSet_0=\FinSet_1=\bn{1} $ and $\FinSet=\sum_{n:\NN}\FinSet_n$
 by \cref{lem:maxonefinitetype}.
 
-Note that $\fin$ is the image of the map $F : \NN \to \UU$
+Note that being a finite set implies being a set, and hence
+$\FinSet = \sum_{X:\UU}\isfinset(X)$.
+Also, $\FinSet$ is the image of the map $F : \NN \to \UU$
 from~\cref{def:finiteset}, and is hence essentially $\UU$-small
 (for any universe $\UU$), by~\cref{pri:replacement}.
 
