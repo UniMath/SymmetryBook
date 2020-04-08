@@ -202,58 +202,55 @@ The following exercise reconciles the words of the above definition with the typ
   We also write $\pt_X \defeq a$ for the \emph{base point} of the pointed type.
 \end{remark}
 
-We are now ready to define the \emph{type} of groups:
+We are now ready to define the type of groups:
+
 \begin{definition}\label{def:typegroup}
-  A \emph{group} is given by pointed connected groupoid $X\jdeq(A,a)$
-  via the loop type $\loops(A,a)$;
-  the \emph{type of groups},
+  The \emph{type of groups} is a wrapped copy (see \cref{sec:unary-sum-types})
+  of the type of pointed connected groupoids $\UUscone$, defined as follows.
   \[
-    \typegroup \defequi \Copy(\UUscone),
+    \typegroup \defequi \Copy(\UUscone)
   \]
-  is a wrapped copy (cf.~\cref{sec:unary-sum-types})
-  of the type of pointed connected groupoids $\UUscone$.
-  We rename the constructor $\mkgroup : \UUscone \to \typegroup$,
-  so a group $G\jdeq\inc X:\typegroup$ will be referred to simply as
-  $\mkgroup X$.
-  We rename the destructor $\clf : \typegroup \to \UUscone$, and
-  \[
-    \clf G \jdeq \clf(\mkgroup X) \defequi X \jdeq (A,a)
-  \]
-  is referred to as the \emph{classifying type of $G$}.
-  The element $\p_G\defequi \pt_{\clf G} \jdeq a$ will be referred to as the \emph{base point}.
-  Informally, we may also refer to the type $\clf G_\div \jdeq A$ itself
-  as the classifying type of $G$.
+  A \emph{group} is an element of $\typegroup$.
+  For $X : \UUscone$, we adopt the notation $\mkgroup X$ as a synonym for the
+  group $\inc X : \typegroup$ provided by the constructor associated with $\Copy$.
+\end{definition}
+
+\begin{definition}\label{def:classifying-type}
+  For $G : \typegroup$, we adopt the notation $\clf G$ for the pointed type $\out G : \UUscone$
+  provided by the destructor associated with $\Copy$; we will refer to it as the \emph{classifying type} of $G$.
+  Morever, the elements of $\clf G$ will be referred to as the \emph{shapes of $G$},
+  and we define the \emph{designated shape of $G$} by setting $\p_G\defequi \pt_{\clf G}$.
 \end{definition}
 
 \begin{definition}\label{def:group-symmetries}% or elements
-  We define the \emph{symmetries} of a group $G \jdeq \mkgroup X$,
-  to be the set $\USym G \defeq \loops X$. In this way we have defined a
-  map
-  \[
-    \USym : \Group \to \Set, \qquad
-    \mkgroup X \mapsto \loops X.
-  \]
+  Let $G$ be a group.
+  We regard every group as a group of symmetries, and thus we refer to the elements of $\loops \clf G$ as the
+  \emph{symmetries in $G$}; they are the symmetries of the designated shape $\p_G$ of $G$.
+  (Notice the careful distinction between the phrases ``\emph{symmetries in}'' and ``\emph{symmetries of}''.)
+  We adopt the notation $\USym G$ for the type $\loops \clf G$ of symmetries in $G$; it is a set.
 \end{definition}
+
 \begin{remark}\label{rem:aut}
   We are emphasizing that the essential feature of a group
-  is the symmetries of the base point.
-  And that is why we defined $\Group$ to be a copy of $\UUscone$,
-  and not $\UUscone$ itself:\marginnote{%
+  is the symmetries of its designated shape.
+  That is why we defined $\Group$ to be a copy of $\UUscone$,
+  and not $\UUscone$ itself,\marginnote{%
     Recall also the example of the negated natural numbers $\NNN$
     from \cref{sec:unary-sum-types}:
     Its elements are $-n$ for $n:\NN$ to remind us how to think about them.
     And the same applies to $\Group$:
     Its elements are $\mkgroup X$ for $X : \UUscone$
     to remind us how to think about them.}
-  The type most often associated to a group $G$ is the set $\USym G$,
-  so we use a special notation for the classifying type $\clf G$.
-  However, as noted in \cref{sec:unary-sum-types},
+  the type $\USym G$ is at least as important as $\clf G$ --- the copying forces us to use
+  the notation $\clf G$, preventing a glib identification of $G$ with its classifying type
+  and preventing us from regarding $G$ as having \emph{elements}.
+  As noted in \cref{sec:unary-sum-types},
   the constructor and destructor pair forms an equivalence $\Group \weq \UUscone$.
-  And $\UUscone$ is a subtype of $\UUp$, so in this sense,
+  The type $\UUscone$ is a subtype of $\UUp$, so 
   once you know that a pointed type $X$ is a connected groupoid,
-  this pointed type gives a classifying type for a group $G\defeq\mkgroup X$,
-  and $X$ carries all the information about the group $G$.
+  you know also that $X$ is the classifying type for a group, namely $G\defeq\mkgroup X$.
 \end{remark}
+
 \begin{remark}\label{rem:BG-convention}
   To define a function $f : \prod_{G:\Group}T(G)$,
   where $T(G)$ is a type family indexed by $G:\Group$,
