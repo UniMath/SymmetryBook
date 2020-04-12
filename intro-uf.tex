@@ -263,7 +263,7 @@ in the case of $\refl{x}:x=x$.
   \[ 
   \trp[T]{e} : T(x) \to T(y)
   \]
-  is defined by induction setting $\trp[T]{\refl{x}} (t) \defeq t$.
+  is defined by induction setting $\trp[T]{\refl{x}} \defeq \id_{T(x)}$.
 \end{definition} 
 The function thus defined may be called 
 \emph{the transport function in the type family $T$ along the path $e$}, 
@@ -322,7 +322,13 @@ parameter $x:X$. Furthermore, let $A$ be a type, $f:A\to X$ a function,
 and $p: a=a'$ a path. Show that $\trp[T\circ f]{ p} = \trp[T]{\ap{f}(p)}$. 
 \end{xca}
 
-
+\begin{xca}\label{xca:trp-nondep}
+  Let $X,Y$ be types.
+  Even though $Y$ does not depend on a parameter $x:X$,
+  we can still regard this as a trivial dependency.
+  In this instance we speak of a \emph{constant family}.
+  Show that $\trp[Y]{p} = \id_Y$ for all paths $p:x=x'$.
+\end{xca}
 When the types $T(x)$ may have more than one element, 
 we may regard an element of $T(x)$ as providing additional {\em structure} on $x$. 
 In that case, we will refer to the transport function $T(x) \to T(y)$ as 
@@ -609,72 +615,11 @@ The following simple lemma will be useful later.
   $y$ and $q$ is $\refl y$, rendering the two sides of the equation equal, by definition, to $\refl {g(x)(y)}$.
 \end{definition}
 
-%% premature: sums are defined later
-%% Application of the construction above to the type $Z \defeq \sum_{x:X} Y(x)$ and the function $g$ defined by $g(x)(y) \defeq (x,y)$ yields a
-%% function $$\sum_{p:x=x'} \pathover y Y p {y'} \to ((x,y) = (x',y')).$$
-
-\section{Inductive types}
-\label{sec:inductive-types}
-
-There are other examples of types that are conveniently introduced
-in the same way as we have seen with the natural numbers and the equality types.
-A type
-presented in this style shares some common features: there are some ways to create new elements, and there is a way (called \emph{induction}) to
-prove something about every element of the type (or family of types).  We will refer to such types as \emph{inductive} types, and we present a
-few more of them in this section, including the finite types, and then we present some other constructions for making new types from old ones.
-For each of these constructions we explain what it means for two elements of the newly constructed type to be equal in terms of equality in the
-constituent types.
-
-\subsection{Finite types}
-\label{sec:finite-types}
-Firstly, there is the \emph{empty} type, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
-definition.  The induction principle for $\emptytype$ says that to prove something about (or to construct something from) every element of
-$\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be proven. (This logical principle is traditionally called \emph{ex falso quodlibet}.\footnote{%
-  Sometimes also \emph{ex falso sequitur quodlibet}:
-  From falsehood, anything follows.}) As
-an example, we may prove that any two elements $x$ and $y$ of $\emptytype$ are equal by using induction on $x$.
-
-An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one expects that there are no real absurdities in mathematics, nor in any
-logical system (such as ours) that attempts to provide a language for mathematics, but it is important to have such a name so we can discuss
-the possibility, which might result inadvertently from the introduction of unwarranted assumptions.  For example, to assert that a type $P$ has
-no elements, it would be sensible to assert that an element of $P$ would lead to an absurdity.  Providing a function of type $P \to \emptytype$ is a
-convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting $\neg P \defeq P \to \emptytype$.  Using it, we
-may define the type $(a \ne b) \defeq \neg (a = b)$; an element of it asserts that $a$ and $b$ cannot be identified.
-
-Secondly, there will also be a type called $\true$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
-  ``trivial'').  Its induction principle
-states that, in order to prove something about (or to construct something from) every element of $\true$, it suffices to consider the special
-case where the element is $\triv$.  As an example, we may prove, for any element $u : \true$, that $u=\triv$, by using induction to reduce
-to proving $\triv=\triv$, a proof of which is provided by $\refl{\triv}$.  One may also prove that any two elements of $\true$ are equal by using induction twice.
-
-There is a function $X \to \true$, for any type $X$, namely: $a \mapsto \triv$.  This corresponds, for propositions, to the statement that an
-implication holds if the conclusion is true.
-
-Thirdly, there will be a type called $\bool$, 
-defined by induction and provided with two elements, $\yes$ and $\no$.  
-One may prove by induction
-that any element of $\bool$ is equal to $\yes$ or to $\no$.
-
-We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
-Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.\footnote{%
-  This definition uses the induction principle.}
-The definition of $P(b)$ is motivated by the expectation that we will be able
-to prove that $P(b)$ and $b = \yes$ are equivalent.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv :
-P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$,
-establishing the claim.
-
-In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne
-\Succ(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
-\defeq \true$ and $P(\Succ(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
-and $i = 0$ are equivalent.  If there were an element $e: 0 = \Succ(n)$, we could substitute $\Succ(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
-of $P(\Succ(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=\Succ(n)) \to \emptytype$, establishing the claim.
-
-In a similar way we will in \cref{sec:typeFin} define types $\bn n$ for any $n$ in $\NN$
-such that $\bn n$ is the type (set) of $n$ elements.
-
-\subsection{Sum types}
+\section{Sum types}
 \label{sec:sum-types}
-There are \emph{sums} of types.  By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
+
+There are \emph{sums} of types.
+By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
 there will be a type\footnote{%
   Also known as a \emph{Sigma-type}.}
 $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$. Since the type of $b$ may depend on $a$ we also call such a pair
@@ -727,187 +672,6 @@ $\snd(a,b)\defeq b$.
 \end{enumerate}
 In \ref{it:second-projection}, the type of $\snd$ is, in full,
 $\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
-
-\subsection{Binary products}
-\label{sec:binprod-types}
-There is special case of sum types that deserves to be mentioned since
-it occurs quite often. Let $X$ and $Y$ be types, and consider the constant
-family of types $Y(x)\defeq Y$. In other words, $Y(x)$ is a type that depends
-on an element $x$ of $X$ that happens to be $Y$ for any such $x$.
-Then we can form the sum type $\sum_{x:X} Y(x)$ as above.
-Elements of this sum type are pairs $(x,y)$
-with $x$ in $X$ and $y$ in $Y(x)\jdeq Y$.\footnote{%
-  These \emph{cartesian} products we illustrate as usual
-  by rectangles where one side represents $X$ and the other $Y$.\par
-  \begin{tikzpicture}
-    % X
-    \coordinate (X-left) at (-.5,-1);
-    \node[dot,label=below:$x$] (X-x) at (1.2,-1) {};
-    \coordinate (X-right) at (2.5,-1);
-    \node (X) at (2.9,-1) {$X$};
-    \draw (X-left) -- (X-right);
-    % Y
-    \coordinate (Y-bot) at (3.5,0);
-    \node[dot,label=right:$y$] (Y-y) at (3.5,1) {};
-    \coordinate (Y-top) at (3.5,2);
-    \node (Y) at (3.5,-.4) {$Y$};
-    \draw (Y-top) -- (Y-bot);
-    % XY
-    \node (SXY) at (.4,.5) {${X\times Y}$};
-    \coordinate (XY-top-left) at (-.5,2);
-    \coordinate (XY-bot-left) at (-.5,0);
-    \coordinate (XY-top-x) at (1,2);
-    \coordinate (XY-bot-x) at (1,0);
-    \coordinate (XY-y-left) at (0,1);
-    \coordinate (XY-y-right) at (2.5,1);
-    \coordinate (XY-top-right) at (2.5,2);
-    \coordinate (XY-bot-right) at (2.5,0);
-    \draw (XY-bot-left) -- (XY-bot-right) -- (XY-top-right)
-    -- (XY-top-left) --cycle;
-    \draw[dashed] (1.2,0) -- (1.2,2);
-    \draw[dashed] (-.5,1) -- (2.5,1);
-    \node[dot,label=above left:${(x,y)}$] (xy) at (1.2,1) {};
-    \draw[->,shorten <=.1cm,shorten >=.1cm] (1.2,0)
-    -- node[anchor=east] {${\fst}$} (X-x);
-    \draw[->,shorten <=.1cm,shorten >=.1cm] (2.5,1)
-    -- node[anchor=south] {${\snd}$} (Y-y);
-  \end{tikzpicture}}
-In this case the type of $y$
-doesn't depend on $x$, and in this special case the sum type is called
-the \emph{binary product}, or \emph{cartesian product} of the types $X$ and $Y$,
-denoted by $X \times Y$.
-
-Recall that we have seen something similar with the product type
-$\prod_{x:X} Y(x)$, which we denote $X\to Y$ in case $Y(x)\defeq Y$.
-The type $X \times Y$ inherits the functions $\fst,\snd$ from
-$\sum_{x:X} Y(x)$, with the same definitions $\fst(x,y)\defeq x$
-and $\snd(x,y)\defeq y$. Their types can now be denoted in a
-simpler way as $\fst: (X \times Y)\to X$ and 
-$\snd: (X \times Y)\to Y$, and they are called as before the
-first and the second projection, respectively.
-
-Again, proving something about (or constructing something from) every 
-element $(a,b)$ of $X \times Y$ is simply done for all $a:X$ and $b:Y$.
-An identification between two elements $(a_1,b_1),(a_2,b_2)$ of 
-$X \times Y$ consists of an identification of $a_1$ and $a_2$ in $X$
-and an identification of $b_1$ and $b_2$ in $Y$. In fact, 
-again, the type of identifications between two pairs in $X \times Y$
-is equivalent to the binary product of the types of identifications between
-elements of $X$ and of identifications between elements of $Y$.
-
-If $f: X \to Y$ and $f': X' \to Y'$, then we let 
-$f\times f'$ denote the map of type $(X\times X') \to (Y\times Y')$ 
-that sends $(x,x')$ to $(f(x),f(x'))$.
-
-\subsection{Binary sums}
-\label{sec:binsum-types}
-If a sum type is of the form $\sum_{b:\bool} T(b)$, with $T(b)$
-a type depending on $b$ in $\bool$, there is a simpler way of
-describing it.\footnote{%
-  In a case like this, we can thicken up the lines denoting
-  $T(\no)$ and $T(\yes)$ in our picture, if we like:\par
-  \begin{tikzpicture}
-    \node[dot,label=below:${\no}$] (no) at (0,-.8) {};
-    \node[dot,label=below:${\yes}$] (yes) at (1.5,-.8) {};
-    \node (Bool) at (2.5,-.8) {$\bool$};
-    \draw (0,0.9) ellipse (.25 and 1);
-    \node (Tno) at (0,2.2) {$T(\no)$};
-    \draw (1.5,1.1) ellipse (.4 and 0.8);
-    \node (Tyes) at (1.5,2.2) {$T(\yes)$};
-    \node[dot,label=above:$x$] (x-no) at (0,0.8) {};
-    \node[dot,label=below:$y$] (y-yes) at (1.5,1.2) {};
-  \end{tikzpicture}}
-After all, the type family $T(b)$ is fully determined
-by two types, namely by the types $T(\no)$ and $T(\yes)$.
-The elements of $\sum_{b:\bool} T(b)$ are dependent pairs $(\no,x)$ with
-$x$ in $T(\no)$ and $(\yes,y)$ with $y$ in $T(\yes)$. The resulting
-type can be viewed as the \emph{disjoint union} of $T(\no)$ and $T(\yes)$:
-from an element of $T(\no)$ or an element of $T(\yes)$ 
-we can produce an element of $\sum_{b:\bool} T(b)$.  
-
-Such types can be described more clearly in the following way.
-The \emph{binary sum} of two types $X$ and $Y$, denoted $X \amalg Y$,
-is an inductive type with two constructors: $\inl{} : X \to X \amalg Y$ and
-$\inr{} : Y \to X \amalg Y$.\footnote{%
-  Be aware that in a picture, the same point may refer
-  either to $x$ in $X$ or to $\inl x$ in the sum $X \amalg Y$:\par
-  \begin{tikzpicture}
-    \draw (0,0.9) ellipse (.25 and 1);
-    \node (X) at (0,2.1) {$X$};
-    \draw (1,1.1) ellipse (.4 and 0.8);
-    \node (Y) at (1,2.1) {$Y$};
-    \node[dot,label=above:$x$] (x) at (0,0.8) {};
-    \node[dot,label=below:$y$] (y) at (1,1.2) {};
-    \draw[dashed] (0.5,1.1) ellipse (1.2 and 1.6);
-    \node (XY) at (-0.75,2.35) {$X \amalg Y$};
-  \end{tikzpicture}}
-Proving a property of any element of $X \amalg Y$
-means proving that this property holds of any $\inl{x}$ with $x:X$ and any
-$\inr{y}$ with $y:Y$. In general, constructing a function $f$ of type
-$\prod_{z: X \amalg Y} T(z)$, where $T(z)$ is a type depending on 
-$z$, is done by defining $f(\inl{x})$ for all $x$ in $X$
-and $f(\inr{y})$ for all $y$ in $Y$.
-
-Identification of two elements $a$ and $b$ in $X \amalg Y$ is 
-only possible if they are constructed with the same constructor.
-Thus $\inl{x} = \inr{y}$ is always empty, and identifications
-$\inl{x} = \inl{x'}$ are equivalent to identifications $x=x'$ in $X$,
-and identifications
-$\inr{y} = \inr{y'}$ are equivalent to identifications $y=y'$ in $Y$.
-
-\subsection{Unary sums}\label{sec:unary-sum-types}
-
-Sometimes it is useful to be able to make a copy of a type $X$:
-A new type that behaves just like $X$,
-though it is not definitionally equal to $X$.
-The \emph{unary sum} or \emph{wrapped copy} of $X$ is an inductive type $\Copy(X)$
-with a single constructor $\inc{} : X \to \Copy(X)$.\footnote{%
-  A point $x:X$ corresponds to the point $\inc{x}:\Copy(X)$:\par
-  \begin{tikzpicture}
-    \draw (0,1) ellipse (.3 and .8);
-    \draw[dashed] (-.1,1) ellipse (.6 and 1.1);
-    \node[dot,label=above:$x$] (x) at (0,0.8) {};
-    \node (X) at (-.45,.7) {$X$};
-    \node (c) at (.75,1) {$\leftrightarrow$};
-    \draw[dashed] (1.7,1) ellipse (.3 and .8);
-    \draw (1.6,1) ellipse (.6 and 1.1);
-    \node[dot,label=above:$\inc{x}$] (inx) at (1.7,0.8) {};
-    \node (Xdashed) at (2.6,.1) {$\Copy(X)$};
-  \end{tikzpicture}\par
-  \noindent Note that $\Copy(X)$ can alternatively be defined as $\sum_{z:\true}X$.}
-Constructing a function $f : \prod_{z:\Copy(X)}T(z)$,
-where $T(z)$ is a type depending on $z : \Copy(X)$,
-is done by defining $f(\inc{x})$ for all $x:X$.
-Taking $T(z)$ to be the constant family at $X$,
-we get a function $\out : \Copy(X) \to X$,
-called the \emph{destructor},
-with $\out(\inc{x}) \defeq x$ for $x:X$,
-and the induction principle implies that $\inc{\out(z)} = z$
-for all $z:\Copy(X)$, so $\Copy(X)$ and $X$ are equivalent, as expected.
-In fact, we will assume that the latter equation even holds definitionally.
-It follows that identifications $\inc{x}=\inc{x'}$ in $\Copy(X)$ are equivalent
-to identifications $x=x'$ in $X$, and identifications $\out z=\out z'$ in $X$
-are equivalent to identifications $z=z'$ in $\Copy(X)$.
-
-Here's an example to illustrate why it can useful to make such a wrapped type:
-We introduced the natural numbers $\NN$ in \cref{sec:natural-numbers}.
-Suppose we want a type consisting of negations of naturals numbers,
-$\set{\ldots, -2, -1,0}$,
-perhaps as an intermediate step towards building the set of integers
-$\set{\ldots, -2, -1,0,1,2,\ldots}$.\footnote{%
-  (FIX) Maybe we'll actually do just that!}
-Of course, the type $\NN$ itself would do,
-but then we would need to pay extra attention to whether $n:\NN$
-is supposed to represent $n$ as an integer or its negation.
-So instead we take the wrapped copy $\NNN\defeq\Copy(\NN)$
-and write $- \defeq \inc{} : \NN \to \NNN$ for the constructor.
-There is then no harm in also writing $- \defeq \out : \NNN \to \NN$
-for the destructor.
-This means that $\NNN$ is a type equivalent to $\NN$,
-whose elements are exactly $-n$ for $n:\NN$,
-indeed, $-(-n) \jdeq n$ for $n$ an element of either $\NN$ or $\NNN$,
-and identifications $-n = -n'$ are equivalent to
-identifications $n=n'$.
 
 \section{Equivalences}\label{sec:equivalence}
 
@@ -1057,8 +821,20 @@ By \cref{lem:weq-iso} it follows that $f$
 is an equivalence.
 \end{proof}
 
-The above lemma is clearly reflects the  contractibility of the
-singleton type $\sum_{x:X}(a=x)$. For this reason
+The above lemma clearly reflects the  contractibility of the
+singleton type $\sum_{x:X}(a=x)$.\footnote{%
+  In fact, an alternative proof would go as follows:
+  First, we use \cref{lem:weq-iso} to show associativity of sum types,
+  i.e., $\sum_{x:X}\sum_{y:Y(x)}Z(x,y)
+  \equiv \sum_{w : (\sum_{x:X}Y(x))}Z(\fst w,\snd w)$,
+  where $X$ is a type,
+  $Y(x)$ is a family of types depending on $x:X$,
+  and $Z(x,y)$ is a family of types depending on $x:X$ and $y:Y(x)$.
+  Then, we show for any contractible type $X$,
+  and any family of types $Y(x)$ depending on $x:X$,
+  that $\sum_{x:X}Y(x)$ is equivalent to $Y(c)$,
+  where $c$ is the center of contraction.}
+For this reason
 we call application of this lemma `to contract away'
 the prefix $\sum_{x:X} \sum_{i: a=x}$, in order
 to obtain a simpler, equivalent type. It is often applied
@@ -1179,6 +955,274 @@ The following lemma gives the desired characterization of paths between pairs.
 We often use $\fst(\pathpair p q) = p$ and $\snd(\pathpair p q) = q$,
 which follow by induction on $p$ and $q$ from the definitions of $\ap{}$ and $\pathpair \_ \_$.
 Similarly, $r=\pathpair {\fst(r)}{\snd(r)}$ by induction on $r$.
+
+\section{Binary products}
+\label{sec:binprod-types}
+
+There is special case of sum types that deserves to be mentioned since
+it occurs quite often. Let $X$ and $Y$ be types, and consider the constant
+family of types $Y(x)\defeq Y$. In other words, $Y(x)$ is a type that depends
+on an element $x$ of $X$ that happens to be $Y$ for any such $x$.
+(Recall \cref{xca:trp-nondep}.)
+Then we can form the sum type $\sum_{x:X} Y(x)$ as above.
+Elements of this sum type are pairs $(x,y)$
+with $x$ in $X$ and $y$ in $Y(x)\jdeq Y$.\footnote{%
+  These \emph{cartesian} products we illustrate as usual
+  by rectangles where one side represents $X$ and the other $Y$.\par
+  \begin{tikzpicture}
+    % X
+    \coordinate (X-left) at (-.5,-1);
+    \node[dot,label=below:$x$] (X-x) at (1.2,-1) {};
+    \coordinate (X-right) at (2.5,-1);
+    \node (X) at (2.9,-1) {$X$};
+    \draw (X-left) -- (X-right);
+    % Y
+    \coordinate (Y-bot) at (3.5,0);
+    \node[dot,label=right:$y$] (Y-y) at (3.5,1) {};
+    \coordinate (Y-top) at (3.5,2);
+    \node (Y) at (3.5,-.4) {$Y$};
+    \draw (Y-top) -- (Y-bot);
+    % XY
+    \node (SXY) at (.4,.5) {${X\times Y}$};
+    \coordinate (XY-top-left) at (-.5,2);
+    \coordinate (XY-bot-left) at (-.5,0);
+    \coordinate (XY-top-x) at (1,2);
+    \coordinate (XY-bot-x) at (1,0);
+    \coordinate (XY-y-left) at (0,1);
+    \coordinate (XY-y-right) at (2.5,1);
+    \coordinate (XY-top-right) at (2.5,2);
+    \coordinate (XY-bot-right) at (2.5,0);
+    \draw (XY-bot-left) -- (XY-bot-right) -- (XY-top-right)
+    -- (XY-top-left) --cycle;
+    \draw[dashed] (1.2,0) -- (1.2,2);
+    \draw[dashed] (-.5,1) -- (2.5,1);
+    \node[dot,label=above left:${(x,y)}$] (xy) at (1.2,1) {};
+    \draw[->,shorten <=.1cm,shorten >=.1cm] (1.2,0)
+    -- node[anchor=east] {${\fst}$} (X-x);
+    \draw[->,shorten <=.1cm,shorten >=.1cm] (2.5,1)
+    -- node[anchor=south] {${\snd}$} (Y-y);
+  \end{tikzpicture}}
+In this case the type of $y$
+doesn't depend on $x$, and in this special case the sum type is called
+the \emph{binary product}, or \emph{cartesian product} of the types $X$ and $Y$,
+denoted by $X \times Y$.
+
+Recall that we have seen something similar with the product type
+$\prod_{x:X} Y(x)$, which we denote $X\to Y$ in case $Y(x)\defeq Y$.
+The type $X \times Y$ inherits the functions $\fst,\snd$ from
+$\sum_{x:X} Y(x)$, with the same definitions $\fst(x,y)\defeq x$
+and $\snd(x,y)\defeq y$. Their types can now be denoted in a
+simpler way as $\fst: (X \times Y)\to X$ and
+$\snd: (X \times Y)\to Y$, and they are called as before the
+first and the second projection, respectively.
+
+Again, proving something about (or constructing something from) every
+element $(a,b)$ of $X \times Y$ is simply done for all $a:X$ and $b:Y$.
+An identification between two elements $(a_1,b_1),(a_2,b_2)$ of
+$X \times Y$ consists of an identification of $a_1$ and $a_2$ in $X$
+and an identification of $b_1$ and $b_2$ in $Y$. In fact, the type of identifications between two pairs in $X \times Y$
+is equivalent to the binary product of the types of identifications between
+elements of $X$ and of identifications between elements of $Y$.
+This follows from \cref{lem:isEq-pair=} together with
+\cref{xca:trp-nondep}.
+
+If $f: X \to Y$ and $f': X' \to Y'$, then we let
+$f\times f'$ denote the map of type $(X\times X') \to (Y\times Y')$
+that sends $(x,x')$ to $(f(x),f(x'))$.
+
+\section{More inductive types}
+\label{sec:inductive-types}
+
+There are other examples of types that are conveniently introduced
+in the same way as we have seen with the natural numbers and the equality types.
+A type
+presented in this style shares some common features: there are some ways to create new elements, and there is a way (called \emph{induction}) to
+prove something about every element of the type (or family of types).  We will refer to such types as \emph{inductive} types, and we present a
+few more of them in this section, including the finite types, and then we present some other constructions for making new types from old ones.
+For each of these constructions we explain what it means for two elements of the newly constructed type to be equal in terms of equality in the
+constituent types.
+
+\subsection{Finite types}
+\label{sec:finite-types}
+Firstly, there is the \emph{empty} type, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
+definition.  The induction principle for $\emptytype$ says that to prove something about (or to construct something from) every element of
+$\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be proven. (This logical principle is traditionally called \emph{ex falso quodlibet}.\footnote{%
+  Sometimes also \emph{ex falso sequitur quodlibet}:
+  From falsehood, anything follows.}) As
+an example, we may prove that any two elements $x$ and $y$ of $\emptytype$ are equal by using induction on $x$.
+
+An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one expects that there are no real absurdities in mathematics, nor in any
+logical system (such as ours) that attempts to provide a language for mathematics, but it is important to have such a name so we can discuss
+the possibility, which might result inadvertently from the introduction of unwarranted assumptions.  For example, to assert that a type $P$ has
+no elements, it would be sensible to assert that an element of $P$ would lead to an absurdity.  Providing a function of type $P \to \emptytype$ is a
+convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting $\neg P \defeq P \to \emptytype$.  Using it, we
+may define the type $(a \ne b) \defeq \neg (a = b)$; an element of it asserts that $a$ and $b$ cannot be identified.
+
+Secondly, there will also be a type called $\true$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
+  ``trivial'').  Its induction principle
+states that, in order to prove something about (or to construct something from) every element of $\true$, it suffices to consider the special
+case where the element is $\triv$.  As an example, we may prove, for any element $u : \true$, that $u=\triv$, by using induction to reduce
+to proving $\triv=\triv$, a proof of which is provided by $\refl{\triv}$.  One may also prove that any two elements of $\true$ are equal by using induction twice.
+
+There is a function $X \to \true$, for any type $X$, namely: $a \mapsto \triv$.  This corresponds, for propositions, to the statement that an
+implication holds if the conclusion is true.
+
+Thirdly, there will be a type called $\bool$,
+defined by induction and provided with two elements, $\yes$ and $\no$.
+One may prove by induction
+that any element of $\bool$ is equal to $\yes$ or to $\no$.
+
+We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
+Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.\footnote{%
+  This definition uses the induction principle.}
+The definition of $P(b)$ is motivated by the expectation that we will be able
+to prove that $P(b)$ and $b = \yes$ are equivalent.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv :
+P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$,
+establishing the claim.
+
+In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne
+\Succ(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
+\defeq \true$ and $P(\Succ(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
+and $i = 0$ are equivalent.  If there were an element $e: 0 = \Succ(n)$, we could substitute $\Succ(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
+of $P(\Succ(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=\Succ(n)) \to \emptytype$, establishing the claim.
+
+In a similar way we will in \cref{sec:typeFin} define types $\bn n$ for any $n$ in $\NN$
+such that $\bn n$ is a type (set) of $n$ elements.
+
+
+\subsection{Binary sums}
+\label{sec:binsum-types}
+For sum types of the form $\sum_{b:\bool} T(b)$, with $T(b)$
+a type depending on $b$ in $\bool$, there is a simpler way of
+describing an equivalent type.\footnote{%
+  In a case like this, we can thicken up the lines denoting
+  $T(\no)$ and $T(\yes)$ in our picture, if we like:\par
+  \begin{tikzpicture}
+    \node[dot,label=below:${\no}$] (no) at (0,-.8) {};
+    \node[dot,label=below:${\yes}$] (yes) at (1.5,-.8) {};
+    \node (Bool) at (2.5,-.8) {$\bool$};
+    \draw (0,0.9) ellipse (.25 and 1);
+    \node (Tno) at (0,2.2) {$T(\no)$};
+    \draw (1.5,1.1) ellipse (.4 and 0.8);
+    \node (Tyes) at (1.5,2.2) {$T(\yes)$};
+    \node[dot,label=above:$x$] (x-no) at (0,0.8) {};
+    \node[dot,label=below:$y$] (y-yes) at (1.5,1.2) {};
+  \end{tikzpicture}}
+After all, the type family $T(b)$ is fully determined
+by two types, namely by the types $T(\no)$ and $T(\yes)$.
+The elements of $\sum_{b:\bool} T(b)$ are dependent pairs $(\no,x)$ with
+$x$ in $T(\no)$ and $(\yes,y)$ with $y$ in $T(\yes)$. The resulting
+type can be viewed as the \emph{disjoint union} of $T(\no)$ and $T(\yes)$:
+from an element of $T(\no)$ or an element of $T(\yes)$
+we can produce an element of $\sum_{b:\bool} T(b)$.
+
+These disjoint union types can be described more clearly in the following way.
+The \emph{binary sum} of two types $X$ and $Y$, denoted $X \amalg Y$,
+is an inductive type with two constructors: $\inl{} : X \to X \amalg Y$ and
+$\inr{} : Y \to X \amalg Y$.\footnote{%
+  Be aware that in a picture, the same point may refer
+  either to $x$ in $X$ or to $\inl x$ in the sum $X \amalg Y$:\par
+  \begin{tikzpicture}
+    \draw (0,0.9) ellipse (.25 and 1);
+    \node (X) at (0,2.1) {$X$};
+    \draw (1,1.1) ellipse (.4 and 0.8);
+    \node (Y) at (1,2.1) {$Y$};
+    \node[dot,label=above:$x$] (x) at (0,0.8) {};
+    \node[dot,label=below:$y$] (y) at (1,1.2) {};
+    \draw[dashed] (0.5,1.1) ellipse (1.2 and 1.6);
+    \node (XY) at (-0.75,2.35) {$X \amalg Y$};
+  \end{tikzpicture}}
+Proving a property of any element of $X \amalg Y$
+means proving that this property holds of any $\inl{x}$ with $x:X$ and any
+$\inr{y}$ with $y:Y$. In general, constructing a function $f$ of type
+$\prod_{z: X \amalg Y} T(z)$, where $T(z)$ is a type depending on
+$z$, is done by defining $f(\inl{x})$ for all $x$ in $X$
+and $f(\inr{y})$ for all $y$ in $Y$.
+
+\begin{xca}\label{xca:binary-sum-equiv}
+  Let $X,Y$ be types, and consider the type family
+  $T(z)$ depending on $z:\bool$ defined by
+  $T(\no)\defeq X$ and $T(\yes) \defeq Y$.
+  Show that the map $f : X\amalg Y \to \sum_{b:\bool}T(b)$,
+  defined by $f (\inl x) \defeq (\no,x)$ and $f(\inr y) \defeq (\yes,y)$,
+  is an equivalence.
+\end{xca}
+
+Identification of two elements $a$ and $b$ in $X \amalg Y$ is
+only possible if they are constructed with the same constructor.
+Thus $\inl{x} = \inr{y}$ is always empty, and identifications
+$\inl{x} = \inl{x'}$ are equivalent to identifications $x=x'$ in $X$,
+and identifications
+$\inr{y} = \inr{y'}$ are equivalent to identifications $y=y'$ in $Y$.
+
+\begin{xca}\label{xca:binary-sum-id}
+  Prove these statements using \cref{xca:binary-sum-equiv},
+  \cref{lem:isEq-pair=}, and a characterization
+  of the identity types of $\bool$.
+\end{xca}
+
+\subsection{Unary sums}\label{sec:unary-sum-types}
+
+Sometimes it is useful to be able to make a copy of a type $X$:
+A new type that behaves just like $X$,
+though it is not definitionally equal to $X$.
+The \emph{unary sum} or \emph{wrapped copy} of $X$ is an inductive type $\Copy(X)$
+with a single constructor, $\inc{} : X \to \Copy(X)$.\footnote{%
+  A point $x:X$ corresponds to the point $\inc{x}:\Copy(X)$:\par
+  \begin{tikzpicture}
+    \draw (0,1) ellipse (.3 and .8);
+    \draw[dashed] (-.1,1) ellipse (.6 and 1.1);
+    \node[dot,label=above:$x$] (x) at (0,0.8) {};
+    \node (X) at (-.45,.7) {$X$};
+    \node (c) at (.75,1) {$\leftrightarrow$};
+    \draw[dashed] (1.7,1) ellipse (.3 and .8);
+    \draw (1.6,1) ellipse (.6 and 1.1);
+    \node[dot,label=above:$\inc{x}$] (inx) at (1.7,0.8) {};
+    \node (Xdashed) at (2.6,.1) {$\Copy(X)$};
+  \end{tikzpicture}\par
+  \noindent Note that $\Copy(X)$ can alternatively be defined as $\sum_{z:\true}X$.}
+Constructing a function $f : \prod_{z:\Copy(X)}T(z)$,
+where $T(z)$ is a type depending on $z : \Copy(X)$,
+is done by defining $f(\inc{x})$ for all $x:X$.
+Taking $T(z)$ to be the constant family at $X$,
+we get a function, $\out : \Copy(X) \to X$,
+called the \emph{destructor},
+with $\out(\inc{x}) \defeq x$ for $x:X$,
+and the induction principle implies that $\inc{\out(z)} = z$
+for all $z:\Copy(X)$, so $\Copy(X)$ and $X$ are equivalent, as expected.
+In fact, we will assume that the latter equation even holds definitionally.
+It follows that identifications $\inc{x}=\inc{x'}$ in $\Copy(X)$ are equivalent
+to identifications $x=x'$ in $X$, and identifications $\out(z)=\out(z')$ in $X$
+are equivalent to identifications $z=z'$ in $\Copy(X)$.
+
+Note that we can make several copies of $X$ that are not
+definitionally equal among themselves,
+for instance by picking different names for the constructor.
+We write $\Copy_{\constructor{con}}(X)$ for a copy of $X$
+whose constructor is
+\[
+  \constructor{con} : X \to \Copy_{\constructor{con}}(X).
+\]
+
+Here's an example to illustrate why it can be useful to make such a wrapped type:
+We introduced the natural numbers $\NN$ in \cref{sec:natural-numbers}.
+Suppose we want a type consisting of negations of naturals numbers,
+$\set{\ldots, -2, -1,0}$,
+perhaps as an intermediate step towards building the set of integers
+$\set{\ldots, -2, -1,0,1,2,\ldots}$.\footnote{%
+  (FIX) Maybe we'll actually do just that!}
+Of course, the type $\NN$ itself would do,
+but then we would need to pay extra attention to whether $n:\NN$
+is supposed to represent $n$ as an integer or its negation.
+So instead we take the wrapped copy $\NNN\defeq\Copy_{-}(\NN)$,
+with constructor ${-} : \NN \to \NNN$.
+There is no harm in also writing ${-} : \NNN \to \NN$
+for the destructor.
+This means that $\NNN$ is a type equivalent to $\NN$,
+whose elements are exactly $-n$ for $n:\NN$;
+indeed, $-(-n) \jdeq n$ for $n$ an element of either $\NN$ or $\NNN$,
+and identifications $-n = -n'$ are equivalent to
+identifications $n=n'$.
 
 
 \section{Universes and univalence}\label{sec:univax}

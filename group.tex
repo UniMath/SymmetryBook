@@ -176,12 +176,12 @@ We will return to this example when we've defined torsors.
     to emphasize that groupoids are $1$-types;
     the type of connected types is denoted
     \[
-      \UU^{>0} \defeq \sum_{A:\UU}\biggl(\Trunc{A}\times
-    \prod_{x,y:A}\Trunc{x=_ay}\biggr).\]
+      \UU^{>0} \defeq \sum_{A:\UU}\Bigl(\Trunc{A}\times
+    \prod_{x,y:A}\Trunc{x=_ay}\Bigr).\]
     Similar notations with a subscript ``$*$'' indicate pointed types.}
   \[
-    \UUscone \defeq \sum_{A:\UU}\sum_{a:A} \biggl(\isset(a=_Aa)
-    \times \prod_{x:A}\Trunc{a=_Ax}\biggr).
+    \UUscone \defeq \sum_{A:\UU}\sum_{a:A} \Bigl(\isset(a=_Aa)
+    \times \prod_{x:A}\Trunc{a=_Ax}\Bigr).
   \]
 \end{definition}
 The following exercise reconciles the words of the above definition with the type.
@@ -206,71 +206,90 @@ We are now ready to define the type of groups:
 
 \begin{definition}\label{def:typegroup}
   The \emph{type of groups} is a wrapped copy (see \cref{sec:unary-sum-types})
-  of the type of pointed connected groupoids $\UUscone$, defined as follows.
+  of the type of pointed connected groupoids $\UUscone$,
   \[
-    \typegroup \defequi \Copy(\UUscone)
+    \typegroup \defequi \Copy_{\mkgroup}(\UUscone),
   \]
+  with constructor $\mkgroup : \UUscone \to \Group$.
   A \emph{group} is an element of $\typegroup$.
-  For $X : \UUscone$, we adopt the notation $\mkgroup X$ as a synonym for the
-  group $\inc X : \typegroup$ provided by the constructor associated with $\Copy$.
 \end{definition}
 
 \begin{definition}\label{def:classifying-type}
-  For $G : \typegroup$, we adopt the notation $\clf G$ for the pointed type $\out G : \UUscone$
-  provided by the destructor associated with $\Copy$; we will refer to it as the \emph{classifying type} of $G$.
-  Morever, the elements of $\clf G$ will be referred to as the \emph{shapes of $G$},
-  and we define the \emph{designated shape of $G$} by setting $\p_G\defequi \pt_{\clf G}$.
+  We write $\B : \typegroup \to \UUscone$ for the
+  destructor associated with $\Copy_{\mkgroup}(\UUscone)$.
+  For $G : \typegroup$,
+  we call $\BG$ the \emph{classifying type} of $G$.\footnote{%
+    As a notational convention we always write the ``$\B$''
+    so that it sits next to and matches the shape
+    of its operand.
+    You see immediately the typographical reason behind this convention:
+    The italic letters $B$,$G$ get along nicely,
+    while the roman $\B$ would clash with its italic friend $G$
+    if we wrote $\B G$ instead.} % only place \B G is allowed
+  Morever, the elements of $\BG$ will be referred to as the \emph{shapes of $G$},
+  and we define the \emph{designated shape of $G$} by setting
+  $\p_G\defequi \pt_{\BG}$,
+  \ie the designated shape of $G$ is the base point of its
+  classifying type.
 \end{definition}
 
 \begin{definition}\label{def:group-symmetries}% or elements
   Let $G$ be a group.
-  We regard every group as a group of symmetries, and thus we refer to the elements of $\loops \clf G$ as the
-  \emph{symmetries in $G$}; they are the symmetries of the designated shape $\p_G$ of $G$.
-  (Notice the careful distinction between the phrases ``\emph{symmetries in}'' and ``\emph{symmetries of}''.)
-  We adopt the notation $\USym G$ for the type $\loops \clf G$ of symmetries in $G$; it is a set.
+  We regard every group as a group of symmetries,
+  and thus we refer to the elements of $\loops \BG$ as the
+  \emph{symmetries in $G$};
+  they are the symmetries of the designated shape $\p_G$ of $G$.
+  (Notice the careful distinction between the phrases
+  ``\emph{symmetries in}'' and ``\emph{symmetries of}''.)
+  We adopt the notation $\USym G$ for the type $\loops \BG$ of symmetries in $G$;
+  it is a set.\footnote{%
+    Taking the symmetries in a group
+    thus defines a map
+    $\USym : \Group \to \Set$,
+    with $\mkgroup X \mapsto \loops X$.}
 \end{definition}
 
 \begin{remark}\label{rem:aut}
   We are emphasizing that the essential feature of a group
   is the symmetries of its designated shape.
   That is why we defined $\Group$ to be a copy of $\UUscone$,
-  and not $\UUscone$ itself,\marginnote{%
+  and not $\UUscone$ itself;\marginnote{%
     Recall also the example of the negated natural numbers $\NNN$
     from \cref{sec:unary-sum-types}:
     Its elements are $-n$ for $n:\NN$ to remind us how to think about them.
     And the same applies to $\Group$:
     Its elements are $\mkgroup X$ for $X : \UUscone$
     to remind us how to think about them.}
-  the type $\USym G$ is at least as important as $\clf G$ --- the copying forces us to use
-  the notation $\clf G$, preventing a glib identification of $G$ with its classifying type
-  and preventing us from regarding $G$ as having \emph{elements}.
+  the type $\USym G$ is at least as important as $\BG$
+  --- the copying forces us to use the notation $\BG$,
+  preventing a glib identification of $G$ with its classifying type.
   As noted in \cref{sec:unary-sum-types},
   the constructor and destructor pair forms an equivalence $\Group \weq \UUscone$.
   The type $\UUscone$ is a subtype of $\UUp$, so 
   once you know that a pointed type $X$ is a connected groupoid,
-  you know also that $X$ is the classifying type for a group, namely $G\defeq\mkgroup X$.
+  you know also that $X$ is the classifying type for a group,
+  namely $G\defeq\mkgroup X$.
+
+  Note that the equivalence also entails
+  that identifications $G=H$ of groups are equivalent
+  to identifications $\BG = \BH$ of pointed types.
 \end{remark}
 
 \begin{remark}\label{rem:BG-convention}
   To define a function $f : \prod_{G:\Group}T(G)$,
   where $T(G)$ is a type family indexed by $G:\Group$,
   it suffices to consider the case $G\jdeq\mkgroup X$,
-  where $X$ is a pointed connected groupoid.
-  Since $X\jdeq\clf G$, we shall make a convention to
-  always use the variable name $\BG$ instead of $X$,
-  and similarly, for a variable $H:\Group$,
-  when we use the induction principle for $\Group$,
-  we use the variable $\BH:\UUscone$, etc.
-  And whenever we introduce a variable $G$ of type $\Group$,
-  we immediately and silently use the induction principle
-  to get a variable $\BG:\UUscone$ such that $G\jdeq\mkgroup\BG$
-  and $\BG \jdeq \clf(\mkgroup\BG) \jdeq \clf G$.\footnote{%
-    You see immediately the typographical reason behind this convention:
-    The italic letters $B$,$G$ get along nicely,
-    while the roman $\clf$ distances itself a bit from its italic friend $G$.}
-
-  Also note that identifications $G=H$ of groups are equivalent
-  to identifications $\BG = \BH$ of pointed types.
+  where $X$ is a pointed connected groupoid,
+  namely the classifying type $\BG$.\footnote{%
+    If you are bothered by the convention
+    to write the classifying type of $G$ in \emph{italic} like a variable,
+    you can either think of $\BG$ as a locally defined
+    variable denoting the classifying type that is
+    defined whenever a variable $G$ of type $\Group$ is introduced,
+    or you can imagine that whenever such a $G$ is introduced
+    (with the goal of making a construction or proving a proposition),
+    we silently apply the induction principle to
+    reveal a wrapped variable $\BG:\UUscone$.}
 \end{remark}
 
 It is not infrequent that we want to consider the symmetries $\loops(A,a)$
@@ -295,8 +314,8 @@ of some element $a$ in some groupoid $A$.
   since $A$ is connected.
 
   In other words, for any $G \jdeq \mkgroup\BG$, we have
-  an identification $G = \Aut_{\BG_\div}(\p_G)$, of $G$ with the automorphism
-  group of the base point $\p_G : \BG$.
+  an identification $G = \Aut_{\BG}(\p_G)$, of $G$ with the automorphism
+  group of the designated shape $\p_G : \BG$.
 \end{remark}
 
 \subsection{First examples}
@@ -867,37 +886,36 @@ $\Bf :\BG\to\BH$ that ``sends $\p_G$ to $\p_H$'',
     When it is clear from context that a homomorphism is intended,
     we even write $f : G \to H$.}
   \[
-    \Hom(G,H)\defequi\Copy(\BG\ptdto\BH),
+    \Hom(G,H)\defequi\Copy_{\mkgroup}(\BG\ptdto\BH),
   \]
-  \ie a wrapped copy of the type of pointed maps of classifying spaces.
-  Just as for groups, we rename the constructor
-  $\mkhom : (\BG \ptdto \BH) \to \Hom(G,H)$,
-  and the destructor $\clf : \Hom(G,H) \to (\BG \ptdto \BH)$.
-  We call $\clf f$ is \emph{classifying map} of the homomorphism.
+  \ie a wrapped copy of the type of pointed maps of classifying spaces
+  with constructor
+  $\mkhom : (\BG \ptdto \BH) \to \Hom(G,H)$.
+  We again write $\B : \Hom(G,H) \to (\BG \ptdto \BH)$ for the destructor,
+  and we call $\Bf$ is \emph{classifying map} of the homomorphism.
 \end{definition}
 Recall from \cref{sec:pointedtypes},
 that when there is little danger of confusion, we may drop the subscript
 $\div$ when talking about the unpointed structure.
 \begin{remark}\label{rem:Bf-convention}
-  We shall use a parallel convention for homomorphisms
-  as we use for groups. Recall, that because
-  $\Hom(G,H)$ is a wrapped copy of $\BG\ptdto\BH$,
-  to construct a function $\varphi : \prod_{f:\Hom(G,H)}T(f)$,
+  To construct a function $\varphi : \prod_{f:\Hom(G,H)}T(f)$,
   where $T(f)$ is a family of types indexed by $f:\Hom(G,H)$,
-  it suffices to consider the case $f \jdeq \mkhom\Bf$,
-  where we deliberately use the variable name $\Bf : \BG\ptdto\BH$.
+  it suffices to consider the case $f \jdeq \mkhom\Bf$.\footnote{%
+    We use the same notational convention regarding ``$\B$''
+    applied to homomorphisms as we do for groups.}
 
-  Also, remember that identifications of homomorphisms $f=_{\Hom(G,H)}h$
+  Identifications of homomorphisms $f=_{\Hom(G,H)}h$
   are equivalent to identifications of pointed maps
-  $\mathit{\Bf} =_{\BG\ptdto\BH} \mathit{\Bh}$,
-  and that the latter are pairs of an identification of (unpointed) maps
+  $\Bf =_{\BG\ptdto\BH} \Bh$;
+  the latter are (by \cref{lem:isEq-pair=}) given by
+  pairs of an identification of (unpointed) maps
   $H : \Bf_\div =_{(\BG_\div \to \BH_\div)} \Bh_\div$ with an identification
   $K : H(\p_G)\Bf_0 =_{(\p_H=\Bh(\p_G))} \Bh_0$.
 \end{remark}
 
 \begin{example}%
   \label{ex:groups-morphisms}%
-  ~%
+  \leavevmode
   \begin{enumerate}
   \item Consider two sets $S$ and $T$.  Recall from \cref{ex:groups}
     that $\Set_{(S)}\defequi\sum_{X:\Set}\Trunc{S=X}$ is the component
@@ -2369,19 +2387,19 @@ The desired statement is ``$\rho_G$ is a monomorphism'': by \cref{lem:eq-mono-co
 Recall that given a pointed type $X$, we coerce it silently to its
 underlying unpointed type $X_\div$ whenever this coercion can be
 inferred from context. For example, given a group $G$, the type
-${\B G}\weq {\B G}$ can not possibly mean anything but
-${\B G}_\div\simeq {\B G}_\div$ as the operator ``$\weq$'' acts on
+$\BG\weq \BG$ can not possibly mean anything but
+$\BG_\div\simeq \BG_\div$ as the operator ``$\weq$'' acts on
 bare types. To refer to the type of pointed equivalences (that is the
 pointed function whose underlying function is an equivalence), we
-shall use the notation ${\B G} \ptdweq {\B G}$.%
-% In a similar way, $A\to {\B G}$ for a type $A$ has no
-% other meaning that the function type $A \to {\B G}_\div$.  This
+shall use the notation $\BG \ptdweq \BG$.%
+% In a similar way, $A\to \BG$ for a type $A$ has no
+% other meaning that the function type $A \to \BG_\div$.  This
 % kind of coercion is used all over the place in this section to avoid
-% notation explosion. One more subtle example is $\id_{\B G}$, which
+% notation explosion. One more subtle example is $\id_\BG$, which
 % can have two different meanings: either the identity function
-% ${\B G}_\div \to {\B G}_\div$ pointed by the reflexivity path,
+% $\BG_\div \to \BG_\div$ pointed by the reflexivity path,
 % or the bare unpointed identity function. If the context is
-% ambiguous, we will write properly $\id_{{\B G}_\div}$ when
+% ambiguous, we will write properly $\id_{\BG_\div}$ when
 % necessary.
 %
 % Note that for a pointed type $X$, the type $X=X$ should normally be
@@ -2407,22 +2425,22 @@ shall use the notation ${\B G} \ptdweq {\B G}$.%
 \begin{definition}
   Let $G$ be a group. The {\em center} of $G$, denoted
   $\grpcenter(G)$, is the group
-  $\Aut_{({\B G}_\div={\B G}_\div)}(\id_{{\B G}_\div})$.%
+  $\Aut_{(\BG_\div=\BG_\div)}(\id_{\BG_\div})$.%
   \marginnote{%
     We work transparently through the equivalence
     \begin{displaymath}
-      ({\B G}_\div={\B G}_\div) \weq (\B G \weq \B G)
+      (\BG_\div=\BG_\div) \weq (\BG \weq \BG)
     \end{displaymath}
-    so that $\id_{{\B G}_\div}$ is freely used in place of
-    $\refl {{\B G}_\div}$ when convenient.%
+    so that $\id_{\BG_\div}$ is freely used in place of
+    $\refl {\BG_\div}$ when convenient.%
   }%
 \end{definition}
 
 There is a natural map
-$\ev_{\pt_G} : ({\B G}_\div={\B G}_\div) \to {\B G}_\div$ defined by
+$\ev_{\pt_G} : (\BG_\div=\BG_\div) \to \BG_\div$ defined by
 $\ev_{\pt_G}(\varphi)\defequi \varphi(\pt_G)$. In particular,
-$\ev_{\pt_G}(\id_{{\B G}_\div}) \jdeq \pt_G$. It makes the restriction
-of this map to the connected component of $\id_{{\B G}_\div}$ a
+$\ev_{\pt_G}(\id_{\BG_\div}) \jdeq \pt_G$. It makes the restriction
+of this map to the connected component of $\id_{\BG_\div}$ a
 pointed map, hence it defines a homomorphism
 \begin{displaymath}
   \grpcenterinc G : \Hom(\grpcenter(G), G).
@@ -2431,14 +2449,14 @@ We will now justifiy the name {\em center} for $\grpcenter(G)$, and
 connect it to the notion of center for abstract groups in ordinary
 mathematics. The homomorphism $\grpcenterinc G$ induces a homomorphism
 of abstract groups from $\abstr(\grpcenter(G))$ to $\abstr(G)$. By
-induction on $p:\id_{{\B G}_\div} = \varphi$ for
-$\varphi:{\B G}_\div={\B G}_\div$, one proves that
+induction on $p:\id_{\BG_\div} = \varphi$ for
+$\varphi:\BG_\div=\BG_\div$, one proves that
 $\ap{\B \grpcenterinc G}(p) = p(\pt_G)$: indeed, this is true when
-$p\jdeq \refl {\id_{{\B G}_\div}}$. One proves furthermore, again by
-induction on $p:\id_{{\B G}_\div} = \varphi$, that
+$p\jdeq \refl {\id_{\BG_\div}}$. One proves furthermore, again by
+induction on $p:\id_{\BG_\div} = \varphi$, that
 $\ap \varphi = (q\mapsto \inv{p(\pt_G)} q p(\pt_G))$. In particular,
-when $\varphi \jdeq \id_{{\B G}_\div}$, it shows that for every
-$p:\id_{{\B G}_\div}=\id_{{\B G}_\div}$, the following proposition
+when $\varphi \jdeq \id_{\BG_\div}$, it shows that for every
+$p:\id_{\BG_\div}=\id_{\BG_\div}$, the following proposition
 holds:
 \begin{displaymath}
   \prod_{g:\pt_G=\pt_G }p(\pt_G) g = g p(\pt_G)
@@ -2450,21 +2468,21 @@ center of the group $\abstr(G)$ in ordinary group theory.)
 
 \begin{lemma}
   \label{lemma:center-is-subgroup}%
-  The map $\B \grpcenterinc G$ is a \covering over $\B G$. 
+  The map $\B \grpcenterinc G$ is a \covering over $\BG$.
 \end{lemma}
 \begin{proof}
   One wants to prove the proposition
-  $\isset(\inv{(\B\grpcenterinc G)}(x))$ for each $x:\B G$. By connectedness
-  of $\B G$, one can show the proposition only at $x\jdeq
+  $\isset(\inv{(\B\grpcenterinc G)}(x))$ for each $x:\BG$. By connectedness
+  of $\BG$, one can show the proposition only at $x\jdeq
   \pt_G$. However,
   \begin{displaymath}
     \inv{(\B\grpcenterinc G)}(\pt_G) \weq \sum_{\varphi:{\B\grpcenter(G)}}{\pt_G = \varphi(\pt_G)}
   \end{displaymath}
   Recall that $\B\grpcenter(G)$ is the connected component of
-  $\id_{{\B G}_\div}$ in ${\B G}_\div = {\B G}_\div$. In particular, if $(\varphi,p)$
+  $\id_{\BG_\div}$ in $\BG_\div = \BG_\div$. In particular, if $(\varphi,p)$
   and $(\psi,q)$ are two elements of the type on the right hand-side
   above, their identity type $(\varphi,p)=(\psi,q)$ is equivalent to
-  their identity type in ${\B G}_\div = {\B G}_\div$, or in other words:
+  their identity type in $\BG_\div = \BG_\div$, or in other words:
   \begin{displaymath}
     ((\varphi,p) = (\psi,q)) \weq \sum_{\pi:\varphi=\psi}\pi(\pt_G) p = q.
   \end{displaymath}
@@ -2474,9 +2492,9 @@ center of the group $\abstr(G)$ in ordinary group theory.)
   \item for $\pi:\varphi=\psi$, the type $\pi(\pt_G) p = q$ is a
     proposition; hence for two such elements $(\pi,!)$ and $(\pi',!)$,
     one has $(\pi,!)=(\pi',!)$ equivalent to $\pi=\pi'$,
-  \item for all $x:\B G$, $\varphi(x)=\psi(x)$ is a set, hence for
+  \item for all $x:\BG$, $\varphi(x)=\psi(x)$ is a set, hence for
     $\pi,\pi':\varphi=\psi$, the type $\pi=\pi'$ is a proposition,
-  \item connectedness of $\B G$ proves then that $\pi=\pi'$ is equivalent
+  \item connectedness of $\BG$ proves then that $\pi=\pi'$ is equivalent
     to $\pi(\pt_G)=\pi'(\pt_G)$,
   \item finally the propositional condition on $\pi$ and $\pi'$ allows
     us to conclude as $\pi(\pt_G)= q\inv p = \pi'(\pt_G)$.
@@ -2499,31 +2517,31 @@ center'' of $G$ is picked out by $\abstr{(\grpcenterinc G)}$.
   an element.
 \end{lemma}
 \begin{proof}
-  One must construct an element $\hat g:\id_{{\B G}_\div} = \id_{{\B G}_\div}$ such that
+  One must construct an element $\hat g:\id_{\BG_\div} = \id_{\BG_\div}$ such that
   $g=\hat g(\pt_G)$. We shall use function extensionality and produce
-  an element $\hat g(x):x=x$ for all $x:\B G$ instead. Note that $x=x$ is
-  a set, and that connectedness of $\B G$ is not directly applicable
+  an element $\hat g(x):x=x$ for all $x:\BG$ instead. Note that $x=x$ is
+  a set, and that connectedness of $\BG$ is not directly applicable
   here. We will use a technique that will prove useful in many
   situations in the book, along the lines of the following sketch
   (where we denote $U(x)\defequi (x=x)$):
   \begin{enumerate}
-  \item for a given $x:\B G$, if such a $\hat g(x):U(x)$ existed, it would
+  \item for a given $x:\BG$, if such a $\hat g(x):U(x)$ existed, it would
     produce an element of the type $T(\hat g(x))$ for a carefully chosen type
     family $T$,
-  \item aim to prove $\iscontr(\sum_{u:U(x)}T(u))$ for any $x:\B G$,
-  \item this is a proposition, so connectedness of ${\B G}$ can be applied
+  \item aim to prove $\iscontr(\sum_{u:U(x)}T(u))$ for any $x:\BG$,
+  \item this is a proposition, so connectedness of $\BG$ can be applied
     and only $\iscontr(\sum_{u:U(\pt_G)}T(u))$ needs to be proven,
   \item hopefully, $\sum_{u:U(\pt_G)}T(u)$ reduces to an obvious
     singleton type.
   \end{enumerate}
-  Here, for any $x:\B G$, we define the type family $T: (x=x) \to \UU$
+  Here, for any $x:\BG$, we define the type family $T: (x=x) \to \UU$
   by
   \begin{displaymath}
     T(q) \defequi \prod_{p:\pt_G=x} (pg=qp).
   \end{displaymath}
   And we claim that $\sum_{q:x=x}T(q)$ is contractible for any
-  $x:\B G$. Because this is a proposition, one only need to check that
-  it holds on one point of the connected type ${\B G}$, say
+  $x:\BG$. Because this is a proposition, one only need to check that
+  it holds on one point of the connected type $\BG$, say
   $x\jdeq pt_G$. Now,
   \begin{displaymath}%
     \begin{aligned}
@@ -2548,7 +2566,7 @@ center'' of $G$ is picked out by $\abstr{(\grpcenterinc G)}$.
     then uses that the propositional truncation of $\pt_G=\pt_G$ is
     indeed inhabited (by $\trunc{\refl {\pt_G}}$).%
   }%
-  We have just shown that for all $x:\B G$, the type
+  We have just shown that for all $x:\BG$, the type
   $\sum_{q:x=x}T(q)$ is contractible. We define now $\hat g(x):x=x$ as
   the chosen center of contraction of that type. In particular, in the
   previous proof that $\sum_{q:\pt_G=\pt_G}T(q)$ is connected, we
@@ -2560,11 +2578,11 @@ Together, \cref{lemma:center-inc-inj-on-paths} and
 \cref{lemma:center-inc-surj-on-paths} show that
 $\abstr{(\grpcenterinc G)}$ establishes an equivalence
 \begin{equation}
-  \left( \id_{{\B G}_\div} = \id_{{\B G}_\div} \right) \weq \sum_{g:\pt_G=\pt_G}\prod_{h:\pt_G=\pt_G}gh=hg
+  \left( \id_{\BG_\div} = \id_{\BG_\div} \right) \weq \sum_{g:\pt_G=\pt_G}\prod_{h:\pt_G=\pt_G}gh=hg
 \end{equation}
 In yet other words,
-$\B \grpcenter(G)\defequi \conncomp{({\B G}_\div = {\B G}_\div)}
-{\id_{{\B G}_\div}}$ is (equivalent to) the classifying type of a
+$\B \grpcenter(G)\defequi \conncomp{(\BG_\div = \BG_\div)}
+{\id_{\BG_\div}}$ is (equivalent to) the classifying type of a
 group whose abstract group is the ``abstract center'' of $\abstr(G)$.
 
 The following lemma is then immediate:
@@ -2754,19 +2772,19 @@ identity type $x=y$ is a groupoid for $x,y:A$.
   % local macro
   \newcommand{\loopspace}[1][]{\constructor{Aut}^2_{#1}}
   Define the map $\BB : \typeabgroup \to \UUp$ by
-  $\BB G\defequi \univcover{\UU}{{\B G}_\div}$. Proving that $\BB G$ is a
+  $\BB G\defequi \univcover{\UU}{\BG_\div}$. Proving that $\BB G$ is a
   $2$-type is equivalent to proving the proposition $\isset(p=q$) for
   all $p,q:x=y$ and all $x,y:\BB G$. One can then use connectedness of
   $\BB G$ and restrict to only show that $p=q$ is a set for all path
-  $p,q:({\B G}_\div,\settrunc{\id_{{\B G}_\div}})=({\B
-    G}_\div,\settrunc{\id_{{\B G}_\div}})$. As part of the definition
-  of the group $G$, the type ${\B G}$ is a $1$-type, hence
-  ${\B G}_\div={\B G}_\div$ is also a $1$-type through
+  $p,q:(\BG_\div,\settrunc{\id_{\BG_\div}})=({\B
+    G}_\div,\settrunc{\id_{\BG_\div}})$. As part of the definition
+  of the group $G$, the type $\BG$ is a $1$-type, hence
+  $\BG_\div=\BG_\div$ is also a $1$-type through
   univalence. Moreover,
-  $\trp p {(\settrunc{\id_{{\B G}_\div}})} = \settrunc{\id_{{\B G}_\div}}$ and
-  $\trp q {(\settrunc{\id_{{\B G}_\div}})} = \settrunc{\id_{{\B G}_\div}}$ both
+  $\trp p {(\settrunc{\id_{\BG_\div}})} = \settrunc{\id_{\BG_\div}}$ and
+  $\trp q {(\settrunc{\id_{\BG_\div}})} = \settrunc{\id_{\BG_\div}}$ both
   are propositions, as they are identity types in the set
-  $\setTrunc{{\B G}_\div={\B G}_\div}$. Hence $\isset(p=q)$ holds.
+  $\setTrunc{\BG_\div=\BG_\div}$. Hence $\isset(p=q)$ holds.
 
   So one gets a map, denoted again $\BB$ abusively,
   \begin{displaymath}
@@ -2854,7 +2872,7 @@ identity type $x=y$ is a groupoid for $x,y:A$.
   for $\BB$. Given an abelian group $G$, the proof
   of~\cref{lemma:universal-cover-simply-connected} gives an
   equivalence between $\B\loopspace {(\BB G)}$ and the connected
-  component of $\id_{{\B G}_\div}$ in ${\B G}_\div={\B G}_\div$. By
+  component of $\id_{\BG_\div}$ in $\BG_\div=\BG_\div$. By
   definition, this is the classifying type of $\grpcenter(G)$. Being
   abelian, $G$ is isomorphic to its center
   (\cref{def:abelian-groups}), and so it yields an element of

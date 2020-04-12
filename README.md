@@ -12,3 +12,4 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - If x is a bound variable and c is less bound, then we prefer c = x to x = c. Typically, if c is the center of contraction.
 - If k and n are number variables that can be renamed, then we prefer k < n to k > n or n < k.
 - *up to* versus *modulo* regarding a group action: *Up to* is the stacky version, the orbit type (typically for us, a groupoid), whereas *modulo* refers to the set of connected components/the set of orbits. For example, given a group G, we have the groupoid of elements up to conjugation versus the set of elements modulo conjugation.
+- globally defined constants are typeset roman, while variables are italic. One exception is the *B* construction: The B matches whatever it operates on and joins to it without any space.
