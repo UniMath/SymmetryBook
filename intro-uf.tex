@@ -1034,6 +1034,15 @@ If $f: X \to Y$ and $f': X' \to Y'$, then we let
 $f\times f'$ denote the map of type $(X\times X') \to (Y\times Y')$
 that sends $(x,x')$ to $(f(x),f(x'))$.
 
+The following lemma follows from \cref{lem:isEq-pair=}, combined with \cref{def:pathover-trp} and \cref{xca:trp-nondep}.
+
+\begin{lemma}\label{lem:isEq-pair-bin=}
+  Suppose we are given type $X$ and $Y$.
+  For any elements $(x,y)$ and $(x',y')$ of $X \times Y$,
+  the map defined in \cref{def:pairtopath} defined by $$(p,q) \mapsto \pathpair p q$$ is an equivalence of type
+  $$( x = x' ) \times (y = y') \weq \left( (x,y) = (x',y') \right). $$
+\end{lemma}
+
 \section{More inductive types}
 \label{sec:inductive-types}
 
@@ -1397,37 +1406,44 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \item\label{prop-utils-codom} $A\to P$ is a proposition;
 \item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
+\item\label{prop-utils-sum} if $A$ is a proposition, then $\sum_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-eq} $P \liff Q$ is a proposition;
 \item\label{prop-utils-lem} $P \amalg (P\to\false)$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-\ref{prop-utils-false-true}
+\ref{prop-utils-false-true}:
 If $p,q : \false$, then $p=q$ holds vacuously.
 If $p,q : \true$, then $p=q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv=\triv$.
 
-\ref{prop-utils-codom}
+\ref{prop-utils-codom}:
 If $p,q : A\to P$, then $p=q$ is proved by first observing that $p$ and $q$
 are functions which, by function extensionality, are equal if they have
 equal values $p(x) = q(x)$ in $P$ for all $x$ in $A$. This is
 actually the case since $P$ is a proposition.
 
-\ref{prop-utils-pi}
+\ref{prop-utils-pi}:
 If $p,q : \prod_{a:A} R(a)$ one can use the same argument as for $A\to P$
 but now with \emph{dependent} functions $p,q$.
 
-\ref{prop-utils-times}
+\ref{prop-utils-times}:
 If $(p_1,q_1),(p_2,q_2) : P\times Q$, then $(p_1,q_1)=(p_2,q_2)$
-is proved componentwise. 
+is proved componentwise.  Alternatively, we may regard this case as a special case of \ref{prop-utils-sum}.
 
-\ref{prop-utils-eq}
+\ref{prop-utils-sum}:
+Given $(a_1,r_1), (a_2,r_2) : \sum_a R(a)$, we must establish that $(a_1,r_1) = (a_2,r_2)$.  Combining the map in \cref{def:pairtopath} with the
+identity in \cref{def:pathover-trp} yields a map $ \left( \sum_{u : a_1 = a_2} \trp[Y]{u}(r_1)=r_2 \right) \to \left( (a_1,r_1) = (a_2,r_2)
+\right)$, so it suffices to construct an element in the source of the map.  Since $A$ is a proposition, we may find $u : a_1 = a_2$.  Since
+$R(a_2)$ is a proposition, we may find $v : \trp[Y]{u}(r_1)=r_2$.  The pair $(u,v)$ is what we wanted to find.
+
+\ref{prop-utils-eq}:
 Using \cref{lem:weq-iso}, $P \liff Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by 
 combining~\ref{prop-utils-codom} and~\ref{prop-utils-times}.
 
-\ref{prop-utils-lem}
+\ref{prop-utils-lem}:
 If $p,q : P\amalg (P\to\false)$, then we can distinguish four cases
 based on $\inl{}/\inr{}$, see \cref{sec:sum-types}. In two cases
 we have both $P$ and $P\to\false$ and we are done. In the other two,
@@ -1457,6 +1473,7 @@ existential quantification for propositions.
 
 The lemma above has a generalization from propositions to
 $n$-types which we state without proving.
+(The proof goes by induction on $n$, with the lemma above serving as the base case where $n = -1$.)
 
 \begin{lemma}\label{lem:level-n-utils}
 Let $A$ be a type, and let $X$ and $Y$ be $n$-types.
@@ -1466,6 +1483,7 @@ Let $Z(a)$ be an $n$-type depending on $a:A$. Then we have:
 \item\label{level-n-utils-codom} $A\to X$ is an $n$-type;
 \item\label{level-n-utils-pi} $\prod_{a:A} Z(a)$ is an $n$-type;
 \item\label{level-n-utils-times} $X\times Y$ is an $n$-type.
+\item\label{level-n-utils-sum} if $A$ is an $n$-type, then $\sum_{a:A} Z(a)$ is an $n$-type;
 \end{enumerate}
 \end{lemma}
 
