@@ -133,15 +133,36 @@ $(\prod_{x:\Sc} A(x))\to \sum_{a:A(\base)}(\pathover a A {\Sloop} a)$
 is an equivalence.
 \end{remark}
 
-
+\begin{marginfigure}
+  \begin{tikzpicture}
+    %% draw S1
+    \node[dot,label=below:$\Sc$] (base) at (0,0) {};%
+    \draw[->] (base) .. controls ++(45:1) and ++(135:1) .. node (loop)
+    {} (base);
+    %% type A
+    \begin{scope}[xshift=5em]
+      \draw plot [smooth cycle] coordinates {(0,0) (1.5,0) (1.3,1)
+        (0,1.5)};%
+      \node[dot,label=below:$a$] (a) at (.5,.5) {};%
+      \node (A1) at (1.5,1.5) {$A$}; \draw[->] (a) .. controls
+      ++(-20:1) and ++(-30:.5) .. ++(45:.5) .. controls ++(150:1) and
+      ++(210:1) .. node[very near start] (middle) {} (a);
+    \end{scope}
+    %% draw map g
+    \draw[dashed, ->, shorten <= 3pt, shorten >= 3pt] (loop) to[bend
+    left] node[above]{$g$} (middle);
+  \end{tikzpicture}
+\end{marginfigure}
 \begin{remark}
-A function $f:\Sc\to A$ is often called a \emph{loop} in $A$, 
-the picture being that $f$ throws $\Sloop:\base=\base$ as a lasso in the type $A$.
+  A function $f:\Sc\to A$ is often called a \emph{loop} in $A$, the
+  picture being that $f$ throws $\Sloop:\base=\base$ as a lasso in the
+  type $A$.
 
-  Under univalence, so that $a=_Aa$ is identified with the pointed functions 
-from the circle, this allows for a very graphic interpretation of the 
-symmetries in $a=_Aa$: they are all in the image of a function $g$ from 
-the circle: they are loops in the type $A$ starting and ending at $a$! ((picture!!))
+  Under univalence, so that $a=_Aa$ is identified with the pointed
+  functions from the circle, this allows for a very graphic
+  interpretation of the symmetries in $a=_Aa$: they are all in the
+  image of a function $g$ from the circle: they are loops in the type
+  $A$ starting and ending at $a$!
 \end{remark}
 
 \begin{lemma}\label{lem:circleisconnected}
@@ -411,17 +432,50 @@ $$\exp:\RR\to \Sc$$
 be the \emph{exponential \covering of the circle}.
 \end{definition}
 
-\begin{remark}
-  \label{rem:expforreal}
-  The reason for the name $\exp:\RR\to \Sc$ comes from the following visualization.   
-If $x$ is a real number, then the complex exponentiation 
-$e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has absolute value $1$ and 
-so defines a continuous function from the real numbers to the unit circle.  
-Choosing any point $z$ on the unit circle, we see that the preimage of $z$ under 
-the exponential function is a shifted copy of the integers inside the reals. 
- 
-This connection between the integers and the unit circle is precisely captured in 
-a form that we can take further by the \covering $\exp:\RR\to \Sc$.
+\begin{remark} \label{rem:expforreal}%
+  \begin{marginfigure}
+    \tikzexternalenable
+    \begin{tikzpicture}[scale=0.7]
+      \begin{axis}[axis lines=none,line width=1pt, axis equal]% image]
+
+        \addplot[domain=0:10*pi,samples=200,black,no
+        marks,thick] %500 samples slow
+        ({10*cos(deg(x))}, % x-coordinate
+        {2*sin(deg(x)) + 2*x/pi}) % y-coordinate
+        coordinate [dot,label=left:$2$,pos=0.9] (B) % point (A)
+        coordinate [dot,label=left:$1$,pos=0.7] % point (A)
+        coordinate [dot,label=left:$0$,pos=0.5] %
+        coordinate [dot,label=left:$-1$,pos=0.3] %
+        coordinate [dot,label=left:$-2$,pos=0.1] (C) %
+        node[above,pos=1] {$\RR$} ; %
+
+        \addplot[domain=0:2*pi,samples=50,black,no
+        marks,thick] %500 samples slow
+        ({10*cos(deg(x))}, % x-coordinate
+        {2*sin(deg(x))-5}) % y-coordinate
+        coordinate [label=left:$\Sloop$,pos=0]
+        coordinate [dot,pos=0.5]; % point (D)
+
+        \node at (0,-5) () {$\Sc$};
+        
+        \draw[dotted] ([yshift=1em]B.north) node[above left]{$\zet$} -- (B);
+        \draw[dotted] (C) -- ([yshift=-1em]C.south);
+
+      \end{axis}
+    \end{tikzpicture}
+    \tikzexternaldisable
+  \end{marginfigure}
+  The reason for the name $\exp:\RR\to \Sc$ comes from the following
+  visualization.  If $x$ is a real number, then the complex
+  exponentiation $e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has
+  absolute value $1$ and so defines a continuous function from the
+  real numbers to the unit circle.  Choosing any point $z$ on the unit
+  circle, we see that the preimage of $z$ under the exponential
+  function is a shifted copy of the integers inside the reals.
+
+  This connection between the integers and the unit circle is
+  precisely captured in a form that we can take further by the
+  \covering $\exp:\RR\to \Sc$.
 \end{remark}
 
 We already defined a \covering $f:A\to B$ to be universal if $A$ is connected
@@ -545,61 +599,58 @@ then the type of $h(\Sloop)$ is a proposition.
 We now define $f: \uc{\base}\to R$ and $g: R\to\uc{\base}$ that will turn out to
 give inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
 
+\begin{marginfigure}
+  \tikzexternalenable
+  \begin{tikzpicture}[]
+    \begin{axis}[axis lines=none,line width=1pt, axis equal]
+
+      \addplot[domain=0:10*pi,samples=200,black,no
+      marks,thick] %500 samples slow
+      ({10*cos(deg(x))}, % x-coordinate
+      {2*sin(deg(x)) + 2*x/pi}) % y-coordinate
+      coordinate [dot,label={left,color=white}:$2$,pos=0.9] (B) % point (A)
+      coordinate [dot,label={left,color=white}:$1$,pos=0.7] (one) % point (A)
+      coordinate [dot,label={left,color=white}:$0$,pos=0.5] (zero) %
+      coordinate [dot,label={left,color=white}:$-1$,pos=0.3] (mone) %
+      coordinate [dot,label={left,color=white}:$-2$,pos=0.1] (C) %
+      node[above,pos=1] {$\RR$} ; %
+
+      \addplot[domain=0:2*pi,samples=50,black,no
+      marks,thick] %500 samples slow
+      ({10*cos(deg(x))}, % x-coordinate
+      {2*sin(deg(x))-5}) % y-coordinate
+      coordinate [label=left:$\Sloop$,pos=0]
+      coordinate [dot,pos=0.5]; % point (D)
+
+      \node at (0,-5) () {$\Sc$};
+      
+      \draw[dotted] ([yshift=1em]B.north) node[above left]{$\zet$} -- (B);
+      \draw[dotted] (C) -- ([yshift=-1em]C.south);
+    \end{axis}
+    \draw[->, bend left, shorten <=2pt, shorten >=2pt] (zero) to
+    node[left] {\scriptsize$\trp[R]{\Sloop}$} (one);%
+    \draw[->, bend right, shorten <=2pt, shorten >=2pt] (zero) to
+    node[left] {\scriptsize$\trp[R]{\inv\Sloop}$} (mone);%
+    \draw[->, bend right, shorten <=2pt, shorten >=2pt, line
+    width=2pt, white] (zero) to (B);%
+    \draw[->, bend right, shorten <=2pt, shorten >=2pt] (zero) to
+    node[right,rounded corners,fill=white,outer sep=5pt]
+    {\scriptsize$\trp[R]{\Sloop^2}$} (B);%
+    \draw[->, bend left, shorten <=2pt, shorten >=2pt, white, line
+    width=2pt] (zero) to (C);%
+    \draw[->, bend left, shorten <=2pt, shorten >=2pt] (zero) to
+    node[right,rounded corners,fill=white,outer sep=5pt]
+    {\scriptsize$\trp[R]{\Sloop^{-2}}$} (C);%
+  \end{tikzpicture}
+  \tikzexternaldisable
+  \caption{Transport in the family $R$}\label{fig:transportalongloop}
+\end{marginfigure}
 \begin{definition}
   \label{def:fPtoR}
   The function $f:\prod_{z:\Sc}(\uc{\base}(z)\to R(z))$ is defined by transport: $f(z)(p)\defequi\trp[R]{p}(0)$.
 \end{definition}
-
 In Figure~\ref{fig:transportalongloop}, the transport in the definition
 above has been visualised for $p={\Sloop^n}$, $n=-2,-1,0,1,2$.
-
-\begin{figure}[h]
-  \begin{sidecaption}%
-    {Transport in the family $R$}[fig:transportalongloop]
-    \centering
-    \vspace{.5in}
-    (SLOW PICTURE OF SPIRAL)
-    \vspace{.5in}
-\DELETE% comment this line out to include slow picture
-{\begin{tikzpicture}[scale=0.8]
-\begin{axis}[axis lines=none,line width=1pt, axis equal image]
-
-\node at (-10,13) () {$\zet$}; %CUTOFF FOR UNKNOWN REASON
-\node [] at (-10,12) (A) {};
-
-\addplot[domain=0:10*pi,samples=500,black,no marks,thick] %500 samples slow
-({10*cos(deg(x))}, % x-coordinate
-{2*sin(deg(x)) + x/pi}) % y-coordinate
-node [circle,scale=0.3,fill,pos=0.9] (B) {} % point (A)
-node [circle,scale=0.3,fill,pos=0.7] {} % point (A)
-node [circle,scale=0.3,fill,pos=0.5] {} %
-node [circle,scale=0.3,fill,pos=0.3] {} % 
-node [circle,scale=0.3,fill,pos=0.1] (C) {}; %
-
-\node at (-11,9) () {$2$};
-\node at (-11,7) () {$1$};
-\node at (-11,5) () {$0$};
-\node at (-11,3) () {$-1\;\;\,$};
-\node at (-11,1) () {$-2\;\;\,$};
-
-\node [] at (-10,-2) (D) {};
-\node at (0,-5) () {$\Sc$};
-\node at (9,-5) () {$\Sloop$};
-
-\addplot[domain=0:2*pi,samples=100,black,no marks,thick] %500 samples slow
-({10*cos(deg(x))}, % x-coordinate
-{2*sin(deg(x))-5}) % y-coordinate
-node [circle,scale=0.3,fill,pos=0.5] (E) {}; % point (D)
-
-
-\draw[dotted] (A)--(B);
-\draw[thick] (B)--(C);
-\draw[dotted] (C)--(D);
-
-\end{axis}
-\end{tikzpicture}}%DELETE
-\end{sidecaption}
-\end{figure}
 
 \begin{lemma}\label{lem:windingnumber}
 For $f$ as in \cref{def:fPtoR} we have $f(\base)(\Sloop^n)=n$ for all $n:\zet$.
@@ -629,22 +680,26 @@ take into account that $R(\base)\jdeq \zet$ and $\uc{\base}(\base) \jdeq (\base=
 The function $g:\prod_{z:\Sc}(R(z)\to \uc{\base}(z))$ is 
 defined by circle induction: 
 \[
-g(\base)\defeq {\Sloop^{-}}:\zet\to(\base=\base) : n \mapsto {\Sloop^n}
+g(\base)\defeq \left(n \mapsto {\Sloop^n} \right) :\zet\to(\base=\base) 
 \]
 and 
 \[
 g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}=_{\zet\to (\base=\base)} g(\base).
 \]
-So far we have only given the type of $g(\Sloop)$. By definition, $R(\Sloop)$ is $s$
-and $\uc{\base}(\Sloop)$ is composition with $\Sloop$.
-In a picture, $g(\Sloop)$ should prove that it does not matter what 
-path you take around the square
-$$\xymatrix{\zet\ar[rr]^{\Sloop^-}\ar@{=}[d]^s_\downarrow
- &&(\base=\base)\ar@{=}[d]^{\Sloop\cdot\_}_\downarrow\\
-  \zet\ar[rr]^{\Sloop^-}&&\,(\base=\base).}
-$$
-This follows by a simple calculation: ${\Sloop\,\Sloop^{n-1}} = {\Sloop^n}$, 
-for all $n:\zet$. 
+\marginnote{%
+  In a picture, $g(\Sloop)$ should prove that it does not matter what 
+  path you take around the square
+  $$\xymatrix{\zet\ar[rr]^{\Sloop^-}\ar@{=}[d]^s_\downarrow
+    &&(\base=\base)\ar@{=}[d]^{\Sloop\cdot\_}_\downarrow\\
+    \zet\ar[rr]^{\Sloop^-}&&\,(\base=\base).}
+  $$%
+}%
+So far we have only given the type of $g(\Sloop)$. By definition,
+$R(\Sloop)$ is $s$ and $\uc{\base}(\Sloop)$ is composition with
+$\Sloop$.%
+The element $g(\Sloop)$ follows by a simple calculation: the
+proposition ${\Sloop\,\Sloop^{n-1}} = {\Sloop^n}$ holds for all
+$n:\zet$.
 \end{definition}
 
 
@@ -675,7 +730,7 @@ This follows from \cref{lem:windingnumber}.
 \begin{corollary}\label{cor:S1groupoid}
 The circle $\Sc$ is a groupoid, and the function
 \[
-{\Sloop}^{-} : \zet\to(\base=_{\Sc}\base)
+{\Sloop}^{\blank} : \zet\to(\base=_{\Sc}\base)
 \]
 sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
@@ -687,7 +742,7 @@ that $y=_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
 By \cref{def:gRtoP}, ${\Sloop}^{-}\jdeq g(\base)$ is an equivalence.
 \end{proof}
 
-The following lemma is a simple example of a technique later called `delooping'.
+The following lemma is a simple example of a technique later called {\em delooping}.
 \begin{lemma}\label{lem:S1-delooping}
 Let $A$ be a connected type and $a:A$. 
 Assume we have an equivalence $e:(\base=_{\Sc}\base) \to (a=a)$
@@ -758,11 +813,17 @@ of elements of $C$, since its type is propositional and does not convey
 any information beyond its mere existence. We may write a ``!'' in order
 to remind the reader of hidden information of propositional type.
 
-Before we continue by identifying the symmetries of $(\zet,\etop{s})$ in $C$,
-below in \cref{lem:IdCisZet}, we investigate paths in $\sum_{X:\UU}(X=_{\UU}X)$.
-
+Before we continue by identifying the symmetries of $(\zet,\etop{s})$
+in $C$, below in \cref{lem:IdCisZet}, we investigate paths in
+$\sum_{X:\UU}(X=_{\UU}X)$.%
+\marginnote{%
+  Recall from \cref{def:pairtopath} that, given a type family $T:A\to \UU$, a
+  path $p:a=b$ in $A$ and a pathover $q:\pathover x T p y$, the
+  expression $\pathpair{p}{q}$ denotes the resulting path
+  $(a,t)=(b,u)$ in $\sum_{x:A}T(x)$.%
+}%
 \begin{lemma}\label{lem:path-in-sum-X:U-X=X}
-Let $X_i:\UU$ be types,with symmetries $s_i: X_i = X_i$ for $i=1,2,3$, and 
+Let $X_i:\UU$ be types, with symmetries $s_i: X_i = X_i$ for $i=1,2,3$, and 
 paths $p_i : X_i = X_{i+1}$ and $q_i : \pathover {s_i}{}{p_i}{s_{i+1}}$ over $p_i$, 
 for $i=1,2$, so that $\pathpair {p_i}{q_i} : (X_i,s_i) = (X_{i+1},s_{i+1})$.
 Then $\pathpair {p_2}{q_2} \cdot \pathpair {p_1}{q_1} = \pathpair {p_2 \cdot p_1}{q_2 \cdoto q_1} $.
@@ -900,7 +961,58 @@ This will look like a clock, with marks $1,2,\dots,12$.
 You can then make a function from the circle to itself by sending 
 all marks to $12$ and each of the arcs connecting the marks to the entire circle 
 -- (in a continuous manner preserving the orientation).
-  ((picture!!))
+\begin{marginfigure}
+  \tikzexternalenable
+  \begin{tikzpicture}
+    \begin{axis}[axis lines=none,line width=1pt, axis equal]
+      \def\startx{10*cos(deg(5/4*pi))}
+      \def\starty{(-2*sin(deg(5/4*pi)) + 5/2)}
+      \def\stopx{10*cos(deg(7/4*pi))}
+      \def\stopy{(-2*sin(deg(7/4*pi)) + 7/2 + 44)}
+      \def\stepfun#1{((1-#1)*(sqrt(#1))+#1*(1-sqrt(1-#1)))}
+
+      \addplot[domain=pi:5/4*pi, samples=5, black, no marks, thick]
+      ({10*cos(deg(x))},%
+      {(-2*sin(deg(x)) + 2*x/pi)});%
+      \addplot[domain=7/4*pi:2*pi, samples=5, black, no marks, thick]
+      ({10*cos(deg(x))},%
+      {(-2*sin(deg(x)) + 2*x/pi + 44)});%
+      \addplot[domain={\startx}:{\stopx}, samples=100, no marks, thick]
+      (%
+      {(\stepfun{(x-\startx)/(\stopx -\startx)})*(\stopx -\startx) + \startx},%
+      {(\stopy - \starty)/(\stopx - \startx)*(x-\startx) + \starty}%
+      );
+  
+      \addplot[domain=pi:24*pi,samples=300,black,no
+      marks,thick] %500 samples slow
+      ({10*cos(deg(x))}, % x-coordinate
+      {2*sin(deg(x)) + 2*x/pi}) % y-coordinate
+      coordinate [dot, label=left:$1$, pos={0/23}]
+      coordinate [dot, label=left:$2$, pos={2/23}]
+      coordinate [dot, label=left:$3$, pos={4/23}]
+      coordinate [dot, label=left:$4$, pos={6/23}]
+      coordinate [dot, label=left:$5$, pos={8/23}]
+      coordinate [dot, label=left:$6$, pos={10/23}]
+      coordinate [dot, label=left:$7$, pos={12/23}]
+      coordinate [dot, label=left:$8$, pos={14/23}]
+      coordinate [dot, label=left:$9$, pos={16/23}]
+      coordinate [dot, label=left:$10$, pos={18/23}]
+      coordinate [dot, label=left:$11$, pos={20/23}]
+      coordinate [dot, label=left:$12$, pos={22/23}];
+      
+      \addplot[domain=0:2*pi,samples=50,black,no
+      marks,thick] %500 samples slow
+      ({10*cos(deg(x))}, % x-coordinate
+      {2*sin(deg(x))-5}) % y-coordinate
+      coordinate [label={left,scale=.7}:$\Sloop$,pos=0]
+      coordinate [dot,pos=0.5]; % point (D)
+
+      \node[scale=.7] at (0,-5) () {$\Sc$};
+    \end{axis}
+  \end{tikzpicture}
+  \tikzexternaldisable
+  \caption{\color{red} REWORK WITH COLOR}
+\end{marginfigure}
 \end{remark}
 
 We could be more ambitious and ask: what is the \emph{type} of decidable 
@@ -941,7 +1053,7 @@ We proceed as follows.  First we presenting the answer, a covering we call $\dg{
  What should we require of $\dg{m}(X,f)$ for $(X,f):C$? Well, $\dg{m}:S^1\to S^1$ sends $\base$ to $\base$ and $\Sloop$ to $\Sloop^m$; somehow only the $\Sloop^k$ where $k$ is a multiple of $k$ is in the image of $\dg{m}$.  So we have to find an element $(Y,r):C$ with ``$r^m$ corresponding to $f$''.  We achieve this by ``streching'' $X$: let $Y$ be $m$ copies of $X$ and let $r$ jump idly from one copy to another except every $m$th time when $r$ also is allowed to use $f$.  
 This is illustrated in \cref{fig:root} with the shift by $f$ being 
 vertical and the movement from copy to copy going around a circle.  
-\begin{figure}[bt]
+\begin{figure}[hbt]
   \begin{sidecaption}%
     {The $m$-th root of a function $f: X\to X$}[fig:root]
   \centering
@@ -1056,7 +1168,7 @@ and the composite $\dg{m}c$ is given by
 $((\bn m\times\zet,\sqrt[m]s),\id\times s)$: we must produce an element in 
 $$((\bn m\times\zet,\sqrt[m]s),\id\times s)=((\zet,s),s^m).$$
 Consider the equivalence  $\mZ: (\bn m\times \zet)\to\zet$ with $\mZ(i,n)=i+mn$ discussed above.  Since transport of $\sqrt[m]s$ along $\mZ$ is exactly $s$ (\ie $\mZ\cdot\sqrt[m]s=s\cdot\mZ$; 
-note the way we formulate this so that we don't need to talk about an inverse of $\mZ$) we get an identification which we also call $\mZ:((\bn m\times\zet,\sqrt[m]s))=_C((\zet,s))$.  Likewise, transport of $\id\times s$ along $m$ is $s^m$, so that $\mZ$ lifts to an element in
+note the way we formulate this so that we don't need to talk about an inverse of $\mZ$) we get an identification which we also call $\mZ:(\bn m\times\zet,\sqrt[m]s)=_C(\zet,s)$.  Likewise, transport of $\id\times s$ along $\mZ$ is $s^m$, so that $\mZ$ lifts to an element in
 $((\bn m\times\zet,\sqrt[m]s),\id\times s)=((\zet,s),s^m)$.
 \end{example}
 
@@ -1340,17 +1452,11 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
 % $$D_0\simeq P\times\zet\simeq\zet.$$
 
 %% temporary definition
-  \def\blank{{-}}%
   \def\mono{\hookrightarrow}%
   \def\bigetop#1{\overline{#1}}%
   \def\bigptoe#1{\widetilde{#1}}%
-  \def\inv#1{#1^{-1}}%
   \def\myq{\mathfrak m}%
-  \renewcommand{\trp}[2][\null]{%
-    \ifx#1\null\mathop{\mathit{trp}_{#2}}%
-    \else\mathop{\mathit{trp}_{#1,#2}}%
-    \fi%
-  }%
+  %% remove next 4 def if one still wants explicit coercion from eq to path and conversely 
   \def\bigetop#1{{#1}}%
   \def\bigptoe#1{{#1}}%
   \def\etop#1{{#1}}%
@@ -1616,7 +1722,7 @@ since $\dg{m} \neq \dg{m} (-\id_\Sc)$
 (similar to $\id_\Sc \neq -\id_\Sc$ in \cref{xca:S1=S1-components}).
 In the remaining paragraphs we deal with the case $t\jdeq\id_\Sc$.
 We will use the equivalence $w: (\base=\base)\to\zet$ that
-is the inverse of ${\Sloop}^{-}$ from \cref{cor:S1groupoid}.
+is the inverse of ${\Sloop}^{\blank}$ from \cref{cor:S1groupoid}.
 
 Consider a $Q: \dg{m} =_{\Sc\to\Sc} \dg{m}$; then we have $Q(\base): \base=\base$,
 and $Q(\Sloop)$ proves a proposition. 
@@ -1629,21 +1735,27 @@ We take $k$ as the first component of the center.
 For the second component of the center it suffices to give an element of 
 $(\id_\Sc,Q(\base))=(\id_\Sc,{\Sloop}^k)\jdeq f(k)$. 
 We take ${\Sloop}^{-l}$ as (simplified) element of $\id_\Sc = \id_\Sc$.
-In the following picture we analyze transport in the family $R(t)\defeq(\dg{m} = \dg{m} t)$ 
-(left half) and specialize to the situation at hand (right half).
-
-\[
-\xymatrix{
-t\ar@{=}[d]^{p}_\downarrow
-& \dg{m}\ar@{=}[r]^{X}_\rightarrow 
-&\dg{m} t \ar@{=}[d]^{(\dg{m} \_)(p)}_\downarrow &&
-&\id_\Sc\ar@{=}[d]^{{\Sloop}^{-l}}_\downarrow
-& \base\ar@{=}[r]^{Q(\base)}_\rightarrow 
-& \base\ar@{=}[d]^{{\Sloop}^{-ml}}_\downarrow 
-\\
-t'&&\dg{m} t' &&
-&\id_\Sc   &&\base{\vphantom{t}}}
-\]
+The picture in \cref{fig:transport-R} depicts transport in the family $R(t)\defeq(\dg{m} = \dg{m} t)$ 
+(top half) and specialize to the situation at hand (bottom half).
+\begin{marginfigure}
+  \[
+    \xymatrix{%
+      t\ar@{=}[d]^{p}_\downarrow
+      & \dg{m}\ar@{=}[r]^{X}_\rightarrow
+      & \dg{m} t \ar@{=}[d]^{(\dg{m}\_)(p)}_\downarrow
+      \\
+      t'& & \dg{m} t' %
+      \\
+      \id_\Sc\ar@{=}[d]^{{\Sloop}^{-l}}_\downarrow
+      & \base\ar@{=}[r]^{Q(\base)}_\rightarrow 
+      & \base\ar@{=}[d]^{{\Sloop}^{-ml}}_\downarrow 
+      \\
+      \id_\Sc & & \base{\vphantom{t}}%
+    }
+  \]
+  \caption{Transport in the type family $R$.}%
+  \label{fig:transport-R}%
+\end{marginfigure}
 Clearly, the transport of $Q(\base)$ along ${\Sloop}^{-l}$ is 
 equal to ${\Sloop}^{k}$ because of $w(Q(\base)) = ml+k$.
 This completes the construction of the center.
