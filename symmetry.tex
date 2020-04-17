@@ -98,6 +98,121 @@ The set of orbits is the set-truncation of the orbit type,
 \]
 We say that the action is \emph{transitive} if $X / G$ is contractible.
 
+\section{Heaps \texorpdfstring{$(\dagger)$}{(\textdagger)}}
+\label{sec:heaps}
+
+Recall that we in \cref{rem:heap-preview} wondered about
+the status of general identity types $a=_A a'$,
+where $a$ and $a'$ might be different elements of a groupoid $A$.\marginnote{%
+  This section has no implications for the rest of the book,
+  and can thus safely be skipped on a first reading.
+  (TODO: Move in place in \cref{ch:groups}?)}
+Here we describe the resulting algebraic structure
+and how it relates to groups.
+
+We proceed in a fashion entirely analogous to that of \cref{sec:typegroup},
+but instead of looking a pointed types, we look at \emph{bipointed types}.
+
+\begin{definition}\label{def:bipt-conn-groupoid}
+  The type of \emph{bipointed, connected groupoids} is the type
+  \[
+    \UUppone \defeq \sum_{A:\UU^{=1}}(A \times A).
+  \]
+\end{definition}
+Recall that $\UU^{=1}$ is the type of connected groupoids $A$,
+and that we also write $A:\UU$ for the underlying type.
+We write $(A,a,a'):\UUppone$ to indicate the two endpoints.
+
+Analogous to the loop type of a pointed type,
+we have a designated identity type of a bipointed type,
+where we use the two points as the endpoints of the identifications:
+We set $\ISym(A,a,a') \defeq (a =_A a')$.
+
+\begin{definition}\label{def:heap}
+  The type of \emph{heaps} is a wrapped copy (\cf \cref{sec:unary-sum-types})
+  of the type of bipointed, connected groupoids $\UUppone$,
+  \[
+    \Heap \defeq \Copy_{\mkheap}(\UUppone),
+  \]
+  with constructor $\mkheap : \UUppone \to \Heap$.
+\end{definition}
+We call the destructor $\B : \Heap \to \UUppone$,
+and call $\BH$ the \emph{classifying type} of the heap $H \jdeq\mkheap\BH$,
+just as for groups,
+and we call the first point in $BH$ is \emph{start shape} of $H$,
+and the second point the \emph{end shape} of $H$.
+
+The identity type construction $\ISym : \UUppone \to \Set$
+induces a map $\USym : \Heap \to \Set$,
+mapping $\mkheap X$ to $\ISym X$.
+These are the \emph{underlying identifications} of the heaps.
+
+These is an obvious map (indeed a functor) from groups to heaps,
+given by doubling the point.
+That is, we keep the classifying type and use the designated shape
+as both start and end shape of the heap.
+In fact, this map lifts to the type of heaps with a chosen identification.
+\begin{exercise}\label{xca:group+torsor-heap}
+  Define natural equivalences $\Heap \weq \sum_{G:\Group}\BG$,
+  and $\Group \weq \sum_{H:\Heap}(\USym H)$.
+\end{exercise}
+Recalling the equivalence between $\BG$ and the type of $G$-torsors
+from~\cref{lem:BGbytorsor},
+we can also say that a heap is the same
+as a group $G$ together with a $G$-torsor.\footnote{%
+  But be aware that are \emph{two} such descriptions,
+  according to which endpoint is the designated shape,
+  and which is the ``twisted'' torsor.}
+
+In the other direction,
+there are \emph{two} obvious maps (functors) from heaps to groups,
+taking either the start or the end shape to be the designated shape.
+
+Here's an \emph{a priori} different map from heaps to groups:
+For a heap $H \jdeq \mkheap(A,a,a')$, consider all the
+symmetries of the underlying set of identifications $(a=_Aa')$
+which arise as $r \mapsto p\inv q r$ for $p,q\in H$.
+
+Note that $(p,q)$ and $(p',q')$ determine the same symmetry
+if and only if $p\inv q = p'\inv{q'}$, and if and only if
+$\inv{p'}p = \inv{q'}q$.
+
+For the composition, we have $(p,q)(p',q') = (p\inv{q}p',q') = (p,q'\inv{p'}q)$.
+
+\begin{exercise}
+  Complete the argument that this defines a map
+  from heaps to groups. Can you identify the resulting group
+  with the symmetries of the start or end shape?
+  How would you change the construction to get the other endpoint?
+\end{exercise}
+
+\begin{exercise}
+  Show that the symmetries of the two endpoints of a heap
+  are \emph{merely} isomorphic.
+
+  Define the notion of an \emph{abelian heap},
+  and show that for abelian heaps,
+  the symmetry groups of the endpoints are (\emph{purely}) isomorphic.
+\end{exercise}
+
+Now we come to the question of describing the algebraic structure
+of a heap.
+Whereas for groups we can define the abstract structure
+in terms of the reflexivity path and the binary operation of path composition,
+for heaps, we can define the abstract structure
+in terms of a \emph{ternary operation}.
+
+\begin{exercise}\label{xca:heap-variety}
+  Fix a set $S$.
+  Show that the fiber $\inv{\USym}(S)\jdeq\sum_{H:\Heap}(S=\USym H)$ is a set.
+
+  Now fix in addition a ternary operation $t:S\times S\times S\to S$ on $S$.
+  Show that the fiber of the map $\Heap \to \sum_{S:\Set}(S\times S\times S \to S)$,
+  mapping $H$ to $(\USym H,(p,q,r)\mapsto p \inv{q} r)$,
+  at $(S,t)$ is a proposition,
+  and describe this proposition in terms of equations.
+\end{exercise}
+
 \section{Semidirect products}
 \label{sec:Semidirect-products}
 
