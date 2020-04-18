@@ -221,11 +221,12 @@ action of a group on a group.  Like the product, it consists of pairs, both at t
 see.
 
 We start with some preliminaries on paths between pairs. 
-Lemma \cref{lem:isEq-pair=} above takes a simpler form when $y$ and $y'$ are values of a section $f$ of the family $Y$, as the following lemma shows.
+Lemma \cref{lem:isEq-pair=} above takes a simpler form when $y$ and $y'$ are values of a family $x \mapsto f(x)$
+of elements of the family $x \mapsto Y(x)$, as the following lemma shows.
 
 \begin{lemma}\label{lem:pathpairsection}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
-  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
   For any elements $x$ and $x'$ of $X$,
   there is an equivalence of type
   $$\left ( (x,f(x)) = (x',f(x')) \right ) \weq (x=x') \times (f(x) = f(x)),$$
@@ -251,7 +252,7 @@ $X$.
 
 \begin{definition}\label{def:pathsectionaction}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
-  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
   For any elements $x$ and $x'$ of $X$ and for any identity $p : x = x'$, define a function $(f(x') = f(x')) \to (f(x) = f(x))$, to be denoted
   by $q' \mapsto {q'} ^ p$, by induction on $p$ and $x'$, reducing to the case where $x'$ is $x$ and $p$ is $\refl x$, allowing us to
   set ${q'} ^{ \refl x } \defeq q'$.
@@ -261,7 +262,7 @@ We turn now to associativity for the operation just defined.
 
 \begin{lemma}\label{def:pathsectionactionassoc}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
-  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
   For any elements $x$, $x'$, and $x''$ of $X$, for any identities $p : x = x'$ and $p' : x' = x''$,
   and for any $q : f x'' = f x''$,
   there is an identity of type $ ( q ^{ p' }) ^ p = q ^{( p' \cdot p )}$.
@@ -278,7 +279,7 @@ The next lemma contains the formula we are seeking.
 
 \begin{lemma}\label{lem:pathpairsectionmult}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
-  Suppose we are also given a section $f : \prod_{x:X} Y(x)$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
   For any elements $x$, $x'$, and $x''$ of $X$, and for any two identities $e : (x,f(x)) = (x',f(x'))$ and $e' : (x',f(x')) = (x'',f(x''))$,
   if $e$ corresponds to the pair $(p,q)$ with $p : x = x'$ and $q : f x = f x$ under the equivalence of \cref{lem:pathpairsection},
   and $e'$ corresponds to the pair $(p',q')$ with $p' : x' = x''$ and $q' : f x' = f x'$,
@@ -308,9 +309,11 @@ been able to argue by induction on $p$ and $p'$.
 
 Observe that if the action of $G$ on $H$ is trivial, then $\tilde H(t) \jdeq H$ for all $t$ and $G \ltimes \tilde H \jdeq G \times H$.
 
-Projection onto the first factor gives a homomorphism $p \defeq \mkgroup \fst : G \ltimes \tilde H \to G$, and it has a section $s : G \to G \ltimes \tilde H$ defined by 
-$ s \defeq \mkgroup {\left( t \mapsto (t,\sh_{\tilde H(t)}) \right) }$, for $t : \B G$.  The two maps are homomorphisms because they preserve the basepoints.
-
+Projection onto the first factor gives a homomorphism $p \defeq \mkgroup \fst : G \ltimes \tilde H \to G$.
+Moreover, there is a homomorphism $s : G \to G \ltimes \tilde H$ defined by 
+$ s \defeq \mkgroup {\left( t \mapsto (t,\sh_{\tilde H(t)}) \right) }$, for $t : \B G$.
+The two maps are homomorphisms because they are made from basepoint-preserving maps.
+The map $s$ is a \emph{section} of $p$ in the sense the $p \circ s = \id_G$.
 There is also a homomorphism $j : H \to G \ltimes \tilde H$ defined by $j \defeq \mkgroup { \left( u \mapsto (\sh_G,u) \right) }$, for $u : \B H$.
 
 \begin{lemma}
