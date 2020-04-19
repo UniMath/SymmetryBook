@@ -102,7 +102,7 @@ function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$.
 Application of the definitions shows, for example, that $\fact(2) \jdeq 2$, because both sides expand to $\Succ(\Succ(0))$.
 
 We finish this section with the definition of iteration by recursion.  Let $X$ be a type, and suppose we have a function $e : X \to X$.  We
-define by induction the $n$-fold \emph{iteration} $e^n : X \to X$ by setting $e^0 \defeq \id_X$ and $e^{S(n)}\defeq e\circ e^n$.
+define by induction the $n$-fold \emph{iteration} $e^n : X \to X$ by setting $e^0 \defeq \id_X$ and $e^{\Succ(n)}\defeq e\circ e^n$.
 Here we apply rule \ref{P4} with the identity function $\id_X$ for $a$
 and the function $d \mapsto e\circ d$ for $g_m : (X\to X)\to(X\to X)$, for any $m$.
 
@@ -2042,19 +2042,19 @@ if all constituent types are sets.
   \[
     T(0,0,p) \defeq (p = \refl{0})%
     \quad \text{and} \quad%
-    T(S(n), S(m), p) \defeq \sum_{q : n = m} p = \ap S q,%
+    T(\Succ(n), \Succ(m), p) \defeq \sum_{q : n = m} p = \ap S q,%
   \]
-  and for the other cases the choice does not matter, say $T(0, S(m),
-  p) \defeq T(S(n), 0 ,p) \defeq \emptytype$.  Next we prove $T(n,m,p)$
+  and for the other cases the choice does not matter, say $T(0, \Succ(m),
+  p) \defeq T(\Succ(n), 0 ,p) \defeq \emptytype$.  Next we prove $T(n,m,p)$
   for all $n,m$, and $p$ by induction on $p$, leaving us with
   $T(n,n,\refl{n})$ for all $n : \NN$, which we in turn prove by
-  distinguishing cases on $n$.  Both the case for $0$ and for $S(n)$
+  distinguishing cases on $n$.  Both the case for $0$ and for $\Succ(n)$
   hold by reflexivity, where in the successor case we use $\refl{n}$
-  for $q$ and note that $\ap S \refl{n} \jdeq \refl{S(n)}$.
+  for $q$ and note that $\ap S \refl{n} \jdeq \refl{\Succ(n)}$.
 
   We can now prove $p = \refl{n}$ for all $p : n = n$ by induction
   on~$n$.  In the base case this is simply $T(0,0,p)$.  And for the
-  case $S(n)$ we get from $T(S(n),S(n),p)$ that $p = \ap{S} q$ for
+  case $\Succ(n)$ we get from $T(\Succ(n),\Succ(n),p)$ that $p = \ap{S} q$ for
   some $q : n = n$.  By induction hypothesis we have $e : q =
   \refl{n}$ and thus also
   \[
@@ -2240,8 +2240,8 @@ $f\,\trunc{x}_0\jdeq g(x)$ for all $x:A$, as desired.\footnote{%
 \section{More on natural numbers}
 \label{sec:more-on-N}
 
-Another useful function is the \emph{predecessor} $p$ defined by
-$p(0)\defeq 0$ and $p(S(n))\defeq n$.
+A useful function $\NN\to\NN$ is the \emph{predecessor} $p$ defined by
+$p(0)\defeq 0$ and $p(\Succ(n))\defeq n$.
 Elementary properties of addition, multiplication and predecessor
 can be proved in type theory in the usual way.
 We freely use them, sometimes even in definitions, leaving most of the
@@ -2257,7 +2257,7 @@ Both $m\leq n$ and $m<n$ are propositions for all $n,m:\NN$.
 
 \begin{xca}\label{xca:try-your-luck-N}
 Try your luck in type theory proving any of the following.
-The successor function satisfies $(S(n)=S(m))\liff(n=m)$.
+The successor function satisfies $(\Succ(n)=\Succ(m))\liff(n=m)$.
 The functions $+$ and $\cdot$ are commutative and associative,
 $\cdot$ distributes over $+$.
 The relations $\leq$ and $<$ are transitive and
@@ -2299,9 +2299,9 @@ otherwise $\mu_P(n)=n$.
 This is a standard procedure that we will call \emph{bounded search}.
 The function $\mu_P$ is defined by induction, setting
 $\mu_P(0)\defeq 0$ and 
-$\mu_P(S(n))\defeq \mu_P(n)$ if $\mu_P(n) < n$.
-Otherwise, we set $\mu_P(S(n))\defeq n$ if $P(n)$,
-and $\mu_P(S(n))\defeq S(n)$ else, using $d(n)$ to decide,
+$\mu_P(\Succ(n))\defeq \mu_P(n)$ if $\mu_P(n) < n$.
+Otherwise, we set $\mu_P(\Succ(n))\defeq n$ if $P(n)$,
+and $\mu_P(\Succ(n))\defeq \Succ(n)$ else, using $d(n)$ to decide,
 that is, by induction on $d(n):P(n)\amalg\neg P(n)$.
 By design, $\mu_P$ `remembers' where it has found the least $k$ (if so).
 We are now done with the computational part and the rest
@@ -2313,9 +2313,9 @@ By induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \mu_P(n)\leq n \quad\text{and}\quad \mu_P(n)<n \to P(\mu_P(n)).
 \]
 The base case $n=0$ is easy. For the induction step, 
-review the computation of $\mu_P(S(n))$. If $\mu_P(S(n))=\mu_P(n)$
+review the computation of $\mu_P(\Succ(n))$. If $\mu_P(\Succ(n))=\mu_P(n)$
 since $\mu_P(n) < n$, then we are done by the induction hypothesis.
-Otherwise, either $\mu_P(S(n))=n$ and $P(n)$, or $\mu_P(S(n))=S(n)$.
+Otherwise, either $\mu_P(\Succ(n))=n$ and $P(n)$, or $\mu_P(\Succ(n))=\Succ(n)$.
 In both cases we are done.
 
 Also by induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
@@ -2324,10 +2324,10 @@ P(m) \to \mu_P(n)\leq m,~ \text{for all $m$ in $\NN$.}
 \]
 The base case $n=0$ holds since $\mu_P(0)=0$. For the induction step,
 assume $P(m) \to \mu_P(n)\leq m$ for all $m$ (IH). Let $m:\NN$
-and assume $P(m)$. We have to prove $\mu_P(S(n))\leq m$.
-If $\mu_P(S(n))=\mu_P(n)$ we are done by IH. Otherwise we have
-$\mu_P(n)=n$ and $\mu_P(S(n)) = S(n)$ and $\neg P(n)$. 
-Then $\mu_P(n)\leq m$ by IH, and $n\neq m$, so $\mu_P(S(n))\leq m$.
+and assume $P(m)$. We have to prove $\mu_P(\Succ(n))\leq m$.
+If $\mu_P(\Succ(n))=\mu_P(n)$ we are done by IH. Otherwise we have
+$\mu_P(n)=n$ and $\mu_P(\Succ(n)) = \Succ(n)$ and $\neg P(n)$. 
+Then $\mu_P(n)\leq m$ by IH, and $n\neq m$, so $\mu_P(\Succ(n))\leq m$.
 
 By contraposition we get from the previous result
 \[
@@ -2337,12 +2337,12 @@ By contraposition we get from the previous result
 Note that there may not be an $n$ such that $P(n)$,
 the best we can do is to prove
 \[
-P(n)\to P_{\min}(\mu_P(S(n)))
+P(n)\to P_{\min}(\mu_P(\Succ(n)))
 \]
 by combining previous results. Assume $P(n)$.
-Then $\mu_P(S(n))\leq n < S(n)$, so that $P(\mu_P(S(n)))$.
-Moreover, $P(m) \to \mu_P(S(n))\leq m$ for all $m$ in $\NN$.
-Hence $P_{\min}(\mu_P(S(n)))$.
+Then $\mu_P(\Succ(n))\leq n < \Succ(n)$, so that $P(\mu_P(\Succ(n)))$.
+Moreover, $P(m) \to \mu_P(\Succ(n))\leq m$ for all $m$ in $\NN$.
+Hence $P_{\min}(\mu_P(\Succ(n)))$.
 
 Since $\sum_{n:\NN} P_{\min}(n)$ is a proposition, 
 we obtain the following function by the induction
@@ -2419,7 +2419,7 @@ type of $n$ elements for any $n:\NN$.
 \begin{definition}\label{def:finiteset}
 For any type $X$ define $\Succ(X)\defeq X\amalg\true$.
 Define inductively the type family $F(n)$, for each $n:\NN$, by
-setting $F(0)\defeq\emptytype$ and $F(S(n))\defeq\Succ(F(n))$.
+setting $F(0)\defeq\emptytype$ and $F(\Succ(n))\defeq\Succ(F(n))$.
 Now abbreviate $\bn{n}\defeq F(n)$. The type $\bn{n}$ is called
 the type with $n$ elements, and we denote its elements
 by $0,1,\ldots,n-1$ rather than by the corresponding expressions
