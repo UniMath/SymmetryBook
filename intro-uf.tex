@@ -1304,8 +1304,9 @@ sort of thing the collection of all classes would be.
 The approach in univalent mathematics resolves the issue as follows.
 
 \begin{enumerate}
-\item There are some types called {\em universes}.
-\item If $\UU$ is a universe, and $X : \UU$ is an element of $\UU$, then $X$ is a type.
+\item There are some types called \emph{universes}.\index{universe}
+\item If $\UU$ is a universe, and $X : \UU$ is an element of $\UU$, then $X$ is a type.%
+  \glossary(UU){$\protect\UU$}{universe}
 \item If $X$ is a type, then it appears as an element in some universe $\UU$.
 \item If $\UU$ and $\UU'$ are universes, $\UU:\UU'$ and $X:\UU$, then also $X:\UU'$.
 \item The types $\emptytype$, $\true$, and $\NN$ are elements of every universe $\UU$.
@@ -1331,13 +1332,30 @@ We first define the \emph{function} that
 the univalence axiom postulates to be an equivalence.
 
 \begin{definition}\label{def:idtoeq}
-  For types $X$ and $Y$ in a universe $\UU$ and a path $p : X = Y$, we define an equivalence $\cast_{X,Y} (p) : X\equiv Y$ by induction on $Y$ and $p$, setting
-  $\cast_{X,Y} (\refl X) \defeq \id_X : X \equiv X$.  The result is a function \[ \cast_{X,Y} : (X = Y) \to (X\equiv Y). \]
+  For types $X$ and $Y$ in a universe $\UU$ and a path $p : X = Y$,
+  we define an equivalence $\cast_{X,Y} (p) : X\equiv Y$
+  by induction on $Y$ and $p$,
+  setting $\cast_{X,Y} (\refl X) \defeq \id_X : X \equiv X$.
+  The result is a function\index{cast}
+  \[
+    \cast_{X,Y} : (X = Y) \to (X\equiv Y).
+  \]
 \end{definition}
   
 In expressions such as $\cast_{X,Y}(p)$ we may abbreviate $\cast_{X,Y}$ to $\cast$ if 
-no confusion will result. We may also write $\cast (p)$ more briefly as $\ptoe p$, 
-which we also use to denote only the function from $X$ to $Y$.
+no confusion will result. We may also write $\cast (p)$ more briefly as $\ptoe p$,%
+\glossary(ptoe){$\protect\ptoe p$}{cast along a path between types}
+which we also use to denote only the function from $X$ to $Y$.\footnote{%
+    \emph{Cast} is here used in the sense of
+    ``arranging into a suitable form''.
+    A more theatrical description would be that
+    an element $x$ of $X$ is cast in the role of a $Y$
+    as directed by the path $p : X = Y$.
+    But beware that some programming languages use \emph{cast}
+    in a quite different sense, meaning to take a
+    single bit-pattern representing an object of type $X$
+    and simply \emph{reinterpreting} the same bits
+    as an object of type $Y$.}
 
 One may verify that $\cast(p)(x) = \trp[\id_\UU]{ p} (x)$, for $x : X$, by induction on $p$.
 Here $id_\UU$ is the identity function $id_\UU$ on $\UU$, viewed as a family of types on $\UU$. 
@@ -1345,16 +1363,24 @@ As a corollary, one sees that $\trp[\id_\UU]{ p}$, previously defined as a funct
 
 Now comes the univalence axiom.
 
-\begin{definition}\label{def:univalence}
-Voevodsky's \emph{univalence axiom} (UA) postulates that 
+\begin{principle}[Univalence Axiom]\label{def:univalence}
+  Voevodsky's \emph{univalence axiom}\index{univalence axiom} (UA)%
+  \index{UA|see{univalence axiom}} postulates that
 $\cast_{X,Y}$ above is an equivalence for all $X,Y:\UU$.
-Formally, we postulate the existence of an element \[ \ua_{X,Y} : \isEq(\cast_{X,Y}).\]
-\end{definition}
+Formally, we postulate the existence of an element
+\[
+  \ua_{X,Y} : \isEq(\cast_{X,Y}).
+\]
+\end{principle}
 
-For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$, the result of applying the
+For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$,%
+\glossary(ua){$\protect\ua$}{the inverse of $\protect\cast$, from UA}
+the result of applying the
 inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus there are identities $\cast (\ua (f)) = f$ and $\ua (\cast (p)) = p$.
 
-We may also write $\ua (f)$ more briefly as $\etop f$.  Thus there are identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$. Also, $\overline{\id_X}=\refl{X}$
+We may also write $\ua (f)$ more briefly as $\etop f$.%
+\glossary(ftop){$\protect\etop f$}{$\protect\ua(f)$}
+Thus there are identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$. Also, $\overline{\id_X}=\refl{X}$
 and $\overline{g\,f}=\etop{g}\,\etop{f}$ if $g: Y\equiv Z$.
 
 \begin{xca}\label{xca:C2}
@@ -1374,8 +1400,10 @@ the two elements of $\bool$), and that $\twist\cdot\twist=\refl{\bool}$.
 Let $P$ be a type.  The property that $P$ has at most one element may 
 be expressed by saying that any two elements are equal. 
 Hence it is encoded by $\prod_{a,b:P} (a=b)$.  
-We shall call a type $P$ with that property a \emph{proposition}, 
-and its elements will be called \emph{proofs} of $P$.
+We shall call a type $P$ with that property a \emph{proposition},%
+\index{proposition}
+and its elements will be called \emph{proofs} of $P$.%
+\index{proof!of a proposition}
 We will use them for doing logic in type theory.
 The reason for doing so is that the most relevant
 thing about a logical proposition is whether it has a proof or not.
@@ -1384,11 +1412,12 @@ a logical proposition that all its members are equal.
 
 Suppose $P$ is a proposition.  Then English phrases such as ``$P$ holds'', ``we know $P$'', and ``we have shown $P$'', will all mean that we
 have an element of $P$.  We will not use such phrases for types that are not propositions, nor will we discuss knowing $P$ conditionally with a
-phrase such as ``whether $P$''.  Similarly, if {\em Q} is the English phrase for a statement encoded by the proposition $P$, then the English
-phrases ``{\em Q} holds'', ``we know {\em Q}'', and ``we have shown {\em Q}'', will all mean that we have an element of $P$.
+phrase such as ``whether $P$''.  Similarly, if ``$Q$'' is the English phrase for a statement encoded by the proposition $P$, then the English
+phrases ``$Q$ holds'', ``we know $Q$'', and ``we have shown $Q$'', will all mean that we have an element of $P$.
 
 Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity 
-type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.
+type $x=y$ is a proposition, then we shall say that $X$ is a \emph{set}.%
+\index{set}
 The reason for doing so is that the most relevant
 thing about a set is which elements it has; distinct identifications
 of equal elements are not relevant.
@@ -1400,13 +1429,15 @@ One of the contributions of Vladimir Voevodsky is the extension of
 the hierarchy downwards, with the notion of proposition,
 including logic in the same hierarchy.
 Some authors therefore call propositions \emph{$(-1)$-types}, 
-and they call contractible types {\em $(-2)$-types}.} 
+and they call contractible types \emph{$(-2)$-types}.}
 
-Let $X$ be a type.  If for any $x:X$ and any $y:X$ the identity type $x=y$ is a set, 
- then we shall say that $X$ is a \emph{groupoid}, also called a $1$-\emph{type}.
+Let $X$ be a type.
+If for any $x:X$ and any $y:X$ the identity type $x=y$ is a set,
+then we shall say that $X$ is a \emph{groupoid},\index{groupoid}
+also called a $1$-\emph{type}.
 
 The pattern continues.  If for any $n:\NN$, any $x:X$, and any $y:X$ 
-the identity type $x=y$ is is an $n$-\emph{type}, 
+the identity type $x=y$ is is an $n$-\emph{type},\index{type!$n$-truncated}
 then we shall say that $X$ is an $(n+1)$-\emph{type}.
 
 We prove that every proposition is a set, from which it follows
@@ -1543,10 +1574,9 @@ We formalize the definitions from the start of this section.
 \isprop(P) &\defeq\prod\nolimits_{p,q:P}(p=q)\\
 \isset(S) &\defeq\prod\nolimits_{x,y:S}\isprop(x=y)\jdeq
                   \prod\nolimits_{x,y:S}\prod\nolimits_{p,q:(x=y)}(p=q)\\
-\isgrpd(G) &\defeq\prod\nolimits_{g,h:G}\isset(g=h)\jdeq \ldots\\
+\isgrpd(G) &\defeq\prod\nolimits_{g,h:G}\isset(g=h)\jdeq \ldots
 \end{align*}
 \end{definition}
-
 \begin{lemma}\label{lem:isX-is-prop}
   For any type $A$, the following types are propositions:
   \begin{enumerate}
