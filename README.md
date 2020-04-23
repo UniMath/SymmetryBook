@@ -15,3 +15,13 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - globally defined constants are typeset roman, while variables are italic. One exception is the *B* construction: The B matches whatever it operates on and joins to it without any space.
 - Whenever possible, do not use a letter for a variable when the same letter is being used as an operator. E.g., try to avoid a variable B when the classifying type/map operator B is used in the same paragraph.
 - Use macros with mathematical meaning, such as \conncomp, whenever possible, for uniformity of notation.
+- Construct sort-order keys for glossary entries this way: 
+	   + for unary operators, use 1 followed by something (e.g., for $-y$ use (1-);
+       + for binary operators, use 2 followed by something (e.g., for $x+y$ use (2+);
+	   + for numbers, use 8 followed by the number (e.g., for $0$ use (80).	 
+       + for identifiers in the Greek alphabet use 9 followed by the 2-digit ordinal number of
+	     the first letter (for proper alphabetization) and then something (e.g., for $\loops$ use (24Omega):
+						01 Α α, 02 Β β, 03 Γ γ, 04 Δ δ, 05 Ε ε, 06 Ζ ζ, 07 Η η, 08 Θ θ, 09 Ι ι, 
+				10 Κ κ, 11 Λ λ, 12 Μ μ, 13 Ν ν, 14 Ξ ξ, 15 Ο ο, 16 Π π, 17 Ρ ρ, 18 Σ σ, 19 Τ τ,
+				20 Υ υ, 21 Φ φ, 22 Χ χ, 23 Ψ ψ, and 24 Ω ω;
+       + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker);
