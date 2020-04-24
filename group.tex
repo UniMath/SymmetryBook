@@ -835,7 +835,7 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
   $$\xymatrix{S\times S\ar[rr]^{(s,t)\mapsto s\circ t}&&S}
   $$
   with the property that
-  \marginnote{Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is a group}
+  \marginnote{Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is an abstract group}
   \begin{enumerate}
   \item for all $a,b,c:S$ we have that $(a\circ c)\circ(b\circ c)=a\circ b$
   \item far all $a,c:S$ there is a $b:S$ such that $a\circ b=c$.
@@ -915,7 +915,8 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   trivial group.  Likewise, there is a unique morphism from the
   trivial group to $G$, sending the unique element of $\bn 1$ to
   $\sh_G$, and pointed by $\refl {\sh_G}$.
-\item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv\BG\times\BH$ and $\BG$ and $\BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  \footnote{Elaborate}
+\item If $G$ and $H$ are groups, the projections $\BG\gets \BG\times \BH\to \BH$ and inclusions $\BG\to\BG\times\BH\gets\BH$ \marginnote{the ``projections'' $G\gets G\times H\to H$ and ``inclusions'' $G\to G\times H\gets H$ are homomorphisms}
+  (\eg the inclusion $\BG\to\BG\times\BH$ is given by $z\mapsto(z,\sh_H)$) give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  
   \end{enumerate}
 \end{example}
 
@@ -945,20 +946,20 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   contradiction. Such a path is the data of a path $p:\id = \id$ such
   that $\pathover {\refl{\bn 3}} {T} {p} \tau$ where the type family
   $T:(\fin_3\to\fin_3) \to \UU$ is given by
-  $f\mapsto (\pt_{\permgrp 3} = f(\pt_{\permgrp 3}))$. It is easy to
+  $f\mapsto (\sh_{\permgrp 3} = f(\sh_{\permgrp 3}))$. It is easy to
   determine the transport in that type family $T$ and we find that
-  $(\pathover {\refl{\bn 3}} {T} {p} \tau) \weq (p(\pt_{\permgrp
+  $(\pathover {\refl{\bn 3}} {T} {p} \tau) \weq (p(\sh_{\permgrp
     3})=\tau)$. Now, by induction on $q:\id=f$ for
   $f:\fin_3 \to \fin_3$, one shows that
   \begin{displaymath}
     \ap f : (\USym{\permgrp 3}) \to
-    (f(\pt_{\permgrp 3}) = f(\pt_{\permgrp 3}))
+    (f(\sh_{\permgrp 3}) = f(\sh_{\permgrp 3}))
   \end{displaymath}
   is equal to
-  $q(\pt_{\permgrp 3})\cdot {\blank}\cdot \inv{q(\pt_{\permgrp
+  $q(\sh_{\permgrp 3})\cdot {\blank}\cdot \inv{q(\sh_{\permgrp
       3})}$. In particular, when $f\jdeq \id$ and $q\jdeq p$, it means
-  that conjugating by $p(\pt_{\permgrp 3})$ is trivial. But by
-  hypothesis $p(\pt_{\permgrp 3}) = \tau$, so it means that $\tau$
+  that conjugating by $p(\sh_{\permgrp 3})$ is trivial. But by
+  hypothesis $p(\sh_{\permgrp 3}) = \tau$, so it means that $\tau$
   commutes with every other element of
   $\USym{\permgrp 3}$. One can check that it
   actually fails to be the case for the element $\theta$ defined by
@@ -993,10 +994,10 @@ we should first study how pointed maps affect loops:
   We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$
   is equivalent to the \emph{set} of ``abstract group homomorphisms''
   from $\abstr(G)$ to $\abstr(H)$ (cf.\ \cref{lem:homomabstrconcr}),
-  but it is instructive to prove that
+  but it is instructive to prove that $\Hom(G,H)$, or equivalently
   \[
-    \Hom(G,H) \defequi (\BG\ptdto\BH) \defequi
-    \sum_{F:\BG_\div\to \BH_\div}(\sh_H=F(\sh_G))
+    (\BG\ptdto\BH) \defequi
+    \sum_{F:\BG_\div\to \BH_\div}(\sh_H=F(\sh_G)),
   \]
   is a set directly from the definition. Recall our notation: a
   homomorphism $f:\Hom(G,H)$ is recorded as the pair
@@ -1007,32 +1008,43 @@ we should first study how pointed maps affect loops:
   group homomorphisms $f,f':\Hom(G,H)$.  We clearly must have a
   $$J:\Bf_\div=\Bf_\div',$$
   which by function extensionality (\cref{def:funext}) is equivalently
-  UNIQUELY (DISCUSS) given by its image given by the element (with the same
+  % UNIQUELY (DISCUSS)
+  given by its image given by the element (with the same
   name) in the $\Pi$-type
   $$J:\prod_{z:\BG_\div}\Bf_\div(z)=\Bf'_\div(z).$$ 
-  Transport along $J$ of $p_f:\sh_H=\Bf_\div(\sh_G)$ shows that in
-  addition we must have a path $!:J(\sh_G)\cdot p_f=p_{f'}$ in the
-  type ${\sh_H=\Bf'_\div(\sh_G)}$:
-  \begin{displaymath}
+   \marginnote{  \begin{displaymath}
     \xymatrix{&\sh_H\ar@{=}[dl]_{p_f}^{\rotatebox{35}{\footnotesize$\gets$}}
       \ar@{=}[dr]^{p_{f'}}_{\rotatebox{-35}{\footnotesize$\to$}}&\\
       \Bf_\div(\sh_G)\ar@{=}[rr]^{J(\sh_G)}_\to&&\,\Bf'_\div(\sh_G).}
-  \end{displaymath}
+  \end{displaymath}}
+Transport along $J$ of $p_f:\sh_H=\Bf_\div(\sh_G)$ shows that in
+  addition we must have a path $!:J(\sh_G)\cdot p_f=p_{f'}$
+ in the
+  type ${\sh_H=\Bf'_\div(\sh_G)}$.
   In other words, we have an equivalence
-  $$(f=f')\simeq \sum_{J:\Bf_\div=\Bf'_\div}J(\sh_G)p_f=p_{f'}.$$
-  Now, take elements $(J,!)$ and $(K,!)$ of the type in the right-hand
-  side of the previous equivalence and prove that $(J,!) = (K,!)$ has
-  an element. Notice that, for any $H:\Bf_\div = \Bf'_\div$, one can
-  prove by induction on $\gamma:\sh_G=x$ that the following diagram
-  commutes:
-  $$\xymatrix{
-    \Bf_\div(\sh_G)\ar@{=}[r]^{H(\sh_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&
+  $$(f=f')\simeq \sum_{J:\Bf_\div=\Bf'_\div}J(\sh_G)p_f=p_{f'},$$
+  and our goal is to prove that any two elements are identical.
+  \marginnote{Induction on $\gamma:\sh_G=z$ gives
+   $$\xymatrix{
+    \Bf_\div(\sh_G)\ar@{=}[rr]^{J(\sh_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&&
     \Bf'_\div(\sh_G)\ar@{=}[d]^\downarrow_{\Bf'_\div(\gamma)}\\
-    \Bf_\div(z)\ar@{=}[r]^{H(z)}_\to&\Bf'_\div(z)},
-  $$
-  It means in particular that, for propositional goals, $H$ is
-  entirely determined by $H(\sh_G)$. More precisely, the remark
-  applies to $J$ and $K$ when we try to prove $(J,!) = (K,!)$. Indeed,
+    \Bf_\div(z)\ar@{=}[rr]^{J(z)}_\to&&\,\Bf'_\div(z).}
+  $$ 
+  Together these two commutative diagrams (and the fact that we're in a set) show that $(J,!)$ is unique.}
+   Take two elements $(J,!),(K,!):\sum_{J:\Bf_\div=\Bf'_\div}J(\sh_G)p_f=p_{f'}$.  We must prove that $(J,!) = (K,!)$ has
+   an element.
+  % Notice that, for any $L:\Bf_\div = \Bf'_\div$, one can
+  % prove by induction on $\gamma:\sh_G=x$ that the following diagram
+  % commutes:
+  % $$\xymatrix{
+  %   \Bf_\div(\sh_G)\ar@{=}[r]^{L(\sh_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&
+  %   \Bf'_\div(\sh_G)\ar@{=}[d]^\downarrow_{\Bf'_\div(\gamma)}\\
+  %   \Bf_\div(z)\ar@{=}[r]^{L(z)}_\to&\,\Bf'_\div(z).}
+  % $$
+  % It means in particular that, for propositional goals, $L$ is
+  % entirely determined by $L(\sh_G)$. More precisely, the remark
+  % applies to $J$ and $K$ when we try to prove $(J,!) = (K,!)$.
+  Indeed,
   this type is equivalent to $J=K$, which is in turn equivalent to
   $\prod_{z:\BG_\div}J(z)=K(z)$, and because $\Bf_\div(z)=\Bf'_\div(z)$
   is a set for every $z$ ($\BH_\div$ being a groupoid), the type
@@ -1133,19 +1145,11 @@ The definition of group homomorphisms in \cref{def:grouphomomorphism} should be 
   and define the function
   \begin{displaymath}
     f^\abstr : \USym G \xrightarrow{\ap {\Bf_\div}}
-    (f(\sh_G)=f(\sh_G)) \xrightarrow{\trp {\inv{p_f}}} (\sh_H=pt_H)
+    (f(\sh_G)=f(\sh_G)) \xrightarrow{\trp {\inv{p_f}}} \USym H
   \end{displaymath}
+  (remember, $\USym G\defequi (\sh_G=\sh_G)$).
   We take the time to develop from first principles the properties
   that $f^\abstr$ satisfies.
-  % As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
-% , for $z:\BG$ this gives rise to a map 
-% $$\ap{\Bf_\div}:(\sh_G=z)\to (\Bf_\div(\sh_G)=\Bf_\div(z)),$$ 
-% defined by induction by declaring that $\ap{\Bf_\div}(\refl{\sh_G})\defequi \refl{\Bf_\div(\sh_G)}$.  
-% If $g:\USym G$, then $\ap{\Bf_\div}(g)$ is an element of $\Bf_\div(\sh_G)=\Bf_\div(\sh_G)$, while we want something in $\USym H$.  However, this is not an obstacle since conjugation by $p_f: \Bf_\div(\sh_G)=\sh_H$ gives rise to 
-% $$\mathrm{ad}_{p_f}:(\Bf_\div(\sh_G)=\Bf_\div(\sh_G))\weq\USym H$$ (with $\mathrm{ad}_{p_f}(\refl{\Bf_\div(\sh_G)})=\refl{\sh_H}$, as discussed in \cref{sec:heavy-transport}) and so 
-% $$\mathrm{ad}_{p_f}(\ap{\Bf_\div}(g)):\USym H.$$
-% This defines a function
-% $$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{\Bf_\div}:\USym G\to\USym H$$
   One proves easily (by induction) that
   $\trp {\inv{p_f}} = \inv{p_f} \cdot \blank \cdot p_f$. It means that
   the element $f^\abstr(g)$ is the ``up, over and down'' identity of
@@ -1158,14 +1162,6 @@ The definition of group homomorphisms in \cref{def:grouphomomorphism} should be 
       \sh_H\ar@{:}[r]^{f^\abstr(g)}_\to & \sh_H.%
     }
   \end{displaymath}
-% Since type-checking removes the ambiguity, we trust it will not lead to any confusion that we simplify the notation and use the symbol $f$ simultaneously for $\Bf_\div$, writing $f\colon \BG_\div\to \BH_\div$ and for $\ap{\Bf_\div}$, writing $f:\USym G\to (f(\sh_G)=f(\sh_G))$, while we write
-% $$f^\abstr\defequi \mathrm{ad}_p\ap{\Bf_\div}:\USym G\to\USym H, \qquad g\mapsto p\,f(g)\,p^{-1}$$  
-% and depicting it as the ``up, over and down'' identity of $\sh_H$:
-% $$\xymatrix{f(\sh_G)\ar@{=}[r]^{f(g)}_\to\ar@{=}[d]^\downarrow_p&f(\sh_G)\ar@{=}[d]^\downarrow_p\\
-% \sh_H&\sh_H}.$$
-% When time comes, even the superscript $\abstr$ will vanish.
-% % (which is defensible, given that $p$ is part of the homomorphism $f$).
-
 With the shorthand $$e_G\defequi\refl{\sh_G}:\USym G$$ and writing (to remind us where things happen)
 $$g\cdot_Gg':\USym G$$
  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture 
@@ -1178,11 +1174,22 @@ and likewise with a subscript $H$, we have the following:
       f^\abstr(e_G)\defequi\trp {\inv{p_f}}\ap{\Bf_\div}(\refl{\sh_G})
       = \inv{p_f} \cdot \refl{\sh_H} \cdot p_f = e_H
     \end{displaymath}
-% Since $\ap{\Bf}(e_G)\oldequiv \ap{\Bf}f(\refl{\sh_G})\oldequiv\refl{f(\sh_G)}$ and $e_H\oldequiv\refl{\sh_H}$, 
-% $$f(e_G)\oldequiv\mathrm{ad}_p(\ap{\Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\sh_G)})\oldequiv \refl{\sh_H}\oldequiv e_H$$
   \item the proposition
     $f^\abstr(g\cdot_Gg')=f^\abstr(g)\cdot_Hf^\abstr(g')$ contains an
     element given by the composite:
+    \marginnote{
+If you find it useful, you may consider the following picture:
+\begin{displaymath}
+  \xymatrix{
+\Bf_\div(\sh_G)\ar@{=}[rr]^{\ap{\Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{\Bf_\div}(g')}_{\rotatebox{-35}{\footnotesize$\to$}} \ar@{=}[dd]_{p_f}^\uparrow
+&&\Bf_\div(\sh_G)\ar@{=}[dd]_{p_f}^\uparrow\\
+&\Bf_\div(\sh_G)\ar@{=}[d]_{p_f}^\uparrow
+\ar@{=}[ur]^{\ap{\Bf_\div}(g)}_{\rotatebox{35}{\footnotesize$\to$}}
+&\\
+\sh_H&\sh_H&\sh_H},
+\end{displaymath}
+where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\sh_H$ in the middle.
+}
     \begin{align*}
       f^\abstr(g\cdot_Gg')
       &\defequi \trp{\inv{p_f}}\left(\ap{\Bf_\div}(g\, g')\right)
@@ -1203,35 +1210,33 @@ and likewise with a subscript $H$, we have the following:
     equalities. The other equalities are either path algebra or using
     that $\trp {\inv{p_f}}$ is equal to the function mapping $x$ to
     $\inv{p_f} x {p_f}$.
-
-If you find it useful, you may consider the following picture:
-\begin{displaymath}
-  \xymatrix{
-\Bf_\div(\sh_G)\ar@{=}[rr]^{\ap{\Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{\Bf_\div}(g')}_{\rotatebox{-35}{\footnotesize$\to$}} \ar@{=}[dd]_{p_f}^\uparrow
-&&\Bf_\div(\sh_G)\ar@{=}[dd]_{p_f}^\uparrow\\
-&\Bf_\div(\sh_G)\ar@{=}[d]_{p_f}^\uparrow
-\ar@{=}[ur]^{\ap{\Bf_\div}(g)}_{\rotatebox{35}{\footnotesize$\to$}}
-&\\
-\sh_H&\sh_H&\sh_H},
-\end{displaymath}
-where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\sh_H$ in the middle.
   \end{enumerate}
 \end{remark}
 \begin{definition}\label{def:abstrisfunctor}
   If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
- $$\Hom^\abstr(\mathcal G,\mathcal H)
+  $$\Hom^\abstr(\mathcal G,\mathcal H)
 \defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times 
 \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
 $$
-Since $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
-$f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ for $s:S$ are
-propositions, a homomorphism of abstract group is uniquely determined
+  \marginnote{For $s:S$ both $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
+$f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
+propositions; hence a homomorphism of abstract group is uniquely determined
 by its underlying function of sets, and unless there is danger of
 confusion we may write $f$ instead of $(f,!)$.
-
+}
 If $G$ and $H$ are groups, the function
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is defined as the function $f\mapsto \abstr(f)\defequi(f^\abstr,!)$
+\marginnote{%
+  $f^\abstr\defequi \trp {\inv{p_f}}\ap {\Bf_\div}: \USym G =\USym H$, and so
+  \begin{displaymath}
+    \xymatrix{%
+      \Bf_\div(\sh_G)\ar@{=}[r]^{\ap{\Bf_\div}(g)}_\to \ar@{=}[d]^\uparrow_{p_f} &
+      \Bf_\div(\sh_G)\ar@{=}[d]^\uparrow_{p_f}
+      \\
+      \sh_H\ar@{=}[r]^{f^\abstr(g)}_\to & \sh_H.%
+    }
+  \end{displaymath} commutes.}
 made explicit in \cref{def:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
@@ -1306,7 +1311,10 @@ Disregarding the set-condition we get the simpler notion of \inftygps:
 \section{$G$-sets}
 \label{sec:gsets}
 
-One of the goals of the next section is to prove that, in a precise sense, any abstract group corresponds to a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.  However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
+One of the goals of \cref{sec:Gsetforabstract} is to prove that the tyoes of groups and abstract groups are equivalent.
+% , in a precise sense, any abstract group corresponds to a group.
+In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
+However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
 
 Before we handle the more complex case of abstract groups, 
 let us see what this looks like for groups.
@@ -1328,28 +1336,26 @@ In particular, if $g:\USym G$,
 then $X(g)$ is a permutation of the underlying set of $X$. 
 
 The type of $G$-sets is $$\GSet\defequi(\BG\to\Set).$$
-%$$\Type_G\defequi (\BG\to\UU),\qquad \GSet\defequi (\BG\to\Set).$$
 \end{definition}
-\begin{remark}
+\marginnote{%\begin{remark}
   Much of what follows will work equally well for $\infty$-groups; if $G$ is an infinity group, a \emph{$G$-type} is a function $X : \BG\to\UU.$
-\end{remark}
-
+%\end{remark}
+}
 \begin{remark}
   The reader will notice that the type of $G$-sets is equivalent to the 
-type of \coverings over $\BG$. %\footnote{we should be careful with having too many official names for the same objects}
+type of \coverings over $\BG$.
 The reason we have allowed ourselves two names is that our focus is different: for a $G$-set $X:\BG\to\Set$ we focus on the sets $X(z)$, whereas when talking about \coverings the first projection $\sum_{z:\BG}X(z)\to \BG$ takes center stage.  Each focus has its advantages.
-
-%Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 \end{remark}
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group, then
 $$\princ G:\BG\to\Set,\qquad\princ G(z)\defequi\pathsp{\sh_G}(z)\defequi(\sh_G=z)$$ is a $G$-set called the \emph{principal $G$-torsor}.  
 We've seen this family before in the guise of the (preimages of the) ``universal \covering'' of \cref{def:universalcover}!  
-The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.
+\marginnote{The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.}
 
 There is nothing sacred about starting the equality $\sh_G = z$ in $\sh_G$. 
-Let $\pathsp{\blank}$ denote the map sending $y:\BG$ to the $G$-set $\pathsp y$. 
+Let
+$$\pathsp{\blank}:\BG\to\GSet$$ denote the map sending $y:\BG$ to the $G$-set $\pathsp y$. 
 Applying $\pathsp{\blank}$ to a path $q:y=y'$
 induces an equivalence from $\pathsp y$ to $\pathsp {y'}$ that sends $p:y=z$ to $pq^{-1}:y'=z$. As a matter of fact, \cref{lem:BGbytorsor} will identify $\BG$ with the type of $G$-torsors via the map $\pathsp{\blank}$, simply denoted as $\pathsp{}$,
 using the full transport structure of the identity type $\pathsp y(z)\defequi(y=z)$.
@@ -1359,13 +1365,15 @@ using the full transport structure of the identity type $\pathsp y(z)\defequi(y=
 
 \begin{example}\label{def:adjointrep}
   If $G$ is a group (or \inftygp), then
-$$\Ad_G:\BG\to\UU,\qquad\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.  The name ``adjoint'' comes from how transport works in this case; if $p:y=z$, then $\Ad_G(p):(y=y)=(z=z)$ is given by conjugation: 
+$$\Ad_G:\BG\to\UU,\qquad\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.  
+\marginnote{The name ``adjoint'' comes from how transport works in this case; if $p:y=z$, then $\Ad_G(p):(y=y)=(z=z)$ is given by conjugation: 
 $$\Ad_G(p)(q)=pqp^{-1}:z=z,$$ the picture
 $$\xymatrix{y\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&z\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
 y\ar@{=}[r]^p_\to&z}$$
 is a mnemonic device illustrating that it couldn't have been different, and should be contrasted with the picture for $\princ G (p):(\sh_G=y)=(\sh_G=z)$:
 $$\xymatrix{\sh_G\ar@{=}[r]^{\refl{\sh_G}}_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
-y\ar@{=}[r]^p_\to&\,z.}$$  
+  y\ar@{=}[r]^p_\to&\,z.}$$
+}
 Notice that by the induction principle for the circle,
 $$\sum_{z:\BG}\Ad_G(z)=\sum_{z:\BG}(z=z)$$
 is equivalent to the type of (unpointed!) maps $\Sc\to\BG$, known in other contexts as the \emph{free loop space} of $\BG$, an apt name given that it is the type of ``all symmetries of $\BG$.''  
@@ -1385,10 +1393,11 @@ $$\Hom(H,G)(y)\defequi\Hom(H,G)(\sh_H,y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y
   Provide an identification between the $G$-sets 
 $\Ad_G$  and $\Hom(\ZZ,G)$ 
 of \cref{def:adjointrep} and \cref{ex:HomHGasGset}.
-
+\marginnote{%
 Hint: This is similar to \cref{ex:Zinitial}: 
 identify $\Hom(\ZZ,G)(y)$ with $\sum_{z:\BG}\sum_{p:z=z}(y=z)$ and 
 consider the map to $y=y$ sending $(z,p,q)$ to $q^{-1}p\,q$.
+}
 \end{xca}
 
 
@@ -1418,20 +1427,20 @@ from $G$ to $\Sigma_X$, \ie a pointed map $(f,p) : \BG\ptdto \BSigma_{X}$),
 then the composite
 $$\xymatrix{\BG\ar[r]^-{f}&\conncomp \Set X \ar[r]^{\fst}&\Set}$$
 is a $G$-set with the value at $\sh_G$ equal to $X$.
+\marginnote{%
+We must be careful not to focus too much on the underlying set.  
+For instance, even though the underlying set of both $\Ad_G$ and $\princ G$ is $\USym G$, in general  $\Ad_G$ and $\princ G$  are very different $G$-sets.  
+To drive this point home, compare the illustrations of transport along a $p:\USym G$ for the two:
+$$\xymatrix{\sh_G\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
+  \sh_G\ar@{=}[r]^p_\to&\sh_G} $$%\qquad
+$$\xymatrix{\sh_G\ar@{=}[r]^{\refl{\sh_G}}_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
+\sh_G\ar@{=}[r]^p_\to&{\hphantom{.}}\sh_G.}$$
+A third $G$-set with underlying set $\USym G$ is $\mathrm{triv}_G(\USym G)$.}
 
 The reasoning in the previous two paragraphs yields the following equivalence:
 \[
 \GSet \equiv \sum_{X:\Set} \BG \ptdto \BSigma_X.
 \]
-
-However, we must be careful not to focus too much on the underlying set.  
-For instance, even though the underlying type of both $\Ad_G$ and $\princ G$ is $\USym G$, in general  $\Ad_G$ and $\princ G$  are very different $G$-sets.  
-To drive this point home, compare the illustrations of transport along a $p:\USym G$ for the two:
-$$\xymatrix{\sh_G\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
-\sh_G\ar@{=}[r]^p_\to&\sh_G}                 \qquad
-\xymatrix{\sh_G\ar@{=}[r]^{\refl{\sh_G}}_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
-\sh_G\ar@{=}[r]^p_\to&{\hphantom{.}}\sh_G.}$$
-A third $G$-set with underlying set $\USym G$ is $\mathrm{triv}_G(\USym G)$.
 \end{remark}
 
 \begin{xca}
@@ -1446,7 +1455,7 @@ then $X$ is a $G$-set.
 \sususe{Transitive $G$-sets}
 \label{sec:transitiveGsets}
 We end the section with some observations regarding so-called transitive $G$-sets which will be valuable when we move on to discussing subgroups.
-Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if for all $a,b:\mathcal X$ there is a $g:\mathcal X$ such that $a=g\cdot b$.  In our world this translates to
+Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists a $b:\mathcal X$ such that for all $a:\mathcal X$ there is a $g:\mathcal X$ with $a=g\cdot b$.  In our world this translates to
 \begin{definition}\label{def:transitiveGset}
   A $G$-set $X:\BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
   \[
@@ -1455,15 +1464,18 @@ Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\math
   \]
   holds.
 \end{definition}
+\begin{remark}
+  
 Note that the mention of $y$ is redundant in the definition: by
 connectedness (cf.~\cref{xca:component-connected}) it is enough to
 demand
 \begin{displaymath}
-  \Trunc[\big]{\sum_{b:X(\sh_G)}\prod_{a:X(\sh_G)}\sum_{g:\USym G}a=g\cdot b},
+  \Trunc[\big]{\sum_{b:X(\sh_G)}\prod_{a:X(\sh_G)}\sum_{g:\USym G}a=g\cdot b}.
 \end{displaymath}
 In other words, $X$ is transitive if and only if there merely is a
 $b:X(\sh_G)$ such that the map $-\cdot b:\USym G\to X(\sh_G)$ is
 surjective.
+\end{remark}
 
 \begin{lemma}
   \label{lem:conistrans}
@@ -1504,15 +1516,17 @@ is injective.
 
 
 \section{The classifying type is the type of torsors}
+This section can be seen as a motivation for the use of torsors.
+In \cref{sec:Gsetforabstract} we'll use this concept to prove that the type of groups and the type of abstract groups are equivalent by classifying abstract groups in terms of their pointed connected groupoid of torsors.  To see how this might work it is good to start with the case of a (concrete) group $G$.  In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to get the right definition we should first explore what the torsors of $G$ look like.
 \label{sec:torsors}
-\begin{definition}
+\begin{definition}\marginnote{%\begin{remark}
+  This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor.  There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.
+}%\end{remark}
   Given a group  $G$, the type of {\em$G$-torsors} is
 $$\typetorsor_G\defequi\sum_{X:\GSet}\Trunc{\princ G=X},$$
 where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
-\begin{remark}
-  This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor.  There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.
-\end{remark}
+
 
 \begin{remark}
   For $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings of $\BG$ containing the universal \covering.
@@ -1590,17 +1604,6 @@ $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\f
   \end{displaymath}
   Then \cref{lem:pathsptransportiseq} states exactly that $\ap P$ is
   an equivalence.
-%
-% But this will follow by the very definition of the identity type!  
-%
-% For $q:y=z$,  the transport $T(q):\pathsp y=\pathsp z$ is given by  sending $p:y=x$ to
-% $$T(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ 
-% or, in a picture 
-% $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{T(q)(p)}_\downarrow\\
-% x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
-
-% %Hence $\bn 1\to T^{-1}(f)=\sum_{p:y=z}T(p)=f$ with value is an equivalence.
-% %the same as giving an element in $T(z)(y)\defequi (z=y)$.
 \end{proof}
 
 %BID will remove the following comment after May 1 2020
