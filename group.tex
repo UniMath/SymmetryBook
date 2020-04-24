@@ -1517,7 +1517,7 @@ is injective.
 
 \section{The classifying type is the type of torsors}
 This section can be seen as a motivation for the use of torsors.
-In \cref{sec:Gsetforabstract} we'll use this concept to prove that the type of groups and the type of abstract groups are equivalent by classifying abstract groups in terms of their pointed connected groupoid of torsors.  To see how this might work it is good to start with the case of a (concrete) group $G$.  In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to get the right definition we should first explore what the torsors of $G$ look like.
+In \cref{sec:Gsetforabstract} we'll use this concept to prove that the type of groups and the type of abstract groups are equivalent by classifying abstract groups in terms of their pointed connected groupoid of torsors.  To see how this might work it is good to start with the case of a (concrete) group $G$.  In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to get the right definition we should first explore what the torsors of $G$ look like and prove \cref{lem:BGbytorsor} showing that $\BG$ is equivalent to the type of $G$-torsors.
 \label{sec:torsors}
 \begin{definition}\marginnote{%\begin{remark}
   This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor.  There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.
@@ -1533,14 +1533,14 @@ where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one!
 \end{remark}
-\begin{remark}
-  \label{def:BG2TorsG}
+
   For $z:\BG$, recall the definition of $\pathsp z:\BG\to\Set$ as the
   $G$-set with $\pathsp z(y)\defequi(z=y)$ (so that in particular
-  $\princ G\defequi\pathsp{\sh_G}$).
+  $\princ G\defequi\pathsp{\sh_G}$).  Note that $\pathsp z$ is a $G$-torsor.
 
-  Let $\pathsp{}:\BG\to_*(\typetorsor_G,\princ G)$ be the pointed map given by sending $z:\BG$ to $\pathsp z$ and by the identification $\refl{\pathsp{\sh_G}}:\pathsp{\sh_G}=\princ G$. 
-\end{remark}
+ \begin{definition}
+  \label{def:BG2TorsG} Let $$\pathsp{}:\BG\to_*(\typetorsor_G,\princ G)$$ be the pointed map given by sending $z:\BG$ to $\pathsp z$ and by the identification $\refl{\pathsp{\sh_G}}:\pathsp{\sh_G}=\princ G$. 
+\end{definition}
 If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ instead of $\pathsp{}$.
 
 \begin{example}\label{ex:pathsptransport}
@@ -1553,10 +1553,10 @@ For $q:y=z$,  the transport
 $\pathsp q:\prod_{x:\BG}\pathsp y(x)=\pathsp z(x)$
 is obtained 
 by sending $p:\pathsp y(x)\defequi (y=x)$ to
-$$\pathsp q(p)\defequi pq^{-1}:\pathsp z(x)\defequi(z=x)$$ 
-or, in a picture, 
+\marginnote{In a picture, 
 $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{\pathsp q(p)}_\downarrow\\
-x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
+x\ar@{=}[r]^{\refl x}_\to&\,x.}$$}
+$$\pathsp q(p)\defequi pq^{-1}:\pathsp z(x)\defequi(z=x).$$ 
 \end{example}
 \begin{lemma}\label{lem:pathsptransportiseq}
   For  $y,z:\BG$ the induced map  (\ie transport) of identity types
@@ -1587,7 +1587,9 @@ is an equivalence.
 $$\pathsp{}:\BG\to(\typetorsor_G,\princ G),\qquad z\mapsto \pathsp z\defequi(x\mapsto(z=_{\BG}x))$$
 is an equivalence.
 Univalence then provides us with an identity 
-$$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\footnote{in the appropriate universe}.
+$$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$
+of groups (or $\infty$-groups).
+%\footnote{in the appropriate universe}.
 \end{theorem}
 
 \begin{proof}
@@ -1779,64 +1781,64 @@ $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\f
 
 
 
-\subsection{Any group is a subgroup of a permutation group}
-\label{sec:groupssubperm}
+% \subsection{Any group is a subgroup of a permutation group}
+% \label{sec:groupssubperm}
 
 
-This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\Set$''.
-% \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
-In the following, we should call {\em monomorphism} a homomorphism
-$f:\Hom(G,H)$ for which $\abstr(f):\USym G\to\USym H$ is
-injective\footnote{What will later be simply called a subgroup.}.
-\begin{lemma}
-  \label{lem:allgpsarepermutationgps}Let $G$ be a group. Then
-  remembering the base point in the factorization of the principal
-  $G$-torsor $\princ G:\BG\to\Set$ through the component
-  $\conncomp \Set {\USym G}$ of $\Set$ (\cf \cref{remark:GsetsareGsets})
-  gives an monomorphism
-  $$\alpha_G:\Hom(G,\Sigma_{\USym G})$$  
-  of $G$ into a permutation group.
-\end{lemma}
-\begin{proof}
-  The type of monomorphisms from $G$ to a group $H$ is
-  equivalent\footnote{((GIVE REF)) but it will be a forward ref...} to
-  the type of pointed \coverings over $\BH$ with total space $\BG$, so
-  we need to show that $\alpha_G:\BG\to\UU_{\USym G}$ is a
-  \covering.  Under the identity
-  $\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)$ of
-  \cref{lem:BGbytorsor} the function $\alpha$ translates to the
-  evaluation map
-  $$\xymatrix{
-    \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\sh_G}}\ar@{=}[d]&&\Sigma_{\USym G}\ar@{=}[d]\\
-    \conncomp{(\BG\to\Set)}{\princ G}\ar@{}[rr]^-{E\mapsto E(\sh_G)}&&
-    \,\conncomp{\Set}{\USym G}.  }$$ We must show that the fibers
-  $\inv{\ev_{\sh_G}}(X)$ for $X:\Sigma_{\USym G}$ are sets.  This
-  fiber is equivalent to
-  $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X=E(\sh_G))$ which is a
-  set precisely when $\sum_{E:\BG\to\Set}(X=E(\sh_G))$ is a set.  We
-  must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\sh_G))$,
-  then the type $(E,p)=(F,q)$, which is equivalent
-  to
-  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\sh_G)=qp^{-1}$$
-  is a proposition.  Note that if $r:\sh_G=x$, then
-  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
-  \begin{displaymath}
-    \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
-      X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
-      &F(\sh_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
-  \end{displaymath}
-  and so $\phi(x)$ (which by nature is independent of such an
-  $r:\sh_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us
-  pin this down in our language.  If $\phi,\psi:((E,p)=(F,q))$, we
-  must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
-  $F(x)$ are sets, it is enough to show that the proposition
-  $\phi(x)=\psi(x)$ is not empty.  Let
-  $f:(\sh_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
-  composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
-  given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
-  proposition, one can consider that $\sh_G=x$ is not empty, and we
-  are done.
-\end{proof}
+% This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\Set$''.
+% % \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+% In the following, we should call {\em monomorphism} a homomorphism
+% $f:\Hom(G,H)$ for which $\abstr(f):\USym G\to\USym H$ is
+% injective\footnote{What will later be simply called a subgroup.}.
+% \begin{lemma}
+%   \label{lem:allgpsarepermutationgps}Let $G$ be a group. Then
+%   remembering the base point in the factorization of the principal
+%   $G$-torsor $\princ G:\BG\to\Set$ through the component
+%   $\conncomp \Set {\USym G}$ of $\Set$ (\cf \cref{remark:GsetsareGsets})
+%   gives an monomorphism
+%   $$\alpha_G:\Hom(G,\Sigma_{\USym G})$$  
+%   of $G$ into a permutation group.
+% \end{lemma}
+% \begin{proof}
+%   The type of monomorphisms from $G$ to a group $H$ is
+%   equivalent\footnote{((GIVE REF)) but it will be a forward ref...} to
+%   the type of pointed \coverings over $\BH$ with total space $\BG$, so
+%   we need to show that $\alpha_G:\BG\to\UU_{\USym G}$ is a
+%   \covering.  Under the identity
+%   $\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)$ of
+%   \cref{lem:BGbytorsor} the function $\alpha$ translates to the
+%   evaluation map
+%   $$\xymatrix{
+%     \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\sh_G}}\ar@{=}[d]&&\Sigma_{\USym G}\ar@{=}[d]\\
+%     \conncomp{(\BG\to\Set)}{\princ G}\ar@{}[rr]^-{E\mapsto E(\sh_G)}&&
+%     \,\conncomp{\Set}{\USym G}.  }$$ We must show that the fibers
+%   $\inv{\ev_{\sh_G}}(X)$ for $X:\Sigma_{\USym G}$ are sets.  This
+%   fiber is equivalent to
+%   $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X=E(\sh_G))$ which is a
+%   set precisely when $\sum_{E:\BG\to\Set}(X=E(\sh_G))$ is a set.  We
+%   must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\sh_G))$,
+%   then the type $(E,p)=(F,q)$, which is equivalent
+%   to
+%   $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\sh_G)=qp^{-1}$$
+%   is a proposition.  Note that if $r:\sh_G=x$, then
+%   $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
+%   \begin{displaymath}
+%     \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
+%       X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
+%       &F(\sh_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
+%   \end{displaymath}
+%   and so $\phi(x)$ (which by nature is independent of such an
+%   $r:\sh_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us
+%   pin this down in our language.  If $\phi,\psi:((E,p)=(F,q))$, we
+%   must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
+%   $F(x)$ are sets, it is enough to show that the proposition
+%   $\phi(x)=\psi(x)$ is not empty.  Let
+%   $f:(\sh_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
+%   composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
+%   given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
+%   proposition, one can consider that $\sh_G=x$ is not empty, and we
+%   are done.
+% \end{proof}
 
 \subsection{Homomorphisms and torsors}
 \label{sec:homotor}
@@ -1847,39 +1849,37 @@ In view of the equivalence $\pathsp{}^G$ between $\BG$ and $(\typetorsor_G,\prin
 $$f^*Y\defequi Y\, f:\BG\to\Set.$$  
 
 If $X:\BG\to\Set$ is a $G$-set and $y:\BH$ define 
-% \footnote{OLD: $$f_*X(y)\defequi(\sh_H=y)\times_{\USym G}X(\sh_G)$$ to be the set quotient of $(\sh_H=y)\times X(\sh_G)$ by the relation $(p,x)\sim(p\, f(q)^{-1},X(q)x)$ for all $q:\sh_G=pt_G$.
-% The \emph{induced} $H$-set 
-% $$f_*X:\BH\to\Set$$ has value at $y:\BH$ the set $f_*X(y)$.}
-the \emph{induced $H$-type} $f_*\BH\to\UU$ by
-$$f_*X(y)\defequi\sum_{x:\BG}(\Bf x =y)\times X(x).$$
-\end{definition}
-\begin{remark}
+the \emph{induced $H$-type} 
+\marginnote{%\begin{remark}
   Note that the induced $H$-type may or may not be an $H$-{\bf set}.
-
   As an example, consider the homomorphism $cy_2:\Hom(\ZZ,\Sigma_2)$ discussed above, given by sending $\base:S^1$ to $\bn 2:\fin_2$ and $\Sloop$ to the twist.
+}
+\marginnote{%
   If we consider $cy_2$ also as a $\ZZ$-set (by including $\fin_2$ in the type of all sets), the induced $\Sigma_2$-set $\Sigma_2\times_{\ZZ}cy_2:\fin_2\to\Set$ is given by 
   $$y\mapsto \Sigma_{z:S^1}(cy_2(z)=y)\times cy_2(z),$$
   and it is instructive to see that the symmetry of $(\base,\refl{\bn 2},0)$
   induced by $\Sloop^2$ is not identical to $\refl{}$,
-  \footnote{I have yet to write a nice exposition of this ``instructive'' point: one application of $\Sloop$ takes you to $(\base,tw,1)$}
-  and so the induced $\Sigma_2$-type in question is \emph{not} a set.  
-  
-  However, we prove in a moment that the induced $H$-type of a $G$-torsor is an $H$-torsor, and so, in particular, an $H$-set.
-\end{remark}
+  % \footnote{I have yet to write a nice exposition of this ``instructive'' point: one application of $\Sloop$ takes you to $(\base,tw,1)$}
+  and so the induced $\Sigma_2$-type in question is \emph{not} a set.
+}\marginnote{%
+  This situation is common in algebra and is often referred to by saying that some construction is not ``exact''.
+  % However, %we prove in a moment that
+  % the induced $H$-type of a $G$-torsor is an $H$-torsor, and so, in particular, an $H$-set.
+}%\end{remark}
+$f_*\BH\to\UU$ by
+$$f_*X(y)\defequi\sum_{x:\BG}(\Bf x =y)\times X(x).$$
+\end{definition}
 
 For $X$ being the principal $G$-torsor  $\princ G$, the contraction of $\sum_{x:\BG}(\sh_G=x)$ induces an equivalence
-$$\eta_y:f_*\princ G(y)=\sum_{x:\BG}(\Bf(x)=y)\times(\sh_G=x)\simeq (\Bf(x)=y)\oldequiv\princ{\Bf(x)}^H(y).$$  The resulting identity $\bar\eta:f_*\princ G=\princ{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-type $f_*X$ is an $H$-torsor, defining a map 
-$$f_*:\typetorsor_G\to\typetorsor_H.$$
-Summing up
-% \footnote{OLD:
-% When $X=\princ G$ we can get a good picture of $f_*X$:  composition gives a map
-% $$\eta:(\sh_H=y)\times \USym G\to (\sh_H=y),\quad \eta(p,q)=p\,f(q)$$
-% and the fact that $\eta(p,q)=\eta(p\,f(r)^{-1},r\,q)$ for all $r:\USym G$ tells us that $\eta$ defines a map $\eta_f(y):f_*\princ G(y)\to\princ H(y)$.  
-% The map $\iota:\princ H(y)\to f_*\princ G(y)$ defined by $\iota(p)=[p,e_G]$ is an inverse: $\iota\eta_f(y)$ sends $[p,q]$ to $[pf(q)^{-1},e_G]$, which is equal to $[p,q]$; and $\eta_f(y)\iota$ sends $p$ to $p\,f(e_G)^{-1}$, which is equal to $p$.  Hence $\eta_f(y)$ is an equivalence.}
+$$\eta_y:f_*\princ G(y)=\sum_{x:\BG}(\Bf(x)=y)\times(\sh_G=x)\simeq (\Bf(x)=y)\oldequiv\princ{\Bf(x)}^H(y).$$  The resulting identity $\bar\eta:f_*\princ G=\princ{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-type $f_*X$ is an $H$-torsor.
+
+Summing up:
 \begin{lemma}
   \label{lem:inducedtorsor}
    Let $f:\Hom(G,H)$ be a group homomorphism.  
-If $X$ is a $G$-torsor, then $f_*X$ is an $H$-torsor and the identity 
+   If $X$ is a $G$-torsor, then the induced $H$-type $f_*X$ is an $H$-torsor and so we get an induced map
+   $$f_*:\typetorsor_G\to\typetorsor_H.$$
+   The identity 
 $\bar{\eta}:f_*\pathsp x^G=\pathsp{\Bf(x)}^H$
 % \footnote{OLD: $\bar{\eta}_f:f_*\pathsp x^G=\pathsp{\Bf(x)}^H$ associated to the equivalence $\eta_f$}
 shows that  
@@ -1887,10 +1887,6 @@ $$\xymatrix{\BG\ar[r]^{\Bf}\ar[d]^{\pathsp{}^G}&\BH\ar[d]^{\pathsp{}^H}\\
 \typetorsor_G\ar[r]^{f_*}&\typetorsor_H}$$ 
 commutes.
 \end{lemma}
-% \footnote{OLS: \begin{proof}
-%   If $\Trunc{X=\princ G}$, then $\Trunc{f_*X=f_*\princ G}$ and $\eta_f:f_*\princ G=\princ H$, so $f_*$ takes $G$-torsors to $H$-torsors.
-% \end{proof}
-% }
 \begin{remark}
   \label{rem:inducedGsetfromabstracthomomorphisms}
   Notice that our construction of the induced $G$-set works equally well for a homomorphism $\phi:\Hom^\abstr(\abstr(G),\abstr(H))$:
@@ -1908,16 +1904,16 @@ sending $[p,q]:(\sh_H=y)\times_{\USym G}\USym G$ to $p\,\phi(q):(\sh_H=y)$.
 \label{sec:Gsetforabstract}
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.
-That is, by totally analogy, we define the of torsors for an abstract group,
+That is, by totally analogy, we define the torsors for an abstract group,
 and it will then be a relative simple matter to show that the processes of
 \begin{enumerate}
 \item forming the abstract group of a group and 
 \item taking the group represented by the torsors of an abstract group
 \end{enumerate}
  are inverse to each other.
-
+\marginnote{%
 Note that we have not considered an ``abstract'' counterpart of the concept of $\infty$-group, so all we do in this section is set-based.
-
+}
 \begin{definition}
 \label{def:abstrGtorsors}
   If ${\agp G}=(S,e,\mu,\iota)$ is an abstract group, a \emph{$\agp G$-set}\index{Gset@$\agp G$-set (of abstract group} is a set $\mathcal X$ together with a homomorphism
@@ -1928,7 +1924,7 @@ $$Set_{\agp G}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\agp G},\abstr(
 The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
-$$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}\Trunc{\princ {\agp G}=S}.$$
+$$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}\Trunc{\princ {\agp G}^\abstr=S}.$$
 \end{definition}
 \begin{example}
   If $G$ is a group we can unravel the definition and see that an $\abstr(G)$-set consists of
@@ -1942,19 +1938,22 @@ $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}\Trunc{\princ 
 
 
 To help reading the coming proofs we introduce some notation that is redundant, but may aid the memory in cluttered situations:  Let $x,y,z$ be elements in some type, then
+\marginnote{We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of identity types $\pathsp{}\colon (y=z)\to(\pathsp y=\pathsp z)$ evaluated at $x$, while post-composition $\post$ is transport in the family $\pathsp x$.}
 \begin{align*}
 %  \pre:(x=y)\to ((y=z)=(x=z)),\qquad&\pre(q)(p)\defequi pq\\
   \preinv:(y=x)\to ((y=z)=(x=z)),\quad&\preinv(q)(p)\defequi\pathsp qp\defequi pq^{-1}\\
   \post:(y=z)\to ((x=y)=(x=z)),\quad&\post(p)(q)\defequi\post_pq\defequi pq\\
   %\adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
 \end{align*}
-We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of identity types $\pathsp{}\colon (y=z)\to(\pathsp y=\pathsp z)$ evaluated at $x$, while post-composition $\post$ is transport in the family $\pathsp x$, 
 
 
 \begin{example}\label{ex:qG}
   If $G$ is a group, then for any $x:\BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\sh_G=x)$, has a natural structure of an $\abstr(G)$-set by means of 
-$$\preinv:\USym G\to ((\sh_G=x)=(\sh_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\sh_G=x}$ and that for $p,q:\USym G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \sh_G=x$ we have that 
-$$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  
+  $$\preinv:\USym G\to ((\sh_G=x)=(\sh_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\sh_G=x}$ and that for $p,q:\USym G$ we have that
+  \marginnote{\ie if $r\colon \sh_G=x$ we have that 
+$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong.}  
+  $$\preinv(p\,q)=\preinv(p)\preinv(q).$$
+  
 
 That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $\BG$ is connected (any $\sh_G=x$ will serve as a proof of $(\sh_G=x,\preinv,!)=\princ{\abstr(G)}^\abstr$).
 
@@ -1965,7 +1964,7 @@ which by the very definition of transport for $\princ G$ is $\preinv$.
 \end{example}
 
 \begin{definition}
-  If ${\agp G}$ is an abstract group, then the \emph{concrete group $\concr({\agp G})$ associated with ${\agp G}$} is the group (given by the pointed connected groupoid) $(\typetorsor_{\agp G}^\abstr,\princ {\agp G})$.
+  If ${\agp G}$ is an abstract group, then the \emph{concrete group $\concr({\agp G})$ associated with ${\agp G}$} is the group given by the pointed connected groupoid $(\typetorsor_{\agp G}^\abstr,\princ {\agp G})$.
 \end{definition}
 We give the construction of \cref{ex:qG} a short name since it will occur in important places.
 \begin{definition}
