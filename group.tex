@@ -1986,10 +1986,11 @@ $$q_G:(x=_{\BG}y)\to (q_G(x)=q_G(y))%(\sh_G=x)=_\UU(\sh_G=y))
 $$
 is an equivalence.
   Now, $q_G(x)=q_G(y)$ is equivalent to the set 
-\begin{align*}
-  &((\sh_G=x),\preinv)=_{\abstr(G)\text{-set}}((\sh_G=y),\preinv)\\
-=&\sum_{f:(\sh_G=x)=(\sh_G=y)}f\preinv=\preinv f
-\end{align*}
+$$
+((\sh_G=x),\preinv)=_{\abstr(G)\text{-set}}((\sh_G=y),\preinv)$$
+which in turn is equivalent to 
+$$\sum_{f:(\sh_G=x)=(\sh_G=y)}f\preinv=\preinv f
+$$
  ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\sh_G=x}\prod_{p:\sh_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by 
 $$(\post,!):(x=y)\to \sum_{f:(\sh_G=x)=(\sh_G=y)}f\preinv=\preinv f.$$
 Given an element
@@ -2080,69 +2081,126 @@ and the next two subsections offer two proofs.
 
 \sususe{``Delooping'' a group homomorphism}
 \label{sec:thierrysdelooping}
-We now explore the first approach.\footnote{Note to self: make into a lemma and say ``group'' etc}
+We now explore the first approach.
 
 \begin{proof}
-  Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
-We suppose given a group morphism
-$$f:a = a\rightarrow b = b$$
-and we explain how to build a map $g:X \rightarrow Y$ with
-a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
-for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+  Suppose we are given an abstract group homomorphism
+$$f:\Hom^\abstr(\abstr(G),\abstr(H))$$
+and we explain how to build a map $g:\BG_\div \rightarrow \BH_\div$ with
+a path $p:\sh_H = g(\sh_G)$ such that $p f(\omega) = g(\omega) p$
+for all $\omega:\sh_G = \sh_G$ (so that $g$ is a ``delooping'' of $f$, that is, $f=\abstr(g)$).
+\marginnote{We will thus have displayed a map $\mathrm{deloop}:\Hom^\abstr(\abstr(G),\abstr(H))\to\Hom(G,H)$ with $\abstr\,\mathrm{deloop}=\refl{}$. We leave it to the reader to prove that $\mathrm{deloop}\,\abstr=\refl{}$. }
 
-\medskip
-
-Let us assume the problem solved. The map $g:X\rightarrow Y$
-will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
-and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
+To get an idea of our strategy, let us assume the problem solved. The map $g:\BG_\div\rightarrow \BH_\div$
+will then send any path $\alpha:{\sh_G} = x$ to a path $g(\alpha):g({\sh_G}) = g(x)$
+and so we get a family of paths $p(\alpha) \defequi g(\alpha) p$ in ${\sh_H} = g(x)$ such that
 $$p(\alpha\omega) = g(\alpha)g(\omega)p
   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
-for all $\omega:a = a$ and $\alpha : a = x$.
-
-\medskip
+for all $\omega:{\sh_G} = {\sh_G}$ and $\alpha : {\sh_G} = x$.
 
 This suggests to introduce the following family
 $$
-C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
+C(x)~:=~ \sum_{y:\BH_\div}\sum_{p:({\sh_G}=x)\rightarrow ({\sh_H} = y)}~~~\prod_{\omega:{\sh_G}={\sh_G}}\prod_{\alpha:{\sh_G}=x}~
  p(\alpha\omega) = p(\alpha)f(\omega)
 $$
-
  An element of $C(x)$ has three components, the last component being
- a proof since $Y$ is a $1$-type.
+ a proposition since $\BH_\div$ is a groupoid.
 
- The type $C(a)$ has a simpler description. An element of $C(a)$ is
+ The type $C({\sh_G})$ has a simpler description. An element of $C({\sh_G})$ is
  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
- $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
- can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
- is completely determined by $p(1_a)$.
- Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
+ $\alpha$ and $\omega$ in ${\sh_G}={\sh_G}$.
+ Since $f$ is an abstract group homomorphism, this condition
+ can be simplified to $p(\omega) = p(1_{\sh_G})f(\omega)$, and the map $p$
+ is completely determined by $p(1_{\sh_G})$.
+ Thus $C({\sh_G})$ is equal to $\sum_{y:\BH_\div}{\sh_H} = y$ and is contractible.
 
- \medskip
 
  It follows that we have
  $$
- \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ ({\sh_G} = x)\rightarrow\iscontr~ C(x)
  $$
 and so, since $\iscontr~C(x)$ is a proposition
  $$
- \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
  $$
- Since $X$ is connected, we have
- $\prod_{x:X}\iscontr~ C(x)$
- and so, in particular, we have an element of $\prod_{x:X}C(x)$.
+ Since $\BG_\div$ is connected, we have
+ $\prod_{x:\BG_\div}\iscontr~ C(x)$
+ and so, in particular, we have an element of $\prod_{x:\BG_\div}C(x)$.
 
- We get in this way a map $g:X\rightarrow Y$
- together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
+ We get in this way a map $g:\BG_\div\rightarrow \BH_\div$
+ together with a map $p:(a=x)\rightarrow ({\sh_H} = g(x))$ such that
  $p (\alpha\omega) = p(\alpha) f(\omega)$
- for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
-We have, for $\alpha:a=x$
-$$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
+ for all $\alpha$ in ${\sh_G}=x$ and $\omega$ in ${\sh_G}={\sh_G}$.
+We have, for $\alpha:{\sh_G}=x$
+$$\prod_{x':\BG_\div}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
 since this holds for $\lambda = 1_x$.
-In particular, $p(\omega) = g(\omega)p(1_a)$.
+In particular, $p(\omega) = g(\omega)p(1_{\sh_G})$.
 
-We also have $p(\omega) = p(1_a)f(\omega)$, hence 
-$p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
-for all $\alpha:a=a$ and we have found a delooping of $f$.
+We also have $p(\omega) = p(1_{\sh_G})f(\omega)$, hence 
+$p(1_{\sh_G})g(\alpha) =  f(\alpha)p(1_{\sh_G})$
+for all $\alpha:\sh_G=\sh_G$ and we have found a delooping of $f$.
+
+%Security copy if things go wrong. BID: delete by May 1
+%   Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
+% We suppose given a abstract group homomorphism
+% $$f:a = a\rightarrow b = b$$
+% and we explain how to build a map $g:X \rightarrow Y$ with
+% a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
+% for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+
+% \medskip
+
+% Let us assume the problem solved. The map $g:X\rightarrow Y$
+% will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
+% and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
+% $$p(\alpha\omega) = g(\alpha)g(\omega)p
+%   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
+% for all $\omega:a = a$ and $\alpha : a = x$.
+
+% \medskip
+
+% This suggests to introduce the following family
+% $$
+% C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
+%  p(\alpha\omega) = p(\alpha)f(\omega)
+% $$
+
+%  An element of $C(x)$ has three components, the last component being
+%  a proof since $Y$ is a $1$-type.
+
+%  The type $C(a)$ has a simpler description. An element of $C(a)$ is
+%  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
+%  $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
+%  can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
+%  is completely determined by $p(1_a)$.
+%  Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
+
+%  \medskip
+
+%  It follows that we have
+%  $$
+%  \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
+%  $$
+% and so, since $\iscontr~C(x)$ is a proposition
+%  $$
+%  \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
+%  $$
+%  Since $X$ is connected, we have
+%  $\prod_{x:X}\iscontr~ C(x)$
+%  and so, in particular, we have an element of $\prod_{x:X}C(x)$.
+
+%  We get in this way a map $g:X\rightarrow Y$
+%  together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
+%  $p (\alpha\omega) = p(\alpha) f(\omega)$
+%  for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
+% We have, for $\alpha:a=x$
+% $$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
+% since this holds for $\lambda = 1_x$.
+% In particular, $p(\omega) = g(\omega)p(1_a)$.
+
+% We also have $p(\omega) = p(1_a)f(\omega)$, hence 
+% $p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
+% for all $\alpha:a=a$ and we have found a delooping of $f$.
 \end{proof}
 
 
@@ -2155,10 +2213,10 @@ The second approach to \cref{lem:homomabstrconcr} is as follows:
 \begin{proof}
 %\newcommand{\we}{\overset\sim\to}
   The equivalence of $\pathsp{}^G:\BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
-$$\pathsp{}:\Hom(G,H)\oldequiv (\BG\to_*\BH)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
+$$\pathsp{}:\Hom(G,H)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
 $$
 Consider the map
-$$A:((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)\to \Hom^\abstr(\abstr(G),\abstr(H))$$
+$$A:((\typetorsor_G,\princ G))\to_*(\typetorsor_H,\princ H)\to \Hom^\abstr(\abstr(G),\abstr(H))$$
 given by letting $A(f,p)$ be the composite 
 $$\xymatrix{\USym G\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
   \USym H\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
@@ -2166,7 +2224,10 @@ $$\xymatrix{\USym G\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
   (f\princ G=f\princ G)\ar@{=}[rr]^-{q\mapsto p^{-1}qp}_\to&&
   (\princ H=\princ H)
 }$$
-(together with the proof that this is an abstract group homomorphism).  We see that we have shown the desired result if we prove instead $A$ is an equivalence.  The reason to complicate $\abstr$ this way is that it gets easier to write out a homotopy inverse.
+(together with the proof that this is an abstract group homomorphism).  We
+are done if we show that $A$ is an equivalence.
+% see that we have shown the desired result if we prove instead $A$ is an equivalence.
+\marginnote{The reason to complicate $\abstr$ this way is that it gets easier to write out a homotopy inverse.}
 
 If $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{rem:inducedGsetfromabstracthomomorphisms} and the identity $\eta_\phi:\phi_*\princ G=\princ H$. 
  %  let
@@ -2232,17 +2293,24 @@ Given groups $G,H$, a homomorphism $f: \Hom(G,H)$ is called a\label{def:epimorph
 \item \emph{monomorphism}\index{monomorphism!of groups} if for any group $F$,
   postcomposition by $f$ is an injection from $\Hom(F,G)$ to $\Hom(F,H)$, and an
 \item \emph{epimorphism}\index{epimorphism!of groups} if for any group $I$,
-  precomposition by $f$ is an injection from $\Hom(G,I)$ to $\Hom(H,I)$.
+  precomposition by $f$ is an injection from $\Hom(H,I)$ to $\Hom(G,I)$.
 \end{enumerate}
+The corresponding families of propositions are called
+$$\ismono,\isepi:\Hom(G,H)\to\Prop.$$
 \end{definition}
 
-We've seen that for any group $G$, the underlying set $\USym G$ of $\abstr(G)$ is equivalent to $\Hom(\ZZ,G)$ which in turn is equivalent to $\Hom^{\abstr}(\abstr(\ZZ),\abstr(G))$ and that abstraction preserves composition.  Hence, if $f:\Hom(G,H)$ is a group homomorphism, then saying that
+\marginnote{$$\xymatrix{\USym G\ar[d]^\simeq\ar[r]^{f^\abstr}&\USym H\ar[d]^\simeq\\
+    \Hom(\ZZ,G)\ar[r]^{f_*}\ar[d]^\simeq_\abstr&\Hom(\ZZ,H)\ar[d]^\simeq_\abstr\\
+    \Hom^{\abstr}(\ZZ,\abstr(G))\ar[r]^{\abstr f_*}&\Hom^{\abstr}(\ZZ,\abstr(H)) 
+ }$$
+commutes (we've written $\ZZ$ also for $\abstr(\ZZ$) since otherwise it wouldn't fit.}
+We've seen that for any group $G$, the underlying set $\USym G\defequi(\sh_G=\sh_G)$ of $\abstr(G)$ is equivalent to the set of homomorphisms $\Hom(\ZZ,G)$ which in turn is equivalent to the set of abstract homomorphisms $\Hom^{\abstr}(\abstr(\ZZ),\abstr(G))$ and that abstraction preserves composition.
+Hence, if $f:\Hom(G,H)$ is a group homomorphism, then saying that
 $f^\abstr$ is an injection is equivalent to saying that postcomposition by $f$ is an injection $\Hom(\ZZ,G)\to\Hom(\ZZ,H)$.
 % if $g,h:\Hom(\ZZ,G)$ satisfies $fg=fh$ then $g=h$.
 In this observation, the integers $\ZZ$ plays no more of a r\^ole than $\bn 1$ does in \cref{lem:injofsetsaremono}; we can let the source vary over any group $F$: 
  
-Since types $\Hom(\_,\_)$ are sets, being a monomorphism/epimorphism is a proposition.
-We have the following equivalent characterizations.
+%We have the following equivalent characterizations.
 
 \begin{lemma}\label{lem:eq-mono-cover}
 Let $G$ and $H$ be groups and $f: \Hom(G,H)$ a homomorphism.
@@ -2290,9 +2358,9 @@ The correspondence between groups and abstract groups allows for a cute proof of
 % \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
 
 Recall the principal $G$-torsor $\princ G:\BG\to\Set$.
-Since $\princ G(\sh_G)\defequi \USym G$ this defines a pointed function $\rho_G:\BG\to_* \BSigma_{\USym G}\defequi(\conncomp \Set {\USym G},\USym G)$, \ie a homomorphism from $G$ to the permutation group
-$$\rho_G:\Hom(G,\Sigma_{\USym G})$$
-(where the letter $\rho$ commemorates the word ``regular'').
+Since $\princ G(\sh_G)\defequi \USym G$ this defines a pointed function $\rho_G:\BG\to_* \BSigma_{\USym G}\defequi(\conncomp \Set {\USym G},\USym G)$,
+\marginnote{the letter $\rho$ commemorates the word ``regular''} \ie a homomorphism from $G$ to the permutation group
+$$\rho_G:\Hom(G,\Sigma_{\USym G}).$$
 The desired statement is ``$\rho_G$ is a monomorphism'': by \cref{lem:eq-mono-cover} this means that the induced map $\rho_G^\abstr$ from the symmetries of $\sh_G$ in $\BG_\div$ to the symmetries of $\USym G$ in $\Set$ is an injection, \ie ``any symmetry is a symmetry of $\Set$''.
 
 % Under the identity $\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)$ of
