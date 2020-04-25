@@ -562,8 +562,8 @@ of paths using transport along $p$.
 
 \begin{definition}\label{def:pathover-trp}
 In the context of \cref{def:pathsoverpaths}, define by induction on $p$ an
-identification $\po(p): \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$,
-by setting $\po(\refl{x}) \defeq \refl{y=y'}$.
+identification $\po_p: \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$,
+by setting $\po_{\refl{x}} \defeq \refl{y=y'}$.
 \end{definition}
 
 Many of the operations on paths have their counterpart for paths over paths.
@@ -1388,8 +1388,8 @@ inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus the
 
 We may also write $\ua (f)$ more briefly as $\etop f$.%
 \glossary(ftop){$\protect\etop f$}{$\protect\ua(f)$}
-Thus there are identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$. Also, $\overline{\id_X}=\refl{X}$
-and $\overline{g\,f}=\etop{g}\,\etop{f}$ if $g: Y\equiv Z$.
+Thus there are identities $\etop {\ptoe p} = p$ and $\ptoe {\etop f} = f$. Also, $\overetop{\id_X}=\refl{X}$
+and $\overetop{g\,f}=\etop{g}\,\etop{f}$ if $g: Y\equiv Z$.
 
 \begin{xca}\label{xca:C2}
 Prove that $\bool=\bool$ has exactly two elements, 
@@ -1680,12 +1680,22 @@ Moreover:
   if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
 \end{corollary}
 In particular, if $T$ is a set, then $T_P$ is again a set; 
-we may denote this subset by $\set{t:T \mid P(t)}$. 
+we may denote this subset by $\setof{t:T}{P(t)}$.
 
+\begin{remark}\label{rem:subtype-convention}
+  Another important consequence of~\cref{lem:subtype-eq-=}
+  is that we can afford not to distinguish carefully
+  between elements $(t,p)$ of the subtype $T_P$
+  and elements $t$ of type $T$ for which the proposition $P(t)$ holds.
+  We will hence often silently coerce from $T_P$ to $T$ via the first projection,
+  and if $t:T$ is such that $P(t)$ holds, we'll write $t:T_P$
+  to mean any pair $(t,p)$ where $p:P(t)$,
+  since when $P(t)$ holds, the type $P(t)$ is contractible.
+\end{remark}
 Given a set $A$ and a function $\chi_B: A\to\bool$,
 \cref{lem:isset-bool} yields that $\chi_B(a) = \yes$ is a
 proposition, and we can form
-the subset $\set{a:A \mid \chi_B(a) = \yes}$. However,
+the subset $\setof{a:A}{\chi_B(a) = \yes}$. However,
 not every subset as in \cref{def:subtype} can be given
 through a $\chi_B: A\to\bool$. As proved in \cref{sec:finite-types},
 any element of $\bool$ is equal to $\yes$ or to $\no$.
@@ -1724,6 +1734,10 @@ When we don't care about the precise universe $\UU$,
 we'll leave it out from the notation,
 and just write $\Prop$ and $\Set$.
 
+Following \cref{rem:subtype-convention},
+if we have a type $A$ for which we know that it is a proposition or a set,
+we write also $A : \Prop$ or $A : \Set$, respectively.
+
 \section{Pointed types}\label{sec:pointedtypes}
 Sometimes we need to equip types with additional structure
 that cannot be expressed by a proposition such as
@@ -1732,13 +1746,15 @@ Therefore the following is \emph{not} a subtype of $\UU$.
 
 \begin{definition}\label{def:pointedtypes}
   A \emph{pointed type} is a pair $(A,a)$ where $A$ is a type
-  and $a$ is an element of $A$. The \emph{type of pointed types} is
+  and $a$ is an element of $A$. The \emph{type of pointed types} is%
+  \index{pointed type}\glossary(UUb){$\protect\UUp$}{universe of pointed types}
   \[
     \UUp \defeq \sum_{A:\UU} A.
   \]
   Given a type $A$ we let $A_+$ be the pointed type you get
   by adding a default element:
-  $A_+\defequi(A\coprod\true,\inr{\triv})$.
+  $A_+\defequi(A\coprod\true,\inr{\triv})$.%
+  \glossary(Aplus){$A_+$}{$A$ together with a disjoint base point}
   Given a pointed type $X\jdeq(A,a)$,
   the \emph{underlying type}
   is $X_\div\defeq A$, and the \emph{base point} is $\pt_X\defeq a$,
@@ -1802,26 +1818,29 @@ $Y(x)\to Z(x)$ and $x=x$ depending on $x:X$.
 
 \begin{definition}\label{def:function-type-families}
 Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
-Define $Y\to Z$ to be the type family with $(Y\to Z)(x) \defeq Y(x)\to Z(x)$.
-We call $f:Y\to Z$ an equivalence if $f(x): Y(x)\to Z(x)$ is an
-equivalence for all $x:X$.
+Define $Y\fibto Z$ to be the type family
+with $(Y\fibto Z)(x) \defeq Y(x)\to Z(x)$.
 \end{definition}
+Recall from \cref{def:fiberwise} that an element $f : \prod_{x:X}(Y\fibto Z)(x)$
+is called a fiberwise map,
+and $f$ is called a fiberwise equivalence,
+if $f(x): Y(x)\to Z(x)$ is an equivalence for all $x:X$.
 
 \begin{lemma}\label{lem:trp-in-function-type}
 Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
 Then we have for every $x,x':X$, $e: x=x'$, $f: Y(x)\to Z(x)$, and $y':Y(x')$:
 \[
-\trp[Y\to Z]{ e} (f)(y') = \trp[Z]{e} (f(\trp[Y]{ e^{-1}}(y')).
+\trp[Y\fibto Z]{ e} (f)(y') = \trp[Z]{e} \Bigl(f\bigl(\trp[Y]{ e^{-1}}(y')\bigr)\Bigr).
 \]
 \end{lemma}
 \begin{proof}
-By induction on $e: x=x'$. For $e \jdeq \refl{x}$ we have $e^{-1}\jdeq \refl{x}$
+By induction on $e: x=x'$. For $e \jdeq \refl{x}$, we have $e^{-1}\jdeq \refl{x}$,
 and all transports are identity functions of appropriate type. 
 \end{proof}
 
 An important special case of the above lemma is with $\UU$
 as index type and type families $Y\defeq Z\defeq \id_\UU$.
-Then $Y\to Z$ is $X\to X$ as type depending on $X:\UU$. Now, 
+Then $Y\fibto Z$ is $X\to X$ as a type depending on $X:\UU$. Now,
 if $A:\UU$ and $e: A=A$ comes by UA from some equivalence 
 $g:A\to A$, then the above lemma combined with function extensionality 
 yields that for any $f: A\to A$
@@ -1858,7 +1877,89 @@ where $Y\jdeq X$ and $a,b$ members of $X$:
 \end{xca}
 
 There is also a dependent version of \cref{lem:trp-in-fx=Ygx},
-which can be proved by an additional induction on $i$.
+which is again proved by induction on $e$.\footnote{%
+  We picture this in two stages. First, we show the fiberwise
+  situation as follows:\par
+  \noindent\begin{tikzpicture}
+    % Name the coordinates so they are easy to change
+    % first: X
+    \coordinate (X-left) at (-1,-1);
+    \node[dot,label=below:$x$] (X-x) at (0,-1.2) {};
+    \node[dot,label=below:$x'$] (X-xp) at (1.5,-1.3) {};
+    \coordinate[label=right:$X$] (X-right) at (3.2,-1.1);
+    % then: Y top and bottom
+    \coordinate (Y-top-left) at (-1,2.1);
+    \coordinate (Y-bot-left) at (-1,0.5);
+    \coordinate[label=above:$Y(x)$] (Y-top-x) at (0,2.4);
+    \coordinate (Y-bot-x) at (0,-.1);
+    \coordinate[label=above:$Y(x')$] (Y-top-xp) at (1.5,2.7);
+    \coordinate (Y-bot-xp) at (1.5,-.4);
+    \coordinate (Y-top-right) at (3.2,2.3);
+    \coordinate (Y-bot-right) at (3.2,0.0);
+    \draw (Y-bot-left) .. controls +(-90:.5) and +(0:-.5) .. (Y-bot-x)
+    .. controls +(0:.5) and +(-10:-.5) .. (Y-bot-xp)
+    .. controls +(-10:.5) and +(90:-.5) .. (Y-bot-right)
+    -- (Y-top-right)
+    .. controls +(90:.5) and +(0:.5) .. (Y-top-xp)
+    .. controls +(0:-.5) and +(-10:.4) .. (Y-top-x)
+    .. controls +(-10:-.4) and +(90:.5) .. (Y-top-left)
+    -- (Y-bot-left);
+    \draw[dashed] (Y-bot-x) -- (Y-top-x);
+    \draw[dashed] (Y-bot-xp) -- (Y-top-xp);
+    \draw (X-left) .. controls +(-10:.3) and +(0:-.3) .. (X-x);
+    \draw[->] (X-x) .. controls +(0:.3) and +(-10:-.5) ..
+      node[anchor=north] {$e$} (X-xp);
+    \draw (X-xp) .. controls +(-10:.5) and +(0:-.1) .. (X-right);
+    % Now the specifics: two sections f,g and path-overs and transports
+    \coordinate (Y-f-left) at (-1,0.6);
+    \coordinate (Y-g-left) at (-1,1.6);
+    \coordinate[label=right:$f$] (Y-f-right) at (3.2,0.9);
+    \coordinate[label=right:$g$] (Y-g-right) at (3.2,1.5);
+    \node[dot,label=below left:$f(x)$] (fx) at (0,0.5) {};
+    \node[dot,label=above left:$g(x)$] (gx) at (0,1.5) {};
+    \node[dot,label=below right:$f(x')$] (fxp) at (1.5,0.7) {};
+    \node[dot,label=above right:$g(x')$] (gxp) at (1.5,1.7) {};
+    \node[dot,label=right:$\trp{e}(f(x))$] (tfx) at (1.5,-.1) {};
+    \node[dot,label=right:$\trp{e}(g(x))$] (tgx) at (1.5,2.4) {};
+    \draw[dotted] (Y-f-left) .. controls +(30:.3) and +(0:-.5) .. (fx);
+    \draw[->] (fx) .. controls +(0:.5) and +(0:-.5) ..
+      node[anchor=south] {$\apd{f}(e)$} (fxp);
+    \draw[dotted] (fxp) .. controls +(0:.5) and +(-30:-.3) .. (Y-f-right);
+    \draw[dotted] (Y-g-left) .. controls +(-30:.3) and +(0:-.5) .. (gx);
+    \draw[->] (gx) .. controls +(0:.5) and +(0:-.5) ..
+      node[anchor=north] {$\apd{g}(e)$} (gxp);
+    \draw[dotted] (gxp) .. controls +(0:.5) and +(25:-.3) .. (Y-g-right);
+    \draw[->] (fx) -- node[anchor=east] {$i$} (gx);
+    \draw[->] (fxp) -- node[anchor=west] {${\trp{e}(i)}$} (gxp);
+    \draw (tfx) -- (fxp); \draw (gxp) -- (tgx);
+    \draw[mapsto,shorten <=3pt,shorten >=2pt] (fx)
+    .. controls +(-45:.5) and +(0:-.4) .. (tfx);
+    \draw[mapsto,shorten <=3pt,shorten >=2pt] (gx)
+    .. controls +(45:.5) and +(20:-.4) .. (tgx);
+  \end{tikzpicture}\par
+  \noindent Here, there's not room to show all
+  that's going on in the fiber $Y(x')$, so we illustrate that
+  as follows:\par
+  \noindent\begin{tikzpicture}
+    \node (Yxp) at (0.1,2) {$Y(x')$};
+    \draw (0,-1)
+    .. controls ++(200:-1) and ++(180:1) .. (2.5,-1.8)
+    .. controls ++(180:-1) and ++(270:1) .. (3.5,0)
+    .. controls ++(270:-1) and ++(20:2)   .. (2,2)
+    .. controls ++(20:-2)   and ++(90:1)  .. (-1,0.7)
+    .. controls ++(90:-1)  and ++(200:1) .. (0,-1);
+    \node[dot,label=below left:$f(x')$] (fxp) at (0.1,-.4) {};
+    \node[dot,label=above left:$g(x')$] (gxp) at (0.1,.6) {};
+    \node[dot,label=below right:$\trp{e}(f(x))$] (tfx) at (1.8,-.7) {};
+    \node[dot,label=above right:$\trp{e}(g(x))$] (tgx) at (1.8,1.2) {};
+    \draw[<-] (fxp) .. controls +(-20:.5) and +(10:-.5) .. (tfx);
+    \draw[->] (fxp) -- node[auto] {$\trp[Z]{e}(i)$} (gxp);
+    \draw[<-] (gxp) .. controls +(10:.5) and +(0:-.5) .. (tgx);
+    \draw[->] (tfx) .. controls +(45:.5) and +(-45:.5) ..
+    node[auto,swap] {$\ap{\trp[Y]{e}}(i)$} (tgx);
+    \node (poapdf) at (1.1,-.2) {$\po_e\bigl(\apd{f}(e)\bigr)$};
+    \node (poapdg) at (.9,1.35) {$\po_e\bigl(\apd{g}(e)\bigr)$};
+  \end{tikzpicture}}
 
 \begin{lemma}\label{lem:trp-in-fx=Yxgx}
 Let $X,Y(x)$ be types and $f(x),g(x): Y(x)$ for all $x:X$. 
@@ -1866,7 +1967,8 @@ Let $Z(x)\defeq (f(x)=g(x))$,
 with the identification in $Y(x)$, for every $x:X$. 
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \[
-\trp[Z]{ e} (i) = \apd{g}(e) \cdot \ap{\trp[Y]{e}}(i) \cdot \apd{f}(e)^{-1}.
+  \trp[Z]{ e} (i) = \po_e\bigl(\apd{g}(e)\bigr)
+  \cdot \ap{\trp[Y]{e}}(i) \cdot \po_e\bigl(\apd{f}(e)\bigr)^{-1}.
 \]
 \end{lemma}
 
