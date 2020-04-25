@@ -835,7 +835,7 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
   $$\xymatrix{S\times S\ar[rr]^{(s,t)\mapsto s\circ t}&&S}
   $$
   with the property that
-  \marginnote{Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is a group}
+  \marginnote{Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is an abstract group}
   \begin{enumerate}
   \item for all $a,b,c:S$ we have that $(a\circ c)\circ(b\circ c)=a\circ b$
   \item far all $a,c:S$ there is a $b:S$ such that $a\circ b=c$.
@@ -915,7 +915,8 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   trivial group.  Likewise, there is a unique morphism from the
   trivial group to $G$, sending the unique element of $\bn 1$ to
   $\sh_G$, and pointed by $\refl {\sh_G}$.
-\item If $G$ and $H$ are groups, the inclusions and projections between $B(G\times H)\oldequiv\BG\times\BH$ and $\BG$ and $\BH$ give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  \footnote{Elaborate}
+\item If $G$ and $H$ are groups, the projections $\BG\gets \BG\times \BH\to \BH$ and inclusions $\BG\to\BG\times\BH\gets\BH$ \marginnote{the ``projections'' $G\gets G\times H\to H$ and ``inclusions'' $G\to G\times H\gets H$ are homomorphisms}
+  (\eg the inclusion $\BG\to\BG\times\BH$ is given by $z\mapsto(z,\sh_H)$) give rise to group homomorphisms between $G\times H$ and $G$ and $H$.  
   \end{enumerate}
 \end{example}
 
@@ -945,20 +946,20 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   contradiction. Such a path is the data of a path $p:\id = \id$ such
   that $\pathover {\refl{\bn 3}} {T} {p} \tau$ where the type family
   $T:(\fin_3\to\fin_3) \to \UU$ is given by
-  $f\mapsto (\pt_{\permgrp 3} = f(\pt_{\permgrp 3}))$. It is easy to
+  $f\mapsto (\sh_{\permgrp 3} = f(\sh_{\permgrp 3}))$. It is easy to
   determine the transport in that type family $T$ and we find that
-  $(\pathover {\refl{\bn 3}} {T} {p} \tau) \weq (p(\pt_{\permgrp
+  $(\pathover {\refl{\bn 3}} {T} {p} \tau) \weq (p(\sh_{\permgrp
     3})=\tau)$. Now, by induction on $q:\id=f$ for
   $f:\fin_3 \to \fin_3$, one shows that
   \begin{displaymath}
     \ap f : (\USym{\permgrp 3}) \to
-    (f(\pt_{\permgrp 3}) = f(\pt_{\permgrp 3}))
+    (f(\sh_{\permgrp 3}) = f(\sh_{\permgrp 3}))
   \end{displaymath}
   is equal to
-  $q(\pt_{\permgrp 3})\cdot {\blank}\cdot \inv{q(\pt_{\permgrp
+  $q(\sh_{\permgrp 3})\cdot {\blank}\cdot \inv{q(\sh_{\permgrp
       3})}$. In particular, when $f\jdeq \id$ and $q\jdeq p$, it means
-  that conjugating by $p(\pt_{\permgrp 3})$ is trivial. But by
-  hypothesis $p(\pt_{\permgrp 3}) = \tau$, so it means that $\tau$
+  that conjugating by $p(\sh_{\permgrp 3})$ is trivial. But by
+  hypothesis $p(\sh_{\permgrp 3}) = \tau$, so it means that $\tau$
   commutes with every other element of
   $\USym{\permgrp 3}$. One can check that it
   actually fails to be the case for the element $\theta$ defined by
@@ -993,10 +994,10 @@ we should first study how pointed maps affect loops:
   We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$
   is equivalent to the \emph{set} of ``abstract group homomorphisms''
   from $\abstr(G)$ to $\abstr(H)$ (cf.\ \cref{lem:homomabstrconcr}),
-  but it is instructive to prove that
+  but it is instructive to prove that $\Hom(G,H)$, or equivalently
   \[
-    \Hom(G,H) \defequi (\BG\ptdto\BH) \defequi
-    \sum_{F:\BG_\div\to \BH_\div}(\sh_H=F(\sh_G))
+    (\BG\ptdto\BH) \defequi
+    \sum_{F:\BG_\div\to \BH_\div}(\sh_H=F(\sh_G)),
   \]
   is a set directly from the definition. Recall our notation: a
   homomorphism $f:\Hom(G,H)$ is recorded as the pair
@@ -1007,32 +1008,43 @@ we should first study how pointed maps affect loops:
   group homomorphisms $f,f':\Hom(G,H)$.  We clearly must have a
   $$J:\Bf_\div=\Bf_\div',$$
   which by function extensionality (\cref{def:funext}) is equivalently
-  UNIQUELY (DISCUSS) given by its image given by the element (with the same
+  % UNIQUELY (DISCUSS)
+  given by its image given by the element (with the same
   name) in the $\Pi$-type
   $$J:\prod_{z:\BG_\div}\Bf_\div(z)=\Bf'_\div(z).$$ 
-  Transport along $J$ of $p_f:\sh_H=\Bf_\div(\sh_G)$ shows that in
-  addition we must have a path $!:J(\sh_G)\cdot p_f=p_{f'}$ in the
-  type ${\sh_H=\Bf'_\div(\sh_G)}$:
-  \begin{displaymath}
+   \marginnote{  \begin{displaymath}
     \xymatrix{&\sh_H\ar@{=}[dl]_{p_f}^{\rotatebox{35}{\footnotesize$\gets$}}
       \ar@{=}[dr]^{p_{f'}}_{\rotatebox{-35}{\footnotesize$\to$}}&\\
       \Bf_\div(\sh_G)\ar@{=}[rr]^{J(\sh_G)}_\to&&\,\Bf'_\div(\sh_G).}
-  \end{displaymath}
+  \end{displaymath}}
+Transport along $J$ of $p_f:\sh_H=\Bf_\div(\sh_G)$ shows that in
+  addition we must have a path $!:J(\sh_G)\cdot p_f=p_{f'}$
+ in the
+  type ${\sh_H=\Bf'_\div(\sh_G)}$.
   In other words, we have an equivalence
-  $$(f=f')\simeq \sum_{J:\Bf_\div=\Bf'_\div}J(\sh_G)p_f=p_{f'}.$$
-  Now, take elements $(J,!)$ and $(K,!)$ of the type in the right-hand
-  side of the previous equivalence and prove that $(J,!) = (K,!)$ has
-  an element. Notice that, for any $H:\Bf_\div = \Bf'_\div$, one can
-  prove by induction on $\gamma:\sh_G=x$ that the following diagram
-  commutes:
-  $$\xymatrix{
-    \Bf_\div(\sh_G)\ar@{=}[r]^{H(\sh_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&
+  $$(f=f')\simeq \sum_{J:\Bf_\div=\Bf'_\div}J(\sh_G)p_f=p_{f'},$$
+  and our goal is to prove that any two elements are identical.
+  \marginnote{Induction on $\gamma:\sh_G=z$ gives
+   $$\xymatrix{
+    \Bf_\div(\sh_G)\ar@{=}[rr]^{J(\sh_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&&
     \Bf'_\div(\sh_G)\ar@{=}[d]^\downarrow_{\Bf'_\div(\gamma)}\\
-    \Bf_\div(z)\ar@{=}[r]^{H(z)}_\to&\Bf'_\div(z)},
-  $$
-  It means in particular that, for propositional goals, $H$ is
-  entirely determined by $H(\sh_G)$. More precisely, the remark
-  applies to $J$ and $K$ when we try to prove $(J,!) = (K,!)$. Indeed,
+    \Bf_\div(z)\ar@{=}[rr]^{J(z)}_\to&&\,\Bf'_\div(z).}
+  $$ 
+  Together these two commutative diagrams (and the fact that we're in a set) show that $(J,!)$ is unique.}
+   Take two elements $(J,!),(K,!):\sum_{J:\Bf_\div=\Bf'_\div}J(\sh_G)p_f=p_{f'}$.  We must prove that $(J,!) = (K,!)$ has
+   an element.
+  % Notice that, for any $L:\Bf_\div = \Bf'_\div$, one can
+  % prove by induction on $\gamma:\sh_G=x$ that the following diagram
+  % commutes:
+  % $$\xymatrix{
+  %   \Bf_\div(\sh_G)\ar@{=}[r]^{L(\sh_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&
+  %   \Bf'_\div(\sh_G)\ar@{=}[d]^\downarrow_{\Bf'_\div(\gamma)}\\
+  %   \Bf_\div(z)\ar@{=}[r]^{L(z)}_\to&\,\Bf'_\div(z).}
+  % $$
+  % It means in particular that, for propositional goals, $L$ is
+  % entirely determined by $L(\sh_G)$. More precisely, the remark
+  % applies to $J$ and $K$ when we try to prove $(J,!) = (K,!)$.
+  Indeed,
   this type is equivalent to $J=K$, which is in turn equivalent to
   $\prod_{z:\BG_\div}J(z)=K(z)$, and because $\Bf_\div(z)=\Bf'_\div(z)$
   is a set for every $z$ ($\BH_\div$ being a groupoid), the type
@@ -1133,19 +1145,11 @@ The definition of group homomorphisms in \cref{def:grouphomomorphism} should be 
   and define the function
   \begin{displaymath}
     f^\abstr : \USym G \xrightarrow{\ap {\Bf_\div}}
-    (f(\sh_G)=f(\sh_G)) \xrightarrow{\trp {\inv{p_f}}} (\sh_H=pt_H)
+    (f(\sh_G)=f(\sh_G)) \xrightarrow{\trp {\inv{p_f}}} \USym H
   \end{displaymath}
+  (remember, $\USym G\defequi (\sh_G=\sh_G)$).
   We take the time to develop from first principles the properties
   that $f^\abstr$ satisfies.
-  % As in \cref{def:apd}%\footnote{I use $f(p)$ rather than the $\mathrm{ap}_f$-formalism which I think is alienating when compared with the classical setup}
-% , for $z:\BG$ this gives rise to a map 
-% $$\ap{\Bf_\div}:(\sh_G=z)\to (\Bf_\div(\sh_G)=\Bf_\div(z)),$$ 
-% defined by induction by declaring that $\ap{\Bf_\div}(\refl{\sh_G})\defequi \refl{\Bf_\div(\sh_G)}$.  
-% If $g:\USym G$, then $\ap{\Bf_\div}(g)$ is an element of $\Bf_\div(\sh_G)=\Bf_\div(\sh_G)$, while we want something in $\USym H$.  However, this is not an obstacle since conjugation by $p_f: \Bf_\div(\sh_G)=\sh_H$ gives rise to 
-% $$\mathrm{ad}_{p_f}:(\Bf_\div(\sh_G)=\Bf_\div(\sh_G))\weq\USym H$$ (with $\mathrm{ad}_{p_f}(\refl{\Bf_\div(\sh_G)})=\refl{\sh_H}$, as discussed in \cref{sec:heavy-transport}) and so 
-% $$\mathrm{ad}_{p_f}(\ap{\Bf_\div}(g)):\USym H.$$
-% This defines a function
-% $$f^\abstr\defequi \mathrm{ad}_{p_f}\ap{\Bf_\div}:\USym G\to\USym H$$
   One proves easily (by induction) that
   $\trp {\inv{p_f}} = \inv{p_f} \cdot \blank \cdot p_f$. It means that
   the element $f^\abstr(g)$ is the ``up, over and down'' identity of
@@ -1158,14 +1162,6 @@ The definition of group homomorphisms in \cref{def:grouphomomorphism} should be 
       \sh_H\ar@{:}[r]^{f^\abstr(g)}_\to & \sh_H.%
     }
   \end{displaymath}
-% Since type-checking removes the ambiguity, we trust it will not lead to any confusion that we simplify the notation and use the symbol $f$ simultaneously for $\Bf_\div$, writing $f\colon \BG_\div\to \BH_\div$ and for $\ap{\Bf_\div}$, writing $f:\USym G\to (f(\sh_G)=f(\sh_G))$, while we write
-% $$f^\abstr\defequi \mathrm{ad}_p\ap{\Bf_\div}:\USym G\to\USym H, \qquad g\mapsto p\,f(g)\,p^{-1}$$  
-% and depicting it as the ``up, over and down'' identity of $\sh_H$:
-% $$\xymatrix{f(\sh_G)\ar@{=}[r]^{f(g)}_\to\ar@{=}[d]^\downarrow_p&f(\sh_G)\ar@{=}[d]^\downarrow_p\\
-% \sh_H&\sh_H}.$$
-% When time comes, even the superscript $\abstr$ will vanish.
-% % (which is defensible, given that $p$ is part of the homomorphism $f$).
-
 With the shorthand $$e_G\defequi\refl{\sh_G}:\USym G$$ and writing (to remind us where things happen)
 $$g\cdot_Gg':\USym G$$
  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture 
@@ -1178,11 +1174,22 @@ and likewise with a subscript $H$, we have the following:
       f^\abstr(e_G)\defequi\trp {\inv{p_f}}\ap{\Bf_\div}(\refl{\sh_G})
       = \inv{p_f} \cdot \refl{\sh_H} \cdot p_f = e_H
     \end{displaymath}
-% Since $\ap{\Bf}(e_G)\oldequiv \ap{\Bf}f(\refl{\sh_G})\oldequiv\refl{f(\sh_G)}$ and $e_H\oldequiv\refl{\sh_H}$, 
-% $$f(e_G)\oldequiv\mathrm{ad}_p(\ap{\Bf}(e_G))\oldequiv\mathrm{ad}_p(\refl{f(\sh_G)})\oldequiv \refl{\sh_H}\oldequiv e_H$$
   \item the proposition
     $f^\abstr(g\cdot_Gg')=f^\abstr(g)\cdot_Hf^\abstr(g')$ contains an
     element given by the composite:
+    \marginnote{
+If you find it useful, you may consider the following picture:
+\begin{displaymath}
+  \xymatrix{
+\Bf_\div(\sh_G)\ar@{=}[rr]^{\ap{\Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{\Bf_\div}(g')}_{\rotatebox{-35}{\footnotesize$\to$}} \ar@{=}[dd]_{p_f}^\uparrow
+&&\Bf_\div(\sh_G)\ar@{=}[dd]_{p_f}^\uparrow\\
+&\Bf_\div(\sh_G)\ar@{=}[d]_{p_f}^\uparrow
+\ar@{=}[ur]^{\ap{\Bf_\div}(g)}_{\rotatebox{35}{\footnotesize$\to$}}
+&\\
+\sh_H&\sh_H&\sh_H},
+\end{displaymath}
+where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\sh_H$ in the middle.
+}
     \begin{align*}
       f^\abstr(g\cdot_Gg')
       &\defequi \trp{\inv{p_f}}\left(\ap{\Bf_\div}(g\, g')\right)
@@ -1203,35 +1210,33 @@ and likewise with a subscript $H$, we have the following:
     equalities. The other equalities are either path algebra or using
     that $\trp {\inv{p_f}}$ is equal to the function mapping $x$ to
     $\inv{p_f} x {p_f}$.
-
-If you find it useful, you may consider the following picture:
-\begin{displaymath}
-  \xymatrix{
-\Bf_\div(\sh_G)\ar@{=}[rr]^{\ap{\Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{\Bf_\div}(g')}_{\rotatebox{-35}{\footnotesize$\to$}} \ar@{=}[dd]_{p_f}^\uparrow
-&&\Bf_\div(\sh_G)\ar@{=}[dd]_{p_f}^\uparrow\\
-&\Bf_\div(\sh_G)\ar@{=}[d]_{p_f}^\uparrow
-\ar@{=}[ur]^{\ap{\Bf_\div}(g)}_{\rotatebox{35}{\footnotesize$\to$}}
-&\\
-\sh_H&\sh_H&\sh_H},
-\end{displaymath}
-where $f^\abstr(g\cdot_Gg')$ is simply ``up, over and down'' while $f^\abstr(g)\cdot_Hf^\abstr(g')$ takes the detour via the $\sh_H$ in the middle.
   \end{enumerate}
 \end{remark}
 \begin{definition}\label{def:abstrisfunctor}
   If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
- $$\Hom^\abstr(\mathcal G,\mathcal H)
+  $$\Hom^\abstr(\mathcal G,\mathcal H)
 \defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times 
 \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
 $$
-Since $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
-$f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ for $s:S$ are
-propositions, a homomorphism of abstract group is uniquely determined
+  \marginnote{For $s:S$ both $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
+$f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
+propositions; hence a homomorphism of abstract group is uniquely determined
 by its underlying function of sets, and unless there is danger of
 confusion we may write $f$ instead of $(f,!)$.
-
+}
 If $G$ and $H$ are groups, the function
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 is defined as the function $f\mapsto \abstr(f)\defequi(f^\abstr,!)$
+\marginnote{%
+  $f^\abstr\defequi \trp {\inv{p_f}}\ap {\Bf_\div}: \USym G =\USym H$, and so
+  \begin{displaymath}
+    \xymatrix{%
+      \Bf_\div(\sh_G)\ar@{=}[r]^{\ap{\Bf_\div}(g)}_\to \ar@{=}[d]^\uparrow_{p_f} &
+      \Bf_\div(\sh_G)\ar@{=}[d]^\uparrow_{p_f}
+      \\
+      \sh_H\ar@{=}[r]^{f^\abstr(g)}_\to & \sh_H.%
+    }
+  \end{displaymath} commutes.}
 made explicit in \cref{def:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
@@ -1306,7 +1311,10 @@ Disregarding the set-condition we get the simpler notion of \inftygps:
 \section{$G$-sets}
 \label{sec:gsets}
 
-One of the goals of the next section is to prove that, in a precise sense, any abstract group corresponds to a group.  In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.  However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
+One of the goals of \cref{sec:Gsetforabstract} is to prove that the tyoes of groups and abstract groups are equivalent.
+% , in a precise sense, any abstract group corresponds to a group.
+In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
+However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
 
 Before we handle the more complex case of abstract groups, 
 let us see what this looks like for groups.
@@ -1328,28 +1336,26 @@ In particular, if $g:\USym G$,
 then $X(g)$ is a permutation of the underlying set of $X$. 
 
 The type of $G$-sets is $$\GSet\defequi(\BG\to\Set).$$
-%$$\Type_G\defequi (\BG\to\UU),\qquad \GSet\defequi (\BG\to\Set).$$
 \end{definition}
-\begin{remark}
+\marginnote{%\begin{remark}
   Much of what follows will work equally well for $\infty$-groups; if $G$ is an infinity group, a \emph{$G$-type} is a function $X : \BG\to\UU.$
-\end{remark}
-
+%\end{remark}
+}
 \begin{remark}
   The reader will notice that the type of $G$-sets is equivalent to the 
-type of \coverings over $\BG$. %\footnote{we should be careful with having too many official names for the same objects}
+type of \coverings over $\BG$.
 The reason we have allowed ourselves two names is that our focus is different: for a $G$-set $X:\BG\to\Set$ we focus on the sets $X(z)$, whereas when talking about \coverings the first projection $\sum_{z:\BG}X(z)\to \BG$ takes center stage.  Each focus has its advantages.
-
-%Given a $G$-set, we may consider it as a $G$-type and will usually not make a notational distinction.
 \end{remark}
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group, then
 $$\princ G:\BG\to\Set,\qquad\princ G(z)\defequi\pathsp{\sh_G}(z)\defequi(\sh_G=z)$$ is a $G$-set called the \emph{principal $G$-torsor}.  
 We've seen this family before in the guise of the (preimages of the) ``universal \covering'' of \cref{def:universalcover}!  
-The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.
+\marginnote{The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.}
 
 There is nothing sacred about starting the equality $\sh_G = z$ in $\sh_G$. 
-Let $\pathsp{\blank}$ denote the map sending $y:\BG$ to the $G$-set $\pathsp y$. 
+Let
+$$\pathsp{\blank}:\BG\to\GSet$$ denote the map sending $y:\BG$ to the $G$-set $\pathsp y$. 
 Applying $\pathsp{\blank}$ to a path $q:y=y'$
 induces an equivalence from $\pathsp y$ to $\pathsp {y'}$ that sends $p:y=z$ to $pq^{-1}:y'=z$. As a matter of fact, \cref{lem:BGbytorsor} will identify $\BG$ with the type of $G$-torsors via the map $\pathsp{\blank}$, simply denoted as $\pathsp{}$,
 using the full transport structure of the identity type $\pathsp y(z)\defequi(y=z)$.
@@ -1359,13 +1365,15 @@ using the full transport structure of the identity type $\pathsp y(z)\defequi(y=
 
 \begin{example}\label{def:adjointrep}
   If $G$ is a group (or \inftygp), then
-$$\Ad_G:\BG\to\UU,\qquad\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.  The name ``adjoint'' comes from how transport works in this case; if $p:y=z$, then $\Ad_G(p):(y=y)=(z=z)$ is given by conjugation: 
+$$\Ad_G:\BG\to\UU,\qquad\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.  
+\marginnote{The name ``adjoint'' comes from how transport works in this case; if $p:y=z$, then $\Ad_G(p):(y=y)=(z=z)$ is given by conjugation: 
 $$\Ad_G(p)(q)=pqp^{-1}:z=z,$$ the picture
 $$\xymatrix{y\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&z\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
 y\ar@{=}[r]^p_\to&z}$$
 is a mnemonic device illustrating that it couldn't have been different, and should be contrasted with the picture for $\princ G (p):(\sh_G=y)=(\sh_G=z)$:
 $$\xymatrix{\sh_G\ar@{=}[r]^{\refl{\sh_G}}_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
-y\ar@{=}[r]^p_\to&\,z.}$$  
+  y\ar@{=}[r]^p_\to&\,z.}$$
+}
 Notice that by the induction principle for the circle,
 $$\sum_{z:\BG}\Ad_G(z)=\sum_{z:\BG}(z=z)$$
 is equivalent to the type of (unpointed!) maps $\Sc\to\BG$, known in other contexts as the \emph{free loop space} of $\BG$, an apt name given that it is the type of ``all symmetries of $\BG$.''  
@@ -1385,10 +1393,11 @@ $$\Hom(H,G)(y)\defequi\Hom(H,G)(\sh_H,y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y
   Provide an identification between the $G$-sets 
 $\Ad_G$  and $\Hom(\ZZ,G)$ 
 of \cref{def:adjointrep} and \cref{ex:HomHGasGset}.
-
+\marginnote{%
 Hint: This is similar to \cref{ex:Zinitial}: 
 identify $\Hom(\ZZ,G)(y)$ with $\sum_{z:\BG}\sum_{p:z=z}(y=z)$ and 
 consider the map to $y=y$ sending $(z,p,q)$ to $q^{-1}p\,q$.
+}
 \end{xca}
 
 
@@ -1418,20 +1427,20 @@ from $G$ to $\Sigma_X$, \ie a pointed map $(f,p) : \BG\ptdto \BSigma_{X}$),
 then the composite
 $$\xymatrix{\BG\ar[r]^-{f}&\conncomp \Set X \ar[r]^{\fst}&\Set}$$
 is a $G$-set with the value at $\sh_G$ equal to $X$.
+\marginnote{%
+We must be careful not to focus too much on the underlying set.  
+For instance, even though the underlying set of both $\Ad_G$ and $\princ G$ is $\USym G$, in general  $\Ad_G$ and $\princ G$  are very different $G$-sets.  
+To drive this point home, compare the illustrations of transport along a $p:\USym G$ for the two:
+$$\xymatrix{\sh_G\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
+  \sh_G\ar@{=}[r]^p_\to&\sh_G} $$%\qquad
+$$\xymatrix{\sh_G\ar@{=}[r]^{\refl{\sh_G}}_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
+\sh_G\ar@{=}[r]^p_\to&{\hphantom{.}}\sh_G.}$$
+A third $G$-set with underlying set $\USym G$ is $\mathrm{triv}_G(\USym G)$.}
 
 The reasoning in the previous two paragraphs yields the following equivalence:
 \[
 \GSet \equiv \sum_{X:\Set} \BG \ptdto \BSigma_X.
 \]
-
-However, we must be careful not to focus too much on the underlying set.  
-For instance, even though the underlying type of both $\Ad_G$ and $\princ G$ is $\USym G$, in general  $\Ad_G$ and $\princ G$  are very different $G$-sets.  
-To drive this point home, compare the illustrations of transport along a $p:\USym G$ for the two:
-$$\xymatrix{\sh_G\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
-\sh_G\ar@{=}[r]^p_\to&\sh_G}                 \qquad
-\xymatrix{\sh_G\ar@{=}[r]^{\refl{\sh_G}}_\to\ar@{=}[d]_q^\downarrow&\sh_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
-\sh_G\ar@{=}[r]^p_\to&{\hphantom{.}}\sh_G.}$$
-A third $G$-set with underlying set $\USym G$ is $\mathrm{triv}_G(\USym G)$.
 \end{remark}
 
 \begin{xca}
@@ -1446,7 +1455,7 @@ then $X$ is a $G$-set.
 \sususe{Transitive $G$-sets}
 \label{sec:transitiveGsets}
 We end the section with some observations regarding so-called transitive $G$-sets which will be valuable when we move on to discussing subgroups.
-Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if for all $a,b:\mathcal X$ there is a $g:\mathcal X$ such that $a=g\cdot b$.  In our world this translates to
+Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists a $b:\mathcal X$ such that for all $a:\mathcal X$ there is a $g:\mathcal X$ with $a=g\cdot b$.  In our world this translates to
 \begin{definition}\label{def:transitiveGset}
   A $G$-set $X:\BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
   \[
@@ -1455,15 +1464,18 @@ Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\math
   \]
   holds.
 \end{definition}
+\begin{remark}
+  
 Note that the mention of $y$ is redundant in the definition: by
 connectedness (cf.~\cref{xca:component-connected}) it is enough to
 demand
 \begin{displaymath}
-  \Trunc[\big]{\sum_{b:X(\sh_G)}\prod_{a:X(\sh_G)}\sum_{g:\USym G}a=g\cdot b},
+  \Trunc[\big]{\sum_{b:X(\sh_G)}\prod_{a:X(\sh_G)}\sum_{g:\USym G}a=g\cdot b}.
 \end{displaymath}
 In other words, $X$ is transitive if and only if there merely is a
 $b:X(\sh_G)$ such that the map $-\cdot b:\USym G\to X(\sh_G)$ is
 surjective.
+\end{remark}
 
 \begin{lemma}
   \label{lem:conistrans}
@@ -1504,29 +1516,31 @@ is injective.
 
 
 \section{The classifying type is the type of torsors}
+This section can be seen as a motivation for the use of torsors.
+In \cref{sec:Gsetforabstract} we'll use this concept to prove that the type of groups and the type of abstract groups are equivalent by classifying abstract groups in terms of their pointed connected groupoid of torsors.  To see how this might work it is good to start with the case of a (concrete) group $G$.  In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to get the right definition we should first explore what the torsors of $G$ look like and prove \cref{lem:BGbytorsor} showing that $\BG$ is equivalent to the type of $G$-torsors.
 \label{sec:torsors}
-\begin{definition}
+\begin{definition}\marginnote{%\begin{remark}
+  This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor.  There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.
+}%\end{remark}
   Given a group  $G$, the type of {\em$G$-torsors} is
 $$\typetorsor_G\defequi\sum_{X:\GSet}\Trunc{\princ G=X},$$
 where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
-\begin{remark}
-  This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor.  There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.
-\end{remark}
+
 
 \begin{remark}
   For $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings of $\BG$ containing the universal \covering.
 
 Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one!
 \end{remark}
-\begin{remark}
-  \label{def:BG2TorsG}
+
   For $z:\BG$, recall the definition of $\pathsp z:\BG\to\Set$ as the
   $G$-set with $\pathsp z(y)\defequi(z=y)$ (so that in particular
-  $\princ G\defequi\pathsp{\sh_G}$).
+  $\princ G\defequi\pathsp{\sh_G}$).  Note that $\pathsp z$ is a $G$-torsor.
 
-  Let $\pathsp{}:\BG\to_*(\typetorsor_G,\princ G)$ be the pointed map given by sending $z:\BG$ to $\pathsp z$ and by the identification $\refl{\pathsp{\sh_G}}:\pathsp{\sh_G}=\princ G$. 
-\end{remark}
+ \begin{definition}
+  \label{def:BG2TorsG} Let $$\pathsp{}:\BG\to_*(\typetorsor_G,\princ G)$$ be the pointed map given by sending $z:\BG$ to $\pathsp z$ and by the identification $\refl{\pathsp{\sh_G}}:\pathsp{\sh_G}=\princ G$. 
+\end{definition}
 If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ instead of $\pathsp{}$.
 
 \begin{example}\label{ex:pathsptransport}
@@ -1539,10 +1553,10 @@ For $q:y=z$,  the transport
 $\pathsp q:\prod_{x:\BG}\pathsp y(x)=\pathsp z(x)$
 is obtained 
 by sending $p:\pathsp y(x)\defequi (y=x)$ to
-$$\pathsp q(p)\defequi pq^{-1}:\pathsp z(x)\defequi(z=x)$$ 
-or, in a picture, 
+\marginnote{In a picture, 
 $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{\pathsp q(p)}_\downarrow\\
-x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
+x\ar@{=}[r]^{\refl x}_\to&\,x.}$$}
+$$\pathsp q(p)\defequi pq^{-1}:\pathsp z(x)\defequi(z=x).$$ 
 \end{example}
 \begin{lemma}\label{lem:pathsptransportiseq}
   For  $y,z:\BG$ the induced map  (\ie transport) of identity types
@@ -1573,7 +1587,9 @@ is an equivalence.
 $$\pathsp{}:\BG\to(\typetorsor_G,\princ G),\qquad z\mapsto \pathsp z\defequi(x\mapsto(z=_{\BG}x))$$
 is an equivalence.
 Univalence then provides us with an identity 
-$$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\footnote{in the appropriate universe}.
+$$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$
+of groups (or $\infty$-groups).
+%\footnote{in the appropriate universe}.
 \end{theorem}
 
 \begin{proof}
@@ -1590,17 +1606,6 @@ $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\f
   \end{displaymath}
   Then \cref{lem:pathsptransportiseq} states exactly that $\ap P$ is
   an equivalence.
-%
-% But this will follow by the very definition of the identity type!  
-%
-% For $q:y=z$,  the transport $T(q):\pathsp y=\pathsp z$ is given by  sending $p:y=x$ to
-% $$T(q)(p)\defequi pq^{-1}:T(z)(x)\defequi(z=x),$$ 
-% or, in a picture 
-% $$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{T(q)(p)}_\downarrow\\
-% x\ar@{=}[r]^{\refl x}_\to&\,x.}$$
-
-% %Hence $\bn 1\to T^{-1}(f)=\sum_{p:y=z}T(p)=f$ with value is an equivalence.
-% %the same as giving an element in $T(z)(y)\defequi (z=y)$.
 \end{proof}
 
 %BID will remove the following comment after May 1 2020
@@ -1776,64 +1781,64 @@ $$\bar{\pathsp{}}:G=(\typetorsor_G,\princ G)$$ of groups (or $\infty$-groups).\f
 
 
 
-\subsection{Any group is a subgroup of a permutation group}
-\label{sec:groupssubperm}
+% \subsection{Any group is a subgroup of a permutation group}
+% \label{sec:groupssubperm}
 
 
-This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\Set$''.
-% \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
-In the following, we should call {\em monomorphism} a homomorphism
-$f:\Hom(G,H)$ for which $\abstr(f):\USym G\to\USym H$ is
-injective\footnote{What will later be simply called a subgroup.}.
-\begin{lemma}
-  \label{lem:allgpsarepermutationgps}Let $G$ be a group. Then
-  remembering the base point in the factorization of the principal
-  $G$-torsor $\princ G:\BG\to\Set$ through the component
-  $\conncomp \Set {\USym G}$ of $\Set$ (\cf \cref{remark:GsetsareGsets})
-  gives an monomorphism
-  $$\alpha_G:\Hom(G,\Sigma_{\USym G})$$  
-  of $G$ into a permutation group.
-\end{lemma}
-\begin{proof}
-  The type of monomorphisms from $G$ to a group $H$ is
-  equivalent\footnote{((GIVE REF)) but it will be a forward ref...} to
-  the type of pointed \coverings over $\BH$ with total space $\BG$, so
-  we need to show that $\alpha_G:\BG\to\UU_{\USym G}$ is a
-  \covering.  Under the identity
-  $\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)$ of
-  \cref{lem:BGbytorsor} the function $\alpha$ translates to the
-  evaluation map
-  $$\xymatrix{
-    \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\sh_G}}\ar@{=}[d]&&\Sigma_{\USym G}\ar@{=}[d]\\
-    \conncomp{(\BG\to\Set)}{\princ G}\ar@{}[rr]^-{E\mapsto E(\sh_G)}&&
-    \,\conncomp{\Set}{\USym G}.  }$$ We must show that the fibers
-  $\inv{\ev_{\sh_G}}(X)$ for $X:\Sigma_{\USym G}$ are sets.  This
-  fiber is equivalent to
-  $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X=E(\sh_G))$ which is a
-  set precisely when $\sum_{E:\BG\to\Set}(X=E(\sh_G))$ is a set.  We
-  must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\sh_G))$,
-  then the type $(E,p)=(F,q)$, which is equivalent
-  to
-  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\sh_G)=qp^{-1}$$
-  is a proposition.  Note that if $r:\sh_G=x$, then
-  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
-  \begin{displaymath}
-    \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
-      X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
-      &F(\sh_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
-  \end{displaymath}
-  and so $\phi(x)$ (which by nature is independent of such an
-  $r:\sh_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us
-  pin this down in our language.  If $\phi,\psi:((E,p)=(F,q))$, we
-  must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
-  $F(x)$ are sets, it is enough to show that the proposition
-  $\phi(x)=\psi(x)$ is not empty.  Let
-  $f:(\sh_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
-  composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
-  given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
-  proposition, one can consider that $\sh_G=x$ is not empty, and we
-  are done.
-\end{proof}
+% This allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry of $\Set$''.
+% % \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+% In the following, we should call {\em monomorphism} a homomorphism
+% $f:\Hom(G,H)$ for which $\abstr(f):\USym G\to\USym H$ is
+% injective\footnote{What will later be simply called a subgroup.}.
+% \begin{lemma}
+%   \label{lem:allgpsarepermutationgps}Let $G$ be a group. Then
+%   remembering the base point in the factorization of the principal
+%   $G$-torsor $\princ G:\BG\to\Set$ through the component
+%   $\conncomp \Set {\USym G}$ of $\Set$ (\cf \cref{remark:GsetsareGsets})
+%   gives an monomorphism
+%   $$\alpha_G:\Hom(G,\Sigma_{\USym G})$$  
+%   of $G$ into a permutation group.
+% \end{lemma}
+% \begin{proof}
+%   The type of monomorphisms from $G$ to a group $H$ is
+%   equivalent\footnote{((GIVE REF)) but it will be a forward ref...} to
+%   the type of pointed \coverings over $\BH$ with total space $\BG$, so
+%   we need to show that $\alpha_G:\BG\to\UU_{\USym G}$ is a
+%   \covering.  Under the identity
+%   $\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)$ of
+%   \cref{lem:BGbytorsor} the function $\alpha$ translates to the
+%   evaluation map
+%   $$\xymatrix{
+%     \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\sh_G}}\ar@{=}[d]&&\Sigma_{\USym G}\ar@{=}[d]\\
+%     \conncomp{(\BG\to\Set)}{\princ G}\ar@{}[rr]^-{E\mapsto E(\sh_G)}&&
+%     \,\conncomp{\Set}{\USym G}.  }$$ We must show that the fibers
+%   $\inv{\ev_{\sh_G}}(X)$ for $X:\Sigma_{\USym G}$ are sets.  This
+%   fiber is equivalent to
+%   $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X=E(\sh_G))$ which is a
+%   set precisely when $\sum_{E:\BG\to\Set}(X=E(\sh_G))$ is a set.  We
+%   must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\sh_G))$,
+%   then the type $(E,p)=(F,q)$, which is equivalent
+%   to
+%   $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\sh_G)=qp^{-1}$$
+%   is a proposition.  Note that if $r:\sh_G=x$, then
+%   $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
+%   \begin{displaymath}
+%     \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
+%       X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
+%       &F(\sh_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
+%   \end{displaymath}
+%   and so $\phi(x)$ (which by nature is independent of such an
+%   $r:\sh_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us
+%   pin this down in our language.  If $\phi,\psi:((E,p)=(F,q))$, we
+%   must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
+%   $F(x)$ are sets, it is enough to show that the proposition
+%   $\phi(x)=\psi(x)$ is not empty.  Let
+%   $f:(\sh_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
+%   composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
+%   given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
+%   proposition, one can consider that $\sh_G=x$ is not empty, and we
+%   are done.
+% \end{proof}
 
 \subsection{Homomorphisms and torsors}
 \label{sec:homotor}
@@ -1844,39 +1849,37 @@ In view of the equivalence $\pathsp{}^G$ between $\BG$ and $(\typetorsor_G,\prin
 $$f^*Y\defequi Y\, f:\BG\to\Set.$$  
 
 If $X:\BG\to\Set$ is a $G$-set and $y:\BH$ define 
-% \footnote{OLD: $$f_*X(y)\defequi(\sh_H=y)\times_{\USym G}X(\sh_G)$$ to be the set quotient of $(\sh_H=y)\times X(\sh_G)$ by the relation $(p,x)\sim(p\, f(q)^{-1},X(q)x)$ for all $q:\sh_G=pt_G$.
-% The \emph{induced} $H$-set 
-% $$f_*X:\BH\to\Set$$ has value at $y:\BH$ the set $f_*X(y)$.}
-the \emph{induced $H$-type} $f_*\BH\to\UU$ by
-$$f_*X(y)\defequi\sum_{x:\BG}(\Bf x =y)\times X(x).$$
-\end{definition}
-\begin{remark}
+the \emph{induced $H$-type} 
+\marginnote{%\begin{remark}
   Note that the induced $H$-type may or may not be an $H$-{\bf set}.
-
   As an example, consider the homomorphism $cy_2:\Hom(\ZZ,\Sigma_2)$ discussed above, given by sending $\base:S^1$ to $\bn 2:\fin_2$ and $\Sloop$ to the twist.
+}
+\marginnote{%
   If we consider $cy_2$ also as a $\ZZ$-set (by including $\fin_2$ in the type of all sets), the induced $\Sigma_2$-set $\Sigma_2\times_{\ZZ}cy_2:\fin_2\to\Set$ is given by 
   $$y\mapsto \Sigma_{z:S^1}(cy_2(z)=y)\times cy_2(z),$$
   and it is instructive to see that the symmetry of $(\base,\refl{\bn 2},0)$
   induced by $\Sloop^2$ is not identical to $\refl{}$,
-  \footnote{I have yet to write a nice exposition of this ``instructive'' point: one application of $\Sloop$ takes you to $(\base,tw,1)$}
-  and so the induced $\Sigma_2$-type in question is \emph{not} a set.  
-  
-  However, we prove in a moment that the induced $H$-type of a $G$-torsor is an $H$-torsor, and so, in particular, an $H$-set.
-\end{remark}
+  % \footnote{I have yet to write a nice exposition of this ``instructive'' point: one application of $\Sloop$ takes you to $(\base,tw,1)$}
+  and so the induced $\Sigma_2$-type in question is \emph{not} a set.
+}\marginnote{%
+  This situation is common in algebra and is often referred to by saying that some construction is not ``exact''.
+  % However, %we prove in a moment that
+  % the induced $H$-type of a $G$-torsor is an $H$-torsor, and so, in particular, an $H$-set.
+}%\end{remark}
+$f_*\BH\to\UU$ by
+$$f_*X(y)\defequi\sum_{x:\BG}(\Bf x =y)\times X(x).$$
+\end{definition}
 
 For $X$ being the principal $G$-torsor  $\princ G$, the contraction of $\sum_{x:\BG}(\sh_G=x)$ induces an equivalence
-$$\eta_y:f_*\princ G(y)=\sum_{x:\BG}(\Bf(x)=y)\times(\sh_G=x)\simeq (\Bf(x)=y)\oldequiv\princ{\Bf(x)}^H(y).$$  The resulting identity $\bar\eta:f_*\princ G=\princ{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-type $f_*X$ is an $H$-torsor, defining a map 
-$$f_*:\typetorsor_G\to\typetorsor_H.$$
-Summing up
-% \footnote{OLD:
-% When $X=\princ G$ we can get a good picture of $f_*X$:  composition gives a map
-% $$\eta:(\sh_H=y)\times \USym G\to (\sh_H=y),\quad \eta(p,q)=p\,f(q)$$
-% and the fact that $\eta(p,q)=\eta(p\,f(r)^{-1},r\,q)$ for all $r:\USym G$ tells us that $\eta$ defines a map $\eta_f(y):f_*\princ G(y)\to\princ H(y)$.  
-% The map $\iota:\princ H(y)\to f_*\princ G(y)$ defined by $\iota(p)=[p,e_G]$ is an inverse: $\iota\eta_f(y)$ sends $[p,q]$ to $[pf(q)^{-1},e_G]$, which is equal to $[p,q]$; and $\eta_f(y)\iota$ sends $p$ to $p\,f(e_G)^{-1}$, which is equal to $p$.  Hence $\eta_f(y)$ is an equivalence.}
+$$\eta_y:f_*\princ G(y)=\sum_{x:\BG}(\Bf(x)=y)\times(\sh_G=x)\simeq (\Bf(x)=y)\oldequiv\princ{\Bf(x)}^H(y).$$  The resulting identity $\bar\eta:f_*\princ G=\princ{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-type $f_*X$ is an $H$-torsor.
+
+Summing up:
 \begin{lemma}
   \label{lem:inducedtorsor}
    Let $f:\Hom(G,H)$ be a group homomorphism.  
-If $X$ is a $G$-torsor, then $f_*X$ is an $H$-torsor and the identity 
+   If $X$ is a $G$-torsor, then the induced $H$-type $f_*X$ is an $H$-torsor and so we get an induced map
+   $$f_*:\typetorsor_G\to\typetorsor_H.$$
+   The identity 
 $\bar{\eta}:f_*\pathsp x^G=\pathsp{\Bf(x)}^H$
 % \footnote{OLD: $\bar{\eta}_f:f_*\pathsp x^G=\pathsp{\Bf(x)}^H$ associated to the equivalence $\eta_f$}
 shows that  
@@ -1884,10 +1887,6 @@ $$\xymatrix{\BG\ar[r]^{\Bf}\ar[d]^{\pathsp{}^G}&\BH\ar[d]^{\pathsp{}^H}\\
 \typetorsor_G\ar[r]^{f_*}&\typetorsor_H}$$ 
 commutes.
 \end{lemma}
-% \footnote{OLS: \begin{proof}
-%   If $\Trunc{X=\princ G}$, then $\Trunc{f_*X=f_*\princ G}$ and $\eta_f:f_*\princ G=\princ H$, so $f_*$ takes $G$-torsors to $H$-torsors.
-% \end{proof}
-% }
 \begin{remark}
   \label{rem:inducedGsetfromabstracthomomorphisms}
   Notice that our construction of the induced $G$-set works equally well for a homomorphism $\phi:\Hom^\abstr(\abstr(G),\abstr(H))$:
@@ -1905,16 +1904,16 @@ sending $[p,q]:(\sh_H=y)\times_{\USym G}\USym G$ to $p\,\phi(q):(\sh_H=y)$.
 \label{sec:Gsetforabstract}
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.
-That is, by totally analogy, we define the of torsors for an abstract group,
+That is, by totally analogy, we define the torsors for an abstract group,
 and it will then be a relative simple matter to show that the processes of
 \begin{enumerate}
 \item forming the abstract group of a group and 
 \item taking the group represented by the torsors of an abstract group
 \end{enumerate}
  are inverse to each other.
-
+\marginnote{%
 Note that we have not considered an ``abstract'' counterpart of the concept of $\infty$-group, so all we do in this section is set-based.
-
+}
 \begin{definition}
 \label{def:abstrGtorsors}
   If ${\agp G}=(S,e,\mu,\iota)$ is an abstract group, a \emph{$\agp G$-set}\index{Gset@$\agp G$-set (of abstract group} is a set $\mathcal X$ together with a homomorphism
@@ -1925,7 +1924,7 @@ $$Set_{\agp G}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\agp G},\abstr(
 The \emph{principal ${\agp G}$-torsor} $\princ {\agp G}^\abstr$ is the ${\agp G}$-set consisting of the underlying set $S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
-$$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}\Trunc{\princ {\agp G}=S}.$$
+$$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}\Trunc{\princ {\agp G}^\abstr=S}.$$
 \end{definition}
 \begin{example}
   If $G$ is a group we can unravel the definition and see that an $\abstr(G)$-set consists of
@@ -1939,19 +1938,22 @@ $$\typetorsor_{\agp G}^\abstr\defequi\sum_{S:\Set_{\agp G}^\abstr}\Trunc{\princ 
 
 
 To help reading the coming proofs we introduce some notation that is redundant, but may aid the memory in cluttered situations:  Let $x,y,z$ be elements in some type, then
+\marginnote{We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of identity types $\pathsp{}\colon (y=z)\to(\pathsp y=\pathsp z)$ evaluated at $x$, while post-composition $\post$ is transport in the family $\pathsp x$.}
 \begin{align*}
 %  \pre:(x=y)\to ((y=z)=(x=z)),\qquad&\pre(q)(p)\defequi pq\\
   \preinv:(y=x)\to ((y=z)=(x=z)),\quad&\preinv(q)(p)\defequi\pathsp qp\defequi pq^{-1}\\
   \post:(y=z)\to ((x=y)=(x=z)),\quad&\post(p)(q)\defequi\post_pq\defequi pq\\
   %\adjoint:(x=y)\to((x=x)=(y=y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
 \end{align*}
-We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of identity types $\pathsp{}\colon (y=z)\to(\pathsp y=\pathsp z)$ evaluated at $x$, while post-composition $\post$ is transport in the family $\pathsp x$, 
 
 
 \begin{example}\label{ex:qG}
   If $G$ is a group, then for any $x:\BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ Gx\defequi(\sh_G=x)$, has a natural structure of an $\abstr(G)$-set by means of 
-$$\preinv:\USym G\to ((\sh_G=x)=(\sh_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\sh_G=x}$ and that for $p,q:\USym G$ we have that  $\preinv(p\,q)=\preinv(p)\preinv(q)$ (\ie if $r\colon \sh_G=x$ we have that 
-$$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong).  
+  $$\preinv:\USym G\to ((\sh_G=x)=(\sh_G=x))$$ and the fact that $\preinv(e_G)\defequi\refl{\sh_G=x}$ and that for $p,q:\USym G$ we have that
+  \marginnote{\ie if $r\colon \sh_G=x$ we have that 
+$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong.}  
+  $$\preinv(p\,q)=\preinv(p)\preinv(q).$$
+  
 
 That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $\BG$ is connected (any $\sh_G=x$ will serve as a proof of $(\sh_G=x,\preinv,!)=\princ{\abstr(G)}^\abstr$).
 
@@ -1962,7 +1964,7 @@ which by the very definition of transport for $\princ G$ is $\preinv$.
 \end{example}
 
 \begin{definition}
-  If ${\agp G}$ is an abstract group, then the \emph{concrete group $\concr({\agp G})$ associated with ${\agp G}$} is the group (given by the pointed connected groupoid) $(\typetorsor_{\agp G}^\abstr,\princ {\agp G})$.
+  If ${\agp G}$ is an abstract group, then the \emph{concrete group $\concr({\agp G})$ associated with ${\agp G}$} is the group given by the pointed connected groupoid $(\typetorsor_{\agp G}^\abstr,\princ {\agp G})$.
 \end{definition}
 We give the construction of \cref{ex:qG} a short name since it will occur in important places.
 \begin{definition}
@@ -1984,10 +1986,11 @@ $$q_G:(x=_{\BG}y)\to (q_G(x)=q_G(y))%(\sh_G=x)=_\UU(\sh_G=y))
 $$
 is an equivalence.
   Now, $q_G(x)=q_G(y)$ is equivalent to the set 
-\begin{align*}
-  &((\sh_G=x),\preinv)=_{\abstr(G)\text{-set}}((\sh_G=y),\preinv)\\
-=&\sum_{f:(\sh_G=x)=(\sh_G=y)}f\preinv=\preinv f
-\end{align*}
+$$
+((\sh_G=x),\preinv)=_{\abstr(G)\text{-set}}((\sh_G=y),\preinv)$$
+which in turn is equivalent to 
+$$\sum_{f:(\sh_G=x)=(\sh_G=y)}f\preinv=\preinv f
+$$
  ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\sh_G=x}\prod_{p:\sh_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by 
 $$(\post,!):(x=y)\to \sum_{f:(\sh_G=x)=(\sh_G=y)}f\preinv=\preinv f.$$
 Given an element
@@ -2078,69 +2081,126 @@ and the next two subsections offer two proofs.
 
 \sususe{``Delooping'' a group homomorphism}
 \label{sec:thierrysdelooping}
-We now explore the first approach.\footnote{Note to self: make into a lemma and say ``group'' etc}
+We now explore the first approach.
 
 \begin{proof}
-  Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
-We suppose given a group morphism
-$$f:a = a\rightarrow b = b$$
-and we explain how to build a map $g:X \rightarrow Y$ with
-a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
-for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+  Suppose we are given an abstract group homomorphism
+$$f:\Hom^\abstr(\abstr(G),\abstr(H))$$
+and we explain how to build a map $g:\BG_\div \rightarrow \BH_\div$ with
+a path $p:\sh_H = g(\sh_G)$ such that $p f(\omega) = g(\omega) p$
+for all $\omega:\sh_G = \sh_G$ (so that $g$ is a ``delooping'' of $f$, that is, $f=\abstr(g)$).
+\marginnote{We will thus have displayed a map $\mathrm{deloop}:\Hom^\abstr(\abstr(G),\abstr(H))\to\Hom(G,H)$ with $\abstr\,\mathrm{deloop}=\refl{}$. We leave it to the reader to prove that $\mathrm{deloop}\,\abstr=\refl{}$. }
 
-\medskip
-
-Let us assume the problem solved. The map $g:X\rightarrow Y$
-will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
-and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
+To get an idea of our strategy, let us assume the problem solved. The map $g:\BG_\div\rightarrow \BH_\div$
+will then send any path $\alpha:{\sh_G} = x$ to a path $g(\alpha):g({\sh_G}) = g(x)$
+and so we get a family of paths $p(\alpha) \defequi g(\alpha) p$ in ${\sh_H} = g(x)$ such that
 $$p(\alpha\omega) = g(\alpha)g(\omega)p
   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
-for all $\omega:a = a$ and $\alpha : a = x$.
-
-\medskip
+for all $\omega:{\sh_G} = {\sh_G}$ and $\alpha : {\sh_G} = x$.
 
 This suggests to introduce the following family
 $$
-C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
+C(x)~:=~ \sum_{y:\BH_\div}\sum_{p:({\sh_G}=x)\rightarrow ({\sh_H} = y)}~~~\prod_{\omega:{\sh_G}={\sh_G}}\prod_{\alpha:{\sh_G}=x}~
  p(\alpha\omega) = p(\alpha)f(\omega)
 $$
-
  An element of $C(x)$ has three components, the last component being
- a proof since $Y$ is a $1$-type.
+ a proposition since $\BH_\div$ is a groupoid.
 
- The type $C(a)$ has a simpler description. An element of $C(a)$ is
+ The type $C({\sh_G})$ has a simpler description. An element of $C({\sh_G})$ is
  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
- $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
- can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
- is completely determined by $p(1_a)$.
- Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
+ $\alpha$ and $\omega$ in ${\sh_G}={\sh_G}$.
+ Since $f$ is an abstract group homomorphism, this condition
+ can be simplified to $p(\omega) = p(1_{\sh_G})f(\omega)$, and the map $p$
+ is completely determined by $p(1_{\sh_G})$.
+ Thus $C({\sh_G})$ is equal to $\sum_{y:\BH_\div}{\sh_H} = y$ and is contractible.
 
- \medskip
 
  It follows that we have
  $$
- \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ ({\sh_G} = x)\rightarrow\iscontr~ C(x)
  $$
 and so, since $\iscontr~C(x)$ is a proposition
  $$
- \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
  $$
- Since $X$ is connected, we have
- $\prod_{x:X}\iscontr~ C(x)$
- and so, in particular, we have an element of $\prod_{x:X}C(x)$.
+ Since $\BG_\div$ is connected, we have
+ $\prod_{x:\BG_\div}\iscontr~ C(x)$
+ and so, in particular, we have an element of $\prod_{x:\BG_\div}C(x)$.
 
- We get in this way a map $g:X\rightarrow Y$
- together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
+ We get in this way a map $g:\BG_\div\rightarrow \BH_\div$
+ together with a map $p:(a=x)\rightarrow ({\sh_H} = g(x))$ such that
  $p (\alpha\omega) = p(\alpha) f(\omega)$
- for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
-We have, for $\alpha:a=x$
-$$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
+ for all $\alpha$ in ${\sh_G}=x$ and $\omega$ in ${\sh_G}={\sh_G}$.
+We have, for $\alpha:{\sh_G}=x$
+$$\prod_{x':\BG_\div}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
 since this holds for $\lambda = 1_x$.
-In particular, $p(\omega) = g(\omega)p(1_a)$.
+In particular, $p(\omega) = g(\omega)p(1_{\sh_G})$.
 
-We also have $p(\omega) = p(1_a)f(\omega)$, hence 
-$p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
-for all $\alpha:a=a$ and we have found a delooping of $f$.
+We also have $p(\omega) = p(1_{\sh_G})f(\omega)$, hence 
+$p(1_{\sh_G})g(\alpha) =  f(\alpha)p(1_{\sh_G})$
+for all $\alpha:\sh_G=\sh_G$ and we have found a delooping of $f$.
+
+%Security copy if things go wrong. BID: delete by May 1
+%   Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
+% We suppose given a abstract group homomorphism
+% $$f:a = a\rightarrow b = b$$
+% and we explain how to build a map $g:X \rightarrow Y$ with
+% a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
+% for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+
+% \medskip
+
+% Let us assume the problem solved. The map $g:X\rightarrow Y$
+% will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
+% and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
+% $$p(\alpha\omega) = g(\alpha)g(\omega)p
+%   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
+% for all $\omega:a = a$ and $\alpha : a = x$.
+
+% \medskip
+
+% This suggests to introduce the following family
+% $$
+% C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
+%  p(\alpha\omega) = p(\alpha)f(\omega)
+% $$
+
+%  An element of $C(x)$ has three components, the last component being
+%  a proof since $Y$ is a $1$-type.
+
+%  The type $C(a)$ has a simpler description. An element of $C(a)$ is
+%  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
+%  $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
+%  can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
+%  is completely determined by $p(1_a)$.
+%  Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
+
+%  \medskip
+
+%  It follows that we have
+%  $$
+%  \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
+%  $$
+% and so, since $\iscontr~C(x)$ is a proposition
+%  $$
+%  \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
+%  $$
+%  Since $X$ is connected, we have
+%  $\prod_{x:X}\iscontr~ C(x)$
+%  and so, in particular, we have an element of $\prod_{x:X}C(x)$.
+
+%  We get in this way a map $g:X\rightarrow Y$
+%  together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
+%  $p (\alpha\omega) = p(\alpha) f(\omega)$
+%  for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
+% We have, for $\alpha:a=x$
+% $$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
+% since this holds for $\lambda = 1_x$.
+% In particular, $p(\omega) = g(\omega)p(1_a)$.
+
+% We also have $p(\omega) = p(1_a)f(\omega)$, hence 
+% $p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
+% for all $\alpha:a=a$ and we have found a delooping of $f$.
 \end{proof}
 
 
@@ -2153,10 +2213,10 @@ The second approach to \cref{lem:homomabstrconcr} is as follows:
 \begin{proof}
 %\newcommand{\we}{\overset\sim\to}
   The equivalence of $\pathsp{}^G:\BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
-$$\pathsp{}:\Hom(G,H)\oldequiv (\BG\to_*\BH)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
+$$\pathsp{}:\Hom(G,H)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
 $$
 Consider the map
-$$A:((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)\to \Hom^\abstr(\abstr(G),\abstr(H))$$
+$$A:((\typetorsor_G,\princ G))\to_*(\typetorsor_H,\princ H)\to \Hom^\abstr(\abstr(G),\abstr(H))$$
 given by letting $A(f,p)$ be the composite 
 $$\xymatrix{\USym G\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
   \USym H\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
@@ -2164,7 +2224,10 @@ $$\xymatrix{\USym G\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
   (f\princ G=f\princ G)\ar@{=}[rr]^-{q\mapsto p^{-1}qp}_\to&&
   (\princ H=\princ H)
 }$$
-(together with the proof that this is an abstract group homomorphism).  We see that we have shown the desired result if we prove instead $A$ is an equivalence.  The reason to complicate $\abstr$ this way is that it gets easier to write out a homotopy inverse.
+(together with the proof that this is an abstract group homomorphism).  We
+are done if we show that $A$ is an equivalence.
+% see that we have shown the desired result if we prove instead $A$ is an equivalence.
+\marginnote{The reason to complicate $\abstr$ this way is that it gets easier to write out a homotopy inverse.}
 
 If $(\phi,!):\Hom^\abstr(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{rem:inducedGsetfromabstracthomomorphisms} and the identity $\eta_\phi:\phi_*\princ G=\princ H$. 
  %  let
@@ -2230,17 +2293,24 @@ Given groups $G,H$, a homomorphism $f: \Hom(G,H)$ is called a\label{def:epimorph
 \item \emph{monomorphism}\index{monomorphism!of groups} if for any group $F$,
   postcomposition by $f$ is an injection from $\Hom(F,G)$ to $\Hom(F,H)$, and an
 \item \emph{epimorphism}\index{epimorphism!of groups} if for any group $I$,
-  precomposition by $f$ is an injection from $\Hom(G,I)$ to $\Hom(H,I)$.
+  precomposition by $f$ is an injection from $\Hom(H,I)$ to $\Hom(G,I)$.
 \end{enumerate}
+The corresponding families of propositions are called
+$$\ismono,\isepi:\Hom(G,H)\to\Prop.$$
 \end{definition}
 
-We've seen that for any group $G$, the underlying set $\USym G$ of $\abstr(G)$ is equivalent to $\Hom(\ZZ,G)$ which in turn is equivalent to $\Hom^{\abstr}(\abstr(\ZZ),\abstr(G))$ and that abstraction preserves composition.  Hence, if $f:\Hom(G,H)$ is a group homomorphism, then saying that
+\marginnote{$$\xymatrix{\USym G\ar[d]^\simeq\ar[r]^{f^\abstr}&\USym H\ar[d]^\simeq\\
+    \Hom(\ZZ,G)\ar[r]^{f_*}\ar[d]^\simeq_\abstr&\Hom(\ZZ,H)\ar[d]^\simeq_\abstr\\
+    \Hom^{\abstr}(\ZZ,\abstr(G))\ar[r]^{\abstr f_*}&\Hom^{\abstr}(\ZZ,\abstr(H)) 
+ }$$
+commutes (we've written $\ZZ$ also for $\abstr(\ZZ$) since otherwise it wouldn't fit.}
+We've seen that for any group $G$, the underlying set $\USym G\defequi(\sh_G=\sh_G)$ of $\abstr(G)$ is equivalent to the set of homomorphisms $\Hom(\ZZ,G)$ which in turn is equivalent to the set of abstract homomorphisms $\Hom^{\abstr}(\abstr(\ZZ),\abstr(G))$ and that abstraction preserves composition.
+Hence, if $f:\Hom(G,H)$ is a group homomorphism, then saying that
 $f^\abstr$ is an injection is equivalent to saying that postcomposition by $f$ is an injection $\Hom(\ZZ,G)\to\Hom(\ZZ,H)$.
 % if $g,h:\Hom(\ZZ,G)$ satisfies $fg=fh$ then $g=h$.
 In this observation, the integers $\ZZ$ plays no more of a r\^ole than $\bn 1$ does in \cref{lem:injofsetsaremono}; we can let the source vary over any group $F$: 
  
-Since types $\Hom(\_,\_)$ are sets, being a monomorphism/epimorphism is a proposition.
-We have the following equivalent characterizations.
+%We have the following equivalent characterizations.
 
 \begin{lemma}\label{lem:eq-mono-cover}
 Let $G$ and $H$ be groups and $f: \Hom(G,H)$ a homomorphism.
@@ -2288,11 +2358,9 @@ The correspondence between groups and abstract groups allows for a cute proof of
 % \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
 
 Recall the principal $G$-torsor $\princ G:\BG\to\Set$.
-Since $\princ G(\sh_G)\defequi \USym G$ this defines a pointed function $\rho_G:\BG\to_* \BSigma_{\USym G}\defequi(\conncomp \Set {\USym G},\USym G)$, \ie a homomorphism from $G$ to the permutation group
-$$\rho_G:\Hom(G,\Sigma_{\USym G})$$
-(where the letter $\rho$ commemorates the word ``regular'').
-The desired statement is ``$\rho_G$ is a monomorphism'': by \cref{lem:eq-mono-cover} this means that the induced map $\rho_G^\abstr$ from the symmetries of $\sh_G$ in $\BG_\div$ to the symmetries of $\USym G$ in $\Set$ is an injection, \ie ``any symmetry is a symmetry of $\Set$''.
-
+Since $\princ G(\sh_G)\defequi \USym G$ this defines a pointed function $\rho_G:\BG\to_* \BSigma_{\USym G}\defequi(\conncomp \Set {\USym G},\USym G)$,
+\marginnote{the letter $\rho$ commemorates the word ``regular''} \ie a homomorphism from $G$ to the permutation group
+$$\rho_G:\Hom(G,\Sigma_{\USym G}).$$
 % Under the identity $\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)$ of
 %   \cref{lem:BGbytorsor} the principal $G$-torsor translates to the
 %   evaluation map
@@ -2301,20 +2369,12 @@ The desired statement is ``$\rho_G$ is a monomorphism'': by \cref{lem:eq-mono-co
 %     \conncomp{(\BG\to\Set)}{\princ G}\ar@{}[rr]^-{E\mapsto E(\sh_G)}&&
 %     \,\conncomp{\Set}{\USym G}  }$$
 \begin{lemma}
-  \label{lem:allgpsarepermutationgps}Let $G$ be a group. Then
+  \label{lem:allgpsarepermutationgps}
+  \marginnote{By \cref{lem:eq-mono-cover} ``$\rho_G$ is a monomorphism'' means that the induced map $\rho_G^\abstr$ from the symmetries of $\sh_G$ in $\BG_\div$ to the symmetries of $\USym G$ in $\Set$ is an injection, \ie ``any symmetry is a symmetry of $\Set$''.}Let $G$ be a group. Then
   $\rho_G:\Hom(G,\Sigma_{\USym G})  $ is a monomorphism.
-  % remembering the base point in the factorization of the principal
-  % $G$-torsor $\princ G:\BG\to\Set$ through the component
-  % $\conncomp \Set {\USym G}$ of $\Set$ (\cf \cref{remark:GsetsareGsets})
-  % gives an monomorphism
-  % $$\alpha_G:\Hom(G,\Sigma_{\USym G})$$  
-  % of $G$ into a permutation group.
 \end{lemma}
 \begin{proof}
-  % The type of monomorphisms from $G$ to a group $H$ is by \cref{lem:eq-mono-cover}
-  % equivalent to
-  % the type of pointed \coverings over $\BH$ with total space $\BG$, so
-  We need to show that $\rho_G:\BG\to \conncomp \Set {\USym G}$ is a
+  In view of \cref{lem:eq-mono-cover} we need to show that $\rho_G:\BG\to \conncomp \Set {\USym G}$ is a
   \covering.
   Under the identity
   $$\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)\oldequiv (\conncomp{\Set}{\USym G},\USym G)$$ of
@@ -2326,25 +2386,27 @@ The desired statement is ``$\rho_G$ is a monomorphism'': by \cref{lem:eq-mono-co
   %   \typetorsor_G\ar[rr]^-{\mathrm{ev}_{\sh_G}}\ar@{=}[d]&&\Sigma_{\USym G}\ar@{=}[d]\\
   %   \conncomp{(\BG\to\Set)}{\princ G}\ar@{}[rr]^-{E\mapsto E(\sh_G)}&&
   %   \,\conncomp{\Set}{\USym G}.  }$$
-  We must show that the fibers
+  We must show that the preimages
   $\inv{\ev_{\sh_G}}(X)$ for $X:\Sigma_{\USym G}$ are sets.  This
   fiber is equivalent to
   $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X=E(\sh_G))$ which is a
   set precisely when $\sum_{E:\BG\to\Set}(X=E(\sh_G))$ is a set.  We
   must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\sh_G))$,
   then the type $(E,p)=(F,q)$, which is equivalent
-  to
-  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\sh_G)=qp^{-1},$$
-  is a proposition.  Note that if $r:\sh_G=x$, then
-  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, or in a picture
+  \marginnote{Note that if $r:\sh_G=x$, then
+  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, in a picture
   \begin{displaymath}
     \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
       X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
       &F(\sh_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
   \end{displaymath}
-  and so $\phi(x)$ (which by nature is independent of such an
-  $r:\sh_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$.  Let us
-  pin this down in our language.  If $\phi,\psi:((E,p)=(F,q))$, we
+and so $\phi(x)$ (which by nature is independent of such an
+$r:\sh_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$. The text says this formally.}
+to
+  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\sh_G)=qp^{-1},$$
+  is a proposition.  
+% Let us pin this down in our language.
+If $\phi,\psi:((E,p)=(F,q))$, we
   must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
   $F(x)$ are sets, it is enough to show that the proposition
   $\phi(x)=\psi(x)$ is not empty.  Let
@@ -2968,14 +3030,13 @@ identity type $x=y$ is a groupoid for $x,y:A$.
 
 \section{$G$-sets vs $\abstr(G)$-sets}
 \label{sec:Gsetsabstrconcr}
+\marginnote{Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-set is
+  $$Set_{\abstr(G)}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\abstr(G)},\abstr(\Sigma_{\mathcal X})).$$}
 
 Given a group $G$ it should by now come as no surprise that the type of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
-
-Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-set is
-$$Set_{\abstr(G)}^\abstr\defequi \sum_{\mathcal X:\Set}\Hom_\abstr({\abstr(G)},\abstr(\Sigma_{\mathcal X})).$$
 According to \cref{lem:homomabstrconcr}
 $$\abstr:\Hom(G,\Sigma_{\mathcal X})\to\Hom^\abstr(\abstr(G),\abstr(\Sigma_{\mathcal X}))$$
-is an equivalence, where the group $\Sigma_{\mathcal X}$ (as a pointed connected groupoid) is the component of type $\Set$, pointed at $\mathcal X$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\mathcal X})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\mathcal X=F(\sh_G))$.  Finally, 
+is an equivalence, where the group $\Sigma_{\mathcal X}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\mathcal X$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\mathcal X})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\mathcal X=F(\sh_G))$.  Finally, 
 $$\mathrm{pr}:\sum_{\mathcal X}\sum_{F:\BG_\div\to\Set}(\mathcal X=F(\sh_G))\we 
 %\sum_{F:\BG_\div\to\Set}\sum_{\mathcal X}(\mathcal X=F(\sh_G))\we 
 (\BG_\div\to\Set),\quad \mathrm{pr}(\mathcal X,F,p)\defequi F
@@ -2987,7 +3048,7 @@ Backtracking these equivalences we see that we have established
   Let $G$ be a group.  Then the map
   $$\ev_{\sh_G}:\GSet\to\Set^\abstr_{\abstr(G)},\qquad \ev_{\sh_G}(X)\defequi(X(\sh_G),a_X)
 $$
-is an equivalence, where the action $a_X:\Hom^\abstr(\abstr(G), \abstr(\Sigma_{X(\sh_G)}))$ is given by transport $X^=:\USym G\to (X(\sh_G)=X(\sh_G))$.
+is an equivalence, where the action $a_X:\Hom^\abstr(\abstr(G), \abstr(\Sigma_{X(\sh_G)}))$ is given by transport $X:\USym G\defequi(\sh_G=\sh_G)\to (X(\sh_G)=X(\sh_G))$.
 \end{lemma}
 If $X$ is a $G$-set, $g:\USym G$ and $x:X(\sh_G)$, we seek forgiveness for writing $g\cdot x:X(\sh_G)$ instead of $\cast(a_X(g))(x)$.\footnote{and I ask forgiveness for strongly disliking the use of ``$\cast$'' as a name for some tacitly understood map!}
 
@@ -3012,16 +3073,18 @@ $$\xymatrix{\USym H\ar[r]^-{F^=}&(F(\sh_H)=F(\sh_G))\ar[rr]^-{t\mapsto p^{-1}t\,
 We see that $\abstr(F,p\,g^{-1})$ is given by conjugation:
 $q\mapsto(p\,g^{-1})^{-1}F^=(q)\,(p\,g^{-1})=g\,(p^{-1}F^=(q)\,p)\,g^{-1}$, or in other words $c^g\circ\abstr(F,p)$.
 \end{example}
-For reference we list the conclusion of this example as a lemma''
+For reference we list the conclusion of this example as a lemma:
 \begin{lemma}\label{lem:abstrandconj}
   If $H$ and $G$ are groups, then the equivalence of \cref{lem:actionsconcreteandabstract} sends the $G$-set $\Hom(H,G)$ to the $\abstr(G)$-set $\Hom^\abstr(\abstr(H),\abstr(G))$ with action given by postcomposing with conjugation by elements of $\abstr(G)$.
 \end{lemma}
 
 If $f:\Hom(G,G')$ is a homomorphism, then precomposition with $\Bf:\BG\to \BG'$ defines a map $$f^*:(G'\text{-}\Set)\to(G\text{-}\Set).$$
-We will have the occasion to use the following result which essentially says that if $f:\Hom(G,G')$ is a ``surjective homomorphism'', then $f^*$ embeds the type of $G'$-sets as some of the components of the type of $G$-sets.
+\marginnote{Recall that \cref{lem:eq-mono-cover} told us that $f$ is an epimorphism precisely when $\USym f$ is a surjection.}
+We will have the occasion to use the following result which essentially says that if $f:\Hom(G,G')$ is an epimorphism, then $f^*$ embeds the type of $G'$-sets as some of the components of the type of $G$-sets.
 \begin{lemma}
   \label{lem:epifullyfaithful}
-  Let $G$ and $G'$ be groups and let $f:\Hom(G,G')$ be a homomorphism.  If the induced map $f:\USym G\to\USym {G'}$ is surjective (\cf \cref{def:injection}), then the map $f^*:(G'\text{-}\Set)\to(G\text{-}\Set)$ (induced by precomposition with $\Bf:\BG\to \BG'$) is ``fully faithful'' in the sense that if $X,Y$ are $G'$-sets, then
+  Let $G$ and $G'$ be groups and let $f:\Hom(G,G')$ be an epimorphism.
+  Then the map $f^*:(G'\text{-}\Set)\to(G\text{-}\Set)$ (induced by precomposition with $\Bf:\BG\to \BG'$) is ``fully faithful'' in the sense that if $X,Y$ are $G'$-sets, then
 $$f^*:(X=Y)\to(f^*X=f^*Y)
 $$
 is an equivalence.
@@ -3069,69 +3132,16 @@ For instance, is there a group $\ZZ\vee%\boxplus
 \ZZ\to G$ corresponds to {\bf two} symmetries of $a$?  
 At the very least, $\ZZ\vee\ZZ$ itself would have to have two symmetries and these two can't have any relation, since in a general group $G=\aut_A(a)$ there is a priori no telling what the relation between the symmetries of $a$ might be.  
 Now, \emph{one} symmetry is given by a pointed function $(S^1,\base)\to_*(A,a)$ and so a \emph{pair} of symmetries is given by a function $f:S^1+S^1\to A$ with the property that $f$ sends each of the base points of the circles to $a$.  But $S^1+S^1$ is not connected, and so not a group.  To fix this we take the clue from the requirement that both the base points were to be sent to a common base point and \emph{define} $S^1\vee S^1$ to be what we get from $S^1+S^1$ when we \emph{insert an identity} between the two basepoints.
-$$\xymatrix{\base\ar@(ul,dl)[]|{\Sloop}\ar@{.>}[rr]^{\text{identify!}}&&\base\ar@(ur,dr)[]|{\Sloop}}
-$$
+\marginnote{$S^1\vee S^1$ if formed from $S^1+S^1$ by inserting an identity$$\xymatrix{\base\ar@(ul,dl)[]|{\Sloop}\ar@{.>}[rr]^{\text{identify!}}&&\base\ar@(ur,dr)[]|{\Sloop}}
+  $$}
+
 The amazing thing is that this works -- an enormous simplification of the classical construction of the ``free products'' or ``amalgamated sum'' of groups.  We need to show that the ``wedge'' $S^1\vee S^1$ is indeed a group, and this proof simultaneously unpacks the classical description.
-
-% \begin{definition}
-%   \label{def:wedge}
-%   Let $(A_1,a_1)$ and $(A_2,a_2)$ be pointed types.  Their wedge is the pointed type $(A_1\vee A_2,a_{12})$ given as a higher inductive type\footnote{how/where discussed?} by
-%   \begin{enumerate}
-%   \item functions $i_1:A_1\to A_1\vee A_2$ and $i_2:A_2\to A_1\vee A_2$
-%   \item an element $a_{12}: A_1\vee A_2$ (where we point the type),
-%   \item identities $g_1:i_1a_1=a_{12}$ and $g_2:i_2a_2=a_{12}$.
-%   \end{enumerate}
-%   The function 
-% $$i^g_1:(a_1=_{A_1}a_1)\to(a_{12}=_{A_1\vee A_2}a_{12})$$ 
-% is defined by $i^g_1(p)\defequi g_1i_1(p)g_1^{-1}$, and likewise $i_2^g(q)\defequi g_2i_2(q)g_2^{-1}$.
-% \end{definition}
-% ((PICTURE))
-
-% \begin{lemma}
-%   \label{lem:wedgeofgpoidisgpoid}
-%   Let $\aut_{A_1}(a_1)$ and $\aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $\aut_{A_1\vee A_2}(a_{12})$ is a decidable group.
-% \end{lemma}
-% \begin{proof}
-% That ${A_1\vee A_2}$ is connected follows by transitivity of identity, passing through the identities $g_1$ and $g_2$ in the wedge if necessary.
-
-% We must prove that the wedge is a groupoid, \ie that all identity types are sets, which we do by giving an explicit description of the universal \covering.  The idea is that an identity in $a_{12}=x$ can be factored into a string of identities, each lying solely in $A_1$ or in $A_2$.  We define a family of sets consisting of exactly such strings of identities --  it is a set since $A_1$ and $A_2$ are groupoids -- and prove that it is equivalent to the family $P(x)\defequi(a_{12}=_{A_1\vee A_2}x)$ which consequently must be a family of sets.
-
-%   We use the notation of \cref{def:wedge} freely, and for ease of notation, let $a_{2k+i}\defequi a_i$ for $i=1,2$, $k:\NN$.
-% Define families of sets
-% $$C_i:A_i\to\Set,\qquad i=1,2$$
-% by 
-% $$C_i(x)\defequi(a_i=_{A_i}x)\times\sum_{n:\NN}\prod_{1\leq k\leq n}\sum_{p_k:a_{i+k}=% _{A_{i+k}}
-%   a_{i+k}}(p_k\neq\refl {a_{i+k}})$$
-% when $x:A_i$.  Note that $p_k\neq\refl{a_{i+k}}$ makes sense and is a proposition since our groups are decidable; we leave it out when naming elements.  Also, set
-% $$C(a_{12})\defequi \sum_{i:\bn 1}(a_i=a_i)\times\sum_{n:\NN}\prod_{1\leq k\leq n}\sum_{p_k:a_{i+k}=% _{A_{i+k}}
-%   a_{i+k}}(p_k\neq\refl {a_{i+k}})
-% $$
-% Define $C(g_i):C_i(a_1)\to C(a_{12})$ by
-% $$C(g_i)(p_0,n,p_1\dots,p_n)=
-% \begin{cases}
-%   (1-i,p_1,n-1,p_2\dots,p_n)& \text{ if }p_0=\refl{a_i}\\
-%   (i,\refl{a_i},p_0,n+1,p_1\dots,p_n)& \text{ if }p_0\neq\refl{a_1}.
-% \end{cases}
-% $$
-% $C_{12}$ is ((obviously or write out)) an equivalence, and so the triple $(C_1,C_2,C_{12})$ defines a family
-% $$C:A_1\vee A_2\to\Set.$$
-% We will show that $C$ is equivalent to $P\defequi \pathsp{a_{12}}$, which is given by $P(x)=(a_{12}=x)$, and so that the identity types of the wedge are sets.
-
-% One way is the ``inclusion''; more precisely, 
-% $$\alpha:\prod_{x:A_1\vee A_2}(P(x)\to C(x))$$ is given by letting identities be considered as strings of length zero: $\alpha_i(i_ia)(p)=(0,p):C_i(a)$.  This is well defined since $\alpha_2(i_2a_2)(gpg^{-1})=C_{12}\alpha_1(i_1a_1)(p)$ ((is this how you'd say this?  Feel free to fix.  Remember that $C(x)$ is a set)).
-% The other way, 
-% $$\beta:\prod_{x:A_1\vee A_2}(C(x)\to P(x)),$$ is given by composing the identities, using the glue $g_1$ and $g_2$ to make their ends meet: $\beta_1(n,p_0,\dots,p_n,!)\defequi i_1(p_0)g^{-1}i_2^g(p_1)i_1^g(p_2) \dots i_{n+1}^g(p_n)$. % (ending in $\dots gi_1(p_n)$ if $n$ is even and $\dots g^{-1}i_2(p_n)g$ if $n$ is odd) 
-% and likewise for $\beta_2$ and the glue ((write)).
-
-% That $\beta\alpha(p)=p$ follows by path induction: it is enough to prove it for 
-% $p\defequi\refl{}$ ((here the assymmetry of our definition makes saying this slightly awkward since the basepoint is in $i_1A_1$; fix)).  That $\alpha\beta(n,p_0,\dots,p_n)=(n,p_0,\dots,p_n)$ follows by induction on $n$ ((write)).
-% \end{proof}
 
 We start by giving a definition of the wedge construction which is important for pointed types in general and then prove that the wedge of two groups is a group whose symmetries are arbitrary ``words'' in the original symmetries.
 
 \begin{definition}
   \label{def:wedge}
-  Let $(A_1,a_1)$ and $(A_2,a_2)$ be pointed types.  The \emph{wedge}\index{wedge of pointed types} is the pointed type $(A_1\vee A_2,a_{12})$ given as a higher inductive type\footnote{how/where discussed?} by
+  Let $(A_1,a_1)$ and $(A_2,a_2)$ be pointed types.  The \emph{wedge}\index{wedge of pointed types} is the pointed type $(A_1\vee A_2,a_{12})$ given as a higher inductive type by
   \begin{enumerate}
   \item functions $i_1:A_1\to A_1\vee A_2$ and $i_2:A_2\to A_1\vee A_2$
   \item an identity $g:i_1a_1=i_2a_2$.
@@ -3146,47 +3156,18 @@ $$\prod_{C:(A_1\vee A_2)\to\UU}\sum_{s:\prod_{a:A_1+A_2}Ci(a)}%\sum_{s_2:\prod_{
 ((s(a_1)=C(g^{-1})s(a_2))\,\to\,\prod_{x:(A_1\vee A_2)}C(x)).$$
 \end{definition}
 
-
 Unraveling the induction principle we see that if $B$ is a pointed type, then a  pointed function $f:A_1\vee A_2\to_* B$ is given by providing pointed functions $f_1:A_1\to_* B$ and $f_2:A_2\to_* B$  -- the identity $f_1(a_1)=f_2(a_2)$ which seems to be missing is provided by the requirement of the functions being pointed.  For the record
 \begin{lemma}
   \label{lem:univvee}
   If $B$ is a pointed type, then the function 
-  $$i^*(A_1\vee A_2\to_*B)\to(A_1\to_*B)\times(A_2\to_*B),\qquad i^*(f)=(fi_1,fi_2)
+  $$i^*:(A_1\vee A_2\to_*B)\to(A_1\to_*B)\times(A_2\to_*B),\qquad i^*(f)=(fi_1,fi_2)
 $$
 is an equivalence.
 \end{lemma}
 
-Here is a picture of $i_2^g(p)$: it is the symmetry of the base point $a_{12}\defequi i_1a_1$ you get by \emph{first} moving to $i_2a_2$ with $g$, \emph{then} travel around with $p$ ($i_2p$, really) and finally go home to the basepoint with the inverse of $g$.
-% $$\xymatrix{i_1a_1\ar@/^/[rr]^{g}&&i_2a_2\,\,\,\ar@/^/[ll]^{g^{-1}}\ar@(ur,dr)[]^{p}}
-% $$
 
-% $$\xy (-20,20)*+{A};(0,20)*+{B}
-% **\crv{}
-% \endxy$$
-% $$% \xy (-20,20)*+{i_1a_1\,\,};(0,20)*+{}
-% % **\crv{}\endxy
-% % \xy (0,20)*+{i_2a_2};(0,20)*+{}
-% % **\crv{(20,30)&(0,40)&(-20,30)}
-% % \endxy
-% \xy (-20,20)*+{a_{12}\,\,};(-20,20)*+{}
-% **\crv{(10,20)&(-20,35)&(0,45)&(20,35)&(15,20)&(-10,20)}
-% %?>*\dir{>}
-% ?(.38)*{} *!LD!/^3pt/{>}
-% ?(.95)*{} *!LD!/^-15pt/{g^{-1}}
-% ?(.03)*{} *!LD!/^-5pt/{g}
-% ?(.55)*{} *!LD!/^-7pt/{i_2p}
-% \endxy
-% $$
-% $$\xy (0,20)*+{A};(60,0)*+{B}
-% **\crv{(20,20)&(30,20)&(50,-20)&(60,-10)}
-%  ?<*\dir{<} ?>*\dir{>}
-%  ?(.65)*{\oplus} *!LD!/^-5pt/{x}
-%  ?(.65)/12pt/*{\oplus} *!LD!/^-5pt/{x’}
-%  ?(.28)*=0{\otimes}-/40pt/*+{Q}="q"
-%  +/100pt/*+{P};"q" **\dir{-}
-% \endxy
-% $$
-$$
+
+To the right you see a picture of $i_2^g(p)$: \marginnote{$$
 \xy (-20,20)*+{};(-20,20)*+{}
 **\crv{(15,20)&(18,20)&(-10,35)&(10,45)&(25,30)&(20,19)&(0,20)}
 %?>*\dir{>}
@@ -3201,11 +3182,12 @@ $$
 ?(1)*{} *!LD!/^-2pt/{\bullet}
 ?(1)*{} *!LD!/^-12pt/{a_{12}}
 \endxy
-$$
+$$}it is the symmetry of the base point $a_{12}\defequi i_1a_1$ you get by \emph{first} moving to $i_2a_2$ with $g$, \emph{then} travel around with $p$ ($i_2p$, really) and finally go home to the basepoint with the inverse of $g$.
 
-We now prove that wedges of decidable groups are decidable groups.   The idea is that an identity in $a_{12}=x$ can be factored into a string of identities, each lying solely in $A_1$ or in $A_2$.  We define a family of sets consisting of exactly such strings of identities --  it is a set since $A_1$ and $A_2$ are groupoids -- and prove that it is equivalent to the family $P(x)\defequi(a_{12}=_{A_1\vee A_2}x)$ which consequently must be a family of sets.
+We now prove that wedges of decidable groups are decidable groups.
+\marginnote{The idea is that an identity in $a_{12}=x$ can be factored into a string of identities, each lying solely in $A_1$ or in $A_2$.  We define a family of sets consisting of exactly such strings of identities --  it is a set since $A_1$ and $A_2$ are groupoids -- and prove that it is equivalent to the family $P(x)\defequi(a_{12}=_{A_1\vee A_2}x)$ which consequently must be a family of sets.
 We need to be able to determine whether a symmetry is reflexivity or not, but once we know that, the symmetries of the base point in the wedge are then given by ``words $p_0p_1\dots p_n$'' where the $p_j$ alternate between being symmetries in the first or the second group, and none of the $p_j$ for positive $j$ are allowed to be reflexivity% : effectively a symmetry in the wedge can be decomposed into composites of symmetries in each of the groups
-.  Note that there order of the $p_j$s is not negotiable: if I shuffle them I get a new symmetry.
+.  Note that there order of the $p_j$s is not negotiable: if I shuffle them I get a new symmetry.}
 \begin{lemma}
   \label{lem:wedgeofgpoidisgpoid}
   Let $\aut_{A_1}(a_1)$ and $\aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $\aut_{A_1\vee A_2}(a_{12})$ is a decidable group.  
@@ -3285,13 +3267,13 @@ $\alpha\beta(\refl{a_1},0)\defequi\alpha(\refl{a_{12}})\defequi(\refl{a_1},0)$. 
   =&i^C_k\trp[C_k]{p_{k-1}}(\refl{a_{k-1}},n-k,p_k,\dots,p_n)\\
   =&(p_{k-1},n-k,p_k,\dots,p_n).
 \end{align*}
-((please see whether this makes sense to anybody but yvt))
+%((please see whether this makes sense to anybody but yvt))
 \end{proof}
 
 \begin{definition}
   \label{def:sumofgroup}
   If $G_1=\aut_{A_1}(a_1)$ and $G_1=\aut_{A_1}(a_1)$ are groups, then their \emph{sum}\index{sum of groups} is defined as
-  $$G_1\vee G_2\defequi \aut_{A_1\vee A_2}(a_{12}).$$ The homomorphisms $i_1:G_1\to G_1\vee G_2$ and $i_2:G_2\to G_1\vee G_2$ induced from the structure maps  $i_1:A_1\to A_1\vee A_2$ and  $i_2:A_2\to A_1\vee A_2$ are also referred to as structure maps.
+  $$G_1\vee G_2\defequi \aut_{A_1\vee A_2}(a_{12}).$$ The homomorphisms $i_1:G_1\to G_1\vee G_2$ and $i_2:G_2\to G_1\vee G_2$ induced from the structure maps  $i_1:A_1\to A_1\vee A_2$ and  $i_2:A_2\to A_1\vee A_2$ are also referred to as \emph{structure maps}.
 \end{definition}
 \begin{lemma}
   \label{lem:sumofgroupsISsum} If $G_1$, $G_2$ and $G$ are groups, then the function
@@ -3299,19 +3281,22 @@ $\alpha\beta(\refl{a_1},0)\defequi\alpha(\refl{a_{12}})\defequi(\refl{a_1},0)$. 
 given by restriction along the structure maps is an equivalence.
 \end{lemma}
 \begin{proof}
-  ((write))
+  This is a special case of \cref{lem:univvee}.
 \end{proof}
 Specializing, we return to our initial motivation and see that mapping out of a wedge of two circles \emph{exactly} captures the information of two independent symmetries:
 \begin{corollary}
   \label{cor:ZplusZuniv}
   If $G$ is a group, then the functions
-  $$\Hom(\ZZ\vee\ZZ,G)\to \Hom(\ZZ,G)\times\Hom(\ZZ,G)\to G\times G$$
-  are equivalences.((fix language))
+  $$\Hom(\ZZ\vee\ZZ,G)\to \Hom(\ZZ,G)\times\Hom(\ZZ,G)\simeq \USym G\times \USym G$$
+  is an equivalence.
 \end{corollary}
 \begin{xca}
 This leads to the following characterization of abelian groups formulated purely in terms of pointed connected groupoids (no reference to the identity types).
   \label{xca:whatAREabeliangroups}
-  A group $G$ is abelian if and only if the canonical map 
+  A group $G$ is abelian if and only if the canonical map
+  
+  \marginnote{$$\xymatrix{\BG\vee\BG\ar[r]^{\text{fold}}\ar[d]_{\text{inclusion}}&\BG\\
+      \BG\times\BG\ar@{.>}[ur]}$$}
 $$+:G\vee G\to G$$ 
 (given via \cref{lem:sumofgroupsISsum} by $G\oldequiv G$) extends over the inclusion 
 $$i:G\vee G\to G\times G$$ 
