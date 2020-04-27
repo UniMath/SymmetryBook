@@ -535,7 +535,7 @@ and saying that going from (upper left hand corner) $a$ to (lower right hand cor
   Alternatively, the reference to $\mathbf{isAb}$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} (it is the sum of $X$ and $Y$ where the base points are identified); \cref{xca:whatAREabeliangroups}
   \marginnote{$$\xymatrix{\BG\vee\BG\ar[r]^{\text{fold}}\ar[d]_{\text{inclusion}}&\BG\\
       \BG\times\BG\ar@{.>}[ur]}$$}
-  offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $\BG\vee \BG\to \BG$ factors over the inclusion $\BG\vee\BG\to\BG\times\BG$.
+  offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $\BG\vee \BG\to \BG$ (both summands are mapped by the identity) factors over the inclusion $\BG\vee\BG\to\BG\times\BG$.
 \end{remark}
 \begin{xca}
    Let $\aut_A(a):\typegroup$ and let $b$ be an arbitrary element of $A$.  Prove that the groups $\aut_A(a)$ and $\aut_A(b)$ are identical, in the sense that $\Trunc{\aut_A(a)=\aut_A(b)}$ is true.  Similarly for \inftygps when you get that far.
@@ -3184,26 +3184,75 @@ To the right you see a picture of $i_2^g(p)$: \marginnote{$$
 \endxy
 $$}it is the symmetry of the base point $a_{12}\defequi i_1a_1$ you get by \emph{first} moving to $i_2a_2$ with $g$, \emph{then} travel around with $p$ ($i_2p$, really) and finally go home to the basepoint with the inverse of $g$.
 
-We now prove that wedges of decidable groups are decidable groups.
 \marginnote{The idea is that an identity in $a_{12}=x$ can be factored into a string of identities, each lying solely in $A_1$ or in $A_2$.  We define a family of sets consisting of exactly such strings of identities --  it is a set since $A_1$ and $A_2$ are groupoids -- and prove that it is equivalent to the family $P(x)\defequi(a_{12}=_{A_1\vee A_2}x)$ which consequently must be a family of sets.
 We need to be able to determine whether a symmetry is reflexivity or not, but once we know that, the symmetries of the base point in the wedge are then given by ``words $p_0p_1\dots p_n$'' where the $p_j$ alternate between being symmetries in the first or the second group, and none of the $p_j$ for positive $j$ are allowed to be reflexivity% : effectively a symmetry in the wedge can be decomposed into composites of symmetries in each of the groups
 .  Note that there order of the $p_j$s is not negotiable: if I shuffle them I get a new symmetry.}
+
+
+\begin{definition}
+  \label{def:sumofgroup}
+  If $G_1=\aut_{A_1}(a_1)$ and $G_2=\aut_{A_2}(a_2)$ are groups, then their \emph{sum}\index{sum of groups} is defined as
+  $$G_1\vee G_2\defequi \aut_{A_1\vee A_2}(a_{12}).$$
+  The homomorphisms $i_1:G_1\to G_1\vee G_2$ and $i_2:G_2\to G_1\vee G_2$ induced from the structure maps  $i_1:A_1\to A_1\vee A_2$ and  $i_2:A_2\to A_1\vee A_2$ are also referred to as \emph{structure maps}.
+\end{definition}
+\begin{lemma}
+  \label{lem:sumofgroupsISsum} If $G_1$, $G_2$ and $G$ are groups, then the function
+  $$\Hom(G_1\vee G_2,G)\to\Hom(G_1,G)\times\Hom(G_2,G)$$ 
+given by restriction along the structure maps is an equivalence.
+\end{lemma}
+\begin{proof}
+  This is a special case of \cref{lem:univvee}.
+\end{proof}
+Specializing further, we return to our initial motivation and see that mapping out of a wedge of two circles \emph{exactly} captures the information of two independent symmetries:
+\begin{corollary}
+  \label{cor:ZplusZuniv}
+  If $G$ is a group, then the functions
+  $$\Hom(\ZZ\vee\ZZ,G)\to \Hom(\ZZ,G)\times\Hom(\ZZ,G)\simeq \USym G\times \USym G$$
+  is an equivalence.
+\end{corollary}
+\begin{xca}
+This leads to the following characterization of abelian groups formulated purely in terms of pointed connected groupoids (no reference to the identity types).
+  \label{xca:whatAREabeliangroups}
+  A group $G$ is abelian if and only if the canonical map
+  
+  \marginnote{$$\xymatrix{G\vee G\ar[r]^+\ar[d]_{\text{inclusion}}&G\\
+      G\times G\ar@{.>}[ur]}$$}
+$$+:G\vee G\to G$$ 
+(given via \cref{lem:sumofgroupsISsum} by $\id_G:G\to G$) extends over the inclusion 
+$$i:G\vee G\to G\times G$$ 
+(given by the inclusions $\mathrm{in}_1,\mathrm{in}_2:G\to G\times G$).\footnote{I haven't written out a formalization myself}
+
+As a cute aside, one can see that the required map $\BG\times\BG\to_*\BG$ actually doesn't need to be pointed:
+factoring $+:\BG\vee\BG\to_*\BG$ over $i:\BG\vee\BG\to_*\BG\times\BG$
+-- even in an unpointed way -- kills all ``commutators''
+$ghg^{-1}h^{-1}:\USym(G\vee G)$.  
+\end{xca}
+
+We end the section by proving that wedges of decidable groups are decidable groups and that they can be given the classical description in terms of words.
+
+
 \begin{lemma}
   \label{lem:wedgeofgpoidisgpoid}
-  Let $\aut_{A_1}(a_1)$ and $\aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $\aut_{A_1\vee A_2}(a_{12})$ is a decidable group.  
+  Let $G_1\defequi\aut_{A_1}(a_1)$ and $G_2\defequi\aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $G_1\vee G_2\defequi\aut_{A_1\vee A_2}(a_{12})$ is a decidable group.  
 
 Let $C_1$ be the set of strings $(p_0,n,p_1,\dots,p_n)$ with $n:\NN$ and, for $0\leq j\leq n$ 
 \begin{itemize}
-\item $p_{j}:a_1=a_1$ for even $j$ 
-\item $p_{j}:a_2=a_2$ for odd $j$ and 
-\item $p_j$ is not reflexivity for $j$ positive (makes sense and is a proposition since our groups are decidable).
+\item $p_{j}:\USym G_1%\defequi (a_1=a_1)
+  $  for even $j$ 
+\item $p_{j}:\USym G_2%\defequi (a_2=a_2)
+  $ for odd $j$ and 
+\item $p_j$ is not reflexivity for $j$ positive
 \end{itemize}
-  Then the function given by composition in $a_{12}=a_{12}$
-$$\beta:C_1\to(a_{12}=a_{12}),\qquad\beta(p_0,n,p_1,\dots p_n)\defequi i_1^gp_0i_2^gp_1i_1^gp_2\dots i_?^gp_n$$ 
+(the last requirement makes sense and is a proposition since our groups are decidable).
+
+  Then the function given by composition in $\USym G_{12}\defequi(a_{12}=a_{12})$
+  $$\beta:C_1\to\USym G_{12}%\defequi(a_{12}=a_{12})
+  ,\qquad\beta(p_0,n,p_1,\dots p_n)\defequi i_1^gp_0i_2^gp_1i_1^gp_2\dots i_?^gp_n$$ 
 (where $i_?^gp_n$  is $i_1^gp_n$ or $i_2^gp_n$ according to whether $n$ is even or odd) is an equivalence.
 \end{lemma}
 \begin{proof}
-That the wedge is connected follows by transitivity of identity, if necessary passing through the identity $g:i_1a_1=i_2a_2$ in the wedge.
+  That the wedge is connected follows by transitivity of identifications,
+  if necessary passing through the identification $g:i_1a_1=i_2a_2$ in the wedge.
 
 We must prove that the wedge is a groupoid, \ie that all identity types are sets, which we do by giving an explicit description of the universal \covering. 
 
@@ -3269,39 +3318,6 @@ $\alpha\beta(\refl{a_1},0)\defequi\alpha(\refl{a_{12}})\defequi(\refl{a_1},0)$. 
 \end{align*}
 %((please see whether this makes sense to anybody but yvt))
 \end{proof}
-
-\begin{definition}
-  \label{def:sumofgroup}
-  If $G_1=\aut_{A_1}(a_1)$ and $G_1=\aut_{A_1}(a_1)$ are groups, then their \emph{sum}\index{sum of groups} is defined as
-  $$G_1\vee G_2\defequi \aut_{A_1\vee A_2}(a_{12}).$$ The homomorphisms $i_1:G_1\to G_1\vee G_2$ and $i_2:G_2\to G_1\vee G_2$ induced from the structure maps  $i_1:A_1\to A_1\vee A_2$ and  $i_2:A_2\to A_1\vee A_2$ are also referred to as \emph{structure maps}.
-\end{definition}
-\begin{lemma}
-  \label{lem:sumofgroupsISsum} If $G_1$, $G_2$ and $G$ are groups, then the function
-  $$\Hom(G_1\vee G_2,G)\to\Hom(G_1,G)\times\Hom(G_2,G)$$ 
-given by restriction along the structure maps is an equivalence.
-\end{lemma}
-\begin{proof}
-  This is a special case of \cref{lem:univvee}.
-\end{proof}
-Specializing, we return to our initial motivation and see that mapping out of a wedge of two circles \emph{exactly} captures the information of two independent symmetries:
-\begin{corollary}
-  \label{cor:ZplusZuniv}
-  If $G$ is a group, then the functions
-  $$\Hom(\ZZ\vee\ZZ,G)\to \Hom(\ZZ,G)\times\Hom(\ZZ,G)\simeq \USym G\times \USym G$$
-  is an equivalence.
-\end{corollary}
-\begin{xca}
-This leads to the following characterization of abelian groups formulated purely in terms of pointed connected groupoids (no reference to the identity types).
-  \label{xca:whatAREabeliangroups}
-  A group $G$ is abelian if and only if the canonical map
-  
-  \marginnote{$$\xymatrix{\BG\vee\BG\ar[r]^{\text{fold}}\ar[d]_{\text{inclusion}}&\BG\\
-      \BG\times\BG\ar@{.>}[ur]}$$}
-$$+:G\vee G\to G$$ 
-(given via \cref{lem:sumofgroupsISsum} by $G\oldequiv G$) extends over the inclusion 
-$$i:G\vee G\to G\times G$$ 
-(given by the inclusions $\mathrm{in}_1,\mathrm{in}_2:G\to G\times G$).\footnote{I haven't written out a formalization myself}
-\end{xca}
 
 % Local Variables:
 % fill-column: 144
