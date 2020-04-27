@@ -947,7 +947,7 @@ We would like to understand the effect of a homomorphism $f : \Hom(G,H)$
 on the underlying symmetries $\USym G$, $\USym H$.
 Since the underlying symmetries are obtained by taking loops,
 we should first study how pointed maps affect loops:
-\begin{definition}
+\begin{definition}\label{def:loops-map}
   If $X,Y$ are pointed types,
   and $f : X \ptdto Y$ is a pointed map,
   then we get an induced map
@@ -957,12 +957,49 @@ we should first study how pointed maps affect loops:
   mapping $q : \pt_X = \pt_X$
   to $\inv{f_0}f(q)f_0 : \pt_Y = \pt_Y$.
 \end{definition}
-\begin{definition}
+\begin{definition}\label{def:USym-hom}
   Any group homomorphism $f : \Hom(G,H)$
   induces a map $\USym f \defeq \loops B\!f : \USym G \to \USym H$.
   In other words, the homomorphism $\mkhom\Bf$
   induces $\loops\Bf$ as the map on underlying symmetries.
 \end{definition}
+
+\begin{definition}\label{def:loops-compose}
+  For pointed types $X,Y,Z$ and pointed maps $f : X \ptdto Y$
+  and $g : Y \ptdto Z$, we get an identification of type
+  \[
+    \loops(g \circ f) =_{(\loops X \to \loops Y)}
+    \loops(g) \circ \loops(f).
+  \]
+\end{definition}
+\begin{proof}[Construction]
+  Recall (FROM WHERE?) that $f_0:\pt_Y = f(\pt_X)$, $g_0:\pt_Z=g(\pt_Y)$,
+  and $(g \circ f)_0 \jdeq
+  \ap{g}(f_0) \cdot g_0 : \pt_Z = g(f(\pt_X))$.
+  Let $p : \loops X$. Then we calculate,
+  \begin{align*}
+    \loops(g\circ f)(p)
+    &\jdeq \inv{(g\circ f)_0} \cdot
+      \ap{g\circ f}(p) \cdot
+      (g\circ f)_0 \\
+    &=\inv{g_0} \cdot \inv{(\ap{g}(f_0))} \cdot
+      \ap{g}\bigl(\ap{f}(p)\bigr) \cdot
+      \ap{g}(f_0) \cdot g_0 \\
+    &= \inv{g_0} \cdot \ap{g}(\inv{f_0}) \cdot
+      \ap{g}\bigl(\ap{f}(p)\bigr) \cdot
+      \ap{g}(f_0) \cdot g_0 \\
+    &= \inv{g_0} \cdot
+      \ap{g}\bigl(\inv{f_0}\cdot\ap{f}(p) \cdot f_0\bigr)
+      \cdot g_0 \\
+    &\jdeq \loops g\bigl(\loops f(p)\bigr).\qedhere
+  \end{align*}
+\end{proof}
+\begin{corollary}\label{cor:USym-compose}
+For composable group homomorphisms
+$\varphi : \Hom(G,H)$, $\psi:\Hom(H,K)$,
+we get an identification
+$\USym(\psi\circ\varphi) = \USym\psi \circ \USym\varphi$.
+\end{corollary}
 \begin{example}
   We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$
   is equivalent to the \emph{set} of ``abstract group homomorphisms''
@@ -1057,32 +1094,37 @@ The following lemma states ``the naturality of $\ev_{\BG}$ in the previous examp
 (DISCUSS AMONG US)
 
 \begin{lemma}\label{lem:Znatural}
-Let $G$ and $H$ be groups and $(f,f_0): \Hom(G,H)$.
-Then the following diagram commutes. In this diagram,
-$(f,f_0)\_$ denotes composition with $(f,f_0)$, and 
-$(f,f_0)(\_)$ denotes the function mapping $g:pt_G = pt_G$ to $f_0^{-1} f(g) f_0$.
-\end{lemma}
-(ALTERNATIVE NOTATION FOR Ad ap AND Omega, DISCUSS)
-
+Let $G$ and $H$ be groups and $f: \Hom(G,H)$.
+Then the following diagram commutes,
 \[
-\begin{tikzcd} 
-\Hom(\ZZ,G) \arrow[r, eq, "\ev_{\BG}"] \arrow[d, "{(f,f_0)\_}"] & 
-\USym G \arrow[d, "{(f,f_0)(\_)}"]\\ 
-\Hom(\ZZ,H) \arrow[r, eq, "\ev_{\BH}"] & \USym H \\
-\end{tikzcd}
+  \begin{tikzcd} 
+    \Hom(\ZZ,G) \arrow[r, eqr, "\ev"] \arrow[d, "f\circ{\blank}"'] & 
+    \USym G \arrow[d, "\USym f"]\\ 
+    \Hom(\ZZ,H) \arrow[r, eqr, "\ev"] & \USym H,
+  \end{tikzcd}
 \]
+where the horizontal maps evaluate
+the map on underlying symmetries at the loop
+$\Sloop : \USym\ZZ$.
+\end{lemma}
 
 \begin{proof}
-By the following diagram, using some path algebra.
+  Let $k:\Hom(\ZZ,G)$, giving $\USym k : \USym\ZZ \to \USym G$.
+  Going across horizontally and then down,
+  $k$ is mapped first to $\USym k(\Sloop)$,
+  and then to $\USym f(\USym k(\Sloop))$.
+  Going the other way takes $k$ to $\USym(f\circ k)(\Sloop)$,
+  which is equal to $\USym f(\USym k(\Sloop))$
+  by \cref{cor:USym-compose}.
 \end{proof}
 
-\[
-\begin{tikzcd} 
-(g,g_0) \arrow[r, mapsto, "\ev_{\BG}"] \arrow[d, mapsto, "{(f,f_0)\_}"] & 
-g_0^{-1} g(\Sloop) g_0 \arrow[d, mapsto, "{(f,f_0)(\_)}"]\\
-(fg,f(g_0)f_0) \arrow[r, mapsto, "\ev_{\BH}"] & f_0^{-1} f(g_0)^{-1} f(g(\Sloop)) f(g_0) f_0 \\
-\end{tikzcd}
-\]
+% \[
+% \begin{tikzcd} 
+% (g,g_0) \arrow[r, mapsto, "\ev_{\BG}"] \arrow[d, mapsto, "{(f,f_0)\_}"] & 
+% g_0^{-1} g(\Sloop) g_0 \arrow[d, mapsto, "{(f,f_0)(\_)}"]\\
+% (fg,f(g_0)f_0) \arrow[r, mapsto, "\ev_{\BH}"] & f_0^{-1} f(g_0)^{-1} f(g(\Sloop)) f(g_0) f_0 \\
+% \end{tikzcd}
+% \]
 
 
 \begin{xca}\label{xca:BGtotype}
