@@ -1,0 +1,15 @@
+name: Build the book
+on: [push, pull_request]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v1
+      - name: Create the directory figures/
+        run: mkdir -p figures
+      - name: Compile LaTeX document
+        uses: dante-ev/latex-action@master
+        with:
+          args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
+          root_file: book.tex
