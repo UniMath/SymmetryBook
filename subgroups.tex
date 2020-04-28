@@ -19,8 +19,14 @@ and there are several ways to pin them down.  If $A$ is a groupoid, singling out
 In particular, the proposition $\ismono(i)$ is equivalent to saying that $\US i:\USym H\to \USym G$ is an injection (all preimages are propositions), and also to saying that $B i:\BH\to\BG$ is a \covering, and (since $\BG$ is connected), to $\isset((Bi)^{-1}(\sh_G))$.
 %\newcommand{\typemono}{Mono}
 \begin{definition}
+  \label{def:typeofmono}
   If $G$ is a group, the \emph{type of monomorphisms into $G$} is
   $$\typemono_G\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i).$$
+  A monomorphism $(H,i,!)$ is
+      \begin{enumerate}
+      \item \emph{trivial}\index{trivial monomorphism} if $\BH$ is contractible
+      \item \emph{proper}\index{proper monomorphism} if $Bi$ is not an equivalence.
+      \end{enumerate}
 \end{definition}
 
 \begin{example}
@@ -66,7 +72,10 @@ Now, $i_{H'}=i_Hf$ is equivalent to $\US i_{H'}=\US i_H \US f$, and since $\US i
 % Now, since $(H,i_H,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $!:f^==\refl{\USym H}$, which ultimately forces $f$ to be (identical to) the identity homomorphism. 
 \end{proof}
 
-
+\begin{example}  
+  \label{ex:prodinclisGset}
+  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.  The corresponding $G\times G'$-set is the composite of the first projection $\\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG$ followed by the principal $G$-torsor.  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, then the monomorphism correspond to the $G$-set given by $Bf$ followed by the princial $H$-torsor.
+\end{example}
 
 
 \subsection{Subgroups through $G$-sets}
@@ -80,14 +89,14 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
 
 \begin{definition}
   Let $G$ be a group then the set of \emph{subgroups of $G$} is
-  $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}\sum_{\pt_{\sh_G}:X(\sh_G)}\mathrm{isTrans}(X).$$
+  $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}\sum_{\pt:X(\sh_G)}\mathrm{isTrans}(X).$$
   The preferred equivalence 
  with the set of monomorphisms into $G$ is given by the function
   $$E:\typemono_G\to\typesubgroup_G\qquad (H,i,!)\mapsto E(H,i,!)\defequi ((Bi)^{-1},(\sh_H,p_i),!),$$
   where the monomorphism $i:\Hom(H,G)$ is -- as always -- given by the pointed map $(Bi_\div,p_i):(\BH_\div,\sh_H)\to_*(\BG_\div,\sh_G)$; and where $(Bi)^{-1}:\BG\to\Set$ is the preimage $G$-set (since $i$ is a monomorphism)  and finally $(\sh_H,p_i):(Bi)^{-1}(y)\defequi \sum_{x:\BH}(y=Bi(x))$.
 \end{definition}
 \marginnote{%
-   The inverse equivalence to $E$ is given by sending $(X,\pt_{\sh_G},!)$ to the monomorphism associated with the first projection $\sum_{z:\BG}X(z)\to\BG$.
+   The inverse equivalence to $E$ is given by sending $(X,\pt,!)$ to the monomorphism associated with the first projection $\sum_{z:\BG}X(z)\to\BG$.
  }%
 \marginnote{%
   Which of the equivalent sets is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence as needed.
@@ -96,8 +105,53 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
     \cref{ex:sigma2inSigma3} can be displayed as a subgroup of $\Sigma_3$ through
     $$X:\fin_3\to\Set
     $$
-    given by $A\mapsto\sum_{B:\fin 2}(A=B+\bn 1)$ together with a proof that $\sum_{B:\fin 2}(A=B+\bn 1)$ is a set [the identity type $(B,p)=(B',p')$ is equivalent to $\Sum_{q:B=B'}(q+\bn 1)p=p'$, so $q+\bn 1=p'p^{-1}$ which pins down $q$ uniquely  -- check!]
+    given by $A\mapsto\sum_{B:\fin 2}(A=B+\bn 1)$ together with a proof that $\sum_{B:\fin 2}(A=B+\bn 1)$ is a set [the identity type $(B,p)=(B',p')$ is equivalent to $\sum_{q:B=B'}(q+\bn 1)p=p'$, so $q+\bn 1=p'p^{-1}$ which pins down $q$ uniquely  -- check!]
   \end{example}
+
+  Translating the concepts in \cref{def:typeofmono} through the equivalence $E$ we say that a subgroup $(X,\pt,!):\typesubgroup_G$ is
+      \begin{enumerate}
+      \item \emph{trivial}\index{trivial subgroup} if $X$ is identical to the principal $G$-torsor.
+      \item \emph{proper}\index{proper subgroup} if $X(\sh_G)$ is not contractible.
+      \end{enumerate}
+
+      \subsection{The action on the set of subgroups}
+\label{sec:actiononsub}
+
+Not only is the type of subgroups  of $G$ a set, it is in a natural way (equivalent to the value at $\sh_G$ of) a $G$-set which we denote by the same name.  We first do the monomorphism interpretation
+\begin{definition}
+  If $G$ is the group, the \emph{$G$-set of monomorphisms into $G$}\index{Gset of monomorphisms into G@$G$-set of monomorphisms into $G$} $\typemono_G:\BG\to\Set$ is given by
+  $$%\typesubgroup_G:\BG\to\Set,\qquad 
+  \typemono_G(y)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)(y)}\isset(\Bf^{-1}(\sh_G))$$
+  for $y:\BG$, 
+where  -- as in \cref{ex:HomHGasGset} -- 
+$$\Hom(H,G)(y)\defequi\sum_{F:\BH_\div\to \BG_\div}(y=F(\sh_H))$$
+is the $G$-set of homomorphisms from $H$ to $G$.
+\end{definition}
+\marginnote{The type of monomorphisms into $G$ is $\typemono(\sh_G)$, and as $y:\BG$ varies, the only thing that changes in $\typemono_G(y)$ is that $\BG=(\BG_\div,\sh_G)$ is replaced by $(\BG_\div,y)$.}
+
+\begin{definition}
+  \label{def:conjactonmonos}
+  If $G$ is a group, then the action of $G$ on the set of monomorphisms into $G$ is called \emph{conjugation}\index{conjugation}. 
+
+  \label{def:conjugate}
+  If $(H,F,p,!):\typemono_G(\sh_G)$ is a monomorphism into $G$ and $g:\USym G$, then the monomorphisms  $(H,F,p,!),(H,F,p\,g^{-1},!):\typemono_G(\sh_G)$ are said to be \emph{conjugate}\index{conjugate}\index{conjugate}. 
+\end{definition}
+\begin{remark}
+  \label{rem:whyconjugate}
+  The term ``conjugation'' may seem confusing as the %(abstract) 
+action of $g:\USym G$ on a monomorphism $(H,F,p,!):\typemono_G(\sh_G)$ (where $p:x=F(\sh_H)$) is simply $(H,F,p\,g^{-1},!)$, which does not seem much like conjugation.  
+However, as we saw in \cref{ex:abstrandconj}, under the equivalence $\abstr:\Hom(H,G)\we\Hom^\abstr(\abstr(H),\abstr(G))$, the corresponding action on $\Hom^\abstr(\abstr(H),\abstr(G))$ is exactly (postcomposition with) conjugation $c^g:\abstr(G)=\abstr(G)$.  
+\footnote{The same phenomenon appeared in \cref{xca:HomZGvsAdG} where we gave an equivalence between the $G$-sets $\Hom(\ZZ,G)$ and $\Ad_G$ (where the action is very visibly by conjugation).}
+  \label{rem:conjactiononmonos}
+\end{remark}
+Summing up the remark:
+\begin{lemma}
+  \label{lem:conjugationabstractly}
+  Under the equivalence of \cref{lem:actionsconcreteandabstract} between $G$-sets and $\abstr(G)$-sets, the $G$-set $\typemono_G$ corresponds to the $\abstr(G)$-set
+$$\sum_{H:\typegroup}\sum_{\phi:\Hom^\abstr(\abstr(H),\abstr(G))}\isprop(\phi^{-1}(e_G))$$ of \emph{abstract monomorphisms}\index{abstract monomorphisms} of $\abstr(G)$, with action $g\cdot(H,\phi,!)\defequi(H,c^g\,\phi,!)$ for $g:\abstr(G)$, where  $c^g:\abstr(G)=\abstr(G)$ is conjugation as defined in \cref{ex:conjhomo}.
+\end{lemma}
+
+
 
 ------------------
 
@@ -139,11 +193,7 @@ We must choose one of these equivalent formulations for our concept of ``subgrou
       Let $G$ be a group.  
       The \emph{type of subgroups of $G$}\index{type!subgroup} is the type
       $$\typesubgroup_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(\Bf^{-1}(\sh_G)).$$
-       A subgroup $(H,f,!)$ is
-      \begin{enumerate}
-      \item \emph{trivial}\index{trivial subgroup} if $\BH$ is contractible
-      \item \emph{proper}\index{proper subgroup} if $\Bf$ is not an equivalence.
-      \end{enumerate}
+       
     \end{definition}
     \begin{remark}
       \label{rem:notationsubgroup}
