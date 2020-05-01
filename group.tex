@@ -737,10 +737,11 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
   \end{displaymath}
 
   We will typically refer to a monoid as a triple $(M,e,\mu)$,
-  omitting the names for the (true) $\isset$ and unit and
-  associativity laws, and likewise, an abstract group will be referred
-  to as a quadruple $(M,e,\mu,\iota)$.  With this notation, the set
-  $M$ is referred to as \emph{underlying set}.
+  omitting the entries for proofs of the unit and
+  associativity laws and for the statement that $M$ is a set.
+  Likewise, an abstract group $H$ will be referred
+  to as a quadruple $H \jdeq (M,e,\mu,\iota)$.  With this notation, the set
+  $M$ will be referred to as the \emph{underlying set} of $H$.
 \end{remark}
 
 In conclusion, in that section we have proved that groups give rise to
@@ -751,7 +752,8 @@ define an abstract group
 $$\abstr(G)\defequi (\USym G,e,\cdot,{-}^{-1}).$$
   \end{lemma}
   \begin{proof}
-    The elements $p_1,\dots, p_4$ of \cref{def:p1,def:p4,def:p3,xca:p2} show that all the relevant identity types (which are propositions since $A$ is a groupoid) are nonempty, as required.
+    The elements $p_1,\dots, p_4$ of \cref{def:p1,def:p4,def:p3,xca:p2} show that all the relevant identity types (which are propositions since
+    $\B G$ is a groupoid) are nonempty, as required.
   \end{proof}
   \begin{definition}\label{def:abstrG}
     Given a group $G$, the abstract group $\abstr(G)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
@@ -819,11 +821,23 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
 \section{Homomorphisms}
 \label{sec:homomorphisms}
 
-The notion of a group homomorphism from $G\jdeq\mkgroup\BG$ to $H\jdeq\mkgroup\BH$
-is simple:
-it is a pointed function of classifying types $\BG\ptdto\BH$, that is, it is a function
-$\Bf :\BG\to\BH$ that ``sends $\sh_G$ to $\sh_H$'',
-\ie together with an identification $p:\sh_H=_{\BH}\Bf(\sh_G)$:
+Let $G$ and $H$ be groups, suppose we have a function $f : \B G \to \B H$.
+Suppose also, for simplicity, that $\pt_{\B H} \jdeq f ( \pt_{\B G} ) $, so the pair $(f, \refl {\pt_{\B H}})$ is a pointed function of type $\B G \ptdto \B H$.
+Applying \cref{def:ap} yields a function $F \defeq \ap f : \USym G \to \USym H$, which satisfies the following identities.
+\begin{align*}
+  F ( \refl {\pt_{\B G}} ) & = \refl{\pt_{\B H}}                               \\
+  F (g ^ {-1})     & = (F (g))^{-1}         & \text {for any $g : \USym G$}    \\
+  F (g' \cdot g)   & =  F (g') \cdot  F (g) & \text {for any $g, g' : \USym G$}
+\end{align*}
+The third one follows from \cref{lem:apcomp}, and the first two have similar proofs.
+These three identities assert that the function $\ap f$ \emph{preserves}, in a certain sense, the operations provided by \cref{lem:idtypesgiveabstractgroups} that
+make the abstract group $\abstr(G)$ from $\USym G$ and the abstract group $\abstr(H)$ from $\USym H$.
+In the traditional study of abstract groups, these three identities play an important role and entitle one to call the function $F$ a
+\emph{homomorphism of abstract groups}.
+
+A slight generalization of the discussion above will be to suppose that we have an identity of type $\pt_{\B H} = f ( \pt_{\B G} ) $ not
+necessarily given by reflexivity.  Indeed, that works out, thereby motivating the following definition.
+
 \begin{definition}\label{def:grouphomomorphism}
   The type of \emph{group homomorphisms} from $G:\typegroup$ to
   $H:\typegroup$ is defined to be\marginnote{%
@@ -1233,7 +1247,7 @@ where $\US f(g\cdot_Gg')$ is simply ``up, over and down'' while $\US f(g)\cdot_H
 $$
   \marginnote{For $s:S$ both $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
 $f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
-propositions; hence a homomorphism of abstract group is uniquely determined
+propositions; hence a homomorphism of abstract groups is uniquely determined
 by its underlying function of sets, and unless there is danger of
 confusion we may write $f$ instead of $(f,!)$.
 }
