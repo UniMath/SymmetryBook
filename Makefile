@@ -11,7 +11,8 @@ one-by-one: figures
 figures:
 	mkdir $@
 clean:
-	rm -f *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf *.run.xml
+	rm -f *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf \
+		*.run.xml *.glo *.gls *.idx *.ilg *.ind
 veryclean:clean
 	rm -rf *.pdf *.auxlock *.synctex.gz figures
 always:
