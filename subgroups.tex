@@ -121,6 +121,180 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
 If $(X,\pt,!)$ is a subgroup corresponding to a monomorphism $(H,i,!)$ into a group $G$, tradition would permit us to relax the burden of notation and we could write ``a subgroup $i:H\subseteq G$'', or, if we didn't need the name of $i:\Hom(H,G)$, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''. 
     \end{remark}
 
+\subsection{The geometry of subgroups: some small examples}\footnote{this subsection is not touched: it needs attention}
+\label{smallsubgpex}
+
+As a teaser, and in order to get a geometric feel for the subgroups and their intricate interplay, it can be useful to have some fairly manageable examples to stare at.  
+Some of the main tools for analyzing the geometry of subgroups are collected in \cref{sec:fingp} on finite groups, and we hope the reader will be intrigued by our mysterious claims and go on to study \cref{sec:fingp}.
+That said, the examples we'll present are possible to muddle through by hand without any fancy machinery, but brute force is generally not an option and even for the present examples it is not something you want to show publicly.
+
+When presenting the subgroups of a group $G$, three types are especially revealing: the set of subgroups $\typesubgroup_G(\sh_G)$, the \emph{groupoid of subgroups} $\typesubgroup(G)\defequi\sum_{y:\BG}\typesubgroup_G(y)$ and what we for now call the ``set of normal subgroups'' $\prod_{y:\BG}\typesubgroup_G(y)$.   Our local use of ``normal subgroup'' is equivalent to the official definition to come.  
+
+The first projection $\typesubgroup(G)\to \BG$ is referred to as the \emph{\covering of subgroups}.
+
+\footnote{Write out and fix the concrete examples (cyclic groups and $\Sigma_3$) commented out}
+% \begin{remark}
+% In  \cref{cha:circle} we studied the subgroups of the group of integers $G=\ZZ$ through \coverings over the circle $S^1$ (which we showed was equivalent to $B\ZZ$).
+% We discovered a subgroup $n\ZZ$ for each natural number $n:\NN$ and in the groupoid $\typesubgroup({\ZZ})$ these sit as elements in separate components.  Each of these components are contractible (because addition is commutative: $\ZZ$ is an abelian group).
+
+% In general, a component $K$ of the groupoid $\sum_{y:\BG}\typesubgroup_G(y)$ of subgroups of a group $G$ may be much more interesting. For one thing the, $K$ can contain many subgroups in the sense that the preimage of the first projection $K\to \BG$ is a set that may have many different elements; each representing a subgroup.  However, this set of subgroup will be a \emph{conjugacy class} of subgroups: the different subgroups are related by the conjugation action of $G$.  
+
+% If $G$ is abelian this action is trivial, and $\sum_{y:\BG}\typesubgroup_G(y)$ consists of contractible components indexed over the subgroups of $G$.  Otherwise different subgroups may live in the same component of the groupoid of subgroups -- we'll see examples in a moment.
+
+% In addition, the components will not in general be contractible, revealing the symmetries of the subgroups under the conjugation action.
+% \end{remark}
+
+
+% \begin{example}
+%   The trivial group only has itself as a subgroup; the groupoid of subgroups and the set of normal subgroups are singletons.
+% \end{example}
+% \begin{example}
+%   The cyclic group $C_p$ of prime order $p$ has only two subgroups, the trivial and the full subgroup itself and both are normal.  In fact, all subgroups of abelian groups are normal.  
+
+% In general, the cyclic group $C_n$ of order $n$ has exactly one subgroup for each divisor $i$ of $n$.
+% \end{example}
+
+
+% \begin{example}
+%   The group $C_2\times C_2$ has has no less than five subgroups: the trivial one, three subgroups that as groups (as opposed as \emph{sub}groups) are equivalent to $C_2$ and the full group $C_4$ itself.
+% \end{example}
+% \begin{remark}
+%   The permutation group $\Sigma_3$ has four nontrivial proper subgroups.  Three conjugate subgroups isomorphic as groups to $C_2$ and one normal one which is as a group is isomorphic to $C_3$.  The component containing the copies of $C_2$ is equivalent to a circle.
+% \end{remark}
+\section{Kernels and cokernels}
+\label{subsec:ker}
+
+The set of subgroups of a group $G$ encodes much information about $G$, partially because homomorphisms between $G$ and other groups give rise to subgroups.
+
+If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism, the preimage $\phi^{-1}(e_G)$ is an abstract subgroup which is classically called the kernel of $\phi$.
+
+On the other hand, the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.
+
+In our setup with a group homomorphism 
+$f:\Hom(G,G')$ being given by a pointed function $\Bf:\BG\to_*\BG'$, the kernel and cokernel are just two aspects of the preimage 
+$$(\Bf)^{-1}(\sh_{G'})\defequi\sum_{z:\BG}(\sh_{G'}=\Bf(z)):$$
+ the cokernel is the set of components and the kernel is a preferred component.  This point of view makes it clear that the kernel is a subgroup whereas there is no particular reason for the cokernel to be more than a ($G'$-) set.
+\begin{definition}
+  \label{def:cokernel}
+  Let $f:\Hom(G,G')$  be a homomorphism.
+The \emph{cokernel}\index{cokernel} of $f$ is the $G'$-set
+\[
+  \coker f:\BG'\to\Set,\qquad \coker f(z)\defequi  \Trunc{(\Bf)^{-1}(z)}_0;
+\]
+defining a function of sets
+$$\coker:\Hom(G,G')\to G'\text{-}\Set.$$
+\marginnote{The associated $\abstr(G')$-set $\coker f(\sh_{G'})$ is also referred to as the cokernel of $f$.  }
+If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$. 
+\end{definition}
+\marginnote{We've seen that there is a close connection between monomorphisms into $G'$ and $G'$-sets, and it is natural to ask if the $G'$-set $\coker f$ gives rise to a monomorphism into $G'$.  The answer to this question is occasionally ``yes'' and is intimately connected to the notion of ``normal subgroups'' which we'll explore shortly.}
+\begin{remark}
+  Note that we say that a homomorphism $f:\Hom(G,G')$ is an epimorphism if the preimages of $\Bf$ are connected.  We can now give yet another reformulation: $f$ is an epimorphism if $\coker f$ is the singleton.
+\end{remark}
+
+\begin{definition}
+  \label{def:kernel}
+Let $f:\Hom(G,G')$  be a homomorphism.
+Consider the element 
+$$\sh_{\ker f}\defequi(\sh_G,p_f):(\Bf)^{-1}(\sh_{G'})$$ (where $p_f:\sh_{G'}=\Bf(\sh_G)$ is the part of $f$ claiming it is a pointed map). 
+Define the \emph{kernel}\index{kernel}  of $f$ to be the group defined by the pointed component  of $\sh_{\ker f}$ in $(\Bf)^{-1}(\sh_{G'})$:
+$$\ker f\defequi \aut_{(\Bf)^{-1}(\sh_{G'})}(\sh_{\ker f}).
+$$ 
+
+The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$) giving a monomorphism into $G$; defining a function
+$$\ker:\Hom(G,G')\to\typemono_G$$
+\marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomrophism into $G$?  This is common usage and is only resolved by a typecheck.}
+which we will also refer to as the \emph{kernel}.
+\end{definition}
+{\color{blue}THIS WILL BE CHANGED A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism.\footnote{clarify the relation between the surjective homomorphism and the subgroup}}
+Written out,
+$B\ker f_\div$ is $\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$  
+
+\begin{definition}
+  \label{def:image}
+  Let $f:\Hom(G,G')$  be a homomorphism.
+  The \emph{image}\index{image} $\image f$ of $f$ is the group
+  $$\image f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\sh_{G'},|\sh_G,p_f|)$$
+  together with the monomorphism of $\image f$ into $G'$ given by the first projection $B\image f\to \BG'$ (a monomorphism since $\coker f(z)$ is a set); resulting in a function
+  $$\image:\Hom(G,G')\to\typemono_{G'}.$$
+
+
+The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:\BG$ to
+$$B\tilde f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|).$$ 
+
+% We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group homomorphism} if $(\Bf)^{-1}(\sh_{G'})$ is connected.
+%, or equivalently if $\image f\to G'$ is an equivalence.
+\end{definition}
+% \begin{remark}
+%   \label{rem:cokerasGset}
+%   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\sh_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$\BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$  
+% We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set.
+% \end{remark}
+In view of \cref{ex:charsurinj} below, the families  
+$$\mathrm{issurj},\mathrm{isinj}:\Hom(G,G')\to\Prop
+$$
+of propositions that a given homomorphism is surjective or injective have several useful interpretations.
+\begin{xca}
+  \label{ex:charsurinj}
+  Let $f:\Hom(G,G')$ Prove that
+  \begin{enumerate}
+  \item the following are equivalent
+    \begin{enumerate}
+    \item $f$ is a surjective homomorphism (\cref{def:surjective}),
+    \item the cokernel of $f$ is contractible,
+    \item the first projection $B\image f\to \BG$ is an equivalence
+    \item the induced map of sets 
+$f^=:\USym G\to\USym {G'}$ is a surjection
+    \end{enumerate}
+  \item the following are equivalent
+    \begin{enumerate}
+    \item $f$ is an injective homomorphism (\ie the induced map of sets 
+$f^=:\USym G\to(\sh_{G'}\to\sh_{G'})$
+is an injection)
+\item the kernel of $f$ is trivial
+\item $\Bf:\BG\to \BG'$ is a \covering.
+\item the induced map $B\tilde f:\BG\to B\image f$ is an equivalence.
+    \end{enumerate}
+  \end{enumerate}
+\end{xca}
+
+
+
+Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion (first projection) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
+
+\begin{lemma}
+  \label{lem:kerandcoker}
+  \label{lem:countinggps}
+  Let $f:\Hom(G,G')$ be a group homomorphism.  The induced homomorphism $\tilde f:\Hom(G,\image f)$ is a surjective homomorphims and $f$ factors as $\tilde f$ followed by the inclusion of the image of $f$ in $G'$.  The induced map $(B\tilde f)^{-1}(\pt_{\image f})\to (\Bf)^{-1}(\sh_{G'})$ induces an equivalence
+  $$B\ker\tilde f\simeq B\ker f.$$
+\end{lemma}
+\begin{proof}
+Only the last part needs further comment, but follows since since for $x:\BG$ the first projection from $\pt_{\image f}=(\Bf,|x,\refl{\Bf(x)}|)$ to $\sh_{G'}=f(x)$ is an equivalence (the fibers are true propositions).
+  \footnote{\color{blue}  
+ Also show counting results for the finite group part somewhere.} 
+\end{proof}
+
+Finally, the image factorization would have been useless were it not for the fact that it is unique:
+\begin{lemma}
+  \label{lem:uniquenessofimagefactorizationforgroups}
+  Let $G,H,G'$ be groups, let $h:\Hom(G,H)$ and $j:\Hom(H,G')$ be homomorphisms and let $!:f=j\,h$.  If $h$ is surjective there is a unique homomorphism $t:\Hom(H,\image f)$ so that $\tilde f=t\, h$ and $j$ is $t$ composed with the first projection from $\image f$ to $ G'$.
+\end{lemma}
+\begin{proof}
+  We've used that we're operating with groupoids to simplify the statement, but a similar statement follows generally by essentially the proof below if you keep track of the element in $f=j\,h$.  To simplify we drop the ``$B$''s from the notation, writing ``$f$'' instead of ``$\Bf$''.  
+
+That $h$ is a surjective homomorphism amounts to saying that for $y:\BH$, then the set truncation $\Trunc{h^{-1}(y)}_0$ of the preimage is contractible, and so the first projection $\mathrm{pr_1}:\sum_{y:\BH}\Trunc{h^{-1}(y)}_0\to \BH$ is an equivalence.
+
+For $y:\BH$, consider the map 
+$$T_y:h^{-1}(y)\to f^{-1}(j y),\qquad T_y(x,p)\defequi (x,!_xj(p))$$ where $x:\BG$, $p:y=h(x)$ and $!_xj(p):j(y)=f(x)$ is the composite of $j(p):j(y)=j\,h(x)$ and $!:j\,h=f$ (as applied to $x$).  Performing set-truncation on $T_y$ and precomposing with the inverse of the first projection, we get a map
+$$t:\BH%\sum_{y:\BH}\Trunc{h^{-1}(y)}_0
+\to\sum_{z:\BG'}\Trunc{f^{-1}(z)}_0\oldequiv B\image f,\qquad Bt(y)\defequi(jy,|T_y|(q_y))$$
+where $q_y:\Trunc{h^{-1}(y)}_0$ is the second projection of the inverse of the first projection.  The agreement of $t$ with $\tilde f$ and $j$ follows by construction.
+\end{proof}
+
+\begin{example}
+  An example from linear algebra: let $A$ be any $n\times n$-matrix with nonzero determinant and with integer entries, considered as a homomorphism $A:\Hom(\ZZ^n,\ZZ^n)$.  Then the cokernel of $A$ is a finite set with cardinality the absolute value of the determinant of $A$.  You might want to picture this as a $|\det(A)|$-fold \covering of the $n$-fold torus $(S^1)^{\times n}$ by itself.
+\end{example}
+
+
       \section{The action on the set of subgroups}
 \label{sec:actiononsub}
 
@@ -199,230 +373,6 @@ For now we just state the definition in the form that it is a subgroup fixed und
 \end{remark}
 
 ------------------
-    \begin{remark}
-      \label{rem:notationsubgroup}
-      A note on notation is in order.  
-If $(H,i,!)$ monomorphism into a group $G$, tradition often permits us to relax the burden of notation; we may write ``a subgroup $i:H\subseteq G$'', or, if we don't need the name of $i:\Hom(H,G)$ in what follows, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
-    \end{remark}
-
-\begin{lemma}
-  \label{lem:setofsubgroups}
-  If $G$ is a group, then the type $\typesubgroup_G$ of subgroups is a set.
-\end{lemma}
-\begin{proof}
-An identity between two subgroups $i_H:H\subseteq G$ and $i_{H'}:H'\subseteq G$ is an identity $p:H'=_{\typegroup}H$ such that $i_{H'}=i_H\,p$ (a proposition since $\Hom(H',G)$ is a set).
-  By univalence and \cref{lem:eqofconntypes}, the identity type $H=H'$ is equivalent to the set 
-$$\sum_{f:\Hom(H,H')}\isEq(f^=:\USym H\to\USym {H'}).$$  
-%If $(H,i_H,!)$ is a subgroup of $G$, then
-Consequently, the identity type
-$(H,i_H,!)=_{\typesubgroup_G}(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ which are such that $!:i_H^==i_H^=f^=$ and such that $f^=$ is an equivalence (as we see in a moment this last requirement is redundant).  
-Now, since $(H,i_H,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $!:f^==\refl{\USym H}$, which ultimately forces $f$ to be (identical to) the identity homomorphism. 
-\end{proof}
-Not only is the type of subgroups  of $G$ a set, it is in a natural way (equivalent to the value at $\sh_G$ of) a $G$-set which we denote by the same name
-$$%\typesubgroup_G:\BG\to\Set,\qquad 
-\typesubgroup_G(y)\defequi \sum_{H:\typegroup}\sum_{f:\Hom(H,G)(y)}\isset(\Bf^{-1}(\sh_G)),$$
-where  as in \cref{ex:HomHGasGset}  
-$$\Hom(H,G)(y)\defequi\sum_{F:\BH_\div\to \BG_\div}(y=F(\sh_H))$$
-is the $G$-set of homomorphisms from $H$ to $G$.
-% In this interpretation, $(H,F,p,!):\typesubgroup_G(\sh_G)$ represents a subgroup of $G$ (so that $p:\sh_G=F(\sh_H)$).  An identity $g:\USym G$ acts on $\typesubgroup_G(\sh_G)$ by sending $(H,F,p,!)$ to $(H,F,p\,g^{-1},!)$.
-
-\begin{definition}
-  \label{def:conjactonsubgroups}
-  If $G$ is a group, then the action of $G$ on the set of subgroups is called \emph{conjugation}. 
-
-
-  \label{def:conjugate}
-  If $(H,F,p,!):\typesubgroup_G(\sh_G)$ is a subgroup of $G$ and $g:\USym G$, then the subgroups  $(H,F,p,!),(H,F,p\,g^{-1},!):\typesubgroup_G(\sh_G)$ are said to be \emph{conjugate}\index{conjugate}. 
-\end{definition}
-\begin{remark}
-  \label{rem:whyconjugate}
-  The term ``conjugation'' may seem confusing as the %(abstract) 
-action of $g:\USym G$ on a subgroup $(H,F,p,!):\typesubgroup_G(\sh_G)$ (where $p:x=F(\sh_H)$) is simply $(H,F,p\,g^{-1},!)$, which does not seem much like conjugation.  
-However, as we saw in \cref{ex:abstrandconj}, under the equivalence $\abstr:\Hom(H,G)\we\Hom^\abstr(\abstr(H),\abstr(G))$, the corresponding action on $\Hom^\abstr(\abstr(H),\abstr(G))$ is exactly (postcomposition with) conjugation $c^g:\abstr(G)=\abstr(G)$.  
-\footnote{The same phenomenon appeared in \cref{xca:HomZGvsAdG} where we gave an equivalence between the $G$-sets $\Hom(\ZZ,G)$ and $\Ad_G$ (where the action is very visibly by conjugation).}
-% \end{remark}
-
-% \begin{remark}
-  \label{rem:conjactiononsubgroups}
- %  It is worthwhile to study this action a bit further.  Let $(H,f,!)$ be a subgroup of $G$ and let $g:\USym G$.  We can trade $f$ for $\abstr(f):\Hom^\abstr(\abstr(G),\abstr(H))$ whose underlying set map is the injection $\Bf^=:\USym H\to\USym G$. %We allow ourselves to write ``$f$'' instead of $\Bf^=$. 
-% As we saw in \cref{ex:abstrandconj}, the action of $g$ postcomposes with conjugation $c^g:\USym G=\USym G$.
-% Hence, if we represent a subgroup as 
-% $$(H,\phi,!):\sum_{H:\typegroup}\sum_{\phi:\Hom^\abstr(\abstr(H),\abstr(G))}\isprop(\phi^{-1}(e_G)),$$ then
-% $g\cdot(H,\phi,!)=(H,c^g\,\phi,!)$.
-
-% Now, if $g$ comes from $H$, say, $\i_H(h)$
-\end{remark}
-Summing up the remark:
-\begin{lemma}
-  \label{lem:conjugationabstractly}
-  Under the equivalence of \cref{lem:actionsconcreteandabstract} between $G$-sets and $\abstr(G)$-sets, the $G$-set $\typesubgroup_G$ corresponds to the $\abstr(G)$-set
-$$\sum_{H:\typegroup}\sum_{\phi:\Hom^\abstr(\abstr(H),\abstr(G))}\isprop(\phi^{-1}(e_G))$$ of abstract subgroups of $\abstr(G)$, with action $g\cdot(H,\phi,!)\defequi(H,c^g\,\phi,!)$ for $g:\abstr(G)$, where  $c^g:\abstr(G)=\abstr(G)$ is conjugation as defined in \cref{ex:conjhomo}.
-\end{lemma}
-
-
-\begin{remark}
- %  If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.  
-% Our use of ``subgroup'' can be defended as follows.  
-% It corresponds in set-theoretic language to saying that a subgroup is an injective homomorphism \emph{modulo} the relation forcing that precomposing with an isomorphism yields identical subgroups.  
-% Set-theory offers the luxury of having a representative in every equivalence class: namely the image of the injection, type theory does not.
-\end{remark}
-
-\sususe{The geometry of subgroups: some small examples}
-\label{smallsubgpex}
-
-As a teaser, and in order to get a geometric feel for the subgroups and their intricate interplay, it can be useful to have some fairly manageable examples to stare at.  
-Some of the main tools for analyzing the geometry of subgroups are collected in \cref{sec:fingp} on finite groups, and we hope the reader will be intrigued by our mysterious claims and go on to study \cref{sec:fingp}.
-That said, the examples we'll present are possible to muddle through by hand without any fancy machinery, but brute force is generally not an option and even for the present examples it is not something you want to show publicly.
-
-When presenting the subgroups of a group $G$, three types are especially revealing: the set of subgroups $\typesubgroup_G(\sh_G)$, the \emph{groupoid of subgroups} $\typesubgroup(G)\defequi\sum_{y:\BG}\typesubgroup_G(y)$ and what we for now call the ``set of normal subgroups'' $\prod_{y:\BG}\typesubgroup_G(y)$.   Our local use of ``normal subgroup'' is equivalent to the official definition to come.  
-
-The first projection $\typesubgroup(G)\to \BG$ is referred to as the \emph{\covering of subgroups}.
-
-\footnote{Write out and fix the concrete examples (cyclic groups and $\Sigma_3$) commented out}
-% \begin{remark}
-% In  \cref{cha:circle} we studied the subgroups of the group of integers $G=\ZZ$ through \coverings over the circle $S^1$ (which we showed was equivalent to $B\ZZ$).
-% We discovered a subgroup $n\ZZ$ for each natural number $n:\NN$ and in the groupoid $\typesubgroup({\ZZ})$ these sit as elements in separate components.  Each of these components are contractible (because addition is commutative: $\ZZ$ is an abelian group).
-
-% In general, a component $K$ of the groupoid $\sum_{y:\BG}\typesubgroup_G(y)$ of subgroups of a group $G$ may be much more interesting. For one thing the, $K$ can contain many subgroups in the sense that the preimage of the first projection $K\to \BG$ is a set that may have many different elements; each representing a subgroup.  However, this set of subgroup will be a \emph{conjugacy class} of subgroups: the different subgroups are related by the conjugation action of $G$.  
-
-% If $G$ is abelian this action is trivial, and $\sum_{y:\BG}\typesubgroup_G(y)$ consists of contractible components indexed over the subgroups of $G$.  Otherwise different subgroups may live in the same component of the groupoid of subgroups -- we'll see examples in a moment.
-
-% In addition, the components will not in general be contractible, revealing the symmetries of the subgroups under the conjugation action.
-% \end{remark}
-
-
-% \begin{example}
-%   The trivial group only has itself as a subgroup; the groupoid of subgroups and the set of normal subgroups are singletons.
-% \end{example}
-% \begin{example}
-%   The cyclic group $C_p$ of prime order $p$ has only two subgroups, the trivial and the full subgroup itself and both are normal.  In fact, all subgroups of abelian groups are normal.  
-
-% In general, the cyclic group $C_n$ of order $n$ has exactly one subgroup for each divisor $i$ of $n$.
-% \end{example}
-
-
-% \begin{example}
-%   The group $C_2\times C_2$ has has no less than five subgroups: the trivial one, three subgroups that as groups (as opposed as \emph{sub}groups) are equivalent to $C_2$ and the full group $C_4$ itself.
-% \end{example}
-% \begin{remark}
-%   The permutation group $\Sigma_3$ has four nontrivial proper subgroups.  Three conjugate subgroups isomorphic as groups to $C_2$ and one normal one which is as a group is isomorphic to $C_3$.  The component containing the copies of $C_2$ is equivalent to a circle.
-% \end{remark}
-\sususe{Kernels and cokernels}
-\label{subsec:ker}
-
-If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism, the preimage $\phi^{-1}(e_G)$ is a classically called the kernel of $\phi$ and the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.  
-In our setup with a group homomorphism 
-$$f:\Hom(G,G')\defequi(\BG\to_*\BG'),$$ the kernel and cokernel are just two aspects of the preimage 
-$$(\Bf)^{-1}(\sh_{G'})\defequi\sum_{z:\BG}(\sh_{G'}=\Bf(z)):$$
- the cokernel is the set of components and the kernel is a preferred component.  This point of view makes it clear that the kernel is a subgroup whereas there is no particular reason for the cokernel to be more than a ($G'$-) set.
-\begin{definition}
-  \label{def:cokernel}
-  Let $f:\Hom(G,G')\defequi(\BG\to_*\BG')$  be a homomorphism. %  The preimage $$f^{-1}(\sh_{G'})\defequi\sum_{z:\BG}(\sh_{G'}=f(z))$$
-% is a groupoid containing important information about $f$.
-The \emph{cokernel}\index{cokernel} of $f$ is the $G'$-set
-\[
-  \coker f:\BG'\to\Set,\qquad \coker f(z)\defequi  \Trunc{(\Bf)^{-1}(z)}_0.\text{\footnotemark}
-\]
-\footnotetext{set trunctation}
-The associated $\abstr(G')$-set $\coker f(\sh_{G'})$ is also referred to as the cokernel of $f$.  If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$.  
-
-\end{definition}
-\begin{definition}
-  \label{def:kernel}
-Let $f:\Hom(G,G')$  be a homomorphism.
-Consider the element 
-$$\sh_{\ker f}\defequi(\sh_G,p_f):(\Bf)^{-1}(\sh_{G'})$$ (where $p_f:\sh_{G'}=\Bf(\sh_G)$ is the part of $f$ claiming it is a pointed map). 
-Define the \emph{kernel}\index{kernel}  of $f$ to be the group defined by the pointed component  of $\sh_{\ker f}$ in $(\Bf)^{-1}(\sh_{G'})$:
-$$\ker f\defequi ((\Bf)^{-1}(\sh_{G'})_{(\sh_{\ker f})},\sh_{\ker f}).
-$$ 
-Written out,
-$B\ker f_\div\defequi \sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$  
-
-The first projection $B\ker f\to_* \BG$ displays the kernel $\ker f$ as a subgroup of $G$ (\emph{sub}group since the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$).  
-
-A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism.\footnote{clarify the relation between the surjective homomorphism and the subgroup}
-\end{definition}
-
-\begin{definition}
-\label{def:image}
-The \emph{image}\index{image} of $f$ is the subgroup of $G'$ given by $B\image f\defequi \sum_{z:\BG'}\coker f(z)$ pointed at $\pt_{\image f}\defequi (\sh_{G'},|\sh_G,p_f|)$ together with the first projection $B\image f\to \BG'$ (plus the fact that $\coker f(z)$ is a set).\label{def:surjective}
-
-The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:\BG$ to
-$$B\tilde f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|).$$ 
-
-We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group homomorphism} if $(\Bf)^{-1}(\sh_{G'})$ is connected.
-%, or equivalently if $\image f\to G'$ is an equivalence.
-\end{definition}
-% \begin{remark}
-%   \label{rem:cokerasGset}
-%   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\sh_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$\BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$  
-% We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set.
-% \end{remark}
-In view of \cref{ex:charsurinj} below, the families  
-$$\mathrm{issurj},\mathrm{isinj}:\Hom(G,G')\to\Prop
-$$
-of propositions that a given homomorphism is surjective or injective have several useful interpretations.
-\begin{xca}
-  \label{ex:charsurinj}
-  Let $f:\Hom(G,G')$ Prove that
-  \begin{enumerate}
-  \item the following are equivalent
-    \begin{enumerate}
-    \item $f$ is a surjective homomorphism (\cref{def:surjective}),
-    \item the cokernel of $f$ is contractible,
-    \item the first projection $B\image f\to \BG$ is an equivalence
-    \item the induced map of sets 
-$f^=:\USym G\to\USym {G'}$ is a surjection
-    \end{enumerate}
-  \item the following are equivalent
-    \begin{enumerate}
-    \item $f$ is an injective homomorphism (\ie the induced map of sets 
-$f^=:\USym G\to(\sh_{G'}\to\sh_{G'})$
-is an injection)
-\item the kernel of $f$ is trivial
-\item $\Bf:\BG\to \BG'$ is a \covering.
-\item the induced map $B\tilde f:\BG\to B\image f$ is an equivalence.
-    \end{enumerate}
-  \end{enumerate}
-\end{xca}
-
-
-
-Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion (first projection) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
-
-\begin{lemma}
-  \label{lem:kerandcoker}
-  \label{lem:countinggps}
-  Let $f:\Hom(G,G')$ be a group homomorphism.  The induced homomorphism $\tilde f:\Hom(G,\image f)$ is a surjective homomorphims and $f$ factors as $\tilde f$ followed by the inclusion of the image of $f$ in $G'$.  The induced map $(B\tilde f)^{-1}(\pt_{\image f})\to (\Bf)^{-1}(\sh_{G'})$ induces an equivalence
-  $$B\ker\tilde f\simeq B\ker f.$$
-\end{lemma}
-\begin{proof}
-Only the last part needs further comment, but follows since since for $x:\BG$ the first projection from $\pt_{\image f}=(\Bf,|x,\refl{\Bf(x)}|)$ to $\sh_{G'}=f(x)$ is an equivalence (the fibers are true propositions).
-  \footnote{\color{blue}  
- Also show counting results for the finite group part somewhere.} 
-\end{proof}
-
-Finally, the image factorization would have been useless were it not for the fact that it is unique:
-\begin{lemma}
-  \label{lem:uniquenessofimagefactorizationforgroups}
-  Let $G,H,G'$ be groups, let $h:\Hom(G,H)$ and $j:\Hom(H,G')$ be homomorphisms and let $!:f=j\,h$.  If $h$ is surjective there is a unique homomorphism $t:\Hom(H,\image f)$ so that $\tilde f=t\, h$ and $j$ is $t$ composed with the first projection from $\image f$ to $ G'$.
-\end{lemma}
-\begin{proof}
-  We've used that we're operating with groupoids to simplify the statement, but a similar statement follows generally by essentially the proof below if you keep track of the element in $f=j\,h$.  To simplify we drop the ``$B$''s from the notation, writing ``$f$'' instead of ``$\Bf$''.  
-
-That $h$ is a surjective homomorphism amounts to saying that for $y:\BH$, then the set truncation $\Trunc{h^{-1}(y)}_0$ of the preimage is contractible, and so the first projection $\mathrm{pr_1}:\sum_{y:\BH}\Trunc{h^{-1}(y)}_0\to \BH$ is an equivalence.
-
-For $y:\BH$, consider the map 
-$$T_y:h^{-1}(y)\to f^{-1}(j y),\qquad T_y(x,p)\defequi (x,!_xj(p))$$ where $x:\BG$, $p:y=h(x)$ and $!_xj(p):j(y)=f(x)$ is the composite of $j(p):j(y)=j\,h(x)$ and $!:j\,h=f$ (as applied to $x$).  Performing set-truncation on $T_y$ and precomposing with the inverse of the first projection, we get a map
-$$t:\BH%\sum_{y:\BH}\Trunc{h^{-1}(y)}_0
-\to\sum_{z:\BG'}\Trunc{f^{-1}(z)}_0\oldequiv B\image f,\qquad Bt(y)\defequi(jy,|T_y|(q_y))$$
-where $q_y:\Trunc{h^{-1}(y)}_0$ is the second projection of the inverse of the first projection.  The agreement of $t$ with $\tilde f$ and $j$ follows by construction.
-\end{proof}
-
-\begin{example}
-  An example from linear algebra: let $A$ be any $n\times n$-matrix with nonzero determinant and with integer entries, considered as a homomorphism $A:\Hom(\ZZ^n,\ZZ^n)$.  Then the cokernel of $A$ is a finite set with cardinality the absolute value of the determinant of $A$.  You might want to picture this as a $|\det(A)|$-fold \covering of the $n$-fold torus $(S^1)^{\times n}$ by itself.
-\end{example}
-
 
 \sususe{Subgroups through $G$-sets}
 
