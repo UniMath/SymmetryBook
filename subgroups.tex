@@ -4,19 +4,19 @@
 \section{Subgroups}
 \label{sec:subgroups}
 In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discovered that the ``subsymmetries'' formed a very organized structure.
-For each natural number $n$ we obtained a set of subsymmetry the entire identity type $\base=\base$, namely the set of all the iterates $(\Sloop^{n})^m$ where $m$ varies over the integers.
+For each natural number $n$ we obtained a set of subsymmetries in the identity type $\base=\base$, namely the set of all the iterates $(\Sloop^{n})^m$ where $m$ varies over the integers.
 When $n$ was positive this was realized as the $n$-fold \covering of $S^1$, when $n=0$ this was given by the universal \covering.
 
 
 The other extreme of the idea of ``subsymmetries'' was exposed in \cref{sec:groupssubperm} in the form of the slogan ``any symmetry is a symmetry of $\Set$''.
-By this we meant that, if $G=\aut_A(a)$ is a group, we produced a monomorphism $\rho_G:\Hom(\aut_a(A),\aut_{a=a}(\Set))$, \ie any symmetry of $a$ is uniquely given by a symmetry (``permutation'') of the set $a=a$.
+By this we meant that, if $G=\aut_A(a)$ is a group, we produced a monomorphism $\rho_G:\Hom(G,\aut_{\USym G}(\Set))$, \ie any symmetry of $a$ is uniquely given by a symmetry (``permutation'') of the set $\USym G\defequi (a=a)$.
 
 For other groups the ``subsymmetries'' form more involved structures,
-and there are several ways to pin them down.  If $A$ is a groupoid, singling out a group of subsymmetries of $a:A$ should be a way of picking out just some of the symmetries of $a$ in $A$ in a way so that we can compose subsymmetries compatibly.  To make a long story short; we want a group $H$ and a homomorphism $i:\Hom(H,G)$ so that $\US i:\USym H\to\USym H$ is injective.\footnote{in classical set theory it is an important difference between saying that a function is the inclusion of a subset (which is what one classically wants) and saying that it is an injection.  We'll address this in a moment, so rest assured that all is well as you read on.}  We have a name for such a setup: $i$ is a \emph{monomorphism} as laid out in different intermpretations in \cref{lem:eq-mono-cover}.
+and there are several ways to pin them down.  If $A$ is a groupoid, singling out a group of subsymmetries of $a:A$ should be a way of picking out just some of the symmetries of $a$ in $A$ in a way so that we can compose subsymmetries compatibly.  To make a long story short; we want a group $H$ and a homomorphism $i:\Hom(H,G)$ so that $\US i:\USym H\to\USym G$ is injective.\footnote{in classical set theory it is an important difference between saying that a function is the inclusion of a subset (which is what one classically wants) and saying that it is an injection.  We'll address this in a moment, so rest assured that all is well as you read on.}  We have a name for such a setup: $i$ is a \emph{monomorphism} as laid out in different intermpretations in \cref{lem:eq-mono-cover}.
 
 \subsection{Subgroups as monomorphisms}
 
-In particular, the proposition $\ismono(i)$ is equivalent to saying that $\US i:\USym H\to \USym G$ is an injection (all preimages are propositions), and also to saying that $B i:\BH\to\BG$ is a \covering, and (since $\BG$ is connected), to $\isset((Bi)^{-1}(\sh_G))$.
+The proposition $\ismono(i)$ is equivalent to saying that $\US i:\USym H\to \USym G$ is an injection (all preimages of $\USym i$ are propositions), and also to saying that $B i:\BH\to\BG$ is a \covering, and (since $\BG$ is connected), to $\isset((Bi)^{-1}(\sh_G))$.
 %\newcommand{\typemono}{Mono}
 \begin{definition}
   \label{def:typeofmono}
@@ -24,8 +24,8 @@ In particular, the proposition $\ismono(i)$ is equivalent to saying that $\US i:
   $$\typemono_G\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i).$$
   A monomorphism $(H,i,!)$ is
       \begin{enumerate}
-      \item \emph{trivial}\index{trivial monomorphism} if $\BH$ is contractible
-      \item \emph{proper}\index{proper monomorphism} if $Bi$ is not an equivalence.
+      \item \emph{trivial}\index{trivial monomorphism} if $\BH$ is contractible (or, equivalently, if $\USym H$ is contractible),
+      \item \emph{proper}\index{proper monomorphism} if $Bi$ is not an equivalence (or, equivalently, if $\USym i$ is not an equivalence).
       \end{enumerate}
 \end{definition}
 
@@ -56,7 +56,7 @@ We will be interested in knowing when two monomorphisms into $G$ are identical.
   In particular, the type $\typemono_G$ of monomorphisms into $G$ is a set.
 \end{lemma}
 \marginnote{If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.   
-Our use of monomorphisms can be defended because two monomorphisms into $G$ are identified exactly if they differ by precomposition by an identity.  
+Our use of monomorphisms can be defended because two monomorphisms into $G$ are identical exactly if they differ by precomposition by an identitification.  
 In set-theoretic language this corresponds to saying that a subgroup is an injective abstract homomorphism \emph{modulo} the relation forcing that precomposing with an isomorphism yields identical subgroups.  
 Classical set-theory offers the luxury of having a preferred representative in every equivalence class: namely the image of the injection, type theory does not.  We only know that the type $\typemono$ is a set.}
 \begin{proof}
@@ -72,16 +72,10 @@ Now, $i_{H'}=i_Hf$ is equivalent to $\US i_{H'}=\US i_H \US f$, and since $\US i
 % Now, since $(H,i_H,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $!:f^==\refl{\USym H}$, which ultimately forces $f$ to be (identical to) the identity homomorphism. 
 \end{proof}
 
-\begin{example}  
-  \label{ex:prodinclisGset}
-  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.  The corresponding $G\times G'$-set is the composite of the first projection $\\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG$ followed by the principal $G$-torsor.  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, then the monomorphism correspond to the $G$-set given by $Bf$ followed by the princial $H$-torsor.
-\end{example}
-
-
 \subsection{Subgroups through $G$-sets}
 
 For many purposes it is useful to define ``subgroups'' slightly differently.
-A monomorphism into $G$ consists of a group $H$ (pointed connected groupoid  $\BH$) and a pointed function $Bi:\BH\to_* \BG$ whose fibers are sets (a pointed \covering).  There is really no need to specify that $\BH_\div$ is a groupoid: if $F:T\to \BG$ is a \covering, then $T$ is automatically a groupoid.  
+A monomorphism into $G$ is given by a pointed connected groupoid  $\BH=(\BH_\div,\pt_H)$, a function $F:\BH_\div\to\BG_\div$ whose fibers are sets (a \covering) and an identification $p_f:\sh_G=F(\sh_H)$.  There is really no need to specify that $\BH_\div$ is a groupoid: if $F:T\to \BG$ is a \covering, then $T$ is automatically a groupoid.  
 
 On the other hand,  the type of \coverings over $\BG$ is equivalent to the type of $G$-sets: if $X:\BG\to\Set$ is a $G$-set, then the \covering is given by the first projection $\tilde X\to \BG$ where $\tilde X\defequi\sum_{y:\BG}X(y)$ and the inverse is obtained by considering the fibers of a \covering.  Furthermore, we saw in \cref{lem:conistrans} that $\tilde X$ being connected is equivalent to the condition $\istrans(X)$ of \cref{def:transitiveGset} claiming that the $G$-set $X$ is transitive. 
 
@@ -89,7 +83,7 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
 
 \begin{definition}
   Let $G$ be a group then the set of \emph{subgroups of $G$} is
-  $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}\sum_{\pt:X(\sh_G)}\mathrm{isTrans}(X).$$
+  $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}X(\sh_G)\times\mathrm{isTrans}(X).$$
   The preferred equivalence 
  with the set of monomorphisms into $G$ is given by the function
   $$E:\typemono_G\to\typesubgroup_G\qquad (H,i,!)\mapsto E(H,i,!)\defequi ((Bi)^{-1},(\sh_H,p_i),!),$$
@@ -99,7 +93,7 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
    The inverse equivalence to $E$ is given by sending $(X,\pt,!)$ to the monomorphism associated with the first projection $\sum_{z:\BG}X(z)\to\BG$.
  }%
 \marginnote{%
-  Which of the equivalent sets is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence as needed.
+  Which of the equivalent sets $\typemono_G$ and $\typesubgroup_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
   }%
   \begin{example}
     \cref{ex:sigma2inSigma3} can be displayed as a subgroup of $\Sigma_3$ through
@@ -107,6 +101,13 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
     $$
     given by $A\mapsto\sum_{B:\fin 2}(A=B+\bn 1)$ together with a proof that $\sum_{B:\fin 2}(A=B+\bn 1)$ is a set [the identity type $(B,p)=(B',p')$ is equivalent to $\sum_{q:B=B'}(q+\bn 1)p=p'$, so $q+\bn 1=p'p^{-1}$ which pins down $q$ uniquely  -- check!]
   \end{example}
+  
+\begin{example}  
+  \label{ex:prodinclisGset}
+  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG$ followed by the principal $G$-torsor.  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, then the monomorphism correspond to the $G$-set given by $Bf$ followed by the princial $H$-torsor.
+\end{example}
+
+
 
   Translating the concepts in \cref{def:typeofmono} through the equivalence $E$ we say that a subgroup $(X,\pt,!):\typesubgroup_G$ is
       \begin{enumerate}
@@ -114,7 +115,13 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
       \item \emph{proper}\index{proper subgroup} if $X(\sh_G)$ is not contractible.
       \end{enumerate}
 
-      \subsection{The action on the set of subgroups}
+      \begin{remark}
+      \label{rem:notationsubgroup}
+      A note on classical notation is in order.  
+If $(X,\pt,!)$ is a subgroup corresponding to a monomorphism $(H,i,!)$ into a group $G$, tradition would permit us to relax the burden of notation and we could write ``a subgroup $i:H\subseteq G$'', or, if we didn't need the name of $i:\Hom(H,G)$, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''. 
+    \end{remark}
+
+      \section{The action on the set of subgroups}
 \label{sec:actiononsub}
 
 Not only is the type of subgroups  of $G$ a set, it is in a natural way (equivalent to the value at $\sh_G$ of) a $G$-set which we denote by the same name.  We first do the monomorphism interpretation
@@ -150,55 +157,52 @@ Summing up the remark:
   Under the equivalence of \cref{lem:actionsconcreteandabstract} between $G$-sets and $\abstr(G)$-sets, the $G$-set $\typemono_G$ corresponds to the $\abstr(G)$-set
 $$\sum_{H:\typegroup}\sum_{\phi:\Hom^\abstr(\abstr(H),\abstr(G))}\isprop(\phi^{-1}(e_G))$$ of \emph{abstract monomorphisms}\index{abstract monomorphisms} of $\abstr(G)$, with action $g\cdot(H,\phi,!)\defequi(H,c^g\,\phi,!)$ for $g:\abstr(G)$, where  $c^g:\abstr(G)=\abstr(G)$ is conjugation as defined in \cref{ex:conjhomo}.
 \end{lemma}
+\begin{remark}
+  \label{rem:typeofsubgpstrivifab}
+  We know that a group $G$ is abelian if and only if conjugation is trivial: for all $g:\USym G$ we have $c^g=\id$, and so we get that $\typemono_G$ is a trivial $G$-set if and only if $G$ is abelian.
+\end{remark}
 
-
-
-------------------
-
-
-The family of sets $\typesubgroup_G(y)$ where we let the element $y:\BG$ vary is by the same reasoning equivalent to the family $\typesubgroup_G'(y)$ which we for reference spell out in symbols.
+The subgroup analog of $y\mapsto\typemono_G(y)$ is
 
 \begin{definition}
-  Let $G$ be a group and $y:\BG$, then the $G$-set of \emph{subgroups' of $G$} is
-  $$\typesubgroup_G':\BG\to\Set,\qquad\typesubgroup_G'(y)\defequi\sum_{X:\BG\to\Set}\sum_{\pt_y:X(y)}\mathrm{isTrans}(X)$$
-and the type of \emph{normal subgroups'} is the set of fixed points
-$$\typenormal_G'\defequi\prod_{y:\BG}\typesubgroup_G'(y).$$
-%A \emph{normal subgroup'} of $G$ is an element in $\typenormal_G'$.
+  Let $G$ be a group and $y:\BG$, then the $G$-set of \emph{subgroups of $G$} is
+  $$\typesubgroup_G:\BG\to\Set,\qquad\typesubgroup_G(y)\defequi\sum_{X:\BG\to\Set}\sum_{\pt_y:X(y)}\mathrm{isTrans}(X).$$
 \end{definition}
-Likewise, in symbols, the above described equivalence between the families $\typesubgroup_G$ and $\typesubgroup_G'$ is provided by the map 
-$$E(y):\typesubgroup_G(y)\to\typesubgroup_G'(y),\qquad E(H,F,p_F,!)=(F^{-1}, (\sh_H,p_F),!)
+The only thing depending on $y$ in $\typesubgroup_G(y)$ is where the ``base''point is residing.
+
+Extending the equivalence of sets we get an equivalence of $G$-sets $E:\typemono_G\to\typesubgroup_G$ via
+$$E(y):\typemono_G(y)\to\typesubgroup_G(y),\qquad E(H,F,p_F,!)=(F^{-1}, (\sh_H,p_F),!)
 $$
-(where $H$ is a group, $F:\BH_\div\to \BG_\div$ is a map and $p_F:y=F(\sh_H)$ an identity in $\BG$; and $F^{-1}:\BG\to\Set$ is $G$-set given by the preimages of $F$ and $(\sh_H,p_F):F^{-1}(y)\defequi \sum_{x:\BH}y=F(x)$ is the base point).  If $y$ is $\sh_G$ we follow our earlier convention of dropping it from the notation.
+for $y:\BG$ (where $H$ is a group, $F:\BH_\div\to \BG_\div$ is a map and $p_F:y=F(\sh_H)$ an identity in $\BG$; and $F^{-1}:\BG\to\Set$ is $G$-set given by the preimages of $F$ and $(\sh_H,p_F):F^{-1}(y)\defequi \sum_{x:\BH}y=F(x)$ is the base point).  If $y$ is $\sh_G$ we follow our earlier convention of dropping it from the notation.
 
 
-Since the families are equivalent we may use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably.
+Since the families are equivalent (via $E$) we use $\typemono_G$ or $\typesubgroup_G$ interchangeably.
+
+\subsection{Normal subgroups}
+\label{sec:normal}
+\newcommand{\typekernel}{Kernels}
+In the study of groups, the notion of a normal subgroup is of vital important, and as any important concept it comes in many guises, revealing the different aspects.
+For now we just state the definition in the form that it is a subgroup fixed under the action of $G$ on the $G$-set of subgroups.
+\begin{definition}
+  \label{def:normalsubgroup}
+  The set of \emph{normal subgroups}\index{normal subgroup}\index{type! of normal subgroups} is
+  $$\typenormal_G\defequi\prod_{y:\BG}\typesubgroup_G(y)$$
+  considered as a subset of $\typesubgroup_G$ via the inclusion
+  $$i:\typenormal_G\to\typesubgroup_G,\qquad i(N)\defequi N(\sh_G).$$
+  The corresponding fixed point in the $G$-set of monomorphisms are called \emph{kernels}\index{type! of kernels}
+  $$\typekernel_G\defequi\prod_{y:\BG}\typemono_G(y)$$
+  with inclusion $i:\typekernel_G\to \typemono_G$ again given by $i(M)\defequi M(\sh_G)$.
+  We let $E^G:\typekernel_G\to\typenormal_G$ denote the equivalence given by the equivalence of $G$-sets $E:\typemono_G\to\typesubgroup_G$.
+\end{definition}
+\begin{remark}
+  From \cref{rem:typeofsubgpstrivifab} we know that the $G$-set $\typemono_G$ is a trivial $G$-set (the family is constant) if and only if $G$ is abelian.  Consequently, $G$ is abelian if and only if all ``subgroups are normal'' (\ie $i\typenormal_G\to\typesubgroup_G$ is an equivalence).
+\end{remark}
 
 ------------------
-
-
-
-.
-One thing is that our concept of a subtype of $B$ is merely the first projection $\sum_{b:B}P(b)\to B$, where the $P$ is a family of propositions.
-Another thing is that for group the ``sub'' refers to the associated abstract groups, so that ``$\BH$ is a subgroup of $\BG$'' should \emph{not} mean that ``$\BH$ is a subtype of $\BG$'', but that we have a group homomorphism $f:\Hom(H,G)$ so that the induced function $\USym H\to\USym G$ is an ``inclusion of a subset''.
-In other words, we must have that $f$ is a ``monomorphism'' (see \cref{lem:injofsetsaremono}).
-
-
-
-
-Now, as we saw in \cref{lem:injofsetsaremono}, that   $f:\Hom(H,G)$ is a monomorphism is equivalent to saying that $f:\USym H\to\USym G$ is an injection (preimages are propositions) which again is equivalent to the preimages of $\Bf:\BH\to \BG$ being sets.
-We must choose one of these equivalent formulations for our concept of ``subgroup'', but will move freely between them as may be convenient in a particular case.
-%Hence we get the following neat formulation.
-    \begin{definition}
-      \label{def:subgroup}
-      Let $G$ be a group.  
-      The \emph{type of subgroups of $G$}\index{type!subgroup} is the type
-      $$\typesubgroup_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(H,G)}\isset(\Bf^{-1}(\sh_G)).$$
-       
-    \end{definition}
     \begin{remark}
       \label{rem:notationsubgroup}
       A note on notation is in order.  
-If $(H,i,!)$ is a subgroup of a group $G$, tradition often permits us to relax the burden of notation; we may write ``a subgroup $i:H\subseteq G$'', or, if we don't need the name of $i:\Hom(H,G)$ in what follows, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
+If $(H,i,!)$ monomorphism into a group $G$, tradition often permits us to relax the burden of notation; we may write ``a subgroup $i:H\subseteq G$'', or, if we don't need the name of $i:\Hom(H,G)$ in what follows, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
     \end{remark}
 
 \begin{lemma}
