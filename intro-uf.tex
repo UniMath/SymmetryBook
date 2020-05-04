@@ -470,10 +470,10 @@ This can be proven by induction or by substitution.
     $\ev_x : \big(\prod_{x:X} Y(x)\bigr) \to Y(x)$, defined by
     $\ev_x(f) \defeq f(x)$. Then we have
     ${\ptw}_{f,g}(p,x) = \ap{\ev_x}(p)$, but not definitionally.}
-\[ 
-{\ptw}_{f,g}: f=g \to \prod_{x:X} f(x)=g(x)
-\text{,~setting ${\ptw}_{f,f}(\refl{f},x)\defeq\refl{f(x)}$.}
-\] 
+  \[ 
+    {\ptw}_{f,g}: f=g \to \prod_{x:X} f(x)=g(x),
+  \]
+  setting ${\ptw}_{f,f}(\refl{f},x)\defeq\refl{f(x)}$.
 \end{definition}
 
 Conversely, from a basic axiom called \emph{function extensionality},%
@@ -602,8 +602,14 @@ function $f$ to paths using the definition above.
 
 \begin{definition}\label{def:apd}
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$, and a function $f:\prod_x Y(x)$.
-  Given elements $x,x':X$ and a path $p : x = x'$, we define $$\apd{f}(p) : \pathover {f(x)} Y p {f(x')}$$ by induction on $p$,
-  setting $$\apd f {(\refl x)} \defeq \refl {f(x)}.$$
+  Given elements $x,x':X$ and a path $p : x = x'$, we define
+  \[
+    \apd{f}(p) : \pathover {f(x)} Y p {f(x')}
+  \]
+  by induction on $p$, setting
+  \[
+    \apd f {(\refl x)} \defeq \refl {f(x)}.\qedhere
+  \]
 \end{definition}
 
 The function $\apd f$ is called \emph{dependent application} of $f$ to paths.\footnote{%
@@ -663,7 +669,10 @@ The following construction shows how functions of two variables may be applied t
   Given elements $x,x':X$, $y:Y(x)$, and
   $y':Y(x')$, a path $p : x = x'$, and a path $q :\pathover y Y p {y'}$ over $p$,
   we may construct a path $$\apap g p q : g(x)(y) = g(x')(y')$$ by induction on $p$ and $q$,
-  setting $$\apap g {\refl x}{\refl y} \defeq \refl {g(x)(y)}.$$
+  setting
+  \[
+    \apap g {\refl x}{\refl y} \defeq \refl {g(x)(y)}.\qedhere
+  \]
 \end{definition}
 
 The function $p \mapsto q \mapsto \apap g p q$ is called {\em application} of $g$ to paths over paths.
@@ -748,7 +757,9 @@ This property is encoded in the following definition.
 \begin{definition}
   \label{def:contractible}
   Given a type $X$, define a type $\iscontr(X)$ by setting
-  $$\iscontr(X) \defeq \sum_{c:X} \prod_{x:X} (c=x).$$
+  \[
+    \iscontr(X) \defeq \sum_{c:X} \prod_{x:X} (c=x).\qedhere
+  \]
 \end{definition}
 
 If $ (c,h) : \iscontr(X) $, then $c$ will be called the {\em center} of the
@@ -919,10 +930,9 @@ by $x:X$. A map $f$ of type $\prod_{x:X}(Y(x)\to Z(x))$
 can be viewed as a family of maps $f(x): Y(x)\to Z(x)$ and is called a 
 \emph{fiberwise} map. The \emph{totalization} of $f$ is defined as
 \[
-\tot(f) : \Bigl(\sum_{x:X} Y(x)\Bigr) \to \sum_{x:X} Z(x),
-\text{ setting } \tot(f)(x,y)\defeq (x,f(x)(y)).
+  \tot(f) : \Bigl(\sum_{x:X} Y(x)\Bigr) \to \sum_{x:X} Z(x),
 \]
-
+setting $\tot(f)(x,y)\defeq (x,f(x)(y)).$
 \end{definition}
 
 \begin{lemma}\label{lem:fiberwise}
@@ -954,7 +964,7 @@ $\ptw_{f,g}: f=g \to \prod_{x:X} f(x)=g(x)$ in \cref{def:ptw} is an equivalence.
 Formally, we postulate the existence of an element $\funext : \isEq(\ptw_{f,g})$.
 Thus we get a function 
 \[
-  \inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x)=g(x)\Bigr) \to f=g.
+  \inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x)=g(x)\Bigr) \to f=g.\qedhere
 \]
 \end{definition}
 
@@ -1357,7 +1367,7 @@ the univalence axiom postulates to be an equivalence.
   setting $\cast_{X,Y} (\refl X) \defeq \id_X : X \equiv X$.
   The result is a function\index{cast}
   \[
-    \cast_{X,Y} : (X = Y) \to (X\equiv Y).
+    \cast_{X,Y} : (X = Y) \to (X\equiv Y).\qedhere
   \]
 \end{definition}
   
@@ -1368,8 +1378,8 @@ which we also use to denote only the function from $X$ to $Y$.\footnote{%
     \emph{Cast} is here used in the sense of
     ``arranging into a suitable form''.
     A more theatrical description would be that
-    an element $x$ of $X$ is cast in the role of a $Y$
-    as directed by the path $p : X = Y$.
+    an element $x$ of $X$ is cast in the \emph{role} of a $Y$
+    as \emph{directed} by the path $p : X = Y$.
     But beware that some programming languages use \emph{cast}
     in a quite different sense, meaning to take a
     single bit-pattern representing an object of type $X$
@@ -1377,7 +1387,7 @@ which we also use to denote only the function from $X$ to $Y$.\footnote{%
     as an object of type $Y$.}
 
 One may verify that $\cast(p)(x) = \trp[\id_\UU]{ p} (x)$, for $x : X$, by induction on $p$.
-Here $id_\UU$ is the identity function $id_\UU$ on $\UU$, viewed as a family of types on $\UU$. 
+Here $\id_\UU$ is the identity function $\id_\UU$ on $\UU$, viewed as a family of types on $\UU$. 
 As a corollary, one sees that $\trp[\id_\UU]{ p}$, previously defined as a function, is an equivalence.
 
 Now comes the univalence axiom.
@@ -1388,7 +1398,7 @@ Now comes the univalence axiom.
 $\cast_{X,Y}$ above is an equivalence for all $X,Y:\UU$.
 Formally, we postulate the existence of an element
 \[
-  \ua_{X,Y} : \isEq(\cast_{X,Y}).
+  \ua_{X,Y} : \isEq(\cast_{X,Y}).\qedhere
 \]
 \end{principle}
 
@@ -1593,7 +1603,7 @@ We formalize the definitions from the start of this section.
 \isprop(P) &\defeq\prod\nolimits_{p,q:P}(p=q)\\
 \isset(S) &\defeq\prod\nolimits_{x,y:S}\isprop(x=y)\jdeq
                   \prod\nolimits_{x,y:S}\prod\nolimits_{p,q:(x=y)}(p=q)\\
-\isgrpd(G) &\defeq\prod\nolimits_{g,h:G}\isset(g=h)\jdeq \ldots
+\isgrpd(G) &\defeq\prod\nolimits_{g,h:G}\isset(g=h)\jdeq \ldots\qedhere
 \end{align*}
 \end{definition}
 \begin{lemma}\label{lem:isX-is-prop}
@@ -1787,11 +1797,12 @@ Therefore the following is \emph{not} a subtype of $\UU$.
   $(g,g_0)(f,f_0) : X\ptdto Z$ is defined as the pair $(gf,g(f_0)g_0)$,
   see the diagram below.
   \[
-    \begin{tikzcd}
+    \begin{tikzcd}[baseline=(O.base)]
       & \pt_Y \ar[r, eqr, "f_0"]\ar[d, mapsto, "g"]
       & f(\pt_X) \ar[d, mapsto, "g"]\\
-      \pt_Z \ar[r, eqr, "g_0"] & g(\pt_Y) \ar[r, eqr, "g(f_0)" ] & g(f(\pt_X))
-    \end{tikzcd}
+      \pt_Z \ar[r, eqr, "g_0"] & g(\pt_Y) \ar[r, eqr, "g(f_0)" ] &
+      |[alias=O]| g(f(\pt_X))
+    \end{tikzcd}\qedhere
   \]
 \end{definition}
 
@@ -1883,7 +1894,7 @@ where $Y\jdeq X$ and $a,b$ members of $X$:
 \item\label{trp-in-a=x} $\trp[x\mapsto a=x]{e} (i) = e\cdot i$;
 \item $\trp[x\mapsto x=b]{e} (i) = i \cdot e^{-1}$;
 \item \label{trp-in-x=x}$\trp[x\mapsto x=x]{e} (i) = e \cdot i\cdot e^{-1}$ 
-(also called \emph{conjugation}).
+(also called \emph{conjugation}).\qedhere
 \end{enumerate}
 \end{xca}
 
@@ -2094,7 +2105,7 @@ Show that any connected set is contractible.
 \begin{definition}\label{def:prop-image}
   Let $A,B$ be types and let $f : A \to B$. We define the \emph{image} of $f$ as
   \[
-    \im(f) \defeq \sum_{y:B}\exists_{x:A}(y = f\,x).
+    \im(f) \defeq \sum_{y:B}\exists_{x:A}(y = f\,x).\qedhere
   \]
 \end{definition}
 
@@ -2631,7 +2642,7 @@ using $\inl{}$ and $\inr{}$.
   \item Denote in full all elements of $\bn{0}$, $\bn{1} $, and $\bn{2}$.
   \item Show (using univalence) that $\bn{1} =\true$, $\bn{2} =\bool$.
   \item Show (using univalence) that $\bn{n} = \sum_{k:\NN} k<n$ for all $n:\NN$.
-  \item Show that $m=n$ if $\bn{m}=\bn{n}$.
+  \item Show that $m=n$ if $\bn{m}=\bn{n}$.\qedhere
   \end{enumerate}
 \end{xca}
 \begin{definition}\label{def:is-finite}
@@ -2677,7 +2688,7 @@ The \emph{groupoid of finite sets} is defined by
 \]
 For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
 \[
-  \FinSet_n\defequi \sum_{S:\Set}\Trunc{S=\bn{n}}.
+  \FinSet_n\defequi \sum_{S:\Set}\Trunc{S=\bn{n}}.\qedhere
 \]
 \end{definition}
 Observe that $\FinSet_0=\FinSet_1=\bn{1} $ and $\FinSet=\sum_{n:\NN}\FinSet_n$
@@ -2737,7 +2748,7 @@ if $f^{-1}(b)$ is a proposition for all $b:B$.
 A function $f:A\to B$ is a \emph{surjection}, or \emph{surjective},
 if for all $b:B$ there exists an $a:A$ such that $b=f(a)$,
 that is, $\Trunc{\sum_{a:A} b=f(a)}$.
-
+%
 %A function $f:A\to B$ is a \emph{split surjection} if for all $b:B$
 %$\sum_{a:A} b=f(a)$.
 \end{definition}
