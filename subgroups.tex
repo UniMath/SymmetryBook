@@ -1,6 +1,7 @@
 \chapter{Subgroups}
 \label{ch:subgroups}
 
+\newcommand{\epi}{\mathrm{epi}}
 \section{Subgroups}
 \label{sec:subgroups}
 In our discussion of the group $\ZZ=\aut_{S^1}(\base)$ of integers in we discovered that the ``subsymmetries'' formed a very organized structure.
@@ -96,12 +97,14 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
   Which of the equivalent sets $\typemono_G$ and $\typesubgroup_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
   }%
   \begin{example}
-    \cref{ex:sigma2inSigma3} can be displayed as a subgroup of $\Sigma_3$ through
+    The monomorphism of $\Sigma_2$ into $\Sigma_3$ of \cref{ex:sigma2inSigma3} can be displayed as a subgroup of $\Sigma_3$ through 
     $$X:\fin_3\to\Set
     $$
     given by $A\mapsto\sum_{B:\fin 2}(A=B+\bn 1)$ together with a proof that $\sum_{B:\fin 2}(A=B+\bn 1)$ is a set [the identity type $(B,p)=(B',p')$ is equivalent to $\sum_{q:B=B'}(q+\bn 1)p=p'$, so $q+\bn 1=p'p^{-1}$ which pins down $q$ uniquely  -- check!]
   \end{example}
-  
+  \begin{xca}
+    Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\aut_{\USym G}(\Set)$. Write out the corresponding subgroup of $\aut_{\USym G}(\Set)$.
+  \end{xca}
 \begin{example}  
   \label{ex:prodinclisGset}
   We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG$ followed by the principal $G$-torsor.  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, then the monomorphism correspond to the $G$-set given by $Bf$ followed by the princial $H$-torsor.
@@ -164,19 +167,26 @@ The first projection $\typesubgroup(G)\to \BG$ is referred to as the \emph{\cove
 \section{Images, kernels and cokernels}
 \label{subsec:ker}
 
-In \cref{ex:Cm} we studied the map $cy_m:S^1\to\fin_m$  $cy_m(\base)\defequi\bn m$ and 
-$cy_m(\Sloop)\defis s_m$, picking out exactly the cyclic permutation $s_m\colon\bn m=\bn m$ (and its iterates) among all permutations.  The reason we studied $cy_m$ was that we wanted to isolate the ``cyclic permutations'' within all symmetries in the group of all permutations $\Sigma_m$. \footnote{BIDNBNB return 4.5}
-
 The set of subgroups of a group $G$ encodes much information about $G$, partially because homomorphisms between $G$ and other groups give rise to subgroups.
 
-If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism, the preimage $\phi^{-1}(e_G)$ is an abstract subgroup which is classically called the kernel of $\phi$.
+In \cref{ex:Cm} we studied a homomorphism from $\ZZ$ to $\Sigma_m$ defined via the pointed map $cy_m:S^1\to_*\fin_m$ given by sending $\base$ to $\bn m$ and 
+$\Sloop$ to the cyclic permutation $s_m\colon\USym\Sigma_m\oldequiv(\bn m=\bn m)$, singling out the iterates of $s_m$ among all permutations.  From this we defined the group $C_m$ through a quite general process which we define in this section, namely by taking the \emph{image} of $cy_m$.
 
-On the other hand, the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.
+We also noted that the resulting pointed map from $S^1$ to $\B C_m$ was intimately tied up with the $m$-fold \covering $-^m:S^1\to_*S^1$ -- picking out exactly the iterates of $\Sloop^m$ -- which in our current language corresponds to a monomorphism $i_m:\Hom(\ZZ,\ZZ)$. This process is also a special case of something, namely the \emph{kernel}.
+
+The construction of $\ZZ/m$ and the isomorphism between $\ZZ/m$ and $C_m$ is also a consequence of what we do in this section, but we'll have to wait till \footnote{findref} to say this elegantly.
+
+\marginnote{For those familiar with the classical notion, the following summary may guide the intuition.}
+
+ \marginnote{ If $\phi:\Hom^\abstr(\mathcal G,\mathcal G')$ is an abstract group homomorphism, the preimage $\phi^{-1}(e_G)$ is an abstract subgroup which is classically called the kernel of $\phi$.}
+
+\marginnote{On the other hand, the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.}
 
 In our setup with a group homomorphism 
-$f:\Hom(G,G')$ being given by a pointed function $\Bf:\BG\to_*\BG'$, the kernel and cokernel are just two aspects of the preimage 
-$$(\Bf)^{-1}(\sh_{G'})\defequi\sum_{z:\BG}(\sh_{G'}=\Bf(z)):$$
- the cokernel is the set of components and the kernel is a preferred component.  This point of view makes it clear that the kernel is a subgroup whereas there is no particular reason for the cokernel to be more than a ($G'$-) set.
+$f:\Hom(G,G')$ being given by a pointed function $\Bf:\BG\to_*\BG'$, the above mentioned kernel and cokernel are just two aspects of the preimage 
+$$(\Bf)^{-1}(\sh_{G'})\defequi\sum_{x:\BG}(\sh_{G'}=\Bf(x)):$$
+the cokernel is the set of components and the kernel is a preferred component.  This point of view makes it clear that the kernel is a subgroup whereas there is no particular reason for the cokernel to be more than a ($G'$-) set.
+\marginnote{Even though the cokernel is in general just a $G'$-set, we will see in \cref{def:normalquotient} that in certain situations it gives rise to a group called the quotient group. }
 \begin{definition}
   \label{def:cokernel}
   Let $f:\Hom(G,G')$  be a homomorphism.
@@ -208,54 +218,54 @@ $$\ker:\Hom(G,G')\to\typemono_G$$
 \marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomrophism into $G$?  This is common usage and is only resolved by a typecheck.}
 which we will also refer to as the \emph{kernel}.
 \end{definition}
-{\color{blue}THIS WILL BE CHANGED A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism.\footnote{clarify the relation between the surjective homomorphism and the subgroup}}
-Written out,
-$B\ker f_\div$ is $\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$  
+\marginnote{\color{blue}THIS WILL BE CHANGED A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
+Written out, the classifying type of the kernel,
+$B\ker f_\div$, is $$\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$$
 
+For a function of sets the notion of the ``image'' gives us a factorization through a surjection followed by an injection.  For homomorphism of groups we similarly have a factorization through an epimorphism followed by a monomorphism.  The formula for the image in group theory is essentially the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel: 
 \begin{definition}
   \label{def:image}
   Let $f:\Hom(G,G')$  be a homomorphism.
   The \emph{image}\index{image} $\image f$ of $f$ is the group
   $$\image f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\sh_{G'},|\sh_G,p_f|)$$
-  together with the monomorphism of $\image f$ into $G'$ given by the first projection $B\image f\to \BG'$ (a monomorphism since $\coker f(z)$ is a set); resulting in a function
+  together with the monomorphism $\image_f$ of $\image f$ into $G'$ given by the first projection $B\image f\to \BG'$ (a monomorphism since $\coker f(z)$ is a set); resulting in a function
   $$\image:\Hom(G,G')\to\typemono_{G'}.$$
 
 
 The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:\BG$ to
-$$B\tilde f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|).$$ 
+$$B\tilde f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$ 
 
 % We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group homomorphism} if $(\Bf)^{-1}(\sh_{G'})$ is connected.
 %, or equivalently if $\image f\to G'$ is an equivalence.
 \end{definition}
+
 % \begin{remark}
 %   \label{rem:cokerasGset}
 %   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\sh_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$\BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$  
 % We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set.
 % \end{remark}
 In view of \cref{ex:charsurinj} below, the families  
-$$\mathrm{issurj},\mathrm{isinj}:\Hom(G,G')\to\Prop
+$$\mathrm{isepi},\mathrm{ismono}:\Hom(G,G')\to\Prop
 $$
-of propositions that a given homomorphism is surjective or injective have several useful interpretations.
+of propositions that a given homomorphism is an epimorphism or monomorphism have several useful interpretations (parts of the exercise have already been done).
 \begin{xca}
   \label{ex:charsurinj}
   Let $f:\Hom(G,G')$ Prove that
   \begin{enumerate}
   \item the following are equivalent
     \begin{enumerate}
-    \item $f$ is a surjective homomorphism (\cref{def:surjective}),
+    \item $f$ is an epimorphism,
     \item the cokernel of $f$ is contractible,
-    \item the first projection $B\image f\to \BG$ is an equivalence
-    \item the induced map of sets 
-$f^=:\USym G\to\USym {G'}$ is a surjection
+    \item the inclusion of the image (first projection) $\image_f:\Hom(\image f,G')$ is an isomorphism,
+    \item the induced map of sets $\USym f:\USym G\to\USym {G'}$ is a surjection
     \end{enumerate}
   \item the following are equivalent
     \begin{enumerate}
-    \item $f$ is an injective homomorphism (\ie the induced map of sets 
-$f^=:\USym G\to(\sh_{G'}\to\sh_{G'})$
-is an injection)
+    \item $f$ is a monomorphism,
+    \item $\USym f$ is an injection
 \item the kernel of $f$ is trivial
 \item $\Bf:\BG\to \BG'$ is a \covering.
-\item the induced map $B\tilde f:\BG\to B\image f$ is an equivalence.
+\item the induced map $\tilde f:\Hom(G,\image f)$ is an isomorphism.
     \end{enumerate}
   \end{enumerate}
 \end{xca}
@@ -405,7 +415,6 @@ $$
 Since the families are equivalent we may use $\typesubgroup_G$ or $\typesubgroup_G'$ interchangeably.  
 There is, however, a little explanation needed in order to see that the type $\typenormal_G$ of normal subgroups is equivalent to $\typenormal'_G$.
 We do this by using the intermediate set of surjections from $G$:
-\newcommand{\epi}{\mathrm{epi}}
 \begin{definition}
   \label{def:typeepi}
   If $G$ is a group, then the \emph{set of surjections from $G$} is the set
