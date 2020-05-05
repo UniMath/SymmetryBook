@@ -1,0 +1,488 @@
+%%
+%% This is file `marginfix.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% marginfix.dtx  (with options: `package')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from marginfix.sty.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file marginfix.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{marginfix}%
+           [2020/05/05 v1.2 Fix Margin Paragraphs]
+\makeatletter
+\newif\ifmfx@ypos
+\DeclareOption{ypos}{\mfx@ypostrue}
+\ProcessOptions\relax
+\let\mfx@marginlist\@empty
+\let\mfx@injected\@empty
+\newinsert\Mfx@inject@insert
+\newbox\Mfx@marginbox
+\newdimen\Mfx@marginpos@min
+\newdimen\Mfx@marginpos@max
+\newdimen\Mfx@marginspace
+\newdimen\Mfx@marginheight
+\def\mfx@marginstart{0pt}
+\let\mfx@marginpieces\@empty
+\newbox\Mfx@piece@content
+\newcount\Mfx@piece@count
+\newif\ifmfx@in@phantom
+\newdimen\Mfx@mparshift
+\newdimen\marginheightadjustment
+\newdimen\marginposadjustment
+\def\@addmarginpar{%
+  \@next\@marbox\@currlist{}\MFX@AssertionError
+  \MFX@getypos
+  \expandafter\ifx\@marbox\Mfx@inject@insert
+    \mfx@injected\global\let\mfx@injected\@empty
+  \else
+    \MFX@cons\mfx@marginlist{%
+      \noexpand\mfx@build@note\@currbox\@marbox{\mfx@ypos}%
+      \noexpand\mfx@build@skip{\the\marginparpush}%
+    }%
+  \fi
+}
+\def\MFX@cons#1#2{%
+  \edef\temp@{#2}%
+  \expandafter\expandafter\expandafter\gdef
+  \expandafter\expandafter\expandafter#1%
+  \expandafter\expandafter\expandafter{\expandafter#1\temp@}%
+}
+
+\def\MFX@snoc#1#2{%
+  \edef\temp@{#2}%
+  \expandafter\expandafter\expandafter\gdef
+  \expandafter\expandafter\expandafter#1%
+  \expandafter\expandafter\expandafter{\expandafter\temp@#1}%
+}
+\def\MFX@run@clear#1{%
+  \expandafter\global\expandafter\let\expandafter#1\expandafter\@empty#1%
+}
+\def\MFX@inject#1{
+  \expandafter\def\expandafter\@freelist\expandafter{%
+    \expandafter\@elt\expandafter\Mfx@inject@insert
+    \expandafter\@elt\expandafter\Mfx@inject@insert
+    \@freelist}%
+  \expandafter\def\expandafter\mfx@injected\expandafter{\mfx@injected#1}%
+  \marginpar{}%
+}
+\def\MFX@getypos{%
+  \dimen@\dimexpr\@pageht+\@pagedp+\marginposadjustment+\Mfx@mparshift\relax
+  \ifnum\outputpenalty=-10002\relax
+    \advance\dimen@-\Mfx@strutheight
+  \fi
+  \edef\mfx@ypos{\the\dimen@}%
+  \global\Mfx@mparshift\z@
+}
+\newdimen\Mfx@strutheight
+\edef\marginpar{%
+  \unexpanded{\setbox\@tempboxa\hbox{\strut}\Mfx@strutheight\ht\@tempboxa}%
+  \expandafter\unexpanded\expandafter{\marginpar}%
+}
+\expandafter\def\expandafter\@combinefloats\expandafter{\expandafter
+  \MFX@combinefloats@before\@combinefloats}
+\def\MFX@combinefloats@before{%
+  \advance\Mfx@marginheight\marginheightadjustment
+  \MFX@buildmargin
+  \MFX@attachmargin
+  \global\Mfx@marginheight\z@
+}
+\def\MFX@attachmargin{%
+  \setbox\Mfx@marginbox\vtop{%
+    \vskip\z@\unvbox\Mfx@marginbox}%
+  \setbox\@outputbox\vbox{%
+    \begingroup
+    \setbox\@tempboxa\vbox{%
+      \hbox{%
+        \if\MFX@leftmargin
+          \llap{\box\Mfx@marginbox\hskip\marginparsep}%
+        \else
+          \hskip\columnwidth
+          \rlap{\hskip\marginparsep\box\Mfx@marginbox}%
+        \fi
+      }}%
+    \ht\@tempboxa\z@
+    \dp\@tempboxa\z@
+    \box\@tempboxa
+    \endgroup
+    \unskip
+    \unvbox\@outputbox
+  }%
+}
+\def\MFX@buildmargin{%
+  \Mfx@marginheight=\@colroom
+  \ifx\mfx@marginstart\relax
+  \else
+    \MFX@cons\mfx@marginpieces{%
+      \noexpand\@elt{\mfx@marginstart}{\the\Mfx@marginheight}}%
+    \gdef\mfx@marginstart{0pt}%
+    \global\Mfx@piece@count=\@ne
+  \fi
+  \ifx\mfx@marginpieces\@empty\else
+    \MFX@buildmargin@down
+    \MFX@buildmargin@up
+    \MFX@buildmargin@pieces
+  \fi
+}
+\def\MFX@buildmargin@down{%
+  \let\mfx@pieceheights\@empty
+  \def\@elt##1##2{%
+    \MFX@cons\mfx@pieceheights{\noexpand\@elt{\the\dimexpr##2-##1}}}%
+  \mfx@marginpieces
+  \MFX@popdimen\Mfx@marginheight\mfx@pieceheights
+  \let\mfx@build@note\MFX@margin@note@down
+  \let\mfx@build@skip\@gobble
+  \let\mfx@build@clear\MFX@build@clear@down
+  \let\mfx@marginout\@empty
+  \MFX@run@clear\mfx@marginlist
+}
+\def\MFX@margin@note@down#1#2#3{%
+  \MFX@whichbox\@marbox#1#2%
+  \if\MFX@check@fit{}{\ht\@marbox+\dp\@marbox}%
+    \MFX@snoc\mfx@marginout{%
+      \noexpand\@cons\noexpand\@freelist#1%
+      \noexpand\@cons\noexpand\@freelist#2%
+      \noexpand\mfx@build@note\@marbox{#3}}%
+    \let\mfx@build@skip\MFX@margin@skip@down
+  \else
+    \mfx@build@clear
+    \mfx@build@note{#1}{#2}{#3}%
+  \fi
+}
+\def\MFX@margin@skip@down#1{%
+  \if\MFX@check@fit{}{#1}%
+    \MFX@snoc\mfx@marginout{\noexpand\mfx@build@skip{#1}}%
+  \else
+    \mfx@build@clear
+  \fi
+}
+\def\MFX@build@clear@down{%
+  \def\mfx@build@note##1##2##3{%
+    \MFX@cons\mfx@marginlist{\noexpand\mfx@build@note##1##2{\MFX@minus@inf}}}%
+  \def\mfx@build@skip##1{%
+    \MFX@cons\mfx@marginlist{\noexpand\mfx@build@skip{##1}}}%
+  \def\mfx@build@clear{%
+    \MFX@cons\mfx@marginlist{\noexpand\mfx@build@clear}}%
+}
+\def\MFX@check@fit#1#2{%
+  00\fi % close out the \if
+  \@tempswafalse
+  \ifdim\dimexpr#2<\Mfx@marginheight % it fits
+    \advance\Mfx@marginheight-\dimexpr#2\relax % deduct the size
+    \@tempswatrue
+  \else % didn't fit: check the next piece
+    \ifx\mfx@pieceheights\@empty\else % make sure there's anything there
+      #1%
+      \MFX@popdimen\Mfx@marginheight\mfx@pieceheights
+      \if\MFX@check@fit{#1}{#2}\fi
+    \fi
+  \fi
+  \if@tempswa % start a new \if
+}
+\def\MFX@popdimen#1#2{%
+  \def\@elt##1{%
+    #1##1\relax
+    \def\@elt####1{%
+      \MFX@cons#2{\noexpand\@elt{####1}}%
+    }%
+  }%
+  \MFX@run@clear#2%
+}
+\def\MFX@whichbox#1#2#3{%
+  \if\MFX@leftmargin
+    \def#1{#2}%
+  \else
+    \def#1{#3}%
+  \fi
+}
+\def\MFX@leftmargin{%
+  00\fi % close out the \if
+  \@tempcnta\@ne
+  \if@mparswitch
+    \unless\ifodd\c@page
+      \@tempcnta\m@ne
+    \fi
+  \fi
+  \if@reversemargin
+    \@tempcnta-\@tempcnta
+  \fi
+  \ifnum\@tempcnta<\z@ % start a new \if
+}
+\def\MFX@minus@inf{-4000\p@}
+\def\MFX@buildmargin@up{%
+  \let\mfx@pieceheights\@empty
+  \let\mfx@phantomheights\@empty
+  \let\temp@@\relax
+  \def\@elt##1##2{%
+    \MFX@snoc\mfx@pieceheights{\noexpand\@elt{\the\dimexpr##2-##1}}%
+    \ifx\temp@@\relax\else
+      \MFX@snoc\mfx@phantomheights{\noexpand\@elt{\the\dimexpr##1-\temp@@}}%
+    \fi
+    \def\temp@@{##2}%
+  }%
+  \mfx@in@phantomfalse
+  \mfx@marginpieces
+  \MFX@popdimen\Mfx@marginheight\mfx@pieceheights
+  \let\mfx@build@note\MFX@margin@note@up
+  \let\mfx@build@skip\@gobble
+  \MFX@run@clear\mfx@marginout
+}
+\def\MFX@margin@note@up#1#2{%
+  \ifmfx@in@phantom
+    \MFX@popdimen\Mfx@marginheight\mfx@pieceheights
+    \advance\Mfx@piece@count\m@ne
+    \mfx@in@phantomfalse
+  \fi
+  \if\MFX@check@fit{\advance\Mfx@piece@count\m@ne
+                    \MFX@popdimen\dimen@\mfx@phantomheights}{\ht#1+\dp#1}%
+    \MFX@snoc\mfx@marginout{%
+      \noexpand\mfx@build@note{#1}{#2}{\the\Mfx@piece@count}}%
+    \let\mfx@build@skip\MFX@margin@skip@up
+  \else\MFX@AssertionError\fi
+}
+\def\MFX@margin@skip@up#1{%
+  \dimen@#1\relax
+  \advance\Mfx@marginheight-\dimen@
+  \ifdim\Mfx@marginheight<\z@
+    \advance\dimen@\Mfx@marginheight
+    \MFX@snoc\mfx@marginout{%
+      \noexpand\mfx@build@skip{\the\dimen@}{\the\Mfx@piece@count}}%
+    \dimen@-\Mfx@marginheight
+    \ifmfx@in@phantom
+      \MFX@popdimen\Mfx@marginheight\mfx@pieceheights
+      \advance\Mfx@piece@count\m@ne
+      \mfx@in@phantomfalse
+    \else
+      \MFX@popdimen\Mfx@marginheight\mfx@phantomheights
+      \mfx@in@phantomtrue
+    \fi
+    \mfx@build@skip\dimen@
+  \else
+    \MFX@snoc\mfx@marginout{%
+      \noexpand\mfx@build@skip{\the\dimen@}{\the\Mfx@piece@count}}%
+  \fi
+}
+\def\MFX@buildmargin@pieces{%
+  \Mfx@piece@count\z@
+  \Mfx@marginspace\z@
+  \setbox\Mfx@marginbox\vbox{\vskip\z@}%  TODO - do we need this?
+  \let\@elt\MFX@buildmargin@piece
+  \MFX@run@clear\mfx@marginpieces
+  \let\@elt\relax
+  \Mfx@piece@count\z@
+}
+\def\MFX@buildmargin@piece#1#2{%
+  \ifdim\ht\Mfx@marginbox<#1\relax
+    \dimen@\dimexpr#1-\ht\Mfx@marginbox\relax
+    \setbox\Mfx@marginbox\vbox{%
+      \unvbox\Mfx@marginbox
+      \vskip\dimen@
+    }%
+    \advance\Mfx@marginspace\dimen@
+  \fi
+  \Mfx@marginpos@min#1\relax
+  \Mfx@marginpos@max#1\relax
+  \Mfx@marginheight#2\relax
+  \advance\Mfx@piece@count\@ne
+  \MFX@buildpiece@down
+  \MFX@buildpiece@up
+  \setbox\Mfx@marginbox\vbox{%
+    \unvbox\Mfx@marginbox
+    \box\Mfx@piece@content
+    \vskip\z@
+  }%
+}
+\def\MFX@buildpiece@down{%
+  \let\mfx@build@note\MFX@piece@note@down
+  \let\mfx@build@skip\MFX@piece@skip@down
+  \let\mfx@pieceout\@empty
+  \MFX@run@clear\mfx@marginout
+}
+\def\MFX@piece@note@down#1#2#3{%
+  \Mfx@marginspace\z@
+  \@tempswafalse
+  \ifdim#2>\Mfx@marginheight
+    \ifnum#3>\Mfx@piece@count
+      \@tempswatrue
+    \fi
+  \fi
+  \ifdim\dimexpr\ht#1+\dp#1+\Mfx@marginpos@min>\Mfx@marginheight
+    \@tempswatrue
+  \fi
+  \if@tempswa
+    \MFX@piece@clear
+    \mfx@build@note{#1}{#2}{#3}%
+  \else
+    \dimen@#2\relax
+    \ifdim\dimen@=\MFX@minus@inf
+      \ifdim\Mfx@marginpos@max=\z@
+        \dimen@\topskip
+        \advance\dimen@-\ht#1\relax
+        \ifdim\dimen@<\z@ \dimen@\z@ \fi
+      \fi
+    \fi
+    \advance\dimen@-\Mfx@marginpos@max
+    \ifdim\dimen@>\z@
+      \MFX@snoc\mfx@pieceout{\noexpand\mfx@build@compressible{\the\dimen@}}%
+      \advance\Mfx@marginpos@max\dimen@
+    \fi
+    \MFX@snoc\mfx@pieceout{\noexpand\mfx@build@note{#1}}%
+    \advance\Mfx@marginpos@min\dimexpr\ht#1+\dp#1\relax
+    \advance\Mfx@marginpos@max\dimexpr\ht#1+\dp#1\relax
+  \fi
+}
+\def\MFX@piece@skip@down#1#2{%
+  \dimen@#1\relax
+  \ifdim\Mfx@marginspace>\z@
+    \advance\dimen@-\Mfx@marginspace
+    \ifdim\dimen@<\z@ \dimen@\z@ \fi
+    \advance\Mfx@marginspace-\dimen@
+  \fi
+  \ifdim\dimen@>\z@
+    \ifdim\dimexpr#1+\Mfx@marginpos@min>\Mfx@marginheight
+      \MFX@piece@clear
+      \mfx@build@skip{\the\dimen@}{#2}%
+    \else
+      \MFX@snoc\mfx@pieceout{\noexpand\mfx@build@skip{\the\dimen@}{#2}}%
+      \advance\Mfx@marginpos@min\dimen@
+      \advance\Mfx@marginpos@max\dimen@
+    \fi
+  \fi
+}
+\def\MFX@piece@clear{%
+  \def\mfx@build@note##1##2##3{%
+    \MFX@cons\mfx@marginout{\noexpand\mfx@build@note##1{##2}{##3}}}%
+  \def\mfx@build@skip##1##2{%
+    \MFX@cons\mfx@marginout{\noexpand\mfx@build@skip{##1}{##2}}}%
+}
+\def\MFX@buildpiece@up{%
+  \Mfx@marginheight\dimexpr\Mfx@marginpos@max-\Mfx@marginheight\relax
+  \ifdim\Mfx@marginheight<\z@\Mfx@marginheight\z@\fi
+  \let\mfx@build@note\MFX@piece@note@up
+  \let\mfx@build@compressible\MFX@piece@compressible@up
+  \let\mfx@build@skip\MFX@piece@skip@maybedefer
+  \MFX@run@clear\mfx@pieceout\relax
+}
+\def\MFX@piece@skip@maybedefer#1#2{%
+  \ifnum#2>\Mfx@piece@count
+    \MFX@snoc\mfx@marginout{\noexpand\mfx@build@skip{#1}{#2}}%
+  \else
+    \let\mfx@build@skip\MFX@piece@skip@up
+    \mfx@build@skip{#1}{#2}%
+  \fi
+}
+\def\MFX@piece@note@up#1{%
+  \setbox\Mfx@piece@content\vbox{%
+    \box#1%
+    \unvbox\Mfx@piece@content}%
+  \let\mfx@build@skip\MFX@piece@skip@up
+}
+\def\MFX@piece@skip@up#1#2{%
+  \setbox\Mfx@piece@content\vbox{%
+    \vskip#1\relax
+    \unvbox\Mfx@piece@content}%
+}
+\def\MFX@piece@compressible@up#1{%
+  \advance\Mfx@marginheight-#1\relax
+  \ifdim\Mfx@marginheight<\z@
+    \MFX@piece@skip@up{-\Mfx@marginheight}\relax
+    \Mfx@marginheight\z@
+  \fi
+}
+\def\dumpmargins{%
+  \loop
+  \unless\ifx\mfx@marginlist\@empty
+    \let\temp@\mfx@marginlist
+    \vbox{}\clearpage
+    \ifx\temp@\mfx@marginlist
+      \PackageError{marginfix}{lost some margin notes%
+      \ifx\mfx@marginstart\relax\ (missing \noexpand\unblockmargin)\fi
+      }\@eha
+      \let\mfx@marginlist\@empty % be nicer by just dropping one?
+      % TODO: also, set an emergency mode to allow oversized notes
+    \fi
+  \repeat
+}
+\AtEndDocument{\dumpmargins}
+\def\marginskip#1{%
+  \MFX@cons\mfx@marginlist{\noexpand\mfx@build@skip{#1}}%
+}
+\def\clearmargin{%
+  \MFX@cons\mfx@marginlist{\noexpand\mfx@build@clear}%
+}
+\def\softclearmargin{%
+  \marginskip{\the\textheight}%
+}
+\def\extendmargin#1{%
+  \advance\Mfx@marginheight#1\relax
+}
+\def\mparshift#1{%
+  \advance\Mfx@mparshift#1\relax
+}
+\def\blockmargin{%
+  \@ifnextchar[%]
+    \MFX@blockmargin
+    {\MFX@blockmargin[0\p@]}%
+}
+\def\MFX@blockmargin[#1]{%
+  \MFX@inject{%
+    \ifx\mfx@marginstart\relax
+      \PackageError{marginfix}{two \\blockmargin with no \\unblockmargin}\@eha
+    \else
+      \MFX@cons\mfx@marginpieces{\noexpand
+        \@elt{\mfx@marginstart}{\expandafter\dimexpr\mfx@ypos+#1\relax}}%
+      \global\let\mfx@marginstart\relax
+      \global\advance\Mfx@piece@count\@ne
+    \fi
+  }%
+}
+\def\unblockmargin{%
+  \@ifnextchar[%]
+    \MFX@unblockmargin
+    {\MFX@unblockmargin[0\p@]}%
+}
+\def\MFX@unblockmargin[#1]{%
+  \MFX@inject{%
+    \ifx\mfx@marginstart\relax
+      \xdef\mfx@marginstart{\dimexpr\mfx@ypos+#1\relax}%
+    \else
+      \PackageError{marginfix}{\\unblockmargin with no \\blockmargin}\@eha
+    \fi
+  }%
+}
+\def\marginphantom{%
+  \@ifnextchar[%]
+    \MFX@marginphantom
+    {\MFX@marginphantom[0\p@]}%
+}
+\def\MFX@marginphantom[#1]#2{%
+  \ifdim#2<\z@\MFX@marginphantom[#1+#2]{-#2}\else
+  \MFX@inject{%
+    \ifx\mfx@marginstart\relax
+      \PackageError{marginfix}{\\marginphantom while margin blocked}\@eha
+    \else
+      \MFX@cons\mfx@marginpieces{\noexpand
+        \@elt{\mfx@marginstart}{\expandafter\dimexpr\mfx@ypos+#1\relax}}%
+      \xdef\mfx@marginstart{\dimexpr\mfx@ypos+#1+#2\relax}%
+      \global\advance\Mfx@piece@count\@ne
+    \fi
+  }%
+  \fi
+}
+\makeatother
+\endinput
+%%
+%% End of file `marginfix.sty'.
