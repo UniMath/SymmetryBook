@@ -211,7 +211,7 @@ Define the \emph{kernel}\index{kernel}  of $f$ to be the group defined by the po
 $$\ker f\defequi \aut_{(\Bf)^{-1}(\sh_{G'})}(\sh_{\ker f}).
 $$ 
 
-The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$) giving a monomorphism into $G$; defining a function
+The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$) giving a monomorphism $\ker_f$ of $\ker f$ into $G$; together defining a function
 $$\ker:\Hom(G,G')\to\typemono_G$$
 \marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomrophism into $G$?  This is common usage and is only resolved by a typecheck.}
 which we will also refer to as the \emph{kernel}.
@@ -219,8 +219,20 @@ which we will also refer to as the \emph{kernel}.
 \marginnote{\color{blue}THIS WILL BE CHANGED A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
 Written out, the classifying type of the kernel,
 $B\ker f_\div$, is $$\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$$
+\begin{xca}\footnote{proofread}
+  \marginnote{$$\xymatrix{\ker F_2\ar[r]^\cong\ar[d]^{F_1}&\ker f_1\ar[d]^{\ker_{f_1}}\\
+      \ker f_2f_1\ar[d]^{F_2}\ar[r]^{\ker_{f_2f_1}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar@{=}[d]\\
+      \ker f_2\ar[r]^{\ker_{f_2}}&G_1\ar[r]^{f_2}&G_2% \\
+   % \coker F_2&\coker f_1
+ }
+  $$}
+  Consider homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
+  There is a unique monomorphisms $F_1$ from $\ker f_1$ to $\ker(f_2f_1)$ and a unique homomorphism $F_2$ from $\ker(f_2f_1)$ to $\ker f_2$ such that $\ker_{f_1}=\ker_{f_2f_1}F_1$ and $f_1\ker_{f_2f_1}=\ker_{f_2}F_2$.
+  Furthermore, $$F_1=_{\typemono_{G_1}}\ker F_2$$ and $$(\coker f_1)\,\ker_{f_2}=_{\Ker f_2\to\Set}\coker (F_2).$$ 
+\end{xca}
 
-For a function of sets the notion of the ``image'' gives us a factorization through a surjection followed by an injection.  For homomorphism of groups we similarly have a factorization through an epimorphism followed by a monomorphism.  The formula for the image in group theory is essentially the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel: 
+For a function of sets the notion of the ``image'' gives us a factorization through a surjection followed by an injection.  For homomorphism of groups we similarly have a factorization through an epimorphism followed by a monomorphism.
+\marginnote{The formula for the image in group theory is essentially the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel.}
 \begin{definition}
   \label{def:image}
   Let $f:\Hom(G,G')$  be a homomorphism.
@@ -253,9 +265,9 @@ of propositions that a given homomorphism is an epimorphism or monomorphism have
   \item the following are equivalent
     \begin{enumerate}
     \item $f$ is an epimorphism,
+    \item $\USym f$ is a surjection
     \item the cokernel of $f$ is contractible,
-    \item the inclusion of the image (first projection) $\image_f:\Hom(\image f,G')$ is an isomorphism,
-    \item the induced map of sets $\USym f:\USym G\to\USym {G'}$ is a surjection
+    \item the ``inclusion of the image'' $\image_f:\Hom(\image f,G')$ is an isomorphism,
     \end{enumerate}
   \item the following are equivalent
     \begin{enumerate}
@@ -263,20 +275,28 @@ of propositions that a given homomorphism is an epimorphism or monomorphism have
     \item $\USym f$ is an injection
 \item the kernel of $f$ is trivial
 \item $\Bf:\BG\to \BG'$ is a \covering.
-\item the induced map $\tilde f:\Hom(G,\image f)$ is an isomorphism.
+\item the induced homomorphism $\tilde f:\Hom(G,\image f)$ is an isomorphism.
     \end{enumerate}
   \end{enumerate}
 \end{xca}
 
 
 
-Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion (first projection) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
-
+Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion $\image_f$ (first projection on the level of classifying types) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
+\marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\tilde f}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\image_f}}
+$$}
 \begin{lemma}
   \label{lem:kerandcoker}
   \label{lem:countinggps}
-  Let $f:\Hom(G,G')$ be a group homomorphism.  The induced homomorphism $\tilde f:\Hom(G,\image f)$ is a surjective homomorphims and $f$ factors as $\tilde f$ followed by the inclusion of the image of $f$ in $G'$.  The induced map $(B\tilde f)^{-1}(\pt_{\image f})\to (\Bf)^{-1}(\sh_{G'})$ induces an equivalence
-  $$B\ker\tilde f\simeq B\ker f.$$
+  Let $f:\Hom(G,G')$ be a group homomorphism.
+  \begin{enumerate}
+  \item The induced homomorphism $\tilde f:\Hom(G,\image f)$ is an epimorphims giving a function
+    $$\Hom(G,G')\to\typeepi_G,\qquad f\mapsto\tilde f.$$
+  \item By definition, $f=_{\Hom(G,G')}\image_f\,\tilde f$. %factors as $\tilde f$ followed by the inclusion of the image of $f$ in $G'$.  
+  \item The induced map $(B\tilde f)^{-1}(\sh_{\image f})\to (\Bf)^{-1}(\sh_{G'})$ induces an isomorphism
+  $$\ker\tilde f\cong \ker f.$$
+  \end{enumerate}
+
 \end{lemma}
 \begin{proof}
 Only the last part needs further comment, but follows since since for $x:\BG$ the first projection from $\pt_{\image f}=(\Bf,|x,\refl{\Bf(x)}|)$ to $\sh_{G'}=f(x)$ is an equivalence (the fibers are true propositions).
