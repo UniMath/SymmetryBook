@@ -1001,32 +1001,21 @@ we should first study how pointed maps affect loops:
   For pointed types $X,Y,Z$ and pointed maps $f : X \ptdto Y$
   and $g : Y \ptdto Z$, we get an identification of type
   \[
-    \loops(g \circ f) =_{(\loops X \to \loops Y)}
+    \loops(g \circ f) =_{(\loops X \to \loops Z)}
     \loops(g) \circ \loops(f).
   \]
 \end{definition}
+
 \begin{proof}[Construction]
-  Recall (FROM WHERE?) that $f_0:\pt_Y = f(\pt_X)$, $g_0:\pt_Z=g(\pt_Y)$,
-  and $(g \circ f)_0 \jdeq
-  \ap{g}(f_0) \cdot g_0 : \pt_Z = g(f(\pt_X))$.
-  Let $p : \loops X$. Then we calculate,
-  \begin{align*}
-    \loops(g\circ f)(p)
-    &\jdeq \inv{(g\circ f)_0} \cdot
-      \ap{g\circ f}(p) \cdot
-      (g\circ f)_0 \\
-    &=\inv{g_0} \cdot \inv{(\ap{g}(f_0))} \cdot
-      \ap{g}\bigl(\ap{f}(p)\bigr) \cdot
-      \ap{g}(f_0) \cdot g_0 \\
-    &= \inv{g_0} \cdot \ap{g}(\inv{f_0}) \cdot
-      \ap{g}\bigl(\ap{f}(p)\bigr) \cdot
-      \ap{g}(f_0) \cdot g_0 \\
-    &= \inv{g_0} \cdot
-      \ap{g}\bigl(\inv{f_0}\cdot\ap{f}(p) \cdot f_0\bigr)
-      \cdot g_0 \\
-    &\jdeq \loops g\bigl(\loops f(p)\bigr).\qedhere
-  \end{align*}
+  Let $x$ denote the base point of $X$.
+  By induction on $f_0$ and on $g_0$, we reduce to the case where $f_0 \jdeq \refl{f(x)}$
+  and $g_0 \jdeq \refl{g(f(x))}$, and it suffices to identify $\ap{g \circ f}$ with $\ap g \circ \ap f$.
+  By \cref{def:funext}, it suffices to identify $\ap{g \circ f}(p)$ with $\ap g ( \ap f (p))$ for each $p : \loops X$.
+  For that purpose, it suffices to prove the stronger statement that $\ap{g \circ f}(p) = \ap g ( \ap f (p))$ for any $x' : X$ and any $p : x = x'$.
+  By induction on $p$, it suffices to prove that $\ap{g \circ f}(\refl x) = \ap g ( \ap f (\refl x))$, and that can
+  be done by observing that both sides are equal, by definition, to $\refl{g(f(x))}$.
 \end{proof}
+
 \begin{corollary}\label{cor:USym-compose}
 For composable group homomorphisms
 $\varphi : \Hom(G,H)$, $\psi:\Hom(H,K)$,
