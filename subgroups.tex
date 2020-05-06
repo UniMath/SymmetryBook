@@ -213,24 +213,12 @@ $$
 
 The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$) giving a monomorphism $\ker_f$ of $\ker f$ into $G$; together defining a function
 $$\ker:\Hom(G,G')\to\typemono_G$$
-\marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomrophism into $G$?  This is common usage and is only resolved by a typecheck.}
+\marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomorphism into $G$?  This is common usage and is only resolved by a typecheck.}
 which we will also refer to as the \emph{kernel}.
 \end{definition}
 \marginnote{\color{blue}THIS WILL BE CHANGED A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
 Written out, the classifying type of the kernel,
 $B\ker f_\div$, is $$\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$$
-\begin{xca}\footnote{proofread}
-  \marginnote{$$\xymatrix{\ker F_2\ar[r]^\cong\ar[d]^{F_1}&\ker f_1\ar[d]^{\ker_{f_1}}\\
-      \ker f_2f_1\ar[d]^{F_2}\ar[r]^{\ker_{f_2f_1}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar@{=}[d]\\
-      \ker f_2\ar[r]^{\ker_{f_2}}&G_1\ar[r]^{f_2}&G_2% \\
-   % \coker F_2&\coker f_1
- }
-  $$}
-  Consider homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
-  There is a unique monomorphisms $F_1$ from $\ker f_1$ to $\ker(f_2f_1)$ and a unique homomorphism $F_2$ from $\ker(f_2f_1)$ to $\ker f_2$ such that $\ker_{f_1}=\ker_{f_2f_1}F_1$ and $f_1\ker_{f_2f_1}=\ker_{f_2}F_2$.
-  Furthermore, $$F_1=_{\typemono_{G_1}}\ker F_2$$ and $$(\coker f_1)\,\ker_{f_2}=_{\Ker f_2\to\Set}\coker (F_2).$$ 
-\end{xca}
-
 For a function of sets the notion of the ``image'' gives us a factorization through a surjection followed by an injection.  For homomorphism of groups we similarly have a factorization through an epimorphism followed by a monomorphism.
 \marginnote{The formula for the image in group theory is essentially the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel.}
 \begin{definition}
@@ -284,7 +272,45 @@ of propositions that a given homomorphism is an epimorphism or monomorphism have
 
 Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion $\image_f$ (first projection on the level of classifying types) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
 \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\tilde f}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\image_f}}
-$$}
+  $$}
+
+The kernel, cokernel and image constructions satisfy a lot of important relations which we will review in a moment, but in our setup they are really complicated ways of interpreting the following fact about preimages
+\begin{lemma}
+  Consider pointed functions $(f_1,p_1):(X_0,x_0)\to_*(X_1,x_1)$ and $(f_2,p_2):(X_1,x_1)\to_*(X_2,x_2)$ and the resulting functions
+  $$F:f_1^{-1}(x_1)\to(f_2f_1)^{-1}(x_2),\qquad F(x,p)\defequi(x,p_1f_2p),$$
+  $$G:(f_2f_1)^{-1}(x_2)\to f_2^{-1}(x_2),\qquad G(x,q)\defequi(f_1x,q)$$
+  $$H:G^{-1}(x_1,p_2)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)=(f_1x,q))\to \\
+  %\sum_{x:X_0}(x_1=f_1(x))\oldequiv
+  \to f_1^{-1}(x_1),\qquad H(x,q,(\overline{p,r}))\defequi (x,p))$$
+  % \begin{multline*}
+  %   H:G^{-1}(x_1,p_2)\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)=(f_1x,q))\to \\
+  %   \sum_{x:X_0}(x_1=f_1(x))\oldequiv f_1^{-1}(x_1),\qquad H(x,q,(\overline{p,r}))\defequi (x,p))
+  % \end{multline*}
+  % $$H:F^{-1}(x_1,p_1)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_1)=(x,p_1f_2q))\to \sum_{x:X_0}(x_1=f_1(x))\oldequiv
+  % \to f_1^{-1}(x_1),\qquad H(x,q,t)\defequi (x,\fst(t))$$
+  \marginnote{$$\xymatrix{G^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]^F&f_1^{-1}(x_1)\ar[d]^{\fst}&\\
+      (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^G&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar@{=}[d]\\
+    f_2^{-1}(x_2)\ar[r]^{\fst}&X_1\ar[r]^{f_2}&X_2}
+  $$}
+  (where the function $\xymatrix{((x_1,p_2)=(f_1x,q))\ar[rr]^-{(\overline{p,r})\mapsto p}&&(x_1=f_1(x))}$ is the ``first projection'' explained in the discussion of the interpretation of pairs following \cref{def:pairtopath}).  Then $H$ is an equivalence and $FH$ is definitionally equal to the first projection $\fst:{G^{-1}(x_1,p_2)\to(f_2f_1)^{-1}(x_2)}$ and so through univalence provides an identification
+  $$\bar H:(G^{-1}(x_1,p_2),\fst)=(f_1^{-1}(x_1),F)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$ of function with codomain $(f_2f_1)^{-1}(x_2)$.
+  %($\fst(t)$ refers to the discussion following \cref{def:pairtopath} so that if $t\oldequiv(\overline{a,b}):(x_1,p_1)=(x,p_1f_2q)$, then $\fst(t)\defequi a:x_1=f_1x$).
+\end{lemma}
+
+\begin{xca}\footnote{proofread}
+  \marginnote{$$\xymatrix{\ker f_1\ar@{=}[r]\ar[d]^{F_1}&\ker f_1\ar[d]^{\ker_{f_1}}\\
+      \ker f_2f_1\ar[d]^{F_2}\ar[r]^{\ker_{f_2f_1}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar@{=}[d]\\
+      \ker f_2\ar[r]^{\ker_{f_2}}&G_1\ar[r]^{f_2}&G_2% \\
+   % \coker F_2&\coker f_1
+ }
+  $$}
+  Consider homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
+  There is a unique monomorphisms $F_1$ from $\ker f_1$ to $\ker(f_2f_1)$ and a unique homomorphism $F_2$ from $\ker(f_2f_1)$ to $\ker f_2$ such that $\ker_{f_1}=\ker_{f_2f_1}F_1$ and $f_1\ker_{f_2f_1}=\ker_{f_2}F_2$.
+  Furthermore, $$F_1=_{\typemono_{G_1}}\ker_{F_2}$$ and $$(\coker f_1)\,\B\ker_{f_2}=_{\B\Ker f_2\to\Set}\coker (F_2).$$ 
+\end{xca}
+
+
+
 \begin{lemma}
   \label{lem:kerandcoker}
   \label{lem:countinggps}
