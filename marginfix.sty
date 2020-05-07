@@ -22,7 +22,7 @@
 %% in the same archive or directory.)
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{marginfix}%
-           [2020/05/05 v1.2 Fix Margin Paragraphs]
+           [2020/05/06 v1.2 Fix Margin Paragraphs]
 \makeatletter
 \newif\ifmfx@ypos
 \DeclareOption{ypos}{\mfx@ypostrue}
@@ -123,13 +123,13 @@
   }%
 }
 \def\MFX@buildmargin{%
-  \Mfx@marginheight=\@colroom
+  \advance\Mfx@marginheight\@colroom
   \ifx\mfx@marginstart\relax
   \else
     \MFX@cons\mfx@marginpieces{%
       \noexpand\@elt{\mfx@marginstart}{\the\Mfx@marginheight}}%
     \gdef\mfx@marginstart{0pt}%
-    \global\Mfx@piece@count=\@ne
+    \global\advance\Mfx@piece@count\@ne
   \fi
   \ifx\mfx@marginpieces\@empty\else
     \MFX@buildmargin@down
@@ -282,7 +282,7 @@
   \let\@elt\MFX@buildmargin@piece
   \MFX@run@clear\mfx@marginpieces
   \let\@elt\relax
-  \Mfx@piece@count\z@
+  \global\Mfx@piece@count\z@
 }
 \def\MFX@buildmargin@piece#1#2{%
   \ifdim\ht\Mfx@marginbox<#1\relax
