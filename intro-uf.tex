@@ -60,9 +60,12 @@ setting $g \circ f \defeq (a \mapsto g(f(a)))$;%
 in other words, it is the function that sends an arbitrary element $a$ of $X$ to $g(f(a))$ in
 $Z$.  The composite $g \circ f$ may also be denoted simply by $gf$.%
 \glossary(2circ){$\circ$}{function composition}
-We also may use the following alternative notation for the composite function, which includes the three types explicitly.
-$$ \left( X \xrightarrow f Y \xrightarrow g Z \right) \defeq g \circ f$$
-\glossary(2circbis){$ ( X \xrightarrow f Y \xrightarrow g Z ) $}{function composition}
+We also may use the following alternative notation for the composite function, which includes the three types explicitly:%
+\glossary(2circbis){$ ( X \xrightarrow f Y \xrightarrow g Z ) $}%
+{function composition}
+\[
+  \left( X \xrightarrow f Y \xrightarrow g Z \right) \defeq g \circ f
+\]
 
 Now consider functions $f : X \to Y$, $g : Y \to Z$, and $h : Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by
 definition, since applying the definitions within expands both expresssions to $a \mapsto h(g(f(a)))$.  In other
@@ -429,7 +432,7 @@ $\ap{f}(\refl{x})\defeq\refl{f(x)}$.%
 \glossary(ap){$\protect\ap{f}$}{action on paths, \cref{def:ap}}
 \end{definition}
 
-The function $\ap f$ is called {\em application} of $f$ to paths.\footnote{%
+The function $\ap f$ is called \emph{application} of $f$ to paths.\footnote{%
   Another name is the \emph{action on paths} of $f$.}
 For convenience, we may abbreviate $\ap f (p)$ to $f(p)$.
 
@@ -668,14 +671,17 @@ The following construction shows how functions of two variables may be applied t
   Suppose also we are given a function $g : \prod_{x:X} (Y(x) \to Z)$ of two variables.
   Given elements $x,x':X$, $y:Y(x)$, and
   $y':Y(x')$, a path $p : x = x'$, and a path $q :\pathover y Y p {y'}$ over $p$,
-  we may construct a path $$\apap g p q : g(x)(y) = g(x')(y')$$ by induction on $p$ and $q$,
-  setting
+  we may construct a path
+  \[
+    \apap g p q : g(x)(y) = g(x')(y')
+  \]
+  by induction on $p$ and $q$, setting
   \[
     \apap g {\refl x}{\refl y} \defeq \refl {g(x)(y)}.\qedhere
   \]
 \end{definition}
 
-The function $p \mapsto q \mapsto \apap g p q$ is called {\em application} of $g$ to paths over paths.
+The function $p \mapsto q \mapsto \apap g p q$ is called \emph{application} of $g$ to paths over paths.
 For convenience, we may abbreviate $\apap g p q$ to $g(p)(q)$.
 
 The following simple lemma will be useful later.
@@ -762,8 +768,8 @@ This property is encoded in the following definition.
   \]
 \end{definition}
 
-If $ (c,h) : \iscontr(X) $, then $c$ will be called the {\em center} of the
-the {\em contraction} $h$, and we call the type $X$ \emph{contractible}.
+If $ (c,h) : \iscontr(X) $, then $c$ will be called the \emph{center} of the
+the \emph{contraction} $h$, and we call the type $X$ \emph{contractible}.
 
 By path composition, one sees that any element $x : X$ can serve as the center of a contraction of a contractible type $X$.
 
@@ -998,12 +1004,21 @@ two pairs to be equal.  We start with a definition.
 \end{definition}
 
 \begin{lemma}\label{cor:isEq-pair=}
-  In the situation of \cref{def:pairtopath}, if $x'$ is $x$, so that $( \pathover y Y {\refl x} {y'} ) \jdeq ( y = y' )$,
-  then for any $q : y = y'$, the identity $$\pathpair {\refl x} q = \ap {\pair (x)} q$$ holds.
+  In the situation of \cref{def:pairtopath}, if $x'$ is $x$,
+  so that we have $( \pathover y Y {\refl x} {y'} ) \jdeq ( y = y' )$,
+  then for any $q : y = y'$, the identity
+  \[
+    \pathpair {\refl x} q = \ap {\pair (x)} q
+  \]
+  holds.
 \end{lemma}
 
 \begin{proof}
-  By induction on $q$ it suffices to establish the identity $$\pathpair {\refl x} {\refl y} = \ap {\pair (x)} (\refl y),$$ both sides of which are
+  By induction on $q$ it suffices to establish the identity
+  \[
+    \pathpair {\refl x} {\refl y} = \ap {\pair (x)} (\refl y),
+  \]
+  both sides of which are
   equal to $\refl {(x,y)}$ by definition.
 \end{proof}
 
@@ -1012,14 +1027,27 @@ The following lemma gives the desired characterization of paths between pairs.
 \begin{lemma}\label{lem:isEq-pair=}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$,
-  the map defined in \cref{def:pairtopath} defined by $$(p,q) \mapsto \pathpair p q$$ is an equivalence of type
-  $$\left( \sum_{p:x=x'} \pathover y Y p {y'} \right) \weq \left ( (x,y) = (x',y') \right ).$$
+  the map defined in \cref{def:pairtopath} defined by
+  \[
+    (p,q) \mapsto \pathpair p q
+  \]
+  is an equivalence of type
+  \[
+    \left( \sum_{p:x=x'} \pathover y Y p {y'} \right)
+    \weq \left ( (x,y) = (x',y') \right ).
+  \]
 \end{lemma}
 
 \begin{proof}
   Call the map $\Phi$.
-  A map the other way, $$ \Psi : ((x,y) = (x',y')) \to \sum_{p:x=x'} \pathover y Y p {y'}, $$
-  can be defined by induction, by setting $$\Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).$$
+  A map the other way,
+  \[
+    \Psi : ((x,y) = (x',y')) \to \sum_{p:x=x'} \pathover y Y p {y'},
+  \]
+  can be defined by induction, by setting
+  \[
+    \Psi (\refl {(x,y)}) \defeq (\refl x, \refl y).
+  \]
   One proves, by induction on paths, the identities $ \Psi ( \Phi (p,q) ) = (p,q) $ and $ \Phi (\Psi ( r )) = r$, so $\Psi$ and $\Phi$ are inverse functions.
   Applying \cref{lem:weq-iso}, we see that $\Phi$ and $\Psi$ are inverse equivalences, thereby obtaining the desired result.
 \end{proof}
@@ -1107,8 +1135,14 @@ The following lemma follows from \cref{lem:isEq-pair=}, combined with \cref{def:
 \begin{lemma}\label{lem:isEq-pair-bin=}
   Suppose we are given type $X$ and $Y$.
   For any elements $(x,y)$ and $(x',y')$ of $X \times Y$,
-  the map defined in \cref{def:pairtopath} defined by $$(p,q) \mapsto \pathpair p q$$ is an equivalence of type
-  $$( x = x' ) \times (y = y') \weq \left( (x,y) = (x',y') \right). $$
+  the map defined in \cref{def:pairtopath} defined by
+  \[
+    (p,q) \mapsto \pathpair p q
+  \]
+  is an equivalence of type
+  \[
+    ( x = x' ) \times (y = y') \weq \left( (x,y) = (x',y') \right).
+  \]
 \end{lemma}
 
 \begin{xca}\label{xca:binary-prod-equiv}
@@ -1319,12 +1353,11 @@ identifications $n=n'$.
 At various points in the discussion above we have spoken of a family of types $Y(x)$ ranging over the elements $x$ of a type $X$.  Now we want
 to make that precise by taking $Y$ to be a function from $X$ to a type whose elements are types; one advantage will be that functions can be
 defined by induction.  Until now types and their elements have been different sorts of things, so it might be a bit jarring at first to consider
-a type as an element of some other type. Indeed, some care is required.  The first temptation is to posit a new type $\UU$ called a {\em
-  universe} so that every type is realized as an element of $\UU$, and thus allowing the family $Y$ to be realized as a function $Y : X \to
+a type as an element of some other type. Indeed, some care is required.  The first temptation is to posit a new type $\UU$ called a \emph{universe} so that every type is realized as an element of $\UU$, and thus allowing the family $Y$ to be realized as a function $Y : X \to
 \UU$.  This universe would be ``the type of all types'', but introducing it would lead to an absurdity, basically for the same reason that
 introduction of a ``set of all sets'' leads to an absurdity in traditional mathematics.  That was realized by 1900 and is now known as Russell's
 paradox.  The paradox results from constructing the set $W$ of all sets $X$ such that $X$ is not an element of $X$ and then considering whether
-$W$ is an element of $W$.  Some later approaches to set theory included the notion of a {\em class}, where classes are much like sets, but they
+$W$ is an element of $W$.  Some later approaches to set theory included the notion of a \emph{class}, where classes are much like sets, but they
 are bigger and there are more of them.  In particular, the collection of all sets was posited to be a class.  Of course, then may wonder what
 sort of thing the collection of all classes would be.
 
@@ -1822,15 +1855,8 @@ prove that $A\to B_\div$ is equivalent to $A_+\ptdto B$.
 \end{xca}
 
 \begin{xca}\label{xca:freemaps}
-  Let $A$ be a pointed type and $B$ a type.  Show that  
-$\sum_{b:B}(A\ptdto (B,b))$ and $(A_\div\to B)$ are equivalent.
-%given by $\mathrm{pr}_2(b,f)=f$ 
-%(for $b:B$, $f:A_\div\to B$ and $p:f(\pt_A)=b$)
-%Hint: note that 
-%$$\sum_{b:B}(A\ptdto (B,b))\oldequiv \sum_{b:B}\sum_{f:A_\div\to B}f(\pt_A)=b$$ 
-%is equivalent to $\sum_{f:A_\div\to B}\sum_{b:B}f(\pt_A)=b$.
-%Hint: show that the fiber $\sum_{b:B}\sum_{g:A_\div\to B}\sum_{p:g(\pt_A)=b}f=g$ 
-%over $f:A_\div\to B$ is equivalent to $\sum_{b:B}f(\pt_A)=b$ which is contractible.
+  Let $A$ be a pointed type and $B$ a type.
+  Show that $\sum_{b:B}(A\ptdto (B,b))$ and $(A_\div\to B)$ are equivalent.
 \end{xca}
 
 
@@ -2014,23 +2040,27 @@ which we solve in the canonical way as before.
 \section{Propositional truncation and logic}
 \label{sec:prop-trunc}
 
-As explained in \cref{sec:props-sets-grpds}, $\to,\prod,\times$ 
-can be used for the logical operations implication, 
+As explained in \cref{sec:props-sets-grpds},
+the type formers $\to,\prod,\times$ 
+can be used for the logical operations of implication, 
 universal quantification, and conjunction, respectively.
 Moreover, $\true$ and $\false$ can be used as truth values,
 and $\neg A \defeq (A\to\false)$ can be used for negation.
 We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
 that are not propositions, even though the constituents are
 propositions. This means we are still lacking $\vee$ and $\exists$
-from the standard repertoire of logic, as well as the notion of {\em non-emptiness} of a type.
+from the standard repertoire of logic, as well as the notion of \emph{non-emptiness} of a type.
 In this section we explain how to implement those three notions.
 
 To motivate the construction that follows, consider non-emptiness of a type $T$.  In order to be in a position to encode the mathematical
 assertion expressed by the English phrase ``$T$ is non-empty'', we will need a proposition $P$.  The proposition $P$ will have to be constructed
 somehow from $T$.  Any element of $T$ should somehow give rise to an element of $P$, but, since all elements of propositions are equal to each
 other, all elements of $P$ arising from elements of $T$ should somehow be made to equal each other.  Finally, any proposition $Q$ that is a
-consequence of having an element of $T$ should also be a consequence of $P$.  (We are suppressing the etymology of the word ``non-empty'',
-because the proposition $T \ne \emptytype$ does not satisfy that final condition.)
+consequence of having an element of $T$ should also be a consequence of $P$.
+(We are suppressing the etymology of the word ``non-empty'',
+because the proposition $T \ne \emptytype$ does not satisfy that final condition.\footnote{%
+  For this reason, some people prefer the word ``\emph{inhabited}''
+  instead of ``non-empty''.})
 
 We define now an operation called propositional truncation,\footnote{%
 The name ``truncation'' is slightly misleading since it suggests leaving
@@ -2059,7 +2089,7 @@ In the non-dependent case we get that
 any function $g: T\to P$ yields a (unique) function $f:\Trunc{T}\to P$ 
 satisfying $f(\trunc{t})\jdeq g(t)$ for all $t:T$.\footnote{%
 Note that $f(\trunc{t})$ respects equality since $P$ is a proposition.}
-A good way to state this recursion principle is that, 
+A useful consequence of this recursion principle is that, 
 for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
 \[
 (\Trunc{T} \to P) \quad \to \quad (T \to P).
@@ -2085,7 +2115,10 @@ Let $A$ be a type. We call $A$ \emph{non-empty} if we have an element of $\Trunc
   is called the \emph{(connected) component} of $a$ in $A$.
   We say that elements $x,y$ of $A$ are \emph{in the same component}
   if we have an element of $\Trunc{x=y}$.
-  The type $A$ is called \emph{connected} if it is non-empty with
+  The type $A$ is called \emph{connected}\footnote{%
+    Below in \cref{def:set-truncation} we will
+    define the \emph{set of connected components} of a type.}
+  if it is non-empty with
   all elements in the same component, that is, if
   $\Trunc{A} \times \prod_{x,y:A} \Trunc{x=y}$.
 \end{definition}
@@ -2131,14 +2164,14 @@ Let $A$ be a connected type, and suppose that $a=a$ is a proposition for every $
 Show that $A$ is contractible.
 \end{xca}
 
-In the following definition we introduce the adverb {\em merely}.
+In the following definition we introduce the adverb \emph{merely}.
 
 \begin{definition}\label{def:merely}
-  If {\em A} is an English adjectival phrase encoded by a type $T$, 
-  then {\em merely A} is the English adjective encoded by the type $\Trunc T$.
+  If \emph{A} is an English adjectival phrase encoded by a type $T$, 
+  then \emph{merely A} is the English adjective encoded by the type $\Trunc T$.
 \end{definition}
 
-For example, a type is non-empty if and only if it {\em merely has an element}, and two elements of a connected type are {\em merely equal}.
+For example, a type is non-empty if and only if it \emph{merely has an element}, and two elements of a connected type are \emph{merely equal}.
 
 On the other hand, if we want to emphasize that a phrase \emph{A} refers to the
 untruncated type $T$, then we employ the adverb \emph{purely}
@@ -2228,8 +2261,8 @@ In other words, $\Set$ is a groupoid.
 \end{lemma}
 
 \begin{proof}
-By univalence, $(X=Y) \equiv (X\equiv Y)$. The latter type is
-$\sum_{f:X\to Y} \isEq(f)$. Since $X$ and $Y$ are sets,
+By univalence, $(X=Y) \equiv (X\equiv Y) \jdeq
+\sum_{f:X\to Y} \isEq(f)$. Since $X$ and $Y$ are sets,
 so is $X\to Y$ by \cref{lem:level-n-utils}. Moreover,
 $\isEq(f)$ is a proposition by \cref{lem:isX-is-prop}.
 It follows by \cref{cor:subtype-same-level} that $X=Y$ is a set.  
@@ -2310,11 +2343,27 @@ satisfying $f(\trunc{t}_0)\jdeq g(t)$ for all $t:T$.\footnote{%
 Lemma~7.3.12\footnotemark gives an equivalence from 
 $\trunc{t}_0 = \trunc{t'}_0$ to $\Trunc{t=t'}$ for all $t,t:T$.}%
 \footcitetext{hottbook}
-A good way to state this recursion principle is that, 
+A consequence of this recursion principle is that, 
 for any set $S$, precomposition with $\trunc{\_}_0$ is an equivalence
 \[
 (\Trunc{T}_0 \to S) \quad \to \quad (T \to S).
 \]
+\begin{xca}\label{xca:sum-of-conn-compoenents}
+  Let $A$ be a type. Define for every element $z : \Trunc{A}_0$
+  the connected component corresponding to $z$, $A_{(z)}$,
+  a subtype of $A$, such that for $a:A$, you recover the notion from
+  \cref{def:connected}: $A_{(\trunc{a}_0)} \jdeq A_{(a)}$.\footnote{%
+    \emph{Hint:} Use a map $\Trunc{a={\blank}} : A \to \Prop$
+    and the fact that the universe of propositions
+    is a set.}
+  
+  Prove that the set truncation map $\trunc{\blank}_0 : A \to \Trunc{A}_0$
+  in this way exhibits $A$ as the sum of its connected components,
+  indexed by $\Trunc{A}_0$:
+  \[
+    A \equiv \sum_{z : \Trunc{A}_0} A_{(z)}. \qedhere
+  \]
+\end{xca}
 
 \subsection{Weakly constant maps}
 
@@ -2323,7 +2372,7 @@ only applies directly to construct elements of \emph{propositions} (that is, to 
 Here we discuss how we can construct elements of \emph{sets}.
 
 \begin{definition}
-  A map $f: A \to B$ is \emph{weakly constant} if $f\,x = f\,x'$ for all $x,x':A$.
+  A map $f: A \to B$ is \emph{weakly constant} if $f(x) = f(x')$ for all $x,x':A$.
 \end{definition}
 This is in contrast to a \emph{constant} map,
 which is one of the form $x \mapsto b$ for some $b:B$.
@@ -2334,7 +2383,7 @@ weak constancy of $f : A \to B$ is a proposition.
 \begin{theorem}\label{thm:wconstant-elim}
   If $f : A \to B$ is a weakly constant map, and $B$ is a set, then
   there is an induced map $g : \Trunc{A} \to B$ such that
-  $g(\trunc x)\jdeq f\,x$ for all $x:A$.
+  $g(\trunc x)\jdeq f(x)$ for all $x:A$.
 \end{theorem}
 \begin{proof}
   Consider the image factorization of $f : A \xrightarrow{p}{} \im(f)
@@ -2377,40 +2426,40 @@ $A/R$ as the image of the map $R : A \to (A \to \Prop)$.
 \end{definition}
 An element of the image is an equivalence class:
 a subset $P$ of $A$ for which there merely exists $a:A$
-such that $P\,x$ holds if and only if $R\,a\,x$ holds.
+such that $P(x)$ holds if and only if $R(a,x)$ holds.
 We write $[a]$ for the equivalence class containing $a$.
 \begin{lemma}\label{lem:equiv-class-prop}
   For any equivalence class $P : A/R$ and $a:A$,
-  $P = [a]$ if and only if $P\,a$ holds.
+  $P = [a]$ if and only if $P(a)$ holds.
 \end{lemma}
 \begin{proof}
-  Assume $P = [a]$. Then $P\,x$ is equivalent to $R\,a\,x$ for all $x:A$.
-  Take $x\defeq a$ and use reflexivity $R\,a\,a$ to conclude $P\,a$.
+  Assume $P = [a]$. Then $P(x)$ is equivalent to $R(a,x)$ for all $x:A$.
+  Take $x\defeq a$ and use reflexivity $R(a,a)$ to conclude $P(a)$.
 
-  Conversely, assume $P\,a$, and let $x:A$ be given.
-  To prove the proposition $P\,x \equiv R\,a\,x$ we may assume that
+  Conversely, assume $P(a)$, and let $x:A$ be given.
+  To prove the proposition $P(x) \equiv R(a,x)$ we may assume that
   $P \jdeq [b]$ for some $b:A$.
-  Then $P\,x \jdeq R\,b\,x$, and we need to show $R\,b\,x \equiv R\,a\,x$.
-  This follows from $P\,a \jdeq R\,b\,a$ using symmetry and transitivity.
+  Then $P(x) \jdeq R(b,x)$, and we need to show $R(b,x) \equiv R(a,x)$.
+  This follows from $P(a) \jdeq R(b,a)$ using symmetry and transitivity.
 \end{proof}
 \begin{theorem}\label{thm:quotient-property}
-  We have $([x] = [x']) \equiv (R\,x\,x')$ for all $x,x':A$,
+  We have $([x] = [x']) \equiv R(x,x')$ for all $x,x':A$,
   and for any \emph{set} $B$, a
   function $f : A \to B$ factors uniquely through the map $[\blank] : A \to A/R$ if
-  $f\,x=f\,x'$ for all $x,x':A$ with $R\,x\,x'$.
+  $f(x)=f(x')$ for all $x,x':A$ with $R(x,x')$.
   Indeed we get a map $\bar f : A/R \to B$ with
-  $\bar f\,[x] \jdeq f\,x$ for all $x:A$.
+  $\bar f([x]) \jdeq f(x)$ for all $x:A$.
 \end{theorem}
 \begin{proof}
   For the first part we use \cref{lem:equiv-class-prop} applied to $P_x \defeq [x]$ and $x'$.
 
-  Now let $B$ be a set and let $f : A \to B$ a function satisfying $f\,x=f\,x'$
-  for all $x,x':A$ with $R\,x\,x'$.
+  Now let $B$ be a set and let $f : A \to B$ a function satisfying $f(x)=f(x')$
+  for all $x,x':A$ with $R(x,x')$.
 
   Uniqueness: If $g,h$ are extensions of $f$ through $[\blank]$, then
-  for any $z:A/R$, the type $g\,z=h\,z$ is a proposition since $B$ is
+  for any $z:A/R$, the type $g(z)=h(z)$ is a proposition since $B$ is
   a set, so we may assume $z\jdeq [x]$ for some $x:A$. Then
-  $g\,[x] = f\,x = h\,[x]$, as desired.
+  $g([x]) = f(x) = h([x])$, as desired.
 
   Existence: Let $z\jdeq(P,!):A/R$. To define the image of $z$ in $B$,
   using the truth of the proposition $\exists_{x:A}(P = [x])$,
@@ -2422,13 +2471,13 @@ We write $[a]$ for the equivalence class containing $a$.
   equivalence class $[x]$ is accompanied by the witness
   $\trunc{(x, \refl{[x]})} : \exists_{y:A}([x] = [y])$.
   By~\cref{thm:wconstant-elim}, this is mapped judgmentally
-  to $(f \circ \fst)(x, \refl{[x]}) \jdeq f\,x$, as desired.
+  to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
 \end{proof}
 
 We can use set quotients to give an alternative definition
 of the set truncation $\Trunc{A}_0$ of a type $A$.
 Consider the relation $R : A \to A \to \Prop$ given by
-$R\,x\,y \defeq \Trunc{x=y}$.
+$R(x,y) \defeq \Trunc{x=y}$.
 This is easily seen to be an equivalence relation,
 using the groupoid structure of identity types.
 Hence we get a quotient set $A/R$ that satisfies
@@ -2437,11 +2486,11 @@ where we write $\trunc{\blank}_0$ for the equivalence classes.
 Furthermore,~\cref{thm:quotient-property} implies that
 $A/R$ satisfies the recursion principle of~\cref{def:set-truncation}:
 If $S$ is a set, and $g:A\to S$ is any function,
-then $g\,x=g\,y$ holds whenever $\Trunc{x=y}$
+then $g(x)=g(y)$ holds whenever $\Trunc{x=y}$
 by the elimination principle
 of the propositional truncation,
 and hence we get a function $f : A/R \to S$ satisfying
-$f\,\trunc{x}_0\jdeq g(x)$ for all $x:A$, as desired.\footnote{%
+$f(\trunc{x}_0)\jdeq g(x)$ for all $x:A$, as desired.\footnote{%
   Expanding the definitions,
   this means that we can take the $0$-truncation $\Trunc{A}_0$
   of $A:\UU$ to be the $\UU$-small image
@@ -2455,12 +2504,12 @@ $f\,\trunc{x}_0\jdeq g(x)$ for all $x:A$, as desired.\footnote{%
 \section{More on natural numbers}
 \label{sec:more-on-N}
 
-A useful function $\NN\to\NN$ is the \emph{predecessor} $p$ defined by
-$p(0)\defeq 0$ and $p(\Succ(n))\defeq n$.
+A useful function $\NN\to\NN$ is the \emph{predecessor} $\Pred$ defined by
+$\Pred(0)\defeq 0$ and $\Pred(\Succ(n))\defeq n$.
 Elementary properties of addition, multiplication and predecessor
 can be proved in type theory in the usual way.
 We freely use them, sometimes even in definitions, leaving most of the
-proofs to the reader.
+proofs/constructions to the reader.
 
 \begin{definition}
 \label{def:orderonN}
@@ -2494,15 +2543,25 @@ We give some more details of the proof, since they illustrate an aspect
 of type theory that has not been very prominent up to know, namely
 the close connection between proving and computing.
 
-\begin{definition}
+\begin{goal}
 \label{def:Nwellordered}
-Let $P(n)$ be a proposition for all natural numbers $n$. 
+Let $P(n)$ be a proposition for all natural numbers $n$.
 Define the type $P_{\min}(n)$ expressing that $n$ is the smallest
 natural number such that $P(n)$:
 \[
 P_{\min}(n) \defeq P(n) \times \prod_{m:\NN} (P(m) \to n\leq m)
 \]
-Then $P_{\min}(n)$ is also a proposition, and all $n$ such that $P_{\min}(n)$
+Then we seek a function
+\begin{equation}\label{eqn:min}
+\min(P) : \prod_{n:\NN}(P(n)\amalg\neg P(n)) \to 
+          \exists_{n:\NN} P(n) \to \sum_{n:\NN} P_{\min}(n),
+\end{equation}
+computing a minimal witness for $P$
+from evidence that $P$ is decidable and that a witness merely exists.
+\end{goal}
+\begin{construction}
+First note that $P_{\min}(n)$ is a proposition,
+and that all $n$ such that $P_{\min}(n)$
 are equal. Therefore the type $\sum_{n:\NN} P_{\min}(n)$
 is also a proposition. 
 
@@ -2516,7 +2575,7 @@ The function $\mu_P$ is defined by induction, setting
 $\mu_P(0)\defeq 0$ and 
 $\mu_P(\Succ(n))\defeq \mu_P(n)$ if $\mu_P(n) < n$.
 Otherwise, we set $\mu_P(\Succ(n))\defeq n$ if $P(n)$,
-and $\mu_P(\Succ(n))\defeq \Succ(n)$ else, using $d(n)$ to decide,
+and $\mu_P(\Succ(n))\defeq \Succ(n)$ otherwise, using $d(n)$ to decide,
 that is, by induction on $d(n):P(n)\amalg\neg P(n)$.
 By design, $\mu_P$ `remembers' where it has found the least $k$ (if so).
 We are now done with the computational part and the rest
@@ -2549,7 +2608,7 @@ By contraposition we get from the previous result
 \mu_P(n)= n \to \neg P(m),~\text{for all $m<n$.}
 \]
 
-Note that there may not be an $n$ such that $P(n)$,
+Note that there may not be any $n$ such that $P(n)$;
 the best we can do is to prove
 \[
 P(n)\to P_{\min}(\mu_P(\Succ(n)))
@@ -2560,14 +2619,13 @@ Moreover, $P(m) \to \mu_P(\Succ(n))\leq m$ for all $m$ in $\NN$.
 Hence $P_{\min}(\mu_P(\Succ(n)))$.
 
 Since $\sum_{n:\NN} P_{\min}(n)$ is a proposition, 
-we obtain the following function by the induction
-principle for propositional truncation \cref{def:prop-trunc}:
-
-\begin{align}\label{eqn:min}%\tag{bla}
+we obtain the required function by the induction
+principle for propositional truncation, \cref{def:prop-trunc}:
+\[
 \min(P) : \prod_{n:\NN}(P(n)\amalg\neg P(n)) \to 
-           \Trunc[\Big]{\sum_{n:\NN} P(n)} \to  \sum_{n:\NN} P_{\min}(n).
-\end{align}
-\end{definition}
+           \Trunc[\Big]{\sum_{n:\NN} P(n)} \to  \sum_{n:\NN} P_{\min}(n).\qedhere
+\]
+\end{construction}
 
 \begin{remark}\label{rem:computations-can-decide}
 In the interest of readability, we do not always make the use
@@ -2684,7 +2742,13 @@ which is easily proved by giving functions in both directions and using UA.
 \end{proof}
 
 The above lemma remains true if $X$ ranges over $\Set$.
-If a set $S$ is in the same component in $\Set$ as $\bn{n}$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
+If a set $S$ is in the same component in $\Set$\footnote{%
+  Here it doesn't matter whether we say $\Set$ or $\UU$,
+  since any finite set is a set.
+  Hence we also have $\FinSet_n
+  \jdeq \Set_{(\bn{n})} = \FinSet_{(\bn{n})}
+  = \UU_{(\bn{n})}$.}
+as $\bn{n}$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
 
 \begin{definition}\label{def:groupoidFin}
 The \emph{groupoid of finite sets} is defined by
@@ -2777,7 +2841,9 @@ if $f$ is both injective and surjective, we show that
 $f^{-1}(b)$ is contractible, for each $b:B$. 
 Being contractible is a proposition, so by \cref{def:prop-trunc}
 we can drop the truncation in $\Trunc{\sum_{a:A} b=f(a)}$.
-Now apply injectivity.
+Now apply injectivity.\footnote{%
+  This argument applies generally:
+  Any non-empty proposition is contractible.}
 \end{proof}
 \begin{remark}
   \label{rem:injectionsurjectionisnotwhatyouthink}
@@ -2785,13 +2851,19 @@ Now apply injectivity.
 
 The real line is contractible and the inclusion of the discrete subspace $\{0,1\}$ is, well, an inclusion (of sets, which is the same thing as an inclusion of spaces).  However, $\{0,1\}$ is not connected, seemingly contradicting the next result.
 
-  This apparent contradiction is resolved once one recalls the myopic nature of our setup: the contractibility of the real line means that ``all real numbers are identical'', and \emph{our} ``preimage of $3.25$'' is not a proposition: it contains \emph{both} $0$ and $1$.  Hence ``$\{0,1\}\subseteq\mathbf R$'' would not count as an injection in our sense.
+  This apparent contradiction is resolved once one recalls the myopic nature of our setup: the contractibility of the real line means that ``all real numbers are identical'', and \emph{our} ``preimage of $3.25$'' is not a proposition: it contains \emph{both} $0$ and $1$.  Hence ``$\{0,1\}\subseteq\mathbb R$'' would not count as an injection in our sense.
 
-  We should actually have been more precise above: we were referring to the \emph{homotopy type} of the real line, rather than the real line itself.
+  We should actually have been more precise above: we were referring to the \emph{homotopy type} of the real line, rather than the real line itself.\footnote{%
+    We don't define this formally here,
+    see \citeauthor{Shulman-Real-Cohesive}\footnotemark{} for a synthetic account.
+    The idea is that the homotopy type $\constant{h}(X)$ of a type $X$
+    has a map from $X$, $\iota : X \to \constant{h}(X)$,
+    and any continuous function $f : [0,1] \to X$
+    gives rise to a path
+    $\iota(f(0)) = \iota(f(1))$ in
+    $\constant{h}(X)$.}\footcitetext{Shulman-Real-Cohesive}
   We shall later (in the chapters on geometry) make plenty of use of the latter,
   which is as usual a set with uncountably many elements.
-% 
-%On one hand, there is no injection of $\{0,1\}$ into $\{0\}$, and on the other, any injection of a nonempty space into the one-point space \emph{is} an equivalence.  
 \end{remark}
 
 \begin{corollary}\label{cor:inj+connected}
@@ -2812,7 +2884,11 @@ Let $f:X\to Y$ be a surjective map from a connected type $X$. Then $Y$ is connec
 For any map $f:X\to Y$ between arbitrary types, if $y,y':Y$ and we are given 
 $x,x':X$, $p:y=f(x)$, $p':y'=f(x')$ and $q:x=x'$, 
 then we have an identity between $y$ and $y'$ given by the composite
-$$\xymatrix{y\ar@{=}[r]^-p&f(x)\ar@{=}[r]^{f(q)}&f(x')\ar@{=}[r]^-{p'{}^{-1}}&y'}.$$
+\[
+  \begin{tikzcd}
+    y \ar[r,eq,"p"] & f(x)\ar[r,eq,"f(q)"] & f(x')\ar[r,eq,"\inv{p'}"] & y'.
+  \end{tikzcd}
+\]
 Now the lemma follows by eliminating the propositional truncations in the assumptions,
 using that the conclusion is a proposition.
 \end{proof}
