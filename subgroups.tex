@@ -276,9 +276,11 @@ Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\ti
 
 The kernel, cokernel and image constructions satisfy a lot of important relations which we will review in a moment, but in our setup they are really complicated ways of interpreting the following fact about preimages
 \begin{lemma}
+  \label{lem:fibersofcomposites}
   Consider pointed functions $(f_1,p_1):(X_0,x_0)\to_*(X_1,x_1)$ and $(f_2,p_2):(X_1,x_1)\to_*(X_2,x_2)$ and the resulting functions
-  $$F:f_1^{-1}(x_1)\to(f_2f_1)^{-1}(x_2),\qquad F(x,p)\defequi(x,p_1f_2p),$$
+  $$F:f_1^{-1}(x_1)\to(f_2f_1)^{-1}(x_2),\qquad F(x,p)\defequi(x,p_2f_2p),$$
   $$G:(f_2f_1)^{-1}(x_2)\to f_2^{-1}(x_2),\qquad G(x,q)\defequi(f_1x,q)$$
+  \marginnote{(here the function $\xymatrix{((x_1,p_2)=(f_1x,q))\ar[r]^-{(\overline{p,r})\mapsto p}&(x_1=f_1(x))}$ is the ``first projection'' explained in the discussion of the interpretation of pairs following \cref{def:pairtopath})}
   $$H:G^{-1}(x_1,p_2)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)=(f_1x,q))\to \\
   %\sum_{x:X_0}(x_1=f_1(x))\oldequiv
   \to f_1^{-1}(x_1),\qquad H(x,q,(\overline{p,r}))\defequi (x,p))$$
@@ -288,14 +290,23 @@ The kernel, cokernel and image constructions satisfy a lot of important relation
   % \end{multline*}
   % $$H:F^{-1}(x_1,p_1)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_1)=(x,p_1f_2q))\to \sum_{x:X_0}(x_1=f_1(x))\oldequiv
   % \to f_1^{-1}(x_1),\qquad H(x,q,t)\defequi (x,\fst(t))$$
-  \marginnote{$$\xymatrix{G^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]^F&f_1^{-1}(x_1)\ar[d]^{\fst}&\\
+  \marginnote{$$\xymatrix{
+      G^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]_{\fst}&f_1^{-1}(x_1)\ar[d]^{\fst}\ar[dl]_F&\\
       (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^G&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar@{=}[d]\\
-    f_2^{-1}(x_2)\ar[r]^{\fst}&X_1\ar[r]^{f_2}&X_2}
+    f_2^{-1}(x_2)\ar[r]^{\fst}&X_1\ar[r]^{f_2}&X_2.}
   $$}
-  (where the function $\xymatrix{((x_1,p_2)=(f_1x,q))\ar[rr]^-{(\overline{p,r})\mapsto p}&&(x_1=f_1(x))}$ is the ``first projection'' explained in the discussion of the interpretation of pairs following \cref{def:pairtopath}).  Then $H$ is an equivalence and $FH$ is definitionally equal to the first projection $\fst:{G^{-1}(x_1,p_2)\to(f_2f_1)^{-1}(x_2)}$ and so through univalence provides an identification
+
+Then $H$ is an equivalence and $FH$ is definitionally equal to the first projection $\fst:{G^{-1}(x_1,p_2)\to(f_2f_1)^{-1}(x_2)}$ and so, through univalence, provides an identification
   $$\bar H:(G^{-1}(x_1,p_2),\fst)=(f_1^{-1}(x_1),F)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$ of function with codomain $(f_2f_1)^{-1}(x_2)$.
   %($\fst(t)$ refers to the discussion following \cref{def:pairtopath} so that if $t\oldequiv(\overline{a,b}):(x_1,p_1)=(x,p_1f_2q)$, then $\fst(t)\defequi a:x_1=f_1x$).
 \end{lemma}
+\begin{proof}
+  That $H$ is an equivalence is seen by noting that $G^{-1}(x_1,p_2)$ is equivalent to
+  $\sum_{x:X_0}\sum_{q:x_2=f_2f_1x}\sum_{p:x_1=f_1x}q=p_2f_2p$ and that $\sum_{q:x_2=f_2f_1x}q=p_2f_2p$ is contractible.
+\end{proof}
+When referring to \cref{lem:fibersofcomposites}
+it is often useful to display an inverse to $H$ explicitly:
+$$H^{-1}(x,q)\defequi((x,p_2f_2q),(\overline{q,\refl{p_2f_2q}})).$$
 
 \begin{xca}\footnote{proofread}
   \marginnote{$$\xymatrix{\ker f_1\ar@{=}[r]\ar[d]^{F_1}&\ker f_1\ar[d]^{\ker_{f_1}}\\
