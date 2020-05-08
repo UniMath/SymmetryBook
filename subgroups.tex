@@ -205,46 +205,78 @@ If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G
 %\newcommand*{\kermap}[1]{\mathrm{in}_{\ker #1}} something wrong fix
 \begin{definition}
   \label{def:kernel}
-Let $f:\Hom(G,G')$  be a homomorphism.
-Consider the element 
-$$\sh_{\ker f}\defequi(\sh_G,p_f):(\Bf)^{-1}(\sh_{G'})$$ (where $p_f:\sh_{G'}=\Bf(\sh_G)$ is the part of $f$ claiming it is a pointed map). 
-Define the \emph{kernel}\index{kernel}  of $f$ to be the group defined by the pointed component  of $\sh_{\ker f}$ in $(\Bf)^{-1}(\sh_{G'})$:
-$$\ker f\defequi \aut_{(\Bf)^{-1}(\sh_{G'})}(\sh_{\ker f}).
+ We define a function
+  $$\ker:\Hom(G,G')\to\typemono_G$$
+  which we call the \emph{kernel}\index{kernel}.  
+ If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in  $\ker f\defequi(\Ker f,\incl_{\ker f},!):\typemono_G$.    Consider the element 
+$$\sh_{\Ker f}\defequi(\sh_G,p_f):(\Bf)^{-1}(\sh_{G'})$$ (where $p_f:\sh_{G'}=\Bf(\sh_G)$ is the part of $\Bf$ claiming it is a pointed map). 
+Define the \emph{kernel group}\index{kernel!group} (or most often just the kernel) 
+\marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomorphism into $G$?  This is common usage and is only resolved by a typecheck.}
+of $f$ to be the group $\Ker f$ defined by the pointed component  of $\sh_{\ker f}$ in $(\Bf)^{-1}(\sh_{G'})$:
+$$\Ker f\defequi \aut_{(\Bf)^{-1}(\sh_{G'})}(\sh_{\ker f}).
 $$ 
-
 The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$) giving a monomorphism
 % $\kermap f$
-$\incl_{\ker f}$ of $\ker f$ into $G$; together defining a function
-$$\ker:\Hom(G,G')\to\typemono_G$$
-\marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomorphism into $G$?  This is common usage and is only resolved by a typecheck.}
-which we will also refer to as the \emph{kernel}.
+$\incl_{\ker f}$ of $\ker f$ into $G$; together defining $\ker f=(\Ker f,\incl_{\ker f},!):\typemono_G$.
 \end{definition}
-\marginnote{\color{blue}THIS WILL BE CHANGED A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
+\marginnote{{\color{blue}THIS WILL BE CHANGED} A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
 Written out, the classifying type of the kernel,
 $B\ker f_\div$, is $$\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$$
-For a function of sets the notion of the ``image'' gives us a factorization through a surjection followed by an injection.  For homomorphism of groups we similarly have a factorization through an epimorphism followed by a monomorphism.
-\marginnote{The formula for the image in group theory is essentially the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel.}
+
+For a function $f:A\to B$ of sets (or, more generally, of types) the notion of the ``image'' gives us a factorization through a surjection followed by an injection: noting that $a\mapsto (f(a),!)$ is a surjection from $A$ to the ``image'' $\sum_{b:B}\Trunc{f^{-1}(b)}$, from which we have an injection (first projection) to $B$.  
+\marginnote{The formula for the image in group theory is the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel $\coker(f)\defequi\Trunc{(\Bf)^{-1}(z)}_0$.}
+For homomorphism $f:\Hom(G,G')$ of groups we similarly have a factorization through an epimorphism followed by a monomorphism.  The image is now represented by %type $\sum_{b:B}\Trunc{f^{-1}(b)}$ is simply replaces by
+$\sum_{z\BG'}\Trunc{(\Bf)^{-1}(z)}_0$.
+\newcommand{\prj}{\constant{pr}}
+\newcommand{\prjim}{\prj^{\img}}
+\begin{construction}
+  We define a function
+  $$\img:\Hom(G,G')\to\typemono_G$$
+  called the \emph{image}\index{image!function} %(or just image)
+  and a function
+  $$\prjim:\Hom(G,G')\to\typeepi_G
+  $$
+  called the \emph{projection to the image}\index{image!projection to},
+  so that if  $f:\Hom(G,G')$  is a homomorphism, then
+  $\img f\defequi(\Img f,\incl_{\img f},!):\typemono_G$ and
+  $\prjim f\defequi(\Img f,\prj_{\Img f},!):\typeepi_G$
+  with common first projection the \emph{image group}\index{image!group} (or most often just the image) $\Img f$, and so that we have a definitional equality in $\Hom(G,G')$
+  \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img f}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img f}}}
+  $$}
+$$f\oldequiv\incl_{\Img f}\prj_{\Img f}.$$
+Let 
+\end{construction}
+\begin{implementation}
+  Consider the element
+  $$\sh_{\Img f}\defequi (\sh_{G'},|\sh_G,p_f|):\sum_{z:\BG'}\coker f(z)$$ and define the image group of $f$ to be
+  $$\Img f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\sh_{\Img f}).$$
+  The first projection $\fst: B\image f\to \BG'$ is a \covering
+  (since $\coker f(z)$ is a set) giving a monomorphism $\incl_{\img f}$ of $\Img f$ into $G$.
+
+  The homomorphism (which we must show is an epimorphism) $\prj_{\Img f}:\Hom(G,\Img f)$  is given on the level of classifying types by sending $x:\BG$ to
+  $$B\prj_{\Img f} f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$
+  From this it is clear that $\Bf$ is definitionally equal to the composite of $B\incl_{\Img f}$ and $B\prj_{\Img f}$.
+  \marginnote{and if the wrapping destroys this fact in some ugly manner, it is an argument against wrapping}
+\end{implementation}
+
 \begin{definition}
   \label{def:image}
-  Let $f:\Hom(G,G')$  be a homomorphism.
-  The \emph{image}\index{image} $\image f$ of $f$ is the group
-  $$\image f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\sh_{G'},|\sh_G,p_f|)$$
-  together with the monomorphism $\image_f$ of $\image f$ into $G'$ given by the first projection $B\image f\to \BG'$ (a monomorphism since $\coker f(z)$ is a set); resulting in a function
-  $$\image:\Hom(G,G')\to\typemono_{G'}.$$
+ We define a function
+  $$\img:\Hom(G,G')\to\typemono_G$$
+  which we call the \emph{image}\index{image}.
+  If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in $\img f\defequi(\Img f,\incl_{\img f},!):\typemono_G$.  
+  The \emph{image group}\index{image!group} (or most often just the image) of $f$ is the group
+  $$\Img f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\sh_{G'},|\sh_G,p_f|).$$
+  The first projection $\fst: B\image f\to \BG'$ is a \covering
+  (since $\coker f(z)$ is a set) giving a monomorphism $\incl_{\img f}$ of $\Img f$ into $G$;
+  together defining $\img f=(\Img f,\incl_{\img f},!):\typemono_G$.  
 
 
 The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:\BG$ to
 $$B\tilde f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$ 
-
-% We say that the homomorphism $f$ is \emph{surjective}\index{surjective! group homomorphism} if $(\Bf)^{-1}(\sh_{G'})$ is connected.
-%, or equivalently if $\image f\to G'$ is an equivalence.
 \end{definition}
 
-% \begin{remark}
-%   \label{rem:cokerasGset}
-%   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\sh_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$\BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$  
-% We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set.
-% \end{remark}
+% \begin{remark}   \label{rem:cokerasGset}   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\sh_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$\BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$   We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set. \end{remark}
 In view of \cref{ex:charsurinj} below, the families  
 $$\mathrm{isepi},\mathrm{ismono}:\Hom(G,G')\to\Prop
 $$
