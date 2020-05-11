@@ -3,14 +3,19 @@
 
 An effective principle in mathematics is that when you want to study a certain 
 phenomenon you should search for a single type that captures this phenomenon.  
-Here are two examples
+Here are two examples:\footnote{%
+  Notice that these have arrows pointing in different directions:
+  In~\cref{it:one-out} we're mapping \emph{out} of $\bn{1}$,
+  while in~\cref{it:prop-in} we're mapping \emph{in} to $\Prop$.}
 \begin{enumerate}
-\item The contractible type $\bn 1$ has the property that given 
+\item\label{it:one-out}
+  The contractible type $\bn 1$ has the property that given 
 any type $A$ a function $\bn 1\to A$ provides exactly the 
 same information as picking an element in $A$.
 For, an equivalence from $A$ to $\bn 1\to A$ is provided by
 the function $a \mapsto (x \mapsto a)$.
-\item The type $\Prop$ of propositions has the property that 
+\item\label{it:prop-in}
+  The type $\Prop$ of propositions has the property that 
 given any type $A$ a function $A\to\Prop$ provides exactly 
 the same information as picking a subtype of $A$.
 \end{enumerate}
@@ -19,7 +24,13 @@ which is so that given \emph{any} type $A$ the type of functions
 $X\to A$ (or $A\to X$, but that's not what we're going to do) 
 picks out exactly the symmetries in $A$.  
 We will soon see that there is such a type: 
-the circle which is built \emph{exactly} so that this 
+the circle\footnote{%
+  We call this type the ``circle''
+  because it turns out to be the homotopy type of
+  the topological circle $\setof{(x,y)\in\RR^2}{x^2+y^2=1}$.
+  In the later chapters on geometry we'll return
+  to ``real'' geometrical circles.}
+which is built \emph{exactly} so that this 
 ``universality with respect to symmetries'' holds.  
 It may be surprising to see how little it takes to define it; 
 especially in hindsight when we eventually discover some of the many uses of the circle.
@@ -64,10 +75,56 @@ by this data satisfies $f(\base)\jdeq a$ and
 the recursion principle provides an (unnamed) element of 
 $\ap{f}(\Sloop)=l$.
 
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}
+    \node (A) at (2,3) {$\sum_{x:\Sc}A(x)$};
+    \node (Sc) at (2,0) {$\Sc$};
+    \node (Sloop) at (.9,-.5) {$\Sloop$};
+    \draw[->] (A) -- node[auto] {$\fst$} (Sc);
+    \draw[->] (-90:1 and .3) arc (-90:270:1 and .3);
+    \node[basedot] at (-1,0) {};
+    % then: A top and bottom
+    \coordinate[label=above left:$A(\base)$] (A-top-left) at (-1,2.7);
+    \coordinate (A-bot-left) at (-1,0.9);
+    \coordinate (A-top-front) at (0,2.4);
+    \coordinate (A-bot-front) at (0,0.7);
+    \coordinate (A-top-back) at (0,2.8);
+    \coordinate (A-bot-back) at (0,1.3);
+    \coordinate (A-top-right) at (1,2.6);
+    \coordinate (A-bot-right) at (1,0.8);
+    \draw (A-top-left) -- (A-bot-left)
+    .. controls +(-90:.3) and +(-10:-.5) .. (A-bot-front)
+    .. controls +(-10:.5) and +(90:-.3) .. (A-bot-right)
+    -- (A-top-right)
+    .. controls +(-90:.2) and +(170:-.5) .. (A-top-front)
+    .. controls +(170:.5) and +(90:-.2) .. (A-top-left);
+    \draw[dashed] (A-bot-left)
+    .. controls +(90:.3) and +(5:-.4) .. (A-bot-back)
+    .. controls +(5:.4) and +(-90:-.3) .. (A-bot-right);
+    \draw (A-top-left)
+    .. controls +(90:.3) and +(-10:-.3) .. (A-top-back)
+    .. controls +(-10:.3) and +(-90:-.3) .. (A-top-right);
+    \node[dot,label=left:$a$] (a-left) at (-1,2) {};
+    \coordinate (a-front) at (0,1.6);
+    \coordinate (a-right) at (1,1.8);
+    \coordinate (a-back) at (0,2.2);
+    \draw[->] (a-left)
+    .. controls +(-90:.3) and +(-15:-.4) .. (a-front);
+    \draw (a-front)
+    .. controls +(-15:.4) and +(90:-.3) .. node[auto] {$l$} (a-right);
+    \draw[dashed] (a-left)
+    .. controls +(90:.3) and +(-5:-.4) .. (a-back)
+    .. controls +(-5:.4) and +(-90:-.3) .. (a-right);
+  \end{tikzpicture} 
+  \caption{The induction principle of $\Sc$.}
+  \label{fig:circle-induction}
+\end{marginfigure}
+
 Let $A(x)$ be a type for every $x:\Sc$. The induction principle of $\Sc$
 states that, in order to prove $A(x)$ for every element $x$ of $\Sc$,
 it suffices to give an element $a$ of $A(\base)$ together with an
-identification $l$ of type $\pathover{a}{A}{\Sloop}{a}$. 
+identification $l$ of type $\pathover{a}{A}{\Sloop}{a}$,
+cf.~\cref{fig:circle-induction}.
 The function $f$ defined by this data satisfies $f(\base)\jdeq a$ and 
 the induction principle provides an element of $\apd{f}(\Sloop)=l$.
 \end{definition}
@@ -87,15 +144,13 @@ For all types $A$, the evaluation function
 \ev_A : (\Sc\to A)\to \sum_{a:A}(a=_Aa)\text{~defined by~} 
 \ev_A(g)\defeq (g(\base),g(\Sloop))
 \]
-is an equivalence, with inverse $\el_A$ defined by the recursion principle.  
-In particular, if $a:A$, the function $((\Sc,\base)\to_* (A,a))\to (a=_Aa)$
-sending $(g,p)$ to $p^{-1}\cdot g(\Sloop)\cdot p$ is an equivalence.
+is an equivalence, with inverse $\ve_A$ defined by the recursion principle.
 \end{lemma}
 \begin{proof}
 Fix $A:\UU$. We apply \cref{lem:weq-iso}. 
-For all $a:A$ and $l:a=a$ we have $\ev(\el(a,l))=(a,l)$
+For all $a:A$ and $l:a=a$ we have $\ev(\ve(a,l))=(a,l)$
 by the recursion principle. It remains to prove
-$\el(\ev(f))=f$ for all $f:\Sc\to A$. This will follow
+$\ve(\ev(f))=f$ for all $f:\Sc\to A$. This will follow
 from the following more general result. Assume 
 $p: f(\base)= g(\base)$ and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
 We show $f=g$, for which it suffices to prove by circle induction
@@ -109,21 +164,29 @@ Hence $\trp[P]{\Sloop}(p)=p$ by easy calculation.
 Using \cref{lem:isEq-pair=} we can phrase the result
 as: if $\ev(f)=\ev(g)$, then  $f=g$.
 
-Now we get $\el(\ev(f))=f$, as
-$\ev(\el(\ev(f)))=(f(\base),f(\Sloop))\jdeq\ev(f)$ with $p\defeq\refl{f(\base)}$
+Now we get $\ve(\ev(f))=f$, as
+$\ev(\ve(\ev(f)))=(f(\base),f(\Sloop))\jdeq\ev(f)$ with $p\defeq\refl{f(\base)}$
 and $q$ coming from the induction principle.
 \end{proof}
-
-{\color{blue}
-The above proof is a function $e$ of type $\prod_{A:\UU} \isEq(\ev_A)$.
-This means that for all $A:\UU$, $a:A$ and $p:a=a$, 
-$e(A,a,p)$ is a proof that $\ev_A^{-1}(a,p)$ is contractible. Hence 
-%$\fst(e(A,a,p)): \sum_{f:\Sc\to A}(a,p)=\ev_A(f)$ is the center of contraction, and 
-$\fst(\fst(e(A,a,p))):\Sc\to A$. 
-We denote $\fst(\fst(e(A,a,p)))$ by $\ve_A(a,p)$. When we specify a function
-$f:\Sc\to A$ by $f(\base)\defeq a$ and $f(\Sloop)\defis p$ we mean
-$f\defeq\ve_A(a,p)$.
-}
+\begin{corollary}\label{cor:circle-loopspace}
+  For any $a:A$, the function $\ev_A^a:((\Sc,\base)\to_* (A,a))\to (a=_Aa)$
+  sending $(g,p)$ to $p^{-1}\cdot g(\Sloop)\cdot p$ is an equivalence.  
+\end{corollary}
+\begin{proof}
+It's easy to check commutativity of the diagram
+\[
+  \begin{tikzcd}
+    (\Sc \to A) \ar[rr,"{g\mapsto(g(a),g,\refl{g(a)})}"]
+    \ar[dr,"\ev_A"'] & &
+    \sum_{a:A}\bigl((\Sc,\base) \ptdto (A,a)\bigr)
+    \ar[dl,"\tot(\ev_A^-)"] \\
+    &  \,\sum_{a:A}(a=_A a),
+  \end{tikzcd}
+\]
+where to top map is an equivalence by \cref{cor:contract-away},
+and the left map is an equivalence by \cref{lem:freeloopspace}.
+The result now follows from \cref{lem:fiberwise-equiv-from-tot}.
+\end{proof}
 
 \begin{remark}\label{rem:dep-univ-prop-circle}
 By almost the same argument as for \cref{lem:freeloopspace}
@@ -162,7 +225,9 @@ is an equivalence.
   functions from the circle, this allows for a very graphic
   interpretation of the symmetries in $a=_Aa$: they are all in the
   image of a function $g$ from the circle: they are loops in the type
-  $A$ starting and ending at $a$!
+  $A$ starting and ending at $a$!\footnote{%
+    This is of course how we have been
+    picturing paths the whole time.}
 \end{remark}
 
 \begin{lemma}\label{lem:circleisconnected}
@@ -181,10 +246,14 @@ If this truncation were removed we wouldn't know what to do in
 the induction step (actually, ${\base=z}$ for all $z:\Sc$ contradicts UA).
 This said, the family $R:\Sc\to\UU$ with $R(z)\defequi (\base=z)$ is extremely 
 important for other purposes. We will call it in \cref{def:universalcover} the 
-``universal \covering'' of the circle and is the key tool in proving that 
+``universal \covering'' of the circle and it is the key tool in proving that 
 the set of integers and the symmetries in the circle coincide.
-We use the phrase ``symmetries {\em in} the circle'' to refer to the elements of $\base=_{\Sc}\base$,
-whereas we use the phrase ``symmetries {\em of} the circle'' to refer to the elements of $\Sc=_{\UU}\Sc$.
+We use the phrase ``symmetries \emph{in} the circle'' to refer to the elements of $\base=_{\Sc}\base$,\footnote{%
+  Here we are using ``the circle'' to mean the
+  \emph{pointed} type $(\Sc,\base)$.
+  But it also turns out that the type $\base=_{\Sc}\base$ is
+  equivalent to the type $x=_{\Sc}x$, for any $x:\Sc$.}
+whereas we use the phrase ``symmetries \emph{of} the circle'' to refer to the elements of $\Sc=_{\UU}\Sc$.
 The latter type is equivalent to $\Sc\amalg\Sc$,
 as follows from \cref{xca:S1=S1-components} and \cref{{xca:(S1->S1)_(f)-eqv-S1}}.
 
@@ -760,7 +829,7 @@ that $y=_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
 By \cref{def:gRtoP}, ${\Sloop}^{-}\jdeq g(\base)$ is an equivalence.
 \end{proof}
 
-The following lemma is a simple example of a technique later called {\em delooping}.
+The following lemma is a simple example of a technique later called \emph{delooping}.
 \begin{lemma}\label{lem:S1-delooping}
 Let $A$ be a connected type and $a:A$. 
 Assume we have an equivalence $e:(\base=_{\Sc}\base) \to (a=a)$
@@ -1502,7 +1571,7 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
   %%
   Let us move on to \ref{item:setbundle-mcover}. %
   First, let us emphasize that we are interested in the symmetries of
-  $\dg{m}$ {\em as a set bundle}, meaning we shall explore
+  $\dg{m}$ \emph{as a set bundle}, meaning we shall explore
   $(\Sc,\dg{m}) =_X (\Sc,\dg{m})$ where $X$ is the type
   $\SetBundle(\Sc)$.
   % (and not $\Sc\to \Sc$)
