@@ -84,16 +84,19 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
   Let $G$ be a group then the set of \emph{subgroups of $G$} is
   $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}X(\sh_G)\times\mathrm{isTrans}(X).$$
   The preferred equivalence 
- with the set of monomorphisms into $G$ is given by the function
+  with the set of monomorphisms into $G$ is given by the function
+  \marginnote{%
+   The inverse equivalence to $E$ is given by sending $(X,\pt,!)$ to the monomorphism associated with the first projection $\sum_{z:\BG}X(z)\to\BG$.
+ }%
   $$E:\typemono_G\to\typesubgroup_G\qquad (H,i,!)\mapsto E(H,i,!)\defequi ((Bi)^{-1},(\sh_H,p_i),!),$$
   where the monomorphism $i:\Hom(H,G)$ is -- as always -- given by the pointed map $(Bi_\div,p_i):(\BH_\div,\sh_H)\to_*(\BG_\div,\sh_G)$; and where $(Bi)^{-1}:\BG\to\Set$ is the preimage $G$-set (since $i$ is a monomorphism)  and finally $(\sh_H,p_i):(Bi)^{-1}(y)\defequi \sum_{x:\BH}(y=Bi(x))$.
 \end{definition}
-\marginnote{%
-   The inverse equivalence to $E$ is given by sending $(X,\pt,!)$ to the monomorphism associated with the first projection $\sum_{z:\BG}X(z)\to\BG$.
- }%
+
 \marginnote{%
   Which of the equivalent sets $\typemono_G$ and $\typesubgroup_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
-  }%
+}%
+\marginnote{%
+An argument for our choice can be that the identity type in $\typesubgroup_G$ seems more transparent than the one in $\typemono_G$  (``more things are equal'' in $\typemono_G$?), just as  $A\to\Prop$ gives more the intuition of picking out a subset by means of a characteristic function than what you get when considering the equivalent type of injections into $A$.}
   \begin{example}
     The monomorphism of $\Sigma_2$ into $\Sigma_3$ of \cref{ex:sigma2inSigma3} can be displayed as a subgroup of $\Sigma_3$ through 
     $$X:\fin_3\to\Set
@@ -105,7 +108,10 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
   \end{xca}
 \begin{example}  
   \label{ex:prodinclisGset}
-  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG$ followed by the principal $G$-torsor.  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, then the monomorphism correspond to the $G$-set given by $Bf$ followed by the princial $H$-torsor.
+  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.
+  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the principal $G$-torsor $\princ G:\BG\to\Set$.
+  
+  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi=\id_H$, then $(H,i,!):\typemono_G$, corresponding to the subgroup with $G$-set given by the composite of $\Bf$ with the princial $H$-torsor $\princ H$.
 \end{example}
 
 
@@ -181,10 +187,15 @@ The construction of $\ZZ/m$ and the isomorphism between $\ZZ/m$ and $C_m$ is als
 \marginnote{On the other hand, the cokernel is the quotient set of $\mathcal G'$ by the relation that if $g:\mathcal G$ and $g':\mathcal G'$, then $g'\sim g'\cdot\phi(g)$.}
 
 In our setup with a group homomorphism 
-$f:\Hom(G,G')$ being given by a pointed function $\Bf:\BG\to_*\BG'$, the above mentioned kernel and cokernel are just two aspects of the preimage 
-$$(\Bf)^{-1}(\sh_{G'})\defequi\sum_{x:\BG}(\sh_{G'}=\Bf(x)):$$
-the cokernel is the set of components and the kernel is a preferred component.  This point of view makes it clear that the kernel is a subgroup whereas there is no particular reason for the cokernel to be more than a ($G'$-) set.
+$f:\Hom(G,G')$ being given by a pointed function $\Bf:\BG\to_*\BG'$, the above mentioned kernel, cokernel and image are just different aspects of the preimages  
+$$(\Bf)^{-1}(z)\defequi\sum_{x:\BG}(z=\Bf(x))$$
+for $z:\BG'$.  Note that all these preimages are groupoids.
+
+The kernel will correspond to a preferred component of the preimage of $\sh_{G'}$, the cokernel will be the ($G'$-)set of components and for the image we will choose a component of the \covering corresponding to the cokernel.  This point of view makes it clear that the image will be a subgroup of $G'$, the kernel will be a subgroup of $G$, whereas there is no particular reason for the cokernel to be more than a ($G'$-) set.
 \marginnote{Even though the cokernel is in general just a $G'$-set, we will see in \cref{def:normalquotient} that in certain situations it gives rise to a group called the quotient group. }
+
+\subsection{Kernels and cokernels}
+\label{sec:kerandcoker}
 \begin{definition}
   \label{def:cokernel}
   Let $f:\Hom(G,G')$  be a homomorphism.
@@ -198,10 +209,6 @@ $$\coker:\Hom(G,G')\to G'\text{-}\Set.$$
 If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G'$, we often write $G'/G$ for the cokernel of $f$. 
 \end{definition}
 \marginnote{We've seen that there is a close connection between monomorphisms into $G'$ and $G'$-sets, and it is natural to ask if the $G'$-set $\coker f$ gives rise to a monomorphism into $G'$.  The answer to this question is occasionally ``yes'' and is intimately connected to the notion of ``normal subgroups'' which we'll explore shortly.}
-\begin{remark}
-  Note that we say that a homomorphism $f:\Hom(G,G')$ is an epimorphism if the preimages of $\Bf$ are connected.  We can now give yet another reformulation: $f$ is an epimorphism if $\coker f$ is the singleton.
-\end{remark}
-
 %\newcommand*{\kermap}[1]{\mathrm{in}_{\ker #1}} something wrong fix
 \begin{definition}
   \label{def:kernel}
@@ -211,17 +218,103 @@ If $f:\Hom(G,G')$ is clear from the context and displays $G$ as a subgroup of $G
  If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in  $\ker f\defequi(\Ker f,\incl_{\ker f},!):\typemono_G$.    Consider the element 
 $$\sh_{\Ker f}\defequi(\sh_G,p_f):(\Bf)^{-1}(\sh_{G'})$$ (where $p_f:\sh_{G'}=\Bf(\sh_G)$ is the part of $\Bf$ claiming it is a pointed map). 
 Define the \emph{kernel group}\index{kernel!group} (or most often just the kernel) 
-\marginnote{There is an inherent abiguity in our notation: is the kernel of $f$ a group or a monomorphism into $G$?  This is common usage and is only resolved by a typecheck.}
-of $f$ to be the group $\Ker f$ defined by the pointed component  of $\sh_{\ker f}$ in $(\Bf)^{-1}(\sh_{G'})$:
+\marginnote{There is an inherent abiguity in our notation:
+  is the kernel of $f$ a group or a monomorphism into $G$?
+  This is common usage and is only resolved by a typecheck.}
+of $f$ to be the group $\Ker f$ defined by the pointed component  of $\sh_{\Ker f}$ in $(\Bf)^{-1}(\sh_{G'})$:
 $$\Ker f\defequi \aut_{(\Bf)^{-1}(\sh_{G'})}(\sh_{\ker f}).
 $$ 
 The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$) giving a monomorphism
 % $\kermap f$
 $\incl_{\ker f}$ of $\ker f$ into $G$; together defining $\ker f=(\Ker f,\incl_{\ker f},!):\typemono_G$.
 \end{definition}
-\marginnote{{\color{blue}THIS WILL BE CHANGED} A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
+
 Written out, the classifying type of the kernel,
 $B\ker f_\div$, is $$\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$$
+
+\marginnote{\tiny{\color{blue}THIS WILL BE CHANGED} A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
+
+\begin{xca}
+  Given a homomorphism $f:\Hom(G,G')$, prove that
+    \marginnote{Hint: consider the corresponding property of the preimage of $\Bf$.
+      $$\xymatrix{L\ar[drr]^h\ar@{.>}[dr]^{k}\ar[ddr]&&\\
+        &\Ker f\ar[r]_{\incl_{\ker f}}\ar[d]&G\ar[d]^f\\
+        &{1}\ar[r]&\,G'.}$$}
+  \begin{enumerate}
+  \item $f$ is a monomorphism if and only if the kernel is trivial
+  \item $f$ is an epimorphims if and only if the cokernel is contractible.
+  \item if $h:\Hom(L,G)$ is a homomorphism such that $fh:\Hom(H,G')$ factors over the trivial group $1$, then there is a unique $k:\Hom(H,\Ker f)$ such that $h=\incl_{\ker f}k$. 
+  \end{enumerate}
+\end{xca}
+
+
+The kernel, cokernel and image constructions satisfy a lot of important relations which we will review in a moment, but in our setup many of them are just complicated ways of interpreting the following fact about preimages
+\begin{lemma}
+  \label{lem:fibersofcomposites}
+  Consider pointed functions $(f_1,p_1):(X_0,x_0)\to_*(X_1,x_1)$ and $(f_2,p_2):(X_1,x_1)\to_*(X_2,x_2)$ and the resulting functions
+  $$F_1:f_1^{-1}(x_1)\to(f_2f_1)^{-1}(x_2),\qquad F_1(x,p)\defequi(x,p_2f_2p),$$
+  $$F_2:(f_2f_1)^{-1}(x_2)\to f_2^{-1}(x_2),\qquad F_2(x,q)\defequi(f_1x,q)$$
+  \marginnote{(here the function $\xymatrix{((x_1,p_2)=(f_1x,q))\ar[r]^-{(\overline{p,r})\mapsto p}&(x_1=f_1(x))}$ is the ``first projection'' explained in the discussion of the interpretation of pairs following \cref{def:pairtopath})}
+  $$H:F_2^{-1}(x_1,p_2)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)=(f_1x,q))\to \\
+  %\sum_{x:X_0}(x_1=f_1(x))\oldequiv
+  \to f_1^{-1}(x_1),\qquad H(x,q,(\overline{p,r}))\defequi (x,p))$$
+  % \begin{multline*}
+  %   H:F_2^{-1}(x_1,p_2)\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)=(f_1x,q))\to \\
+  %   \sum_{x:X_0}(x_1=f_1(x))\oldequiv f_1^{-1}(x_1),\qquad H(x,q,(\overline{p,r}))\defequi (x,p))
+  % \end{multline*}
+  % $$H:F_1^{-1}(x_1,p_1)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_1)=(x,p_1f_2q))\to \sum_{x:X_0}(x_1=f_1(x))\oldequiv
+  % \to f_1^{-1}(x_1),\qquad H(x,q,t)\defequi (x,\fst(t))$$
+  \marginnote{$$\xymatrix{
+      F_2^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]_{\fst}&f_1^{-1}(x_1)\ar[d]^{\fst}\ar[dl]_{F_1}&\\
+      (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^{F_2}&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar@{=}[d]\\
+    f_2^{-1}(x_2)\ar[r]^{\fst}&X_1\ar[r]^{f_2}&X_2.}
+  $$}
+
+Then
+\begin{enumerate}
+\item $H$ is an equivalence with inverse
+$$H^{-1}(x,q)\defequi((x,p_2f_2q),(\overline{q,\refl{p_2f_2q}})),$$ 
+\item the composite $F_1H$ is definitionally equal to the first projection $\fst:{F_2^{-1}(x_1,p_2)\to(f_2f_1)^{-1}(x_2)}$. 
+\end{enumerate}
+Hence, through univalence, $H$ provides an identification
+  $$\bar H:(F_2^{-1}(x_1,p_2),\fst)=(f_1^{-1}(x_1),F_1)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$ of function with codomain $(f_2f_1)^{-1}(x_2)$.
+  %($\fst(t)$ refers to the discussion following \cref{def:pairtopath} so that if $t\oldequiv(\overline{a,b}):(x_1,p_1)=(x,p_1f_2q)$, then $\fst(t)\defequi a:x_1=f_1x$).
+\end{lemma}
+\begin{proof}
+  That $H$ is an equivalence is seen by noting that $F_2^{-1}(x_1,p_2)$ is equivalent to
+  $\sum_{x:X_0}\sum_{q:x_2=f_2f_1x}\sum_{p:x_1=f_1x}q=p_2f_2p$ and that $\sum_{q:x_2=f_2f_1x}q=p_2f_2p$ is contractible.
+\end{proof}
+% When referring to \cref{lem:fibersofcomposites}
+% it is often useful to display an
+From the universal property of the preimage it furthermore follows that $F$ is the unique map such that $\fst F=_{f_1^{\-1}(x_1)\to X_0}\fst$ and $H^{-1}$ is similarly unique wrt. $\fst H^{-1}=F$.
+
+\begin{corollary}
+  \marginnote{$$\xymatrix{\Ker f_1\ar@{=}[r]\ar[d]^{F_1}&\Ker f_1\ar[d]^{\incl_{\ker f_1}}\\
+      \Ker f_2f_1\ar[d]^{F_2}\ar[r]^{\incl_{\ker f_2f_1}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar@{=}[d]\\
+      \Ker f_2\ar[r]^{\incl_{\ker f_2}}&G_1\ar[r]^{f_2}&G_2% \\
+   % \coker F_2&\coker f_1
+ }
+  $$}
+  Consider homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
+  There is a unique monomorphisms $F_1$ from $\ker f_1$ to $\ker(f_2f_1)$ and a unique homomorphism $F_2$ from $\ker(f_2f_1)$ to $\ker f_2$ such that $\incl_{\ker f_1}=\incl_{\ker f_2f_1}F_1$ and $f_1\incl_{\ker f_2f_1}=\incl_{\ker f_2}F_2$.
+  Furthermore, $$F_1=_{\typemono_{G_1}}\incl_{\ker F_2}$$ and $$(\coker f_1)\,\B\incl_{\ker f_2}=_{\B\Ker f_2\to\Set}\coker (F_2).$$
+
+  Consequequently,
+  \begin{enumerate}
+  \item if $f_2$ is a monomorphism then $F_1:\ker f_1\to\Ker f_2f_1$ is an isomorphism and 
+  \item if $f_1$ is a monomorphism then $F_2:\ker f_2f_1\to\Ker f_2$ is an isomorphism.
+  \end{enumerate}
+\footnote{Recall (from where?) that if $f,g:A\to\Set$ are two $A$-sets, then $f\to g$ is defined to be the set $$\prod_{a:A}(f(a)\to g(a))$$ and we say that $\phi:f\to g$ is an equivalence if $\prod_{a:A}\isEq\phi(a)$.}
+  Likewise, the set truncation of the maps $F_1$ and $F_2$ constructed in \cref{lem:fibersofcomposites} give maps $F_1':\coker f_1\to_{\BG_2\to\Set}\coker f_2f_1\,Bf_2$ and $F_2':\coker f_2f_1\to_{\BG_2\to\Set}\coker f_2$ of families
+  giving that
+  \begin{enumerate}
+  \item if $f_2$ is an epimorphism then $F':\coker f_1\to_{\BG_2\to\Set}\coker f_2f_1\,Bf_2$ is an equivalence and 
+  \item if $f_1$ is an epimorphism then $F_2':\coker f_2f_1\to_{\BG_2\to\Set}\coker f_2$  is an equivalence.
+  \end{enumerate}
+\end{corollary}
+
+\subsection{The image}
+\label{sec:image}
 
 For a function $f:A\to B$ of sets (or, more generally, of types) the notion of the ``image'' gives us a factorization through a surjection followed by an injection: noting that $a\mapsto (f(a),!)$ is a surjection from $A$ to the ``image'' $\sum_{b:B}\Trunc{f^{-1}(b)}$, from which we have an injection (first projection) to $B$.  
 \marginnote{The formula for the image in group theory is the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel $\coker(f)\defequi\Trunc{(\Bf)^{-1}(z)}_0$.}
@@ -309,51 +402,6 @@ Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\ti
 \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\tilde f}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\image_f}}
   $$}
 
-The kernel, cokernel and image constructions satisfy a lot of important relations which we will review in a moment, but in our setup they are really complicated ways of interpreting the following fact about preimages
-\begin{lemma}
-  \label{lem:fibersofcomposites}
-  Consider pointed functions $(f_1,p_1):(X_0,x_0)\to_*(X_1,x_1)$ and $(f_2,p_2):(X_1,x_1)\to_*(X_2,x_2)$ and the resulting functions
-  $$F:f_1^{-1}(x_1)\to(f_2f_1)^{-1}(x_2),\qquad F(x,p)\defequi(x,p_2f_2p),$$
-  $$G:(f_2f_1)^{-1}(x_2)\to f_2^{-1}(x_2),\qquad G(x,q)\defequi(f_1x,q)$$
-  \marginnote{(here the function $\xymatrix{((x_1,p_2)=(f_1x,q))\ar[r]^-{(\overline{p,r})\mapsto p}&(x_1=f_1(x))}$ is the ``first projection'' explained in the discussion of the interpretation of pairs following \cref{def:pairtopath})}
-  $$H:G^{-1}(x_1,p_2)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)=(f_1x,q))\to \\
-  %\sum_{x:X_0}(x_1=f_1(x))\oldequiv
-  \to f_1^{-1}(x_1),\qquad H(x,q,(\overline{p,r}))\defequi (x,p))$$
-  % \begin{multline*}
-  %   H:G^{-1}(x_1,p_2)\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)=(f_1x,q))\to \\
-  %   \sum_{x:X_0}(x_1=f_1(x))\oldequiv f_1^{-1}(x_1),\qquad H(x,q,(\overline{p,r}))\defequi (x,p))
-  % \end{multline*}
-  % $$H:F^{-1}(x_1,p_1)%\oldequiv\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_1)=(x,p_1f_2q))\to \sum_{x:X_0}(x_1=f_1(x))\oldequiv
-  % \to f_1^{-1}(x_1),\qquad H(x,q,t)\defequi (x,\fst(t))$$
-  \marginnote{$$\xymatrix{
-      G^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]_{\fst}&f_1^{-1}(x_1)\ar[d]^{\fst}\ar[dl]_F&\\
-      (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^G&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar@{=}[d]\\
-    f_2^{-1}(x_2)\ar[r]^{\fst}&X_1\ar[r]^{f_2}&X_2.}
-  $$}
-
-Then $H$ is an equivalence and $FH$ is definitionally equal to the first projection $\fst:{G^{-1}(x_1,p_2)\to(f_2f_1)^{-1}(x_2)}$ and so, through univalence, provides an identification
-  $$\bar H:(G^{-1}(x_1,p_2),\fst)=(f_1^{-1}(x_1),F)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$ of function with codomain $(f_2f_1)^{-1}(x_2)$.
-  %($\fst(t)$ refers to the discussion following \cref{def:pairtopath} so that if $t\oldequiv(\overline{a,b}):(x_1,p_1)=(x,p_1f_2q)$, then $\fst(t)\defequi a:x_1=f_1x$).
-\end{lemma}
-\begin{proof}
-  That $H$ is an equivalence is seen by noting that $G^{-1}(x_1,p_2)$ is equivalent to
-  $\sum_{x:X_0}\sum_{q:x_2=f_2f_1x}\sum_{p:x_1=f_1x}q=p_2f_2p$ and that $\sum_{q:x_2=f_2f_1x}q=p_2f_2p$ is contractible.
-\end{proof}
-When referring to \cref{lem:fibersofcomposites}
-it is often useful to display an inverse to $H$ explicitly:
-$$H^{-1}(x,q)\defequi((x,p_2f_2q),(\overline{q,\refl{p_2f_2q}})).$$
-
-\begin{xca}\footnote{proofread}
-  \marginnote{$$\xymatrix{\ker f_1\ar@{=}[r]\ar[d]^{F_1}&\ker f_1\ar[d]^{\ker_{f_1}}\\
-      \ker f_2f_1\ar[d]^{F_2}\ar[r]^{\ker_{f_2f_1}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar@{=}[d]\\
-      \ker f_2\ar[r]^{\ker_{f_2}}&G_1\ar[r]^{f_2}&G_2% \\
-   % \coker F_2&\coker f_1
- }
-  $$}
-  Consider homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
-  There is a unique monomorphisms $F_1$ from $\ker f_1$ to $\ker(f_2f_1)$ and a unique homomorphism $F_2$ from $\ker(f_2f_1)$ to $\ker f_2$ such that $\ker_{f_1}=\ker_{f_2f_1}F_1$ and $f_1\ker_{f_2f_1}=\ker_{f_2}F_2$.
-  Furthermore, $$F_1=_{\typemono_{G_1}}\ker_{F_2}$$ and $$(\coker f_1)\,\B\ker_{f_2}=_{\B\Ker f_2\to\Set}\coker (F_2).$$ 
-\end{xca}
 
 
 
