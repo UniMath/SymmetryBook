@@ -172,7 +172,11 @@ and $q$ coming from the induction principle.
   For any $a:A$, the function $\ev_A^a:((\Sc,\base)\to_* (A,a))\to (a=_Aa)$
   sending $(g,p)$ to $p^{-1}\cdot g(\Sloop)\cdot p$ is an equivalence.  
 \end{corollary}
-\begin{proof}
+\begin{proof}\hskip-5pt\footnote{%
+    This can also be done directly:
+    The inverse to $\ev_A^a$ sends $l : a=_Aa$
+    to $(\ve_A(a,l), \refl{a})$.
+    Try to verify this!}
 It's easy to check commutativity of the diagram
 \[
   \begin{tikzcd}
@@ -265,88 +269,129 @@ and explore the concept of \coverings.
 \section{The integers}
 \label{sec:integers}
 
-We define the type of integers in one of the many possible ways.
+We define the type of integers in one of the many possible ways.\footnote{%
+  Here are some of these alternatives:
+  \begin{itemize}
+  \item As the copy of $\NN$ where $2n$ means $n$ and $2n+1$ means $-n-1$, for $n:\NN$.
+  \item As the sum $\NN\coprod\NN$, where $\inl{n}$ means $-n-1$ and $\inr{n}$ means $n$.
+  \item As the sum $\NN\coprod\bn1\coprod\NN$, where from the left copy of $\NN$ we get $-n-1$, from the center $0:\bn1$ we get $0$, and from the right copy of $\NN$ we get $n+1$, for $n:\NN$.
+  \item As the quotient of $\NN\times\NN$ under the equivalence relation
+    $(n,m) \sim (n',m')$ defined by $n+m' = n'+m$,
+    where $(n,m)$ represents $n-m$.
+  \item As the subset of $\NN\times\NN$ consisting of those $(n,m)$ with $n=0\lor m=0$ (picking canonical representatives for the above equivalence relation).
+  \item As the loops $\base=_\Sc\base$ in the circle. %$\ddot\smile$
+  \end{itemize}}
 
 \begin{definition}\label{def:zet}
-  Let $\zet$ be the inductive type with the following three
-  constructors:
+  Let $\zet$ be the higher inductive type with the following three
+  constructors:\glossary(Z){$\protect\zet$}{the set of integers,
+  \cref{def:zet}}
 \begin{enumerate}
-\item $z_0: \zet$ for the integer number zero,
-$0 \defeq z_0$
-\item $pos: \NN \to \zet$ for positive numbers,
-$1 \defeq pos(0),\ldots$
-\item $neg: \NN \to \zet$ for negative numbers, 
-$-1 \defeq neg(0),\ldots$
+\item $\iota_+: \NN \to \zet$ for the nonnegative numbers,
+  $0,1,\ldots$\glossary(909iota+){$\iota_+$}{embedding of $\NN$ into $\zet$}
+\item $\iota_-: \NNN \to \zet$ for the nonpositive numbers,
+  $-0,-1,\ldots$\glossary(909iota-){$\iota_-$}{embedding of $\NNN$ into $\zet$}
+\item $\zeq : \iota_-(-0) = \iota_+(0)$.
 \end{enumerate}
-Like any other inductive type, the type $\zet$ comes with an
-induction principle. Let $T(z)$ be a family of types indexed by $z:\zet$.
+Because we used the copy $\NNN$ for the nonpositive numbers from \cref{exa:nnn},
+we can leave out the constructor symbols $\iota_\pm$
+when the type is clear from context.
+Thus we have $\ldots,-2,-1,-0,0,1,2,\ldots:\zet$ and $\zeq:-0=_\zet0$.
+
+The type $\zet$ comes with an induction principle:
+Let $T(z)$ be a family of types indexed by $z:\zet$.
 In order to construct an element $f(z)$ of $T(z)$ for all $z:\zet$,
-it suffices to give $f(0): T(0)$ and to give functions $g$ and $h$ such
-that $g(n): T(pos(n))$ and $h(n): T(neg(n))$ for all $n:\NN$.
-Here $g$ and $h$ can be defined by induction on $n:\NN$.
+it suffices to give functions $g$ and $h$ such
+that $g(n): T(\iota_+(n))$ and $h(n): T(\iota_-(m))$ for all $n:\NN,m:\NNN$,
+together with $q : \pathover {h(-0)} T \zeq {g(0)}$.
+Here $g$ and $h$ can be defined by induction on $n:\NN,m:\NNN$.\footnote{%
+  Of course, giving $h$ is the same as giving $h':\prod_{n:\NN}T(-n)$.}
 
-The \emph{embedding} function $i:\NN\to\zet$ is defined by induction,
-setting $i(0)\defeq z_0$, $i(S(n))\defeq pos(n)$.
-Like the type $\NN$, the type $\zet$ is a set with decidable equality
-and ordering relations,
-and we denote its elements often in the usual way as $\ldots,-1,0,1,\ldots$.
-
-One well-known equivalence is \emph{negation} ${-}:\zet\to\zet$, 
-also called \emph{complement}, inductively defined by setting 
-$-z_0\defeq z_0$, 
-$-pos(n)\defeq neg(n)$, 
-$-neg(n)\defeq pos(n)$.
-Negation is its own inverse.
-
-The \emph{successor} function $s:\zet\to\zet$ is defined inductively setting 
-$s(z_0)\defeq pos(0)$, 
-$s(pos(n))\defeq pos(S(n))$,
-$s(neg(n))\defeq -i(n)$. For example, we have
-$s(-1)\jdeq s(neg(0))\jdeq -i(0) \jdeq z_0 \jdeq 0$.
-By induction on $n:\NN$ one proves $s(i(n))=i(S(n))$, 
-so that one can say that $s$ extends $S$
-on the $i$-image of $\NN$. 
-
-The successor function $s$ is an equivalence.
-It is instructive to depict iterating $s$ in both directions as 
-a doubly infinite sequence containing all integers:
-\[
-\ldots \mapsto neg(1) \mapsto neg(0) \mapsto z_0 \mapsto pos(0) \mapsto pos(1) \mapsto \ldots
-\]
-
-The inverse $s^{-1}$ of $s$ is called the \emph{predecessor} function.
-We recall the $n$-fold iteration $s^n$ defined earlier;
-the $n$-fold iteration of $s^{-1}$ will be denoted by $s^{-n}$.
-
-Addition of integers is defined inductively by setting
-$z + z_0\defeq z$, 
-$z + pos(n)\defeq s^{n+1}(z)$, 
-$z + neg(n)\defeq s^{-(n+1)}(z)$.
-Again, addition extends $+$ on the $i$-image of $\NN$,
-see \cref{xca:addition-on-Z-and-N}. 
-From addition and unary $-$ one can define a binary
-\emph{substraction} function setting $z-y \defeq z+(-y)$.
+The resulting function $f:\prod_{z:\zet}T(z)$ satisfies
+$f(n)\jdeq g(n)$ and $f(-n)\jdeq h(-n)$ for $n:\NN$,
+and there is an (unnamed) element of $\apd{f}(\zeq) = q$.
 \end{definition}
 
+Like the type $\NN$, the type $\zet$ is a set with decidable equality
+and ordering relations.
+
+One well-known self-equivalence is \emph{negation}, ${-}:\zet\to\zet$,
+also called \emph{complement}, inductively defined by setting
+$-\iota_+(n)\defeq \iota_-(-n)$,
+$-\iota_-(m)\defeq \iota_+(-m)$,
+$\constant{ap}_-(\zeq) \defis \inv{\zeq}$.\footnote{%
+  Here we included the constructor symbols for clarity,
+  but the definition allows us to use the negation symbol
+  unadorned, because the following diagram
+  commutes up to judgmental equality:
+  \[
+    \begin{tikzcd}[column sep=large,row sep=large,ampersand replacement=\&]
+      \NN \ar[r,shift left=1mm,"-"]\ar[d,"\iota_+"']
+      \& \NNN \ar[l,shift left=1mm,"-"]\ar[d,"\iota_-"] \\
+      \zet \ar[r,shift left=1mm,"-"]
+      \& \zet \ar[l,shift left=1mm,"-"]
+    \end{tikzcd}
+  \]}
+Negation is its own inverse.
+
+The \emph{successor} function $\zs:\zet\to\zet$%
+\glossary(s){$\protect\zs$}{successor function on $\zet$} is
+likewise defined inductively, setting
+$\zs(n) \defeq \Succ(n)$,
+$\zs(-0) \defeq 1$,
+$\zs(-\Succ(n)) \defeq -n$,
+and $\ap{\zs}(\zeq) \defis \refl{1}$.
+
+The successor function $\zs$ is an equivalence.
+It is instructive to depict iterating $\zs$ in both directions as
+a doubly infinite sequence containing all integers:
+\[
+  \begin{tikzcd}[arrows=mapsto,row sep=tiny]
+    & & & -0 \ar[dd,eqr]\ar[dr] & & & \\
+    \cdots\ar[r] & -2\ar[r] & -1\ar[ur] & & 1\ar[r] & 2\ar[r] & \cdots \\
+    & & & 0 \ar[ur] & & &
+  \end{tikzcd}
+\]
+
+The inverse $\inv\zs$ of $\zs$ is called the \emph{predecessor} function.
+We recall the $n$-fold iteration $\zs^n$ defined earlier;
+the $n$-fold iteration of $\zs^{-1}$ will be denoted by $\zs^{-n}$.
+Since $\zs^0 \jdeq \id \jdeq \zs^{-0}$,
+this defines the iteration $\zs^z$ for all $z:\zet$.\footnote{%
+  In the same way, we can define the iteration
+$f^z : X \to X$ for any \emph{equivalence} $f : X \to X$.}\index{iteration}
+
+\emph{Addition} of integers is now defined by iteration:
+$z + y \defeq \zs^{y}(z)$.
+This extends $+$ on the $\iota_+$-image of $\NN$,
+see \cref{xca:addition-on-Z-and-N}.
+From addition and unary $-$ one can define a binary
+\emph{subtraction} function setting $z-y \defeq z+(-y)$.
+Since addition and subtraction are mutually inverse,
+we may iterate addition to define \emph{multiplication}:
+$zy \defeq (w \mapsto w+z)^y(0)$.
+
 \begin{xca}\label{xca:addition-on-Z-and-N}
-Show that $i(n+m)=i(n)+i(m)$ for all $n,m:\NN$.
+  Show that $\iota_+(n+m)=\iota_+(n)+\iota_+(m)$
+  and $\iota_+(nm) =\iota_+(n)\iota_+(m)$ for all $n,m:\NN$.
 \end{xca}
 
-Ordering relations $<$ and $\leq$ on $\zet$ are easily defined
+The ordering relations $<$ and $\leq$ on $\zet$ are easily defined
 and shown to extend those on $\NN$.
 
 Recall the induction principle for $\zet$ in \cref{def:zet} above.
 Instead of defining $g$ and $h$ explicitly, we will often
-define $g'$ and $h'$ such that $g'(z): T(z)\to T(z+1)$ 
-for all $z:\zet$ with $z\geq 0$, and $h'(z): T(z)\to T(z-1)$ 
-for all $z:\zet$ with $z\leq 0$. The function $f$ defined by 
-satisfies $f(z+1)\jdeq g'(z,f(z))$ for all $z\geq 0$,
+give $f(0)$ directly, and
+define $g'$ and $h'$ such that $g'(z): T(z)\to T(z+1)$
+for all $z:\zet$ with $z\geq 0$, and $h'(z): T(z)\to T(z-1)$
+for all $z:\zet$ with $z\leq 0$. The function $f$ thus defined
+satisfies $f(-0) \jdeq f(0)$,
+$f(z+1)\jdeq g'(z,f(z))$ for all $z\geq 0$,
 and $f(z-1)\jdeq h'(z,f(z))$ for all $z\leq 0$.
 
 \begin{xca}\label{xca:commutative-add-Z}
-Show that $n+m = m+n$ for all $n,m:\zet$.  
+  Show that $x+y = y+x$ and $xy=yx$ for all $x,y:\zet$.
 \end{xca}
-
 
 \section{\Coverings}
 \label{sec:covering}
@@ -417,7 +462,7 @@ so that in this case each preimage contains two points (is \emph{merely equal} t
 However, $A$ is not the constant family, like $A'$ depicted on the right, since 
 $A'=\sum_{z:\Sc}\bn 2=\Sc\times\bn 2=\Sc+\Sc$ is not connected.  
 Obviously something way more fascinating is going on.
-(In fact the \covering on the left is given by $\ve(\bool,ua(\twist))$,
+(In fact the \covering on the left is given by $\ve_\UU(\bool,\twist)$,
 see \cref{xca:C2} and \cref{lem:freeloopspace}).
 
 \begin{figure}[hbt]
@@ -489,7 +534,7 @@ specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.
 Said more concisely in terms of \cref{lem:freeloopspace},
 the type of \coverings over the circle is equivalent to 
 \[
-  \sum_{X:\Set}(X=X).
+  \sum_{X:\Set}(X=X).\qedhere
 \]
 \end{example}
 A particularly important example is the following:
@@ -548,10 +593,12 @@ be the \emph{exponential \covering of the circle}.
   absolute value $1$ and so defines a continuous function from the
   real numbers to the unit circle.  Choosing any point $z$ on the unit
   circle, we see that the preimage of $z$ under the exponential
-  function is a shifted copy of the integers inside the reals.
+  function is a shifted copy of the integers inside the reals.\footnote{%
+    Again, we emphasize that we are here dealing with the
+    \emph{homotopy types} of the reals and the unit circle.}
 
   This connection between the integers and the unit circle is
-  precisely captured in a form that we can take further by the
+  precisely captured in a form that we can take further by studying the
   \covering $\exp:\RR\to \Sc$.
 \end{remark}
 
