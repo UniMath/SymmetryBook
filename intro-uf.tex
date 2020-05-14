@@ -3061,7 +3061,7 @@ that each $\fst(P(a))$ is a proposition.
 The inverse equivalence in \cref{lem:typefamiliesandfibrations}
 sends $\fst\circ P$ to
 \[
-  \fst: (\sum_{a:A} \fst(P(a))) \to A.
+  \fst: \Bigl(\sum_{a:A} \fst(P(a))\Bigr) \to A.
 \]
 All the fibers of this function are propositions by combining
 $\snd\circ P : \prod_{a:A} \isprop(P(a))$
@@ -3090,75 +3090,98 @@ $(A\to\Set) \equiv \sum_{B:\UU}\sum_{f:B\to A}
 \end{enumerate}
 \end{lemma}
 
+\section{Stuff, structure, and properties}
+\label{sec:stuff-struct-prop}
 
-% {\color{blue}\tiny BID On its way to be moved to \cref{sec:thierrysdelooping}.  
-% \section{How to deloop a group morphism - MOVE TO GROUPS?}
+Recall from \cref{lem:sum-of-fibers}\marginnote{%
+  The precise formalization of the intuitive
+  notions of ``stuff'', ``structure'',
+  and ``properties'' was worked out
+  in terms of category theory in
+  \emph{UseNet} discussions between
+  John Baez, Toby Bartels, and James Dolan
+  on \texttt{sci.physics.research} in 1998.
+  It was clear that the simplest description
+  was in terms of homotopy types,
+  and hence it's even simpler in type theory.
+  See also \citeauthor{Baez-Shulman}\footnotemark{}
+  for further discussion.}%
+\footcitetext{Baez-Shulman}
+that any map $f : B \to A$ can be described
+as ``projecting away'' its fibers,
+by using the equivalence $e$:
+\[
+  \begin{tikzcd}
+    B \ar[rr,"e","\sim"']\ar[dr,"f"'] & &
+    \sum_{a:A} \inv f(a)\ar[dl,"\fst"] \\
+    & A &
+  \end{tikzcd}
+\]
+We say that $f$ \emph{forgets} these fibers.\index{forget}
+If $A$ and $B$ are groupoids,
+these fibers are themselves groupoids,
+but it can happen that they are sets, propositions, or even contractible.
+Accordingly, we say that:
+\begin{itemize}
+\item $f$ \emph{forgets at most structure} if all the fibers are sets;%
+  \index{forget!structure}
+\item $f$ \emph{forgets properties} if all the fibers are propositions;%
+  \index{forget!properties}
+\item $f$ \emph{forgets nothing} if all the fibers are contractible.
+\end{itemize}
+Of course, a map forgets properties if and only if
+it's an injection,
+and it forgets nothing if and only it's an equivalence.
 
-% Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
-% We suppose given a group morphism
-% $$f:a = a\rightarrow b = b$$
-% and we explain how to build a map $g:X \rightarrow Y$ with
-% a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
-% for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
+Going in the other direction,
+we say that:
+\begin{itemize}
+\item $f$ \emph{forgets at most $n$-stuff}
+  if all the fibers are $n$-truncated.\index{forget!stuff}
+\end{itemize}
+Thus, an element of a groupoid is $1$-stuff
+(or just \emph{stuff}\index{stuff|see{forget!stuff}}),
+while an element of a set is a structure, or $0$-stuff,
+while an proof of a proposition is a property, or $(-1)$-stuff.
 
-% \medskip
+Refining the usual image and image factorization from
+\cref{def:prop-image,xca:unique-fact-image}
+we can factor $f : B \to A$ through
+first its \emph{$0$-image}\footnote{%
+  Using the general $n$-truncation,
+  we can define the $n$-image
+  in a similar way and prove that
+  the $n$-image factorization is unique.}
+and then its usual $(-1)$-image\index{image} as follows:
+\[
+  B = \sum_{a:A} f^{-1}(a) \to
+  \sum_{a:A} \Trunc{f^{-1}(a)}_0 \to
+  \sum_{a:A} \Trunc{f^{-1}(a)}_{-1} \to
+  \sum_{a:A} \Trunc{f^{-1}(a)}_{-2} = A.
+\]
+Here, the first map \emph{forgets} (possibly higher) \emph{stuff},
+the second map \emph{forgets purely structure},
+while the last \emph{forgets purely properties}
+(this is the inclusion of the usual image).
 
-% Let us assume the problem solved. The map $g:X\rightarrow Y$
-% will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
-% and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
-% $$p(\alpha\omega) = g(\alpha)g(\omega)p
-%   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
-% for all $\omega:a = a$ and $\alpha : a = x$.
-
-% \medskip
-
-% This suggests to introduce the following family
-% $$
-% C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
-%  p(\alpha\omega) = p(\alpha)f(\omega)
-% $$
-
-%  An element of $C(x)$ has three components, the last component being
-%  a proof since $Y$ is a $1$-type.
-
-%  The type $C(a)$ has a simpler description. An element of $C(a)$ is
-%  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
-%  $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
-%  can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
-%  is completely determined by $p(1_a)$.
-%  Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
-
-%  \medskip
-
-%  It follows that we have
-%  $$
-%  \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
-%  $$
-% and so, since $\iscontr~C(x)$ is a proposition
-%  $$
-%  \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
-%  $$
-%  Since $X$ is connected, we have
-%  $\prod_{x:X}\iscontr~ C(x)$
-%  and so, in particular, we have an element of $\prod_{x:X}C(x)$.
-
-%  We get in this way a map $g:X\rightarrow Y$
-%  together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
-%  $p (\alpha\omega) = p(\alpha) f(\omega)$
-%  for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
-% We have, for $\alpha:a=x$
-% $$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
-% since this holds for $\lambda = 1_x$.
-% In particular, $p(\omega) = g(\omega)p(1_a)$.
-
-% We also have $p(\omega) = p(1_a)f(\omega)$, hence 
-% $p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
-% for all $\alpha:a=a$ and we have found a delooping of $f$.
-
-% }
-
-
-
+\begin{example}\label{exa:stuff-struct-prop}
+  Let us look at some examples:
+  \begin{itemize}
+  \item The first projection $\fst : \FinSet \times \FinSet \to \FinSet$
+    forgets stuff, namely the second set in the pair.
+  \item The first projection $\fst : \sum_{A:\FinSet} A \to \FinSet$
+    from the type of pointed finite sets to the type of finite sets
+    forgets structure, namely the structure of a chosen point.
+  \item The inclusion of the type of sets with cardinality
+    $n$, $\FinSet_n$, into the type of all finite sets, $\FinSet$,
+    forgets properties, namely the property
+    ``having cardinality $n$''.\qedhere
+    \end{itemize}
+\end{example}
+\begin{xca}\label{xca:stuff-struct-prop}
+  Analyze more examples of maps between groupoids
+  in terms of ``what is forgotten''.
+\end{xca}
 
 % Local Variables:
 % fill-column: 144
