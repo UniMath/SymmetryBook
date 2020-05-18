@@ -222,15 +222,15 @@ Define the \emph{kernel group}\index{kernel!group} (or most often just the kerne
   is the kernel of $f$ a group or a monomorphism into $G$?
   This is common usage and is only resolved by a typecheck.}
 of $f$ to be the group $\Ker f$ defined by the pointed component  of $\sh_{\Ker f}$ in $(\Bf)^{-1}(\sh_{G'})$:
-$$\Ker f\defequi \aut_{(\Bf)^{-1}(\sh_{G'})}(\sh_{\ker f}).
+$$\Ker f\defequi \aut_{(\Bf)^{-1}(\sh_{G'})}(\sh_{\Ker f}).
 $$ 
-The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\ker f}=(z,p)}$) giving a monomorphism
+The first projection $B\ker f\to \BG$ is a \covering (the preimages are equivalent to the sets $\sum_{p:\sh_{G'}=\Bf(z)}\Trunc{\sh_{\Ker f}=(z,p)}$) giving a monomorphism
 % $\kermap f$
 $\incl_{\ker f}$ of $\ker f$ into $G$; together defining $\ker f=(\Ker f,\incl_{\ker f},!):\typemono_G$.
 \end{definition}
 
 Written out, the classifying type of the kernel,
-$B\ker f_\div$, is $$\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\ker f}=(z,p)}.$$
+$B\ker f_\div$, is $$\sum_{z:\BG}\sum_{p:\sh_{G'}=f(z)}\Trunc{\sh_{\Ker f}=(z,p)}.$$
 
 \marginnote{\tiny{\color{blue}THIS WILL BE CHANGED} A subgroup is said to be \emph{normal}\index{normal} if it is the kernel of a surjective homomorphism. {clarify the relation between the surjective homomorphism and the subgroup}}
 
@@ -304,11 +304,11 @@ From the universal property of the preimage it furthermore follows that $F$ is t
   \item if $f_2$ is a monomorphism then $F_1:\ker f_1\to\Ker f_2f_1$ is an isomorphism and 
   \item if $f_1$ is a monomorphism then $F_2:\ker f_2f_1\to\Ker f_2$ is an isomorphism.
   \end{enumerate}
-\footnote{Recall (from where?) that if $f,g:A\to\Set$ are two $A$-sets, then $f\to g$ is defined to be the set $$\prod_{a:A}(f(a)\to g(a))$$ and we say that $\phi:f\to g$ is an equivalence if $\prod_{a:A}\isEq\phi(a)$.}
-  Likewise, the set truncation of the maps $F_1$ and $F_2$ constructed in \cref{lem:fibersofcomposites} give maps $F_1':\coker f_1\to_{\BG_2\to\Set}\coker f_2f_1\,Bf_2$ and $F_2':\coker f_2f_1\to_{\BG_2\to\Set}\coker f_2$ of families
-  giving that
+\footnote{If $f,g:A\to\Set$ are two $A$-sets, then $f\to g$ is defined to be the set $$\prod_{a:A}(f(a)\to g(a))$$ and we say that $\phi:f\to g$ is an equivalence if $\prod_{a:A}\isEq\phi(a)$.}
+  Likewise, the set truncation of the maps $F_1$ and $F_2$ constructed in \cref{lem:fibersofcomposites} give maps  of families $F_1':\coker f_1\to_{\BG_1\to\Set}\coker f_2f_1\,Bf_2$ and $F_2':\coker f_2f_1\to_{\BG_2\to\Set}\coker f_2$
+  such that
   \begin{enumerate}
-  \item if $f_2$ is an epimorphism then $F':\coker f_1\to_{\BG_2\to\Set}\coker f_2f_1\,Bf_2$ is an equivalence and 
+  \item if $f_2$ is an epimorphism then $F_1':\coker f_1\to_{\BG_2\to\Set}\coker f_2f_1\,Bf_2$ is an equivalence and 
   \item if $f_1$ is an epimorphism then $F_2':\coker f_2f_1\to_{\BG_2\to\Set}\coker f_2$  is an equivalence.
   \end{enumerate}
 \end{corollary}
@@ -336,8 +336,30 @@ $\sum_{z\BG'}\Trunc{(\Bf)^{-1}(z)}_0$.
   with common first projection the \emph{image group}\index{image!group} (or most often just the image) $\Img f$, and so that we have a definitional equality in $\Hom(G,G')$
   \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img f}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img f}}}
   $$}
-$$f\oldequiv\incl_{\Img f}\prj_{\Img f}.$$
-Let 
+$$f\oldequiv\incl_{\Img f}\prj_{\Img f},$$
+referred to as the \emph{factorization of $f$ through its image.}
+
+
+The factorization of $f:\Hom(G,G')$ through its image is universal
+\marginnote{$$\xymatrix{&G_1\ar[dr]^{f_2}\ar@{.>}[dd]^t&\\
+    G_0\ar[ur]^{f_1}\ar[dr]_{\prj_{\img f_2f_1}}&&G_2\\
+  &\Img f_2f_1\ar[ur]_{\incl_{\img f_2f_1}}}
+$$}
+in the sense that if given two homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$ such that $f_1$ is an epimorphism and $f_2$ in a monomorphism, then there is a unique isomorphism $t:\Hom(G_1,\Img f_2,f_1)$ such that $t\,f_1=\prj_{\img f_2f_1}$ and $f_2=\incl_{\img f_2f_1}t$ and $t$ is an isomorphism.  Through univalence $t$ gives rise to identifications
+$$f_1=_{\typeepi_G}\prj_{\img f_2f_1}\text{ and }f_2=_{\typemono_{G'}}\incl_{\img f_2f_1}.$$
+
+
+Given two homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$, the homomorphism
+$\incl_{\img \prj_{\img f_2}f_1}:\Hom(\Img f_2f_1,\Img f_2)$ is a monomorphism satisfying
+\marginnote{$$\xymatrix{G_0\ar[rr]^{\prj_{\img f_2f_1}}\ar[d]_{f_1}&&
+    \Img f_2f_1\ar[dr]^-{\incl_{\img f_2f_1}}\ar[d]_{\incl_{\img{\prj_{\img f_2}f_1}}}&\\
+G_1\ar[rr]_-{\prj_{\img f_2}}&&\Img f_2\ar[r]_{\incl_{\img f_2}}&G_2}$$}
+\begin{enumerate}
+\item $\incl_{\img \prj_{\img f_2}f_1}$ is an isomorphism if and only if  $f_1$ is an epimorphism,
+\item $\incl_{\img f_2f_1}=\incl_{\img f_2}\incl_{\img \prj_{\img f_2} f_1}$ and 
+\item $\prj_{\img f_2}f_1=\incl_{\img \prj_{\img f_2} f_1}\prj_{\img f_2f_1}$.  
+\end{enumerate}
+
 \end{construction}
 \begin{implementation}{con:im}
   Consider the element
@@ -346,30 +368,35 @@ Let
   The first projection $\fst: B\image f\to \BG'$ is a \covering
   (since $\coker f(z)$ is a set) giving a monomorphism $\incl_{\img f}$ of $\Img f$ into $G$.
 
-  The homomorphism (which we must show is an epimorphism) $\prj_{\Img f}:\Hom(G,\Img f)$  is given on the level of classifying types by sending $x:\BG$ to
+  The homomorphism \marginnote{\color{blue}(which we must show is an epimorphism  - should also include the universal property of the factorization)} $\prj_{\Img f}:\Hom(G,\Img f)$  is given on the level of classifying types by sending $x:\BG$ to
   $$B\prj_{\Img f} f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$
   From this it is clear that $\Bf$ is definitionally equal to the composite of $B\incl_{\Img f}$ and $B\prj_{\Img f}$.
   \marginnote{and if the wrapping destroys this fact in some ugly manner, it is an argument against wrapping}
+
+  As for the universality of the factorization, assume given $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$ such that $f_1$ is an epimorphism and $f_2$ in a monomorphism.  Since  $\incl_{\img f_2f_1}$ is a monomorphism, there is at most one homomorphism $t:\Hom(G_1,\Img f_2,f_1)$ such that $f_2=\incl_{\img f_2f_1}t$.  We must show that such a $t$ exist and that it furthermore satisfies  $t\,f_1=\prj_{\img f_2f_1}$.  This is achieved by setting
+  $$Bt_\div(y)\defequi (\Bf_2(y),|(\Bf_2(y),\refl{}|
+  $$
+  
 \end{implementation}
 
-\begin{definition}
-  \label{def:image}
- We define a function
-  $$\img:\Hom(G,G')\to\typemono_G$$
-  which we call the \emph{image}\index{image}.
-  If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in $\img f\defequi(\Img f,\incl_{\img f},!):\typemono_G$.  
-  The \emph{image group}\index{image!group} (or most often just the image) of $f$ is the group
-  $$\Img f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\sh_{G'},|\sh_G,p_f|).$$
-  The first projection $\fst: B\image f\to \BG'$ is a \covering
-  (since $\coker f(z)$ is a set) giving a monomorphism $\incl_{\img f}$ of $\Img f$ into $G$;
-  together defining $\img f=(\Img f,\incl_{\img f},!):\typemono_G$.  
+% \begin{definition}
+%   \label{def:image}
+%  We define a function
+%   $$\img:\Hom(G,G')\to\typemono_G$$
+%   which we call the \emph{image}\index{image}.
+%   If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in $\img f\defequi(\Img f,\incl_{\img f},!):\typemono_G$.  
+%   The \emph{image group}\index{image!group} (or most often just the image) of $f$ is the group
+%   $$\Img f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\sh_{G'},|\sh_G,p_f|).$$
+%   The first projection $\fst: B\image f\to \BG'$ is a \covering
+%   (since $\coker f(z)$ is a set) giving a monomorphism $\incl_{\img f}$ of $\Img f$ into $G$;
+%   together defining $\img f=(\Img f,\incl_{\img f},!):\typemono_G$.  
 
 
-The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:\BG$ to
-$$B\tilde f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$ 
-\end{definition}
+% The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:\BG$ to
+% $$B\tilde f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$ 
+% \end{definition}
 
-% \begin{remark}   \label{rem:cokerasGset}   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\sh_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$\BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$   We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set. \end{remark}
+% % \begin{remark}   \label{rem:cokerasGset}   If $f:\Hom(G,G')$ we notice that the abstract group $\abstr(G')$ acts on $\coker(f)\defequi\Trunc{f^{-1}(\sh_{G'})}_0$, making the cokernel an $\abstr(G')$-set.  If we prefer to talk about a $G'$-set, we consider the cokernel as the set-family $$\BG'\to\Set,\qquad z\mapsto   \Trunc{f^{-1}(z)}_0.$$   We will see this used most frequently when considerint inclusions of subgroups: if $H$ is a subgroup of $G$, then $G/H$ is a $G$-set. \end{remark}
 In view of \cref{ex:charsurinj} below, the families  
 $$\mathrm{isepi},\mathrm{ismono}:\Hom(G,G')\to\Prop
 $$
@@ -398,10 +425,10 @@ of propositions that a given homomorphism is an epimorphism or monomorphism have
 
 
 
-Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion $\image_f$ (first projection on the level of classifying types) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
-\marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\tilde f}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\image_f}}
-  $$}
-
+% Note that if $f:\Hom(G,G')$, then the composite of the induced homomorphism $\tilde f:\Hom(G,\image f)$ with the subgroup inclusion $\image_f$ (first projection on the level of classifying types) of $\image f$ in $G'$ is $f$ by definition.  We will refer to this as the \emph{factorization of $f$ through its image}.
+% \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\tilde f}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\image_f}}
+%   $$}
+ ------------------
 
 
 
