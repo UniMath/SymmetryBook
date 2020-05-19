@@ -7,6 +7,8 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - We call objects in a type *elements* of that type even if the type is not a set.
 - An element of a proposition can be called a *proof*.
 - An element of an identity type is called an *identification*, and otherwise a *path*.
+- definitional equivality is denoted with three lines and is called just that, i.e., *definitional* and not *judgmental*.
+- In the preliminary chapters (up to subgroups), the underlying set map U from groups to sets has to be applied explicitly. Thereafter, it can be a coercion.
 - Composition of p: a=b and q: b=c is denoted by either p\ct q, or by q\cdot p, qp or q\circ p. The latter is preferred when p and q come from equivalences. The macro \ct currently produces a star.
 - In dependent pairs, components having propositional type may be omitted.
 - If x is a bound variable and c is less bound, then we prefer c = x to x = c. Typically, if c is the center of contraction.
