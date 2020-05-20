@@ -2163,36 +2163,10 @@ Recall that given a pointed type $X$, we coerce it silently to its
 underlying unpointed type $X_\div$ whenever this coercion can be
 inferred from context. For example, given a group $G$, the type
 $\BG\weq \BG$ can not possibly mean anything but
-$\BG_\div\simeq \BG_\div$ as the operator ``$\weq$'' acts on
-bare types. To refer to the type of pointed equivalences (that is the
-pointed function whose underlying function is an equivalence), we
+$\BG_\div\simeq \BG_\div$ as the operator ``$\weq$'' acts on bare
+types. To refer to the type of pointed equivalences (that is the
+pointed functions whose underlying functions are equivalences), we
 shall use the notation $\BG \ptdweq \BG$.%
-% In a similar way, $A\to \BG$ for a type $A$ has no
-% other meaning that the function type $A \to \BG_\div$.  This
-% kind of coercion is used all over the place in this section to avoid
-% notation explosion. One more subtle example is $\id_\BG$, which
-% can have two different meanings: either the identity function
-% $\BG_\div \to \BG_\div$ pointed by the reflexivity path,
-% or the bare unpointed identity function. If the context is
-% ambiguous, we will write properly $\id_{\BG_\div}$ when
-% necessary.
-%
-% Note that for a pointed type $X$, the type $X=X$ should normally be
-% interpreted as the type of symmetries of $X$ in the type $\UU_\ast$
-% of pointed types. However, because we work transparently though
-% univalence, it makes sense to let $X=X$ denote the type of
-% symmetries of $X_\div$ in the universe $\UU$. This way, we can still
-% use the silent equivalence
-% \begin{displaymath}
-%   (X=X) \weq (X\weq X).
-% \end{displaymath}
-% To lift any ambiguity, we shall write $X=_\ast X$ for the type of
-% symmetries of $X$ in $\UU_\ast$. If one writes also $X\weq_\ast X$ for
-% the type of pointed maps whose underlying map is an equivalence, then
-% one gets, through univalence, an equivalence:
-% \begin{displaymath}
-%   (X=_\ast X) \weq (X\weq_\ast X).
-% \end{displaymath}
 
 \subsection{Center of a group}
 \label{sec:center-group}
@@ -2287,26 +2261,26 @@ The following result explains how every element of the ``abstract
 center'' of $G$ is picked out by $\abstr{(\grpcenterinc G)}$.
 \begin{lemma}
   \label{lemma:center-inc-surj-on-paths}%
-  Let $g:\sh_G = \sh_G$ and suppose that $gh=hg$ for every
+  Let $g:\USym G$ and suppose that $gh=hg$ for every
   $h:\USym G$. The fiber $\inv{(\ap {\B\grpcenterinc G})}(g)$ contains
   an element.
 \end{lemma}
 \begin{proof}
-  One must construct an element $\hat g:\id_{\BG_\div} = \id_{\BG_\div}$ such that
+  One must construct an element
+  $\hat g:\id_{\BG_\div} = \id_{\BG_\div}$ such that
   $g=\hat g(\sh_G)$. We shall use function extensionality and produce
-  an element $\hat g(x):x=x$ for all $x:\BG$ instead. Note that $x=x$ is
-  a set, and that connectedness of $\BG$ is not directly applicable
-  here. We will use a technique that will prove useful in many
-  situations in the book, along the lines of the following sketch
-  (where we denote $U(x)\defequi (x=x)$):
+  an element $\hat g(x):x=x$ for all $x:\BG$ instead. Note that $x=x$
+  is a set, and that connectedness of $\BG$ is not directly applicable
+  here. We will use a technique that has already proven useful in many
+  situations in the book, along the lines of the following sketch:
   \begin{enumerate}
-  \item for a given $x:\BG$, if such a $\hat g(x):U(x)$ existed, it would
+  \item for a given $x:\BG$, if such a $\hat g(x):x=x$ existed, it would
     produce an element of the type $T(\hat g(x))$ for a carefully chosen type
     family $T$,
-  \item aim to prove $\iscontr(\sum_{u:U(x)}T(u))$ for any $x:\BG$,
+  \item aim to prove $\iscontr(\sum_{u:x=x}T(u))$ for any $x:\BG$,
   \item this is a proposition, so connectedness of $\BG$ can be applied
-    and only $\iscontr(\sum_{u:U(\sh_G)}T(u))$ needs to be proven,
-  \item hopefully, $\sum_{u:U(\sh_G)}T(u)$ reduces to an obvious
+    and only $\iscontr(\sum_{u:\USym G}T(u))$ needs to be proven,
+  \item hopefully, $\sum_{u:\USym G}T(u)$ reduces to an obvious
     singleton type.
   \end{enumerate}
   Here, for any $x:\BG$, we define the type family $T: (x=x) \to \UU$
@@ -2317,7 +2291,7 @@ center'' of $G$ is picked out by $\abstr{(\grpcenterinc G)}$.
   And we claim that $\sum_{q:x=x}T(q)$ is contractible for any
   $x:\BG$. Because this is a proposition, one only need to check that
   it holds on one point of the connected type $\BG$, say
-  $x\jdeq pt_G$. Now,
+  $x\jdeq \sh_G$. Now,
   \begin{displaymath}%
     \begin{aligned}
       \sum_{q:\USym G}T(q) &\jdeq
@@ -2353,7 +2327,8 @@ Together, \cref{lemma:center-inc-inj-on-paths} and
 \cref{lemma:center-inc-surj-on-paths} show that
 $\abstr{(\grpcenterinc G)}$ establishes an equivalence
 \begin{equation}
-  \left( \id_{\BG_\div} = \id_{\BG_\div} \right) \weq \sum_{g:\USym G}\prod_{h:\USym G}gh=hg
+  %\left( \id_{\BG_\div} = \id_{\BG_\div} \right)
+  \USym \grpcenter(G) \weq \sum_{g:\USym G}\prod_{h:\USym G}gh=hg
 \end{equation}
 In yet other words,
 $\B \grpcenter(G)\defequi \conncomp{(\BG_\div = \BG_\div)}
@@ -2405,6 +2380,12 @@ The following lemma is then immediate:
 Let us say that a pointed type $(A,a)$ is {\em simply connected} when
 both $A$ and $a=a$ are connected types.
 
+\marginnote{%
+  The definition of the universal cover is reminiscent of the notion
+  of connected component: instead of selecting elements that are
+  merely equal to a fixed element $a$, the universal cover selects
+  elements together with mere witnesses of the equality with $a$.%
+}
 \begin{definition}
   Let $A$ be a type and $a:A$ an element. The {\em universal cover} of
   $A$ at $a$ is the type
@@ -2452,8 +2433,8 @@ This description allows us to prove the following lemma.
 \end{lemma}
 \begin{proof}
   First, we prove that $\univcover A a$ is connected. It has a point
-  $(a,\refl a)$ and, for every $(x,\alpha):\univcover A a$, one wants
-  $\Trunc{(a,\refl a) = (x,\alpha)}$. This is proposition, hence a
+  $(a,\settrunc{\refl a})$ and, for every $(x,\alpha):\univcover A a$, one wants
+  $\Trunc{(a,\settrunc{\refl a}) = (x,\alpha)}$. This is proposition, hence a
   set, so that one can suppose $\alpha = \settrunc p$ for a path
   $p:a=x$. Now, the proposition
   $\settrunc p \cdot \settrunc {\refl a} = \settrunc p$ holds. So one
@@ -2539,7 +2520,7 @@ identity type $x=y$ is a groupoid for $x,y:A$.
 % \end{itemize}
 
 \begin{theorem}
-  The type $\typeabgroup$ of abelian group is equivalent to the type
+  The type $\typeabgroup$ of abelian groups is equivalent to the type
   of pointed simply connected $2$-types.
 \end{theorem}
 \begin{proof}
@@ -2567,7 +2548,7 @@ identity type $x=y$ is a groupoid for $x,y:A$.
   $\BB G$ and restrict to only show that $p=q$ is a set for all path
   $p,q:(\BG_\div,\settrunc{\id_{\BG_\div}})=({\B
     G}_\div,\settrunc{\id_{\BG_\div}})$. As part of the definition
-  of the group $G$, the type $\BG$ is a $1$-type, hence
+  of the group $G$, the type $\BG_\div$ is a $1$-type, hence
   $\BG_\div=\BG_\div$ is also a $1$-type through
   univalence. Moreover,
   $\trp p {(\settrunc{\id_{\BG_\div}})} = \settrunc{\id_{\BG_\div}}$ and
@@ -2606,49 +2587,53 @@ identity type $x=y$ is a groupoid for $x,y:A$.
     \ap{\blank\cdot q}(h) \cdot \ap{r\cdot\blank}(g)
     = \ap{s\cdot \blank}(g) \cdot \ap{\blank\cdot p}(h).
   \end{equation}
-  \begin{marginfigure}
-    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
-      \node[] (x1) {$x$};
-      \node[right of=x1] (y1) {$y$};
-      \node[right of=y1] (z1) {$z$};
-      \node[below of=x1] (x2) {$x$};
-      \node[right of=x2] (y2) {$y$};
-      \node[right of=y2] (z2) {$z$};
-      \draw[bend left] (x1) to node[above] (p) {\footnotesize$p$} (y1);
-      \draw[bend right] (x1) to  node[below] (q1) {\footnotesize$q$} (y1);
-      \draw[bend left] (y1) to node[above] (r1) {\footnotesize$r$} (z1);
-      \draw[bend left] (y2) to node[above] (r2) {\footnotesize$r$} (z2);
-      \draw[bend right] (y2) to  node[below] (s) {\footnotesize$s$} (z2);
-      \draw[bend right] (x2) to node[below] (q2) {\footnotesize$q$} (y2);
-      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
-      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
-      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
-    \end{tikzpicture}%
-    =%
-    \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
-      \node[] (x1) {$x$};
-      \node[right of=x1] (y1) {$y$};
-      \node[right of=y1] (z1) {$z$};
-      \node[below of=x1] (x2) {$x$};
-      \node[right of=x2] (y2) {$y$};
-      \node[right of=y2] (z2) {$z$};
-      \draw[bend left] (x2) to node[above] (p) {\footnotesize$p$} (y2);
-      \draw[bend right] (x2) to  node[below] (q1) {\footnotesize$q$} (y2);
-      \draw[bend right] (y2) to node[above] (r1) {\footnotesize$s$} (z2);
-      \draw[bend left] (y1) to node[above] (r2) {\footnotesize$r$} (z1);
-      \draw[bend right] (y1) to  node[below] (s) {\footnotesize$s$} (z1);
-      \draw[bend left] (x1) to node[above] (p2) {\footnotesize$p$} (y1);
-      \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
-      \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
-      \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
-    \end{tikzpicture}%
-    \caption{%
-      Visual representation of~\cref{eq:horizontal-comp}. The vertical
-      dotted lines denotes composition.%
-    }\label{fig:horizontal-comp}
-  \end{marginfigure}%
   This equality takes place in $r\cdot p = s\cdot q$ and is better
-  represented by the diagram in~\cref{fig:horizontal-comp}. %
+  represented by the diagram in~\cref{fig:horizontal-comp}.
+  \begin{figure}[h]
+    \begin{sidecaption}
+      {%
+        Visual representation of~\cref{eq:horizontal-comp}. The vertical
+        dotted lines denotes composition.%
+      }[fig:horizontal-comp]
+      \centering%
+      \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
+        \node[] (x1) {$x$};
+        \node[right of=x1] (y1) {$y$};
+        \node[right of=y1] (z1) {$z$};
+        \node[below of=x1] (x2) {$x$};
+        \node[right of=x2] (y2) {$y$};
+        \node[right of=y2] (z2) {$z$};
+        \draw[bend left] (x1) to node[above] (p) {\footnotesize$p$} (y1);
+        \draw[bend right] (x1) to  node[below] (q1) {\footnotesize$q$} (y1);
+        \draw[bend left] (y1) to node[above] (r1) {\footnotesize$r$} (z1);
+        \draw[bend left] (y2) to node[above] (r2) {\footnotesize$r$} (z2);
+        \draw[bend right] (y2) to  node[below] (s) {\footnotesize$s$} (z2);
+        \draw[bend right] (x2) to node[below] (q2) {\footnotesize$q$} (y2);
+        \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
+        \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
+        \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
+      \end{tikzpicture}%
+      =%
+      \begin{tikzpicture}[node distance=4em, baseline=(basenode.base)]
+        \node[] (x1) {$x$};
+        \node[right of=x1] (y1) {$y$};
+        \node[right of=y1] (z1) {$z$};
+        \node[below of=x1] (x2) {$x$};
+        \node[right of=x2] (y2) {$y$};
+        \node[right of=y2] (z2) {$z$};
+        \draw[bend left] (x2) to node[above] (p) {\footnotesize$p$} (y2);
+        \draw[bend right] (x2) to  node[below] (q1) {\footnotesize$q$} (y2);
+        \draw[bend right] (y2) to node[above] (r1) {\footnotesize$s$} (z2);
+        \draw[bend left] (y1) to node[above] (r2) {\footnotesize$r$} (z1);
+        \draw[bend right] (y1) to  node[below] (s) {\footnotesize$s$} (z1);
+        \draw[bend left] (x1) to node[above] (p2) {\footnotesize$p$} (y1);
+        \draw[double, shorten >=.1em, shorten <=.1em] (p) to node[right] {\footnotesize$g$} (q1);
+        \draw[double, shorten >=.1em, shorten <=.1em] (r2) to node[right] {\footnotesize$h$} (s);
+        \draw[gray,densely dotted] (x1) to node (basenode){} (x2) (y1) to (y2) (z1) to (z2);
+      \end{tikzpicture}%
+    \end{sidecaption}
+  \end{figure}%
+  % 
   One prove such a result by induction on $h$. Indeed, when
   $h\jdeq \refl r$, then both sides of the equation reduces through
   path algebra to $\ap {r\cdot\blank} (g)$. Now we are interested in
@@ -2765,7 +2750,7 @@ identity type $x=y$ is a groupoid for $x,y:A$.
     \end{displaymath}
   \end{fullwidth}
   Note that $\ev_{\refl a}^{a}$ is precisely the equivalence
-  $\loopspace{(\BB\loopspace(A,a))}\weq (a=a)$ described
+  $\B\loopspace{(\BB\loopspace(A,a))}_\div \weq (a=a)$ described
   in~\cref{eq:loopspace-A-abelian}. Hence, by connectedness of $A$,
   one gets that the proposition $\isEq(\ev_{\refl a}^{a'})$ holds for
   all $a':A$. In particular, because the propositions
