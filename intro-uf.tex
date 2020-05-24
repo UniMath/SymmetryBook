@@ -2174,6 +2174,13 @@ Show that any connected set is contractible.
   is equivalent to the image factorization.
 \end{xca}
 
+\begin{xca}\label{xca:all-prop-image}
+Let $f:A\to B$ for $A$ and $B$ types, and let $P(b)$ be a proposition
+depending on $b:B$.
+Show that $\prod_{z:\im(f)} P(\fst(z))$ if and only if $\prod_{a:A} P(f(a))$.
+%(Hint: for the if-direction, use truncation elimination and path induction.)
+\end{xca}
+
 \begin{xca}\label{xca:connected-trivia}
 Let $A$ be a connected type, and suppose that $a=a$ is a proposition for every $a:A$. 
 Show that $A$ is contractible.
@@ -2299,7 +2306,7 @@ if all constituent types are sets.
   proposition for all $n,m:\NN$, i.e., $p = q$ for all $n,m : \NN$ and
   $p, q : n = m$.  By induction on $q$ it suffices to prove $p = \refl
   n$ for all $p : n = n$.  Note that we can not simply prove this by
-  induction on $p$.  Instead we first proof an inversion principle for
+  induction on $p$.  Instead we first prove an inversion principle for
   identifications in $\NN$ as follows.  We define a type $T(n,m,p)$
   for $n, m : \NN$ and $p : n = m$ by induction on $n$ and $m$:
   \[
@@ -2401,8 +2408,8 @@ weak constancy of $f : A \to B$ is a proposition.
   $g(\trunc x)\jdeq f(x)$ for all $x:A$.
 \end{theorem}
 \begin{proof}
-  Consider the image factorization of $f : A \xrightarrow{p}{} \im(f)
-  \xrightarrow{i}{} B$,
+  Consider the image factorization 
+  $A \xrightarrow{p}{} \im(f) \xrightarrow{i}{} B$ of $f$,
   where $p(x) \defeq (f(x),\trunc{(x,\refl{f(x)})})$
   and $i(y,!) \defeq y$.
 
@@ -2410,8 +2417,8 @@ weak constancy of $f : A \to B$ is a proposition.
   $(y_1,z_1),(y_2,z_2):\im(f)$. Since $B$ is a set, the type $y_1=_B
   y_2$ is a proposition. Hence we may hypothesize (by induction on $z_i$)
   that we have $x_1,x_2:A$ with
-  $f\,x_i = y_i$ for $i=1,2$. By concatenation, we get
-  $y_1=f\,x_1=f\,x_2=y_2$ and hence $(y_1,z_1)=(y_2,z_2)$.
+  $f(x_i) = y_i$ for $i=1,2$. By concatenation, we get
+  $y_1=f(x_1)=f(x_2)=y_2$ and hence $(y_1,z_1)=(y_2,z_2)$.
 
   Thus, by the universal property of the truncation,
   we get $g' : \Trunc A \to \im(f)$ such
@@ -2425,9 +2432,9 @@ weak constancy of $f : A \to B$ is a proposition.
 \begin{definition}\label{def:quotient-set}
 Given a set $A$ and an equivalence relation\footnote{%
   Recall that an \emph{equivalence relation} is one that is
-  (1) \emph{reflexive}: $R\,x\,x$,
-  (2) \emph{symmetric}: $R\,x\,y \to R\,y\,x$, and
-  (3) \emph{transitive}: $R\,x\,y \to R\,y\,z \to R\,x\,z$.}
+  (1) \emph{reflexive}: $R(x,x)$,
+  (2) \emph{symmetric}: $R(x,y) \to R(y,x)$, and
+  (3) \emph{transitive}: $R(x,y) \to R(y,z) \to R(x,z)$.}
 $R : A \to A \to \Prop$,
 we define the \emph{quotient set}\footnote{%
   We may wonder about the universe level of $A/R$,
@@ -2438,11 +2445,17 @@ we define the \emph{quotient set}\footnote{%
   Propositional Resizing~\cref{pri:prop-resizing} to push
   the values of $R$ into a lower universe.}
 $A/R$ as the image of the map $R : A \to (A \to \Prop)$.
+For $a:A$ we define $[a] \defeq (R(a),\trunc{(a,\refl{R(a)})}$ in $A/R$.
 \end{definition}
 An element of the image is an equivalence class:
 a subset $P$ of $A$ for which there merely exists $a:A$
 such that $P(x)$ holds if and only if $R(a,x)$ holds.
-We write $[a]$ for the equivalence class containing $a$.
+In particular $[a]$ is the equivalence class containing $a$, as $R(a,a)$.
+We recall the convention to use $[a]\jdeq(R(a),!)$ also to denote
+its first component, that is, to use $[a]$ and $R(a)$ interchangeably.
+
+In the following proofs we frequently use \cref{xca:all-prop-image}.
+
 \begin{lemma}\label{lem:equiv-class-prop}
   For any equivalence class $P : A/R$ and $a:A$,
   $P = [a]$ if and only if $P(a)$ holds.
@@ -2458,8 +2471,8 @@ We write $[a]$ for the equivalence class containing $a$.
   This follows from $P(a) \jdeq R(b,a)$ using symmetry and transitivity.
 \end{proof}
 \begin{theorem}\label{thm:quotient-property}
-  We have $([x] = [x']) \equiv R(x,x')$ for all $x,x':A$,
-  and for any \emph{set} $B$, a
+  We have $([x] = [x']) \equiv R(x,x')$ for all $x,x':A$. 
+  Also, for any \emph{set} $B$, a
   function $f : A \to B$ factors uniquely through the map $[\blank] : A \to A/R$ if
   $f(x)=f(x')$ for all $x,x':A$ with $R(x,x')$.
   Indeed we get a map $\bar f : A/R \to B$ with
