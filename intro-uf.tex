@@ -1696,18 +1696,20 @@ Given a type $P$, show that $P$ is a proposition if and only if $p=q$ is contrac
 for any $p, q: P$.
 \end{xca}
 
+\section{Excluded middle and propositional resizing}
+
 Recall from \cref{lem:prop-utils}\ref{prop-utils-lem} that $P\amalg (P \to
-\false)$ is a proposition whenever $P$ is a proproposition.  
+\false)$ is a proposition whenever $P$ is a proposition.
 
 \begin{principle}[Law of Excluded Middle (LEM)]
-  \label{princ:lem}%
+  \label{pri:lem}%
   For every proposition $P$, the proposition $P\amalg (P\to \false)$ holds.
 \end{principle}
 
 LEM is usually assumed in ordinary mathematics. However, type theory is born
 in a constructivist tradition which aims at developing as much mathematics as
 possible without assuming LEM altogether. Following this idea, we will
-explicitly state whenever we are assuming LEM. 
+explicitly state whenever we are assuming LEM.
 
 A usefull consequence of LEM is the so called principle of ``proof by
 contradiction'': to prove a proposition $P$, assume its negation $P\to\false$
@@ -1715,12 +1717,24 @@ and derive a contradiction. Without LEM, this proves only the double negation of
 $P$, that is $(P\to\false)\to\false$.  However, with LEM, one can derive $P$
 from the latter: indeed, according to LEM, either $P$ or $P\to \false$ holds;
 but $P\to\false$ leads to a contradiction by hypothesis, making $P$ hold
-necessarily. 
+necessarily.
 
 \begin{remark}
   We will later see a weaker version of LEM, called the Limited Omniscient
   Principle (\cref{LPO}), that is often enough.
 \end{remark}
+
+Sometimes we make use of the following,
+which is another consequence of LEM:
+\begin{principle}[Propositional Resizing]
+  \label{pri:prop-resizing}\index{Propositional resizing}
+  For any pair of nested universes $\UU:\UU'$, the injection
+  $\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.
+\end{principle}
+\begin{xca}\label{xca:lem-prop-sizing}
+  Show that if the principle of the excluded middle holds for all propositions,
+  then propositional resizing holds.
+\end{xca}
 
 \section{Subtypes, subsets and decidability}
 \label{sec:subtype}
@@ -1730,27 +1744,74 @@ considering the \emph{characteristic function} $\chi_B\colon A\to\bool$
 which takes the value $\yes$ on $B$ and $\no$ everywhere else:
 $B$ is then exactly the preimage of $\yes$ under $\chi_B: A\to\bool$.
 Assuming that every subset has a characteristic function
-requires the Law of the Excluded Middle (LEM).
+with values in $\bool$
+requires the Law of the Excluded Middle (LEM, \cref{pri:lem}).
 
-In this book we do not assume LEM, and there are some more subtleties.
+In this book we do not always assume LEM, and there are some more subtleties.
 Let $T$ be a type and let $P: T\to\UU$ be a type family.
 The sum type $\sum_{t:T} P(t)$ consists of pairs $(t,p)$ with
 $t:T$ and $p:P(t)$. This is \emph{not} a good way to carve out a subtype
 of $T$, as there could be distinct pairs $(t,p)$ and $(t,p')$ in $P(t)$.
 For this reason we require that each $P(t)$ is a proposition.
 
-\begin{definition}\label{def:subtype}\index{subtype}
-Let $T$ be a type and let $P: T\to\UU$ be a type family such that
-$P(t)$ is a proposition for each $t:T$. Then we also
-call $P$ a \emph{predicate} on $T$.\index{predicate}
-The \emph{subtype} of $T$ characterized by $P$ is defined
-as $T_P\defeq \sum_{t:T} P(t)$.\footnote{%
-  Technically, the subtype is the pair of the type
-  $T_P$ together with the inclusion $\fst : T_P \to T$.}
-%We say that an element $t':T$ \emph{lies in the subtype} $T_P$ if $P(t')$.
+\begin{definition}\label{def:predicate}
+  Let $T$ be a type and let $P$ be a type family on $T$ such that
+  $P(t)$ is a proposition for each $t:T$.
+  Then call $P$ a \emph{predicate}\index{predicate} on $T$.\footnote{%
+    Note that giving a predicate on $T$ is
+    equivalent to giving a map $Q: T\to\Prop$,
+    and we sometimes say that $Q$ itself is the predicate.}
+\end{definition}
+
+In ordinary sets, a subset $B$ of a set $A$ can alternatively be
+considered as a set ($B$) in its own right
+equipped with an injection from $B$ into $A$.
+
+We need the notion of injection between general types,
+and we define this to be close to the usual meaning in set theory.
+\begin{definition}\label{def:injection}
+  A function $f:A\to B$ is an \emph{injection}, or \emph{injective},
+  if $f^{-1}(b)$ is a proposition for all $b:B$.
+\end{definition}
+\begin{lemma}\label{lem:inj-ap}
+  A function $f:A\to B$ is an injection if and only if
+  each induced function
+  $\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence,
+  for all $a,a':A$.
+\end{lemma}
+\begin{proof}
+  TODO\footnote{May want to go via the equivalence
+    $((a,p) =_{f^{-1}(b)} (a',p')) \equiv
+    \ap{f}^{-1} (p' \circ \inv p)$,
+    where $p : b = f(a)$ and $p' : b = f(a')$,
+    so $p' \circ \inv p : f(a) = f(a')$.}
+\end{proof}
+
+Given a predicate $P$ on $T$, we can form the type
+$\sum_{t:T}P(t)$ which comes with a map
+$\fst : \biggl(\sum_{t:T}P(t)\biggr) \to T$.
+\begin{xca}\label{xca:subtype-to-type-injection}
+Let $T$ be a type and $P$ a predicate on $T$.
+Show that $\fst : T_P \to T$ is an injection.
+Give an equivalence from $(t,p)=(t',p')$ to $t=t'$, for all $t,t':T$ and
+$p:P(t)$, $p':P(t')$.
+\end{xca}
+
+\begin{definition}\label{def:subtype}
+  A \emph{subtype}\index{subtype} of a type $T$
+  is a type $S$ together with an injection
+  $f : S \to T$. The type of subtypes of $T$ is thus
+  \[
+    \mathrm{Sub}_T \defeq
+    \sum_{S:\UU}\sum{f:S\to T}\isinj(f).
+  \]
+\end{definition}
+Given a predicate $P$ on $T$,
+the \emph{subtype} of $T$ characterized by $P$ is defined
+as $T_P\defeq \sum_{t:T} P(t)$,
+together with the injection $\fst : T_P \to T$.
 If $T$ is a set, then $T_P$
 is also denoted by $\set{t:T \mid P(t)}$, indeed again a set.
-\end{definition}
 
 \begin{lemma}\label{lem:subtype-eq-=}
 Let conditions be as in \cref{def:subtype}. Consider $\fst: T_P \to T$
@@ -1796,14 +1857,6 @@ the subset $\setof{a:A}{\chi_B(a) = \yes}$. However,
 not every subset as in \cref{def:subtype} can be given
 through a $\chi_B: A\to\bool$. As proved in \cref{sec:finite-types},
 any element of $\bool$ is equal to $\yes$ or to $\no$.
-We formulate a similar property for propositions, since without LEM
-we cannot in general decide whether a proposition is empty or not.
-
-\begin{definition}\label{def:decidability}\index{decidable proposition}
-A proposition $P$ is called \emph{decidable} if $P\amalg\neg P$.
-A predicate $P: A\to\UU$ is called \emph{decidable} if
-$P(a)$ is a decidable proposition for each $a:A$.
-\end{definition}
 
 If $P: A\to\UU$ is a decidable predicate, then
 we can define $\chi_P: A\to\bool$ by induction (actually,
@@ -2286,21 +2339,12 @@ $(x=_Ay) \equiv \mathrm{Eq}_A\,x\,y$.
   types indexed by $x:A$, then $\prod_{x:A}B(x)$ is locally $\UU$-small.)
 \end{xca}
 
-Sometimes we make use of the following: %MOVE TO SOMEWHERE ELSE?
-\begin{principle}[Propositional Resizing]
-  \label{pri:prop-resizing}\index{Propositional resizing}
-  For any pair of nested universes $\UU:\UU'$, the injection
-  $\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.
-\end{principle}
 \begin{remark}
-  This principle equivalently says that any proposition is essentially $\UU$-small,
+  Note that propositional resizing (\cref{pri:prop-resizing})
+  equivalently says that any proposition is essentially $\UU$-small,
   where we may take $\UU$ to be the smallest universe $\UU_0$.
-  It also implies that any set is locally $\UU_0$-small.
+  When we assume this, we get that any set is locally $\UU_0$-small.
 \end{remark}
-\begin{xca}\label{xca:lem-prop-sizing}
-  Show that if the principle of the excluded middle holds for all propositions,
-  then propositional resizing holds.
-\end{xca}
 
 We will make use of the following (recall the definition of the image, \cref{def:prop-image}):
 \begin{principle}[Replacement]
@@ -2860,7 +2904,8 @@ In this section we collect a number of useful results on equivalences.
 
 \begin{lemma}\label{lem:ap-equivalence}
 If $f:A\to B$ is an equivalence, then so is each
-$\ap{f}: (a=a') \to (f(a)=f(a'))$ for all $a,a':A$.
+$\ap{f}: (a=a') \to (f(a)=f(a'))$ for all $a,a':A$.\footnote{%
+  TODO: Obsolete}
 \end{lemma}
 \begin{proof}
 Let $f^{-1} : B\to A$ be the inverse of $f$, then we have
@@ -2895,23 +2940,17 @@ usual meaning in set theory: a function from $A$ to $B$ is
 surjective if the preimage of any $b:B$ is non-empty,
 and injective if such preimages contain at most one element.
 
-\begin{definition}\label{def:injection}
-A function $f:A\to B$ is an \emph{injection}, or \emph{injective},
-if $f^{-1}(b)$ is a proposition for all $b:B$.
+\begin{definition}\label{def:surjection}
 A function $f:A\to B$ is a \emph{surjection}, or \emph{surjective},
-if for all $b:B$ there exists an $a:A$ such that $b=f(a)$,
-that is, $\Trunc{\sum_{a:A} b=f(a)}$.
-%
-%A function $f:A\to B$ is a \emph{split surjection} if for all $b:B$
-%$\sum_{a:A} b=f(a)$.
+if for all $b:B$ there merely exists an $a:A$ such that $b=f(a)$,
+that is, $\Trunc{\sum_{a:A} b=f(a)}$.\footnote{%
+  A function $f:A\to B$ is a \emph{split surjection}
+  if for all $b:B$ there (purely) is an $a:A$ with $b=f(a)$.
+  This is equivalent to saying we have a function
+  $g:B\to A$ such that $f\circ g = \id_B$
+  (such a $g$ is called a \emph{section} of $f$).}
 \end{definition}
 
-\begin{xca}\label{xca:subtype-to-type-injection}
-Let $T$ be a type and $P$ a predicate on $T$.
-Show that $\fst : T_P \to T$ is an injection.
-Give an equivalence from $(t,p)=(t',p')$ to $t=t'$, for all $t,t':T$ and
-$p:P(t)$, $p':P(t')$.
-\end{xca}
 
 \begin{lemma}\label{lem:inj+surj}
 For all types $A,B$, a function $f: A\to B$ is an equivalence
