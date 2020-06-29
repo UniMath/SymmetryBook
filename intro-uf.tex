@@ -1835,6 +1835,24 @@ Following \cref{rem:subtype-convention},
 if we have a type $A$ for which we know that it is a proposition or a set,
 we write also $A : \Prop$ or $A : \Set$, respectively.
 
+\begin{definition}\label{def:decidable-set}\index{decidable set}
+  A type $A$ is called a \emph{decidable set} if the equality relation $x=_A y$
+  is a decidable proposition for all $x,y:A$.
+\end{definition}
+Note the slight subtlety of this definition together with
+\cref{def:decidability}: Any proposition has a decidable equality relation
+(since each instance is contractible) and is thus a \emph{decidable set},
+even though it may not be a \emph{decidable as a proposition}.
+
+The way we phrased this definition, it builds in the condition that $A$ is a set.
+The following celebrated and useful theorem states that this is unnecessary.
+\begin{theorem}[Hedberg]\label{thm:hedberg}\index{Hedberg's theorem}
+  Any type $A$ for which we have a function of type
+  $\prod_{x,y:A}\bigl(x=y \coprod \lnot(x=y)\bigr)$
+  is a decidable set.
+\end{theorem}
+For a proof see~Theorem~7.2.5 of the HoTT Book\footcite{hottbook}.
+
 \section{Pointed types}\label{sec:pointedtypes}
 Sometimes we need to equip types with additional structure
 that cannot be expressed by a proposition such as
@@ -2601,6 +2619,7 @@ We can prove the following lemma by double induction.
 \begin{lemma}\label{lem:dec-eq+order-N}
 The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
 \end{lemma}
+By Hedberg's \cref{thm:hedberg}, it follows in particular that $\NN$ is a set.
 
 We will now prove an important property of $\NN$, called the
 \emph{least number principle for decidable, non-empty subsets of} $\NN$.
