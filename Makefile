@@ -11,10 +11,9 @@ one-by-one: figures
 figures:
 	mkdir $@
 clean:
-	rm -f *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf \
-		*.run.xml *.glo *.gls *.idx *.ilg *.ind
-veryclean:clean
-	rm -rf *.pdf *.auxlock *.synctex.gz figures
+	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
+		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
+		*.pdf *.auxlock *.synctex.gz figures TAGS
 always:
 
 # This list should include all the tex files that go into the book, in the order they go.
