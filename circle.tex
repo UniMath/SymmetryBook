@@ -1360,11 +1360,41 @@ we need a further assumption which is not generally present in our setup, namely
   or there is a smallest $n_0:\NN$ such that $P(n_0)=1$.
 \end{principle}
 
-LPO is weaker than the law of excluded middle and we are free to assume it as an axiom -- or not.
-We will be explicit about where we will use it.
-LPO makes it possible to prove that the canonical map $(\sum_{m:\NN} \hat C_m) \to \hat C$,
-mapping $(m,c,!)$ to $c$, is an equivalence.
-We will elaborate this equivalence in the next paragraphs.
+Note that LPO is weaker than LEM (cf. \cref{princ:lem}), by which is meant that
+\begin{lemma}
+  LEM implies LPO.
+\end{lemma}
+
+\begin{proof}
+  Indeed, for any function $P:\NN \to \bn 2$, one can consider
+  the type $\kappa_P\defequi\prod_{n:\NN}0=P(n)$. Because $\NN$ is a set, the type
+  $\kappa_P$ is a proposition. Assuming LEM, either $\kappa_P$ or its negation
+  $\kappa_P \to \false$ holds. If $\kappa_P$ holds, then $P$ is constant $0$.
+  Otherwise $\kappa_P \to \false$ holds and then one can consider the proposition
+  \begin{displaymath}
+    \eta_P \defequi \exists_{n:\NN}\left( 1=P(n) \times \prod_{m:\NN}m<n \to 0 = P(m) \right).
+  \end{displaymath}
+  Because we assumed LEM, proving the proposition $\eta_P$ can be
+  done by contradiction. Suppose $\eta_P \to \false$. To derive a
+  contradiction, we simply show that $\kappa_P$ follows. This is done by proving
+  $\forall_{m:\NN} m\leq n \to 0 = P(m)$ by induction on $n:\NN$:
+  \begin{enumerate}
+    \item for $n\jdeq 0$, the property simplifies to $0 = P(0)$; this holds by
+      contradiction, as otherwise $1 = P(0)$ and it provides a element of
+      $\eta_P$, leading to $\false$,
+    \item assuming the property at rank $n:\NN$, it holds at rank $n+1$ by
+      contradiction: indeed, otherwise, because all numbers $m<n$ satisfy $0 =
+      P(m)$ by induction hypothesis, it means that $1=P(n)$, which gives an
+      element of $\eta_P$, eventually leading to $\false$.
+  \end{enumerate}
+  In particular, we have proved $\kappa_P$, and because one has $\kappa_P \to
+  \false$ among our hypothesis, one finds a contradiction.
+\end{proof}
+
+As for LEM, we are freee to assume LPO or not, and we will be explicit about
+where we will use it. LPO makes it possible to prove that the canonical map
+$(\sum_{m:\NN} \hat C_m) \to \hat C$, mapping $(m,c,!)$ to $c$, is an
+equivalence.  We will elaborate this equivalence in the next paragraphs.
 
 Fix for the moment an element $(A,f,!)$ of $\hat C$, that is,
 a connected type $A$ and a decidable \covering  $f:A\to C$ (see \cref{def:covering}).
