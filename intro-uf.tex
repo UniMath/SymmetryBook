@@ -973,7 +973,7 @@ The converse to \cref{lem:fiberwise} also holds.
 \end{lemma}
 For a proof see~Theorem~4.7.7 of the HoTT Book\footcite{hottbook}.
 
-Yet another application of  equivalence is to postulate axioms.
+Yet another application of the notion of equivalence is to postulate axioms.
 
 \begin{principle}\label{def:funext}
 The axiom of \emph{function extensionality} postulates that the function
@@ -1696,21 +1696,42 @@ Given a type $P$, show that $P$ is a proposition if and only if $p=q$ is contrac
 for any $p, q: P$.
 \end{xca}
 
-\section{Excluded middle and propositional resizing}
+\section{Decidability, excluded middle and propositional resizing}
+\label{sec:decidability}
 
 Recall from \cref{lem:prop-utils}\ref{prop-utils-lem} that $P\amalg (P \to
 \false)$ is a proposition whenever $P$ is a proposition.
-
-\begin{principle}[Law of Excluded Middle (LEM)]
+\begin{definition}\label{def:decidability}
+  A proposition $P$ is called \emph{decidable}
+  if $P\amalg\neg P$ holds.\index{decidable proposition}
+\end{definition}
+In ordinary mathematics, it is usually assumed that
+every proposition is decidable.
+This is encapsulated in the following principle.
+\begin{principle}[Law of Excluded Middle, LEM]
   \label{pri:lem}%
   For every proposition $P$, the proposition $P\amalg (P\to \false)$ holds.
 \end{principle}
-
-LEM is usually assumed in ordinary mathematics. However, type theory is born
-in a constructivist tradition which aims at developing as much mathematics as
-possible without assuming LEM altogether. Following this idea, we will
+However, type theory is born
+in a constructivist tradition
+which aims at developing as much mathematics as
+possible without assuming LEM altogether.\footnote{%
+  Besides any philosophical reasons,
+  there are several pragmatic reasons
+  for developing constructive mathematics.
+  One is that proofs in constructive mathematics
+  can be executed as programs,
+  and another is that the results also hold in non-standard models,
+  for instance a model where every type has a topological structure,
+  and all constructions are continuous.
+  See also \cref{ft:cohesive} below.}
+Following this idea, we will
 explicitly state whenever we are assuming LEM.
-
+\begin{xca}\label{xca:lem-prop}
+  Show that LEM is equivalent to asserting
+  that the map $(\yes = \blank) : \bool \to \Prop$
+  is an equivalence.
+\end{xca}
 A usefull consequence of LEM is the so called principle of ``proof by
 contradiction'': to prove a proposition $P$, assume its negation $P\to\false$
 and derive a contradiction. Without LEM, this proves only the double negation of
@@ -1720,34 +1741,41 @@ but $P\to\false$ leads to a contradiction by hypothesis, making $P$ hold
 necessarily.
 
 \begin{remark}
-  We will later see a weaker version of LEM, called the Limited Omniscient
-  Principle (\cref{LPO}), that is often enough.
+  We will later encounter a weaker version of LEM, called the Limited
+  Principle of Omniscience (\cref{LPO}), which is often enough.\footnote{%
+    As the naming indicates, we can think of LEM itself as an omniscience
+    principle, telling us for every proposition $P$,
+    whether $P$ is true or false.
+    It was this interpretation of LEM that led Brouwer to reject it
+    in his 1908 paper on \emph{De onbetrouwbaarheid der logische
+      principes}.\footnotemark{}}\footcitetext{Brouwer-1908}
 \end{remark}
 
 Sometimes we make use of the following,
 which is another consequence of LEM:
 \begin{principle}[Propositional Resizing]
   \label{pri:prop-resizing}\index{Propositional resizing}
-  For any pair of nested universes $\UU:\UU'$, the injection
+  For any pair of nested universes $\UU:\UU'$, the inclusion
   $\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.
 \end{principle}
 \begin{xca}\label{xca:lem-prop-sizing}
-  Show that if the principle of the excluded middle holds for all propositions,
+  Show that if LEM holds for all propositions,
   then propositional resizing holds.
 \end{xca}
 
-\section{Subtypes, subsets and decidability}
+\section{Predicates and subtypes}
 \label{sec:subtype}
 
 In ordinary sets, a subset $B$ of a set $A$ can be given concretely by
-considering the \emph{characteristic function} $\chi_B\colon A\to\bool$
+considering the \emph{characteristic function} $\chi_B:A\to\bool$
 which takes the value $\yes$ on $B$ and $\no$ everywhere else:
 $B$ is then exactly the preimage of $\yes$ under $\chi_B: A\to\bool$.
 Assuming that every subset has a characteristic function
 with values in $\bool$
 requires the Law of the Excluded Middle (LEM, \cref{pri:lem}).
 
-In this book we do not always assume LEM, and there are some more subtleties.
+In this book we do not always assume LEM,
+and there are some additional subtleties.
 Let $T$ be a type and let $P: T\to\UU$ be a type family.
 The sum type $\sum_{t:T} P(t)$ consists of pairs $(t,p)$ with
 $t:T$ and $p:P(t)$. This is \emph{not} a good way to carve out a subtype
@@ -1757,11 +1785,15 @@ For this reason we require that each $P(t)$ is a proposition.
 \begin{definition}\label{def:predicate}
   Let $T$ be a type and let $P$ be a type family on $T$ such that
   $P(t)$ is a proposition for each $t:T$.
-  Then call $P$ a \emph{predicate}\index{predicate} on $T$.\footnote{%
+  Then we call $P$ a \emph{predicate}\index{predicate} on $T$.\footnote{%
     Note that giving a predicate on $T$ is
     equivalent to giving a map $Q: T\to\Prop$,
     and we sometimes say that $Q$ itself is the predicate.}
+  If each $P(t)$ is a decidable proposition,
+  then we say that $P$ is a \emph{decidable predicate}.
 \end{definition}
+By \cref{xca:lem-prop}, the decidable predicates $P$ on $T$
+correspond uniquely to the characteristic functions $\chi_P:T\to\bool$.
 
 In ordinary sets, a subset $B$ of a set $A$ can alternatively be
 considered as a set ($B$) in its own right
@@ -1780,22 +1812,47 @@ and we define this to be close to the usual meaning in set theory.
   for all $a,a':A$.
 \end{lemma}
 \begin{proof}
-  TODO\footnote{May want to go via the equivalence
-    $((a,p) =_{f^{-1}(b)} (a',p')) \equiv
-    \ap{f}^{-1} (p' \circ \inv p)$,
-    where $p : b = f(a)$ and $p' : b = f(a')$,
-    so $p' \circ \inv p : f(a) = f(a')$.}
+  First we note that if $z,z' : f^{-1}(b)$ for some $b:B$,
+  then there is an equivalence
+  \begin{equation}\label{eq:inj-ap-equiv}
+    (z = z') \equiv \ap{f}^{-1}(\snd{z'} \cdot \inv{\snd{z}}).
+  \end{equation}
+  Indeed, we can construct this for $z\jdeq(a,p)$ and $z'\jdeq(a',p')$,
+  where $a,a':A$, $p:b=f(a)$ and $p':b=f(a')$,
+  as the composition\footnote{%
+    TODO: Picture}
+  \begin{align*}
+    (z = z')
+    &\jdeq \bigl( (a,p) = (a',p') \bigr) \\
+    &\equiv \sum_{q : a=a'} \pathover{p}{b=f(\blank)}{q}{p'} \\
+    &\equiv \sum_{q : a=a'} \ap{f}(q) \cdot p = p' \\
+    &\equiv \sum_{q : a=a'} p' \cdot \inv p = \ap{f}(q) \\
+    &\jdeq \ap{f}^{-1}(p' \cdot \inv p).
+  \end{align*}
+  The second equivalence relies on \cref{lem:trp-in-fx=Ygx} below.
+
+  It follows directly from \eqref{eq:inj-ap-equiv}
+  that if $\ap{f}$ is an equivalence,
+  then $f^{-1}(b)$ is a proposition,
+  as all its identity types are contractible.
+
+  On the other hand, if we fix $a,a':A$ and $p:f(a)=f(a')$,
+  then \eqref{eq:inj-ap-equiv} applied to $b \defeq f(a)$,
+  $z \defeq (a,\refl{f(a)})$ and
+  $z' \defeq (a',p)$,
+  gives $\ap{f}^{-1}(p) \equiv (z=_{f^{-1}(b)}z')$,
+  which shows that if each $f^{-1}(b)$ is a proposition,
+  then $\ap{f}$ is an equivalence.
 \end{proof}
+\begin{xca}\label{xca:inj-sets}
+  Show that if $A,B$ are sets, then a function
+  $f : A \to B$ is injective if and only if
+  $f(a)=f(a')$ implies $a=a'$ for all $a,a'$.
+\end{xca}
 
 Given a predicate $P$ on $T$, we can form the type
 $\sum_{t:T}P(t)$ which comes with a map
-$\fst : \biggl(\sum_{t:T}P(t)\biggr) \to T$.
-\begin{xca}\label{xca:subtype-to-type-injection}
-Let $T$ be a type and $P$ a predicate on $T$.
-Show that $\fst : T_P \to T$ is an injection.
-Give an equivalence from $(t,p)=(t',p')$ to $t=t'$, for all $t,t':T$ and
-$p:P(t)$, $p':P(t')$.
-\end{xca}
+$\fst : \Bigl(\sum_{t:T}P(t)\Bigr) \to T$.
 
 \begin{definition}\label{def:subtype}
   A \emph{subtype}\index{subtype} of a type $T$
@@ -1803,22 +1860,16 @@ $p:P(t)$, $p':P(t')$.
   $f : S \to T$. The type of subtypes of $T$ is thus
   \[
     \mathrm{Sub}_T \defeq
-    \sum_{S:\UU}\sum{f:S\to T}\isinj(f).
+    \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).\qedhere
   \]
 \end{definition}
-Given a predicate $P$ on $T$,
-the \emph{subtype} of $T$ characterized by $P$ is defined
-as $T_P\defeq \sum_{t:T} P(t)$,
-together with the injection $\fst : T_P \to T$.
-If $T$ is a set, then $T_P$
-is also denoted by $\set{t:T \mid P(t)}$, indeed again a set.
 
 \begin{lemma}\label{lem:subtype-eq-=}
-Let conditions be as in \cref{def:subtype}. Consider $\fst: T_P \to T$
-and let $(x_1,p_1),(x_2,p_2) : T_P$.
-Then $\ap{\fst}: ((x_1,p_1) = (x_2,p_2)) \to (x_1 = x_2)$ is an equivalence.
+  Let $T$ be a type and $P$ a predicate on $T$.
+  Consider $\fst: T_P \to T$
+  and let $(x_1,p_1),(x_2,p_2) : T_P$.
+  Then $\ap{\fst}: ((x_1,p_1) = (x_2,p_2)) \to (x_1 = x_2)$ is an equivalence.
 \end{lemma}
-
 \begin{proof}
 We apply \cref{lem:weq-iso}. Consider $q: x_1 = x_2$.
 By induction on $q$ we get that each $\pathover {p_1} P q {p_2}$ is contractible,
@@ -1830,9 +1881,14 @@ Also, for any $r: (x_1,p_1)=(x_2,p_2)$, $r=\pathpair{\fst(r)}{\snd(r)}$.
 The latter pair is equal to $\pathpair{\ap{\fst(r)}}{c}$ for any $c$
 in the contractible type $\pathover {p_1} P {\fst(r)} {p_2}$.
 \end{proof}
-The above lemma has several important consequences.
-First of all, it confirms that $\fst: T_P \to T$ is an injection.
-Moreover:
+Combined with \cref{lem:inj-ap},
+this gives that $\fst$ is an injection.
+Hence, given a predicate $P$ on $T$,
+the \emph{subtype} of $T$ characterized by $P$ is defined
+as $T_P\defeq \sum_{t:T} P(t)$,
+together with the injection $\fst : T_P \to T$.
+
+The above lemma has other important consequences.
 \begin{corollary}\label{cor:subtype-same-level}
   For each natural number $n$,
   if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
@@ -1871,6 +1927,13 @@ for any type $T$ and function $f:T\to\bool$.
 Show $(P\equiv\true)\amalg(P\equiv\false)$ for every decidable
 proposition $P$.
 \end{xca}
+We've seen how to make a subtype from a predicate.
+Conversely, from a subtype of $T$ given by the injection
+$f : S \to T$,
+we can form the predicate $P_f : T \to \Prop$, $P_f(x) \defeq \inv f(x)$.
+We shall we in \cref{lem:Prop-Set-pointed-families},
+that these operations form an equivalence
+between predicates on $T$ and subtypes of $T$.
 
 \begin{definition}\label{def:Prop-Set}
 The type of types that are propositions and the
@@ -2663,7 +2726,7 @@ We can prove the following lemma by double induction.
 \begin{lemma}\label{lem:dec-eq+order-N}
 The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
 \end{lemma}
-By Hedberg's \cref{thm:hedberg}, it follows in particular that $\NN$ is a set.
+By Hedberg's \cref{thm:hedberg}, we get an alternate proof that $\NN$ is a set.
 
 We will now prove an important property of $\NN$, called the
 \emph{least number principle for decidable, non-empty subsets of} $\NN$.
@@ -2976,7 +3039,7 @@ The real line is contractible and the inclusion of the discrete subspace $\{0,1\
 
   This apparent contradiction is resolved once one recalls the myopic nature of our setup: the contractibility of the real line means that ``all real numbers are identical'', and \emph{our} ``preimage of $3.25$'' is not a proposition: it contains \emph{both} $0$ and $1$.  Hence ``$\{0,1\}\subseteq\mathbb R$'' would not count as an injection in our sense.
 
-  We should actually have been more precise above: we were referring to the \emph{homotopy type} of the real line, rather than the real line itself.\footnote{%
+  We should actually have been more precise above: we were referring to the \emph{homotopy type} of the real line, rather than the real line itself.\footnote{\label{ft:cohesive}%
     We don't define this formally here,
     see \citeauthor{Shulman-Real-Cohesive}\footnotemark{} for a synthetic account.
     The idea is that the homotopy type $\constant{h}(X)$ of a type $X$
