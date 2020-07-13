@@ -26,4 +26,5 @@ This book will be an undergraduate textbook written in the univalent style, taki
 						01 Α α, 02 Β β, 03 Γ γ, 04 Δ δ, 05 Ε ε, 06 Ζ ζ, 07 Η η, 08 Θ θ, 09 Ι ι, 
 				10 Κ κ, 11 Λ λ, 12 Μ μ, 13 Ν ν, 14 Ξ ξ, 15 Ο ο, 16 Π π, 17 Ρ ρ, 18 Σ σ, 19 Τ τ,
 				20 Υ υ, 21 Φ φ, 22 Χ χ, 23 Ψ ψ, and 24 Ω ω;
-       + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker);
+       + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker);      
+- Given a: A, we refer to elements of a = a as either symmetries *of* a, or symmetries *in* A.     
