@@ -2,7 +2,7 @@
 \label{ch:groups}
 
 
-The identity type is not just any type:  in the previous sections we have seen that the identity type $a=_Aa$ reflects the ``symmetries'' of an element $a$ in a type $A$.\footnote{%
+An identity type is not just any type:  in the previous sections we have seen that the identity type $a=_Aa$ reflects the ``symmetries'' of an element $a$ in a type $A$.\footnote{%
   Since the symmetries $p : a=_A a$ are paths that start and end
   at the point $a:A$, we also call them \emph{loops} at $a$.\par
   \begin{tikzpicture}
@@ -11,20 +11,20 @@ The identity type is not just any type:  in the previous sections we have seen t
     \node (A) at (2.5,2.1) {$A$};
     \draw[->] (a) .. controls ++(-10:3) and ++(100:2.5) .. node[auto,swap] {$p$} (a);
   \end{tikzpicture}}
-Symmetries have special properties; for instance you can rotate a square by $90\mathdegree$, and you can rotate it by $-90\mathdegree$, undoing the first rotation.
-Symmetries can also be composed, and this composition respects certain rules that holds in all examples.  One way to study the concept of ``symmetries'', would be to isolate the common rules for all our examples, but also show, conversely, that anything satisfying these rules actually \emph{is} an example.
+Symmetries have special properties.  For instance, you can rotate a square by $90\mathdegree$, and you can reverse that motion by rotating it by $-90\mathdegree$.
+Symmetries can also be composed, and this composition respects certain rules that holds in all examples.  One way to study the concept of ``symmetries'' would be to isolate the common rules for all our examples, and to show, conversely, that anything satisfying these rules actually \emph{is} an example.
 
 
 
 With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19\textsuperscript{th} century that the properties of such symmetries could be codified by saying that they form an abstract \emph{group}.
-In \cref{sec:identity-types} we saw that the identity type was ``reflexive, symmetric and transitive'' -- and an abstract group is just a set with such operations satisfying certain rules.
+In \cref{sec:identity-types} we saw that an identity type is ``reflexive, symmetric and transitive'' -- and an abstract group is just a set with such operations satisfying corresponding rules.
 
-We attack the issue more concretely;
+We attack the issue more concretely:
 instead of focusing on the abstract properties,
-we promote the type exhibiting the symmetries,
-and the axioms for an abstract group follow from the rules for identity types
-without needing us to worry about them.
-However, we \emph{will} show that the two approaches give the same end result.
+we bring the type exhibiting the symmetries to the fore.
+The axioms for an abstract group follow from the rules for identity types,
+without us needing to impose them.
+We will show that the two approaches give the same end result.
 
 In this chapter we lay the foundations and provide some basic examples of groups.
 
@@ -35,19 +35,18 @@ In \cref{sec:identity-type-as-abstract} we spell out the details, expanding on t
 In most of our exposition we make the blanket assumption that the identity type in question is a set, but in \cref{sec:inftygps} we briefly discuss $\infty$-groups where this assumption is dropped.
 
 Classically, groups have appeared because they ``act'' on a set (or more general objects), that is to say, they collect some of the symmetries of the set.  This is a point of view that we will return to many times and we give the basic theory in \cref{sec:gsets}.
-This section should remind the reader very much of what happened in \cref{cha:circle}, where we did much of the same considerations for the special case of the integers.
-More generally, connected \coverings now reappear in the guise of ``transitive $G$-sets'', laying the groundwork for our later discussion of the set of subgroups.
+This section should remind the reader of the material in \cref{cha:circle}, where we dealt with the special case of the group of integers.
+More generally, connected \coverings now reappear in the guise of ``transitive $G$-sets'', laying the groundwork for our later discussion of the set of subgroups of a group.
 
-Another important thing which is discussed in \cref{sec:gsets} is the type of ``$G$-torsors'', which at first glance can appear frightening.
-However, a $G$-torsor corresponds to \emph{a} universal \covering and the important step is to consider the \emph{type} of these:
+Another important thing, which is discussed in \cref{sec:gsets}, is the type of ``$G$-torsors'', which at first glance can appear frightening.
+However, a $G$-torsor corresponds to \emph{a} universal \covering, and the important step is to consider the \emph{type} of these.
 This idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
 
-With all this in place, the structure of the type of groups is in the large in many aspects similar to the universe in the sense that many of the constructions we're used to from the universe have their analog for groups.
-The functions are replaced by the homomorphisms.
-Products stay ``the same,'' as we will see in \cref{ex:productofgroups}.
-(And more generally, product types over sets ``stay the same.'').
-The sum of two groups is simple enough:
-It is the sum of the underlying types with the base points identified, as defined more precisely in \cref{def:wedge}.
+With all this in place, the structure of the type of groups is in many aspects similar to the universe, in the sense that many of the constructions on the universe that we're accustomed to have analogues for groups, namely:
+functions are replaced by homomorphisms;
+products stay ``the same,'' as we will see in \cref{ex:productofgroups}
+(and more generally, product types over sets ``stay the same.'');
+and the sum of two groups has a simple implementation as the sum of the underlying types with the base points identified, as defined more precisely in \cref{def:wedge}.
 In the usual treatment this is a somewhat more difficult subject involving ``words'' taken from the two groups.
 This reappears in our setting when we show that homomorphisms
 from a sum to another group
@@ -64,7 +63,7 @@ correspond to pairs of homomorphisms
 
 \begin{definition}\label{looptype}
   Given a pointed type $X\jdeq(A,a)$, we define its type of \emph{loops}
-  by $\loops X \jdeq (a =_A a)$.%
+  by $\loops X \defeq (a =_A a)$.%
   \index{loop type}\glossary(924Omega){$\protect\loops$}{loop type, \cref{looptype}}
 \end{definition}
 \begin{example}\label{ex:base=base}
@@ -78,24 +77,25 @@ correspond to pairs of homomorphisms
   We can think of this as describing the symmetries of $\base$:
   we have one ``generating symmetry'' $\Sloop$,
   and this can be applied any number of times,
-  giving a new symmetry for each new number.
-  Here, composition of loops corresponds to usual addition of integers.
+  giving a symmetry for each number.
+  Composition of loops here corresponds to addition of integers.
 
-Hence, the circle is a very cheap packaging of the ``{group}'' of integers, the declaration of $\base$ and $\Sloop$ not only gives the \emph{set} $\zet$ of integers, but at the same time the addition.
+  The circle is an efficient packaging of the ``{group}'' of integers, for the declaration of $\base$ and $\Sloop$ not only gives the \emph{set}
+  $\zet$ of integers, but also the addition operation.
 \end{example}
 \begin{example}
   Recall the finite set $\bn{2}:\fin_2$ from \cref{def:finiteset}, containing two elements.
-  According to \cref{xca:C2}, $\bn{2} =\bn{2} $ has exactly two distinct elements,
+  According to \cref{xca:C2}, the identity type $\bn{2} =\bn{2} $ has exactly two distinct elements,
   $\refl{\bn{2}}$ and $\twist$,
-  and doing $\twist$ twice gives you back $\refl{\bn{2}}$.
-  We see that this is exactly all the symmetries
-  you'd expect to have of a two point set:
-  You can let everything stay in place ($\refl{\bn{2}}$),
-  or you can swap the two elements ($\twist$);
-  and if you swap twice, everything is let be.
+  and doing $\twist$ twice yields x$\refl{\bn{2}}$.
+  We see that these are all the symmetries
+  of a two point set you'd expect to have:
+  you can let everything stay in place ($\refl{\bn{2}}$);
+  or you can swap the two elements ($\twist$).
+  If you swap twice, the results leaves everything in place.
   The pointed type $\fin_2$ (of ``finite sets with two elements''),
   with $\bn{2}$ as the base point,
-  is our embodiment of these symmetries,\ie $\loops\fin_2$.
+  is our embodiment of these symmetries, \ie they are the elements of $\loops\fin_2$.
 
   Observe that (by the definition of $\Sc$)
   there is an interesting function $\Sc\to\fin_2$,
@@ -106,7 +106,7 @@ The examples Klein and Lie were interested in were of a type making it admissibl
 say that a group is the type of loops $\loops(A,a) \jdeq (a=_Aa)$
 for \emph{some} type $A$ and \emph{some} element $a:A$.
 However, in elementary texts it is customary to restrict the notion of a group to the case when $a=_Aa$ is a \emph{set}, as we will do, starting in \cref{sec:identity-type-as-abstract}.
-This makes some proofs easier, since if are we given two elements $g,h:a=_Aa$, then the identity type $g=h$ is a proposition, \ie $g$ can be equal to $h$ in at most one way.  Hence questions relating to uniqueness will never be a problem.
+This makes some proofs easier, since if are we given two elements $g,h:a=_Aa$, then the identity type $g=h$ is a proposition, \ie $g$ can be equal to $h$ in at most one way.  Hence questions relating to uniqueness of proofs of equality will never present a problem.
 
 
 See \cref{sec:grouphistory} for a brief summary of the early history of groups.
@@ -122,7 +122,7 @@ See \cref{sec:grouphistory} for a brief summary of the early history of groups.
     A set with this kind of operation is called a \emph{heap},
     and we'll return to heaps in \cref{sec:heaps}.}
 Given $f:a=_Aa'$ we can use transport along $f$ to compare $a=_Aa'$ with $a=_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent the existence and choice of such an $f$ the identity types $a=_Aa'$ and $a=_Aa$ are different animals.
-We will return to this example when we've defined torsors.
+We will return to this example after we have defined torsors.
 \end{remark}
 
 

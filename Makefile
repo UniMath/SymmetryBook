@@ -1,8 +1,11 @@
+TEXOPTIONS = -halt-on-error -pdf -pdflatex="pdflatex --shell-escape %O %S"
+MK = latexmk $(TEXOPTIONS)
+
 all: book.pdf TAGS
 book.pdf: always figures
-	latexmk -halt-on-error -quiet -pdf -pdflatex="pdflatex --shell-escape %O %S" book
+	$(MK) -quiet book
 see-errors: figures
-	latexmk -halt-on-error -pdf -pdflatex="pdflatex --shell-escape %O %S" book
+	$(MK) book
 one-by-one: figures
 	pdflatex --shell-escape book.tex
 	biber book
