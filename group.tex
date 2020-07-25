@@ -214,7 +214,7 @@ We will return to this example after we have defined torsors.
   We also write $\pt_X$ for the \emph{base point} $a$ of the pointed type $X$, as in \cref{def:pointedtypes}.
 \end{remark}
 
-We are now ready to define the type of groups:
+We are now ready to define the type of groups.
 
 \begin{definition}\label{def:typegroup}
   The \emph{type of groups} is a wrapped copy (see \cref{sec:unary-sum-types})
@@ -305,8 +305,8 @@ We are now ready to define the type of groups:
     reveal a wrapped variable $\BG:\UUscone$.}
 \end{remark}
 
-It is not infrequent that we want to consider the symmetries $\loops(A,a)$
-of some element $a$ in some groupoid $A$.
+Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ in some groupoid $A$, so we introduce the following definition.
+
 \begin{definition}\label{def:automorphism-group}
   \footnote{ Previously, this allowed for A to not necessarily be a groupoid,
     as long as the component of A is. That seems like unnecessary generality?!
@@ -355,7 +355,7 @@ where $\fin_n$ is the groupoid of sets of cardinality $n$ (\cf \ref{def:finitese
 The classifying type is thus $B\Sigma_n\defequi (\fin_n,\bn{n})$.
 With our convention of \cref{rem:symmetriesofnonconnectedgroupoids} we can tolerate $\aut_{\fin}(\bn n)$, $\aut_{\Set}(\bn n)$ or even $\aut_{\UU}(\bn n)$ as synonyms for the group $\Sigma_n$ (where $\fin$ and $\Set$ are the subtypes of $\UU$ of finite sets and sets).
 
-If the reader starts worrying about size issues, that is quite legitimate; see \cref{rem:groupsarebig}.
+If the reader starts worrying about size issues, that is legitimate: see \cref{rem:groupsarebig}.
  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  Again, the only thing wrong with the groupoid $\Set$ of set (apart from $\Set$ being large) is that $\Set$ is not connected.
 %}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  %
  The \emph{group of permutations of $S$} is defined to be
@@ -366,7 +366,21 @@ with classifying type $B\Sigma_S\defequi(\conncomp \Set S,S)$.
 
 \begin{remark}
   \label{rem:groupsarebig}
-  This is only for those who worry about size issues - a theme we systematically ignore in our exposition.  If we start with a base universe $\UU_0$, the groupoid of sets of cardinality $n$, $\fin_n$ is a $\Sigma$-type $\sum_{A:\UU_0}\Trunc{A=\bn{n}}$ over $\UU_0$ and so without any massage will lie in a bigger universe $\UU_1$.  In order to accommodate for the finite permutation groups, the universe ``$\UU$'' appearing as a subscript for the first $\Sigma$ in the definition of groups needs to be at least as big as $\UU_1$.  If so, the type $\typegroup$ will not be in $\UU_1$, but in some bigger universe $\UU_2$, so if I choose some group $G$ and look at \emph{its} group of automorphisms, this will will be a group only if the universe is at least as big as $\UU_2$.  Luckily, our convention is that the universes are nested, \marginnote{We have nested universes:\\ $\UU_0\subseteq\UU_1\subseteq\UU_2\subseteq\dots$} and so at any point we'll just be somewhere big enough for our purposes, see \cref{sec:univax}.  This is not to say that these questions are trivial or unimportant; they are nontrivial and important, but not what this text is about.
+  This remark is for those who worry about size issues - a theme we usually ignore in our exposition.  If we
+  start with a base universe $\UU_0$, the groupoid $\fin_n$ of sets of cardinality $n$ is the $\Sigma$-type
+  $\sum_{A:\UU_0}\Trunc{A=\bn{n}}$ over $\UU_0$ and so (without any modification) will lie in any bigger
+  universe $\UU_1$.  In order to accommodate the finite permutation groups, the universe ``$\UU$'' appearing as
+  a subscript of the first $\Sigma$-type in \cref{def:pt-conn-groupoid}, appearing later in the definition of
+  ``group'', needs to be at least as big as $\UU_1$.  If $\UU$ is taken to be $\UU_1$, then the type
+  $\typegroup$ of groups will not be in $\UU_1$, but in some bigger universe $\UU_2$.  If we then choose some
+  group $G:\typegroup$ and look at \emph{its} group of automorphisms, based on an identity type in
+  $\typegroup$, this will be an element of $\typegroup$ only if the universe $\UU$ in the definition of
+  $\typegroup$ is at least as big as $\UU_2$, which is not the case.  Our convention from \cref{sec:univax} is
+  that the universes form an ascending chain $\UU_0\subseteq\UU_1\subseteq\UU_2\subseteq\dots$, corresponding
+  to which there will an ascending chain of types of groups,
+  $$ \typegroup_i \defequi \Copy_{\mkgroup}(\sum_{A:\UU_i} ( A \times \isconn(A) \times \isgrpd(A) )), $$ and
+  any group we encounter will be an element of $\typegroup_i$ for $i$ large enough.  These matters concerning
+  universes are nontrivial and important, but in this text we have chosen to focus on other matters.
 \end{remark}
 
 \begin{example}\label{ex:cyclicgroups}
@@ -837,6 +851,7 @@ Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a she
 \section{Homomorphisms}
 \label{sec:homomorphisms}
 
+\begin{remark}\label{homom-idens}
 Let $G$ and $H$ be groups, and suppose we have a function $f : \B G \to \B H$.
 Suppose also, for simplicity, that $\pt_{\B H} \jdeq f ( \pt_{\B G} ) $, so the pair $(f, \refl {\pt_{\B H}})$ is a pointed function of type $\B G \ptdto \B H$.
 Applying \cref{def:ap} yields a function $F \defeq \ap f : \USym G \to \USym H$, which satisfies the following identities.
@@ -850,6 +865,7 @@ These three identities assert that the function $\ap f$ \emph{preserves}, in a c
 make the abstract group $\abstr(G)$ from $\USym G$ and the abstract group $\abstr(H)$ from $\USym H$.
 In the traditional study of abstract groups, these three identities play an important role and entitle one to call the function $F$ a
 \emph{homomorphism of abstract groups}.
+\end{remark}
 
 A slight generalization of the discussion above will be to suppose that we have an identity of type $\pt_{\B H} = f ( \pt_{\B G} ) $ not
 necessarily given by reflexivity.  Indeed, that works out, thereby motivating the following definition.
