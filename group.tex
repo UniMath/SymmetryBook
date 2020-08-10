@@ -888,6 +888,45 @@ necessarily given by reflexivity.  Indeed, that works out, thereby motivating th
   and we call $\Bf$ \emph{classifying map} of the homomorphism.
 \end{definition}
 
+We would like to understand the effect of a homomorphism $f : \Hom(G,H)$
+on the underlying symmetries $\USym G$, $\USym H$.
+Since the underlying symmetries are obtained by taking loops,
+we should first study how pointed maps affect loops:
+
+\begin{construction}\label{def:loops-map}
+  Given pointed types $X$ and $Y$ and a pointed function $f : X\ptdto Y$ (as defined in \cref{def:pointedtypes}),
+  we construct a function $\loops f : \loops X \to \loops Y$.
+\end{construction}
+
+\begin{implementation}{def:loops-map}
+  We write $X \jdeq (A,a)$, $Y \jdeq (B,b)$, and $f \jdeq (p,e)$, where $p : X \to Y$ and $e : b = p(a)$.
+  By induction on $e$ we are reduced to the case where $b \jdeq p(a)$, so we may define $\loops f \defeq \ap p$
+  (see \cref{def:ap}).
+\end{implementation}
+
+\begin{definition}\label{def:USym-hom}
+  Given groups $G$ and $H$ and a homomorphism $f : \Hom(G,H)$, we define a function $\USym f : \USym G \to \USym H$
+  by setting $\USym f \defeq \loops \B f$.
+  In other words, the homomorphism $\mkhom\Bf$
+  induces $\loops\Bf$ as the map on underlying symmetries.
+\end{definition}
+
+\begin{lemma}
+  Given groups $G$ and $H$ and a homomorphism $f : \Hom(G,H)$, the function $\USym f : \USym X \to \USym Y$ defined above satisfies
+  the following identities.
+  \begin{align}
+    \label{gp-homo-unit} (\USym f) ( \refl {\pt_{\B G}} ) & = \refl{\pt_{\B H}}                                                       \\
+    \label{gp-homo-comp} (\USym f) (g ^ {-1})     & = ((\USym f) (g))^{-1}                 & \text {for any $g : \USym G$}            \\
+    \label{gp-homo-inv}  (\USym f) (g' \cdot g)   & =  (\USym f) (g') \cdot  (\USym f) (g) & \text {for any $g, g' : \USym G$}
+  \end{align}
+\end{lemma}
+
+\begin{proof}
+  We write $f \jdeq (p,e)$, where $p : \B G \to \B H$ and $e : \pt_{\B H} = p (\pt_{\B G})$.
+  By induction on $e$, we reduce to the case where $\pt_{\B H} \jdeq p (\pt_{\B G}$.
+  We finish by applying \cref{homom-idens}.
+\end{proof}
+
 \begin{definition}\label{def:groupisomorphism}
   A homomorphism $f : G\to_\Group H$ is an \emph{isomorphism}\index{isomorphism!of groups} if its classifying map $\Bf$ is an equivalence.
 \end{definition}
@@ -1006,28 +1045,6 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   Indeed, $\theta\tau(0) = 2$ while $\tau\theta(0) = 1$. (See also
   \cref{exer:first examples}.)
 \end{remark}
-
-We would like to understand the effect of a homomorphism $f : \Hom(G,H)$
-on the underlying symmetries $\USym G$, $\USym H$.
-Since the underlying symmetries are obtained by taking loops,
-we should first study how pointed maps affect loops:
-\begin{definition}\label{def:loops-map}
-  If $X,Y$ are pointed types,
-  and $f : X \ptdto Y$ is a pointed map,
-  then we get an induced map
-  \[
-    \loops f : \loops X \to \loops Y,
-  \]
-  mapping $q : \pt_X = \pt_X$
-  to $\inv{f_0}f(q)f_0 : \pt_Y = \pt_Y$.
-\end{definition}
-
-\begin{definition}\label{def:USym-hom}
-  Any group homomorphism $f : \Hom(G,H)$
-  induces a map $\USym f \defeq \loops B\!f : \USym G \to \USym H$.
-  In other words, the homomorphism $\mkhom\Bf$
-  induces $\loops\Bf$ as the map on underlying symmetries.
-\end{definition}
 
 \begin{construction}\label{def:loops-compose}
   For pointed types $X,Y,Z$ and pointed maps $f : X \ptdto Y$
@@ -1206,16 +1223,16 @@ as we record in the following remark.
   and \cref{def:abstrisfunctor} for a condensation of what the
   discussion below end up with concluding that ``preserves'' means.
 
-  Recall that such a $f:\Hom(G,H)$ is recorded as a pair
+  Recall that such an $f:\Hom(G,H)$ is recorded as a pair
   \begin{displaymath}
     (\Bf_\div,p_f):\sum_{F:\BG_\div\to \BH_\div}(\sh_H=F(\sh_G)),
   \end{displaymath}
-  and define the function
+  and recall the function
   \begin{displaymath}
-    \US f \defeq \left( \USym G \xrightarrow{\ap {\Bf_\div}}
-    (f(\sh_G)=f(\sh_G)) \xrightarrow{\trp {\inv{p_f}}} \USym H \right)
+    \US f : \USym G \to \USym H
   \end{displaymath}
-  (remember, $\USym G\defequi (\sh_G=\sh_G)$).
+  defined in \cref{def:USym-hom}.
+
   We take the time to develop from first principles the properties
   that $\US f$ satisfies.
   One proves easily (by induction) that
@@ -1234,52 +1251,13 @@ With the shorthand $$e_G\defequi\refl{\sh_G}:\USym G$$ and writing (to remind us
 $$g\cdot_Gg':\USym G$$
  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture
 $\xymatrix{\sh_G\ar@{=}[r]^{g'}_\to&\sh_G\ar@{=}[r]^{g}_\to&\sh_G}$)
-and likewise with a subscript $H$, we have the following:
+and likewise with a subscript $H$, we have the following statements.
   \begin{enumerate}
-  \item the proposition $\US f(e_G)= e_H$ holds through the
-    composite:
-    \begin{displaymath}
-      \US f(e_G)\defequi\trp {\inv{p_f}}\ap{\Bf_\div}(\refl{\sh_G})
-      = \inv{p_f} \cdot \refl{\sh_H} \cdot p_f = e_H
-    \end{displaymath}
-  \item the proposition
-    $\US f(g\cdot_Gg')=\US f(g)\cdot_H\US f(g')$ contains an
-    element given by the composite:
-    \marginnote{
-If you find it useful, you may consider the following picture:
-\begin{displaymath}
-  \xymatrix{
-\Bf_\div(\sh_G)\ar@{=}[rr]^{\ap{\Bf_\div}(g\, g')}_\to\ar@{=}[dr]^{\ap{\Bf_\div}(g')}_{\rotatebox{-35}{\footnotesize$\to$}} \ar@{=}[dd]_{p_f}^\uparrow
-&&\Bf_\div(\sh_G)\ar@{=}[dd]_{p_f}^\uparrow\\
-&\Bf_\div(\sh_G)\ar@{=}[d]_{p_f}^\uparrow
-\ar@{=}[ur]^{\ap{\Bf_\div}(g)}_{\rotatebox{35}{\footnotesize$\to$}}
-&\\
-\sh_H&\sh_H&\sh_H},
-\end{displaymath}
-where $\US f(g\cdot_Gg')$ is simply ``up, over and down'' while $\US f(g)\cdot_H\US f(g')$ takes the detour via the $\sh_H$ in the middle.
-}
-    \begin{align*}
-      \US f(g\cdot_Gg')
-      &\defequi \trp{\inv{p_f}}\left(\ap{\Bf_\div}(g\, g')\right)
-      \\
-      &=\trp{\inv{p_f}}(\ap{\Bf_\div}(g)\,\ap{\Bf_\div}(g)')
-      \\
-      &=\inv{p_f}\ap{\Bf_\div}(g)\ap{\Bf_\div}(g'){p_f}
-      \\
-      &=\inv{p_f}\ap{\Bf_\div}(g)p_f\inv{p_f}\ap{\Bf_\div}(g'){p_f}
-      \\
-      &=\trp{\inv{p_f}}\left(\ap{\Bf_\div}(g)\right)
-        \cdot_H\trp{\inv{p_f}}\left(\ap{\Bf_\div}(g')\right)
-      \\
-      &\jdeq \US f(g)\cdot_H\US f(g'),
-    \end{align*}
-    where we have used that $\ap{\Bf_\div}$ takes composites of
-    identities to composites of identities in the first
-    equalities. The other equalities are either path algebra or using
-    that $\trp {\inv{p_f}}$ is equal to the function mapping $x$ to
-    $\inv{p_f} x {p_f}$.
+  \item the proposition $\US f(e_G)= e_H$ holds by \cref{gp-homo-unit}
+  \item the proposition $\US f(g \cdot_G g')=\US f(g)\cdot_H\US f(g')$ holds by \cref{gp-homo-comp}
   \end{enumerate}
 \end{remark}
+
 \begin{definition}\label{def:abstrisfunctor}
   If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
   $$\Hom^\abstr(\mathcal G,\mathcal H)
