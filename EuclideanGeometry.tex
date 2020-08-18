@@ -72,6 +72,16 @@ $\RR^n$.
 
 \section{Euclidean spaces}
 
+In high school geometry courses, one encounters the Euclidean plane (of
+dimension 2) and the Euclidean space of dimension 3.  They harbor such things
+as points, the vector from one point to another, lines, line segments,
+triangles, tetrahedra, and so on.  Symmetries of those objects are also
+studied: for example, an isoceles non-equilateral triangle has a total of 2
+symmetries: the identity and the reflection through the midline.  In this
+section we give a precise definition of the Euclidean space of dimension $n$,
+together with its points and vectors.  More complicated geometric objects will
+be introduced in subsequent sections.
+
 \begin{definition}\label{def:EuclideanSpace}
   A {\em Euclidean space} $E$ is an (abstract) torsor $A$ for the additive group
   underlying an inner product space $V$.  (For the definition of abstract
@@ -86,10 +96,14 @@ the underlying additive group\footnote{We are careful not to refer to the group
   on Abelian groups.}
 of $V$.
 
-We denote the type of all Euclidean spaces of dimension $n$ by $\ES_n \defeq
-\sum_{V:\OS_n} \typetorsor_V$.  The elements of $\Points E$ will be the {\em
-  points} in the geometry of $E$, and the elements of $\Vectors E$ will be the
-    {\em vectors} in the geometry of $E$.
+\begin{definition}
+  We denote the type of all Euclidean spaces of dimension $n$ by $\ES_n \defeq
+  \sum_{V:\OS_n} \typetorsor_V$.  The elements of $\Points E$ will be the {\em
+    points} in the geometry of $E$, and the elements of $\Vectors E$ will be the
+      {\em vectors} in the geometry of $E$.
+      We let $\ES$ denote the type of all Euclidean spaces; it is equivalent to the
+      sum $\sum_{n:\NN} \ES_n$.
+\end{definition}
 
 The torsor $\Points E$ is a nonempty set upon which $V$ acts.  Since $V$ is an
 additive group, we prefer to write the action additively, too: given $v:V$ and
@@ -147,3 +161,54 @@ an action of it on the Euclidean space $\EE^n$.
   Finally, observe that $\EucGp n \weq \sum_{V:\B \OrthGp n} \B V$, again
   using \cref{lem:BGbytorsor}.
 \end{proof}
+
+\section{Geometric objects}
+
+Let $E$ be a Euclidean space, as defined in \cref{def:EuclideanSpace}.  The
+points of $E$ are the elements of $\Points E$, and intuitively, a geometric
+object in $E$ ought to come with a way to tell which points of $E$ are inside
+the object.
+
+For example, in the standard Euclidean plane with coordinates labelled $x$ and
+$y$, the $x$-axis is described by the equation $y=0$.  In other words, we have
+a function of type $p : \Points E \to \Prop$ defined by $(x,y) \mapsto y=0$.
+It's the predicate that defines the line as a subset of the plane.  More
+complicated objects can also be specified as sets of points of $E$ by other
+functions $\Points E \to \Prop$.  Now consider a typical Euclidean symmetry of
+the line, for example, the symmetry given by the function $t : (x,y) \mapsto (x+3,y)$.
+It is compatible with the action of $\Vectors E$ on $\Points E$, and it sends
+the line to itself.  If we consider the pair $(E,p)$ as an element of the type
+$\sum_{E:\ES} (\Points E \to \Prop)$, then, by univalence, we see that the
+translation $t$ gives rise to an identity of type $(E,p) = (E,p)$.
+
+Now suppose the object to be described is a car, as an object in a
+3-dimensional Euclidean space.  Then presumably we would like to give more
+information than just whether a point is inside the car: we may wish to
+distinguish points of the car by the type of material found there.  For
+example, to distinguish the windshield (made of glass) from the hood (made of
+steel).  Thus, letting $M$ denote the set of materials found in the car, we may
+choose to model the car as a function of type $\Points E \to M$.
+
+In order to unify the two examples above into a general framework, one may
+observe that $\Prop$ is a set (with at most 2 distinct elements, $\true$ and
+$\false$).  That motivates the following definition.
+
+\begin{definition}
+  Let $M$ be a set.  A {\em geometric object} is a pair $(E,p)$, regarded as an
+  element of the type $\EucObj \defeq \sum_{E:\ES} (\Points E \to M)$.  If one
+  wishes to emphasize the role played by the set $M$, we may refer to $(E,p)$
+  as a geometric object {\em with materials drawn from the set
+    $M$}.\footnote{It would be a mistake to regard a geometric object as a
+    triple $(E,M,p)$, for then symmetries would be allowed to permute the
+    materials.}
+\end{definition}
+
+\begin{exercise}
+  Show that $\EucObj$ is a groupoid.
+\end{exercise}
+
+The exercise above allows us to speak of the symmetry group of a geometric object.
+
+ %% Local Variables:
+ %% latex-block-names: '("exercise" "xca")
+ %% End:
