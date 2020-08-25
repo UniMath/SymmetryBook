@@ -192,6 +192,10 @@ an action of it on the Euclidean space $\EE^n$.
 
 \section{Geometric objects}
 
+In this section, we discuss the notion of ``object'' in Euclidean space, but
+much of what we say is more general and applies equally well to other sorts of
+geometry, such as projective geometry or hyperbolic geometry.
+
 Let $E$ be a Euclidean space, as defined in \cref{def:EuclideanSpace}.  The
 points of $E$ are the elements of $\Points E$, and intuitively, a geometric
 object in $E$ ought to come with a way to tell which points of $E$ are inside
@@ -199,15 +203,15 @@ the object.
 
 For example, in the standard Euclidean plane with coordinates labelled $x$ and
 $y$, the $x$-axis is described by the equation $y=0$.  In other words, we have
-a function of type $p : \Points E \to \Prop$ defined by $(x,y) \mapsto y=0$.
+a function of type $g : \Points E \to \Prop$ defined by $(x,y) \mapsto y=0$.
 It's the predicate that defines the line as a subset of the plane.  More
 complicated objects can also be specified as sets of points of $E$ by other
 functions $\Points E \to \Prop$.  Now consider a typical Euclidean symmetry of
 the line, for example, the symmetry given by the function $t : (x,y) \mapsto (x+3,y)$.
 It is compatible with the action of $\Vectors E$ on $\Points E$, and it sends
-the line to itself.  If we consider the pair $(E,p)$ as an element of the type
+the line to itself.  If we consider the pair $(E,g)$ as an element of the type
 $\sum_{E:\ES} (\Points E \to \Prop)$, then, by univalence, we see that the
-translation $t$ gives rise to an identity of type $(E,p) = (E,p)$.
+translation $t$ gives rise to an identity of type $(E,g) = (E,g)$.
 
 Now suppose the object to be described is a car, as an object in a
 3-dimensional Euclidean space.  Then presumably we would like to give more
@@ -223,13 +227,15 @@ observe that $\Prop$ is a set (with 2 distinguished elements, $\true$ and
 $\false$).  That motivates the following definition.
 
 \begin{definition}
-  Let $M$ be a set.  A {\em geometric object} is a pair $(E,p)$ of type
+  Let $M$ be a set.  A {\em geometric object} is a pair $(E,g)$ of type
   $\EucObj \defeq \sum_{E:\ES} (\Points E \to M)$.  If one wishes to emphasize
-  the role played by the set $M$, we may refer to $(E,p)$ as a geometric object
+  the role played by the set $M$, we may refer to $(E,g)$ as a geometric object
   {\em with materials drawn from the set $M$}.\footnote{It would be a mistake
-    to regard a geometric object as a triple $(E,M,p)$, for then symmetries
-    would be allowed to permute the materials.}  We may also say that $(E,p)$
-  is a geometric object {\em in $E$}.
+    to regard a geometric object as a triple $(E,M,g)$, for then symmetries
+    would be allowed to permute the materials.}  We may also say that $(E,g)$
+  is a geometric object {\em in $E$}.  When $M$ is $\Prop$, we will think of
+  the object as the subset of $\Points E$ consisting of those points $P$ such
+  that $g(P)$ holds.
 \end{definition}
 
 \begin{exercise}
@@ -239,8 +245,49 @@ $\false$).  That motivates the following definition.
 The exercise above allows us to speak of the symmetry group of a geometric object.
 
 \begin{exercise}
-  Show that the symmetry group of a geometric object in $\EE^n$ is a subgroup of $\OrthGp n$.
+  Show that the symmetry group of a geometric object in $\EE^n$ is a subgroup of $\EucGp n$.
 \end{exercise}
+
+\begin{exercise}
+  Let $E$ be a Euclidean space of dimension $n$, and let $P$ be a point of $E$.
+  The subset of $\Points E$ containing just the point $P$ is defined by the
+  predicate $Q \mapsto (Q=P)$.  Show that its symmetry group is isomorphic to
+  $\OrthGp n$.
+\end{exercise}
+
+One often considers situations in geometry with multiple objects in the same
+space.  For example, one may wish to consider two lines in the plane, or a
+point and a plane in space.  This prompts the following definitions.
+
+\begin{definition}
+  Suppose we are given an index type $I$ and a set $M_i$ for each $i\in I$.  A
+  {\em configuration} of geometric objects relative to that data is a Euclidean
+  space $E$ together with a function $p_i : \Points E \to M_i$ for each
+  $i\in I$.  Its {\em consituents} are the geometric objects of the form
+  $(E,p_i)$, for each $i \in I$.  If $n$ is a natural number, and we let $I$ be
+  the finite type with $n$ elements, then we may refer to the configuration as
+  a configuration of $n$ objects.  
+\end{definition}
+
+\begin{definition}
+  Given an index type $I$ and a collection of geometric objects $T_i$ indexed
+  by the elements of $I$, an {\em arrangement} of the objects is a
+  configuration, also indexed by $I$, whose $i$-th consituent is merely equal to
+  $T_i$.
+\end{definition}
+
+For example, suppose we consider arrangements consisting of a point and a line
+in the plane.  The arrangements where the point is at a distance $d$ from the
+line, where $d \ge 0$, are all merely equal to each other, because there is a
+Euclidean motion that relates any two of them.  Hence, in some sense, the
+arrangements are classified by the set of nonnegative real numbers $d$.  This
+motivates the following definition.
+
+\begin{definition}
+  Given an index type $I$ and a collection of geometric objects $T_i$ indexed
+  by the elements of $I$, then an {\em incidence type} between them is a
+  connected component of the type of all arrangements of the objects.
+\end{definition}
 
  %% Local Variables:
  %% latex-block-names: '("exercise" "xca")
