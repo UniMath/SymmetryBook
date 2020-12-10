@@ -250,23 +250,28 @@ of $a=b$.  The element $p$ serves the purpose.
 Now we state our symmetry result a little more formally.
 
 \begin{definition}\label{def:eq-symm}
-For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$
-be the function defined by induction by setting
-$\symm_{a,a}(\refl a) \defeq \refl a$.
-We may abbreviate $\symm_{a,b}(p)$ as $p^{-1}$.%
-\glossary(1-1){$p^{-1}$}{reverse identification, path inverse, \cref{def:eq-symm}}
+  For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$
+  be the function defined by induction by setting
+  $\symm_{a,a}(\refl a) \defeq \refl a$.
+
+  This operation on paths is called \emph{path inverse}, and we may abbreviate $\symm_{a,b}(p)$ as $p^{-1}$.
+  \glossary(1-1){$p^{-1}$}{reverse identification, path inverse, \cref{def:eq-symm}}
 \end{definition}
 
-Similarly, transitivity is formulated as an inductive definition for
-a function $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$.  We may
-abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p\ct q$,
-or as $q\cdot p$, $qp$, or $q\circ p$, see \cref{fig:path-concatenation}.
-This binary operation is called \emph{path composition} or \emph{path concatenation}.
-\index{composition!of paths}\index{concatenation!of paths}
-(The notation $q\circ p$ fits particularly well when the paths are
-related to functions and the composition of the paths is related to the
-composition of the related functions in the same order, e.g., see transport below.)%
-\glossary(2conc){$p\protect\ct q, q\cdot p, qp, q\circ p$}{path concatenation or composition}
+Similarly, we formulate transitivity a little more formally, as follows.
+
+\begin{definition}\label{def:eq-trans}
+  For any type $X$ and for any $a,b,c:X$, let $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$ be the function defined by induction by setting
+  $(\trans_{a,b,b} p) (\refl b ) \defeq p$.
+
+  This binary operation is called \emph{path composition} or \emph{path concatenation}\index{composition!of paths}\index{concatenation!of paths},
+  and we may abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p \ct q$, or as $q \cdot p$, $qp$, or $q \circ p$, see \cref{fig:path-concatenation}.  
+  \glossary(2conc){$p\protect\ct q, q\cdot p, qp, q\circ p$}{path concatenation or composition}
+\end{definition}
+
+The notation $q\circ p$ for path composition fits our intution particularly well when the paths are related to functions and the composition of
+the paths is related to the composition of the related functions in the same order, as happens, for example, in connection with {\em transport},
+defined below.
 
 \begin{marginfigure}
 %  \centering
@@ -293,13 +298,25 @@ composition of the related functions in the same order, e.g., see transport belo
 \end{marginfigure}
 
 The types of $\symm_{a,b}$ and $\trans_{a,b,c}$ express that
-equality is symmetric and transitive. Another view on
+equality is symmetric and transitive. Another view of
 $\symm_{a,b}$ and $\trans_{a,b,c}$ is that they are
 operations on identifications, namely reversing an identification
 and concatenating two identifications. As operations, they satisfy
 many algebraic properties, such as $(p^{-1})^{-1} = p$ and
 associativity of concatenation, that are all easy to prove by induction.
-We leave them as exercises, see Lemma 2.1.4 the HoTT book\footcite{hottbook}.
+We formulate some of them in the following exercise.
+
+\begin{exercise}
+  Let $X$ be a type and let $a,b,c,d:X$ be elements.  Establish the following identities.
+  \begin{enumerate}
+  \item For $p:a=b$, show that $p \ct \refl b = p$.
+  \item For $p:a=b$, show that $\refl a \ct p = p$.
+  \item For $p:a=b$, $q:b=c$, and $r:c=d$, show that $(p \ct q) \ct r = p \ct (q \ct r)$.
+  \item For $p:a=b$, show that $p^{-1} \ct p = \refl b$.
+  \item For $p:a=b$, show that $p \ct p^{-1} = \refl a$.
+  \item For $p:a=b$, show that $(p^{-1})^{-1} = p$.
+  \end{enumerate}
+\end{exercise}
 
 Concatenation can be used to define powers $p^n$ of $p:a=a$
 by induction on $n:\NN$, setting $p^0\defeq\refl{a}$ and
@@ -3380,6 +3397,6 @@ while the last \emph{forgets purely properties}
 
 % Local Variables:
 % fill-column: 144
-% latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition")
+% latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition" "exercise")
 % TeX-master: "book"
 % End:
