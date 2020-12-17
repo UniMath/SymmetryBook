@@ -559,39 +559,53 @@ and saying that going from (upper left hand corner) $a$ to (lower right hand cor
 \section{The identity type as an abstract group }
 \label{sec:identity-type-as-abstract}
 
-Studying the identity type leads one to the definition of what a group should be:
-Let $A$ be a type, and let $a=b$ be shorthand for $a=_Ab$ when $a,b:A$.  In \cref{sec:identity-types} we saw that
+Studying the identity type leads one to the definition of what a group should be.
+For convenience we fix in this section a type $A$ and an element $a:A$.
+For any element $b:A$, let $a=b$ be shorthand for $a=_A b$. 
+In \cref{sec:identity-types} we introduced the following elements and their types.
 \begin{enumerate}
-\item[R] {\bf Reflexivity.} For any $a:A$ there is an element
-$$\refl a{}:a=a$$
-\item[S] {\bf Symmetry.} For any $a,b:A$ there is a an element $$\symm{}_{a,b}:(a=b)\to (b=a)$$ defined by $\symm{}_{a,a}(\refl a{})\defequi\refl a{}$
-\item[T] {\bf Transitivity.} For any $a,b,c:A$ there is an element $$\trans{}_{a,b,c}:(a=b)\to((b=c)\to(a=c))$$ defined by $\trans{}_{a,a,a}(\refl a{})(\refl a{})\defequi \refl a{}$.
+\item[R] {\bf The reflexivity path at $a$.} On page \pageref{rules-for-equality},
+point \ref{E2}, we introduced $$\refl{a}:a=a.$$
+\item[S] {\bf Symmetry.} In \cref{def:eq-symm} we defined by induction, 
+for any $b:A$, the function $$\symm{}_{a,b}:(a=b)\to (b=a),$$
+by putting by $\symm{}_{a,a}(\refl{a})\defequi\refl{a}$.
+\item[T] {\bf Transitivity.} After \cref{def:eq-symm} we {\color{red} suggested to 
+define, for any $b,c:A$, the
+function $$\trans{}_{a,b,c}:(a=b)\to((b=c)\to(a=c)),$$
+we do this here by double induction, putting
+$\trans{}_{a,a,a}(\refl{a})(\refl{a})\defequi \refl{a}$.}
 \end{enumerate}
-%\footnote{\em\bf I have swapped the order of the input in trans so that it can fit.  I know you hate it and will force me to recant}
 
- To emulate classical notation, for fixed $a:A$,
-let's write
+To emulate classical notation, recalling we have fixed $a:A$, let's write
  \begin{enumerate}
- \item $e$ instead of $\refl a{}$
- \item $g^{-1}$ instead of $\symm_{a,a}(g)$, when $g:a=a$
+ \item $e$ instead of $\refl{a}$,
+ \item $g^{-1}$ instead of $\symm_{a,a}(g)$, when $g:a=a$, and
  \item $h\cdot g$ instead of $\trans_{a,a,a}(g)(h)$ when $g,h:a=a$.
  \end{enumerate}
- What properties can we show about this without knowing anything about $A$ and $a$? For convenience, here is a list of the results we are aiming for: for all $g,g_1,g_2,g_3:a=a$ we will construct elements in all the following propositions
+ What can we show about these without knowing anything about $A$ and $a$? 
+For convenience, here is a list of the results we are aiming for: 
+for all $g,g_1,g_2,g_3:a=a$ we will construct elements in all the following
+types (was:propositions)
  \begin{enumerate}
  \item $g=g\cdot e$  \qquad(``right unit law'')
  \item $g=e\cdot g$ \qquad(``left unit law'')
- \item $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ \qquad(``associativity'')
- \item $e=g^{-1}\cdot g$ \qquad(``inverse'').
+ \item $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ \qquad(``associativity law'')
+ \item $e=g\cdot \inv g$ \qquad(``law of inverses'').
  %\item $g\cdot g^{-1}=e$ redundant (remove)
 % \item $(g^{-1})^{-1}=g$ redundant (remove)
  \end{enumerate}
 
-
-We do $g=e\cdot g$ in some detail (remember that ``$e$'' is shorthand for $\refl a{}$)
+The above are actually special cases of \cref{xca:path-groupoid-laws}.
+We do $g=e\cdot g$ in some detail (remember that ``$e$'' is shorthand for $\refl{a}$).
 \begin{definition}\label{def:p1}
-  Let $A$ be a type and $a, b:A$ and $g:a=b$ be elements.  Then $p_1(a,b,g):g=_{a=b}g\cdot e$ is the element defined by induction by saying that $p_1(a,a,e)$ is $\refl e:e=e\cdot e$.\footnote{This makes sense since we \emph{defined} $e\cdot e\defequi e$ (or, as it was originally formulated, $\trans_{a,a,a}(\refl a{})(\refl a{})\defequi \refl a{}$). }
+  Let $b:A$ and $g:a=b$ be elements.  
+Then $p_1(b,g):g=_{a=b}g\cdot e$ is the element defined by 
+induction by saying that $p_1(a,e)$ is $\refl e:e=e\cdot e$.%
+\footnote{\label{ftnt:equality-jdeq}This makes sense since we \emph{defined} $e\cdot e\jdeq e$ 
+(or, as it was originally formulated, $\trans_{a,a,a}(\refl{a})(\refl{a})\jdeq \refl{a}$). 
+Similarly for $\inv e \jdeq e$, that is, $\symm{}_{a,a}(\refl{a})\jdeq\refl{a}$.}
 \end{definition}
-\begin{remark}
+\begin{remark}{\color{red}REMOVE?}
    We'll say that we produce $p_1(a,b,g)$ by ``induction on $b$'', the case where $b$ is $a$ (and $g$ is $e$) is the start of the induction; the induction principle for the identity type $a=b$ then finishes the construction.
 
 As constructed, $p_1$ is actually an element in the type
@@ -601,21 +615,46 @@ We may add a little meat to the definition of $p_1$: in the definition of the id
 According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e)\oldequiv (e=e\cdot e)$, but $e\cdot e\defequi e$ and so $\refl e:e=e$ will do.
 \end{remark}
 \begin{definition}\label{def:p3}
-  Let $A$ be a type and $a,b,c,d:A$ and $g_3:a=b$, $g_2:b=c$ and $g_1:c=d$ elements.
-  Then\marginnote{This definition is somewhat more complicated than the first, in the sense that in order to unravel the induction to exactly the form accepted in the definition of the identity type, we need to apply the rule three times.}
-  $$p_3(a,b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{a=_Ad}(g_1\cdot g_2)\cdot g_3$$ is the element defined by induction by saying that $p_3(a,a,a,a,e,e,e,e)$ is $\refl e:e\cdot(e\cdot e)=(e\cdot e)\cdot e$ [which makes sense since $e\cdot e\defequi e$].
+  Let $b,c,d:A$ and $g_3:a=b$, $g_2:b=c$ and $g_1:c=d$ elements.
+  Then\marginnote{This definition is somewhat more complicated than the first, 
+in the sense that in order to unravel the induction to exactly the form accepted 
+in the definition of the identity type on page \pageref{rules-for-equality}, \ref{E3}, 
+we need to apply the rule three times.}
+  $$p_3(b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{a=_Ad}(g_1\cdot g_2)\cdot g_3$$ is the element defined by induction by saying that $p_3(a,a,a,e,e,e)$ is $\refl e:e\cdot(e\cdot e)=(e\cdot e)\cdot e$,
+using footnote \ref{ftnt:equality-jdeq}.
 \end{definition}
 \begin{definition}\label{def:p4}
-  Let $A$ be a type and let $a,b:A$ and $g:a=b$ be elements.  Then $p_4(a,b,g):g^{-1}\cdot g=_{a=_Aa} e$ is the element defined by induction by saying that $p_4(a,a,e)$ is $\refl e:e=e\cdot e$ [which makes sense since $e^{-1}\defequi e$ and $e\cdot e\defequi e$].
+  Let $b:A$ and $g:a=b$ be elements. Then $p_4(b,g):g\cdot\inv g=_{a=_Aa} e$ is 
+the element defined by induction by saying that $p_4(a,e)$ is $\refl e:e=e\cdot e$,
+using footnote \ref{ftnt:equality-jdeq}.
 \end{definition}
 
 \begin{xca}\label{xca:p2}
-    Define $p_2(a,b,g)$ %and $p_3(a,b,g)$
+    Define $p_2(b,g)$ %and $p_3(a,b,g)$
 by exactly the same procedure, completing the list.
 \end{xca}
 
 \begin{remark}
-   One may worry about many things when one sees the list ``right unit law, left unit law, associativity, inverse''.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the left and right unit laws equal?  Since $a=a$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two elements are equal.
+{\color{red}NEW:} In the general situation, where $A$ is an arbitrary type with a given element $a:A$,
+it is possible that the laws above are types that contain also other elements than
+the ones we just have constructed. Then the same structure consisting 
+of $A,a,e,{\cdot},\inv \_$ could be a group in different ways, depending on the
+choices made for elements witnessing the laws above. This is not how a group
+is defined in ordinary mathematics. It is also undesirable for the following reason.
+The right and the left unit laws are different types. However, by taking $e$ for $g$ in both laws
+we get the type $e=e\cdot e$ as a common instance. With the constructions above
+we would get both $p_1(a,e)$ and $p_2(a,e)$ as elements of $e=e\cdot e$.
+Both are equal to $\refl{e}$, but with different choices for $p_1$ and $p_2$
+we could get two different elements of $e=e\cdot e$. This is just the simplest
+example of the ambiguity that may occur. We can avoid this ambiguity, 
+and stay close to the definition of a group in ordinary mathematics,
+by the additional assumption that $A$ is a set. Then all the laws are propositions
+and hence witnessing elements are unique. 
+ 
+
+
+
+OLD:   One may worry about many things when one sees the list ``right unit law, left unit law, associativity, inverse''.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the left and right unit laws equal?  Since $a=a$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two elements are equal.
  \end{remark}
 
 These properties of the identity type are bundled together in the concept of an abstract group, under the additional hypothesis that we are dealing with a set.
