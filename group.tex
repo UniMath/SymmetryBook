@@ -559,144 +559,61 @@ and saying that going from (upper left hand corner) $a$ to (lower right hand cor
 \section{The identity type as an abstract group }
 \label{sec:identity-type-as-abstract}
 
-Studying the identity type leads one to the definition of what a group should be.
-For convenience we fix in this section a type $A$ and an element $a:A$.
+Studying the identity type leads one to the definition of what an abstract group should be.  We fix a type $A$ and an element $a:A$ for the rest
+of the section, and we focus on the identity type $a=a$.  We make the following observations about its elements and operations on them.
 
-In \cref{sec:identity-types} we introduced the following elements and their types.
 \begin{enumerate}
-\item[R] {\bf The reflexivity path at $a$.} On page \pageref{rules-for-equality},
-point \ref{E2}, we introduced $$\refl{a}:a=a.$$
-\item[S] {\bf Symmetry.} In \cref{def:eq-symm} we defined by induction, 
-for any $b:A$, the function $$\symm{}_{a,b}:(a=b)\to (b=a),$$
-by putting $\symm{}_{a,a}(\refl{a})\defeq \refl{a}$.\footnote%
-{Instantiations of this definitional equality will be referred to as
-`the definitional equality in S'.}
-\item[T] {\bf Transitivity.} In \cref{def:eq-trans} we defined by induction, 
-for any $b,c:A$, the function $$\trans{}_{a,b,c}:(a=b)\to((b=c)\to(a=c)),$$
-by putting $(\trans{}_{a,b,c}(p))(\refl{a})\defeq p$.\footnote%
-{Instantiations of this definitional equality will be referred to as
-`the definitional equality in T'.}
+\item
+  There is an element $\refl a : a=a$.
+  (See page \pageref{rules-for-equality}, item \ref{E2}.)
+  We set $e \defeq \refl a$ as notation for the time being.
+\item
+  For $g : a=a$, the inverse $g^{-1} : a=a$ was defined in \cref{def:eq-symm}.
+  Because it was defined by path induction, this inverse operation satisfies $e^{-1} \jdeq e$.
+\item
+  For $g, h : a=a$, the product $h \cdot g : a=a$ was defined in \cref{def:eq-trans}.
+  Because it was defined by path induction, this product operation satisfies $e \cdot g \jdeq g$.
 \end{enumerate}
 
-To emulate classical notation, recalling we have fixed $a:A$, we write
-$e$ instead of $\refl{a}$. The notations introduced in \cref{def:eq-symm}
-and \cref{def:eq-trans}, when instantiated with $b$ and $c$ being $a$,
-allow us to write $g^{-1}$ instead of $\symm_{a,a}(g)$ and
-$h\cdot g$ instead of $(\trans_{a,a,a}(g))(h)$, for all $g,h: a=a$.
+For any elements $g,g_1,g_2,g_3:a=a$, we consider the following 4 equations.
+\begin{enumerate}
+\item
+  \label{it:right-unit} \emph{the right unit law:} $g=g\cdot e$  
+\item
+  \label{it:left-unit} \emph{the left unit law:} $g=e\cdot g$ 
+\item
+  \label{it:associativity} \emph{the associativity law:} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ 
+\item
+  \label{it:inverse} \emph{the law of inverses:} $g\cdot \inv g = e$ 
+\end{enumerate}
 
-What equations can we show about these without knowing anything about $A$ and $a$? 
-For convenience, here is a list of the results we are aiming for: 
-for all $g,g_1,g_2,g_3:a=a$ we will construct elements in all the following types.
- \begin{enumerate}
- \item\label{it:right-unit} $g=g\cdot e$  \qquad(``right unit law'')
- \item\label{it:left-unit} $g=e\cdot g$ \qquad(``left unit law'')
- \item\label{it:associativity} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ 
-\qquad(``associativity law'')
- \item\label{it:inverse} $e=g\cdot \inv g$ \qquad(``law of inverses'').
- %\item $g\cdot g^{-1}=e$ redundant (remove)
-% \item $(g^{-1})^{-1}=g$ redundant (remove)
- \end{enumerate}
-
-The above are actually special cases of \cref{xca:path-groupoid-laws}.
-Remember that ``$e$'' is shorthand for $\refl{a}$.
-\begin{definition}\label{def:p1}
-  Let $b:A$ and $g:a=b$ be elements.  
-Then $p_1(b,g):g=_{a=b}g\cdot e$ is the element defined by 
-induction by saying that $p_1(a,e)$ is $\refl e:e=e\cdot e$, 
-which makes sense by the definitional equality in T.
-\end{definition}
-Now $p_1(a,a)$ witnesses the right unit law \ref{it:right-unit} above.
-
-\DELETE{\begin{remark}
-   We'll say that we produce $p_1(a,b,g)$ by ``induction on $b$'', the case where $b$ is $a$ (and $g$ is $e$) is the start of the induction; the induction principle for the identity type $a=b$ then finishes the construction.
-
-As constructed, $p_1$ is actually an element in the type
-$$\prod_{a:A}\prod_{b:A}\prod_{g:a=b}(g=g\cdot e)$$ -- it is constructed ``uniformly'' or ``naturally'' for all $a,b,g$: think of it as a function with $(a,b,g)$ as input and $p_1(a,b,g):g=g\cdot e$ as output.
-
-We may add a little meat to the definition of $p_1$: in the definition of the identity type, for each $a:A$ let $P$ be the type family given by $P(b,g)\defequi (g=g\cdot e)$ for each $b:A$ and $g:a=b$.
-According to the definition of the identity type, in order to produce elements in $P(b,g)$ for arbitrary $b$ and $g$ it suffices to give an element in $P(a,e)\oldequiv (e=e\cdot e)$, but $e\cdot e\defequi e$ and so $\refl e:e=e$ will do.
-\end{remark}
-}% end DELETE
-
-\begin{xca}\label{xca:p2}
-Define $p_2(b,g): g =_{b=a} e\cdot g$ for all $b:A$ and $g: b=a$.
-Then $p_2(a,e)$ witnesses the left unit law \ref{it:left-unit} above.
-\end{xca}
-
-\begin{definition}\label{def:p3}
-  Let $b,c,d:A$ and $g_1:b=a$, $g_2:c=b$ and $g_3:d=c$ be elements. Then
- \DELETE{\marginnote{This definition is somewhat more complicated than the first, 
-in the sense that in order to unravel the induction to exactly the form accepted 
-in the definition of the identity type on page \pageref{rules-for-equality}, \ref{E3}, 
-we need to apply the rule three times.}}% end DELETE
-$$p_3(b,c,d,g_1,g_2,g_3):g_1\cdot(g_2\cdot g_3)=_{d=_Aa}(g_1\cdot g_2)\cdot g_3$$
-is the element defined by induction on $g_1$,
-by saying that $p_3(a,c,d,e,g_2,g_3)$ is $\refl{g_2\cdot g_3}$,
-which makes sense by the definitional equality in T.
-\end{definition}
-Now $p_3(a,a,a,e,e,e)$ witnesses the associativity law \ref{it:associativity} above.
-
-\begin{definition}\label{def:p4}
-  Let $b:A$ and $g:b=a$ be elements. Then $p_4(b,g): e =_{a=_Aa} g\cdot\inv g$ is 
-the element defined by induction by saying that $p_4(a,e)$ is $\refl e:e=e\cdot \inv e$,
-which makes sense by the definitional equalities in S and T.
-\end{definition}
-Now $p_4(a,e)$ witnesses the law of inverses \ref{it:inverse} above,
-completing the list.
-
-
-\begin{remark}
-{\color{red}Dan will reformulate and reposition this:} 
-In the general situation, where $A$ is an arbitrary type with a given element $a:A$,
-it is possible that the laws above are types that contain also other elements than
-the ones we just have constructed. Then the same structure consisting 
-of $A,a,e,{\cdot},\inv \_$ could be a group in different ways, depending on the
-choices made for elements witnessing the laws above. This is not how a group
-is defined in ordinary mathematics. It is also undesirable for the following reason.
-The right and the left unit laws are different types. However, by taking $e$ for $g$ in both laws
-we get the type $e=e\cdot e$ as a common instance. With the constructions above
-we would get both $p_1(a,e)$ and $p_2(a,e)$ as elements of $e=e\cdot e$.
-Both are equal to $\refl{e}$, but with different choices for $p_1$ and $p_2$
-we could get two different elements of $e=e\cdot e$. This is just the simplest
-example of the ambiguity that may occur. We can avoid this ambiguity, 
-and stay close to the definition of a group in ordinary mathematics,
-by the additional assumption that $a=a$ is a set. Then all the laws are propositions
-and hence witnessing elements are unique. 
- 
-OLD:   One may worry about many things when one sees the list ``right unit law, left unit law, associativity, inverse''.  For instance, for the particular case of $g$ being $e$, are the elements in $e=e\cdot e$ given in the left and right unit laws equal?  Since $a=a$ is a set, such worries become irrelevant: $e=e\cdot e$ is then a proposition, so any two elements are equal.
- \end{remark}
-
-The equations \ref{it:right-unit}--\ref{it:inverse} of the identity type are bundled together in the concept of an abstract group, under the additional hypothesis that we are dealing with a set.
-{\color{red}This assumption guarantees that \ref{it:right-unit}--\ref{it:inverse} are
-propositions.} 
+In \cref{xca:path-groupoid-laws}, the reader has constructed explicit elements of these equations.  If $a=a$ were a set, then the equations
+above would all be propositions, and then, in line with the convention adopted in \cref{sec:props-sets-grpds}, we could simply say that
+\cref{xca:path-groupoid-laws} establishes that the equations hold.  That motivates the following definition, in which we introduce a new set $S$
+to play the role of $a=a$, we introduce a new element $e:S$ to play the role of $\refl a$, and we dispense with the type $A$ and its element
+$a$.
 
 \begin{definition}\label{def:abstractgroup}
   An \emph{abstract group} consists of the following data:
   \begin{enumerate}
-  \item a set $S$ called the \emph{underlying set} of the abstract group;
-  \item an element $e:S$ called the \emph{unit} or the \emph{neutral element};
-  \item\label{struc:mult-op} a function ${\blank}\cdot{\blank}: S\to S\to S$ called the \emph{multiplication},
-    taking two elements $g_1,g_2:S$ to their \emph{product} denoted by $g_1\cdot g_2:S$;\footnote{%
-      The types $S\to S\to S$ and $(S\times S)\to S$ are equivalent
-and will be used interchangeably.}
-  The above data should satisfy the following properties, for all $g,g_1,g_2,g_3 : S$:
+  \item a set $S$, called the \emph{underlying set};
+  \item an element $e:S$, called the \emph{unit} or the \emph{neutral element};
+  \item\label{struc:mult-op} a function $S\to S\to S$, called \emph{multiplication},
+    taking two elements $g_1,g_2:S$ to their \emph{product}, denoted by $g_1\cdot g_2:S$.
+    \par \noindent
+    Moreover, the following equations should hold, for all $g,g_1,g_2,g_3 : S$.
     \begin{enumerate}[label=(\alph*),ref=(\alph*)]
-    \item\label{axiom:unit-laws} %$e$ is a ``neutral element'':
-      $g\cdot e=e\cdot g=g$ called the \emph{unit laws};
-    \item\label{axiom:ass-law} %satisfying ``associativity'':
-      $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ called the \emph{associativity law};
-  \end{enumerate}
-  \item\label{struc:inv-op} a function $\inv{\blank}: S\to S$ called the \emph{inverse operation},
-    taking an element $g:S$ to its \emph{inverse} denoted by $g^{-1}$.
-
-    \noindent Moreover, the inverse operation should satisfy the
-    following property, for all $g:S$ :
-    \begin{enumerate}[resume*]
-    \item\label{axiom:inv-law} %inverse
-      $ e = g\cdot g^{-1}$ called the \emph{law of inverses}.\qedhere
+    \item\label{axiom:unit-laws} $g\cdot e=g$ and $e\cdot g=g$ (the \emph{unit laws});
+    \item\label{axiom:ass-law} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ (the \emph{associativity law});
     \end{enumerate}
-%  \item %inverses:
-%    for every $g:S$, there merely exist an element $h:S$ such that $e=h\cdot g$.
+  \item\label{struc:inv-op} a function $S\to S$, the \emph{inverse operation},
+    taking an element $g:S$ to its \emph{inverse} $g^{-1}$.
+    \par \noindent
+    Moreover, the following equation should hold, for all $g:S$.
+    \begin{enumerate}[resume*]
+    \item\label{axiom:inv-law} $ e = g\cdot g^{-1}$ (the \emph{law of inverses}).
+    \qedhere
+    \end{enumerate}
   \end{enumerate}
 \end{definition}
 
