@@ -1,0 +1,537 @@
+\chapter{Finitely generated groups}
+\label{ch:fggroups}
+
+TODO:
+\begin{itemize}
+\item Make a separate chapter on combinatorics? Actions and Burnside and counting colorings?
+\item Cayley actions: $G$ acts on $\Gamma(G,S)$: Action on vertices is the left action of $G$ on itself: $t \mapsto (t=_{\BG} \pt)$, on vertices, for $s : S$, have edge $t = \pt$ to $t = \pt$
+\item Recall universal property of free groups: If we have a map $\varphi : S \to H$, then we get a homomorphism $\bar\varphi : F(S) \to H$, represented by $BF(S) \to_\pt \BH$ defined by induction, sending $\pt$ to $\pt$ and $s$ to $\varphi(s)$.
+\item define different types of graphs ($S$-digraphs, $\tilde S$-graphs,
+  (partial) functional graphs, graph homomorphisms, quotients of graphs)
+\item define (left/right) Cayley graphs of f.g.~groups
+  -- $\Aut(\Gamma_G) = G$ (include $\alpha : F(S) \to G$ in notation?)
+  -- Cayley graphs are vertex transitive
+\item Cayley graphs and products, semi-direct products, homomorphisms
+\item Some isomorphisms involving semi-direct products
+  -- Exceptional automorphism of $\Sigma_6$:
+  -- Exotic map $\Sigma_5 \to \Sigma_6$.
+  (Conjugation action of $\Sigma_5$ on $6$ $5$-Sylow subgroups.)
+  A set bundle $X : \BSigma_6 \to \BSigma_6$.
+\item \url{https://math.ucr.edu/home/baez/six.html}
+  Relating $\Sigma_6$ to the icosahedron.
+  The icosahedron has $6$ axes. Two axes determines a golden rectangle (also known as a \emph{duad},\footnote{%
+    These names come from Sylvester.}
+  so there are $15$ such. A symmetry of the icosahedron can be described
+  by knowing there a fixed rectangle goes, and a symmetry of the rectangle.
+  Picking three rectangles not sharing a diagonal gives a \emph{syntheme}:
+  three golden rectangles whose vertices make up the icosahedron.
+  Some synthemes (known as \emph{true crosses}
+  have the rectangles orthogonal to each other, as in
+  \cref{fig:true-cross}.
+  Fact: The symmetries of the icosahedron form the alternating symmetries of the $5$ true crosses.
+  Of course, we get an action on the $6$ axes, thus a homomorphism $\constant{A}_5 \to \Sigma_6$.
+  Every golden rectangle lies in one true cross and two skew crosses.
+  The combinatorics of duads, synthemes, and synthematic totals are illustrated
+  in the Cremona-Richardson configuration and the resulting Tutte-Coxeter graph.
+  The automorphism group of the latter is in fact $\Aut(\Sigma_6)$.
+  If we color the vertices according to duad/syntheme, we get $\Sigma_6$ itself.
+\begin{marginfigure}
+  \tdplotsetmaincoords{140}{35}
+  \begin{tikzpicture}[tdplot_main_coords,scale=1.0]
+    % icosahedron
+    \begin{scope}[fill=casblue,opacity=.2]
+      \fill (0.00000, 1.00000, 1.61803) -- (0.00000, -1.00000, 1.61803)
+      -- (0.00000, -1.00000, -1.61803) -- (0.00000, 1.00000, -1.61803) -- cycle;
+      \fill (1.00000, 1.61803, 0.00000) -- (-1.00000, 1.61803, 0.00000)
+      -- (-1.00000, -1.61803, 0.00000) -- (1.00000, -1.61803, 0.00000) -- cycle;
+      \fill (1.61803, 0.00000, 1.00000) -- (1.61803, 0.00000, -1.00000)
+      -- (-1.61803, 0.00000, -1.00000) -- (-1.61803, 0.00000, 1.00000) -- cycle;
+    \end{scope}
+    \begin{scope}[draw=casred,fill=casred,opacity=.2]
+      \fill (0.00000, 1.00000, 1.61803) -- (0.00000, -1.00000, 1.61803) -- (-1.61803, 0.00000, 1.00000) -- cycle;
+      \fill (-0.00000, 1.00000, 1.61803) -- (1.61803, 0.00000, 1.00000) -- (-0.00000, -1.00000, 1.61803) -- cycle;
+      \fill (0.00000, 1.00000, 1.61803) -- (-1.61803, 0.00000, 1.00000) -- (-1.00000, 1.61803, 0.00000) -- cycle;
+      \fill (-0.00000, 1.00000, 1.61803) -- (1.00000, 1.61803, 0.00000) -- (1.61803, 0.00000, 1.00000) -- cycle;
+      \fill (-0.00000, -1.00000, 1.61803) -- (1.61803, -0.00000, 1.00000) -- (1.00000, -1.61803, 0.00000) -- cycle;
+      \fill (0.00000, 1.00000, 1.61803) -- (-1.00000, 1.61803, 0.00000) -- (1.00000, 1.61803, 0.00000) -- cycle;
+      \fill (-0.00000, -1.00000, 1.61803) -- (-1.00000, -1.61803, 0.00000) -- (-1.61803, 0.00000, 1.00000) -- cycle;
+      \fill (1.61803, -0.00000, 1.00000) -- (1.00000, 1.61803, -0.00000) -- (1.61803, -0.00000, -1.00000) -- cycle;
+      \fill (-0.00000, -1.00000, 1.61803) -- (1.00000, -1.61803, 0.00000) -- (-1.00000, -1.61803, 0.00000) -- cycle;
+      \fill (-1.61803, 0.00000, 1.00000) -- (-1.61803, 0.00000, -1.00000) -- (-1.00000, 1.61803, 0.00000) -- cycle;
+      \fill (1.00000, 1.61803, 0.00000) -- (-1.00000, 1.61803, -0.00000) -- (0.00000, 1.00000, -1.61803) -- cycle;
+      \fill (-1.61803, 0.00000, 1.00000) -- (-1.00000, -1.61803, -0.00000) -- (-1.61803, 0.00000, -1.00000) -- cycle;
+      \fill (1.61803, 0.00000, 1.00000) -- (1.61803, -0.00000, -1.00000) -- (1.00000, -1.61803, 0.00000) -- cycle;
+      \fill (-1.00000, -1.61803, 0.00000) -- (1.00000, -1.61803, -0.00000) -- (-0.00000, -1.00000, -1.61803) -- cycle;
+      \fill (-1.00000, 1.61803, 0.00000) -- (-1.61803, 0.00000, -1.00000) -- (0.00000, 1.00000, -1.61803) -- cycle;
+      \fill (1.00000, 1.61803, 0.00000) -- (0.00000, 1.00000, -1.61803) -- (1.61803, 0.00000, -1.00000) -- cycle;
+      \fill (1.00000, -1.61803, 0.00000) -- (1.61803, -0.00000, -1.00000) -- (-0.00000, -1.00000, -1.61803) -- cycle;
+      \fill (-1.61803, 0.00000, -1.00000) -- (-1.00000, -1.61803, -0.00000) -- (-0.00000, -1.00000, -1.61803) -- cycle;
+      \fill (1.61803, 0.00000, -1.00000) -- (0.00000, 1.00000, -1.61803) -- (0.00000, -1.00000, -1.61803) -- cycle;
+      \fill (0.00000, 1.00000, -1.61803) -- (-1.61803, 0.00000, -1.00000) -- (0.00000, -1.00000, -1.61803) -- cycle;
+      \draw (0.00000, 1.00000, 1.61803) -- (0.00000, -1.00000, 1.61803);
+      \draw (-0.00000, 1.00000, 1.61803) -- (1.61803, 0.00000, 1.00000);
+      \draw (0.00000, 1.00000, 1.61803) -- (-1.61803, 0.00000, 1.00000);
+      \draw (-0.00000, 1.00000, 1.61803) -- (1.00000, 1.61803, 0.00000);
+      \draw (-0.00000, -1.00000, 1.61803) -- (-1.61803, 0.00000, 1.00000);
+      \draw (-0.00000, -1.00000, 1.61803) -- (1.61803, -0.00000, 1.00000);
+      \draw (0.00000, 1.00000, 1.61803) -- (-1.00000, 1.61803, 0.00000);
+      \draw (-0.00000, -1.00000, 1.61803) -- (-1.00000, -1.61803, 0.00000);
+      \draw (-1.61803, 0.00000, 1.00000) -- (-1.00000, 1.61803, 0.00000);
+      \draw (1.61803, -0.00000, 1.00000) -- (1.00000, 1.61803, -0.00000);
+      \draw (-0.00000, -1.00000, 1.61803) -- (1.00000, -1.61803, 0.00000);
+      \draw (1.61803, 0.00000, 1.00000) -- (1.00000, -1.61803, -0.00000);
+      \draw (-1.61803, 0.00000, 1.00000) -- (-1.61803, 0.00000, -1.00000);
+      \draw (-1.00000, 1.61803, 0.00000) -- (1.00000, 1.61803, 0.00000);
+      \draw (-1.61803, 0.00000, 1.00000) -- (-1.00000, -1.61803, -0.00000);
+      \draw (1.61803, 0.00000, 1.00000) -- (1.61803, -0.00000, -1.00000);
+      \draw (1.00000, 1.61803, 0.00000) -- (1.61803, 0.00000, -1.00000);
+      \draw (-1.00000, 1.61803, 0.00000) -- (0.00000, 1.00000, -1.61803);
+      \draw (1.00000, -1.61803, 0.00000) -- (-1.00000, -1.61803, 0.00000);
+      \draw (-1.00000, 1.61803, 0.00000) -- (-1.61803, 0.00000, -1.00000);
+      \draw (1.00000, 1.61803, 0.00000) -- (0.00000, 1.00000, -1.61803);
+      \draw (-1.00000, -1.61803, 0.00000) -- (-1.61803, -0.00000, -1.00000);
+      \draw (1.00000, -1.61803, 0.00000) -- (-0.00000, -1.00000, -1.61803);
+      \draw (1.61803, -0.00000, -1.00000) -- (1.00000, -1.61803, 0.00000);
+      \draw (-1.00000, -1.61803, 0.00000) -- (-0.00000, -1.00000, -1.61803);
+      \draw (-1.61803, 0.00000, -1.00000) -- (0.00000, 1.00000, -1.61803);
+      \draw (1.61803, -0.00000, -1.00000) -- (0.00000, -1.00000, -1.61803);
+      \draw (0.00000, 1.00000, -1.61803) -- (1.61803, 0.00000, -1.00000);
+      \draw (-1.61803, 0.00000, -1.00000) -- (-0.00000, -1.00000, -1.61803);
+      \draw (0.00000, 1.00000, -1.61803) -- (0.00000, -1.00000, -1.61803);
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Icosahedron with an inscribed true cross}
+  \label{fig:true-cross}
+\end{marginfigure}
+\item words and reduced words
+\item define (left/right) presentation complex of group presentation
+\item define Stallings folding
+\item deduce Nielsen--Schreier and Nielsen basis
+\item deduce algorithms for generalized word problem, conjugation, etc.
+\item deduce Howson's theorem
+\item think about 2-cell replacement for folding; better proofs in HoTT?
+\item move decidability results to main flow
+\item include undecidability of word problem in general
+  -- doesn't depend on presentation (for classes closed under inverse images of monoid homomorphisms)
+\item describe $F(S)/H$ in the case where $H$ has infinite index
+\item describe normal closure of $R$ in $F(S)$ -- still f.g.? -- get Cayley graph of $F(S)/\langle R\rangle$. -- Todd-Coxeter algorithm?
+\item in good cases we can recognize $\mathcal{S}(R)$ as a ``fundamental domain'' in Cayley graph of $\langle S\mid R\rangle$.
+\end{itemize}
+
+\begin{remark}
+  In this chapter, we use letters from the
+  beginning of the alphabet $a,b,c,\dots$
+  to denote generators,
+  and we use the corresponding capital letters
+  $A,B,C$ to denote their inverses,
+  so, e.g., $aA=Aa=1$.
+  This cleans up the notational clutter significantly.
+\end{remark}
+
+Do we fix $S$, a finite set $S=\{a,b,\ldots\}$?
+Mostly $F$ will denote the free group on $S$.
+And for almost all examples, we take $S = \{a,b\}$.
+
+\section{Cayley diagrams}
+\label{sec:cayley-diagrams}
+
+We have seen in the previous chapter how cyclic groups
+(those generated by a single generator)
+have neatly described torsors.
+
+In this section we shall generalize this story
+to groups $G$ generated by a
+(finite or just decidable)
+set of generators $S$.
+
+\tikzset{vertex/.style={circle,fill=black,inner sep=0pt,minimum size=4pt}}
+\tikzset{gena/.style={draw=casblue,-stealth}}
+\tikzset{genb/.style={draw=casred,-stealth}}
+
+\begin{figure}
+  \begin{sidecaption}%
+    {Cayley diagram for $S_3$ with respect to $S = \{(12),(23)\}$.}[fig:cayley-s3]
+  \centering
+  \begin{tikzpicture}
+    \pgfmathsetmacro{\len}{2}
+    \node[vertex,label=30:$(13)$]   (n13)  at (30:\len)  {};
+    \node[vertex,label=90:$(132)$]  (n132) at (90:\len)  {};
+    \node[vertex,label=150:$(12)$]  (n12)  at (150:\len) {};
+    \node[vertex,label=210:$e$]     (ne)   at (210:\len) {};
+    \node[vertex,label=270:$(23)$]  (n23)  at (270:\len) {};
+    \node[vertex,label=330:$(123)$] (n123) at (330:\len) {};
+    \begin{scope}[every to/.style={bend left=22}]
+      % generator a is (12)
+      \draw[gena] (ne)   to (n12);
+      \draw[gena] (n12)  to (ne);
+      \draw[gena] (n13)  to (n132);
+      \draw[gena] (n132) to (n13);
+      \draw[gena] (n123) to (n23);
+      \draw[gena] (n23)  to (n123);
+      % generator b is (23)
+      \draw[genb] (ne)   to (n23);
+      \draw[genb] (n23)  to (ne);
+      \draw[genb] (n13)  to (n123);
+      \draw[genb] (n123) to (n13);
+      \draw[genb] (n12)  to (n132);
+      \draw[genb] (n132) to (n12);
+    \end{scope}
+  \end{tikzpicture}
+  \end{sidecaption}
+\end{figure}
+
+$G \equiv \Aut(D_G) \to \Sym(\Card G)$
+
+\begin{figure}
+  \begin{sidecaption}%
+    {Cayley diagram for $A_5$ with respect to $S = \{a,b\}$,
+      where $a$ is a $1/5$-rotation about a vertex and
+      $b$ is a $1/2$-rotation about an edge in an icosahedron.}[fig:cayley-a5]
+  \centering
+\tdplotsetmaincoords{45}{135}
+\begin{tikzpicture}[tdplot_main_coords,scale=2]
+  % cayley icosahedron
+  \begin{scope}[fill=casblue,opacity=.2]
+\fill (0.00000, 1.00000, 1.61803) -- (0.00000, -1.00000, 1.61803) -- (-1.61803, 0.00000, 1.00000) -- cycle;
+\fill (-0.00000, 1.00000, 1.61803) -- (1.61803, 0.00000, 1.00000) -- (-0.00000, -1.00000, 1.61803) -- cycle;
+\fill (0.00000, 1.00000, 1.61803) -- (-1.61803, 0.00000, 1.00000) -- (-1.00000, 1.61803, 0.00000) -- cycle;
+\fill (-0.00000, 1.00000, 1.61803) -- (1.00000, 1.61803, 0.00000) -- (1.61803, 0.00000, 1.00000) -- cycle;
+\fill (-0.00000, -1.00000, 1.61803) -- (1.61803, -0.00000, 1.00000) -- (1.00000, -1.61803, 0.00000) -- cycle;
+\fill (0.00000, 1.00000, 1.61803) -- (-1.00000, 1.61803, 0.00000) -- (1.00000, 1.61803, 0.00000) -- cycle;
+\fill (-0.00000, -1.00000, 1.61803) -- (-1.00000, -1.61803, 0.00000) -- (-1.61803, 0.00000, 1.00000) -- cycle;
+\fill (1.61803, -0.00000, 1.00000) -- (1.00000, 1.61803, -0.00000) -- (1.61803, -0.00000, -1.00000) -- cycle;
+\fill (-0.00000, -1.00000, 1.61803) -- (1.00000, -1.61803, 0.00000) -- (-1.00000, -1.61803, 0.00000) -- cycle;
+\fill (-1.61803, 0.00000, 1.00000) -- (-1.61803, 0.00000, -1.00000) -- (-1.00000, 1.61803, 0.00000) -- cycle;
+\fill (1.00000, 1.61803, 0.00000) -- (-1.00000, 1.61803, -0.00000) -- (0.00000, 1.00000, -1.61803) -- cycle;
+\fill (-1.61803, 0.00000, 1.00000) -- (-1.00000, -1.61803, -0.00000) -- (-1.61803, 0.00000, -1.00000) -- cycle;
+\fill (1.61803, 0.00000, 1.00000) -- (1.61803, -0.00000, -1.00000) -- (1.00000, -1.61803, 0.00000) -- cycle;
+\fill (-1.00000, -1.61803, 0.00000) -- (1.00000, -1.61803, -0.00000) -- (-0.00000, -1.00000, -1.61803) -- cycle;
+\fill (-1.00000, 1.61803, 0.00000) -- (-1.61803, 0.00000, -1.00000) -- (0.00000, 1.00000, -1.61803) -- cycle;
+\fill (1.00000, 1.61803, 0.00000) -- (0.00000, 1.00000, -1.61803) -- (1.61803, 0.00000, -1.00000) -- cycle;
+\fill (1.00000, -1.61803, 0.00000) -- (1.61803, -0.00000, -1.00000) -- (-0.00000, -1.00000, -1.61803) -- cycle;
+\fill (-1.61803, 0.00000, -1.00000) -- (-1.00000, -1.61803, -0.00000) -- (-0.00000, -1.00000, -1.61803) -- cycle;
+\fill (1.61803, 0.00000, -1.00000) -- (0.00000, 1.00000, -1.61803) -- (0.00000, -1.00000, -1.61803) -- cycle;
+\fill (0.00000, 1.00000, -1.61803) -- (-1.61803, 0.00000, -1.00000) -- (0.00000, -1.00000, -1.61803) -- cycle;
+\end{scope}
+\node[vertex] (n) at (0.00000, 0.50000, 1.61803) {};
+\node[vertex] (na) at (0.40451, 0.75000, 1.46353) {};
+\node[vertex] (nb) at (-0.00000, -0.50000, 1.61803) {};
+\node[vertex] (nA) at (-0.40451, 0.75000, 1.46353) {};
+\node[vertex] (naa) at (0.25000, 1.15451, 1.21353) {};
+\node[vertex] (nba) at (-0.40451, -0.75000, 1.46353) {};
+\node[vertex] (nab) at (1.21353, 0.25000, 1.15451) {};
+\node[vertex] (nAb) at (-1.21353, 0.25000, 1.15451) {};
+\node[vertex] (nbA) at (0.40451, -0.75000, 1.46353) {};
+\node[vertex] (nAA) at (-0.25000, 1.15451, 1.21353) {};
+\node[vertex] (nbaa) at (-0.25000, -1.15451, 1.21353) {};
+\node[vertex] (naba) at (1.21353, -0.25000, 1.15451) {};
+\node[vertex] (nAba) at (-1.46353, 0.40451, 0.75000) {};
+\node[vertex] (naab) at (0.75000, 1.46353, 0.40451) {};
+\node[vertex] (nbab) at (-1.21353, -0.25000, 1.15451) {};
+\node[vertex] (nAAb) at (-0.75000, 1.46353, 0.40451) {};
+\node[vertex] (nabA) at (1.46353, 0.40451, 0.75000) {};
+\node[vertex] (nbAA) at (0.25000, -1.15451, 1.21353) {};
+\node[vertex] (nabaa) at (1.46353, -0.40451, 0.75000) {};
+\node[vertex] (nAbaa) at (-1.61803, 0.00000, 0.50000) {};
+\node[vertex] (naaba) at (1.15451, 1.21353, 0.25000) {};
+\node[vertex] (nAAba) at (-0.50000, 1.61803, 0.00000) {};
+\node[vertex] (nbaab) at (-0.75000, -1.46353, 0.40451) {};
+\node[vertex] (nAbab) at (-1.15451, 1.21353, 0.25000) {};
+\node[vertex] (nbAAb) at (0.75000, -1.46353, 0.40451) {};
+\node[vertex] (naabA) at (0.50000, 1.61803, 0.00000) {};
+\node[vertex] (nbabA) at (-1.46353, -0.40451, 0.75000) {};
+\node[vertex] (nabAA) at (1.61803, -0.00000, 0.50000) {};
+\node[vertex] (naabaa) at (1.15451, 1.21353, -0.25000) {};
+\node[vertex] (nAAbaa) at (-0.75000, 1.46353, -0.40451) {};
+\node[vertex] (nbaaba) at (-1.15451, -1.21353, 0.25000) {};
+\node[vertex] (nbAAba) at (0.50000, -1.61803, 0.00000) {};
+\node[vertex] (nabaab) at (1.15451, -1.21353, 0.25000) {};
+\node[vertex] (nAbaab) at (-1.61803, 0.00000, -0.50000) {};
+\node[vertex] (nabAAb) at (1.61803, -0.00000, -0.50000) {};
+\node[vertex] (nbaabA) at (-0.50000, -1.61803, 0.00000) {};
+\node[vertex] (nAbabA) at (-1.15451, 1.21353, -0.25000) {};
+\node[vertex] (naabAA) at (0.75000, 1.46353, -0.40451) {};
+\node[vertex] (nbaabaa) at (-1.15451, -1.21353, -0.25000) {};
+\node[vertex] (nbAAbaa) at (0.75000, -1.46353, -0.40451) {};
+\node[vertex] (nAbaaba) at (-1.46353, 0.40451, -0.75000) {};
+\node[vertex] (nabAAba) at (1.46353, -0.40451, -0.75000) {};
+\node[vertex] (naabaab) at (1.46353, 0.40451, -0.75000) {};
+\node[vertex] (nAAbaab) at (-0.25000, 1.15451, -1.21353) {};
+\node[vertex] (naabAAb) at (0.25000, 1.15451, -1.21353) {};
+\node[vertex] (nabaabA) at (1.15451, -1.21353, -0.25000) {};
+\node[vertex] (nAbaabA) at (-1.46353, -0.40451, -0.75000) {};
+\node[vertex] (nbaabAA) at (-0.75000, -1.46353, -0.40451) {};
+\node[vertex] (nAbaabaa) at (-1.21353, 0.25000, -1.15451) {};
+\node[vertex] (nabAAbaa) at (1.21353, -0.25000, -1.15451) {};
+\node[vertex] (naabAAba) at (0.40451, 0.75000, -1.46353) {};
+\node[vertex] (nbAAbaab) at (0.25000, -1.15451, -1.21353) {};
+\node[vertex] (nbaabAAb) at (-0.25000, -1.15451, -1.21353) {};
+\node[vertex] (naabaabA) at (1.21353, 0.25000, -1.15451) {};
+\node[vertex] (nAAbaabA) at (-0.40451, 0.75000, -1.46353) {};
+\node[vertex] (nAbaabAA) at (-1.21353, -0.25000, -1.15451) {};
+\node[vertex] (naabAAbaa) at (0.00000, 0.50000, -1.61803) {};
+\node[vertex] (nbaabAAba) at (-0.40451, -0.75000, -1.46353) {};
+\node[vertex] (nabAAbaab) at (0.40451, -0.75000, -1.46353) {};
+\node[vertex] (nbaabAAbaa) at (-0.00000, -0.50000, -1.61803) {};
+\draw[gena] (n) -- (nA);
+\draw[genb] (n) -- (nb);
+\draw[gena] (na) -- (n);
+\draw[genb] (na) -- (nab);
+\draw[gena] (nb) -- (nbA);
+\draw[genb] (nb) -- (n);
+\draw[gena] (nA) -- (nAA);
+\draw[genb] (nA) -- (nAb);
+\draw[gena] (naa) -- (na);
+\draw[genb] (naa) -- (naab);
+\draw[gena] (nba) -- (nb);
+\draw[genb] (nba) -- (nbab);
+\draw[gena] (nab) -- (nabA);
+\draw[genb] (nab) -- (na);
+\draw[gena] (nAb) -- (nbab);
+\draw[genb] (nAb) -- (nA);
+\draw[gena] (nbA) -- (nbAA);
+\draw[genb] (nbA) -- (naba);
+\draw[gena] (nAA) -- (naa);
+\draw[genb] (nAA) -- (nAAb);
+\draw[gena] (nbaa) -- (nba);
+\draw[genb] (nbaa) -- (nbaab);
+\draw[gena] (naba) -- (nab);
+\draw[genb] (naba) -- (nbA);
+\draw[gena] (nAba) -- (nAb);
+\draw[genb] (nAba) -- (nAbab);
+\draw[gena] (naab) -- (naabA);
+\draw[genb] (naab) -- (naa);
+\draw[gena] (nbab) -- (nbabA);
+\draw[genb] (nbab) -- (nba);
+\draw[gena] (nAAb) -- (nAbab);
+\draw[genb] (nAAb) -- (nAA);
+\draw[gena] (nabA) -- (nabAA);
+\draw[genb] (nabA) -- (naaba);
+\draw[gena] (nbAA) -- (nbaa);
+\draw[genb] (nbAA) -- (nbAAb);
+\draw[gena] (nabaa) -- (naba);
+\draw[genb] (nabaa) -- (nabaab);
+\draw[gena] (nAbaa) -- (nAba);
+\draw[genb] (nAbaa) -- (nAbaab);
+\draw[gena] (naaba) -- (naab);
+\draw[genb] (naaba) -- (nabA);
+\draw[gena] (nAAba) -- (nAAb);
+\draw[genb] (nAAba) -- (naabA);
+\draw[gena] (nbaab) -- (nbaabA);
+\draw[genb] (nbaab) -- (nbaa);
+\draw[gena] (nAbab) -- (nAbabA);
+\draw[genb] (nAbab) -- (nAba);
+\draw[gena] (nbAAb) -- (nabaab);
+\draw[genb] (nbAAb) -- (nbAA);
+\draw[gena] (naabA) -- (naabAA);
+\draw[genb] (naabA) -- (nAAba);
+\draw[gena] (nbabA) -- (nAbaa);
+\draw[genb] (nbabA) -- (nbaaba);
+\draw[gena] (nabAA) -- (nabaa);
+\draw[genb] (nabAA) -- (nabAAb);
+\draw[gena] (naabaa) -- (naaba);
+\draw[genb] (naabaa) -- (naabaab);
+\draw[gena] (nAAbaa) -- (nAAba);
+\draw[genb] (nAAbaa) -- (nAAbaab);
+\draw[gena] (nbaaba) -- (nbaab);
+\draw[genb] (nbaaba) -- (nbabA);
+\draw[gena] (nbAAba) -- (nbAAb);
+\draw[genb] (nbAAba) -- (nbaabA);
+\draw[gena] (nabaab) -- (nabaabA);
+\draw[genb] (nabaab) -- (nabaa);
+\draw[gena] (nAbaab) -- (nAbaabA);
+\draw[genb] (nAbaab) -- (nAbaa);
+\draw[gena] (nabAAb) -- (naabaab);
+\draw[genb] (nabAAb) -- (nabAA);
+\draw[gena] (nbaabA) -- (nbaabAA);
+\draw[genb] (nbaabA) -- (nbAAba);
+\draw[gena] (nAbabA) -- (nAAbaa);
+\draw[genb] (nAbabA) -- (nAbaaba);
+\draw[gena] (naabAA) -- (naabaa);
+\draw[genb] (naabAA) -- (naabAAb);
+\draw[gena] (nbaabaa) -- (nbaaba);
+\draw[genb] (nbaabaa) -- (nAbaabA);
+\draw[gena] (nbAAbaa) -- (nbAAba);
+\draw[genb] (nbAAbaa) -- (nbAAbaab);
+\draw[gena] (nAbaaba) -- (nAbaab);
+\draw[genb] (nAbaaba) -- (nAbabA);
+\draw[gena] (nabAAba) -- (nabAAb);
+\draw[genb] (nabAAba) -- (nabaabA);
+\draw[gena] (naabaab) -- (naabaabA);
+\draw[genb] (naabaab) -- (naabaa);
+\draw[gena] (nAAbaab) -- (nAAbaabA);
+\draw[genb] (nAAbaab) -- (nAAbaa);
+\draw[gena] (naabAAb) -- (nAAbaab);
+\draw[genb] (naabAAb) -- (naabAA);
+\draw[gena] (nabaabA) -- (nbAAbaa);
+\draw[genb] (nabaabA) -- (nabAAba);
+\draw[gena] (nAbaabA) -- (nAbaabAA);
+\draw[genb] (nAbaabA) -- (nbaabaa);
+\draw[gena] (nbaabAA) -- (nbaabaa);
+\draw[genb] (nbaabAA) -- (nbaabAAb);
+\draw[gena] (nAbaabaa) -- (nAbaaba);
+\draw[genb] (nAbaabaa) -- (nAAbaabA);
+\draw[gena] (nabAAbaa) -- (nabAAba);
+\draw[genb] (nabAAbaa) -- (nabAAbaab);
+\draw[gena] (naabAAba) -- (naabAAb);
+\draw[genb] (naabAAba) -- (naabaabA);
+\draw[gena] (nbAAbaab) -- (nabAAbaab);
+\draw[genb] (nbAAbaab) -- (nbAAbaa);
+\draw[gena] (nbaabAAb) -- (nbAAbaab);
+\draw[genb] (nbaabAAb) -- (nbaabAA);
+\draw[gena] (naabaabA) -- (nabAAbaa);
+\draw[genb] (naabaabA) -- (naabAAba);
+\draw[gena] (nAAbaabA) -- (naabAAbaa);
+\draw[genb] (nAAbaabA) -- (nAbaabaa);
+\draw[gena] (nAbaabAA) -- (nAbaabaa);
+\draw[genb] (nAbaabAA) -- (nbaabAAba);
+\draw[gena] (naabAAbaa) -- (naabAAba);
+\draw[genb] (naabAAbaa) -- (nbaabAAbaa);
+\draw[gena] (nbaabAAba) -- (nbaabAAb);
+\draw[genb] (nbaabAAba) -- (nAbaabAA);
+\draw[gena] (nabAAbaab) -- (nbaabAAbaa);
+\draw[genb] (nabAAbaab) -- (nabAAbaa);
+\draw[gena] (nbaabAAbaa) -- (nbaabAAba);
+\draw[genb] (nbaabAAbaa) -- (naabAAbaa);
+\end{tikzpicture}
+  \end{sidecaption}
+\end{figure}
+
+\section{Free groups}
+\label{sec:freegroups}
+
+\section{Examples}
+\label{sec:fg-examples}
+
+\section{Subgroups of free groups}
+\label{sec:subgroups-free}
+
+The Nielsen-Schreier theorem.
+
+
+\begin{corollary}
+  A subgroup of finite index of a finitely generated group is finitely generated.
+\end{corollary}
+(This also has an automata theoretic proof, see below.)
+
+\section{Intersecting subgroups}
+\label{sec:intersecting-subgroups}
+
+Stallings folding\footcite{Stallings1991}.
+
+\begin{theorem}
+  Let $H$ be a finitely generated subgroup of $F(S)$ and let $u\in\tilde S^*$
+  by a reduced word. Then $u$ represents an element of $H$ if and only if
+  $u$ is recognized by the Stallings automaton $\mathcal{S}(H)$.
+\end{theorem}
+\begin{theorem}
+  Let $H$ be a finitely generated subgroup of $F(S)$.
+  Then $H$ has finite index if and only if $\mathcal{S}(H)$ is total.
+
+  Furthermore, in this case the index equals the number of vertices of
+  $\mathcal{S}(H)$.
+\end{theorem}
+\begin{corollary}
+  If $H$ has index $n$ in $F(S)$, then $\casop{\constant{rk}} H = 1 + n(\casop{\constant{card}} S-1)$.
+\end{corollary}
+
+\begin{theorem}\label{thm:howson-neumann}
+  Suppose $H_1,H_2$ are two subgroups of $F$ with finite indices $h_1,h_2$.
+  Then the intersection $H_1\cap H_2$ has finite index at most $h_1h_2$.
+\end{theorem}
+\marginnote{The qualitative part of \cref{thm:howson-neumann}
+  is known as \emph{Howson's theorem}, while the inequality
+  is known as \emph{Hanna Neumann's inequality}.
+  Hanna's son, Walter Neumann, conjectured that the $2$ could be removed,
+  and this was later proved independently by Joel Friedman
+  and Igor Mineyev.}
+
+\section{Connections with automata (*)}
+
+($S$ is still a fixed finite set.)
+
+Let $\iota : F(S) \to \tilde S^*$ map an element of the free group to the corresponding reduced word.
+
+The following theorem is due to Benois.
+\begin{theorem}
+  A subset $X$ of $F(S)$ is rational if and only if
+  $\iota(X)\subseteq \tilde S^*$ is a regular language.
+\end{theorem}
+
+\begin{lemma}
+  Let $\rho : \tilde S^* \to \tilde S^*$ map a word to its reduction.
+  Then $\rho$ maps regular languages to regular languages.
+\end{lemma}
+
+The following is due to Sénizergues:
+\begin{theorem}
+  A rational subset of $F(S)$ is either disjunctive or recognizable.
+\end{theorem}
+
+Given a surjective monoid homomorphism $\alpha : S^* \to G$,
+we define the corresponding \emph{matched homomorphism} $\tilde\alpha : \tilde S^* \to G$ by $(\tilde\alpha(a^{-1}) \defeq \alpha(a)^{-1}$.
+\begin{theorem}[?]
+  Consider a f.g.\ group $G$ with a surjective homomorphism
+  $\alpha : F(S) \to G$. A subset $X$ of $G$ is recognisable by a finite $G$-action
+  if and only if $\tilde\alpha^{-1}(X) \subseteq \tilde S^*$ is rational (i.e., regular).
+\end{theorem}
+\begin{theorem}[Muller--Schupp, ?]
+  Suppose $\tilde\alpha : \tilde S^* \to G$ is a surjective matched homomorphism
+  onto a group $G$. Then $G$ is virtually free (i.e., $G$ has a normal free subgroup of finite index) if and only if $\ker(\tilde\alpha)$ is a context-free language.
+\end{theorem}
+\begin{theorem}
+
+\end{theorem}
+The Stallings automaton is an \emph{inverse automaton}:
+it's deterministic,
+and there's an edge $(p,a,q)$ if and only if there's one $(q,A,p)$.
+We can always think of the latter as the \emph{reverse} edge.
+(It's then also deterministic in the reverse direction.)
+
+Two vertices $p,q$ get identified in the Stallings graph/automaton
+if and only if there is a run from $p$ to $q$ with a word $w$
+whose reduction is $1$. (So a word like $aAAaBBbb$.)
+
+\begin{theorem}
+  Let $X \subseteq F(S)$. Then $Y$ is a coset $Hw$ with $H$
+  a finitely generated subgroup,
+  if and only if
+  there is a finite state inverse automaton whose language (after reduction)
+  is $Y$.
+\end{theorem}
+
+\begin{corollary}
+  The generalized word problem in $F(S)$ is solvable:
+  Given a finitely generated subgroup $H$, and a word $u : \tilde S^*$,
+  we can decide whether $u$ represents an element of $H$.
+\end{corollary}
+\marginnote{%
+  The Stallings automaton for $H$ can be constructed in time
+  $O(n \log^*n)$, where $n$ is the sum of the lengths of the generators for $H$.
+  [Cite: Touikan: A fast algorithm for Stallings' folding process.]
+  Once this has been constructed, we can solve membership in $H$ in linear time.}
+
+As above, we get a basis for $H$ as a free group from a spanning tree in
+$\mathcal{S}(H)$.
+
+\begin{theorem}
+  We can decide whether two f.g.\ subgroups of $F(S)$ are conjugate.
+  Moreover, a f.g.\ subgroup $H$ is normal if and only if $\mathcal{S}(H)$
+  is vertex-transitive.
+\end{theorem}
+\begin{proof}
+  $G,H$ are conjugate of and only if their cores are equal.
+\end{proof}
+
+There are other connections between group theory and language theory:
+\begin{theorem}[Anisimov and Seifert]
+  A subgroup $H$ of $G$ is rational if and only if $H$ is finitely generated.
+\end{theorem}
+\begin{theorem}
+  A subgroup $H$ of $G$ is recognizable if and only if it has finite index.
+\end{theorem}
+%%% Local Variables:
+%%% mode: latex
+%%% fill-column: 144
+%%% TeX-master: "book"
+%%% End:
