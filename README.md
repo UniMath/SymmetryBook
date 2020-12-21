@@ -31,4 +31,4 @@ This book will be an undergraduate textbook written in the univalent style, taki
 
 ## An icosahedron for your viewing pleasure
 
-<iframe src="https://raw.githubusercontent.com/UniMath/SymmetryBook/master/icosahedron.html" width="115" height="105" frameborder="0"></iframe>
+<iframe src="https://unimath.github.io/SymmetryBook/icosahedron.html" width="115" height="105" frameborder="0"></iframe>
