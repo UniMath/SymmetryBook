@@ -32,9 +32,9 @@ BOOKFILES :=						\
 	group.tex					\
 	subgroups.tex					\
 	symmetry.tex					\
-	gerbes.tex					\
+	fggroups.tex					\
 	fingp.tex					\
-	EuclideanGeometry.tex			
+	EuclideanGeometry.tex
 
 TAGS : Makefile $(BOOKFILES)
 	etags $(BOOKFILES)
