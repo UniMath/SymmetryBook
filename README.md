@@ -32,3 +32,4 @@ This book will be an undergraduate textbook written in the univalent style, taki
 ## An icosahedron for your viewing pleasure
 
 Go [here for an interactive icosahedron](https://unimath.github.io/SymmetryBook/icosahedron.html)
+and [here for a Cayley diagram of the icosahedral group](https://unimath.github.io/SymmetryBook/icocayley.html).
