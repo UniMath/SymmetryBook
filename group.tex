@@ -590,8 +590,8 @@ For any elements $g,g_1,g_2,g_3:a=a$, we consider the following 4 equations.
 In \cref{xca:path-groupoid-laws}, the reader has constructed explicit elements of these equations.  If $a=a$ were a set, then the equations
 above would all be propositions, and then, in line with the convention adopted in \cref{sec:props-sets-grpds}, we could simply say that
 \cref{xca:path-groupoid-laws} establishes that the equations hold.  That motivates the following definition, in which we introduce a new set $S$
-to play the role of $a=a$, we introduce a new element $e:S$ to play the role of $\refl a$, and we dispense with the type $A$ and its element
-$a$.
+to play the role of $a=a$.  We introduce a new element $e:S$ to play the role of $\refl a$, a new multiplication operation, and a new inverse
+operation.  The original type $A$ and its element $a$ play no further role.
 
 \begin{definition}\label{def:abstractgroup}
   An \emph{abstract group} consists of the following data:
@@ -602,7 +602,7 @@ $a$.
     taking two elements $g_1,g_2:S$ to their \emph{product}, denoted by $g_1\cdot g_2:S$.
     \par \noindent
     Moreover, the following equations should hold, for all $g,g_1,g_2,g_3 : S$.
-    \begin{enumerate}[label=(\alph*),ref=(\alph*)]
+    \begin{enumerate}[label=(\alph*),ref=\ref{struc:mult-op} (\alph*)]
     \item\label{axiom:unit-laws} $g\cdot e=g$ and $e\cdot g=g$ (the \emph{unit laws});
     \item\label{axiom:ass-law} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ (the \emph{associativity law});
     \end{enumerate}
@@ -610,92 +610,76 @@ $a$.
     taking an element $g:S$ to its \emph{inverse} $g^{-1}$.
     \par \noindent
     Moreover, the following equation should hold, for all $g:S$.
-    \begin{enumerate}[resume*]
+    \begin{enumerate}[label=(\alph*),ref=\ref{struc:inv-op} (\alph*)]
     \item\label{axiom:inv-law} $ e = g\cdot g^{-1}$ (the \emph{law of inverses}).
     \qedhere
     \end{enumerate}
   \end{enumerate}
 \end{definition}
 
+\begin{remark}
+  Strictly speaking, the proofs of the various equations are part of the data defining an abstract group, too.  But, since the equations are
+  propositions, the proofs are unique, and by the convention introduced in \cref{rem:subtype-convention}, we can afford to omit those items when
+  speaking informally.  Moreover, one needn't wonder whether one gets a different group if the equations are given different proofs, because the
+  equations cannot be given different proofs.
+\end{remark}
+
 \begin{remark}\label{rem:inverses-as-property}
   \makeatletter %
   \renewcommand\p@enumii{}%
   \makeatother%
   Instead of including the inverse operation as part
-  \ref{struc:inv-op} of the structure and assuming the property
-  \ref{axiom:inv-law}, some authors assume the existence of inverses
-  as a property:
-  \begin{enumerate}
-  \item[]\begin{enumerate}[resume*,label=(\alph*),ref=(\alph*)]
-    \item\label{axiom:mere-inverse} for all $g:S$ there exists an
-      $h:S$ such that $e = g \cdot h$.
-    \end{enumerate}
+  \ref{struc:inv-op} of the structure (including with the property
+  \ref{axiom:inv-law}), some authors assume the existence of inverses
+  by positing the following property.
+  \begin{enumerate}[resume*]
+    \item\label{axiom:mere-inverse} for all $g:S$ there exists an element
+    $h:S$ such that $e = g \cdot h$.
   \end{enumerate}
-  Using the properties \ref{axiom:unit-laws} and
-  \ref{axiom:ass-law} one easily proves that such inverses are
-  unique. We will now compare \ref{axiom:mere-inverse} to \ref{struc:inv-op} plus
-  \ref{axiom:inv-law}.
 
-  First, \cref{def:abstractgroup} requires that $S$ is a set.
-  Consequently, the properties
-  \ref{axiom:unit-laws}--\ref{axiom:inv-law} are propositions.
-  Property \ref{axiom:mere-inverse} instead of \ref{struc:inv-op} plus
-  \ref{axiom:inv-law} does not require the inverse operation to be a
-  function.
+  We will now compare \ref{axiom:mere-inverse} to \ref{struc:inv-op}.
 
-  Property \ref{axiom:mere-inverse} contains the quantification
-  ``there exists''.  The faithful translation of
-  \ref{axiom:mere-inverse} into type theory would be with $\exists$,
-  ``there merely exists'', see \cref{sec:prop-trunc}.  Under this
-  translation, contrary to groups in ordinary mathematics, it makes no
-  sense, a priori, to talk about ``the inverse of $g$'' and about the
-  law of inverses.  Indeed, ``the inverse of $g$'' could only be
-  mentioned when targeting a propositional goal.
-
-  However, the following lemma proves that we can define an inverse
-  operation as in \ref{struc:inv-op} satisfying
-  \ref{axiom:inv-law} from a witness of \ref{axiom:mere-inverse}.
-  This means that, a posteriori, we \emph{can} talk about ``the
-  inverse of $g$'' also if the goal is not a proposition.  We choose
-  to include the inverse operation in the structure right from the
-  start.
+  Property \ref{axiom:mere-inverse} contains the quantifier ``there exists''.  The translation of \ref{axiom:mere-inverse} into type theory
+  would use with $\exists$, ``there merely exists'', as defined in \cref{sec:prop-trunc}.  Under this translation, property \ref{axiom:mere-inverse} does
+  not immediately allow us to speak of ``the inverse of $g$''.
+  However, the following lemma shows that we can define an inverse operation as in \ref{struc:inv-op} from a witness of \ref{axiom:mere-inverse}
+  -- its proof goes by using the properties \ref{axiom:unit-laws} and \ref{axiom:ass-law} to prove that inverses are unique.  As a consequence,
+  we \emph{can} speak ``the inverse of $g$''.
 \end{remark}
 
 \begin{lemma}%
   \label{lem:group-inv-operation}%
   Given a set $S$ together with $e$ and $\cdot$ as in
   \cref{def:abstractgroup} satisfying the unit laws, the associativity
-  law, and property \ref{axiom:mere-inverse}, there is a function
-  $\inv{\blank}: S \to S$ having property \ref{axiom:inv-law} of an
-  abstract group.
+  law, and property \ref{axiom:mere-inverse}, there is a ``inverse'' function
+  $S \to S$ having property \ref{axiom:inv-law} of \cref{def:abstractgroup}.
 \end{lemma}
 
 \begin{proof}
   Consider the function $\mu: S \to (S \to S)$ defined as
   $g\mapsto (h \mapsto g\cdot h)$. Let $g:S$. We claim that the fiber
-  $\inv{\mu(g)}(e)$ is contractible. This is a proposition, hence to
+  $\inv{\mu(g)}(e)$ is contractible.  Contractibility is a proposition, hence to
   prove it from \ref{axiom:mere-inverse}, one can as well assume the
   actual existence of $h$ such that $g\cdot h = e$. Then $(h,!)$ is an
   element of the fiber $\inv{\mu(g)}(e)$. We will now prove that it is
   a center of contraction. For any other element $(h',!)$, we want to
-  prove $(h,!) = (h',!)$ which is equivalent to the type $h=h'$. In
+  prove $(h,!) = (h',!)$, which is equivalent to the equation $h=h'$. In
   order to prove the latter, we show that $h$ is also an inverse on
-  the left of $g$, meaning that $h\cdot g=e$: this is again a
-  proposition so we can assume from \ref{axiom:mere-inverse} an
-  actual element $k:S$ such that $h\cdot k = e$, and by multiplying by
+  the left of $g$, meaning that $h\cdot g=e$.  This equation is also a
+  proposition, so we can assume from \ref{axiom:mere-inverse} that we have an
+  element $k:S$ such that $h\cdot k = e$.  Multiplying that equation by
   $g$ on the left, one obtains
   \begin{displaymath}
-    k = (g\cdot h)\cdot k = g\cdot (h\cdot k) = g\cdot e = g.
+    k = e \cdot k = (g\cdot h)\cdot k = g\cdot (h\cdot k) = g\cdot e = g,
   \end{displaymath}
-  From there it follows that
+  from which we see that $h\cdot g=e$.
+  Now it follows that
   \begin{displaymath}
-    h = h \cdot e = h \cdot (g\cdot h') = (h \cdot g) \cdot h' = e\cdot
-    h' = h'
+    h = h \cdot e = h \cdot (g\cdot h') = (h \cdot g) \cdot h' = e \cdot h' = h',
   \end{displaymath}
-  as required. Hence $\inv{\mu(g)}(e)$ is contractible with center
-  $c_g \defequi (h,!)$. Since the argument works for an arbitrary $g:S$,
-  we can craft the function $\inv\blank : g \mapsto c_g$. By
-  definition it satisfies the law of inverses \ref{axiom:inv-law}.
+  as required. Hence $\inv{\mu(g)}(e)$ is contractible, and we may define $g^{-1}$ to
+  be the center of the contraction, for any $g:S$.
+  The function $g \mapsto g^{-1}$ satisfies the law of inverses \ref{axiom:inv-law}, as required.
 \end{proof}
 Note that the proof above also shows the other \emph{law of inverses}:
 for all $g:S$ we have $g^{-1}\cdot g=e$.
@@ -741,8 +725,8 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
   $M$ will be referred to as the \emph{underlying set} of $H$.
 \end{remark}
 
-In conclusion, in that section we have proved that groups give rise to
-abstract groups:
+In conclusion, we have proved that groups give rise to
+abstract groups, allowing us to state the following lemma.
 
 \begin{lemma}\label{lem:idtypesgiveabstractgroups}
   If $G$ is a group, then $\USym G$,
