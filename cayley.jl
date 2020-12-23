@@ -185,10 +185,75 @@ function drawplatonic(degree::Float64, P::ThreeVector, Q::ThreeVector)
     return tikzstring
 end
 
+"""
+Make a TikzPicture of an icocahedron with a true cross
+P and Q are two adjecent vertices (also specifying the cross),
+D is a viewing direction
+This function emits the faces in order as seen from D
+"""
+function drawicocross(P::ThreeVector, Q::ThreeVector, D::ThreeVector)
+    a = rotor(5.0, P)
+    b = rotor(2.0, P+Q)
+    A = ~a
+    B = ~b
+    G = mkeuclgp(a,b)
+    edge1::Face = [P, Q]
+    face1::Face = [P, Q]
+    # complete the first face, iterating b*a
+    for i in 1:10
+        R = apply(b*a,last(face1))
+        getvertex(face1, R) do
+            push!(face1, R)
+        end
+    end
+    faces::Vector{Face} = [face1]
+    # find all edges and faces, iterating over G
+    # (here we conside edges as degenerate faces
+    for (w, g) in G
+        #newface = apply.(Ref(g),face1)
+        #getface(faces, newface) do
+        #    push!(faces, newface)
+        #end
+        newedge = apply.(Ref(g),edge1)
+        getface(faces, newedge) do
+            push!(faces, newedge)
+        end
+    end
+    # add the three golden rectangles (each split in four quarters)
+    qrect::Face = [0.0P, 0.5(P+Q), P, 0.5(P-Q)]
+    # we want the orbit of qrect under the stabilizing A4
+    # note that a*b*A*A = rotor(3.0, v₁+v₂+v₃)
+    # (12 elements for 3 × 4 quarter rectangles)
+    A4 = mkeuclgp(a*b*A*A, b)
+    for (w, g) in A4
+        newrect = apply.(Ref(g),qrect)
+        getface(faces, newrect) do
+            push!(faces, newrect)
+        end
+    end
+    # sort the faces
+    sort!(faces; by=(X -> (Grassmann.mean(X) ⋅ D)[1]))
+    tikzstring::String = ""
+    for X in faces
+        if length(X) == 2 # edge
+            tikzstring *= ("\\draw " * showvertex(X[1])
+                           * " -- " * showvertex(X[2]) * ";\n")
+        else # rectangle/face
+            tikzstring *= "\\fill[" * (length(X) == 3 ? "red" : "blue") * "] "
+            for R in X
+                tikzstring *= showvertex(R) * " -- "
+            end
+            tikzstring *= "cycle;\n"
+        end
+    end
+    return tikzstring
+end
+
 ## Some examples to try
 # drawplatonic(3.0, N, M) # tetrahedron
 # drawplatonic(3.0, N, K) # cube
-print(drawplatonic(5.0, P, Q)) # icosahedron
+# print(drawplatonic(5.0, P, Q)) # icosahedron
+print(drawicocross(P, Q, N))
 
 """
 Make a TikZpicture of a cayley diagram of a platonic solid
