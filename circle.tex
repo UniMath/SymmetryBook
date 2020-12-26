@@ -303,7 +303,7 @@ This said, the family $R:\Sc\to\UU$ with $R(z)\defequi (\base=z)$ is extremely
 important for other purposes. We will call it in \cref{def:universalcover} the
 ``universal \covering'' of the circle and it is the key tool in proving that
 the set of integers and the symmetries in the circle coincide. Recall that we
-use the phrase ``symmetries \emph{in} the circle'' to refer to the 
+use the phrase ``symmetries \emph{in} the circle'' to refer to the
 elements of $\base=_{\Sc}\base$,\footnote{%
   Here we are using ``the circle'' to mean the
   \emph{pointed} type $(\Sc,\base)$.
@@ -467,7 +467,13 @@ the identity types $a=_Aa$ (for $a:A$) are connected,
 \item \emph{decidable}\index{decidable \covering} if all preimages are decidable sets.
 \end{itemize}
 If $B$ is a pointed type, a \emph{pointed} \covering is a pointed map $f:A\to_*B$ such that, when forgetting the points, $f_\div:A_\div\to B_\div$ is a \covering. Here we only
-require $A$ to be a pointed type. Of course we do get the base point of $A$ in the
+require $A$ to be a pointed type.\footnote{%
+  If we forget the base point of $B$, and the pointedness of $f$, $f_0$,
+  then these can be recovered uniquely, by setting $\pt_B \defeq f(\pt_A)$
+  and $f_0 \defeq \refl{\pt_B} : \pt_B = f(\pt_A)$.
+  Indeed, the forgetful map $\Bigl(\sum_{b:B}(A,a)\ptdto(B,b)\Bigr)
+  \to (A \to B)$ is an equivalence by \cref{cor:contract-away}.}
+Of course we do get the base point of $A$ in the
 preimage of the base point of $B$, but we do not require the preimages of $f_\div$
 to be pointed types.
 \end{definition}
@@ -519,7 +525,7 @@ However, $A$ is not the constant family, like $A'$ depicted on the right, since
 $A'=\sum_{z:\Sc}\bn 2=\Sc\times\bn 2=\Sc+\Sc$ is not connected.
 Obviously something way more fascinating is going on.
 (In fact the \covering on the left is given by $\ve_\UU(\bool,\twist)$,
-see \cref{xca:C2} and \cref{lem:freeloopspace}).
+see \cref{xca:C2} and \cref{lem:freeloopspace}.)
 
 \begin{figure}[hbt]
   \begin{sidecaption}%
@@ -561,12 +567,12 @@ see \cref{xca:C2} and \cref{lem:freeloopspace}).
 
 \begin{remark}
   It \emph{is} possible to misunderstand what a ``connected \covering'' is:
-the other interpretation ``all the preimages are connected'' simply
-would give us an equivalence (since connected sets are contractible),
+the other interpretation ``all the preimages are connected''
+would simply give us an equivalence (since connected sets are contractible),
 and this is \emph{not} what is intended. (Equivalences are \coverings,
 but not necessarily connected \coverings and connected \coverings are not neccesarily equivalences.)
 
-Likewise, for the other qualifications; for instance in a ``finite covering'' $f:A\to B$,
+Likewise for the other qualifications; for instance, in a ``finite covering'' $f:A\to B$,
 the type $A$ is usually \emph{not} a finite set.
 
 We trust the reader to keep our definitions in mind and not the other interpretations.
@@ -688,6 +694,9 @@ contractible, and $B$ is connected, we have
 $\Trunc{(A,f)=(\sum_{b:B}(b_0=_Bb),\fst)}$.
 Hence if $(B,b_0)$ is a pointed connected groupoid, all
 universal \coverings are merely equal to a canonical one.
+Moreover, the type of universal \coverings is equivalent to
+$\bn 1 \to B$, and hence to $B$ itself,
+so the type of \emph{pointed} universal \coverings is contractible.
 This justifies the following definition.
 \begin{definition}
   \label{def:universalcover}
@@ -699,6 +708,8 @@ This justifies the following definition.
   \]
   or alternatively as the first projection from
   $\uc{b_0}B\defequi\sum_{b:B}(b_0=_Bb)$ to $B$.
+
+  This is canonically pointed at $(b_0,\refl{b_0}) : \sum_{b:B}(b_0=_Bb)$.
 \end{definition}
 Note that $(b_0=_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid.
 The type family $(b_0=_B b)$ is also important if $B$ is not a groupoid,
@@ -713,16 +724,28 @@ In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of
 The first instance of this comes already in the next section, where we show in \cref{cor:S1groupoid} that the symmetries in the circle are given by the set of integers $\zet$ by showing that the universal \covering and the exponential \covering (\cref{def:RtoS1}) of the circle coincide.
 
 That said, one way to see that the constant function $c_{b_0}:\bn 1\to B$
-\emph{does} deserve the label universal is the following.
+\emph{does} deserve the label universal is the following.\marginnote{%
+  Any $(a_0,p) : f^{-1}(b_0)$ gives rise to a commutative diagram:
+  \[
+    \begin{tikzcd}[column sep=small,ampersand replacement=\&]
+      \bn 1\ar[rr,dashed,"c_{a_0}"]\ar[dr,"c_{b_0}"'] \& \& A \ar[dl,"f"] \\
+      \& B \&
+    \end{tikzcd}
+  \]}
 Given any function $f:A\to B$ and $(a_0,p): f^{-1}(b_0)$,
 we get a function $c_{a_0}:\bn 1\to A$, and $p:b_0=f(a_0)$ gives rise to
-an element in $c_{b_0}=_{\bn 1\to B}f\, c_{a_0}$.
+an element in $c_{b_0}=_{\bn 1\to B}f \circ c_{a_0}$.
 In other words, any such $f$ is ``a factor of $c_{b_0}$''.
 Note, however, that this depends on $f^{-1}(b_0)$ being non-empty
 (classically, this is often demanded of a covering, which distinguishes it from our \coverings),
 and the factorization depends on the element $(a_0,p)$ used.
-\end{remark}
 
+The situation is even simpler for pointed \coverings:
+For any \emph{pointed} \covering $f : A \ptdto B$, with $(a_0,f_0):f^{-1}(b_0)$,
+there is a \emph{unique} pointed map $g : \bn 1 \ptdto A$
+(given by the base point of $A$), and this of course also gives
+the unique way to write $f$ as a ``pointed factor of $c_{b_0}$''.
+\end{remark}
 
 
 \section{The symmetries in the circle}
@@ -901,8 +924,8 @@ $\uc{\base}(z)$ and $R(z)$.
 \end{lemma}
 \begin{proof}
 We apply \cref{lem:weq-iso} and verify the two conditions.
-  Firstly, we need to give elements $H(z,p):g(z)(f(z)(p))=p$
-for all $z:\Sc$ and $p:\uc{\base}(z)\defeq(\base=z)$.
+  First, we need to give elements $H(z,p):g(z)(f(z)(p))=p$
+for all $z:\Sc$ and $p:\uc{\base}(z)\jdeq(\base=z)$.
 By induction on $p:\base=z$ it suffices to set
 $H(\base,\refl\base)\defeq\refl{\refl{\base}}$ since
 $g(\base)(f(\base)(\refl{\base}))\jdeq g(\base)(0)\jdeq\refl{\base}$.
@@ -925,7 +948,7 @@ The circle $\Sc$ is a groupoid, and the function
 sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
 \begin{proof}
-For any $z:\Sc$, the type $\uc{\base}(z)\jdeq (base=_{\Sc}z)$ is a set
+For any $z:\Sc$, the type $\uc{\base}(z)\jdeq (\base=_{\Sc}z)$ is a set
 since $R(z)$ is a set and $\uc{\base}(z) \equiv R(z)$.
 Since the circle is connected and being a set is a proposition, it follows
 that $y=_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
@@ -962,7 +985,30 @@ namely the set $\zet$ of integers together with the successor $s: \zet\equiv\zet
 
 The importance of the latter example will become apparent when we eventually
 explain that \emph{the circle is equivalent to the connected component of
-$(\zet,\etop{s})$ in the type $\sum_{X:\UU}(X=_{\UU}X)$}.
+  $(\zet,\etop{s})$ in the type $\sum_{X:\UU}(X=_{\UU}X)$}.\footnote{%
+  \textcolor{red}{discuss:} We note for later that elements in
+  this connected component can be thought of as \emph{infinite cyclic sets}:
+  sets $X$ with a successor function $g:X \to X$
+  such that $(X,\etop{g})$ is merely equal to $(\zet,\etop{s})$.
+  That is, $(X,g)$ looks exactly like $(\zet,s)$,
+  but we don't know which element of $X$ is ``zero'':\\[1ex]
+  \begin{tikzpicture}[node distance=10pt]
+    \begin{scope}[every node/.style={dot}]
+      \node (x1) {};
+      \foreach \p/\n/\deg in {1/2/27, 2/3/54, 3/4/81, 4/5/108, 5/6/135,%
+        6/7/162, 7/8/135, 8/9/108, 9/10/81, 10/11/54, 11/12/27} {
+        \node (x\n) [at=(x\p.\deg), anchor=\deg+180, shift=(\deg:10pt)] {};
+      }
+    \end{scope}
+    \node (x0) [left=of x1] {$\ldots$};
+    \node (x13) [right=of x12] {$\ldots$};
+    \begin{scope}[->,shorten <=1pt,shorten >=1pt]
+      \foreach \p/\n in {0/1, 1/2, 2/3, 3/4, 4/5, 5/6,
+        6/7, 7/8, 8/9, 9/10, 10/11, 11/12, 12/13} {
+        \draw (x\p)--(x\n);
+      }
+    \end{scope}
+  \end{tikzpicture}}
 
 Heading towards this goal, we investigate this component a bit further.
 Define the type family $D$ by $D(X) \defeq (X=X)$ for all $X:\UU$.
@@ -1030,10 +1076,14 @@ Any element in $(\zet,\etop{s})=_C(\zet,\etop{s})$ is of
 the form $\pathpair{\etop{s}^k}{!}$ for some unique $k:\zet$.
 In other words, the function
 \[
-\ev_0:((\zet,\etop{s})=_C(\zet,\etop{s}))\to \zet
+\ev_0:\bigl((\zet,\etop{s})=_C(\zet,\etop{s})\bigr)\to \zet
 \text{~defined by~} \ev_0(\pathpair{p}{!}) \defeq \ptoe{p}(0)
 \]
-is an equivalence.
+is an equivalence.\footnote{%
+  There's an easy generalization of this lemma:
+  The same definition provides an equivalence
+  $\ev_0: \bigl((\zet,\etop{s})=_C(X,i)\bigr)
+  \to X$, for any $(X,i):C$.}
 \end{lemma}
 \begin{proof}
   Given $\pathpair{p}{!}:(\zet,\etop{s})=_C(\zet,\etop{s})$ we must determine
@@ -1045,7 +1095,7 @@ $\ptoe{p}(n)=n+\ptoe{p}(0)$. Hence $\ptoe{p}=s^{\ptoe{p}(0)}$, so $p=\etop{s}^k$
 for some unique $k:\zet$.
 \end{proof}
 
-We are going to prove that $c$ is an equivalence.
+We are going to prove that $c$ from \cref{def:S1toC} is an equivalence.
 The method of proof will be used on several occasions.
 Therefore we isolate the following general result first.
 
@@ -1080,7 +1130,8 @@ from \cref{cor:S1groupoid} and \cref{lem:IdCisZet}:
   \end{tikzcd}
 \]
 For $c$ to be an equivalence, it suffices to show that the composition
-is the identity on $\zet$. By definition $\ap{c}(\Sloop) = \pathpair{\etop{s}}{!}$,
+is the identity on $\zet$.
+By definition, $\ap{c}(\Sloop) = \pathpair{\etop{s}}{!}$,
 and by induction on $n:\zet$ it follows that
 $\ev_0(\ap{c}(\Sloop^n))=\ev_0(\pathpair{\etop{s}^n}{!}) = s^n(0) = n$.
 \end{proof}
@@ -1151,7 +1202,7 @@ Let $m=12$ and picture the circle and mark $12$ evenly spaced points.
 This will look like a clock, with marks $1,2,\dots,12$.
 You can then make a function from the circle to itself by sending
 all marks to $12$ and each of the arcs connecting the marks to the entire circle
--- (in a continuous manner preserving the orientation).
+-- (in a continuous manner preserving the orientation).\qedhere%
 \begin{marginfigure}
   \tikzexternalenable
   \begin{tikzpicture}
