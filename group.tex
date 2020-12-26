@@ -596,8 +596,10 @@ operation.  The original type $A$ and its element $a$ play no further role.
 \begin{definition}\label{def:abstractgroup}
   An \emph{abstract group} consists of the following data:
   \begin{enumerate}
-  \item\label{struc:under-set} a set $S$, called the \emph{underlying set};
-  \item\label{struc:unit} an element $e:S$, called the \emph{unit} or the \emph{neutral element};
+  \item\label{struc:under-set} a type $S$.
+    \par \noindent
+    Moreover, the type $S$ should be a set.  It is called the \emph{underlying set}.
+  \item\label{struc:unit} an element $e:S$, called the \emph{unit} or the \emph{neutral element}.
   \item\label{struc:mult-op} a function $S\to S\to S$, called \emph{multiplication},
     taking two elements $g_1,g_2:S$ to their \emph{product}, denoted by $g_1\cdot g_2:S$.
     \par \noindent
@@ -626,8 +628,8 @@ operation.  The original type $A$ and its element $a$ play no further role.
 
 \begin{remark}
   A \emph{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
-  \cref{def:abstractgroup}.  In other words, the existence of inverses is not assumed.  For this reason, the unit laws and the associativity law
-  are, together, known as the \emph{monoid laws}.
+  \cref{def:abstractgroup}.  In other words, the existence of inverses is not assumed.  For this reason, the propertry that $S$ is a set, the
+  unit laws, and the associativity law are, together, known as the \emph{monoid laws}.
 \end{remark}
 
 Taking into account the introductory comments we have made above, we may state the following lemma.
@@ -714,20 +716,20 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
   the multiplication operation $g \mapsto h \mapsto g \cdot h$, and $\iota : S \to S$ denote the inverse operation $g \mapsto g^{-1}$.  Using
   that notation, we introduce names for the relevant propositions.
   \begin{align*}
-    \mathrm{Unitlaws}(S,e,\mu)   & \defequi\prod_{g:S} (\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \\
-    \mathrm{Assoclaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \\
-    \mathrm{Monoidlaws}(S,e,\mu) & \defequi\mathrm{Unitlaws}(S,e,\mu)\times\mathrm{Assoclaw}(S,\mu{}) \\
-    \mathrm{Inverselaw}(S,e,\mu,\iota) & \defequi \prod_{g:S}(\mu(g)(\iota(g)) = e) \\
-    \mathrm{Grouplaws}(S,e,\mu,\iota) & \defequi \mathrm{Monoidlaws}(S,e,\mu) \times \mathrm{Inverselaw}(S,e,\mu,\iota)
+    \mathrm{UnitLaws}(S,e,\mu)   & \defequi\prod_{g:S} (\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \\
+    \mathrm{AssocLaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \\
+    \mathrm{MonoidLaws}(S,e,\mu) & \defequi \isset{(S)} \times \mathrm{UnitLaws}(S,e,\mu) \times \mathrm{AssocLaw}(S,\mu{}) \\
+    \mathrm{InverseLaw}(S,e,\mu,\iota) & \defequi \prod_{g:S}(\mu(g)(\iota(g)) = e) \\
+    \mathrm{GroupLaws}(S,e,\mu,\iota) & \defequi \mathrm{MonoidLaws}(S,e,\mu) \times \mathrm{InverseLaw}(S,e,\mu,\iota)
   \end{align*}
   Now we define the type of abstract groups in terms of those propositions.
   \begin{align*}
-    \typegroup^\abstr \defequi \sum_{S:\UU} & \sum_{e:S}\sum_{\mu{}:S\to S\to S} \sum_{\iota\colon S\to S}
-    \left ( \isset{(S)}\times\mathrm{Grouplaws}(S,e,\mu,\iota) \right )
+    \typegroup^\abstr \defequi \sum_{S:\UU} & \sum_{e:S}\sum_{\mu{}:S\to S\to S} \sum_{\iota\colon S\to S} \mathrm{GroupLaws}(S,e,\mu,\iota)
   \end{align*}
 
-  Thus an abstract group $G$ will be a quintuple of the form $G \jdeq (S,e,\mu,\iota,!)$.  For brevity, we will usually omit the proof of the
-  properties from the display, since it's unique, and write an abstract group as though it were a quadruple $G \jdeq (S,e,\mu,\iota)$.
+  Thus, following the convention introduced in \cref{iterated-sums}, an abstract group $G$ will be a quintuple of the form
+  $G \jdeq (S,e,\mu,\iota,!)$.  For brevity, we will usually omit the proof of the properties from the display, since it's unique, and write an abstract
+  group as though it were a quadruple $G \jdeq (S,e,\mu,\iota)$.
 \end{remark}
 
 \begin{remark}
