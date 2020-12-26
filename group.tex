@@ -596,8 +596,8 @@ operation.  The original type $A$ and its element $a$ play no further role.
 \begin{definition}\label{def:abstractgroup}
   An \emph{abstract group} consists of the following data:
   \begin{enumerate}
-  \item a set $S$, called the \emph{underlying set};
-  \item an element $e:S$, called the \emph{unit} or the \emph{neutral element};
+  \item\label{struc:under-set} a set $S$, called the \emph{underlying set};
+  \item\label{struc:unit} an element $e:S$, called the \emph{unit} or the \emph{neutral element};
   \item\label{struc:mult-op} a function $S\to S\to S$, called \emph{multiplication},
     taking two elements $g_1,g_2:S$ to their \emph{product}, denoted by $g_1\cdot g_2:S$.
     \par \noindent
@@ -622,6 +622,12 @@ operation.  The original type $A$ and its element $a$ play no further role.
   propositions, the proofs are unique, and by the convention introduced in \cref{rem:subtype-convention}, we can afford to omit those items when
   speaking informally.  Moreover, one needn't wonder whether one gets a different group if the equations are given different proofs, because the
   equations cannot be given different proofs.
+\end{remark}
+
+\begin{remark}
+  A \emph{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
+  \cref{def:abstractgroup}.  In other words, the existence of inverses is not assumed.  For this reason, the unit laws and the associativity law
+  are, together, known as the \emph{monoid laws}.
 \end{remark}
 
 Taking into account the introductory comments we have made above, we may state the following lemma.
@@ -657,9 +663,8 @@ Taking into account the introductory comments we have made above, we may state t
   \end{enumerate}
 
   We will now compare \ref{axiom:mere-inverse} to \ref{struc:inv-op}.
-
-  Property \ref{axiom:mere-inverse} contains the quantifier ``there exists''.  The translation of \ref{axiom:mere-inverse} into type theory
-  would use with $\exists$, ``there merely exists'', as defined in \cref{sec:prop-trunc}.  Under this translation, property \ref{axiom:mere-inverse} does
+  Property \ref{axiom:mere-inverse} contains the phrase ``there exists'', and thus its translation into type theory
+  uses the quantifier $\exists$, as defined in \cref{sec:prop-trunc}.  Under this translation, property \ref{axiom:mere-inverse} does
   not immediately allow us to speak of ``the inverse of $g$''.
   However, the following lemma shows that we can define an inverse operation as in \ref{struc:inv-op} from a witness of \ref{axiom:mere-inverse}
   -- its proof goes by using the properties \ref{axiom:unit-laws} and \ref{axiom:ass-law} to prove that inverses are unique.  As a consequence,
@@ -704,58 +709,41 @@ Note that the proof above also shows the other \emph{law of inverses}:
 for all $g:S$ we have $g^{-1}\cdot g=e$.
 
 \begin{remark}
-  It is sometimes handy to break up the rather long
-  \cref{def:abstractgroup} by saying that the right and left unit law
-  together with associativity define a \emph{monoid}, and if we, in
-  addition, have inverses satisfying the law of inverses, then we have
-  an abstract group.%
   \label{rem:typemonoidabstrgp}
-  Summing up in language a machine (and the occasional mad scientist)
-  can handle, the \emph{type of monoids} is
-  $$\typemonoid\defequi \sum_{M:\UU}\sum_{e:M}\sum_{\mu{}:M\to M\to M}
-  \isset{(M)}\times\mathrm{Monoidlaws}(M,e,\mu)
-  $$
-  where
-  $$\mathrm{Monoidlaws}(M,e,\mu)\defequi\mathrm{Unitlaws}(M,e,\mu)\times\mathrm{Assoclaw}(M,\mu{})$$
-  and
+  We may encode the type of abstract groups as follows.  We let $S$ denote the underlying set, $e : S$ denote the unit, $\mu:S\to S\to S$ denote
+  the multiplication operation $g \mapsto h \mapsto g \cdot h$, and $\iota : S \to S$ denote the inverse operation $g \mapsto g^{-1}$.  Using
+  that notation, we introduce names for the relevant propositions.
   \begin{align*}
-    \mathrm{Unitlaws}(M,e,\mu)\defequi\prod_{g:M}
-    & (g=\mu{}(g)(e))\times(g=\mu{}(e)(g)),
-    \\
-    \mathrm{Assoclaw}(M,\mu{})\defequi\prod_{g_1,g_2,g_3:M}
-    & \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3).
+    \mathrm{Unitlaws}(S,e,\mu)   & \defequi\prod_{g:S} (\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \\
+    \mathrm{Assoclaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \\
+    \mathrm{Monoidlaws}(S,e,\mu) & \defequi\mathrm{Unitlaws}(S,e,\mu)\times\mathrm{Assoclaw}(S,\mu{}) \\
+    \mathrm{Inverselaw}(S,e,\mu,\iota) & \defequi \prod_{g:S}(\mu(g)(\iota(g)) = e) \\
+    \mathrm{Grouplaws}(S,e,\mu,\iota) & \defequi \mathrm{Monoidlaws}(S,e,\mu) \times \mathrm{Inverselaw}(S,e,\mu,\iota)
   \end{align*}
-  In the human language we used above, with $\mu(g)(h)=g\cdot h$,
-  $\mathrm{Unitlaws}$ and $\mathrm{Assoclaw}$ spell out to the machine
-  that the unit behaves like a unit and that the multiplication is
-  associative.
+  Now we define the type of abstract groups in terms of those propositions.
+  \begin{align*}
+    \typegroup^\abstr \defequi \sum_{S:\UU} & \sum_{e:S}\sum_{\mu{}:S\to S\to S} \sum_{\iota\colon S\to S}
+    \left ( \isset{(S)}\times\mathrm{Grouplaws}(S,e,\mu,\iota) \right )
+  \end{align*}
 
-  In other words, the \emph{type $\typegroup^\abstr$ of abstract
-    groups} is equivalent to
-  \begin{displaymath}
-    \sum_{(M,e,\mu,!):\typemonoid} \sum_{\iota\colon M\to M} \prod_{g:M}(e=\mu(g)(\iota(g))).
-  \end{displaymath}
-
-  We will typically refer to a monoid as a triple $(M,e,\mu)$,
-  omitting the entries for proofs of the unit and
-  associativity laws and for the statement that $M$ is a set.
-  Likewise, an abstract group $H$ will be referred
-  to as a quadruple $H \jdeq (M,e,\mu,\iota)$.  With this notation, the set
-  $M$ will be referred to as the \emph{underlying set} of $H$.
+  Thus an abstract group $G$ will be a quintuple of the form $G \jdeq (S,e,\mu,\iota,!)$.  For brevity, we will usually omit the proof of the
+  properties from the display, since it's unique, and write an abstract group as though it were a quadruple $G \jdeq (S,e,\mu,\iota)$.
 \end{remark}
 
 \begin{remark}
   That the concept of an abstract group synthesizes the idea of symmetries will be justified in \cref{sec:Gsetforabstract} where we prove that
-$$\abstr:\typegroup\to\typegroup^\abstr$$
-is an equivalence.
+  the function $\abstr:\typegroup\to\typegroup^\abstr$ is an equivalence.
 \end{remark}
+
 \begin{remark}
-  If $\mathcal G=(S,e,\mu,\iota)$ and $\mathcal G'=(S',e',\mu',\iota')$ are abstract groups, an element of the identity type
-  $\mathcal G=\mathcal G'$ consists of quite a lot of information.  First and foremost, we need an identity $p:S=S'$ of sets, but from there on the
+  If $\mathcal G=(S,e,\mu,\iota)$ and $\mathcal G'=(S',e',\mu',\iota')$ are abstract groups, an element of the identity type $\mathcal
+  G=\mathcal G'$ consists of quite a lot of information.  First and foremost, we need an identity $p:S=S'$ of sets, but from there on the
   information is a list of elements in propositions (this is more interesting for \inftygps).  An analysis shows that this list can be shortened
-  to ``$e'=p(e)$ and $\mu'(p(s),p(t))=p(\mu(s,t))$''.  A convenient way of obtaining such an identity is to apply univalence
-  to an equivalence $f: S -> S'$ that preserves the group structure.  (Such a function will be called an abstract \emph{isomorphism}.)
+  to the equations $e'=p(e)$ and $\mu'(p(s),p(t))=p(\mu(s,t))$.  A convenient way of obtaining an identity $p$ that preserves the equations is
+  to apply univalence to an equivalence $f: S \equiv S'$ that preserves the equations.  Such a function will be called an abstract
+  \emph{isomorphism}.
 \end{remark}
+
 \begin{xca}
   \label{xca:conj}
   Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $c^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identity $c^g:\mathcal G=\mathcal G$ is called \emph{conjugation} by $g$\index{conjugation}.
