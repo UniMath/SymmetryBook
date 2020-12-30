@@ -189,14 +189,14 @@ The following result states that any function from the circle exactly
 picks out an element and a symmetry of that element.
 This is a ``universal property'' of the circle.
 
-\begin{lemma}\label{lem:freeloopspace}
+\begin{theorem}\label{lem:freeloopspace}
 For all types $A$, the evaluation function
 \[
 \ev_A : (\Sc\to A)\to \sum_{a:A}(a=_Aa)\text{~defined by~}
 \ev_A(g)\defeq (g(\base),g(\Sloop))
 \]
 is an equivalence, with inverse $\ve_A$ defined by the recursion principle.
-\end{lemma}
+\end{theorem}
 \begin{proof}
 Fix $A:\UU$. We apply \cref{lem:weq-iso}.
 For all $a:A$ and $l:a=a$ we have $\ev(\ve(a,l))=(a,l)$
@@ -580,76 +580,91 @@ We trust the reader to keep our definitions in mind and not the other interpreta
 
 
 \begin{remark}
-  \Coverings are closely related to a concept from topology called ``covering space''
-(or any variant of this concept, including Galois theory) and from algebra as sheaves (of sets).
+  \Coverings are closely related to a concept from topology called ``covering spaces''
+(or any variant of this concept, including Galois theory) and from algebra as locally constant sheaves (of sets).
 Either way, the concept is useful because it singles out the (sub)symmetries.
 \end{remark}
 
-\begin{example}\label{xca:coveringsofS1}
-Let us consider \coverings over the circle, most conveniently
-for the moment in the guise of families
-\[
-  E:\Sc\to\Set.
-\]
-By circle induction, giving such an $E$ is the same as
-specifying a set $E(\base)$ and a symmetry $E(\Sloop):E(\base)=E(\base)$.
-Said more concisely in terms of \cref{lem:freeloopspace},
-the type of \coverings over the circle is equivalent to
-\[
-  \sum_{X:\Set}(X=X).\qedhere
-\]
-\end{example}
+In this chapter, we focus on \coverings over the circle.
+
+\begin{theorem}\label{thm:coveringsofS1perms}
+  The evaluation function provides an equivalence
+  \[
+    \ev_\Set : (\Sc \to \Set) \to \sum_{X:\Set}(X=X)
+    \quad\text{defined by $\ev_\Set(E) \defeq (E(\base),E(\Sloop))$.}
+  \]
+  Consequently, we have a string of equivalences
+  \begin{align*}
+    \SetBundle(\Sc)
+    &\equiv (\Sc \to \Set)
+      \equiv \sum_{X:\Set}(X=X) \\
+    &\equiv \sum_{X:\Set}(X\equiv X)
+    \equiv \sum_{X:\UU}\sum_{f:X\to X}
+    \isset(X) \times \isEq(f).
+  \end{align*}
+\end{theorem}
+\begin{proof}
+  The first part is the universal property of the circle,
+  \cref{lem:freeloopspace}, applied to $A\defeq\Set$.
+  The equivalences then follow from \cref{lem:Prop-Set-pointed-families}\ref{lem:Set-families} and UA,
+  together with minor manipulations.
+\end{proof}
+In slogan form: A \covering over the circle is a set with a permutation of its elements.
+The fiber over $\base:\Sc$ gives the set,
+and transporting along $\Sloop$ gives the permutation.
+
 A particularly important example is the following:
 \begin{definition}\label{def:RtoS1}
-Define $R:\Sc\to\UU$ by circle induction by setting
-$R(\base)\defeq\zet$ and $R(\Sloop)\defis \etop{s}$.
-Since $\zet$ is a set, and being a set is a proposition,
-one can prove by circle induction that $R(z)$ is a set for all $z:\Sc$.
-(Abusing notation we also write $R:\Sc\to\Set$.) Now define
-\[
-  \RR\defeq\sum_{z:\Sc}R(z)
-\]
-and let the first projection denoted by
-\[
-  \exp:\RR\to \Sc
-\]
-be the \emph{exponential \covering of the circle}.
+  The \covering $R:\Sc\to\UU$ corresponds to the integers with the successor operation.
+  We have $R(\base)\defeq\zet$ and $R(\Sloop)\defis \etop{\zs}$.
+  (Abusing notation we also write $R:\Sc\to\Set$.)
+  Now define
+  \[
+    \tilde R\defeq\sum_{z:\Sc}R(z)
+  \]
+  and let the first projection denoted by
+  \[
+    \exp:\tilde R \to \Sc
+  \]
+  be the \emph{exponential \covering of the circle}.
 \end{definition}
 
 \begin{remark} \label{rem:expforreal}%
   \begin{marginfigure}
-    \tikzexternalenable
-    \begin{tikzpicture}[scale=0.7]
-      \begin{axis}[axis lines=none,line width=1pt, axis equal]% image]
+    %\tikzexternalenable
+    \begin{tikzpicture}[scale=.15]
+      \node (Sc) at (0,-5) {$\Sc$};
+      \node[dot,label=left:$2$]  (B)    at (-10,18) {};
+      \node[dot,label=left:$1$]  (one)  at (-10,14) {};
+      \node[dot,label=left:$0$]  (zero) at (-10,10) {};
+      \node[dot,label=left:$-1$] (mone) at (-10, 6) {};
+      \node[dot,label=left:$-2$] (C)    at (-10, 2) {};
+      \node[dot]                 (D)    at (-10,-5) {};
+      \node[label=above:$\tilde R$]   (R)    at (10,20) {};
+      \node[label=above left:$\zet$]  (Z)    at (-10,20) {};
+      \node at (-10,20.8) {$\vdots$};
+      \node at (-10,.2) {$\vdots$};
+      \node[label=left:$\Sloop$] (Sloop) at (10,-5) {};
 
-        \addplot[domain=0:10*pi,samples=200,black,no
-        marks,thick] %500 samples slow
-        ({10*cos(deg(x))}, % x-coordinate
-        {2*sin(deg(x)) + 2*x/pi}) % y-coordinate
-        coordinate [dot,label=left:$2$,pos=0.9] (B) % point (A)
-        coordinate [dot,label=left:$1$,pos=0.7] % point (A)
-        coordinate [dot,label=left:$0$,pos=0.5] %
-        coordinate [dot,label=left:$-1$,pos=0.3] %
-        coordinate [dot,label=left:$-2$,pos=0.1] (C) %
-        node[above,pos=1] {$\RR$} ; %
+      \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
+      \pgfmathsetmacro\cy{2*\cc}%
+      \pgfmathsetmacro\cx{10*\cc}%
+      \pgfmathsetmacro\ay{.35165954}%
 
-        \addplot[domain=0:2*pi,samples=50,black,no
-        marks,thick] %500 samples slow
-        ({10*cos(deg(x))}, % x-coordinate
-        {2*sin(deg(x))-5}) % y-coordinate
-        coordinate [label=left:$\Sloop$,pos=0]
-        coordinate [dot,pos=0.5]; % point (D)
-
-        \node at (0,-5) () {$\Sc$};
-
-        \draw[dotted] ([yshift=1em]B.north) node[above left]{$\zet$} -- (B);
-        \draw[dotted] (C) -- ([yshift=-1em]C.south);
-
-      \end{axis}
+      \draw (10,0) \foreach \y in {0,4,...,16} {
+        .. controls (10,\y + \cy + \ay) and (\cx,3 + \y - \ay)
+        .. (0,3 + \y) .. controls (-\cx,3 + \y + \ay) and (-10,2 + \y + \cy - \ay)
+        .. (-10,2 + \y) .. controls (-10,2 + \y - \cy + \ay) and (-\cx,1 + \y - \ay)
+        .. (0,1 + \y) .. controls (\cx,1 + \y + \ay) and (10,4 + \y - \cy - \ay)
+        .. (10,4 + \y) } ;
+      \draw (10,-5) .. controls (10,-5 + \cy) and (\cx,-3)
+      .. (0,-3) .. controls (-\cx,-3) and (-10,-5 + \cy)
+      .. (-10,-5) .. controls (-10,-5 - \cy) and (-\cx,-7)
+      .. (0,-7) .. controls (\cx,-7) and (10,-5 - \cy) .. (10,-5);
     \end{tikzpicture}
-    \tikzexternaldisable
+    %\tikzexternaldisable
   \end{marginfigure}
-  The reason for the name $\exp:\RR\to \Sc$ comes from the following
+  The reason for the name ``exponential'' comes from the following
   visualization.  If $x$ is a real number, then the complex
   exponentiation $e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has
   absolute value $1$ and so defines a continuous function from the
@@ -657,11 +672,12 @@ be the \emph{exponential \covering of the circle}.
   circle, we see that the preimage of $z$ under the exponential
   function is a shifted copy of the integers inside the reals.\footnote{%
     Again, we emphasize that we are here dealing with the
-    \emph{homotopy types} of the reals and the unit circle.}
+    \emph{homotopy types} of the reals $\RR$ and the unit circle,
+    $\setof{(x,y):\RR^2}{x^2+y^2=1}$.}
 
   This connection between the integers and the unit circle is
   precisely captured in a form that we can take further by studying the
-  \covering $\exp:\RR\to \Sc$.
+  \covering $\exp:\tilde R\to \Sc$.
 \end{remark}
 
 We already defined a \covering $f:A\to B$ to be universal if $A$ is connected
@@ -713,29 +729,30 @@ This justifies the following definition.
 \end{definition}
 Note that $(b_0=_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid.
 The type family $(b_0=_B b)$ is also important if $B$ is not a groupoid,
-but is then not a \emph{set} bundle.
-However, we have \cref{lem:thepathspaceiscontractible} for any type $B$.
+but is then not a \emph{set} bundle.\footnote{%
+  Of course, the type $\sum_{b:B}(b_0=b)$ is contractibe
+  by \cref{lem:thepathspaceiscontractible}, for any type $B$.}
 
 \begin{remark}
   What's so ``universal'' about this?
-The universal \covering over the pointed connected groupoid $(B,b_0)$ coincides with the constant function $c_{b_0}:\bn 1\to B$ (with value $b_0$), and seems like an unnecessary complicated representation were it not for the manifold practical value of the formulation that we've given.
+The universal \covering over the pointed connected groupoid $(B,b_0)$ coincides with the constant function $\cst{b_0}:\bn 1\to B$ (with value $b_0$), and seems like an unnecessary complicated representation were it not for the manifold practical value of the formulation that we've given.
 In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of $b_0$ under the first projection from $\uc{b_0}B$ to $B$; ultimately this will show that the study of symmetries coincides with the study of the universal \covering.
 
 The first instance of this comes already in the next section, where we show in \cref{cor:S1groupoid} that the symmetries in the circle are given by the set of integers $\zet$ by showing that the universal \covering and the exponential \covering (\cref{def:RtoS1}) of the circle coincide.
 
-That said, one way to see that the constant function $c_{b_0}:\bn 1\to B$
+That said, one way to see that the constant function $\cst{b_0}:\bn 1\to B$
 \emph{does} deserve the label universal is the following.\marginnote{%
   Any $(a_0,p) : f^{-1}(b_0)$ gives rise to a commutative diagram:
   \[
     \begin{tikzcd}[column sep=small,ampersand replacement=\&]
-      \bn 1\ar[rr,dashed,"c_{a_0}"]\ar[dr,"c_{b_0}"'] \& \& A \ar[dl,"f"] \\
+      \bn 1\ar[rr,dashed,"\cst{a_0}"]\ar[dr,"\cst{b_0}"'] \& \& A \ar[dl,"f"] \\
       \& B \&
     \end{tikzcd}
   \]}
 Given any function $f:A\to B$ and $(a_0,p): f^{-1}(b_0)$,
-we get a function $c_{a_0}:\bn 1\to A$, and $p:b_0=f(a_0)$ gives rise to
-an element in $c_{b_0}=_{\bn 1\to B}f \circ c_{a_0}$.
-In other words, any such $f$ is ``a factor of $c_{b_0}$''.
+we get a function $\cst{a_0}:\bn 1\to A$, and $p:b_0=f(a_0)$ gives rise to
+an element in $\cst{b_0}=_{\bn 1\to B}f \circ \cst{a_0}$.
+In other words, any such $f$ is ``a factor of $\cst{b_0}$''.
 Note, however, that this depends on $f^{-1}(b_0)$ being non-empty
 (classically, this is often demanded of a covering, which distinguishes it from our \coverings),
 and the factorization depends on the element $(a_0,p)$ used.
@@ -744,9 +761,12 @@ The situation is even simpler for pointed \coverings:
 For any \emph{pointed} \covering $f : A \ptdto B$, with $(a_0,f_0):f^{-1}(b_0)$,
 there is a \emph{unique} pointed map $g : \bn 1 \ptdto A$
 (given by the base point of $A$), and this of course also gives
-the unique way to write $f$ as a ``pointed factor of $c_{b_0}$''.
+the unique way to write $f$ as a ``pointed factor of $\cst{b_0}$''.
 \end{remark}
 
+We'll continue the general study of set bundles in \cref{sec:gsets}
+and indeed throughout the book.
+For now, we'll focus our attention on the circle and set bundles over it.
 
 \section{The symmetries in the circle}
 \label{sec:symcirc}
@@ -755,14 +775,16 @@ With the set $\zet$ of integers \emph{defined} as in \cref{sec:integers},
 we will now \emph{prove} that $\zet$ is equivalent to the type
 $\base=_{\Sc}\base$, and that under this equivalence $0:\zet$ corresponds to
 $\refl{\base}:\base=\base$, and $1$ to $\Sloop$, and $-1$ to $\Sloop^{-1}$.
-More generally, the successor $\etop{s}:\zet=\zet$ corresponds to composition with $\Sloop$
-and the predecessor corresponds to composition with $\Sloop^{-1}$.
+More generally, the successor $\zs:\zet\to\zet$ corresponds to composition with $\Sloop$,
+while the predecessor $\inv{\zs}$ corresponds to composition with $\Sloop^{-1}$.\marginnote{
+  It follows directly that \emph{addition} of integers corresponds
+  to \emph{composition} of loops.}
 
 The first step is to prove that the exponential \covering \cref{def:RtoS1}
 is equal to the universal \covering in \cref{def:universalcover},
 \ie we prove that the family
 \[
-R: \Sc\to\UU,\qquad R(\base)\defeq\zet,\, R(\Sloop)\defis \etop{s}
+  R: \Sc\to\UU,\qquad R(\base)\defeq\zet,\, R(\Sloop)\defis \etop{\zs}
 \]
 is equal to the family
 \[
@@ -793,8 +815,8 @@ In a picture,
 \]
 If $A$ is $\Sc$, then the induction principle for the circle says
 that giving an $h(z):P(z)\to Q(z)$ for all $z:\Sc$ is the same as
-specifying an $h(\base):P(\base)=Q(\base)$ and an identity
-$f(\Sloop):Q(\Sloop)\,h(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}h(\base)$,
+specifying an $h(\base):P(\base)\to Q(\base)$ and an identity
+$h(\Sloop):Q(\Sloop)\,h(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}h(\base)$,
 \ie   a witness that the composites in
 \[
   \begin{tikzcd}[column sep=huge]
@@ -810,33 +832,36 @@ We now define $f: \uc{\base}\to R$ and $g: R\to\uc{\base}$ that will turn out to
 give inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
 
 \begin{marginfigure}
-  \tikzexternalenable
-  \begin{tikzpicture}[]
-    \begin{axis}[axis lines=none,line width=1pt, axis equal]
+  %\tikzexternalenable
+  \begin{tikzpicture}[scale=.15]
+    \node (Sc) at (0,-5) {$\Sc$};
+    \node[dot,label=above:$\vdots$] (B)    at (-10,18) {};
+    \node[dot]                      (one)  at (-10,14) {};
+    \node[dot]                      (zero) at (-10,10) {};
+    \node[dot]                      (mone) at (-10, 6) {};
+    \node[dot]                      (C)    at (-10, 2) {};
+    \node[dot]                      (D)    at (-10,-5) {};
+    \node[label=above:$\RR$]        (R)    at (10,20) {};
+    \node[label=above left:$\zet$]  (Z)    at (-10,20) {};
+    \node at (-10,.2) {$\vdots$};
+    \node[label=left:$\Sloop$] (Sloop) at (10,-5) {};
 
-      \addplot[domain=0:10*pi,samples=200,black,no
-      marks,thick] %500 samples slow
-      ({10*cos(deg(x))}, % x-coordinate
-      {2*sin(deg(x)) + 2*x/pi}) % y-coordinate
-      coordinate [dot,label={left,color=white}:$2$,pos=0.9] (B) % point (A)
-      coordinate [dot,label={left,color=white}:$1$,pos=0.7] (one) % point (A)
-      coordinate [dot,label={left,color=white}:$0$,pos=0.5] (zero) %
-      coordinate [dot,label={left,color=white}:$-1$,pos=0.3] (mone) %
-      coordinate [dot,label={left,color=white}:$-2$,pos=0.1] (C) %
-      node[above,pos=1] {$\RR$} ; %
+    \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
+    \pgfmathsetmacro\cy{2*\cc}%
+    \pgfmathsetmacro\cx{10*\cc}%
+    \pgfmathsetmacro\ay{.35165954}%
 
-      \addplot[domain=0:2*pi,samples=50,black,no
-      marks,thick] %500 samples slow
-      ({10*cos(deg(x))}, % x-coordinate
-      {2*sin(deg(x))-5}) % y-coordinate
-      coordinate [label=left:$\Sloop$,pos=0]
-      coordinate [dot,pos=0.5]; % point (D)
+    \draw (10,0) \foreach \y in {0,4,...,16} {
+      .. controls (10,\y + \cy + \ay) and (\cx,3 + \y - \ay)
+      .. (0,3 + \y) .. controls (-\cx,3 + \y + \ay) and (-10,2 + \y + \cy - \ay)
+      .. (-10,2 + \y) .. controls (-10,2 + \y - \cy + \ay) and (-\cx,1 + \y - \ay)
+      .. (0,1 + \y) .. controls (\cx,1 + \y + \ay) and (10,4 + \y - \cy - \ay)
+      .. (10,4 + \y) } ;
+    \draw (10,-5) .. controls (10,-5 + \cy) and (\cx,-3)
+    .. (0,-3) .. controls (-\cx,-3) and (-10,-5 + \cy)
+    .. (-10,-5) .. controls (-10,-5 - \cy) and (-\cx,-7)
+    .. (0,-7) .. controls (\cx,-7) and (10,-5 - \cy) .. (10,-5);
 
-      \node at (0,-5) () {$\Sc$};
-
-      \draw[dotted] ([yshift=1em]B.north) node[above left]{$\zet$} -- (B);
-      \draw[dotted] (C) -- ([yshift=-1em]C.south);
-    \end{axis}
     \draw[->, bend left, shorten <=2pt, shorten >=2pt] (zero) to
     node[left] {\scriptsize$\trp[R]{\Sloop}$} (one);%
     \draw[->, bend right, shorten <=2pt, shorten >=2pt] (zero) to
@@ -850,9 +875,9 @@ give inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
     width=2pt] (zero) to (C);%
     \draw[->, bend left, shorten <=2pt, shorten >=2pt] (zero) to
     node[right,rounded corners,fill=white,outer sep=5pt]
-    {\scriptsize$\trp[R]{\Sloop^{-2}}$} (C);%
+    {\scriptsize$\trp[R]{\Sloop^{-2}}$} (C);
   \end{tikzpicture}
-  \tikzexternaldisable
+  %\tikzexternaldisable
   \caption{Transport in the family $R$}\label{fig:transportalongloop}
 \end{marginfigure}
 \begin{definition}
@@ -866,19 +891,20 @@ above has been visualised for $p={\Sloop^n}$, $n=-2,-1,0,1,2$.
 For $f$ as in \cref{def:fPtoR} we have $f(\base)(\Sloop^n)=n$ for all $n:\zet$.
 \end{lemma}
 \begin{proof}
-By induction on $n:\zet$.  In the base case $n=0$ we have
-$f(\base)(\Sloop^0)\defeq f(\refl\base)\defeq 0$.
-For $n=s(m)$ with $m:\NN$ we have
+First consider positive $n:\NN$ and apply induction. In the base case $n=0$ we have
+$f(\base)(\Sloop^0)\jdeq f(\refl\base)\jdeq\trp[R]{\refl\base}(0) \jdeq 0$.
+For $n=\zs(m)$ with $m:\NN$ we have
 \begin{align*}
-  f(\base)(\Sloop^{s(m)})&\jdeq\trp[R]{\Sloop^{s(m)}}(0)\\
+  f(\base)(\Sloop^{\zs(m)})
+  &\jdeq\trp[R]{\Sloop^{\zs(m)}}(0)\\
   &=\trp[R]{\Sloop \Sloop^{m}}(0)\\
   &=\trp[R]{\Sloop}(\trp[R]{\Sloop^m}(0))\\
   &\jdeq \trp[R]{\Sloop}(f(\base)(\Sloop^{m}))\\
-  &= s(f(\base)(\Sloop^{m})).
+  &= \zs(f(\base)(\Sloop^{m})).
 \end{align*}
-The last step follows from $\etop{s}=R(\Sloop)$
-and $s=\trp[\id_\UU]{\etop{s}}$, see \cref{def:univalence},
-and hence $s=\trp[\id_\UU]{R(\Sloop)}=\trp[\id_\UU R]{\Sloop}=\trp[R]{\Sloop}$.
+The last step follows from $\etop{\zs}=R(\Sloop)$
+and $\zs=\trp[\id_\UU]{\etop{\zs}}$, see \cref{def:univalence},
+and hence $\zs=\trp[\id_\UU]{R(\Sloop)}=\trp[\id_\UU R]{\Sloop}=\trp[R]{\Sloop}$.
 This completes the induction step for positive $n$.
 For negative $n$ the proof is similar.
 \end{proof}
@@ -901,14 +927,14 @@ g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}=_{\zet\to (\base=\base)
   path you take around the square
   \[
     \begin{tikzcd}[row sep=large,column sep=huge,ampersand replacement=\&]
-      \zet\ar[r,"\Sloop^-"]\ar[d,eqr,"s"] \&
+      \zet\ar[r,"\Sloop^-"]\ar[d,eqr,"\zs"] \&
       (\base=\base)\ar[d,eqr,"\Sloop\cdot\blank"] \\
       \zet\ar[r,"\Sloop^-"] \& (\base=\base).
     \end{tikzcd}
   \]
 }%
 So far we have only given the type of $g(\Sloop)$. By definition,
-$R(\Sloop)$ is $s$ and $\uc{\base}(\Sloop)$ is composition with
+$R(\Sloop)$ is $\zs$ and $\uc{\base}(\Sloop)$ is composition with
 $\Sloop$.%
 The element $g(\Sloop)$ follows by a simple calculation: the
 proposition ${\Sloop\,\Sloop^{n-1}} = {\Sloop^n}$ holds for all
@@ -916,12 +942,12 @@ $n:\zet$.
 \end{definition}
 
 
-\begin{lemma}
+\begin{theorem}
   \label{lem:univisexp}
 For every $z:\Sc$, the functions $f(z)$ defined in \cref{def:fPtoR}
 and $g(z)$ in \cref{def:gRtoP} are inverse equivalences between
 $\uc{\base}(z)$ and $R(z)$.
-\end{lemma}
+\end{theorem}
 \begin{proof}
 We apply \cref{lem:weq-iso} and verify the two conditions.
   First, we need to give elements $H(z,p):g(z)(f(z)(p))=p$
@@ -930,7 +956,7 @@ By induction on $p:\base=z$ it suffices to set
 $H(\base,\refl\base)\defeq\refl{\refl{\base}}$ since
 $g(\base)(f(\base)(\refl{\base}))\jdeq g(\base)(0)\jdeq\refl{\base}$.
 
-Secondly, we need to give elements $G(z)(n):f(z)\,g(z)(n))=n$
+Secondly, we need to give elements $G(z)(n):f(z)(g(z)(n))=n$
 for all $z:\Sc$ and $n: R(z)$.
 By circle induction it suffices to define $G(\base)$ and $G(\Sloop)$,
 but since $\zet$ is a set the information for $G(\Sloop)$ is redundant.
@@ -973,24 +999,23 @@ apply \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
 
 \section{A reinterpretation of the circle}\label{sec:S1isC}
 
-In this section we return to the considerations discussed in \cref{xca:coveringsofS1}.
-Through \cref{lem:freeloopspace} we can get a different perspective on the circle
-which highlights it as a type classifying very simple symmetries.
-By \cref{lem:freeloopspace} (moving up one universe),
-a type family $\Sc\to\UU$ is uniquely given by a type $X:\UU$ together
-with a $i:X=_\UU X$, with no further requirements on $i$.
-Using UA, any type $X$ and any equivalence $f: X\equiv X$ provides such a pair
-$(X,\etop{f})$. We have seen one example in \cref{def:RtoS1},
-namely the set $\zet$ of integers together with the successor $s: \zet\equiv\zet$.
+In this section we return to the equivalences in \cref{thm:coveringsofS1perms}.
+We'll use these to get a different perspective on the circle,
+which highlights it as a type classifying very simple symmetries,
+namely sets with permutations.
+We have already seen one example in \cref{def:RtoS1},
+namely the set $\zet$ of integers together with the successor $\zs: \zet\equiv\zet$,
+corresponding to the universal \covering $\uc\base:\Sc \to \Set$,
+which as a map is the constant function $\cst\base : \bn 1 \to \Sc$.
 
 The importance of the latter example will become apparent when we eventually
 explain that \emph{the circle is equivalent to the connected component of
-  $(\zet,\etop{s})$ in the type $\sum_{X:\UU}(X=_{\UU}X)$}.\footnote{%
-  \textcolor{red}{discuss:} We note for later that elements in
-  this connected component can be thought of as \emph{infinite cyclic sets}:
-  sets $X$ with a successor function $g:X \to X$
-  such that $(X,\etop{g})$ is merely equal to $(\zet,\etop{s})$.
-  That is, $(X,g)$ looks exactly like $(\zet,s)$,
+  $(\zet,\zs)$ in the type $\sum_{X:\UU}(X\to X)$}.\footnote{%
+  The elements of this connected component can be thought of as
+  \emph{infinite cyclic sets}:
+  sets $X$ with a successor function $f:X \to X$
+  such that $(X,f)$ is merely equal to $(\zet,\zs)$.
+  That is, $(X,f)$ looks exactly like $(\zet,\zs)$,
   but we don't know which element of $X$ is ``zero'':\\[1ex]
   \begin{tikzpicture}[node distance=10pt]
     \begin{scope}[every node/.style={dot}]
@@ -1010,95 +1035,171 @@ explain that \emph{the circle is equivalent to the connected component of
     \end{scope}
   \end{tikzpicture}}
 
-Heading towards this goal, we investigate this component a bit further.
-Define the type family $D$ by $D(X) \defeq (X=X)$ for all $X:\UU$.
-Recall from \cref{lem:isEq-pair=} that, given $X:\UU$ and $i: X=X$,
-the identity type $(\zet,\etop{s}) = (X,i)$
-is equivalent to the type of pairs consisting of a $p:\zet=X$ and
-a proof of $\pathover{\etop{s}}{D}{p}{i}$. The latter type is
-equivalent to $\trp[D]{p}(\etop{s}) = i$ by \cref{def:pathover-trp}.
+The key of course is that the equivalences in \cref{thm:coveringsofS1perms}
+restrict to equivalences between their connected components,
+so to understand the components of $\SetBundle(\Sc)$
+it suffices to understand the components of $\sum_{X:\UU}(X \to X)$ at pairs $(X,f)$,
+where $X$ is a set with a permutation $f$.
+
+We are particularly interested in understanding the symmetries in these components,
+so before we prove that the circle is equivalent to the component containing $(\zet,\zs$),
+let us investigate the equalities in the type $\sum_{X:\UU}(X \to X)$ a bit further.
+
+Define the type family $D$ by $D(X) \defeq (X\to X)$ for all $X:\UU$.
+Recall from \cref{lem:isEq-pair=} that, given $X,Y:\UU$ and $f:X\to X$ and $g:Y\to Y$,
+the identity type $(X,f)=(Y,g)$
+is equivalent to the type of pairs consisting of a $p:X=Y$ and
+an element of $\pathover{f}{D}{p}{g}$. The latter type is
+equivalent to $\trp[D]{p}(f) = g$ by \cref{def:pathover-trp}.
 The transport is by conjugation,
-\cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=x}, so that the latter
-type is equivalent to $p\cdot\etop{s}\cdot p^{-1} = i$,
-and to $p\cdot\etop{s} = i\cdot p$, or $p \etop{s} = i p$ for short.
-In total, the identity type $(\zet,\etop{s})=(X,i)$ is equivalent to
+\cref{lem:trp-in-function-type}, so that the latter
+type is equivalent to $\ptoe p\circ f\circ \ptoe p^{-1} = g$.
+If $p\jdeq\etop e$ for an equivalence $e:X\equiv Y$,
+this is equivalent to $e\circ f = g\circ e$, or $e f = g e$ for short.
+In total, the identity type $(X,f)=(Y,g)$ is equivalent to
 \[
-\sum_{p: {\zet = X}} {p \etop{s}} =_{\zet=X} {i p}.
+  \sum_{e: X\equiv Y} ef =_{X\to Y} ge.
 \]
-Since $\zet$ is a set, this sum type is a set.
-In particular, the type of symmetries $(\zet,\etop{s})=(\zet,\etop{s})$
-is equivalent to the set $\sum_{p:\zet=\zet}p\etop{s}=\etop{s}p$,
-and so the component of $(\zet,\etop{s})$ is a connected groupoid.
+This is a set whenever $X$ and $Y$ are; see \cref{fig:Zs=Xf} for an illustration.
+\begin{marginfigure}
+  \begin{tikzpicture}[node distance=10pt]
+    \begin{scope}[every node/.style={dot}]
+      \node (x1) {};
+      \foreach \p/\n/\deg in {1/2/72, 2/3/54, 3/4/81, 4/5/108, 5/6/135,%
+        6/7/162, 7/8/135, 8/9/108, 9/10/81, 10/11/54, 11/12/72} {
+        \node (x\n) [at=(x\p.\deg), anchor=\deg+180, shift=(\deg:10pt)] {};
+      }
+      \node (y1) [at=(x1.east), anchor=180, shift=(192:50pt)] {};
+      \foreach \p/\n in {1/2, 2/3, 3/4, 4/5, 5/6,%
+        6/7, 7/8, 8/9, 9/10, 10/11, 11/12} {
+        \node (y\n) [at=(y\p.north), anchor=south, shift=(90:10pt)] {};
+      }
+    \end{scope}
+    \node (x0) [below=of x1] {$\vdots$};
+    \node (y0) [below=of y1] {$\vdots$};
+    \node (x13) [above=of x12] {$\vdots$};
+    \node (y13) [above=of y12] {$\vdots$};
+    \node (Xf)  [above=26pt of x12] {$(X,f)$};
+    \node (Zs)  [left=2pt of y13] {$(\zet,\zs)$};
+    \node (zero)  [left=2pt of y6] {$0$};
+    \begin{scope}[->,shorten <=1pt,shorten >=1pt]
+      \foreach \p/\n in {0/1, 1/2, 2/3, 3/4, 4/5, 5/6,
+        6/7, 7/8, 8/9, 9/10, 10/11, 11/12, 12/13} {
+        \draw (x\p)--(x\n);
+        \draw (y\p)--(y\n);
+      }
+    \end{scope}
+    \begin{scope}[casblue,<-,shorten <=1pt,shorten >=1pt]
+      \foreach \n in {1,2,...,12} {
+        \draw (x\n)--(y\n);
+      }
+    \end{scope}
+  \end{tikzpicture}
+  \caption{An identification of two infinite cyclic sets.
+    The equivalence $e : \zet \equiv X$ is marked in blue.}\label{fig:Zs=Xf}
+\end{marginfigure}
+In particular, the identity type $(\zet,\zs)=(X,f)$
+is equivalent to the set $\sum_{e:\zet\equiv\zet}e\zs=fe$, for any set $X$ with a permutation $f$.
+Tautologically, then, any power $\zs^n$ of $\zs$ itself gives a symmetry
+$(\zs^n,!) : (\zet,\zs)=(\zet,\zs)$.
 
-This discussion tells us that the following definition makes sense:
-
-\begin{definition}\label{def:S1toC}
-Let $C$ be the component of $\sum_{X:\UU}(X=_{\UU}X)$ containing $(\zet,\etop{s})$.
-Define by circle induction
-\[
-c:\Sc\to C \text{~setting~}
-c(\base)\defequi (\zet,\etop{s},\trunc{\refl{(\zet,\etop{s})}})
-\]
-and $c(\Sloop): c(\base)=_C c(\base)$ given by the successor
-$\etop{s}:\zet=\zet$ and trivial proofs of the propositions
-$\etop{s}\etop{s}=\etop{s}\etop{s}$ and for $\trunc{\refl{(\zet,\etop{s})}}$.
-\end{definition}
-
-We will henceforth leave out the third component from the denotation
-of elements of $C$, since its type is propositional and does not convey
-any information beyond its mere existence. We may write a ``!'' in order
-to remind the reader of hidden information of propositional type.
-
-Before we continue by identifying the symmetries of $(\zet,\etop{s})$
-in $C$, below in \cref{lem:IdCisZet}, we investigate paths in
-$\sum_{X:\UU}(X=_{\UU}X)$.%
-\marginnote{%
-  Recall from \cref{def:pairtopath} that, given a type family $T:A\to \UU$, a
-  path $p:a=b$ in $A$ and a pathover $q:\pathover x T p y$, the
-  expression $\pathpair{p}{q}$ denotes the resulting path
-  $(a,t)=(b,u)$ in $\sum_{x:A}T(x)$.%
-}%
-\begin{lemma}\label{lem:path-in-sum-X:U-X=X}
-Let $X_i:\UU$ be types, with symmetries $s_i: X_i = X_i$ for $i=1,2,3$, and
-paths $p_i : X_i = X_{i+1}$ and $q_i : \pathover {s_i}{}{p_i}{s_{i+1}}$ over $p_i$,
-for $i=1,2$, so that $\pathpair {p_i}{q_i} : (X_i,s_i) = (X_{i+1},s_{i+1})$.
-Then $\pathpair {p_2}{q_2} \cdot \pathpair {p_1}{q_1} = \pathpair {p_2 \cdot p_1}{q_2 \cdoto q_1} $.
-\end{lemma}
-\begin{proof}
-By induction on first $p_2$ and then $q_2$.
-\end{proof}
-
-The above lemma yields, for example, that $\pathpair{\etop{s}}{!} ^n = \pathpair{\etop{s}^n}{!}$.
-
+The following property jumps out at us when we contemplate~\cref{fig:Zs=Xf}.
 \begin{lemma}
   \label{lem:IdCisZet}
-Any element in $(\zet,\etop{s})=_C(\zet,\etop{s})$ is of
-the form $\pathpair{\etop{s}^k}{!}$ for some unique $k:\zet$.
-In other words, the function
-\[
-\ev_0:\bigl((\zet,\etop{s})=_C(\zet,\etop{s})\bigr)\to \zet
-\text{~defined by~} \ev_0(\pathpair{p}{!}) \defeq \ptoe{p}(0)
-\]
-is an equivalence.\footnote{\label{ft:Ztor-equiv}%
-  There's an easy generalization of this lemma:
-  The same definition provides an equivalence
-  $\ev_0: \bigl((\zet,\etop{s})=_C(X,i)\bigr)
-  \to X$, for any $(X,i):C$.}
+  An element $(e,!) : (\zet,\zs)=(X,f)$, with $(X,f)$ in the component of $(\zet,\zs)$,
+  is uniquely determined by the element $e(0):X$.
+  In other words, the function
+  \[
+    \ev_0:\bigl((\zet,\zs)=(X,f)\bigr)\to X
+    \text{~~defined by~~} \ev_0(e,!) \defeq e(0)
+  \]
+  is an equivalence.
 \end{lemma}
 \begin{proof}
-  Given $\pathpair{p}{!}:(\zet,\etop{s})=_C(\zet,\etop{s})$ we must determine
-$p:\zet=\zet$. By univalence this amounts to giving all the values
-$\ptoe{p}(n)$ for $n:\zet$.  However, since $s\ptoe{p}=\ptoe{p}s$ we
-get that $\ptoe{p}(n+1)=\ptoe{p}(n)+1$ for all $n:\zet$.
-Induction on $n:\zet$ (positive and negative $n$ separately) gives that
-$\ptoe{p}(n)=n+\ptoe{p}(0)$. Hence $\ptoe{p}=s^{\ptoe{p}(0)}$, so $p=\etop{s}^k$
-for some unique $k:\zet$.
+  Given $x_0:X$ we must determine a unique equivalence $e:\zet\to X$
+  such that $es=fe$ and $e(0)=x_0$.
+  Induction on $n:\zet$ (positive and negative $n$ separately)
+  gives that $e(n)=f^n(e(0))$.
+  Now we need to prove that this $e$ is an equivalence.
+  Since we're proving an equivalence, and we're assuming $(X,f)$ is in the component
+  of $(\zet,\zs)$, it suffices to show this for $(X,f)\jdeq(\zet,\zs)$.
+  However, for any $x_0:\zet$,
+  the map $n \mapsto \zs^n(x_0) = n + x_0$ is an equivalence,
+  with inverse $n \mapsto n - x_0$.
 \end{proof}
+In particular, the identity type $(\zet,\zs)=(\zet,\zs)$ is equivalent to $\zet$.
 
-We are going to prove that $c$ from \cref{def:S1toC} is an equivalence.
-The method of proof will be used on several occasions.
-Therefore we isolate the following general result first.
+\begin{definition}\label{def:S1toC}
+  Let $\InfCycSet$ be the component of $\sum_{X:\UU}(X\to X)$ containing $(\zet,\zs)$.
+  Elements of $\InfCycSet$ are called \emph{infinite cyclic sets}.
 
+  Define by circle induction
+  \[
+    c:\Sc\to\InfCycSet \text{~~setting~~}
+    c(\base)\defequi (\zet,\zs)
+  \]
+  and $c(\Sloop): c(\base)= c(\base)$ given by the \emph{predecessor} equivalence
+  $\zs^{-1}:\zet\to\zet$
+  and the trivial proof of the proposition $\zs^{-1}\zs=\zs\zs^{-1}$.
+\end{definition}
+
+Note that, as usual, we leave out the propositional components of $\FinCycSet$ (and other subtypes) from the notation.
+
+Since it's such a crucial result, we are going to give two proofs that $c$ from \cref{def:S1toC} is an equivalence.
+Each proof illuminates a different aspect and gives methods that will be used later.
+
+For the first, we return to the equivalences of \cref{thm:coveringsofS1perms}.
+As we said above, these restrict to equivalences between the different components.
+We claim that we get a commuting diagram
+\begin{equation}\label{eq:setbundle-Sc-univ-comp}
+  \begin{tikzcd}
+    & \Sc\ar[dl,"\cst{\blank}"']\ar[d,"\uc{\blank}"]\ar[dr,"c"] & \\
+    \conncomp{\SetBundle(\Sc)}{\cst\base} \ar[r,"\sim"]
+    & \conncomp{(\Sc\to\UU)}{\uc\base} \ar[r,"\sim","\ev_\UU"']
+    & \InfCycSet,
+  \end{tikzcd}
+\end{equation}
+where the left-most diagonal arrow maps $z:\Sc$ to the constant map $\cst z:\bn 1\to\Sc$.
+The left-hand triangle commutes, because the fiber of $\cst z$ at $x:\Sc$
+is equivalent to $\uc{z}(x) \jdeq (z=x)$.
+We prove that the right-hand triangle commutes by circle induction.
+That is, we show $\prod_{z:\Sc}c(z) = \ev_\UU(\uc{z})$.
+The case $z\jdeq\base$ is exactly the equivalence
+$g(\base) = \Sloop^- : \zet \to \uc{\base}(\base)$ of \cref{lem:univisexp}
+together with the fact that $\trp[\uc\base]{\Sloop}$ corresponds to $\zs$.
+To finish, we observe that it doesn't matter which way you take in the diagram
+\[
+  \begin{tikzcd}[row sep=large,column sep=huge]
+    \zet\ar[r,"\Sloop^-"]\ar[d,"\inv{\zs}"] &
+    (\base=\base)\ar[d,"\blank\cdot\Sloop^{-1}"] \\
+    \zet\ar[r,"\Sloop^-"] & (\base=\base).
+  \end{tikzcd}
+\]
+Note that to transport in the family $\uc{-}(\base) \jdeq (\blank = \base)$,
+we use \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a},
+and \emph{that} is why we picked the predecessor equivalence in~\cref{def:S1toC}.
+
+With~\eqref{eq:setbundle-Sc-univ-comp} in hand, we see that $c$ is an equivalence
+if and only if either of the two other downward maps are.\footnote{%
+  At this point we could conclude with an appeal to the type theoretic Yoneda lemma,
+  which states that the map $X \to (X \to \UU)$,
+  sending $x$ to the family $y \mapsto x=y$,
+  is an injection for any type $X$.
+  Exercise: Prove this!}
+It is very direct to show that the map on the left is an equivalence.
+Indeed, the identity type $(\bn 1,\cst x)=(\bn 1,\cst y)$
+is equivalent to pairs of an equivalence $e : \bn 1 \to \bn 1$ and a commuting triangle
+\[
+  \begin{tikzcd}
+    \bn 1 \ar[rr,"e"]\ar[dr,"\cst x"'] & & \bn 1\ar[dl,"\cst y"] \\
+    & \Sc. &
+  \end{tikzcd}
+\]
+But since $\bn 1$ is contractible, this just amounts to the equality $x=y$.
+Hence the map is an embedding, and we conclude by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
+
+We now give the second, more direct, proof that $c$ is an equivalence.
+For this we use the following lemma, which is of independent interest.
 \begin{lemma}\label{lem:conn-eq-f-ap-f-x}
 Let $X$ and $Y$ be connected types, $x$ an element of $X$,
 and $f$ a function from $X$ to $Y$. Then $f$ is an equivalence
@@ -1113,11 +1214,11 @@ using \cref{xca:component-connected}.
 \end{proof}
 
 \begin{theorem}\label{thm:S1bysymmetries}
-  The function $c:\Sc\to C$ from \cref{def:S1toC} is an equivalence.
+  The function $c:\Sc\to\InfCycSet$ from \cref{def:S1toC} is an equivalence.
 \end{theorem}
 \begin{proof}
   In view of \cref{lem:conn-eq-f-ap-f-x} we only need to show that
-$\ap{c}:(\base=_{\Sc}\base)\to((\zet,\etop{s})=_C(\zet,\etop{s}))$ is an equivalence.
+$\ap{c}:(\base=_{\Sc}\base)\to((\zet,\zs)=(\zet,\zs))$ is an equivalence.
 Note that both the domain and the co-domain of $\ap{c}$ are equivalent to $\zet$.
 Consider the following diagram in which we compose $c$ with the equivalences
 from \cref{cor:S1groupoid} and \cref{lem:IdCisZet}:
@@ -1125,15 +1226,17 @@ from \cref{cor:S1groupoid} and \cref{lem:IdCisZet}:
   \begin{tikzcd}[column sep=large]
     \zet\ar[r,"\Sloop^-"] &
     (\base=\base)\ar[r,"\ap{c}"] &
-    ((\zet,\etop{s})=_C(\zet,\etop{s}))\ar[r,"\ev_0\vphantom{\ap{c}}"] &
+    \bigl((\zet,\zs)=(\zet,\zs)\bigr)\ar[r,"\ev_0\vphantom{\ap{c}}"] &
     \zet
   \end{tikzcd}
 \]
 For $c$ to be an equivalence, it suffices to show that the composition
-is the identity on $\zet$.
-By definition, $\ap{c}(\Sloop) = \pathpair{\etop{s}}{!}$,
+is an equivalence $\zet$.
+By definition, $\ap{c}(\Sloop)$ is the identification
+corresponding to $\inv\zs$, sending $0$ to $-1$,
 and by induction on $n:\zet$ it follows that
-$\ev_0(\ap{c}(\Sloop^n))=\ev_0(\pathpair{\etop{s}^n}{!}) = s^n(0) = n$.
+$\ev_0(\ap{c}(\Sloop^n)) = \zs^{-n}(0) = -n$.
+And the map $n \mapsto -n$ is indeed an equivalence.
 \end{proof}
 
 \section{Other \coverings over the circle}
@@ -1165,7 +1268,7 @@ of the Law of the Excluded Middle -- these are all the decidable connected
 
 \begin{example}\label{exa:univS1cover}
 The \emph{universal} \covering from \cref{def:universalcover}
-is the map $c_\base:\bn 1\to \Sc$
+is the map $\cst\base:\bn 1\to \Sc$
 sending the unique element of $\bn 1$ to $\base$.
 (It takes this simple form since the circle is a pointed connected
 groupoid, see the discussion before \cref{def:universalcover}.)
@@ -1282,7 +1385,7 @@ terms of $C$, even though they could be transported along the identity $\bar c:\
 
 \begin{example}\label{exa:univCcover}
 The universal \covering is represented by the constant function
-$c_{(\zet,\etop{s})}:\bn 1\to C$ sending the unique element
+$\cst{(\zet,\etop{s})}:\bn 1\to C$ sending the unique element
 of $\bn 1$ to $(\zet,\etop{s}):C$.\footnote{%
   In light of \cref{ft:Ztor-equiv} we see that the fiber
   of this universal covering over $(X,i):C$ is $X$ itself%
@@ -1295,11 +1398,17 @@ Assume that $m:\NN$ is positive.  We now give a description of
 the $m$-fold \covering over the circle in terms of $C$.
 
 We proceed as follows.
-First we present the answer, a covering we call $\dg{m}:C\to C$,
-and then we prove that $\dg{m}:\Sc\to\Sc$ and $\dg{m}:C\to C$ the  correspond to each other under the equivalence $c:\Sc\we C$.
+First we present the answer, a \covering we call $\cdg{m}:C\to C$,
+and then we prove that $\dg{m}:\Sc\to\Sc$ and $\cdg{m}:C\to C$
+correspond to each other under the equivalence $c:\Sc\we C$.
 
- What should we require of $\dg{m}(X,f)$ for $(X,f):C$? Well, $\dg{m}:\Sc\to\Sc$ sends $\base$ to $\base$ and $\Sloop$ to $\Sloop^m$; somehow only the $\Sloop^k$ where $k$ is a multiple of $k$ is in the image of $\dg{m}$.  So we have to find an element $(Y,r):C$ with ``$r^m$ corresponding to $f$''.  We achieve this by ``streching'' $X$: let $Y$ be $m$ copies of $X$ and let $r$ jump idly from one copy to another except every $m$th time when $r$ also is allowed to use $f$.
-This is illustrated in \cref{fig:root} with the shift by $f$ being
+What should we require of $\cdg{m}(X,i)$ for $(X,i):C$?
+Well, $\dg{m}:\Sc\to\Sc$ sends $\base$ to $\base$ and $\Sloop$ to $\Sloop^m$;
+somehow only the $\Sloop^k$ where $k$ is a multiple of $k$ is in the image of $\dg{m}$.
+So we have to find an element $(Y,j):C$ with ``$j^m$ corresponding to $i$''.
+We achieve this by ``streching'' $X$:
+Let $Y$ be $m$ copies of $X$ and let $j$ jump idly from one copy to another except every $m$-th time when $j$ also is allowed to use $i$.
+This is illustrated in \cref{fig:root} with the shift by $f\defeq\ptoe{i}$ being
 vertical and the movement from copy to copy going around a circle.
 \begin{figure}[hbt]
   \begin{sidecaption}%
@@ -1341,9 +1450,8 @@ vertical and the movement from copy to copy going around a circle.
 \begin{construction}\label{con:root}
   For any type $X$ and $f:X\to X$, we define the $m$-th \emph{root}
   \[
-    {\textstyle\sqrt[m]f} : {\bn m\times X} \to {\bn m\times X}
+    {\textstyle\sqrt[m]f} : {\bn m\times X} \to {\bn m\times X}.
   \]
-  of $f$.
 \end{construction}
 \begin{implementation}{con:root}
   We set
@@ -1377,8 +1485,8 @@ but equally well to identities $i:X=X$,
 writing $\sqrt[\uproot{2}m]{i} \defeq \overetop{\sqrt[\uproot{2}m]{\ptoe{i}}}$,
 resulting in a function
 \[
-  \dg{m}:\sum_{X:\UU}(X=X)\to\sum_{X:\UU}(X=X),\quad
-  \dg{m}(X,i) \defeq \bigl(\bn m\times X, \textstyle\sqrt[\uproot{2}m]{i}\bigr).
+  \cdg{m}:\sum_{X:\UU}(X=X)\to\sum_{X:\UU}(X=X),\quad
+  \cdg{m}(X,i) \defeq \bigl(\bn m\times X, \textstyle\sqrt[\uproot{2}m]{i}\bigr).
 \]
 We now focus on  $C$, the component of $\sum_{X:\UU}(X=X)$ containing $(\zet,\etop{s})$.
 Note\marginnote{%
@@ -1392,17 +1500,18 @@ Moreover, we have ${\varphi\!\sqrt[\uproot{2}m]s} = {s\varphi}$, since
   = k+1+mn = s(\varphi(k,n))
   \quad\text{for all $(k,n):\bn m\times \zet$}.
 \]
-Hence $\dg{m}(\zet,\etop{s}) \jdeq (\bn m\times\zet,\sqrt[\uproot{2}m]{\etop{s}}) = (\zet,\etop{s})$.
-If $(\zet,\etop{s})=(X,f)$, then $\dg{m}(\zet,\etop{s})=\dg{m}(X,f)$,
-so $(\zet,\etop{s})=\dg{m}(X,f)$. Hence we can actually restrict the
+Hence $\cdg{m}(\zet,\etop{s}) \jdeq (\bn m\times\zet,\sqrt[\uproot{2}m]{\etop{s}}) = (\zet,\etop{s})$.
+If $(\zet,\etop{s})=(X,f)$, then $\cdg{m}(\zet,\etop{s})=\cdg{m}(X,f)$,
+so $(\zet,\etop{s})=\cdg{m}(X,f)$. Hence we can actually restrict the
 \emph{degree $m$ function} to the component $C$:
 \[
-  \dg{m}:C\to C,\qquad
-  \dg{m}(X,i)\defeq(\bn m\times X,{\textstyle\sqrt[\uproot{2}m]i}).
+  \cdg{m}:C\to C,\qquad
+  \cdg{m}(X,i)\defeq(\bn m\times X,{\textstyle\sqrt[\uproot{2}m]i}).
 \]
-All reincarnations of the degree $m$ function are denoted $\dg{m}$.\footnote{%
+We use $\rho$ for ``root'' to denote this incarnation
+of the degree $m$ function.\footnote{%
   \label{ft:infinite-cyclic-modulo}%
-  The fiber of $\dg{m}$ at an infinite cyclic set $(X,i)$ is the set
+  The fiber of $\cdg{m}$ at an infinite cyclic set $(X,i)$ is the set
   $X/m \defeq X/\sim_m$ where $\sim_m$ is the equivalence relation that
   identifies points that are a distance $mn$ apart, for some $n:\zet$.
   Indeed, the fiber is
@@ -1416,17 +1525,17 @@ All reincarnations of the degree $m$ function are denoted $\dg{m}$.\footnote{%
   The reader will no doubt have noticed that $X/m$ is a \emph{finite cyclic} set.
   We'll return to the significance of this below.}
 
-We now analyze how $\dg{m}$ acts on paths.
+We now analyze how $\cdg{m}$ acts on paths.
 Let $\pathpair{\etop{p}}{!}:(X,f)=_C(X',f')$.
-Since $\dg{m}$ maps first components $X$ to $\bn m\times X$, we get that
-the first projection of $\ap{\dg{m}}\pathpair{\etop{p}}{!}$ is
+Since $\cdg{m}$ maps first components $X$ to $\bn m\times X$, we get that
+the first projection of $\ap{\cdg{m}}\pathpair{\etop{p}}{!}$ is
 $\overetop{\id\times p} : (\bn m\times X) = (\bn m\times X')$.
 We are particularly interested in the case of the loop of $C$,
 that is, $\pathpair{\etop{s}}{!}:(\zet,\etop{s})=_C(\zet,\etop{s})$.
 We calculate $(\id\times s)(k,n) = (k,s(n))$,
 which by the property of the $m$-root is equal to $(\sqrt[\uproot{2}m]s)^m(k,n)$.
 So we have $(\id\times s)=(\sqrt[\uproot{2}m]s)^m$, which means that
-$\ap{\dg{m}}\pathpair{\etop{s}}{!}$ is indeed the $m$-th power of the
+$\ap{\cdg{m}}\pathpair{\etop{s}}{!}$ is indeed the $m$-th power of the
 loop of $(\bn m\times \zet,\sqrt[\uproot{2}m]{\etop{s}})$.
 
 This will eventually be explained in terms of the symmetries of the
@@ -1438,13 +1547,13 @@ Why does this correspond to the $m$-fold \covering we defined in \cref{exa:mfold
 This is encapsuled by the fact that under the equivalence $c:\Sc\to C$ the two $m$-fold covers agree in the sense that the two functions given as composites in
 \[
   \begin{tikzcd}
-    \Sc\ar[r,"c"]\ar[d,"\dg{m}"'] & C\ar[d,"\dg{m}"] \\
+    \Sc\ar[r,"c"]\ar[d,"\dg{m}"'] & C\ar[d,"\cdg{m}"] \\
     \Sc\ar[r,"c"] & C
   \end{tikzcd}
 \]
 are equal; we need an element in
 \[
-  \dg{m}c=_{\Sc\to C}c\,\dg{m}.
+  \cdg{m}c=_{\Sc\to C}c\,\dg{m}.
 \]
 Under the equivalence
 \[
@@ -1452,7 +1561,7 @@ Under the equivalence
 \]
 of \cref{lem:freeloopspace},
 the composite $c\,\dg{m}$ is given by $((\zet,s),s^m)$
-and the composite $\dg{m}c$ is given by
+and the composite $\cdg{m}c$ is given by
 $((\bn m\times\zet,\sqrt[\uproot{2}m]s),\id\times s)$: we must produce an element in
 \[
   ((\bn m\times\zet,\sqrt[\uproot{2}m]s),\id\times s)=((\zet,s),s^m).
@@ -1465,7 +1574,7 @@ $((\bn m\times\zet,\sqrt[\uproot{2}m]s),\id\times s)=((\zet,s),s^m)$.
 \end{example}
 
 \begin{xca}\label{xca:pointed-maps-circle}
-Verify $\dg{m}c=_{\Sc\ptdto C}c\,\dg{m}$ in case all maps are taken to be pointed.
+Verify $\cdg{m}c=_{\Sc\ptdto C}c\,\dg{m}$ in case all maps are taken to be pointed.
 \end{xca}
 
 There are many other instances of the $m$-th root construction, \cref{con:root},
@@ -1499,7 +1608,7 @@ are all the connected \coverings over
 the circle (precisely one for each natural number), but the proof is unfortunately not constructive:
 we need a further assumption, namely:
 
-\begin{principle}[Limited Principle of Omniscience (LPO)]
+\begin{principle}[Limited Principle of Omniscience, LPO]
   \label{LPO}\index{LPO}
   Any function $P:\NN\to\bn 2$ is either constant $0$,
   or there is a smallest $n_0:\NN$ such that $P(n_0)=1$.
@@ -1585,11 +1694,11 @@ The relevant trace is $p_0 \mapsto m \mapsto 1 \mapsto {\Sloop}$.
 These equivalences satisfy the conditions of \cref{lem:S1-delooping},
 and thus we get an equivalence $\check e: \Sc\equiv A$ with $\check e(\Sloop) = p_0$.
 
-Finally, we show that $(C,\dg{m},!) =_{\hat C} (A,f,!)$.
+Finally, we show that $(C,\cdg{m},!) =_{\hat C} (A,f,!)$.
 Consider the following diagram:
 \[
   \begin{tikzcd}[column sep=huge]
-    C\ar[ddr,"\dg{m}"'] &
+    C\ar[ddr,"\cdg{m}"'] &
     \Sc \ar[d,"\dg{m}"']\ar[l,"c"',"\sim"]\ar[r,"\check e","\sim"'] &
     A\ar[ddl,"f"] \\
     & \Sc \ar[d,"c"',"{\text{\rotatebox[origin=c]{270}{$\sim$}}}"] & \\
@@ -1602,7 +1711,7 @@ in case of the base point $\base$ we use the assumption $p: f(\pt_A)=\pt_C$.
 In the case of the loop $\Sloop$ we get $s^m = \trp{p}(f(p_0))$ since both
 are mapped to $m$ by the equivalence $\ev_0$. Hence the whole diagram
 commutes. Finally, applying UA to the equivalences $c$ and $\check e$,
-we conclude $(C,\dg{m},!) =_{\hat C} (A,f,!)$.
+we conclude $(C,\cdg{m},!) =_{\hat C} (A,f,!)$.
 
 We summarize these results in the following lemma.
 
@@ -1714,16 +1823,14 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
     $\Sc \weq \conncomp {\SetBundle(\Sc)} {\cst \base}$ mapping
     $\base$ to $(\cst \base, \trunc{\refl {\cst \base}})$.
 
-    % The set $c_\base=c_\base$ of symmetries of the universal
-    % \covering of the circle is equivalent to $\zet$.  Furthermore,
-    % there is a symmetry $$Q^1:c_\base=c_\base$$ so that, considered
-    % as an element in $\sum_{X:\Set}X=X$ the pair
-    % $(c_\base=c_\base,Q^1)$ is equal to $(\zet,s)$.
+    In particular, there is a symmetry
+    \[
+      Q^1:\cst\base=_{\SetBundle(\Sc)}\cst\base
+    \]
+    such that every symmetry of $\cst\base$
+    (as a \covering over $\Sc$)
+    writes as $(Q^1)^k$ for a unique $k:\zet$.
 
-    % The component of the type of \coverings over the circle
-    % containing the universal \covering is equivalent to the circle
-    % via the map from $\Sc$ sending $\base$ to $c_\base$ and
-    % $\Sloop$ to $Q^1$.%
   \item \label{item:setbundle-mcover}%
     For a positive integer $m$, the set
     $\dg{m}=\dg{m}$ of symmetries of the
@@ -1735,7 +1842,7 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
       Q^1:\dg{m}=_{\SetBundle(\Sc)}\dg{m}
     \end{displaymath}
     so that every symmetry of $\dg{m}$ (as set bundle over
-    $\Sc$) writes as $(Q^1)^i$ for a uniquely determined $i$ between
+    $\Sc$) writes as $(Q^1)^i$ for a uniquely determined $k$ between
     $0$ and $m-1$. In other words, following \cref{def:Zetmodm},
     \begin{displaymath}
       \conncomp{\SetBundle(\Sc)}{\dg{m}} \weq \conncomp{\left(\sum_{X:\Set}X=X\right)}{\zet/m}.
@@ -1766,48 +1873,14 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
   where the first equivalence is given by induction on $\bn 1$ and
   function extensionality, and the second one is mapping a path $e$ to
   the path $(\refl{\bn 1}, e)$. Both equivalences clearly preserve
-  reflexivity paths and composition of paths, so does their
+  reflexivity paths and composition of paths, hence so does their
   composition.
 
-%   ((spell out $Q^1$))
-% We are going to investigate the set
-% $$D_0\defequi\sum_{g:\bn 1=\bn 1}c_\bullet g=c_\bullet$$
-% of symmetries of the universal \covering $c_\bullet$ of the circle.
-% Our preferred interpretation of $c_\bullet:\bn 1\to C$ is as the first projection from $P\defequi\sum_{(Y,g):C}(\zet,s)=(Y,g)$ to $C$, and the equivalence $c_{((\zet,s),\refl{})}:\bn 1\to P$.
-% More generally, for any type $A$ the function $A\to(\bn 1\to A)$ sending $a:A$ to the function $c_a$ sending the unique element in $\bn 1$ to $a$ is an equivalence, and if $A$ is contractible, then every $c_a$ is an equivalence.
-
-%    Consequently, $D_0$ is equivalent to
-% $$\sum_{((Y,g),p):P}(\zet,s)=_C(Y,g)$$
-% which can be rewritten as
-% $$\sum_{(Y,g):C}((\zet,s)=_C(Y,g))\times((\zet,s)=_C(Y,g))
-% $$
-% For any $a,b:A$ the ``shear''
-% $$\mathrm{shear}:((a=_Ab)\times(a=_Ab))\to((a=_Ab)\times(a=_Aa))$$
-% given by $\mathrm{shear}(p,q)\defequi(p,q^{-1}p)$
-% is an equivalence and so $D_0$ is equivalent to
-% $$\sum_{(Y,g):C}((\zet,s)=_C(Y,g))\times ((\zet,s)=_C(\zet,s)).
-% $$
-% Using the equivalence $\ev_0:((\zet,s)=_C(\zet,s))\equiv\zet$ of \cref{lem:IdCisZet}, this
-%  reduces to
-% $$D_0\simeq P\times\zet\simeq\zet.$$
-
-%% temporary definition
-  \def\mono{\hookrightarrow}%
-  \def\bigetop#1{\overetop{#1}}%
-  \def\bigptoe#1{\widetilde{#1}}%
-  \def\myq{\mathfrak m}%
-  %% remove next 4 def if one still wants explicit coercion from eq to path and conversely
-  \def\bigetop#1{{#1}}%
-  \def\bigptoe#1{{#1}}%
-  \def\etop#1{{#1}}%
-  \def\ptoe#1{{#1}}%
-  %%
   Let us move on to \ref{item:setbundle-mcover}. %
   First, let us emphasize that we are interested in the symmetries of
   $\dg{m}$ \emph{as a set bundle}, meaning we shall explore
-  $(\Sc,\dg{m}) =_X (\Sc,\dg{m})$ where $X$ is the type
+  the loops $(\Sc,\dg{m}) =_X (\Sc,\dg{m})$ in the type
   $\SetBundle(\Sc)$.
-  % (and not $\Sc\to \Sc$)
   Because $\SetBundle(\Sc)$ is a subtype of $\sum_{A:\UU}A\to \Sc$, it
   is enough to determine the symmetries of $(\Sc,\dg{m})$ in this later
   type (cf.\ \cref{lem:subtype-eq-=}). This is unfolded as:
@@ -1819,28 +1892,27 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
   type family $X\mapsto (\Sc=X)$ is an equivalence from $(\Sc = \Sc)$
   to $(\Sc = C)$. Composing with univalence, we get that an
   equivalence $(\Sc=\Sc) \to (\Sc \weq C)$ mapping
-  $g\mapsto c\circ \ptoe g$, with pseudo inverse
-  $t \mapsto \bigetop{\inv c \circ f}$. Hence, by following ((need a
-  ref to exercise there)),
+  $g\mapsto c\ptoe{g}$, with inverse
+  $t \mapsto \overetop{\inv{c} t}$.
+  Hence, by following \cref{xca:sum-equiv-base} we get
   \begin{displaymath}
-    D_m \weq  \sum_{t:\Sc \weq C} \dg{m} =_{\Sc\to \Sc} \dg{m}\inv c t
+    D_m \weq  \sum_{t:\Sc \weq C} \dg{m} =_{\Sc\to \Sc} \dg{m}\inv c t.
   \end{displaymath}
-  Then, denoting $\dg{m}_C: C \to C$ for the $m$-fold cover of $C$,
+  Then, denoting $\cdg{m}: C \to C$ for the $m$-fold cover of $C$,
   \begin{displaymath}
     \begin{split}
       (\dg{m} =_{\Sc\to \Sc} \dg{m}\inv c t) %
-      &\weq (c (\dg{m}) =_{\Sc\to C} c (\dg{m}) \inv c t)
+      &\weq (c \dg{m} =_{\Sc\to C} c \dg{m} \inv c t)
       \\
-      &\weq (\dg{m}_Cc =_{\Sc\to C} \dg{m}_C t)
+      &\weq (\cdg{m}c =_{\Sc\to C} \cdg{m}_C t)
     \end{split}
   \end{displaymath}
   where the first equivalence holds because $c$ is an equivalence, and
-  the second because $\dg{m}_Cc =_{\Sc\to C} c (\dg{m})$ has been
-  proved in \cref{exa:mfoldCcover}. As in \cref{exa:mfoldCcover}, we
-  shall drop the $C$ in index and just write $\dg{m}$ for the
-  $m$-fold cover of $C$. Then if we write
+  the second because $\cdg{m}c =_{\Sc\to C} c \dg{m}$ has been
+  proved in \cref{exa:mfoldCcover}.
+  Then if we write
   \begin{displaymath}
-    F_m \defequi \sum_{t:\Sc \weq C}(\dg{m}c =_{\Sc\to C} \dg{m} t),
+    F_m \defequi \sum_{t:\Sc \weq C}(\cdg{m}c =_{\Sc\to C} \cdg{m} t),
   \end{displaymath}
   one gets that $D_m \weq F_m$ and we can now concentrate on proving that
   $F_m \weq \bn m$.
@@ -1860,46 +1932,46 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
     \end{displaymath}
     In particular, it can be seen that
     $(\zet,\etop s,q_{i,n}) = (\zet,\etop s,q_{i,0})$ in $F_m$.
-  \item Finally we shall define a map $\myq: \bn m \to F_m$ properly
+  \item Finally we shall define a map $\psi: \bn m \to F_m$ properly
     as $i\mapsto (\zet,\etop s,q_{i,0})$ and prove that it is an
     equivalence. It means that given $(Y,g,!):C$, one has to show
     \begin{displaymath}
-      P(Y,g) \defequi \prod_{q:\bn m \times \zet = \bn m \times Y}E(q)\to\iscontr(\inv{\myq}(Y,g,q))
+      P(Y,g) \defequi \prod_{q:\bn m \times \zet = \bn m \times Y}E(q)\to\iscontr(\inv{\psi}(Y,g,q))
     \end{displaymath}
     where $E(q)$ is as in step 1. The dependent product is valued in
     propositions so $P(Y,g)$ itself is a proposition. By definition of
     $C$, $(Y,g)$ lies in the same connected component as $(Z,\etop s)$
     in $\sum_{X:\UU}X=X$, so using \cref{xca:component-connected},
     $P(Y,g)$ holds as soon as $P(Z,\etop s)$ holds. Otherwise put, it
-    is enough to prove the contractibility of the fiber of $\myq$ at
+    is enough to prove the contractibility of the fiber of $\psi$ at
     elements of $F_m$ of the form $(Z,\etop s,q)$ for which step 2
     shows that $q$ must be one of the $q_{i,n}$ for some $(i,n)$. This
     $i$, together with the essentially unique proof that
     $(\zet,\etop s, q_{i,n}) = (\zet,\etop s, q_{i,0})$, is then
     easily seen to be a center of contraction for the fiber
-    $\inv\myq(Z,\etop s, q)$.
+    $\inv\psi(Z,\etop s, q)$.
   \end{enumerate}
 
   {\sc Step 1.} An element of $F_m$ is given by a map $t:\Sc \to C$
   together with a term $!:\isEq(t)$ and a proof
-  $Q: \dg{m}c = \dg{m}t$. Now such a $t$ can be reduced through
+  $Q: \cdg{m}c = \cdg{m}t$. Now such a $t$ can be reduced through
   the universal property of $\Sc$ to the data of
   $t(\base)\defequi (Y,g,!)$ and
   $t(\Sloop)\defis (p,!,!): (Y,g,!) =_C (Y,g,!)$. Under identification
-  through the universal property of $\Sc$, $\dg{m}c$ is given by
+  through the universal property of $\Sc$, $\cdg{m}c$ is given by
   \begin{displaymath}
     \begin{split}
-      &\dg{m}c(\base) \defequi (\bn m\times \zet,\sqrt[\uproot{2}m] {\etop s},!)\\
-      &\dg{m}c(\Sloop) \defis (\id \times {\etop s},!,!): (\bn
+      &\cdg{m}c(\base) \defequi (\bn m\times \zet,\sqrt[\uproot{2}m] {\etop s},!)\\
+      &\cdg{m}c(\Sloop) \defis (\id \times {\etop s},!,!): (\bn
       m\times \zet,\sqrt[\uproot{2}m] {\etop s},!) =_C (\bn m\times
       \zet,\sqrt[\uproot{2}m] {\etop s},!)
     \end{split}
   \end{displaymath}
-  and similarly $\dg{m}t$ is given by
+  and similarly $\cdg{m}t$ is given by
   \begin{displaymath}
     \begin{split}
-      &\dg{m}t(\base) \defequi (\bn m\times Y,\sqrt[\uproot{2}m] g,!)\\
-      &\dg{m}t(\Sloop) \defis (\id \times p,!,!): (\bn m\times
+      &\cdg{m}t(\base) \defequi (\bn m\times Y,\sqrt[\uproot{2}m] g,!)\\
+      &\cdg{m}t(\Sloop) \defis (\id \times p,!,!): (\bn m\times
       Y,\sqrt[\uproot{2}m] g,!) =_C (\bn m\times Y,\sqrt[\uproot{2}m] g,!)
     \end{split}
   \end{displaymath}
@@ -1942,21 +2014,21 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
   property of $\Sc$, an element $(c,!,Q_{i,n})$ of $F_m$, and the
   analysis of step 1 ensures that they are the only ones.
 
-  {\sc Step 3.} Let us then define $\myq: \bn m \to F_m$ by mapping
-  $i \mapsto (c,!,Q_{i,0})$. The claim is that $\myq$ is an
+  {\sc Step 3.} Let us then define $\psi: \bn m \to F_m$ by mapping
+  $i \mapsto (c,!,Q_{i,0})$. The claim is that $\psi$ is an
   equivalence. Recall that $\Sc \equiv C$ is a subtype of $\Sc \to C$,
   so that $F_m$ is a subtype of
   \begin{displaymath}
-    \casoverline {F_m} \defequi \sum_{t:\Sc \to C}\dg{m}c=_{\Sc\to C}\dg{m}t
+    \casoverline {F_m} \defequi \sum_{t:\Sc \to C}\cdg{m}c=_{\Sc\to C}\cdg{m}t
   \end{displaymath}
   If one denotes $\iota$ for the canonical inclusion
   $F_m\mono \casoverline{F_m}$, then the contractibility of the fiber of
-  $\myq$ at a point $(t,!,Q):F_m$, is equivalent to the
-  contractibility of the fiber of $\iota\circ\myq$ at
+  $\psi$ at a point $(t,!,Q):F_m$, is equivalent to the
+  contractibility of the fiber of $\iota\circ\psi$ at
   $(t,Q):\casoverline{F_m}$ (by \cref{lem:subtype-eq-=}).  In other
   words, one need to provide, for every $t:\Sc \to C$, an element of:
   \begin{displaymath}
-    \prod_{Q:(\dg{m}c=\dg{m}t)} \iscontr(\inv {(\iota \myq)} (t,Q))
+    \prod_{Q:(\cdg{m}c=\cdg{m}t)} \iscontr(\inv {(\iota \psi)} (t,Q))
   \end{displaymath}
   Taking advantage of the equivalence
   $\ev_C: (\Sc \to C) \weq \sum_{x:C}(x=_Cx)$ once again, this is
@@ -1964,14 +2036,14 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
   \begin{displaymath}
     P(x) \defequi \prod_{p:x=_Cx}
     \left(
-      \prod_{Q:(\dg{m}c=\dg{m}\ve_C(x,p))} \iscontr(\inv {(\iota \myq)} (\ve_C(x,p),Q))
+      \prod_{Q:(\cdg{m}c=\cdg{m}\ve_C(x,p))} \iscontr(\inv {(\iota \psi)} (\ve_C(x,p),Q))
     \right)
   \end{displaymath}
   Because $\iscontr(\blank)$ is valued in propositions, then so is
   $P$. Through \cref{xca:component-connected} and because $C$ is
   connected, one needs to check $P$ on only one point. We choose to do
   so on $\pt_C$. Now, given $p:\pt_C = \pt_C$ and
-  $Q:(\dg{m}c=\dg{m}\ve(\pt_c,p))$, step 1 proves that
+  $Q:(\cdg{m}c=\cdg{m}\ve(\pt_c,p))$, step 1 proves that
   $(\etop s, !,!)=p$, so that in particular one has
   $\pi:c=\ve(\pt_C,p)$, and then step 2 ensures that $Q_{i,n}=_\pi Q$
   for some $(i,n):\bn m \times \zet$. Also notice that if one denotes
@@ -1990,7 +2062,7 @@ $\cst \base : \bn 1 \to \Sc$ denotes the universal \covering of $\Sc$.
   The compositions of the paths described above yield a path
   $\pi\sigma_n: c = \ve_C(\pt_C,p)$ and a path-over
   $Q_{i,0} =_{\pi\sigma_n} Q$, so that $(i,(\pi\sigma_n,!))$ is in the
-  fiber of $\iota\myq$ at $\ve_C(\pt_C,p)$. We claim it is a center of
+  fiber of $\iota\psi$ at $\ve_C(\pt_C,p)$. We claim it is a center of
   contraction. Indeed, for any other $j:\bn m$ together with a path
   $\rho:c=\ve_C(\pt_C,p)$ such that $Q_{j,0}=_\rho Q$, one gets
   $Q_{i,0}=_{\inv \rho \pi\sigma_n}Q_{j,0}$. \cref{lem:IdCisZet} show
@@ -2020,7 +2092,7 @@ Let $-\id_\Sc : \Sc\to\Sc$ be defined by $-\id_\Sc(\base)\defeq\base$
 and $-\id_\Sc(\Sloop)\defis{\Sloop}^{-1}$. Show $-\id_\Sc \neq \id_\Sc$.
 Prove the following proposition:
 \[
-\prod_{t:\Sc\equiv\Sc}{\Trunc{\id_\Sc = t}\amalg \Trunc{-\id_\Sc = t}}.
+\prod_{t:\Sc\equiv\Sc}{\Trunc{\id_\Sc = t}\amalg \Trunc{-\id_\Sc = t}}.\qedhere
 \]
 \end{xca}
 
@@ -2110,6 +2182,69 @@ is unique, we get $k'=k$ and $l'=l$. The type of $\snd(p')$ is a proposition.
 Hence the pair $(k',p')$ is equal to the center.
 \end{proof}
 
+\subsection*{Yet another proof of \cref{thm:coveringsofS1}\ref{item:setbundle-mcover}}
+
+Recall what we want to achieve: A pointed equivalence between the component
+$B_m \defeq \conncomp {\SetBundle(\Sc)} {\dg{m}}$ of set bundles over the circle
+with fiber an $m$-element set, and the type $C_m$, itself the
+connected component $\conncomp {\sum_{X:\UU}X=X} {(\bn m,s)}$ consisting
+of $m$-element cyclic sets.
+Furthermore, we'd like to prove that the loop types are themselves $m$-element sets,
+\[
+  \bigl(\dg{m} =_{\SetBundle(\Sc)} \dg{m}\bigr)
+  \equiv
+  \bigl((\bn m,s) =_{C_m} (\bn m,s)\bigr)
+  \equiv
+  \bn m,
+\]
+such that reflexivity corresponds to $0:\bn m$ and addition to concatenation.
+
+In this proof, we use the characterization of set bundles as bundles of sets,
+\ie $\SetBundle(\Sc) \equiv \Sc \to \Set$.
+\begin{theorem}
+  The map $F : C_m \to (\Sc \to \Set)$ defined by
+  $F(X,i) \defeq \ve_\Set(X,i)$ induces an equivalence $C_m \equiv B_m$,
+  whose inverse is given by taking the fiber at $\base$ with the identity obtained by transporting along $\Sloop$.
+\end{theorem}
+This is more or less the universal property of the circle,
+which gives the equivalence $\ev_\Set : (\Sc \to \Set) \equiv \sum_{X:\Set}(X=X)$.
+We just have to check that $\ev_\Set$ and $\ve_\Set$ preserve the components,
+which they do.
+
+\begin{theorem}
+  The iteration map $\etop s^- : \zet \to (\bn m,\etop s)=(\bn m,\etop s)$
+  induces an equivalence $\bn m \equiv \zet/m \equiv (\bn m,\etop s)=(\bn m,\etop s)$.
+\end{theorem}
+\begin{proof}
+  The map sends $k:\zet$ to the identification that maps $0:\bn m$ to $(k\pmod m) : \bn m$. This is the reflexivity iff $k=0 \pmod m$.
+  Any identification $\pathpair{\etop g}{!} : (\bn m,\etop s)=(\bn m,\etop s)$
+  is uniquely determined by $g(0)$.
+\end{proof}
+General proof that the bundle automorphisms of a connected circle bundle
+is determined by the image of a point.
+\begin{theorem}
+  Suppose $(X,i)$ is a connected circle bundle with a chosen point $x_0:X$.
+  Then evaluation at $x_0$ determines an equivalence
+  $\bigl((X,i) = (X,i)\bigr) \equiv X$.
+\end{theorem}
+\begin{proof}
+  Any $x:X$ determines a unique bundle map $g:\zet \to X$ sending $0$ to $x$.
+  $g^{-1}(x_0)$ is either $\set{0}$ or of the form $\setof{km}{k:\zet}$ for some $m>0$. (LPO: similar proof as above?)
+
+  Ideally, we want a constructive proof! Want a commuting diagram
+  \[
+    \begin{tikzcd}
+      & \bn 1 \ar[dl,"x_0"']\ar[dr,"x"] &\\
+      A \ar[rr,dashed]\ar[dr] && A\ar[dl] \\
+      & \Sc &
+    \end{tikzcd}
+  \]
+  where $A \defeq \sum_{z:\Sc}\ve_\UU(X,i)(z)$.
+
+  The fiber at $x$ is $\sum_{j : X=X}(ji=ij \times x=j(x_0))$.
+
+\end{proof}
+Also todo: factor out use of min. in LPO
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "book"
