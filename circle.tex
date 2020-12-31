@@ -666,7 +666,7 @@ A particularly important example is the following:
   \end{marginfigure}
   The reason for the name ``exponential'' comes from the following
   visualization.  If $x$ is a real number, then the complex
-  exponentiation $e^{2\pi i x}=\cos(2\pi x)+i\sin(2\pi x)$ has
+  exponentiation $e^{2\pi\ii x}=\cos(2\pi x)+\ii\sin(2\pi x)$ has
   absolute value $1$ and so defines a continuous function from the
   real numbers to the unit circle.  Choosing any point $z$ on the unit
   circle, we see that the preimage of $z$ under the exponential
@@ -1177,7 +1177,9 @@ To finish, we observe that it doesn't matter which way you take in the diagram
 \]
 Note that to transport in the family $\uc{-}(\base) \jdeq (\blank = \base)$,
 we use \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a},
-and \emph{that} is why we picked the predecessor equivalence in~\cref{def:S1toC}.
+and \emph{that} is why we picked the predecessor equivalence in~\cref{def:S1toC}.\footnote{%
+  Another option would have been to choose the opposite equivalence $\zet\equiv\uc\base(\base)$, sending $n$ to $\Sloop^{-n}$, in the base case.
+  The point is: You can move the minus sign around, but it has to pop up somewhere.}
 
 With~\eqref{eq:setbundle-Sc-univ-comp} in hand, we see that $c$ is an equivalence
 if and only if either of the two other downward maps are.\footnote{%
@@ -1252,11 +1254,12 @@ the condition that \emph{each} $\ap{f}$ is injective
 can be relaxed to $\ap{f}: (a_0=a_0)\to(f(a_0)=f(a_0))$ being injective.
 Now look at the following subset:
 \[
-\set{~ l: \base = \base \mid {\ap{f}}^{-1}(plp^{-1})~ }.
+  \setof{q: \base =_\Sc \base}{{\ap{f}}^{-1}(pqp^{-1})}.
 \]
 Clearly, a classification of connected \coverings over the circle
-also classifies certain subsets of symmetries of $\base$.
-Such subsets are closed under concatenation and inverses,
+also classifies certain subsets of symmetries of $\base$,
+or equivalently, using~\cref{cor:S1groupoid}, certain subsets of $\zet$.
+Such subsets of $(\base=_\Sc\base)$ are closed under concatenation and inverses,
 since $\ap{f}$ is compatible with these operations,
 see \cref{lem:apcomp}.
 Using language yet to be introduced, we actually ``classify the subgroups of the integers''.
@@ -1275,7 +1278,8 @@ groupoid, see the discussion before \cref{def:universalcover}.)
 The universal \covering corresponds to the subset consisting
 of $\refl\base : \base=\base$ only.
 \end{example}
-
+Recall also that the universal \covering corresponds under the
+equivalence of~\cref{thm:coveringsofS1perms} to the set of integers $\zet$ with the successor permutation.
 \begin{example}\label{exa:mfoldS1cover}
 For $m:\NN$ positive, define the \emph{degree $m$ function} by circle induction
 \[
@@ -1291,74 +1295,259 @@ Note that the degree $0$ function would be constant,
 and hence not a \covering since the domain is not a set,
 see \cref{xca:constant-cover}.
 
-\begin{remark}
-  \label{rem:RtoS1}
-The universal \covering is essentially the same as defined in \cref{def:RtoS1}
-and explained in \cref{rem:expforreal}
-since the real numbers form a contractible space.
+It is at first blush not obvious that $\dg{m}$ is a \covering,
+just at it was not at first obvious that $\cst\base$ is a \covering.
+So just as we in~\cref{sec:symcirc} proved the latter by constructing
+an equivalence with the exponential \covering,
+in this section, we'll prove the former by constructing an equivalence with
+another concrete family.
 
-\label{rem:finitecoveringsofS1}
-The analogue of our degree $m$ function is the $m$-th power of complex numbers
-restricted to the unit circle, mapping $z$ to $z^m$ if $|z|=1$.
-The following visualization is perhaps more tangible.
-Let $m=12$ and picture the circle and mark $12$ evenly spaced points.
-This will look like a clock, with marks $1,2,\dots,12$.
-You can then make a function from the circle to itself by sending
-all marks to $12$ and each of the arcs connecting the marks to the entire circle
--- (in a continuous manner preserving the orientation).\qedhere%
-\begin{marginfigure}
-  \tikzexternalenable
-  \begin{tikzpicture}
-    \begin{axis}[axis lines=none,line width=1pt, axis equal]
-      \def\startx{10*cos(deg(5/4*pi))}
-      \def\starty{(-2*sin(deg(5/4*pi)) + 5/2)}
-      \def\stopx{10*cos(deg(7/4*pi))}
-      \def\stopy{(-2*sin(deg(7/4*pi)) + 7/2 + 44)}
-      \def\stepfun#1{((1-#1)*(sqrt(#1))+#1*(1-sqrt(1-#1)))}
+Fix a positive number $m:\NN$. Recall the finite set $\bn m$ from~\cref{def:finiteset} with elements denoted $0,1,\dots,m-1$.
+Since $\bn m = \sum_{k:\NN}k<m$ (\cref{xca:finite-types}),
+we may define a successor map $\zs : \bn m \to \bn m$ by
+\[
+  \zs(k) \defeq
+  \begin{cases}
+    k+1 & \text{if $k<m-1$,} \\
+    0   & \text{if $k=m-1$.}
+  \end{cases}
+\]
+\begin{exercise}
+  Show that $\zs : \bn m \to \bn m$ is an equivalence by defining
+  an explicit inverse.
+\end{exercise}
+\begin{definition}\label{def:RmtoS1}
+  Fix $m:\NN$ positive.
+  The \covering $R_m : \Sc\to\Set$ corresponds to the finite set $\bn m$
+  with its successor operation. We have $R_m(\base) \defeq \bn m$ and
+  $R_m(\Sloop) \defis \etop\zs$. We define
+  \[
+    \tilde R_m \defeq \sum_{z:\Sc} R_m(z)
+  \]
+  and let the first projection denoted by
+  \[
+    \pow{m} : \tilde R_m \to \Sc
+  \]
+  be the \emph{$m$\textsuperscript{th} power bundle of the circle}.
+\end{definition}
+\begin{remark}\label{rem:finitecoveringsofS1}
+  \begin{marginfigure}
+    %\tikzexternalenable
+    \begin{tikzpicture}[scale=.15]
+      \node (Sc) at (0,-5) {$\Sc$};
+      \node[dot,label=left:$4$] (four)  at (-10,18) {};
+      \node[dot,label=left:$3$] (three) at (-10,14) {};
+      \node[dot,label=left:$2$] (two)   at (-10,10) {};
+      \node[dot,label=left:$1$] (one)   at (-10, 6) {};
+      \node[dot,label=left:$0$] (zero)  at (-10, 2) {};
+      \node[dot]                (D)     at (-10,-5) {};
+      \node[label=above:$\tilde R_m$] (R) at  (0,20) {};
+      \node[label=above left:$\bn m$] (m) at (-10,20) {};
+      \node[label=left:$\Sloop$] (Sloop) at (10,-5) {};
 
-      \addplot[domain=pi:5/4*pi, samples=5, black, no marks, thick]
-      ({10*cos(deg(x))},%
-      {(-2*sin(deg(x)) + 2*x/pi)});%
-      \addplot[domain=7/4*pi:2*pi, samples=5, black, no marks, thick]
-      ({10*cos(deg(x))},%
-      {(-2*sin(deg(x)) + 2*x/pi + 44)});%
-      \addplot[domain={\startx}:{\stopx}, samples=100, no marks, thick]
-      (%
-      {(\stepfun{(x-\startx)/(\stopx -\startx)})*(\stopx -\startx) + \startx},%
-      {(\stopy - \starty)/(\stopx - \startx)*(x-\startx) + \starty}%
-      );
+      \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
+      \pgfmathsetmacro\cy{2*\cc}%
+      \pgfmathsetmacro\cx{10*\cc}%
+      \pgfmathsetmacro\intx{3.5}%
+      \pgfmathsetmacro\inty{1.5}%
+      \pgfmathsetmacro\ay{.35165954}%
 
-      \addplot[domain=pi:24*pi,samples=300,black,no
-      marks,thick] %500 samples slow
-      ({10*cos(deg(x))}, % x-coordinate
-      {2*sin(deg(x)) + 2*x/pi}) % y-coordinate
-      coordinate [dot, label=left:$1$, pos={0/23}]
-      coordinate [dot, label=left:$2$, pos={2/23}]
-      coordinate [dot, label=left:$3$, pos={4/23}]
-      coordinate [dot, label=left:$4$, pos={6/23}]
-      coordinate [dot, label=left:$5$, pos={8/23}]
-      coordinate [dot, label=left:$6$, pos={10/23}]
-      coordinate [dot, label=left:$7$, pos={12/23}]
-      coordinate [dot, label=left:$8$, pos={14/23}]
-      coordinate [dot, label=left:$9$, pos={16/23}]
-      coordinate [dot, label=left:$10$, pos={18/23}]
-      coordinate [dot, label=left:$11$, pos={20/23}]
-      coordinate [dot, label=left:$12$, pos={22/23}];
-
-      \addplot[domain=0:2*pi,samples=50,black,no
-      marks,thick] %500 samples slow
-      ({10*cos(deg(x))}, % x-coordinate
-      {2*sin(deg(x))-5}) % y-coordinate
-      coordinate [label={left,scale=.7}:$\Sloop$,pos=0]
-      coordinate [dot,pos=0.5]; % point (D)
-
-      \node[scale=.7] at (0,-5) () {$\Sc$};
-    \end{axis}
-  \end{tikzpicture}
-  \tikzexternaldisable
-  \caption{\color{red} REWORK WITH COLOR}
-\end{marginfigure}
+      \draw (-10,2) .. controls (-10,2 - \cy + \ay) and (-\cx,1 - \ay)
+      .. (0,1) .. controls (\cx,1 + \ay) and (10,4 - \cy - \ay)
+      .. (10,4)
+      \foreach \y in {4,8,12,16} {
+        .. controls (10,\y + \cy + \ay) and (\cx,3 + \y - \ay)
+        .. (0,3 + \y) .. controls (-\cx,3 + \y + \ay) and (-10,2 + \y + \cy - \ay)
+        .. (-10,2 + \y) .. controls (-10,2 + \y - \cy + \ay) and (-\cx,1 + \y - \ay)
+        .. (0,1 + \y) .. controls (\cx,1 + \y + \ay) and (10,4 + \y - \cy - \ay)
+        .. (10,4 + \y) }
+      .. controls (10,20 + \cc) and (\intx + \cx, 20 + \inty + \ay)
+      .. (\intx,20 + \inty) .. controls (\intx - \cx,20 + \inty - \ay)
+      and (-\intx + \cx,4 + \ay)
+      .. (-\intx,2 + \inty) .. controls (-\intx - \cx,2 + \inty - \ay)
+      and (-10,2 + \cc) .. (-10,2);
+      \draw (10,-5) .. controls (10,-5 + \cy) and (\cx,-3)
+      .. (0,-3) .. controls (-\cx,-3) and (-10,-5 + \cy)
+      .. (-10,-5) .. controls (-10,-5 - \cy) and (-\cx,-7)
+      .. (0,-7) .. controls (\cx,-7) and (10,-5 - \cy) .. (10,-5);
+    \end{tikzpicture}
+    \caption{The $m$\th power bundle for $m=5$.}
+    \label{fig:m-th-power}
+  \end{marginfigure}
+  The analogue of our degree $m$ function is the $m$\th power of complex numbers
+  restricted to the unit circle, mapping $z$ to $z^m$ if $|z|=1$.
+  If we parameterize the unit circle by the angle $\theta:\RR$
+  (defined up to multiples of $2\pi$),
+  so $z=e^{\theta\ii}$, then $z^m = e^{m\theta\ii}$.
+  \Cref{fig:m-th-power} illustrates the $m$\th power bundle
+  as a family over the circle.
+  Choosing any point $z$ on the unit circle,
+  we that the preimage of $z$ under the $m$\th power map
+  is a shifted copy of the $m$ different $m$th roots of unity inside the unit circle.
 \end{remark}
+To show that $\dg{m}$ and $\pow{m}$ are equal as bundles,\marginnote{%
+  $\begin{tikzcd}[column sep=small,ampersand replacement=\&]
+    \tilde R_m \ar[rr,"\psi_m"]\ar[dr,"\pow{m}"'] \& \& \Sc\ar[dl,"\dg{m}"] \\
+    \& \Sc \&
+  \end{tikzcd}$}
+it suffices to define an equivalence $\psi_m : \tilde R_m \to \Sc$
+and an element $\alpha_m : \dg{m}\psi_m = \pow{m}$,
+showing that the triangle in margin commutes.
+
+To see how to define $\psi_m$ and $\alpha_m$,
+we draw in~\cref{fig:m-power-clock} the type $\tilde R_m$
+unrolled into a ``clock'', with marks $0,1,\dots,m-1$
+(the mark $k$ is the element $(\base,k):\tilde R_m$),
+and arcs following the successor permutation of $\bn m$.
+We denote these arcs by $a_k \defeq \pathpair{\Sloop}{\refl{\zs(k)}} : (\base,k) = (\base,\zs(k))$.
+The $m$\th power map (which is just the first projection)
+sends each mark to $\base:\Sc$ and each arc to $\Sloop$.
+\begin{marginfigure}
+  \begin{tikzpicture}
+    \foreach \n/\deg in {0/0, 1/72, 2/144, 3/216, 4/288} {
+      \node[dot] (x\n) at (\deg:1) {};
+      \node (l\n) [at=(x\n.\deg), anchor=\deg+180, shift=(\deg:2pt)] {$\n$};
+      \draw[->,shorten <=1pt,shorten >=1pt] (x\n) arc (\deg:\deg+72:1);
+      \node (p\n) at (\deg+36:.7) {$\color{casblue}{\Sloop}$};
+    }
+    \foreach \n/\deg in {0/0, 1/72, 2/144, 3/216} {
+      \node (r\n) [at=(\deg+36:1), anchor=\deg+180]
+      {\scriptsize$\color{casred}{\refl\base}$};
+    }
+    \node (r4) at (-36:1.3) {$\color{casred}{\Sloop}$};
+  \end{tikzpicture}
+  \caption{Unrolling $\tilde R_m$ as a ``clock''. (Here we're going around in a counterclockwise fashion as mathematicians are wont to do.)}
+  \label{fig:m-power-clock}
+\end{marginfigure}
+This is indicated in blue on the inside of the clock.
+To define $\psi_m$, we must send all the marks to $\base:\Sc$
+and all arcs to $\refl\base$, except one, which goes to $\Sloop$.
+This is indicated in red on the outside of the clock.
+\begin{construction}\label{con:psi-alpha-m}
+  For each positive integer $m$,
+  there is an equivalence $\psi_m : \tilde R_m \to \Sc$
+  and an element $\alpha_m : \dg{m}\psi_m = \pow{m}$.
+\end{construction}
+\begin{implementation}{con:psi-alpha-m}
+  Since $\tilde R_m \jdeq \sum_{z:\Sc}R_m(z)$,
+  to define $\psi_m$ we first split the argument into a pair $(z,k)$.
+  In a slight abuse of notation, we write $\psi_m : \prod_{z:\Sc}(R_m(z) \to \Sc)$
+  for the curried function as well.
+  We define $\psi_m(z) : R_m(z) \to \Sc$ by circle induction on $z$.
+  The base case is $\psi_m(\base) \defeq \cst\base : \bn m \to \Sc$,
+  the constant function at $\base$.
+  Since transport in a function type is by conjugation
+  (\cref{lem:trp-in-function-type}),
+  and the codomain type is constant,
+  we need to give an identity
+  $\psi_m(\Sloop) : \psi_m(\base) =_{\bn m\to\Sc} \psi_m(\base)R_m(\Sloop)$.
+  We construct $\psi_m(\Sloop)$ using function extensionality,
+  by giving an element in $\bn m\to(\base=\base)$.
+  Since $\psi_m$ needs to send all arcs, except the last,
+  in $\tilde R_m$ to reflexivity,
+  we map $k$ to $\refl\base$ for $k<m-1$,
+  and we map $m-1$ to $\Sloop$.
+
+  The inverse of $\psi_m$ maps $\base$ to $(\base,0)$, \ie the mark at $0$,
+  and $\Sloop$ to $a_{m-1}\cdots a_0$,
+  \ie the product of all the arcs around the circle.
+  We leave it as an exercise to prove that this really defines an inverse to $\psi_m$.
+
+  We likewise use function extensionality and pair and circle induction
+  to define $\alpha$, reducing the problem to giving
+  (with a slight abuse of notation)
+  $\alpha_m(\base,k) : \pow{m}(\base,k) = \dg{m}(\psi_m(\base,k))$
+  together with elements $\alpha_m(\Sloop,k)$ witnessing that
+  the two composites agree in the square
+  \[
+    \begin{tikzcd}
+      \pow{m}(\base,k) \ar[r,eqr,"{\alpha_m(\base,k)}"] \ar[d,eql,"{\pow{m}(a_k)}"']
+      & \dg{m}(\psi_m(\base,k)) \ar[d,eqr,"{\dg{m}(\psi_m(a_k))}"] \\
+      \pow{m}(\base,\zs(k)) \ar[r,eqr,"{\alpha_m(\base,\zs(k))}"]
+      & \dg{m}(\psi_m(\base,\zs(k))).
+    \end{tikzcd}
+  \]
+  In~\cref{fig:psi-alpha-m-help} we show these $m$ squares with the
+  left and right hand sides simplified according to the definitions.
+  \begin{marginfigure}
+    \[
+      \begin{tikzcd}[column sep=large,ampersand replacement=\&]
+        \base\ar[r,eqr,"{\alpha_m(\base,0)}"]\ar[d,eql,"\Sloop"']
+        \& \base\ar[d,eqr,"\refl\base"] \\
+        \base\ar[r,eqr,"{\alpha_m(\base,1)}"]\ar[d,eql,"\Sloop"']
+        \& \base\ar[d,eqr,"\refl\base"] \\
+        \vdots\ar[d,eql,"\Sloop"'] \& \vdots\ar[d,eqr,"\refl\base"] \\
+        \base\ar[r,eqr,"{\alpha_m(\base,m-1)}"]\ar[d,eql,"\Sloop"']
+        \& \base\ar[d,eqr,"\Sloop^m"] \\
+        \base\ar[r,eqr,"{\alpha_m(\base,0)}"]
+        \& \base
+      \end{tikzcd}
+    \]
+    \caption{The simplified types of the squares $\alpha_m(\Sloop,k)$.}
+    \label{fig:psi-alpha-m-help}
+  \end{marginfigure}
+  We see that we should pick $\alpha_m(\base,k) \defeq \Sloop^{m-1-k}$
+  and then we can take reflexivity for $\alpha_m(\Sloop,k)$.
+\end{implementation}
+
+% The following visualization is perhaps more tangible.
+% Let $m=12$ and picture the circle and mark $12$ evenly spaced points.
+% This will look like a clock, with marks $1,2,\dots,12$.
+% You can then make a function from the circle to itself by sending
+% all marks to $12$ and each of the arcs connecting the marks to the entire circle
+% -- (in a continuous manner preserving the orientation).\qedhere%
+% \begin{marginfigure}
+%   \tikzexternalenable
+%   \begin{tikzpicture}
+%     \begin{axis}[axis lines=none,line width=1pt, axis equal]
+%       \def\startx{10*cos(deg(5/4*pi))}
+%       \def\starty{(-2*sin(deg(5/4*pi)) + 5/2)}
+%       \def\stopx{10*cos(deg(7/4*pi))}
+%       \def\stopy{(-2*sin(deg(7/4*pi)) + 7/2 + 44)}
+%       \def\stepfun#1{((1-#1)*(sqrt(#1))+#1*(1-sqrt(1-#1)))}
+% 
+%       \addplot[domain=pi:5/4*pi, samples=5, black, no marks, thick]
+%       ({10*cos(deg(x))},%
+%       {(-2*sin(deg(x)) + 2*x/pi)});%
+%       \addplot[domain=7/4*pi:2*pi, samples=5, black, no marks, thick]
+%       ({10*cos(deg(x))},%
+%       {(-2*sin(deg(x)) + 2*x/pi + 44)});%
+%       \addplot[domain={\startx}:{\stopx}, samples=100, no marks, thick]
+%       (%
+%       {(\stepfun{(x-\startx)/(\stopx -\startx)})*(\stopx -\startx) + \startx},%
+%       {(\stopy - \starty)/(\stopx - \startx)*(x-\startx) + \starty}%
+%       );
+% 
+%       \addplot[domain=pi:24*pi,samples=300,black,no
+%       marks,thick] %500 samples slow
+%       ({10*cos(deg(x))}, % x-coordinate
+%       {2*sin(deg(x)) + 2*x/pi}) % y-coordinate
+%       coordinate [dot, label=left:$1$, pos={0/23}]
+%       coordinate [dot, label=left:$2$, pos={2/23}]
+%       coordinate [dot, label=left:$3$, pos={4/23}]
+%       coordinate [dot, label=left:$4$, pos={6/23}]
+%       coordinate [dot, label=left:$5$, pos={8/23}]
+%       coordinate [dot, label=left:$6$, pos={10/23}]
+%       coordinate [dot, label=left:$7$, pos={12/23}]
+%       coordinate [dot, label=left:$8$, pos={14/23}]
+%       coordinate [dot, label=left:$9$, pos={16/23}]
+%       coordinate [dot, label=left:$10$, pos={18/23}]
+%       coordinate [dot, label=left:$11$, pos={20/23}]
+%       coordinate [dot, label=left:$12$, pos={22/23}];
+% 
+%       \addplot[domain=0:2*pi,samples=50,black,no
+%       marks,thick] %500 samples slow
+%       ({10*cos(deg(x))}, % x-coordinate
+%       {2*sin(deg(x))-5}) % y-coordinate
+%       coordinate [label={left,scale=.7}:$\Sloop$,pos=0]
+%       coordinate [dot,pos=0.5]; % point (D)
+% 
+%       \node[scale=.7] at (0,-5) () {$\Sc$};
+%     \end{axis}
+%   \end{tikzpicture}
+%   \tikzexternaldisable
+%   \caption{\color{red} REWORK WITH COLOR}
+% \end{marginfigure}
 
 We could be more ambitious and ask: what is the \emph{type} of decidable
 \coverings over the circle?  Since the type of \coverings is
