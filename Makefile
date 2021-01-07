@@ -17,6 +17,10 @@ figures:
 clean:
 	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
 		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
+		*.auxlock *.synctex.gz TAGS
+cleanall:
+	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
+		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
 		*.pdf *.auxlock *.synctex.gz figures TAGS
 always:
 
