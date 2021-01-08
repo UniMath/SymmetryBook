@@ -1129,7 +1129,7 @@ In particular, the identity type $(\zet,\zs)=(\zet,\zs)$ is equivalent to $\zet$
 \begin{definition}\label{def:S1toC}
   Let $\InfCyc$ be the component of $\sum_{X:\UU}(X\to X)$ containing $(\zet,\zs)$.
   Elements of $\InfCyc$ are called \emph{infinite cycles}.\footnote{%
-    Cf.~\cref{def:Cyc} below.}
+    See also~\cref{def:Cyc} below for general cycles.}
 
   Define by circle induction
   \[
@@ -1140,6 +1140,52 @@ In particular, the identity type $(\zet,\zs)=(\zet,\zs)$ is equivalent to $\zet$
   $\zs^{-1}:\zet\to\zet$
   and the trivial proof of the proposition $\zs^{-1}\zs=\zs\zs^{-1}$.
 \end{definition}
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}[scale=.15]
+    \node (Sc) at (0,-5) {$\Sc$};
+    \node[dot]                 (D)    at (-10,-5) {};
+    \node[label=above left:$\uc{\color{casred}\base}({\color{casblue}\base})$] (Z) at (-10,20) {};
+    \node at (-10,24.8) {$\vdots$};
+    \node at (-10,.2) {$\vdots$};
+    \node[label=left:$\Sloop$] (Sloop) at (10,-5) {};
+
+    \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
+    \pgfmathsetmacro\cy{2*\cc}%
+    \pgfmathsetmacro\cx{10*\cc}%
+    \pgfmathsetmacro\ay{.35165954}%
+
+    \draw[dashed] (10,0)
+    .. controls (10,\cy + \ay) and (\cx,3 - \ay)
+    .. (0,3) .. controls (-\cx,3 + \ay) and (-10,2 + \cy - \ay)
+    .. (-10,2);
+    \foreach \y/\col in {0/dashed,4/casred,8/black,12/casblue,16/dashed} {
+      \draw[\col] (-10,2 + \y)
+      .. controls (-10,2 + \y - \cy + \ay) and (-\cx,1 + \y - \ay)
+      .. (0,1 + \y) .. controls (\cx,1 + \y + \ay) and (10,4 + \y - \cy - \ay)
+      .. (10,4 + \y) .. controls (10,4 + \y + \cy + \ay) and (\cx,7 + \y - \ay)
+      .. (0,7 + \y) .. controls (-\cx,7 + \y + \ay) and (-10,6 + \y + \cy - \ay)
+      .. (-10,6 + \y);
+    }
+    \draw[dashed] (-10,22)
+    .. controls (-10,22 - \cy + \ay) and (-\cx,21 - \ay)
+    .. (0,21) .. controls (\cx,21 + \ay) and (10,24 - \cy - \ay)
+    .. (10,24);
+    \foreach \y in {2,6,...,22} {
+      \node[dot] (B\y) at (-10,\y) {};
+    }
+    \draw (10,-5) .. controls (10,-5 + \cy) and (\cx,-3)
+    .. (0,-3) .. controls (-\cx,-3) and (-10,-5 + \cy)
+    .. (-10,-5) .. controls (-10,-5 - \cy) and (-\cx,-7)
+    .. (0,-7) .. controls (\cx,-7) and (10,-5 - \cy) .. (10,-5);
+  \end{tikzpicture}
+  \caption{For the fiber of the universal \covering,
+    $\uc{\color{casred}\base}({\color{casblue}\base}) \jdeq
+    ({\color{casred}\base} = {\color{casblue}\base})$,
+    we \emph{increase} the winding number when we transport
+    the endpoint (in blue) along $\Sloop$, and
+    we \emph{decrease} it when we transport the starting point
+    (in red) in the same way.}\label{fig:plus-minus-one}
+\end{marginfigure}
 
 Note that, as usual, we leave out the propositional components of $\InfCyc$ (and other subtypes) from the notation.
 
@@ -1175,7 +1221,8 @@ To finish, we observe that it doesn't matter which way you take in the diagram
 \]
 Note that to transport in the family $\uc{-}(\base) \jdeq (\blank = \base)$,
 we use \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a},
-and \emph{that} is why we picked the predecessor equivalence in~\cref{def:S1toC}.\footnote{%
+and \emph{that} is why we picked the predecessor equivalence in~\cref{def:S1toC}.
+This is also illustrated in \cref{fig:plus-minus-one}.\footnote{%
   Another option would have been to choose the opposite equivalence $\zet\equiv\uc\base(\base)$, sending $n$ to $\Sloop^{-n}$, in the base case.
   The point is: You can move the minus sign around, but it has to pop up somewhere.}
 
@@ -1281,7 +1328,7 @@ any two points $x,x':X$ can be connected by applying $t$ some number of times.
 \end{definition}
 \begin{theorem}\label{thm:cycset-connS1cover}
   Under the equivalence of \cref{thm:coveringsofS1perms},
-  connected set bundles of the circle correspond to cyclic sets.
+  connected \coverings of the circle correspond to cycles.
 \end{theorem}
 \begin{proof}
   Consider a set $X$ with permutation $t$.
@@ -1917,7 +1964,7 @@ vertical and the movement from copy to copy going around a circle.
     {\textstyle\sqrt[\uproot{2}m]t}(k,x)\defeq
     \begin{cases}
       (k+1,x)& \text{for $k<m-1$ and}\\
-      (0,f(x))& \text{for $k=m-1$}.
+      (0,t(x))& \text{for $k=m-1$}.
     \end{cases}
   \]
 \par \vspace{-1.5\baselineskip}
@@ -1983,7 +2030,7 @@ for an arbitrary cycle $(X,t)$.
 The first part is easy, since the product of $\bn m$ with an $n$-element set
 is an $mn$-element set. We set $\pt_n \defeq (\bn n,\zs) : \Cyc_n$.
 \begin{lemma}
-  The degree $m$ function restricts to give functions
+  The degree $m$ function restricts to give pointed maps
   \[
     \cdg{m} : \Cyc_n \ptdto \Cyc_{mn} \quad\text{and}\quad
     \cdg{m} : \Cyc_0 \ptdto \Cyc_0.
