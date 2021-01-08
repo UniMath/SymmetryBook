@@ -1,0 +1,54 @@
+% Copyright (c) 2019 Takahiro Ueda
+%
+% This file may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License (LPPL), either version 1.3c of this
+% license or (at your option) any later version. The latest version of
+% this license is in:
+%
+%    http://www.latex-project.org/lppl.txt
+%
+\ProvidesPackage{tikz-external-hash}[2019/10/01 v0.1.1]
+
+% This style file replaces the \tikz command and the tikzpicture environment
+% in such a way that externalization uses hash values of picture contents as
+% the cache file names.
+%
+% Usage:
+%   \usepackage{tikz}
+%   \usetikzlibrary{external}
+%   \usepackage{tikz-external-hash}%  before \tikzexternalize
+%   \tikzexternalize
+%
+\usepackage{tikz}
+\usetikzlibrary{external}
+\usepackage{etoolbox}
+\usepackage{environ}
+
+% Patch \tikzexternal@tikzpicture@replacement in tikzexternalshared.code.tex.
+
+\NewEnviron{tikz@external@hash@tikzpicture}[1][]{%
+  % Here the cache file name is derived from
+  % (1) the contents in the picture,
+  % (2) the options,
+  % (3) \beamer@pgfextension if defined.
+  \edef\tikz@external@hash@tempa{#1}%
+  \@ifundefined{beamer@pgfextension}{}{%
+    \edef\tikz@external@hash@tempa{%
+      \tikz@external@hash@tempa;\beamer@pgfextension}%
+  }%
+  \edef\tikz@external@hash@tempa{\expandonce\BODY;\tikz@external@hash@tempa}%
+  \expandafter\tikzexternal@computemdfivesum\expandafter{%
+    \tikz@external@hash@tempa}%
+  \xdef\tikzexternal@nextfile{\pgfretval}%
+  % Now, put the picture.
+  \let\tikzpicture=\tikzexternal@tikzpicture@replacement@orig
+  \begin{tikzpicture}[#1]%
+    \BODY
+  \end{tikzpicture}%
+  \let\endtikzpicture=\relax
+}
+
+\let\tikzexternal@tikzpicture@replacement@orig=\tikzexternal@tikzpicture@replacement
+\let\tikzexternal@tikzpicture@replacement=\tikz@external@hash@tikzpicture
+
+% latest-raw-url: https://gist.githubusercontent.com/tueda/c9a9c073c5f656e7ce870faf2e836be8/raw/tikz-external-hash.sty
