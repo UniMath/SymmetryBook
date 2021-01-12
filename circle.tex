@@ -1657,13 +1657,46 @@ equivalent to $\Sc\to \Set$, and $\Set$ is a groupoid
 (\cref{lem:Set-is-groupoid}),
 \cref{lem:level-n-utils}\ref{level-n-utils-codom} gives
 that the type of \coverings over the circle is a groupoid.
-We will pin this groupoid down by first analyzing the symmetries in each
-component.
+We will pin this groupoid down by first analyzing the sets of
+identifications in it.
 
 To do this, we generalize \cref{lem:IdCisZet} to other kinds of cycles.
+However, since we're dealing with multiple components,
+it'll be useful to have a set labeling the components first.
+\begin{definition}\label{def:subgroup-zet-of-cycle}
+  For any cycle $(X,t)$,
+  let $H_t \defeq \setof{n:\zet}{t^n=\id}$.
+\end{definition}
+Thus, $H_t$ is the subtype of $\zet$ determined by the predicate $t^n=\id$
+for $n:\zet$.
+\begin{lemma}
+  For any connected \covering $(A,f)$ with corresponding cycle $(X,t)$,
+  if $x:X$, then $H_t = \setof{n:\zet}{t^n(x)=x}$,
+  and for any $a:A$, we have that $H_t$
+  also equals the image of the composite
+  \[
+    \ap{f} : (a =_A a) \to (f(a) =_\Sc f(a)) \we \zet.
+  \]
+\end{lemma}
+\begin{proof}
+  The first part is a special case of the second, since elements $x:X$
+  correspond to elements $a:A$ together with $p:\base=f(a)$.
+
+  In any case, since we're proving a proposition, and $A$ is connected,
+  way may assume we have $p:\base=f(a)$, and thus reduce to the
+  first point.
+
+  Let $x:X$, and assume $t^n(x)=x$. Then if $x':X$ is any other point,
+  to prove the proposition $t^n(x')=x'$, we may assume we have $k:\zet$
+  with $x'=t^k(x)$. Then $t^n(x')=t^{n+k}(x)=t^k(x)=x'$, as desired.
+  The other inclusion is clear.
+\end{proof}
+
 \begin{lemma}\label{lem:IdCycle}
   Let $(X,t):\Cyc$ be a cycle with a chosen point $x_0:X$.
-  An equality $(e,!) : (X,t)=(Y,u)$, with $(Y,u)$ in the same component as $(X,t$),
+  If $(Y,u)$ is another cycle with $H_t=H_u$,
+  then it is in the same component as $(X,t)$,
+  and any equality $(e,!) : (X,t)=(Y,u)$
   is uniquely determined by the element $e(x_0):Y$.
   In other words, the function
   \[
@@ -1673,6 +1706,8 @@ To do this, we generalize \cref{lem:IdCisZet} to other kinds of cycles.
   is an equivalence.
 \end{lemma}
 \begin{proof}
+  Assume $H_t=H_u$, \ie $t^n(x)=x$ if and only if $u^n(y)=y$
+  for any $x:X$, $y:Y$ and $n:\zet$.
   Given $y_0:Y$ we must determine a unique equivalence $e:X\to Y$
   such that $et=ue$ and $e(x_0)=y_0$.
 
@@ -1691,26 +1726,20 @@ To do this, we generalize \cref{lem:IdCisZet} to other kinds of cycles.
   so $y=u^n(y_0)=y'$.
 
   Now to prove the proposition $P_x$,
-  we may assume we have an equivalence $h:(X,t)\simeq(Y,u)$ of cycles,
-  since $(X,t)$ and $(Y,u)$ are assumed to be in the same component.
-  And we may assume we have $m:\zet$ is such that $x=t^m(x_0)$.
+  we may assume we have $m:\zet$ is such that $x=t^m(x_0)$.
   We let $y\defeq u^m(y_0)$, and we need to show, for any $n:\zet$,
   that $x=t^n(x_0)$ implies $y=u^n(y_0)$.
   So now $t^m(x_0)=t^n(x_0)$ and we must show $u^m(y_0)=u^n(y_0)$.
-  This is again a proposition, so we take $\ell:\zet$ with $y_0=u^\ell(h(x_0))$.
-  Then we have
-  \begin{align*}
-    u^m(y_0)
-    &= u^m(u^\ell(h(x_0)))
-      = h(t^\ell(t^m(x_0)))
-      = h(t^\ell(t^n(x_0))) \\
-    &= u^n(u^\ell(h(x_0))) = u^n(y_0),
-  \end{align*}
-  as desired.
+  But this follows from our starting assumption, since
+  the former is equivalent to $t^{m-n}(x_0)=x_0$
+  and the latter to $u^{m-n}(y_0)=y_0$.
 
-  It's now easy to prove the proposition that this $e$ is indeed an equivalence.
+  It's easy to prove the proposition that this $e$ is indeed an equivalence,
+  so this is left to the reader.
 \end{proof}
-\begin{corollary}
+As a first consequence,
+we get the following for the type of loops at the standard $m$-cycles.
+\begin{corollary}\label{cor:id-m-cycle}
   Evaluation at $0$ gives an equivalence
   $\bigl((\bn m,\zs)=(\bn m,\zs)\bigr) \equiv \bn m$ under which
   reflexivity maps to $0$, and composition with the equality
@@ -1718,20 +1747,61 @@ To do this, we generalize \cref{lem:IdCisZet} to other kinds of cycles.
   corresponds to the operation $\zs:\bn m\to\bn m$.
 \end{corollary}
 
-As promised, we now return to the question of the components
-of the type of connected \coverings of the circle, or equivalently, by \cref{thm:cycset-connS1cover}, of the type of cycles, $\Cyc$.
-It makes sense to restrict to decidable \coverings/cycles.\footnote{%
+And as a second consequence,
+we get a more concrete description of the set of components of $\Cyc$,
+and hence, by \cref{thm:cycset-connS1cover},
+of the type of connected \coverings of the circle.
+\begin{corollary}\label{cor:set-trunc-cyc}
+  The map $H : \Cyc \to \Sub_\zet$ sending $(X,t)$ to $H_t$
+  induces an equivalence from $\setTrunc{\Cyc}$
+  onto the subset of $\Sub_\zet$ consisting of those subsets\marginnote{%
+    By $H$ being closed under addition and negation,
+    we simply mean that if $z,z'$ are in $H$,
+    then so are $z+z'$ and $-z$.}
+  $H \subseteq \zet$ that contain $0$ and are closed under addition and negation.
+\end{corollary}
+\begin{proof}
+  The map $H$ induces $g : \setTrunc{\Cyc} \to \Sub_\zet$
+  by the universal property of set truncation, cf.~\cref{def:set-truncation}.
+  From \cref{lem:IdCycle} we know that $g$ is an injection,
+  so it remains to prove that the image is as stated.
+  It is clear that $H_t$, for a cycle $(X,t)$, contains $0$ and is closed
+  under addition and negation.
+  Conversely, suppose $H$ contains $0$ and is closed under addition and negation.
+  Define the relation $\sim_H$ on $\zet$ by setting $z \sim_H z'$ if and only if
+  the difference $z-z'$ is in $H$.
+  This is an equivalence relation:
+  it is reflexive since $H$ contains $0$,
+  transitive since $H$ is closed under addition,
+  and symmetric since $H$ is closed under negation.
+  So let $X \defeq \zet/\sim_H$, and define $t([z])\defeq[\zs(z)]$
+  for $z:\zet$.
+  This is well-defined, since $z \sim_H z'$ holds if and only if
+  $\zs(z) \sim_H \zs(z')$.
+  It is clear that $(X,t)$ is a cycle with $H_t = H$.
+\end{proof}
+\begin{definition}\label{def:Order}
+  The type of \emph{orders} is defined to $\Order\defeq\setTrunc{\Cyc}$.\marginnote{%
+    Note that we're still being cavalier with universe levels.
+    Really, we should write
+    $\SetBundle(\Sc)_\UU$, $\Cyc_\UU$, $\Sub_\zet^\UU$, $\Order_\UU$, etc.,
+    to indicate from which universe $\UU$ we draw the types involved.
+    We trust that the reader can fill these in if desired.}
+  We say that the infinite cycle $(\zet,zs)$ has \emph{infinite order},
+  and the standard $m$-cycle $(\bn m,\zs)$ has \emph{finite order $m$},
+  for positive $m:\NN$.
+\end{definition}
+The description in \cref{cor:set-trunc-cyc} is still not as concrete as we'd like.
+Is it true that any cycle has either infinite order or finite order $m$
+for some positive $m:\NN$?
+Any other textbook will tell you that the answer is yes,
+but the proof is unfortunately not constructive.
+It makes sense first to restrict to decidable \coverings/cycles.\footnote{%
   This rules out certain pathological cycles,
   such as the subset $\setof{(\ee^{2\pi\alpha\ii})^n:\CC}{n:\zet}$,
   where $\alpha:\RR$ is an unknown real number,
   of which we don't know whether it is rational or not.}
-We already know the following components: The one containing the infinite cycle $(\zet,zs)$, $\Cyc_0 \defeq \InfCyc$, and for each positive $m:\NN$,
-the one containing the standard $m$-cycle $(\bn m,\zs)$, $\Cyc_m \defeq \conncomp{\Cyc}{(\bn m,\zs)}$.
-Any other textbook will tell you that these
-are all the (decidable) connected \coverings over
-the circle/cycles (precisely one for each natural number),
-but the proof is unfortunately not constructive:
-we need one further assumption, namely:
+Even so, we need one further non-constructive assumption, namely:
 
 \begin{principle}[Limited Principle of Omniscience, LPO]
   \label{LPO}\index{LPO}
@@ -1759,82 +1829,37 @@ Note that LPO is weaker than LEM (cf. \cref{pri:lem}), by which is meant the fol
 
 As for LEM, we are free to assume LPO or not, and we will be explicit about
 where we will use it. LPO makes it possible to prove that the canonical map
-$(\sum_{m:\NN} \Cyc_m) \to \Cyc^{\constant{dec}}$ (the codomain being the subtype of $\Cyc$ consisting of decidable cycles), mapping $(m,c,!)$ to $c$, is an
-equivalence. We will elaborate this equivalence in the next paragraphs.
+$\NN \to \Order^{\constant{dec}}$
+(the codomain being the subtype of $\Order$ given by decidable cycles),
+mapping $0$ to the infinite order and each positive $n$ to the finite order $n$,
+is an equivalence.
+We will elaborate this equivalence in the next paragraphs.
 
-\begin{definition}
-  For any connected \covering $(A,f)$ / cycle $(X,t)$,
-  let $H_f \defeq H_t \defeq \setof{n:\zet}{t^n=\id}$.
-\end{definition}
-
-\begin{lemma}
-  For any connected \covering $(A,f)$ with corresponding cycle $(X,t)$,
-  if $x:X$, then $H_t = \setof{n:\zet}{t^n(x)=x}$,
-  and for any $a:A$, we have that $H_t$
-  also equals the image of the composite
-  \[
-    \ap{f} : (a =_A a) \to (f(a) =_\Sc f(a)) \we \zet.
-  \]
-\end{lemma}
-\begin{proof}
-  The first part is a special case of the second, since elements $x:X$
-  correspond to elements $a:A$ together with $p:\base=f(a)$.
-
-  In any case, since we're proving a proposition, and $A$ is connected,
-  way may assume we have $p:\base=f(a)$, and thus reduce to the
-  first point.
-
-  Let $x:X$, and assume $t^n(x)=x$. Then if $x':X$ is any other point,
-  to prove the proposition $t^n(x')=x'$, we may assume we have $k:\zet$
-  with $x'=t^k(x)$. Then $t^n(x')=t^{n+k}(x)=t^k(x)=x'$, as desired.
-  The other inclusion is clear.
-\end{proof}
-
-\begin{lemma}\label{lem:cyc-standard-comp}
-  A cycle $(X,t)$ is in the component of the infinite cycle $(\zet,\zs)$
-  if and only if $H_t=\set{0}$,
-  and it is in the component of the standard $m$-cycle $(\bn m,\zs)$
-  if and only if $H_t=m\zet$, for positive $m:\NN$.
-\end{lemma}
-\begin{proof}
-  The implications from left to right are clear.
-
-  Fix a cycle $(X,t)$, and assume $H_t=m\zet$ with $m:\NN$.
-  Since we're proving a proposition, we make fix $x:X$,
-  and then we get a function $e : \zet \to X$ with $e(n)\defeq t^n(x)$.
-  If $m=0$, then $e$ is an equivalence, since it is both surjective
-  (as $(X,t)$ is a cycle), and injective,
-  since $f^n(x)=f^k(x)$ implies $f^{n-k}(x)=x$, so $n=k$.
-
-  If $m$ is positive, then we claim that $e$ restricted to $\bn m$
-  is an equivalence.
-  Surjectivity: Let $x':X$. Take $k:\zet$ with $x'=f^k(x)$.
-  Use Euclidean division by $m$ to write $k=qm + r$ with $r:\bn m$.
-  Then $x'=f^{qm+r}(x) = f^r(x)$.
-  Injectivity: Suppose without loss of generality that
-  $f^n(x)=f^k(x)$ with $0\le k\le n<m$.
-  Then $f^{n-k}(x)=x$, so $k=n$.
-\end{proof}
+We already know from \cref{cor:set-trunc-cyc} that the map is an injection,
+and a cycle $(X,t)$ has infinite order
+if and only if $H_t=\set{0}$,\footnote{%
+  This is why it's natural to associate to $0:\NN$
+  the infinite order.}
+and it has finite order $m$
+if and only if $H_t=m\zet$, for positive $m:\NN$.
 
 Fix now a decidable cycle $(X,t)$,
 and consider the corresponding subset $H \defeq H_t \jdeq \setof{n:\zet}{f^n=\id}$.
 This is a decidable subset, since this is a proposition, and $n$ is in $H$
 if and only if $f^n(x)=x$ for some/all $x:X$.
 
-Also note that $n$ is in $H$ if and only if $-n$.
 Apply LPO (\cref{LPO}) to the function $P:\NN\to\bn 2$ defined
 by $P(n)=1$ if $n+1$ is in $H$, and $P(n)=0$ otherwise.
 If $P(n)$ is constant $0$, then $H=\set{0}$,
-so $(X,f)$ is an infinite cycle in the component of $(\zet,zs)$,
-by \cref{lem:cyc-standard-comp}.
+so $(X,f)$ has infinite order.
 (As a \covering, it is then merely equivalent to the universal \covering.)
 
 Otherwise, if $n_0$ is the smallest natural number with $m\defeq n_0+1$ in $H$,
-then we claim $H=m\zet$, from which it follows that $(X,t)$ is in the component
-of the standard $m$-cycle $(\bn m,\zs)$, again by \cref{lem:cyc-standard-comp}.
+then we claim $H=m\zet$,
+from which it follows that $(X,t)$ has order $m$.
 
 Clearly, $m\zet \subseteq H$, since if $t^m=\id$, then so is $t^{nm}=\id$.
-And if $t^q=\id$, then by Euclidean division,
+And if $t^q=\id$, then by Euclidean division of integers, cf.~\cref{lem:euclid-div},
 there exist $k:\ZZ$, $r:\NN$ with $r<m$ so that $q=km+r$.
 Now, the number $r$ is in $H$, since $t^r=t^{q-km}=\id$,
 and is less than the minimal positive value $m$ in $H$,
@@ -1883,12 +1908,12 @@ between the circle and the type of infinite cycles.
 
 In this section, we reinterpret the degree $m$ function $\dg{m}$
 as a map of infinite cycles. Indeed, it makes sense as a map on all cycles,
-and we'll use it classify the connected \coverings on the components $\Cyc_n$,
+and we'll use it to classify the connected \coverings on the components $\Cyc_n$,
 of $\Cyc$, determined by the standard $n$-cycles, for positive integers $n$.
 
 That's why it's instructive to rephrase connected \coverings over $\Sc$
 in terms of cycles,
-even though they could be transported along the identity $\bar c:\Sc=\Cyc_0$ corresponding to $c$.
+even though they could just be transported along the identity $\bar c:\Sc=\Cyc_0$ corresponding to $c$.
 
 Before we do the degree $m$ maps, let's note that the
 universal \covering over $\Cyc_0$ is represented by the constant function
@@ -2132,6 +2157,27 @@ natural identification $(X,t) = (\bn m\times Y, \sqrt[\uproot{2}m]{u^m})$.
 The reader will no doubt have noticed that $X/m$ is a \emph{finite cycle}.
 We'll return to the significance of this below.
 
+Our next step is to identify the fiber of $\cdg{m}$ over a general cycle $(X,t)$.
+Classically, the remaining cases are those of $n$-cycles,
+but it's useful to be a bit more general, to see what happens.
+Note that the equivalence relation $\sim_m$ defined above for an infinite cycle
+make sense for all cycles.
+\begin{theorem}
+  For \emph{any} cycle $(X,t)$, the preimage $\cdg{m}^{-1}(X,t)$
+  is equivalent to $P\times S$, where $P$ is the proposition expressing $m\in H_t$,
+  and $S = X/m$.
+\end{theorem}
+\begin{proof}
+  The preimage is
+  \[
+    \cdg{m}^{-1}(X,t)
+    \equiv \sum_{(Y,u):\Cyc}\bigl((X,t) = (\bn m\times Y,\sqrt[\uproot{2}m]{u})\bigr),
+  \]
+
+\end{proof}
+\section{Getting our cycles in order}
+\label{sec:cycles-order}
+
 {\color{casblue}
 \section{TODO}
 
@@ -2140,9 +2186,6 @@ We'll return to the significance of this below.
     then the type of maps $f : (X,t) \to (Y,u)$ is equivalent to $P\times Y$,
     where $P$ is the proposition $H_t \subseteq H_u$.}
 \item Corollary: \textsl{$(X,t)$ is a cycle, then the type $\sum_{(Y,u):\conncomp{\Cyc}{(X,t)}}Y$ is contractible.}
-\item Theorem: \textsl{For \emph{any} cycle $(X,t)$, the preimage $\cdg{m}^{-1}(X,t)$
-  is equivalent to $P\times S$, where $P$ is a proposition expressing $m\in H_t$,
-  and $S = X/m$.}
 \item Introduce type of orders, $\constant{Order} \defeq \setTrunc{\Cyc}$,
   with \emph{divisibility} relation $t \mid u$ induced by $H_u \subseteq H_t$?
   Subtypes: decidable orders and discrete(?) orders.
