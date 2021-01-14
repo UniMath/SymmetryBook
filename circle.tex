@@ -1669,7 +1669,7 @@ it'll be useful to have a set labeling the components first.
 \end{definition}
 Thus, $H_t$ is the subtype of $\zet$ determined by the predicate $t^n=\id$
 for $n:\zet$.
-\begin{lemma}
+\begin{lemma}\label{lem:cycle-order-point-ap}
   For any connected \covering $(A,f)$ with corresponding cycle $(X,t)$,
   if $x:X$, then $H_t = \setof{n:\zet}{t^n(x)=x}$,
   and for any $a:A$, we have that $H_t$
@@ -1780,19 +1780,37 @@ of the type of connected \coverings of the circle.
   $\zs(z) \sim_H \zs(z')$.
   It is clear that $(X,t)$ is a cycle with $H_t = H$.
 \end{proof}
+The components of $\Cyc$ will prop up many times from now on,
+so me make the following definitions to make it easier to talk about them.
 \begin{definition}\label{def:Order}
-  The type of \emph{orders} is defined to $\Order\defeq\setTrunc{\Cyc}$.\marginnote{%
+  The type of \emph{orders} is defined to be
+  $\Order\defeq\setTrunc{\Cyc}$.\marginnote{%
     Note that we're still being cavalier with universe levels.
     Really, we should write
     $\SetBundle(\Sc)_\UU$, $\Cyc_\UU$, $\Sub_\zet^\UU$, $\Order_\UU$, etc.,
     to indicate from which universe $\UU$ we draw the types involved.
     We trust that the reader can fill these in if desired.}
-  We say that the infinite cycle $(\zet,zs)$ has \emph{infinite order},
+  We say that the infinite cycle $(\zet,\zs)$ has \emph{infinite order},
   and the standard $m$-cycle $(\bn m,\zs)$ has \emph{finite order $m$},
   for positive $m:\NN$.
+
+  We write $\ord\defeq\settrunc{\blank}:\Cyc\to\Order$ for the map
+  from cycles to their orders, and we write $\ord(t)\defeq\ord(X,t)$ for short.
+
+  We say that the order $d\defeq\ord(X,t)$ \emph{divides} the order $k\defeq\ord(Y,u)$, written $d | k$,
+  for cycles $(X,t),(Y,u)$, if $H_u \subseteq H_t$.
 \end{definition}
+We have a canonical injection $\NN \to \Order$,
+mapping $0$ to the infinite order and each positive $n$ to the finite order $n$.
+The orders in the image are called \emph{principal},
+and we don't make any notational distinction between a natural number $d$
+and the corresponding principal order.
+As a subset of $\zet$, a principal order is simply $d\zet$,
+so we see that the divisibility relation on orders extends that on natural numbers.
+
 The description in \cref{cor:set-trunc-cyc} is still not as concrete as we'd like.
-Is it true that any cycle has either infinite order or finite order $m$
+Is it true that any order is principal, in other words,
+that every cycle has either infinite order or finite order $m$
 for some positive $m:\NN$?
 Any other textbook will tell you that the answer is yes,
 but the proof is unfortunately not constructive.
@@ -1831,7 +1849,6 @@ As for LEM, we are free to assume LPO or not, and we will be explicit about
 where we will use it. LPO makes it possible to prove that the canonical map
 $\NN \to \Order^{\constant{dec}}$
 (the codomain being the subtype of $\Order$ given by decidable cycles),
-mapping $0$ to the infinite order and each positive $n$ to the finite order $n$,
 is an equivalence.
 We will elaborate this equivalence in the next paragraphs.
 
@@ -2153,44 +2170,142 @@ Indeed, the fiber is
 The equivalence is obtained by sending an equivalence class $Y$ to
 the corresponding infinite cycle $(Y,u^m)$ together with the
 natural identification $(X,t) = (\bn m\times Y, \sqrt[\uproot{2}m]{u^m})$.
+See \cref{thm:fiber-cdg} below for a careful proof of a more general statement.
 
 The reader will no doubt have noticed that $X/m$ is a \emph{finite cycle}.
 We'll return to the significance of this below.
 
 Our next step is to identify the fiber of $\cdg{m}$ over a general cycle $(X,t)$.
-Classically, the remaining cases are those of $n$-cycles,
+Classically, the remaining cases are those of finite $n$-cycles,
 but it's useful to be a bit more general, to see what happens.
 Note that the equivalence relation $\sim_m$ defined above for an infinite cycle
 make sense for all cycles.
-\begin{theorem}
+
+\begin{lemma}\label{lem:sum-cycle-point-contr}
+  For any order $d:\Order$, the type $\sum_{(X,t):\Cyc_d}X$ is contractible,
+  where $\Cyc_d$ denotes the component of $\Cyc$ consisting
+  of cycles of order $d$.
+\end{lemma}
+\begin{proof}
+  This is relatively straight-forward from \cref{lem:IdCycle}.
+  The type in question is nonempty since all cycles have a nonempty underlying set,
+  so it suffices to prove the type is a proposition.
+  So let $(X,t),(X',t')$ be cycles of order $o$, and take $x:X$ and $x':X$.
+  An identification $((X,t),x) = ((X',t'),x')$ is given by an equivalence of
+  cycles $e : (X,t)=(X',t')$ with $e(x)=x'$.
+  But evaluation at $x$ induces an equivalence
+  $\bigl((X,t)=(X',t')\bigr) \simeq X'$,
+  so there exists a unique $e$ with $e(x)=x'$.
+\end{proof}
+\begin{lemma}\label{lem:m-root-id}
+  For any cycle $(X,t)$, if $(\sqrt[\uproot{2}m]{t})^n = \id$,
+  then $m$ divides $n$, \ie $n=mq$ for some $q:\zet$, and $t^q=\id$.
+  In other words, $m$ divides the order of $\sqrt[\uproot{2}m]{t}$.
+\end{lemma}
+This follows simply by looking at the first component,
+where $\sqrt[\uproot{2}m]{t}$ acts as the successor operation on $\bn m$.
+
+We're almost ready to identify the fiber of $\cdg{m}$ at a cycle $(X,t)$.
+We know that the fiber is \nonempty only if $m$ divides the order.
+A key ingredient for the converse is the following.
+\begin{lemma}\label{lem:X-mod-m-chosen}
+  Let $(X,t):\Cyc$ be a cycle with a chosen point $x_0:X$
+  and with order divisible by $m$.
+  Then the map $f : \bn m \to X/m$, $f(k) \defeq [t^k(x_0)]$
+  is an equivalence.
+\end{lemma}
+\begin{proof}
+  Fix an equivalence class $V:X/m$ and consider its preimage under $f$,
+  $f^{-1}(V) \jdeq \sum_{k:\bn m}(V=[t^k(x_0)])$.
+  The contractibility of this type is a proposition, so we may choose
+  $x:X$ with $V=[x]$.
+  Then $(V=[t^k(x_0)])\equiv([x]=[t^k(x_0)])\equiv(x\sim_m t^k(x_0))$.
+  So we need to show that $\sum_{k:\bn m}(x\sim_m t^k(x_0))$ is contractible.
+  More simply, we need to show that there is a unique $k$ with $x\sim_m t^k(x_0)$.
+  Since $(X,t)$ is a cycle, we may further choose $n:\zet$ with $x=t^n(x_0)$.
+  By Euclidean division, write $n=qm+r$ with $q:\zet$, $r:\bn m$.
+  Then $x = t^n(x_0) \sim_m t^r(x_0)$, so we have our center.
+  Let $k:\bn m$ also satisfy $x\sim_m t^k(x_0)$.
+  We need to show the proposition $k=r$.
+  But $t^{r-k}(x_0) \sim_m x_0$, so we may take $q:\zet$ with $t^{qm+r-k}(x_0)=x_0$.
+  Since $m$ divides the order of $t$, this implies $r=k$, as desired.
+\end{proof}
+Now we have all the pieces needed to prove the main result.
+\begin{theorem}\label{thm:fiber-cdg}
   For \emph{any} cycle $(X,t)$, the preimage $\cdg{m}^{-1}(X,t)$
-  is equivalent to $P\times S$, where $P$ is the proposition expressing $m\in H_t$,
-  and $S = X/m$.
+  is equivalent to $P\times X/m$,
+  where $P\defeq (H_t \subseteq m\zet)$ expresses that $m$ divides the order of $t$.
 \end{theorem}
 \begin{proof}
-  The preimage is
+  We'll use \cref{lem:weq-iso}, and we first define the function
   \[
-    \cdg{m}^{-1}(X,t)
-    \equiv \sum_{(Y,u):\Cyc}\bigl((X,t) = (\bn m\times Y,\sqrt[\uproot{2}m]{u})\bigr),
+    g : \cdg{m}^{-1}(X,t) \to P\times X/m,
   \]
+  by mapping $(Y,u)$ and an identification of cycles
+  $e : (X,t) = (\bn m\times Y,\sqrt[\uproot{2}m]{u})$
+  to the proof of $P$ from \cref{lem:m-root-id}
+  and the class $V_e\defeq [e^{-1}(0,y)]:X/m$, for any $y:Y$.
+  Note that this doesn't depend on $y$, and as a subset of $X$,
+  $V_e=\setof{x:X}{\fst(e(x))=0}$.
 
+  In the other direction, to define the function
+  \[
+    h : P\times X/m \to \cdg{m}^{-1}(X,t),
+  \]
+  fix an equivalence class $V:X/m$,
+  and assume that $m$ divides the order of $t$.
+  Then we have, with a bit of abuse of notation, the cycle $(V,t^m)$,
+  where we also write $V$ for the type of elements in $X$ that lie in the class $V$,
+  and $t^m$ is the restriction of this power of $t$ to $V$.\footnote{%
+    If $x$ lies in $V$, then so does $t^m(x)$.}
+  We also need an identification
+  $(X,t)=(\bn m\times V,\sqrt[\uproot{2}m]{t^m})$.
+  This we define via a map $e : \bn m\times V \to X$, $e(k,x) \defeq t^k(x)$.
+  This is an equivalence as long as the orders match.
+  So let $n:\zet$, and assume first that $t^n=\id$.
+  Then $P$ implies that we may write $n=qm$ for some $q:\zet$,
+  so
+  \[
+    (\sqrt[\uproot{2}m]{t^m})^n
+    = (\sqrt[\uproot{2}m]{t^m})^{qm}
+    = (\id \times t^m)^q = (\id \times t^{qm}) = \id.
+  \]
+  Conversely, we know from \cref{lem:m-root-id} again,
+  that if $(\sqrt[\uproot{2}m]{t^m})^n=\id$,
+  then we may write $n=qm$ for some $q:\zet$,
+  and $(t^m)^q=\id$, which by \cref{lem:cycle-order-point-ap}
+  implies that $t^n = \id$.
+
+  Straight from these definitions, we see that $g\circ h=\id$.
+  We leave to the reader to check that $h\circ g=\id$.
 \end{proof}
+
 \section{Getting our cycles in order}
 \label{sec:cycles-order}
 
-{\color{casblue}
-\section{TODO}
+{\color{casblue} TODO: Exposition and figures
+
+\begin{theorem}
+  If $(X,t),(Y,u)$ are cycles, $x_0:X$,
+  then the type of maps $f : (X,t) \to (Y,u)$ is equivalent to $P\times Y$,
+  where $P$ is the proposition $H_t \subseteq H_u$.
+\end{theorem}
+
+Thus, an order $p$ divides an order $q$ if and only if
+there is a map of cycles from a cycle of order $q$
+to a cycle of order $p$.
+\begin{theorem}
+  The partially ordered set $(\Order,|)$ is a lattice
+  with least element the finite order $1$
+  and greatest element the infinite order, represented by the number $0$,
+  and meets and joins given by “gcd” and “lcm”, respectively.
+\end{theorem}
+
+\subsection{More TODO}
 
 \begin{itemize}
-\item Maps of cycles? Theorem: \textsl{If $(X,t),(Y,u)$ are cycles, $x_0:X$,
-    then the type of maps $f : (X,t) \to (Y,u)$ is equivalent to $P\times Y$,
-    where $P$ is the proposition $H_t \subseteq H_u$.}
-\item Corollary: \textsl{$(X,t)$ is a cycle, then the type $\sum_{(Y,u):\conncomp{\Cyc}{(X,t)}}Y$ is contractible.}
-\item Introduce type of orders, $\constant{Order} \defeq \setTrunc{\Cyc}$,
-  with \emph{divisibility} relation $t \mid u$ induced by $H_u \subseteq H_t$?
-  Subtypes: decidable orders and discrete(?) orders.
-  Operations: Meet, join, \dots?
 \item Classify connected \coverings over $\Cyc_n$.
+\item Universal property of $\Cyc_n$ among groupoids.
 \item Bijective proof of $mn = \lcm(m,n)\times\gcd(m,n)$ via the product of cycles.
   Chinese remainder stuff.
 \item Somehow sneak in totatives and automorphisms of cyclic groups?
