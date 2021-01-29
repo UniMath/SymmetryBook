@@ -36,7 +36,9 @@ Thus, we shall refer to $\NN$ as the \emph{type of all natural numbers}, and we 
 Intuitively and informally, it is a collection whose members are the natural numbers.
 
 Once the various types are regarded to exist as mathematical objects, they become worthy of study, and the language and scope of mathematics
-is enriched.  For example, we can expect to be permitted to formulate a statement such as ``$\NN$ is infinite'' and to try to prove it.
+is enriched.  For example, we can expect to be permitted to formulate an assertion such as ``$\NN$ is infinite'' and to try to prove it.\footnote{%
+  Pointers to discussions of potential infinity and actual infinity.
+}
 
 Historically, there was some trepidation about introducing the collection of all natural numbers as a mathematical object, perhaps because if
 one were to attempt to build the collection from nothing by adding numbers to it one at a time, it would take an eternity to complete the
@@ -53,16 +55,38 @@ and so on forever.  Indeed, all of that is part of what will be presented later.
 In this section we build on the intuition imparted in the previous section.
 
 In \emph{univalent mathematics},\index{mathematics!univalent} types are used to classify all mathematical objects.
-Every mathematical object is an element of some (unique) type.
+Every mathematical object is an \emph{element} of some (unique) \emph{type}.
 Before one can talk about an object of a certain type, one must introduce the type itself.
 There are enough ways to form new types from old ones to provide everything we need to write mathematics.
 
-One expresses the declaration that an \emph{element} $a$ is of \emph{type} $X$ by writing $a:X$.%
+One expresses the declaration that an object $a$ is an element of the \emph{type} $X$ by writing $a:X$.%
 \footnote{The notation in mathematics based on \emph{set theory} that corresponds (sort of) to this is $a \in X$.}
 \index{element}
 \glossary(2:){${:}$}{element judgment}
-Using that notation, each variable is introduced along with a declaration of the type of thing it will refer to, and
-the declared types of the variables are used to determine which statements of the theory are grammatically well formed.
+
+Using that notation, each variable $x$ is introduced along with a declaration of the form $x:X$, which declares that $x$ will refer to something
+of type $X$, but provides no other information about $x$.  The declared types of the variables are used to determine which statements of the
+theory are grammatically well formed.
+
+After introducing a variable $x:X$, it may be possible to form an expression $e$ of type $Y$, all of whose components have been already been
+given a meaning.
+(Here the variable $x$ is regarded also as having already been given a meaning.)
+Such an expression will be called a \emph{family of elements of $Y$} parametrized by the elements of $X$.
+Such a family provides a variety of elements of $Y$, for, if $a$ is any expression denoting an object of $X$, one may replace all
+occurrences of $x$ by $a$ in $e$, thereby obtaining an element of $Y$, which may be regarded as a \emph{member} of the family.
+
+Here's an example: we let $n$ be a natural number and consider the real number $\sqrt n$.
+It gives a family of real numbers parametrized by the natural numbers (also called a \emph{sequence} of real numbers).
+One of the members of the family is $\sqrt{11}$.
+
+Similarly, after introducing a variable $x:X$, it may be possible to form an expression $T$ representing a type, all of whose components have
+been already been given a meaning.
+Such an expression will be called a \emph{family of types} parametrized by the elements of $X$.
+Such a family provides a variety of types, for, if $a$ is any expression denoting an object of $X$, one may replace all
+occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a member of the family.
+
+Here's an example: we let $n$ be a natural number and $T$ be the type of regular $n$-sided polygons in the plane.  It gives a family
+of types parametrized by the natural numbers.  One of the members of the family is the type of all triangles in the plane.
 
 If $X$ and $Y$ are types, there will be a type whose elements serve as
 \emph{functions}\index{function type} from $X$ to $Y$;
@@ -73,23 +97,36 @@ and we are saying that $f$ is a function from $X$ to $Y$.
 
 Functions behave as one would expect, and one can make new ones in the usual way.
 
-To provide an example of making new functions in the usual way, we first introduce notation for making and for using \emph{definitions}.\index{definition}
+Here is some concise notation for constructing a function without naming it.
+Suppose we wish to construct a function of type $X \to Y$.  For that purpose, it suffices to consider
+an element $x:X$ and to construct an expression $e:Y$, all of whose components have been already been given a meaning;
+here the variable $x$ is regarded also as having already been given a meaning.  Given that, the notation $x \mapsto e$ will denote the function
+that sends each $x$ to $e$.  To apply it to a particular element $a:X$, one replaces each instance of $x$ in $e$ by $a$, as usual.
+
+To provide another example of making new functions in the usual way, we first introduce notation for making and for using \emph{definitions}.\index{definition}
+
 The notation $x \defeq z$ will be an announcement that we are defining
-the expression $x$ to be the expression $z$;%
+the expression $x$ to be the expression $z$, all of whose components have already been given a meaning;
+in that case, we will say that $x$ has been \emph{defined} to be (or to mean) $z$.%
 \glossary(2:=){$\defeq$}{definition}
-the forms allowed for the
-expression $x$ will be made clear by the examples we give.
+For example, after writing $n \defeq 12$, we will say that $n$ has been defined to be $12$.
+
+The forms allowed for the expression $x$ will be made clear by the examples we give.
+
 The notation $x \jdeq y$ will denote the statement that the expressions $x$ and $y$
 become the same thing if all the subexpressions within $x$ or $y$ are expanded according to their definitions, if any;%
 \glossary(2==){$\jdeq$}{definitional equality}
 in that case, we will say
-that $x$ and $y$ are \emph{the same by definition}.  Whenever two expressions are the same by definition, we may replace one with the other
+that $x$ and $y$ are \emph{the same by definition}.
+For example, after writing $n \defeq 12$ and $m \defeq n$, we may say that $12 \jdeq m$ and that $m \jdeq 12$.
+
+Whenever two expressions are the same by definition, we may replace one with the other
 inside any other expression, at will, because the expansion of definitions is regarded as trivial and transparent.
 
 We proceed now to the promised example.  Consider functions $f : X \to Y$ and $g : Y \to Z$.  We define their composite $g \circ f : X \to Z$ by
-setting $g \circ f \defeq (a \mapsto g(f(a)))$;%
+setting $g \circ f \defeq (a \mapsto g(f(a)))$.%
 \glossary(2fundef){$\mapsto$}{``maps to'', function definition}
-in other words, it is the function that sends an arbitrary element $a$ of $X$ to $g(f(a))$ in
+In other words, it is the function that sends an arbitrary element $a$ of $X$ to $g(f(a))$ in
 $Z$.  The composite $g \circ f$ may also be denoted simply by $gf$.%
 \glossary(2circ){$\circ$}{function composition}
 We also may use the following alternative notation for the composite function, which includes the three types explicitly:%
@@ -100,7 +137,7 @@ We also may use the following alternative notation for the composite function, w
 \]
 
 Now consider functions $f : X \to Y$, $g : Y \to Z$, and $h : Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by
-definition, since applying the definitions within expands both expresssions to $a \mapsto h(g(f(a)))$.  In other
+definition, since applying the definitions within expands both expressions to $a \mapsto h(g(f(a)))$.  In other
 words, we have established that $(h \circ g) \circ f \jdeq h \circ (g \circ f)$.  Thus, we may write $h \circ g \circ f$ for
 either expression, without danger of confusion.
 
@@ -199,6 +236,12 @@ The identity type $a =_X b$ may also be called an \emph{equation}.%
 \index{equation|see{identity type}}
 
 When there is no risk of confusion, we will write $a=b$ instead of $a =_X b$.
+
+Good motivation for this notation for equality is provided by a remark made by Robert Recorde in 1557:
+``to avoid the tedious repetition of these words \emph{is equal to}, I will substitute \dots
+a pair of parallels or twin lines of the same length, thus: $=$, because no two things can be more equal.''
+%% Robert Recorde, The Whetstone of Witte (London, England: John Kyngstone, 1557), p. 236
+%% https://archive.org/stream/TheWhetstoneOfWitte#page/n237/mode/2up
 
 When we know that there can be at most one element of $a=b$, we will refer to an element $i$ of $a=b$ as a \emph{proof}\,\footnote{Here we override
   the use of the word ``proof'' that is traditional in metamathematics; such a thing would now be a formal expression denoting an
