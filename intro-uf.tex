@@ -71,22 +71,27 @@ theory are grammatically well formed.
 After introducing a variable $x:X$, it may be possible to form an expression $e$ of type $Y$, all of whose components have been already been
 given a meaning.
 (Here the variable $x$ is regarded also as having already been given a meaning.)
-Such an expression will be called a \emph{family of elements of $Y$} parametrized by the elements of $X$.
+Such an expression will be called a \emph{family of elements of $Y$} \index{family} parametrized by the elements of $X$.
+To clarify the dependence of $e$ on $x$ primarily, we may write $e(x)$ (or $e_x$) instead of $e$.
 Such a family provides a variety of elements of $Y$, for, if $a$ is any expression denoting an object of $X$, one may replace all
-occurrences of $x$ by $a$ in $e$, thereby obtaining an element of $Y$, which may be regarded as a \emph{member} of the family.
+occurrences of $x$ by $a$ in $e$, thereby obtaining an element of $Y$, which may be regarded as a \emph{member} of the family
+and which may be denoted by $e(a)$.
 
 Here's an example: we let $n$ be a natural number and consider the real number $\sqrt n$.
-It gives a family of real numbers parametrized by the natural numbers (also called a \emph{sequence} of real numbers).
+It gives a family of real numbers parametrized by the natural numbers.
+(The family may also be called a \emph{sequence} of real numbers).
 One of the members of the family is $\sqrt{11}$.
 
 Similarly, after introducing a variable $x:X$, it may be possible to form an expression $T$ representing a type, all of whose components have
 been already been given a meaning.
-Such an expression will be called a \emph{family of types} parametrized by the elements of $X$.
+To clarify the dependence of $T$ on $x$ primarily, we may write $T(x)$ instead of $T$.
+Such an expression will be called a \emph{family of types} \index{family} parametrized by the elements of $X$.
 Such a family provides a variety of types, for, if $a$ is any expression denoting an object of $X$, one may replace all
-occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a member of the family.
+occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a member of the family,
+and which may be denoted by $T(a)$.
 
 Here's an example: we let $n$ be a natural number and $T$ be the type of $n$-sided polygons in the plane.  It gives a family
-of types parametrized by the natural numbers.  One of the members of the family is the type of all triangles in the plane.
+of types parametrized by the natural numbers.  One of the members of the family is the type $T(3)$ of all triangles in the plane.
 
 If $X$ and $Y$ are types, there will be a type whose elements serve as
 \emph{functions}\index{function type} from $X$ to $Y$;
@@ -95,29 +100,34 @@ the notation for it is $X \to Y$.%
 Thus when we write $f : X \to Y$, we mean that $f$ is an element of the type $X \to Y$,
 and we are saying that $f$ is a function from $X$ to $Y$.
 
-Functions behave as one would expect, and one can make new ones in the usual way.
+Functions behave as one would expect, and one can make new ones in the usual way, by which we mean the following.
+Let $x$ be a variable of type $X$, and let $e(x)$ be an expression of type $Y$, possibly involving $x$.  Then we use
+the notation $x \mapsto e(x)$ for the function that sends an element $a$ of $X$ to the element $e(a)$ of $Y$ obtained by replacing
+all occurrences of $x$ in $e$ by $a$.  If we name the function $f$, then that element of $Y$ will be denoted by $f(a)$.
 
-Here is some concise notation for constructing a function without naming it.
-Suppose we wish to construct a function of type $X \to Y$.  For that purpose, it suffices to consider
-an element $x:X$ and to construct an expression $e:Y$, all of whose components have been already been given a meaning;
-here the variable $x$ is regarded also as having already been given a meaning.  Given that, the notation $x \mapsto e$ will denote the function
-that sends each $x$ to $e$.  To apply it to a particular element $a:X$, one replaces each instance of $x$ in $e$ by $a$, as usual.
+Once a family $e(x)$ has been encapsulated in the function $x \mapsto e(x)$, the variable $x$ is referred to as a \emph{dummy}
+variable.  This signifies that the name of the variable no longer matters, i.e., that $x \mapsto e(x)$ and $t \mapsto e(t)$
+may regarded as identical.
 
-To provide another example of making new functions in the usual way, we first introduce notation for making and for using \emph{definitions}.\index{definition}
+In the previous paragraph we referred to the possibility of giving a name to a function.
+We expand on that now by introducing notation for making and for using \emph{definitions}.\index{definition}
 
 The notation $x \defeq z$ will be an announcement that we are defining
 the expression $x$ to be the expression $z$, all of whose components have already been given a meaning;
 in that case, we will say that $x$ has been \emph{defined} to be (or to mean) $z$.%
 \glossary(2:=){$\defeq$}{definition}
-For example, after writing $n \defeq 12$, we will say that $n$ has been defined to be $12$.
-
 The forms allowed for the expression $x$ will be made clear by the examples we give.
 
-The notation $x \jdeq y$ will denote the statement that the expressions $x$ and $y$
-become the same thing if all the subexpressions within $x$ or $y$ are expanded according to their definitions, if any;%
+For example, after writing $n \defeq 12$, we will say that $n$ has been defined to be $12$.
+
+For another example, the function $f$ that we named above may be introduced by writing $f \defeq ( x \mapsto e(x) )$.
+Alternatively and more traditionally, we may write $f(x) \defeq e(x)$.
+
+The notation $b \jdeq c$ will denote the statement that the expressions $b$ and $c$
+become the same thing if all the subexpressions within $b$ or $c$ are expanded according to their definitions, if any;%
 \glossary(2==){$\jdeq$}{definitional equality}
 in that case, we will say
-that $x$ and $y$ are \emph{the same by definition}.
+that $b$ and $c$ are \emph{the same by definition}.
 For example, after writing $n \defeq 12$ and $m \defeq n$, we may say that $12 \jdeq m$ and that $m \jdeq 12$.
 
 Whenever two expressions are the same by definition, we may replace one with the other
@@ -160,23 +170,23 @@ Here are Peano's rules\footcite{peano-principia} for constructing the natural nu
 \item\label{P3} if $m$ is a natural number, then there is also a natural number $\Succ(m)$, called the \emph{successor} of $m$;%
   \glossary(succ){$\protect\Succ$}{the successor function on $\NN$, Peano's rules, \cref{P3}}%
   \index{successor}
-\item\label{P4} given a family of types $X(m)$ depending on a parameter\footnote{%
-  Referring to a variable as a \emph{parameter} is a turn of phrase that emphasizes that an expression depends on the variable,
-  drawing attention to the results as the variable ranges over elements of its type.}%
-\index{parameter}
-  $m$ of type $\NN$, in order to define a family $f(m) : X(m)$ of elements of each of them it suffices to provide an element $a$ of $X(0)$ and
-  to provide, for each $m$, a function $g_m : X(m) \to X(\Succ(m))$.  (The resulting function $f$ may be regarded as having been defined inductively
-  by the two declarations $f(0) \defeq a$ and $f(\Succ(m)) \defeq g_m(f(m))$.)
+\item\label{P4} suppose we are given:
+  (1) a family of types $X(m)$ depending on a variable $m$ of type $\NN$;
+  (2) an element $a$ of $X(0)$; and
+  (3) a family of functions $g_m : X(m) \to X(\Succ(m))$.
+  Then from those data we are provided with a family of elements $f(m) : X(m)$.
 \end{enumerate}
-\nopagebreak
+
 You may recognize rule \ref{P4} as ``the principle of mathematical induction'' or as ``defining a function by recursion''.\footnote{%
   Rule \ref{P4} and our logical framework are stronger than in Peano's original formulation, and this allows us to omit some rules that Peano had to include:
   that different natural numbers have different successors; and that no number has $0$ as its successor.  Those omitted rules
   remain true in this formulation and can be proved from the other rules, after we have introduced the notion of equality in
   our logical framework.}
-We may also refer to it
-simply as ``induction for $\NN$''.  Notice that the two cases in an inductive definition correspond to the two ways of introducing elements of
+We will refer to it simply as ``induction on $\NN$''.  
+The resulting family $f$ may be regarded as having been defined inductively
+by the two declarations $f(0) \defeq a$ and $f(\Succ(m)) \defeq g_m(f(m))$, which cover both ways of introducing elements of
 $\NN$ via the use of rules \ref{P2} and \ref{P3}.
+(In terms of computer programming, those two declarations amount to the code for a recursive subroutine that can handle any incoming natural number.)
 
 We introduce the following syntactic definitions.
 \begin{align*}
@@ -192,18 +202,18 @@ We introduce the following syntactic definitions.
   & \quad \vdots
 \end{align*}
 
-We may now define addition and multiplication of natural numbers by recursion.  In both cases, the family of types $X(m)$ is defined by setting
+We may now define addition and multiplication of natural numbers by induction on $\NN$.  In both cases, the family of types $X(m)$ is defined by setting
 $X(m) \defeq \NN$ for every $m : \NN$.  For natural numbers $n$ and $m$ we define $n+m : \NN$ by induction on $m$ by setting $n+0\defeq n$ and
 $n+\Succ(m)\defeq \Succ(n+m)$.  Application of definitions shows, for example, that $2+2 \jdeq 4$ are the same by definition, because both sides reduce
 to $\Succ(\Succ(\Succ(\Succ(0))))$.  Similarly we define the product $n \cdot m : \NN$ by induction on $m$ by setting setting $n\cdot 0\defeq 0$ and $n\cdot
 \Succ(m)\defeq (n\cdot m) + n$.
 
-We may also define the factorial function $\fact : \NN \to \NN$ by recursion, setting $\fact(0) \defeq 1$ and setting
+We may also define the factorial function $\fact : \NN \to \NN$ by induction on $\NN$, setting $\fact(0) \defeq 1$ and setting
 $\fact(\Succ(m)) \defeq (m+1) \cdot \fact(m)$.  This definition applies rule \ref{P4} with $1$ for $a$, and with the
 function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$.
 Application of the definitions shows, for example, that $\fact(2) \jdeq 2$, because both sides expand to $\Succ(\Succ(0))$.
 
-We finish this section with the definition of iteration by recursion.  Let $X$ be a type, and suppose we have a function $e : X \to X$.  We
+We finish this section with the definition of iteration by induction on $\NN$.  Let $X$ be a type, and suppose we have a function $e : X \to X$.  We
 define by induction the $n$-fold \emph{iteration} $e^n : X \to X$ by setting $e^0 \defeq \id_X$ and $e^{\Succ(n)}\defeq e\circ e^n$.%
 \index{iteration}
 Here we apply rule \ref{P4} with the identity function $\id_X$ for $a$
