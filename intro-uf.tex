@@ -71,7 +71,8 @@ theory are grammatically well formed.
 After introducing a variable $x:X$, it may be possible to form an expression $e$ of type $Y$, all of whose components have been already been
 given a meaning.
 (Here the variable $x$ is regarded also as having already been given a meaning.)
-Such an expression will be called a \emph{family of elements of $Y$} \index{family} parametrized by the elements of $X$.
+Such an expression will also be called a \emph{family of elements of $Y$} \index{family} parametrized by the elements of $X$, when
+we wish to focus on the dependence of $e$ (and perhaps $Y$) on the variable $x$.
 To clarify the dependence of $e$ on $x$ primarily, we may write $e(x)$ (or $e_x$) instead of $e$.
 Such a family provides a variety of elements of $Y$, for, if $a$ is any expression denoting an object of $X$, one may replace all
 occurrences of $x$ by $a$ in $e$, thereby obtaining an element of $Y$, which may be regarded as a \emph{member} of the family
@@ -85,13 +86,15 @@ One of the members of the family is $\sqrt{11}$.
 Similarly, after introducing a variable $x:X$, it may be possible to form an expression $T$ representing a type, all of whose components have
 been already been given a meaning.
 To clarify the dependence of $T$ on $x$ primarily, we may write $T(x)$ instead of $T$.
-Such an expression will be called a \emph{family of types} \index{family} parametrized by the elements of $X$.
+Such an expression may be called a \emph{family of types} \index{family} parametrized by the elements of $X$.
 Such a family provides a variety of types, for, if $a$ is any expression denoting an object of $X$, one may replace all
 occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a member of the family,
 and which may be denoted by $T(a)$.
 
-Here's an example: we let $n$ be a natural number and $T$ be the type of $n$-sided polygons in the plane.  It gives a family
+Here's an example: we let $n$ be a natural number (larger than $2$) and $T$ be the type of $n$-sided polygons in the plane.  It gives a family
 of types parametrized by the natural numbers.  One of the members of the family is the type $T(3)$ of all triangles in the plane.
+It is possible to specify a family of elements in this family of types: for example, one may consider the regular $n$-sided polygon of radius
+$1$ with a vertex on the $x$-axis.
 
 If $X$ and $Y$ are types, there will be a type whose elements serve as
 \emph{functions}\index{function type} from $X$ to $Y$;
@@ -211,22 +214,27 @@ We introduce the following syntactic definitions.
   & \quad \vdots
 \end{align*}
 
-We may now define addition and multiplication of natural numbers by induction on $\NN$.  In both cases, the family of types $X(m)$ is defined by setting
-$X(m) \defeq \NN$ for every $m : \NN$.  For natural numbers $n$ and $m$ we define $n+m : \NN$ by induction on $m$ by setting $n+0\defeq n$ and
-$n+\Succ(m)\defeq \Succ(n+m)$.  Application of definitions shows, for example, that $2+2 \jdeq 4$ are the same by definition, because both sides reduce
-to $\Succ(\Succ(\Succ(\Succ(0))))$.  Similarly we define the product $n \cdot m : \NN$ by induction on $m$ by setting setting $n\cdot 0\defeq 0$ and $n\cdot
-\Succ(m)\defeq (n\cdot m) + n$.
+We may use induction on $\NN$ to define of \emph{iteration} of functions.  Let $Y$ be a type, and suppose we have a function $e : Y \to Y$.  We
+define by induction on $\NN$ the $m$-fold \emph{iteration} $e^m : Y \to Y$ by setting $e^0 \defeq \id_Y$ and $e^{\Succ(m)}\defeq e\circ e^m$.
+(Here we apply rule \ref{P4} with the the type $Y \to Y$ as the family of types $X(m)$, the identity function $\id_Y$ for $a$, and the function
+$d \mapsto e\circ d$ for the family $g_m : (Y\to Y)\to(Y\to Y)$ of functions.)
 
-We may also define the factorial function $\fact : \NN \to \NN$ by induction on $\NN$, setting $\fact(0) \defeq 1$ and setting
-$\fact(\Succ(m)) \defeq (m+1) \cdot \fact(m)$.  This definition applies rule \ref{P4} with $1$ for $a$, and with the
-function $n \mapsto (m+1) \cdot n$ for $g_m$, for all $m$.
-Application of the definitions shows, for example, that $\fact(2) \jdeq 2$, because both sides expand to $\Succ(\Succ(0))$.
+We may now define addition of natural numbers by induction on $\NN$.  For natural numbers $n$ and $m$ we define $n+m : \NN$ by induction on
+$\NN$ with respect to the variable $m$ by setting $n+0\defeq n$ and $n+\Succ(m)\defeq \Succ(n+m)$.  (The reader should be able to extract the
+family $X(m)$, the element $a$, and the family of functions $g_m$ from that pair of definitions.)  Application of definitions shows, for
+example, that $2+2$ and $4$ are the same by definition, and thus we may write $2+2 \jdeq 4$, because both expressions reduce to
+$\Succ(\Succ(\Succ(\Succ(0))))$.
 
-We finish this section with the definition of iteration by induction on $\NN$.  Let $X$ be a type, and suppose we have a function $e : X \to X$.  We
-define by induction the $n$-fold \emph{iteration} $e^n : X \to X$ by setting $e^0 \defeq \id_X$ and $e^{\Succ(n)}\defeq e\circ e^n$.%
-\index{iteration}
-Here we apply rule \ref{P4} with the identity function $\id_X$ for $a$
-and the function $d \mapsto e\circ d$ for $g_m : (X\to X)\to(X\to X)$, for any $m$.
+Similarly we define the product $m \cdot n : \NN$ by induction on $m$ by setting setting $ 0 \cdot n \defeq 0$ and
+$ \Succ(m) \cdot n \defeq (n\cdot m) + n$.
+
+Alternatively (and equivalently) we may use iteration of functions to define addition and multiplication, by setting $n+m \defeq \Succ^m(n)$ and
+$m \cdot n := ( i \mapsto i + n )^m (0) $.
+
+Finally, we may define the factorial function $\fact : \NN \to \NN$ by induction on $\NN$, setting $\fact(0) \defeq 1$ and 
+$\fact(\Succ(m)) \defeq \Succ(m) \cdot \fact(m)$.  (One can see that this definition applies rule \ref{P4} with $X(m) \defeq \NN$, with $1$ for
+$a$, and with the function $n \mapsto \Succ(m) \cdot n$ for $g_m$.)  Application of the definitions shows, for example, that $\fact(3) \jdeq 6$, as
+the reader may verify.
 
 \section{Identity types}
 \label{sec:identity-types}
