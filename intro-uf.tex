@@ -78,6 +78,9 @@ Such a family provides a variety of elements of $Y$, for, if $a$ is any expressi
 occurrences of $x$ by $a$ in $e$, thereby obtaining an element of $Y$, which may be regarded as a \emph{member} of the family
 and which may be denoted by $e(a)$.
 
+Naturally, if the expression $e$ doesn't actually involve the variable $x$, then the members of the family are all the same,
+and we'll refer to the family as a \emph{constant family} of elements.
+
 Here's an example: we let $n$ be a natural number and consider the real number $\sqrt n$.
 It gives a family of real numbers parametrized by the natural numbers.
 (The family may also be called a \emph{sequence} of real numbers).
@@ -90,6 +93,9 @@ Such an expression may be called a \emph{family of types} \index{family} paramet
 Such a family provides a variety of types, for, if $a$ is any expression denoting an object of $X$, one may replace all
 occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a member of the family,
 and which may be denoted by $T(a)$.
+
+Naturally, if the expression $T$ doesn't actually involve the variable $x$, then the members of the family are all the same,
+and we'll refer to the family as a \emph{constant family} of types.
 
 Here's an example: we let $n$ be a natural number (larger than $2$) and $T$ be the type of $n$-sided polygons in the plane.  It gives a family
 of types parametrized by the natural numbers.  One of the members of the family is the type $T(3)$ of all triangles in the plane.
@@ -183,9 +189,11 @@ Here are Peano's rules\footcite{peano-principia} for constructing the natural nu
   \glossary(succ){$\protect\Succ$}{the successor function on $\NN$, Peano's rules, \cref{P3}}%
   \index{successor}
 \item\label{P4} suppose we are given:
-  (1) a family of types $X(m)$ depending on a variable $m$ of type $\NN$;
-  (2) an element $a$ of $X(0)$; and
-  (3) a family of functions $g_m : X(m) \to X(\Succ(m))$.
+  \begin{enumerate}
+  \item a family of types $X(m)$ depending on a variable $m$ of type $\NN$;
+  \item an element $a$ of $X(0)$; and
+  \item a family of functions $g_m : X(m) \to X(\Succ(m))$.
+  \end{enumerate}
   Then from those data we are provided with a family of elements $f(m) : X(m)$.
 \end{enumerate}
 
@@ -196,8 +204,9 @@ You may recognize rule \ref{P4} as ``the principle of mathematical induction'' o
   our logical framework.}
 We will refer to it simply as ``induction on $\NN$''.  
 The resulting family $f$ may be regarded as having been defined inductively
-by the two declarations $f(0) \defeq a$ and $f(\Succ(m)) \defeq g_m(f(m))$, which cover both ways of introducing elements of
-$\NN$ via the use of rules \ref{P2} and \ref{P3}.
+by the two declarations $f(0) \defeq a$ and $f(\Succ(m)) \defeq g_m(f(m))$,
+and indeed, we will often simply write such a pair of declarations as a shorthand way of applying rule \ref{P4}.
+The two declarations cover the two ways of introducing elements of $\NN$ via the use of the two rules \ref{P2} and \ref{P3}.
 (In terms of computer programming, those two declarations amount to the code for a recursive subroutine that can handle any incoming natural number.)
 
 We introduce the following syntactic definitions.
@@ -254,36 +263,39 @@ Here are the rules for constructing equality types.
 \item\label{E2} for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$
   (the name $\refl{}$ comes from the word ``reflexivity'')%
   \glossary(refl){$\protect\refl{a}$}{reflexivity, identity type, \cref{E2}}
-\item\label{E3} for any type $X$ and for any element $a$ of it, given a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type
-  $a =_X b$, in order to define elements $f(b,e) : P(b,e)$ of all of them it suffices to provide an element $p$ of $P(a,\refl a)$.  The resulting
-  function $f$ may be regarded as having been completely defined by the single definition $f(a,\refl a) \defeq p$.
+\item\label{E3} suppose we are given:
+  \begin{enumerate}
+  \item a type $X$ and an element $a:X$;
+  \item a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type $a =_X b$; and
+  \item an element $p$ of $P(a,\refl a)$.
+  \end{enumerate}
+  Then from those data we are provided with a family of elements $f(b,e) : P(b,e)$.
 \end{enumerate}
 
-The identity type $a =_X b$ may also be called an \emph{equation}.%
-\index{equation|see{identity type}}
+The type $a =_X b$ may be called an \emph{equality type}, and \emph{identity type}, or simply an \emph{equation})\index{equation|see{identity type}}.
 
 When there is no risk of confusion, we will write $a=b$ instead of $a =_X b$.
 
-Good motivation for this notation for equality is provided by a remark made by Robert Recorde in 1557:
+(Good motivation for the form of the equal sign is provided by a remark made by Robert Recorde in 1557:
 ``to avoid the tedious repetition of these words \emph{is equal to}, I will substitute \dots
-a pair of parallels or twin lines of the same length, thus: $=$, because no two things can be more equal.''
+a pair of parallels or twin lines of the same length, thus: $=$, because no two things can be more equal.'')
 %% Robert Recorde, The Whetstone of Witte (London, England: John Kyngstone, 1557), p. 236
 %% https://archive.org/stream/TheWhetstoneOfWitte#page/n237/mode/2up
 
-When we know that there can be at most one element of $a=b$, we will refer to an element $i$ of $a=b$ as a \emph{proof}\,\footnote{Here we override
-  the use of the word ``proof'' that is traditional in metamathematics; such a thing would now be a formal expression denoting an
-  element of $a=b$.} that $a$ is equal to $b$.%
-\index{proof}
-
-When $a=b$ may have more than one element, we will refer to an element $i$ of $a=b$ as an \emph{identification} of $a$ with $b$, or simply as an
+We will refer to an element $i$ of $a=b$ as an \emph{identification} of $a$ with $b$, or simply as an
 \emph{identity} or an \emph{equality}.  Since the word ``identification'' is a long one, we may also refer to $i$ as a \emph{path} from $a$ to
 $b$ -- this has the advantage of incorporating the intuition that an identification may proceed gradually through intermediate steps.%
 \index{identification}\index{identity|see{identification}}%
 \index{equality|see{identification}}
 
-It may come as a surprise that two mathematical objects can be equal in more than one way, especially since rule \ref{E3} above seems to say that the
-trivial proofs of equality are the only relevant ones, but this reflects a situation commonly encountered in geometry, where \emph{congruence} of
-geometric figures is considered.%
+In certain circumstances, to be discussed later, we will refer to an element $i$ of $a=b$ as a \emph{proof}\,\footnote{Here we override
+  the use of the word ``proof'' that is traditional in metamathematics; such a thing would now be a formal expression denoting an
+  element of $a=b$.} that $a$ is equal to $b$.%
+\index{proof}
+
+The need to record, using the element $i$, the way we identify $a$ with $b$ may come as a surprise, since normally, in mathematics, one is
+accustomed to regarding $a$ as either equal to $b$ or not.  However, this reflects a situation commonly encountered in geometry
+when \emph{congruence} of geometric figures is considered.%
 \index{congruence}
 For example, in Euclidean space, two equilateral triangles of the same size are congruent in six (different)
 ways.\footnote{Six, since we allow reflections, otherwise there are only three.\par
@@ -301,19 +313,29 @@ in the context of geometry is the main point of this book.
 In light of the analogy with geometry just introduced, 
 we will refer to an element $i$ of $a=a$ as a \emph{symmetry} of $a$.%
 \index{symmetry!of an element}  
-Think of a congruence of a triangle with itself.  
+Think, for example, of a congruence of a triangle with itself.
 An example of a non-trivial symmetry will be seen in \cref{xca:C2}.
 
-Expansion of the definitions in the type $\fact(2)=2$ simplifies it to $\Succ(\Succ(0)) = \Succ(\Succ(0))$, so we see from rule \ref{E2} that $\refl{\Succ(\Succ(0))}$ serves
-as a proof of it.  We may also write $\refl{2}$ and $\refl{\fact(2)}$ for that proof.  A student might want a more detailed proof of the
-equation, but as a result of our convention above that definitions are syntactically transparent, the application of definitions, including
-inductive definitions, is regarded as a trivial operation, and the details are omitted from the proof.
+Consider the equation $\fact(2)=2$, where $\fact$ denotes the factorial function defined in \cref{sec:natural-numbers}.
+Expansion of the definitions in the equation $\fact(2)=2$ simplifies it to $\Succ(\Succ(0)) = \Succ(\Succ(0))$,
+so we see from rule \ref{E2} that $\refl{\Succ(\Succ(0))}$ serves
+as an element of it.\footnote{We will see later that numbers don't have symmetries, as one would expect, so the
+  possibility that there are other ways to identify $\fact(2)$ with $2$ doesn't arise.}                      
+We may also write either $\refl{2}$ or $\refl{\fact(2)}$ for that element.
+A student might want a more detailed derivation that $\fact(2)$ may be identified with $2$,
+but as a result of our convention above that definitions may be applied without changing anything, the application of definitions, including
+inductive definitions, is normally regarded as a trivial operation, and the details are usually omitted.
 
-We will refer to rule \ref{E3} as ``induction for equality''.  It says that to prove something about (or to construct something from) every proof that
-$a$ is equal to something else, it suffices to consider the special case where the proof is the trivial proof that $a$ is equal to itself, i.e.,
-where the proof is $\refl a : a=a$.  Notice that the single case in such an induction corresponds to the single way of introducing elements of
-equality types via rule \ref{E2}, and compare that with \ref{P4}, which dealt with the two ways of introducing elements of $\NN$.
-%% ???
+We will refer to rule \ref{E3} as ``induction for equality'', and to signal that we wish to apply rule \ref{E3} to produce
+an element of $P(b,e)$, we may announce that we argue \emph{by induction on $e$}.
+The family $f$ resulting from an application of rule \ref{E3} may be regarded as having been completely defined by the single declaration
+$f(a,\refl a) \defeq p$,
+and indeed, we will often simply write such a declaration as a shorthand way of applying rule \ref{E3}.
+The rule says that to construct something from every identification $e$ of $a$ with something else,
+it suffices to consider the special case where the identification $e$ is $\refl a : a=a$.
+\footnote{Notice that the single special case in such an induction corresponds to the single way of introducing elements of
+equality types via rule \ref{E2}, and compare that with \ref{P4}, which dealt with the two ways of introducing elements of $\NN$.}
+
 Intuitively, the induction principle for equality amounts to saying that the element $\refl a$ ``generates'' the system of types $a=b$, as $b$
 ranges over elements of $A$.\footnote{%
   We can also use a geometric intuition: when $b$ ``freely ranges'' over elements of $A$,
@@ -352,7 +374,7 @@ of $a=b$.  The element $p$ serves the purpose.
 Now we state our symmetry result a little more formally.
 
 \begin{definition}\label{def:eq-symm}
-  For any type $X$ and for any $a,b:X$, let $\symm_{a,b} : (a=b) \to (b=a)$
+  For any type $X$ and for any $a,b:X$, let $$\symm_{a,b} : (a=b) \to (b=a)$$
   be the function defined by induction by setting
   $\symm_{a,a}(\refl a) \defeq \refl a$.
 
@@ -363,7 +385,7 @@ Now we state our symmetry result a little more formally.
 Similarly, we formulate transitivity a little more formally, as follows.
 
 \begin{definition}\label{def:eq-trans}
-  For any type $X$ and for any $a,b,c:X$, let $\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$ be the function defined by induction by setting
+  For any type $X$ and for any $a,b,c:X$, let $$\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$$ be the function defined by induction by setting
   $(\trans_{a,b,b} p) (\refl b ) \defeq p$.
 
   This binary operation is called \emph{path composition} or \emph{path concatenation}\index{composition!of paths}\index{concatenation!of paths},
@@ -371,7 +393,8 @@ Similarly, we formulate transitivity a little more formally, as follows.
   \glossary(2conc){$p\protect\ct q, q\cdot p, qp, q\circ p$}{path concatenation or composition}
 \end{definition}
 
-The notation $q\circ p$ for path composition fits our intution particularly well when the paths are related to functions and the composition of
+The notation $q\circ p$ for path composition, with $p$ and $q$ in reverse order,
+fits our intution particularly well when the paths are related to functions and the composition of
 the paths is related to the composition of the related functions in the same order, as happens, for example, in connection with {\em transport},
 defined below.
 
@@ -404,8 +427,8 @@ equality is symmetric and transitive. Another view of
 $\symm_{a,b}$ and $\trans_{a,b,c}$ is that they are
 operations on identifications, namely reversing an identification
 and concatenating two identifications. As operations, they satisfy
-many algebraic properties, such as $(p^{-1})^{-1} = p$ and
-associativity of concatenation, that are all easy to prove by induction.
+many equations, such as $(p^{-1})^{-1} = p$ and
+associativity of concatenation, which may all be proven by induction.
 We formulate some of them in the following exercise.
 
 \begin{xca}\label{xca:path-groupoid-laws}
@@ -428,12 +451,23 @@ as $(p^{-1})^n$.\footnote{For now, this is just a convention,
   but after we introduce the set of integers $\zet$ below in~\cref{def:zet},
   we'll be justified in writing $p^z$ for any $z:\zet$.}
 
-One frequent use of elements of identity types is in \emph{substitution}.%
-\index{substitution}
-Let $X$ be a type, and let $T(x)$ be a family of types depending on a
-parameter $x:X$.  Suppose $x,y:X$ and $e:x=y$.
+One frequent use of elements of identity types is in \emph{substitution}\index{substitution}, which is
+the logical principal that supports our intuition that when $x$ can by identified with $y$, we may replace $x$ by $y$
+in mathematical expressions at will.  A wrinkle new to students will likely be that, in our logical framework
+where there may be various ways to identify $x$ with $y$, one must specify the identification used in the substitution.
+Thus one may prefer to speak of using an identification to \emph{transport} properties and data about $x$ to properties and data about $y$.
+
+Here is a geometric example: if $x$ is a triangle of area $3$ in the plane, and $y$ is congruent to $x$, then $y$ also has area $3$.
+
+Here is another example: if $x$ is a right triangle in the plane, and $y$ is congruent to $x$, then $y$ is also a right triangle, and
+the congruence informs us which of the $3$ angles of $y$ is the right angle.
+
+Now we introduce the notion more formally.
+
+Let $X$ be a type, and let $T(x)$ be a family of types depending on a parameter $x:X$ (as discussed in \cref{univalent-mathematics}).
+Suppose $x,y:X$ and $e:x=y$.
 Then there is a function of type $T(x) \to T(y)$.
-We define one specific such function by induction,
+We define one specific such function by induction on $e$,
 by taking its value to be the identity function on $T(x)$
 in the case of $\refl{x}:x=x$.
 
@@ -491,18 +525,26 @@ or, less verbosely, \emph{transport}.\footnote{%
   \end{tikzpicture}}%
 \index{transport}
 We may also simplify the notation to just $\trp e$.
-The transport functions behave as expected: $\trp {e\circ e'} = \trp e \circ \trp {e'}$.
-In words: transport along the composition $e\circ e'$ is the composition of the two
-transport functions (to be proved by induction on $e$).
+The transport functions behave as expected: there is an identification of type $\trp {e'\circ e} = \trp {e'} \circ \trp {e}$.
+In words: transport along the composition $e\circ e'$ can be identified with the composition of the two
+transport functions.  This may be proved by induction in the following exercise.
+
+\begin{xca}
+  Let $X$ be a type, and let $T(x)$ be a family of types depending on a parameter $x:X$.
+  Suppose $x,y,z:X$, $e:x=y$, and $e':y=z$. Show there is an identification of type
+  $$\trp {e'\circ e} = \trp {e'} \circ \trp {e}.$$
+\end{xca}
+
+(IS THERE A WAY TO TIGHTEN UP THE END OF ENVIRONMENT MARKER ABOVE?)
+
 Yet another example of good behavior is given in the following exercise.
 
 \begin{xca}\label{xca:trp-nondep}
   Let $X,Y$ be types.
-  Even though $Y$ does not depend on a parameter $x:X$,
-  we can still regard this as a trivial dependency.
-  In this instance we speak of a \emph{constant family}.
+  As discussed in \cref{univalent-mathematics}, we may regard the expression $Y$ as a constant family of types parametrized by the elements of $X$.
   Show that $\trp[Y]{p} = \id_Y$ for all paths $p:x=x'$.
 \end{xca}
+
 When the types $T(x)$ may have more than one element,
 we may regard an element of $T(x)$ as providing additional \emph{structure} on $x$.
 In that case, we will refer to the transport function $T(x) \to T(y)$ as
