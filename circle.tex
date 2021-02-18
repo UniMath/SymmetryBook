@@ -172,7 +172,7 @@ $\ap{f}(\Sloop)=l$.
 \end{marginfigure}
 
 Let $A(x)$ be a type for every $x:\Sc$. The induction principle of $\Sc$
-states that, in order to prove $A(x)$ for every element $x$ of $\Sc$,
+states that, in order to define an element of $A(x)$ for every element $x$ of $\Sc$,
 it suffices to give an element $a$ of $A(\base)$ together with an
 identification $l$ of type $\pathover{a}{A}{\Sloop}{a}$,
 cf.~\cref{fig:circle-induction}.
@@ -202,8 +202,9 @@ Fix $A:\UU$. We apply \cref{lem:weq-iso}.
 For all $a:A$ and $l:a=a$ we have $\ev(\ve(a,l))=(a,l)$
 by the recursion principle. It remains to prove
 $\ve(\ev(f))=f$ for all $f:\Sc\to A$. This will follow
-from the following more general result. Assume
-$p: f(\base)= g(\base)$ and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
+from the following more general result.
+Let $f,g:\Sc\to A$,
+$p: f(\base)= g(\base)$, and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
 We show $f=g$, for which it suffices to prove by circle induction
 that $P(x)\defeq(f(x)=g(x))$ for all $x:\Sc$.
 For the base case we take $p$.
@@ -266,9 +267,9 @@ is an equivalence.
       ++(-20:1) and ++(-30:.5) .. ++(45:.5) .. controls ++(150:1) and
       ++(210:1) .. node[very near start] (middle) {} (a);
     \end{scope}
-    %% draw map g
+    %% draw map f
     \draw[dashed, ->, shorten <= 3pt, shorten >= 3pt] (loop) to[bend
-    left] node[above]{$g$} (middle);
+    left] node[above]{$f$} (middle);
   \end{tikzpicture}
 \end{marginfigure}
 \begin{remark}
@@ -276,10 +277,10 @@ is an equivalence.
   picture being that $f$ throws $\Sloop:\base=\base$ as a lasso in the
   type $A$.
 
-  Under univalence, so that $a=_Aa$ is identified with the pointed
+  Using the above equivalence, so that $a=_Aa$ is identified with the pointed
   functions from the circle, this allows for a very graphic
-  interpretation of the symmetries of $a$ in $A$: they are all in the
-  image of a function $g$ from the circle: they are loops in the type
+  interpretation of the symmetries of $a$ in $A$: they are traced out
+  by a function $f$ from the circle and can be seen as loops in the type
   $A$ starting and ending at $a$!\footnote{%
     This is of course how we have been
     picturing loops the whole time.}
@@ -302,7 +303,8 @@ the induction step (actually, ${\base=z}$ for all $z:\Sc$ contradicts UA).
 This said, the family $R:\Sc\to\UU$ with $R(z)\defequi (\base=z)$ is extremely
 important for other purposes. We will call it in \cref{def:universalcover} the
 ``universal \covering'' of the circle and it is the key tool in proving that
-the set of integers and the symmetries in the circle coincide. Recall that we
+the set of integers and the symmetries in the circle can be identified.
+Recall that we
 use the phrase ``symmetries \emph{in} the circle'' to refer to the
 elements of $\base=_{\Sc}\base$,\footnote{%
   Here we are using ``the circle'' to mean the
@@ -313,9 +315,7 @@ whereas we use the phrase ``symmetries \emph{of} the circle'' to refer to the el
 The latter type is equivalent to $\Sc\amalg\Sc$,
 as follows from \cref{xca:S1=S1-components} and \cref{{xca:(S1->S1)_(f)-eqv-S1}}.
 
-
-
-In order to do this we should properly define the set of integers
+In order to proceed, we should properly define the set of integers
 and explore the concept of \coverings.
 
 \section{The integers}
@@ -473,9 +473,7 @@ require $A$ to be a pointed type.\footnote{%
   and $f_0 \defeq \refl{\pt_B} : \pt_B = f(\pt_A)$.
   Indeed, the forgetful map $\Bigl(\sum_{b:B}(A,a)\ptdto(B,b)\Bigr)
   \to (A \to B)$ is an equivalence by \cref{cor:contract-away}.}
-Of course we do get the base point of $A$ in the
-preimage of the base point of $B$, but we do not require the preimages of $f_\div$
-to be pointed types.
+We do not require the preimages of $f_\div$ to be pointed types.
 \end{definition}
 With a formula, given a type $B$, the type of \coverings over $B$ is
 \[
@@ -617,7 +615,9 @@ A particularly important example is the following:
 \begin{definition}\label{def:RtoS1}
   The \covering $R:\Sc\to\UU$ corresponds to the integers with the successor operation.
   We have $R(\base)\defeq\zet$ and $R(\Sloop)\defis \etop{\zs}$.
-  (Abusing notation we also write $R:\Sc\to\Set$.)
+  (This is indeed a set bundle since $\Sc$ is connected,
+  so that $R(x)$ is a set for all $x:\Sc$.
+  Abusing notation we also write $R:\Sc\to\Set$.)
   Now define
   \[
     \tilde R\defeq\sum_{z:\Sc}R(z)
@@ -725,7 +725,8 @@ This justifies the following definition.
 
   This is canonically pointed at $(b_0,\refl{b_0}) : \sum_{b:B}(b_0=_Bb)$.
 \end{definition}
-Note that $(b_0=_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid.
+Note that, for a general pointed connected type $(B,b_0)$, we have that
+$(b_0=_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid.
 The type family $(b_0=_B b)$ is also important if $B$ is not a groupoid,
 but is then not a \emph{set} bundle.\footnote{%
   Of course, the type $\sum_{b:B}(b_0=b)$ is contractibe
@@ -755,8 +756,8 @@ Note, however, that this depends on $f^{-1}(b_0)$ being non-empty
 (classically, this is often demanded of a covering, which distinguishes it from our \coverings),
 and the factorization depends on the element $(a_0,p)$ used.
 
-The situation is even simpler for pointed \coverings:
-For any \emph{pointed} \covering $f : A \ptdto B$, with $(a_0,f_0):f^{-1}(b_0)$,
+The situation is even simpler for pointed maps:
+For any \emph{pointed} map $f : A \ptdto B$, with $(a_0,f_0):f^{-1}(b_0)$,
 there is a \emph{unique} pointed map $g : \bn 1 \ptdto A$
 (given by the base point of $A$), and this of course also gives
 the unique way to write $f$ as a ``pointed factor of $\cst{b_0}$''.
@@ -794,8 +795,8 @@ Function extensionality reduces the question to pointwise equality
 of $\uc{\base}$ and $R$ as functions.
 Using univalence, it suffices to give
 an equivalence from $\uc{\base}(z)$ to $R(z)$ for every $z:\Sc$,
-that is, recalling \cref{def:function-type-families}
-an equivalence $f: \uc{\base}\to R$. We will use
+that is, recalling \cref{def:function-type-families},
+a (fiberwise) equivalence $f: \uc{\base}\to R$. We will use
 \cref{lem:weq-iso}, so will also define $g: R\to\uc{\base}$.
 
 We first recall from \cref{sec:heavy-transport} how
@@ -813,7 +814,8 @@ In a picture,
 \]
 If $A$ is $\Sc$, then the induction principle for the circle says
 that giving an $h(z):P(z)\to Q(z)$ for all $z:\Sc$ is the same as
-specifying an $h(\base):P(\base)\to Q(\base)$ and an identity
+specifying an $h(\base):P(\base)\to Q(\base)$ and,
+using \cref{def:pathover-trp} and the discussion above, an identity
 $h(\Sloop):Q(\Sloop)\,h(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}h(\base)$,
 \ie   a witness that the composites in
 \[
@@ -931,7 +933,7 @@ g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}=_{\zet\to (\base=\base)
 }%
 So far we have only given the type of $g(\Sloop)$. By definition,
 $R(\Sloop)$ is $\zs$ and $\uc{\base}(\Sloop)$ is composition with
-$\Sloop$.%
+$\Sloop$.
 The element $g(\Sloop)$ follows by a simple calculation: the
 proposition ${\Sloop\,\Sloop^{n-1}} = {\Sloop^n}$ holds for all
 $n:\zet$.
