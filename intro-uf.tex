@@ -751,12 +751,15 @@ Many of the operations on paths have their counterpart for paths over paths.
 For example, we may define composition of paths over paths as follows.
 
 \begin{definition}\label{def:pathovercomposition}
-Suppose we are given a type $A$ and a family of types $B(a)$ parametrized by the elements $a$ of $A$.
-Let $a_i:A$, $b_i:B(a_i)$ for $i=1,2,3$, and $p_i : a_i = a_{i+1}$ for $i=1,2$.
-We define the function $\cdoto$ of type
-$\pathover {b_2} B {p_2} {b_3} \to \pathover {b_1} B {p_1} {b_2} \to
- \pathover {b_1} B {p_2 \cdot p_1} {b_3}$ by induction, first on $p_2$ and then on $r: b_2 = b_3$,
-by setting $(\refl{b_2} \cdoto q) \defeq q$ for all $q: \pathover {b_1} B {p_1} {b_2}$.
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose also that we have elements $x, x', x'' : X$, a path $p : x = x'$, and a path $p' : x' = x''$.
+  Suppose further that we have elements $y : Y(x)$, $y' : Y(x')$, and $y'' : Y(x'')$, with paths $q : \pathover y Y p {y'}$ over $p$
+  and $q' : \pathover {y'} Y {p'} {y''}$ over $p'$.
+  Then we define the \emph{composite} path $q' \pathovercomp q : \pathover y Y {p' \circ p} {y''}$ over $p' \circ p$ as follows.
+  First we apply path induction on $x''$ and $p'$ to reduce to the case where $x''$ is $x'$ and $p'$ is $\refl{x'}$.
+  That also reduces the type $\pathover {y'} Y {p'} {y''}$ to the identity type $y' = y''$, so we may apply path induction on $y''$ and $q'$ to reduce
+  to the case where $y''$ is $y'$ and $q'$ is $\refl{y'}$.
+  Now observe that $p' \circ p$ is $p$, so $q$ provides the element we need.
 \end{definition}
 
 Similarly, one can define reversal of paths over paths,
@@ -986,7 +989,7 @@ of an element $x$ and an element $e$ of the identity type $y = f(x)$.
 
 In set theory, a function $f : X \to Y$ is a bijection if and only if
 all preimages $f^{-1}(y)$ consist of exactly one element.
-This we can also express in type theory, in an definition due
+This we can also express in type theory, in a definition due
 to Voevodsky.
 
 \begin{definition}
