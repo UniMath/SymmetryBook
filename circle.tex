@@ -2374,6 +2374,72 @@ connected set bundles of $\Cyc_n$
 \end{itemize}
 }
 
+\subsection{Universal property of $\Cyc_n$}
+
+This section is devoted to showing that maps out of $\Cyc_n$ into a groupoid
+are equivalently given by the choice of a point togetehr with a symmetry of
+order $n$: that is any map $\Cyc_n \to A$ is fully determined by a point $a$ of
+the groupoid $A$ together with a symmetry $\sigma:a=a$ such that
+$\sigma^n=\refl a$.
+
+Recall that $\Cyc_n$ contains the point $\pt_n \defequi (\bn n, \zs)$. This
+point has a symmetry $\sigma_n \defequi (\zs, !)$ whose second projection is a
+proof that $\zs\zs = \zs\zs$ \marginnote{Should we take $(\inv \zs,!)$ instead to
+match the choice in the case $\Cyc_0$?}. 
+%
+Recall also from \cref{cor:id-m-cycle} that all elements of $\pt_n = \pt_n$ are
+of the form $\sigma_n^i$ for $i=0,\dots,n-1$.
+
+Given a groupoid $A$, and a map $f :
+\Cyc_n \to A$, one can consider $f(\pt_n)$ and $\ap f (\sigma_n): f(\pt_n) =
+f(\pt_n)$. Transporting a proof of the equation $\refl {\pt_n} = \sigma_n^n$ in
+$\Cyc_n$ through $f$, one gets a proof of $\refl {f(\pt_n)} =
+\ap f(\sigma_n)^n$. Hence, the following map is well-defined:
+\begin{displaymath}
+  \ev_{n,A} : (\Cyc_n \to A) \to \sum_{a:A}\sum_{\sigma:a=a}\refl a = \sigma^n,\quad
+  f \mapsto (f(\pt_n), \ap f (\sigma_n), !)
+\end{displaymath}
+
+\begin{theorem}
+  For any groupoid $A$, the map $\ev_{n,A}$ is an equivalence.
+  \label{prop:ump-cycn-into-groupoids}
+\end{theorem}
+\begin{proof}
+  Let $a:A$ and $\sigma:a=a$ such that $\refl a = \sigma^n$ holds.
+  One wants to prove that the fiber 
+  \begin{displaymath}
+    \sum_{f:\Cyc_n \to A} (a,\sigma, !) = \ev_{n,A}(f)
+  \end{displaymath}
+  is contractible. Hence we first need to craft a function $f:\Cyc_n \to A$
+  such that there is $p:a=f(\pt_n)$ such that $\ap f (\sigma_n) \cdot p = p
+  \cdot \sigma$.
+
+  In order to do so, we will craft a function $f:\Cyc_n \to A$ together with a
+  function $\hat p_x: \pt_n = x \to a = f(x)$ for each $x:\Cyc_n$ such that
+  $\hat p_x(\blank\sigma_n) = \hat p_x(\blank) \sigma$. By setting $p \jdeq \hat
+  p_{\pt_n}(\refl {\pt_n})$, we would have succeeded. Indeed, path induction on
+  $\alpha: x = x'$ shows that $\hat p_{x'}(\alpha \blank) = \ap f (\alpha) \hat
+  p_x(\blank)$ on one hand, and the hyptohesis on $\hat p$ proves that $\hat
+  p_{\pt_n} (\blank) \sigma = \hat p_{\pt_n}(\blank \sigma_n)$ on the other
+  hand. This leads to the chain of equations:
+  \begin{displaymath}
+    p \sigma = \hat p_{\pt_n}(\refl {\pt_n}) \sigma = \hat p_{\pt_n}(\refl {\pt_n}\sigma_n) = \hat p_{\pt_n}(\sigma_n\refl {\pt_n}) = \ap f (\sigma_n) \hat p_{\pt_n}(\refl {\pt_n}) = \ap f (\sigma_n) p 
+  \end{displaymath}
+
+  It remains to craft the promised $f$ and $\hat p$. For each $x:\Cyc_n$, consider the type
+  \begin{displaymath}
+    T(x) \defequi \sum_{b:A}\sum_{\pi: \pt_n = x \to a = b} \pi(\blank\sigma_n) = \pi(\blank) \sigma
+  \end{displaymath}
+  One claims that $T(x)$ is contractible. To prove this proposition for $x$
+  ranging over the connected type $\Cyc_n$, it is enough to only prove it for
+  $x \jdeq \pt_n$. However, as every element of $\pt_n = \pt_n$ can be written
+  as $\sigma_n^i$ for some $i:\bn n$, one gets:
+  \begin{displaymath}
+    T(\pt_n) \weq \sum_{b:A}\sum_{\pi: \bn n \to a = b} \pi(\blank) = \pi(0)\sigma^{\blank} \weq \sum_{b:A} a = b \weq 1
+  \end{displaymath}
+  One gets $f(x)$ by selecting a center of contraction for each $x:\Cyc_n$ and the function $\hat p_x$ is then defined as the first projection of the second component of this center of contraction. 
+\end{proof}
+
 \section{Old material yet to be integrated}
 \label{sec:deckS1}
 
