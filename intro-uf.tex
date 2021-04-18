@@ -24,11 +24,11 @@ For example, one may write ``$P$ lies on $L$'' or $1/x$, but not ``$L$ lies on $
 Often English prose suffices for such declarations in mathematics expositions,
 but, for convenience, mathematicians introduce names to refer to the various types
 of things under discussion.
-For example, the name $\NN$ is usually used to declare that a variable is a natural number,
-the name $\ZZ$ is usually used to declare that a variable is an integer,
-and the name $\RR$ is usually used to declare that a variable is a real number.
-Ways are also given for constructing new type names from old ones: for example, the name $\RR\times\RR$ may be used to declare that a variable
-is a point of the plane (this name is intended to convey the information that a point of the plane is a pair of real numbers).
+For example, the name $\NN$ is usually used when declaring that a variable is a natural number,
+the name $\ZZ$ is usually used when declaring that a variable is an integer,
+and the name $\RR$ is usually used when declaring that a variable is a real number.
+Ways are also given for constructing new type names from old ones: for example, the name $\RR\times\RR$ may be used when declaring that a variable
+is a point of the plane, for it conveys the information that a point of the plane is a pair of real numbers.
 
 Once one becomes accustomed to the use of names such as $\NN$ in mathematical prose, it is natural to take the next step and regard
 those names as denoting things that exist.
@@ -80,7 +80,7 @@ and which may be denoted by $T(a)$.
 Naturally, if the expression $T$ doesn't actually involve the variable $x$, then the members of the family are all the same,
 and we'll refer to the family as a \emph{constant family} of types.
 
-Here's an example of a family of types: we let $n$ be a natural number (larger than $2$) and $T$ be the type of $n$-sided polygons in the plane.  It gives a family
+Here's an example of a family of types: we let $n$ be a natural number and $P_n$ be the type of $n$-sided polygons in the plane.  It gives a family
 of types parametrized by the natural numbers.  One of the members of the family is the type $T(5)$ of all pentagons in the plane.
 
 After introducing a variable $x:X$ and a family of types $T$, it may be possible to form an expression $e$ of type $T$, all of whose components have been already been
@@ -100,36 +100,51 @@ It gives a family of real numbers parametrized by the natural numbers.
 (The family may also be called a \emph{sequence} of real numbers).
 One of the members of the family is $\sqrt{11}$.
 
-Here's an example of a family of elements in a (non-constant) family of types: we let $n$ be a natural number (larger than $2$) and $T$ be the
-type of $n$-sided polygons in the Euclidean plane, as we did above.  Then we consider the regular $n$-sided polygon $e$ of radius $1$ with a
-vertex on the $x$-axis.  One of the members of the family is the regular pentagon $e(5)$ of radius $1$ with a vertex on the $x$-axis.
+Here's an example of a family of elements in a (non-constant) family of types: we let $n$ be a natural number and $P_n$ be the
+type of $n$-sided polygons in the Euclidean plane, as we did above.  Then we consider the regular $n$-sided polygon $p_n$ of radius $1$ with a
+vertex on the $x$-axis.  One of the members of the family is the regular pentagon $p_5$ of radius $1$ with a vertex on the $x$-axis.
 
-If $X$ and $Y$ are types, there will be a type whose elements serve as
-\emph{functions}\index{function type} from $X$ to $Y$;
-the notation for it is $X \to Y$.%
-\glossary(2fun){$\protect\to$}{function type}
-Thus when we write $f : X \to Y$, we mean that $f$ is an element of the type $X \to Y$,
-and we are saying that $f$ is a function from $X$ to $Y$.
+Families of elements can be encapsulated in mathematical objects called \emph{functions}\index{function}, as one might expect.  Let $e$ be a
+family of elements of a family of types $T$, both of which are parametrized by the elements $x$ of $X$.  We use the notation $x \mapsto e$ for
+the function that sends an element $a$ of $X$ to the element $e(a)$ of $T(a)$.  Recall that $e(a)$ which is obtained from $e$ by replacing all
+occurrences of $x$ in $e$ by $a$.  If we name the function $f$, then that element of $T$ will be denoted by $f(a)$.  The \emph{type} of the
+function $x \mapsto e$ will be denoted by $\prod_{x:X} T$\index{product type}\glossary(916Pi){$\Pi$}{product type}; if $T$ is a constant family
+of types, then the type will also be denoted by $X \to T$\glossary(2fun){$\protect\to$}{function type}.  Thus when we write $f : X \to T$, we
+mean that $f$ is an element of the type $X \to T$, and we are saying that $f$ is a function from $X$ to $T$.
 
-Functions behave as one would expect, and one can make new ones in the usual way, by which we mean the following.
-Let $x$ be a variable of type $X$, and let $e(x)$ be an expression of type $Y$, possibly involving $x$.  Then we use
-the notation $x \mapsto e(x)$ for the function that sends an element $a$ of $X$ to the element $e(a)$ of $Y$ obtained by replacing
-all occurrences of $x$ in $e$ by $a$.  If we name the function $f$, then that element of $Y$ will be denoted by $f(a)$.
+An example of a function is the function $n \mapsto \sqrt n$ of type $\NN \to \RR$.
 
-The alert reader may wonder why we bother with functions at all: doesn't the expression $e(x)$ serve just as well as the function $x \mapsto
-e(x)$, for all practical purposes?  The answer is no: what if we want to use the variable $x$ for elements of a different type later on?  Then
-$e(x)$ is no longer well formed.  For example, imagine first writing this: ``For a natural number $n$ we consider the real number $\sqrt n$''
-and then writing this: ``Now consider a triangle $n$ in the plane.''  The result is that $\sqrt n$ is no longer usable, whereas the function $n
-\mapsto \sqrt n$ has encapsulated the variable and the family into a single object and remains usable.\footnote{Students of trigonometry are
-familiar with the concept of function, as something encapsulated this way: the \emph{sine} function and the \emph{cosine} function stand alone,
-and are not accompanied by a variable, such as $x$ or $\theta$, which one must always use.}
+Another example of a function is the function $n \mapsto p_n$ of type $\prod_{n:\NN} P_n$, where $P_n$ is the type of polygons introduced above,
+and $p_n$ is the polygon introduced above.
 
-Once a family $e(x)$ has been encapsulated in the function $x \mapsto e(x)$, the variable $x$ is referred to as a \emph{dummy
+Another example of a function is the function $m \mapsto (n \mapsto m+n)$ of type $\NN \to (\NN \to \NN)$.  It is a function that accepts a
+natural number as argument and returns a function as its value.  The function returned is of type $\NN \to \NN$.  It accepts a natural number
+as argument and returns a natural number as value.
+
+The reader may wonder why the word ``product'' is used when speaking of product types.  To motivate that, we consider a simple example
+informally.  We take $X$ to be a type with just two elements, $b$ and $c$.  We take $T(x)$ to be a family of types parametrized by the elements
+of $X$, with $T(b)$ being a type with $5$ elements and $T(c)$ being a type with $11$ elements.  Then the various functions $f$ of type
+$\prod_{x:X} T(x)$ are plausibly obtained by picking a suitable element for $f(b)$ from the $5$ possibilities in $T(b)$ and by picking a
+suitable element for $f(c)$ from the $11$ possibilities in $T(c)$.  The number of ways to make both choices is $5 \times 11$, which is a
+\emph{product} of two numbers.  Thus $\prod_{x:X} T(x)$ is sort of like the product of $T(b)$ and $T(c)$, at least as far as counting is
+concerned.
+
+The alert reader may wonder why we bother with functions at all: doesn't the expression $e$ serve just as well as the function $x \mapsto e$,
+for all practical purposes?  The answer is no.  One reason is that the expression $e$ doesn't inform the reader that the variable under
+consideration is $x$.  Another reason is that we may want to use the variable $x$ for elements of a different type later on: then $e(x)$ is no
+longer well formed.  For example, imagine first writing this: ``For a natural number $n$ we consider the real number $\sqrt n$'' and then
+writing this: ``Now consider a triangle $n$ in the plane.''  The result is that $\sqrt n$ is no longer usable, whereas the function
+$n \mapsto \sqrt n$ has encapsulated the variable and the family into a single object and remains usable.\footnote{Students of trigonometry are already
+familiar with the concept of function, as something encapsulated this way.  The functions \emph{sin} and \emph{cos} are examples.}  Yet another
+reason is that functions are mathematical objects, and not all of them can be represented by expressions in the language of mathematics.
+
+Once a family $e$ has been encapsulated in the function $x \mapsto e$, the variable $x$ is referred to as a \emph{dummy
 variable}\index{dummy variable} or as a \emph{bound variable}\index{bound variable}.\footnote{Students of calculus are familiar with the concept
 of dummy variable and are accustomed to using identities such as $\int_a^b f(t)\,dt = \int_a^b f(x)\,dx$.} This signifies that the name of the
-variable no longer matters, i.e., that $x \mapsto e(x)$ and $t \mapsto e(t)$ may regarded as identical.
+variable no longer matters, i.e., that $x \mapsto e(x)$ and $t \mapsto e(t)$ may regarded as identical.  Moreover, the $x$ inside the function
+$x \mapsto e$ is regarded as unrelated variables $x$ which may appear elsewhere in the discussion.
 
-In the previous paragraph we referred to the possibility of giving a name to a function.
+We have mentioned above the possibility of giving a name to a function.
 We expand on that now by introducing notation for making and for using \emph{definitions}.\index{definition}
 
 The notation $x \defeq z$ will be an announcement that we are defining
@@ -577,45 +592,30 @@ other words, elements that can be identified have the same properties.
 
 \section{Product types}
 \label{sec:product-types}
-Our type theory will also contain \emph{products} of types.
-By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a
-parameter $x$ of type $X$, then there will be a type $\prod_{x:X} Y(x)$
-whose elements $f$ are functions that provide elements $f(a)$ of type
-$Y(a)$, one for each $a:X$. We may refer to $X$ as the
-\emph{index type} of the product.%
-\index{product type}
-\glossary(916Pi){$\Pi$}{product type}
 
-We have actually seen such functions already, for example,
-in \ref{P4} in \cref{sec:natural-numbers}, where
-we called $f(m):X(m)$ a `family of elements'. We can now
-also say $f: \prod_{m:\NN} X(m)$. However, we will continue to use
-phrases with `family' and `for all' as well, always referring to functions
-of appropriate types.
-%TODO decide on terminology "map" and "section"
+Functions and product types have been introduced in \cref{univalent-mathematics}, where we have also explained how to create a function by
+encapsulating a family of elements in one.  In this section we treat functions and product types in more detail.
 
-A function $f : X \to Y$ is essentially the same thing as a function $f$
-of type $\prod_{x:X} Y$, where the product is formed using a constant family of types.\footnote{%
-  For this reason, the type $\prod_{x:X} Y(x)$ is also called a \emph{dependent product type}.
-  It's also called a \emph{Pi-type}.}%
+Recall that if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then there is a \emph{product type}
+$\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type $Y(a)$, one for each $a:X$.  Because the family $Y$ of
+types depends on the parameter $x$, the type $\prod_{x:X} Y(x)$ is also called a \emph{dependent product type}.  We will refer to $X$ as the
+\emph{index type} of the product.\index{product type}\index{index type} By contrast, if $Y$ happens to be a constant family of types, then
+$\prod_{x:X} Y$ will also be denoted by $X \to Y$, and it will also be called a \emph{function type}.
 
-The basic way of constructing an element of a product type
-is by explicit definition, as we have seen before.
-
-Functions preserve equality, a fact that is frequently used.
-We make this fully precise now, for once and for all,
-to be used implicitly later on.
+Functions preserve equality, and we will use this frequently later on.  More precisely, functions induce maps on identity types, as the
+following definition makes precise.
 
 \begin{definition}\label{def:ap}
 For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,x':X$, the function
-$\ap{f} : x = x' \to f(x) = f(x')$ is defined by induction by setting
-$\ap{f}(\refl{x})\defeq\refl{f(x)}$.%
-\glossary(ap){$\protect\ap{f}$}{action on paths, \cref{def:ap}}
+$\ap{f,x,x'} : x = x' \to f(x) = f(x')$ is defined by induction by setting
+$\ap{f,x,x'}(\refl{x})\defeq\refl{f(x)}$.%
+\glossary(ap){$\protect\ap{f}$}{application of a function to a path, \cref{def:ap}}
 \end{definition}
 
-The function $\ap f$ is called \emph{application} of $f$ to paths.\footnote{%
-  Another name is the \emph{action on paths} of $f$.}
-For convenience, we may abbreviate $\ap f (p)$ to $f(p)$.
+The function $\ap{f,x,x'}$, for any elements $x$ and $x'$ of $X$, is called an \emph{application} of $f$ to paths or to identities.
+
+When $x$ and $x'$ are clear from the context, we may abbreviate $\ap{f,x,x'}$ by writing $\ap{f}$ instead.
+For convenience, we may abbreviate even further, writing $f(p)$ for $\ap f (p)$.
 
 The following lemma shows that $\ap f$ is compatible with composition.
 
