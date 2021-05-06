@@ -646,22 +646,17 @@ $\ap f(p^{-1}) =  (\ap f (p))^{-1}$, and that $\ap \id$ is the identity on paths
   function, and let $p: a=a'$ be a path. Show that there is an identity of type $\trp[T \circ f]{p} = \trp[T]{\ap{f}(p)}$.
 \end{xca}
 
-If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ are equal,
-then they have equal values, i.e., for every element $x$ of $X$,
-we may conclude that $f(x) = g(x)$ (commonly phrased as:
-$f$ and $g$ are \emph{pointwise equal}).
-This can be proven by induction or by substitution.
+If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ can be identified, then their values can be identified, i.e., for every element $x$ of
+$X$, we may produce an identification of type $f(x) = g(x)$.  This can be proved by induction, as follows.
 
 \begin{definition}\label{def:ptw}
-  Let $f,g:\prod_{x:X} Y(x)$. Define by induction the function\footnote{%
-    Alternatively, we can consider for any $x:X$ the evaluation function
-    $\ev_x : \big(\prod_{x:X} Y(x)\bigr) \to Y(x)$, defined by
-    $\ev_x(f) \defeq f(x)$. Then we have
-    by setting ${\ptw}_{f,g}(p,x) = \ap{\ev_x}(p)$, but not definitionally.}
+  Let $f,g:\prod_{x:X} Y(x)$. Define by induction the function
   \[
     {\ptw}_{f,g}: f=g \to \prod_{x:X} f(x)=g(x),
   \]
-  setting $({\ptw}_{f,f}(\refl{f})) (x) \defeq \refl{f(x)}$.
+  setting ${\ptw}_{f,f}(\refl{f}) \defeq x \mapsto \refl{f(x)}$.
+  \footnote{ Alternatively, we can consider for any $x:X$ the evaluation function $\ev_x : \big(\prod_{x:X} Y(x)\bigr) \to Y(x)$, defined by
+    $\ev_x(f) \defeq f(x)$.  Then one could define ${\ptw}_{f,g}(p,x) \defeq \ap{\ev_x}(p)$.  The two functions are not equal by definition.}
 \end{definition}
 
 Conversely, given $f,g:\prod_{x:X} Y(x)$, from a basic axiom called \emph{function extensionality},%
@@ -669,18 +664,16 @@ Conversely, given $f,g:\prod_{x:X} Y(x)$, from a basic axiom called \emph{functi
 postulated in \cref{def:funext}, an identity $f=g$ can be produced from a
 family of identities of type $f(x) = g(x)$ parametrized by the elements $x$ of $X$.
 
-\begin{definition}\label{def:natural-homotopy}
+\begin{definition}\label{def:naturality-square-commutativity}
 Let $X,Y$ be types and $f,g: X\to Y$ functions.
-Elements of $\prod_{x:X} f(x)=g(x)$ are called \emph{homotopies}.%
-\index{homotopy}
-Given such a homotopy $h$, and elements $x,x'$ of $X$ as well as a path $p: x=x'$,
+Given an element $h$ of type $\prod_{x:X} f(x)=g(x)$, elements $x$ and $x'$ of $X$, and a path $p: x=x'$,
 we can define by induction on $p$ an element
 \[
   \ns(h,p): h(x')\cdot \ap{f}(p) =_{f(x)=g(x')} \ap{g}(p)\cdot h(x),
 \]
-by setting $\ns(h,\refl{x})$ to be some previously
+by induction, by setting $\ns(h,\refl{x})$ to be some previously
 constructed element of $h(x) \cdot \refl{f(x)} = h(x)$.%
-\glossary(ns){$\protect\ns$}{naturality square, \cref{def:natural-homotopy}}
+\glossary(ns){$\protect\ns$}{naturality square, \cref{def:naturality-square-commutativity}}
 The type of $\ns(h,p)$ can be depicted as a square\footnote{%
   Like this, where we add little arrows to the equal signs to indicate their direction:
   \begin{displaymath}
@@ -2322,9 +2315,9 @@ for all $p: a=a'$, as well as
 $\ap{f}(h(a'))\cdot\ap{f^{-1}}(q)\cdot {h(a)^{-1}})=q$ for all $q: f(a)=f(a')$.
 
 The first round trip is easy by induction on $p$. The reader may also recognize a
-naturality square as in \cref{def:natural-homotopy} based on the homotopy $h$.
-The second round trip also uses the other homotopy $i(y):f(f^{-1}(y))=y$ for all $y:B$.
-This case is more involved and uses several applications of \cref{def:natural-homotopy}.
+naturality square as in \cref{def:naturality-square-commutativity} based on $h$.
+The second round trip also uses the family of identities $i(y):f(f^{-1}(y))=y$ for all $y:B$.
+This case is more involved and uses several applications of \cref{def:naturality-square-commutativity}.
 We refrain from giving all details.\footnote{%
 A short proof can be obtained from \cref{lem:fib-vs-path}.}
 \end{proof}
