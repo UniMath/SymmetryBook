@@ -9,7 +9,8 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - An element of an identity type is called an *identification*, and otherwise a *path*.
   We may say that it shows how to *identify* two elements.
   We may say it establishes that two elements are *equal* provided the identity type is a proposition.
-- Definitional equivality is denoted with three lines and is called just that, i.e., *definitional* and not *judgmental*.
+- The type containing the variable in a family is called the "parameter type", not the "index type", nor the "base type".
+- Definitional equality is denoted with three lines and is called just that, i.e., *definitional* and not *judgmental*.
 - A synonym of "function" is "map".  We don't use "mapping" or "application" as synonyms.
 - In the preliminary chapters (up to subgroups), the underlying set map U from groups to sets has to be applied explicitly. Thereafter, it can be a coercion.
 - Composition of p: a=b and q: b=c is denoted by either p\ct q, or by q\cdot p, qp or q\circ p. The latter is preferred when p and q come from equivalences. The macro \ct currently produces a star.

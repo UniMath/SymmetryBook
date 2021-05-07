@@ -1,4 +1,4 @@
-Iden%% this chapter sets up the foundational system, which is Univalent Foundations
+%% this chapter sets up the foundational system, which is Univalent Foundations
 \chapter{An introduction to univalent mathematics}
 \label{ch:univalent-mathematics}
 
@@ -50,14 +50,14 @@ Therefore, if we expect ``$\NN$ is infinite'' to be a well formed statement, we'
 have to have a name for that type.  Similarly, we'll have to know what type of thing that type is, and we'll have to have a name for it,
 and so on forever.  Indeed, all of that is part of what will be presented in this chapter.
 
-\section{Univalent mathematics}
+\section{Types, elements, families, and functions}
 \label{univalent-mathematics}
 
 In this section we build on the intuition imparted in the previous section.
 
 In \emph{univalent mathematics},\index{mathematics!univalent}\footnote{The term ``univalent'' is a word coined by Vladimir Voevodsky, who
 introduced it to describe his principle that types that are \emph{equivalent} in a certain sense can be identified with each other.  The
-principal is stated precisely in \cref{def:univalence}.  As Voevodsky explained, the word comes from a Russian translation of a mathematics
+principle is stated precisely in \cref{def:univalence}.  As Voevodsky explained, the word comes from a Russian translation of a mathematics
 book, where the English mathematical term ``faithful'' was translated into Russian as the Russian word that sounds like ``univalent''.  He also
 said ``Indeed these foundations seem to be faithful to the way in which I think about mathematical objects in my head.''} types are used to
 classify all mathematical objects.  Every mathematical object is an \emph{element} (or a \emph{member}) of some (unique) \emph{type}.  Before
@@ -80,7 +80,8 @@ To clarify the dependence of $T$ on $x$ primarily, we may write $T(x)$ instead o
 Such an expression may be called a \emph{family of types} \index{family} parametrized by the elements of $X$.
 Such a family provides a variety of types, for, if $a$ is any expression denoting an object of $X$, one may replace all
 occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a member of the family,
-and which may be denoted by $T(a)$.
+and which may be denoted by $T(a)$.  For that reason, we may also say, when introducing a family of types, we may say instead that \emph{for each
+element} or \emph{for all elements} $x$ of type $X$ we are given a type $T(x)$.
 
 Naturally, if the expression $T$ doesn't actually involve the variable $x$, then the members of the family are all the same,
 and we'll refer to the family as a \emph{constant family} of types.
@@ -95,7 +96,8 @@ we wish to focus on the dependence of $e$ (and perhaps $T$) on the variable $x$.
 To clarify the dependence of $e$ on $x$ primarily, we may write $e(x)$ (or $e_x$) instead of $e$.
 Such a family provides a variety of elements of $T$, for, if $a$ is any expression denoting an object of $X$, one may replace all
 occurrences of $x$ by $a$ in $e$ and in $T$, thereby obtaining an element of $T(a)$, which may be regarded as a \emph{member} of the family
-and which will be denoted by $e(a)$.
+and which will be denoted by $e(a)$.  For that reason, we may also say, when introducing a family of elements, we may say instead that \emph{for each
+element} or \emph{for all elements} $x$ of type $X$ we are given an element $e(x)$ of type $T(x)$.
 
 Naturally, if the expressions $e$ and $T$ don't actually involve the variable $x$, then the members of the family are all the same,
 and we'll refer to the family as a \emph{constant family} of elements.
@@ -109,6 +111,9 @@ Here's an example of a family of elements in a (non-constant) family of types: w
 polygons in the plane, as we did above.  Then we consider the regular $n$-sided polygon $p_n$ of radius $1$ with a vertex on the $x$-axis.  We
 see that $p_n : P_n$.  One of the members of the family is the regular pentagon $p_5$ of radius $1$ with a vertex on the $x$-axis; it is of type
 $P_5$.
+
+The type $X$ containing the variable for a family of types or a family of elements is called the \emph{parameter type}\index{parameter type} of
+the family. 
 
 Families of elements can be enclosed in mathematical objects called \emph{functions}\index{function} (or \emph{maps}\index{map}), as one might
 expect.
@@ -211,7 +216,7 @@ Here are Peano's rules\footcite{peano-principia} for constructing the natural nu
   \index{successor}
 \item\label{P4} suppose we are given:
   \begin{enumerate}
-  \item a family of types $X(m)$ depending on a variable $m$ of type $\NN$;
+  \item a family of types $X(m)$ parametrized by a variable $m$ of type $\NN$;
   \item an element $a$ of $X(0)$; and
   \item a family of functions $g_m : X(m) \to X(\Succ(m))$.
   \end{enumerate}
@@ -294,7 +299,7 @@ Here are the rules for constructing equality types.
 \item\label{E3} suppose we are given:
   \begin{enumerate}
   \item a type $X$ and an element $a:X$;
-  \item a family of types $P(b,e)$ depending on parameters $b$ of type $X$ and $e$ of type $a =_X b$; and
+  \item a family of types $P(b,e)$ parametrized by variables $b$ of type $X$ and $e$ of type $a =_X b$; and
   \item an element $p$ of $P(a,\refl a)$.
   \end{enumerate}
   Then from those data we are provided with a family of elements $f(b,e) : P(b,e)$.
@@ -493,7 +498,7 @@ the congruence informs us which of the $3$ angles of $y$ is the right angle.
 
 Now we introduce the notion more formally.
 
-Let $X$ be a type, and let $T(x)$ be a family of types depending on a parameter $x:X$ (as discussed in \cref{univalent-mathematics}).
+Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$ (as discussed in \cref{univalent-mathematics}).
 Suppose $a,b:X$ and $e:a=b$.
 Then there is a function of type $T(a) \to T(b)$.
 We define one specific such function by induction on $e$,
@@ -560,8 +565,8 @@ In words: transport along the composition $e\circ e'$ can be identified with the
 transport functions.  This may be proved by induction in the following exercise.
 
 \begin{xca}
-  Let $X$ be a type, and let $T(x)$ be a family of types depending on a parameter $x:X$.
-  Suppose $a,b,c:X$, $e:a=b$, and $e':b=c$. Show there is an identification of type
+  Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$.
+  Suppose we are given elements $a,b,c:X$, $e:a=b$, and $e':b=c$. Show there is an identification of type
   \[
     \trp {e'\circ e} = \trp {e'} \circ \trp {e}.\qedhere
   \]
@@ -598,10 +603,9 @@ other words, elements that can be identified have the same properties.
 Functions and product types have been introduced in \cref{univalent-mathematics}, where we have also explained how to create a function by
 enclosing a family of elements in one.  In this section we treat functions and product types in more detail.
 
-Recall that if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then there is a \emph{product type}
-$\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type $Y(a)$, one for each $a:X$.  Because the family $Y$ of
-types depends on the parameter $x$, the type $\prod_{x:X} Y(x)$ is also called a \emph{dependent product type}.  We will refer to $X$ as the
-\emph{index type} of the product.\index{product type}\index{index type} By contrast, if $Y$ happens to be a constant family of types, then
+Recall that if $X$ is a type and $Y(x)$ is a family of types parametrized by a variable $x$ of type $X$, then there is a \emph{product type}
+$\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$ of type $Y(a)$, one for each $a:X$.  We will refer to $X$ as the
+\emph{parameter type} of the product.\index{product type}\index{parameter type} By contrast, if $Y$ happens to be a constant family of types, then
 $\prod_{x:X} Y$ will also be denoted by $X \to Y$, and it will also be called a \emph{function type}.
 
 Functions preserve equality, and we will use this frequently later on.  More precisely, functions induce maps on identity types, as the
@@ -642,7 +646,7 @@ $\ap f(p^{-1}) =  (\ap f (p))^{-1}$, and that $\ap \id$ is the identity on paths
 
 
 \begin{xca}\label{xca:trp-ap}
-  Let $X$ be a type, and let $T(x)$ be a family of types depending on a parameter $x:X$. Furthermore, let $A$ be a type, let $f:A\to X$ be a
+  Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$. Furthermore, let $A$ be a type, let $f:A\to X$ be a
   function, and let $p: a=a'$ be a path. Show that there is an identity of type $\trp[T \circ f]{p} = \trp[T]{\ap{f}(p)}$.
 \end{xca}
 
@@ -650,13 +654,13 @@ If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ can be identified, then 
 $X$, we may produce an identification of type $f(x) = g(x)$.  This can be proved by induction, as follows.
 
 \begin{definition}\label{def:ptw}
-  Let $f,g:\prod_{x:X} Y(x)$. Define by induction the function
+  Let $f,g:\prod_{x:X} Y(x)$. Define the function
   \[
-    {\ptw}_{f,g}: f=g \to \prod_{x:X} f(x)=g(x),
+    {\ptw}_{f,g}: ( f=g ) \to \left( \prod_{x:X} f(x)=g(x) \right),
   \]
-  setting ${\ptw}_{f,f}(\refl{f}) \defeq x \mapsto \refl{f(x)}$.
+  by induction by setting ${\ptw}_{f,f}(\refl{f}) \defeq x \mapsto \refl{f(x)}$.
   \footnote{The notation $\ptw$ is chosen to remind the reader of the word ``point-wise'', because the identities are provided just for each
-  point $x$.   An alternative approach goes by considering, for any $x:X$, the evaluation function $\ev_x : \big(\prod_{x:X} Y(x)\bigr) \to Y(x)$, defined by
+  point $x$.   An alternative approach goes by considering, for any $x:X$, the evaluation function $\ev_x : \big(\prod_{x:X} Y(x)\bigr) \to Y(x)$ defined by
     $\ev_x(f) \defeq f(x)$.  Then one could define ${\ptw}_{f,g}(p,x) \defeq \ap{\ev_x}(p)$.  The functions provided by these two definitions
   are not equal by definition, but they can be identified, and one can easily be used in place of the other.}
 \end{definition}
@@ -882,11 +886,11 @@ The following simple lemma will be useful later.
 \label{sec:sum-types}
 
 There are \emph{sums} of types.
-By this we mean if $X$ is a type and $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$, then
+By this we mean if $X$ is a type and $Y(x)$ is a family of types parametrized by a variable $x$ of type $X$, then
 there will be a type\footnote{%
   Also known as a \emph{Sigma-type}.}
 $\sum _{x:X} Y(x)$ whose elements are all pairs $(a,b)$, where $a:X$ and $b:Y(a)$. Since the type of $b$ may depend on $a$ we also call such a pair
-a \emph{dependent} pair. We may refer to $X$ as the \emph{index
+a \emph{dependent} pair. We may refer to $X$ as the \emph{parameter
   type} of the sum.\footnote{%
   We also call $\sum_{x:X}Y(x)$ the \emph{total type} of the family,
   and we picture it, in the style of the pictures above,
@@ -938,13 +942,13 @@ $\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
 
 \begin{remark}
   \label{iterated-sums}
-  One may consider sums of sums.  For example, suppose $X$ is a type, suppose $Y(x)$ is a family of types indexed by a parameter $x$ of type $X$,
-  and suppose $Z(x,y)$ is a family of types indexed by parameters $x:X$ and $y:Y(x)$.  In this case, the \emph{iterated sum}
+  One may consider sums of sums.  For example, suppose $X$ is a type, suppose $Y(x)$ is a family of types parametrized by a variable $x$ of type $X$,
+  and suppose $Z(x,y)$ is a family of types parametrized by variables $x:X$ and $y:Y(x)$.  In this case, the \emph{iterated sum}
   $\sum _{x:X} \sum_{y:Y(x)} Z(x,y)$ consists of pairs of the form $(x,(y,z))$.  For simplicity, we introduce the notation
   $(x,y,z) \defeq (x,(y,z))$, and refer to $(x,y,z)$ as a \emph{triple} or as a \emph{$3$-tuple}.
 
-  That process can be repeated: suppose $X_1$ is a type, suppose $X_2(x_1)$ is a family of types indexed by a parameter $x_1$ of type $X_1$,
-  suppose $X_3(x_1,x_2)$ is a family of types indexed by parameters $x_1:X_1$ and $x_2:X_2(x_1)$, and so on, up to a family
+  That process can be repeated: suppose $X_1$ is a type, suppose $X_2(x_1)$ is a family of types parametrized by a variable $x_1$ of type $X_1$,
+  suppose $X_3(x_1,x_2)$ is a family of types parametrized by variables $x_1:X_1$ and $x_2:X_2(x_1)$, and so on, up to a family
   $X_n(x_1,\dots,x_{n-1})$ of types.  In this case, the \emph{iterated sum}
   $$\sum _{x_1:X_1} \sum_{x_2:X_2(x_1)} \dots \sum_{x_{n-1}:X_{n-1}(x_1,\dots,x_{n-2})} X_n(x_1,\dots,x_{n-1}) $$
   consists of elements of the form
@@ -1195,7 +1199,7 @@ two pairs to be equal.  We start with a definition.
     We picture paths between pairs much in the same way as
     paths over paths, cf.~\cref{ft:path-over-pic}.
     Just as, to give a pair in the sum type $\sum_{x:X}Y(x)$,
-    we need both the point $x$ in the base type $X$
+    we need both the point $x$ in the parameter type $X$
     as well as the point $y$ in $Y(x)$,
     to give a path from $(x,y)$ to $(x',y')$,
     we need both a path $p : x=x'$
@@ -1732,9 +1736,9 @@ the two elements of $\bool$), and that $\twist\cdot\twist=\refl{\bool}$.%
 
 In this section we collect useful results on transport in
 type families that are defined by a type constructor applied
-to types that are depending on an element of some index type.
+to families of types.
 Typical examples of such `structured' type families are
-$Y(x)\to Z(x)$ and $x=x$ depending on $x:X$.
+$Y(x)\to Z(x)$ and $x=x$ parametrized by $x:X$.
 
 \begin{definition}\label{def:function-type-families}
 Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
@@ -1759,7 +1763,7 @@ and all transports are identity functions of appropriate type.
 \end{proof}
 
 An important special case of the above lemma is with $\UU$
-as index type and type families $Y\defeq Z\defeq \id_\UU$.
+as parameter type and type families $Y\defeq Z\defeq \id_\UU$.
 Then $Y\to Z$ is $X\to X$ as a type depending on $X:\UU$. Now,
 if $A:\UU$ and $e: A=A$ comes by UA from some equivalence
 $g:A\to A$, then the above lemma combined with function extensionality
@@ -2573,7 +2577,7 @@ $(x=_Ay) \equiv \mathrm{Eq}_A\,x\,y$.
   Show that $\UU$ is locally $\UU$-small, and investigate
   the closure properties of essentially and locally $\UU$-small types.
   (For instance, show that if $A:\UU$ and $B(x)$ is a family of locally $\UU$-small
-  types indexed by $x:A$, then $\prod_{x:A}B(x)$ is locally $\UU$-small.)
+  types parametrized by $x:A$, then $\prod_{x:A}B(x)$ is locally $\UU$-small.)
 \end{xca}
 
 \begin{remark}
@@ -2990,7 +2994,7 @@ for any set $S$, precomposition with $\trunc{\_}_0$ is an equivalence
 
   Prove that the set truncation map $\trunc{\blank}_0 : A \to \Trunc{A}_0$
   in this way exhibits $A$ as the sum of its connected components,
-  indexed by $\Trunc{A}_0$:
+  parametrized by $\Trunc{A}_0$:
   \[
     A \equiv \sum_{z : \Trunc{A}_0} A_{(z)}. \qedhere
   \]
@@ -3415,7 +3419,7 @@ from~\cref{def:finiteset}, and is hence essentially $\UU$-small
 \label{sec:typefam}
 
 There is a natural equivalence between maps into a type $A$
-and type families indexed by $A$. The key idea is that the
+and type families parametrized by $A$. The key idea is that the
 fibers of a map form a type family. We will elaborate this
 idea and some variations.
 
