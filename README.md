@@ -21,6 +21,7 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - Globally defined constants are typeset roman, while variables are italic. One exception is the *B* construction: The B matches whatever it operates on and joins to it without any space.
 - Whenever possible, do not use a letter for a variable when the same letter is being used as an operator. E.g., try to avoid a variable B when the classifying type/map operator B is used in the same paragraph.
 - Use macros with mathematical meaning, such as \conncomp, whenever possible, for uniformity of notation.
+- Avoid the use of acronyms, such as LEM and LPO.
 - Construct sort-order keys for glossary entries this way:
 	   + for unary operators, use 1 followed by something (e.g., for $-y$ use (1-);
        + for binary operators, use 2 followed by something (e.g., for $x+y$ use (2+);
