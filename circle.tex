@@ -1880,46 +1880,11 @@ Even so, we need one further non-constructive assumption, namely:
 
 \begin{principle}[Limited Principle of Omniscience]
   \label{LPO}\index{Limited Principle of Omniscience}
-  Any function $P:\NN\to\bn 2$ is either a constant function with value $0$,
-  or there is a smallest number $n_0:\NN$ such that $P(n_0)=1$.
+  For any function $P:\NN\to\bn 2$, 
+  either there is a smallest number $n_0:\NN$ such that $P(n_0)=1$,
+  or $P$ is a constant function with value $0$.
 \end{principle}
 
-\begin{remark}\label{rem:LPO-solves-halting problem}
-We show that LPO is not constructively provable, the reason being that
-"either $P$, or $Q$" is encoded constructively as $P\coprod Q$.\marginnote{%
-The statement that something is not provable is a statement \emph{about}, 
-and not \emph{in}, our theory. Proving such a statement often requires
-properties of the theory that cannot be formulated nor proved in the theory itself.
-One such `metaproperty' that we use here is \emph{canonicity}.
-An example of canonicity is that every natural number that does not depend
-on anything is a \emph{numeral}, that is, either $0$ or $S(n)$ for some numeral $n$.
-Another example of canonicity is that every element of $P\coprod Q$ that 
-does not depend on anything is either of the form $\inl{p}$ for some $p:P$ or 
-of the form $\inr{q}$ for some $q:Q$.}
-
-Our argument is based on the Halting Problem: given a Turing machine 
-$M$ and an input $n$, determine whether $M$ halts on $n$.
-It is known that the Halting Problem cannot be solved by an algorithm.
-%that can be implemented on a Turing machine
-We use a few more facts from computability theory.
-First, Turing machines can be enumerated $M_0,M_1,\ldots$
-Second, there exists a function $T(e,n,k)$ such that $T(e,n,k) = 1$
-if $M_e$ halts on input $n$ in at most $k$ steps, and $T(e,n,k) = 0$
-otherwise. This function $T$ can easily be implemented in our theory.
-
-Towards a contradiction, assume we have a proof $p$ of LPO in our theory,
-where $p$ does not depend on anything. In particular, $p$ does not
-depend on any axiom.\footnote{It is possible to weaken the notion
-of canonicity so that the argument still works even if $p$ uses $\ua$.}
-It is clear that $k\mapsto T(e,n,k)$ is a constant function with value $0$
-if and only if $M_e$ does not halt on input $n$. Now consider $p(k\mapsto T(e,n,k))$.
-This is an element of a type of the form $P\coprod Q$. Let $e$ and $n$ be
-arbitrary numerals. Then $p(k\mapsto T(e,n,k))$ does not depend on anything
-and has one of the two canonical forms $\inl{p}$, representing the case
-of not halting, or $\inr{q}$, halting. Since canonical forms
-can be computed we would have an algorithm to solve the Halting Problem
-for all $e$ and $n$. Contradiction.
-\end{remark}
 
 The Limited Principle of Omniscience is weaker than the Law of Excluded Middle \cref{pri:lem}, as we prove in the following lemma.\footnote{%
   It is also the case that the Limited Principle of Omniscience does not imply the Law of Excluded Middle, because
@@ -1943,8 +1908,15 @@ The Limited Principle of Omniscience is weaker than the Law of Excluded Middle \
   to conclude that there is a smallest $n_0:\NN$ such that $P(n_0)=1$.
 \end{proof}
 
-As for the Law of Excluded Middle, we are free to assume the Limited Principle of Omniscience or not, and we will be explicit about
-where we will use it.  The Limited Principle of Omniscience makes it possible to prove that the canonical map
+\begin{xca}\label{xca:not-not-lpoP}
+  Without using LEM or LPO, show that $(Q(P)\to\false)\to\false$ holds
+  for every function $P:\NN\to\bn 2$, where $Q(P)$ is the proposition obtained
+  by applying the Limited Principle of Omniscience to the function $P$.
+\end{xca}
+
+As for the Law of Excluded Middle, we are free to assume the Limited Principle of Omniscience 
+or not, and we will be explicit about where we will use it. 
+The Limited Principle of Omniscience makes it possible to prove that the canonical map
 $\NN \to \Order^{\constant{dec}}$
 (the codomain being the subtype of $\Order$ given by decidable cycles),
 is an equivalence.
