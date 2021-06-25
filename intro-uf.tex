@@ -2487,7 +2487,7 @@ Recall from \cref{lem:prop-utils}\ref{prop-utils-lem} that $P\amalg (P \to
   A proposition $P$ is called \emph{decidable}
   if $P\amalg\neg P$ holds.\index{decidable proposition}
 \end{definition}
-In ordinary mathematics, it is usually assumed that
+In traditional mathematics, it is usually assumed that
 every proposition is decidable.
 This is expressed by the following principle.
 \begin{principle}[Law of Excluded Middle]
@@ -2631,51 +2631,38 @@ in~\cref{def:groupoidFin}, is essentially small.
 \section{Predicates and subtypes}
 \label{sec:subtype}
 
-In ordinary sets, a subset $B$ of a set $A$ can be given concretely by
-considering the \emph{characteristic function} $\chi_B:A\to\bool$
-which takes the value $\yes$ on $B$ and $\no$ everywhere else:
-$B$ is then exactly the preimage of $\yes$ under $\chi_B: A\to\bool$.
-Assuming that every subset has a characteristic function
-with values in $\bool$
-requires the Law of the Excluded Middle (\cref{pri:lem}).
-
-In this book we do not always assume the Law of Excluded Middle,
-and there are some additional subtleties.
-Let $T$ be a type and let $P: T\to\UU$ be a type family.
-The sum type $\sum_{t:T} P(t)$ consists of pairs $(t,p)$ with
-$t:T$ and $p:P(t)$. This is \emph{not} a good way to carve out a subtype
-of $T$, as there could be distinct pairs $(t,p)$ and $(t,p')$ in $P(t)$.
-For this reason we require that each $P(t)$ is a proposition.
+In this section, we consider the relationship between predicates on a type $T$ and subtypes of $T$.  The basic idea is that the predicate tells
+whether an element of $T$ should belong to the subtype, and the predicate can be recovered from the subtype by asking whether an element of $T$
+is in it.
 
 \begin{definition}\label{def:predicate}
-  Let $T$ be a type and let $P$ be a type family on $T$ such that
-  $P(t)$ is a proposition for each $t:T$.
+  Let $T$ be a type and let $P(t)$ be a family of types parametrized by an variable $t:T$, such that $P(t)$ is a proposition.
   Then we call $P$ a \emph{predicate}\index{predicate} on $T$.\footnote{%
     Note that giving a predicate on $T$ is
-    equivalent to giving a map $Q: T\to\Prop$,
+    equivalent to giving a map $Q: T\to\Prop_\UU$ for a suitable universe $\UU$,
     and we sometimes say that $Q$ itself is the predicate.}
-  If each $P(t)$ is a decidable proposition,
-  then we say that $P$ is a \emph{decidable predicate}.
+  If $P(t)$ is a decidable proposition,
+  then we say that $P$ is a \emph{decidable predicate} on $T$.
 \end{definition}
+
 By \cref{xca:lem-prop}, the decidable predicates $P$ on $T$
 correspond uniquely to the characteristic functions $\chi_P:T\to\bool$.
 
-In ordinary sets, a subset $B$ of a set $A$ can alternatively be
-considered as a set ($B$) in its own right
-equipped with an injection from $B$ into $A$.
+We now introduce the notion of \emph{injection}, which will be key to saying what a \emph{subtype} is.
 
-We need the notion of injection between general types,
-and we define this to be close to the usual meaning in set theory.
 \begin{definition}\label{def:injection}
-  A function $f:A\to B$ is an \emph{injection}, or \emph{injective},
-  if $f^{-1}(b)$ is a proposition for all $b:B$.
+  A function $f:A\to B$ is an \emph{injection}\index{injection}, or is \emph{injective}\index{injective},
+  if $f^{-1}(b)$ is a proposition for all $b:B$.  The propery of being an injection is encoded by
+  the type $\isinj(f) \defeq \prod_{b:B} \isprop(\inf f (b))$.
 \end{definition}
+
 \begin{lemma}\label{lem:inj-ap}
   A function $f:A\to B$ is an injection if and only if
   each induced function
   $\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence,
   for all $a,a':A$.
 \end{lemma}
+
 \begin{proof}
   First we note that if $z,z' : f^{-1}(b)$ for some $b:B$,
   then there is an equivalence
@@ -2718,10 +2705,12 @@ and we define this to be close to the usual meaning in set theory.
 \begin{definition}\label{def:subtype}
   A \emph{subtype}\index{subtype} of a type $T$
   is a type $S$ together with an injection
-  $f : S \to T$. The type of subtypes of $T$ is thus
+  $f : S \to T$.  Selecting a universe $\UU$ as a repository for such types $S$ allows us to introduce
+  the type of subtypes of $T$ in $\UU$ as follows.
   \[
-    \Sub_T \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).\qedhere
+  \Sub^\UU_T \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).
   \]
+  We may choose to leave the choice of $\UU$ ambiguous, in which case we will write $\Sub_T$ for $\Sub^\UU_T$.
 \end{definition}
 
 \begin{lemma}\label{lem:subtype-eq-=}
@@ -2792,7 +2781,7 @@ proposition $P$.
 We've seen how to make a subtype from a predicate.
 Conversely, from a subtype of $T$ given by the injection
 $f : S \to T$,
-we can form the predicate $P_f : T \to \Prop$, $P_f(x) \defeq \inv f(x)$.
+we can form a predicate $P_f : T \to \Prop$ defined by $P_f(x) \defeq \inv f(x)$.
 We shall see in~\cref{lem:Prop-Set-pointed-families},
 that these operations form an equivalence
 between predicates on $T$ and subtypes of $T$.
