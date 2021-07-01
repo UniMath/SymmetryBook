@@ -1,16 +1,7 @@
 \chapter{Metamathematical remarks}
 \label{app:metamath}
 
-\section{The Limited Principle of Omniscience}
-\label{sec:LPO}
-
-\begin{remark}\label{rem:LPO-solves-halting problem}
-Recall the Limited Principle of Omniscience (LPO):
-  for any function $P:\NN\to\bn 2$, 
-  either there is a smallest number $n_0:\NN$ such that $P(n_0)=1$,
-  or $P$ is a constant function with value $0$.
-We will show that LPO is not provable in our theory.\footnote{%
-The statement that something is not provable is a statement \emph{about}, 
+The statement that something is not provable is a statement \emph{about},
 and not \emph{in}, a theory. Proving such a statement often requires
 properties of the theory that cannot be formulated nor proved in the theory itself.
 
@@ -19,37 +10,51 @@ We call an element \emph{closed} if it does not contain free variables.
 An example of canonicity is that every closed natural number is a \emph{numeral},
 that is, either $0$ or $S(n)$ for some numeral $n$.
 Another example of canonicity is that every closed element of $L\coprod R$
-is either of the form $\inl{l}$ for some $l:L$ or 
+is either of the form $\inl{l}$ for some $l:L$ or
 of the form $\inr{r}$ for some $r:R$.
 A second important metaproperty of our theory is that one can compute canonical forms.
-}%end footnote
 
-The argument is based on the Halting problem: given a Turing machine 
+[TODO: Write more about what metamathematics is.]
+
+\section{The Limited Principle of Omniscience}
+\label{sec:LPO}
+
+\begin{remark}\label{rem:LPO-solves-halting problem}
+Recall the Limited Principle of Omniscience (LPO), \cref{LPO}:
+  for any function $P:\NN\to\bn 2$,
+  either there is a smallest number $n_0:\NN$ such that $P(n_0)=1$,
+  or $P$ is a constant function with value $0$.
+We will show that LPO is not provable in our theory.
+
+The argument is based on the halting problem: given a Turing machine
 $M$ and an input $n$, determine whether $M$ halts on $n$.
-It is known that the Halting problem cannot be solved by an algorithm.
-%that can be implemented on a Turing machine.
+It is known that the halting problem cannot be solved by an algorithm
+that can be implemented on a Turing machine.\footnote{It's commonly accepted that
+  every algorithm \emph{can} be thus implemented.}
 
 We use a few more facts from computability theory.
-First, Turing machines can be enumerated $M_0,M_1,\ldots$
+First, Turing machines can be enumerated. We denote the $n$\th Turing machine $M_n$,
+so we can list the Turing machines in order: $M_0,M_1,\ldots$.
 Second, there exists a function $T(e,n,k)$ such that $T(e,n,k) = 1$
 if $M_e$ halts on input $n$ in at most $k$ steps, and $T(e,n,k) = 0$
-otherwise. This function $T$ can easily be implemented in our theory.
+otherwise. This function $T$ can be implemented in our theory.
 
 Towards a contradiction, assume we have a closed proof $t$ of LPO in our theory.
-In particular, $t$ does not depend on any axiom.\footnote{It is possible to weaken the notion
-of canonicity so that the argument still works even if the proof $t$ uses $\ua$.}
+We assume as well that $t$ does not depend on any axiom.\footnote{It is possible to weaken the notion
+  of canonicity so that the argument still works even if the proof $t$ uses $\ua$.
+Of course, the argument must fail if we allow the use of LEM!}
 It is clear that $k\mapsto T(e,n,k)$ is a constant function with value $0$
 if and only if $M_e$ does not halt on input $n$. Now consider $t(k\mapsto T(e,n,k))$,
 which is an element of a type of the form $L\coprod R$.
 
-We now explain how to solve the Halting problem.
-Let $e$ and $n$ be arbitrary numerals. 
+We now explain how to solve the halting problem.
+Let $e$ and $n$ be arbitrary numerals.
 Then $t(k\mapsto T(e,n,k))$ is a closed element of $L\coprod R$.
 Hence we can compute its canonical form. If $t(k\mapsto T(e,n,k))\jdeq\inr{r}$ for some
 $r:R$, then $k\mapsto T(e,n,k)$ is a constant function with value $0$,
 and $M_e$ does not halt on input $n$. If $t(k\mapsto T(e,n,k))\jdeq\inl{l}$ for some
 $l:L$, then $M_e$ does halt on input $n$.
-Thus we have an algorithm to solve the Halting problem
+Thus we have an algorithm to solve the halting problem
 for all $e$ and $n$. Since this is impossible, we have refuted the assumption
 that there is a closed proof $t$ of LPO in our theory.
 \end{remark}
