@@ -20,7 +20,8 @@ The ``point'', when the number is written in base $2$ notation, is called ``floa
 
 Types occur in mathematics, too, and are used in the same way: all variables are introduced along with a declaration of the type of thing they
 will refer to.\index{type} For example, one may say ``consider a real number $x$'', ``consider a natural number $n$'', ``consider a point $P$ of
-the plane'', or ``consider a line $L$ of the plane''.  After that introduction, one may say that the \emph{type} of $P$ is \emph{a point of the
+the plane'', or ``consider a line $L$ of the plane''.  After that introduction, one may say that the \emph{type} of $n$ is \emph{natural number} and
+that the \emph{type} of $P$ is \emph{point of the
 plane}.  Just as in a computer program, type declarations such as those are used to determine which mathematical statements are grammatically
 well formed.  Thus one may write ``$P$ lies on $L$'' or $1/x$, but not ``$L$ lies on $P$'' nor $1/L$.\footnote{In mathematics there are no
 ``run-time'' errors; rather, it is legitimate to write the expression $1/x$ only if we already know that $x$ is a non-zero real number.}
@@ -95,8 +96,7 @@ we wish to focus on the dependence of $e$ (and perhaps $T$) on the variable $x$.
 To clarify the dependence of $e$ on $x$ primarily, we may write $e(x)$ (or $e_x$) instead of $e$.
 Such a family provides a variety of elements of $T$, for, if $a$ is any expression denoting an object of $X$, one may replace all
 occurrences of $x$ by $a$ in $e$ and in $T$, thereby obtaining an element of $T(a)$, which may be regarded as a \emph{member} of the family
-and which will be denoted by $e(a)$.  For that reason, we may also say, when introducing a family of elements, we may say instead that \emph{for each
-element} or \emph{for all elements} $x$ of type $X$ we are given an element $e(x)$ of type $T(x)$.
+and which will be denoted by $e(a)$.
 
 Naturally, if the expressions $e$ and $T$ don't actually involve the variable $x$, then the members of the family are all the same,
 and we'll refer to the family as a \emph{constant family} of elements.
@@ -148,8 +148,7 @@ $x$.  Another reason is that we may want to use the variable $x$ for elements of
 formed.  For example, imagine first writing this: ``For a natural number $n$ we consider the real number $\sqrt n$'' and then writing this:
 ``Now consider a triangle $n$ in the plane.''  The result is that $\sqrt n$ is no longer usable, whereas the function $n \mapsto \sqrt n$ has
 enclosed the variable and the family into a single object and remains usable.\footnote{Students of trigonometry are already familiar with the
-concept of function, as something enclosed this way.  The functions \emph{sin} and \emph{cos} are examples.}  Yet another reason is that
-functions are mathematical objects, and not all of them can be represented by expressions in the language of mathematics.
+concept of function, as something enclosed this way.  The functions \emph{sin} and \emph{cos} are examples.}
 
 Once a family $e$ has been enclosed in the function $x \mapsto e$, the variable $x$ is referred to as a \emph{dummy variable}\index{dummy
   variable} or as a \emph{bound variable}\index{bound variable}.\footnote{Students of calculus are familiar with the concept of dummy variable
@@ -390,7 +389,10 @@ ranges over elements of $A$.\footnote{%
     \node at (0.5,0.2) {$\refl a$};
     \node (A2) at (1.5,1.5) {$A$};
     \end{scope}
-  \end{tikzpicture}}
+  \end{tikzpicture}
+  Conversely, we can imagine $b$ starting at $a$ and $e$ starting out as $\refl a$, and then think of $b$ roaming throughout $A$, pulling
+  the string $e$ along with it, until it finds every path from $a$ to some other element.
+}
 
 Equality is \emph{symmetric}, in the sense that an identification of $a$ with $b$ may be reversed to give an identification of $b$ with $a$.  In
 order to produce an element of $b=a$ from an element $e$ of $a=b$, for any $b$ and $e$, we argue by induction.  We let $P(b,e)$ be $b=a$ for any
@@ -429,8 +431,8 @@ Similarly, we formulate transitivity a little more formally, as follows.
 
 The notation $q\circ p$ for path composition, with $p$ and $q$ in reverse order,
 fits our intution particularly well when the paths are related to functions and the composition of
-the paths is related to the composition of the related functions in the same order, as happens, for example, in connection with {\em transport},
-defined below.
+the paths is related to the composition of the related functions in the same order, as happens, for example, in connection with {\em transport}
+(defined below in \cref{def:transport}) in \cref{xca:trp-compose}.
 
 \begin{marginfigure}
 %  \centering
@@ -564,7 +566,7 @@ The transport functions behave as expected: there is an identification of type $
 In words: transport along the composition $e\circ e'$ can be identified with the composition of the two
 transport functions.  This may be proved by induction in the following exercise.
 
-\begin{xca}
+\begin{xca}\label{xca:trp-compose}
   Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$.
   Suppose we are given elements $a,b,c:X$, $e:a=b$, and $e':b=c$. Show there is an identification of type
   \[
@@ -576,10 +578,11 @@ Yet another example of good behavior is given in the following exercise.
 
 \begin{xca}\label{xca:trp-nondep}
   Let $X,Y$ be types.
-  As discussed in \cref{univalent-mathematics}, we may regard the expression $Y$ as a constant family of types parametrized by the elements of $X$.
-  Produce an element of type $\trp[Y]{p} = \id_Y$, for any path $p:a=b$.
+  As discussed in \cref{univalent-mathematics}, we may regard the expression $Y$ as a constant family of types parametrized by a variable $x:X$.
+  Produce an identification of type $\trp[Y]{p} = \id_Y$, for any path $p:a=b$.
 \end{xca}
 
+In \cref{sec:props-sets-grpds} below we will discuss what it means for a type to have at most one element.
 When the types $T(x)$ may have more than one element,
 we may regard an element of $T(x)$ as providing additional \emph{structure} on $x$.
 In that case, we will refer to the transport function $\trp e : T(a) \to T(b)$ as
@@ -613,17 +616,17 @@ following definition makes precise.
 
 \begin{definition}\label{def:ap}
 For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,x':X$, the function
-$\ap{f,x,x'} : (x = x') \to (f(x) = f(x'))$ is defined by induction by setting
+$$\ap{f,x,x'} : (x = x') \to (f(x) = f(x'))$$ is defined by induction by setting
 $\ap{f,x,x}(\refl{x})\defeq\refl{f(x)}$.%
 \glossary(ap){$\protect\ap{f}$}{application of a function to a path, \cref{def:ap}}
 \end{definition}
 
 The function $\ap{f,x,x'}$, for any elements $x$ and $x'$ of $X$, is called an \emph{application} of $f$ to paths or to identities,
 and this explains the choice of the symbol $\ap{}$ in the notation for it.
-It may also be called a function (or a map) \emph{induced} by $f$ on identity types.
+It may also be called the function (or map) \emph{induced} by $f$ on identity types.
 
 When $x$ and $x'$ are clear from the context, we may abbreviate $\ap{f,x,x'}$ by writing $\ap{f}$ instead.
-For convenience, we may abbreviate even further, writing $f(p)$ for $\ap f (p)$.
+For convenience, we may abbreviate it even further, writing $f(p)$ for $\ap f (p)$.
 
 The following lemma shows that $\ap f$ is compatible with composition.
 
@@ -647,11 +650,12 @@ $\ap f(p^{-1}) =  (\ap f (p))^{-1}$, and that $\ap \id$ is the identity on paths
 
 \begin{xca}\label{xca:trp-ap}
   Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$. Furthermore, let $A$ be a type, let $f:A\to X$ be a
-  function, and let $p: a=a'$ be a path. Show that there is an identification of type $\trp[T \circ f]{p} = \trp[T]{\ap{f}(p)}$.
+  function, and let $p: a=a'$ be a path. Show that there is an identification of type $\trp[T \circ f]{p} = \trp[T]{\ap{f}(p)}$
+  between two functions of type $T(f(a)) \to T(f(a'))$.
 \end{xca}
 
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ can be identified, then their values can be identified, i.e., for every element $x$ of
-$X$, we may produce an identification of type $f(x) = g(x)$.  This can be proved by induction, as follows.
+$X$, we may produce an identification of type $f(x) = g(x)$, which can be constructed by induction, as follows.
 
 \begin{definition}\label{def:ptw}
   Let $f,g:\prod_{x:X} Y(x)$. Define the function
@@ -1182,10 +1186,13 @@ Yet another application of the notion of equivalence is to postulate axioms.
 The axiom of \emph{function extensionality} postulates that the function
 $\ptw_{f,g}: f=g \to \prod_{x:X} f(x)=g(x)$ in \cref{def:ptw} is an equivalence.
 Formally, we postulate the existence of an element $\funext : \isEq(\ptw_{f,g})$.
-Thus we get a function
+From that we can construct the corresponding inverse function.
 \[
-  \inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x)=g(x)\Bigr) \to f=g.\qedhere
+\inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x)=g(x)\Bigr) \to f=g.
 \]
+Thus two functions whose values can all be identified can themselves be identified.
+This supports the intuition that there is nothing more to a function than the values
+it sends its arguments to.
 \end{principle}
 
 \section{Identifying pairs}\label{sec:pairpaths}
