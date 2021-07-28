@@ -19,6 +19,86 @@ A second important metaproperty of our theory is that one can compute canonical 
 
 [TODO: Write more about what metamathematics is.]
 
+\section{Definitional equality}
+\label{sec:defeq}
+
+\subsection{Basics}
+\label{sec:defeq-basics}
+
+The concept of definition was introduced in \cref{univalent-mathematics},
+together with what it means to be \emph{the same by definition}. 
+Being the same by definition, or being definitionally equal, 
+(NB appears for the first time on p. 26!) 
+is a relationship between syntactic expressions.
+In this section we provide more details about this relationship.
+
+There are four basic forms of definitional equality:
+\begin{enumerate}
+\item The original form: making an explicit definition, e.g., $1 \defeq \Succ(0)$;%
+\footnote{The notation $\defeq$ serves two purposes: 
+(1) the ``:'' tells the reader that we make a definition
+(or reminds the reader that this definition has been made);
+(2) we state that the definitional equality $1 \jdeq \Succ(0)$ holds.}
+\item The extension of the original form as found in inductive definitions,
+e.g., $n+0 \defeq n$ and $n+\Succ(m) \defeq \Succ(n+m)$;
+\item Simplifying the application of an explicitly defined function to an argument,
+e.g., $(x \mapsto f(x))(a) \jdeq f(a)$;
+\item Simplifying the explicit definition of a function that is already given,
+e.g., $(x \mapsto S(x)) \jdeq S$;
+\end{enumerate}
+
+Definitional equality is the \emph{congruence closure} of these 
+four basic forms, that is, the smallest reflexive, symmetric, transitive
+and congruent relation that contains all instances of the four basic forms.
+Here a congruent relation is a relation that is closed under all syntactic
+operations of type theory. For example, if $T : \NN\to\UU$, then $T(n)\jdeq T(n+0)$
+using symmetry and congruence, and for any $P: T(n)\to\UU$ we have
+$\prod_{x:T(n)} P(x) \jdeq \prod_{x:T(n+0)} P(x)$ by another application
+of congruence.
+
+%Discuss later: If syntactic expressions $e$ and $e'$ are definitionally equal, denoted by $e\jdeq e'$, then $e$ and $e'$ have the same type $T$, then $\refl e : e=_T e'$; the converse is not true.
+
+\subsection{Testing definitional equality}
+\label{sec:defeq-computation}
+
+Although it is possible to enumerate all true definitional equalities,
+this does not give a terminating algorithm to test whether a given instance $e\jdeq e'$ holds.
+In particular when $e\jdeq e'$ does not hold, such an enumeration will not terminate.
+A terminating test of definitional equality is important for type checking,
+as the examples in the last paragraph of the previous section show.
+
+A better approach to a terminating test of definitional equality is the following.
+First direct the four basic forms of definitional equality from left to right
+as they are given.\footnote{%
+TODO: think about the last, $\eta$.}
+For the first two forms this can be viewed as unfolding definitions,
+and for the last two forms as simplifying function application and (unnecessary) 
+abstraction, respectively.
+This defines a basic reduction relation, and we write $e\to e'$ if $e'$ can
+be obtained by a basic reduction of a subexpression in $e$. 
+The reflexive transitive closure of $\to$ is denoted by $\to^*$.
+The symmetric closure of $\to^*$ coincides with $\jdeq$.
+
+We mention a few important properties of the relations $\to,\to^*$ and $\jdeq$.
+The first is called the Church-Rosser property, and states that,
+if $e\jdeq e'$, then there is an expression $c$ such that $e\to^* c$
+and $e'\to^* c$. The second is called type safety and states that,
+if $e:T$ and $e\to e'$, then also $e':T$.
+The third is called termination and states that for well-typed expressions $e$
+there is no infinite reduction sequence starting with $e$.
+The proofs of Church-Rosser and type safety are long and tedious, but pose no essential
+difficulties. For a non-trivial type theory such as in this book the last property,
+termination, is extremely difficult and has not been carried out in full detail.
+The closest come results on the Coq \footcite{Coq} (TODO: find good reference).
+
+Testing definitional equality of given well-typed terms $e$ and $e'$ can now be done
+by reducing them with $\to$ until one reaches irreducible expressions $n$ and $n'$
+such that $e\to^* n$ and $e'\to^* n'$, and then comparing $n$ and $n'$. 
+Now we have: $e\jdeq e'$ iff $n\jdeq n'$ iff (by Church-Rosser)
+there exists a $c$ such that $n\to^* c$ and $n'\to^* c$.
+Since $n$ and $n'$ are irreducible the latter is equivalent to
+$n$ and $n'$ being identical syntactic expressions.
+
 \section{The Limited Principle of Omniscience}
 \label{sec:LPO}
 
