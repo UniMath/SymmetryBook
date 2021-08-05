@@ -767,7 +767,7 @@ by setting $\po_{\refl{x}} \defeq \refl{y=y'}$.%
 \glossary(po){$\protect\po_p$}{convert path over path, \cref{def:pathover-trp}}
 \end{definition}
 
-Many of the operations on paths have their counterpart for paths over paths.
+Many of the operations on paths have counterparts for paths over paths.
 For example, we may define composition of paths over paths as follows.
 
 \begin{definition}\label{def:pathovercomposition}
@@ -782,7 +782,7 @@ For example, we may define composition of paths over paths as follows.
   Now observe that $p' \circ p$ is $p$, so $q$ provides the element we need.
 \end{definition}
 
-Similarly, one can define reversal of paths over paths,
+Similarly, one can define the inverse of a path over a path,
 writing $\inv q : \pathover {b'} B {\inv p} b$ for the inverse
 of $q : \pathover b B p {b'}$.
 These operations on paths over paths
@@ -964,7 +964,7 @@ Using a combination of sum, product, and identity types allows
 us to express important notions, as done in the following
 definitions.
 
-The property that a type $X$ has exactly one element may be expressed by saying $X$ has an element such that every other element is equal to it.
+The property that a type $X$ has ``exactly one element'' may be made precise by saying that $X$ has an element such that every other element is equal to it.
 This property is encoded in the following definition.
 
 \begin{definition}
@@ -992,19 +992,18 @@ For any type $X$ and $a:X$, the singleton type $\sum_{x:X} (a=x)$ is contractibl
 
 \begin{proof}
 Take as center the pair $(a,\refl{a})$. We have
-to prove for any element $x$ of $X$ and for any identification
-$i: a=x$, that $(a,\refl{a}) = (x,i)$.  This is done by induction on $x$ and $i$, which reduces us to showing
-that $(a,\refl{a}) = (a,\refl{a})$.
+to produce, for any element $x$ of $X$ and for any identification
+$i: a=x$, an identification of type $(a,\refl{a}) = (x,i)$.  This is done by path induction on $x$ and $i$, which reduces us to producing
+an identity of type $(a,\refl{a}) = (a,\refl{a})$; reflexivity provides one, namely $\refl{(a,\refl{a})}$.
 \end{proof}
 
 \begin{definition}
 \label{def:fiber}
 Given a function $f : X \to Y$ and an element $y:Y$,
-the \emph{fiber} (or \emph{preimage}) $f^{-1}(y)$ consists
-of elements $x$ such that $y = f(x)$.
-This is encoded by defining $f^{-1}(y) \defeq \sum_{x:X}(y = f(x))$.
-In other words, an element of the fiber is a pair $(x,e)$ consisting
-of an element $x$ and an element $e$ of the identity type $y = f(x)$.
+the \emph{fiber} (or \emph{preimage}) $f^{-1}(y)$
+is encoded by defining $$f^{-1}(y) \defeq \sum_{x:X}(y = f(x)).$$
+In other words, an element of the fiber $f^{-1}(y)$ is a pair consisting
+of an element $x$ of $X$ and an identification of type $y = f(x)$.
 \end{definition}
 
 In set theory, a function $f : X \to Y$ is a bijection if and only if
@@ -1014,19 +1013,17 @@ to Voevodsky.
 
 \begin{definition}
   \label{def:equivalence}
-  A function $f : X \to Y$ is called an \emph{equivalence},
-  denoted by $\isEq(f)$, if $\inv f(y)$ is contractible for
-  all $y:Y$.\footnote{%
-    I.e., we define $\isEq(f) \defeq \prod_{y:Y}\iscontr(f^{-1}(y))$.}
+  A function $f : X \to Y$ is called an \emph{equivalence} if $\inv f(y)$ is contractible for
+  all $y:Y$.  The condition is encoded by the type $$\isEq(f) \defeq \prod_{y:Y}\iscontr(f^{-1}(y)).$$
 \end{definition}
 
 In the above case we say that the types
-$X$ and $Y$ are \emph{equivalent}, denoted by $X\equiv Y$.
-More precisely, since there could be more than one equivalence
-between two types, we define the type of equivalences from $X$ to $Y$ by
+$X$ and $Y$ are \emph{equivalent}, and we express that by writing $X\equiv Y$.
+More precisely, we define the type of equivalences from $X$ to $Y$ by
 \[
   (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f).
 \]
+We remark that there could be more than one equivalence between $X$ and $Y$.
 
 Suppose $f:X \to Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility.
 Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.\footnote{%
