@@ -1017,13 +1017,15 @@ to Voevodsky.
   all $y:Y$.  The condition is encoded by the type $$\isEq(f) \defeq \prod_{y:Y}\iscontr(f^{-1}(y)).$$
 \end{definition}
 
-In the above case we say that the types
-$X$ and $Y$ are \emph{equivalent}, and we express that by writing $X\equiv Y$.
-More precisely, we define the type of equivalences from $X$ to $Y$ by
-\[
+We may say that $X$ and $Y$ are \emph{equivalent} if there is an equivalence between them.
+
+\begin{definition}
+  \label{def:type-of-equivalences}
+  We define the type $X \equiv Y$ of equivalences from $X$ to $Y$ by the following definition.
+  \[
   (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f).
-\]
-We remark that there could be more than one equivalence between $X$ and $Y$.
+  \]
+\end{definition}
 
 Suppose $f:X \to Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility.
 Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.\footnote{%
@@ -1111,14 +1113,14 @@ singleton type $\sum_{x:X}(a=x)$.\footnote{%
   where $X$ is a type,
   $Y(x)$ is a family of types depending on $x:X$,
   and $Z(x,y)$ is a family of types depending on $x:X$ and $y:Y(x)$.
-  Then, we show for any contractible type $X$,
-  and any family of types $Y(x)$ depending on $x:X$,
-  that $\sum_{x:X}Y(x)$ is equivalent to $Y(c)$,
+  Then, we show for any contractible type $X$
+  and for any family of types $Y(x)$ depending on $x:X$,
+  that there is an equivalence between $\sum_{x:X}Y(x)$ and $Y(c)$,
   where $c$ is the center of contraction.}
 For this reason
 we call application of this lemma `to contract away'
 the prefix $\sum_{x:X} \sum_{i: a=x}$, in order
-to obtain a simpler, equivalent type. It is often applied
+to obtain a simpler type. It is often applied
 in the following simpler form.
 
 \begin{corollary}\label{cor:contract-away}
@@ -1394,13 +1396,9 @@ first and the second projection, respectively.
 
 Again, proving something about (or constructing something from) every
 element $(a,b)$ of $X \times Y$ is simply done for all $a:X$ and $b:Y$.
-An identification between two elements $(a_1,b_1),(a_2,b_2)$ of
-$X \times Y$ consists of an identification of $a_1$ and $a_2$ in $X$
-and an identification of $b_1$ and $b_2$ in $Y$. In fact, the type of identifications between two pairs in $X \times Y$
-is equivalent to the binary product of the types of identifications between
-elements of $X$ and of identifications between elements of $Y$.
-This follows from \cref{lem:isEq-pair=} together with
-\cref{xca:trp-nondep}.
+
+There is an equivalence between $(a_1,b_1)=(a_2,b_2)$ and $(a_1=a_2) \times (b_1=b_2)$.
+This follows from \cref{lem:isEq-pair=} together with \cref{xca:trp-nondep}.
 
 If $f: X \to Y$ and $f': X' \to Y'$, then we let
 $f\times f'$ denote the map of type $(X\times X') \to (Y\times Y')$
@@ -1475,14 +1473,14 @@ We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a fam
 Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.\footnote{%
   This definition uses the induction principle.}
 The definition of $P(b)$ is motivated by the expectation that we will be able
-to prove that $P(b)$ and $b = \yes$ are equivalent.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv :
-P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$,
+to construct an equivalence between $P(b)$ and $b = \yes$.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in
+$\triv : P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$,
 establishing the claim.
 
 In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne
-\Succ(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that $P(0)
-\defeq \true$ and $P(\Succ(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to prove that $P(i)$
-and $i = 0$ are equivalent.  If there were an element $e: 0 = \Succ(n)$, we could substitute $\Succ(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
+\Succ(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that 
+$P(0) \defeq \true$ and $P(\Succ(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to construct an equivalence between $P(i)$
+and $i = 0$.  If there were an element $e: 0 = \Succ(n)$, we could substitute $\Succ(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
 of $P(\Succ(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=\Succ(n)) \to \emptytype$, establishing the claim.
 
 In a similar way we will in \cref{sec:typeFin} define types $\bn n$ for any $n$ in $\NN$
@@ -1492,8 +1490,7 @@ such that $\bn n$ is a type (set) of $n$ elements.
 \subsection{Binary sums}
 \label{sec:binsum-types}
 For sum types of the form $\sum_{b:\bool} T(b)$, with $T(b)$
-a type depending on $b$ in $\bool$, there is a simpler way of
-describing an equivalent type.\footnote{%
+a type depending on $b$ in $\bool$, there is an equivalence with a simpler type.\footnote{%
   In a case like this, we can thicken up the lines denoting
   $T(\no)$ and $T(\yes)$ in our picture, if we like:\par
   \begin{tikzpicture}
@@ -1549,10 +1546,9 @@ and $f(\inr{y})$ for all $y$ in $Y$.
 
 Identification of two elements $a$ and $b$ in $X \amalg Y$ is
 only possible if they are constructed with the same constructor.
-Thus $\inl{x} = \inr{y}$ is always empty, and identifications
-$\inl{x} = \inl{x'}$ are equivalent to identifications $x=x'$ in $X$,
-and identifications
-$\inr{y} = \inr{y'}$ are equivalent to identifications $y=y'$ in $Y$.
+Thus $\inl{x} = \inr{y}$ is always empty, and there are equivalences of type
+$(\inl{x} = \inl{x'}) \equiv (x=x')$ and 
+$(\inr{y} = \inr{y'}) \equiv (y=y')$.
 
 \begin{xca}\label{xca:binary-sum-id}
   Prove these statements using \cref{xca:binary-sum-equiv},
@@ -1588,15 +1584,13 @@ we get a function, $\out : \Copy(X) \to X$,
 called the \emph{destructor},
 with $\out(\inc{x}) \defeq x$ for $x:X$,
 and the induction principle implies that $\inc{\out(z)} = z$
-for all $z:\Copy(X)$, so $\Copy(X)$ and $X$ are equivalent, as expected.
+for all $z:\Copy(X)$, so there is an equivalence of type $\Copy(X) \equiv X$, as expected.
 In fact, we will assume that the latter equation even holds definitionally.
-It follows that identifications $\inc{x}=\inc{x'}$ in $\Copy(X)$ are equivalent
-to identifications $x=x'$ in $X$, and identifications $\out(z)=\out(z')$ in $X$
-are equivalent to identifications $z=z'$ in $\Copy(X)$.
+It follows that there are equivalences of type $(\inc{x}=\inc{x'}) \equiv (x=x')$ and $(\out(z)=\out(z')) \equiv (z=z')$.
 
 Note that we can make several copies of $X$ that are not
-definitionally equal among themselves,
-for instance by picking different names for the constructor.
+definitionally equal to each other,
+for instance, by picking different names for the constructor.
 We write $\Copy_{\constructor{con}}(X)$ for a copy of $X$
 whose constructor is
 \[
@@ -1620,11 +1614,10 @@ with constructor ${-} : \NN \to \NNN$.%
   \cref{exa:nnn}}
 There is no harm in also writing ${-} : \NNN \to \NN$
 for the destructor.
-This means that $\NNN$ is a type equivalent to $\NN$,
-whose elements are exactly $-n$ for $n:\NN$;
-indeed, $-(-n) \jdeq n$ for $n$ an element of either $\NN$ or $\NNN$,
-and identifications $-n = -n'$ are equivalent to
-identifications $n=n'$.
+This means that there is an equivalence of type $\NNN \equiv \NN$, for
+the elements of $\NNN$ are of the form $-n$ for $n:\NN$.
+Indeed, $-(-n) \jdeq n$ for $n$ an element of either $\NN$ or $\NNN$,
+and there is an equivalence of type $(-n = -n') \equiv (n=n')$.
 \end{example}
 
 \section{Universes and univalence}\label{sec:univax}
@@ -1650,24 +1643,21 @@ The approach in univalent mathematics resolves the issue as follows.
 \item If $\UU$ and $\UU'$ are universes, $\UU:\UU'$ and $X:\UU$, then also $X:\UU'$.
 \item The types $\emptytype$, $\true$, and $\NN$ are elements of every universe $\UU$.
 \item If $X : \UU$ and $a,b:X$, then $(a = _X b) : \UU$.
-\item Given a type $X:\UU$ and a family of types $Y(x):\UU$ parametrized by the elements $x$ of $X$, the sum $\sum_{x:X} Y(x)$ and the product
+\item Given a type $X:\UU$ and a family of types $Y(x):\UU$ parametrized by variable $x$ of type $X$, the sum $\sum_{x:X} Y(x)$ and the product
   $\prod_{x:X} Y(x)$ are also elements of $\UU$.
 \end{enumerate}
 
 It follows from the properties posited above that there are an infinite number of universes: there is at least one, because the type $\NN$ is
 contained in one as an element, there is another one containing that one, and so on, forever.
 
-The univalence axiom is a statement about the universe $\UU$:
-for all types $X$ and $Y$ in $\UU$ being \emph{equal} in $\UU$ is
-\emph{equivalent} to them being \emph{equivalent}. This greatly
-enhances our capacity to prove that two types are equal
-and to use this equality to transport properties and structure
-between them. We deliberately use the term transport
-here since it is precisely transport in the sense of
-\cref{def:transport} along the identification
-$X = Y$ stipulated by the equivalence $f$.
+The univalence axiom is a statement about an arbitrary universe $\UU$:
+for all types $X$ and $Y$ in $\UU$: there is an equivalence between identities in $\UU$ between them and
+equivalences between them.  This greatly
+enhances our ability to produce identities between the two types 
+and to use the resulting identities to transport (in the sense of \cref{def:transport}) properties and structure
+between the types.
 
-We first define the \emph{function} that
+We now define the \emph{function} that
 the univalence axiom postulates to be an equivalence.
 
 \begin{definition}\label{def:idtoeq}
@@ -1675,7 +1665,7 @@ the univalence axiom postulates to be an equivalence.
   we define an equivalence $\cast_{X,Y} (p) : X\equiv Y$
   \glossary(cast){$\protect\cast_{X,Y} (p)$}{cast along a path between types, \cref{def:idtoeq}}
   by induction on $Y$ and $p$,
-  setting $\cast_{X,Y} (\refl X) \defeq \id_X : X \equiv X$.
+  setting $\cast_{X,X} (\refl X) \defeq \id_X : X \equiv X$.
   The result is a function\index{cast}
   \[
     \cast_{X,Y} : (X = Y) \to (X\equiv Y).\qedhere
@@ -1685,7 +1675,7 @@ the univalence axiom postulates to be an equivalence.
 In expressions such as $\cast_{X,Y}(p)$ we may abbreviate $\cast_{X,Y}$ to $\cast$ if
 no confusion will result. We may also write $\cast (p)$ more briefly as $\ptoe p$,%
 \glossary(1cast){$\protect\ptoe p$}{cast along a path between types}
-which we also use to denote only the function from $X$ to $Y$.\footnote{%
+which we also use to denote the corresponding function from $X$ to $Y$.\footnote{%
     \emph{Cast} is here used in the sense of
     ``arranging into a suitable form''.
     A more theatrical description would be that
@@ -1716,7 +1706,7 @@ Formally, we postulate the existence of an element
 For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$,%
 \glossary(ua){$\protect\ua$}{the inverse of $\protect\cast$, from univalence}
 the result of applying the
-inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus there are identities $\cast (\ua (f)) = f$ and $\ua (\cast (p)) = p$.
+inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus there are identities of type $\cast (\ua (f)) = f$ and $\ua (\cast (p)) = p$.
 
 We may also write $\ua (f)$ more briefly as $\etop f$.%
 \glossary(1bar){$\protect\etop f$}{$\protect\ua(f)$}
