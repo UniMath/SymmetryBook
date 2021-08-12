@@ -84,7 +84,7 @@ correspond to pairs of homomorphisms
   $\zet$ of integers, but also the addition operation.
 \end{example}
 \begin{example}
-  Recall the finite set $\bn{2}:\fin_2$ from \cref{def:finiteset}, containing two elements.
+  Recall the finite set $\bn{2}:\FinSet_2$ from \cref{def:finiteset}, containing two elements.
   According to \cref{xca:C2}, the identity type $\bn{2} =\bn{2} $ has exactly two distinct elements,
   $\refl{\bn{2}}$ and $\twist$,
   and doing $\twist$ twice yields x$\refl{\bn{2}}$.
@@ -93,13 +93,13 @@ correspond to pairs of homomorphisms
   you can let everything stay in place ($\refl{\bn{2}}$);
   or you can swap the two elements ($\twist$).
   If you swap twice, the results leaves everything in place.
-  The pointed type $\fin_2$ (of ``finite sets with two elements''),
+  The pointed type $\FinSet_2$ (of ``finite sets with two elements''),
   with $\bn{2}$ as the base point,
-  is our embodiment of these symmetries, \ie they are the elements of $\loops\fin_2$.
+  is our embodiment of these symmetries, \ie they are the elements of $\loops(\FinSet_2,\bn 2)$.
 
   Observe that (by the definition of $\Sc$)
-  there is an interesting function $\Sc\to\fin_2$,
-  sending $\base:\Sc$ to $\bn{2} :\fin_2$ and $\Sloop$ to $\twist$.
+  there is an interesting function $\Sc\to\FinSet_2$,
+  sending $\base:\Sc$ to $\bn{2} :\FinSet_2$ and $\Sloop$ to $\twist$.
 \end{example}
 
 If we take the type of loops $\loops(A,a) \jdeq (a=_Aa)$
@@ -350,10 +350,10 @@ namely the symmetries in the type of sets.
   \begin{enumerate}
   \item Recall that the set $\bn{1} =\true$ has the single element which we can call $*$. Then $\aut_{\bn{1} }(*)$ is a group called the \emph{trivial group}.
   \item If $n:\NN$, then the \emph{permutation group of $n$ letters} is
-$$\Sigma_n\defequi\aut_{\fin_n}(\bn{n} ),$$
-where $\fin_n$ is the groupoid of sets of cardinality $n$ (\cf \ref{def:finiteset}).
-The classifying type is thus $B\Sigma_n\defequi (\fin_n,\bn{n})$.
-With our convention of \cref{rem:symmetriesofnonconnectedgroupoids} we can tolerate $\aut_{\fin}(\bn n)$, $\aut_{\Set}(\bn n)$ or even $\aut_{\UU}(\bn n)$ as synonyms for the group $\Sigma_n$ (where $\fin$ and $\Set$ are the subtypes of $\UU$ of finite sets and sets).
+$$\Sigma_n\defequi\aut_{\FinSet_n}(\bn{n} ),$$
+where $\FinSet_n$ is the groupoid of sets of cardinality $n$ (\cf \ref{def:finiteset}).
+The classifying type is thus $B\Sigma_n\defequi (\FinSet_n,\bn{n})$.
+With our convention of \cref{rem:symmetriesofnonconnectedgroupoids} we can tolerate $\aut_{\FinSet}(\bn n)$, $\aut_{\Set}(\bn n)$ or even $\aut_{\UU}(\bn n)$ as synonyms for the group $\Sigma_n$ (where $\FinSet$ and $\Set$ are the subtypes of $\UU$ of finite sets and setsrespectively).
 
 If the reader starts worrying about size issues, that is legitimate: see \cref{rem:groupsarebig}.
  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?  Again, the only thing wrong with the groupoid $\Set$ of set (apart from $\Set$ being large) is that $\Set$ is not connected.
@@ -366,8 +366,8 @@ with classifying type $B\Sigma_S\defequi(\conncomp \Set S,S)$.
 
 \begin{remark}
   \label{rem:groupsarebig}
-  This remark is for those who worry about size issues - a theme we usually ignore in our exposition.  If we
-  start with a base universe $\UU_0$, the groupoid $\fin_n$ of sets of cardinality $n$ is the $\Sigma$-type
+  This remark is for those who worry about size issues -- a theme we usually ignore in our exposition.  If we
+  start with a base universe $\UU_0$, the groupoid $\FinSet_n$ of sets of cardinality $n$ is the $\Sigma$-type
   $\sum_{A:\UU_0}\Trunc{A=\bn{n}}$ over $\UU_0$ and so (without any modification) will lie in any bigger
   universe $\UU_1$.  In order to accommodate the finite permutation groups, the universe ``$\UU$'' appearing as
   a subscript of the first $\Sigma$-type in \cref{def:pt-conn-groupoid}, appearing later in the definition of
@@ -419,15 +419,17 @@ We make this our (first) definition of the cyclic group of order $m$:
 \label{ex:Cm}
 There are other (beside the symmetries of the $m$-fold \covering and Definition~\ref{def:Z/mgroup}) ways of obtaining the cyclic group of order $m$, which occasionally are more convenient.  The prime other interpretation is as the group of ``cyclic permutations of $m$ points on a circle''; \ie as the ``set of $m$th roots of unity in the complex plane'' equipped with complex multiplication.
 
-We know the group $\Sigma_m\defequi\aut_{\fin_m}(\bn m)$ of {\bf all} permutations of the set $\bn m$ with $m$ elements, but how do we select the ``subgroup'' of cyclic permutations?
-The key insight is the provided by function
-$$cy_m:S^1\to\fin_m$$
-with $cy_m(\base)\defequi\bn m$ and
-$cy_m(\Sloop)\defis s_m$, picking out exactly the cyclic permutation $s_m\colon\bn m=\bn m$ (and its iterates) among all permutations.  Set truncation of \cref{def:set-truncation} provides us with a tool for capturing only the symmetries of $\fin_m$ hit by $f$: the (in language to come) subgroup of the permutation group of cyclic permutations is the group
+We know the group $\Sigma_m\defequi\aut_{\FinSet_m}(\bn m)$ of {\bf all} permutations of the set $\bn m$ with $m$ elements, but how do we select the ``subgroup'' of cyclic permutations?
+The key insight is provided by the function
+\begin{displaymath}
+  \cy m:S^1\to\FinSet_m
+\end{displaymath}
+with $\cy m(\base)\defequi\bn m$ and
+$\cy m(\Sloop)\defis s_m$, picking out exactly the cyclic permutation $s_m\colon\bn m=\bn m$ (and its iterates) among all permutations.  Set truncation of \cref{def:set-truncation} provides us with a tool for capturing only the symmetries of $\FinSet_m$ hit by $\cy m$: the (in language to come) subgroup of the permutation group of cyclic permutations is the group
 $$C_m\defequi\aut_{BC_m}(\pt_{C_m}),$$
-where $(BC_m)_\div\defequi \sum_{S:\fin_m}\Trunc{cy_m^{-1}(S)}_0$ and $\pt_{C_m}\defequi (\bn m,\trunc{(\base,\refl{\bn m})}_0))$.  We must prove that $BC_m$ is a pointed connected groupoid for it to earn the name ``group'', but since we will provide a pointed equivalence between $B\ZZ/m$ and $BC_m$, this will follow automatically.
+where $(BC_m)_\div\defequi \sum_{S:\FinSet_m}\Trunc{\inv{\cy m}(S)}_0$ and $\pt_{C_m}\defequi (\bn m,\trunc{(\base,\refl{\bn m})}_0))$.  We must prove that $BC_m$ is a pointed connected groupoid for it to earn the name ``group'', but since we will provide a pointed equivalence between $B\ZZ/m$ and $BC_m$, this will follow automatically.
 
-\marginnote{More precisely, but using language not yet established: $\ZZ/m$ is equivalent to the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) of $cy_m$, whereas $C_m$ is exactly the ``image'' (\cf \cref{def:image}) of $cy_m$.  Thanks to \cref{lem:kerandcoker} these are equivalent groups. However, in our special case we can give a proof using only language we know.}
+\marginnote{More precisely, but using language not yet established: $\ZZ/m$ is equivalent to the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) of $\cy m$, whereas $C_m$ is exactly the ``image'' (\cf \cref{def:image}) of $\cy m$.  Thanks to \cref{lem:kerandcoker} these are equivalent groups. However, in our special case we can give a proof using only language we know.}
 
 Consider $t:\prod_{z:S^1}((\base=\base)\to(z=z))$ given by circle induction by sending $\base:S^1$ to the identity $t_\base\defequi\id_{\base=\base}$ and $\Sloop:\base=\base$ to $\refl{\id_{\base=\base}}$.
 Since we'll be using it often, we let $\Sloop_z:z=z$ be shorthand for $t_z(\Sloop)$.
@@ -435,46 +437,46 @@ Since we'll be using it often, we let $\Sloop_z:z=z$ be shorthand for $t_z(\Sloo
 
 \begin{lemma}
   \label{lem:CmisisotoZ/m}
-  Given $S\colon\fin_m$, the function
+  Given $S:\FinSet_m$, the function
   \begin{align*}
-    f_S\colon\Sigma_{z\colon\Sc^1}(S=cy_m(z))&\to \Sigma_{q\colon S=S}\Trunc{(S,q)=(\bn m,s_m)},\\
- f_S(z,v)&\defequi (v^{-1}cy_m(\Sloop_z)v,!)
+    f_S\colon\sum_{z:\Sc}(S=\cy m(z))&\to \sum_{q:{S=S}}\Trunc{(S,q)=(\bn m,s_m)},\\
+ f_S(z,v)&\defequi (v^{-1}\cy m(\Sloop_z)v,!)
   \end{align*}
   has connected fiber and defines
  an equivalence $f\colon BC_m\we B\ZZ/m$.
 \end{lemma}
 \begin{proof}
-  First and foremost, $f_S$ is actually well defined in the sense that $(S,v^{-1}cy_m(\Sloop_z)v)=(\bn m,s_m)$ is inhabited.
+  First and foremost, $f_S$ is actually well defined in the sense that $(S,v^{-1}\cy m(\Sloop_z)v)=(\bn m,s_m)$ is inhabited.
   This is clear in view of the function
   $$(\base =z)\to((S,q)=(\bn m,s_m))$$
   sending $p:\base= z$ to the identity represented by the picture
   $$\xymatrix{
     \bn m\ar@{=}[ddd]^{s_m}_{\downarrow}\ar@{=}[r]^-{\refl{} }_-\to&
-    cy_m(\base)\ar@{=}[ddd]^{cy_m(\Sloop)}_{\downarrow}\ar@{=}[r]^{cy_m(p)}_-\to&
-    cy_m(z)\ar@{=}[ddd]^{cy_m(\Sloop_z)}_{\downarrow}\ar@{=}[r]^-v_-\gets&
+    \cy m(\base)\ar@{=}[ddd]^{\cy m(\Sloop)}_{\downarrow}\ar@{=}[r]^{\cy m(p)}_-\to&
+    \cy m(z)\ar@{=}[ddd]^{\cy m(\Sloop_z)}_{\downarrow}\ar@{=}[r]^-v_-\gets&
     S\ar@{=}[d]^-v_{\downarrow}\\
-    &&&cy_m(z)\ar@{=}[d]^{cy_m(\Sloop_z)}_{\downarrow}\\
-     &&&cy_m(z)\ar@{=}[d]^-v_{\uparrow}\\
-     \bn m\ar@{=}[r]^-{\refl{} }_-\to& cy_m(\base)\ar@{=}[r]^{cy_m(p)}_-\to&cy_m(z)\ar@{=}[r]^-v_\gets&\,S,}
+    &&&\cy m(z)\ar@{=}[d]^{\cy m(\Sloop_z)}_{\downarrow}\\
+     &&&\cy m(z)\ar@{=}[d]^-v_{\uparrow}\\
+     \bn m\ar@{=}[r]^-{\refl{} }_-\to& \cy m(\base)\ar@{=}[r]^{\cy m(p)}_-\to&\cy m(z)\ar@{=}[r]^-v_\gets&\,S,}
   $$
-  where leftmost square commutes by definition of $cy_m$, the center square commutes by the definition as $\Sloop_z$ by circle induction.
+  where leftmost square commutes by definition of $\cy m$, the center square commutes by the definition as $\Sloop_z$ by circle induction.
 
   Note that  once we have shown that $f_S$ has connected fiber, we know that the set truncation $\Trunc{f_S}_0$ is an equivalence;
-  $$\xymatrix{\Sigma_{z\colon\Sc^1}(S=cy_m(z))\ar[r]^-{f_S}\ar[d]& \Sigma_{q\colon S=S}\Trunc{(S,q)=(\bn m,s_m)}\ar[d]^{\simeq}\\
- \Trunc{\Sigma_{z\colon\Sc^1}(S=cy_m(z))}_0\ar[r]^-{\Trunc{f_S}_0}& \Trunc{\Sigma_{q\colon S=S}\Trunc{(S,q)=(\bn m,s_m)}}_0 }
-  $$ and the fact that $\Sigma_{q\colon S=S}\Trunc{(S,q)=(\bn m,s_m)}$ is a set gives us (upon applying $\Sigma_{S:\fin_m}$) the desired equivalence $BC_m\we B\ZZ_m$.
+  $$\xymatrix{\sum_{z\colon\Sc}(S=\cy m(z))\ar[r]^-{f_S}\ar[d]& \sum_{q\colon S=S}\Trunc{(S,q)=(\bn m,s_m)}\ar[d]^{\simeq}\\
+ \Trunc{\sum_{z\colon\Sc}(S=\cy m(z))}_0\ar[r]^-{\Trunc{f_S}_0}& \Trunc{\sum_{q\colon S=S}\Trunc{(S,q)=(\bn m,s_m)}}_0 }
+  $$ and the fact that $\sum_{q\colon S=S}\Trunc{(S,q)=(\bn m,s_m)}$ is a set gives us (upon applying $\sum_{S:\FinSet_m}$) the desired equivalence $BC_m\we B\ZZ_m$.
 
   So to finish the proof we must show that $f_S$ has connected fiber.
-  Since $S$ lies in the component of $\bn m\oldequiv cy_m(\base)$ and since the proposition $\Trunc{(cy_m(\base),q)=(\bn m,s_m)}$ implies that $q$ is identical to $\Sloop^k$ for some $k$, it suffices to prove that for every $k$ the fiber
-  $f_{cy_m(\base)}^{-1}(cy_m(\Sloop^k),!)$ -- or written out:
-  $$\Sigma_{z:S^1}\Sigma_{v:\bn cy_m(\base)=cy_m z}cy_m(\Sloop^k)=v^{-1}cy_m(\Sloop_z)v$$
+  Since $S$ lies in the component of $\bn m\oldequiv \cy m(\base)$ and since the proposition $\Trunc{(\cy m(\base),q)=(\bn m,s_m)}$ implies that $q$ is identical to $\Sloop^k$ for some $k$, it suffices to prove that for every $k$ the fiber
+  $f_{\cy m(\base)}^{-1}(\cy m(\Sloop^k),!)$ -- or written out:
+  $$\sum_{z:S^1}\sum_{v:\cy m(\base)=\cy m(z)}\cy m(\Sloop^k)=v^{-1}\cy m(\Sloop_z)v$$
    -- is connected.
 
-  Assume $(z,v,!):f_{cy_m(\base)}^{-1}(\Sloop^k,!)$.  Given $p:\base=z$ we get that the diagram
-  $$\xymatrix{cy_m(\base)\ar@{=}[r]^{cy_m(p)}\ar@{=}[d]^{cy_m(\Sloop}&cy_m(z)\ar@{=}[r]^-v&cy_m(\base)\ar@{=}[d]^{cy_m(\Sloop)}\\
-  cy_m(\base)\ar@{=}[r]^{cy_m(p)}&cy_m(z)\ar@{=}[r]^-v&cy_m(\base)}$$
-commutes; that is, $cy_m(p)v:cy_m(\base)=cy_m(\base)$ commutes with $cy_m(\Sloop)$.
-Consequently, $cy_m(p)v$ must be of the form $cy_m(\Sloop^k)$ for some $k=0,1,\dots,m-1$, or alternatively, we have an $\alpha:v=cy_m(p^{-1}\Sloop^k)$.
+  Assume $(z,v,!):f_{\cy m(\base)}^{-1}(\Sloop^k,!)$.  Given $p:\base=z$ we get that the diagram
+  $$\xymatrix{\cy m(\base)\ar@{=}[r]^{\cy m(p)}\ar@{=}[d]^{\cy m(\Sloop}&\cy m(z)\ar@{=}[r]^-v&\cy m(\base)\ar@{=}[d]^{\cy m(\Sloop)}\\
+  \cy m(\base)\ar@{=}[r]^{\cy m(p)}&\cy m(z)\ar@{=}[r]^-v&\cy m(\base)}$$
+commutes; that is, $\cy m(p)v:\cy m(\base)=\cy m(\base)$ commutes with $\cy m(\Sloop)$.
+Consequently, $\cy m(p)v$ must be of the form $\cy m(\Sloop^k)$ for some $k=0,1,\dots,m-1$, or alternatively, we have an $\alpha:v=\cy m(p^{-1}\Sloop^k)$.
 Hence $(p^{-1}\Sloop^k,\alpha):(z,v,!)=(\base,\refl{})$.
 % {\color{red}This was not the most elegant thing I've produced, but I must quit now and push so that you can see if you get the gist. }
 \end{proof}
@@ -484,16 +486,16 @@ Hence $(p^{-1}\Sloop^k,\alpha):(z,v,!)=(\base,\refl{})$.
   \label{xca:somedetailsonfinitegroupstocheck}
   \begin{enumerate}
   \item Compare the definitions of \cref{def:finiteset} and show that if $n:\NN$, then $\Sigma_n=\Sigma_{\bn{n} }$
-and (since $\fin_0=\fin_1=\bn 1$) that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
-\item Prove that the set $\bn{n} =_{\fin_n}\bn{n} $ is finite of cardinality $n!$.
-\item Give an identification of the $n$-fold \covering of $S^1$ of \cref{exa:mfoldS1cover} with the first projection $\sum_{z:S^1}cy_n^{-1}(z)\to S^1$ of \cref{ex:cyclicgroups}.
-\footnote{Hint: for every $z:S^1$, $cy_n(z):\fin_n$ is a finite set of cardinality $n$.
+and (since $\FinSet_0=\FinSet_1=\bn 1$) that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
+\item Prove that the set $\bn{n} =_{\FinSet_n}\bn{n} $ is finite of cardinality $n!$.
+\item Give an identification of the $n$-fold \covering of $S^1$ of \cref{exa:mfoldS1cover} with the first projection $\sum_{z:S^1}\cy n^{-1}(z)\to S^1$ of \cref{ex:cyclicgroups}.
+\footnote{Hint: for every $z:S^1$, $\cy n(z):\FinSet_n$ is a finite set of cardinality $n$.
 Decidability is not an issue, so you can appeal to our classification of the \coverings of the circle.}
 \item Show that, given a type $X$, the type of functions $BC_n\to X$ is equivalent to the type
 $$\sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$$ of functions $f:S^1\to X$ such that the two ways around
 $$\xymatrix{S^1\ar[d]_{(-)^n}\ar[dr]^f&\\S^1\ar[r]^f&X}$$
 agree. \footnote{Hint: define the function $F_1:(BC_n\to X)\to (S^1\to X)$ by precomposition:
-$F_1(g)(z)=g(cy_n(z),!)$ and observe that since $cy_n(z)=cy_n(z^n)$ we have a
+$F_1(g)(z)=g(\cy n(z),!)$ and observe that since $\cy n(z)=\cy n(z^n)$ we have a
 function $F:(BC_n\to X)\to \sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$.}
 \end{enumerate}
 \end{xca}
@@ -958,13 +960,13 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   However, it is important to understand that different homomorphisms
   can have the same underlying unpointed function. Consider, for
   example, the group $\permgrp 3$, whose classifying space is
-  $\clf \permgrp 3\defequi (\fin_3,\bn 3)$, and the path
+  $\clf \permgrp 3\defequi (\FinSet_3,\bn 3)$, and the path
   $\tau:\USym{\permgrp 3}$ that is defined (through
   univalence) as
   \begin{displaymath}
     0\mapsto 1,\quad 1\mapsto 0,\quad 2 \mapsto 2
   \end{displaymath}
-  Then the function $\id: \fin_3 \to \fin_3$ gives rise to two
+  Then the function $\id: \FinSet_3 \to \FinSet_3$ gives rise to two
   elements of $\Hom(\permgrp 3,\permgrp 3)$: the first one is
   $(\id,\refl{\bn 3})$, which is simply denoted $\id_{\permgrp 3}$;
   the second one is $(\id,\tau)$, that we will denote $\tilde\tau$
@@ -972,12 +974,12 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   is suppose a path $\id_{\permgrp 3}= \tilde \tau$ and derive a
   contradiction. Such a path is the data of a path $p:\id = \id$ such
   that $\pathover {\refl{\bn 3}} {T} {p} \tau$ where the type family
-  $T:(\fin_3\to\fin_3) \to \UU$ is given by
+  $T:(\FinSet_3\to\FinSet_3) \to \UU$ is given by
   $f\mapsto (\shape_{\permgrp 3} = f(\shape_{\permgrp 3}))$. It is easy to
   determine the transport in that type family $T$ and we find that
   $(\pathover {\refl{\bn 3}} {T} {p} \tau) \weq (p(\shape_{\permgrp
     3})=\tau)$. Now, by induction on $q:\id=f$ for
-  $f:\fin_3 \to \fin_3$, one shows that
+  $f:\FinSet_3 \to \FinSet_3$, one shows that
   \begin{displaymath}
     \ap f : (\USym{\permgrp 3}) \to
     (f(\shape_{\permgrp 3}) = f(\shape_{\permgrp 3}))
@@ -1612,11 +1614,11 @@ If $X:\BG\to\Set$ is a $G$-set and $y:\BH$ define
 the \emph{induced $H$-type}
 \marginnote{%
   Note that the induced $H$-type may or may not be an $H$-{\bf set}.
-  As an example, consider the homomorphism $cy_2:\Hom(\ZZ,\Sigma_2)$ discussed above, given by sending $\base:S^1$ to $\bn 2:\fin_2$ and $\Sloop$ to the twist.
+  As an example, consider the homomorphism $\cy 2:\Hom(\ZZ,\Sigma_2)$ discussed above, given by sending $\base:S^1$ to $\bn 2:\FinSet_2$ and $\Sloop$ to the twist.
 }
 \marginnote{%
-  If we consider $cy_2$ also as a $\ZZ$-set (by including $\fin_2$ in the type of all sets), the induced $\Sigma_2$-set $\Sigma_2\times_{\ZZ}cy_2:\fin_2\to\Set$ is given by
-  $$y\mapsto \Sigma_{z:S^1}(cy_2(z)=y)\times cy_2(z),$$
+  If we consider $\cy 2$ also as a $\ZZ$-set (by including $\FinSet_2$ in the type of all sets), the induced $\Sigma_2$-set $\Sigma_2\times_{\ZZ}\cy 2:\FinSet_2\to\Set$ is given by
+  $$y\mapsto \Sigma_{z:S^1}(\cy 2(z)=y)\times \cy 2(z),$$
   and it is instructive to see that the symmetry of $(\base,\refl{\bn 2},0)$
   induced by $\Sloop^2$ is not identical to $\refl{}$,
   % \footnote{I have yet to write a nice exposition of this ``instructive'' point: one application of $\Sloop$ takes you to $(\base,tw,1)$}
