@@ -573,9 +573,21 @@
 \newcommand*{\isom}{\cong}
 \newcommand*{\liff}{\weq}
 \newcommand*{\jdeq}{\oldequiv}
-\newcommand*{\defeq}{\mathrel{\vcentcolon\jdeq}}
+\newcommand*{\defeq}{\vcentcolon\mathrel{\mkern-0.8mu}\jdeq}
 \newcommand*{\defequi}{\defeq} % definitionally equal
-\newcommand*{\defis}{\mathrel{\vcentcolon=}}
+\newcommand*{\defis}{\coloneqq}
+
+% make colon active (an active topic of discussion)
+\makeatletter
+\def\ordinarycolon{\mathchar`\:}
+\def\colon{\,\mathord\ordinarycolon\,}
+\protected\edef\tikz@nonactivecolon{%
+  \noexpand\ifmmode\noexpand\colon\noexpand\else:\noexpand\fi
+}
+\begingroup\lccode`\~=`\:\lowercase{\endgroup
+  \protected\def~}{\new@ifnextchar={\coloneqq\@gobble}{\colon}}
+\AtBeginDocument{\mathcode`\:="8000 }
+\makeatother
 
 % binary operations
 \newcommand*{\ct}{*}
