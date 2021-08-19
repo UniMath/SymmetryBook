@@ -5,11 +5,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Create the directory figures/
         run: mkdir -p figures
+      - name: Make version.tex
+        run: make version.tex
       - name: Compile LaTeX document
-        uses: dante-ev/latex-action@master
+        uses: dante-ev/latex-action@latest
         with:
           args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
           root_file: book.tex
+      - name: Gather file in build directory
+        run: |
+          mkdir build
+          mv book.pdf build/
+      - name: Publish to GitHub pages
+        if: success() && github.ref == 'refs/heads/main'
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: gh-pages
+          build_dir: build/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
