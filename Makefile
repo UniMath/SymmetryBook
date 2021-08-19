@@ -1,11 +1,11 @@
 MK = latexmk -halt-on-error -pdf -pdflatex="pdflatex -halt-on-error --shell-escape %O %S"
 
 all: book.pdf TAGS
-book.pdf: always figures
+book.pdf: always figures version.tex
 	$(MK) -quiet book
-see-errors: figures
+see-errors: figures version.tex
 	$(MK) book
-one-by-one: figures
+one-by-one: figures version.tex
 	pdflatex -halt-on-error --shell-escape book.tex
 	makeindex book.idx
 	biber book
@@ -14,14 +14,17 @@ one-by-one: figures
 	pdflatex -halt-on-error --shell-escape book.tex
 figures:
 	mkdir $@
+version.tex:
+	printf '\\newcommand{\\OPTversion}{%s}\n' \
+		"`git log -1 --pretty=format:'\texttt{%h} (%ad)' --date=short`" > version.tex
 clean:
 	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
 		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
-		*.auxlock *.synctex.gz TAGS
+		*.auxlock *.synctex.gz TAGS version.tex
 cleanall:
 	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
 		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
-		*.pdf *.auxlock *.synctex.gz figures TAGS
+		*.pdf *.auxlock *.synctex.gz figures TAGS version.tex
 always:
 
 # This list should include all the tex files that go into the book, in the order they go.
@@ -38,6 +41,8 @@ BOOKFILES :=						\
 	symmetry.tex					\
 	fggroups.tex					\
 	fingp.tex					\
+	metamath.tex					\
+	history.tex					\
 	EuclideanGeometry.tex
 
 TAGS : Makefile $(BOOKFILES)
