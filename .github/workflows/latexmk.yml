@@ -10,6 +10,8 @@ jobs:
         run: mkdir -p figures
       - name: Make version.tex
         run: make version.tex
+      - name: Disable TikZ externalize
+        run: echo "\newcommand{\OPTnotikzexternal}{true}" >> version.tex
       - name: Compile LaTeX document
         uses: dante-ev/latex-action@latest
         with:
@@ -20,7 +22,7 @@ jobs:
           mkdir build
           mv book.pdf build/
       - name: Publish to GitHub pages
-        if: success() && github.ref == 'refs/heads/main'
+        if: success() && github.ref == 'refs/heads/master'
         uses: crazy-max/ghaction-github-pages@v1
         with:
           target_branch: gh-pages
