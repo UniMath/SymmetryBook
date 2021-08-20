@@ -14,9 +14,9 @@ one-by-one: figures version.tex
 	pdflatex -halt-on-error --shell-escape book.tex
 figures:
 	mkdir $@
-version.tex: .git/FETCH_HEAD
+version.tex: .git/refs/heads/master
 	printf '\\newcommand{\\OPTversion}{%s}\n' \
-		"`git log -1 --pretty=format:'\texttt{%h} (%ad)' --date=short`" > version.tex
+		"`git log -1 --pretty=format:'\texttt{%h} (%as)'`" > version.tex
 clean:
 	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
 		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
