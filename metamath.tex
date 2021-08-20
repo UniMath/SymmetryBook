@@ -10,10 +10,10 @@ properties of the theory that cannot be formulated nor proved in the theory itse
 
 One such `metaproperty' that we use here is \emph{canonicity}.
 We call an element \emph{closed} if it does not contain free variables.
-An example of canonicity is that every closed natural number is a \emph{numeral},
-that is, either $0$ or $S(n)$ for some numeral $n$.
-Another example of canonicity is that every closed element of $L\coprod R$
-is either of the form $\inl{l}$ for some $l:L$ or
+An example of canonicity is that every closed expression of type $\NN$
+is a \emph{numeral}, that is, either $0$ or $S(n)$ for some numeral $n$.
+Another example of canonicity is that every closed expresssion of 
+type $L\coprod R$ is either of the form $\inl{l}$ for some $l:L$ or
 of the form $\inr{r}$ for some $r:R$.
 A second important metaproperty of our theory is that one can compute canonical forms.
 
@@ -34,34 +34,59 @@ In this section we provide more details about this relationship.
 
 There are four basic forms of definitional equality:
 \begin{enumerate}
-\item The original form: making an explicit definition, e.g., $1 \defeq \Succ(0)$;%
-\footnote{The notation $\defeq$ serves two purposes: 
-(1) the ``:'' tells the reader that we make a definition
-(or reminds the reader that this definition has been made);
-(2) we state that the definitional equality $1 \jdeq \Succ(0)$ holds.}
-\item The extension of the original form as found in inductive definitions,
-e.g., $n+0 \defeq n$ and $n+\Succ(m) \defeq \Succ(n+m)$;
-\item Simplifying the application of an explicitly defined function to an argument,
-e.g., $(x \mapsto f(x))(a) \jdeq f(a)$;
-\item Simplifying the explicit definition of a function that is already given,
-e.g., $(x \mapsto S(x)) \jdeq S$;
+\item\label{it:exp-defeq} Resulting from making an explicit definition, 
+e.g., $1 \defeq \Succ(0)$, after which we have $1 \jdeq \Succ(0)$;%
+\footnote{The notation $\defeq$ tells the reader that we make a definition
+(or reminds the reader that this definition has been made).}
+
+\item\label{it:imp-defeq} Resulting from making an implicit definition, 
+like we do in inductive definitions,
+e.g., $n+0 \defeq n$ and $n+\Succ(m) \defeq \Succ(n+m)$,
+after which we have $n+0 \jdeq n$ and $n+\Succ(m) \jdeq \Succ(n+m)$;
+
+\item\label{it:beta} Simplifying the application of an explicitly defined 
+function to an argument, e.g., $(x \mapsto e_x)(a) \jdeq e_a$;
+
+\item\label{it:eta} Simplifying $(x \mapsto e_x)$ to $f$ when $e_x$
+is the application of the function $f$ to the variable $x$,
+e.g., $(x \mapsto S(x)) \jdeq S$.
 \end{enumerate}
 
 Definitional equality is the \emph{congruence closure} of these 
 four basic forms, that is, the smallest reflexive, symmetric, transitive
 and congruent relation that contains all instances of the four basic forms.
 Here a congruent relation is a relation that is closed under all syntactic
-operations of type theory. For example, if $T : \NN\to\UU$, then $T(n)\jdeq T(n+0)$
-using symmetry and congruence, and for any $P: T(n)\to\UU$ we have
-$\prod_{x:T(n)} P(x) \jdeq \prod_{x:T(n+0)} P(x)$ by another application
-of congruence.
+operations of type theory. One such operation is substitution, so that we
+get from the examples above that, e.g., $1+0 \jdeq 1$ 
+and $n+\Succ(\Succ(m)) \jdeq \Succ(n+\Succ(m))$. Another important
+operation is application. For example, we can apply $\Succ$ to each of
+the sides of $n+\Succ(m) \jdeq \Succ(n+m)$ and get 
+$\Succ(n+\Succ(m)) \jdeq \Succ(\Succ(n+m))$, and also
+$n+\Succ(\Succ(m)) \jdeq \Succ(\Succ(n+m))$ by transitivity.
+
+Let's elaborate $\id \circ f \jdeq f$ claimed on page~\pageref{page:idofetaf}.
+The definitions used on the left hand side are 
+$\id \defeq (y \mapsto y)$ and $g \circ f \defeq (x \mapsto g(f(x)))$.
+In the latter definition we substitute $\id$ for $g$ and get
+$\id \circ f \jdeq (x \mapsto \id(f(x)))$. Unfolding $\id$ we get
+$(x \mapsto \id(f(x))) \jdeq (x \mapsto (y\mapsto y)(f(x)))$.
+Applying \ref{it:beta} we can substitute $f(x)$ for $(y\mapsto y)(f(x)))$
+and get $(x \mapsto (y\mapsto y)(f(x))) \jdeq (x \mapsto f(x))$.
+By \ref{it:eta} the right hand side is definitionally equal to $f$.
+Indeed $\id \circ f \jdeq f$ by transitivity.
+
+Definitional equality is also relevant for typing.
+For example, let $A: \UU$ and $P: A\to\UU$. If $B\jdeq A$,
+then  $ (B\to\UU)\jdeq(A\to\UU)$ by congruence, and also $P: B\to\UU$,
+and even $\prod_{x:B} P(x) \jdeq \prod_{x:A} P(x)$.
+
 
 %Discuss later: If syntactic expressions $e$ and $e'$ are definitionally equal, denoted by $e\jdeq e'$, then $e$ and $e'$ have the same type $T$, then $\refl e : e=_T e'$; the converse is not true.
 
-\subsection{Testing definitional equality}
+\subsection{Deciding definitional equality (not updated yet)}
 \label{sec:defeq-computation}
 
-By a \emph{test} we mean here a terminating algorithmic procedure that 
+By a \emph{decision procedure} we mean a terminating algorithmic procedure that 
 answers a yes/no question.
 Although it is possible to enumerate all true definitional equalities,
 this does not give a test that answers whether or not a given instance $e\jdeq e'$ holds.
