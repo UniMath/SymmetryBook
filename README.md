@@ -34,6 +34,10 @@ This book will be an undergraduate textbook written in the univalent style, taki
        + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker);
 - Given a: A, we refer to elements of a = a as either symmetries *of* a, or symmetries *in* A.
 
+## Current draft of the book
+
+Go [here for the current draft of the book](https://unimath.github.io/SymmetryBook/book.pdf).
+
 ## An icosahedron for your viewing pleasure
 
 Go [here for an interactive icosahedron](https://unimath.github.io/SymmetryBook/icosahedron.html)
