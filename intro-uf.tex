@@ -652,7 +652,7 @@ $\ap f(p^{-1}) =  (\ap f (p))^{-1}$, and that $\ap \id$ is the identity on paths
 \begin{xca}\label{xca:trp-ap}
   Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$. Furthermore, let $A$ be a type, let $f:A\to X$ be a
   function, and let $p: a=a'$ be a path. Show that there is an identification of type $\trp[T \circ f]{p} = \trp[T]{\ap{f}(p)}$
-  between two functions of type $T(f(a)) \to T(f(a'))$.
+  between these two functions, which are of type $T(f(a)) \to T(f(a'))$.
 \end{xca}
 
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ can be identified, then their values can be identified, i.e., for every element $x$ of
@@ -700,37 +700,35 @@ The type of $\ns(h,p)$ can be depicted as a square\footnote{%
 
 \section{Identifying elements in members of families of types}
 
-If $Y(x)$ is a family of types parametrized by the elements $x$ of a type $X$, then it is possible to ``identify'' an element of $Y(x)$ with an
-element of $Y(x')$ after identifying $x$ with $x'$.  That is the idea of the following definition.
+If $Y(x)$ is a family of types parametrized by the elements $x$ of a type $X$, and $a$ and $a'$ are elements of type $X$, then after identifying
+$a$ with $a'$ it is possible to ``identify'' an element of $Y(a)$ with an element of $Y(a')$.  That is the idea of the following definition.
 
 \begin{definition}\label{def:pathsoverpaths}
-  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.  Given elements $x,x':X$, $y:Y(x)$, and
-  $y':Y(x')$ and a path $p : x = x'$,
-  we define a new type $\pathover y Y p {y'}$ by induction on $p$,%
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by a variable $x$ of type $X$.  Given elements $a,a':X$, $y:Y(a)$, and
+  $y':Y(a')$ and a path $p : a = a'$,
+  we define a new type $\pathover y Y p {y'}$ as follows.%
   \glossary(2=over){$=^Y_p$}{path-over type, \cref{def:pathsoverpaths}}
-  thereby reducing to the case
-  where $x'$ is $x$ and $p$ is $\refl x$,
-  rendering $y$ and $y'$ of the same type,
-  allowing us to set
-  $\left( \pathover y Y {\refl x} {y'} \right) \defeq (y = y')$.
+  We proceed by induction on $a'$ and $p$, which reduces us to the case where $a'$ is $a$ and $p$ is $\refl a$,
+  rendering $y$ and $y'$ of the same type, allowing us to set
+  $\left( \pathover y Y {\refl a} {y'} \right) \defeq (y = y')$.
   An element $q : \pathover y Y p {y'}$ is called a \emph{path} from $y$ to $y'$ \emph{over} $p$.\footnote{\label{ft:path-over-pic}%
-    We picture this simply as follows: the path from $y$ to $y'$ over $p$ winds
-    through the vertical lines representing the types $Y(x'')$ as $x'':X$
-    moves along the path $p$ in $X$ from $x$ to $x'$:\par
+    We picture this simply as follows: the path from $y$ to $y'$ over $p$ travels
+    through the vertical lines representing the types $Y(x)$ as $x:X$
+    moves along the path $p$ in $X$ from $a$ to $a'$:\par
   \begin{tikzpicture}
     % Name the coordinates so they are easy to change
     % first: X
     \coordinate (X-left) at (-1,-1);
-    \node[dot,label=below:$x$] (X-x) at (0,-1.2) {};
-    \node[dot,label=below:$x'$] (X-xp) at (1.5,-.9) {};
+    \node[dot,label=below:$a$] (X-x) at (0,-1.2) {};
+    \node[dot,label=below:$a'$] (X-xp) at (1.5,-.9) {};
     \coordinate (X-right) at (2.8,-1);
     \node (X) at (3,-1) {$X$};
     % then: Y top and bottom
     \coordinate (Y-top-left) at (-1,1.5);
     \coordinate (Y-bot-left) at (-1,0.5);
-    \coordinate[label=above:$Y(x)$] (Y-top-x) at (0,1.9);
+    \coordinate[label=above:$Y(a)$] (Y-top-x) at (0,1.9);
     \coordinate (Y-bot-x) at (0,-.1);
-    \coordinate[label=above:$Y(x')$] (Y-top-xp) at (1.5,2.1);
+    \coordinate[label=above:$Y(a')$] (Y-top-xp) at (1.5,2.1);
     \coordinate (Y-bot-xp) at (1.5,.2);
     \coordinate (Y-top-right) at (2.8,1.3);
     \coordinate (Y-bot-right) at (2.8,0.8);
@@ -1642,7 +1640,7 @@ The approach in univalent mathematics resolves the issue as follows.
   \glossary(UU){$\protect\UU$}{universe}
 \item If $X$ is a type, then it appears as an element in some universe $\UU$.
 \item If $\UU$ and $\UU'$ are universes, $\UU:\UU'$ and $X:\UU$, then also $X:\UU'$.
-\item The types $\emptytype$, $\true$, and $\NN$ are elements of every universe $\UU$.
+\item The types $\emptytype$, $\true$, $\bool$, and $\NN$ are elements of every universe $\UU$.
 \item If $X : \UU$ and $a,b:X$, then $(a = _X b) : \UU$.
 \item Given a type $X:\UU$ and a family of types $Y(x):\UU$ parametrized by variable $x$ of type $X$, the sum $\sum_{x:X} Y(x)$ and the product
   $\prod_{x:X} Y(x)$ are also elements of $\UU$.
