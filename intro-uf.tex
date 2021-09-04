@@ -1653,15 +1653,12 @@ and there is an equivalence of type $(-n = -n') \equiv (n=n')$.
 
 \section{Univalence}\label{sec:univax}
 
-The univalence axiom is a statement about an arbitrary universe $\UU$:
-for all types $X$ and $Y$ in $\UU$: there is an equivalence between identities in $\UU$ between them and
-equivalences between them.  This greatly
-enhances our ability to produce identities between the two types 
-and to use the resulting identities to transport (in the sense of \cref{def:transport}) properties and structure
-between the types.
+The univalence axiom, to be presented in this section, greatly enhances our ability to produce identities between the two types and to use the
+resulting identities to transport (in the sense of \cref{def:transport}) properties and structure between the types.  It asserts that if $\UU$
+is a universe, and $X$ and $Y$ are types in $\UU$, then there is an equivalence between identities between $X$ and $Y$ and equivalences between
+$X$ and $Y$.
 
-We now define the \emph{function} that
-the univalence axiom postulates to be an equivalence.
+We now define the function that the univalence axiom postulates to be an equivalence.
 
 \begin{definition}\label{def:idtoeq}
   For types $X$ and $Y$ in a universe $\UU$ and a path $p : X = Y$,
@@ -1679,31 +1676,24 @@ In expressions such as $\cast_{X,Y}(p)$ we may abbreviate $\cast_{X,Y}$ to $\cas
 no confusion will result. We may also write $\cast (p)$ more briefly as $\ptoe p$,%
 \glossary(1cast){$\protect\ptoe p$}{cast along a path between types}
 which we also use to denote the corresponding function from $X$ to $Y$.\footnote{%
-    \emph{Cast} is here used in the sense of
-    ``arranging into a suitable form''.
-    A more theatrical description would be that
-    an element $x$ of $X$ is cast in the \emph{role} of a $Y$
+    \emph{Cast} is here used in the sense of ``arranging into a suitable form''.
+    A more theatrical description would be that an element $x$ of $X$ is cast in the \emph{role} of an element of $Y$
     as \emph{directed} by the path $p : X = Y$.
-    But beware that some programming languages use \emph{cast}
-    in a quite different sense, meaning to take a
-    single bit-pattern representing an object of type $X$
-    and simply \emph{reinterpreting} the same bits
-    as an object of type $Y$.}
+    But beware that some programming languages use \emph{cast} in a different sense:
+    to take a bit-pattern representing an object of type $X$ and simply \emph{reinterpreting} the same bits as an object of type $Y$.}
 
-One may verify that $\cast(p)(x) = \trp[\id_\UU]{ p} (x)$, for $x : X$, by induction on $p$.
-Here $\id_\UU$ is the identity function $\id_\UU$ on $\UU$, viewed as a family of types on $\UU$.
-As a corollary, one sees that $\trp[\id_\UU]{ p}$, previously defined as a function, is an equivalence.
+Let $T$ be a variable of type $\UU$; then we may view $T$ as a family of types parametrized by $\UU$, of the sort required for use with
+transport as defined in \cref{def:transport}.  One may construct an identity of type $\cast(p)(x) = \trp[T]{p} (x)$, for $x : X$, by induction
+on $Y$ and $p$.  As a corollary, one sees that the function $\trp[T]{p}$ is an equivalence.
 
-Now comes the univalence axiom.
+We are ready to state the univalence axiom.
 
 \begin{principle}[Univalence Axiom]\label{def:univalence}
-  Voevodsky's \emph{univalence axiom}\index{univalence axiom} (UA)%
-  \index{UA|see{univalence axiom}} postulates that
-$\cast_{X,Y}$ above is an equivalence for all $X,Y:\UU$.
-Formally, we postulate the existence of an element
-\[
-  \ua_{X,Y} : \isEq(\cast_{X,Y}).\qedhere
-\]
+    Voevodsky's \emph{univalence axiom}\index{univalence axiom} (UA)\index{UA|see{univalence axiom}} postulates that $\cast_{X,Y}$ is an equivalence for all $X,Y:\UU$.
+    Formally, we postulate the existence of an element
+    \[
+      \ua_{X,Y} : \isEq(\cast_{X,Y}).\qedhere
+    \]
 \end{principle}
 
 For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X = Y $ to denote $\cast_{X,Y}^{-1}(f)$,%
