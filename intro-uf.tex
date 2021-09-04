@@ -218,14 +218,12 @@ one may wonder what sort of thing the collection of all classes would be.  Such 
   \item There are some types called \emph{universes}.\index{universe}\glossary(UU){$\protect\UU$}{universe}
   \item If $\UU$ is a universe, and $X : \UU$ is an element of $\UU$, then $X$ is a type.
   \item If $X$ is a type, then it appears as an element in some universe $\UU$.
+    Moreover, if $n$ is a natural number and $X_1, \dots, X_n$ are types, then there is a universe $\UU$ containing all of them.
   \item If $\UU$ and $\UU'$ are universes, $\UU:\UU'$, $X$ is a type, and $X:\UU$, then also $X:\UU'$.  (Thus we may regard $\UU'$ as being larger than $\UU$.)
-  \item If $\UU$ and $\UU'$ are universes, then there is a universe $\UU''$ with $\UU : \UU''$ and $\UU' : \UU''$.
   \item There is a particular universe $\UU_0$, which we single out to serve as a repository for certain basic types to be introduced in the sequel.
 \end{enumerate}
 
 It follows from the properties above that there are an infinite number of universes, for each one is an element of a larger one.
-
-It also follows from the properties above that if $X_1, \dots, X_n$ are types, then there is a universe $\UU$ containing all of them.
 
 Now suppose we have a type $X$ and a family $T(x)$ of types parametrized by a variable $x$ of type $X$.  Choose a universe $U$ with $T(x) : U$.
 Then we can make a function of type $X \to U$, namely $f \defeq (x \mapsto T(x))$.  Conversely, if $f'$ is a function of type $X \to \UU$, then
@@ -237,8 +235,8 @@ types in $\UU$ and functions to $\UU$ will often be used.
 
 Here are Peano's rules\footcite{peano-principia} for constructing the natural numbers in the form that is used in type theory.
 \begin{enumerate}[label=(P\arabic*),ref=(P\arabic*)]
-\item\label{P1} there is a type called $\NN$
-  (whose elements will be called natural numbers);%
+\item\label{P1} there is a type called $\NN$ in the universe $\UU_0$
+  (whose elements will be called \emph{natural numbers});%
   \glossary(N){$\protect\NN$}{the type of natural numbers, Peano's rules, \cref{P1}}
 \item\label{P2} there is an element of $\NN$ called $0$, called \emph{zero};%
   \glossary(80){$0$}{the natural number zero, Peano's rules, \cref{P2}}\index{zero}
@@ -320,21 +318,22 @@ the two elements are of the same type; we shall have no need to compare elements
 
 Here are the rules for constructing and using equality types.
 \begin{enumerate}[label=(E\arabic*),ref=(E\arabic*)]\label{rules-for-equality}
-\item\label{E1}
-  for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a =_X b$;%
-  \glossary(2=){${=_X}$}{identity type, \cref{E1}}%
-  \index{identity type}
-\item\label{E2} for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$
-  (the name $\refl{}$ comes from the word ``reflexivity'')%
-  \glossary(refl){$\protect\refl{a}$}{reflexivity, identity type, \cref{E2}}
-\item\label{E3} suppose we are given:
-  \begin{enumerate}
-  \item a type $X$ and an element $a:X$;
-  \item a family of types $P(b,e)$ parametrized by variables $b$ of type $X$ and $e$ of type $a =_X b$; and
-  \item an element $p$ of $P(a,\refl a)$.
-  \end{enumerate}
-  Then from those data we are provided with a family of elements $f(b,e) : P(b,e)$ parametrized by $b$ and $e$.
-  Moreover, $f(a,\refl a) \jdeq p$.
+  \item\label{E1}
+    for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a =_X b$;%
+    \glossary(2=){${=_X}$}{identity type, \cref{E1}}%
+    \index{identity type}
+    moreover, if $X$ is an element of a universe $\UU$, then so is $a =_X b$.
+  \item\label{E2} for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$
+    (the name $\refl{}$ comes from the word ``reflexivity'')%
+    \glossary(refl){$\protect\refl{a}$}{reflexivity, identity type, \cref{E2}}
+  \item\label{E3} suppose we are given:
+    \begin{enumerate}
+    \item a type $X$ and an element $a:X$;
+    \item a family of types $P(b,e)$ parametrized by variables $b$ of type $X$ and $e$ of type $a =_X b$; and
+    \item an element $p$ of $P(a,\refl a)$.
+    \end{enumerate}
+    Then from those data we are provided with a family of elements $f(b,e) : P(b,e)$ parametrized by $b$ and $e$.
+    Moreover, $f(a,\refl a) \jdeq p$.
 \end{enumerate}
 
 The type $a =_X b$ may be called an \emph{equality type}, and \emph{identity type}, or simply an \emph{equation})\index{equation|see{identity type}}.
@@ -643,6 +642,8 @@ $\prod_{x:X} Y(x)$ whose elements $f$ are functions that provide elements $f(a)$
 \emph{parameter type} of the product.\index{product type}\index{parameter type} By contrast, if $Y$ happens to be a constant family of types, then
 $\prod_{x:X} Y$ will also be denoted by $X \to Y$, and it will also be called a \emph{function type}.
 
+If $X$ and $Y(x)$ are elements of a universe $\UU$, then so is $\prod_{x:X} Y(x)$.
+
 Functions preserve equality, and we will use this frequently later on.  More precisely, functions induce maps on identity types, as the
 following definition makes precise.
 
@@ -736,9 +737,11 @@ with $a'$ it turns out that it is possible to ``identify'' an element of $Y(a)$ 
 idea of the following definition.
 
 \begin{definition}\label{def:pathsoverpaths}
-  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by a variable $x$ of type $X$.  Given elements $a,a':X$, $y:Y(a)$, and
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by a variable $x$ of type $X$.
+  Suppose also that $X$ and $Y(x)$ are elements of a universe $\UU$.
+  Given elements $a,a':X$, $y:Y(a)$, and
   $y':Y(a')$ and a path $p : a = a'$,
-  we define a new type $\pathover y Y p {y'}$ as follows.%
+  we define a new type $\pathover y Y p {y'}$ as an element of $\UU$ as follows.%
   \glossary(2=over){$=^Y_p$}{path-over type, \cref{def:pathsoverpaths}}
   We proceed by induction on $a'$ and $p$, which reduces us to the case where $a'$ is $a$ and $p$ is $\refl a$,
   rendering $y$ and $y'$ of the same type, allowing us to set
@@ -958,6 +961,8 @@ a \emph{dependent} pair. We may refer to $X$ as the \emph{parameter
     \draw[->,shorten <=.1cm,shorten >=.1cm] (Y-bot-x)
     -- node[anchor=west] {${\fst}$} (X-x);
   \end{tikzpicture}}
+
+If $X$ and $Y(x)$ are elements of a universe $\UU$, then so is $\sum _{x:X} Y(x)$.
 
 Proving something about (or constructing something from) every
 element of $\sum _{x:X} Y(x)$ is done by performing the construction on elements of the form $(a,b)$, for every $a:X$ and $b: Y(a)$.
@@ -1472,7 +1477,7 @@ constituent types.
 
 \subsection{Finite types}
 \label{sec:finite-types}
-Firstly, there is the \emph{empty} type, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
+Firstly, there is the \emph{empty} type in the universe $\UU_0$, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
 definition.  The induction principle for $\emptytype$ says that to prove something about (or to construct something from) every element of
 $\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be proven. (This logical principle is traditionally called \emph{ex falso quodlibet}.\footnote{%
   Sometimes also \emph{ex falso sequitur quodlibet}:
@@ -1486,7 +1491,7 @@ no elements, it would be sensible to assert that an element of $P$ would lead to
 convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting $\neg P \defeq P \to \emptytype$.  Using it, we
 may define the type $(a \ne b) \defeq \neg (a = b)$; an element of it asserts that $a$ and $b$ cannot be identified.
 
-Secondly, there will also be a type called $\true$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
+Secondly, there will also be a type called $\true$ in the universe $\UU_0$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
   ``trivial'').  Its induction principle
 states that, in order to prove something about (or to construct something from) every element of $\true$, it suffices to consider the special
 case where the element is $\triv$.  As an example, we may prove, for any element $u : \true$, that $u=\triv$, by using induction to reduce
@@ -1495,7 +1500,7 @@ to proving $\triv=\triv$, a proof of which is provided by $\refl{\triv}$.  One m
 There is a function $X \to \true$, for any type $X$, namely: $a \mapsto \triv$.  This corresponds, for propositions, to the statement that an
 implication holds if the conclusion is true.
 
-Thirdly, there will be a type called $\bool$,
+Thirdly, there will be a type called $\bool$ in the universe $\UU_0$,
 defined by induction and provided with two elements, $\yes$ and $\no$.
 One may prove by induction
 that any element of $\bool$ is equal to $\yes$ or to $\no$.
@@ -1726,7 +1731,7 @@ Typical examples of such `structured' type families are
 $Y(x)\to Z(x)$ and $x=x$ parametrized by $x:X$.
 
 \begin{definition}\label{def:function-type-families}
-Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
+Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be families of types parametrized by a variable $x:X$.
 Define $Y\to Z$ to be the type family
 with $(Y\to Z)(x) \defeq Y(x)\to Z(x)$.
 \end{definition}
