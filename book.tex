@@ -1,10 +1,20 @@
-\pdfoutput=1
-\input version
-\input macros
 \usepackage[notref,notcite]{showkeys}
 \renewcommand*{\showkeyslabelformat}[1]{%
   {\rotatebox[origin=cr]{60}{\normalfont\tiny\ttfamily#1}}}
 %\includeonly{}
+
+\input version
+
+%% speed up compilation by compiling tikz figure separately
+%% unless we say not to be defining \OPTnotikzexternal
+\ifthenelse{\isundefined{\OPTnotikzexternal}}{%
+  \usepackage{tikz-external-hash}
+  \usetikzlibrary{external}%
+  \tikzset{external/system call={pdflatex -fmt macros \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+  \tikzexternalize[prefix=figures/]%
+  \AtBeginEnvironment{tikzcd}{\tikzexternaldisable}
+  \AtEndEnvironment{tikzcd}{\tikzexternalenable}
+}{}
 
 \begin{document}
 

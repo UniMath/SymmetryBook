@@ -1,3 +1,7 @@
+$pdf_mode = 1;
+
+$pdflatex = "pdflatex -halt-on-error --shell-escape -fmt macros %O %S";
+
 @default_files = ("book");
 
 push @generated_exts, "glo", "gls";

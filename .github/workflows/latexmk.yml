@@ -12,6 +12,11 @@ jobs:
         run: make version.tex
       - name: Disable TikZ externalize
         run: echo "\newcommand{\OPTnotikzexternal}{true}" >> version.tex
+      - name: Precompilation
+        uses: dante-ev/latex-action@latest
+        with:
+          compiler: pdflatex
+          args: -ini -jobname="macros" "&pdflatex macros.tex\dump"
       - name: Compile LaTeX document
         uses: dante-ev/latex-action@latest
         with:
