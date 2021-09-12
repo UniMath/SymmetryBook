@@ -17,8 +17,9 @@ figures:
 macros.fmt: macros.tex tikzsetup.tex
 	pdflatex -ini -jobname="macros" "&pdflatex macros.tex\dump"
 version.tex: .git/refs/heads/master
-	printf '\\newcommand{\\OPTversion}{%s}\n' \
-		"`git log -1 --pretty=format:'\texttt{%h} (%as)'`" > version.tex
+	git log -1 --date=short \
+    --pretty=format:'\newcommand{\OPTcommit}{%h}%n\newcommand{\OPTdate}{%ad}%n' \
+    > version.tex
 clean:
 	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
 		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
