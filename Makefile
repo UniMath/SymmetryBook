@@ -44,7 +44,7 @@ BOOKFILES :=						\
 	symmetry.tex					\
 	fggroups.tex					\
 	fingp.tex					\
-	EuclideanGeometry.tex					\
+	EuclideanGeometry.tex				\
 	galois.tex					\
 	history.tex					\
 	metamath.tex
