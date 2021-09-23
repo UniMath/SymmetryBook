@@ -365,14 +365,24 @@ Here are the rules for constructing and using equality types.
   \item\label{E3} suppose we are given:
     \begin{enumerate}
     \item a type $X$ and an element $a:X$;
-    \item a family of types $P(b,e)$ parametrized by variables $b$ of type $X$ and $e$ of type $a =_X b$; and
-    \item an element $p$ of $P(a,\refl a)$.
+    \item a family of types $P(b,e,\dots)$ parametrized by a variable $b$ of type $X$, a variable $e$ of type $a =_X b$, and perhaps some
+      further variables; and
+    \item an element $p$ of $P(a,\refl a,\dots)$.
     \end{enumerate}
-    Then from those data we are provided with a family of elements $f(b,e) : P(b,e)$ parametrized by $b$ and $e$.
-    Moreover, $f(a,\refl a) \jdeq p$.
+    Then from those data we are provided with a family of elements $f(b,e,\dots) : P(b,e,\dots)$.
+    Moreover, $f(a,\refl a,\dots) \jdeq p$.
+  \item\label{E4} suppose we are given:
+    \begin{enumerate}
+    \item a type $X$ and an element $a:X$;
+    \item a sequence of variables $b,e,s_1:S_1,\dots,s_n:S_n$ consisting of a variable $b$ of type $X$, a variable $e$ of type $a =_X b$, and perhaps some
+      further variables; and
+    \item a family of types $Y$ parametrized by variables $$s_1:S_1(a,\refl a),\dots,s_n:S_n(a,\refl a).$$
+    \end{enumerate}
+    Then from those data we are provided with a family of types $Z$ parametrized by the variables $b,e,s_1:S_1,\dots,s_n:S_n$.
+    Moreover, $Z(a,\refl a,\dots) \jdeq Y$.
 \end{enumerate}
 
-The type $a =_X b$ may be called an \emph{equality type}, and \emph{identity type}, or simply an \emph{equation})\index{equation|see{identity type}}.
+The type $a =_X b$ may be called an \emph{equality type}, an \emph{identity type}, or simply an \emph{equation})\index{equation|see{identity type}}.
 
 When there is no risk of confusion, we will write $a=b$ instead of $a =_X b$.
 
@@ -426,8 +436,9 @@ A student might want a more detailed derivation that $\fact(2)$ may be identifie
 but as a result of our convention above that definitions may be applied without changing anything, the application of definitions, including
 inductive definitions, is normally regarded as a trivial operation, and the details are usually omitted.
 
-We will refer to rule \ref{E3} as ``induction for equality'', and to signal that we wish to apply rule \ref{E3} to produce
-an element of $P(b,e)$, we may announce that we argue \emph{by induction on $e$}.
+We will refer to rules \ref{E3} and \ref{E4} as ``induction for equality''.  To signal that we wish to apply one of them,
+e may announce that we argue \emph{by induction on $e$}.
+
 The family $f$ resulting from an application of rule \ref{E3} may be regarded as having been completely defined by the single declaration
 $f(a,\refl a) \defeq p$,
 and indeed, we will often simply write such a declaration as a shorthand way of applying rule \ref{E3}.
@@ -666,6 +677,7 @@ function $\trp e : T(a) \to T(b)$ provides a way to establish a claim about $b$
 from a claim about $a$, so we will refer to it as \emph{substitution}.  In
 other words, elements that can be identified have the same properties.
 
+We will see our first example of the use of rule \ref{E4} in \cref{def:pathsoverpaths}.
 
 \section{Product types}
 \label{sec:product-types}
@@ -774,12 +786,11 @@ idea of the following definition.
 
 \begin{definition}\label{def:pathsoverpaths}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by a variable $x$ of type $X$.
-  Suppose also that $X$ and $Y(x)$ are elements of a universe $\UU$.
   Given elements $a,a':X$, $y:Y(a)$, and
   $y':Y(a')$ and a path $p : a = a'$,
-  we define a new type $\pathover y Y p {y'}$ as an element of $\UU$ as follows.%
+  we define a new type $\pathover y Y p {y'}$ as follows.%
   \glossary(2=over){$=^Y_p$}{path-over type, \cref{def:pathsoverpaths}}
-  We proceed by induction on $a'$ and $p$, which reduces us to the case where $a'$ is $a$ and $p$ is $\refl a$,
+  We proceed by induction on $a'$ and $p$ (i.e., by application of rule \ref{E4}), which reduces us to the case where $a'$ is $a$ and $p$ is $\refl a$,
   rendering $y$ and $y'$ of the same type, allowing us to set
   $\left( \pathover y Y {\refl a} {y'} \right) \defeq (y = y')$.
   An element $q : \pathover y Y p {y'}$ is called a \emph{path} from $y$ to $y'$ \emph{over} $p$.\footnote{\label{ft:path-over-pic}%
