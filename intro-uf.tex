@@ -255,8 +255,9 @@ Some later approaches to
   \item If $\UU$ is a universe, and $X : \UU$ is an element of $\UU$, then $X$ is a type.
   \item If $X$ is a type, then it appears as an element in some universe $\UU$.
     Moreover, if $X$ and $Y$ are types, then there is a universe $\UU$ containing both of them.
-  \item If $\UU$ and $\UU'$ are universes, $\UU:\UU'$, $X$ is a type, and $X:\UU$, then also $X:\UU'$.  (Thus we may regard $\UU'$ as being larger than $\UU$.)
+  \item If $\UU$ and $\UU'$ are universes, $\UU:\UU'$, $X$ is a type, and $X:\UU$, then also $X:\UU'$.  (Thus we may regard $\UU'$ as being \emph{larger} than $\UU$.)
   \item There is a particular universe $\UU_0$, which we single out to serve as a repository for certain basic types to be introduced in the sequel.
+    Moreover, $\UU_0 : \UU$ for every universe $\UU$, and thus $\UU_0$ is the \emph{smallest} universe.
 \end{enumerate}
 
 It follows from the properties above that there are an infinite number of universes, for each one is an element of a larger one.
@@ -371,16 +372,6 @@ Here are the rules for constructing and using equality types.
     \end{enumerate}
     Then from those data we are provided with a family of elements $f(b,e,\dots) : P(b,e,\dots)$.
     Moreover, $f(a,\refl a,\dots) \jdeq p$.
-  \item\label{E4} suppose we are given:
-    \begin{enumerate}
-    \item a type $X$ and an element $a:X$;
-    \item a sequence of variables $b,e,s_1:S_1(b,e),\dots,s_n:S_n(b,e)$ consisting of a variable $b$ of type $X$,
-      a variable $e$ of type $a =_X b$, and perhaps some further variables $s_i$,
-      where the type $S_i$ of $s_i$ may depend on the variables to the left of it in the sequence; and
-    \item a family of types $Y$ parametrized by variables $$s_1:S_1(a,\refl a),\dots,s_n:S_n(a,\refl a).$$
-    \end{enumerate}
-    Then from those data we are provided with a family of types $Z$ parametrized by the variables $b,e,s_1:S_1(b,e),\dots,s_n:S_n(b,e)$.
-    Moreover, $Z(a,\refl a,\dots) \jdeq Y$.
 \end{enumerate}
 
 The type $a =_X b$ may be called an \emph{equality type}, an \emph{identity type}, or simply an \emph{equation})\index{equation|see{identity type}}.
@@ -437,8 +428,7 @@ A student might want a more detailed derivation that $\fact(2)$ may be identifie
 but as a result of our convention above that definitions may be applied without changing anything, the application of definitions, including
 inductive definitions, is normally regarded as a trivial operation, and the details are usually omitted.
 
-We will refer to rules \ref{E3} and \ref{E4} as ``induction for equality''.  To signal that we wish to apply one of them,
-e may announce that we argue \emph{by induction on $e$}.
+We will refer to rule \ref{E3} as ``induction for equality''.  To signal that we wish to apply it, we may announce that we argue \emph{by induction on $e$}.
 
 The family $f$ resulting from an application of rule \ref{E3} may be regarded as having been completely defined by the single declaration
 $f(a,\refl a) \defeq p$,
@@ -678,8 +668,6 @@ function $\trp e : T(a) \to T(b)$ provides a way to establish a claim about $b$
 from a claim about $a$, so we will refer to it as \emph{substitution}.  In
 other words, elements that can be identified have the same properties.
 
-We will see our first example of the use of rule \ref{E4} in \cref{def:pathsoverpaths}.
-
 \section{Product types}
 \label{sec:product-types}
 
@@ -786,57 +774,57 @@ with $a'$ it turns out that it is possible to ``identify'' an element of $Y(a)$ 
 idea of the following definition.
 
 \begin{definition}\label{def:pathsoverpaths}
-  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by a variable $x$ of type $X$.
+  Suppose we are given a type $X$ in a universe $\UU$ and a family of types $Y(x)$, also in $\UU$, parametrized by a variable $x$ of type $X$.
   Given elements $a,a':X$, $y:Y(a)$, and
   $y':Y(a')$ and a path $p : a = a'$,
-  we define a new type $\pathover y Y p {y'}$ as follows.%
+  we define a new type $\pathover y Y p {y'}$ in $\UU$ as follows.%
   \glossary(2=over){$=^Y_p$}{path-over type, \cref{def:pathsoverpaths}}
-  We proceed by induction on $a'$ and $p$ (i.e., by application of rule \ref{E4}), which reduces us to the case where $a'$ is $a$ and $p$ is $\refl a$,
-  rendering $y$ and $y'$ of the same type, allowing us to set
-  $\left( \pathover y Y {\refl a} {y'} \right) \defeq (y = y')$.
-  An element $q : \pathover y Y p {y'}$ is called a \emph{path} from $y$ to $y'$ \emph{over} $p$.\footnote{\label{ft:path-over-pic}%
-    We picture this simply as follows: the path from $y$ to $y'$ over $p$ travels
-    through the vertical lines representing the types $Y(x)$ as $x:X$
-    moves along the path $p$ in $X$ from $a$ to $a'$:\par
-  \begin{tikzpicture}
-    % Name the coordinates so they are easy to change
-    % first: X
-    \coordinate (X-left) at (-1,-1);
-    \node[dot,label=below:$a$] (X-x) at (0,-1.2) {};
-    \node[dot,label=below:$a'$] (X-xp) at (1.5,-.9) {};
-    \coordinate (X-right) at (2.8,-1);
-    \node (X) at (3,-1) {$X$};
-    % then: Y top and bottom
-    \coordinate (Y-top-left) at (-1,1.5);
-    \coordinate (Y-bot-left) at (-1,0.5);
-    \coordinate[label=above:$Y(a)$] (Y-top-x) at (0,1.9);
-    \coordinate (Y-bot-x) at (0,-.1);
-    \coordinate[label=above:$Y(a')$] (Y-top-xp) at (1.5,2.1);
-    \coordinate (Y-bot-xp) at (1.5,.2);
-    \coordinate (Y-top-right) at (2.8,1.3);
-    \coordinate (Y-bot-right) at (2.8,0.8);
-    \draw (Y-bot-left) .. controls +(-90:.5) and +(0:-.5) .. (Y-bot-x)
-    .. controls +(0:.5) and +(-10:-.5) .. (Y-bot-xp)
-    .. controls +(-10:.5) and +(90:-.5) .. (Y-bot-right)
-    -- (Y-top-right)
-    .. controls +(90:.5) and +(0:.5) .. (Y-top-xp)
-    .. controls +(0:-.5) and +(-10:.4) .. (Y-top-x)
-    .. controls +(-10:-.4) and +(90:.5) .. (Y-top-left)
-    -- (Y-bot-left);
-    \draw[dashed] (Y-bot-x) -- (Y-top-x);
-    \draw[dashed] (Y-bot-xp) -- (Y-top-xp);
-    \draw (X-left) .. controls +(-10:.3) and +(0:-.3) .. (X-x);
-    \draw[->] (X-x) .. controls +(0:.3) and +(-10:-.5) ..
-      node[anchor=north] {$p$} (X-xp);
-    \draw (X-xp) .. controls +(-10:.5) and +(0:-.1) .. (X-right);
-    % Now the specifics: two points y,y' and the pathover
-    \node[dot,label=left:$y$] (y) at (0,0.9) {};
-    \node[dot,label=right:$y'$] (yp) at (1.5,1.1) {};
-    \draw[->] (y) .. controls +(0:.5) and +(0:-.5) ..
-      node[anchor=south] {$q$} (yp);
-    \end{tikzpicture}}%
-  \index{path over}
+  We proceed by induction on $a'$ and $p$, which reduces us to the case where $a'$ is $a$ and $p$ is $\refl a$,
+  rendering $y$ and $y'$ of the same type $Y(a)$ in $\UU$, allowing us to define
+  $\pathover y Y {\refl a} {y'}$ to be $y = y'$, which is also in $\UU$.
 \end{definition}
+
+An element $q : \pathover y Y p {y'}$ is called a \emph{path} from $y$ to $y'$ \emph{over} $p$.\index{path over}\footnote{\label{ft:path-over-pic}%
+  We picture this as follows: the path from $y$ to $y'$ over $p$ travels
+  through the vertical lines representing the types $Y(x)$ as $x:X$
+  moves along the path $p$ in $X$ from $a$ to $a'$:\par
+\begin{tikzpicture}
+  % Name the coordinates so they are easy to change
+  % first: X
+  \coordinate (X-left) at (-1,-1);
+  \node[dot,label=below:$a$] (X-x) at (0,-1.2) {};
+  \node[dot,label=below:$a'$] (X-xp) at (1.5,-.9) {};
+  \coordinate (X-right) at (2.8,-1);
+  \node (X) at (3,-1) {$X$};
+  % then: Y top and bottom
+  \coordinate (Y-top-left) at (-1,1.5);
+  \coordinate (Y-bot-left) at (-1,0.5);
+  \coordinate[label=above:$Y(a)$] (Y-top-x) at (0,1.9);
+  \coordinate (Y-bot-x) at (0,-.1);
+  \coordinate[label=above:$Y(a')$] (Y-top-xp) at (1.5,2.1);
+  \coordinate (Y-bot-xp) at (1.5,.2);
+  \coordinate (Y-top-right) at (2.8,1.3);
+  \coordinate (Y-bot-right) at (2.8,0.8);
+  \draw (Y-bot-left) .. controls +(-90:.5) and +(0:-.5) .. (Y-bot-x)
+  .. controls +(0:.5) and +(-10:-.5) .. (Y-bot-xp)
+  .. controls +(-10:.5) and +(90:-.5) .. (Y-bot-right)
+  -- (Y-top-right)
+  .. controls +(90:.5) and +(0:.5) .. (Y-top-xp)
+  .. controls +(0:-.5) and +(-10:.4) .. (Y-top-x)
+  .. controls +(-10:-.4) and +(90:.5) .. (Y-top-left)
+  -- (Y-bot-left);
+  \draw[dashed] (Y-bot-x) -- (Y-top-x);
+  \draw[dashed] (Y-bot-xp) -- (Y-top-xp);
+  \draw (X-left) .. controls +(-10:.3) and +(0:-.3) .. (X-x);
+  \draw[->] (X-x) .. controls +(0:.3) and +(-10:-.5) ..
+    node[anchor=north] {$p$} (X-xp);
+  \draw (X-xp) .. controls +(-10:.5) and +(0:-.1) .. (X-right);
+  % Now the specifics: two points y,y' and the pathover
+  \node[dot,label=left:$y$] (y) at (0,0.9) {};
+  \node[dot,label=right:$y'$] (yp) at (1.5,1.1) {};
+  \draw[->] (y) .. controls +(0:.5) and +(0:-.5) ..
+    node[anchor=south] {$q$} (yp);
+  \end{tikzpicture}}%
 
 The following definition identifies the type of paths over $p$ with a type
 of paths using transport along $p$.
@@ -844,7 +832,7 @@ of paths using transport along $p$.
 \begin{definition}\label{def:pathover-trp}
 In the context of \cref{def:pathsoverpaths}, define by induction on $p$ an
 identification
-$\po_p: \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$,
+$\po_p: \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$ in $\UU$,
 by setting $\po_{\refl{x}} \defeq \refl{y=y'}$.%
 \glossary(po){$\protect\po_p$}{convert path over path, \cref{def:pathover-trp}}
 \end{definition}
@@ -1504,8 +1492,8 @@ The following lemma follows from \cref{lem:isEq-pair=}, combined with \cref{def:
 \end{lemma}
 
 \begin{xca}\label{xca:binary-prod-equiv}
-  Let $X,Y$ be types, and consider the type family
-  $T(z)$ depending on $z:\bool$ defined by
+  Let $X,Y$ be types in a universe $\UU$, and consider the type family
+  $T(z)$ in $\UU$ depending on $z:\bool$ defined by
   $T(\no)\defeq X$ and $T(\yes) \defeq Y$.
   Show that the function $(\prod_{b:\bool}T(b))\to X\times Y$
   sending $f$ to $(f(\no),f(\yes))$, is an equivalence.
@@ -1525,47 +1513,46 @@ constituent types.
 
 \subsection{Finite types}
 \label{sec:finite-types}
-Firstly, there is the \emph{empty} type in the universe $\UU_0$, denoted by $\emptytype$ or by $\false$, defined inductively, with no way to construct elements provided in the inductive
-definition.  The induction principle for $\emptytype$ says that to prove something about (or to construct something from) every element of
-$\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be proven. (This logical principle is traditionally called \emph{ex falso quodlibet}.\footnote{%
-  Sometimes also \emph{ex falso sequitur quodlibet}:
-  From falsehood, anything follows.}) As
-an example, we may prove that any two elements $x$ and $y$ of $\emptytype$ are equal by using induction on $x$.
+Firstly, there is the \emph{empty} type in the universe $\UU_0$, denoted by $\emptytype$ or by $\false$.  It is an inductive type, with no way
+to construct elements of it.  The induction principle for $\emptytype$ says that to prove something about (or to construct something from) every
+element of $\emptytype$, it suffices to consider no special cases (!).  Hence, every statement about an arbitrary element of $\emptytype$ can be
+proven. (This logical principle is traditionally called \emph{ex falso quodlibet}.\footnote{% Sometimes also \emph{ex falso sequitur quodlibet}:
+From falsehood, anything follows.}) As an example, we may prove that any two elements $x$ and $y$ of $\emptytype$ are equal by using induction
+on $x$.
 
 An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one expects that there are no real absurdities in mathematics, nor in any
 logical system (such as ours) that attempts to provide a language for mathematics, but it is important to have such a name so we can discuss
 the possibility, which might result inadvertently from the introduction of unwarranted assumptions.  For example, to assert that a type $P$ has
 no elements, it would be sensible to assert that an element of $P$ would lead to an absurdity.  Providing a function of type $P \to \emptytype$ is a
-convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting $\neg P \defeq P \to \emptytype$.  Using it, we
+convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting $\neg P \defeq (P \to \emptytype)$.  Using it, we
 may define the type $(a \ne b) \defeq \neg (a = b)$; an element of it asserts that $a$ and $b$ cannot be identified.
 
-Secondly, there will also be a type called $\true$ in the universe $\UU_0$, defined inductively and provided with a single element $\triv$; (the name $\triv$ comes from the word
-  ``trivial'').  Its induction principle
-states that, in order to prove something about (or to construct something from) every element of $\true$, it suffices to consider the special
-case where the element is $\triv$.  As an example, we may prove, for any element $u : \true$, that $u=\triv$, by using induction to reduce
-to proving $\triv=\triv$, a proof of which is provided by $\refl{\triv}$.  One may also prove that any two elements of $\true$ are equal by using induction twice.
+Secondly, there will also be an inductive type called $\true$ in the universe $\UU_0$ provided with a single element $\triv$; (the name $\triv$
+comes from the word ``trivial'').  Its induction principle states that, in order to prove something about (or to construct something from) every
+element of $\true$, it suffices to consider the special case where the element is $\triv$.  As an example, we may construct, for any element $u
+: \true$, an identity of type $u=\triv$; we use induction to reduce to the case where $u$ is $\triv$, and then $\refl{\triv}$ provides the
+desired element.  One may also construct, for any elements $x$ and $y$ of $\true$, an identity of type $x=y$ by using induction both on $x$ and
+on $y$.
 
 There is a function $X \to \true$, for any type $X$, namely: $a \mapsto \triv$.  This corresponds, for propositions, to the statement that an
 implication holds if the conclusion is true.
 
-Thirdly, there will be a type called $\bool$ in the universe $\UU_0$,
-defined by induction and provided with two elements, $\yes$ and $\no$.
-One may prove by induction
-that any element of $\bool$ is equal to $\yes$ or to $\no$.
+Thirdly, there will be an inductive type called $\bool$ in the universe $\UU_0$, provided with two elements, $\yes$ and $\no$.  Its induction
+principle states that, in order to prove something about (or to construct something from) every element of $\bool$, it suffices to consider two
+cases: the special case where the element is $\yes$ and the special case where the element is $\no$.
 
-We may use substitution to prove $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ parametrized by a variable $b:\bool$.
-Define $P(\yes) \defeq \true$ and define $P(\no) \defeq \false$.\footnote{%
-  This definition uses the induction principle.}
-The definition of $P(b)$ is motivated by the expectation that we will be able
-to construct an equivalence between $P(b)$ and $b = \yes$.  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in
-$\triv : P (\yes)$ to get an element of $P(\no)$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$,
-establishing the claim.
+We may use substitution to construct an element of type $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ in the universe
+$\UU_0$ parametrized by a variable $b:\bool$.  We define $P(b)$ by induction on $b$ by setting $P(\yes) \defeq \true$ and $P(\no) \defeq
+\false$.  (The definition of $P(b)$ is motivated by the expectation that we will be able to construct an equivalence between $P(b)$ and $b =
+\yes$.)  If there were an element $e: \yes = \no$, we could substitute $\no$ for $\yes$ in $\triv : P (\yes)$ to get an element of $P(\no)$,
+which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes=\no) \to \emptytype$, as desired.
 
 In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne
-\Succ(n)$.  To do this, we introduce a family of types $P(i)$ parametrized by a variable $i:\NN$.  Define $P$ recursively by specifying that 
-$P(0) \defeq \true$ and $P(\Succ(m)) \defeq \false$.  The definition of $P(i)$ is motivated by the expectation that we will be able to construct an equivalence between $P(i)$
-and $i = 0$.  If there were an element $e: 0 = \Succ(n)$, we could substitute $\Succ(n)$ for $0$ in $\triv : P ( 0 )$ to get an element
-of $P(\Succ(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=\Succ(n)) \to \emptytype$, establishing the claim.
+\Succ(n)$.  To do this, we introduce a family of types $P(i)$ in $\UU_0$ parametrized by a variable $i:\NN$.  Define $P$ recursively by
+specifying that $P(0) \defeq \true$ and $P(\Succ(m)) \defeq \false$.  (The definition of $P(i)$ is motivated by the expectation that we will be
+able to construct an equivalence between $P(i)$ and $i = 0$.)  If there were an element $e: 0 = \Succ(n)$, we could substitute $\Succ(n)$ for $0$
+in $\triv : P ( 0 )$ to get an element of $P(\Succ(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0=\Succ(n)) \to
+\emptytype$, establishing the claim.
 
 In a similar way we will in \cref{sec:typeFin} define types $\bn n$ for any $n$ in $\NN$
 such that $\bn n$ is a type (set) of $n$ elements.
@@ -1620,8 +1607,8 @@ $z$, is done by defining $f(\inl{x})$ for all $x$ in $X$
 and $f(\inr{y})$ for all $y$ in $Y$.
 
 \begin{xca}\label{xca:binary-sum-equiv}
-  Let $X,Y$ be types, and consider the type family
-  $T(z)$ depending on $z:\bool$ defined by
+  Let $X,Y$ be types in a universe $\UU$, and consider the type family
+  $T(z)$ in $\UU$ depending on $z:\bool$ defined by induction on $z$ by
   $T(\no)\defeq X$ and $T(\yes) \defeq Y$.
   Show that the map $f : X\amalg Y \to \sum_{b:\bool}T(b)$,
   defined by $f (\inl x) \defeq (\no,x)$ and $f(\inr y) \defeq (\yes,y)$,
