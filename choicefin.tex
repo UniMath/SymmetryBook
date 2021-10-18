@@ -1,0 +1,187 @@
+\chapter{Choice for finite sets ($\dagger$)}
+\label{ch:choicefin}
+
+This chapter is a short overview of how group theory is involved in
+relating different choice principles for families of finite sets.  A
+paradigm case is that if we have choice for all families of
+$2$-element sets, then we have choice for all families of $4$-element
+sets.%
+\footnote{This is due to Tarski,
+  see~\citeauthor{Jech-AC}\footnotemark{}, p.~107.}\footcitetext{Jech-AC}
+
+Plan of the chapter:
+\begin{enumerate}
+\item For a family of $n$-element sets over a base type $X$, $P : X
+  \to \BSG_n$, there is a section if and only if there is a
+  ``reduction of the structure group'' to a subgroup of $\SG_n$,
+  whose action on the standard $n$-element set, $\bn n$, has a fixed point.
+\item Prove Blass' theorem that the axiom of choice is equivalent to
+  vanishing of $H^1$ for sets and coefficient groups.
+\item Define $\AC(n)$ to be: all families of $n$-element sets admit
+  sections. Also define local versions, for each fixed type $X$,
+  $\lAC X(n)$, by specializing to families over $X$.
+\end{enumerate}
+
+\begin{lemma}
+  If $\lAC{X}$ holds for a set $X$,\marginnote{%
+    In fancier language, this says that the axiom of choice
+    implies that all cohomology sets $\constant{H}^1(X,G)$ are trivial.}
+  then $\Trunc{X \to \BG}_0$ is contractible for any group $G$.
+\end{lemma}
+
+\begin{proof}
+  Suppose we have a map $f : X \to \BG$.
+  We need to show that $f$ is merely equal to the constant map.
+  Consider the corresponding family of sets
+  consisting of the underlying sets of the $G$-torsors represented by
+  $f(x) : BG$, for $x:X$.
+  That is, define $P : X \to \Set$ by setting $P(x) \defeq (\pt = f(x))$.
+  Since $\BG$ is connected, this is a family of non-empty sets,
+  so by the axiom of choice for families over $X$,
+  there exists a section.
+  Since we're proving a proposition, let $s : \prod_{x:X}(\pt = f(x))$
+  be a section.
+  Then $s$ identifies $f$ with the constant map, as desired.
+\end{proof}
+
+\begin{theorem}[Blass]\label{thm:Blass}
+  Let $X$ be a set with decidable equality such that $\Trunc{X \to \BG}_0$ is contractible
+  for all groups $G$.
+  Then every family of non-empty sets with decidable equality over $X$
+  merely admits a section,
+  \ie $\lAC{X}^{\mathrm{d}}$ holds.
+\end{theorem}
+
+\begin{proof}
+  First suppose $P : X \to \Set$ is such that all the sets $P(x)$
+  have the same size, \ie the function $P$ factors through
+  $\BAut(S)$ for some non-empty set $S$.
+  This in turn means that we have a function $h : X \to \BG$,
+  where $G \defeq \Aut(S)$, with $P = \prj_1 \circ h$,
+  where $\prj_1 : \BAut(S) = \sum_{A : \Set}\Trunc{S \simeq A} \to \Set$
+  is the projection.
+
+  By assumption, $h$ is merely equal to the constant family.
+  But since we are proving a proposition, we may assume that $h$
+  \emph{is} constant, so $P$ is the constant family at $S$.
+  And this has a section since $S$ is non-empty.
+
+  [TODO: complete the proof and think about whether we can relax the
+  decidability requirements]
+\end{proof}
+
+\begin{theorem}
+  Let $X$ be any set. Then $\lAC{X}(4)$ follows from $\lAC{X}(2)$ and $\lAC{X}(3)$.
+\end{theorem}
+
+\begin{proof}
+  Let $P : X \to \BSG_4$ be a family of $4$-element sets over $X$.
+  Consider the map $\Bf : \BSG_4 \to \BSG_3$ that maps a $4$-element set
+  to the $3$-element set of its $2+2$ partitions.
+  Choose a section by $\lAC{X}(3)$.
+  Now use $\lAC{X}(2)$ twice to choose for each chosen partition
+  first one of the $2$-element parts, and secondly one of the $2$
+  elements in each chosen part.
+\end{proof}
+
+In the global case where we can change the base set,
+we don't need choice for $3$-element sets.
+This is Tarski's result alluded to above.
+
+\begin{theorem}
+  $\AC(2)$ implies $\AC(4)$.
+\end{theorem}
+
+\begin{proof}
+  Let $P: X \to \BSG_4$ be a family of $4$-element sets indexed by a set $X$.
+  Consider the new set $Y$ consisting of all $2$-element subsets
+  of $P(x)$, as $x$ runs over $X$,
+  \[
+    Y \defeq \sum_{x:X}[P(x)]^2.
+  \]
+  The set $Y$ carries a canonical family of $2$-element sets,
+  so we may choose an element of each.
+  In other words, we have chosen an element of each of the $6$
+  different $2$-element subsets of each of the $4$-element sets
+  $P(x)$.
+
+  For every $a : P(x)$, let $q_x(a)$ be the number of $2$-element
+  subsets $\set{a,b}$ of $P(x)$ with $b\ne a$ for which $a$ is the
+  chosen element.
+
+  Define the sets $B(x) \defeq \setof{a:P(x)}{\text{$q_x(a)$ is a
+      minimum of $q_x$}}$, and remember that they are subsets of $P(x)$.
+  This determines a decomposition of $X$ into three parts $X = X_1 +
+  X_2 + X_3$, where
+  \[
+    X_i \defeq \sum_{x:X}(\text{$B(x)$ has cardinality $i$}),
+    \quad i = 1,2,3.
+  \]
+  Note that $B(x)$ can't be all of $P(x)$ (why?).
+
+  Over $X_1$, we get a section of $P$ by picking the unique element
+  in $B(x)$.
+
+  Over $X_3$, we get a section of $P$ by picking the unique element
+  \emph{not} in $B(x)$.
+
+  Over $X_2$, we get a section of $P$ by picking the already chosen
+  element of the $2$-element set $B(x)$.
+\end{proof}
+
+The following appears as Theorem~6 in Blass\footcite{Blass-Finite-Choice}.
+\begin{theorem}
+  Assume $\Trunc{X \to \BCG_n}_0$ is contractible for all sets $X$ and
+  positive integers $n$. Then $\AC(n)$ holds for all $n$.
+\end{theorem}
+
+\begin{proof}
+  Induction on $n$, the case $n\jdeq 1$ being trivial.
+
+  Let $P : X \to \BSG_n$ be a family of $n$-element sets,
+  and let $Y \defeq \sum_{x:X}P(x)$ be the domain set of this \covering.
+  Consider the family $Q : Y \to \BSG_{n-1}$ defined by
+  \[
+    Q((x,y)) \defeq \setof{y' : P(x)}{y \ne y'} = P(x) \setminus \set{y},
+  \]
+  where we use the fact that $P(x)$ is an $n$-element set
+  and thus has decidable equality,
+  so we can form the $(n-1)$-element complement $P(x) \setminus
+  \set{y}$.
+
+  By induction hypothesis, we get a section of $Q$, which we can
+  express as a family of functions
+  \[
+    f : \prod_{x:X}\bigl(P(x) \to P(x)\bigr)
+  \]
+  where $f_x(y) \ne y$ for all $x,y$.
+  Since $P(x)$ is an $n$-element set, we can decide whether $f_x$
+  is a permutation or not, and if so, whether it is a cyclic
+  permutation.
+  We have thus obtained a partition $X = X_1 + X_2 + X_3$,
+  where
+  \begin{align*}
+    X_1 &\defeq \setof{x:X}{\text{$f_x$ is not a permutation}}, \\
+    X_2 &\defeq \setof{x:X}{\text{$f_x$ is a non-cyclic permutation}}, \\
+    X_3 &\defeq \setof{x:X}{\text{$f_x$ is a cyclic permutation}}.
+  \end{align*}
+  We get a section of $P$ over $X_1$ by induction hypothesis
+  by considering the family of the images of $f_x$.
+
+  We get a section of $P$ over $X_2$ by first choosing a cycle
+  (there are fewer then $n$ cycles because there are no $1$-cycles),
+  and then choosing an element of the chosen cycle.
+
+  We get a section of $P$ over $X_3$ by the assumption applied
+  to the map $X_3 \to \BCG_n$ induced by equipping each $P(x)$ with
+  the cyclic order determined by the cyclic permutation $f_x$.
+\end{proof}
+
+[TODO: State the general positive result due to
+Mostowski\footcite{Mostowski-Finite-Choice}, maybe as an exercise
+and give references to the negative results, due to Gauntt (unpublished).]
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "book"
+%%% End:
