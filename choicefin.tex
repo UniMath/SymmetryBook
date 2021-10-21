@@ -9,18 +9,76 @@ sets.%
 \footnote{This is due to Tarski,
   see~\citeauthor{Jech-AC}\footnotemark{}, p.~107.}\footcitetext{Jech-AC}
 
-Plan of the chapter:
-\begin{enumerate}
-\item For a family of $n$-element sets over a base type $X$, $P : X
+The axiom of choice is a principle that we may add to our type theory
+(it holds in the standard model), but there are many models where it doesn't hold.
+
+\begin{principle}[The Axiom of Choice]\label{pri:ac}
+  For every set $X$ and every family of \emph{non-empty} sets
+  $P : X \to \Set_{\ne\emptyset}$,
+  there merely exists an dependent function of type $\prod_{x:X}P(x)$.
+  In other terms, for any set $X$ and any family of sets $P:X\to\Set$,
+  we have
+  \begin{equation}\label{eq:ac-impl}
+    \prod_{x:X}\Trunc{P(x)} \to \Trunc[\bigg]{\prod_{x:X}P(x)}.\qedhere
+  \end{equation}
+\end{principle}
+
+\begin{remark}
+  We have an equivalence between the Pi-type $\prod_{x:X}P(x)$ and the
+  type of sections of the projection map $\prj_1 : \sum_{x:X}P(x) \to X$,
+  under which families of non-empty sets correspond to surjections between sets
+  (using that $X$ is a set).
+  Thus, the axiom of choice equivalently says that any surjection
+  between sets admits a section.
+
+  Because of this equivalence, we'll sometimes also call elements of the
+  Pi-type \emph{sections}.
+\end{remark}
+
+The following is usually called Diaconescu's theorem\footcite{Diaconescu} or the Goodman--Myhill theorem\footcite{Goodman-Myhill}, but it was first observed in a problem in Bishop's book on constructive analysis~\footcite{Bishop}.
+
+\begin{theorem}
+  The axiom of choice implies the law of the excluded middle, \cref{pri:lem}.
+\end{theorem}
+
+\begin{proof}
+  Let $P$ be a proposition, and consider the quotient map $q : \bn 2 \to \bn 2/\sim$,
+  where $\sim$ is the equivalence relation on $\bn 2$ satisfying $(0 \sim 1) = P$.
+  Like any quotient map, $q$ is surjective, so by the axiom of choice, it has
+  a section $s : \bn 2/\sim \to \bn 2$. That is, we also have $q\circ s = \id$.
+
+  Using decidable equality in $\bn 2$, check whether $s([0])$ and $s([1])$ are equal
+  or not.
+
+  If they are, then we get the chain of identifications
+  $[0] = q(s([0])) = q(s([1])) = [1]$, so $P$ holds.
+
+  If they aren't, then assuming $P$ leads to a contradiction, meaning $\lnot P$ holds.
+\end{proof}
+
+We'll now define some restricted variants of the axiom of choice,
+because our goal is to see how they relate to each other and to other principles.
+
+\begin{definition}
+  Let $\AC$ denote the full axiom of choice, as in~\cref{pri:ac}.
+  If we fix the set $X$, and consider \eqref{eq:ac-impl} for arbitrary families $P:X\to\Set$, we call this the \emph{$X$-local axiom of choice}, denoted $\lAC{X}$.
+
+  If we restrict $P$ to take values in $n$-element sets, for some $n:\NN$,
+  we denote the resulting principle $\AC(n)$.
+  (That is, here we consider families $P : X \to \BSG_n$.)
+
+  If we both fix $X$ and restrict to families of $n$-element sets,
+  we denote the resulting principle $\lAC{X}(n)$.
+\end{definition}
+
+\begin{xca}
+  Show that $\lAC{X}$ is always true whenever $X$ is a finite set.
+\end{xca}
+
+[TODO, Elaborate: For a family of $n$-element sets over a base type $X$, $P : X
   \to \BSG_n$, there is a section if and only if there is a
   ``reduction of the structure group'' to a subgroup of $\SG_n$,
-  whose action on the standard $n$-element set, $\bn n$, has a fixed point.
-\item Prove Blass' theorem that the axiom of choice is equivalent to
-  vanishing of $H^1$ for sets and coefficient groups.
-\item Define $\AC(n)$ to be: all families of $n$-element sets admit
-  sections. Also define local versions, for each fixed type $X$,
-  $\lAC X(n)$, by specializing to families over $X$.
-\end{enumerate}
+  whose action on the standard $n$-element set, $\bn n$, has a fixed point.]
 
 \begin{lemma}
   If $\lAC{X}$ holds for a set $X$,\marginnote{%
