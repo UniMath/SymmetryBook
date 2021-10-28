@@ -46,6 +46,7 @@ BOOKFILES :=						\
 	fingp.tex					\
 	EuclideanGeometry.tex				\
 	galois.tex					\
+	choicefin.tex					\
 	history.tex					\
 	metamath.tex
 
