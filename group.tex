@@ -17,7 +17,8 @@ Symmetries can also be composed, and this composition respects certain rules tha
 
 
 With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19\textsuperscript{th} century that the properties of such symmetries could be codified by saying that they form an abstract \emph{group}.
-In \cref{sec:identity-types} we saw that an identity type is ``reflexive, symmetric and transitive'' -- and an abstract group is just a set with such operations satisfying corresponding rules.
+In \cref{sec:identity-types} we saw that equality is ``reflexive, symmetric and transitive'' -- implemented by operations $\refl{a}$, $\symm_{a,b}$ and $\trans_{a,b,c}$,
+and an abstract group is just a set with such operations satisfying appropriate rules.
 
 We attack the issue more concretely:
 instead of focusing on the abstract properties,
@@ -28,7 +29,7 @@ We will show that the two approaches give the same end result.
 
 In this chapter we lay the foundations and provide some basic examples of groups.
 
-\subsection{Brief overview of the chapter}
+\section{Brief overview of the chapter}
 In \cref{sec:typegroup} we give the formal definition of a group along with some basic examples.
 In \cref{sec:identity-type-as-abstract} we spell out the details, expanding on the properties of the identity type of a group and comparing these properties with those of an abstract group.  We then return in \cref {sec:identity-type-as-abstract} to groups more generally, explaining how these map to each other through ``homomorphisms'' (which to us are simply given by pointed maps) and what this entails for the identity types: all the abstract group properties are preserved.
 
@@ -38,7 +39,7 @@ Classically, groups have appeared because they ``act'' on a set (or more general
 This section should remind the reader of the material in \cref{cha:circle}, where we dealt with the special case of the group of integers.
 More generally, connected \coverings now reappear in the guise of ``transitive $G$-sets'', laying the groundwork for our later discussion of the set of subgroups of a group.
 
-Another important thing, which is discussed in \cref{sec:gsets}, is the type of ``$G$-torsors'', which at first glance can appear frightening.
+Another important notion, which is discussed in \cref{sec:gsets}, is the type of ``$G$-torsors'', which at first glance can appear frightening.
 However, a $G$-torsor corresponds to \emph{a} universal \covering, and the important step is to consider the \emph{type} of these.
 This idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
 
@@ -67,8 +68,8 @@ where they take center stage.
 \begin{example}\label{ex:base=base}
   We defined the circle $\Sc$ in \cref{def:circle} by declaring
   that it has a point $\base$ and an identification (``symmetry'')
-  $\Sloop:(\base=\base) \jdeq \loops\Sc$,
-  and we proved in \cref{cor:S1groupoid} that $\loops\Sc$ is equivalent
+  $\Sloop:(\base=\base) \jdeq \loops(\Sc,\base)$,
+  and we proved in \cref{cor:S1groupoid} that $\loops(\Sc,\base)$ is equivalent
   to the set $\zet$ (of integers),
   where $n\in\zet$ corresponds to the $n$-fold composition of $\Sloop$ with itself
   (which works for both positive and negative $n$).
@@ -85,7 +86,7 @@ where they take center stage.
   Recall the finite set $\bn{2}:\FinSet_2$ from \cref{def:finiteset}, containing two elements.
   According to \cref{xca:C2}, the identity type $\bn{2} =\bn{2} $ has exactly two distinct elements,
   $\refl{\bn{2}}$ and $\twist$,
-  and doing $\twist$ twice yields x$\refl{\bn{2}}$.
+  and doing $\twist$ twice yields $\refl{\bn{2}}$.
   We see that these are all the symmetries
   of a two point set you'd expect to have:
   you can let everything stay in place ($\refl{\bn{2}}$);
@@ -165,7 +166,7 @@ We will return to this example after we have defined torsors.
   and thus from $\loops(A_{(a)},(a,!))$ to $\loops(A,a)$.
   This means that, when considering the loop type $\loops(A,a)$,
   ``only the elements $x:A$ with $x$ merely equal to $a$ are relevant'',
-  and to avoid artificial extra components,
+  and to avoid irrelevant extra components,
   we should consider only \emph{connected} types $A$ (\cf \cref{def:connected}).
 
   Also, our preference for $\loops(A,a)$ to be a \emph{set}
@@ -236,7 +237,7 @@ We are now ready to define the type of groups.
     so that it sits next to and matches the shape
     of its operand.
     You see immediately the typographical reason behind this convention:
-    The italic letters $B$,$G$ get along nicely,
+    The italic letters $B$, $G$ get along nicely,
     while the roman $\B$ would clash with its italic friend $G$
     if we wrote $\B G$ instead.}
   Morever, the elements of $\BG$ will be referred to as the \emph{shapes of $G$},
@@ -254,7 +255,7 @@ We are now ready to define the type of groups.
   they are the symmetries of the designated shape $\shape_G$ of $G$.
   (Notice the careful distinction between the phrases
   ``\emph{symmetries in}'' and ``\emph{symmetries of}''.)
-  We adopt the notation $\USym G$ for the type $\loops \BG$ of symmetries in $G$;
+  We adopt the notation $\G$ for the type $\loops \BG$ of symmetries in $G$;
   it is a set.\footnote{%
     Taking the symmetries in a group
     thus defines a map
@@ -358,7 +359,8 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
   \item Recall that the set $\bn{1}$ has the single element
     which we can call $*$. Then
     $\Aut_{\bn{1}}(*)$ is a group called the \emph{trivial group}.
-    Of course, this is also $\Aut_{\true}(\triv)$.
+    Of course, this is also $\Aut_{\true}(\triv)$,
+    the automorphism group of the trivial element in the type $\true$.
   \item If $n:\NN$, then the \emph{permutation group of $n$ letters} is
     \[
       \SG_n\defequi\Aut_{\FinSet_n}(\bn{n}),
@@ -392,32 +394,47 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
   This remark is for those who worry about size issues -- a theme we usually ignore in our exposition.  If we
   start with a base universe $\UU_0$, the groupoid $\FinSet_n$ of sets of cardinality $n$ is the $\Sigma$-type
   $\sum_{A:\UU_0}\Trunc{A=\bn{n}}$ over $\UU_0$ and so (without any modification) will lie in any bigger
-  universe $\UU_1$.  In order to accommodate the finite permutation groups, the universe ``$\UU$'' appearing as
+  universe $\UU_1$.  In order to accommodate the permutation groups of sets in $\UU_0$, the universe ``$\UU$'' appearing as
   a subscript of the first $\Sigma$-type in \cref{def:pt-conn-groupoid}, appearing later in the definition of
   ``group'', needs to be at least as big as $\UU_1$.  If $\UU$ is taken to be $\UU_1$, then the type
   $\typegroup$ of groups will not be in $\UU_1$, but in some bigger universe $\UU_2$.  If we then choose some
-  group $G:\typegroup$ and look at \emph{its} group of automorphisms, based on an identity type in
-  $\typegroup$, this will be an element of $\typegroup$ only if the universe $\UU$ in the definition of
-  $\typegroup$ is at least as big as $\UU_2$, which is not the case.  Our convention from \cref{sec:univax} is
+  group $G:\typegroup$ and look at its group of automorphisms, $\Aut_\Group(G)$, based on the identity type $G =_\Group G$, this will be an element of $\typegroup$ only if the universe $\UU$ in the definition of
+  $\typegroup$ is at least as big as $\UU_2$.  Our convention from \cref{sec:universes} is
   that the universes form an ascending chain $\UU_0\subseteq\UU_1\subseteq\UU_2\subseteq\dots$, corresponding
   to which there will an ascending chain of types of groups,
-  $$ \typegroup_i \defequi \Copy_{\mkgroup}(\sum_{A:\UU_i} ( A \times \isconn(A) \times \isgrpd(A) )), $$ and
-  any group we encounter will be an element of $\typegroup_i$ for $i$ large enough.  These matters concerning
-  universes are nontrivial and important, but in this text we have chosen to focus on other matters.
+  \[
+    \typegroup_i = \Copy_{\mkgroup}\bigl( (\UU_i)_*^{=1} \bigr),
+  \]
+  and any group we encounter will be an element of $\typegroup_i$ for $i$
+  large enough.
+
+  These matters concerning universes are nontrivial and important,
+  but in this text we have chosen to focus on other matters.\footnote{%
+    We will note, however, that the Replacement~\cref{pri:replacement}
+    often allows us to conclude that a group $G$ belongs to $\typegroup_0$.
+    This is the case for $\SG_S$, for $S:\Set_0$, and for $\Aut_\Group(G)$,
+    for $G:\Group_0$, as we invite the reader to check.}
 \end{remark}
 
 \begin{example}\label{ex:cyclicgroups}
-In \cref{thm:coveringsofS1} we studied the symmetries of the ``$m$-fold \covering''
-of the circle for $m$ a positive integer, and showed that there were $m$ different
-such symmetries. Moreover we showed that these symmetries were the powers $f^n$ (for $n=0,1,\dots,m-1$)
-of one (non-unique) symmetry $f$ and that $f^{m+k}=f^k$ for any integer $k$.
-This very important phenomenon pops up in many situations,
-and is called the \emph{cyclic group of order $m$}.
+  In \cref{cor:id-m-cycle} we studied the symmetries of the standard $m$-cycle $(\bn m,\zs)$
+  (equivalently, of the ``$m$-fold \covering'' over the circle, $(\Sc,\dg{m})$)
+  for $m$ a positive integer, and showed that there were $m$ different
+  such symmetries.
+  Moreover, we showed that these symmetries can be identified with the elements
+  $0,1,\dots,m-1$ of $\bn n$,
+  and under this correspondence composition of symmetries correspond to
+  addition modulo $m$,
+  because
+  This group is called the \emph{cyclic group of order $m$},
+  $\CG_m \defeq \Aut_\Cyc((\bn m,\zs))$.\footnote{%
+    Note that the cyclic group of order $1$ is the trivial group,
+    the cyclic group of order $2$ is equivalent to the permutation group $\SG_2$:
+    there are exactly one nontrivial symmetry $f$ and $f^2$ is the identity.
+    When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.
+    In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\SG_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.}
 
-\marginnote{In this example we discover the cyclic group of order $m$ as the group of symmetries of the $m$-fold \covering of $S^1$.}
 
-\marginnote{Note that the cyclic group of order $1$ is the trivial group, the cyclic group of order $2$ is equivalent to the permutation group $\Sigma_2$: there are exactly one nontrivial symmetry $f$ and $f^2$ is the identity.  When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.  In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\Sigma_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.
-}
 In other words, the cyclic group of order $m$ is the (pointed) component of the type $\SetBundle(\Sc)$ of \coverings of the circle containing the $m$-fold \covering.
 We analyzed this in \cref{thm:coveringsofS1} and found that this (pointed) component was equivalent to the connected groupoid
 $$B\ZZ/m_\div\defequi\conncomp{(\sum_{X:\Set}X=X)}{\zet/m}$$
@@ -603,13 +620,13 @@ of the section, and we focus on the identity type $a=a$.  We make the following 
 For any elements $g,g_1,g_2,g_3:a=a$, we consider the following 4 equations.
 \begin{enumerate}
 \item
-  \label{it:right-unit} \emph{the right unit law:} $g=g\cdot e$  
+  \label{it:right-unit} \emph{the right unit law:} $g=g\cdot e$
 \item
-  \label{it:left-unit} \emph{the left unit law:} $g=e\cdot g$ 
+  \label{it:left-unit} \emph{the left unit law:} $g=e\cdot g$
 \item
-  \label{it:associativity} \emph{the associativity law:} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ 
+  \label{it:associativity} \emph{the associativity law:} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$
 \item
-  \label{it:inverse} \emph{the law of inverses:} $g\cdot \inv g = e$ 
+  \label{it:inverse} \emph{the law of inverses:} $g\cdot \inv g = e$
 \end{enumerate}
 
 In \cref{xca:path-groupoid-laws}, the reader has constructed explicit elements of these equations.  If $a=a$ were a set, then the equations
