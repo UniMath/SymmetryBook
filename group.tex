@@ -617,16 +617,16 @@ of the section, and we focus on the identity type $a=a$.  We make the following 
   Because it was defined by path induction, this product operation satisfies $e \cdot g \jdeq g$.
 \end{enumerate}
 
-For any elements $g,g_1,g_2,g_3:a=a$, we consider the following 4 equations.
+For any elements $g,g_1,g_2,g_3:a=a$, we consider the following four equations:
 \begin{enumerate}
 \item
-  \label{it:right-unit} \emph{the right unit law:} $g=g\cdot e$
+  \label{it:right-unit} \emph{the right unit law:} $g=g\cdot e$,
 \item
-  \label{it:left-unit} \emph{the left unit law:} $g=e\cdot g$
+  \label{it:left-unit} \emph{the left unit law:} $g=e\cdot g$,
 \item
-  \label{it:associativity} \emph{the associativity law:} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$
+  \label{it:associativity} \emph{the associativity law:} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$,
 \item
-  \label{it:inverse} \emph{the law of inverses:} $g\cdot \inv g = e$
+  \label{it:inverse} \emph{the law of inverses:} $g\cdot \inv g = e$.
 \end{enumerate}
 
 In \cref{xca:path-groupoid-laws}, the reader has constructed explicit elements of these equations.  If $a=a$ were a set, then the equations
@@ -677,7 +677,7 @@ operation.  The original type $A$ and its element $a$ play no further role.
 Taking into account the introductory comments we have made above, we may state the following lemma.
 
 \begin{lemma}\label{lem:idtypesgiveabstractgroups}
-  If $G$ is a group, then $\USym G$,
+  If $G$ is a group, then $\USymG$,
   together with $e\defequi\refl{\shape_G}{}$,
   $g^{-1}\defequi\symm_{\shape_G,\shape_G}g$
   and $h \cdot g \defequi \trans_{\shape_G,\shape_G,\shape_G}(g)(h)$, define an abstract group.
@@ -685,18 +685,16 @@ Taking into account the introductory comments we have made above, we may state t
 \end{lemma}
 
 \begin{proof}
-  The type $\USym G$ is a set, because $\B G$ is a groupoid.
+  The type $\USymG$ is a set, because $\BG$ is a groupoid.
   \cref{xca:path-groupoid-laws} shows that all the relevant equations hold, as required.
 \end{proof}
 
 \begin{definition}\label{def:abstrG}
-  Given a group $G$, the abstract group $\abstr(G)$ of \cref{lem:idtypesgiveabstractgroups} is called the \emph{abstract group associated to $G$}.
+  Given a group $G$, the abstract group of~\cref{lem:idtypesgiveabstractgroups},
+  $\abstr(G)$, is called the \emph{abstract group associated to $G$}.
 \end{definition}
 
 \begin{remark}\label{rem:inverses-as-property}
-  \makeatletter %
-  \renewcommand\p@enumii{}%
-  \makeatother%
   Instead of including the inverse operation as part
   \ref{struc:inv-op} of the structure (including with the property
   \ref{axiom:inv-law}), some authors assume the existence of inverses
@@ -789,6 +787,17 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
 \end{remark}
 
 \begin{xca}
+  \label{xca:op-abs-group}
+  Let $\mathcal G \jdeq (S,e,\mu,\iota)$ be an abstract group.
+  Define another structure $\mathcal G\op \defeq (S,e,\mu\op,\iota)$,
+  where $\mu\op : S \to S \to S$ sends $a,b:S$ to $\mu(b,a)$,
+  \ie $\mu\op$ swaps the order of the arguments as compared to $\mu$.
+
+  Show that $\iota : S \to S$ defines an isomorphism $\mathcal G = \mathcal G\op$.\footnote{Hint: in down-to-earth terms this boils down to the equation
+    $(a\cdot b)^{-1} = b^{-1}\cdot a^{-1}$.}
+\end{xca}
+
+\begin{xca}
   \label{xca:conj}
   Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $c^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identity $c^g:\mathcal G=\mathcal G$ is called \emph{conjugation} by $g$\index{conjugation}.
 \end{xca}
@@ -807,7 +816,7 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
     give an element in the proposition
     \begin{displaymath}
       \prod_{g:S} (e=\mu(\iota(g))(g))\times
-      (g=\iota(\iota(g))).
+      (g=\iota(\iota(g))).\qedhere
     \end{displaymath}
   \end{xca}
   \begin{xca}\label{xca:typemonoidisgroupoid}
@@ -822,23 +831,25 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
     \item $c*(b*a)=\overline{(c*\bar b)}*a$,
     \end{enumerate}
     for all $a,b,c:S$.
-    Show that the type of abstract groups is equivalent to the type of sheargroups.
-
-Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a sheargroup and conversely, letting $a*b=b\cdot a^{-1}$ takes you back.  On your way you may need at some point to show that $\overline{\bar a}=a$: setting $c=\bar a$ and $b=a$ in the third formula will do the trick (after you have established that $\bar e=e$).  This exercise may be good to look back to in the many instances where the inverse inserted when ``multiplying from the right by $a$'' is forced by transport considerations.
+    Show that the type of abstract groups is equivalent to the type of sheargroups.\footnote{%
+      Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a sheargroup and conversely, letting $a*b=b\cdot a^{-1}$ takes you back.  On your way you may need at some point to show that $\overline{\bar a}=a$: setting $c=\bar a$ and $b=a$ in the third formula will do the trick (after you have established that $\bar e=e$).  This exercise may be good to look back to in the many instances where the inverse inserted when ``multiplying from the right by $a$'' is forced by transport considerations.}
 \end{xca}
 \begin{xca}
-  Another and even leaner way to define abstract groups, highlighting how we can do away with both the inverse and the unit: a \emph{Furstenberg group}
-  \marginnote{Named after Hillel Furstenberg who at the age of 20 published a paper in the Proceedings of the American Mathematical Society doing this exercise.}
+  Another and even leaner way to define abstract groups, highlighting how we can do away with both the inverse and the unit: a \emph{Furstenberg group}\footnote{%
+    Named after Hillel (Harry) Furstenberg who at the age of 20 published a paper doing this exercise.\footnotemark{}}\footcitetext{Furstenberg}
   is a non-empty set $S$ together with a function
-  $$\xymatrix{S\times S\ar[rr]^{(s,t)\mapsto s\circ t}&&S}
-  $$
+  \[
+    \begin{tikzcd}[column sep=large]
+      S\times S \ar[r,"{(s,t)\mapsto s\circ t}"] & S
+    \end{tikzcd}
+  \]
   with the property that
-  \marginnote{Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is an abstract group}
   \begin{enumerate}
   \item for all $a,b,c:S$ we have that $(a\circ c)\circ(b\circ c)=a\circ b$
-  \item far all $a,c:S$ there is a $b:S$ such that $a\circ b=c$.
+  \item for all $a,c:S$ there is a $b:S$ such that $a\circ b=c$.
   \end{enumerate}
-  Show that the type of Furstenberg groups is equivalent to the type of groups.
+  Show that the type of Furstenberg groups is equivalent to the type of groups.\footnote{%
+    Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is an abstract group.}
 \end{xca}
 
 \section{Homomorphisms}
