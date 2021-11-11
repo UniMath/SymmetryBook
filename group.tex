@@ -344,6 +344,7 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
   \[
     \ZZ \defeq \mkgroup(\Sc,\base) = \Aut_\Sc(\base).
   \]
+  That is, the classifying 
   It is noteworthy that along the way we gave several versions of the circle,
   each of which has its own merits,
   with the type of infinite cycles from~\cref{def:S1toC},
@@ -457,35 +458,93 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
 
 \begin{example}
 \label{ex:Cm}
-There are other (beside the symmetries of the $m$-fold \covering and Definition~\ref{def:Z/mgroup}) ways of obtaining the cyclic group of order $m$, which occasionally are more convenient.  The prime other interpretation is as the group of ``cyclic permutations of $m$ points on a circle''; \ie as the ``set of $m$th roots of unity in the complex plane'' equipped with complex multiplication.
+There are other (beside the symmetries of the $m$-cycle and of the $m$-fold \covering) ways of obtaining the cyclic group of order $m$, which occasionally are more convenient.
+The prime other interpretation comes from thinking about the symmetries of the $m$-cycle in a slightly different way.
+We can picture the $m$-cycle as consisting of $m$ points on a circle,
+\eg as the set of $m$th roots of unity in the complex plane, as shown in~\cref{fig:m-cycle-roots}.
+\begin{marginfigure}
+  \begin{tikzpicture}
+    \foreach \n/\deg in {0/0, 1/35, 2/70, m-1/325} {
+      \node[dot] (x\n) at (\deg:1) {};
+      \node (l\n) [at=(x\n.\deg), anchor=\deg+180, shift=(\deg:1pt)] {$\xi^{\n}$};
+      \draw[->,shorten <=1pt,shorten >=1pt] (x\n) arc (\deg:\deg+35:1);
+    }
+    \foreach \deg in {110, 115, 120, 275, 280, 285} {
+      \node[cntdot] at (\deg:1) {};
+    }
+    \draw[shorten <=1pt,shorten >=1pt] (125:1) arc (125:270:1);
+    \draw[->,shorten <=1pt,shorten >=1pt] (290:1) arc (290:325:1);
+    \draw (180:1.2) -- (360:1.2);
+    \draw[->] (1.6,0) -- (1.9,0);
+    \node at (2.1,0) {$x$};
+    \node at (0,1.7) {$y$};
+    \draw[->] (270:1.2) -- (90:1.5);
+  \end{tikzpicture}
+  \caption{The $m$-cycle as the $m$\th roots of unity.
+    (Here $\xi=\ee^{2\pi\ii/m}$ is a primitive $m$\th root.)}
+  \label{fig:m-cycle-roots}
+\end{marginfigure}
+Any cyclic permutation is in particular a permutation of $m$-element set underlying the cycle.
+This manifests itself as the projection map $\prj : \Cyc_m \to \FinSet_m$,
+equivalently, using the notation introduced above, $\prj : \BCG_m \to \BSG_m$,
+where the group $\SG_m=\Aut_\Set(\bn m)$ is that of
+\emph{all} permutations of the set $\bn m$ with $m$ elements.
+The projection map,
+whose fiber at $X : \BSG_m$ is the set $\sum_{f:X\to X}\Trunc{(X,f)=(\bn m,\zs)}$,
+captures $\CG_m$ as a ``subgroup'' of the permutations, namely the cyclic ones,
+corresponding to the fact that the shapes of $\CG_m$ are those of $\SG_m$
+together with the extra structure of the ``cyclic ordering'' determined by $f$.
 
-We know the group $\Sigma_m\defequi\aut_{\FinSet_m}(\bn m)$ of {\bf all} permutations of the set $\bn m$ with $m$ elements, but how do we select the ``subgroup'' of cyclic permutations?
-The key insight is provided by the function
-\begin{displaymath}
-  \cy m:S^1\to\FinSet_m
-\end{displaymath}
-with $\cy m(\base)\defequi\bn m$ and
-$\cy m(\Sloop)\defis s_m$, picking out exactly the cyclic permutation $s_m\colon\bn m=\bn m$ (and its iterates) among all permutations.  Set truncation of \cref{def:set-truncation} provides us with a tool for capturing only the symmetries of $\FinSet_m$ hit by $\cy m$: the (in language to come) subgroup of the permutation group of cyclic permutations is the group
-$$C_m\defequi\aut_{BC_m}(\pt_{C_m}),$$
-where $(BC_m)_\div\defequi \sum_{S:\FinSet_m}\Trunc{\inv{\cy m}(S)}_0$ and $\pt_{C_m}\defequi (\bn m,\trunc{(\base,\refl{\bn m})}_0))$.  We must prove that $BC_m$ is a pointed connected groupoid for it to earn the name ``group'', but since we will provide a pointed equivalence between $B\ZZ/m$ and $BC_m$, this will follow automatically.
+But how do we capture the other aspect of $\CG_m$,
+mentioned in~\cref{ex:cyclicgroups},
+that all the cyclic permutations can be obtained by a single generating one.
+When thinking of the $m$\th roots of unity as in~\cref{fig:m-cycle-roots},
+we can take complex multiplication by $\xi$ to be the generating symmetry.
 
-\marginnote{More precisely, but using language not yet established: $\ZZ/m$ is equivalent to the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) of $\cy m$, whereas $C_m$ is exactly the ``image'' (\cf \cref{def:image}) of $\cy m$.  Thanks to \cref{lem:kerandcoker} these are equivalent groups. However, in our special case we can give a proof using only language we know.}
+The key insight is provided by the function $R_m:S^1\to\FinSet_m$ from~\cref{def:RmtoS},
+with $R_m(\base)\defequi\bn m$ and
+$R_m(\Sloop)\defis \zs$, picking out exactly the cyclic permutation
+$\zs:\bn m=\bn m$ (and its iterates) among all permutations.
+Using our new notation, we can also write this as
+\[
+  R_m : \B\ZZ \to \BSG_m.
+\]
+Set truncation of \cref{def:set-truncation} provides us with a tool for capturing only the symmetries of $\FinSet_m$ hit by $R_m$:
+the (in language to come) subgroup of the permutation group generated by the cyclic permutations $\zs$ is the group
+\[
+  \CG'_m\defequi\mkgroup(\BCG'_m,\sh_{\CG'_m}),
+\]
+where $\BCG'_m\defequi \sum_{X:\FinSet_m}\Trunc{\inv{R_m}(X)}_0$
+and $\sh_{\CG'_m}\defequi (\bn m,\trunc{(\base,\refl{\bn m})}_0)$.
+We must prove that $\BCG'_m$ is a pointed connected groupoid for
+this to be well-defined, but since we will provide a pointed equivalence between $\BCG_m$ and $\BCG'_m$, this will follow automatically.
+\marginnote{More precisely, but using language not yet established: $\CG_m$ is isomorphic to $\ZZ/m\ZZ$, which is the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) induced by $R_m$, whereas $\CG'_m$ is exactly the corresponding ``image'' (\cf \cref{sec:image}). Thanks to \cref{lem:kerandcoker} these are isomorphic groups. However, in our special case we can give a proof using only language we know.}
+\end{example}
 
-Consider $t:\prod_{z:S^1}((\base=\base)\to(z=z))$ given by circle induction by sending $\base:S^1$ to the identity $t_\base\defequi\id_{\base=\base}$ and $\Sloop:\base=\base$ to $\refl{\id_{\base=\base}}$.
-Since we'll be using it often, we let $\Sloop_z:z=z$ be shorthand for $t_z(\Sloop)$.
-%\footnote{is this how you would like to say it: it should be conjugation, but perhaps you argue for this through commutativity?}
-
-\begin{lemma}
+\begin{construction}
   \label{lem:CmisisotoZ/m}
-  Given $S:\FinSet_m$, the function
-  \begin{align*}
-    f_S\colon\sum_{z:\Sc}(S=\cy m(z))&\to \sum_{q:{S=S}}\Trunc{(S,q)=(\bn m,s_m)},\\
- f_S(z,v)&\defequi (v^{-1}\cy m(\Sloop_z)v,!)
-  \end{align*}
+  We defined a pointed equivalence $g : \BCG'_m \ptdto \BCG_m$,
+  commuting definitionally with the projection maps to $\BSG_m$.\marginnote{%
+    $\begin{tikzcd}[column sep=tiny,ampersand replacement=\&]
+      \B\ZZ \ar[rr,dashed]\ar[drrr,bend right,"R_m"'] \& \phantom{1} \&
+      \BCG'_m \ar[rr,"g"]\ar[dr,"\prj"'] \& \& \BCG_m\ar[dl,"\prj"] \\
+      \& \& \& \BSG_m \&
+    \end{tikzcd}$}
+\end{construction}
+
+\begin{implementation}{lem:CmisisotoZ/m}
+  We'll define $g$ as the totalization (\cref{def:fiberwise})
+  of a family of maps
+  \[
+    f_X : \sum_{z:\Sc}(X = R_m(z)) \to \sum_{f:{X\to X}}\Trunc{(X,f)=(\bn m,\zs)},
+  \]
+  parametrized by an $m$-element set $X$ (recall $\BSG_m \jdeq \FinSet_m$).
+  Note that the domain of $f_X$ is exactly the fiber $R_m^{-1}(X)$.
+
+  Let
+  $f_X(z,v) \defequi (v^{-1}\cy m(\Sloop_z)v,!)$
   has connected fiber and defines
  an equivalence $f\colon BC_m\we B\ZZ/m$.
-\end{lemma}
-\begin{proof}
   First and foremost, $f_S$ is actually well defined in the sense that $(S,v^{-1}\cy m(\Sloop_z)v)=(\bn m,s_m)$ is inhabited.
   This is clear in view of the function
   $$(\base =z)\to((S,q)=(\bn m,s_m))$$
@@ -519,9 +578,8 @@ commutes; that is, $\cy m(p)v:\cy m(\base)=\cy m(\base)$ commutes with $\cy m(\S
 Consequently, $\cy m(p)v$ must be of the form $\cy m(\Sloop^k)$ for some $k=0,1,\dots,m-1$, or alternatively, we have an $\alpha:v=\cy m(p^{-1}\Sloop^k)$.
 Hence $(p^{-1}\Sloop^k,\alpha):(z,v,!)=(\base,\refl{})$.
 % {\color{red}This was not the most elegant thing I've produced, but I must quit now and push so that you can see if you get the gist. }
-\end{proof}
+\end{implementation}
 
-\end{example}
 \begin{xca}
   \label{xca:somedetailsonfinitegroupstocheck}
   \begin{enumerate}
@@ -829,7 +887,11 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
   \end{xca}
   \begin{xca}
     \label{xca:cheapgroup}
-    There is a leaner way of characterizing what an abstract group is: define a \emph{sheargroup} to be a set $S$ together with an element $e:S$, a function $S\times S\to S$ sending $(a,b):S\times S$ to $a*b:S$ and the following propositions, where we use the shorthand $\bar a\defequi a*e$:
+    There is a leaner way of characterizing what an abstract group is:
+    define a \emph{sheargroup} to be a set $S$ together with an element $e:S$,
+    a function $\blank * \blank: S\to S\to S$, sending $a,b:S$ to $a*b:S$,
+    and the following propositions,
+    where we use the shorthand $\bar a\defequi a*e$:
     \begin{enumerate}
     \item $e*a=a$,
     \item $a*a=e$ and
@@ -842,12 +904,8 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
 \begin{xca}
   Another and even leaner way to define abstract groups, highlighting how we can do away with both the inverse and the unit: a \emph{Furstenberg group}\footnote{%
     Named after Hillel (Harry) Furstenberg who at the age of 20 published a paper doing this exercise.\footnotemark{}}\footcitetext{Furstenberg}
-  is a non-empty set $S$ together with a function
-  \[
-    \begin{tikzcd}[column sep=large]
-      S\times S \ar[r,"{(s,t)\mapsto s\circ t}"] & S
-    \end{tikzcd}
-  \]
+  is a nonempty set $S$ together with a function
+  $\blank\circ\blank : S \to S \to S$, sending $a,b:S$ to $a\circ b:S$,
   with the property that
   \begin{enumerate}
   \item for all $a,b,c:S$ we have that $(a\circ c)\circ(b\circ c)=a\circ b$
@@ -1692,7 +1750,7 @@ $$f^*Y\defequi Y\, f:\BG\to\Set.$$
 If $X:\BG\to\Set$ is a $G$-set and $y:\BH$ define
 the \emph{induced $H$-type}
 \marginnote{%
-  Note that the induced $H$-type may or may not be an $H$-{\bf set}.
+  Note that the induced $H$-type may or may not be an $H$-\emph{set}.
   As an example, consider the homomorphism $\cy 2:\Hom(\ZZ,\Sigma_2)$ discussed above, given by sending $\base:S^1$ to $\bn 2:\FinSet_2$ and $\Sloop$ to the twist.
 }
 \marginnote{%
@@ -2904,7 +2962,7 @@ commutes.  Likewise, (using transport along the identity $p_f:\shape_{G'}=f(\sha
 \label{sec:coprod}
 We have seen how the group of integers $\ZZ=(S^1,\base)$ synthesizes the notion of one symmetry with no relations: every symmetry in the circle is of the form $\Sloop^n$ for some unique $n$.  Also, given any group $G=\aut_A(a)$, the set $a=a$ of symmetries of $a$ corresponds to the set of homomorphisms $\ZZ\to G$, \ie to pointed functions $(S^1,\base)\to_*(A,a)$ by evaluation at $\Sloop$.  What happens if we want to study more than one symmetry at the time?
 
-For instance, is there a group $\ZZ\vee\ZZ$ so that for any group $G=\aut_A(a)$ a homomorphism $\ZZ\vee\ZZ\to G$ corresponds to {\bf two} symmetries of $a$?
+For instance, is there a group $\ZZ\vee\ZZ$ so that for any group $G=\aut_A(a)$ a homomorphism $\ZZ\vee\ZZ\to G$ corresponds to \emph{two} symmetries of $a$?
 At the very least, $\ZZ\vee\ZZ$ itself would have to have two symmetries and these two can't have any relation, since in a general group $G=\aut_A(a)$ there is a priori no telling what the relation between the symmetries of $a$ might be.
 Now, \emph{one} symmetry is given by a pointed function $(S^1,\base)\to_*(A,a)$ and so a \emph{pair} of symmetries is given by a function $f:S^1+S^1\to A$ with the property that $f$ sends each of the base points of the circles to $a$.  But $S^1+S^1$ is not connected, and so not a group.  To fix this we take the clue from the requirement that both the base points were to be sent to a common base point and \emph{define} $S^1\vee S^1$ to be what we get from $S^1+S^1$ when we \emph{insert an identity} between the two basepoints.
 \marginnote{$S^1\vee S^1$ if formed from $S^1+S^1$ by inserting an identity$$\xymatrix{\base\ar@(ul,dl)[]|{\Sloop}\ar@{.>}[rr]^{\text{identify!}}&&\base\ar@(ur,dr)[]|{\Sloop}}
