@@ -2319,7 +2319,7 @@ We define them as close as possible to their
 usual meaning in set theory: a function from $A$ to $B$ is
 surjective if the preimage of any $b:B$ is non-empty,
 and injective if such preimages contain at most one element.
-This motivates the following definition.
+This motivates the following definitions.
 
 \begin{definition}\label{def:surjection}
 A function $f:A\to B$ is a \emph{surjection}, or is \emph{surjective},
@@ -2332,6 +2332,11 @@ that is, $\Trunc{\sum_{a:A} b=f(a)}$.\footnote{%
   (such a $g$ is called a \emph{section} of $f$).}
 \end{definition}
 
+\begin{definition}\label{def:injection}
+  A function $f:A\to B$ is an \emph{injection}\index{injection}, or is \emph{injective}\index{injective},
+  if $f^{-1}(b)$ is a proposition for all $b:B$.  The property of being an injection is encoded by
+  the type $\isinj(f) \defeq \prod_{b:B} \isprop(\inv f (b))$.
+\end{definition}
 
 \begin{lemma}\label{lem:inj+surj}
 For all types $A,B$, a function $f: A\to B$ is an equivalence
@@ -2376,6 +2381,67 @@ then we have an identity between $y$ and $y'$ given by the composite
 Now the lemma follows by eliminating the propositional truncations in the assumptions,
 using that the conclusion is a proposition.
 \end{proof}
+
+\begin{lemma}\label{lem:inj-ap}
+  A function $f:A\to B$ is an injection if and only if
+  each induced function
+  $\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence,
+  for all $a,a':A$.
+\end{lemma}
+
+\begin{proof}
+  First we note that if $z,z' : f^{-1}(b)$ for some $b:B$,
+  then there is an equivalence
+  \begin{equation}\label{eq:inj-ap-equiv}
+    (z = z') \equiv \ap{f}^{-1}(\snd{z'} \cdot \inv{\snd{z}}).
+  \end{equation}
+  Indeed, we can construct this for $z\jdeq(a,p)$ and $z'\jdeq(a',p')$,
+  where $a,a':A$, $p:b=f(a)$ and $p':b=f(a')$,
+  as the composition\marginnote{%
+    \noindent\normalsize\begin{tikzpicture}
+      \node (X) at (0,-1.5) {$B$};
+      \draw (0,-1)
+      .. controls ++(170:-1) and ++(180:1) .. (2,-1.8)
+      .. controls ++(180:-1) and ++(270:1.5) .. (3.5,0.5)
+      .. controls ++(270:-1.5) and ++(80:1.4)  .. (-1,1)
+      .. controls ++(80:-1.4)  and ++(170:1) .. (0,-1);
+      \node[dot,label=left:$f(a)$] (a) at (0,0) {};
+      \node[dot,label=below:$b$] (b) at (1.8,-1) {};
+      \node[dot,label=right:$f(a')$] (c) at (2.3,.6) {};
+      \node (ct) at (1.2,1) {$\ap{f}(q)$};
+      \draw[<-] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto,swap] {$p$} (b);
+      \draw[->] (b) .. controls ++(10:1) and ++(-70:1) .. node[auto,swap] {$p'$} (c);
+      \draw[->] (a) .. controls ++(45:1) and ++(170:1) .. (c);
+    \end{tikzpicture}}
+  \begin{align*}
+    (z = z')
+    &\jdeq \bigl( (a,p) = (a',p') \bigr) \\
+    &\equiv \sum_{q : a=a'} \pathover{p}{b=f(\blank)}{q}{p'} \\
+    &\equiv \sum_{q : a=a'} \ap{f}(q) \cdot p = p' \\
+    &\equiv \sum_{q : a=a'} p' \cdot \inv p = \ap{f}(q) \\
+    &\jdeq \ap{f}^{-1}(p' \cdot \inv p).
+  \end{align*}
+  The second equivalence relies on \cref{lem:trp-in-fx=Ygx}.
+
+  It follows directly from \eqref{eq:inj-ap-equiv}
+  that if $\ap{f}$ is an equivalence,
+  then $f^{-1}(b)$ is a proposition,
+  as all its identity types are contractible.
+
+  On the other hand, if we fix $a,a':A$ and $p:f(a)=f(a')$,
+  then \eqref{eq:inj-ap-equiv} applied to $b \defeq f(a)$,
+  $z \defeq (a,\refl{f(a)})$ and
+  $z' \defeq (a',p)$,
+  gives $\ap{f}^{-1}(p) \equiv (z=_{f^{-1}(b)}z')$,
+  which shows that if each $f^{-1}(b)$ is a proposition,
+  then $\ap{f}$ is an equivalence.
+\end{proof}
+\begin{xca}\label{xca:inj-sets}
+  Show that if $A,B$ are sets, then a function
+  $f : A \to B$ is injective if and only if
+  $f(a)=f(a')$ implies $a=a'$ for all $a,a'$.
+\end{xca}
+
 
 \begin{lemma}\label{lem:fib-vs-path}
 Let $X$ and $Y$ be types and let $f:X\to Y$ be a function.
@@ -2648,73 +2714,9 @@ is in it.
 By \cref{xca:lem-prop}, the decidable predicates $P$ on $T$
 correspond uniquely to the characteristic functions $\chi_P:T\to\bool$.
 
-We now introduce the notion of \emph{injection}, which will be key to saying what a \emph{subtype} is.
+We recall from \cref{def:injection} the notion of \emph{injection}, 
+which will be key to saying what a \emph{subtype} is.
 
-\begin{definition}\label{def:injection}
-  A function $f:A\to B$ is an \emph{injection}\index{injection}, or is \emph{injective}\index{injective},
-  if $f^{-1}(b)$ is a proposition for all $b:B$.  The propery of being an injection is encoded by
-  the type $\isinj(f) \defeq \prod_{b:B} \isprop(\inf f (b))$.
-\end{definition}
-
-\begin{lemma}\label{lem:inj-ap}
-  A function $f:A\to B$ is an injection if and only if
-  each induced function
-  $\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence,
-  for all $a,a':A$.
-\end{lemma}
-
-\begin{proof}
-  First we note that if $z,z' : f^{-1}(b)$ for some $b:B$,
-  then there is an equivalence
-  \begin{equation}\label{eq:inj-ap-equiv}
-    (z = z') \equiv \ap{f}^{-1}(\snd{z'} \cdot \inv{\snd{z}}).
-  \end{equation}
-  Indeed, we can construct this for $z\jdeq(a,p)$ and $z'\jdeq(a',p')$,
-  where $a,a':A$, $p:b=f(a)$ and $p':b=f(a')$,
-  as the composition\marginnote{%
-    \noindent\normalsize\begin{tikzpicture}
-      \node (X) at (0,-1.5) {$B$};
-      \draw (0,-1)
-      .. controls ++(170:-1) and ++(180:1) .. (2,-1.8)
-      .. controls ++(180:-1) and ++(270:1.5) .. (3.5,0.5)
-      .. controls ++(270:-1.5) and ++(80:1.4)  .. (-1,1)
-      .. controls ++(80:-1.4)  and ++(170:1) .. (0,-1);
-      \node[dot,label=left:$f(a)$] (a) at (0,0) {};
-      \node[dot,label=below:$b$] (b) at (1.8,-1) {};
-      \node[dot,label=right:$f(a')$] (c) at (2.3,.6) {};
-      \node (ct) at (1.2,1) {$\ap{f}(q)$};
-      \draw[<-] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto,swap] {$p$} (b);
-      \draw[->] (b) .. controls ++(10:1) and ++(-70:1) .. node[auto,swap] {$p'$} (c);
-      \draw[->] (a) .. controls ++(45:1) and ++(170:1) .. (c);
-    \end{tikzpicture}}
-  \begin{align*}
-    (z = z')
-    &\jdeq \bigl( (a,p) = (a',p') \bigr) \\
-    &\equiv \sum_{q : a=a'} \pathover{p}{b=f(\blank)}{q}{p'} \\
-    &\equiv \sum_{q : a=a'} \ap{f}(q) \cdot p = p' \\
-    &\equiv \sum_{q : a=a'} p' \cdot \inv p = \ap{f}(q) \\
-    &\jdeq \ap{f}^{-1}(p' \cdot \inv p).
-  \end{align*}
-  The second equivalence relies on \cref{lem:trp-in-fx=Ygx}.
-
-  It follows directly from \eqref{eq:inj-ap-equiv}
-  that if $\ap{f}$ is an equivalence,
-  then $f^{-1}(b)$ is a proposition,
-  as all its identity types are contractible.
-
-  On the other hand, if we fix $a,a':A$ and $p:f(a)=f(a')$,
-  then \eqref{eq:inj-ap-equiv} applied to $b \defeq f(a)$,
-  $z \defeq (a,\refl{f(a)})$ and
-  $z' \defeq (a',p)$,
-  gives $\ap{f}^{-1}(p) \equiv (z=_{f^{-1}(b)}z')$,
-  which shows that if each $f^{-1}(b)$ is a proposition,
-  then $\ap{f}$ is an equivalence.
-\end{proof}
-\begin{xca}\label{xca:inj-sets}
-  Show that if $A,B$ are sets, then a function
-  $f : A \to B$ is injective if and only if
-  $f(a)=f(a')$ implies $a=a'$ for all $a,a'$.
-\end{xca}
 
 \begin{definition}\label{def:subtype}
   A \emph{subtype}\index{subtype} of a type $T$
