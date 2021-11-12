@@ -2307,77 +2307,19 @@ and write \emph{purely A}.
 
 In this section we collect a number of useful results on equivalences.
 
-Another application of propositional truncation
-is the notion of image.
-\begin{definition}\label{def:prop-image}
-  Let $A,B$ be types and let $f : A \to B$. We define the \emph{image} of $f$ as
-  \glossary(ima){$\protect\im(f)$}{the (propositional) image of $\protect f$}
-  \[
-    \im(f) \defeq \sum_{y:B}\exists_{x:A}(y = f\,x).\qedhere
-  \]
-\end{definition}
+Consider the function $f:\bn{1}\to\bn{2}$ sending $0$ to $0$.
+The fibers of $f$ at $0$ and $1$ are equivalent to $\true$ and $\false$.
+Hence $f$ is not an equivalence, since $\false$ is not contractible. 
+Observe that both fibers are propositions, that is, contain at most one element.
 
-Note that $(\exists_{x:A}(y = f\,x)) \jdeq \Trunc{f^{-1}(y)}$,
-the propositional truncation of the fiber.
-For this reason, $\im(f)$ is called the \emph{propositional} image.
-Later we will meet other notions of image, based on other truncation operations.
-
-\begin{xca}\label{xca:unique-fact-image}
-  Show that the image of $f : A \to B$ induces a factorization $f = i\circ p$
-  \[
-    \begin{tikzcd}
-      A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
-      & \im(f)\ar[ur,"i"'] &
-    \end{tikzcd}
-  \]
-  where $p$ is surjective and $i$ is injective, and that each such factorization
-  is equivalent to the image factorization.
-\end{xca}
-
-\begin{xca}\label{xca:all-prop-image}
-Let $f:A\to B$ for $A$ and $B$ types, and let $P(b)$ be a proposition
-depending on $b:B$.
-Show that $\prod_{z:\im(f)} P(\fst(z))$ if and only if $\prod_{a:A} P(f(a))$.
-%(Hint: for the if-direction, use truncation elimination and path induction.)
-\end{xca}
-
-\begin{lemma}\label{lem:ap-equivalence}
-If $f:A\to B$ is an equivalence, then so is each
-$\ap{f}: (a=a') \to (f(a)=f(a'))$ for all $a,a':A$.\footnote{%
-  TODO: Obsolete}
-\end{lemma}
-\begin{proof}
-Let $f^{-1} : B\to A$ be the inverse of $f$, then we have
-$\ap{f^{-1}}: (b=b') \to (f^{-1}(b)=f^{-1}(b'))$ for all $b,b':B$.
-Consider $\ap{f^{-1}}$ for $b\defeq f(a)$ and $b'\defeq f(a')$.
-Then the codomain is $f^{-1}(f(a))=f^{-1}(f(a'))$, and not $a=a'$.
-However, we have $h(x):f^{-1}(f(x))=x$ for every $x:A$, so the
-codomain of $\ap{f^{-1}}$ is equivalent to the domain of $\ap{f}$.
-
-We apply \cref{lem:weq-iso}.
-We take the inverse of $\ap{f}$ to map $q: f(a)=f(a')$
-to $h(a')\cdot{\ap{f^{-1}}(q)}\cdot {h(a)^{-1}} : a=a'$.
-We then have to prove $h(a')\cdot{\ap{f^{-1}}(\ap{f}(p))}\cdot {h(a)^{-1}} = p$
-for all $p: a=a'$, as well as
-$\ap{f}(h(a'))\cdot\ap{f^{-1}}(q)\cdot {h(a)^{-1}})=q$ for all $q: f(a)=f(a')$.
-
-The first round trip is easy by induction on $p$. The reader may also recognize a
-naturality square as in \cref{def:naturality-square-commutativity} based on $h$.
-The second round trip also uses the family of identities $i(y):f(f^{-1}(y))=y$ for all $y:B$.
-This case is more involved and uses several applications of \cref{def:naturality-square-commutativity}.
-We refrain from giving all details.\footnote{%
-A short proof can be obtained from \cref{lem:fib-vs-path}.}
-\end{proof}
-
-The converse of \cref{lem:ap-equivalence} is not
-true: $f:\bn{1}\to\bn{2}$ sending $0$ to $0$ is not an
-equivalence. As a function between sets,
+As a function between sets
 $f$ is an injection (one-to-one), but not a surjection.
 We need these important concepts for types in general.
 We define them as close as possible to their
 usual meaning in set theory: a function from $A$ to $B$ is
 surjective if the preimage of any $b:B$ is non-empty,
 and injective if such preimages contain at most one element.
+This motivates the following definition.
 
 \begin{definition}\label{def:surjection}
 A function $f:A\to B$ is a \emph{surjection}, or is \emph{surjective},
@@ -2495,6 +2437,41 @@ and $f: A\equiv B$ and $g:\prod_{a:A}(F(a) \equiv G(f(a)))$.
 Give an equivalence from $\sum_{a:A} F(a)$ to $\sum_{b:B} G(b)$.
 (An important special case is $F\jdeq G\circ f$.)
 \end{xca}
+
+Another application of propositional truncation
+is the notion of image.
+\begin{definition}\label{def:prop-image}
+  Let $A,B$ be types and let $f : A \to B$. We define the \emph{image} of $f$ as
+  \glossary(ima){$\protect\im(f)$}{the (propositional) image of $\protect f$}
+  \[
+    \im(f) \defeq \sum_{y:B}\exists_{x:A}(y = f\,x).\qedhere
+  \]
+\end{definition}
+
+Note that $(\exists_{x:A}(y = f\,x)) \jdeq \Trunc{f^{-1}(y)}$,
+the propositional truncation of the fiber.
+For this reason, $\im(f)$ is called the \emph{propositional} image.
+Later we will meet other notions of image, based on other truncation operations.
+
+\begin{xca}\label{xca:unique-fact-image}
+  Show that the image of $f : A \to B$ induces a factorization $f = i\circ p$
+  \[
+    \begin{tikzcd}
+      A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
+      & \im(f)\ar[ur,"i"'] &
+    \end{tikzcd}
+  \]
+  where $p$ is surjective and $i$ is injective, and that each such factorization
+  is equivalent to the image factorization.
+\end{xca}
+
+\begin{xca}\label{xca:all-prop-image}
+Let $f:A\to B$ for $A$ and $B$ types, and let $P(b)$ be a proposition
+depending on $b:B$.
+Show that $\prod_{z:\im(f)} P(\fst(z))$ if and only if $\prod_{a:A} P(f(a))$.
+%(Hint: for the if-direction, use truncation elimination and path induction.)
+\end{xca}
+
 
 
 \section{Decidability, excluded middle and propositional resizing}
@@ -3030,8 +3007,8 @@ by $\Trunc{\blank}_n$ with corresponding constructor $\trunc{\blank}_n$.
 Propositional truncation $\Trunc{\blank}$ can thus also be denoted as
 $\Trunc{\blank}_{-1}$. Sometimes it is convenient to consider
 contractible types as $-2$-types, with constant truncation operator
-$\Trunc{\blank}_{-2}\defeq\true$ and 
-constructor $\trunc{\blank}_{-2}\defeq\triv$.
+$\Trunc{T}_{-2}\defeq\true$ and 
+constructor $\trunc{t}_{-2}\defeq\triv$.
 }%endmarginnote
 
 \begin{xca}\label{xca:sum-of-conn-components}
