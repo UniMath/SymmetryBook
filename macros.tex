@@ -335,8 +335,20 @@
 \makerunningwidth{cas}{\headwidth}
 \makeheadposition{cas}{flushright}{flushleft}{}{}
 \newcommand*{\headtitle}{\normalfont\scshape\textls{symmetry}}
-\makeevenhead{cas}{\thepage\kern2pc\headtitle}{}{}
-\makeoddhead{cas}{}{}{\headtitle\kern2pc\thepage}
+\makeevenhead{cas}{\thepage\kern2pc\normalfont\scshape\textls{\leftmark}}{}{}
+\makeoddhead{cas}{}{}{{\normalfont\scshape\textls{\rightmark}}\kern2pc\thepage}
+\nouppercaseheads
+\makeatletter
+\makepsmarks{cas}{%
+  \createmark{chapter}{both}{nonumber}{\@chapapp\ }{. \ }
+  \createplainmark{toc}{both}{\contentsname}
+  \createplainmark{lof}{both}{\listfigurename}
+  \createplainmark{lot}{both}{\listtablename}
+  \createplainmark{bib}{both}{\bibname}
+  \createplainmark{index}{both}{\indexname}
+  \createplainmark{glossary}{both}{\glossaryname}
+}
+\makeatother
 \pagestyle{cas}
 
 %%% Chapters
