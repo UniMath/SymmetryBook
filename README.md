@@ -21,6 +21,8 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - Globally defined constants are typeset roman, while variables are italic. One exception is the *B* construction: The B matches whatever it operates on and joins to it without any space.
 - When a structure is introduced and unpacked at the same time, use ≡ to connect the new variable with the unpacked parts. For example: “Let M ≡ (S,ι,μ) be a monoid”.
 - Hints to exercises go in footnotes in the margin, with the footnote marker at the end of the exercise.
+- Margin notes should usually to be made as footnotes (i.e., with a footnote marker).
+- For a G-set X, we also write X for the underlying set, and we may write X^z to mean X twisted by a G-shape z : BG.
 - Whenever possible, do not use a letter for a variable when the same letter is being used as an operator. E.g., try to avoid a variable B when the classifying type/map operator B is used in the same paragraph.
 - Use macros with mathematical meaning, such as \conncomp, whenever possible, for uniformity of notation.
 - Avoid the use of acronyms, such as LEM and LPO.
