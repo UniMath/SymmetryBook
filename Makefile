@@ -44,11 +44,13 @@ BOOKFILES :=						\
 	symmetry.tex					\
 	fggroups.tex					\
 	fingp.tex					\
-	EuclideanGeometry.tex				\
+	fields.tex					\
+	geometry.tex				\
 	galois.tex					\
 	choicefin.tex					\
 	history.tex					\
-	metamath.tex
+	metamath.tex					\
+	choicefin.tex
 
 TAGS : Makefile $(BOOKFILES)
 	etags $(BOOKFILES)
