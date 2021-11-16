@@ -1417,7 +1417,7 @@ Disregarding the set-condition we get the simpler notion of \inftygps:
 \section{$G$-sets}
 \label{sec:gsets}
 
-One of the goals of \cref{sec:Gsetforabstract} is to prove that the tyoes of groups and abstract groups are equivalent.
+One of the goals of \cref{sec:Gsetforabstract} is to prove that the types of groups and abstract groups are equivalent.
 In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
 However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
 
@@ -1615,6 +1615,73 @@ is injective.
   depend on $f$. Since we try to prove a proposition we are done.
 \end{proof}
 
+\subsection{Actions in a type}
+\label{sec:actions}
+Oftentimes it is interesting not to have an action on a set, but on an element in any given type (not necessarily the type of sets).  For instance, a group can act on another, giving rise to the notion of the semidirect product in \cref{sec:Semidirect-products}.  We will return these more generalt types of actions many times.
+
+\begin{definition}\label{action}
+  If $G$ is any (possibly higher) group and $A$ is any type of objects,
+  then we define an \emph{action} by $G$ in %the world of elements of
+  $A$ as a function
+  \[
+    X : \BG \to A.\qedhere
+  \]
+\end{definition}
+
+The particular object of type $A$ being acted on is $X(\shape_G):A$,
+and the action itself is given by transport.
+This generalizes our earlier definition of $G$-sets, $X : \BG \to \Set$.
+
+\begin{definition}\label{std-action}
+  The \emph{standard action} of $G$ on its designated shape $\shape_G$ is obtained by
+  taking $A \defeq \B G$ and $X \defeq \id_{\B G}$.
+\end{definition}
+
+\begin{example}
+  An action of $G$ on its set $\USym G$ of symmetries is provided by taking $X$ to be the principal torsor $\princ G$ as defined in
+  \cref{def:principaltorsor}.
+\end{example}
+
+Notice that the type $\BG \to A$ is equivalent to the type
+\[
+  \sum_{a:A}\hom(G,\Aut_A(a)),
+\]
+that is, the type of pairs of an element $a : A$,
+and a homomorphism from $G$ to the automorphism group of $A$.
+This equivalence maps an action $X:\BG\to A$ to the pair consisting of $X(\shape_G)$
+and the homomorphism represented by the pointed map from $\B G$ to the pointed component $A_{(a)}$ given by $X$.
+% .  arising
+% from corestricting $X$ to factor through the component of $A$ containing $a$
+% together with the trivial proof that this map takes $\shape_G:\BG$ to $a$.
+
+Because of this equivalence,
+we define a \emph{$G$-action on $a:A$}
+to be a homomorphism from $G$ to $\Aut_A(a)$.
+
+In the special case when $A$ is a universe we can talk about fixed points and orbits as follows.
+Many times we are particularly interested in actions on types,
+i.e., $A$ is a universe:
+\[
+  X : \BG \to \UU.
+\]
+\begin{definition}
+  \label{def:orbittype}\label{def:fixedpointtye}
+  If $X\colon G\to\UU$, then  \emph{orbit type}\index{orbit type} of the action as
+  \footnote{We use superscripts and subscripts many places and truncations of orbit types, and to distinguish the orbits and fixed points are decorated with ``$hG$'', following a convention in homotopy theory.}
+\[
+  X_{hG} \defeq \sum_{z:\BG} X(z),
+\]
+and the type of \emph{fixed points}\index{fixed point type} as
+\[
+  X^{hG} \defeq \prod_{z:\BG} X(z).
+\]
+The \emph{set of orbits}\index{set|of orbits}\index{orbit set} is the set-truncation of the orbit type,
+\[
+  X / G \defeq \Trunc{X_G}_0.
+\]
+We say that the action is \emph{transitive} if $X / G$ is contractible.
+\end{definition}
+Notice that this notion of transitive coincides with the one we introduced in \cref{def:transitiveGset}: that $X/G$ is contractible exactly encodes that there is just one ``orbit'': there is a $b:X(\shape_G)$ so that for any $a:X(\shape_G)$ there is a $g:UG$ such that $a=g\cdot b$.
 
 
 \section{The classifying type is the type of torsors}
@@ -2926,6 +2993,129 @@ commutes.  Likewise, (using transport along the identity $p_f:\shape_{G'}=f(\sha
 % commutes.  However, since $f$ is surjective there is a $g:\USym G$ so that $g'=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
 \end{proof}
 
+\section{Semidirect products {\color{red} just moved without prooreading BID 211116}}
+\label{sec:Semidirect-products}
+
+In this section we describe a generalization of the product of two group, called the {\em semidirect} product, which can be constructed from an
+action of a group on a group.  Like the product, it consists of pairs, both at the level of concrete groups and of abstract groups, as we shall
+see.
+
+We start with some preliminaries on paths between pairs.
+Lemma \cref{lem:isEq-pair=} above takes a simpler form when $y$ and $y'$ are values of a family $x \mapsto f(x)$
+of elements of the family $x \mapsto Y(x)$, as the following lemma shows.
+
+\begin{lemma}\label{lem:pathpairsection}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
+  For any elements $x$ and $x'$ of $X$,
+  there is an equivalence of type
+  $$\left ( (x,f(x)) = (x',f(x')) \right ) \weq (x=x') \times (f(x) = f(x)),$$
+  where the identity type on the left side is between elements of $\sum_{x:X} Y(x)$.
+\end{lemma}
+
+\begin{proof}
+  By \cref{lem:isEq-pair=} and by composition of equivalences, it suffices to establish an equivalence of type
+  $$\left( \sum_{p:x=x'} \pathover {f(x)} Y p {f(x')} \right) \weq (x=x') \times (f(x) = f(x)).$$
+  Rewriting the right hand side as a sum over a constant family, it suffices to find an equivalence of type
+  $$\left( \sum_{p:x=x'} \pathover {f(x)} Y p {f(x')} \right) \weq \sum_{p:x=x'} (f(x) = f(x)).$$
+  By \cref{lem:fiberwise} it suffices to establish an equivalence of type
+  $$ \left( \pathover {f(x)} Y p {f(x')} \right) \weq (f(x) = f(x))$$
+  for each $p:x=x'$.  By induction on $x'$ and $p$ we reduce to the case where $x'$ is $x$ and $p$ is $\refl x$, and it suffices to establish an
+  equivalence of type
+  $$ \left( \pathover {f(x)} Y {\refl x} {f(x)} \right) \weq (f(x) = f(x)).$$
+  Now the two sides are equal by definition, so the identity equivalence provides what we need.
+\end{proof}
+
+The lemma above shows how to rewrite certain paths between pairs as pairs of paths.  Now we wish to establish the formula for composition of
+paths, rewritten in terms of pairs of paths, but first we introduce a convenient definition for the transport of loops in $Y(x)$ along paths in
+$X$.
+
+\begin{definition}\label{def:pathsectionaction}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
+  For any elements $x$ and $x'$ of $X$ and for any identity $p : x = x'$, define a function $(f(x') = f(x')) \to (f(x) = f(x))$, to be denoted
+  by $q' \mapsto {q'} ^ p$, by induction on $p$ and $x'$, reducing to the case where $x'$ is $x$ and $p$ is $\refl x$, allowing us to
+  set ${q'} ^{ \refl x } \defeq q'$.
+\end{definition}
+
+We turn now to associativity for the operation just defined.
+
+\begin{lemma}\label{def:pathsectionactionassoc}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
+  For any elements $x$, $x'$, and $x''$ of $X$, for any identities $p : x = x'$ and $p' : x' = x''$,
+  and for any $q : f x'' = f x''$,
+  there is an identification of type $ ( q ^{ p' }) ^ p = q ^{( p' \cdot p )}$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $p$ and $p'$, it suffices to show that $ ( q ^{ \refl y }) ^ { \refl y } = q ^{( \refl y \cdot \refl y )}$, in which both sides are
+  equal to $q$ by definition.
+\end{proof}
+
+Observe that the operation depends on $f$, but $f$ is not included as part of the notation.
+
+The next lemma contains the formula we are seeking.
+
+\begin{lemma}\label{lem:pathpairsectionmult}
+  Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
+  Suppose we are also given a function $f : \prod_{x:X} Y(x)$.
+  For any elements $x$, $x'$, and $x''$ of $X$, and for any two identities $e : (x,f(x)) = (x',f(x'))$ and $e' : (x',f(x')) = (x'',f(x''))$,
+  if $e$ corresponds to the pair $(p,q)$ with $p : x = x'$ and $q : f x = f x$ under the equivalence of \cref{lem:pathpairsection},
+  and $e'$ corresponds to the pair $(p',q')$ with $p' : x' = x''$ and $q' : f x' = f x'$,
+  then $e' \cdot e$ corresponds to the pair $(p' \cdot p , ({q'} ^ p) \cdot q)$.
+\end{lemma}
+
+\begin{proof}
+  By induction on $p$ and $p'$ we reduce to the case where $x'$ and $x''$ are $x$ and $p$ and $p'$ are $\refl x$.
+  It now suffices to show that $e' \cdot e$ corresponds to the pair $(\refl x , q' \cdot q)$.
+  Applying the definition of the map $\Phi$ in the proof of \cref{lem:isEq-pair=} to our three pairs, we see that it suffices to show that
+  $\left( \apap g {\refl x} {q'} \right) \cdot \left( \apap g {\refl x} {q} \right) = \apap g {\refl x} {q' \cdot q}$, with $g$, as there, being the function $ g(x)(y) \defeq (x,y)$.
+  By \cref{def:applfun2comp} it suffices to show that $\left( \ap {g(x)} {q'} \right) \cdot \left( \ap {g(x)} {q} \right) = \ap {g(x)} {(q' \cdot q)}$, which follows from
+  compatibility of $\ap {g(x)}$ with composition, as in \cref{lem:apcomp}.
+\end{proof}
+
+The lemma above will be applied mostly in the case where $x'$ and $x''$ are $x$, but if it had been stated only for that case, we would not have
+been able to argue by induction on $p$ and $p'$.
+
+\begin{definition}\label{def:semidirect-product}
+  Given a group $G$ and an action $\tilde H : \BG \to \typegroup$ on a group $H \defeq \tilde H(\shape_G)$, we define a group called the {\em
+    semidirect product} as follows.
+  $$G \ltimes \tilde H \defeq \mkgroup { \sum_{t:\BG} \B \tilde H(t) }$$
+  Here the basepoint of the sum is taken to be the point $(\shape_G,\shape_H)$.
+  (We deduce from \cref{lem:level-n-utils}, \cref{level-n-utils-sum}, that $\sum_{t:\BG} \B \tilde H(t)$ is a groupoid.
+  See \cref{lem:UNKNOWN} for a proof that $\sum_{t:\BG} \B \tilde H(t)$ is connected.)
+\end{definition}
+
+Observe that if the action of $G$ on $H$ is trivial, then $\tilde H(t) \jdeq H$ for all $t$ and $G \ltimes \tilde H \jdeq G \times H$.
+
+Projection onto the first factor gives a homomorphism $p \defeq \mkgroup \fst : G \ltimes \tilde H \to G$.
+Moreover, there is a homomorphism $s : G \to G \ltimes \tilde H$ defined by
+$ s \defeq \mkgroup {\left( t \mapsto (t,\shape_{\tilde H(t)}) \right) }$, for $t : \B G$.
+The two maps are homomorphisms because they are made from basepoint-preserving maps.
+The map $s$ is a \emph{section} of $p$ in the sense the $p \circ s = \id_G$.
+There is also a homomorphism $j : H \to G \ltimes \tilde H$ defined by $j \defeq \mkgroup { \left( u \mapsto (\shape_G,u) \right) }$, for $u : \B H$.
+
+\begin{lemma}
+  The homomorphism $j$ above is a monomorphism, and it gives the same (normal) subgroup of $G \ltimes \tilde H$ as the kernel $\ker p$ of $p$.
+\end{lemma}
+
+\begin{proof}
+  See \ref{def:kernel} for the definition of kernel.  According to \cref{lem:fst-fiber(a)=B(a)}, the map $\B H \to (\B p)^{-1}(\shape_G)$ defined by
+  $ u \mapsto ((\shape_G,u), \refl{\shape_G}) $ is an equivalence.  This establishes that the fiber $(\B p)^{-1}(\shape_G)$ is connected and thus serves as
+  the classifying type of $\ker p$.  Pointing out that the composite map $H \xrightarrow{\isom} \ker p \to G \ltimes \tilde H$ is $j$ and using
+  univalence to promote the equivalence to an identity gives the result.
+\end{proof}
+
+Our next goal is to present the explicit formula for the multiplication operation in $\USym { G \ltimes \tilde H }$.
+First we apply \cref{lem:pathpairsection} to get a bijection $\USym { G \ltimes \tilde H } \weq \USym G \times \USym H$.
+Now use that to transport the multiplication operation of the group $\USym { G \ltimes \tilde H }$ to the set $\USym G \times \USym H$.
+Now \cref{lem:pathpairsectionmult} tells us the formula for that transported operation is given as follows.
+$$ (p',q') \cdot (p,q) = (p' \cdot p , ({q'} ^ p) \cdot q) $$
+In a traditional algebra course dealing with abstract groups, this formula is used as the definition of the multiplication operation
+on the set $\USym G \times \USym H$, but then one must prove that the operation satisfies the properties of \cref{def:abstractgroup}.
+The advantage of our approach is that the formula emerges from the underlying logic that governs how composition of paths works.
+
 
 
 \section{Sums of groups}
@@ -3121,6 +3311,140 @@ $\alpha\beta(\refl{a_1},0)\defequi\alpha(\refl{a_{12}})\defequi(\refl{a_1},0)$. 
 \end{align*}
 %((please see whether this makes sense to anybody but yvt))
 \end{proof}
+
+\section{Heaps \texorpdfstring{$(\dagger)$}{(\textdagger) \color{red} just moved from symmetry without proofreding BID211116}}
+\label{sec:heaps}
+
+Recall that we in \cref{rem:heap-preview} wondered about
+the status of general identity types $a=_A a'$,
+for $a$ and $a'$ elements of a groupoid $A$,
+as opposed to the more special loop types $a=_Aa$.\marginnote{%
+  This section has no implications for the rest of the book,
+  and can thus safely be skipped on a first reading.
+  (TODO: Move in place in \cref{ch:groups}?)}
+Here we describe the resulting algebraic structure
+and how it relates to groups.
+
+We proceed in a fashion entirely analogous to that of \cref{sec:typegroup},
+but instead of looking a pointed types, we look at \emph{bipointed types}.
+
+\begin{definition}\label{def:bipt-conn-groupoid}
+  The type of \emph{bipointed, connected groupoids} is the type
+  \[
+    \UUppone \defeq \sum_{A:\UU^{=1}}(A \times A).\qedhere
+  \]
+\end{definition}
+Recall that $\UU^{=1}$ is the type of connected groupoids $A$,
+and that we also write $A:\UU$ for the underlying type.
+We write $(A,a,a'):\UUppone$ to indicate the two endpoints.
+
+Analogous to the loop type of a pointed type,
+we have a designated identity type of a bipointed type,
+where we use the two points as the endpoints of the identifications:
+We set $\ISym(A,a,a') \defeq (a =_A a')$.
+
+\needspace{6\baselineskip}
+\begin{definition}\label{def:heap}
+  The type of \emph{heaps}\footnote{%
+    The concept of heap (in the abelian case)
+    was first introduced by Prüfer\footnotemark{}
+    under the German name \emph{Schar} (swarm/flock).
+    In Anton Sushkevich's book
+    \casrus{Теория Обобщенных Групп}
+    (\emph{Theory of Generalized Groups}, 1937),
+    the Russian term \casrus{груда} (heap)
+    is used in contrast to \casrus{группа} (group).
+    For this reason, a heap is sometimes
+    known as a ``groud'' in English.}%
+  \footcitetext{Pruefer-AG}
+  is a wrapped copy (\cf \cref{sec:unary-sum-types})
+  of the type of bipointed, connected groupoids $\UUppone$,
+  \[
+    \Heap \defeq \Copy_{\mkheap}(\UUppone),
+  \]
+  with constructor $\mkheap : \UUppone \to \Heap$.
+\end{definition}
+We call the destructor $\B : \Heap \to \UUppone$,
+and call $\BH$ the \emph{classifying type} of the heap $H \jdeq\mkheap\BH$,
+just as for groups,
+and we call the first point in $BH$ is \emph{start shape} of $H$,
+and the second point the \emph{end shape} of $H$.
+
+The identity type construction $\ISym : \UUppone \to \Set$
+induces a map $\USym : \Heap \to \Set$,
+mapping $\mkheap X$ to $\ISym X$.
+These are the \emph{underlying identifications} of the heaps.
+
+These is an obvious map (indeed a functor) from groups to heaps,
+given by doubling the point.
+That is, we keep the classifying type and use the designated shape
+as both start and end shape of the heap.
+In fact, this map lifts to the type of heaps with a chosen identification.
+\begin{exercise}\label{xca:group+torsor-heap}
+  Define natural equivalences $\Heap \weq \sum_{G:\Group}\BG$,
+  and $\Group \weq \sum_{H:\Heap}(\USym H)$.
+\end{exercise}
+Recalling the equivalence between $\BG$ and the type of $G$-torsors
+from~\cref{lem:BGbytorsor},
+we can also say that a heap is the same
+as a group $G$ together with a $G$-torsor.\footnote{%
+  But be aware that are \emph{two} such descriptions,
+  according to which endpoint is the designated shape,
+  and which is the ``twisted'' torsor.}
+It also follows that the type of heaps is a (large) groupoid.
+
+In the other direction,
+there are \emph{two} obvious maps (functors) from heaps to groups,
+taking either the start or the end shape to be the designated shape.
+
+Here's an \emph{a priori} different map from heaps to groups:
+For a heap $H$, consider all the
+symmetries of the underlying set of identifications $\USym H$
+that arise as $r \mapsto p\inv q r$ for $p,q\in \USym H$.
+
+Note that $(p,q)$ and $(p',q')$ determine the same symmetry
+if and only if $p\inv q = p'\inv{q'}$, and if and only if
+$\inv{p'}p = \inv{q'}q$.
+
+For the composition, we have $(p,q)(p',q') = (p\inv{q}p',q') = (p,q'\inv{p'}q)$.
+
+\begin{exercise}
+  Complete the argument that this defines a map
+  from heaps to groups. Can you identify the resulting group
+  with the symmetry group of the start or end shape?
+  How would you change the construction to get the other endpoint?
+\end{exercise}
+
+\begin{exercise}
+  Show that the symmetry groups of the two endpoints of a heap
+  are \emph{merely} isomorphic.
+
+  Define the notion of an \emph{abelian heap},
+  and show that for abelian heaps,
+  the symmetry groups of the endpoints are (\emph{purely}) isomorphic.
+\end{exercise}
+
+Now we come to the question of describing the algebraic structure
+of a heap.
+Whereas for groups we can define the abstract structure
+in terms of the reflexivity path and the binary operation of path composition,
+for heaps, we can define the abstract structure
+in terms of a \emph{ternary operation},
+as envisioned by the following exercise.
+
+\begin{exercise}\label{xca:heap-variety}
+  Fix a set $S$.
+  Show that the fiber $\inv{\USym}(S)\jdeq\sum_{H:\Heap}(S=\USym H)$ is a set.
+
+  Now fix in addition a ternary operation $t:S\times S\times S\to S$ on $S$.
+  Show that the fiber of the map $\Heap \to \sum_{S:\Set}(S\times S\times S \to S)$,
+  mapping $H$ to $(\USym H,(p,q,r)\mapsto p \inv{q} r)$,
+  at $(S,t)$ is a proposition,
+  and describe this proposition in terms of equations.
+\end{exercise}
+
+
+
 
 % Local Variables:
 % fill-column: 144
