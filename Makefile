@@ -1,4 +1,4 @@
-MK = latexmk -halt-on-error
+MK = latexmk
 
 all: book.pdf TAGS
 book.pdf: always figures version.tex macros.fmt
@@ -27,7 +27,7 @@ clean:
 cleanall:
 	rm -rf *.aux *.fdb_latexmk *.fls *.log *.out *.toc *.brf *.blg *.bbl *.bcf	\
 		*.run.xml *.glo *.gls *.idx *.ilg *.ind					\
-		*.pdf *.auxlock *.synctex.gz figures TAGS version.tex macros.fmt
+		book.pdf *.auxlock *.synctex.gz figures TAGS version.tex macros.fmt
 always:
 
 # This list should include all the tex files that go into the book, in the order they go.
