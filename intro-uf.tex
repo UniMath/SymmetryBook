@@ -13,7 +13,7 @@ string\footnote{A \emph{string} is a sequence of characters, such as ``abcdefgh'
 \footnote{In a programming language, the well formed expression $1/x$ may produce a run-time error if $x$ happens to have the value $0$.}
 
 To enable the programmer to express such declarations, names are introduced to refer to the various types of things.  For example, the name
-$\bool$ may be used to declare that a variable is a Boolean value\footnote{A Boolean value is either \emph{true} or \emph{false}},
+$\bool$ may be used to declare that a variable is a Boolean value\footnote{A Boolean value is either \emph{true} or \emph{false}.},
   $\integer$ may refer to 32 bit integers, and $\real$ may refer to 64 bit floating point numbers\footnote{An example of a \emph{floating
 point number} is $.625 \times 2^{33}$ -- the \emph{mantissa} $.625$ and the \emph{exponent} $33$ are stored inside the floating point number.
 The ``point'', when the number is written in base $2$ notation, is called ``floating'', because its position is easily changed by modifying the exponent.}.
@@ -47,7 +47,7 @@ introducing the collection of all natural numbers as a mathematical object, perh
 nothing by adding numbers to it one at a time, it would take an eternity to complete the assembly.  We won't regard that as an obstacle.
 
 We have said that the types of things are used to determine whether mathematical statements are well formed.
-Therefore, if we expect ``$\NN$ is infinite'' to be a well formed statement, we'll have to know what type of thing $\NN$ is, and we'll
+Therefore, if we expect ``$\NN$ is infinite'' to be a well-formed statement, we'll have to know what type of thing $\NN$ is, and we'll
 have to have a name for that type.  Similarly, we'll have to know what type of thing that type is, and we'll have to have a name for it,
 and so on forever.  Indeed, all of that is part of what will be presented in this chapter.
 
@@ -191,7 +191,7 @@ or as ``$g$ composed with $f$''.)  The composite function $g \circ f$ may also b
 We also may use the following alternative notation for the composite function, which includes the three
 types explicitly:\glossary(2circbis){$ ( X \xrightarrow f Y \xrightarrow g Z ) $}{function composition}
 \[
-  \left( X \xrightarrow f Y \xrightarrow g Z \right) \defeq g \circ f
+  \left( X \xrightarrow f Y \xrightarrow g Z \right) \defeq g \circ f.
 \]
 
 Now consider functions $f : X \to Y$, $g : Y \to Z$, and $h : Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by
@@ -200,7 +200,7 @@ words, we have established that $(h \circ g) \circ f \jdeq h \circ (g \circ f)$.
 either expression, without danger of confusion.
 
 One may define the identity function $\id_X : X \to X$ by setting $\id_X \defeq (a \mapsto a)$.  Application of definitions shows that
-$f \circ \id_X$ is the same by definition as $a \mapsto f(a)$, which, by a standard convention, which we adopt\marginnote{The convention that
+$f \circ \id_X$ is the same by definition as $a \mapsto f(a)$, which, by a standard convention, which we adopt\footnote{The convention that
   $f \jdeq (a \mapsto f(a))$ is referred to as the \emph{$\eta$-rule}\glossary(907-rule){$\eta$}{$\eta$-rule} in the jargon of type theory.}, is to be regarded as the same as $f$.  In
 other words, we have established that $f \circ \id_X \jdeq f$.%
 \phantomsection\label{page:idofetaf}
@@ -1080,13 +1080,16 @@ of an element $x$ of $X$ and an identification of type $y = f(x)$.
 
 In set theory, a function $f : X \to Y$ is a bijection if and only if
 all preimages $f^{-1}(y)$ consist of exactly one element.
-This we can also express in type theory, in a definition due
-to Voevodsky.
+We can also express this in type theory, in a definition due
+to Voevodsky, for types in general.
 
 \begin{definition}
   \label{def:equivalence}
   A function $f : X \to Y$ is called an \emph{equivalence} if $\inv f(y)$ is contractible for
-  all $y:Y$.  The condition is encoded by the type $$\isEq(f) \defeq \prod_{y:Y}\iscontr(f^{-1}(y)).$$
+  all $y:Y$.  The condition is encoded by the type 
+\[
+\isEq(f) \defeq \prod_{y:Y}\iscontr(f^{-1}(y)).\qedhere
+\]
 \end{definition}
 
 We may say that $X$ and $Y$ are \emph{equivalent} if there is an equivalence between them.
@@ -1095,7 +1098,7 @@ We may say that $X$ and $Y$ are \emph{equivalent} if there is an equivalence bet
   \label{def:type-of-equivalences}
   We define the type $X \equiv Y$ of equivalences from $X$ to $Y$ by the following definition.
   \[
-  (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f).
+  (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f).\qedhere
   \]
 \end{definition}
 
@@ -1788,17 +1791,17 @@ is called a fiberwise map,
 and $f$ is called a fiberwise equivalence,
 if $f(x): Y(x)\to Z(x)$ is an equivalence for all $x:X$.
 
-\begin{lemma}\label{lem:trp-in-function-type}
+\begin{construction}\label{lem:trp-in-function-type}
 Let $X$ be a type, and let $Y(x)$ and $Z(x)$ be types for every $x:X$.
 Then we have for every $x,x':X$, $e: x=x'$, $f: Y(x)\to Z(x)$, and $y':Y(x')$:
 \[
 \trp[Y\to Z]{ e} (f)(y') = \trp[Z]{e} \Bigl(f\bigl(\trp[Y]{ e^{-1}}(y')\bigr)\Bigr).
 \]
-\end{lemma}
-\begin{proof}
+\end{construction}
+\begin{implementation}{lem:trp-in-function-type}
 By induction on $e: x=x'$. For $e \jdeq \refl{x}$, we have $e^{-1}\jdeq \refl{x}$,
 and all transports are identity functions of appropriate type.
-\end{proof}
+\end{implementation}
 
 An important special case of the above lemma is with $\UU$
 as parameter type and type families $Y\defeq Z\defeq \id_\UU$.
@@ -1817,18 +1820,18 @@ This equation is phrased as `transport by conjugation'.\marginnote[-3\baselinesk
   \end{tikzcd}}
 The following lemma is proved by induction on $e: x=x'$.
 
-\begin{lemma}\label{lem:trp-in-fx=Ygx}
+\begin{construction}\label{lem:trp-in-fx=Ygx}
 Let $X,Y$ be types, $f,g: X\to Y$ functions, and let
 $Z(x)\defeq (f(x)=g(x))$ for every $x:X$.
 Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
 \[
 \trp[Z]{ e} (i) = \ap{g}(e) \cdot i \cdot \ap{f}(e)^{-1}.
 \]
-\end{lemma}
+\end{construction}
 
 \begin{xca}\label{xca:trp-in-a/x=b/x}
-Prove the following special cases of \cref{lem:trp-in-fx=Ygx},
-where $Y\jdeq X$ and $a,b$ members of $X$:
+Implement \cref{lem:trp-in-fx=Ygx} in the following special cases,
+where $Y\jdeq X$ and $a,b$ are elements of $X$:
 \begin{enumerate}
 \item $\trp[x\mapsto a=b]{e} (i) = i$;
 \item\label{trp-in-a=x} $\trp[x\mapsto a=x]{e} (i) = e\cdot i$;
@@ -1923,7 +1926,7 @@ which is again proved by induction on $e$.\footnote{%
     \node (poapdg) at (.9,1.35) {$\po_e\bigl(\apd{g}(e)\bigr)$};
   \end{tikzpicture}}
 
-\begin{lemma}\label{lem:trp-in-fx=Yxgx}
+\begin{construction}\label{lem:trp-in-fx=Yxgx}
 Let $X,Y(x)$ be types and $f(x),g(x): Y(x)$ for all $x:X$.
 Let $Z(x)\defeq (f(x)=g(x))$,
 with the identification in $Y(x)$, for every $x:X$.
@@ -1932,7 +1935,7 @@ Then for all $x,x'$ in $X$, $e: x=x'$, and $i: f(x)=g(x)$ we have:
   \trp[Z]{ e} (i) = \po_e\bigl(\apd{g}(e)\bigr)
   \cdot \ap{\trp[Y]{e}}(i) \cdot \po_e\bigl(\apd{f}(e)\bigr)^{-1}.
 \]
-\end{lemma}
+\end{construction}
 
 The following construction will be used later in the book.
 
@@ -2338,6 +2341,12 @@ that is, $\Trunc{\sum_{a:A} b=f(a)}$.\footnote{%
   the type $\isinj(f) \defeq \prod_{b:B} \isprop(\inv f (b))$.
 \end{definition}
 
+\begin{xca}\label{xca:inj-sets}
+  Show that if $A,B$ are sets, then a function
+  $f : A \to B$ is injective if and only if
+  $f(a)=f(a')$ implies $a=a'$ for all $a,a'$.
+\end{xca}
+
 \begin{lemma}\label{lem:inj+surj}
 For all types $A,B$, a function $f: A\to B$ is an equivalence
 if and only if $f$ is an injection and a surjection.
@@ -2354,6 +2363,9 @@ Now apply injectivity.\footnote{%
   This argument applies generally:
   Any non-empty proposition is contractible.}
 \end{proof}
+
+If the types $A$ and $B$ in the above lemma are \emph{sets},
+then we call equivalences between $A$ and $B$ also \emph{bijections}.
 
 \begin{corollary}\label{cor:inj+connected}
 Let $A,B$ be types such that $A$ is non-empty and $B$ is connected.
@@ -2382,20 +2394,16 @@ Now the lemma follows by eliminating the propositional truncations in the assump
 using that the conclusion is a proposition.
 \end{proof}
 
-\begin{lemma}\label{lem:inj-ap}
-  A function $f:A\to B$ is an injection if and only if
-  each induced function
-  $\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence,
-  for all $a,a':A$.
-\end{lemma}
-
-\begin{proof}
-  First we note that if $z,z' : f^{-1}(b)$ for some $b:B$,
-  then there is an equivalence
-  \begin{equation}\label{eq:inj-ap-equiv}
+\begin{construction}\label{con:fib-vs-path}
+  For every $f:A\to B$, $b:B$, and $z,z' : f^{-1}(b)$,
+  there is an equivalence 
+  \begin{equation}\label{eq:fib_vs-path}
     (z = z') \equiv \ap{f}^{-1}(\snd{z'} \cdot \inv{\snd{z}}).
   \end{equation}
-  Indeed, we can construct this for $z\jdeq(a,p)$ and $z'\jdeq(a',p')$,
+\end{construction}
+
+\begin{implementation}{con:fib-vs-path}
+  We can construct this equivalence for $z\jdeq(a,p)$ and $z'\jdeq(a',p')$,
   where $a,a':A$, $p:b=f(a)$ and $p':b=f(a')$,
   as the composition\marginnote{%
     \noindent\normalsize\begin{tikzpicture}
@@ -2421,80 +2429,56 @@ using that the conclusion is a proposition.
     &\equiv \sum_{q : a=a'} p' \cdot \inv p = \ap{f}(q) \\
     &\jdeq \ap{f}^{-1}(p' \cdot \inv p).
   \end{align*}
-  The second equivalence relies on \cref{lem:trp-in-fx=Ygx}.
+  The second equivalence relies on \cref{def:pathover-trp}
+  and \cref{lem:trp-in-fx=Ygx}.
+\end{implementation}
 
-  It follows directly from \eqref{eq:inj-ap-equiv}
+\begin{lemma}\label{lem:eqandcovofconntypes}
+  A function $f:A\to B$ is an injection if and only if
+  each induced function
+  $\ap{f}: (a=a') \to (f(a)=f(a'))$ is an equivalence,
+  for all $a,a':A$.\footnote{%
+    \emph{Warning:}
+    If $A$ and $B$ are sets, then each $\ap{f}$ is an equivalence
+    if and only if we have the implication $(f(a) = f(a')) \to (a = a')$,
+    but this is in general not sufficient.}
+\end{lemma}
+
+\begin{proof}
+  It follows directly from \eqref{eq:fib_vs-path}
   that if $\ap{f}$ is an equivalence,
   then $f^{-1}(b)$ is a proposition,
   as all its identity types are contractible.
 
   On the other hand, if we fix $a,a':A$ and $p:f(a)=f(a')$,
-  then \eqref{eq:inj-ap-equiv} applied to $b \defeq f(a)$,
+  then \eqref{eq:fib_vs-path} applied to $b \defeq f(a)$,
   $z \defeq (a,\refl{f(a)})$ and
   $z' \defeq (a',p)$,
   gives $\ap{f}^{-1}(p) \equiv (z=_{f^{-1}(b)}z')$,
   which shows that if each $f^{-1}(b)$ is a proposition,
   then $\ap{f}$ is an equivalence.
 \end{proof}
-\begin{xca}\label{xca:inj-sets}
-  Show that if $A,B$ are sets, then a function
-  $f : A \to B$ is injective if and only if
-  $f(a)=f(a')$ implies $a=a'$ for all $a,a'$.
-\end{xca}
 
 
-\begin{lemma}\label{lem:fib-vs-path}
-Let $X$ and $Y$ be types and let $f:X\to Y$ be a function.
-Let $x_i:X$, define $y_i\defeq f(x_i)$ for $i=0,1$, and consider a path $q:y_0 = y_1$.
-Recall the map $\ap{f}: (x_0=x_1) \to (y_0 = y_1)$ and its fiber
-$(\ap{f})^{-1}(q) \defeq \sum_{p:x_0=x_1} q =\ap{f}(p)$ over $q$.
-Then we have:
-\[
-((x_0,\refl{y_0})=_{f^{-1}(y_0)}(x_1,q))\equiv (\ap{f})^{-1}(q)
-\]
-\end{lemma}
-\begin{proof}
-%Observe that the type on the right is the fiber of $\ap{f}$ at $q$.
-  We calculate, starting with \cref{lem:isEq-pair=},
-  \begin{align*}
-    \bigl((x_0,\refl{y_0})=(x_1,q)\bigr)
-    &= \sum_{p:x_0=x_1} \pathover {\refl{y_0}} {y_0=f(\blank)} p q \\
-    &\stackrel{\mathclap{\text{\cref{def:pathover-trp}}}}{=}\quad\;
-      \sum_{p:x_0=x_1} \trp[y_0=f(\blank)]{p} ( \refl{y_0} ) = q \\
-    &\stackrel{\mathclap{\text{\cref{lem:trp-in-fx=Ygx}}}}{=}\quad\;
-     \sum_{p:x_0=x_1} \ap{f}(p)\cdot\refl{y_0}\cdot\inv{\refl{y_0}} = q \\
-    &= \sum_{p:x_0=x_1} q = \ap{f}(p) \\
-    &\jdeq \inv{(\ap{f})}(q) \qedhere
-  \end{align*}
-\end{proof}
-
-\begin{corollary}\label{cor:fib-vs-path}\label{lem:eqandcovofconntypes}
-Let $X$ and $Y$ be types and let $f:X\to Y$ be a function. Then we have:
+\begin{corollary}\label{cor:fib-vs-path}
+Let $A$ and $B$ be types and let $f:A\to B$ be a function. Then we have:
 \begin{enumerate}
-\item\label{prop-fib-vs-path}
-  $f$ is an injection if and only if each map $\ap{f} : (x_0 = x_1) \to (f(x_0) = f(x_1))$ induced by $f$
-  on identity types is an equivalence;\footnote{%
-    \emph{Warning:}
-    If $X$ and $Y$ are sets, then each $\ap{f}$ is an equivalence
-    if and only if we have the implication $(f(x_0) = f(x_1)) \to (x_0 = x_1)$,
-    but this is in general not sufficient.}
 \item\label{set-fib-vs-path}
-All fibers of $f$ are sets if and only if all fibers of each map induced by $f$ on identity types are propositions;
+All fibers of $f$ are $n+1$-types if and only if all fibers of 
+each map induced by $f$ on identity types are $n$-types;
 \item\label{conn-fib-vs-path}
-If $X$ and $Y$ are connected, then $f$ is an equivalence
-if and only if each map induced by $f$ on identity types is an equivalence.
+If $A$ and $B$ are connected, then $f$ is an equivalence
+if and only if each map induced by $f$ on identity types is an equivalence;
+\item\label{conn-fib-vs-path-point}
+If $A$ and $B$ are connected and $a:A$, then $f$ is an equivalence
+if and only if $\ap{f}: (a=a) \to (f(a)=f(a))$ is an equivalence.
 \end{enumerate}
 \end{corollary}
 \begin{proof}
-(1) Follows from \cref{lem:fib-vs-path}: if $f$ is an injection,
-then $f^{-1}(y_0)$ is a proposition, and hence identities in $f^{-1}(y_0)$
-are contractible. For the converse, use that $(x,p)=_{f^{-1}(y)}(x',p')$ is
-equivalent to $(x,\refl{f(x)}) =_{f^{-1}(f(x))} (x',p'\cdot p^{-1})$,
-for all $(x,p),(x',p') : f^{-1}(y)$.
-
-(2) Similar to the proof of (1).
-
-(3) By (1) and \cref{cor:inj+connected}.
+(1) For $n=-2$ this is \cref{lem:eqandcovofconntypes}
+and the proof for $n\geq -1$ is similar.
+(2) By \cref{lem:eqandcovofconntypes} and \cref{cor:inj+connected}.
+(3) By (2) and \cref{xca:component-connected}.
 \end{proof}
 
 \begin{xca}\label{xca:sum-equivalences}
