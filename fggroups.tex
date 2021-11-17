@@ -150,7 +150,7 @@ For technical reasons, we restrict decidable sets $S$.\footnote{%
   Fix a decidable set $S$.
   The classifying type of the free group on $S$, $\BFG_S$,%
   \index{free group}%
-  \glossary(FS){$\protect\FG_S$}{free group on a decidable set of generators}%
+  \glossary(FS){$\protect\FG_S$}{free group on a decidable set of generators}
   is a type with a point $\base : \BFG_S$ and
   a constructor ${\Sloop_\blank} : S \to \base=\base$.
 
@@ -208,15 +208,71 @@ If we take $T \defeq \tilde S$ we get the set of words in the signed letters fro
 \[
   \varepsilon,a,b,A,B,aa,ab,aA,aB,ba,bb,bA,bB,Aa,Ab,AA,AB,\ldots
 \]
-When we interpret these as symmetries in $\BFG_S$, the words
-$aA$ and $Bb$, etc., become trivial.
+When we interpret these as symmetries in $\BFG_S$, \ie as elements in $\UFG_S$,
+the words $aA$ and $Bb$, etc., become trivial.
 \begin{definition}
   A word $w : \tilde S^*$ is called \emph{reduced}
   if it doesn't contain any consequence pair of complementary letters.
-  The map $\rho : \tilde S^* \to \tilde S^*$ maps a word to its \emph{reduction},
+  The map $\rho_S : \tilde S^* \to \tilde S^*$ maps a word to its \emph{reduction},
   which is obtained by repeatedly deleting consecutive pairs of complementary
   letters until none remain.
 \end{definition}
+
+\begin{xca}
+  Complete the definition of $\rho_S$ by nested induction on words.
+\end{xca}
+
+\begin{definition}
+  We define $\mathcal R_S$ to be the image of $\rho_S$ in $\tilde S^*$,
+  whose elements are the \emph{reduced words}.
+  We define $\mathcal D_S$ to be the fiber of $\rho_S$ at the empty word,
+  $\rho_S^{-1}(\varepsilon)$,
+  whose elements are called \emph{Dyck words}.\footnote{%
+    Considered as a set of words,
+    $\mathcal D_S$ is called the \emph{2-sided Dyck language}.
+    Perhaps the \emph{1-sided Dyck language} is more familiar
+    in language theory: Here, $S$ is considered as a set of
+    `opening parentheses', while the complementary elements
+    are `closing parentheses'.
+    For example, the 1-sided Dyck language for $\tilde S=\set{\textup{(},\textup{)}}$
+    consists of all \emph{balanced} words of opening and closing parentheses,
+    \eg (), (()), ()(), etc., while our $\mathcal D_S$ in this case
+    also has words like )( and ))(()(.}
+\end{definition}
+
+\begin{remark}
+  Like any map, $\rho_S$ induces an equivalence relation $\sim$
+  on the set $\tilde S^*$
+  where two words $u,v$ are related
+  if and only if they map to the same reduced word,
+  in other words,
+  $u \sim v$ if and only if $\rho_S(u) = \rho_S(v)$.
+  Thus, $\rho_S$ induces an equivalence $\tilde S^*/{\sim} \equivto \mathcal R_S$.
+\end{remark}
+
+We are now ready to prove that set $\mathcal R_S$ of reduced words
+is equivalent to $\UFG_S$.
+We'll do this be defining an interpretation function from words
+to elements of the free group.
+
+\begin{definition}
+  We define $\sem\blank : \tilde S^* \to \UFG_S$
+  by induction on words by setting
+  \begin{align*}
+    \sem\varepsilon             &\defeq \refl\base & & \\
+    \sem{wa}                    &\defeq \sem w \Sloop_a,
+                                &\text{for $a:S$,}& \\
+    \sem{w\bar a}\jdeq \sem{wA} &\defeq \sem w \Sloop_a^{-1},
+                                &\text{for $a:S$.}&\qedhere
+  \end{align*}
+\end{definition}
+
+\begin{theorem}
+  Fix a decidable set $S$.
+  The interpretation map $\llbracket\blank\rrbracket$ respects the equivalence
+  relation, and induces an equivalence denoted the same way,
+  $\llbracket\blank\rrbracket : \mathcal R_S \to \UFG_S$.
+\end{theorem}
 
 \section{Cayley diagrams}
 \label{sec:cayley-diagrams}
@@ -543,15 +599,7 @@ Stallings folding\footcite{Stallings1991}.
 ($S$ is still a fixed finite set.)
 
 Let $\iota : F(S) \to \tilde S^*$ map an element of the free group to the corresponding reduced word.
-The kernel of $\iota$ is the \emph{2-sided Dyck language} $\mathcal D_S$.\footnote{%
-  Perhaps the \emph{1-sided Dyck language} is more familiar
-  in language theory: Here, $S$ is considered as a set of
-  ``opening parentheses'', while the complementary elements
-  are ``closing parentheses''.
-  It's customary to pick $\tilde S=\set{\textup{(},\textup{)}}$.
-  The 1-sided Dyck language for this alphabet consists
-  of all \emph{balanced} words of opening and closing parentheses,
-  like (),(()),()(), etc.}
+The kernel of $\iota$ is the \emph{2-sided Dyck language} $\mathcal D_S$.
 
 The following theorem is due to Benois.
 \begin{theorem}
