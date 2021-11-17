@@ -168,7 +168,8 @@ For technical reasons, we restrict decidable sets $S$.\footnote{%
 
 In order to see that this is a correct definition,
 we need to know that $\BFG_S$ is a groupoid.
-We can follow that same strategy as in~\cref{lem:wedgeofgpoidisgpoid}
+We can follow that same strategy as in~\cref{lem:univisexp}
+and~\cref{lem:wedgeofgpoidisgpoid}
 and show this by giving a description of $\FG_S$ as an \emph{abstract} group.
 To see what this should be, think about what symmetries of $\base$
 we can write using the constructors $\Sloop_s$ for $s:S$.
@@ -185,7 +186,7 @@ This motivates the following definitions.
   be the (decidable) set of \emph{signed} letters from $S$.
   Also, let $\bar{\blank} : \tilde S \to \tilde S$
   be the equivalence that swaps the two copies of $S$.
-  This map is an involution called \emph{complementation}
+  This map is an involution called \emph{complementation}.
 \end{definition}
 
 If $a:S$, we'll also write $a:\tilde S$ for the left inclusion,
@@ -197,9 +198,9 @@ so that $\bar a \jdeq A$ and $\bar A \jdeq a$, \ie $a$ and $A$ are complementary
   This is the inductive type with constructors $\varepsilon : T^*$
   (\emph{the empty list})\glossary(1Tstar){$T^*$}{list of elements of $T$}%
   \index{list}
-  and \emph{concatenation} of type $T^* \to T \to T^*$,
-  taking a list $\ell$ and an element $t:T$ to the extended list
-  consisting of $\ell$ with $t$ tacked on at the end.
+  and \emph{concatenation} of type $T \to T^* \to T^*$,
+  taking an element $t:T$ and a list $\ell$ to the extended list $t\ell$
+  consisting of $t$ followed by the elements of $\ell$.
 \end{definition}
 Instead of ``lists'' we often speak about ``words'' formed from ``letters''
 taking from the set $T$, which is thus a kind of ``alphabet''.
@@ -219,7 +220,8 @@ the words $aA$ and $Bb$, etc., become trivial.
 \end{definition}
 
 \begin{xca}
-  Complete the definition of $\rho_S$ by nested induction on words.
+  Complete the definition of $\rho_S$ by nested induction on words.\footnote{%
+    Hint: This is precisely the point where we need $S$ to have decidable equality.}
 \end{xca}
 
 \begin{definition}
@@ -260,19 +262,80 @@ to elements of the free group.
   by induction on words by setting
   \begin{align*}
     \sem\varepsilon             &\defeq \refl\base & & \\
-    \sem{wa}                    &\defeq \sem w \Sloop_a,
+    \sem{aw}                    &\defeq \Sloop_a \cdot \sem w,
                                 &\text{for $a:S$,}& \\
-    \sem{w\bar a}\jdeq \sem{wA} &\defeq \sem w \Sloop_a^{-1},
+    \sem{\bar aw}\jdeq \sem{Aw} &\defeq \Sloop_a^{-1} \cdot \sem w,
                                 &\text{for $a:S$.}&\qedhere
   \end{align*}
 \end{definition}
 
 \begin{theorem}
   Fix a decidable set $S$.
-  The interpretation map $\llbracket\blank\rrbracket$ respects the equivalence
-  relation, and induces an equivalence denoted the same way,
-  $\llbracket\blank\rrbracket : \mathcal R_S \to \UFG_S$.
+  The interpretation map $\sem\blank$ restricts to
+  an equivalence, denoted the same way,
+  $\sem\blank : \mathcal R_S \to \UFG_S$.
 \end{theorem}
+
+\begin{proof}
+  We extend $\mathcal R_S$ to an $\FG_S$-set, $\mathcal R_S : \BFG_S \to \Set$,
+  where we define $\mathcal R_S(x)$ by induction on $x : \BFG_S$, with
+  \[
+    \mathcal R_S(\base) \defeq \mathcal R_S,\quad\text{and}\quad
+    \mathcal R_S(\Sloop_a) \defis \casoverline{\zs_a},\quad\text{for $a:S$.}
+  \]
+  Here $\zs_a : \mathcal R_S \equivto \mathcal R_S$ is the equivalence
+  sending a word $w$ to $\rho_S(aw)$, whose inverse sends
+  $w$ to $\rho_S(Aw)$. These operations are indeed mutual inverses,
+  since $aAw \sim w \sim Aaw$.\footnote{%
+    The set $\mathcal R_S$ is very much like $\zet$, but instead of having
+    only one successor equivalence $\zs$, it has one for each element of $S$.}
+
+  Our goal now is to extend the definition of $\sem\blank$ to
+  $\sem\blank_x : \mathcal R_S(x) \to \pathsp\base$,
+  where $\pathsp\base(x) \jdeq (\base = x)$, for $x : \BFG_S$,
+  so that this is an inverse to the map given by transport of $\varepsilon$,
+  $\tau_x : (\base = x) \to \mathcal R_S(x)$,
+  with $\tau_x(p) \defeq \trp[\mathcal R_S]{p}(\varepsilon)$.
+  Thinking back to~\cref{def:gRtoP},
+  we define $\sem\blank_x$ by induction on $x$ with
+  $\sem\blank_\base \defeq \sem\blank$ and using
+  the identification $\sem{aw} = \Sloop_a \cdot \sem w$.\footnote{%
+    In a picture, the case for $\Sloop_a$ should prove that it does not matter what
+    path you take around the square
+    \[
+      \begin{tikzcd}[row sep=large,column sep=huge,ampersand replacement=\&]
+        \mathcal R_S\ar[r,"{\sem\blank}"]\ar[d,eqr,"\zs_a"] \&
+        (\base=\base)\ar[d,eqr,"\Sloop_a\cdot\blank"] \\
+        \mathcal R_S\ar[r,"{\sem\blank}"] \& (\base=\base).
+      \end{tikzcd}
+    \]}
+
+  We get an identification $\sem{\blank}_x \circ \tau_x = \id$ by path induction,
+  since $\sem{\varepsilon} = \refl\base$.
+
+  To prove the proposition $\tau_x(\sem w_x) = w$ for all $x:\BFG_S$
+  and $w : \mathcal R_S(x)$,
+  it suffices to consider the case $x \jdeq \base$, since $\BFG_S$ is connected.
+  We prove that $\tau_\base(\sem w) \sim w$ holds for \emph{all} words
+  $w:\tilde S^*$ by induction on $w$,
+  because then it follows that $\tau_\base(\sem w) = w$ for \emph{reduced} words $w$.
+  The case $w \jdeq \varepsilon$ is trivial.
+  In the step case for adding $a:S$, we calculate,
+  \[
+    \tau_\base(\sem{aw}) \jdeq \trp[\mathcal R_S]{\Sloop_a \cdot \sem w}(\varepsilon)
+    = \trp[\mathcal R_S]{\Sloop_a}(\tau_\base(\sem w))
+    = \zs_a(w) = \rho_S(aw) \sim aw,
+  \]
+  as desired, the complementary case being similar.
+\end{proof}
+
+\begin{xca}
+  Construct an equivalence $\mathcal R_{\bn 1} \equiv \zet$
+  sending $\varepsilon$ to $0$ such that $\zs_*$ corresponds to $\zs$,
+  where $*:\bn 1$ is the unique element.
+  This gives us two more options to add to the list in~\cref{ft:many-integers}
+  on~\cpageref{ft:many-integers}: $\tilde{\bn 1}^*/{\sim}$ and $\mathcal R_{\bn 1}$!
+\end{xca}
 
 \section{Cayley diagrams}
 \label{sec:cayley-diagrams}
