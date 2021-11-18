@@ -1,9 +1,9 @@
 \section{Choice for finite sets\titledagger}
 \label{sec:choicefin}
 
-This chapter is a short overview of how group theory is involved in
+This section is a short overview of how group theory is involved in
 relating different choice principles for families of finite sets.  A
-paradigm case is that if we have choice for all families of
+paradigmatic case is that if we have choice for all families of
 $2$-element sets, then we have choice for all families of $4$-element
 sets.%
 \footnote{This is due to Tarski,
@@ -59,7 +59,8 @@ The following is usually called Diaconescu's theorem\footcite{Diaconescu} or the
 \end{proof}
 
 We'll now define some restricted variants of the axiom of choice,
-because our goal is to see how they relate to each other and to other principles.
+that however are not always true,
+and our goal is to see how they relate to each other and to other principles.
 
 \begin{definition}
   Let $\AC$ denote the full axiom of choice, as in~\cref{pri:ac}.
@@ -163,9 +164,35 @@ for arbitrary \inftygps.
   \emph{is} constant, so $P$ is the constant family at $S$.
   And this has a section since $S$ is non-empty.
 
-  [TODO: complete the proof and think about whether we can relax the
-  decidability requirements]
+  In the general case, consider a surjection $p : Y \to X$,
+  and let $C$ be the higher inductive type with constructors
+  $c : C$, $f : X \to C$, and $k : \prod_{y:Y}(c = f(p(y))$.\footnote{%
+    This kind of higher inductive type is also known as a pushout,
+    and its constructors fit together to give a commutative square:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&]
+        Y \ar[d]\ar[r,"p"] \& X \ar[d,"f"] \\
+        \bn 1 \ar[r,"c"'] \& C
+      \end{tikzcd}
+    \]}
+  Using the same kind of argument as in~\cref{lem:wedgeofgpoidisgpoid}
+  and~\cref{thm:free-group-elements}, we can show,
+  using decidability of equality in $X$ and $Y$,
+  that the identity type $c =_C f(x)$ is equivalent to a type of reduced words
+  over $Y \coprod Y$.
+  In particular, $C$ is a groupoid, and it's easy to check that it's connected.
+  Hence we can form the group $G \defeq \mkgroup(C,c)$.
+
+  By assumption, the map $f$ is merely equal to the constant map,
+  so since we're proving a proposition,
+  we may assume we have a family of elements $h(x) : c = f(x)$, for $x:X$.
+  Taking for each $x$ the last $y$ in the corresponding reduced word,
+  we get a family of elements $s(x) : Y$
+  such that $p(s(x)) = x$,
+  but this is precisely the section we wanted.
 \end{proof}
+
+[TODO: Think about whether the proof generalizes. Can we say something more if we assume trivial cohomology with coefficients in \inftygps?]
 
 \begin{theorem}
   Let $X$ be any set. Then $\lAC{X}(4)$ follows from $\lAC{X}(2)$ and $\lAC{X}(3)$.
