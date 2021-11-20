@@ -359,8 +359,11 @@ $$F_1':\coker f_1\to_{\BG_1\to\Set}\coker f_2f_1\,Bf_2,\quad F_2':\coker f_2f_1\
 \subsection{The image}
 \label{sec:image}
 
+
 For a function $f:A\to B$ of sets (or, more generally, of types) the notion of the ``image'' gives us a factorization through a surjection followed by an injection: noting that $a\mapsto (f(a),!)$ is a surjection from $A$ to the ``image'' $\sum_{b:B}\Trunc{f^{-1}(b)}$, from which we have an injection (first projection) to $B$.
 \marginnote{The formula for the image in group theory is the same as the one for sets, except that the propositional truncation we have for the set factorization is replaced by the set truncation present in our formulation of the cokernel $\coker(f)\defequi\Trunc{(\Bf)^{-1}(z)}_0$.}
+This factorization $A\to\sum_{b:B}\Trunc{f^{-1}(b)}\to B$ is unique (\cref{xca:unique-fact-image}).
+
 For homomorphism $f:\Hom(G,G')$ of groups we similarly have a factorization through an epimorphism followed by a monomorphism.  The image is now represented by %type $\sum_{b:B}\Trunc{f^{-1}(b)}$ is simply replaces by
 $\sum_{z\BG'}\Trunc{(\Bf)^{-1}(z)}_0$.
 
@@ -995,16 +998,21 @@ commutes.
 
 \section{The pullback}
 \label{sec:pullback}
+Given two functions $f:B\to D$ and $g:C\to D$ with common target, the ``pullback'' which we will now define should be thought about as the type of all pairs of elements $(b,c):B\times C$ so that $f(b)=g(c)$.  This construction is important in many situations also beyond group theory.
 
 \begin{definition}
   \label{def:pullback}
   Let $B, C, D$ be types and let $f:B\to D$ and $g:C\to D$ be two maps.
 The \emph{pullback}\index{pullback} of $f$ and $g$ is the type
 $$\prod(f,g)\defequi\sum_{(b,c):B\times C}(f(b)=_Dg(c))$$
-together with the two projections $\prod(f,g)\to B$ and $\prod(f,g)\to C$ sending $(b,c,p):\prod(f,g)$ to $b:B$ or $c:C$.  If $f$ and $g$ are clear from the context, we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
-$$\xymatrix{B\times_DC\ar[r]\ar[d]&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
+together with the two projections $\prj_B:\prod(f,g)\to B$ and $\prj_C:\prod(f,g)\to C$ sending $(b,c,p):\prod(f,g)$ to $b:B$ or $c:C$.  If $f$ and $g$ are clear from the context, we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
+$$\xymatrix{B\times_DC\ar[r]^{\prj_C}\ar[d]^{\prj_B}&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
 \end{definition}
 \begin{xca}
+  \marginnote{Illustrating the exercise: if the solid diagram commutes there is a unique dotted arrow so that the resulting diagram commutes:
+    $$\xymatrix{A\ar@{.>}[dr]\ar[drr]\ar[ddr]&&\\
+    &B\times_DC\ar[r]\ar[d]&C\ar[d]\\&B\ar[r]&D}
+  $$}
   \label{xca:univpropofpullback}
   Let $f:B\to D$ and $g:C\to D$ be two maps with common target.  If $A$ is a type show that
   \begin{align*}
@@ -1015,18 +1023,20 @@ $$\xymatrix{B\times_DC\ar[r]\ar[d]&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
 \end{xca}
 
 \begin{example}
+  \marginnote{Preimage as a pullback: $$\xymatrix{f^{-1}(d)\ar[d]\ar[r]&\bn1\ar[d]^d\\B\ar[r]^f&D}$$}
   If $g:\bn 1\to D$ has value $d:D$ and $f:B\to D$ is any map, then $\prod(f,g)\oldequiv B\times_D\bn 1$ is equivalent to the preimage $f^{-1}(d)\defequi\sum_{b:B}d=f(b)$.
 \end{example}
 \begin{example}
   \label{ex:pullbackandgcd}
-  Much group theory is hidden in the pullback.  For instance, the greatest common divisor $\gcd(a,b)$ of $a,b:\NN$ is another name for the number of components you get if you pull back the $a$-fold and the $b$-fold cover of the circle: as we will see in \cref{lem:iso2} we have a pullback
-$$\xymatrix{S^1\times C_{\gcd(a,b)}\ar[d]\ar[r]& S^1\ar[d]^{(-)^b}\\
+  Much group theory is hidden in the pullback.  For instance, the greatest common divisor $\gcd(a,b)$ of $a,b:\NN$ is another name for the number of components you get if you pull back the $a$-fold and the $b$-fold cover of the circle: we % will see in \cref{lem:iso2} we
+  have a pullback
+$$\xymatrix{S^1\times\B C_{\gcd(a,b)}\ar[d]\ar[r]& S^1\ar[d]^{(-)^b}\\
 S^1\ar[r]^{(-)^a}&\,S^1}
 $$
 (where $C_n$ was the cyclic group of order $n$).
 To get a geometric idea, think of the circle as the unit circle in the complex numbers so that the $a$-fold cover is simply taking the $a$-fold power.  With this setup, the pullback should consist of pairs $(z_1,z_2)$ of unit length complex numbers with the property that $z_1^a=z_2^b$.  Let $a=a'G$ and $b=b'G$ where $G=\gcd(a,b)$. Taking an arbitrary unit length complex number $z$, then the pair $(z^{b'},z^{a'})$ is in the pull back (since $a'b=ab'$).  But so is $(\zeta z^{b'},z^{a'})$, where $\zeta$ is any $G$\th root of unity.  Each of the $G$-choices of $\zeta$ contributes in this way to a component of the pullback.  In more detail: identifying the cyclic group $C_G$ of order $G$ with the group of $g$\th roots of unity, the top horizontal map $S^1\times C_G\to S^1$ sends $(z,\zeta)$ to $z^{a'}$ and the left vertical map sends $(z,\zeta)$ to the product $\zeta z^{b'}$.
 
-Also the least common multiple is hidden in the pullback; in the present example it is demonstrated that the map(s) accross the diagram makes each component of the pullback a copy of the subgroup $a'b\ZZ$ of $\ZZ$.
+Also the least common multiple $\lcm(a,b)=a'b$ is hidden in the pullback; in the present example it is demonstrated that the map(s) accross the diagram makes each component of the pullback a copy of the subgroup $\lcm(a,b)\ZZ$ of $\ZZ$.
 \end{example}
 
 
