@@ -2556,7 +2556,7 @@ $\Cyc_n$ is mapping by $f$ to a proof of $\refl {f(\pt_n)} =
   \marginnote{The construction of $\chi$ is really an ad hoc version of the following fact: for any $G$-set $X$, the type of fixed points of $X$ is equivalent to the type of sections of $\sum_{z:\BG}X(z) \to \BG$. If we move this section forward, one can rewrite it as such.} 
 \end{proof}
 
-\section{Old material yet to be integrated}
+\section{Old and new material yet to be integrated}
 \label{sec:deckS1}
 
 There are many other instances of the $m$\th root construction, \cref{con:root},
@@ -2997,6 +2997,95 @@ the same analysis as above we get $w(Q(\base)) = ml'+k'$. Since Euclidean Divisi
 is unique, we get $k'=k$ and $l'=l$. The type of $\snd(p')$ is a proposition.
 Hence the pair $(k',p')$ is equal to the center.
 \end{proof}
+
+\subsection*{Higher images}
+
+Recall from \cref{def:prop-image} the propositional image:
+  \[
+    \im(f) \jdeq \sum_{y:B}\exists_{x:A}(y = f\,x) 
+           \jdeq \sum_{y:B}\Trunc{\sum_{x:A}(y = f\,x)}
+           \jdeq \sum_{y:B}\Trunc{\inv f (y)}.
+  \]
+In this subsection we will generalize the propositional image
+to higher images, replacing the propositional
+truncation involved in the definition by $n$-truncation.
+
+Recall furthermore the unique image factorization from \cref{xca:unique-fact-image}:
+  \[
+    \begin{tikzcd}
+      A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
+      & \im(f)\ar[ur,"i"'] &
+    \end{tikzcd}
+  \]
+Here $p$ is surjective and $i$ is injective. Both surjectivity 
+(\cref{def:surjection}) and injectivity (\cref{def:injection})
+rely on the notion of proposition: all fibers of $p$ are non-empty
+and all fibers of $i$ are propositions.
+
+The uniqueness of the factorization $f=ip$ can be visualized
+in terms of the two diagonals of the diamond below:
+for any surjection $g$ and injection $h$ such that $f=hg$,
+that is, the diagram below on the left commutes,
+one can construct a (unique) equivalence $e$ such that
+the diagram on the right commutes.
+
+  \[
+    \begin{tikzcd}
+      & X \ar[dr,"h"] & & & X \ar[dr,"h"] &\\
+      A \ar[rr,"f"]\ar[dr,"p"'] \ar[ur,"g"]& & B
+&
+      A \ar[dr,"p"'] \ar[ur,"g"]& & B  \\
+      & \im(f)\ar[ur,"i"'] & & & \im(f)\ar[ur,"i"']\ar[uu, dotted, "e"] &
+    \end{tikzcd}
+  \]
+
+The unique existence of an equivalence $e$ as above is called the
+\emph{universal property of the propositional image}.
+Uniqueness of $e$ above also follows from the following two exercises.
+
+\begin{xca}\label{xca:cancel-injection}
+Let $i:A\to B$ be an injection and let $i\blank$ be composition with $i$.
+Show that $\ap{i\blank}: (f = g) \to (if = ig)$ is an equivalence.
+\end{xca}
+\begin{xca}\label{xca:cancel-injection}
+Let $p:A\to B$ be a surjection and let $\blank p$ be precomposition with $p$.
+Show that $\ap{\blank p}: (f = g) \to (fp = gp)$ is an equivalence.
+\end{xca}
+
+We will now define higher images and generalize the notions
+of injection and surjection such that a similar
+universal property of higher images can be proved.
+
+\begin{definition}\label{def:n-image}
+  Let $A,B$ be types and let $f : A \to B$. We define the $n$-\emph{image} of $f$ as
+  \glossary(iman){$\protect\im_n(f)$}{the $\protect n$-image of $\protect f$}
+  \[
+    \im_n(f) \defeq \sum_{y:B}\Trunc{\inv f (y))}_n.\qedhere
+  \]
+\end{definition}
+
+\begin{definition}\label{def:n-connected}
+  Let $A,B$ be types and let $f : A \to B$. The funtion $f$ is $n$-\emph{connected}
+  \index{function!$n$-connected}
+  if $\Trunc{\inv f (b)}_n$ is contractible, for each $b:B$.
+\end{definition}
+
+\begin{definition}\label{def:n-truncated}
+  Let $A,B$ be types and let $f : A \to B$. The funtion $f$ is $n$-\emph{truncated}
+  \index{function!$n$-truncated}
+  if $\inv f (b)$ is an $n$-type, for each $b:B$.
+\end{definition}
+
+Indeed, we have that $\im_{-1}(f) \jdeq im(f)$. Moreover, 
+the $(-1)$-connected functions are precisely the surjections, 
+and the $(-1)$-truncated functions are precisely the injections.
+
+
+
+
+
+
+
 
 %%% Local Variables:
 %%% mode: latex
