@@ -3060,7 +3060,7 @@ universal property of higher images can be proved.
   Let $A,B$ be types and let $f : A \to B$. We define the $n$-\emph{image} of $f$ as
   \glossary(iman){$\protect\im_n(f)$}{the $\protect n$-image of $\protect f$}
   \[
-    \im_n(f) \defeq \sum_{y:B}\Trunc{\inv f (y))}_n.\qedhere
+    \im_n(f) \defeq \sum_{b:B}\Trunc{\inv f (b))}_n.\qedhere
   \]
 \end{definition}
 
@@ -3076,14 +3076,73 @@ universal property of higher images can be proved.
   if $\inv f (b)$ is an $n$-type, for each $b:B$.
 \end{definition}
 
-Indeed, we have that $\im_{-1}(f) \jdeq im(f)$. Moreover, 
+Indeed, we have that $\im_{-1}(f) \jdeq \im(f)$. Moreover, 
 the $(-1)$-connected functions are precisely the surjections, 
 and the $(-1)$-truncated functions are precisely the injections.
 
+%\begin{definition}\label{def:n-image-factorization}
+ % Let $A,B$ be types and let $f : A \to B$. 
+  The $n$-image of $f$
+  induces a \emph{factorization} $f = i\circ p$ with
+  $p(a)\defeq (f(a),\trunc{(a,\refl{f(a)})}_n)$ for all $a:A$, and $i\defeq\fst$.
+  \[
+    \begin{tikzcd}
+      A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
+      & \im_n(f)\ar[ur,"i"'] &
+    \end{tikzcd}
+  \]
+%\end{definition}
+Clearly, $i$ is $n$-truncated. TODO $p$ is $n$-connected and
 
 
+\begin{construction}\label{con:fibcomp=fibfib}
+  Let $g:A\to X$ and $h: X\to B$, and let 
+$\tilde{g}:A\to \sum_{b:B}\inv h (b)$ be the composition of $g$
+with the canonical equivalence $X\to \sum_{b:B}\inv h (b)$ from \cref{lem:sum-of-fibers}.
+Thus $\tilde{g}(a)\jdeq (h(g(a)),g(a),\refl{h(g(a))})$ for each $a:A$,
+and we have the following commutative diagram:
+  \[
+    \begin{tikzcd}
+      A \ar[r,"g"] \ar[dr,"\tilde{g}"'] & X \ar[r,"h"] \ar[d, eqr] & B \\
+      & \sum_{b:B}\inv h (b) \ar[ur,"\fst"'] &
+    \end{tikzcd}
+  \]
+Then we have $\inv {(h\circ g)} (b) = \sum_{y:\inv h (b)} \inv {\tilde{g}}(b,y)$
+for all $b:B$.
+\end{construction}
+\begin{implementation}{con:fibcomp=fibfib}
+Let, for each $b:B$, $e(b)$ map any pair $(a,p):\inv {(h\circ g)} (b)$ to 
+$((g(a),p),(a,q))$. Here $q$ is of type $(b,g(a),p) = (h(g(a)),g(a),\refl{h(g(a))})$
+and is given componentwise by $p: b=h(g(a))$, $\refl{g(a)}$ and 
+$q_3: \pathover {p}{\blank=h(g(a))}{p} {\refl{h(g(a))}}$.
+This construction uses \cref{def:pairtopath}, \cref{def:pathover-trp},
+and \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a} (for $q_3$).
+\end{implementation}
 
+\begin{xca}\label{xca:fibcomp=fibfib}
+Complete the details of \cref{con:fibcomp=fibfib}.
+In particular, prove that $e$ is a fiberwise equivalence.
+Alternatively, construct your own $e$ by using \cref{cor:contract-away} (twice!).
+\end{xca}
 
+\begin{xca}\label{xca:pullout-base-type}
+Let $X$ be an $n$-type and let $Y(x)$ be a type for all $x:X$.
+Construct equivalences $\Trunc{\sum_{x:X} Y(x)}_n \to \sum_{x:X} \Trunc{Y(x)}_n$ 
+and $\Trunc{\prod_{x:X} Y(x)}_n \to \prod_{x:X} \Trunc{Y(x)}_n$.
+\end{xca}
+
+  \[
+    \begin{tikzcd}
+     &\sum\limits_{b:B} P(b)\ar[rr,"\fst"]\ar[ddd,dotted]&&B\ar[ddd,dotted]\\
+      \sum\limits_{b:B}\sum\limits_{y:P(b)}Q(b,y) \ar[rr,"?"]\ar [ur,"?"]\ar[ddd,dotted]&& 
+      \sum\limits_{b:B}\sum\limits_{y:P(b)} \Trunc{Q(b,y)}_n \ar [ur,"\fst"']\ar[ddd,dotted]\\
+\\
+     &P(b)\ar[rr]&&\bn{1}\\
+      \sum\limits_{y:P(b)} Q(b,y) \ar[r,"\trunc{\blank}_n"'] \ar [ur,"?"]& 
+      \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n \ar[r,"?"'] & 
+      \sum\limits_{y:P(b)} \Trunc{Q(b,y)}_n \ar[ur]\\
+    \end{tikzcd}
+  \]
 
 
 
