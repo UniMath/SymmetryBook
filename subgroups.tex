@@ -395,7 +395,8 @@ That the image gives a \emph{unique factorization} is elegantly expressed by say
 
   \begin{construction}\label{con:im}
     For all groups $G,$ and $G'$ the map
-    $$\circ:\typeepi_G\times_{\typegroup}\typemono_{G'}\to\Hom(G,G')
+    $$
+    \circ:\typeepi_G\times_{\typegroup}\typemono_{G'}\to\Hom(G,G')
     $$
     given by composition,\footnote{here $p$ is an epimorphism from $G$ to the group $Z$, $j$ a monomorphims from the group $Z'$ to $G'$, $\alpha\colon Z=Z$
       and $\ptoe\alpha$ is the isomorphism corresponding to the $\alpha\colon Z=Z'$, as in \cref{def:idtoeq},
@@ -411,25 +412,53 @@ That the image gives a \emph{unique factorization} is elegantly expressed by say
   $$\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),|x,\refl{f(x)}|)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z
   }$$
   is unique in the sense that if $p:f=qj$ where $q\colon X\to Y$ is so that for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible and $j\colon Y\to Z$ is so that for all $z:Z$ the fiber $j^{-1}(z)$ is $n$-truncated, then for each $z:Z$ the function $f^{-1}(z)\to j^{-1}(z)$ induced by ($p$ and) $q$ 
-  gives an equivalence
-  $$\Trunc{f^{-1}(z)}_n\simeq j^{-1}(z)
+  gives an equivalence\footnote{to see that the function is an equivalence notice that it can be obtained as follows: rewrite $f^{-1}(z)$ first as
+    $$\sum_{x:X}\sum_{y:Y}(z=f(x))\times(y=qx),$$ then as
+    $$\sum_{y:Y}\sum_{x:X}(z=j(y))\times(y=q(x))$$ and finally use that the $n$-truncation of
+    $\sum_{x:X}y=q(x)$ is contractible}
+  \marginnote{
+    $$\xymatrix{
+      X\ar[r]^q\ar[d]&Y\ar[d]^j\\\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[r]_-{\fst}\ar@{.>}[ur]^{(j,q)}_\simeq&Z
+    }$$}
+  $$(j,q):\Trunc{f^{-1}(z)}_n\simeq j^{-1}(z)
   $$
   identifying (under univalence) the two factorizations of $f$.
+  
+  If $X$ and $Z$ are connected groupoids, then so is $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$, and so when applying the factorization to groups (when $n=0$), the only thing we need to worry about is the base point.
+  If if the point-data is given by $x_0:X$, $y_0:Y$, $z_0:Z$,
+  $p_q:y_0=q(x_0)$,
+  $p_j:z_0=j(y_0)$ and
+  $p_f:z_0=f(x_0)$ with
+  $b:p_f=a_{x_0}^{-1}j(p_q)p_j$, where $a:\prod_{x:X}f(x)=j(q(x))$ witnesses that we have a factorization, then we point $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ in $(z_0,|x_0,p_f|)$ and note that the equivalence $\sum_{z:Z}\Trunc{f^{-1}(z)}_n\we Y$ is pointed via $p_q:y_0=q(x_0)$ and
+  $$b:\xymatrix{
+    z_0\ar@{=}[rr]_\to^{p_j}\ar@{=}[d]_{\refl{z_0}}&&j(y_0)\ar@{=}[d]_{j{p_q}}^\uparrow\\
+    z_0\ar@{=}[r]^{p_f}_\to&f(x_0)\ar@{=}[r]_\to^{a_{x_0}}&j(q(x_0)).}$$
+\end{implementation}
+
+Explicitly, the image factorization for groups is the function
+\begin{align*}
+\circ^{-1}:\Hom(G,G')&\to\typeepi_G\times_{\typegroup}\typemono_{G'}\\
+\circ^{-1}(f)&\defequi ((\Img f,\prj_{\img f},!),(\Img f,\incl_{\img f},!),\refl{\Img f}),
+\end{align*}
+    where as before the \index{image group}\emph{image group} is the group
+    $$\Img f\defequi \aut_{\sum_{z:\BG'}\coker f(z)}(\shape_{G'},|\shape_G,p_f|),$$
+    the monomorphism $\incl_{\img f}$ is obtained from the wrapping of the first projection
+    $$\B\incl_{\img f}\defequi\fst: B\Img f\to \BG'$$
+    and
+the epimorphism
+  $\prj_{\img f}$  is given on the level of classifying types by sending $x:\BG$ to
+  $$B\prj_{\Img f} f(x)\defequi (\Bf(x),|x,\refl{\Bf(x)}|):\B\image f.$$
+
     
-  More precisely, we define a function
-  $$\img:\Hom(G,G')\to\typemono_{G'}$$
-  called the \emph{image}\index{image!function} %(or just image)
-  and a function
-  $$\prjim:\Hom(G,G')\to\typeepi_G
-  $$
-  called the \emph{projection to the image}\index{image!projection to},
-  so that if  $f:\Hom(G,G')$  is a homomorphism, then
-  $\img f\defequi(\Img f,\incl_{\img f},!):\typemono_{G'}$ and
-  $\prjim f\defequi(\Img f,\prj_{\Img f},!):\typeepi_G$
-  with common first projection the \emph{image group}\index{image!group} (or most often just the image) $\Img f$, and so that we have a definitional equality in $\Hom(G,G')$
+ Occasionally we may refer to the two projections of the image factorization
+ \begin{align*}
+    \img:\Hom(G,G')\to\typemono_{G'},\qquad&\img(f)\defequi(\Img f,\incl_{\img f},!)\\
+ \prjim:\Hom(G,G')\to\typeepi_G, \qquad&\prjim f\defequi(\Img f,\prj_{\Img f},!)
+  \end{align*}
+  as the \emph{image}\index{image!function} and the \emph{projection to the image}\index{image!projection to}
   \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img f}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img f}}}
   $$}
-$$f\oldequiv\incl_{\Img f}\prj_{\Img f},$$
+$$f_{\Hom(G,G')}\incl_{\Img f}\prj_{\Img f},$$
 referred to as the \emph{factorization of $f$ through its image.}
 
 Given two homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$, there is a unique homomorphism
@@ -486,7 +515,6 @@ $$f_1=_{\typeepi_G}\prj_{\img f_2f_1}\text{ and }f_2=_{\typemono_{G'}}\incl_{\im
   % $$Bt_\div(y)\defequi (\Bf_2(y),|(\Bf_2(y),\refl{}|.
   % $$
 
-\end{implementation}
 
 % \begin{definition}
 %   \label{def:image}
