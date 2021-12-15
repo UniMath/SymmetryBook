@@ -440,6 +440,8 @@ That the image gives a \emph{unique factorization} is elegantly expressed by say
     z_0\ar@{=}[r]^{p_f}_\to&f(x_0)\ar@{=}[r]_\to^{a_{x_0}}&j(q(x_0)).}$$
 \end{implementation}
 
+  \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img f}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img f}}}
+  $$}
 Explicitly, the image factorization for groups is the function
 \begin{align*}
 \circ^{-1}:\Hom(G,G')&\to\typeepi_G\times_{\typegroup}\typemono_{G'}\\
@@ -461,8 +463,6 @@ the epimorphism
  \prjim:\Hom(G,G')\to\typeepi_G, \qquad&\prjim f\defequi(\Img f,\prj_{\img f},!)
   \end{align*}
   as the \emph{image}\index{image!function} and the \emph{projection to the image}.\index{image!projection to}
-  \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img f}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img f}}}
-  $$}
 % $$f_{\Hom(G,G')}\incl_{\Img f}\prj_{\Img f},$$
 % referred to as the \emph{factorization of $f$ through its image.}
 
@@ -470,22 +470,30 @@ We need to understand how the image factorization handles composition of homomor
 This is forced by the uniqueness as follows.
 
 \marginnote{
-  $$\xymatrix{G_0\ar@{=}[rr]&&G_0\\
-    \Img f_1\ar@{=}[r]&\Img f_1&\\
-    G_1&\Img(\prj_{\img f_2}\incl_{\img f_1})\ar@{=}[r]&\Img(f_2f_1)\\
-    \Img f_2\ar@{=}[r]&\Img f_2&\\
-    G_2\ar@{=}[rr]&&G_2
+  $$\xymatrix{
+    &&G_0\ar[dl]_{\prj_{\img f_1}}\ar[dd]_{\prj_{\img f_2f_1}}\\
+   & \Img f_1\ar[dl]_{\incl_{\img f_1}}\ar[d]^{\prj_{\img(\prj_{\img f_2}\incl_{\img f_1})}}&\\
+    G_1\ar[dr]_{\prj_{\img f_2}}&
+    \Img(\prj_{\img f_2}\incl_{\img f_1})\ar[d]^{\incl_{\img(\prj_{\img f_2}\incl_{\img f_1})}}
+    \ar@{=}[r]&\Img(f_2f_1)\ar[dd]_{\incl_{\img f_2f_1}}\\
+    &\Img f_2\ar[dr]_{\incl_{\img f_2}}&\\
+    G_2&&
   }$$}
 \begin{lemma}
   Given composable homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$, unique factorization induces identifications
   \begin{align*}
-    \prjim(f_2f_1)&=_{\typeepi_{G_0}}(\Img(\prj_{\img f_2}\incl_{\img f_1}),)
+    \prjim(f_2f_1)&=_{\typeepi_{G_0}}(\Img(\prj_{\img f_2}\incl_{\img f_1}),
   \prj_{\img(\prj_{\img f_2}\incl_{\img f_1})}\prj_{\img f_1},!)\\%\prj^{\img}(\prj_{\img f_2}\prj_{\img f_1})\\
-    \img(f_2f_1)&=_{\typemono_{G_2}}%\img(\incl_{\img f_2}\incl_{\img (\prj_{\img f_2})\incl_{\img f_1})
+    \img(f_2f_1)&=_{\typemono_{G_2}}(\Img(\prj_{\img f_2}\incl_{\img f_1}),\incl_{\img f_2}\incl_{\img(\prj_{\img f_2}\incl_{\img f_1})},!)%\img(\incl_{\img f_2}\incl_{\img (\prj_{\img f_2})\incl_{\img f_1})
   \end{align*}
   
   
 \end{lemma}
+\begin{proof}
+  Since composition preserves monomorphisms and epimorphisms, this is just uniqueness of the image factorization of the composite $f_2f_1$.
+\end{proof}
+
+{\color{red}editing here 211215 BID}
 there is a unique homomorphism
 $u:\Hom(\Img f_2f_1,\Img f_2)$ satisfying
 \marginnote{$$\xymatrix{G_0\ar[rr]^{\prj_{\img f_2f_1}}\ar[d]_{f_1}&&
