@@ -412,7 +412,9 @@ That the image gives a \emph{unique factorization} is elegantly expressed by say
   For any integer $n\geq -1$ -- and in our case for $n=0$ -- on the level of types the factorization of a function $f\colon X\to Z$ as
   $$\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),|x,\refl{f(x)}|)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z
   }$$
-  is unique in the sense that if $p:f=qj$ where $q\colon X\to Y$ is so that for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible and $j\colon Y\to Z$ is so that for all $z:Z$ the fiber $j^{-1}(z)$ is $n$-truncated, then for each $z:Z$ the function $f^{-1}(z)\to j^{-1}(z)$ induced by ($p$ and) $q$ 
+  is unique in the sense that
+  \begin{quote}
+    if $p:f=qj$ where $q\colon X\to Y$ is so that for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible and $j\colon Y\to Z$ is so that for all $z:Z$ the fiber $j^{-1}(z)$ is $n$-truncated, then for each $z:Z$ the function $f^{-1}(z)\to j^{-1}(z)$ induced by ($p$ and) $q$ 
   gives an equivalence\footnote{to see that the function is an equivalence notice that it can be obtained as follows: rewrite $f^{-1}(z)$ first as
     $$\sum_{x:X}\sum_{y:Y}(z=f(x))\times(y=qx),$$ then as
     $$\sum_{y:Y}\sum_{x:X}(z=j(y))\times(y=q(x))$$ and finally use that the $n$-truncation of
@@ -424,6 +426,8 @@ That the image gives a \emph{unique factorization} is elegantly expressed by say
   $$(j,q):\Trunc{f^{-1}(z)}_n\simeq j^{-1}(z)
   $$
   identifying (under univalence) the two factorizations of $f$.
+  \end{quote}
+
   
   If $X$ and $Z$ are connected groupoids, then so is $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$, and so when applying the factorization to groups (when $n=0$), the only thing we need to worry about is the base point.
   If if the point-data is given by $x_0:X$, $y_0:Y$, $z_0:Z$,
@@ -454,15 +458,35 @@ the epimorphism
  Occasionally we may refer to the two projections of the image factorization
  \begin{align*}
     \img:\Hom(G,G')\to\typemono_{G'},\qquad&\img(f)\defequi(\Img f,\incl_{\img f},!)\\
- \prjim:\Hom(G,G')\to\typeepi_G, \qquad&\prjim f\defequi(\Img f,\prj_{\Img f},!)
+ \prjim:\Hom(G,G')\to\typeepi_G, \qquad&\prjim f\defequi(\Img f,\prj_{\img f},!)
   \end{align*}
-  as the \emph{image}\index{image!function} and the \emph{projection to the image}\index{image!projection to}
+  as the \emph{image}\index{image!function} and the \emph{projection to the image}.\index{image!projection to}
   \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img f}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img f}}}
   $$}
-$$f_{\Hom(G,G')}\incl_{\Img f}\prj_{\Img f},$$
-referred to as the \emph{factorization of $f$ through its image.}
+% $$f_{\Hom(G,G')}\incl_{\Img f}\prj_{\Img f},$$
+% referred to as the \emph{factorization of $f$ through its image.}
 
-Given two homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$, there is a unique homomorphism
+We need to understand how the image factorization handles composition of homomorphisms.
+This is forced by the uniqueness as follows.
+
+\marginnote{
+  $$\xymatrix{G_0\ar@{=}[rr]&&G_0\\
+    \Img f_1\ar@{=}[r]&\Img f_1&\\
+    G_1&\Img(\prj_{\img f_2}\incl_{\img f_1})\ar@{=}[r]&\Img(f_2f_1)\\
+    \Img f_2\ar@{=}[r]&\Img f_2&\\
+    G_2\ar@{=}[rr]&&G_2
+  }$$}
+\begin{lemma}
+  Given composable homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$, unique factorization induces identifications
+  \begin{align*}
+    \prjim(f_2f_1)&=_{\typeepi_{G_0}}(\Img(\prj_{\img f_2}\incl_{\img f_1}),)
+  \prj_{\img(\prj_{\img f_2}\incl_{\img f_1})}\prj_{\img f_1},!)\\%\prj^{\img}(\prj_{\img f_2}\prj_{\img f_1})\\
+    \img(f_2f_1)&=_{\typemono_{G_2}}%\img(\incl_{\img f_2}\incl_{\img (\prj_{\img f_2})\incl_{\img f_1})
+  \end{align*}
+  
+  
+\end{lemma}
+there is a unique homomorphism
 $u:\Hom(\Img f_2f_1,\Img f_2)$ satisfying
 \marginnote{$$\xymatrix{G_0\ar[rr]^{\prj_{\img f_2f_1}}\ar[d]_{f_1}&&
     \Img f_2f_1\ar[r]^-{\incl_{\img f_2f_1}}\ar[d]_{u}&G_2\ar@{=}[d]\\
