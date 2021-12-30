@@ -3092,12 +3092,12 @@ and the $(-1)$-truncated functions are precisely the injections.
   The $n$-image of $f$
   induces a \emph{factorization} $f = i\circ p$ with
   $p(a)\defeq (f(a),\trunc{(a,\refl{f(a)})}_n)$ for all $a:A$, and $i\defeq\fst$.
-  \[
+\begin{equation}\label{eqn:n-image-factorization}
     \begin{tikzcd}
       A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
       & \im_n(f)\ar[ur,"i"'] &
     \end{tikzcd}
-  \]
+\end{equation}
 %\end{definition}
 Clearly, $i$ is $n$-truncated. By \cref{lem:sum-of-fibers} and
 the following lemma, $p$ is $n$-connected.
@@ -3137,11 +3137,11 @@ and we have the following commutative diagram:
       & \sum_{b:B}\inv h (b) \ar[ur,"\fst"'] &
     \end{tikzcd}
   \]
-Then we have equivalences $e(b) : \inv {(h\circ g)} (b) \equivto \sum_{y:\inv h (b)} \inv {\tilde{g}}(b,y)$
+Then we have equivalences $e(b) : \inv {(hg)} (b) \equivto \sum_{y:\inv h (b)} \inv {\tilde{g}}(b,y)$
 for all $b:B$.
 \end{construction}
 \begin{implementation}{con:fibcomp=fibfib}
-Let, for each $b:B$, $e(b)$ map any pair $(a,p):\inv {(h\circ g)} (b)$ to 
+Let, for each $b:B$, $e(b)$ map any pair $(a,p):\inv {(hg)} (b)$ to 
 $((g(a),p),(a,q))$. Here $q$ is of type $(b,g(a),p) = (h(g(a)),g(a),\refl{h(g(a))})$
 and is given componentwise by $p: b=h(g(a))$, $\refl{g(a)}$ and 
 $q_3: \pathover {p}{\blank=h(g(a))}{p} {\refl{h(g(a))}}$.
@@ -3157,20 +3157,48 @@ Alternatively, construct your own $e$ by using \cref{cor:contract-away} (twice!)
 
 \begin{xca}\label{xca:pullout-base-type}
 Let $X$ be an $n$-type and let $Y(x)$ be a type for all $x:X$.
-Construct equivalences $\Trunc{\sum_{x:X} Y(x)}_n \to \sum_{x:X} \Trunc{Y(x)}_n$ 
-and $\Trunc{\prod_{x:X} Y(x)}_n \to \prod_{x:X} \Trunc{Y(x)}_n$.
+Construct canonical equivalences 
+$\Trunc{\sum_{x:X} Y(x)}_n \to \sum_{x:X} \Trunc{Y(x)}_n$  and 
+$\Trunc{\prod_{x:X} Y(x)}_n \to \prod_{x:X} \Trunc{Y(x)}_n$.
 \end{xca}
+
+We shall now show that the $n$-image factorization
+of $f:A\to B$ in \cref{eqn:n-image-factorization} is unique.
+For some type $X$, assume an $n$-connected function $g:A\to X$
+and an $n$-truncated function $h:X\to B$ such $f=hg$.
+
+In view of \cref{con:fibcomp=fibfib}, we may assume without
+loss of generality that $X\defeq \sum_{b:B} P(b)$ for some
+family of $n$-types $P(b)$, and $h\defeq\fst$.
+
+By \cref{lem:sum-of-fibers} we can assume that 
+$A\defeq\sum_{b:B}\sum_{y:P(b)} Q(b,y)$, where
+$Q(b,y) \defeq\inv g (b,y)$ are the fibers of $g$, 
+which are all $n$-connected by assumption.
+With this $A$, the function $g$
+maps each triple $(b,y,q)$ to the pair $(b,y)$, 
+as in the upper arrow of the left face of the cube below.
+By $f=hg$ we then get that $f=\fst$ on the diagonal of
+the top face, left out for simplicity.
+
+We construct the desired equivalence $e$ in the top face of the cube
+fiberwise.
+
 
   \[
     \begin{tikzcd}
-     &\sum\limits_{b:B} P(b)\ar[rr,"\fst"]\ar[ddd,dotted]&&B\ar[ddd,dotted]\\
-      \sum\limits_{b:B}\sum\limits_{y:P(b)}Q(b,y) \ar[rr,"?"]\ar [ur,"?"]\ar[ddd,dotted]&& 
-      \sum\limits_{b:B}\sum\limits_{y:P(b)} \Trunc{Q(b,y)}_n \ar [ur,"\fst"']\ar[ddd,dotted]\\
+     &\sum\limits_{b:B} P(b)\ar[rr,"\fst"]&&B\\
+      \sum\limits_{b:B}\sum\limits_{y:P(b)}Q(b,y) 
+        \ar[rr,"{(b,y,q)\mapsto(b,y,\trunc{q}_n)}"]
+        \ar [ur,"{(b,y,q)\mapsto(b,y)}"]&& 
+      \sum\limits_{b:B} \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n 
+         \ar [ur,"\fst"']
+         \ar [ul,dotted,"e"']\\
 \\
-     &P(b)\ar[rr]&&\bn{1}\\
-      \sum\limits_{y:P(b)} Q(b,y) \ar[r,"\trunc{\blank}_n"'] \ar [ur,"?"]& 
-      \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n \ar[r,"?"'] & 
-      \sum\limits_{y:P(b)} \Trunc{Q(b,y)}_n \ar[ur]\\
+     &P(b)\ar[uuu,"{y\mapsto(b,y)}"]\ar[rr]&&\ar[uuu,"b"]\bn{1}\\
+      \sum\limits_{y:P(b)} Q(b,y) \ar[r,"\trunc{\blank}_n"'] \ar [ur,"\fst"]\ar[uuu,"{z\mapsto(b,z)}"]& 
+      \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n \ar[r,"E.\,\ref{xca:pullout-base-type}"'] & 
+      \sum\limits_{y:P(b)} \Trunc{Q(b,y)}_n \ar[ur]\ar[uuu,"{z'\mapsto(b,z')}"]\\
     \end{tikzcd}
   \]
 
