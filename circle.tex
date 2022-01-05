@@ -3000,7 +3000,7 @@ Hence the pair $(k',p')$ is equal to the center.
 
 \subsection*{Higher images}
 
-Recall from \cref{def:prop-image} the propositional image of a map $f : A \to B$:
+Recall from \cref{def:prop-image} the propositional image of a map $f : A \to B$,
   \[
     \im(f) \jdeq \sum_{y:B}\exists_{x:A}(y = f\,x)
            \jdeq \sum_{y:B}\Trunc{\sum_{x:A}(y = f\,x)}
@@ -3029,7 +3029,7 @@ that is, the diagram below on the left commutes,
 one can construct a (unique) equivalence $e$ such that
 the diagram on the right commutes.
 
-  \[
+\begin{equation}\label{eqn:image-univ-prop}
     \begin{tikzcd}
       & X \ar[dr,"h"] & & & X \ar[dr,"h"] &\\
       A \ar[rr,"f"]\ar[dr,"p"'] \ar[ur,"g"]& & B
@@ -3037,19 +3037,23 @@ the diagram on the right commutes.
       A \ar[dr,"p"'] \ar[ur,"g"]& & B  \\
       & \im(f)\ar[ur,"i"'] & & & \im(f)\ar[ur,"i"']\ar[uu, dotted, "e"] &
     \end{tikzcd}
-  \]
+\end{equation}
 
 The unique existence of an equivalence $e$ as above is called the
 \emph{universal property of the propositional image}.
 Uniqueness of $e$ above also follows from the following two exercises.
 
 \begin{xca}\label{xca:cancel-injection}
-Let $i:A\to B$ be an injection and let $i\blank$ be composition with $i$.
-Show that $\ap{i\blank}: (f = g) \to (if = ig)$ is an equivalence.
+Let $A,B,X$ be types and $i:A\to B$ an injection. 
+Let $i\blank : (X\to A) \to (X\to B)$ be postcomposition with $i$.
+Show that $\ap{i\blank}: (f = g) \to (if = ig)$ is an equivalence,
+for any $f,g: X\to A$.
 \end{xca}
 \begin{xca}\label{xca:cancel-surjection}
-Let $p:A\to B$ be a surjection and let $\blank p$ be precomposition with $p$.
-Show that $\ap{\blank p}: (f = g) \to (fp = gp)$ is an equivalence.
+Let $A,B,Y$ be types and $p:A\to B$ be a surjection.
+Let $\blank p : (B\to Y) \to (A\to Y)$ be precomposition with $p$.
+Show that $\ap{\blank p}: (f = g) \to (fp = gp)$ is an equivalence,
+for any $f,g: B\to Y$.
 \end{xca}
 
 We will now define higher images and generalize the notions
@@ -3065,7 +3069,7 @@ universal property of higher images can be proved.
 \end{definition}
 
 \begin{definition}\label{def:n-connected}
-  Let $A,B$ be types and let $f : A \to B$. The funtion $f$ is $n$-\emph{connected}
+  Let $A,B$ be types and let $f : A \to B$. The function $f$ is $n$-\emph{connected}
   \index{function!$n$-connected}
   if $\Trunc{\inv f (b)}_n$ is contractible, for each $b:B$.
   A type is called $n$-\emph{connected}
@@ -3078,7 +3082,7 @@ Morover, the $(-1)$-connected types are precisely the non-empty ones,
 and the $0$-connected types are those we have called connected in \cref{def:connected}.
 
 \begin{definition}\label{def:n-truncated}
-  Let $A,B$ be types and let $f : A \to B$. The funtion $f$ is $n$-\emph{truncated}
+  Let $A,B$ be types and let $f : A \to B$. The function $f$ is $n$-\emph{truncated}
   \index{function!$n$-truncated}
   if $\inv f (b)$ is an $n$-type, for each $b:B$.
 \end{definition}
@@ -3090,7 +3094,7 @@ and the $(-1)$-truncated functions are precisely the injections.
 %\begin{definition}\label{def:n-image-factorization}
  % Let $A,B$ be types and let $f : A \to B$. 
   The $n$-image of $f$
-  induces a \emph{factorization} $f = i\circ p$ with
+  induces a \emph{factorization} $f = i p$ with
   $p(a)\defeq (f(a),\trunc{(a,\refl{f(a)})}_n)$ for all $a:A$, and $i\defeq\fst$.
 \begin{equation}\label{eqn:n-image-factorization}
     \begin{tikzcd}
@@ -3144,7 +3148,8 @@ for all $b:B$.
 Let, for each $b:B$, $e(b)$ map any pair $(a,p):\inv {(hg)} (b)$ to 
 $((g(a),p),(a,q))$. Here $q$ is of type $(b,g(a),p) = (h(g(a)),g(a),\refl{h(g(a))})$
 and is given componentwise by $p: b=h(g(a))$, $\refl{g(a)}$ and 
-$q_3: \pathover {p}{\blank=h(g(a))}{p} {\refl{h(g(a))}}$.
+$q_3: \pathover {p}{}{p} {\refl{h(g(a))}}$,
+where the path over $p$ is in the identity type family $\blank=h(g(a))$.
 This construction uses \cref{def:pairtopath}, \cref{def:pathover-trp},
 and \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a} (for $q_3$).
 \end{implementation}
@@ -3164,46 +3169,97 @@ $\Trunc{\prod_{x:X} Y(x)}_n \to \prod_{x:X} \Trunc{Y(x)}_n$.
 
 We shall now show that the $n$-image factorization
 of $f:A\to B$ in \cref{eqn:n-image-factorization} is unique.
-For some type $X$, assume an $n$-connected function $g:A\to X$
-and an $n$-truncated function $h:X\to B$ such $f=hg$.
+This result can be visualized in a similar way as we
+did in \cref{eqn:image-univ-prop} for $n=-1$,
+and is called the \emph{universal property of the $n$-image}.
 
+\begin{theorem}\label{thm:n-im-univ-prop}
+Let conditions be as in \cref{eqn:n-image-factorization}.
+For a given type $X$, assume we are given an $n$-connected 
+function $g:A\to X$ and an $n$-truncated function $h:X\to B$ with $f=hg$.
+Then there exists a unique equivalence $e: \im_n(f)\to X$
+such that $g=ep$ and $i=he$.
+\end{theorem}
+
+\begin{proof}
 In view of \cref{con:fibcomp=fibfib}, we may assume without
 loss of generality that $X\defeq \sum_{b:B} P(b)$ for some
 family of $n$-types $P(b)$, and $h\defeq\fst$.
 
-By \cref{lem:sum-of-fibers} we can assume that 
+By \cref{lem:sum-of-fibers} we may also assume without
+loss of generality that 
 $A\defeq\sum_{b:B}\sum_{y:P(b)} Q(b,y)$, where
 $Q(b,y) \defeq\inv g (b,y)$ are the fibers of $g$, 
 which are all $n$-connected by assumption.
-With this $A$, the function $g$
+Define $R(b)\defeq\sum_{y:P(b)} Q(b,y)$ for all $b:B$.
+With this $A$, the function $g: A\to X$
 maps each triple $(b,y,q)$ to the pair $(b,y)$, 
-as in the upper arrow of the left face of the cube below.
-By $f=hg$ we then get that $f=\fst$ on the diagonal of
-the top face, left out for simplicity.
+as in the up arrow in \cref{fig:n-im-univ-prop-total}.
+By $f=hg$ we then get that $f$ is the first projection,
+with its $n$-image equivalent to 
+$\sum_{b:B} \Trunc{R(b)}_n$.
+The $n$-connected map $p$ is transported to
+$(b,y,q)\mapsto(b,\trunc{(y,q)}_n)$ 
+as in the down arrow in \cref{fig:n-im-univ-prop-total}.
+Thus the three maps into $B$ are all first projections
+(with different domains, of course).
 
-We construct the desired equivalence $e$ in the top face of the cube
-fiberwise.
+\begin{marginfigure}
+  \noindent\begin{tikzcd}
+      &\sum\limits_{b:B} P(b)\ar[rd,"\fst"]\\ 
+      \sum\limits_{b:B} R(b) 
+        \ar[rd,"{(b,y,q)\mapsto(b,\trunc{(y,q)}_n)}"']
+        \ar [ru,"{(b,y,q)\mapsto(b,y)}"]
+        \ar [rr,pos=0.7,"\fst"]
+      &&B\\ 
+      &\sum\limits_{b:B} \Trunc{R(b)}_n 
+         \ar [ru,"\fst"']
+         \ar [uu,dotted,pos=0.3,"e"']
+\end{tikzcd}
+\caption{caption}
+\label{fig:n-im-univ-prop-total}
+\end{marginfigure}
 
+We have to construct an equivalence $e$ as in 
+\cref{fig:n-im-univ-prop-total} such that the whole diagram commutes.
+We construct for each $b:B$ and equivalence $e_b$ as in
+\cref{fig:n-im-univ-prop-b:B} and obtain $e$ by `summing over $B$'.
+TO BE CONTINUED
 
-  \[
-    \begin{tikzcd}
-     &\sum\limits_{b:B} P(b)\ar[rr,"\fst"]&&B\\
-      \sum\limits_{b:B}\sum\limits_{y:P(b)}Q(b,y) 
-        \ar[rr,"{(b,y,q)\mapsto(b,y,\trunc{q}_n)}"]
-        \ar [ur,"{(b,y,q)\mapsto(b,y)}"]&& 
-      \sum\limits_{b:B} \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n 
-         \ar [ur,"\fst"']
-         \ar [ul,dotted,"e"']\\
-\\
-     &P(b)\ar[uuu,"{y\mapsto(b,y)}"]\ar[rr]&&\ar[uuu,"b"]\bn{1}\\
-      \sum\limits_{y:P(b)} Q(b,y) \ar[rr,"\trunc{\blank}_n"'] \ar [ur,"\fst"]\ar[uuu,"{z\mapsto(b,z)}"]&& 
-      \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n 
-         \ar[ur]\ar[uuu,"{z'\mapsto(b,z')}"]
-         \ar [ul,dotted,"e_b"']\\
-     %&\sum\limits_{y:P(b)} \Trunc{Q(b,y)}_n \ar[uu, eqr]\ar[ur,eqr,"E.\,\ref{xca:pullout-base-type}"']
-    \end{tikzcd}
-  \]
+\begin{marginfigure}
+  \noindent\begin{tikzcd}
+      &P(b)\ar[rd]\\
+      R(b) 
+        \ar[rd,"{\trunc{\blank}_n}"']
+        \ar [ru,"{\fst}"]
+      &&\bn{1}\\ 
+      &\Trunc{R(b)}_n 
+         \ar [ru]
+         \ar [uu,dotted,"e_b"']
+\end{tikzcd}
+\caption{caption}
+\label{fig:n-im-univ-prop-b:B}
+\end{marginfigure}
 
+%  \[
+%    \begin{tikzcd}
+%     &\sum\limits_{b:B} P(b)\ar[rr,"\fst"]&&B\\
+%      \sum\limits_{b:B}\sum\limits_{y:P(b)}Q(b,y) 
+%       \ar[rr,"{(b,y,q)\mapsto(b,\trunc{(y,q)}_n)}"]
+%        \ar [ur,"{(b,y,q)\mapsto(b,y)}"]&& 
+%      \sum\limits_{b:B} \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n 
+%         \ar [ur,"\fst"']
+%         \ar [ul,dotted,"e"']\\
+%\\
+%     &P(b)\ar[uuu,"{y\mapsto(b,y)}"]\ar[rr]&&\ar[uuu,"b"]\bn{1}\\
+%      \sum\limits_{y:P(b)} Q(b,y) \ar[rr,"\trunc{\blank}_n"'] \ar [ur,"\fst"]\ar[uuu,"{z\mapsto(b,z)}"]&& 
+%      \Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n 
+%         \ar[ur]\ar[uuu,"{z'\mapsto(b,z')}"]
+%         \ar [ul,dotted,"e_b"']\\
+%     %&\sum\limits_{y:P(b)} \Trunc{Q(b,y)}_n \ar[uu, eqr]\ar[ur,eqr,"E.\,\ref{xca:pullout-base-type}"']
+%   \end{tikzcd}
+% \]
+\end{proof}
 
 
 %%% Local Variables:
