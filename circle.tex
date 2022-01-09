@@ -3172,6 +3172,16 @@ This result can be visualized in a similar way as we
 did in \cref{eqn:image-univ-prop} for $n=-1$,
 and is called the \emph{universal property of the $n$-image}.
 
+\begin{marginfigure}
+\noindent\begin{tikzcd}
+      & X \ar[dr,"h"] & \\
+      A \ar[rr,pos=0.7,"f"]\ar[dr,"p"'] \ar[ur,"g"]& & B\\
+      & \im_n(f)\ar[ur,"i"']\ar[uu,dotted,pos=0.3, "e"] &
+    \end{tikzcd}
+\caption{Universal property of the $n$-image.}
+\label{fig:image-univ-prop}
+\end{marginfigure}
+
 \begin{theorem}\label{thm:n-im-univ-prop}
 Let conditions be as in \cref{eqn:n-image-factorization}.
 For a given type $X$, assume we are given an $n$-connected 
@@ -3181,27 +3191,14 @@ such that $g=ep$ and $i=he$.
 \end{theorem}
 
 \begin{proof}
+We have to construct the equivalence $e$ such that the diagram
+in \cref{fig:image-univ-prop} commutes; uniqueness of $e$
+follows from easy generalizations of \cref{xca:cancel-injection}
+and \cref{xca:cancel-surjection}. To simplify this construction,
+we are going to replace $g$ and $h$ by projection maps.
+ 
 In view of \cref{con:fibcomp=fibfib}, we may assume without
 loss of generality that $X\defeq \sum_{b:B} P(b)$ for some
-family of $n$-types $P(b)$, and $h\defeq\fst$.
-
-By \cref{lem:sum-of-fibers} we may also assume without
-loss of generality that 
-$A\defeq\sum_{b:B}\sum_{y:P(b)} Q(b,y)$, where
-$Q(b,y) \defeq\inv g (b,y)$ are the fibers of $g$, 
-which are all $n$-connected by assumption.
-Define $R(b)\defeq\sum_{y:P(b)} Q(b,y)$ for all $b:B$.
-With this $A$, the function $g: A\to X$
-maps each triple $(b,y,q)$ to the pair $(b,y)$, 
-as in the up arrow in \cref{fig:n-im-univ-prop-total}.
-By $f=hg$ we then get that $f$ is the first projection,
-with its $n$-image equivalent to 
-$\sum_{b:B} \Trunc{R(b)}_n$.
-The $n$-connected map $p$ is transported to
-$(b,y,q)\mapsto(b,\trunc{(y,q)}_n)$ 
-as in the down arrow in \cref{fig:n-im-univ-prop-total}.
-Thus the three maps into $B$ are all first projections
-(with different domains, of course).
 
 \begin{marginfigure}
   \noindent\begin{tikzcd}
@@ -3215,16 +3212,32 @@ Thus the three maps into $B$ are all first projections
          \ar [ru,"\fst"']
          \ar [uu,dotted,pos=0.3,"e"']
 \end{tikzcd}
-\caption{caption}
-\label{fig:n-im-univ-prop-total}
-\end{marginfigure}
+\caption{Universal property of the $n$-image, reinterpreted.}
+\label{fig:n-im-univ-prop-sumB}
+\end{marginfigure}family of $n$-types $P(b)$, and $h\defeq\fst$.
 
-We have to construct an equivalence $e$ as in 
-\cref{fig:n-im-univ-prop-total} such that the whole diagram commutes.
-We construct for each $b:B$ and equivalence $e_b$ as in
-\cref{fig:n-im-univ-prop-b:B} and obtain $e$ by `summing over $B$'.
-The latter means that $e(b,z) \defeq (b,e_b(z))$ for all $b:B$ and $z:\Trunc{R(b)}_n$.
-TO BE CONTINUED
+By \cref{lem:sum-of-fibers} we may also assume without
+loss of generality that 
+$A\defeq\sum_{b:B}\sum_{y:P(b)} Q(b,y)$, where
+$Q(b,y) \defeq\inv g (b,y)$ are the fibers of $g$, 
+which are all $n$-connected by assumption.
+Define $R(b)\defeq\sum_{y:P(b)} Q(b,y)$ for all $b:B$.
+With $A\jdeq \sum_{b:B} R(b)$, the function $g$
+takes the form of the projection map $(b,y,q)\mapsto(b,y)$, 
+as shown in \cref{fig:n-im-univ-prop-sumB}.
+By $f=hg$ we then get that $f$ is the first projection,
+with its $n$-image equivalent to $\sum_{b:B} \Trunc{R(b)}_n$.
+The $n$-connected map $p$ then takes the form
+$(b,y,q)\mapsto(b,\trunc{(y,q)}_n)$ as shown in 
+\cref{fig:n-im-univ-prop-sumB}.
+
+Since $B=\sum_{b:B}\bn{1}$, each type in \cref{fig:n-im-univ-prop-sumB}
+can be considered to be the sum of a type family parametrized by $b:B$.
+For constructing the equivalence $e$ that makes
+\cref{fig:n-im-univ-prop-sumB} commute, it suffices to
+construct for each $b:B$ the equivalence $e_b$ as in
+\cref{fig:n-im-univ-prop-b:B}. Then we obtain $e$ by summing over $B$,
+that is, by putting $e(b,z) \defeq (b,e_b(z))$ for all $b:B$ and $z:\Trunc{R(b)}_n$.
 
 \begin{marginfigure}
   \noindent\begin{tikzcd}
@@ -3237,26 +3250,17 @@ TO BE CONTINUED
          \ar [ru]
          \ar [uu,dotted,"e_b"']
 \end{tikzcd}
-\caption{caption}
+\caption{Taking summands for $b:B$ in \cref{fig:n-im-univ-prop-sumB}.}
 \label{fig:n-im-univ-prop-b:B}
 \end{marginfigure}
 
-\begin{marginfigure}
-  \noindent\begin{tikzcd}
-      &P(b)\ar[rd]\\
-      \sum\limits_{y:P(b)} Q(b,y) 
-        \ar[rd,"{\trunc{\blank}_n}"']
-        \ar [ru,"{\fst}"]
-      &&\bn{1}\\ 
-      &\Trunc{\sum\limits_{y:P(b)} Q(b,y)}_n 
-         \ar [ru]
-         \ar [uu,dotted,"e_b"']
-\end{tikzcd}
-\caption{any better?}
-\label{fig:n-im-univ-prop-b:B}
-\end{marginfigure}
-
-
+Now let $b:B$. We have $\Trunc{R(b)}_n \jdeq \Trunc{\sum_{y:P(b)} Q(b,y)}_n$.
+By \cref{xca:pullout-base-type}, since $P(b)$ is an $n$-type by assumption,
+we have an equivalence $\Trunc{\sum_{y:P(b)} Q(b,y)}_n\to\sum_{y:P(b)}\Trunc{Q(b,y)}_n$.
+For each $y:P(b)$, since $Q(y,b)$ is by assumption $n$-connected,
+so that $\Trunc{Q(b,y)}_n = \bn{1}$,
+we have an equivalence $\sum_{y:P(b)}\Trunc{Q(b,y)}_n \to P(b)$.
+The composite of these equivalences is $e_b$.
 %  \[
 %    \begin{tikzcd}
 %     &\sum\limits_{b:B} P(b)\ar[rr,"\fst"]&&B\\
