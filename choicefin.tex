@@ -78,11 +78,6 @@ and our goal is to see how they relate to each other and to other principles.
   Show that $\lAC{X}$ is always true whenever $X$ is a finite set.
 \end{xca}
 
-[TODO, Elaborate: For a family of $n$-element sets over a base type $X$, $P : X
-  \to \BSG_n$, there is a section if and only if there is a
-  ``reduction of the structure group'' to a subgroup of $\SG_n$,
-  whose action on the standard $n$-element set, $\bn n$, has a fixed point.]
-
 \begin{lemma}\label{lem:ac-impl-triv-coh-sets}
   If $\lAC{X}$ holds for a set $X$,\marginnote{%
     In fancier language, this says that the axiom of choice
@@ -142,16 +137,19 @@ for arbitrary \inftygps.
   then $\Trunc{X \to \BG}_0$ is contractible for all \inftygps $G$.
 \end{xca}
 
-\begin{theorem}[Blass]\label{thm:Blass}
-  Let $X$ be a set with decidable equality such that $\Trunc{X \to \BG}_0$ is contractible
+We now discuss two partial converses to~\cref{lem:ac-impl-triv-coh-sets},
+both due to \citeauthor{Blass-Finite-Choice}\footcite{Blass-Finite-Choice}.
+
+\begin{theorem}[Blass]\label{thm:Blass-1}
+  Let $X$ be a set such that $\Trunc{X \to \BG}_0$ is contractible
   for all groups $G$.
-  Then every family of non-empty sets with decidable equality over $X$
-  merely admits a section,
-  \ie $\lAC{X}^{\mathrm{d}}$ holds.
+  Then every family of non-empty sets over $X$, $P : X \to \Set$,
+  that factors through a connected component of $\Set$,
+  merely admits a section.
 \end{theorem}
 
 \begin{proof}
-  First suppose $P : X \to \Set$ is such that all the sets $P(x)$
+  We suppose $P : X \to \Set$ is such that all the sets $P(x)$
   have the same size, \ie the function $P$ factors through
   $\BAut(S)$ for some non-empty set $S$.
   This in turn means that we have a function $h : X \to \BG$,
@@ -163,8 +161,23 @@ for arbitrary \inftygps.
   But since we are proving a proposition, we may assume that $h$
   \emph{is} constant, so $P$ is the constant family at $S$.
   And this has a section since $S$ is non-empty.
+\end{proof}
 
-  In the general case, consider a surjection $p : Y \to X$,
+Obviously, the same argument works if we consider all \inftygps $G$
+and families of types that are all merely equivalent.
+For the second partial converse, we look at decidable sets.
+
+\begin{theorem}[Blass]\label{thm:Blass-2}
+  Let $X$ be a decidable set such that $\Trunc{X \to \BG}_0$ is contractible
+  for all groups $G$.
+  Then every family of non-empty decidable sets over $X$
+  merely admits a section.\footnote{%
+    We might call this conclusion $\lAC{X}^{\mathrm{dec}}$.}
+\end{theorem}
+
+\begin{proof}
+  Equivalently, consider a surjection $p : Y \to X$,
+  where $X$ and $Y$ are decidable sets,
   and let $C$ be the higher inductive type with constructors
   $c : C$, $f : X \to C$, and $k : \prod_{y:Y}(c = f(p(y))$.\footnote{%
     This kind of higher inductive type is also known as a pushout,
@@ -192,9 +205,14 @@ for arbitrary \inftygps.
   but this is precisely the section we wanted.
 \end{proof}
 
-[TODO: Think about whether the proof generalizes. Can we say something more if we assume trivial cohomology with coefficients in \inftygps?]
+It seems to be an open problem, whether we can do without the decidability assumption,
+\ie whether the converse of~\cref{lem:ac-impl-triv-coh-sets} holds generally.
 
-\begin{theorem}
+Now we turn as promised to the connections between the various local choice principles
+$\lAC{X}(n)$.
+The simplest example is the following.
+
+\begin{theorem}\label{thm:lAC-2-3-4}
   Let $X$ be any set. Then $\lAC{X}(4)$ follows from $\lAC{X}(2)$ and $\lAC{X}(3)$.
 \end{theorem}
 
@@ -208,9 +226,33 @@ for arbitrary \inftygps.
   elements in each chosen part.
 \end{proof}
 
-In the global case where we can change the base set,
-we don't need choice for $3$-element sets.
-This is Tarski's result alluded to above.
+We now look a bit more closely at what happened in this proof,
+so as to better understand the general theorem.
+The key idea is the concept of ``reduction of the structure group''.
+
+[TODO, Elaborate: For a family of $n$-element sets over a base type $X$, $P : X
+\to \BSG_n$, there is a section if and only if there is a
+`` to a subgroup of $\SG_n$,
+whose action on the standard $n$-element set, $\bn n$, has a fixed point.]
+
+Now we return to the local case, and we give the general
+sufficient condition that ensures that $\lAC{X}(n)$ follows from $\lAC{X}(z)$ for each $z:Z$, where $Z$ is a finite subset of $\NN$.
+
+\begin{definition}
+  The condition $L(Z,n)$ is that for every finite subgroup $G$ of $\SG_n$
+  that acts on $\bn n$ without fixed points,
+  there exists finitely many proper, finite subgroups $K_1,\cdots,K_r$ of
+  $G$ such that the sum of the indices,
+  \[
+    |G \idxcolon H_1| + \cdots + |G \idxcolon H_r|,
+  \]
+  lies in $Z$.
+\end{definition}
+
+We now turn to the global case, where we can change the base set.
+Here the basic case is Tarski's result alluded to above,
+which shows that we don't need choice for $3$-element sets,
+in contrast to the local case, \cref{thm:lAC-2-3-4}.
 
 \begin{theorem}
   $\AC(2)$ implies $\AC(4)$.
@@ -254,20 +296,6 @@ This is Tarski's result alluded to above.
   Over $X_2$, we get a section of $P$ by picking the already chosen
   element of the $2$-element set $B(x)$.
 \end{proof}
-
-Now we return to the local case, and we give the general
-sufficient condition that ensures that $\lAC{X}(n)$ follows from $\lAC{X}(z)$ for each $z:Z$, where $Z$ is a finite subset of $\NN$.
-
-\begin{definition}
-  The condition $L(Z,n)$ is that for every finite subgroup $G$ of $\SG_n$
-  that acts on $\bn n$ without fixed points,
-  there exists finitely many proper, finite subgroups $K_1,\cdots,K_r$ of
-  $G$ such that the sum of the indices,
-  \[
-    |G \idxcolon H_1| + \cdots + |G \idxcolon H_r|,
-  \]
-  lies in $Z$.
-\end{definition}
 
 The following appears as Theorem~6 in Blass\footcite{Blass-Finite-Choice}.
 \begin{theorem}
