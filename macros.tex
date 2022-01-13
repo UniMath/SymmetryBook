@@ -656,10 +656,23 @@
 \newcommand*{\weq}{\simeq}
 \def\ordinaryequals{\mathchar`\=}
 \newcommand*{\eq}{\mathrel{\ordinaryequals}}
-\newcommand*{\eqto}{\stackrel{\ordinaryequals}{\smash{\xrightarrow{\mathmakebox[2ex]{}}}\rule{0pt}{0.3ex}}}
-\newcommand*{\equivto}{\stackrel{\simeq}{\smash{\xrightarrow{\mathmakebox[2ex]{}}}\rule{0pt}{0.3ex}}}
-\newcommand*{\isomto}{\stackrel{\cong}{\smash{\xrightarrow{\mathmakebox[2ex]{}}}\rule{0pt}{0.4ex}}}
-\newcommand*{\we}{\stackrel{\sim}{\smash{\xrightarrow{\mathmakebox[2ex]{}}}\rule{0pt}{0.2ex}}}
+% \newtocommand makes a new command for an arrow with a symbol
+% on top that looks better than \xrightarrow
+\newcommand{\doalign}[2]{%
+ {\vbox{\offinterlineskip\ialign{\hfil##\hfil\cr$#1$\cr$#2$\cr}}}%
+}
+\newcommand{\newtocommand}[2]{%
+  \expandafter\newcommand\csname #1to\endcsname{\mathrel{\mathchoice%
+    {\doalign{\scriptstyle #2\,}{\displaystyle\to}}%
+    {\doalign{\scriptstyle #2\,}{\textstyle\to}}%
+    {\doalign{\scriptscriptstyle #2\,}{\scriptstyle\to}}%
+    {\doalign{\scriptscriptstyle #2\,}{\scriptscriptstyle\to}}%
+}}}
+\newtocommand{eq}{\ordinaryequals}
+\newtocommand{equiv}{\simeq}
+\newtocommand{isom}{\cong}
+\newtocommand{sim}{\sim}
+\newcommand*{\we}{\simto}
 \newcommand*{\isom}{\cong}
 \newcommand*{\liff}{\weq}
 \newcommand*{\jdeq}{\oldequiv}
