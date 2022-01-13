@@ -1531,7 +1531,7 @@ An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one e
 logical system (such as ours) that attempts to provide a language for mathematics, but it is important to have such a name so we can discuss
 the possibility, which might result inadvertently from the introduction of unwarranted assumptions.  For example, to assert that a type $P$ has
 no elements, it would be sensible to assert that an element of $P$ would lead to an absurdity.  Providing a function of type $P \to \emptytype$ is a
-convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting $\neg P \defeq (P \to \emptytype)$.  Using it, we
+convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting \glossary{$\neg P$}{negation}$\neg P \defeq (P \to \emptytype)$.  Using it, we
 may define the type $(a \ne b) \defeq \neg (a = b)$; an element of it asserts that $a$ and $b$ cannot be identified.
 
 Secondly, there will also be an inductive type called $\true$ in the universe $\UU_0$ provided with a single element $\triv$; (the name $\triv$
@@ -1598,7 +1598,7 @@ from an element of $T(\no)$ or an element of $T(\yes)$
 we can produce an element of $\sum_{b:\bool} T(b)$.
 
 These disjoint union types can be described more clearly in the following way.
-The \emph{binary sum} of two types $X$ and $Y$, denoted $X \amalg Y$,
+The \emph{binary sum} of two types $X$ and $Y$, denoted \glossary{$X \amalg Y$}{sum of two types}$X \amalg Y$,
 is an inductive type with two constructors: $\inl{} : X \to X \amalg Y$ and
 $\inr{} : Y \to X \amalg Y$.\footnote{%
   Be aware that in a picture, the same point may refer
@@ -2051,7 +2051,7 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
 \item\label{prop-utils-sum} if $A$ is a proposition, then $\sum_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-eq} $P \liff Q$ is a proposition;
-\item\label{prop-utils-lem} $P \amalg (P\to\false)$ is a proposition.
+\item\label{prop-utils-lem} $P \amalg \neg P$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
@@ -2087,12 +2087,12 @@ $(P\to Q)\times(Q\to P)$, which is a proposition by
 combining~\ref{prop-utils-codom} and~\ref{prop-utils-times}.
 
 \ref{prop-utils-lem}:
-If $p,q : P\amalg (P\to\false)$, then we can distinguish four cases
+If $p,q : P\amalg \neg P$, then we can distinguish four cases
 based on $\inl{}/\inr{}$, see \cref{sec:sum-types}. In two cases
-we have both $P$ and $P\to\false$ and we are done. In the other two,
+we have both $P$ and $\neg P$ and we are done. In the other two,
 either $p\jdeq \inl{p'}$ and $q\jdeq \inl{q'}$ with $p',q':P$,
-or $p\jdeq \inr{p'}$ and $q\jdeq \inr{q'}$ with $p',q':P\to\false$.
-In both these cases we are done since $P$ and $P\to\false$
+or $p\jdeq \inr{p'}$ and $q\jdeq \inr{q'}$ with $p',q':\neg P$.
+In both these cases we are done since $P$ and $\neg P$
 are propositions.
 \end{proof}
 
@@ -2101,7 +2101,7 @@ use of $\false$ and $\true$ as truth values, and the use of
 $\to,\prod,\times$ for implication, universal quantification,
 and conjunction, respectively. Since $\false$ is a proposition,
 it follows by \ref{prop-utils-codom} above that
-$\neg A$ as defined by $A\to\false$ is a proposition for any type $A$.
+$\neg A$ is a proposition for any type $A$.
 As noted before, \ref{prop-utils-codom} is a
 special case of \ref{prop-utils-pi}.
 
@@ -2190,7 +2190,7 @@ the type formers $\to,\prod,\times$
 can be used for the logical operations of implication,
 universal quantification, and conjunction, respectively.
 Moreover, $\true$ and $\false$ can be used as truth values,
-and $\neg A \defeq (A\to\false)$ can be used for negation.
+and $\neg A$ can be used for negation.
 We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
 that are not propositions, even though the constituents are
 propositions. This means we are still lacking $\vee$ and $\exists$
@@ -2533,8 +2533,7 @@ Show that $\prod_{z:\im(f)} P(\fst(z))$ if and only if $\prod_{a:A} P(f(a))$.
 \section{Decidability, excluded middle and propositional resizing}
 \label{sec:decidability}
 
-Recall from \cref{lem:prop-utils}\ref{prop-utils-lem} that $P\amalg (P \to
-\false)$ is a proposition whenever $P$ is a proposition.
+Recall from \cref{lem:prop-utils}\ref{prop-utils-lem} that $P\amalg \neg P$ is a proposition whenever $P$ is a proposition.
 \begin{definition}\label{def:decidability}
   A proposition $P$ is called \emph{decidable}
   if $P\amalg\neg P$ holds.\index{decidable proposition}
@@ -2544,7 +2543,7 @@ every proposition is decidable.
 This is expressed by the following principle.
 \begin{principle}[Law of Excluded Middle]
   \label{pri:lem}%
-  For every proposition $P$, the proposition $P\amalg (P\to \false)$ holds.
+  For every proposition $P$, the proposition $P \amalg \neg P$ holds.
 \end{principle}
 
 (The ``middle'' ground excluded by this principle is the possibility that there
@@ -2571,11 +2570,11 @@ explicitly state whenever we are assuming the Law of Excluded Middle.
   is an equivalence.
 \end{xca}
 A useful consequence of the Law of Excluded Middle is the so called principle of ``proof by
-contradiction'': to prove a proposition $P$, assume its negation $P\to\false$
+contradiction'': to prove a proposition $P$, assume its negation $\neg P$
 and derive a contradiction. Without the Law of Excluded Middle, this proves only the double negation of
-$P$, that is $(P\to\false)\to\false$.  However, with the Law of Excluded Middle, one can derive $P$
-from the latter: indeed, according to the Law of Excluded Middle, either $P$ or $P\to \false$ holds;
-but $P\to\false$ leads to a contradiction by hypothesis, making $P$ hold
+$P$, that is $\neg \neg P$.  However, with the Law of Excluded Middle, one can derive $P$
+from the latter: indeed, according to the Law of Excluded Middle, either $P$ or $\neg P$ holds;
+but $\neg P$ leads to a contradiction by hypothesis, making $P$ hold
 necessarily.
 
 %\begin{xca}\label{xca:not-not-lemP}
@@ -2586,7 +2585,7 @@ necessarily.
 \begin{xca}\label{xca:dne-lem}
   Show that, conversely, LEM follows from the principle of
   \emph{double-negation elimination}:
-  For every proposition $P$, if $(P\to\false)\to\false$, then $P$ holds.
+  For every proposition $P$, if $\neg \neg P$, then $P$ holds.
 \end{xca}
 
 \begin{remark}
@@ -3195,7 +3194,7 @@ The relations $\leq$ and $<$ are transitive and
 preserved under $+$; $\leq$ also under $\cdot$.
 We have $(m\leq n) \liff ((m<n)\amalg(m=n))$ (so $\leq$ is reflexive).
 Furthermore, $((m\leq n)\times (n\leq m)) \liff (m=n)$,
-and $((m<n)\times(n<m))\to\false$ (so $<$ is irreflexive).
+and $\neg ((m<n)\times(n<m))$ (so $<$ is irreflexive).
 \end{xca}
 
 We can prove the following lemma by double induction.
@@ -3366,6 +3365,8 @@ Now abbreviate $\bn{n}\defeq F(n)$. The type $\bn{n}$ is called
 the type with $n$ elements, and we denote its elements
 by $0,1,\ldots,n-1$ rather than by the corresponding expressions
 using $\inl{}$ and $\inr{}$.
+
+We also define $\bn m \defeq F(m)$ for a natural number $m$, $\bn 0 \defeq F(0)$, $\bn 1 \defeq F(1)$, and $\bn 2 \defeq F(2)$.
 \end{definition}
 
 \begin{xca}\label{xca:finite-types}
@@ -3410,7 +3411,7 @@ so $\Trunc{n=m}=(n=m)$. It follows that $(n,p)=(m,q)$.
 which is easily proved by giving functions in both directions and using the univalence axiom.
 \end{proof}
 
-The above lemma remains true if $X$ ranges over $\Set$.
+The lemma above remains true if $X$ ranges over $\Set$.
 If a set $S$ is in the same component in $\Set$\footnote{%
   Here it doesn't matter whether we say $\Set$ or $\UU$,
   since any finite set is a set.
@@ -3436,8 +3437,7 @@ Note that being a finite set implies being a set, and hence
 $\FinSet = \sum_{X:\UU}\isfinset(X)$.
 Also, $\FinSet$ is the image of the map $F : \NN \to \UU$
 from~\cref{def:finiteset}, and is hence essentially $\UU$-small
-(for any universe $\UU$), by~\cref{pri:replacement}.
-
+(for any universe $\UU$), by~\cref{pri:replacement}, \cref{P1}, and our assumption that $\UU_0$ is the smallest universe.
 
 \section{Type families and maps}
 \label{sec:typefam}
