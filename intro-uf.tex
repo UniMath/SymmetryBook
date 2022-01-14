@@ -343,7 +343,7 @@ Similarly we define the product $m \cdot n : \NN$ by induction on $m$ by setting
 $ \Succ(m) \cdot n \defeq (m \cdot n) + n$.
 
 Alternatively (and equivalently) we may use iteration of functions to define addition and multiplication, by setting $n+m \defeq \Succ^m(n)$ and
-$m \cdot n := ( i \mapsto i + n )^m (0) $.
+$m \cdot n \defeq ( i \mapsto i + n )^m (0) $.
 
 Finally, we may define the factorial function $\fact : \NN \to \NN$ by induction on $\NN$, setting $\fact(0) \defeq 1$ and 
 $\fact(\Succ(m)) \defeq \Succ(m) \cdot \fact(m)$.  (One can see that this definition applies rule \ref{P4} with $X(m) \defeq \NN$, with $1$ for
@@ -362,17 +362,17 @@ the two elements are of the same type; we shall have no need to compare elements
 Here are the rules for constructing and using equality types.
 \begin{enumerate}[label=(E\arabic*),ref=(E\arabic*)]\label{rules-for-equality}
   \item\label{E1}
-    for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a =_X b$;%
-    \glossary(2=){${=_X}$}{identity type, \cref{E1}}%
+    for any type $X$ and for any elements $a$ and $b$ of it, there is a type $a \eqto b$;%
+    \glossary(2=){$\xrightarrow =$}{identity type, \cref{E1}}%
     \index{identity type}
-    moreover, if $X$ is an element of a universe $\UU$, then so is $a =_X b$.
-  \item\label{E2} for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a =_X a$
+    moreover, if $X$ is an element of a universe $\UU$, then so is $a \eqto b$.
+  \item\label{E2} for any type $X$ and for any element $a$ of it, there is an element $\refl a$ of type $a \eqto a$
     (the name $\refl{}$ comes from the word ``reflexivity'')%
     \glossary(refl){$\protect\refl{a}$}{reflexivity, identity type, \cref{E2}}
   \item\label{E3} suppose we are given:
     \begin{enumerate}
     \item a type $X$ and an element $a:X$;
-    \item a family of types $P(b,e,\dots)$ parametrized by a variable $b$ of type $X$, a variable $e$ of type $a =_X b$, and perhaps some
+    \item a family of types $P(b,e,\dots)$ parametrized by a variable $b$ of type $X$, a variable $e$ of type $a \eqto b$, and perhaps some
       further variables; and
     \item an element $p$ of $P(a,\refl a,\dots)$.
     \end{enumerate}
@@ -380,25 +380,17 @@ Here are the rules for constructing and using equality types.
     Moreover, $f(a,\refl a,\dots) \jdeq p$.
 \end{enumerate}
 
-The type $a =_X b$ may be called an \emph{equality type}, an \emph{identity type}, or simply an \emph{equation})\index{equation|see{identity type}}.
+The type $a \eqto b$ may be called an \emph{equality type} or an \emph{identity type}.
 
-When there is no risk of confusion, we will write $a=b$ instead of $a =_X b$.
-
-(Good motivation for the form of the equal sign is provided by a remark made by Robert Recorde in 1557:
-``to avoid the tedious repetition of these words \emph{is equal to}, I will substitute \dots
-a pair of parallels or twin lines of the same length, thus: $=$, because no two things can be more equal.'')
-%% Robert Recorde, The Whetstone of Witte (London, England: John Kyngstone, 1557), p. 236
-%% https://archive.org/stream/TheWhetstoneOfWitte#page/n237/mode/2up
-
-We will refer to an element $i$ of $a=b$ as an \emph{identification} of $a$ with $b$, or simply as an
+We will refer to an element $i$ of $a \eqto b$ as an \emph{identification} of $a$ with $b$, or simply as an
 \emph{identity} or an \emph{equality}.  Since the word ``identification'' is a long one, we may also refer to $i$ as a \emph{path} from $a$ to
 $b$ -- this has the advantage of incorporating the intuition that an identification may proceed gradually through intermediate steps.%
 \index{identification}\index{identity|see{identification}}%
 \index{equality|see{identification}}
 
-In certain circumstances, to be discussed later, we will refer to an element $i$ of $a=b$ as a \emph{proof}\/\footnote{Here we override
+In certain circumstances, to be discussed later, we will refer to an element $i$ of $a \eqto b$ as a \emph{proof}\/\footnote{Here we override
   the use of the word ``proof'' that is traditional in metamathematics; such a thing would now be a formal expression denoting an
-  element of $a=b$.} that $a$ is equal to $b$.%
+  element of $a \eqto b$.} that $a$ is equal to $b$.%
 \index{proof}
 
 The need to record, using the element $i$, the way we identify $a$ with $b$ may come as a surprise, since normally, in mathematics, one is
@@ -414,21 +406,21 @@ ways.\footnote{Six, since we allow reflections, otherwise there are only three.\
     \end{scope}
   \end{tikzpicture}
 }
-The chief novelty of univalent mathematics is that the basic logical notion of equality, as implemented by the types $a=b$, is carefully
+The chief novelty of univalent mathematics is that the basic logical notion of equality, as implemented by the types $a \eqto b$, is carefully
 engineered to accommodate notions of congruence and symmetry from diverse areas of mathematics, including geometry.  Exposing that point of view
 in the context of geometry is the main point of this book.
 
 In light of the analogy with geometry just introduced, 
-we will refer to an element $i$ of $a=a$ as a \emph{symmetry} of $a$.%
+we will refer to an element $i$ of $a \eqto a$ as a \emph{symmetry} of $a$.%
 \index{symmetry!of an element}  
 Think, for example, of a congruence of a triangle with itself.
 An example of a non-trivial symmetry will be seen in \cref{xca:C2}.
 
-Consider the equation $\fact(2)=2$, where $\fact$ denotes the factorial function defined in \cref{sec:natural-numbers}.
-Expansion of the definitions in the equation $\fact(2)=2$ simplifies it to $\Succ(\Succ(0)) = \Succ(\Succ(0))$,
+Consider the identity type $\fact(2) \eqto 2$, where $\fact$ denotes the factorial function defined in \cref{sec:natural-numbers}.
+Expansion of the definitions in the equation $\fact(2) \eqto 2$ simplifies it to $\Succ(\Succ(0)) \eqto \Succ(\Succ(0))$,
 so we see from rule \ref{E2} that $\refl{\Succ(\Succ(0))}$ serves
 as an element of it.\footnote{We will see later that numbers don't have symmetries, as one would expect, so the
-  possibility that there are other ways to identify $\fact(2)$ with $2$ doesn't arise.}                      
+  possibility that there are other ways to identify $\fact(2)$ with $2$ doesn't arise.}
 We may also write either $\refl{2}$ or $\refl{\fact(2)}$ for that element.
 A student might want a more detailed derivation that $\fact(2)$ may be identified with $2$,
 but as a result of our convention above that definitions may be applied without changing anything, the application of definitions, including
@@ -440,14 +432,14 @@ The family $f$ resulting from an application of rule \ref{E3} may be regarded as
 $f(a,\refl a) \defeq p$,
 and indeed, we will often simply write such a declaration as a shorthand way of applying rule \ref{E3}.
 The rule says that to construct something from every identification $e$ of $a$ with something else,
-it suffices to consider the special case where the identification $e$ is $\refl a : a=a$.%
+it suffices to consider the special case where the identification $e$ is $\refl a : a \eqto a$.%
 \footnote{Notice that the single special case in such an induction corresponds to the single way of introducing elements of
 equality types via rule \ref{E2}, and compare that with \ref{P4}, which dealt with the two ways of introducing elements of $\NN$.}
 
-Intuitively, the induction principle for equality amounts to saying that the element $\refl a$ ``generates'' the system of types $a=b$, as $b$
+Intuitively, the induction principle for equality amounts to saying that the element $\refl a$ ``generates'' the system of types $a \eqto b$, as $b$
 ranges over elements of $A$.\footnote{%
   We can also use a geometric intuition: when $b$ ``freely ranges'' over elements of $A$,
-  together with a path $e : a=b$,
+  together with a path $e : a \eqto b$,
   while we keep the element $a$ fixed, we can picture $e$ as a piece of string
   winding through $A$, and the ``freeness'' of the pair $(b,e)$ allows us to pull the string $e$,
   and $b$ with it, until we have the constant path at $a$, $\refl a$.\par
@@ -470,22 +462,22 @@ ranges over elements of $A$.\footnote{%
 }
 
 Equality is \emph{symmetric}, in the sense that an identification of $a$ with $b$ may be reversed to give an identification of $b$ with $a$.  In
-order to produce an element of $b=a$ from an element $e$ of $a=b$, for any $b$ and $e$, we argue by induction.  We let $P(b,e)$ be $b=a$ for any
-$b$ of type $X$ and for any $e$ of type $a=b$, for use in rule \ref{E3} above.
-This reduces us to the case where $b$ is $a$ and $p$ is $\refl a$, and
-our task is now to produce an element of $a=a$; we choose $\refl a$ for it.
+order to produce an element of $b \eqto a$ from an element $e$ of $a \eqto b$, for any $b$ and $e$, we argue by induction.  We let $P(b,e)$ be $b \eqto a$ for any 
+$b$ of type $X$ and for any $e$ of type $a \eqto b$, for use in rule \ref{E3} above.
+Application of rule \ref{E3} reduces us to the case where $b$ is $a$ and $p$ is $\refl a$, and
+our task is now to produce an element of $a \eqto a$; we choose $\refl a$ for it.
 
 Equality is also \emph{transitive}, and is established the same way.
-For each $a,b,c:X$ and for each $p:a=b$ and for each $q:b=c$ we want to produce an
-element of type $a=c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl b$, and we are to produce an element
-of $a=b$.  The element $p$ serves the purpose.
+For each $a,b,c:X$ and for each $p:a \eqto b$ and for each $q:b \eqto c$ we want to produce an
+element of type $a \eqto c$.  By induction on $q$ we are reduced to the case where $c$ is $b$ and $q$ is $\refl b$, and we are to produce an element
+of $a \eqto b$.  The element $p$ serves the purpose.
 %Notice the similarity of this inductive definition with the definition given above
 %of the sum $m+n$. HMM ... (left versus right recursion)
 
 Now we state our symmetry result a little more formally.
 
 \begin{definition}\label{def:eq-symm}
-  For any type $X$ and for any $a,b:X$, let $$\symm_{a,b} : (a=b) \to (b=a)$$
+  For any type $X$ and for any $a,b:X$, let $$\symm_{a,b} : (a \eqto b) \to (b \eqto a)$$
   be the function defined by induction by setting
   $\symm_{a,a}(\refl a) \defeq \refl a$.
 
@@ -496,13 +488,17 @@ Now we state our symmetry result a little more formally.
 Similarly, we formulate transitivity a little more formally, as follows.
 
 \begin{definition}\label{def:eq-trans}
-  For any type $X$ and for any $a,b,c:X$, let $$\trans_{a,b,c} : (a=b) \to ((b=c) \to (a=c))$$ be the function defined by induction by setting
+  For any type $X$ and for any $a,b,c:X$, let $$\trans_{a,b,c} : (a \eqto b) \to ((b \eqto c) \to (a \eqto c))$$ be the function defined by induction by setting
   $(\trans_{a,b,b} (p)) (\refl b ) \defeq p$.
 
   This binary operation is called \emph{path composition} or \emph{path concatenation}\index{composition!of paths}\index{concatenation!of paths},
-  and we may abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p \ct q$, or as $q \cdot p$, $qp$, or $q \circ p$, see \cref{fig:path-concatenation}.  
+  and we may abbreviate $(\trans_{a,b,c}(p))(q)$ as either $p \ct q$, or as $q \cdot p$, $qp$, or $q \circ p$.
   \glossary(2conc){$p\protect\ct q, q\cdot p, qp, q\circ p$}{path concatenation or composition}
 \end{definition}
+
+The intuition that the path $p$ summarizes a gradual change from $a$ to $b$, and $q$ summarizes a gradual change from $b$ to $c$, leads to the
+intuition that $p \ct q$ progresses gradually from $a$ to $c$ by first changing $a$ to $b$ and then changing $b$ to $c$; see
+\cref{fig:path-concatenation}.
 
 The notation $q\circ p$ for path composition, with $p$ and $q$ in reverse order,
 fits our intution particularly well when the paths are related to functions and the composition of
@@ -537,28 +533,26 @@ The types of $\symm_{a,b}$ and $\trans_{a,b,c}$ express that
 equality is symmetric and transitive. Another view of
 $\symm_{a,b}$ and $\trans_{a,b,c}$ is that they are
 operations on identifications, namely reversing an identification
-and concatenating two identifications. As operations, they satisfy
-many equations, such as $(p^{-1})^{-1} = p$ and
-associativity of concatenation, which may all be proven by induction.
-We formulate some of them in the following exercise.
+and concatenating two identifications.  The results of various combinations of these
+operations can often be identified: we formulate some of these identifications in the following exercise.
 
 \begin{xca}\label{xca:path-groupoid-laws}
   Let $X$ be a type and let $a,b,c,d:X$ be elements.
   \begin{enumerate}
-    \item For $p:a=b$, construct an element of type $p \ct \refl b = p$.
-    \item For $p:a=b$, construct an element of type $\refl a \ct p = p$.
-    \item For $p:a=b$, $q:b=c$, and $r:c=d$, construct an element of type $(p \ct q) \ct r = p \ct (q \ct r)$.
-    \item For $p:a=b$, construct an element of type $p^{-1} \ct p = \refl b$.
-    \item For $p:a=b$, construct an element of type $p \ct p^{-1} = \refl a$.
-    \item For $p:a=b$, construct an element of type $(p^{-1})^{-1} = p$.
+    \item For $p:a \eqto b$, construct an element of type $p \ct \refl b \eqto p$.
+    \item For $p:a \eqto b$, construct an element of type $\refl a \ct p \eqto p$.
+    \item For $p:a \eqto b$, $q:b \eqto c$, and $r:c \eqto d$, construct an element of type $(p \ct q) \ct r \eqto p \ct (q \ct r)$.
+    \item For $p:a \eqto b$, construct an element of type $p^{-1} \ct p \eqto \refl b$.
+    \item For $p:a \eqto b$, construct an element of type $p \ct p^{-1} \eqto \refl a$.
+    \item For $p:a \eqto b$, construct an element of type $(p^{-1})^{-1} \eqto p$.
     \qedhere
   \end{enumerate}
 \end{xca}
 
-Concatenation can be used to define powers $p^n$ of $p:a=a$
-by induction on $n:\NN$, setting $p^0\defeq\refl{a}$ and
+Given an element $p:a \eqto a$, we may use concatenation to define powers $p^n : a \eqto a$ 
+by induction on $n:\NN$; we set $p^0\defeq\refl{a}$ and
 $p^{n+1}\defeq p\cdot p^n$. Negative powers $p^{-n}$ are defined
-as $(p^{-1})^n$.\footnote{For now, this is just a convention,
+as $(p^{-1})^n$.\footnote{We haven't yet assigned a meaning to $-n$,
   but after we introduce the set of integers $\zet$ below in~\cref{def:zet},
   we'll be justified in writing $p^z$ for any $z:\zet$.}
 
@@ -576,10 +570,10 @@ the congruence informs us which of the $3$ angles of $y$ is the right angle.
 Now we introduce the notion more formally.
 
 Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$ (as discussed in \cref{univalent-mathematics}).
-Suppose $a,b:X$ and $e:a=b$.
-Then there is a function of type $T(a) \to T(b)$.
+Suppose $a,b:X$ and $e:a \eqto b$.
+Then we may construct a function of type $T(a) \to T(b)$.
 We define one specific such function by induction on $e$,
-by taking its value on $\refl{a}$ of type $a=a$ to be the identity function on $T(a)$.
+by taking its value on $\refl{a}$ of type $a \eqto a$ to be the identity function on $T(a)$.
 We record that definition as follows.
 
 \begin{definition}\label{def:transport} The function
@@ -637,15 +631,15 @@ or, less verbosely, \emph{transport}.\footnote{%
   \end{tikzpicture}}%
 \index{transport}
 We may also simplify the notation to just $\trp e$.
-The transport functions behave as expected: there is an identification of type $\trp {e'\circ e} = \trp {e'} \circ \trp {e}$.
+The transport functions behave as expected: we may construct an identification of type $\trp {e'\circ e} \eqto \trp {e'} \circ \trp {e}$.
 In words: transport along the composition $e\circ e'$ can be identified with the composition of the two
 transport functions.  This may be proved by induction in the following exercise.
 
 \begin{xca}\label{xca:trp-compose}
   Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$.
-  Suppose we are given elements $a,b,c:X$, $e:a=b$, and $e':b=c$. Show there is an identification of type
+  Suppose we are given elements $a,b,c:X$, $e:a \eqto b$, and $e':b \eqto c$.  Construct an identification of type
   \[
-    \trp {e'\circ e} = \trp {e'} \circ \trp {e}.\qedhere
+    \trp {e'\circ e} \eqto \trp {e'} \circ \trp {e}.\qedhere
   \]
 \end{xca}
 
@@ -654,7 +648,7 @@ Yet another example of good behavior is given in the following exercise.
 \begin{xca}\label{xca:trp-nondep}
   Let $X,Y$ be types.
   As discussed in \cref{univalent-mathematics}, we may regard the expression $Y$ as a constant family of types parametrized by a variable $x:X$.
-  Produce an identification of type $\trp[Y]{p} = \id_Y$, for any path $p:a=b$.
+  Produce an identification of type $\trp[Y]{p} \eqto \id_Y$, for any path $p:a \eqto b$.
 \end{xca}
 
 In \cref{sec:props-sets-grpds} below we will discuss what it means for a type to have at most one element.
@@ -663,8 +657,8 @@ we may regard an element of $T(x)$ as providing additional \emph{structure} on $
 In that case, we will refer to the transport function $\trp e : T(a) \to T(b)$ as
 \emph{transport of structure} from $a$ to $b$.
 
-Take, for example, $T(x)\defeq (x=x)$.
-Then $\trp e$ is of type $a=a \to b=b$ and transports a
+Take, for example, $T(x)\defeq (x \eqto x)$.
+Then $\trp e$ is of type $(a \eqto a) \to (b \eqto b)$ and transports a
 symmetry of $a$ to a symmetry of $b$.
 
 By contrast, when the types
@@ -692,7 +686,7 @@ following definition makes precise.
 
 \begin{definition}\label{def:ap}
 For all types $X$, $Y$, functions $f:X\to Y$ and elements $x,x':X$, the function
-$$\ap{f,x,x'} : (x = x') \to (f(x) = f(x'))$$ is defined by induction by setting
+$$\ap{f,x,x'} : (x \eqto x') \to (f(x) \eqto f(x'))$$ is defined by induction by setting
 $\ap{f,x,x}(\refl{x})\defeq\refl{f(x)}$.%
 \glossary(ap){$\protect\ap{f}$}{application of a function to a path, \cref{def:ap}}
 \end{definition}
@@ -707,36 +701,37 @@ For convenience, we may abbreviate it even further, writing $f(p)$ for $\ap f (p
 The following lemma shows that $\ap f$ is compatible with composition.
 
 \begin{lemma}\label{lem:apcomp}
-  Given a function $f:X\to Y$, and elements $x,x',x'':X$, and paths $p : x = x'$ and $p' : x' = x''$,
-  there is an identification of type $\ap f (p' \cdot p) =  \ap f (p') \cdot  \ap f (p)$.
+  Given a function $f:X\to Y$, and elements $x,x',x'':X$, and paths $p : x \eqto x'$ and $p' : x' \eqto x''$,
+  we may construct an identification of type $\ap f (p' \cdot p) \eqto  \ap f (p') \cdot  \ap f (p)$.
 \end{lemma}
 
 \begin{proof}
-  By induction on $p$ and $p'$, one reduces to producing an element of type
+  By induction on $p$ and $p'$, one reduces to producing an identification of type
   \[
-    \ap f (\refl x \cdot \refl x) =  \ap f ( \refl x ) \cdot  \ap f ( \refl x ).
+    \ap f (\refl x \cdot \refl x) \eqto  \ap f ( \refl x ) \cdot  \ap f ( \refl x ).
   \]
   Both sides of the equation are equal to $\refl { f(x) }$ by definition, so the element $\refl {\refl { f(x) }}$
   has that type.
 \end{proof}
 
-In a similar way one shows that $\ap f$ is compatible with inverse,
-$\ap f(p^{-1}) =  (\ap f (p))^{-1}$, and that $\ap \id$ is the identity on paths.
+In a similar way one shows that $\ap f$ is compatible with path inverse, by constructing an identity of type
+$\ap f(p^{-1}) \eqto  (\ap f (p))^{-1}$.   One may also construct an identity of type $\ap \id (p) \eqto p$.
 
 
 \begin{xca}\label{xca:trp-ap}
   Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$. Furthermore, let $A$ be a type, let $f:A\to X$ be a
-  function, and let $p: a=a'$ be a path. Show that there is an identification of type $\trp[T \circ f]{p} = \trp[T]{\ap{f}(p)}$
-  between these two functions, which are of type $T(f(a)) \to T(f(a'))$.
+  function, let $a$ and $a'$ be elements of $A$, and let $p: a \eqto a'$ be a path.
+  Verify that the two functions $\trp[T \circ f]{p}$ and $\trp[T]{\ap{f}(p)}$ are of type $T(f(a)) \to T(f(a'))$.
+  Then construct an identification between them, i.e., construct an element of type $\trp[T \circ f]{p} \eqto \trp[T]{\ap{f}(p)}$.
 \end{xca}
 
 If two functions $f$ and $g$ of type $\prod_{x:X} Y(x)$ can be identified, then their values can be identified, i.e., for every element $x$ of
-$X$, we may produce an identification of type $f(x) = g(x)$, which can be constructed by induction, as follows.
+$X$, we may produce an identification of type $f(x) \eqto g(x)$, which can be constructed by induction, as follows.
 
 \begin{definition}\label{def:ptw}
   Let $f,g:\prod_{x:X} Y(x)$. Define the function
   \[
-    {\ptw}_{f,g}: ( f=g ) \to \left( \prod_{x:X} f(x)=g(x) \right),
+    {\ptw}_{f,g}: ( f \eqto g ) \to \left( \prod_{x:X} f(x) \eqto g(x) \right),
   \]
   by induction by setting ${\ptw}_{f,f}(\refl{f}) \defeq x \mapsto \refl{f(x)}$.
   \footnote{The notation $\ptw$ is chosen to remind the reader of the word ``point-wise'', because the identities are provided just for each
@@ -747,25 +742,25 @@ $X$, we may produce an identification of type $f(x) = g(x)$, which can be constr
 
 Conversely, given $f,g:\prod_{x:X} Y(x)$, from a basic axiom called \emph{function extensionality},%
 \index{function extensionality}
-postulated in \cref{def:funext}, an identity $f=g$ can be produced from a
-family of identities of type $f(x) = g(x)$ parametrized by the elements $x$ of $X$.
+postulated below in \cref{def:funext}, an identity $f \eqto g$ can be produced from a
+family of identities of type $f(x) \eqto g(x)$ parametrized by a variable $x$ of type $X$.
 
 \begin{definition}\label{def:naturality-square-commutativity}
 Let $X,Y$ be types and $f,g: X\to Y$ functions.
-Given an element $h$ of type $\prod_{x:X} f(x)=g(x)$, elements $x$ and $x'$ of $X$, and a path $p: x=x'$,
-we can define by induction on $p$ an element
+Given an element $h$ of type $\prod_{x:X} f(x) \eqto g(x)$, elements $x$ and $x'$ of $X$, and a path $p: x \eqto x'$,
+we have two elements $h(x')\cdot \ap{f}(p)$ and $\ap{g}(p)\cdot h(x)$ of type $f(x) \eqto g(x')$.
+We construct an identification 
 \[
-  \ns(h,p): h(x')\cdot \ap{f}(p) =_{f(x)=g(x')} \ap{g}(p)\cdot h(x),
+  \ns(h,p): h(x')\cdot \ap{f}(p) \eqto \ap{g}(p)\cdot h(x),
 \]
-by induction, by setting $\ns(h,\refl{x})$ to be some previously
-constructed element of $h(x) \cdot \refl{f(x)} = h(x)$.%
+between them by induction, by setting $\ns(h,\refl{x})$ to be some previously
+constructed element of $h(x) \cdot \refl{f(x)} \eqto h(x)$.%
 \glossary(ns){$\protect\ns$}{naturality square, \cref{def:naturality-square-commutativity}}
 The type of $\ns(h,p)$ can be depicted as a square\footnote{%
-  Like this, where we add little arrows to the equal signs to indicate their direction:
   \begin{displaymath}
     \begin{tikzcd}[column sep=large,row sep=large,ampersand replacement=\&]
-      f(x) \ar[r,eqr,"\ap f(p)"]\ar[d,eql,"h(x)"'] \& f(x')\ar[d,eqr,"h(x')"] \\
-      g(x) \ar[r,eql,"\ap g(p)"'] \& g(x')
+      f(x) \ar[r,"="',"\ap f(p)"] \ar[d,"=","h(x)"'] \& f(x') \ar[d,"="',"h(x')"] \\
+      g(x) \ar[r,"=","\ap g(p)"']                    \& g(x')
     \end{tikzcd}
   \end{displaymath}%
 } and $\ns(h,p)$ is called a \emph{naturality square}.%
@@ -782,12 +777,12 @@ idea of the following definition.
 \begin{definition}\label{def:pathsoverpaths}
   Suppose we are given a type $X$ in a universe $\UU$ and a family of types $Y(x)$, also in $\UU$, parametrized by a variable $x$ of type $X$.
   Given elements $a,a':X$, $y:Y(a)$, and
-  $y':Y(a')$ and a path $p : a = a'$,
+  $y':Y(a')$ and a path $p : a \eqto a'$,
   we define a new type $\pathover y Y p {y'}$ in $\UU$ as follows.%
   \glossary(2=over){$=^Y_p$}{path-over type, \cref{def:pathsoverpaths}}
   We proceed by induction on $a'$ and $p$, which reduces us to the case where $a'$ is $a$ and $p$ is $\refl a$,
   rendering $y$ and $y'$ of the same type $Y(a)$ in $\UU$, allowing us to define
-  $\pathover y Y {\refl a} {y'}$ to be $y = y'$, which is also in $\UU$.
+  $\pathover y Y {\refl a} {y'}$ to be $y \eqto y'$, which is also in $\UU$.
 \end{definition}
 
 An element $q : \pathover y Y p {y'}$ is called a \emph{path} from $y$ to $y'$ \emph{over} $p$.\index{path over}\footnote{\label{ft:path-over-pic}%
