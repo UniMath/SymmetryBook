@@ -785,7 +785,10 @@ idea of the following definition.
   $\pathover y Y {\refl a} {y'}$ to be $y \eqto y'$, which is also in $\UU$.
 \end{definition}
 
-An element $q : \pathover y Y p {y'}$ is called a \emph{path} from $y$ to $y'$ \emph{over} $p$.\index{path over}\footnote{\label{ft:path-over-pic}%
+An element $q : \pathover y Y p {y'}$ is called an \emph{identification} of $y$ with $y'$ \emph{over} $p$, or a 
+\emph{path} from $y$ to $y'$ \emph{over} $p$.\index{path over}
+Intuitively, we regard $p$ as specifying a way for $a$ to change gradually into $a'$, and this provides a way
+for $Y(a)$ to change gradually into $Y(a')$; then $q$ charts a way for $y$ to change gradually into $y'$ as $Y(a)$ changes gradually into $Y(a')$.\footnote{\label{ft:path-over-pic}%
   We picture this as follows: the path from $y$ to $y'$ over $p$ travels
   through the vertical lines representing the types $Y(x)$ as $x:X$
   moves along the path $p$ in $X$ from $a$ to $a'$:\par
@@ -833,8 +836,8 @@ of paths using transport along $p$.
 \begin{definition}\label{def:pathover-trp}
 In the context of \cref{def:pathsoverpaths}, define by induction on $p$ an
 identification
-$\po_p: \left(\pathover y Y p {y'}\right) = \left( \trp[Y]{p}(y)=y'\right)$ in $\UU$,
-by setting $\po_{\refl{x}} \defeq \refl{y=y'}$.%
+$\po_p: \left(\pathover y Y p {y'}\right) \eqto \left( \trp[Y]{p}(y) \eqto y'\right)$ in $\UU$,
+by setting $\po_{\refl{x}} \defeq \refl{y \eqto y'}$.%
 \glossary(po){$\protect\po_p$}{convert path over path, \cref{def:pathover-trp}}
 \end{definition}
 
@@ -843,12 +846,12 @@ For example, we may define composition of paths over paths as follows.
 
 \begin{definition}\label{def:pathovercomposition}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
-  Suppose also that we have elements $x, x', x'' : X$, a path $p : x = x'$, and a path $p' : x' = x''$.
+  Suppose also that we have elements $x, x', x'' : X$, a path $p : x \eqto x'$, and a path $p' : x' \eqto x''$.
   Suppose further that we have elements $y : Y(x)$, $y' : Y(x')$, and $y'' : Y(x'')$, with paths $q : \pathover y Y p {y'}$ over $p$
   and $q' : \pathover {y'} Y {p'} {y''}$ over $p'$.
   Then we define the \emph{composite} path $q' \pathovercomp q : \pathover y Y {p' \circ p} {y''}$ over $p' \circ p$ as follows.
   First we apply path induction on $x''$ and $p'$ to reduce to the case where $x''$ is $x'$ and $p'$ is $\refl{x'}$.
-  That also reduces the type $\pathover {y'} Y {p'} {y''}$ to the identity type $y' = y''$, so we may apply path induction on $y''$ and $q'$ to reduce
+  That also reduces the type $\pathover {y'} Y {p'} {y''}$ to the identity type $y' \eqto y''$, so we may apply path induction on $y''$ and $q'$ to reduce
   to the case where $y''$ is $y'$ and $q'$ is $\refl{y'}$.
   Now observe that $p' \circ p$ is $p$, so $q$ provides the element we need.
 \end{definition}
@@ -867,7 +870,7 @@ function $f$ to paths using the definition above.
 
 \begin{definition}\label{def:apd}
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$, and a function $f:\prod_x Y(x)$.
-  Given elements $x,x':X$ and a path $p : x = x'$, we define
+  Given elements $x,x':X$ and a path $p : x \eqto x'$, we define
   \[
     \apd{f}(p) : \pathover {f(x)} Y p {f(x')}
   \]
@@ -932,10 +935,10 @@ The following construction shows how functions of two variables may be applied t
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$, and a type $Z$.
   Suppose also we are given a function $g : \prod_{x:X} (Y(x) \to Z)$ of two variables.
   Given elements $x,x':X$, $y:Y(x)$, and
-  $y':Y(x')$, a path $p : x = x'$, and a path $q :\pathover y Y p {y'}$ over $p$,
+  $y':Y(x')$, a path $p : x \eqto x'$, and a path $q :\pathover y Y p {y'}$ over $p$,
   we may construct a path
   \[
-    \apap g p q : g(x)(y) = g(x')(y')
+    \apap g p q : g(x)(y) \eqto g(x')(y')
   \]
   by induction on $p$ and $q$, setting
   \[
@@ -950,8 +953,8 @@ The following simple lemma will be useful later.
 
 \begin{definition}\label{def:applfun2comp}
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$, and a type $Z$.  Suppose also we are given
-  a function $g : \prod_{x:X} (Y(x) \to Z)$ of two variables.  Given an element $x:X$, elements $y, y':Y(x)$, and an identity $q : y = y'$, then
-  we define an identification of type $\apap g {\refl x} q = \ap {g(x)}(q)$, by induction on $q$, thereby reducing to the case where $y'$ is
+  a function $g : \prod_{x:X} (Y(x) \to Z)$ of two variables.  Given an element $x:X$, elements $y, y':Y(x)$, and an identity $q : y \eqto y'$, then
+  we define an identification of type $\apap g {\refl x} q \eqto \ap {g(x)}(q)$, by induction on $q$, thereby reducing to the case where $y'$ is
   $y$ and $q$ is $\refl y$, rendering the two sides of the equation equal, by definition, to $\refl {g(x)(y)}$.
 \end{definition}
 
@@ -1044,7 +1047,7 @@ This property is encoded in the following definition.
   \label{def:contractible}
   Given a type $X$, define a type $\iscontr(X)$ by setting
   \[
-    \iscontr(X) \defeq \sum_{c:X} \prod_{x:X} (c=x).\qedhere
+    \iscontr(X) \defeq \sum_{c:X} \prod_{x:X} (c \eqto x).\qedhere
   \]
 \end{definition}
 
@@ -1056,27 +1059,27 @@ By path composition, one sees that any element $x : X$ can serve as the center o
 The following lemma gives an important example of a contractible type.
 
 Give a type $X$ and an element $a$ of $X$,
-the \emph{singleton type} $\sum_{x:X} (a=x)$
-consists of pairs $(x,i)$ with $i: a=x$. The following lemma shows that a singleton type has exactly one element, justifying the name.
+the \emph{singleton type} $\sum_{x:X} (a \eqto x)$
+consists of pairs $(x,i)$ with $i: a \eqto x$. The following lemma shows that a singleton type has exactly one element, justifying the name.
 
 \begin{lemma}\label{lem:thepathspaceiscontractible}
-For any type $X$ and $a:X$, the singleton type $\sum_{x:X} (a=x)$ is contractible.
+For any type $X$ and $a:X$, the singleton type $\sum_{x:X} (a \eqto x)$ is contractible.
 \end{lemma}
 
 \begin{proof}
 Take as center the pair $(a,\refl{a})$. We have
 to produce, for any element $x$ of $X$ and for any identification
-$i: a=x$, an identification of type $(a,\refl{a}) = (x,i)$.  This is done by path induction on $x$ and $i$, which reduces us to producing
-an identity of type $(a,\refl{a}) = (a,\refl{a})$; reflexivity provides one, namely $\refl{(a,\refl{a})}$.
+$i: a \eqto x$, an identification of type $(a,\refl{a}) \eqto (x,i)$.  This is done by path induction on $x$ and $i$, which reduces us to producing
+an identity of type $(a,\refl{a}) \eqto (a,\refl{a})$; reflexivity provides one, namely $\refl{(a,\refl{a})}$.
 \end{proof}
 
 \begin{definition}
 \label{def:fiber}
 Given a function $f : X \to Y$ and an element $y:Y$,
 the \emph{fiber} (or \emph{preimage}) $f^{-1}(y)$
-is encoded by defining $$f^{-1}(y) \defeq \sum_{x:X}(y = f(x)).$$
+is encoded by defining $$f^{-1}(y) \defeq \sum_{x:X}(y \eqto f(x)).$$
 In other words, an element of the fiber $f^{-1}(y)$ is a pair consisting
-of an element $x$ of $X$ and an identification of type $y = f(x)$.
+of an element $x$ of $X$ and an identification of type $y \eqto f(x)$.
 \end{definition}
 
 In set theory, a function $f : X \to Y$ is a bijection if and only if
@@ -1106,14 +1109,14 @@ We may say that $X$ and $Y$ are \emph{equivalent} if there is an equivalence bet
 Suppose $f:X \to Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility.
 Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.\footnote{%
   Note that $\fst(t(y)) : \inv f(y)$, so $\fst(\fst(t(y))) : X$ with
-  $\snd(\fst(t(y))) : y = f(\fst(\fst(t(y)))).$}
+  $\snd(\fst(t(y))) : y \eqto f(\fst(\fst(t(y)))).$}
 
-Clearly, $f(g(y)) = y$ by unfolding all definitions.
+Clearly, $f(g(y)) \eqto y$ by unfolding all definitions.
 Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x))$,
 with the latter as the fiber that $t(f(x))$
 proves contractible. Hence the center of contraction
 $\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
-$g(f(x))\jdeq(\fst(\fst(t(f(x))) = x$.
+$g(f(x))\jdeq(\fst(\fst(t(f(x))) \eqto x$.
 
 We have shown that $f$ and $g$ are inverse functions.  When it won't cause confusion with the notation for the fibers of $f$, we will write
 $f^{-1}$ for $g$.
@@ -1124,7 +1127,7 @@ $\id_X^{-1}(a)$ is a singleton type and hence contractible.
 This simple observation combined with the fact that
 $\trp[T]{\refl{x}}\jdeq \id_{T(x)}$ gives that
 the function $\trp[T]{e}$ from \cref{def:transport}
-is an equivalence from $T(x)$ to $T(y)$, for all $e: x=y$.
+is an equivalence from $T(x)$ to $T(y)$, for all $e: x \eqto y$.
 
 \begin{xca}\label{xca:equivalence-invers}
 Make sure you understand the two applications of $\fst$
@@ -1139,7 +1142,7 @@ Give  a function $(X\equiv Y) \to ((Y\equiv Z) \to (X\equiv Z))$.
 \end{xca}
 
 \begin{xca}\label{xca:2-out-of-3}
-  Consider types $A$, $B$, and $C$, functions $f:A\to B$, $g:A\to C$ and $h:B\to C$, together with an element $e: hf=g$.  Prove that if two of
+  Consider types $A$, $B$, and $C$, functions $f:A\to B$, $g:A\to C$ and $h:B\to C$, together with an element $e: hf \eqto g$.  Prove that if two of
   the three functions are equivalences, then so is the third one.
 \end{xca}
 
@@ -1147,11 +1150,11 @@ The following lemma gives an equivalent characterization
 of equivalence that is sometimes easy to use.
 
 \begin{lemma}\label{lem:weq-iso}
-  Let $X,Y$ be types. For each equivelence $f: X\to Y$, we have a function $g: Y\to X$ such that for all $x:X$ we have $g(f(x))=x$ and for all
-  $y:Y$ we have $f(g(y))=y$. Conversely, if we have such a function $g$, then $f$ is an equivalence.
+  Let $X,Y$ be types. For each equivelence $f: X\to Y$, we have a function $g: Y\to X$ such that for all $x:X$ we have $g(f(x)) \eqto x$ and for all
+  $y:Y$ we have $f(g(y)) \eqto y$. Conversely, if we have such a function $g$, then $f$ is an equivalence.
 \end{lemma}
 \begin{proof}
-If $f: X\to Y$ is an equivalence we can take $g=f^{-1}$.
+If $f: X\to Y$ is an equivalence we can take $g \eqto f^{-1}$.
 For the converse, see Chapter~4 of the HoTT Book,\footcite{hottbook} or \coqident{Foundations.PartA}{isweq_iso}.
 \end{proof}
 
@@ -1159,27 +1162,27 @@ We put \cref{lem:weq-iso} immediately to good use.
 
 \begin{lemma}\label{lem:contract-away}
 Let $X$ be a type with element $a$, and let
-$B(x,i)$ be a type for all $x:X$ and $i: a=x$.
+$B(x,i)$ be a type for all $x:X$ and $i: a \eqto x$.
 Define $f(x,i): B(x,i) \to B(a,\refl{a})$ by induction on $i$,
 setting $f(a,\refl{a},b) \defeq b$ for all $b:B(a,\refl{a})$.
 Then $f$ defines an equivalence
 \[
-f~:~ \sum_{x:X} \sum_{i: a=x} B(x,i) \quad \to \quad B(a,\refl{a}).
+f~:~ \sum_{x:X} \sum_{i: a \eqto x} B(x,i) \quad \to \quad B(a,\refl{a}).
 \]
 \end{lemma}
 \begin{proof}
 We can also define
-$g: B(a,\refl{a})\to \sum_{x:X} \sum_{i: a=x} B(x,i)$
+$g: B(a,\refl{a})\to \sum_{x:X} \sum_{i: a \eqto x} B(x,i)$
 mapping $b: B(a,\refl{a})$ to $(a,\refl{a},b)$.
-Clearly $f(g(b))=b$ for all $b:B(a,\refl{a})$.
-Moreover, $g(f(x,i,b))=(x,i,b)$ is clear by induction
+Clearly $f(g(b)) \eqto b$ for all $b:B(a,\refl{a})$.
+Moreover, $g(f(x,i,b)) \eqto (x,i,b)$ is clear by induction
 on $i$, for all $b:B(x,i)$.
 By \cref{lem:weq-iso} it follows that $f$
 is an equivalence.
 \end{proof}
 
 The above lemma clearly reflects the  contractibility of the
-singleton type $\sum_{x:X}(a=x)$.\footnote{%
+singleton type $\sum_{x:X}(a \eqto x)$.\footnote{%
   In fact, an alternative proof would go as follows:
   First, we use \cref{lem:weq-iso} to show associativity of sum types,
   i.e., $\sum_{x:X}\sum_{y:Y(x)}Z(x,y)
@@ -1193,7 +1196,7 @@ singleton type $\sum_{x:X}(a=x)$.\footnote{%
   where $c$ is the center of contraction.}
 For this reason
 we call application of this lemma `to contract away'
-the prefix $\sum_{x:X} \sum_{i: a=x}$, in order
+the prefix $\sum_{x:X} \sum_{i: a \eqto x}$, in order
 to obtain a simpler type. It is often applied
 in the following simpler form.
 
@@ -1201,7 +1204,7 @@ in the following simpler form.
 With conditions as above, but with $B$ not depending on $i$, the same $f$
 establishes an equivalence
 \[
- \sum_{x:X} ((a=x)\times B(x))~~\equiv~~B(a).
+ \sum_{x:X} ((a \eqto x)\times B(x))~~\equiv~~B(a).
 \]
 \end{corollary}
 
@@ -1255,11 +1258,11 @@ Yet another application of the notion of equivalence is to postulate axioms.
 
 \begin{principle}\label{def:funext}
 The axiom of \emph{function extensionality} postulates that the function
-$\ptw_{f,g}: f=g \to \prod_{x:X} f(x)=g(x)$ in \cref{def:ptw} is an equivalence.
+$\ptw_{f,g}: f \eqto g \to \prod_{x:X} f(x) \eqto g(x)$ in \cref{def:ptw} is an equivalence.
 Formally, we postulate the existence of an element $\funext : \isEq(\ptw_{f,g})$.
 From that we can construct the corresponding inverse function.
 \[
-\inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x)=g(x)\Bigr) \to f=g.
+\inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x) \eqto g(x)\Bigr) \to f \eqto g.
 \]
 Thus two functions whose values can all be identified can themselves be identified.
 This supports the intuition that there is nothing more to a function than the values
@@ -1289,7 +1292,7 @@ two pairs to be equal.  We start with a definition.
     we need both the point $x$ in the parameter type $X$
     as well as the point $y$ in $Y(x)$,
     to give a path from $(x,y)$ to $(x',y')$,
-    we need both a path $p : x=x'$
+    we need both a path $p : x \eqto x'$
     as well as a path $q : \pathover y Y p {y'}$ over $p$.
     Here's a similar picture, where we depict the types in the family
     as being $2$-dimensional for a change.
@@ -1349,8 +1352,8 @@ two pairs to be equal.  We start with a definition.
   \]
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$, we define the map
   \[
-    \Bigl( \sum_{p:x=x'} \pathover y Y p {y'} \Bigr)
-    \to \left ( (x,y) = (x',y') \right )
+    \Bigl( \sum_{p:x \eqto x'} \pathover y Y p {y'} \Bigr)
+    \to \left ( (x,y) \eqto (x',y') \right )
   \]
   by
   \[
