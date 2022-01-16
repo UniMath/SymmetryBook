@@ -1100,18 +1100,18 @@ We may say that $X$ and $Y$ are \emph{equivalent} if there is an equivalence bet
 
 \begin{definition}
   \label{def:type-of-equivalences}
-  We define the type $X \equiv Y$ of equivalences from $X$ to $Y$ by the following definition.
+  We define the type $X \equivto Y$ of equivalences from $X$ to $Y$ by the following definition.
   \[
-  (X\equiv Y) \defeq \sum_{f:X\to Y} \isEq(f).\qedhere
+  (X \equivto Y) \defeq \sum_{f:X\to Y} \isEq(f).\qedhere
   \]
 \end{definition}
 
-Suppose $f:X \to Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility.
+Suppose $f:X \equivto Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility of the fiber.
 Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.\footnote{%
   Note that $\fst(t(y)) : \inv f(y)$, so $\fst(\fst(t(y))) : X$ with
   $\snd(\fst(t(y))) : y \eqto f(\fst(\fst(t(y)))).$}
 
-Clearly, $f(g(y)) \eqto y$ by unfolding all definitions.
+There is an identification of type $f(g(y)) \eqto y$, which can be seen by unfolding all the definitions.
 Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x))$,
 with the latter as the fiber that $t(f(x))$
 proves contractible. Hence the center of contraction
@@ -1119,13 +1119,13 @@ $\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
 $g(f(x))\jdeq(\fst(\fst(t(f(x))) \eqto x$.
 
 We have shown that $f$ and $g$ are inverse functions.  When it won't cause confusion with the notation for the fibers of $f$, we will write
-$f^{-1}$ for $g$.
+$f^{-1}$ instead of $g$.
 
 For any type $X$, the identity function $\id_X$ is an
-equivalence from $X$ to $X$: for every element $a$ in $X$,
-$\id_X^{-1}(a)$ is a singleton type and hence contractible.
-This simple observation combined with the fact that
-$\trp[T]{\refl{x}}\jdeq \id_{T(x)}$ gives that
+equivalence from $X$ to $X$.  To see that, observe that for every element $a$ in $X$,
+$\id_X^{-1}(a)$ is a singleton type and hence is contractible.
+This observation, combined with the fact that
+$\trp[T]{\refl{x}}\jdeq \id_{T(x)}$, gives that
 the function $\trp[T]{e}$ from \cref{def:transport}
 is an equivalence from $T(x)$ to $T(y)$, for all $e: x \eqto y$.
 
@@ -1997,7 +1997,6 @@ type $x \eqto y$ is a proposition, then we shall say that $X$ is a \emph{set}.%
 The reason for doing so is that the most relevant
 thing about a set is which elements it has; distinct identifications
 of equal elements are not relevant.
-
 Alternatively, we shall say that $X$ is a $0$-\emph{type}.\footnote{%
 Sets are thought to consist of points. Points are entities of dimension 0,
 which explains why the count starts here.
@@ -2229,7 +2228,7 @@ Let $T$ be a type. The \emph{propositional truncation} of $T$
 is a type  $\Trunc{T}$ defined by the following constructors:
 \begin{enumerate}
 \item an \emph{element} constructor $\trunc{t} : \Trunc{T}$ for all $t:T$;
-\item a constructor identifying $x \eqto y$  for all $x,y:\Trunc{T}$.
+\item a constructor providing an identity of type $x \eqto y$  for all $x,y:\Trunc{T}$.
 \end{enumerate}
 The (unnamed) identification constructor ensures that $\Trunc{T}$ is a
 proposition. The induction principle states that,
@@ -2242,7 +2241,7 @@ Computationally, we get $f(\trunc{t})\jdeq g(t)$ for all $t:T$.
 \end{definition}
 
 In the non-dependent case we get that
-any function $g: T\to P$ yields a (unique) function $f:\Trunc{T}\to P$
+any function $g: T\to P$ to a proposition $P$ yields a (unique) function $f:\Trunc{T}\to P$
 satisfying $f(\trunc{t})\jdeq g(t)$ for all $t:T$.\footnote{%
 Note that $f(\trunc{t})$ respects equality since $P$ is a proposition.}
 A useful consequence of this recursion principle is that,
@@ -2267,44 +2266,54 @@ We conclude this section with some important notions defined using truncation.
   Let $A$ be a type.
   We call $A$ \emph{non-empty}
   if we have an element of $\Trunc{A}$.\footnote{%
-    This notion is also called \emph{inhabited},
-    instead, in order to avoid confusion with the
+    We may alternatively say that $A$ is \emph{inhabited},
+    in order to avoid confusion with the
     concept of $A$ \emph{not being empty},
     which would be represented by the proposition
     $\neg(A \eqto \emptytype)$, which is equivalent to
     $\neg\neg A$.}
 \end{definition}
 
+\begin{definition}
+  Let $A$ be a type, and let $a$ and $b$ be elements of $A$.  We say that $a$ and $b$ are \emph{equal}\index{equal} and
+  we write $a \eq b$\glossary(2=){$=$}{equality} if there exists an identification of type $a \eqto b$.  Formally, we define it as follows.
+  \[
+  a \eq b \defeq \Trunc {a \eqto b}
+  \]
+  The type $a \eq b$ is called an \emph{equation}\index{equation}.  Equations are propositions.
+\end{definition}
+
 \begin{definition}\label{def:connected}
-  Let $A$ be a type. If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A}\Trunc{a \eqto x}$
-  is called the \emph{(connected) component} of $a$ in $A$.
-  We say that elements $x,y$ of $A$ are \emph{in the same component}
-  if we have an element of $\Trunc{x \eqto y}$.
+  Let $A$ be a type. If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A} x \eq a$
+  is called the \emph{connected component} of $a$ in $A$.
+  We say that elements $x,y$ of $A$ are \emph{in the same component} of $A$ if $x = y$.
   The type $A$ is called \emph{connected}\footnote{%
     Below in \cref{def:set-truncation} we will
     define the \emph{set of connected components} of a type.}
   if it is non-empty with
   all elements in the same component, that is, if
   \[
-    \isconn(A) \defeq \Trunc{A} \times \prod_{x,y:A} \Trunc{x \eqto y}.\qedhere
-  \]
+    \isconn(A) \defeq \Trunc{A} \times \prod_{x,y:A} x \eq y.
+  \]\qedhere
 \end{definition}
-Note that under this definition the empty type $\emptytype$ is not connected.
+
+Note that the empty type $\emptytype$ is \emph{not} connected.
+
 One can view being connected as a weak form
 of being contractible -- without direct access to a center and to
 identifications of elements.
 
 \begin{xca}\label{xca:component-connected}
-Show that the component of $a$ in $A$ is connected.
-Show that connected elements have the same
-\emph{propositional} properties, that is,
-for any predicate $P:A\to\UU$, $P(x)$ is equivalent
-to $P(y)$ for any connected $x,y:A$.
+  Show that the component of $a$ in $A$ is connected.
+  Show that equal elements have the same
+  \emph{propositional} properties, that is,
+  for any predicate $P:A\to\UU$, $P(x)$ is equivalent
+  to $P(y)$ for any $x,y:A$ with $x=y$.
 \end{xca}
 
 \begin{xca}\label{xca:prop-set-trivia}
-Show that $\Trunc P \equiv P$ for any proposition $P$.
-Show that any connected set is contractible.
+  Show that $\Trunc P \equiv P$ for any proposition $P$.
+  Show that any connected set is contractible.
 \end{xca}
 
 \begin{xca}\label{xca:connected-trivia}
@@ -2319,7 +2328,7 @@ In the following definition we introduce the adverb \emph{merely}.
   then \emph{merely A} is the English adjective encoded by the type $\Trunc T$.
 \end{definition}
 
-For example, a type is non-empty if and only if it \emph{merely has an element}, and two elements of a connected type are \emph{merely equal}.
+For example, a type is non-empty if and only if it \emph{merely has an element}, and two elements of a connected type can be \emph{merely} identified.
 
 On the other hand, if we want to emphasize that a phrase \emph{A} refers to the
 untruncated type $T$, then we employ the adverb \emph{purely}
@@ -2347,10 +2356,11 @@ This motivates the following definitions.
 
 \begin{definition}\label{def:surjection}
 A function $f:A\to B$ is a \emph{surjection}, or is \emph{surjective},
-if for all $b:B$ there merely exists an $a:A$ such that $b \eqto f(a)$,
-that is, $\Trunc{\sum_{a:A} b \eqto f(a)}$.\footnote{%
+if for all $b:B$ there (merely) exists an $a:A$ such that $b \eqto f(a)$,
+that is, $\exists_{a:A} b \eqto f(a)$.\footnote{%
   A function $f:A\to B$ is a \emph{split surjection}
-  if for all $b:B$ there (purely) is an $a:A$ with $b \eqto f(a)$.
+  if for all $b:B$ there (purely) is an $a:A$ with $b \eqto f(a)$,
+  in other words, we have a function of type $\prod_{b:B} \sum_{a:A} b \eqto f(a)$.
   This is equivalent to saying we have a function
   $g:B\to A$ such that $f\circ g \eqto \id_B$
   (such a $g$ is called a \emph{section} of $f$).}
@@ -2408,7 +2418,7 @@ $x,x':X$, $p:y \eqto f(x)$, $p':y' \eqto f(x')$ and $q:x \eqto x'$,
 then we have an identity between $y$ and $y'$ given by the composite
 \[
   \begin{tikzcd}
-    y \ar[r,eq,"p"] & f(x)\ar[r,eq,"f(q)"] & f(x')\ar[r,eq,"\inv{p'}"] & y'.
+    y \ar[r,"=","p"'] & f(x) \ar[r,"=","f(q)"'] & f(x') \ar[r,"=","\inv{p'}"'] & y'.
   \end{tikzcd}
 \]
 Now the lemma follows by eliminating the propositional truncations in the assumptions,
@@ -3109,10 +3119,10 @@ In the following proofs we frequently use \cref{xca:all-prop-image}.
 
 \begin{lemma}\label{lem:equiv-class-prop}
   For any equivalence class $P : A/R$ and $a:A$,
-  $P = [a]$ if and only if $P(a)$ holds.
+  $P \eqto k[a]$ is inhabited if and only if $P(a)$ holds.
 \end{lemma}
 \begin{proof}
-  Assume $P = [a]$. Then $P(x)$ is equivalent to $R(a,x)$ for all $x:A$.
+  Assume we have an identification of type $P \eqto [a]$. Then $P(x)$ is equivalent to $R(a,x)$ for all $x:A$.
   Take $x\defeq a$ and use reflexivity $R(a,a)$ to conclude $P(a)$.
 
   Conversely, assume $P(a)$, and let $x:A$ be given.
@@ -3122,33 +3132,33 @@ In the following proofs we frequently use \cref{xca:all-prop-image}.
   This follows from $P(a) \jdeq R(b,a)$ using symmetry and transitivity.
 \end{proof}
 \begin{theorem}\label{thm:quotient-property}
-  We have $([x] = [x']) \equiv R(x,x')$ for all $x,x':A$.
+  We have $([x] \eqto [x']) \equiv R(x,x')$ for all $x,x':A$.
   Also, for any \emph{set} $B$, a
   function $f : A \to B$ factors uniquely through the map $[\blank] : A \to A/R$ if
-  $f(x)=f(x')$ for all $x,x':A$ with $R(x,x')$.
+  $f(x) \eqto f(x')$ for all $x,x':A$ with $R(x,x')$.
   Indeed we get a map $\bar f : A/R \to B$ with
   $\bar f([x]) \jdeq f(x)$ for all $x:A$.
 \end{theorem}
 \begin{proof}
   For the first part we use \cref{lem:equiv-class-prop} applied to $P_x \defeq [x]$ and $x'$.
 
-  Now let $B$ be a set and let $f : A \to B$ a function satisfying $f(x)=f(x')$
+  Now let $B$ be a set and let $f : A \to B$ a function satisfying $f(x) \eqto f(x')$
   for all $x,x':A$ with $R(x,x')$.
 
   Uniqueness: If $g,h$ are extensions of $f$ through $[\blank]$, then
-  for any $z:A/R$, the type $g(z)=h(z)$ is a proposition since $B$ is
+  for any $z:A/R$, the type $g(z) \eqto h(z)$ is a proposition since $B$ is
   a set, so we may assume $z\jdeq [x]$ for some $x:A$. Then
-  $g([x]) = f(x) = h([x])$, as desired.
+  $g([x]) \eqto f(x) \eqto h([x])$, as desired.
 
   Existence: Let $z\jdeq(P,!):A/R$. To define the image of $z$ in $B$,
-  using the truth of the proposition $\exists_{x:A}(P = [x])$,
+  using the truth of the proposition $\exists_{x:A}(P \eqto [x])$,
   it suffices by \cref{thm:wconstant-elim}
-  to give a weakly constant map $\sum_{x:A}(P = [x]) \to B$,
+  to give a weakly constant map $\sum_{x:A}(P \eqto [x]) \to B$,
   and $f \circ \fst$ does the trick.
 
   Now we check the definitional equality: As an element of $A/R$,
   equivalence class $[x]$ is accompanied by the witness
-  $\trunc{(x, \refl{[x]})} : \exists_{y:A}([x] = [y])$.
+  $\trunc{(x, \refl{[x]})} : \exists_{y:A}([x] \eqto [y])$.
   By~\cref{thm:wconstant-elim}, this is mapped, by definition,
   to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
 \end{proof}
@@ -3156,16 +3166,16 @@ In the following proofs we frequently use \cref{xca:all-prop-image}.
 We can use set quotients to give an alternative definition
 of the set truncation $\Trunc{A}_0$ of a type $A$.
 Consider the relation $R : A \to A \to \Prop$ given by
-$R(x,y) \defeq \Trunc{x=y}$.
+$R(x,y) \defeq {x \eq y}$.
 This is easily seen to be an equivalence relation,
 using the groupoid structure of identity types.
 Hence we get a quotient set $A/R$ that satisfies
-$(\trunc{x}_0 = \trunc{y}_0) \equiv \Trunc{x=y}$,
+$(\trunc{x}_0 \eqto \trunc{y}_0) \equiv x=y$,
 where we write $\trunc{\blank}_0$ for the equivalence classes.
 Furthermore,~\cref{thm:quotient-property} implies that
 $A/R$ satisfies the recursion principle of~\cref{def:set-truncation}:
 If $S$ is a set, and $g:A\to S$ is any function,
-then $g(x)=g(y)$ holds whenever $\Trunc{x=y}$
+then $g(x) \eqto g(y)$ holds whenever ${x=y}$
 by the elimination principle
 of the propositional truncation,
 and hence we get a function $f : A/R \to S$ satisfying
@@ -3193,27 +3203,27 @@ proofs/constructions to the reader.
 \begin{definition}
 \label{def:orderonN}
 Let $n,m:\NN$. We say that $m$ is less than or equal to $n$, and write $m\leq n$,
-if there is a $k:\NN$ such that $k+m=n$. Such a $k$ is unique, and if it
+if there is a $k:\NN$ such that $k+m \eqto n$. Such a $k$ is unique, and if it
 is not $0$, we say that $m$ is less than $n$, denoted by $m<n$.
 Both $m\leq n$ and $m<n$ are propositions for all $n,m:\NN$.
 \end{definition}
 
 \begin{xca}\label{xca:try-your-luck-N}
 Try your luck in type theory proving any of the following.
-The successor function satisfies $(\Succ(n)=\Succ(m))\liff(n=m)$.
+The successor function satisfies $(\Succ(n) \eqto \Succ(m))\liff(n \eqto m)$.
 The functions $+$ and $\cdot$ are commutative and associative,
 $\cdot$ distributes over $+$.
 The relations $\leq$ and $<$ are transitive and
 preserved under $+$; $\leq$ also under $\cdot$.
-We have $(m\leq n) \liff ((m<n)\amalg(m=n))$ (so $\leq$ is reflexive).
-Furthermore, $((m\leq n)\times (n\leq m)) \liff (m=n)$,
+We have $(m\leq n) \liff ((m<n)\amalg(m \eqto n))$ (so $\leq$ is reflexive).
+Furthermore, $((m\leq n)\times (n\leq m)) \liff (m \eqto n)$,
 and $\neg ((m<n)\times(n<m))$ (so $<$ is irreflexive).
 \end{xca}
 
 We can prove the following lemma by double induction.
 
 \begin{lemma}\label{lem:dec-eq+order-N}
-The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
+The relations $ \eqto $, $\leq$ and $<$ on $\NN$ are decidable.
 \end{lemma}
 By Hedberg's \cref{thm:hedberg}, we get an alternate proof that $\NN$ is a set.
 
@@ -3249,7 +3259,7 @@ Given a function $d(n): P(n)\amalg\neg P(n)$ deciding $P(n)$ for each $n:\NN$,
 we define a function $\mu_P:\NN\to\NN$ which,
 given input $n$, searches for a $k<n$ such that $P(k)$.
 If such a $k$ exists, $\mu_P$ returns the least such $k$,
-otherwise $\mu_P(n)=n$.
+otherwise $\mu_P(n) \eqto n$.
 This is a standard procedure that we will call \emph{bounded search}.
 The function $\mu_P$ is defined by induction, setting
 $\mu_P(0)\defeq 0$ and
@@ -3266,26 +3276,26 @@ By induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 %((\mu_P(n)\leq n) \times (\mu_P(n)<n \to P(\mu_P(n)))).
 \mu_P(n)\leq n \quad\text{and}\quad \mu_P(n)<n \to P(\mu_P(n)).
 \]
-The base case $n=0$ is easy. For the induction step,
-review the computation of $\mu_P(\Succ(n))$. If $\mu_P(\Succ(n))=\mu_P(n)$
+The base case where $n \defeq 0$ is easy. For the induction step,
+review the computation of $\mu_P(\Succ(n))$. If $\mu_P(\Succ(n)) \eqto \mu_P(n)$
 since $\mu_P(n) < n$, then we are done by the induction hypothesis.
-Otherwise, either $\mu_P(\Succ(n))=n$ and $P(n)$, or $\mu_P(\Succ(n))=\Succ(n)$.
+Otherwise, either $\mu_P(\Succ(n)) \eqto n$ and $P(n)$, or $\mu_P(\Succ(n)) \eqto \Succ(n)$.
 In both cases we are done.
 
 Also by induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \[
 P(m) \to \mu_P(n)\leq m,~ \text{for all $m$ in $\NN$.}
 \]
-The base case $n=0$ holds since $\mu_P(0)=0$. For the induction step,
+The base case $n \defeq 0$ holds since $\mu_P(0) \eqto 0$. For the induction step,
 assume $P(m) \to \mu_P(n)\leq m$ for all $m$ (IH). Let $m:\NN$
 and assume $P(m)$. We have to prove $\mu_P(\Succ(n))\leq m$.
-If $\mu_P(\Succ(n))=\mu_P(n)$ we are done by IH. Otherwise we have
-$\mu_P(n)=n$ and $\mu_P(\Succ(n)) = \Succ(n)$ and $\neg P(n)$.
+If $\mu_P(\Succ(n)) \eqto \mu_P(n)$ we are done by IH. Otherwise we have
+$\mu_P(n) \eqto n$ and $\mu_P(\Succ(n)) \eqto \Succ(n)$ and $\neg P(n)$.
 Then $\mu_P(n)\leq m$ by IH, and $n\neq m$, so $\mu_P(\Succ(n))\leq m$.
 
 By contraposition we get from the previous result
 \[
-\mu_P(n)= n \to \neg P(m),~\text{for all $m<n$.}
+\mu_P(n) \eqto n \to \neg P(m),~\text{for all $m<n$.}
 \]
 
 Note that there may not be any $n$ such that $P(n)$;
@@ -3319,26 +3329,26 @@ this convention to good use in the proof of a form of the so-called
 
 \begin{lemma}\label{lem:PHP}
 For all $N:\NN$ and $f:\NN\to\NN$ such that $f(n)<N$
-for all $n<N+1$, there exist $m < n < N+1$ such that $f(n)=f(m)$.
+for all $n<N+1$, there exist $m < n < N+1$ such that $f(n) \eqto f(m)$.
 \end{lemma}
 \begin{proof}
-By induction on $N$. In the base case $N=0$ there is nothing to do.
+By induction on $N$. In the base case $N \eqto 0$ there is nothing to do.
 For the induction case $N+1$, assume the lemma proved for $N$
 (induction hypothesis, IH, for all $f$). Let $f$ be such
 that $f(n)<N+1$ for all $n<N+2$. The idea of the proof is
-to search for an $n<N+1$ such that $P(n)\defeq (f(n)=N)$,
+to search for an $n<N+1$ such that $P(n)\defeq (f(n) \eqto N)$,
 by computing $\mu_P(N+1)$ as in \cref{def:Nwellordered}.
-If $\mu_P(N+1)=N+1$, that is, $f(n)<N$ for all $n<N+1$,
+If $\mu_P(N+1) \eqto N+1$, that is, $f(n)<N$ for all $n<N+1$,
 then we are done by IH. Assume $\mu_P(N+1) < N+1$,
-so $f(\mu_P(N+1))=N$.
-If also $f(N+1)=N$ then we are done.
-If $f(N+1)<N$, then we define $g$ by $g(n)=f(N+1)$
-if $f(n)= N$, and $g(n)=f(n)$ otherwise.
+so $f(\mu_P(N+1)) \eqto N$.
+If also $f(N+1) \eqto N$ then we are done.
+If $f(N+1)<N$, then we define $g$ by $g(n) \eqto f(N+1)$
+if $f(n) \eqto N$, and $g(n) \eqto f(n)$ otherwise.
 Then IH applies to $g$, and we get $m < n < N+1$ with
-$g(n)=g(m)$. If $f(n)=f(m)$ we are of course done.
+$g(n) \eqto g(m)$. If $f(n) \eqto f(m)$ we are of course done.
 Otherwise, $f(n),f(m)$ cannot both be smaller than $N$,
-as $g(n)=g(m)$. In both remaining cases,
-$f(n)=g(n)=g(m)=f(N+1)$ and $f(N+1)=g(n)=g(m)=f(m)$,
+as $g(n) \eqto g(m)$. In both remaining cases,
+$f(n) \eqto g(n) \eqto g(m) \eqto f(N+1)$ and $f(N+1) \eqto g(n) \eqto g(m) \eqto f(m)$,
 we are done.
 \end{proof}
 
@@ -3352,14 +3362,14 @@ Another application of \cref{def:Nwellordered} is a
 short proof of Euclidean division.
 \begin{lemma}\label{lem:euclid-div}
   For all $n,m:\NN$ with $m>0$ there exist unique $q,r:\NN$
-  such that $r<m$ and $n=qm+r$.
+  such that $r<m$ and $n \eqto qm+r$.
 \end{lemma}
 \begin{proof}
 Define $P(k)\defeq (n\leq km)$. Since $m>0$ we have $P(n)$.
 Now set $k\defeq\mu_P(n)$ as in \cref{def:Nwellordered}.
-If $n=km$ and we set $q\defeq k$ and $r\defeq 0$.
+If $n \eqto km$ and we set $q\defeq k$ and $r\defeq 0$.
 If $n<km$, then $k>0$ and we set $q\defeq k-1$.
-By minimality we have $qm<n<km$ and hence $n=qm+r$ for some $r<m$.
+By minimality we have $qm<n<km$ and hence $n \eqto qm+r$ for some $r<m$.
 \end{proof}
 
 \section{The type of finite types}
@@ -3386,8 +3396,8 @@ We also define $\bn m \defeq F(m)$ for a natural number $m$, $\bn 0 \defeq F(0)$
 \hspace{1in}
   \begin{enumerate}
   \item Denote in full all elements of $\bn{0}$, $\bn{1} $, and $\bn{2}$.
-  \item Show (using univalence) that $\bn{1} =\true$, $\bn{2} =\bool$.
-  \item Show (using univalence) that $\bn{n} = \sum_{k:\NN} k<n$ for all $n:\NN$.
+  \item Show (using univalence) that $\bn{1} \eqto \true$, $\bn{2} \eqto \bool$.
+  \item Show (using univalence) that $\bn{n} \eqto \sum_{k:\NN} k<n$ for all $n:\NN$.
   \item Show that $m=n$ if $\bn{m}=\bn{n}$.\qedhere
   \end{enumerate}
 \end{xca}
@@ -3395,8 +3405,7 @@ We also define $\bn m \defeq F(m)$ for a natural number $m$, $\bn 0 \defeq F(0)$
   Given a type $X$, we define the proposition
   \[
     \textstyle
-    \isfinset(X) \defeq \Trunc*{\sum_{n:\NN}X=\bn{n}}
-    \jdeq \exists_{n:\NN}(X=\bn{n})
+    \isfinset(X) \defeq \exists_{n:\NN}(X \eqto \bn{n})
   \]
   to express that $X$ \emph{is a finite set}.\footnote{%
     When moving beyond sets, there are two different ways
@@ -3408,19 +3417,19 @@ We also define $\bn m \defeq F(m)$ for a natural number $m$, $\bn 0 \defeq F(0)$
 \begin{lemma}\label{lem:maxonefinitetype}
 \leavevmode
 \begin{enumerate}
-  \item $\sum_{n:\NN}\Trunc{X=\bn{n}}$ is a proposition, for all types $X$.
+  \item $\sum_{n:\NN} X=\bn{n}$ is a proposition, for all types $X$.
   \item
-$\sum_{X:\UU}\sum_{n:\NN}\Trunc{X=\bn{n}} =\sum_{X:\UU}\isfinset(X)$.
+  $\sum_{X:\UU}\sum_{n:\NN} {X=\bn{n}} \eqto \sum_{X:\UU}\isfinset(X).$
   \end{enumerate}
 \end{lemma}
 \begin{proof}
 
-(1) Assume $(n,p),(m,q): \sum_{n:\NN}\Trunc{X=\bn{n}}$.
-Then we have $\Trunc{\bn{n}=\bn{m}}$, so $\Trunc{n=m}$
+(1) Assume $(n,p),(m,q): \sum_{n:\NN}{X=\bn{n}}$.
+Then we have ${\bn{n}=\bn{m}}$, so ${n=m}$
 by \cref{xca:finite-types}. But $\NN$ is a set by \cref{thm:isset-inductive-types},
-so $\Trunc{n=m}=(n=m)$. It follows that $(n,p)=(m,q)$.
+so ${n=m} \eqto (n \eqto m)$. It follows that $(n,p) \eqto (m,q)$.
 
-(2) Follows from $\sum_{n:\NN}\Trunc{X=\bn{n}} =\Trunc{\sum_{n:\NN}X=\bn{n}}$,
+(2) Follows from $\sum_{n:\NN} {X=\bn{n}} =\Trunc{\sum_{n:\NN}X \eqto \bn{n}}$,
 which is easily proved by giving functions in both directions and using the univalence axiom.
 \end{proof}
 
@@ -3429,8 +3438,8 @@ If a set $S$ is in the same component in $\Set$\footnote{%
   Here it doesn't matter whether we say $\Set$ or $\UU$,
   since any finite set is a set.
   Hence we also have $\FinSet_n
-  \jdeq \Set_{(\bn{n})} = \FinSet_{(\bn{n})}
-  = \UU_{(\bn{n})}$.}
+  \jdeq \Set_{(\bn{n})} \eqto \FinSet_{(\bn{n})}
+ \eqto \UU_{(\bn{n})}$.}
 as $\bn{n}$ we say that \emph{$S$ has cardinality $n$} or that \emph{the cardinality of $S$ is $n$}.
 
 \begin{definition}\label{def:groupoidFin}
@@ -3440,14 +3449,14 @@ The \emph{groupoid of finite sets} is defined by
 \]
 For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
 \[
-  \FinSet_n\defequi \sum_{S:\Set}\Trunc{S=\bn{n}}.\qedhere
+  \FinSet_n\defequi \sum_{S:\Set}{S=\bn{n}}.\qedhere
 \]
 \end{definition}
-Observe that $\FinSet_0=\FinSet_1=\bn{1} $ and $\FinSet=\sum_{n:\NN}\FinSet_n$
+Observe that $\FinSet_0 \eqto \FinSet_1 \eqto \bn{1} $ and $\FinSet \eqto \sum_{n:\NN}\FinSet_n$
 by \cref{lem:maxonefinitetype}.
 
 Note that being a finite set implies being a set, and hence
-$\FinSet = \sum_{X:\UU}\isfinset(X)$.
+$\FinSet \eqto \sum_{X:\UU}\isfinset(X)$.
 Also, $\FinSet$ is the image of the map $F : \NN \to \UU$
 from~\cref{def:finiteset}, and is hence essentially $\UU$-small
 (for any universe $\UU$), by~\cref{pri:replacement}, \cref{P1}, and our assumption that $\UU_0$ is the smallest universe.
@@ -3469,9 +3478,9 @@ $e_a(b)\defeq ((a,b),\refl{a})$ is an equivalence,
 for all $a:A$.
 \end{lemma}
 \begin{proof}
-Note that $\fst(x,b)\jdeq x$ and that $a=x$ does
+Note that $\fst(x,b)\jdeq x$ and that $a \eqto x$ does
 not depend on $b$. Hence
-$\fst^{-1}(a) \equiv \sum_{x:A}  (B(x) \times (a=x))$
+$\fst^{-1}(a) \equiv \sum_{x:A}  (B(x) \times (a \eqto x))$
 via rearranging brackets.
 Applying \cref{cor:contract-away} leads indeed to
 the equivalence $e_a$.
@@ -3485,14 +3494,14 @@ $e(b)\defeq (f(b),b,\refl{f(b)})$ is an equivalence.
 \begin{proof}
 Define $e^{-1}: \sum_{a:A} f^{-1}(a) \to B$ by $e(a,b,p)\defeq b$.
 Then $e^{-1}(e(b))\jdeq b$ for all $b:B$.
-Let $a:A$, $b:B$ and $p: f(b)=a$.
+Let $a:A$, $b:B$ and $p: f(b) \eqto a$.
 Then $e(e^{-1}(a,b,p))\jdeq (f(b),b,\refl{f(b)})$.
-We have to prove $(f(b),b,\refl{f(b)})=(a,b,p)$.
+We have to prove $(f(b),b,\refl{f(b)}) \eqto (a,b,p)$.
 We use $p$ as identification of the first components,
 and $\refl{b}$ as identification of the second components
 (whose type is constant). For the third component
 we use that the transport of $\refl{f(b)}$ along $p$
-in the type family $(f(b)=\_)$ is indeed equal to $p$
+in the type family $(f(b) \eqto \_)$ is indeed equal to $p$
 itself by \cref{xca:trp-in-a/x=b/x}\ref{trp-in-a=x}.
 Now apply \cref{lem:weq-iso}.
 \end{proof}
@@ -3513,24 +3522,24 @@ $(\sum_{a:A}P(a), \fst)$.
 
 \begin{proof}
 We apply \cref{lem:weq-iso}, and verify the two conditions.
-Let $P:A\to\UU$. We have to prove that $P = \preim(\sum_{a:A}P(a), \fst)$.
+Let $P:A\to\UU$. We have to prove that $P \eqto \preim(\sum_{a:A}P(a), \fst)$.
 By function extensionality it suffices to prove
-$\preim(\sum_{a:A}P(a), \fst)(a)\jdeq \fst^{-1}(a) = P(a)$.
+$\preim(\sum_{a:A}P(a), \fst)(a)\jdeq \fst^{-1}(a) \eqto P(a)$.
 This follows directly from \cref{lem:fst-fiber(a)=B(a)} and the univalence axiom.
 
-Let $f: B\to A$. We have to prove that $(\sum_{a:A} f^{-1}(a), \fst)=(B,f)$.
+Let $f: B\to A$. We have to prove that $(\sum_{a:A} f^{-1}(a), \fst) \eqto (B,f)$.
 Using the univalence axiom, we get an identification
-$\etop{e} : \sum_{a:A} f^{-1}(a) = B$, where $e$ is the equivalence
+$\etop{e} : \sum_{a:A} f^{-1}(a) \eqto B$, where $e$ is the equivalence
 from \cref{lem:sum-of-fibers}. Using \cref{lem:isEq-pair=},
 it remains to give an element of the type $\pathover{\fst}{(\_)\to A}{\etop{e}}{f}$.
 
-As an auxiliary step we note that for any $p: X=Y$ and $g:X\to A$,
+As an auxiliary step we note that for any $p: X \eqto Y$ and $g:X\to A$,
 $h:Y\to A$, the type $\pathover{g}{(\_)\to A}{p}{h}$ of paths over $p$
-is equal to the type $g = h\circ{\ptoe{p}}$, since the two
+is equal to the type $g \eqto h\circ{\ptoe{p}}$, since the two
 types are definitionally equal for $p\jdeq\refl{X}$.
 Applying this here means that we must give an element of
-$\fst = f\circ{\ptoe{\etop{e}}}$. This in turn means that
-we must give an element of $\fst = f\circ e$,
+$\fst \eqto f\circ{\ptoe{\etop{e}}}$. This in turn means that
+we must give an element of $\fst \eqto f\circ e$,
 which follows by function extensionality from the definition
 of $e$ in \cref{lem:sum-of-fibers}.
 \end{proof}
@@ -3657,12 +3666,12 @@ and then its usual $(-1)$-image\index{image} as follows:%
   in a similar way and prove that
   the $n$-image factorization is unique.
   Since the unit type $\bn 1$ is the unique $(-2)$-type,
-  we have $\Trunc{X}_{-2} = \bn 1$ for any type $X$.}
+  we have $\Trunc{X}_{-2} \eqto \bn 1$ for any type $X$.}
 \[
-  B = \sum_{a:A} f^{-1}(a) \to
+  B \eqto \sum_{a:A} f^{-1}(a) \to
   \sum_{a:A} \Trunc{f^{-1}(a)}_0 \to
   \sum_{a:A} \Trunc{f^{-1}(a)}_{-1} \to
-  \sum_{a:A} \Trunc{f^{-1}(a)}_{-2} = A.
+  \sum_{a:A} \Trunc{f^{-1}(a)}_{-2} \eqto A.
 \]
 Here, the first map \emph{forgets pure higher structure},
 the second map \emph{forgets pure structure},
@@ -3710,7 +3719,7 @@ Recall the ($-1$-)image factorization and its uniqueness from~\cref{xca:unique-f
 The $0$-image factorization and its uniqueness play just as important a role,
 so we give a full proof.
 \begin{theorem}\label{thm:unique-fact-0image}
-  Show that the $0$-image of $f : A \to B$ induces a factorization $f = i\circ p$
+  Show that the $0$-image of $f : A \to B$ induces a factorization $f \eqto i\circ p$
   \[
     \begin{tikzcd}
       A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
