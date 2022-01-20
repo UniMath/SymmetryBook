@@ -3002,22 +3002,22 @@ Hence the pair $(k',p')$ is equal to the center.
 
 Recall from \cref{def:prop-image} the propositional image of a map $f : A \to B$,
   \[
-    \im(f) \jdeq \sum_{y:B}\exists_{x:A}(y = f\,x)
-           \jdeq \sum_{y:B}\Trunc{\sum_{x:A}(y = f\,x)}
+    \im(f) \jdeq \sum_{y:B}\exists_{x:A}(y \eqto f\,x)
+           \jdeq \sum_{y:B}\Trunc{\sum_{x:A}(y \eqto f\,x)}
            \jdeq \sum_{y:B}\Trunc{\inv f (y)}.
   \]
 In this subsection we will generalize the propositional image
 to higher images, replacing the propositional
 truncation involved in the definition by $n$-truncation.
 
-Recall furthermore the unique image factorization from \cref{xca:unique-fact-image}:
+Recall furthermore the image factorization from \cref{xca:unique-fact-image}:
   \[
     \begin{tikzcd}
       A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
       & \im(f)\ar[ur,"i"'] &
     \end{tikzcd}
   \]
-Here $p$ is surjective and $i$ is injective. Both surjectivity
+Here $p$ is surjective and $i$ is injective, and any such factorization is equivalent to this one. Both surjectivity
 (\cref{def:surjection}) and injectivity (\cref{def:injection})
 rely on the notion of proposition: all fibers of $p$ are nonempty
 and all fibers of $i$ are propositions.
@@ -3039,7 +3039,7 @@ the diagram on the right commutes.
     \end{tikzcd}
 \end{equation}
 
-The unique existence of an equivalence $e$ as above is called the
+The existence of a unique equivalence $e$ as above is called the
 \emph{universal property of the propositional image}.
 Uniqueness of $e$ above also follows from the following two exercises.
 
@@ -3069,12 +3069,11 @@ universal property of higher images can be proved.
 \end{definition}
 
 \begin{definition}\label{def:n-connected}
-  Let $A,B$ be types and let $f : A \to B$. The function $f$ is $n$-\emph{connected}
-  \index{function!$n$-connected}
-  if $\Trunc{\inv f (b)}_n$ is contractible, for each $b:B$.
-  A type is called $n$-\emph{connected}
-  \index{type!$n$-connected}
-  if the canonical map $A\to\bn{1}$ is $n$-connected.
+  A type $A$ is called $n$-\emph{connected}\index{type!$n$-connected}
+  if its truncation $\Trunc A _ n$ is contractible.
+
+  A function $f : A \to B$ is called $n$-\emph{connected}\index{function!$n$-connected}
+  if the fiber $\inv f (b)$ is $n$-connected, for each $b:B$.
 \end{definition}
 
 Thus, any type is $(-2)$-connected, since its $(-2)$-truncation is contractible.
@@ -3082,9 +3081,8 @@ Morover, the $(-1)$-connected types are precisely the non-empty ones,
 and the $0$-connected types are those we have called connected in \cref{def:connected}.
 
 \begin{definition}\label{def:n-truncated}
-  Let $A,B$ be types and let $f : A \to B$. The function $f$ is $n$-\emph{truncated}
-  \index{function!$n$-truncated}
-  if $\inv f (b)$ is an $n$-type, for each $b:B$.
+  A function $f : A \to B$ is called $n$-\emph{truncated}\index{function!$n$-truncated}
+  if the fiber $\inv f (b)$ is an $n$-type, for each $b:B$.
 \end{definition}
 
 Indeed, we have that $\im_{-1}(f) \jdeq \im(f)$. Moreover,
@@ -3092,10 +3090,12 @@ the $(-1)$-connected functions are precisely the surjections,
 and the $(-1)$-truncated functions are precisely the injections.
 
 %\begin{definition}\label{def:n-image-factorization}
- % Let $A,B$ be types and let $f : A \to B$. 
-  The $n$-image of $f$
-  induces a \emph{factorization} $f = i p$ with
-  $p(a)\defeq (f(a),\trunc{(a,\refl{f(a)})}_n)$ for all $a:A$, and $i\defeq\fst$.
+% Let $A,B$ be types and let $f : A \to B$.
+
+There is a \emph{factorization} $f = i p$ of a map $f : A \to B$ through its $n$-image,
+where $p$ is defined by setting $p(a)\defeq (f(a),\trunc{(a,\refl{f(a)})}_n)$,
+and where $i$ is defined by setting $i\defeq\fst$, as in the following diagram.
+
 \begin{equation}\label{eqn:n-image-factorization}
     \begin{tikzcd}
       A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
@@ -3103,8 +3103,9 @@ and the $(-1)$-truncated functions are precisely the injections.
     \end{tikzcd}
 \end{equation}
 %\end{definition}
-Clearly, $i$ is $n$-truncated. By \cref{lem:sum-of-fibers} and
-the following lemma, $p$ is $n$-connected.
+
+The map $i$ is $n$-truncated, because, for any $b:B$, the fiber $\inv i (b)$ is equivalent to $\Trunc{\inv f (b)}_n$.
+Furthermore, by \cref{lem:sum-of-fibers} and the following lemma, $p$ is $n$-connected.
 
 \begin{lemma}\label{lem:trunc-n-connected}
 For every type $A$, the constructor $\trunc{\blank}_n : A\to \Trunc{A}_n$
@@ -3114,7 +3115,7 @@ is $n$-connected.
 We have to prove that the $n$-truncation of each fiber of $\trunc{\blank}_n$
 is contractible. We start by defining a function 
 $c:\prod_{x:\Trunc{A}_n} \Trunc{\inv{\trunc{x}}_n}_n$ producing the centers.
-Since the co-domains of $c$ are $n$-types, we can define $c$ by
+Since the codomains\footnote{FIX: $c$ has only one codomain} of $c$ are $n$-types, we can define $c$ by
 elimination of $n$-truncation by setting 
 $c(\trunc{a}_n) \defeq \trunc{(a,\refl{\trunc{a}_n})}_n$.
 
