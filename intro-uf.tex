@@ -2246,14 +2246,42 @@ for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
 \]
 This is called \emph{the universal property of propositional truncation}.
 
-We are now ready to define logical disjunction and existence, by
-\[
-(P \vee Q) \defeq \Trunc{P \amalg Q} \quad\text{and}
-\quad\textstyle (\exists_{x:T} P(x)) \defeq \Trunc*{\sum_{x:T}P(x)}.
-\]
+\begin{definition}\label{def:non-empty}
+  Let $T$ be a type.
+  We call $T$ \emph{non-empty}
+  if we have an element of $\Trunc{T}$.\footnote{%
+    We may alternatively say that $T$ is \emph{inhabited},
+    in order to avoid confusion with the
+    concept of $T$ \emph{not being empty},
+    which would be represented by the proposition
+    $\neg(T \eqto \emptytype)$, which is equivalent to
+    $\neg\neg T$.}
+\end{definition}
 
-For example, using \cref{def:prop-trunc},
-from $x:\Trunc{T}$ we may deduce $\exists_{t:T} x \eqto \trunc{t}$.
+Now that propositionarl truncation is available, we are ready to define logical disjunction and existence.
+
+\begin{definition}
+  Given propositions $P$ and $Q$, define their \emph{disjunction} by  $(P \vee Q) \defeq \Trunc{P \amalg Q}$.
+  It expresses the property that $P$ is true or $Q$ is true.
+\end{definition}
+
+\begin{definition}
+  Given a type $X$ and a family $P(x)$ of propositions parametrized by a variable $x$ of type $X$,
+  define a proposition that encodes the property that there exists a member of the family for which
+  the property is true by $(\exists_{x:X} P(x)) \defeq \Trunc*{\sum_{x:X} P(x)}.$
+\end{definition}
+
+The following quantifier could have been defined much earlier, since it doesn't use propositional truncation.
+
+\begin{definition}
+  Given a type $X$ and a family $P(x)$ of propositions parametrized by a variable $x$ of type $X$,
+  define a proposition that encodes the property that there exists a \emph{unique} member of the family for which
+  the property is true by $(\exists!_{x:X} P(x)) \defeq \iscontr({\sum_{x:X} P(x)}).$
+\end{definition}
+
+\begin{xca}
+  Given $x:\Trunc{T}$, prove that $\exists_{t:T} x \eqto \trunc{t}$.
+\end{xca}
 
 \begin{xca}\label{xca:prop-set-trivia-1}
   Suppose $P$ is a proposition.  Produce an equivalence of type $P \equivto \Trunc P$.
@@ -2261,20 +2289,6 @@ from $x:\Trunc{T}$ we may deduce $\exists_{t:T} x \eqto \trunc{t}$.
 
 The exercise above us to pass easily between elements of type $P$ and elements of type
 $\Trunc P$ when $P$ is a proposition.
-
-We conclude this section with some important notions defined using truncation.
-
-\begin{definition}\label{def:non-empty}
-  Let $A$ be a type.
-  We call $A$ \emph{non-empty}
-  if we have an element of $\Trunc{A}$.\footnote{%
-    We may alternatively say that $A$ is \emph{inhabited},
-    in order to avoid confusion with the
-    concept of $A$ \emph{not being empty},
-    which would be represented by the proposition
-    $\neg(A \eqto \emptytype)$, which is equivalent to
-    $\neg\neg A$.}
-\end{definition}
 
 \begin{definition}
   Let $A$ be a type, and let $a$ and $b$ be elements of $A$.  We say that $a$ and $b$ are \emph{equal}\index{equal} and
