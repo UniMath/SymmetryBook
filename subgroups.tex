@@ -412,13 +412,13 @@ We use the pullback construction from \cref{def:pullback} to express the type of
 \end{construction}
 \begin{implementation}{con:im}
   For any integer $n\geq -1$ -- and in our case for $n=0$ -- on the level of types the factorization of a function $f\colon X\to Z$ as
-  $$\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),|x,\refl{f(x)}|)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z
+  $$\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),\trunc{(x,\refl{f(x)})}_n)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z
   }$$
   is unique in the sense that
   \begin{quote}
-    if $p:f\eqto{}qj$ where $q\colon X\to Y$ is so that for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible and $j\colon Y\to Z$ is so that for all $z:Z$ the fiber $j^{-1}(z)$ is $n$-truncated, then for each $z:Z$ the function $f^{-1}(z)\to j^{-1}(z)$ induced by ($p$ and) $q$ 
-  gives an equivalence\footnote{to see that the function is an equivalence notice that it can be obtained as follows: rewrite $f^{-1}(z)$ first as
-    $$\sum_{x:X}\sum_{y:Y}(z\eqto{}f(x))\times(y\eqto{}qx),$$ then as
+    if $p:f\eqto{}jq$ where $q\colon X\to Y$ is so that for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible and $j\colon Y\to Z$ is so that for all $z:Z$ the fiber $j^{-1}(z)$ is $n$-truncated, then for each $z:Z$ the function $f^{-1}(z)\to j^{-1}(z)$ induced by ($p$ and) $q$ 
+  gives an equivalence\footnote{To see that the function is an equivalence notice that it can be obtained as follows: rewrite $f^{-1}(z)$ first as
+    $$\sum_{x:X}\sum_{y:Y}(z\eqto{}f(x))\times(y\eqto{}q(x)),$$ then as
     $$\sum_{y:Y}\sum_{x:X}(z\eqto{}j(y))\times(y\eqto{}q(x))$$ and finally use that the $n$-truncation of
     $\sum_{x:X}y\eqto{}q(x)$ is contractible}
   \marginnote{
@@ -436,7 +436,16 @@ We use the pullback construction from \cref{def:pullback} to express the type of
   $p_q:y_0\eqto{}q(x_0)$,
   $p_j:z_0\eqto{}j(y_0)$ and
   $p_f:z_0\eqto{}f(x_0)$ with
-  $b:p_f\eqto{}a_{x_0}^{-1}j(p_q)p_j$, where $a:\prod_{x:X}f(x)\eqto{}j(q(x))$ witnesses that we have a factorization, then we point $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ in $(z_0,|x_0,p_f|)$ and note that the equivalence $\sum_{z:Z}\Trunc{f^{-1}(z)}_n\we Y$ is pointed via $p_q:y_0\eqto{}q(x_0)$ and
+  $b:p_f\eqto{}a_{x_0}^{-1}j(p_q)p_j$, 
+  where $a:\prod_{x:X}f(x)\eqto{}j(q(x))$ witnesses that we have a factorization, 
+  then we point $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ in $(z_0,\trunc{(x_0,p_f)}_n)$ 
+  \footnote{Is it already clear that with this choice of point the maps
+  $x\mapsto (f(x),\trunc{(x,\refl{f(x)})}_n)$ and $\fst$ indeed are pointed?
+  For the latter this is trivial and for the former the pointing path
+  is based on the pointing path for $f$ so that the factorization of $f$
+  also holds as pointed maps.}
+  and note that the equivalence $\sum_{z:Z}\Trunc{f^{-1}(z)}_n\we Y$ is 
+  pointed via $p_q:y_0\eqto{}q(x_0)$ and
   $$b:\xymatrix{
     z_0\ar@{=}[rr]_\to^{p_j}\ar@{=}[d]_{\refl{z_0}}&&j(y_0)\ar@{=}[d]_{j{p_q}}^\uparrow\\
     z_0\ar@{=}[r]^{p_f}_\to&f(x_0)\ar@{=}[r]_\to^{a_{x_0}}&j(q(x_0)).}$$
