@@ -1,4 +1,4 @@
-%% this chapter sets up the foundational system, which is Univalent Foundations
+  %% this chapter sets up the foundational system, which is Univalent Foundations
 \chapter{An introduction to univalent mathematics}
 \label{ch:univalent-mathematics}
 
@@ -2192,15 +2192,15 @@ for any $p, q: P$.
 
 As explained in \cref{sec:props-sets-grpds},
 the type formers $\to,\prod,\times$
-can be used for the logical operations of implication,
+can be used with types that are propositions for the logical operations of implication,
 universal quantification, and conjunction, respectively.
 Moreover, $\true$ and $\false$ can be used as truth values,
-and $\neg A$ can be used for negation.
+and $\neg$ can be used for negation.
 We have also seen that ${\amalg}$ and $\Sigma$ can lead to types
 that are not propositions, even though the constituents are
-propositions. This means we are still lacking $\vee$ and $\exists$
+propositions. This means we are still lacking disjunction ($P \vee Q$) and existence ($\exists_{x:X} P(x)$)
 from the standard repertoire of logic, as well as the notion of \emph{non-emptiness} of a type.
-In this section we explain how to implement those three notions.
+In this section we explain how to implement these three notions.
 
 To motivate the construction that follows, consider non-emptiness of a type $T$.  In order to be in a position to encode the mathematical
 assertion expressed by the English phrase ``$T$ is non-empty'', we will need a proposition $P$.  The proposition $P$ will have to be constructed
@@ -2216,23 +2216,23 @@ that enforces that all elements of a type become equal.
 
 \begin{definition}\label{def:prop-trunc}
 Let $T$ be a type. The \emph{propositional truncation} of $T$
-is a type  $\Trunc{T}$ defined by the following constructors:
+is the type  $\Trunc{T}$ defined by the following constructors:
 \begin{enumerate}
 \item an \emph{element} constructor $\trunc{t} : \Trunc{T}$ for all $t:T$;
-\item a constructor providing an identity of type $x \eqto y$  for all $x,y:\Trunc{T}$.
+\item an \emph{identification} constructor providing an identity of type $x \eqto y$  for all $x,y:\Trunc{T}$.
 \end{enumerate}
-The (unnamed) identification constructor ensures that $\Trunc{T}$ is a
+The identification constructor ensures that $\Trunc{T}$ is a
 proposition. The induction principle states that,
-for any family of propositions $P(x)$ defined for each $x:\Trunc{T}$,
+for any family of propositions $P(x)$ parametrized by a variable $x:\Trunc{T}$,
 in order to prove $\prod_{x:\Trunc{T}} P(x)$,
 it suffices to prove $\prod_{t:T} P(\trunc{t})$. In other
 words, in order to define a function $f:\prod_{x:\Trunc{T}} P(x)$,
 it suffices to give a function $g: \prod_{t:T} P(\trunc{t})$.
-Computationally, we get $f(\trunc{t})\jdeq g(t)$ for all $t:T$.
+Moreover, the function $f$ will satisfy $f(\trunc{t})\jdeq g(t)$ for all $t:T$.
 \end{definition}
 
-In the non-dependent case we get that
-any function $g: T\to P$ to a proposition $P$ yields a (unique) function $f:\Trunc{T}\to P$
+Consider the special case where the family $P(x)$ is constant.
+We see that any function $g: T\to P$ to a proposition $P$ yields a (unique) function $f:\Trunc{T}\to P$
 satisfying $f(\trunc{t})\jdeq g(t)$ for all $t:T$.\footnote{%
 Given $t, t' : T$, we have an identification of type $ \trunc t \eqto \trunc {t'} $.
 The existence of the function $g$ implies that we have an identification of type $ g(\trunc t) \eqto g(\trunc {t'}) $,
@@ -2240,9 +2240,9 @@ and hence an identification of type $f(t) \eqto f(t')$.  Thus a necessary condit
 the existence of identifications of type $f(t) \eqto f(t')$.  That justifies the
 the hypothesis that $P$ is proposition.}
 A useful consequence of this recursion principle is that,
-for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence
+for any proposition $P$, precomposition with $\trunc{\_}$ is an equivalence of type
 \[
-(\Trunc{T} \to P) \quad \to \quad (T \to P).
+(\Trunc{T} \to P) \quad \equivto \quad (T \to P).
 \]
 This is called \emph{the universal property of propositional truncation}.
 
@@ -2258,7 +2258,7 @@ This is called \emph{the universal property of propositional truncation}.
     $\neg\neg T$.}
 \end{definition}
 
-Now that propositionarl truncation is available, we are ready to define logical disjunction and existence.
+Now that propositional truncation is available, we are ready to define logical disjunction and existence.
 
 \begin{definition}
   Given propositions $P$ and $Q$, define their \emph{disjunction} by  $(P \vee Q) \defeq \Trunc{P \amalg Q}$.
@@ -2269,14 +2269,16 @@ Now that propositionarl truncation is available, we are ready to define logical 
   Given a type $X$ and a family $P(x)$ of propositions parametrized by a variable $x$ of type $X$,
   define a proposition that encodes the property that there exists a member of the family for which
   the property is true by $(\exists_{x:X} P(x)) \defeq \Trunc*{\sum_{x:X} P(x)}.$
+  It expresses the property that $P(x)$ is true for some $x:X$.
 \end{definition}
 
-The following quantifier could have been defined much earlier, since it doesn't use propositional truncation.
+The following logical quantifier could have been defined earlier, since it doesn't use propositional truncation.  We present
+it now, for completeness.
 
 \begin{definition}
   Given a type $X$ and a family $P(x)$ of propositions parametrized by a variable $x$ of type $X$,
   define a proposition that encodes the property that there exists a \emph{unique} member of the family for which
-  the property is true by $(\exists!_{x:X} P(x)) \defeq \iscontr({\sum_{x:X} P(x)})$.
+  the property is true by the proposition $(\exists!_{x:X} P(x)) \defeq \iscontr({\sum_{x:X} P(x)})$.
   (We will even permit ourselves to use this notation when $P(x)$ is a family of types that are not necessarily propositions.)
 \end{definition}
 
@@ -2309,12 +2311,12 @@ $\Trunc P$ when $P$ is a proposition.
   $a \eqto b$ and elements of type $a = b$, and we may even do so without giving explicit notice.
 \end{remark}
 
-(Good motivation for the form of the equal sign is provided by a remark made by Robert Recorde in 1557: ``to avoid the tedious repetition of
+(Good motivation for the form of the equal sign in the notation $a=b$ is provided by a remark made by Robert Recorde in 1557: ``to avoid the tedious repetition of
 these words \emph{is equal to}, I will substitute \dots a pair of parallels or twin lines of the same length, thus: $=$, because no two things
 can be more equal.''\footnote{\textfrak{
 And to auoide the tediouse repetition of these woordes: : is: equalle to : I will sette as: I doe often in woorke vse, a paire of paralleles:, or Gemowe lines: of one lengthe, thus: $\xymatrix{:\ar@{=}[r]&}$ , bicause noe .2. thynges:, can be moare equalle}}
 In fact, the remark of Recorde presages the approach described in this book, for although those two little lines are congruent,
-they were not considered to be equal traditionally, whereas they are considered to be equal in the presence of univalence,
+they were not considered to be equal traditionally, since they are in different places, whereas they may be considered to be equal in the presence of univalence,
 which converts congruences to identities.)
 %% Robert Recorde, The Whetstone of Witte (London, England: John Kyngstone, 1557), p. 236
 %% https://archive.org/stream/TheWhetstoneOfWitte#page/n237/mode/2up
@@ -2322,9 +2324,9 @@ which converts congruences to identities.)
 \begin{definition}\label{def:connected}
   Let $A$ be a type. If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A} x \eq a$
   is called the \emph{connected component} of $a$ in $A$.
-  We say that elements $x,y$ of $A$ are \emph{in the same component} of $A$ if $x = y$.
+  We say that elements $x,y$ of $A$ are \emph{in the same component} of $A$ if $x = y$, for then $A_{(x)} = A_{(y)}$.
   The type $A$ is called \emph{connected}\footnote{%
-    Below in \cref{def:set-truncation} we will
+    In \cref{def:set-truncation} below we will
     define the \emph{set of connected components} of a type.}
   if it is non-empty with
   all elements in the same component, that is, if
@@ -2360,7 +2362,7 @@ In the following definition we introduce the adverb \emph{merely}.
 
 \begin{definition}\label{def:merely}
   If \emph{A} is an English adjectival phrase encoded by a type $T$,
-  then \emph{merely A} is the English adjective encoded by the type $\Trunc T$.
+  then \emph{merely A} is the English adjectival phrase encoded by the type $\Trunc T$.
 \end{definition}
 
 For example, a type is non-empty if and only if it \emph{merely has an element}, and two elements of a connected type can be \emph{merely} identified.
