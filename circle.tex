@@ -2027,17 +2027,64 @@ In \cref{fig:cycle-decomposition} we depict the same permutation as in \cref{fig
 \end{marginfigure}
 It will be useful to have a more concise notation for permutations.
 The permutation $\sigma$ will be denoted $(1\;2\;3)(4\;5)$.
-In general, if $a_1,a_2,\dots,a_k$ are pairwise distinct elements of a set $A$ with decidable equality,
+The two groups of parentheses indicate the two cycles,
+and the order within a group indicates the cyclic order.
+Since the starting point in a cycle doesn't matter,
+we could also have written $(3\;1\;2)(5\;4)$.
+
+In general, if $a_1,a_2,\dots,a_k$ are pairwise distinct elements of a decidable set $A$,
 then we write $(a_1\;a_2\;\cdots\;a_k)$ for the permutation of $A$
-that maps $a_1$ to $a_2$, \ldots, $a_k1$ to $a_1$, and leaves any other elements untouched.
+that maps $a_1$ to $a_2$, \ldots, $a_k$ to $a_1$, and leaves any other elements untouched.
 Such a permutation is called a \emph{cyclic permutation} or, somewhat confusingly, a \emph{cycle}.
-If we say to specify the length, we call it a \emph{$k$-cycle}.
+If we want to specify the length, we call it a \emph{$k$-cycle}.
 A $2$-cycle is also called a \emph{transposition}.
-\begin{remark}
-  % cycle vs cycle
+
+\begin{remark}\label{rem:cycle-vs-cycle}
+  Any cycle $(X,t)$ in the sense of~\cref{def:Cyc} (\ie a cyclically ordered set)
+  gives rise to a permutation $t$ of $X$ consisting of a single cycle.
+  If $X$ is an $n$-element set and $x_0:X$,
+  then we can write this permutation in cycle notation
+  as $(x_0\;t(x_0)\;\cdots\;t^{n-1}(x_0))$.
+
+  Any permutation $t$ on a set $X$ corresponds via~\cref{thm:coveringsofS1perms}
+  to a \covering over $\Sc$, $p : A \to \Sc$.
+  Writing $A$ as a sum of its connected components,
+  we express this \covering as a sum of connected \coverings,
+  but these correspond to cycles by~\cref{thm:cycset-connS1cover}.
 \end{remark}
-% product of transpositions,
-% sign of permutation
+
+\begin{definition}\label{def:support-permutation}
+  Let $A$ be a set with a permutation $\sigma$.
+  If $\sigma(a)=a$, we say that $a$ is a \emph{fixed point} of $\sigma$.
+  If $\sigma(a)\ne a$, we say that $a$ is \emph{moved} by $\sigma$.
+  The \emph{support} of $\sigma$ is the subset of $A$
+  consisting of the elements that are moved by $\sigma$.
+\end{definition}
+Note that if $A$ is decidable, then we can decide whether an element is moved or is a fixed point.
+
+\begin{xca}
+  Let $A$ be a decidable set with two permutations $\sigma,\tau$.
+  Show that if $\sigma,\tau$ have disjoint supports,
+  then they \emph{commute} in the sense that $\sigma\tau=\tau\sigma$.\footnote{%
+    In particular, disjoint cycles commute, so when we express a permutation as a product of disjoint cycles, the order doesn't matter.}
+\end{xca}
+\begin{xca}\label{xca:perm-prod-transpositions}
+  Prove that a $k$-cycle permutation of a decidable set $A$ can be written
+  as a composition of $k-1$ transpositions by verifying the identity
+  \[
+    (a_1\; a_2\; \cdots\; a_k) = (a_1\; a_k)(a_1\;a_{k-1})\cdots(a_1\;a_2).
+    \qedhere
+  \]
+\end{xca}
+\begin{corollary}
+  Any permutation of a finite set can be expressed a composition of transpositions.
+\end{corollary}
+To show this, first write the permutation as a composition of cyclic permutations,
+then apply~\cref{xca:perm-prod-transpositions} to each cycle.\footnote{%
+  This representation is not unique, as for example $(1\;2)=(2\;3)(1\;3)(2\;3)$
+  as permutations of $\set{1,2,3}$.
+  Below, in~\cref{cor:sign-defined}, we'll show that the \emph{parity} (odd/even)
+  of the number of transitions is invariant, however.}
 
 \section{The \texorpdfstring{$m$\th}{mᵗʰ} root:
   \coverings over the components of $\Cyc$}

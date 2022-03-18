@@ -590,10 +590,14 @@ Some groups have the property that the order you perform the symmetries is immat
  Such cases are important enough to have their own name:
 \begin{definition}\label{def:abgp}
   A group $G$ is \emph{abelian} if all symmetries commute, in the sense that
-the proposition
-$$\mathbf{isAb}(G)\defequi\prod_{g,h: \USym G}gh=hg$$
-is true.  In other words, the type of abelian groups is
-$$\mathbf{Ab}\defequi \sum_{G:\typegroup}\mathbf{isAb}(G).$$
+  the proposition
+  \[
+    \isAb(G)\defequi\prod_{g,h: \UG}gh=hg
+  \]
+  is true.  In other words, the type of abelian groups is
+  \[
+    \AbGroup \defequi \sum_{G:\typegroup}\isAb(G).\qedhere
+  \]
 \end{definition}
 \begin{xca}\label{exer:first examples}
   Show that permutation group $\Sigma_2$ is abelian, but that $\Sigma_3$ is not.  Show that if $G$ and $H$ are abelian groups, then so is their product $G\times H$.
@@ -611,8 +615,11 @@ and saying that going from (upper left hand corner) $a$ to (lower right hand cor
   We will return to this point in \cref{sec:abelian-groups}.
 
   Alternatively, the reference to $\mathbf{isAb}$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} (it is the sum of $X$ and $Y$ where the base points are identified); \cref{xca:whatAREabeliangroups}
-  \marginnote{$$\xymatrix{\BG\vee\BG\ar[r]^{\text{fold}}\ar[d]_{\text{inclusion}}&\BG\\
-      \BG\times\BG\ar@{.>}[ur]}$$}
+  \marginnote{%
+    \begin{tikzcd}[ampersand replacement=\&]
+      \BG\vee\BG\ar[r,"\text{fold}"]\ar[d,"\text{inclusion}"'] \& \BG \\
+       \BG\times\BG\ar[ur,dashed]
+    \end{tikzcd}}
   offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $\BG\vee \BG\to \BG$ (both summands are mapped by the identity) factors over the inclusion $\BG\vee\BG\to\BG\times\BG$.
 \end{remark}
 \begin{xca}
@@ -942,31 +949,34 @@ we should first study how pointed maps affect loops:
 \end{implementation}
 
 \begin{definition}\label{def:USym-hom}
-  Given groups $G$ and $H$ and a homomorphism  $f$ from $G$ to, we define a function $\USym f : \USym G \to \USym H$
-  by setting $\USym f \defeq \loops \B f$.
+  Given groups $G$ and $H$ and a homomorphism  $f$ from $G$ to, we define a function $\USymf : \USymG \to \USymH$
+  by setting $\USymf \defeq \loops \Bf$.
   In other words, the homomorphism $\mkhom\Bf$
   induces $\loops\Bf$ as the map on underlying symmetries.
 \end{definition}
 
 \begin{lemma}
-  Given groups $G$ and $H$ and a homomorphism $f : \Hom(G,H)$, the function $\USym f : \USym X \to \USym Y$ defined above satisfies
+  Given groups $G$ and $H$ and a homomorphism $f : \Hom(G,H)$, the function $\USymf : \USymG \to \USymH$ defined above satisfies
   the following identities.
   \begin{align}
-    \label{gp-homo-unit} (\USym f) ( \refl {\pt_{\B G}} ) & = \refl{\pt_{\B H}}                                                       \\
-    \label{gp-homo-comp} (\USym f) (g ^ {-1})     & = ((\USym f) (g))^{-1}                 & \text {for any $g : \USym G$}            \\
-    \label{gp-homo-inv}  (\USym f) (g' \cdot g)   & =  (\USym f) (g') \cdot  (\USym f) (g) & \text {for any $g, g' : \USym G$}
+    \label{gp-homo-unit} (\USymf) ( \refl {\pt_{\BG}} )
+    &= \refl{\pt_{\BH}}                                                      \\
+    \label{gp-homo-comp} (\USymf) (g ^ {-1})
+    &= ((\USymf) (g))^{-1}                   & \text{for any $g : \USymG$} \\
+    \label{gp-homo-inv}  (\USymf) (g' \cdot g)
+    &=  (\USymf) (g') \cdot  (\USymf) (g) & \text{for any $g, g' : \USymG$}
   \end{align}
 \end{lemma}
 
 \begin{proof}
-  We write $f \jdeq (p,e)$, where $p : \B G \to \B H$ and $e : \pt_{\B H} = p (\pt_{\B G})$.
-  By induction on $e$, we reduce to the case where $\pt_{\B H} \jdeq p (\pt_{\B G}$.
+  We write $f \jdeq (p,e)$, where $p : \BG \to \BH$ and $e : \pt_{\BH} = p (\pt_{\BG})$.
+  By induction on $e$, we reduce to the case where $\pt_{\BH} \jdeq p (\pt_{\BG})$.
   We finish by applying \cref{homom-idens}.
 \end{proof}
 
 \begin{definition}\label{def:groupisomorphism}
   A homomorphism $f : G\to H$ is an \emph{isomorphism}\index{isomorphism!of groups} if its classifying map $\Bf$ is an equivalence.
-  We let $\Iso(G,G')$ be the subset of isomorphisms in $\Hom(G.G')$.
+  We let $\Iso(G,G')$ be the subset of isomorphisms in $\Hom(G, G')$.
 \end{definition}
 
 \begin{definition}\label{def:identity-group-homomorphism}
@@ -984,7 +994,7 @@ we should first study how pointed maps affect loops:
 \begin{definition}\label{def:group-homomorphism-composition}
   If $G$, $G'$, and $G''$ are groups, and $f : G\to G'$ and $f' : G'\to G''$ are homomorphisms, then we use
   the definition of composition of pointed functions in \cref{def:pointedtypes} to define the \emph{composite homomorphism}
-  $f' \circ f : G \to G''$ by setting $f' \circ f \defeq \mkhom (\B f' \circ \B f)$.
+  $f' \circ f : G \to G''$ by setting $f' \circ f \defeq \mkhom (\Bf' \circ \Bf)$.
 \end{definition}
 
 Recall from \cref{sec:pointedtypes},
@@ -1028,7 +1038,7 @@ that when there is little danger of confusion, we may drop the subscript
     $\Sigma_S\to\Sigma_{S\times T}$, pointed by the path
     $\refl {S\times T}: {S\times T} = (\blank \times T)(S)$.
 
-In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\Sigma_{mn}$. \footnote{find a good description of the sign $\Sigma_n\to\Sigma_2$}
+In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\Sigma_{mn}$.
 \item Let $G$ be a group.  Since there is a unique map from $\BG$ to
   $\bn{1} $ (obviously pointed by the reflexivity path of the unique
   element of $\bn 1$), we get a unique homomorphism from $G$ to the
@@ -1037,7 +1047,7 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   $\shape_G$, and pointed by $\refl {\shape_G}$.
 \item If $G$ and $H$ are groups, the projections $\BG\gets \BG\times \BH\to \BH$ and inclusions $\BG\to\BG\times\BH\gets\BH$ \marginnote{the ``projections'' $G\gets G\times H\to H$ and ``inclusions'' $G\to G\times H\gets H$ are homomorphisms}
   (\eg the inclusion $\BG\to\BG\times\BH$ is given by $z\mapsto(z,\shape_H)$) give rise to group homomorphisms between $G\times H$ and $G$ and $H$.
-\item In \cref{lem:CmisisotoZ/m} we gave an example of an isomorphism, namely one from the cyclic group $C_m$ to $\ZZ/m$.
+\item In \cref{lem:CmisisotoZ/m} we gave an example of an isomorphism, namely one from the cyclic group $\CG_m$ to $\ZZ/m$.\qedhere
   \end{enumerate}
 \end{example}
 
@@ -1181,8 +1191,6 @@ Transport along $J$ of $p_f:\shape_H=\Bf_\div(\shape_G)$ shows that in
   \end{displaymath}
   This concludes the proof that $f=f'$ is a proposition, or in other
   words that $\Hom(G,H)$ is a set.
-
-% We want to show that $f=f'$ is a proposition.  If $(J,!)$ and $(J',!)$ are elements in $\sum_{J:\Bf_\div=\Bf'_\div}J(\shape_G)\,p_f=p_{f'}$, then $!:J(\shape_G)=p_{f'}p_f^{-1}=J'(\shape_G)$.  Since $J(z)=J'(z)$ is a proposition for each $z:\BG$ it suffices to display a map $(\shape_G=z)\to(J(z)=J'(z))$.
 \end{example}
 
 The following example expresses that $\ZZ$ is a ``free group with one generator''.
@@ -1215,8 +1223,8 @@ Then the following diagram commutes,
 \[
   \begin{tikzcd}
     \Hom(\ZZ,G) \arrow[r, eqr, "\ev"] \arrow[d, "f\circ{\blank}"'] &
-    \USym G \arrow[d, "\USym f"]\\
-    \Hom(\ZZ,H) \arrow[r, eqr, "\ev"] & \USym H,
+    \USymG \arrow[d, "\USymf"]\\
+    \Hom(\ZZ,H) \arrow[r, eqr, "\ev"] & \USymH,
   \end{tikzcd}
 \]
 where the horizontal maps evaluate
@@ -1225,12 +1233,12 @@ $\Sloop : \USym\ZZ$.
 \end{lemma}
 
 \begin{proof}
-  Let $k:\Hom(\ZZ,G)$, giving $\USym k : \USym\ZZ \to \USym G$.
+  Let $k:\Hom(\ZZ,G)$, giving $\USymk : \USym\ZZ \to \USymG$.
   Going across horizontally and then down,
-  $k$ is mapped first to $\USym k(\Sloop)$,
-  and then to $\USym f(\USym k(\Sloop))$.
+  $k$ is mapped first to $\USymk(\Sloop)$,
+  and then to $\USymf(\USymk(\Sloop))$.
   Going the other way takes $k$ to $\USym(f\circ k)(\Sloop)$,
-  which is equal to $\USym f(\USym k(\Sloop))$
+  which is equal to $\USymf(\USymk(\Sloop))$
   by \cref{cor:USym-compose}.
 \end{proof}
 
@@ -1263,43 +1271,51 @@ as we record in the following remark.
   $f:G\to H$.  We now define something that we will later call an
   ``abstract group homomorphism
   ${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from
-  $\USym G$ to $\USym H$ ``preserving'' the abstract group
+  $\USymG$ to $\USymH$ ``preserving'' the abstract group
   structure, cf.\ \cref{def:abstrG} for the definition of $\abstr(G)$
   and \cref{def:abstrisfunctor} for a condensation of what the
   discussion below end up with concluding that ``preserves'' means.
 
   Recall that such an $f:\Hom(G,H)$ is recorded as a pair
   \begin{displaymath}
-    (\Bf_\div,p_f):\sum_{F:\BG_\div\to \BH_\div}(\shape_H=F(\shape_G)),
+    (\Bf_\div,p_f):\sum_{F:\BG_\div\to \BH_\div}(\shape_H\eqto F(\shape_G)),
   \end{displaymath}
   and recall the function
   \begin{displaymath}
-    \US f : \USym G \to \USym H
+    \USymf : \USymG \to \USymH
   \end{displaymath}
   defined in \cref{def:USym-hom}.
 
   We take the time to develop from first principles the properties
-  that $\US f$ satisfies.
+  that $\USymf$ satisfies.
   One proves easily (by induction) that
   $\trp {\inv{p_f}} = \inv{p_f} \cdot \blank \cdot p_f$. It means that
   the element $\US f(g)$ is the ``up, over and down'' identity of
   $\shape_H$ depicted in the following diagram:
-  \begin{displaymath}
-    \xymatrix{%
-      \Bf_\div(\shape_G)\ar@{=}[r]^{\ap{\Bf_\div}(g)}_\to \ar@{=}[d]^\uparrow_{p_f} &
-      \Bf_\div(\shape_G)\ar@{=}[d]^\uparrow_{p_f}
-      \\
-      \shape_H\ar@{:}[r]^{\US f(g)}_\to & \shape_H.%
-    }
-  \end{displaymath}
-With the shorthand $$e_G\defequi\refl{\shape_G}:\USym G$$ and writing (to remind us where things happen)
-$$g\cdot_Gg':\USym G$$
- for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture
-$\xymatrix{\shape_G\ar@{=}[r]^{g'}_\to&\shape_G\ar@{=}[r]^{g}_\to&\shape_G}$)
-and likewise with a subscript $H$, we have the following statements.
+  \[
+    \begin{tikzcd}
+      \Bf_\div(\shape_G)\ar[r,eqtor,"\ap{\Bf_\div}(g)"] &
+      \Bf_\div(\shape_G) \\
+      \shape_H\ar[r,dashed,"\USymf(g)",eqtor]\ar[u,eqtor,"p_f"] &
+      \shape_H\ar[u,eqtor,"p_f"].
+    \end{tikzcd}
+  \]
+  With the shorthand
+  \[
+    e_G\defequi\refl{\shape_G}:\USymG
+  \]
+  and writing (to remind us where things happen)
+  \[
+    g\cdot_Gg':\USymG
+  \]
+  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture
+  $\begin{tikzcd}[cramped,sep=small]
+    \shape_G\ar[r,eqtor,"g'"] & \shape_G\ar[r,eqtor,"g"] & \shape_G
+  \end{tikzcd}$)
+  and likewise with a subscript $H$, we have the following statements:
   \begin{enumerate}
-  \item the proposition $\US f(e_G)= e_H$ holds by \cref{gp-homo-unit}
-  \item the proposition $\US f(g \cdot_G g')=\US f(g)\cdot_H\US f(g')$ holds by \cref{gp-homo-comp}
+  \item the proposition $\USymf(e_G)= e_H$ holds by \cref{gp-homo-unit};
+  \item the proposition $\USymf(g \cdot_G g')=\USymf(g)\cdot_H\USymf(g')$ holds by \cref{gp-homo-comp}.\qedhere
   \end{enumerate}
 \end{remark}
 
@@ -1354,7 +1370,218 @@ Prove that composition of the functions on the underlying sets gives a compositi
 $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)}$.
 \end{xca}
 
+\section{The sign homomorphism}
+\label{sec:sign-homomorphism}
 
+In this section we're going to define the very important
+\emph{sign homomorphism} $\sgn : \SG_n \to \SG_2$, defined for $n \ge 2$.
+To do this, we need to assign to every $n$-element set $A$ a $2$-element $\Bsgn(A)$.
+\begin{marginfigure}
+  \tikzset{->-/.style={
+      decoration={
+        markings,
+        mark=at position .66 with {\arrow[line width=1.18pt]{>}}},postaction={decorate}}}
+  \begin{tikzpicture}
+    \def\myzero{0}
+    \foreach \i in {0,1}
+    \foreach \j in {0,1}
+    \foreach \k in {0,1} {
+      \pgfmathtruncatemacro{\x}{\j}
+      \pgfmathtruncatemacro{\y}{mod(3 * \i + 2 * \j + 2 * \k,4)}
+      \begin{scope}[xshift=50*\x,yshift=-40*\y]
+        \node[dot] (n1\i\j\k) at (90:.5) {};
+        \node[dot] (n2\i\j\k) at (210:.5) {};
+        \node[dot] (n3\i\j\k) at (330:.5) {};
+        \ifx\i\myzero
+        \draw[->-] (n1\i\j\k)--(n2\i\j\k);
+        \else
+        \draw[->-] (n2\i\j\k)--(n1\i\j\k);
+        \fi
+        \ifx\j\myzero
+        \draw[->-] (n2\i\j\k)--(n3\i\j\k);
+        \else
+        \draw[->-] (n3\i\j\k)--(n2\i\j\k);
+        \fi
+        \ifx\k\myzero
+        \draw[->-] (n3\i\j\k)--(n1\i\j\k);
+        \else
+        \draw[->-] (n1\i\j\k)--(n3\i\j\k);
+        \fi
+      \end{scope}
+    }
+    \draw[dashed] (-.6,-2)--(2.4,-2);
+  \end{tikzpicture}
+  \caption{The two equivalence classes of directions of the complete graph
+    on a $3$-element set.}
+  \label{fig:sign-orderings-3}
+\end{marginfigure}
+
+We get this $2$-element set as quotient of the set of all possible ways of ordering two different elements of $A$, where two different such
+choices are deemed the same if they differ in an \emph{even} number of pairs.
+A way of ordering all possible $2$-element subsets of $A$ is equivalently
+a way of directing the complete graph on $A$.
+\Cref{fig:sign-orderings-3} shows all $8$ ways of directing the complete graph on $3$ elements divided into the $2$ resulting equivalence classes.
+
+To see that this really defines an equivalence relation, it helps to generalize a bit.
+Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-element sets parametrized by $E$.
+\begin{definition}
+  The parity relation $\sim$ on $\prod_{e:E}P(e)$ relates functions that disagree in an even number of points. That is, $f\sim g$ holds if and only if the
+  subset $\setof{e:E}{f(e) \ne g(e)}$ has an even number of elements.\footnote{%
+    This makes sense because any $2$-element set is decidable,
+    and a subset of a finite set specified by a decidable predicate
+    is itself a finite set.
+    Note also that the parity relation is itself decidable.}
+\end{definition}
+\begin{lemma}
+  The parity relation $\sim$ is an equivalence relation on the set $\prod_{e:E}P(e)$,
+  and the quotient is a $2$-element set.
+\end{lemma}
+\begin{proof}
+  The $\sim$ relation is clearly symmetric, and it is reflexive, since the empty set
+  has an even number of elements.
+  To show transitivity, let $f_1,f_2,f_3:\prod_{e:E}P(e)$.
+  We can partition $E$ according to whether the $f_i$ agree or disagree:
+  \[
+    E_{ij} \defeq \setof{e:E}{f_i(e) = f_j(e)}, \quad
+    F_{ij} \defeq \setof{e:E}{f_i(e) \ne f_j(e)}.
+  \]
+  By transitivity of equality, $E_{ij} \cap E_{jk} \subseteq E_{ik}$, for all $i,j,k$.
+  Hence, the Venn diagram of these sets has the simplified form shown in the margin,\marginnote{%
+    \begin{tikzpicture}
+      \draw (330:.57735) arc(0:120:1);
+      \draw (330:.57735) arc(-60:-180:1);
+      \draw (90:.57735) arc(120:240:1);
+      \draw (90:.57735) arc(60:-60:1);
+      \draw (210:.57735) arc(180:60:1);
+      \draw (210:.57735) arc(-120:0:1);
+      \node at (0,0) {$D$};
+      \node at (30:.75) {$E'_{13}$};
+      \node at (150:.75) {$E'_{12}$};
+      \node at (-90:.75) {$E'_{23}$};
+      \node at (30:1.5) {$E_{13}$};
+      \node at (150:1.5) {$E_{12}$};
+      \node at (-90:1.5) {$E_{23}$};
+    \end{tikzpicture}}
+  where we set
+  \[
+    D \defeq \setof{e:E}{f_1(e)=f_2(e)=f_3(e)}, \quad
+    E_{ij}' \defeq E_{ij} \setminus D.
+  \]
+  Here we also use that $E_{12} \cup E_{23} \cup E_{13} = E$ (as subsets of $E$),
+  since of the three function values at any $e$ in $E$, two must agree.
+
+  We now find $F_{12} = E'_{13} \cup E'_{23}$ (disjoint union), and similarly for $F_{13}$ and $F_{23}$.
+  Taking cardinalities, we get
+  \[
+    \Card(F_{12})+\Card(F_{13})+\Card(F_{23})
+    =2\bigl(\Card(E'_{12})+\Card(E'_{13})+\Card(E'_{23})\bigr),
+  \]
+  so if two of the $F_{ij}$'s have an even number of elements,
+  then so does the third.
+
+  Finally, to show the proposition that the quotient is a $2$-element set,
+  we may assume that $E$ is the $n$-element set $\set{1,\dots,n}$ (since $n>0$),
+  and (by induction on $n$) that each set $P(e)$ is $\set{\pm 1}$
+  (our favorite $2$-element set for the moment).
+  Then any function is equivalent to either the all $+1$-function
+  or the function that is $-1$ at $1$ and $+1$ otherwise,
+  according to how many times it takes the value $-1$.
+\end{proof}
+
+\begin{remark}
+  The groupoid $E \to \BSG_2$ is connected whenever $E$ is a finite set,
+  and we can make it pointed by taking the constant map to $\sh_{\SG_2}$ as base point.
+  We denote the corresponding group by
+  $\SG_2^E \defeq \mkgroup(E \to \BSG_2,\cst{\sh_{\SG_2}})$;
+  it is an $E$-fold product of the group $\SG_2$.
+  Our construction $P \mapsto \bigl(\prod_{e:E}P(e)\bigr)/\sim$,
+  for $E$ nonempty,
+  defines a map $(E \to \BSG_2) \to \BSG_2$,
+  which can be pointed by the identification indicated in the proof above,
+  and thus defines a homomorphism $\mu_E : \Hom(\SG_2^E,\SG_2)$.
+  We also have this homomorphism when $E$ is empty,
+  since then $\BSG_2^E$ is contractible, so $\SG_2^E$ is the trivial group.
+\end{remark}
+
+\begin{xca}
+  Show that the set of elements of $\SG_2^E$ can be identified with $\set{\pm1}^E$,
+  and under this identification, $\USym\mu_E$ maps a function $s : E \to \set{\pm1}$
+  to the product of its values.
+\end{xca}
+
+\begin{definition}\label{def:sgn}
+  The \emph{sign homomorphism} $\sgn : \Hom(\SG_n,\SG_2)$%
+  \glossary(sgn){$\protect\sgn$}{sign homomorphism, \cref{def:sgn}}
+  is defined via the pointed map $\Bsgn : \BSG_n \ptdto \BSG_2$,
+  where $\Bsgn(A) \defeq \B\mu_{E(A)}(P)$, where $E(A)$ is the set of $2$-element subsets of $A$,
+  and $P : E(A) \to \BSG_2$ maps a $2$-element subset to the underlying $2$-element set.
+  We make $\Bsgn$ pointed using the total ordering on the standard $n$-element set,
+  $\sh_{\SG_n}$ to identify each $2$-element subset with the standard $2$-element set,
+  and using the pointedness of $\B\mu$.
+\end{definition}
+Something interesting happens when we consider permutations on other shapes in $\BSG_n$,
+\ie arbitrary $n$-element sets $A$.
+The same map, $\Bsgn$, can be considered as a map $\BAut(A) \to \BSG_2$,
+but we can cannot make this pointed uniformly in $A$.\footnote{%
+  Why not? A construction $p : \prod_{A:\BSG_n}(\Bsgn(A) \eqto \sh_{\SG_2})$
+  would amount to an identification of $\Bsgn$ with the constant map.}
+However, the self-identifications of a $2$-element set $T$, $(T \eqto T)$,
+\emph{can} be identified with $\set{\pm1}$,\footnote{%
+  In this section, we identify $\USG_2$ with the set $\set{\pm1}$,
+  which has a compatible abstract group structure given by multiplication.}
+according to whether it transposes the elements of the $T$, or not.
+Hence, we can define the sign of any permutation of a finite set:
+\begin{definition}\label{def:sgn-permutation}
+  Let $A$ be a finite set, and let $\sigma$ be a permutation of $A$.
+  If the cardinality of $A$ is $0$ or $1$,
+  then the \emph{sign}\index{sign} of $\sigma$ is $+1$.
+  Otherwise, the \emph{sign} of $\sigma$ is $\pm1$ according to whether
+  $\Bsgn(\sigma)$ swaps the elements of the $2$-element set $\Bsgn(A)$, or not.
+
+  We write $\sgn(\sigma):\set{\pm1}$ for the sign of $\sigma$.
+\end{definition}
+For permutations of the standard $n$-element set,
+this is the same as the value $\Usgn(\sigma) : \USG_2$.
+Note that $\sgn$ defines an abstract homomorphism from $\Aut(A)$ to $\SG_2$
+for each $A$, since it does so for $A \jdeq \sh_{\SG_n}$.
+Hence we in fact have homomorphisms $\sgn : \Hom(\Aut(A),\SG_2)$ for all finite sets $A$.
+
+\begin{lemma}\label{lem:sign-properties}
+  \begin{enumerate}
+  \item\label{it:sign-transposition}
+    The sign of a transposition is $-1$.
+  \item\label{it:sign-cycle}
+    The sign of a $k$-cycle is $(-1)^{k-1}$.
+  \item\label{it:identity-even}
+    The identity permutation can only be expressed as a product
+    of an even number of transpositions.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  For \ref{it:sign-transposition},
+  it suffices to consider the transposition $(1\;2)$ of the standard $n$-element set
+  $\set{1,2,\dots,n}$.
+  Relative to the standard local ordering ($1<2,1<3,\dots,n-1<n$),
+  the transposition only changes the ordering $1<2$ to $2<1$,
+  thus differing at exactly one place.
+
+  \ref{it:sign-cycle} now follows via~\cref{xca:perm-prod-transpositions}.
+
+  For \ref{it:identity-even}, assume $\id_A = (a_1\;b_1)\cdots(a_k\;b_k)$,
+  and take the sign of both sides. Since $\sgn$ is a homomorphism,
+  we get $+1 = (-1)^k$, so $k$ is even.
+\end{proof}
+
+\begin{corollary}\label{cor:sign-defined}
+  If a permutation $\sigma$ is expressed as a product of transpositions in two ways,
+  \[
+    \sigma = (a_1\;b_1)\cdots(a_m\;b_m)
+    = (c_1\;d_1)\cdots(c_n\;d_n),
+  \]
+  then the parity of $m$ equals that of $n$,
+  and we have $\sgn(\sigma)=(-1)^m=(-1)^n$.
+\end{corollary}
 
 \section{\texorpdfstring{\inftygps}{∞-groups}}
 \label{sec:inftygps}
