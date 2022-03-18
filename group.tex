@@ -1425,11 +1425,12 @@ a way of directing the complete graph on $A$.
 To see that this really defines an equivalence relation, it helps to generalize a bit.
 Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-element sets parametrized by $E$.
 \begin{definition}
-  The parity relation $\sim$ on $\prod_{e:E}P(e)$ relates functions that disagree in an even number of points. That $f~g$ holds if and only the
+  The parity relation $\sim$ on $\prod_{e:E}P(e)$ relates functions that disagree in an even number of points. That is, $f\sim g$ holds if and only if the
   subset $\setof{e:E}{f(e) \ne g(e)}$ has an even number of elements.\footnote{%
     This makes sense because any $2$-element set is decidable,
     and a subset of a finite set specified by a decidable predicate
-    is itself a finite set.}
+    is itself a finite set.
+    Note also that the parity relation is itself decidable.}
 \end{definition}
 \begin{lemma}
   The parity relation $\sim$ is an equivalence relation on the set $\prod_{e:E}P(e)$,
@@ -1445,7 +1446,7 @@ Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $
     F_{ij} \defeq \setof{e:E}{f_i(e) \ne f_j(e)}.
   \]
   By transitivity of equality, $E_{ij} \cap E_{jk} \subseteq E_{ik}$, for all $i,j,k$.
-  Hence, the Venn diagram of these sets have the simplified form shown in the margin,\marginnote{%
+  Hence, the Venn diagram of these sets has the simplified form shown in the margin,\marginnote{%
     \begin{tikzpicture}
       \draw (330:.57735) arc(0:120:1);
       \draw (330:.57735) arc(-60:-180:1);
@@ -1509,36 +1510,67 @@ Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $
 \end{xca}
 
 \begin{definition}\label{def:sgn}
-  The \emph{sign homomorphism} $\sgn : \Hom(\SG_n,\SG_2)$ is defined
-  via the pointed map $\Bsgn : \BSG_n \ptdto \BSG_2$,
+  The \emph{sign homomorphism} $\sgn : \Hom(\SG_n,\SG_2)$%
+  \glossary(sgn){$\protect\sgn$}{sign homomorphism, \cref{def:sgn}}
+  is defined via the pointed map $\Bsgn : \BSG_n \ptdto \BSG_2$,
   where $\Bsgn(A) \defeq \B\mu_{E(A)}(P)$, where $E(A)$ is the set of $2$-element subsets of $A$,
   and $P : E(A) \to \BSG_2$ maps a $2$-element subset to the underlying $2$-element set.
   We make $\Bsgn$ pointed using the total ordering on the standard $n$-element set,
   $\sh_{\SG_n}$ to identify each $2$-element subset with the standard $2$-element set,
   and using the pointedness of $\B\mu$.
-
-  The \emph{sign} of a permutation $\sigma : \USG_n$ is the value
-  $\Usgn(\sigma) : \USG_2$.
 \end{definition}
+Something interesting happens when we consider permutations on other shapes in $\BSG_n$,
+\ie arbitrary $n$-element sets $A$.
+The same map, $\Bsgn$, can be considered as a map $\BAut(A) \to \BSG_2$,
+but we can cannot make this pointed uniformly in $A$.\footnote{%
+  Why not? A construction $p : \prod_{A:\BSG_n}(\Bsgn(A) \eqto \sh_{\SG_2})$
+  would amount to an identification of $\Bsgn$ with the constant map.}
+However, the self-identifications of a $2$-element set $T$, $(T \eqto T)$,
+\emph{can} be identified with $\set{\pm1}$,\footnote{%
+  In this section, we identify $\USG_2$ with the set $\set{\pm1}$,
+  which has a compatible abstract group structure given by multiplication.}
+according to whether it transposes the elements of the $T$, or not.
+Hence, we can define the sign of any permutation of a finite set:
+\begin{definition}\label{def:sgn-permutation}
+  Let $A$ be a finite set, and let $\sigma$ be a permutation of $A$.
+  If the cardinality of $A$ is $0$ or $1$,
+  then the \emph{sign}\index{sign} of $\sigma$ is $+1$.
+  Otherwise, the \emph{sign} of $\sigma$ is $\pm1$ according to whether
+  $\Bsgn(\sigma)$ swaps the elements of the $2$-element set $\Bsgn(A)$, or not.
 
-In this section, we identify $\USG_2$ with the set $\set{\pm1}$,
-which has a compatible abstract group structure given by multiplication.
+  We write $\sgn(\sigma):\set{\pm1}$ for the sign of $\sigma$.
+\end{definition}
+For permutations of the standard $n$-element set,
+this is the same as the value $\Usgn(\sigma) : \USG_2$.
+Note that $\sgn$ defines an abstract homomorphism from $\Aut(A)$ to $\SG_2$
+for each $A$, since it does so for $A \jdeq \sh_{\SG_n}$.
+Hence we in fact have homomorphisms $\sgn : \Hom(\Aut(A),\SG_2)$ for all finite sets $A$.
 
 \begin{lemma}\label{lem:sign-properties}
   \begin{enumerate}
-  \item The sign of a transposition is $-1$.
-  \item The sign of a $k$-cycle is $(-1)^{k-1}$.
-  \item The identity permutation can only be expressed as a product
+  \item\label{it:sign-transposition}
+    The sign of a transposition is $-1$.
+  \item\label{it:sign-cycle}
+    The sign of a $k$-cycle is $(-1)^{k-1}$.
+  \item\label{it:identity-even}
+    The identity permutation can only be expressed as a product
     of an even number of transpositions.
   \end{enumerate}
 \end{lemma}
+
 \begin{proof}
-  We only need to prove the first part, as the others follow directly.
-  It suffices to consider the transposition $(1\;2)$ of the standard $n$-element set
+  For \ref{it:sign-transposition},
+  it suffices to consider the transposition $(1\;2)$ of the standard $n$-element set
   $\set{1,2,\dots,n}$.
   Relative to the standard local ordering ($1<2,1<3,\dots,n-1<n$),
   the transposition only changes the ordering $1<2$ to $2<1$,
   thus differing at exactly one place.
+
+  \ref{it:sign-cycle} now follows via~\cref{xca:perm-prod-transpositions}.
+
+  For \ref{it:identity-even}, assume $\id_A = (a_1\;b_1)\cdots(a_k\;b_k)$,
+  and take the sign of both sides. Since $\sgn$ is a homomorphism,
+  we get $+1 = (-1)^k$, so $k$ is even.
 \end{proof}
 
 \begin{corollary}\label{cor:sign-defined}
