@@ -2051,6 +2051,9 @@ A $2$-cycle is also called a \emph{transposition}.
   Writing $A$ as a sum of its connected components,
   we express this \covering as a sum of connected \coverings,
   but these correspond to cycles by~\cref{thm:cycset-connS1cover}.
+
+  It's only for decidable $X$, however, that we can express these
+  cycles as cyclic permutations.
 \end{remark}
 
 \begin{definition}\label{def:support-permutation}
@@ -2066,7 +2069,8 @@ Note that if $A$ is decidable, then we can decide whether an element is moved or
   Let $A$ be a decidable set with two permutations $\sigma,\tau$.
   Show that if $\sigma,\tau$ have disjoint supports,
   then they \emph{commute} in the sense that $\sigma\tau=\tau\sigma$.\footnote{%
-    In particular, disjoint cycles commute, so when we express a permutation as a product of disjoint cycles, the order doesn't matter.}
+    Thus, disjoint cycles commute, so when we express a permutation
+    on a finite set as a product of disjoint cycles, the order doesn't matter.}
 \end{xca}
 \begin{xca}\label{xca:perm-prod-transpositions}
   Prove that a $k$-cycle permutation of a decidable set $A$ can be written
@@ -2085,6 +2089,66 @@ then apply~\cref{xca:perm-prod-transpositions} to each cycle.\footnote{%
   as permutations of $\set{1,2,3}$.
   Below, in~\cref{cor:sign-defined}, we'll show that the \emph{parity} (odd/even)
   of the number of transitions is invariant, however.}
+
+\begin{xca}
+  Show that there $n!$ permutations of a finite set of cardinality $n$, where $n! \defeq \fact(n)$ is the usual notation for the factorial function.
+
+  \emph{Hint:} One way (not the only one) is to construct bijections
+  $\Aut(\bn 0) \equivto \bn 1$ and
+  \begin{equation}\label{eq:type-factorial}
+    \Aut(A \coprod \bn 1) \equivto (A \coprod \bn 1) \times \Aut(A)
+  \end{equation}
+  for all finite sets $A$.\footnote{%
+    In fact, the bijection~\eqref{eq:type-factorial}
+    can be constructed for any decidable set.
+    \citeauthor{EscardoFactorial}\footnotemark{} constructed more generally,
+    for any type $X$, an equivalence
+    $\Aut(X \coprod \bn 1) \equivto (X \coprod \bn 1)' \times \Aut(X)$,
+    where
+    \[
+      Y' \defeq \sum_{y : Y}\prod_{z : Y}(y \eqto z \coprod y \ne z).
+    \]
+    By a local version of Hedberg's~\cref{thm:hedberg},
+    $Y'$ is a subtype of $Y$.}%
+  \footcitetext{EscardoFactorial}
+\end{xca}
+
+\begin{xca}
+  Let $A$ be a finite set of cardinality $n$ and assume $0\le k \le n$.
+  Show that the number of $k$-element subsets of $A$ is given by the
+  binomial coefficient\index{binomial coefficient}\footnote{%
+    Binomial coefficients are familiar from Pascal's triangle,\\
+    \begin{tikzpicture}[xscale=0.25,yscale=.5]
+      \node (00) at ( 0, 0) {$1$};
+      \node (10) at (-1,-1) {$1$};
+      \node (11) at ( 1,-1) {$1$};
+      \node (20) at (-2,-2) {$1$};
+      \node (21) at ( 0,-2) {$2$};
+      \node (22) at ( 2,-2) {$1$};
+      \node (30) at (-3,-3) {$1$};
+      \node (31) at (-1,-3) {$3$};
+      \node (32) at ( 1,-3) {$3$};
+      \node (33) at ( 3,-3) {$1$};
+      \node (40) at (-4,-4) {$1$};
+      \node (41) at (-2,-4) {$4$};
+      \node (42) at ( 0,-4) {$6$};
+      \node (43) at ( 2,-4) {$4$};
+      \node (44) at ( 4,-4) {$1$};
+      \node (50) at (-5,-5) {$1$};
+      \node (51) at (-3,-5) {$5$};
+      \node (52) at (-1,-5) {$10$};
+      \node (53) at ( 1,-5) {$10$};
+      \node (54) at ( 3,-5) {$5$};
+      \node (55) at ( 5,-5) {$1$};
+      \node (d1) at ( 0,-6) {$\vdots$};
+    \end{tikzpicture}\\
+    \noindent where each number is the sum of the two above, \eg $\binom42 = 6$.}
+  \[
+    \binom nk \defeq \frac{n!}{k!(n-k)!}.
+  \]
+  Find a formula for the number of $k$-cycle permutations of $A$
+  using factorials and/or binomial coefficients.
+\end{xca}
 
 \section{The \texorpdfstring{$m$\th}{mᵗʰ} root:
   \coverings over the components of $\Cyc$}
