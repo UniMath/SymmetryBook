@@ -1375,7 +1375,7 @@ $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)
 
 In this section we're going to define the very important
 \emph{sign homomorphism} $\sgn : \SG_n \to \SG_2$, defined for $n \ge 2$.
-To do this, we need to assign to every $n$-element set $A$ a $2$-element $\Bsgn(A)$.
+To do this, we need to assign to every $n$-element set $A$ a $2$-element set $\Bsgn(A)$.
 \begin{marginfigure}
   \tikzset{->-/.style={
       decoration={
@@ -1416,14 +1416,18 @@ To do this, we need to assign to every $n$-element set $A$ a $2$-element $\Bsgn(
   \label{fig:sign-orderings-3}
 \end{marginfigure}
 
-We get this $2$-element set as quotient of the set of all possible ways of ordering two different elements of $A$, where two different such
+We get this $2$-element set as a quotient of the set of all possible ways of
+choosing elements from each $2$-element subset of $A$, where two different such
 choices are deemed the same if they differ in an \emph{even} number of pairs.
-A way of ordering all possible $2$-element subsets of $A$ is equivalently
-a way of directing the complete graph on $A$.
-\Cref{fig:sign-orderings-3} shows all $8$ ways of directing the complete graph on $3$ elements divided into the $2$ resulting equivalence classes.
+Since choosing an element from a $2$-element set is equivalent to ordering it
+(\eg chosen element first),
+we can also talk about ways of ordering all possible $2$-element subsets of $A$,
+or equivalently, ways of directing the complete graph on $A$.
+\Cref{fig:sign-orderings-3} shows all $8$ ways of directing the complete graph on
+a $3$-element set divided into the $2$ resulting equivalence classes.
 
 To see that this really defines an equivalence relation, it helps to generalize a bit.
-Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-element sets parametrized by $E$.
+Thus, fix a finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-element sets parametrized by $E$.
 \begin{definition}
   The parity relation $\sim$ on $\prod_{e:E}P(e)$ relates functions that disagree in an even number of points. That is, $f\sim g$ holds if and only if the
   subset $\setof{e:E}{f(e) \ne g(e)}$ has an even number of elements.\footnote{%
@@ -1434,7 +1438,8 @@ Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $
 \end{definition}
 \begin{lemma}
   The parity relation $\sim$ is an equivalence relation on the set $\prod_{e:E}P(e)$,
-  and the quotient is a $2$-element set.
+  and the quotient is a $2$-element set if $E$ is nonempty, otherwise it is
+  a $1$-element set.
 \end{lemma}
 \begin{proof}
   The $\sim$ relation is clearly symmetric, and it is reflexive, since the empty set
@@ -1448,6 +1453,8 @@ Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $
   By transitivity of equality, $E_{ij} \cap E_{jk} \subseteq E_{ik}$, for all $i,j,k$.
   Hence, the Venn diagram of these sets has the simplified form shown in the margin,\marginnote{%
     \begin{tikzpicture}
+      \fill[opacity=0.6,casred] (330:.57735) arc(0:120:1) arc(180:330:1);
+      \fill[opacity=0.6,casblue] (90:.57735) arc(120:240:1) arc(-60:60:1);
       \draw (330:.57735) arc(0:120:1);
       \draw (330:.57735) arc(-60:-180:1);
       \draw (90:.57735) arc(120:240:1);
@@ -1470,7 +1477,8 @@ Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $
   Here we also use that $E_{12} \cup E_{23} \cup E_{13} = E$ (as subsets of $E$),
   since of the three function values at any $e$ in $E$, two must agree.
 
-  We now find $F_{12} = E'_{13} \cup E'_{23}$ (disjoint union), and similarly for $F_{13}$ and $F_{23}$.
+  We now find $F_{12} = E'_{13} \cup E'_{23}$ (disjoint union),
+  and similarly for $F_{13}$ and $F_{23}$.
   Taking cardinalities, we get
   \[
     \Card(F_{12})+\Card(F_{13})+\Card(F_{23})
@@ -1478,8 +1486,13 @@ Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $
   \]
   so if two of the $F_{ij}$'s have an even number of elements,
   then so does the third.
+  We also see that at least one of the $F_{ij}$'s has even cardinality,
+  so the quotient has at most $2$ elements.
 
-  Finally, to show the proposition that the quotient is a $2$-element set,
+  Finally, if $E$ is empty, then $\prod_{e:E}P(e)$ is contractible,
+  so the quotient is contractible.
+  Assume now that $E$ is nonempty.
+  To show the proposition that the quotient is a $2$-element set,
   we may assume that $E$ is the $n$-element set $\set{1,\dots,n}$ (since $n>0$),
   and (by induction on $n$) that each set $P(e)$ is $\set{\pm 1}$
   (our favorite $2$-element set for the moment).
@@ -1506,15 +1519,28 @@ Thus, fix a nonempty finite set $E$, and let $P : E \to \BSG_2$ be a family of $
 \begin{xca}
   Show that the set of elements of $\SG_2^E$ can be identified with $\set{\pm1}^E$,
   and under this identification, $\USym\mu_E$ maps a function $s : E \to \set{\pm1}$
-  to the product of its values.
+  to the product of its values.\footnote{%
+    Note that this works even when $E$ is empty,
+    since the product of an empty collection of numbers is $+1$.}
 \end{xca}
+
+\begin{definition}\label{def:sign-ordering}
+  A \emph{local ordering}\index{ordering!local} of a finite set $A$
+  is an element of the set $\prod_{e:E(A)}P(e)/\sim$,
+  where $E(A)$ is the set of $2$-element subsets of $A$,
+  and $P : E(A) \to \BSG_2$ maps a $2$-element subset to the underlying $2$-element set.
+
+  A \emph{sign ordering}\index{sign ordering}\index{ordering!sign}
+  of a finite set $A$ is an element of the quotient
+  $\bigl(\prod_{e:E(A)}P(e)\bigr)/\sim$ of the set of local orderings
+  modulo the parity relation.
+\end{definition}
 
 \begin{definition}\label{def:sgn}
   The \emph{sign homomorphism} $\sgn : \Hom(\SG_n,\SG_2)$%
   \glossary(sgn){$\protect\sgn$}{sign homomorphism, \cref{def:sgn}}
   is defined via the pointed map $\Bsgn : \BSG_n \ptdto \BSG_2$,
-  where $\Bsgn(A) \defeq \B\mu_{E(A)}(P)$, where $E(A)$ is the set of $2$-element subsets of $A$,
-  and $P : E(A) \to \BSG_2$ maps a $2$-element subset to the underlying $2$-element set.
+  where $\Bsgn(A) \defeq \B\mu_{E(A)}(P)$,
   We make $\Bsgn$ pointed using the total ordering on the standard $n$-element set,
   $\sh_{\SG_n}$ to identify each $2$-element subset with the standard $2$-element set,
   and using the pointedness of $\B\mu$.
@@ -1523,7 +1549,7 @@ Something interesting happens when we consider permutations on other shapes in $
 \ie arbitrary $n$-element sets $A$.
 The same map, $\Bsgn$, can be considered as a map $\BAut(A) \to \BSG_2$,
 but we can cannot make this pointed uniformly in $A$.\footnote{%
-  Why not? A construction $p : \prod_{A:\BSG_n}(\Bsgn(A) \eqto \sh_{\SG_2})$
+  Why not? A construction $p : \prod_{A:\BSG_n}(\Bsgn_\div(A) \eqto \sh_{\SG_2})$
   would amount to an identification of $\Bsgn$ with the constant map.}
 However, the self-identifications of a $2$-element set $T$, $(T \eqto T)$,
 \emph{can} be identified with $\set{\pm1}$,\footnote{%
@@ -1536,7 +1562,7 @@ Hence, we can define the sign of any permutation of a finite set:
   If the cardinality of $A$ is $0$ or $1$,
   then the \emph{sign}\index{sign} of $\sigma$ is $+1$.
   Otherwise, the \emph{sign} of $\sigma$ is $\pm1$ according to whether
-  $\Bsgn(\sigma)$ swaps the elements of the $2$-element set $\Bsgn(A)$, or not.
+  $\Bsgn_\div(\sigma)$ swaps the elements of the $2$-element set $\Bsgn_\div(A)$, or not.
 
   We write $\sgn(\sigma):\set{\pm1}$ for the sign of $\sigma$.
 \end{definition}
