@@ -3,6 +3,57 @@
 
 Quotients; subspaces (= ?). Bases and so. Dual space; orthogonality. (all of this depends on good implementations of subobjects). Eigen-stuff. Characteristic polynomials; Hamilton-Cayley.
 \section{the algebraic hierarchy: groups, abelian groups, rings, fields}
+
+\begin{definition}
+A commutative ring $R$ is \textbf{nontrivial} if $0 \neq 1$
+$$\mathrm{isNonTrivialCRing}(R) := \mathrm{isCRing}(R) \times (0 \neq 1)$$ 
+\end{definition}
+
+\begin{definition}
+Given a commutative ring $R$, an element $e:R$ is \textbf{invertible} if there exists an element $a:R$ such that $e \cdot a = 1$ and $a \cdot e = 1$:
+$$\mathrm{isInvertible}(e) := \left\Vert\sum_{a:R} (e \cdot a = 1) \times (a \cdot e = 1)\right\Vert$$
+\end{definition}
+
+\begin{theorem}
+In any nontrivial commutative ring $R$, $0$ is always a non-invertible element. 
+$$\mathrm{isNonTrivialCRing}(R) \to \neg \mathrm{isInvertible}(0)$$
+\end{theorem}
+
+\begin{proof}
+Suppose that $0$ is invertible. Then there exists an element $a:R$ such that $a \cdot 0 = 1$. However, due to the absorption properties of $0$ and the fact that $R$ is a set, $a \cdot 0 = 0$. This implies that $0 = 1$, which contradicts the fact that $0 \neq 1$ in a nontrivial commutative ring. Thus, $0$ is a non-invertible element in any nontrivial commutative ring $R$. 
+\end{proof}
+
+\begin{definition}
+A nontrivial commutative ring $R$ is a \textbf{field} if and only if the type of all non-invertible elements in $R$ is contractible:
+$$\mathrm{isField}(R) := \mathrm{isNonTrivialCRing}(R) \times \mathrm{isContr}\left(\sum_{x:R} \neg \mathrm{isInvertible}(x)\right)$$ 
+Equivalently, $R$ is a field if and only if every non-invertible element is equal to zero. 
+\end{definition}
+
+\begin{remark}
+In other parts of the constructive mathematics literature, such as in Peter Johnstone's \textit{Rings, Fields, and Spectra}, this is called a "residue field". However, in this book we shall refrain from using the term "residue field" for our definition, since that contradicts the usage of "residue field" in other parts of mathematics, such as in algebraic geometry. 
+\end{remark}
+
+\begin{definition}
+A field is \textbf{discrete} if every element is either invertible or equal to zero. 
+$$\mathrm{isDiscreteField}(R) := \mathrm{isField}(R) \times \prod_{a:R} \Vert(a = 0) \amalg \mathrm{isInvertible}(a)\Vert$$ 
+\end{definition}
+
+\begin{definition}
+A nontrivial commutative ring $R$ is a \textbf{local ring} if for every element $a:R$ and $b:R$, if the sum $a + b$ is invertible, then either $a$ is invertible or $b$ is invertible. 
+$$\mathrm{isLocalRing}(R) := \mathrm{isNonTrivialCRing}(R) \times \prod_{a:R} \prod_{b:R} \mathrm{isInvertible}(a + b) \to \Vert\mathrm{isInvertible}(a) \amalg \mathrm{isInvertible}(b)\Vert$$ 
+\end{definition}
+
+\begin{definition}
+A field $R$ is \textbf{Heyting} if it is also a local ring. 
+$$\mathrm{isHeytingField}(R) := \mathrm{isField}(R) \times \mathrm{isLocalRing}(R)$$ 
+\end{definition}
+
+References used in this section: 
+\begin{itemize}
+\item Henri Lombardi, Claude Quitté, \textit{Commutative algebra: Constructive methods (Finite projective modules)}
+\item Peter Johnstone, \textit{Rings, Fields, and Spectra}, Journal of Algebra 49 (1977) 238-260
+\end{itemize}
+
 \section{vector spaces}
 \section{the general linear group as automorphism group}
 \section{determinants\titledagger}
