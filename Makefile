@@ -16,7 +16,7 @@ figures:
 	mkdir $@
 macros.fmt: macros.tex tikzsetup.tex
 	pdflatex -ini -jobname="macros" "&pdflatex macros.tex\dump"
-version.tex: .git/refs/heads/master
+version.tex: .git/refs/heads/$(shell git branch --show-current)
 	git log -1 --date=short \
     --pretty=format:'\newcommand{\OPTcommit}{%h}%n\newcommand{\OPTdate}{%ad}%n' \
     > version.tex
