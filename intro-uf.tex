@@ -3211,6 +3211,7 @@ In the following proofs we frequently use \cref{xca:all-prop-image}.
   to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
 \end{proof}
 
+\begin{remark}\label{rem:set-trunc-as-quotient}
 We can use set quotients to give an alternative definition
 of the set truncation $\Trunc{A}_0$ of a type $A$.
 Consider the relation $R : A \to A \to \Prop$ given by
@@ -3237,6 +3238,7 @@ $f(\trunc{x}_0)\jdeq g(x)$ for all $x:A$, as desired.\footnote{%
   by taking the $\UU$-small image
   of the $n$-truncated identity relation
   $A \to (A \to \sum_{X:\UU}\mathrm{is}{n}\mathrm{Type})$.}
+\end{remark}
 
 \section{More on natural numbers}
 \label{sec:more-on-N}
@@ -3778,6 +3780,111 @@ so we give a full proof.
   and that each such factorization
   is equivalent to the $0$-image factorization.
 \end{theorem}
+
+\section{Higher truncations}
+\label{sec:higher-truncations}
+
+We've seen the propositional truncation in~\cref{sec:prop-trunc} and
+the set truncation in~\cref{sec:operations-on-sets}.
+As mentioned in~\cref{rem:set-trunc-as-quotient},
+it's possible to define the latter in terms of the former by considering
+the propositional truncation of the identity types of a type $A$.
+In this section we want to generalize this to higher truncation levels
+and show how we can inductively define all the $n$-truncation operations
+using propositional truncation
+combined with the replacement principle, \cref{pri:replacement},
+which is used to stay within a given universe.
+
+\begin{construction}\label{def:join-construction-of-truncation}
+  For any integer $n\ge-1$ we have an \emph{$n$-truncation operation}
+  $\Trunc\blank_n : \UU \to \UU$, along with \emph{unit maps}
+  $\trunc\blank_n : A \to \Trunc A_n$, satisfying the following universal property.
+
+  For any $n$-type $B$, precomposition with $\trunc\blank_n$ induces an equivalence:
+  \[
+    \bigl(\Trunc A_n\to B\bigr) \equivto (A \to B).
+  \]
+\end{construction}
+\begin{implementation}{def:join-construction-of-truncation}
+  We proceed by induction.
+  For $n\jdeq-1$, we have this from the higher inductive type
+  definition, \cref{def:prop-trunc},
+  with element constructor $\trunc\blank:A \to \Trunc A$.
+
+  To go from $n$ to $n+1$, we fix a type $A:\UU$ and consider the
+  $n$-truncated identity relation
+  \[
+    I_n : A \to \biggl(A \to \sum_{X:\UU}\mathrm{is}{n}\mathrm{Type}(X)\biggr),
+    \quad
+    x \mapsto (y \mapsto \Trunc{x\eqto y}_n).
+  \]
+  Let $\Trunc A_{n+1} \defeq \im(I_n)$ be the usual image of $I_n$,
+  and let $\trunc\blank_{n+1}: A\to\Trunc A_{n+1}$ be the image inclusion,
+  $x \mapsto (\Trunc{x\eqto\blank}_n, !)$.
+
+  Since the type of $n$-types is an $(n+1)$-type,
+  $\Trunc A_{n+1}$ is an $(n+1)$-type by~\cref{lem:level-n-utils}.
+  We also note that the map
+  \begin{equation}\label{eq:trunc-path-eq}
+    \Trunc{x\eqto y}_n \equivto (\trunc x_{n+1} \eqto \trunc y_{n+1}),
+  \end{equation}
+  induced by the universal property of $n$-truncation,
+  is an equivalence.
+  Indeed, the right-hand side is equivalent to
+  \[
+    \prod_{z:A} \bigl(\Trunc{x\eqto z}_n \equivto \Trunc{y\eqto z}_n\bigr),
+  \]
+  and we get an inverse by going backwards along this equivalence at
+  $\trunc{\refl{y}}_n : \Trunc{y\eqto y}_n$.
+
+  To prove the universal property, let $B$ be any $(n+1)$-type
+  and $g : A \to B$ any map.
+
+  It suffices to show that for any $z:\Trunc A_{n+1}$,
+  there is a contractible type of extensions
+  \[
+    \begin{tikzcd}
+      \trunc\blank_{n+1}^{-1}(z) \ar[dr,"g \circ \fst"]\ar[d] & \\
+      \bn 1 \ar[r,dashed] & B,
+    \end{tikzcd}
+  \]
+  since then there's a contractible type of extensions of $g$
+  to all of $\Trunc A_{n+1}$
+  Since this is a proposition and $\trunc\blank_{n+1}$ is surjective,
+  it suffices to prove this for $z$ of the form $\trunc x_{n+1}$ with $x:A$.
+  We need to show that the type
+  \[
+    \prod_{x:A}\sum_{y:B}\prod_{x':A}
+    \bigl((\trunc x_{n+1} \eqto \trunc {x'}_{n+1})
+    \to (y \eqto g(x'))\bigr)
+  \]
+  is contractible.
+  By the equivalence above, we can rewrite this, first as
+  \[
+    \prod_{x:A}\sum_{y:B}\prod_{x':A}
+    \bigl(\Trunc{x\eqto x'}_n \to (y \eqto g(x'))\bigr),
+  \]
+  and then, since $y \eqto g(x')$ is an $n$-type, as
+  \[
+    \prod_{x:A}\sum_{y:B}\prod_{x':A}
+    \bigl((x\eqto x') \to (y \eqto g(x'))\bigr).
+  \]
+  Now we can contract away $x'$ and the identification $x \eqto x'$,
+  so we're left with
+  \[
+    \prod_{x:A}\sum_{y:B}(y \eqto g(x')),
+  \]
+  which is indeed contractible.
+
+  Finally, we need to re-size $\Trunc A_{n+1}$ to fit in the universe
+  $\UU$ that $A$ came from.
+  By \eqref{eq:trunc-path-eq}, its identity types are essentially $\UU$-small
+  by induction hypothesis, so again since $\trunc\blank_{n+1}$ is a surjection
+  from the $\UU$-small type $A$, the replacement principle, \cref{pri:replacement},
+  implies that $\Trunc A_{n+1}$ is essentially $\UU$-small.
+\end{implementation}
+This construction is due to \citeauthor{Rijke-Join}\footcite{Rijke-Join},
+see also the presentation in his book\footcite{Rijke-Intro}.
 
 % Local Variables:
 % fill-column: 144
