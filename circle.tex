@@ -28,6 +28,8 @@ the circle\footnote{%
   We call this type the ``circle''
   because it turns out to be the homotopy type of
   the topological circle $\setof{(x,y)\in\RR^2}{x^2+y^2=1}$.
+  See~\cref{sec:topology} for a discussion of the relationship
+  between topological spaces and (homotopy) types.
   In the later chapters on geometry we'll return
   to ``real'' geometrical circles.}
 which is built \emph{exactly} so that this
@@ -35,7 +37,7 @@ which is built \emph{exactly} so that this
 It may be surprising to see how little it takes to define it;
 especially in hindsight when we eventually discover some of the many uses of the circle.
 
-A symmetry in $A$ is an identification $p:a=_Aa$ for some $a:A$.%
+A symmetry in $A$ is an identification $p:a\eqto_Aa$ for some $a:A$.%
 \index{symmetry!in a type}
 Now, we can take any iteration of $p$ (composing $p$ with itself a number of times),
 and we can consider the inverse $p^{-1}$ and \emph{its} iterations.
@@ -176,7 +178,7 @@ states that, in order to define an element of $A(x)$ for every element $x$ of $\
 it suffices to give an element $a$ of $A(\base)$ together with an
 identification $l$ of type $\pathover{a}{A}{\Sloop}{a}$,
 cf.~\cref{fig:circle-induction}.
-The function $f$ defined by this data satisfies $f(\base)\jdeq a$ and
+The function $f : \prod_{x:\Sc}A(x)$ defined by this data satisfies $f(\base)\jdeq a$ and
 the induction principle provides an element of $\apd{f}(\Sloop)=l$.
 \end{definition}
 
@@ -192,33 +194,36 @@ This is a ``universal property'' of the circle.
 \begin{theorem}\label{lem:freeloopspace}
 For all types $A$, the evaluation function
 \[
-\ev_A : (\Sc\to A)\to \sum_{a:A}(a=_Aa)\text{~defined by~}
+\ev_A : (\Sc\to A)\to \sum_{a:A}(a\eqto_Aa)\text{~defined by~}
 \ev_A(g)\defeq (g(\base),g(\Sloop))
 \]
-is an equivalence, with inverse $\ve_A$ defined by the recursion principle.
+is an equivalence, with inverse $\ve_A$ defined by the recursion principle
+of the circle.
 \end{theorem}
 \begin{proof}
 Fix $A:\UU$. We apply \cref{lem:weq-iso}.
-For all $a:A$ and $l:a=a$ we have $\ev(\ve(a,l))=(a,l)$
-by the recursion principle. It remains to prove
-$\ve(\ev(f))=f$ for all $f:\Sc\to A$. This will follow
+For all $a:A$ and $l:a\eqto a$ we have an identification $\ev(\ve(a,l))\eqto(a,l)$
+by the recursion principle. It remains to construct identifications
+$\ve(\ev(f))\eqto f$ for all $f:\Sc\to A$. This will follow
 from the following more general result.
 Let $f,g:\Sc\to A$,
-$p: f(\base)= g(\base)$, and $q: f(\Sloop) = p^{-1}\cdot g(\Sloop)\cdot p$.
-We show $f=g$, for which it suffices to prove by circle induction
-that $P(x)\defeq(f(x)=g(x))$ for all $x:\Sc$.
+$p: f(\base)\eqto g(\base)$, and $q: f(\Sloop) \eqto p^{-1}\cdot g(\Sloop)\cdot p$.
+We construct an identification $f\eqto g$,
+for which it suffices by function extensionality to construct elements of
+the type $P(x)\defeq(f(x)\eqto g(x))$ for all $x:\Sc$.
+This we do by circle induction.
 For the base case we take $p$.
-The loop case reduces to $\trp[P]{\Sloop}(p)=p$ by \cref{def:pathover-trp}.
-By \cref{lem:trp-in-fx=Ygx} we have
-$\trp[P]{\Sloop}(p)=g(\Sloop)\cdot p \cdot f(\Sloop)^{-1}$.
-By $q$ we have $g(\Sloop) = p\cdot f(\Sloop) \cdot p^{-1}$.
-Hence $\trp[P]{\Sloop}(p)=p$ by easy calculation.
+The loop case reduces to $\trp[P]{\Sloop}(p)\eqto p$ by \cref{def:pathover-trp}.
+By \cref{lem:trp-in-fx=Ygx} we have an identification
+$\trp[P]{\Sloop}(p)\eqto g(\Sloop)\cdot p \cdot f(\Sloop)^{-1}$.
+Using $q$ we get $g(\Sloop) \eqto p\cdot f(\Sloop) \cdot p^{-1}$.
+Hence $\trp[P]{\Sloop}(p)\eqto p$ by easy calculation.
 Using \cref{lem:isEq-pair=} we can phrase the result
-as: if $\ev(f)=\ev(g)$, then  $f=g$.
+as: there is a function $(\ev(f)\eqto \ev(g)) \to (f\eqto g)$.
 
-Now we get $\ve(\ev(f))=f$, as
-$\ev(\ve(\ev(f)))=(f(\base),f(\Sloop))\jdeq\ev(f)$ with $p\defeq\refl{f(\base)}$
-and $q$ coming from the induction principle.
+Now we get $\ve(\ev(f))\eqto f$, as
+$\ev(\ve(\ev(f)))\eqto (f(\base),f(\Sloop))\jdeq\ev(f)$
+with $p\defeq\refl{f(\base)}$ and $q$ coming from the induction principle.
 \end{proof}
 \begin{corollary}\label{cor:circle-loopspace}
   For any $a:A$, the function $\ev_A^a:((\Sc,\base)\to_* (A,a))\to (a=_Aa)$
