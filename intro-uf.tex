@@ -2012,6 +2012,36 @@ including logic in the same hierarchy.
 Some authors therefore call propositions \emph{$(-1)$-types},
 and they call contractible types \emph{$(-2)$-types}.}
 
+\begin{definition}
+  Let $A$ be a \emph{set}, as defined above, and let $a$ and $b$ be elements of $A$.  We say that $a$ and $b$ are \emph{equal}\index{equal} and
+  we write $a \eq b$\glossary(2=){$=$}{equality} as alternative notation for the type $a \eqto b$.  Formally, we define it as follows.
+  \[
+  a \eq b \defeq a \eqto b
+  \]
+  The type $a \eq b$ is called an \emph{equation}\index{equation}.
+\end{definition}
+
+Equations are propositions, so we can speak of them being true or false, and we may use them after the words \emph{if}, \emph{since},
+\emph{whether}, and
+\emph{because} in a sentence.  In set theory, everything is a set and all equations $a \eq b$ are propositions; our definition of $a \eq b$ is
+designed to make the transition from set theory to type theory minimally disconcerting.
+
+(Good motivation for the form of the equal sign in the notation $a=b$ is provided by a remark made by Robert Recorde in 1557 in the \emph{Whetstone of Witte}\footcite{WhetstoneOfWitte}:
+``And to avoid the tedious repetition of these words \emph{is equal to}, I will set,
+as I do often in work use, a pair of parallels, or twin lines of one length, thus: $=$,
+because no two things can be more equal.''\footnote{\textfrak{%
+    And to auoide the tediouse repetition of these woordes : is equalle to :
+    I will sette as I doe often in woorke vse, a paire of paralleles,
+    or Gemowe lines of one lengthe, thus{}:%
+    $\begin{tikzcd}[cramped,ampersand replacement=\&]
+      {}\ar[r,equal]\&{}\end{tikzcd}$,
+    bicause noe .2. thynges, can be moare equalle.}}
+In fact, the remark of Recorde presages the approach described in this book, for although those two little lines are congruent,
+they were not considered to be equal traditionally, since they are in different places, whereas they may be considered to be equal in the presence of univalence,
+which converts congruences to identities.)
+%% Robert Recorde, The Whetstone of Witte (London, England: John Kyngstone, 1557), p. 236
+%% https://archive.org/stream/TheWhetstoneOfWitte#page/n237/mode/2up
+
 Let $X$ be a type.
 If for any $x:X$ and any $y:X$ the identity type $x \eqto y$ is a set,
 then we shall say that $X$ is a \emph{groupoid},\index{groupoid}
@@ -2313,39 +2343,10 @@ it now, for completeness.
 The exercise above us to easily convert elements of type $\Trunc P$ to elements of type
 $P$ when $P$ is a proposition.
 
-\begin{definition}
-  Let $A$ be a \emph{set}, as defined above, and let $a$ and $b$ be elements of $A$.  We say that $a$ and $b$ are \emph{equal}\index{equal} and
-  we write $a \eq b$\glossary(2=){$=$}{equality} as alternative notation for the type $a \eqto b$.  Formally, we define it as follows.
-  \[
-  a \eq b \defeq a \eqto b
-  \]
-  The type $a \eq b$ is called an \emph{equation}\index{equation}.
-\end{definition}
-
-Equations are propositions, so we can speak of them being true or false, and we may use them after the words \emph{if}, \emph{since}, and
-\emph{because} in a sentence.  In set theory, everything is a set and all equations $a \eq b$ are propositions; our definition of $a \eq b$ is
-designed to make the transition from set theory to type theory minimally disconcerting.
-
-(Good motivation for the form of the equal sign in the notation $a=b$ is provided by a remark made by Robert Recorde in 1557 in the \emph{Whetstone of Witte}\footcite{WhetstoneOfWitte}:
-``And to avoid the tedious repetition of these words \emph{is equal to}, I will set,
-as I do often in work use, a pair of parallels, or twin lines of one length, thus: $=$,
-because no two things can be more equal.''\footnote{\textfrak{%
-    And to auoide the tediouse repetition of these woordes : is equalle to :
-    I will sette as I doe often in woorke vse, a paire of paralleles,
-    or Gemowe lines of one lengthe, thus{}:%
-    $\begin{tikzcd}[cramped,ampersand replacement=\&]
-      {}\ar[r,equal]\&{}\end{tikzcd}$,
-    bicause noe .2. thynges, can be moare equalle.}}
-In fact, the remark of Recorde presages the approach described in this book, for although those two little lines are congruent,
-they were not considered to be equal traditionally, since they are in different places, whereas they may be considered to be equal in the presence of univalence,
-which converts congruences to identities.)
-%% Robert Recorde, The Whetstone of Witte (London, England: John Kyngstone, 1557), p. 236
-%% https://archive.org/stream/TheWhetstoneOfWitte#page/n237/mode/2up
-
 \begin{definition}\label{def:connected}
-  Let $A$ be a type. If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A} x \eq a$
+  Let $A$ be a type. If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A} \Trunc { x \eqto a } $
   is called the \emph{connected component} of $a$ in $A$.
-  We say that elements $x,y$ of $A$ are \emph{in the same component} of $A$ if $x = y$, for then $A_{(x)} = A_{(y)}$.
+  We say that elements $x,y$ of $A$ are \emph{in the same component} of $A$ if $\Trunc { x \eqto y }$, for then $A_{(x)} = A_{(y)}$. 
   The type $A$ is called \emph{connected}\footnote{%
     In \cref{def:set-truncation} below we will
     define the \emph{set of connected components} of a type.}
