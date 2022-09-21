@@ -194,15 +194,11 @@ definition}\glossary(2==){$\jdeq$}{definitional equality}.  For example, after w
 Whenever two expressions are the same by definition, we may replace one with the other inside any other expression, because the expansion of
 definitions is regarded as trivial and transparent.
 
-We proceed now to the promised example.  Consider functions $f : X \to Y$ and $g : Y \to Z$.  We define the \emph{composite} function $g \circ f
-: X \to Z$ by setting $g \circ f \defeq (a \mapsto g(f(a)))$.\glossary(2fundef){$\mapsto$}{``maps to'', function definition} In other words, it
+We proceed now to the promised example.  Consider functions $f : X \to Y$ and $g : Y \to Z$.  We define the \emph{composite} function 
+$g \circ f : X \to Z$ by setting $g \circ f \defeq (a \mapsto g(f(a)))$.\glossary(2fundef){$\mapsto$}{``maps to'', function definition}\index{composition!of functions}
+In other words, it
 is the function that sends an arbitrary element $a$ of $X$ to $g(f(a))$ in $Z$.  (The expression $g \circ f$ may be read as ``$g$ circle $f$''
 or as ``$g$ composed with $f$''.)  The composite function $g \circ f$ may also be denoted simply by $gf$.\glossary(2circ){$\circ$}{function composition}
-We also may use the following alternative notation for the composite function, which includes the three
-types explicitly:\glossary(2circbis){$ ( X \xrightarrow f Y \xrightarrow g Z ) $}{function composition}
-\[
-  \left( X \xrightarrow f Y \xrightarrow g Z \right) \defeq g \circ f.
-\]
 
 Now consider functions $f : X \to Y$, $g : Y \to Z$, and $h : Z \to W$.  Then $(h \circ g) \circ f$ and $h \circ (g \circ f)$ are the same by
 definition, since applying the definitions within expands both expressions to $a \mapsto h(g(f(a)))$.  In other
@@ -2231,6 +2227,42 @@ Given a type $P$, show that $P$ is a proposition if and only if $p \eqto q$ is c
 for any $p, q: P$.
 \end{xca}
 
+We now present the notion of a \emph{diagram}\index{diagram}.  A diagram is a graph
+whose vertices are types and whose edges are functions.  Here is an example.
+\[
+\begin{tikzcd}
+  X \ar[r,"f"] \ar[d,"p"] & Y \ar[d,"q"] \\
+  S \ar[r,"g"]            & T 
+\end{tikzcd}
+\]
+The information conveyed by this diagram to the reader is that $X$, $Y$, $S$, and $T$ are types, and that $f$, $g$, $p$, and $q$
+are functions; moreover, $f$ is of type $X \to Y$, $g$ is of type $S \to T$, $p$ is of type $X \to S$, and $q$ is of type $Y \to T$.
+
+Observe that we can travel through the diagram from $X$ to $T$ by following first the arrow labeled $f$ and then the arrow labelled $q$.
+Consequently, the composite function $q \circ f$ is of type $X \to T$.
+
+There is another route from $X$ to $T$ : we could follow first the arrow labeled $p$ and then the arrow labelled $g$.
+Consequently, the composite function $g \circ p$ is also of type $X \to T$.
+
+We say that a diagram \emph{is commutative by definition}\index{diagram!commutative by definition} if, whenever there are two routes from one
+vertex to another, the corresponding composite functions are equal by definition.  For example, in the diagram above, the condition would be that
+$g \circ p \jdeq q \circ f$.
+
+When the function type from any vertex of a diagram to any other vertex of the diagram is a set, then equality of functions is a proposition.
+We say that a diagram \emph{is commutative}\index{diagram!commutative} if, whenever there are two routes from one vertex to another, the
+corresponding composite functions are equal.  For example, in the diagram above, the condition would be that $g \circ p \eq q \circ f$.
+
+There are other sorts of diagrams.  For example, identifications may be composed, and thus we may have a diagram of identifications between
+elements of the same type.  For example, suppose $W$ is a type, suppose that $x$, $y$, $s$, and $t$ are elements of $W$, and consider
+the following diagram.
+\[
+\begin{tikzcd}
+  x \ar[r,eqr,"f"] \ar[d,eqr,"p"] & y \ar[d,eqr,"q"] \\
+  s \ar[r,eqr,"g"]                & t 
+\end{tikzcd}
+\]
+It indicates that $f$ is of type $x \eqto y$, $g$ is of type $s \eqto t$, $p$ is of type $x \eqto s$, and $q$ is of type $y \eqto t$.  We may
+also consider whether such a diagram is commutative by definition, or, in the case where all the identity types are sets, is commutative.
 
 \section{Propositional truncation and logic}
 \label{sec:prop-trunc}
