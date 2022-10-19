@@ -129,23 +129,44 @@ Hence the cardinality of the set of all trivial orbits, \ie of $X^G$, is the dif
 Then $G$ has a subgroup which is cyclic of \gporder $p$.
 \end{theorem}
 \begin{proof}
-Recall the cyclic group $C_p$ of \gporder $p$ given by the pointed connected groupoid
-$$BC_p\defequi(\sum_{S:\Set}\sum_{j:S=S}||(S,j)=\zet/p||,(\zet/p,!)),
+  Recall the cyclic group $\CG_p \defequi \Aut_{\Cyc} \zet/p$ of \gporder $p$ where $\zet/p \defequi (\bn p, s)$ is the standard $p$-cycle. In
+  other words, there is an identification of pointed groupoids
+$$\B\CG_p \eqto (\sum_{S:\Set}\sum_{j:S \eqto S}||(S,j)=\zet/p||,(\zet/p,!)).
 $$
- where $\zet/p:\sum_{S:\Set}S=S$ was a particular model of a set with $p$ element together with a successor modulo $p$.  Informally, $BC_p$ consists of pairs $(S,j)$, where $S$ is a set of cardinality $p$ and $j:S=S$ is a cyclic permutation in the sense that for $0<k<p$ we have that $j^k$ is not $\refl{}$ while $j^p=\refl{}$.  Note also that $j^?:\bn p\to ((S,j)=(S,j))$ given by $j^?(k)=j^k$ is an equivalence (just as for the integers, a symmetry of $(S,j)$, \ie an $f:S=S$ so that $fj=jf$, must be $j^k$ for some $k:\bn p$, and if $k\neq l$, then $j^k\neq j^l$)
+Informally, $\B\CG_p$ consists of pairs $(S,j)$, where $S$ is a set of cardinality $p$ and $j:S\eqto S$ is a cyclic permutation in the sense that for $0<k<p$ we have that $j^k$ is not $\refl{}$ while $j^p=\refl{}$.
+% Note also that $j^?:\bn p\to ((S,j)=(S,j))$ given by $j^?(k)=j^k$ is an equivalence (just as for the integers, a symmetry of $(S,j)$, \ie an $f:S=S$ so that $fj=jf$, must be $j^k$ for some $k:\bn p$, and if $k\neq l$, then $j^k\neq j^l$)
+% If $(S,j):BC_p$ let
+% $$A(S,j)\defequi ((S,j)=(S,j)\to \USym G).$$  Since we have an equivalence $j^?:\bn p\to ((S,j)=(S,j))$ we get that $J:A(S,j)\to \prod_{\bn p}\USym G$ given by $J(g)=(g_{j^0},g_{j_1},\dots,g_{j^{p-1}})$ is an equivalence.
+Given a set $A$, a function $a : \bn p \to A$ is an ordered $p$-tuple of elements of $A$: it suffices to write $a_i$ for $a(i)$ to retrieve the
+usual notations for tuples. Given $(S,j) : \B\CG_p$ however, functions $S \to A$ cannot really be thought the same because $S$ is not
+explicitely enumerated. But as soon as we are given $q : \zet/p \eqto (S,j)$, then functions $S \to A$ are just as good to model ordered
+$p$-tuples of $A$ (just by precomposing with the first projection of $q$). With this in mind, define $\mu_p : (\bn p \to \USym G) \to \USym G$
+to be the $p$-ary multiplication, meaning $\mu_p (g) \defequi g_0g_1\ldots g_{p-1}$. Then, one can define
+$\mu:\prod_{(S,j):\B\CG_p}(\zet/p \eqto (S,j)) \to (S\to\USym G)\to \USym G$ by $\mu_{(S,j)}(q)(g)\defequi (gq)_{0}\cdot\dots\cdot (gq)_{p-1}$
+(where we use $gq$ abusively to denote the composition of $g$ with the equivalence given by applying the first projection to the identification
+$q$). We can now define the $\CG_p$-set $X:\B\CG_p\to\Set$ as:
+$$X(S,j)\defequi\sum_{g:S \to \USym G}\prod_{q : \zet/p \eqto (S,j)}\mu_{(S,j)}(q)(g) = e_G.$$
+% The map from $X(S,j)$ to the $p-1$-fold product of $\USym G$ with itself sending $(g,!)$ to $(g_{j^1},\dots,g_{j^{p-1}})$ is an equivalence ($\mu_{(S,j)}g=e_G$ says exactly that $g_{j^0}$ can be reconstructed as $(g_{j^1}\cdot\dots\cdot g_{j^{p-1}})^{-1}$), so $X(S,j)$ is a set of cardinality $p-1$ times the \gporder of $G$.  In particular, $p$ divides the \gporder of $X(S,j)$.
 
-If $(S,j):BC_p$ let
-$$A(S,j)\defequi ((S,j)=(S,j)\to \USym G).$$  Since we have an equivalence $j^?:\bn p\to ((S,j)=(S,j))$ we get that $J:A(S,j)\to \prod_{\bn p}\USym G$ given by $J(g)=(g_{j^0},g_{j_1},\dots,g_{j^{p-1}})$ is an equivalence.  Define $\mu:\prod_{(S,j):BC_p}(A(S,j)\to\USym G)$ by $\mu_{(S,j)}(g)\defequi g_{j^0}\cdot\dots\cdot g_{j^{p-1}}$ and let $X:BC_p\to\Set$ be the $G$-set defined by
-$$X(S,j)\defequi\sum_{g:A(S,j)}\mu_{(S,j)}g=e_G.$$
-The map from $X(S,j)$ to the $p-1$-fold product of $\USym G$ with itself sending $(g,!)$ to $(g_{j^1},\dots,g_{j^{p-1}})$ is an equivalence ($\mu_{(S,j)}g=e_G$ says exactly that $g_{j^0}$ can be reconstructed as $(g_{j^1}\cdot\dots\cdot g_{j^{p-1}})^{-1}$), so $X(S,j)$ is a set of cardinality $p-1$ times the \gporder of $G$.  In particular, $p$ divides the \gporder of $X(S,j)$.
+% Specializing to $(S,j)$ being $\zet/p$ and allowing to index the elements in $A(\zet/p)$ with $i:\bn p$ (instead of the very awkward ``$(\sqrt[p]\id)^i$'' as purism would dictate) we proceed as follows.
+In particular, an element of $X(\zet/p)$ is a tuple $(g_0,\dots,g_{p-1})$ satisfying that $g_{\sigma 0}\dots g_{\sigma (p-1)} = e_G$ for every
+$\sigma : \USym \CG_p$. Note that this is equivalent to the set of tuples $(g_0,\dots,g_{p-1})$ satisfying that $g_{0}\dots g_{(p-1)} =
+e_G$. So, the map $X(\zet/p)\to \USym G^{p-1}$ that send an element $(g_0,\dots,g_{p-1})$ to $(g_1,\dots,g_{p-1})$ is an equivalence (the
+condition $g_{0}\dots g_{(p-1)} = e_G$ says exactly that we can reconstruct $g_0$ from $(g_1,\dots,g_{p-1})$). In particular, $p$ divides the
+\gporder of $X(\zet/p)$.%
 
-Specializing to $(S,j)$ being $\zet/p$ and allowing to index the elements in $A(\zet/p)$ with $i:\bn p$ (instead of the very awkward ``$(\sqrt[p]\id)^i$'' as purism would dictate) we proceed as follows.
+Now, a $\CG_p$-fixed point of $X$, that is an element $f: \prod_{(S,j):\B\CG_p}X(S,j)$, will have $f_{\zet/p}$ being an element
+$(g_0,\dots,g_{p-1})$ of $X(\zet/p)$ that satisfies (in particular) $(g_0,\dots,g_{p-1})=(g_1,\dots,g_{p-1},g_0)$, \ie{} such that
+$g_0=g_1=g_2=\dots=g_{p-1}$. In other words, a fixed point $f$ is such that $f_{\zet/p}: X(\zet/p)$ is of the form $(g,\dots,g)$ where $g$
+satisfies $g^p=e_G$. So, there is a map $\ev : X^{\CG_p} \to \sum_{g:\USym G}g^p=e_G$ simply given by evaluation at $\zet/p$. This map is an
+equivalence. Indeed, each fiber of $\ev$ is already a proposition, and we only need to show that each is inhabited. Given any $g : \USym G$ such
+that $g^p = e_G$, and given $(S,j) : \B\CG_p$, one can consider the constant function $\hat g : S \to \USym G$ given by $\hat g (s) = g$ for all
+$s:S$. Then, for all $q : \zet/p \eqto (S,j)$, $\hat g q$ is the tuple $(g,\dots,g)$, so that we have $(\hat g, !) : X(S,j)$. In other words, we
+just constructed a fixed point of $X$ whose image through $\ev$ is $g$, that is an element of the fiber of $\ev$ at $g$. In particular,
+$X^{\CG_p}$ is not empty as it is equivalent to $\sum_{g:\USym G}g^p=e_G$, which contains at least $e_G$.
 
-Now, a $C_p$-fixed point of $X(\zet/p)$ is an element $(g_0,\dots,g_{p-1},!)$ such that $(g_0,\dots,g_{p-1},!)=(g_1,\dots,g_{p-1},g_0,!)$, \ie $g_0=g_1=g_2=\dots=g_{p-1}$\footnote{if I am allowed to write that}.  In other words, a fixed point is of the form $(g,\dots,g,!)$, where $!$ expresses that $g^p=e_G$:
-$X(\zet/p)^{C_p}$ is equivalent to $\sum_{g:\USym G}g^p=e_G.$  If we can show that $(g,!):X(\zet/p)^{C_p}$ is nonempty, we'd have established an abstract cyclic subgroup consisting of the powers of $g$.  Of course, setting $g=e_G$ will give us such a fixed point, but if $g\neq e_G$ we get a cyclic subgroup of \gporder $p$ of $G$.
-
-Now, \cref{lem:fixedptsize} claims that $p$ divides the cardinality of $X(\zet/p)^{C_p}$, and since there \emph{are} fixed points, there must be at least $p$ fixed points.
-One of them is the trivial one (given by $g=e_G$ above), but the others are nontrivial.
+Now, \cref{lem:fixedptsize} claims that $p$ divides the cardinality of $X^{\CG_p}$, and since there \emph{are} fixed points, there must be
+at least $p$ fixed points.  One of them is the trivial one (given by $g\defeq e_G$ above), but the others are nontrivial.
 
 % $X(\zet/p)$ splits as a disjoint union of its orbits.\footnote{the formulation here depends on things to come: how do we express the decomposition into orbits?}  Since $p$ is prime, the group $C_p$ is simple ((where proved?)), and so the orbits are either singletons (fixed points) or free orbits:
 % $$X(\zet/p)= X(\zet/p)^{C_p}+(\text{free part of }X(\zet/p)).$$
