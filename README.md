@@ -6,9 +6,9 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - Try to be informal.  Use as few formulas as possible, especially for the parts about type theory and logic, to ease the entry into group theory.
 - We call objects in a type *elements* of that type even if the type is not a set.
 - An element of a proposition can be called a *proof*.
-- An element of an identity type is called an *identification*, and otherwise a *path*.
-  We may say that it shows how to *identify* two elements.
-  We may say it establishes that two elements are *equal* provided the identity type is a proposition.
+- Identity types are denoted in general using the macro \eqto, which produces an arrow with an = on top. An element of an identity type is called an *identification*, and otherwise a *path*. We may say that it shows how to *identify* two elements.
+  If the type is a set, we may denote its identity types by a = b and call them *equations*. When a = b has an element we say that a and b are *equal*.
+- Types similar to identity types, like the type of eqivalences from A to B, are also denoted with a macro ending in "to", like \equivto, producing an arrow with an equivalence sign on top.
 - The type containing the variable in a family is called the "parameter type", not the "index type", nor the "base type".
 - Definitional equality is denoted with three lines and is called just that, i.e., *definitional* and not *judgmental*.
 - A synonym of "function" is "map".  We don't use "mapping" or "application" as synonyms.
