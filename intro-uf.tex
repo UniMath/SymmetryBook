@@ -9,12 +9,12 @@ In some computer programming languages, all variables are introduced along with 
 the type of thing a variable refers to allows the computer to determine which expressions in the language are \emph{grammatically well
 formed}\footnote{The grammar of a programming language consists of all the language's rules.  A statement or expression in a programming
 language is grammatically well formed if it follows all the rules.}, and hence valid.  For example, if $s$ is a
-string\footnote{A \emph{string} is a sequence of characters, such as ``abcdefgh''.} and $x$ is a real number, we may write $1/x$, but we may not write $1/s$.%
+string\footnote{A \emph{string} is a sequence of characters, such as ``qwertyuiop''.} and $x$ is a real number, we may write $1/x$, but we may not write $1/s$.%
 \footnote{In a programming language, the well formed expression $1/x$ may produce a run-time error if $x$ happens to have the value $0$.}
 
 To enable the programmer to express such declarations, names are introduced to refer to the various types of things.  For example, the name
 $\bool$ may be used to declare that a variable is a Boolean value\footnote{A Boolean value is either \emph{true} or \emph{false}.},
-  $\integer$ may refer to 32 bit integers, and $\real$ may refer to 64 bit floating point numbers\footnote{An example of a \emph{floating
+  $\integer$ may refer to 32-bit integers, and $\real$ may refer to 64-bit floating point numbers\footnote{An example of a \emph{floating
 point number} is $.625 \times 2^{33}$ -- the \emph{mantissa} $.625$ and the \emph{exponent} $33$ are stored inside the floating point number.
 The ``point'', when the number is written in base $2$ notation, is called ``floating'', because its position is easily changed by modifying the exponent.}.
 
@@ -61,7 +61,7 @@ introduced it to describe his principle that types that are \emph{equivalent} in
 principle is stated precisely in \cref{def:univalence}.  As Voevodsky explained, the word comes from a Russian translation of a mathematics
 book, where the English mathematical term ``faithful'' was translated into Russian as the Russian word that sounds like ``univalent''.  He also
 said ``Indeed these foundations seem to be faithful to the way in which I think about mathematical objects in my head.''} types are used to
-classify all mathematical objects.  Every mathematical object is an \emph{element} (or a \emph{member}) of some (unique) \emph{type}.  Before
+classify all mathematical objects.  Every mathematical object is an \emph{element} (or a \emph{member}) of some \emph{type}.  Before
 one can talk about an object of a certain type, one must introduce the type itself.  There are enough ways to form new types from old ones to
 provide everything we need to write mathematics.
 
@@ -80,7 +80,7 @@ been already been given a meaning.
 To clarify the dependence of $T$ on $x$ primarily, we may write $T(x)$ (or $T_x$) instead of $T$.
 Such an expression will be called a \emph{family of types} \index{family!of types} parametrized by the variable $x$ of type $X$.
 Such a family provides a variety of types, for, if $a$ is any expression denoting an object of $X$, one may replace all
-occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a member of the family,
+occurrences of $x$ by $a$ in $T$, thereby obtaining a new expression representing a type, which may be regarded as a \emph{member}
 and which may be denoted by $T(a)$.
 
 Naturally, if the expression $T$ doesn't actually involve the variable $x$, then the members of the family are all the same,
@@ -100,8 +100,8 @@ given a meaning.
 Such an expression will also be called a \emph{family of elements of $T$} \index{family!of elements} parametrized by the elements of $X$, when
 we wish to focus on the dependence of $e$ (and perhaps $T$) on the variable $x$.
 To clarify the dependence of $e$ on $x$ primarily, we may write $e(x)$ (or $e_x$) instead of $e$.
-Such a family provides a variety of elements of $T$, for, if $a$ is any expression denoting an object of $X$, one may replace all
-occurrences of $x$ by $a$ in $e$ and in $T$, thereby obtaining an element of $T(a)$, which may be regarded as a \emph{member} of the family
+Such a family provides a variety of elements of members of the family $T$, for, if $a$ is any expression denoting an object of $X$, one may replace all
+occurrences of $x$ by $a$ in $e$ and in $T$, thereby obtaining an element of $T(a)$, which may be regarded as a \emph{member} of the family $e$
 and which will be denoted by $e(a)$.
 
 Naturally, if the expressions $e$ and $T$ don't actually involve the variable $x$, then the members of the family are all the same,
@@ -184,7 +184,7 @@ The forms allowed for the expression $x$ will be made clear by the examples we g
 For example, after writing $n \defeq 12$, we will say that $n$ has been defined to be $12$.
 
 For another example, the function $f$ that we named above may be introduced by writing $f \defeq ( x \mapsto e(x) )$.
-Alternatively and more traditionally, we may write $f(x) \defeq e(x)$.
+Alternatively and more traditionally, we may write $f(x) \defeq e(x)$.   ADD A REMARK.
 
 The notation $b \jdeq c$ will denote the statement that the expressions $b$ and $c$ become the same thing if all the subexpressions within $b$
 or $c$ are expanded according to their definitions, if any; in that case, we will say that $b$ and $c$ are \emph{the same by
@@ -219,7 +219,7 @@ In the following sections we will present various other elementary types and ele
 
 In~\cref{univalent-mathematics} we have introduced the objects known as \emph{types}.  They have \emph{elements}, and the type an
 element belongs to determines the type of thing that it is.  At various points in the sequel, it will be convenient for types also to be
-elements, for that will allow us, for example, to define families of types just as easily as we define families of elements.  To achieve this
+elements, for that will allow us, for example, to enclose families of types in functions.  To achieve this
 convenience, we introduce types that are \emph{universes}.  Some care is required, for the first temptation is to posit a
 single new type $\UU$ called \emph{the universe}, so that every type is realized as an element of $\UU$.  This universe would be ``the type of
 all types'', but introducing it would lead to an absurdity, for roughly the same reason that introduction of a ``set of all sets'' leads to the absurdity
@@ -268,8 +268,8 @@ in traditional mathematics known as Russell's paradox.\footnote{%
 
 It follows from the properties above that there are an infinite number of universes, for each one is an element of a larger one.
 
-Now suppose we have a type $X$ and a family $T(x)$ of types parametrized by a variable $x$ of type $X$.  Choose a universe $U$ with $T(x) : U$.
-Then we can make a function of type $X \to U$, namely $f \defeq (x \mapsto T(x))$.  Conversely, if $f'$ is a function of type $X \to \UU$, then
+Now suppose we have a type $X$ and a family $T(x)$ of types parametrized by a variable $x$ of type $X$.  Choose a universe $\UU$ with $T(x) : \UU$.
+Then we can make a function of type $X \to \UU$, namely $f \defeq (x \mapsto T(x))$.  Conversely, if $f'$ is a function of type $X \to \UU$, then
 we can make a family of types parametrized by $x$, namely $T' \defeq f'(x)$.  The flexibility offered by this correspondence between families of
 types in $\UU$ and functions to $\UU$ will often be used.
 
@@ -292,7 +292,7 @@ Here are Peano's rules\footcite{peano-principia} for constructing the natural nu
   \item an element $a$ of $X(0)$; and
   \item a family of functions $g_m : X(m) \to X(\Succ(m))$.
   \end{enumerate}
-  Then from those data we are provided with a family of elements $f(m) : X(m)$.
+  Then from those data we are provided with a family of elements $f(m) : X(m)$, satisfying $f(0) \jdeq a$ and $f(\Succ(m)) \jdeq g_m(f(m))$.
 \end{enumerate}
 
 The first three rules present few problems for the reader.  They provide us with the smallest natural number $0:\NN$, and we may introduce as
@@ -362,7 +362,7 @@ the two elements are of the same type; we shall have no need to compare elements
 Here are the rules for constructing and using identity types.
 \begin{enumerate}[label=(E\arabic*),ref=(E\arabic*)]\label{rules-for-equality}
   \item\label{E1}
-    for any type $X$ and for any elements $a$ and $b$ of it, there is a \emph{identity type} $a \eqto b$;%
+    for any type $X$ and for any elements $a$ and $b$ of it, there is an \emph{identity type} $a \eqto b$;%
     \glossary(2=){$\xrightarrow =$}{identity type, \cref{E1}}%
     \index{identity type}
     moreover, if $X$ is an element of a universe $\UU$, then so is $a \eqto b$.
@@ -386,7 +386,7 @@ $b$ -- this has the advantage of incorporating the intuition that an identificat
 \index{identification}\index{identity|see{identification}}%
 
 The need to record, using the element $i$, the way we identify $a$ with $b$ may come as a surprise, since normally, in mathematics, one is
-accustomed to regarding $a$ as either equal to $b$ or not.  However, this reflects a situation commonly encountered in geometry
+accustomed to regarding $a$ as being equal to $b$ in at most one way.  However, the use of the element $i$ reflects a situation commonly encountered in geometry
 when \emph{congruence} of geometric figures is considered.%
 \index{congruence}
 For example, in Euclidean space, two equilateral triangles of the same size are congruent in six (different)
@@ -561,14 +561,11 @@ the congruence informs us which of the $3$ angles of $y$ is the right angle.
 
 Now we introduce the notion more formally.
 
-Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$ (as discussed in \cref{univalent-mathematics}).
-Suppose $a,b:X$ and $e:a \eqto b$.
-Then we may construct a function of type $T(a) \to T(b)$.
-We define one specific such function by induction on $e$,
-by taking its value on $\refl{a}$ of type $a \eqto a$ to be the identity function on $T(a)$.
-We record that definition as follows.
-
-\begin{definition}\label{def:transport} The function
+\begin{definition}\label{def:transport}
+  Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$ (as discussed in \cref{univalent-mathematics}).
+  Suppose $a,b:X$ and $e:a \eqto b$.
+  Then we may construct a function of type $T(a) \to T(b)$.
+  The function
   \[
   \trp[T]{e} : T(a) \to T(b)
   \]
@@ -702,12 +699,12 @@ The following lemma shows that $\ap f$ is compatible with composition.
   \[
     \ap f (\refl x \cdot \refl x) \eqto  \ap f ( \refl x ) \cdot  \ap f ( \refl x ).
   \]
-  Both sides of the equation are equal to $\refl { f(x) }$ by definition, so the element $\refl {\refl { f(x) }}$
-  has that type.
+  The two types appearing in the identity type above are equal to $\refl { f(x) }$ by definition, so the element $\refl {\refl { f(x) }}$ provides
+  the needed element of type $\refl { f(x) } \eqto \refl { f(x) }$.
 \end{proof}
 
-In a similar way one shows that $\ap f$ is compatible with path inverse, by constructing an identity of type
-$\ap f(p^{-1}) \eqto  (\ap f (p))^{-1}$.   One may also construct an identity of type $\ap \id (p) \eqto p$.
+In a similar way one shows that $\ap f$ is compatible with path inverse, by constructing an identification of type
+$\ap f(p^{-1}) \eqto  (\ap f (p))^{-1}$.   One may also construct an identification of type $\ap \id (p) \eqto p$.
 
 
 \begin{xca}\label{xca:trp-ap}
@@ -745,8 +742,8 @@ We construct an identification
 \[
   \ns(h,p): h(x')\cdot \ap{f}(p) \eqto \ap{g}(p)\cdot h(x),
 \]
-between them by induction, by setting $\ns(h,\refl{x})$ to be some previously
-constructed element of $h(x) \cdot \refl{f(x)} \eqto h(x)$.%
+between them by induction, by setting $\ns(h,\refl{x})$ to be some 
+element of $h(x) \cdot \refl{f(x)} \eqto h(x)$, which can be constructed by induction, as in Exercise \ref{xca:path-groupoid-laws}.%
 \glossary(ns){$\protect\ns$}{naturality square, \cref{def:naturality-square-commutativity}}
 The type of $\ns(h,p)$ can be depicted as a square\footnote{%
   \begin{displaymath}
@@ -776,6 +773,9 @@ idea of the following definition.
   rendering $y$ and $y'$ of the same type $Y(a)$ in $\UU$, allowing us to define
   $\pathover y Y {\refl a} {y'}$ to be $y \eqto y'$, which is also in $\UU$.
 \end{definition}
+
+\begin{remark}
+\end{remark}
 
 An element $q : \pathover y Y p {y'}$ is called an \emph{identification} of $y$ with $y'$ \emph{over} $p$, or a 
 \emph{path} from $y$ to $y'$ \emph{over} $p$.\index{path over}
