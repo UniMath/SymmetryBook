@@ -1176,14 +1176,14 @@ Give  a function $(X\equiv Y) \to ((Y\equiv Z) \to (X\equiv Z))$.
 The following lemma gives an equivalent characterization
 of equivalence that is sometimes easy to use.
 
-\begin{lemma}\label{lem:weq-iso}
+\begin{construction}\label{lem:weq-iso}
   Let $X,Y$ be types. For each equivalence $f: X\to Y$, we have a function $g: Y\to X$ such that for all $x:X$ we have $g(f(x)) \eqto x$ and for all
   $y:Y$ we have $f(g(y)) \eqto y$. Conversely, if we have such a function $g$, then $f$ is an equivalence.
-\end{lemma}
-\begin{proof}
-Since $f: X\to Y$ is an equivalence we can take $g \defeq f^{-1}$.
+\end{construction}
+\begin{implementation}{lem:weq-iso}
+Given an equivalence $f: X\to Y$ we can take $g \defeq f^{-1}$.
 For the converse, see Chapter~4 of the HoTT Book,\footcite{hottbook} or \coqident{Foundations.PartA}{isweq_iso}.
-\end{proof}
+\end{implementation}
 
 We put \cref{lem:weq-iso} immediately to good use.
 
@@ -2133,21 +2133,21 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
 \item\label{prop-utils-sum} if $A$ is a proposition, then $\sum_{a:A} R(a)$ is a proposition;
-\item\label{prop-utils-eq} $P \liff Q$ is a proposition;
+\item\label{prop-utils-eq} $P \equivto Q$ is a proposition;
 \item\label{prop-utils-lem} $P \amalg \neg P$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 \ref{prop-utils-false-true}:
-If $p,q : \false$, then $p \eqto q$ holds vacuously.
+If $p,q : \false$, then $p \eqto q$ holds by induction on $\false$.
 If $p,q : \true$, then $p \eqto q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv \eqto \triv$.
 
 \ref{prop-utils-codom}:
 If $p,q : A\to P$, then $p \eqto q$ is proved by first observing that $p$ and $q$
 are functions which, by function extensionality, are equal if they have
-equal values $p(x) \eqto q(x)$ in $P$ for all $x$ in $A$. This is
+equal values $p(x) = q(x)$ in $P$ for all $x$ in $A$. This is
 actually the case since $P$ is a proposition.
 
 \ref{prop-utils-pi}:
@@ -2160,12 +2160,12 @@ is proved componentwise.  Alternatively, we may regard this case as a special ca
 
 \ref{prop-utils-sum}:
 Given $(a_1,r_1), (a_2,r_2) : \sum_a R(a)$, we must establish that $(a_1,r_1) \eqto (a_2,r_2)$.  Combining the map in \cref{def:pairtopath} with the
-identity type in \cref{def:pathover-trp} yields a map $ \left( \sum_{u : a_1 \eqto a_2} \trp[Y]{u}(r_1) \eqto r_2 \right) \to \left( (a_1,r_1) \eqto (a_2,r_2)
-\right)$, so it suffices to construct an element in the source of the map.  Since $A$ is a proposition, we may find $u : a_1 \eqto a_2$.  Since
-$R(a_2)$ is a proposition, we may find $v : \trp[Y]{u}(r_1) \eqto r_2$.  The pair $(u,v)$ is what we wanted to find.
+identity type in \cref{def:pathover-trp} yields a map $ \left( \sum_{u : a_1 = a_2} \trp[Y]{u}(r_1) = r_2 \right) \to \left( (a_1,r_1) \eqto (a_2,r_2)
+\right)$, so it suffices to construct an element in the source of the map.  Since $A$ is a proposition, we may find $u : a_1 = a_2$.  Since
+$R(a_2)$ is a proposition, we may find $v : \trp[Y]{u}(r_1) = r_2$.  The pair $(u,v)$ is what we wanted to find.
 
 \ref{prop-utils-eq}:
-Using \cref{lem:weq-iso}, $P \liff Q$ is equivalent to
+Using \cref{lem:weq-iso}, $P \equivto Q$ is equivalent to
 $(P\to Q)\times(Q\to P)$, which is a proposition by
 combining~\ref{prop-utils-codom} and~\ref{prop-utils-times}.
 
@@ -3630,7 +3630,7 @@ We use $p$ as identification of the first components,
 and $\refl{b}$ as identification of the second components
 (whose type is constant). For the third component
 we use that the transport of $\refl{f(b)}$ along $p$
-in the type family $(f(b) \eqto \_)$ is indeed equal to $p$
+in the type family $(f(b) \eqto \_)$ can be identified with $p$
 itself by \cref{xca:trp-in-a/x=b/x}\ref{trp-in-a=x}.
 Now apply \cref{lem:weq-iso}.
 \end{proof}
@@ -3664,7 +3664,7 @@ it remains to give an element of the type $\pathover{\fst}{(\_)\to A}{\etop{e}}{
 
 As an auxiliary step we note that for any $p: X \eqto Y$ and $g:X\to A$,
 $h:Y\to A$, the type $\pathover{g}{(\_)\to A}{p}{h}$ of paths over $p$
-is equal to the type $g \eqto h\circ{\ptoe{p}}$, since the two
+can be identified with the type $g \eqto h\circ{\ptoe{p}}$, since the two
 types are definitionally equal for $p\jdeq\refl{X}$.
 Applying this here means that we must give an element of
 $\fst \eqto f\circ{\ptoe{\etop{e}}}$. This in turn means that
