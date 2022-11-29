@@ -2133,14 +2133,14 @@ Let $R(a)$ be a proposition depending on $a:A$. Then we have:
 \item\label{prop-utils-pi} $\prod_{a:A} R(a)$ is a proposition;
 \item\label{prop-utils-times} $P\times Q$ is a proposition;
 \item\label{prop-utils-sum} if $A$ is a proposition, then $\sum_{a:A} R(a)$ is a proposition;
-\item\label{prop-utils-eq} $P \equivto Q$ is a proposition;
+%\item\label{prop-utils-eq} $P \equivto Q$ is a proposition;
 \item\label{prop-utils-lem} $P \amalg \neg P$ is a proposition.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 \ref{prop-utils-false-true}:
-If $p,q : \false$, then $p \eqto q$ holds by induction on $\false$.
+If $p,q : \false$, then $p \eqto q$ holds by induction for $\false$.
 If $p,q : \true$, then $p \eqto q$ is proved by double induction,
 which reduces the proof to observing that $\refl{\triv}: \triv \eqto \triv$.
 
@@ -2163,11 +2163,6 @@ Given $(a_1,r_1), (a_2,r_2) : \sum_a R(a)$, we must establish that $(a_1,r_1) \e
 identity type in \cref{def:pathover-trp} yields a map $ \left( \sum_{u : a_1 = a_2} \trp[Y]{u}(r_1) = r_2 \right) \to \left( (a_1,r_1) \eqto (a_2,r_2)
 \right)$, so it suffices to construct an element in the source of the map.  Since $A$ is a proposition, we may find $u : a_1 = a_2$.  Since
 $R(a_2)$ is a proposition, we may find $v : \trp[Y]{u}(r_1) = r_2$.  The pair $(u,v)$ is what we wanted to find.
-
-\ref{prop-utils-eq}:
-Using \cref{lem:weq-iso}, $P \equivto Q$ is equivalent to
-$(P\to Q)\times(Q\to P)$, which is a proposition by
-combining~\ref{prop-utils-codom} and~\ref{prop-utils-times}.
 
 \ref{prop-utils-lem}:
 If $p,q : P\amalg \neg P$, then we can distinguish four cases
@@ -2373,7 +2368,17 @@ This is called \emph{the universal property of propositional truncation}.
     $\neg\neg T$.}
 \end{definition}
 
-Now that propositional truncation is available, we are ready to define logical disjunction and existence.
+When we view propositional truncation as an operation on types,
+the type of $\Trunc \blank$ is $\UU\to\UU$. However, that view
+does not take into account that the identification constructor
+proves that $\Trunc T$ is a proposition. It is more informative
+to pack this information into the codomain of the operation
+and let $\Trunc \blank$ have the type $\UU\to\sum_{X:\UU}\isprop(X)$.
+The type $\sum_{X:\UU}\isprop(X)$ is also denoted as $\Prop_\UU$,
+and even as $\Prop$. See \cref{def:Prop-Set} for more information.
+
+Now that propositional truncation is available, 
+we are ready to define logical disjunction and existence.
 
 \begin{definition}
   Given propositions $P$ and $Q$, define their \emph{disjunction} by  $(P \vee Q) \defeq \Trunc{P \amalg Q}$.
@@ -2409,7 +2414,10 @@ The exercise above us to easily convert elements of type $\Trunc P$ to elements 
 $P$ when $P$ is a proposition.
 
 \begin{definition}\label{def:connected}
-  Let $A$ be a type. If $a:A$, then the subtype $A_{(a)}\defeq \sum_{x:A} \Trunc { x \eqto a } $
+  Let $A$ be a type. If $a:A$, then the subtype\footnote{%
+  In \cref{sec:subtype} we will define the notion of subtype more generally.
+  For now we only point out that $\Trunc { x \eqto a }$ is a proposition.}
+   $A_{(a)}\defeq \sum_{x:A} \Trunc { x \eqto a } $
   is called the \emph{connected component} of $a$ in $A$.
   We say that elements $x,y$ of $A$ are \emph{in the same component} of $A$ if $\Trunc { x \eqto y }$, for then $A_{(x)} = A_{(y)}$. 
   The type $A$ is called \emph{connected}\footnote{%
@@ -2430,10 +2438,10 @@ identifications of elements.
 
 \begin{xca}\label{xca:component-connected}
   Show that the component of $a$ in $A$ is connected.
-  Show that equal elements have the same
+  Show that elements in the same component have the same
   \emph{propositional} properties, that is,
-  for any predicate $P:A\to\UU$, $P(x)$ is equivalent
-  to $P(y)$ for any $x,y:A$ with $x=y$.
+  for any $P:A\to\Prop$, $P(x) = P(y)$
+  for any $x,y:A$ with $\Trunc {x=y}$.
 \end{xca}
 
 \begin{xca}\label{xca:prop-set-trivia-2}
@@ -2937,8 +2945,8 @@ proposition $P$.
 \end{xca}
 We've seen how to make a subtype from a predicate.
 Conversely, from a subtype of $T$ given by the injection
-$f : S \to T$,
-we can form a predicate $P_f : T \to \Prop$ defined by $P_f(x) \defeq \inv f(x)$.
+$f : S \to T$, we can form a predicate $P_f : T \to \Prop$ 
+defined by $P_f(x) \defeq \inv f(x)$.
 We shall see in~\cref{lem:Prop-Set-pointed-families},
 that these operations form an equivalence
 between predicates on $T$ and subtypes of $T$.
@@ -3053,16 +3061,20 @@ prove that $A\to B_\div$ is equivalent to $A_+\ptdto B$.
 \section{Operations that produce sets}
 \label{sec:operations-on-sets}
 
+The following lemma holds for $n$-types in general,
+but we only need it for propostions and sets.
+
 \begin{lemma}\label{lem:Set-is-groupoid}
-If $X$ and $Y$ are sets, then $X \eqto Y$ is a set.
-In other words, $\Set$ is a groupoid.
+If $X$ and $Y$ are propositions (sets), then $X \eqto Y$ is a proposition (set).
+In other words, $\Prop$ is a set and $\Set$ is a groupoid.
 \end{lemma}
 
 \begin{proof}
-    By univalence, $(X \eqto Y) \equiv (X\equiv Y) \jdeq \sum_{f:X\to Y} \isEq(f)$. Since $X$ and $Y$ are sets,
-    so is $X\to Y$ by \cref{lem:level-n-utils}. Moreover,
-    $\isEq(f)$ is a proposition by \cref{lem:isX-is-prop}.
-    It follows by \cref{cor:subtype-same-level} that $X \eqto Y$ is a set.
+ By univalence, $(X \eqto Y) \equiv (X\equiv Y) \jdeq \sum_{f:X\to Y} \isEq(f)$.    
+ Since $X$ and $Y$ are propositions (sets),
+ so is $X\to Y$ by \cref{lem:level-n-utils}. Moreover,
+ $\isEq(f)$ is a proposition by \cref{lem:isX-is-prop}.
+ It follows by \cref{cor:subtype-same-level} that $X \eqto Y$ is a proposition (set).
 \end{proof}
 
 One may wonder whether $\NN$ as defined in \cref{sec:inductive-types}
