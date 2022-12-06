@@ -876,8 +876,8 @@ For example, we may define composition of paths over paths as follows.
   Suppose further that we have elements $y : Y(x)$, $y' : Y(x')$, and $y'' : Y(x'')$, with paths $q : \pathover y Y p {y'}$ over $p$
   and $q' : \pathover {y'} Y {p'} {y''}$ over $p'$.
   Then we define the \emph{composite} path $q' \pathovercomp q : \pathover y Y {p' \circ p} {y''}$ over $p' \circ p$ as follows.
-  First we apply path induction on $x''$ and $p'$ to reduce to the case where $x''$ is $x'$ and $p'$ is $\refl{x'}$.
-  That also reduces the type $\pathover {y'} Y {p'} {y''}$ to the identity type $y' \eqto y''$, so we may apply path induction on $y''$ and $q'$ to reduce
+  First we apply path induction on $p'$ to reduce to the case where $x''$ is $x'$ and $p'$ is $\refl{x'}$.
+  That also reduces the type $\pathover {y'} Y {p'} {y''}$ to the identity type $y' \eqto y''$, so we may apply path induction on $q'$ to reduce
   to the case where $y''$ is $y'$ and $q'$ is $\refl{y'}$.
   Now observe that $p' \circ p$ is $p$, so $q$ provides the element we need.
 \end{definition}
@@ -1085,7 +1085,7 @@ By path composition, one sees that any element $x : X$ can serve as the center o
 
 The following lemma gives an important example of a contractible type.
 
-Give a type $X$ and an element $a$ of $X$,
+Given a type $X$ and an element $a$ of $X$,
 the \emph{singleton type} $\sum_{x:X} (a \eqto x)$
 consists of pairs $(x,i)$ with $i: a \eqto x$. The following lemma shows that a singleton type has exactly one element, justifying the name.
 
@@ -1096,7 +1096,7 @@ For any type $X$ and $a:X$, the singleton type $\sum_{x:X} (a \eqto x)$ is contr
 \begin{proof}
 Take as center the pair $(a,\refl{a})$. We have
 to produce, for any element $x$ of $X$ and for any identification
-$i: a \eqto x$, an identification of type $(a,\refl{a}) \eqto (x,i)$.  This is done by path induction on $x$ and $i$, which reduces us to producing
+$i: a \eqto x$, an identification of type $(a,\refl{a}) \eqto (x,i)$.  This is done by path induction on $i$, which reduces us to producing
 an identification of type $(a,\refl{a}) \eqto (a,\refl{a})$; reflexivity provides one, namely $\refl{(a,\refl{a})}$.
 \end{proof}
 
@@ -1143,7 +1143,7 @@ Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x))$,
 with the latter as the fiber that $t(f(x))$
 proves contractible. Hence the center of contraction
 $\fst(t(f(x))$ is equal to $(x,\refl{f(x)})$, and so
-$g(f(x))\jdeq(\fst(\fst(t(f(x))) \eqto x$.
+$g(f(x))\jdeq(\fst(\fst(t(f(x))))) \eqto x$.
 
 We have shown that $f$ and $g$ are inverse functions.  When it won't cause confusion with the notation for the fibers of $f$, we will write
 $f^{-1}$ instead of $g$.
@@ -1160,12 +1160,12 @@ is an equivalence from $T(x)$ to $T(y)$, for all $e: x \eqto y$.
 Make sure you understand the two applications of $\fst$
 in the definition $f^{-1}(y)\defeq\fst(\fst(t(y)))$ above.
 Show that $f^{-1}$ is an equivalence from $Y$ to $X$.
-Give a function $(X\equiv Y) \to (Y\equiv X)$.
+Give a function $(X\equivto Y) \to (Y\equivto X)$.
 % and show that our function is an equivalence. Too difficult here.
 \end{xca}
 
 \begin{xca}\label{xca:equivalence-comp}
-Give  a function $(X\equiv Y) \to ((Y\equiv Z) \to (X\equiv Z))$.
+Give  a function $(X\equivto Y) \to ((Y\equivto Z) \to (X\equivto Z))$.
 \end{xca}
 
 \begin{xca}\label{xca:2-out-of-3}
@@ -1212,8 +1212,8 @@ The above lemma clearly reflects the  contractibility of the
 singleton type $\sum_{x:X}(a \eqto x)$.\footnote{%
   In fact, an alternative proof would go as follows:
   First, we use \cref{lem:weq-iso} to show associativity of sum types,
-  i.e., $\sum_{x:X}\sum_{y:Y(x)}Z(x,y)
-  \equiv \sum_{w : (\sum_{x:X}Y(x))}Z(\fst w,\snd w)$,
+  i.e., to construct an element of $\sum_{x:X}\sum_{y:Y(x)}Z(x,y)
+  \equivto \sum_{w : (\sum_{x:X}Y(x))}Z(\fst w,\snd w)$,
   where $X$ is a type,
   $Y(x)$ is a family of types depending on $x:X$,
   and $Z(x,y)$ is a family of types depending on $x:X$ and $y:Y(x)$.
@@ -1231,7 +1231,7 @@ in the following simpler form.
 With conditions as above, but with $B$ not depending on $i$, the same $f$
 establishes an equivalence
 \[
- \sum_{x:X} ((a \eqto x)\times B(x))~~\equiv~~B(a).
+ \sum_{x:X} ((a \eqto x)\times B(x))~~\equivto~~B(a).
 \]
 \end{corollary}
 
@@ -1244,7 +1244,7 @@ In the direction of further generality, we offer the following exercise.
 We proceed now to define the notion of fiberwise equivalence.
 
 \begin{definition}\label{def:fiberwise}
-Let $X$ be a type, and let $Y(x),Z(x)$ be families of types parameterised
+Let $X$ be a type, and let $Y(x),Z(x)$ be families of types parametrized
 by $x:X$. A map $f$ of type $\prod_{x:X}(Y(x)\to Z(x))$
 can be viewed as a family of maps $f(x): Y(x)\to Z(x)$ and is called a
 \emph{fiberwise} map. The \emph{totalization} of $f$ is defined as
@@ -1285,11 +1285,11 @@ Yet another application of the notion of equivalence is to postulate axioms.
 
 \begin{principle}\label{def:funext}
 The axiom of \emph{function extensionality} postulates that the function
-$\ptw_{f,g}: f \eqto g \to \prod_{x:X} f(x) \eqto g(x)$ in \cref{def:ptw} is an equivalence.
+$\ptw_{f,g}: (f \eqto g) \to \prod_{x:X} f(x) \eqto g(x)$ in \cref{def:ptw} is an equivalence.
 Formally, we postulate the existence of an element $\funext : \isEq(\ptw_{f,g})$.
-From that we can construct the corresponding inverse function.
+From that we can construct the corresponding inverse function
 \[
-\inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x) \eqto g(x)\Bigr) \to f \eqto g.
+\inv{\ptw}_{f,g}: \Bigl(\prod_{x:X} f(x) \eqto g(x)\Bigr) \to (f \eqto g).
 \]
 Thus two functions whose values can all be identified can themselves be identified.
 This supports the intuition that there is nothing more to a function than the values
@@ -1420,7 +1420,7 @@ The following lemma gives the desired characterization of paths between pairs.
   \]
   is an equivalence of type
   \[
-    \left( \sum_{p:x \eqto x'} \pathover y Y p {y'} \right)
+    \Bigl( \sum_{p:x \eqto x'} \pathover y Y p {y'} \Bigr)
     \weq \left ( (x,y) \eqto (x',y') \right ).
   \]
 \end{lemma}
@@ -1671,8 +1671,8 @@ and $f(\inr{y})$ for all $y$ in $Y$.
 Identification of two elements $a$ and $b$ in $X \amalg Y$ is
 only possible if they are constructed with the same constructor.
 Thus $\inl{x} \eqto \inr{y}$ is always empty, and there are equivalences of type
-$(\inl{x} \eqto \inl{x'}) \equiv (x \eqto x')$ and 
-$(\inr{y} \eqto \inr{y'}) \equiv (y \eqto y')$.
+$(\inl{x} \eqto \inl{x'}) \equivto (x \eqto x')$ and 
+$(\inr{y} \eqto \inr{y'}) \equivto (y \eqto y')$.
 
 \begin{xca}\label{xca:binary-sum-id}
   Prove these statements using \cref{xca:binary-sum-equiv},
@@ -1720,9 +1720,12 @@ we get a function, $\out : \Copy(X) \to X$,
 called the \emph{destructor},
 with $\out(\inc{x}) \defeq x$ for $x:X$,
 and the induction principle implies that $\inc{\out(z)} \eqto z$
-for all $z:\Copy(X)$, so there is an equivalence of type $\Copy(X) \equiv X$, as expected.
+for all $z:\Copy(X)$, so there is an equivalence of type 
+$\Copy(X) \equivto X$, as expected.
 In fact, we will assume that the latter equation even holds definitionally.
-It follows that there are equivalences of type $(\inc{x} \eqto \inc{x'}) \equiv (x \eqto x')$ and $(\out(z) \eqto \out(z')) \equiv (z \eqto z')$.
+It follows that there are equivalences of type 
+$(\inc{x} \eqto \inc{x'}) \equivto (x \eqto x')$ and 
+$(\out(z) \eqto \out(z')) \equivto (z \eqto z')$.
 
 Note that we can make several copies of $X$ that are not
 definitionally equal to each other,
@@ -1748,12 +1751,23 @@ So instead we take the wrapped copy $\NNN\defeq\Copy_{-}(\NN)$,
 with constructor ${-} : \NN \to \NNN$.%
 \glossary(NNN){$\protect\NNN$}{the type of negated natural numbers,
   \cref{exa:nnn}}
-There is no harm in also writing ${-} : \NNN \to \NN$
-for the destructor.
-This means that there is an equivalence of type $\NNN \equiv \NN$, for
-the elements of $\NNN$ are of the form $-n$ for $n:\NN$.
-Indeed, $-(-n) \jdeq n$ for $n$ an element of either $\NN$ or $\NNN$,
-and there is an equivalence of type $(-n \eqto -n') \equiv (n \eqto n')$.
+There is no harm in also writing ${-} : \NNN \to \NN$ for the destructor,
+inductively defined by $-(-n)\defeq n$. In fact, the constructor 
+and the destructor are each other's inverse since we
+also have $-(-(-n))\jdeq -n$, and so by induction $-(-m) = m$ for all $m:\NNN$.
+By \cref{lem:weq-iso} we get that they are equivalences.
+
+There is also no harm in writing $\ap{-}$ for the application
+on paths in both directions, as the following exercise shows.
+
+\begin{xca} Show that $\ap{-}: (-n \eqto -n') \to (n \eqto n')$
+is an equivalence. 
+\end{xca}
+
+{\color{red}Was: This means that there is an equivalence of type $\NNN \equivto \NN$, 
+for the elements of $\NNN$ are of the form $-n$ for $n:\NN$.
+Indeed, $-(-n) \jdeq n$ for $n$ an element of either $\NN$ or $\NNN$ (TRUE?),
+and there is an equivalence of type $(-n \eqto -n') \equivto (n \eqto n')$.}
 \end{example}
 
 \section{Univalence}\label{sec:univax}
@@ -1991,9 +2005,9 @@ The following construction will be used later in the book.
 \begin{definition}\label{def:Dan's-lemma}
 Let $X,Y(x)$ be types and $f(x): Y(x)$ for all $x:X$.
 Given elements $x,x':X$ and a path $p : x \eqto x'$, we define an equivalence
-$(\pathover{f(x)}{Y}{e}{f(x')}) \equiv (f(x) \eqto f(x))$.
+$(\pathover{f(x)}{Y}{e}{f(x')}) \equivto (f(x) \eqto f(x))$.
 We do this by inducion on $p$, using \cref{def:pathsoverpaths},
-thereby reducing to the case $(f(x) \eqto f(x)) \equiv (f(x) \eqto f(x))$,
+thereby reducing to the case $(f(x) \eqto f(x)) \equivto (f(x) \eqto f(x))$,
 which we solve in the canonical way as before.
 \end{definition}
 
@@ -2370,11 +2384,11 @@ This is called \emph{the universal property of propositional truncation}.
 
 When we view propositional truncation as an operation on types,
 the type of $\Trunc \blank$ is $\UU\to\UU$. However, that view
-does not take into account that the identification constructor
-proves that $\Trunc T$ is a proposition. It is more informative
+does not take into account that $\Trunc T$ is a proposition. 
+It is more informative
 to pack this information into the codomain of the operation
 and let $\Trunc \blank$ have the type $\UU\to\sum_{X:\UU}\isprop(X)$.
-The type $\sum_{X:\UU}\isprop(X)$ is also denoted as $\Prop_\UU$,
+The type $\sum_{X:\UU}\isprop(X)$ is also denoted as $\Prop_\UU$
 and even as $\Prop$. See \cref{def:Prop-Set} for more information.
 
 Now that propositional truncation is available, 
@@ -2414,12 +2428,13 @@ The exercise above us to easily convert elements of type $\Trunc P$ to elements 
 $P$ when $P$ is a proposition.
 
 \begin{definition}\label{def:connected}
-  Let $A$ be a type. If $a:A$, then the subtype\footnote{%
-  In \cref{sec:subtype} we will define the notion of subtype more generally.
-  For now we only point out that $\Trunc { x \eqto a }$ is a proposition.}
-   $A_{(a)}\defeq \sum_{x:A} \Trunc { x \eqto a } $
-  is called the \emph{connected component} of $a$ in $A$.
-  We say that elements $x,y$ of $A$ are \emph{in the same component} of $A$ if $\Trunc { x \eqto y }$, for then $A_{(x)} = A_{(y)}$. 
+  Let $A$ be a type. For any element $a$ of $A$, the type
+   $A_{(a)}\defeq \sum_{x:A} \Trunc { a \eqto x } $
+  is called the \emph{connected component} of $a$ in $A$.\footnote{%
+  In \cref{sec:subtype} we will define the notion of subtype.
+  It will turn out that $A_{(a)}$ is a subtype of $A$.}
+  We say that elements $x,y$ of $A$ are \emph{in the same component} 
+  of $A$ if $\Trunc { x \eqto y }$. % for then $A_{(x)} = A_{(y)}$. 
   The type $A$ is called \emph{connected}\footnote{%
     In \cref{def:set-truncation} below we will
     define the \emph{set of connected components} of a type.}
@@ -2564,7 +2579,7 @@ using that the conclusion is a proposition.
   For every $f:A\to B$, $b:B$, and $z,z' : f^{-1}(b)$,
   there is an equivalence 
   \begin{equation}\label{eq:fib_vs-path}
-    (z \eqto z') \equiv \ap{f}^{-1}(\snd{z'} \cdot \inv{\snd{z}}).
+    (z \eqto z') \equivto \ap{f}^{-1}(\snd{z'} \cdot \inv{\snd{z}}).
   \end{equation}
 \end{construction}
 
@@ -2590,9 +2605,9 @@ using that the conclusion is a proposition.
   \begin{align*}
     (z \eqto z')
     &\jdeq \bigl( (a,p) \eqto (a',p') \bigr) \\
-    &\equiv \sum_{q : a \eqto a'} \pathover{p}{b \eqto f(\blank)}{q}{p'} \\
-    &\equiv \sum_{q : a \eqto a'} \ap{f}(q) \cdot p \eqto p' \\
-    &\equiv \sum_{q : a \eqto a'} p' \cdot \inv p \eqto \ap{f}(q) \\
+    &\equivto \sum_{q : a \eqto a'} \pathover{p}{b \eqto f(\blank)}{q}{p'} \\
+    &\equivto \sum_{q : a \eqto a'} \ap{f}(q) \cdot p \eqto p' \\
+    &\equivto \sum_{q : a \eqto a'} p' \cdot \inv p \eqto \ap{f}(q) \\
     &\jdeq \ap{f}^{-1}(p' \cdot \inv p).
   \end{align*}
   The second equivalence relies on \cref{def:pathover-trp}
@@ -2620,7 +2635,7 @@ using that the conclusion is a proposition.
   then \eqref{eq:fib_vs-path} applied to $b \defeq f(a)$,
   $z \defeq (a,\refl{f(a)})$ and
   $z' \defeq (a',p)$,
-  gives $\ap{f}^{-1}(p) \equiv (z \eqto kz')$,
+  gives $\ap{f}^{-1}(p) \equivto (z \eqto kz')$,
   which shows that if each $f^{-1}(b)$ is a proposition,
   then $\ap{f}$ is an equivalence.
 \end{proof}
@@ -2649,7 +2664,7 @@ and the proof for $n\geq -1$ is similar.
 
 \begin{xca}\label{xca:sum-equivalences}
 Let $A,B:\UU$, $F:A\to\UU$ and $G:B\to\UU$,
-and $f: A\equiv B$ and $g:\prod_{a:A}(F(a) \equiv G(f(a)))$.
+and $f: A\equivto B$ and $g:\prod_{a:A}(F(a) \equivto G(f(a)))$.
 Give an equivalence from $\sum_{a:A} F(a)$ to $\sum_{b:B} G(b)$.
 (An important special case is $F\jdeq G\circ f$.)
 \end{xca}
@@ -2785,11 +2800,11 @@ Often we run into types that are not in $\UU$ (small) directly,
 but are nevertheless equivalent to types in $\UU$.
 \begin{definition}\label{def:ess-loc-small}
   We say that a type $A$ is \emph{essentially $\UU$-small} if there
-  (purely) is a type $X:\UU$ and an equivalence $A \equiv
+  (purely) is a type $X:\UU$ and an equivalence $A \equivto
   X$. And $A$ is \emph{locally $\UU$-small} if all its identity types
   are essentially $\UU$-small.
 \end{definition}
-Note that $\sum_{X:\UU}(A \equiv X)$ is a proposition by the univalence axiom for $\UU$.
+Note that $\sum_{X:\UU}(A \equivto X)$ is a proposition by the univalence axiom for $\UU$.
 Of course, any $A:\UU$ is essentially $\UU$-small,
 and any essentially $\UU$-small type is locally $\UU$-small.
 
@@ -2797,7 +2812,7 @@ To show that a type is locally $\UU$-small
 we have to give a reflexive relation
 $\mathrm{Eq}_A : A \to A \to \UU$
 that induces, by path induction, a family of equivalences
-$(x \eqto y) \equiv \mathrm{Eq}_A\,x\,y$.
+$(x \eqto y) \equivto \mathrm{Eq}_A\,x\,y$.
 
 \begin{xca}
   Show that $\UU$ is locally $\UU$-small, and investigate
@@ -2851,7 +2866,8 @@ whether an element of $T$ should belong to the subtype, and the predicate can be
 is in it.
 
 \begin{definition}\label{def:predicate}
-  Let $T$ be a type and let $P(t)$ be a family of types parametrized by an variable $t:T$, such that $P(t)$ is a proposition.
+  Let $T$ be a type and let $P(t)$ be a family of propositions 
+  parametrized by an variable $t:T$.
   Then we call $P$ a \emph{predicate}\index{predicate} on $T$.\footnote{%
     Note that giving a predicate on $T$ is
     equivalent to giving a map $Q: T\to\Prop_\UU$ for a suitable universe $\UU$,
@@ -2940,7 +2956,7 @@ specify a decidable predicate on a type $T$.
 \begin{xca}\label{xca:decidability}
 Show that $f(t) \eqto \yes$ is a decidable predicate on $T$,
 for any type $T$ and function $f:T\to\bool$.
-Show $(P\equiv\true)\amalg(P\equiv\false)$ for every decidable
+Show $(P\equivto\true)\amalg(P\equivto\false)$ for every decidable
 proposition $P$.
 \end{xca}
 We've seen how to make a subtype from a predicate.
@@ -3070,7 +3086,8 @@ In other words, $\Prop$ is a set and $\Set$ is a groupoid.
 \end{lemma}
 
 \begin{proof}
- By univalence, $(X \eqto Y) \equiv (X\equiv Y) \jdeq \sum_{f:X\to Y} \isEq(f)$.    
+ By univalence, $(X \eqto Y) \equivto (X\equivto Y) 
+ \jdeq \sum_{f:X\to Y} \isEq(f)$.    
  Since $X$ and $Y$ are propositions (sets),
  so is $X\to Y$ by \cref{lem:level-n-utils}. Moreover,
  $\isEq(f)$ is a proposition by \cref{lem:isX-is-prop}.
@@ -3174,7 +3191,7 @@ constructor $\trunc{t}_{-2}\defeq\triv$.
   the connected component corresponding to $z$, $A_{(z)}$,
   a subtype of $A$, such that for $a:A$, you recover the notion from
   \cref{def:connected}: $A_{(\trunc{a}_0)} \jdeq A_{(a)}$.\footnote{%
-    \emph{Hint:} Use a map $\Trunc{a \eqto {\blank}} : A \to \Prop$
+    \emph{Hint:} Use maps $\Trunc{a \eqto {\blank}} : A \to \Prop$
     and the fact that the universe of propositions
     is a set.}
 
@@ -3182,7 +3199,7 @@ constructor $\trunc{t}_{-2}\defeq\triv$.
   in this way exhibits $A$ as the sum of its connected components,
   parametrized by $\Trunc{A}_0$:
   \[
-    A \equiv \sum_{z : \Trunc{A}_0} A_{(z)}. \qedhere
+    A \equivto \sum_{z : \Trunc{A}_0} A_{(z)}. \qedhere
   \]
 \end{xca}
 
@@ -3621,7 +3638,7 @@ for all $a:A$.
 \begin{proof}
 Note that $\fst(x,b)\jdeq x$ and that $a \eqto x$ does
 not depend on $b$. Hence
-$\fst^{-1}(a) \equiv \sum_{x:A}  (B(x) \times (a \eqto x))$
+$\fst^{-1}(a) \equivto \sum_{x:A}  (B(x) \times (a \eqto x))$
 via rearranging brackets.
 Applying \cref{cor:contract-away} leads indeed to
 the equivalence $e_a$.
@@ -3710,18 +3727,22 @@ The above argument can be refined for each of $\Prop,\Set,\UUp$
 from \cref{sec:subtype}, and one can prove the following
 analogues of \cref{lem:typefamiliesandfibrations}.
 
-\begin{lemma}\label{lem:Prop-Set-pointed-families}
+\begin{construction}\label{lem:Prop-Set-pointed-families}
 Let $A$ be a type. Then we have:
 \begin{enumerate}
-\item $(A\to\Prop) \equiv \sum_{B:\UU}\sum_{f:B\to A}
+\item $(A\to\Prop) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isprop({f^{-1}(a)})$;
 \item \label{lem:Set-families}
-$(A\to\Set) \equiv \sum_{B:\UU}\sum_{f:B\to A}
+$(A\to\Set) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isset({f^{-1}(a)})$;
-\item $(A\to\UUp) \equiv \sum_{B:\UU}\sum_{f:B\to A}
-\prod_{a:A}f^{-1}(a)$. (Hard!)
+\item $(A\to\UUp) \equivto \sum_{B:\UU}\sum_{f:B\to A}
+\prod_{a:A}f^{-1}(a)$.
 \end{enumerate}
-\end{lemma}
+\end{construction}
+
+\begin{xca}\label{xca:Prop-Set-pointed-families}
+Implement the above constructions. (The last is hard!)
+\end{xca}
 
 Since $\Prop$ is a set, we obtain the following corollary.
 \begin{corollary}\label{cor:Sub_T-is-set}
