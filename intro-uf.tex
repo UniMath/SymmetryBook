@@ -1781,13 +1781,13 @@ We now define the function that the univalence axiom postulates to be an equival
 
 \begin{definition}\label{def:idtoeq}
   For types $X$ and $Y$ in a universe $\UU$ and a path $p : X \eqto Y$,
-  we define an equivalence $\cast_{X,Y} (p) : X\equiv Y$
+  we define an equivalence $\cast_{X,Y} (p) : X\equivto Y$
   \glossary(cast){$\protect\cast_{X,Y} (p)$}{cast along a path between types, \cref{def:idtoeq}}
   by induction on $Y$ and $p$,
-  setting $\cast_{X,X} (\refl X) \defeq \id_X : X \equiv X$.
+  setting $\cast_{X,X} (\refl X) \defeq \id_X : X \equivto X$.
   The result is a function\index{cast}
   \[
-    \cast_{X,Y} : (X \eqto Y) \to (X\equiv Y).\qedhere
+    \cast_{X,Y} : (X \eqto Y) \to (X\equivto Y).\qedhere
   \]
 \end{definition}
 
@@ -1815,7 +1815,7 @@ We are ready to state the univalence axiom.
     \]
 \end{principle}
 
-For an equivalence $f: X\equiv Y$, we will adopt the notation $\ua(f) : X \eqto Y $ to denote $\cast_{X,Y}^{-1}(f)$,%
+For an equivalence $f: X\equivto Y$, we will adopt the notation $\ua(f) : X \eqto Y $ to denote $\cast_{X,Y}^{-1}(f)$,%
 \glossary(ua){$\protect\ua$}{the inverse of $\protect\cast$, from univalence}
 the result of applying the
 inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus there are identifications of type $\cast (\ua (f)) \eqto f$ and $\ua (\cast (p)) \eqto p$.
@@ -1823,7 +1823,7 @@ inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus the
 We may also write $\ua (f)$ more briefly as $\etop f$.%
 \glossary(1bar){$\protect\etop f$}{$\protect\ua(f)$}
 Thus there are identifications of type $\etop {\ptoe p} \eqto p$ and $\ptoe {\etop f} \eqto f$.  There are also identifications of type $\overetop{\id_X} \eqto \refl{X}$
-and $\overetop{g\,f} \eqto \etop{g}\,\etop{f}$ if $g: Y\equiv Z$.
+and $\overetop{g\,f} \eqto \etop{g}\,\etop{f}$ if $g: Y\equivto Z$.
 
 \begin{xca}\label{xca:C2}
 Prove that $\bool \eqto \bool$ has exactly two elements,
@@ -2262,7 +2262,7 @@ We leave the other cases as exercises.
 \begin{xca}\label{xca:isX-is-prop}
 Make sure you understand that $\isprop(P)$ is a proposition,
 using the same lemmas as for $\iscontr(A)$.
-Show that $\isset(S)$ and $\isgrpd(G)$ are propositions.
+Show that $\isset(S)$, $\isgrpd(G)$ and $\isEq(f)$ are propositions.
 \end{xca}
 
 The following exercise shows that the inductive definition of $n$-types can
@@ -3282,16 +3282,16 @@ In the following proofs we frequently use \cref{xca:all-prop-image}.
   Take $x\defeq a$ and use reflexivity $R(a,a)$ to conclude $P(a)$.
 
   Conversely, assume $P(a)$, and let $x:A$ be given.
-  To prove the proposition $P(x) \equiv R(a,x)$ we may assume that
+  To prove the proposition $P(x) = R(a,x)$ we may assume that
   $P \jdeq [b]$ for some $b:A$.
-  Then $P(x) \jdeq R(b,x)$, and we need to show $R(b,x) \equiv R(a,x)$.
+  Then $P(x) \jdeq R(b,x)$, and we need to show $R(b,x) = R(a,x)$.
   This follows from $P(a) \jdeq R(b,a)$ using symmetry and transitivity.
 \end{proof}
 \begin{theorem}\label{thm:quotient-property}
-  We have $([x] \eqto [x']) \equiv R(x,x')$ for all $x,x':A$.
+  We have $([x] = [x']) = R(x,x')$ for all $x,x':A$.
   Also, for any \emph{set} $B$, a
   function $f : A \to B$ factors uniquely through the map $[\blank] : A \to A/R$ if
-  $f(x) \eqto f(x')$ for all $x,x':A$ with $R(x,x')$.
+  $f(x) = f(x')$ for all $x,x':A$ with $R(x,x')$.
   Indeed we get a map $\bar f : A/R \to B$ with
   $\bar f([x]) \jdeq f(x)$ for all $x:A$.
 \end{theorem}
@@ -3381,7 +3381,7 @@ and $\neg ((m<n)\times(n<m))$ (so $<$ is irreflexive).
 We can prove the following lemma by double induction.
 
 \begin{lemma}\label{lem:dec-eq+order-N}
-The relations $ \eqto $, $\leq$ and $<$ on $\NN$ are decidable.
+The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
 \end{lemma}
 By Hedberg's \cref{thm:hedberg}, we get an alternate proof that $\NN$ is a set.
 
@@ -3417,7 +3417,7 @@ Given a function $d(n): P(n)\amalg\neg P(n)$ deciding $P(n)$ for each $n:\NN$,
 we define a function $\mu_P:\NN\to\NN$ which,
 given input $n$, searches for a $k<n$ such that $P(k)$.
 If such a $k$ exists, $\mu_P$ returns the least such $k$,
-otherwise $\mu_P(n) \eqto n$.
+otherwise $\mu_P(n) = n$.
 This is a standard procedure that we will call \emph{bounded search}.
 The function $\mu_P$ is defined by induction, setting
 $\mu_P(0)\defeq 0$ and
@@ -3435,25 +3435,25 @@ By induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \mu_P(n)\leq n \quad\text{and}\quad \mu_P(n)<n \to P(\mu_P(n)).
 \]
 The base case where $n \defeq 0$ is easy. For the induction step,
-review the computation of $\mu_P(\Succ(n))$. If $\mu_P(\Succ(n)) \eqto \mu_P(n)$
+review the computation of $\mu_P(\Succ(n))$. If $\mu_P(\Succ(n)) = \mu_P(n)$
 since $\mu_P(n) < n$, then we are done by the induction hypothesis.
-Otherwise, either $\mu_P(\Succ(n)) \eqto n$ and $P(n)$, or $\mu_P(\Succ(n)) \eqto \Succ(n)$.
+Otherwise, either $\mu_P(\Succ(n)) = n$ and $P(n)$, or $\mu_P(\Succ(n)) = \Succ(n)$.
 In both cases we are done.
 
 Also by induction on $n:\NN$ and $d(n): P(n)\amalg\neg P(n)$ we show
 \[
 P(m) \to \mu_P(n)\leq m,~ \text{for all $m$ in $\NN$.}
 \]
-The base case $n \defeq 0$ holds since $\mu_P(0) \eqto 0$. For the induction step,
+The base case $n \defeq 0$ holds since $\mu_P(0) = 0$. For the induction step,
 assume $P(m) \to \mu_P(n)\leq m$ for all $m$ (IH). Let $m:\NN$
 and assume $P(m)$. We have to prove $\mu_P(\Succ(n))\leq m$.
-If $\mu_P(\Succ(n)) \eqto \mu_P(n)$ we are done by IH. Otherwise we have
-$\mu_P(n) \eqto n$ and $\mu_P(\Succ(n)) \eqto \Succ(n)$ and $\neg P(n)$.
+If $\mu_P(\Succ(n)) = \mu_P(n)$ we are done by IH. Otherwise we have
+$\mu_P(n) = n$ and $\mu_P(\Succ(n)) = \Succ(n)$ and $\neg P(n)$.
 Then $\mu_P(n)\leq m$ by IH, and $n\neq m$, so $\mu_P(\Succ(n))\leq m$.
 
 By contraposition we get from the previous result
 \[
-\mu_P(n) \eqto n \to \neg P(m),~\text{for all $m<n$.}
+\mu_P(n) = n \to \neg P(m),~\text{for all $m<n$.}
 \]
 
 Note that there may not be any $n$ such that $P(n)$;
@@ -3487,26 +3487,26 @@ this convention to good use in the proof of a form of the so-called
 
 \begin{lemma}\label{lem:PHP}
 For all $N:\NN$ and $f:\NN\to\NN$ such that $f(n)<N$
-for all $n<N+1$, there exist $m < n < N+1$ such that $f(n) \eqto f(m)$.
+for all $n<N+1$, there exist $m < n < N+1$ such that $f(n) = f(m)$.
 \end{lemma}
 \begin{proof}
-By induction on $N$. In the base case $N \eqto 0$ there is nothing to do.
+By induction on $N$. In the base case $N = 0$ there is nothing to do.
 For the induction case $N+1$, assume the lemma proved for $N$
 (induction hypothesis, IH, for all $f$). Let $f$ be such
 that $f(n)<N+1$ for all $n<N+2$. The idea of the proof is
-to search for an $n<N+1$ such that $P(n)\defeq (f(n) \eqto N)$,
+to search for an $n<N+1$ such that $P(n)\defeq (f(n) = N)$,
 by computing $\mu_P(N+1)$ as in \cref{def:Nwellordered}.
-If $\mu_P(N+1) \eqto N+1$, that is, $f(n)<N$ for all $n<N+1$,
+If $\mu_P(N+1) = N+1$, that is, $f(n)<N$ for all $n<N+1$,
 then we are done by IH. Assume $\mu_P(N+1) < N+1$,
-so $f(\mu_P(N+1)) \eqto N$.
-If also $f(N+1) \eqto N$ then we are done.
-If $f(N+1)<N$, then we define $g$ by $g(n) \eqto f(N+1)$
-if $f(n) \eqto N$, and $g(n) \eqto f(n)$ otherwise.
+so $f(\mu_P(N+1)) = N$.
+If also $f(N+1) = N$ then we are done.
+If $f(N+1)<N$, then we define $g$ by $g(n) = f(N+1)$
+if $f(n) = N$, and $g(n) = f(n)$ otherwise.
 Then IH applies to $g$, and we get $m < n < N+1$ with
-$g(n) \eqto g(m)$. If $f(n) \eqto f(m)$ we are of course done.
+$g(n) = g(m)$. If $f(n) = f(m)$ we are of course done.
 Otherwise, $f(n),f(m)$ cannot both be smaller than $N$,
-as $g(n) \eqto g(m)$. In both remaining cases,
-$f(n) \eqto g(n) \eqto g(m) \eqto f(N+1)$ and $f(N+1) \eqto g(n) \eqto g(m) \eqto f(m)$,
+as $g(n) = g(m)$. In both remaining cases,
+$f(n) = g(n) = g(m) = f(N+1)$ and $f(N+1) = g(n) = g(m) = f(m)$,
 we are done.
 \end{proof}
 
@@ -3520,14 +3520,14 @@ Another application of \cref{def:Nwellordered} is a
 short proof of Euclidean division.
 \begin{lemma}\label{lem:euclid-div}
   For all $n,m:\NN$ with $m>0$ there exist unique $q,r:\NN$
-  such that $r<m$ and $n \eqto qm+r$.
+  such that $r<m$ and $n = qm+r$.
 \end{lemma}
 \begin{proof}
 Define $P(k)\defeq (n\leq km)$. Since $m>0$ we have $P(n)$.
 Now set $k\defeq\mu_P(n)$ as in \cref{def:Nwellordered}.
-If $n \eqto km$ and we set $q\defeq k$ and $r\defeq 0$.
+If $n = km$ and we set $q\defeq k$ and $r\defeq 0$.
 If $n<km$, then $k>0$ and we set $q\defeq k-1$.
-By minimality we have $qm<n<km$ and hence $n \eqto qm+r$ for some $r<m$.
+By minimality we have $qm<n<km$ and hence $n = qm+r$ for some $r<m$.
 \end{proof}
 
 \section{The type of finite types}
@@ -3553,10 +3553,10 @@ We also define $\bn m \defeq F(m)$ for a natural number $m$, $\bn 0 \defeq F(0)$
 \begin{xca}\label{xca:finite-types}
 \hspace{1in}
   \begin{enumerate}
-  \item Denote in full all elements of $\bn{0}$, $\bn{1} $, and $\bn{2}$.
+  \item Denote in full the elements of $\bn{0}$, $\bn{1} $, and $\bn{2}$.
   \item Show (using univalence) that $\bn{1} \eqto \true$, $\bn{2} \eqto \bool$.
   \item Show (using univalence) that $\bn{n} \eqto \sum_{k:\NN} k<n$ for all $n:\NN$.
-  \item Show that $m=n$ if $\bn{m}=\bn{n}$.\qedhere
+  \item Show that $m=n$ if $\bn{m} \eqno \bn{n}$.\qedhere
   \end{enumerate}
 \end{xca}
 \begin{definition}\label{def:is-finite}
