@@ -2429,7 +2429,7 @@ $P$ when $P$ is a proposition.
   We say that elements $x,y$ of $A$ are \emph{in the same component} 
   of $A$ if $\Trunc { x \eqto y }$. % for then $A_{(x)} = A_{(y)}$. 
   The type $A$ is called \emph{connected}\footnote{%
-    In \cref{def:set-truncation} below we will
+    In \cref{xca:sum-of-conn-components} below we will
     define the \emph{set of connected components} of a type.}
   if it is non-empty with
   all elements in the same component.  Formally, this property is encoded by the following proposition.
@@ -2902,13 +2902,17 @@ which will be key to saying what a \emph{subtype} is.
 
 \begin{proof}
 We apply \cref{lem:weq-iso}. Consider $q: x_1 \eqto x_2$.
-By induction on $q$ we get that each $\pathover {p_1} P q {p_2}$ is contractible,
+By induction on $q$, using \cref{xca:prop-contractible=},
+we get that each $\pathover {p_1} P q {p_2}$ is contractible,
 say with center $c_q$. We show that
 mapping $q$ to $\pathpair q {c_q}$ defines an inverse of $\ap{\fst}$,
 applying \cref{lem:isEq-pair=} and the remarks after its proof.
-These give $\ap{\fst}\pathpair q {c_q} \eqto q$ for all $q: x_1 \eqto x_2$.
-Also, for any $r: (x_1,p_1) \eqto (x_2,p_2)$, $r \eqto \pathpair{\fst(r)}{\snd(r)}$.
-The latter pair is equal to $\pathpair{\ap{\fst(r)}}{c}$ for any $c$
+These give identifications in $\ap{\fst}\pathpair q {c_q} \eqto q$
+for all $q: x_1 \eqto x_2$.
+Also, for any $r: (x_1,p_1) \eqto (x_2,p_2)$ we have an identification
+in $r \eqto \pathpair{\fst(r)}{\snd(r)}$.
+The latter pair can be identified with
+$\pathpair{\ap{\fst(r)}}{c}$ for any $c$
 in the contractible type $\pathover {p_1} P {\fst(r)} {p_2}$.
 \end{proof}
 Combined with \cref{lem:inj-ap},
@@ -2994,7 +2998,7 @@ The way we phrased this definition, it builds in the condition that $A$ is a set
 The following celebrated and useful theorem states that this is unnecessary.
 \begin{theorem}[Hedberg]\label{thm:hedberg}\index{Hedberg's theorem}
   Any type $A$ for which we have a function of type
-  $\prod_{x,y:A}\bigl(x \eqto y \amalg \lnot(x \eqto y)\bigr)$
+  $\prod_{x,y:A}\bigl((x \eqto y) \amalg \lnot(x \eqto y)\bigr)$
   is a decidable set.
 \end{theorem}
 For a proof see~Theorem~7.2.5 of the HoTT Book\footcite{hottbook}.
@@ -3071,6 +3075,8 @@ prove that $A\to B_\div$ is equivalent to $A_+\ptdto B$.
   Show that $\sum_{b:B}(A\ptdto (B,b))$ and $(A_\div\to B)$ are equivalent.
 \end{xca}
 
+Since $\UUp$ and $X\ptdto Y$ are sum types, the results on identifying pairs
+in \cref{sec:pairpaths} apply to pointed types and pointed maps as well.
 
 \section{Operations that produce sets}
 \label{sec:operations-on-sets}
@@ -3120,8 +3126,8 @@ if all constituent types are sets.
   for $n, m : \NN$ and $p : n \eqto m$ by induction on $n$ and $m$:
   \[
     T(0,0,p) \defeq (p \eqto \refl{0})%
-    \quad \text{and} \quad%
-    T(\Succ(n), \Succ(m), p) \defeq \sum_{q : n \eqto m} p \eqto \ap S q,%
+    \text{~and~}%
+    T(\Succ(n), \Succ(m), p) \defeq \sum_{q : n \eqto m} p \eqto \ap{\Succ}(q),%
   \]
   and for the other cases the choice does not matter, say $T(0, \Succ(m),
   p) \defeq T(\Succ(n), 0 ,p) \defeq \emptytype$.  Next we prove $T(n,m,p)$
@@ -3233,7 +3239,11 @@ weak constancy of $f : A \to B$ is a proposition.
   Consider the image factorization
   $A \xrightarrow{p}{} \im(f) \xrightarrow{i}{} B$ of $f$,
   where $p(x) \defeq (f(x),\trunc{(x,\refl{f(x)})})$
-  and $i(y,!) \defeq y$.
+  and $i(y,!) \defeq y$.\footnote{%
+  Elements of a type that is a proposition carry no information
+  beyond witnessing that the proposition is non-empty,
+  since all elements of a proposition can be identified.
+  Therefore we may replace them by an exclamation mark.}
 
   The key point is that $\im(f)$ is a proposition: Let
   $(y_1,z_1),(y_2,z_2):\im(f)$. Since $B$ is a set, the type $y_1 \eqto y_2$ is a proposition. Hence we may hypothesize (by induction on $z_i$)
