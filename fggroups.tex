@@ -343,7 +343,7 @@ to elements of the free group.
 \end{xca}
 
 \begin{xca}
-  Construct an equivalence $\FG_{\bn n \coprod \true} \equivto \FG_{\bn n}
+  Construct an equivalence $\FG_{\bn n \amalg \true} \equivto \FG_{\bn n}
   \vee \ZZ$ for each $n : \NN$ using the universal properties.
   As a result, give identifications
   \[
@@ -782,12 +782,166 @@ By the above remark, this applies also to sum types over $\BFG_S$.
 \section{Subgroups of free groups}
 \label{sec:subgroups-free}
 
-The Nielsen--Schreier theorem.
+We now study subgroups of free groups.\marginnote{%
+  Our discussion follows the work of
+  \citeauthor{Swan2022}\footnotemark{}.}\footcitetext{Swan2022}
+We'll eventually prove the Nielsen--Schreier theorem,
+which states that a finite index subgroup $H$ of a free group $\FG_S$ is itself a free group.
+Furthermore, when $S$ is finite, the set of free generators of $H$ is itself finite.
 
+% Should this be in subgroup chapter?
+\begin{definition}\label{def:finite-index}
+  A subgroup of a group $G$ has \emph{finite index} $m$ if, when represented as a
+  transitive $G$-set $X : \BG \to \Set$, $X(\sh_G)$ is a finite set of cardinality $m$.
+\end{definition}
+In that case, of course, all the twisted sets $X(t)$ for $t:\BG$ are also finite sets
+of cardinality $m$.
 
-\begin{corollary}
-  A subgroup of finite index of a finitely generated group is finitely generated.
-\end{corollary}
+Recall from~\cref{def:set-of-subgroups} that the underlying classifying type of the subgroup is the total type $\sum_{t:\BG}X(t)$.
+Thus we'll use the Flattening~\cref{def:graph-quotient-flattening} to analyze
+this in case $G \jdeq \FG_S$, so we need to show that the resulting graph
+has a quotient equivalent to $\bn 1/T$ for some set $T$.
+
+We do this by finding a ``spanning tree'' in the graph.
+
+\begin{definition}
+  A graph $(V,E)$ is \emph{connected}\index{connected!graph} if $V/E$ is a connected type
+  and it's a \emph{tree} if $V/E$ is contractible.
+\end{definition}
+
+\begin{definition}
+  A \emph{subgraph} of a graph $(V,E)$ consists of a subtype $h : U \hookrightarrow V$
+  of the vertices along with, for every pair of vertices $v,w$ in $U$,
+  a subtype $D(v,w)$ of the edges $E(v,w)$.
+\end{definition}
+If we represent graphs by source and target maps, then this amounts to embeddings
+$h : U \hookrightarrow V$ and $k : D \hookrightarrow E$ along with witnesses that the
+following squares commute:
+\[
+  \begin{tikzcd}
+    D \ar[r,hook,"k"]\ar[d,"s"'] & E \ar[d,"s"] \\
+    U \ar[r,hook,"h"'] & V
+  \end{tikzcd}\quad
+  \begin{tikzcd}
+    D \ar[r,hook,"k"]\ar[d,"t"'] & E \ar[d,"t"] \\
+    U \ar[r,hook,"h"'] & V
+  \end{tikzcd}
+\]
+\begin{definition}
+  A \emph{spanning tree} in a graph $(V,E)$ is a subgraph $(U,D)$
+  such that $(U,D)$ is a tree, and the embedding of the vertices
+  $U \hookrightarrow V$ is an equivalence.
+\end{definition}
+Equivalently, it's given by subtypes of the edges (leaving the vertices alone)
+such that the underlying graph is a tree.
+Very often we'll require that the edge embeddings are decidable,
+\ie we can decide whether a given edge $e : E(v,w)$ is part of the tree.
+
+\begin{marginfigure}
+  \begin{tikzpicture}
+    \draw (-.25,0.9) ellipse (.55 and 1.2);
+    \node (X) at (0,2.4) {$V_0$};
+    \draw (1.2,1.1) ellipse (.7 and 1);
+    \node (Y) at (1,2.3) {$V_1$};
+    \node[dot,label=below:$v_0$] (x) at (-.1,0.4) {};
+    \node[dot,label=above:$v_1$] (y) at (1.6,1.3) {};
+    \node[dot] (s) at (-.1,1.4) {};
+    \node[dot] (t) at (1.0,1.3) {};
+    \draw[casblue,dotted,<->] (s) -- (t) node[midway,label=above:$e$] {};
+    \draw[dashed] (0.5,1.1) ellipse (1.5 and 1.9);
+    \node (XY) at (-0.75,3.05) {$V_0 \amalg V_1$};
+  \end{tikzpicture}
+  \caption{A connected graph with a crossing edge}
+  \label{fig:crossing-edge}
+\end{marginfigure}
+\begin{lemma}\label{lem:crossing-edge}
+  Suppose we have a connected graph $(V,E)$ whose type of vertices
+  decomposes as a binary sum $V \equivto V_0 \amalg V_1$
+  and we have $v_0:V_0$ and $v_1:V_1$.
+  Then there merely exists an edge $e$ either with source in $V_0$ and target in $V_1$
+  or vice versa.
+\end{lemma}
+The situation is illustrated in~\cref{fig:crossing-edge}, where we assume
+there is an edge relation on the binary sum that gives a connected graph,
+and hence there must be a ``crossing edge'' $e$, going either from $V_0$ to $V_1$
+or the other way.
+
+\begin{lemma}\label{lem:spanning-tree-step}
+  Fix a connected graph $(V,E)$ where $V$ has decidable equality and $E$ is a family of sets.
+  For any subgraph $(U,D)$, where the embedding $U\hookrightarrow V$ is decidable,
+  and with vertices $u \in U$ and $v \in V \setminus U$,
+  there merely exists a larger subgraph with exactly one more vertex and one more edge,
+  $(U\amalg\bn 1, D\amalg\bn 1)$ such that the induced map on graph quotients
+  $U/D \to (U\amalg\bn 1)/(D\amalg\bn 1)$ is an equivalence.\marginnote{%
+    \begin{tikzcd}[sep=small,ampersand replacement=\&]
+      D \ar[r,hook]\ar[d,shift left]\ar[d,shift right] \&
+      D\amalg\bn 1 \ar[r,hook]\ar[d,shift left]\ar[d,shift right] \&
+      E\ar[d,shift left]\ar[d,shift right] \\
+      U \ar[r,hook]\ar[d] \&
+      U\amalg\bn 1 \ar[r,hook]\ar[d] \&
+      V \ar[d] \\
+      U/D \ar[r,"\equiv"] \&
+      (U\amalg\bn 1)/(D\amalg\bn 1)\ar[r] \&
+      V/E
+    \end{tikzcd}}
+\end{lemma}
+
+\begin{lemma}\label{lem:spanning-tree}
+  Let $(V,E)$ be a connected graph where $V$ is an $n$-element set,
+  and $E$ is a family of decidable sets. Then the graph merely has a spanning tree
+  with exactly $n-1$ edges.
+\end{lemma}
+\begin{proof}
+  We show by induction on $k$, with $1\le k\le n$, that there merely exists
+  a subgraph $(U,D)$ with $k$ vertices, $k-1$ edges, and $U/D$ contractible,
+  \ie the graph $(U,D)$ is a tree.
+
+  For $k\jdeq 1$, we use that $V/E$ is connected to get that $V$ merely has a vertex $v$.
+  This then defines the desired subgraph on one vertex with no edges,
+  and this is clearly a tree.
+
+  Suppose we have such a desired subgraph $(U,D)$
+  with $k$ vertices and $k-1$ edges and $k<n$.
+  Since $V$ is finite, there exists vertices $u \in U$ and $v \in V \setminus U$.
+  Now apply~\cref{lem:spanning-tree-step} to get the next subgraph.
+
+  Finally, the subgraph $(U,D)$ with $n$ vertices and $n-1$ edges gives
+  the desired spanning tree, and any embedding of an $n$-element set
+  in another $n$-element set is an equivalence.\footnote{%
+    Assuming the Axiom of Choice, we can show the mere existence of a spanning tree
+    in any graph $(V,E)$ with a sets of vertices and edges.
+    See the above work by~\citeauthor{Swan2022}.}
+\end{proof}
+
+\begin{theorem}[Nielsen--Schreier Theorem]
+  Suppose that $S$ is a set with decidable equality and
+  $X : \BFG_S \to \Set$ defines a finite index subgroup.
+  Then $\sum_{z:\BFG_S}X(z)$ is merely equivalent to the classifying type of a free group.
+
+  Moreover, if $S$ is a finite set of cardinality $n$ and the subgroup has index $m$,
+  then the free group can be taken on a finite set of cardinality $m(n-1)+1$.
+\end{theorem}
+\begin{proof}
+  By the Flattening~\cref{def:graph-quotient-flattening},
+  we have an equivalence $\sum_{z:\BFG_S}X(z) \equivto X(\base)/E$,
+  where $E(x,y) \jdeq \sum_{s:S}(\pathover{x}{X}{\Sloop_s}{y})$.
+  By the finite index assumption, $X(\base)$ is a finite set,
+  say, of cardinality $m$,
+  and since both $S$ and $X(\base)$ are decidable, so is $E$.
+
+  By~\cref{lem:spanning-tree}, there merely exists a spanning tree with
+  $m-1$ edges $E_0$. Then we have
+  \[
+    V/E \equivto V/(E_0\amalg E_1) \equivto (V/E_0)/E_1
+    \equivto \bn 1/E_1 \equivto \BFG_{E_1}.
+  \]
+  This establishes the first claim.
+
+  If furthermore $S$ has cardinality $n$, then the graph $(X(\base),E)$
+  has $mn$ edges, as there are precisely $n$ outgoing edges from each vertex.
+  Since $E_0$ has $m-1$ edges,
+  that leaves $mn - (m-1) = mn-m+1 = m(n-1)+1$ edges in $E_1$, as desired.
+\end{proof}
 (This also has an automata theoretic proof, see below.)
 
 \section{Intersecting subgroups}
