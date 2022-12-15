@@ -536,14 +536,15 @@ By the above remark, this applies also to sum types over $\BFG_S$.
   using the induction principles:
   \begin{alignat*}2
     \varphi([(v,x)]) &\defeq ([v],e) &\quad
-    \tilde\psi([v],x) &\defeq [(v,x)] \\
+    \tilde\psi([v]) &\defeq (x \mapsto [(v,x)]) \\
     \ap\varphi(\qedge_{(e,q)}) &\defis \pathpair{\qedge_e}{q} &\quad
     \apd{\tilde\psi}(\qedge_e) &\defis h,
   \end{alignat*}
-  where we need $h : \pathover{(x \mapsto [(v,x)])}{z \mapsto X(z) \to V'/E'}{\qedge_e}
-  {y \mapsto [(w,y)]}$ for all $e : E(v,w)$.
+  where we need to construct
+  $h : \pathover{(x \mapsto [(v,x)])}{z \mapsto X(z) \to V'/E'}{\qedge_e}
+  {(y \mapsto [(w,y)])}$ for all $e : E(v,w)$.
   By~\cref{lem:trp-in-function-type}, it suffices to give an identification
-  $[(v,x)] \eqto [(w,\trp[X]{\qedge_e}(x))]$ for all $x : X([v]$.
+  $[(v,x)] \eqto [(w,\trp[X]{\qedge_e}(x))]$ for all $x : X([v])$.
   We get this from the identification constructor $\qedge$ for $V'/E'$
   by applying~\cref{def:pathover-trp} to the reflexivity path at
   $\trp[X]{\qedge_e}(x)$.
@@ -554,6 +555,39 @@ By the above remark, this applies also to sum types over $\BFG_S$.
   is defined by $\psi((z,x)) \defeq \tilde\psi(z)(x)$.
 \end{xca}
 
+Later on we'll need also need the following results about graph quotients.
+\begin{xca}\label{xca:graph-quotient-in-steps}
+  Suppose the edges $E$ of a graph $(V,E)$ are expressed as a binary sum $E_0 \amalg E_1$.
+  (Here, it doesn't matter whether $E$ is expressed as a type family $E : V \to V \to \UU$,
+  in which case we have a family of equivalences $E(v,w) \equivto E_0(v,w) \amalg E_1(v,w)$,
+  or $E$ is the total type of edges.)
+
+  Then we can obtain the graph quotient $V/E$ by first gluing in the edges from $E_0$,
+  and then gluing in the edges from $E_1$ to the resulting type $V/E_0$.
+  Using the description of graphs with a total type of edges $E \equivto E_0 \amalg E_1$,
+  we have corresponding source and target maps expressed as compositions:
+  \[
+    E_1 \hookrightarrow E_0\amalg E_1 \equivto E \rightrightarrows V \to V/E_0.
+  \]
+  Construct an equivalence $V/E \equivto V/(E_0 \amalg E_1) \equivto (V/E_0)/E1$.
+\end{xca}
+
+\begin{xca}\label{xca:graph-quotient-whisker}
+  Suppose we have any type $X$ with an element $x:X$.
+  We can form a graph $(X\amalg\bn 1,\bn 1)$ with vertex type $X\amalg\bn 1$
+  and a single edge from $\inl x$ to $\inr 0$.
+  Construct an equivalence $X \equivto (X\amalg\bn 1)/\bn 1$.\footnote{%
+    This equivalence can be visualized as follows, where $X$ ``grows a whisker''
+    along the single edge.\\
+    \begin{tikzpicture}
+      \draw (0,0) ellipse (1 and 1.2);
+      \node (X) at (0,1.5) {$X$};
+      \node (t) at (1.7,0.6) {$\bn 1$};
+      \node[dot,label=below:$x$] (x) at (.6,0.3) {};
+      \node[dot] (pt) at (1.5,.4) {};
+      \draw[->,bend left] (x) -- (pt) {};
+    \end{tikzpicture}}
+\end{xca}
 \section{Examples}
 \label{sec:fg-examples}
 
@@ -845,8 +879,8 @@ Very often we'll require that the edge embeddings are decidable,
     \node (Y) at (1,2.3) {$V_1$};
     \node[dot,label=below:$v_0$] (x) at (-.1,0.4) {};
     \node[dot,label=above:$v_1$] (y) at (1.6,1.3) {};
-    \node[dot] (s) at (-.1,1.4) {};
-    \node[dot] (t) at (1.0,1.3) {};
+    \node[dot,label=below:$u_0$] (s) at (-.1,1.4) {};
+    \node[dot,label=below:$u_1$] (t) at (1.0,1.3) {};
     \draw[casblue,dotted,<->] (s) -- (t) node[midway,label=above:$e$] {};
     \draw[dashed] (0.5,1.1) ellipse (1.5 and 1.9);
     \node (XY) at (-0.75,3.05) {$V_0 \amalg V_1$};
@@ -865,6 +899,30 @@ The situation is illustrated in~\cref{fig:crossing-edge}, where we assume
 there is an edge relation on the binary sum that gives a connected graph,
 and hence there must be a ``crossing edge'' $e$, going either from $V_0$ to $V_1$
 or the other way.
+\begin{proof}
+  We may assume $V \jdeq V_0 \amalg V_1$ by path induction.
+  The idea is then to define a family of propositions $P : V/E \to \Prop$
+  that, one the one hand, is trivially true over $V_0$, and on the other hand
+  expresses our desired goal, the existence of a ``crossing edge'', over $V_1$.
+
+  We define $P(z)$, for $z:V/E$, by the induction principle for the graph quotient $V/E$,
+  with a subsidiary case distinction for the vertex $v : V_0 \amalg V_1$.
+  We set $([\inl v]) \defeq \true$ for $v : V_0$ and
+  \[
+    P([\inr v]) \defeq \Trunc*{\sum_{u_0:V_0}\sum_{u_1:V_1}
+      \bigl(E(u_0,u_1) \amalg E(u_1,u_0)\bigr)}
+  \]
+  for $v : V_1$.
+  We must then prove that the propositions $P(v)$ and $P(v')$ are equivalent
+  whenever there's an edge from $v$ to $v'$.
+  This is trivially the case when $v,v'$ lie in the same summand,
+  and it's also the case when they lie in different summands, since then
+  we get a witness for the truth over $V_1$.
+
+  Since $V/E$ is connected, $P$ must have a constant truth value,
+  and since $P([\inl{v_0}])\jdeq\true$, every $P(z)$ is true.
+  Hence also $P([\inr{v_1}])$ is true, which is exactly what we wanted.
+\end{proof}
 
 \begin{lemma}\label{lem:spanning-tree-step}
   Fix a connected graph $(V,E)$ where $V$ has decidable equality and $E$ is a family of sets.
@@ -885,12 +943,49 @@ or the other way.
       V/E
     \end{tikzcd}}
 \end{lemma}
+\begin{proof}
+  Since the embedding $U\hookrightarrow V$ is decidable,
+  we can write $V$ as the binary sum $U \amalg (V\setminus U)$.
+  Apply~\cref{lem:crossing-edge} to find a ``crossing edge'' $e$,
+  and form the new subgraph $(U\amalg\bn 1, D\amalg\bn 1)$ by adding
+  the incident vertex not in $U$ as well as the edge $e$ itself.
+  The embedding $U\amalg\bn 1 \to V$ is still decidable, since $V$ has decidable equality.
+  Finally, we have
+  \[
+    (U\amalg\bn 1) / (D\amalg\bn 1) \equivto \bigl((U\amalg\bn 1)/\bn 1\bigr)/D
+    \equivto U/D,
+  \]
+  using~\cref{xca:graph-quotient-in-steps,xca:graph-quotient-whisker}, as desired.
+\end{proof}
 
 \begin{lemma}\label{lem:spanning-tree}
   Let $(V,E)$ be a connected graph where $V$ is an $n$-element set,
   and $E$ is a family of decidable sets. Then the graph merely has a spanning tree
   with exactly $n-1$ edges.
 \end{lemma}
+
+\begin{marginfigure}
+  \begin{tikzpicture}
+    \node[dot] (v1) at (0,0) {};
+    \node[dot] (v2) at (1,0) {};
+    \node[dot] (v3) at (-.4,1) {};
+    \node[dot] (v4) at (.7,.9) {};
+    \node[dot] (v5) at (.5,1.8) {};
+    \node[dot] (v6) at (1.5,1.6) {};
+    \draw[->,casred] (v1) -- (v2);
+    \draw[->,casred] (v1) to[out=135,in=270] (v3);
+    \draw[->,casred] (v3) -- (v4);
+    \draw[->] (v4) -- (v2);
+    \draw[->,casred] (v6) to[out=200,in=80] (v3);
+    \draw[->] (v2) to[out=45,in=270] (v6);
+    \draw[->] (v6) -- (v4);
+    \draw[->,casred] (v6) to[out=90,in=45] (v5);
+  \end{tikzpicture}
+  \caption{A connected graph on $6$ vertices with a spanning tree indicated
+    in~\textcolor{casred}{red}.}
+  \label{fig:spanning-tree-example}
+\end{marginfigure}
+
 \begin{proof}
   We show by induction on $k$, with $1\le k\le n$, that there merely exists
   a subgraph $(U,D)$ with $k$ vertices, $k-1$ edges, and $U/D$ contractible,
@@ -930,10 +1025,11 @@ or the other way.
   and since both $S$ and $X(\base)$ are decidable, so is $E$.
 
   By~\cref{lem:spanning-tree}, there merely exists a spanning tree with
-  $m-1$ edges $E_0$. Then we have
+  $m-1$ edges $E_0$. Then we have,
+  using \cref{xca:graph-quotient-in-steps}:
   \[
     V/E \equivto V/(E_0\amalg E_1) \equivto (V/E_0)/E_1
-    \equivto \bn 1/E_1 \equivto \BFG_{E_1}.
+    \equivto \bn 1/E_1 \equivto \BFG_{E_1}
   \]
   This establishes the first claim.
 
