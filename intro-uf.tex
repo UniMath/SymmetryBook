@@ -1571,8 +1571,9 @@ proven. (This logical principle is traditionally called
 From falsehood, anything follows. Also called the principle of explosion.})
 As an example, we may prove that any two elements $x$ and $y$ of 
 $\emptytype$ are equal (i.e., construct an identification of
-type $x\eqto y$) by using induction on $x$. We may also
-prove by induction on $x:\emptytype$ that $0$ and $\Succ(0)$ are equal
+type $x\eqto y$) by using induction on $x$. We may even
+prove by induction on $x:\emptytype$ that the elements
+$0$ and $\Succ(0)$ of $\NN$ are equal
 (i.e., construct a function of type $\emptytype\to(0\eqto\Succ(0)$).
 
 An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one expects that there are no real absurdities in mathematics, nor in any
@@ -1606,13 +1607,15 @@ cases: the special case where the element is $\yes$ and the special case where t
 We may use substitution to construct an element of type $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ in the universe
 $\UU_0$ parametrized by a variable $b:\bool$.  We define $P(b)$ by induction on $b$ by setting $P(\yes) \defeq \true$ and 
 $P(\no) \defeq \false$.  (The definition of $P(b)$ is motivated by the expectation that we will be able to construct an equivalence between $P(b)$ and 
-$b \eqto  \yes$.)  If there were an element $e: \yes \eqto \no$, we could substitute $\no$ for $\yes$ in $\triv : P (\yes)$ to get an element of $P(\no)$,
+$\yes \eqto b$.)  If there were an element $e: \yes \eqto \no$, we could substitute $\no$ for $\yes$ in $\triv : P (\yes)$ to get an element of $P(\no)$,
 which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes \eqto \no) \to \emptytype$, as desired.
 
-In the same way, we may use substitution to prove that successors of natural numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne
-\Succ(n)$.  To do this, we introduce a family of types $P(i)$ in $\UU_0$ parametrized by a variable $i:\NN$.  Define $P$ recursively by
+In the same way, we may use substitution to prove that successors of natural
+numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne \Succ(n)$.
+To do this, we introduce a family of types $P(i)$ in $\UU_0$ parametrized 
+by a variable $i:\NN$.  Define $P$ recursively by
 specifying that $P(0) \defeq \true$ and $P(\Succ(m)) \defeq \false$.  (The definition of $P(i)$ is motivated by the expectation that we will be
-able to construct an equivalence between $P(i)$ and $i \eqto 0$.)  If there were an element $e: 0 \eqto \Succ(n)$, we could substitute $\Succ(n)$ for $0$
+able to construct an equivalence between $P(i)$ and $0 \eqto i$.)  If there were an element $e: 0 \eqto \Succ(n)$, we could substitute $\Succ(n)$ for $0$
 in $\triv : P ( 0 )$ to get an element of $P(\Succ(n))$, which is absurd.  Since $e$ was arbitrary, we have defined a function $(0 \eqto \Succ(n)) \to \emptytype$,
 establishing the claim.
 
@@ -2484,22 +2487,22 @@ in English speech.
 For example, a type is non-empty if it \emph{merely has an element}, and a type is connected if any two elements can be
 \emph{merely identified} with each other.
 
-We now make precise the meaning of the word \emph{equivalent}, which was introduced earlier.
-
-\begin{definition}\index{equivalent}
-  If $X$ and $Y$ are types, then the phrase ``$X$ and $Y$ are equivalent'' means that an equivalence between them can be
-  \emph{merely} constructed.  It is encoded by the type $\Trunc { X \equivto Y }$.
-\end{definition} 
 
 \section{More on equivalences; surjections and injections}
 \label{sec:more-on-equivalences}
 
 In this section we collect a number of useful results on equivalences.
 
-Consider the function $f:\bn{1}\to\bn{2}$ sending $0$ to $0$.
-The fibers of $f$ at $0$ and $1$ are equivalent to $\true$ and $\false$.
-Hence $f$ is not an equivalence, since $\false$ is not contractible. 
-Observe that both fibers are propositions, that is, contain at most one element.
+Consider the function $f:\bn{1}\to\bn{2}$ that is constant $0$.
+The fibers of $f$ at $0$ and $1$ are $\sum_{x:\bn{1}} 0\eqto 0$
+and $\sum_{x:\bn{1}} 1\eqto 0$, respectively. 
+The latter fiber is not contractible: having an element 
+of it would mean having an element of $1\eqto 0$,
+which would in turn lead to an element in $\false$
+(using a similar reasoning as in \cref{sec:finite-types}).
+Hence $f$ is not an equivalence.
+Observe that both fibers are propositions, 
+that is, contain at most one element.
 
 As a function between sets
 $f$ is an injection (one-to-one), but not a surjection.
@@ -3473,7 +3476,7 @@ assume $P(m) \to \mu_P(n)\leq m$ for all $m$ (IH). Let $m:\NN$
 and assume $P(m)$. We have to prove $\mu_P(\Succ(n))\leq m$.
 If $\mu_P(\Succ(n)) = \mu_P(n)$ we are done by IH. Otherwise we have
 $\mu_P(n) = n$ and $\mu_P(\Succ(n)) = \Succ(n)$ and $\neg P(n)$.
-Then $\mu_P(n)\leq m$ by IH, and $n\neq m$, so $\mu_P(\Succ(n))\leq m$.
+Then $\mu_P(n)\leq m$ by IH, and $n\ne m$, so $\mu_P(\Succ(n))\leq m$.
 
 By contraposition we get from the previous result
 \[
@@ -3537,7 +3540,7 @@ we are done.
 We can now rule out the existence of equivalences between finite
 sets of different size.
 \begin{corollary}\label{cor:Fin-n-injective}
-If $m<n$, then $(\sum_{k:\NN} k<m) \neq (\sum_{k:\NN} k<n)$.
+If $m<n$, then $(\sum_{k:\NN} k<m) \ne (\sum_{k:\NN} k<n)$.
 \end{corollary}
 
 Another application of \cref{def:Nwellordered} is a
