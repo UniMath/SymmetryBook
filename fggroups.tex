@@ -376,7 +376,8 @@ set of generators $S$.
 First recall from Cayley's \cref{lem:allgpsarepermutationgps}
 that any group $G$ can be realized as a subgroup of the permutation group
 on the underlying set of elements of $G$, $\USymG$.
-In this description, a $G$-shape is a set $X$ equipped a torsorial $G$-action,
+In this description, a $G$-shape is a set $X$ equipped
+a $G$-action that defines a $G$-torsor,
 which in turn can be expressed as the structure of a map $\alpha:\USymG \to X \to X$
 satisfying certain properties.
 
@@ -387,14 +388,15 @@ as the official definition.
 \begin{definition}\label{def:gens-gp}
   Let $G$ be a group and $S$ be a subset of $\USymG$, given by an inclusion
   $\iota : S \to \USymG$. We say that \emph{$S$ generates $G$} if the induced
-  homomorphism
+  homomorphism from the free group on $S$,
   \[
-    \FG_S \to G
+    \FG_S \to G,
   \]
   is an epimorphism.
 \end{definition}
 \begin{lemma}\label{lem:gens-gp-iff}
-  Let $G$ be a group and $\iota : S \to \USymG$ the inclusion of a subset of the elements of $G$.
+  Let $G$ be a group
+  and $\iota : S \to \USymG$ an inclusion of a subset of the elements of $G$.
   Then $S$ generates $G$ if and only if the map
   \[
     \rho_S : \BG \to \sum_{X:\UU}(S \to X \to X) ,
@@ -445,7 +447,7 @@ in the type $\sum_{X:\UU}(S \to X \to X)$, or even in the larger type (of which 
 \end{figure}
 
 Also note that $S$ generates $G$ if and only if the map on elements
-$\UFG_S \to \USymG$ is surjective, meaning every element of $g$ can be expressed
+$\UFG_S \to \USymG$ is surjective, meaning every element of $G$ can be expressed
 as a product of the letters in a (reduced) word from $\mathcal R_S$, interpreted
 according to the inclusion of $S$ into $\USymG$.
 This is the case for example for $S$ consisting of the transpositions
@@ -463,12 +465,23 @@ Before we give the proof of~\cref{lem:gens-gp-iff}, let us study these types mor
   from $x$ (the source) to $y$ (the target).
 \end{definition}
 If for every vertex $x:V$ and every color $s:S$ there is unique $s$-colored edge out of $x$, \ie the type $\sum_{y:V}E(s,x,y)$ is contractible, then we say that the graph
-is \emph{functional}. This means that it lives in the subtype $\sum_{V:\UU}(S \to V \to V)$,
+is \emph{functional}. This means that the graph lives in the subtype $\sum_{V:\UU}(S \to V \to V)$,
 as is the case for the graph $\rho_S(\sh_G)$ for a group $G$.
-This graph is called the \emph{Cayley graph} of $G$ with respect to the set $S$.%
-\index{graph!Cayley graph}
+This graph is called the Cayley graph of $G$ with respect to the set $S$:
+\begin{definition}\label{def:cayley-graph}
+  The \emph{Cayley graph}\index{graph!Cayley graph}
+  of a group $G$ with respect to a generating subset $S$
+  is the graph $\Cay(G;S)$\glossary(Cay){$\protect\Cay(G;S)$}{Cayley graph of a group $G$
+  with respect to $S$}
+  is the $S$-colored graph with vertices $\USymG$
+  and edges $S \times \USymG$ where the edge $(s,g)$ has source $g$, target $sg$,
+  and color $s$.
+\end{definition}
+Convince yourself that this is really an equivalent description of $\rho_S(\sh_G)$
+considered as an $S$-colored graph.
 
-If $S$ is contractible (so there's only one color), then we just say \emph{graph}.
+If $S$ is contractible (so there's only one color), then we just say \emph{graph},
+and then we simplify the type of edges to $V \to V \to \UU$.
 Of course, every $S$-labeled graph $(V,E)$ gives rise to such an unlabeled label
 by summing over the colors, \ie the type of edges from $x$ to $y$ in this graph
 is $\sum_{s:S}E(s,x,y)$.
@@ -512,9 +525,9 @@ by ``gluing the edges to the vertices'' defined as follows.
 \begin{xca}
   An equivalence relation $R : A \to A \to \Prop$ on a set $A$
   can be regarded as a graph $(A,R)$.
-  Construct an equivalence between the graph quotient $A/R$
+  Construct an equivalence between set truncation of the graph quotient $\Trunc{A/R}_0$
   and the set quotient $A/R$ from~\cref{def:quotient-set} in this case.
-  (Thus, the apparent notational clash is not a source of real ambiguity.)
+  (In the world of sets, the two notations agree, but 
 \end{xca}
 While we're building up to the proof of~\cref{lem:gens-gp-iff} we need
 a description of a sum type over a graph quotient.
@@ -523,31 +536,39 @@ By the above remark, this applies also to sum types over $\BFG_S$.
   Given a graph $(V,E)$ and a family of types $X : V/E \to \UU$.
   Define $V' \defeq \sum_{v:V}X([v])$ and
   $E'((v,x),(w,y)) \defeq \sum_{e:E(v,w)}\pathover{x}{X}{\qedge_e}{y}$.
-  Then we have an equivalence\footnote{%
+  Then we have an equivalence\index{flattening construction}\footnote{%
     This is often called the \emph{flattening construction} (or flattening lemma),
     as it ``flattens'' a sum over a graph quotient into a single graph quotient.}
   \[
-    V'/E' \equivto \sum_{z:V/E}X(z)
+    \flt : \Bigl(\sum_{z:V/E}X(z)\Bigr) \equivto V'/E'
   \]
 \end{construction}
 \begin{implementation}{def:graph-quotient-flattening}
   We define functions $\varphi : V'/E' \to \sum_{z:V/E}X(z)$
-  and $\tilde\psi : \prod_{z:V/E}\bigl(X(z) \to V'/E'\bigr)$
+  and $\psi : \prod_{z:V/E}\bigl(X(z) \to V'/E'\bigr)$
   using the induction principles:
   \begin{alignat*}2
-    \varphi([(v,x)]) &\defeq ([v],e) &\quad
+    \varphi([(v,x)]) &\defeq ([v],x) &\quad
     \tilde\psi([v]) &\defeq (x \mapsto [(v,x)]) \\
     \ap\varphi(\qedge_{(e,q)}) &\defis \pathpair{\qedge_e}{q} &\quad
     \apd{\tilde\psi}(\qedge_e) &\defis h,
   \end{alignat*}
-  where we need to construct
+  where we need to construct\marginnote{%
+    \begin{tikzcd}[column sep=small,ampersand replacement=\&]
+      X([v]) \ar[rr,"{\trp[X]{\qedge_e}}","\simeq"']\ar[dr,"{\psi([v])}"']
+      \& \& X([w]) \ar[dl,"{\psi([w])}"] \\
+      \& V'/E' \&
+    \end{tikzcd}}
   $h : \pathover{(x \mapsto [(v,x)])}{z \mapsto X(z) \to V'/E'}{\qedge_e}
   {(y \mapsto [(w,y)])}$ for all $e : E(v,w)$.
-  By~\cref{lem:trp-in-function-type}, it suffices to give an identification
+  By transporting in families of functions,
+  it suffices to give an identification
   $[(v,x)] \eqto [(w,\trp[X]{\qedge_e}(x))]$ for all $x : X([v])$.
-  We get this from the identification constructor $\qedge$ for $V'/E'$
-  by applying~\cref{def:pathover-trp} to the reflexivity path at
-  $\trp[X]{\qedge_e}(x)$.
+  We get this as the identification constructor $\qedge_{(e,q)}$ for $V'/E'$,
+  where $q: \pathover{x}{X}{\qedge_e}{\trp[X]{\qedge_e}(x)}$
+  is the identification over $\qedge_e$ corresponding
+  to the reflexivity identification at
+  $\trp[X]{\qedge_e}(x)$ via~\cref{def:pathover-trp}.
 \end{implementation}
 \begin{xca}
   Complete the implementation by giving identifications $\psi\circ\phi\eqto\id$
