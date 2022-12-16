@@ -590,7 +590,7 @@ Later on we'll need also need the following results about graph quotients.
   \[
     E_1 \hookrightarrow E_0\amalg E_1 \equivto E \rightrightarrows V \to V/E_0.
   \]
-  Construct an equivalence $V/E \equivto V/(E_0 \amalg E_1) \equivto (V/E_0)/E1$.
+  Construct an equivalence $V/E \equivto V/(E_0 \amalg E_1) \equivto (V/E_0)/E_1$.
 \end{xca}
 
 \begin{xca}\label{xca:graph-quotient-whisker}
@@ -844,18 +844,22 @@ We'll eventually prove the Nielsen--Schreier theorem,
 which states that a finite index subgroup $H$ of a free group $\FG_S$ is itself a free group.
 Furthermore, when $S$ is finite, the set of free generators of $H$ is itself finite.
 
-% Should this be in subgroup chapter?
+Recall from~\cref{def:set-of-subgroups} that a subgroup is (or can be represented by)
+a transitive $G$-set $X : \BG \to \Set$ along with an element of $X(\sh_G)$.
 \begin{definition}\label{def:finite-index}
-  A subgroup of a group $G$ has \emph{finite index} $m$ if, when represented as a
-  transitive $G$-set $X : \BG \to \Set$, $X(\sh_G)$ is a finite set of cardinality $m$.
+  A subgroup of a group $G$ has \emph{finite index} $m$ if the underlying
+  transitive $G$-set, $X : \BG \to \Set$ is a family of finite sets of cardinality $m$.
 \end{definition}
-In that case, of course, all the twisted sets $X(t)$ for $t:\BG$ are also finite sets
+The is the case, of course, if and only if the set acted on, $X(\sh_G)$, is finite
 of cardinality $m$.
+Notice that the definition doesn't depend on the chosen element of $X(\sh_G)$,
+so applies equally to all conjugacy classes of the subgroup.
 
-Recall from~\cref{def:set-of-subgroups} that the underlying classifying type of the subgroup is the total type $\sum_{t:\BG}X(t)$.
-Thus we'll use the Flattening~\cref{def:graph-quotient-flattening} to analyze
-this in case $G \jdeq \FG_S$, so we need to show that the resulting graph
-has a quotient equivalent to $\bn 1/T$ for some set $T$.
+Recall also that the classifying type of the subgroup is the total type $\sum_{t:\BG}X(t)$ (which is pointed via the chosen point of $X(\sh_G)$).
+We'll use the Flattening~\cref{def:graph-quotient-flattening} to analyze
+this in case where $G$ is the free group on a set $S$, $\FG_S$,
+so we need to show that the quotient of the resulting graph
+is equivalent to $\bn 1/T$ for some set $T$.
 
 We do this by finding a ``spanning tree'' in the graph.
 
@@ -914,7 +918,7 @@ Very often we'll require that the edge embeddings are decidable,
   decomposes as a binary sum $V \equivto V_0 \amalg V_1$
   and we have $v_0:V_0$ and $v_1:V_1$.
   Then there merely exists an edge $e$ either with source in $V_0$ and target in $V_1$
-  or vice versa.
+  or the other way round.
 \end{lemma}
 The situation is illustrated in~\cref{fig:crossing-edge}, where we assume
 there is an edge relation on the binary sum that gives a connected graph,
@@ -923,20 +927,20 @@ or the other way.
 \begin{proof}
   We may assume $V \jdeq V_0 \amalg V_1$ by path induction.
   The idea is then to define a family of propositions $P : V/E \to \Prop$
-  that, one the one hand, is trivially true over $V_0$, and on the other hand
+  that, on one hand is trivially true over $V_0$, and on the other hand
   expresses our desired goal, the existence of a ``crossing edge'', over $V_1$.
 
-  We define $P(z)$, for $z:V/E$, by the induction principle for the graph quotient $V/E$,
-  with a subsidiary case distinction for the vertex $v : V_0 \amalg V_1$.
-  We set $([\inl v]) \defeq \true$ for $v : V_0$ and
+  We now define $P(z)$, for $z:V/E$,
+  by the induction principle for the graph quotient $V/E$.
+  We set $P([\inl v]) \defeq \true$ for $v : V_0$ and
   \[
     P([\inr v]) \defeq \Trunc*{\sum_{u_0:V_0}\sum_{u_1:V_1}
       \bigl(E(u_0,u_1) \amalg E(u_1,u_0)\bigr)}
   \]
   for $v : V_1$.
-  We must then prove that the propositions $P(v)$ and $P(v')$ are equivalent
+  We must then prove that the propositions $P([v])$ and $P([v'])$ are equivalent
   whenever there's an edge from $v$ to $v'$.
-  This is trivially the case when $v,v'$ lie in the same summand,
+  This is the case by definition when $v,v'$ lie in the same summand,
   and it's also the case when they lie in different summands, since then
   we get a witness for the truth over $V_1$.
 
@@ -949,9 +953,10 @@ or the other way.
   Fix a connected graph $(V,E)$ where $V$ has decidable equality and $E$ is a family of sets.
   For any subgraph $(U,D)$, where the embedding $U\hookrightarrow V$ is decidable,
   and with vertices $u \in U$ and $v \in V \setminus U$,
-  there merely exists a larger subgraph with exactly one more vertex and one more edge,
-  $(U\amalg\bn 1, D\amalg\bn 1)$ such that the induced map on graph quotients
-  $U/D \to (U\amalg\bn 1)/(D\amalg\bn 1)$ is an equivalence.\marginnote{%
+  there merely exists\footnote{%
+    Keep in mind that subgraphs consist not only of the vertices and edges,
+    but also of the corresponding embeddings into the supergraph.
+    It's for the sake of these that we only prove mere existence.\\
     \begin{tikzcd}[sep=small,ampersand replacement=\&]
       D \ar[r,hook]\ar[d,shift left]\ar[d,shift right] \&
       D\amalg\bn 1 \ar[r,hook]\ar[d,shift left]\ar[d,shift right] \&
@@ -963,6 +968,9 @@ or the other way.
       (U\amalg\bn 1)/(D\amalg\bn 1)\ar[r] \&
       V/E
     \end{tikzcd}}
+  a larger subgraph with exactly one more vertex and one more edge,
+  $(U\amalg\bn 1, D\amalg\bn 1)$ such that the induced map on graph quotients
+  $U/D \to (U\amalg\bn 1)/(D\amalg\bn 1)$ is an equivalence.
 \end{lemma}
 \begin{proof}
   Since the embedding $U\hookrightarrow V$ is decidable,
@@ -1031,30 +1039,32 @@ or the other way.
 
 \begin{theorem}[Nielsen--Schreier Theorem]
   Suppose that $S$ is a set with decidable equality and
-  $X : \BFG_S \to \Set$ defines a finite index subgroup.
-  Then $\sum_{z:\BFG_S}X(z)$ is merely equivalent to the classifying type of a free group.
+  $X : \BFG_S \to \Set$ defines a (conjugacy class of a)
+  finite index subgroup of $\FG_S$.
+  Then $\sum_{z:\BFG_S}X(z)$ is merely equivalent to $\BFG_T$ for some set $T$.
 
   Moreover, if $S$ is a finite set of cardinality $n$ and the subgroup has index $m$,
-  then the free group can be taken on a finite set of cardinality $m(n-1)+1$.
+  then $T$ can be taken to be a finite set of cardinality $m(n-1)+1$.
 \end{theorem}
 \begin{proof}
   By the Flattening~\cref{def:graph-quotient-flattening},
-  we have an equivalence $\sum_{z:\BFG_S}X(z) \equivto X(\base)/E$,
-  where $E(x,y) \jdeq \sum_{s:S}(\pathover{x}{X}{\Sloop_s}{y})$.
-  By the finite index assumption, $X(\base)$ is a finite set,
-  say, of cardinality $m$,
+  we have an equivalence $\flt:\bigl(\sum_{z:\BFG_S}X(z)\bigr) \equivto V/E$,
+  with $V\defeq X(\base)$ and $E(x,y) \defeq \sum_{s:S}(\pathover{x}{X}{\Sloop_s}{y})$.
+  By the finite index assumption, $V$ is a finite set,
+  say, of cardinality $m>0$,
   and since both $S$ and $X(\base)$ are decidable, so is $E$.
 
-  By~\cref{lem:spanning-tree}, there merely exists a spanning tree with
-  $m-1$ edges $E_0$. Then we have,
-  using \cref{xca:graph-quotient-in-steps}:
+  By~\cref{lem:spanning-tree}, the graph $(V,E)$ merely contains
+  a spanning tree with
+  $m-1$ edges $E_0$, and complementary edge set $E_1$. Hence,
+  using \cref{xca:graph-quotient-in-steps}, we have a chain of equivalences:
   \[
-    V/E \equivto V/(E_0\amalg E_1) \equivto (V/E_0)/E_1
+    V/E \equivto (V/E_0)/E_1
     \equivto \bn 1/E_1 \equivto \BFG_{E_1}
   \]
-  This establishes the first claim.
+  This establishes the first claim with $T \defeq E_1$.
 
-  If furthermore $S$ has cardinality $n$, then the graph $(X(\base),E)$
+  If, furthermore, $S$ has cardinality $n$, then the graph $(V,E)$
   has $mn$ edges, as there are precisely $n$ outgoing edges from each vertex.
   Since $E_0$ has $m-1$ edges,
   that leaves $mn - (m-1) = mn-m+1 = m(n-1)+1$ edges in $E_1$, as desired.
