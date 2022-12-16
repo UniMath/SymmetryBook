@@ -2952,22 +2952,22 @@ we may denote this subset by $\setof{t:T}{P(t)}$.
   since when $P(t)$ holds, the type $P(t)$ is contractible.
 \end{remark}
 Given a set $A$ and a function $\chi_B: A\to\bool$,
-\cref{lem:isset-bool} yields that $\chi_B(a) \eqto \yes$ is a
+\cref{lem:isset-bool} yields that $\chi_B(a) \eq \yes$ is a
 proposition, and we can form
-the subset $\setof{a:A}{\chi_B(a) \eqto \yes}$. However,
+the subset $\setof{a:A}{\chi_B(a) \eq \yes}$. However,
 not every subset as in \cref{def:subtype} can be given
 through a $\chi_B: A\to\bool$. As proved in \cref{sec:finite-types},
 any element of $\bool$ is equal to $\yes$ or to $\no$.
 
 If $P: A\to\UU$ is a decidable predicate, then
 we can define $\chi_P: A\to\bool$ by induction (actually,
-only case distinction) on $p:P(a)$, setting $\chi_P(a) \eqto \yes$
+only case distinction) on $p:P(a)$, setting $\chi_P(a) \eq \yes$
 if $p\jdeq\inl{\_}$ and $\chi_P(a) \eqto \no$ if $p\jdeq\inr{\_}$.
 We will often use a characteristic function $T\to\bool$ to
 specify a decidable predicate on a type $T$.
 
 \begin{xca}\label{xca:decidability}
-Show that $f(t) \eqto \yes$ is a decidable predicate on $T$,
+Show that $f(t) \eq \yes$ is a decidable predicate on $T$,
 for any type $T$ and function $f:T\to\bool$.
 Show $(P\equivto\true)\amalg(P\equivto\false)$ for every decidable
 proposition $P$.
@@ -3082,8 +3082,8 @@ prove that $A\to B_\div$ is equivalent to $A_+\ptdto B$.
 \end{xca}
 
 \begin{xca}\label{xca:freemaps}
-  Let $A$ be a pointed type and $B$ a type.
-  Show that $\sum_{b:B}(A\ptdto (B,b))$ and $(A_\div\to B)$ are equivalent.
+  Let $A$ be a pointed type and $B$ a type. Give an equivalence from
+  $\sum_{b:B}(A\ptdto (B,b))$ to $(A_\div\to B)$.
 \end{xca}
 
 Since $\UUp$ and $X\ptdto Y$ are sum types, the results on identifying pairs
@@ -3128,17 +3128,17 @@ if all constituent types are sets.
 \begin{proof}
   We only do the case of $\NN$ and leave the other cases to the reader
   (cf.\ \cref{xca:set-sum}). The following proof is due to Simon Huber.
-  We have to prove that $n \eqto m$ is a
+  We have to prove that $n \eq m$ is a
   proposition for all $n,m:\NN$, i.e., $p \eqto q$ for all $n,m : \NN$ and
-  $p, q : n \eqto m$.  By induction on $q$ it suffices to prove $p \eqto \refl
+  $p, q : n \eq m$.  By induction on $q$ it suffices to prove $p \eqto \refl
   n$ for all $p : n \eqto n$.  Note that we can not simply prove this by
   induction on $p$.  Instead we first prove an inversion principle for
   identifications in $\NN$ as follows.  We define a type $T(n,m,p)$
-  for $n, m : \NN$ and $p : n \eqto m$ by induction on $n$ and $m$:
+  for $n, m : \NN$ and $p : n \eq m$ by induction on $n$ and $m$:
   \[
     T(0,0,p) \defeq (p \eqto \refl{0})%
     \text{~and~}%
-    T(\Succ(n), \Succ(m), p) \defeq \sum_{q : n \eqto m} p \eqto \ap{\Succ}(q),%
+    T(\Succ(n), \Succ(m), p) \defeq \sum_{q : n \eq m} p \eqto \ap{\Succ}(q),%
   \]
   and for the other cases the choice does not matter, say $T(0, \Succ(m),
   p) \defeq T(\Succ(n), 0 ,p) \defeq \emptytype$.  Next we prove $T(n,m,p)$
@@ -3395,13 +3395,13 @@ Both $m\leq n$ and $m<n$ are propositions for all $n,m:\NN$.
 
 \begin{xca}\label{xca:try-your-luck-N}
 Try your luck in type theory proving any of the following.
-The successor function satisfies $(\Succ(n) \eqto \Succ(m))\liff(n \eqto m)$.
+The successor function satisfies $(\Succ(n) \eqto \Succ(m))\liff(n \eq m)$.
 The functions $+$ and $\cdot$ are commutative and associative,
 $\cdot$ distributes over $+$.
 The relations $\leq$ and $<$ are transitive and
 preserved under $+$; $\leq$ also under $\cdot$.
-We have $(m\leq n) \liff ((m<n)\amalg(m \eqto n))$ (so $\leq$ is reflexive).
-Furthermore, $((m\leq n)\times (n\leq m)) \liff (m \eqto n)$,
+We have $(m\leq n) \liff ((m<n)\amalg(m \eq n))$ (so $\leq$ is reflexive).
+Furthermore, $((m\leq n)\times (n\leq m)) \liff (m \eq n)$,
 and $\neg ((m<n)\times(n<m))$ (so $<$ is irreflexive).
 \end{xca}
 
@@ -3687,7 +3687,7 @@ Define $e^{-1}: \sum_{a:A} f^{-1}(a) \to B$ by $e(a,b,p)\defeq b$.
 Then $e^{-1}(e(b))\jdeq b$ for all $b:B$.
 Let $a:A$, $b:B$ and $p: f(b) \eqto a$.
 Then $e(e^{-1}(a,b,p))\jdeq (f(b),b,\refl{f(b)})$.
-We have to prove $(f(b),b,\refl{f(b)}) \eqto (a,b,p)$.
+We have to find an element in $(f(b),b,\refl{f(b)}) \eqto (a,b,p)$.
 We use $p$ as identification of the first components,
 and $\refl{b}$ as identification of the second components
 (whose type is constant). For the third component
@@ -3707,30 +3707,33 @@ Let $A$ be a type. Then
 \]
 given by $\preim(B,f)(a)\defeq f^{-1}(a)$ is an equivalence.
 %\footnote{in some higher universe}
-An inverse equivalence is given by sending $P:A\to\UU$ to
-$(\sum_{a:A}P(a), \fst)$.
+An inverse equivalence is given by sending $C:A\to\UU$ to
+$(\sum_{a:A}C(a), \fst)$.
 \end{lemma}
 
 \begin{proof}
 We apply \cref{lem:weq-iso}, and verify the two conditions.
-Let $P:A\to\UU$. We have to prove that $P \eqto \preim(\sum_{a:A}P(a), \fst)$.
-By function extensionality it suffices to prove
-$\preim(\sum_{a:A}P(a), \fst)(a)\jdeq \fst^{-1}(a) \eqto P(a)$.
-This follows directly from \cref{lem:fst-fiber(a)=B(a)} and the univalence axiom.
+Let $C:A\to\UU$. We have to identify $C$ with $\preim(\sum_{a:A}C(a), \fst)$.
+As $\preim(\sum_{a:A}C(a), \fst)(a)\jdeq \fst^{-1}(a)$, it suffices
+by function extensionality to identify the latter fiber with
+$C(a)$, for all $a:A$. This follows directly from 
+\cref{lem:fst-fiber(a)=B(a)} and the univalence axiom.
 
-Let $f: B\to A$. We have to prove that $(\sum_{a:A} f^{-1}(a), \fst) \eqto (B,f)$.
+Let $f: B\to A$. 
+We have to identify $(\sum_{a:A} f^{-1}(a), \fst)$ with $(B,f)$.
 Using the univalence axiom, we get an identification
 $\etop{e} : \sum_{a:A} f^{-1}(a) \eqto B$, where $e$ is the equivalence
 from \cref{lem:sum-of-fibers}. Using \cref{lem:isEq-pair=},
-it remains to give an element of the type $\pathover{\fst}{(\_)\to A}{\etop{e}}{f}$.
+it remains to give an element of the type 
+$\pathover{\fst}{(\_)\to A}{\etop{e}}{f}$.
 
 As an auxiliary step we note that for any $p: X \eqto Y$ and $g:X\to A$,
 $h:Y\to A$, the type $\pathover{g}{(\_)\to A}{p}{h}$ of paths over $p$
 can be identified with the type $g \eqto h\circ{\ptoe{p}}$, since the two
 types are definitionally equal for $p\jdeq\refl{X}$.
-Applying this here means that we must give an element of
-$\fst \eqto f\circ{\ptoe{\etop{e}}}$. This in turn means that
-we must give an element of $\fst \eqto f\circ e$,
+Applying this here means that we must give an identification of
+$\fst$ with $f\circ{\ptoe{\etop{e}}}$. Hence it suffices
+to identify $\fst$ and $f\circ e$,
 which follows by function extensionality from the definition
 of $e$ in \cref{lem:sum-of-fibers}.
 \end{proof}
@@ -3738,20 +3741,18 @@ of $e$ in \cref{lem:sum-of-fibers}.
 Let $A$ be a type and consider the subuniverse
 $\Prop\jdeq \sum_{X:\UU}\isprop(X)$ from \cref{sec:subtype}.
 A function $P: A\to\Prop$ can be viewed as a family of propositions:
-$\fst\circ P : A\to \UU$ is a type family, and
-$\snd\circ P : \prod_{a:A} \isprop(P(a))$ witnesses
+$(\fst\circ P) : A\to \UU$ is a type family, and
+$(\snd\circ P) : \prod_{a:A} \isprop(\fst(P(a)))$ witnesses
 that each $\fst(P(a))$ is a proposition.
 The inverse equivalence in \cref{lem:typefamiliesandfibrations}
-sends $\fst\circ P$ to
+sends $(\fst\circ P)$ to
 \[
   \fst: \Bigl(\sum_{a:A} \fst(P(a))\Bigr) \to A.
 \]
-All the fibers of this function are propositions by combining
-$\snd\circ P : \prod_{a:A} \isprop(P(a))$
-with \cref{lem:fst-fiber(a)=B(a)}.
+At each $a:A$, the fiber of this function is equivalent to $\fst(P(a))$ 
+by \cref{lem:fst-fiber(a)=B(a)}, and is thus a proposition by $\snd\circ P$.
 
-Conversely,
-for a function $f: B\to A$ with proof
+Conversely, given a function $f: B\to A$ and a proof
 $g:\prod_{a:A} \isprop(f^{-1}(a))$ that all fibers of $f$
 are propositions,
 we can define $P_f : A\to\Prop$ by setting $P_f(a)\defeq (f^{-1}(a),g(a))$.
@@ -3761,7 +3762,7 @@ from \cref{sec:subtype}, and one can prove the following
 analogues of \cref{lem:typefamiliesandfibrations}.
 
 \begin{construction}\label{lem:Prop-Set-pointed-families}
-Let $A$ be a type. Then we have:
+Let $A$ be a type. Then we have equivalences of the following types:
 \begin{enumerate}
 \item $(A\to\Prop) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isprop({f^{-1}(a)})$;
@@ -3774,7 +3775,9 @@ $(A\to\Set) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \end{construction}
 
 \begin{xca}\label{xca:Prop-Set-pointed-families}
-Implement the above constructions. (The last is hard!)
+Implement the above constructions. (The last is hard,
+since $\UUp$ is not a subuniverse, but adds structure
+to each type in $\UU$!)
 \end{xca}
 
 Since $\Prop$ is a set, we obtain the following corollary.
