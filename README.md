@@ -10,7 +10,7 @@ This book will be an undergraduate textbook written in the univalent style, taki
   If the type is a set, we may denote its identity types by a = b and call them *equations*. When a = b has an element we say that a and b are *equal*.
 - Types similar to identity types, like the type of eqivalences from A to B, are also denoted with a macro ending in "to", like \equivto, producing ⥲ (that is an arrow with an equivalence sign on top).
 - The type containing the variable in a family is called the "parameter type", not the "index type", nor the "base type".
-- Definitional equality is denoted with three lines and is called just that, i.e., *definitional* and not *judgmental*.
+- Being equal by definiton is denoted with three lines and is called just that, and not *definitionally equal* or *judgmentally equal*.
 - A synonym of "function" is "map".  We don't use "mapping" or "application" as synonyms.
 - In the preliminary chapters (up to subgroups), the underlying set map U from groups to sets has to be applied explicitly. Thereafter, it can be a coercion.
 - Composition of p: a⥱b and q: b⥱c is denoted by either p∗q (p\ct q), or by q·p (q\cdot p), qp or q∘p (q\circ p). The latter is preferred when p and q come from equivalences.
