@@ -76,7 +76,7 @@ with $Q\defeq (z:\Sc \mapsto \NN)$.]
 [TODO A second important property of our theory is 
 that one can compute canonical forms.]
 
-\section{Definitional equality}
+\section{Equality by definition}
 \label{sec:defeq}
 
 \subsection{Basics}
@@ -84,12 +84,11 @@ that one can compute canonical forms.]
 
 The concept of definition was introduced in \cref{univalent-mathematics},
 together with what it means to be \emph{the same by definition}. 
-Being the same by definition, or being definitionally equal, 
-(NB appears for the first time on p. 26!) 
+Being the same by definition (NB appears for the first time on p. 26!) 
 is a relationship between syntactic expressions.
 In this section we provide more details about this relationship.
 
-There are four basic forms of definitional equality:
+There are four basic forms of equality by definition:
 \begin{enumerate}
 \item\label{it:exp-defeq} Resulting from making an explicit definition, 
 e.g., $1 \defeq \Succ(0)$, after which we have $1 \jdeq \Succ(0)$;%
@@ -109,7 +108,7 @@ is the application of the function $f$ to the variable $x$,
 e.g., $(x \mapsto S(x)) \jdeq S$.
 \end{enumerate}
 
-Definitional equality is the \emph{congruence closure} of these 
+Equality by definition is the \emph{congruence closure} of these 
 four basic forms, that is, the smallest reflexive, symmetric, transitive
 and congruent relation that contains all instances of the four basic forms.
 Here a congruent relation is a relation that is closed under all syntactic
@@ -129,30 +128,30 @@ $\id \circ f \jdeq (x \mapsto \id(f(x)))$. Unfolding $\id$ we get
 $(x \mapsto \id(f(x))) \jdeq (x \mapsto (y\mapsto y)(f(x)))$.
 Applying \ref{it:beta} we can substitute $f(x)$ for $(y\mapsto y)(f(x)))$
 and get $(x \mapsto (y\mapsto y)(f(x))) \jdeq (x \mapsto f(x))$.
-By \ref{it:eta} the right hand side is definitionally equal to $f$.
+By \ref{it:eta} the right hand side is equal to $f$ by definition.
 Indeed $\id \circ f \jdeq f$ by transitivity.
 
-Definitional equality is also relevant for typing.
+Equality by definition is also relevant for typing.
 For example, let $A: \UU$ and $P: A\to\UU$. If $B\jdeq A$,
 then  $ (B\to\UU)\jdeq(A\to\UU)$ by congruence, and also $P: B\to\UU$,
 and even $\prod_{x:B} P(x) \jdeq \prod_{x:A} P(x)$.
 
 
-%Discuss later: If syntactic expressions $e$ and $e'$ are definitionally equal, denoted by $e\jdeq e'$, then $e$ and $e'$ have the same type $T$, then $\refl e : e=_T e'$; the converse is not true.
+%Discuss later: If syntactic expressions $e$ and $e'$ are equal by definition, denoted by $e\jdeq e'$, then $e$ and $e'$ have the same type $T$, then $\refl e : e=_T e'$; the converse is not true.
 
-\subsection{Deciding definitional equality (not updated yet)}
+\subsection{Deciding equality by definition (not updated yet)}
 \label{sec:defeq-computation}
 
 By a \emph{decision procedure} we mean a terminating algorithmic procedure that 
 answers a yes/no question.
-Although it is possible to enumerate all true definitional equalities,
+Although it is possible to enumerate all true equalities by definition,
 this does not give a test that answers whether or not a given instance $e\jdeq e'$ holds.
 In particular when $e\jdeq e'$ does not hold, such an enumeration will not terminate.
-A test of definitional equality is important for type checking,
+A test of equality by definition is important for type checking,
 as the examples in the last paragraph of the previous section show.
 
-A better approach to a test of definitional equality is the following.
-First direct the four basic forms of definitional equality from left to right
+A better approach to a test of equality by definition is the following.
+First direct the four basic forms of equality by definition from left to right
 as they are given.\footnote{%
 TODO: think about the last, $\eta$.}
 For the first two forms this can be viewed as unfolding definitions,
@@ -175,7 +174,8 @@ difficulties. For a non-trivial type theory such as in this book the last proper
 termination, is extremely difficult and has not been carried out in full detail.
 The closest come results on the Coq \footcite{Coq} (TODO: find good reference).
 
-Testing definitional equality of given well-typed terms $e$ and $e'$ can now be done
+Testing whether or not two given well-typed terms $e$ and $e'$ 
+are equal by definition can now be done
 by reducing them with $\to$ until one reaches irreducible expressions $n$ and $n'$
 such that $e\to^* n$ and $e'\to^* n'$, and then comparing $n$ and $n'$. 
 Now we have: $e\jdeq e'$ iff $n\jdeq n'$ iff (by Church--Rosser)
