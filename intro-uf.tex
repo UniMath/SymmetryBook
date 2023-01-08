@@ -1580,8 +1580,7 @@ An element of $\emptytype$ will be called an \emph{absurdity}.  Of course, one e
 logical system (such as ours) that attempts to provide a language for mathematics, but it is important to have such a name so we can discuss
 the possibility, which might result inadvertently from the introduction of unwarranted assumptions.  For example, to assert that a type $P$ has
 no elements, it would be sensible to assert that an element of $P$ would lead to an absurdity.  Providing a function of type $P \to \emptytype$ is a
-convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting \glossary{$\neg P$}{negation}$\neg P \defeq (P \to \emptytype)$.  Using it, we
-may define the type $(a \ne b) \defeq \neg (a \eqto b)$; an element of it asserts that $a$ and $b$ cannot be identified.
+convenient way to make that assertion.  Hence we define the \emph{negation} of a type by setting \glossary{$\neg P$}{negation}$\neg P \defeq (P \to \emptytype)$.
 
 Secondly, there will also be an inductive type called $\true$ in the universe $\UU_0$ provided with a single element $\triv$; (the name $\triv$
 comes from the word ``trivial'').  Its induction principle states that, in order to prove something about (or to construct something from) every
@@ -1604,14 +1603,15 @@ Thirdly, there will be an inductive type called $\bool$ in the universe $\UU_0$,
 principle states that, in order to prove something about (or to construct something from) every element of $\bool$, it suffices to consider two
 cases: the special case where the element is $\yes$ and the special case where the element is $\no$.
 
-We may use substitution to construct an element of type $\yes \ne \no$.  To do this, we introduce a family of types $P(b)$ in the universe
+We may use substitution to construct an element of type $\neg(\yes \eqto \no)$.  To do this, we introduce a family of types $P(b)$ in the universe
 $\UU_0$ parametrized by a variable $b:\bool$.  We define $P(b)$ by induction on $b$ by setting $P(\yes) \defeq \true$ and 
 $P(\no) \defeq \false$.  (The definition of $P(b)$ is motivated by the expectation that we will be able to construct an equivalence between $P(b)$ and 
 $\yes \eqto b$.)  If there were an element $e: \yes \eqto \no$, we could substitute $\no$ for $\yes$ in $\triv : P (\yes)$ to get an element of $P(\no)$,
 which is absurd.  Since $e$ was arbitrary, we have defined a function $(\yes \eqto \no) \to \emptytype$, as desired.
 
 In the same way, we may use substitution to prove that successors of natural
-numbers are never equal to $0$, \ie for any $n:\NN$ that $0 \ne \Succ(n)$.
+numbers are never equal to $0$, 
+\ie for any $n:\NN$ that $\neg(0 \eqto \Succ(n))$.
 To do this, we introduce a family of types $P(i)$ in $\UU_0$ parametrized 
 by a variable $i:\NN$.  Define $P$ recursively by
 specifying that $P(0) \defeq \true$ and $P(\Succ(m)) \defeq \false$.  (The definition of $P(i)$ is motivated by the expectation that we will be
@@ -2058,16 +2058,19 @@ including logic in the same hierarchy.
 Some authors therefore call propositions \emph{$(-1)$-types},
 and they call contractible types \emph{$(-2)$-types}.}
 
-\begin{definition}
+\begin{definition}\label{def:eq-for-eqto-in-set}
   Let $A$ be a \emph{set}, as defined above, 
   and let $a$ and $b$ be elements of $A$.  
   We write $a \eq b$\glossary(2=){$=$}{equality} as alternative 
   notation for the type $a \eqto b$.  Formally, we define it as follows.
   \[
-  a \eq b \defeq a \eqto b
+  (a \eq b) \defeq (a \eqto b)
   \]
   The type $a \eq b$ is called an \emph{equation}\index{equation}.
   When it has an element, we say that $a$ and $b$ are \emph{equal}.
+  In line with this definition we also define the type 
+  $(a \ne b) \defeq \neg (a \eq b)$; an element of it asserts 
+  that the elements $a$ and $b$ of the set $A$ are not equal.
 \end{definition}
 
 Equations are propositions, so we can speak of them being true or false, and we may use them after the words \emph{if}, \emph{since},
