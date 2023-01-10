@@ -3686,17 +3686,27 @@ Then $e: B \to \sum_{a:A} f^{-1}(a)$ defined by
 $e(b)\defeq (f(b),b,\refl{f(b)})$ is an equivalence.
 \end{lemma}
 \begin{proof}
-Define $e^{-1}: \sum_{a:A} f^{-1}(a) \to B$ by $e(a,b,p)\defeq b$.
+Define $e^{-1}: \sum_{a:A} f^{-1}(a) \to B$ by $e^{-1}(a,b,p)\defeq b$,
+where $p: a\eqto f(b)$.
 Then $e^{-1}(e(b))\jdeq b$ for all $b:B$.
-Let $a:A$, $b:B$ and $p: f(b) \eqto a$.
+Let $a:A$, $b:B$ and $p: a\eqto f(b) $.
 Then $e(e^{-1}(a,b,p))\jdeq (f(b),b,\refl{f(b)})$.
-We have to find an element in $(f(b),b,\refl{f(b)}) \eqto (a,b,p)$.
-We use $p$ as identification of the first components,
+We have to identify $(a,b,p)$ with $(f(b),b,\refl{f(b)})$.
+We use $p$ as identification of the first components
+\marginnote{
+  $\begin{tikzcd}[column sep=small,ampersand replacement=\&]
+    a\ar[r,eqr,"p"] \ar[d,eql,"p"'] \& f(b) \\                   
+    f(b)\ar[ur,eql,"\refl{f(b)}"']
+  \end{tikzcd}$}
+(the horizontal identification $p$ in the diagram in the margin),
 and $\refl{b}$ as identification of the second components
 (whose type is constant). For the third component
-we use that the transport of $\refl{f(b)}$ along $p$
-in the type family $(f(b) \eqto \_)$ can be identified with $p$
-itself by \cref{xca:trp-in-a/x=b/x}\ref{trp-in-a=x}.
+we use transport in the type family $(\_ \eqto f(b))$
+and \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a}. Visualized
+in the diagram in the margin, we transport
+the horizontal identification $p$ along the vertical one, also $p$.
+The result of this transport can be identified with $p\cdot\inv p$
+and hence with $\refl{f(b)}$, the diagonal identification in the diagram.
 Now apply \cref{lem:weq-iso}.
 \end{proof}
 
@@ -3911,9 +3921,9 @@ is pure higher structure.
   from $\trunc{\_} : f^{-1}(a) \to \Trunc{f^{-1}(a)}$.
   In the refined image factorization above, the map for the second arrow
   maps any pair $(a,x)$ with $x:\Trunc{f^{-1}(a)}_0$ to the pair $(a,\trunc{x}')$.
-  Show that for any $p:\Trunc{f^{-1}(a)}$ the fiber of the latter map at $(a,p)$
-  is equivalent to $\Trunc{f^{-1}(a)}_0$. What is forgotten by this map,
-  and what is remembered?
+  For any $p:\Trunc{f^{-1}(a)}$, give an equivalence from the fiber 
+  of the latter map at $(a,p)$ to $\Trunc{f^{-1}(a)}_0$. 
+  What is forgotten by this map, and what is remembered?
 \end{xca}
 
 Recall the ($-1$-)image factorization and its uniqueness from~\cref{xca:unique-fact-image}.
