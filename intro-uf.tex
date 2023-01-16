@@ -3667,17 +3667,20 @@ The \emph{groupoid of finite sets} is defined by
 \]
 For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
 \[
-  \FinSet_n\defequi \sum_{S:\Set}{S=\bn{n}}.\qedhere
+  \FinSet_n\defequi \sum_{S:\Set}\Trunc{\bn{n} = S}.\qedhere
 \]
 \end{definition}
-Observe that $\FinSet_0 \eqto \FinSet_1 \eqto \bn{1} $ and $\FinSet \eqto \sum_{n:\NN}\FinSet_n$
-by \cref{lem:maxonefinitetype}.
+Observe that we have identifications in
+$\FinSet_0 \eqto \FinSet_1 \eqto \bn{1} $, and in
+$\FinSet \eqto \sum_{n:\NN}\FinSet_n$ by \cref{lem:maxonefinitetype}.
 
 Note that being a finite set implies being a set, and hence
-$\FinSet \eqto \sum_{X:\UU}\isfinset(X)$.
+we can identify $\FinSet$ with $\sum_{X:\UU}\isfinset(X)$.
 Also, $\FinSet$ is the image of the map $F : \NN \to \UU$
 from~\cref{def:finiteset}, and is hence essentially $\UU$-small
-(for any universe $\UU$), by~\cref{pri:replacement}, \cref{P1}, and our assumption that $\UU_0$ is the smallest universe.
+(for any universe $\UU$), by~\cref{pri:replacement}, \cref{P1} in
+\cref{sec:natural-numbers}, and our assumption 
+that $\UU_0$ is the smallest universe.
 
 \section{Type families and maps}
 \label{sec:typefam}
@@ -3823,155 +3826,6 @@ Subtypes as in \cref{def:subtype} correspond to predicates
 and $\Sub_T$ is a set, for any type $T$.
 \end{corollary}
 
-\section{Higher structure: stuff, structure, and properties}
-\label{sec:stuff-struct-prop}
-
-Recall from \cref{lem:sum-of-fibers}\marginnote{%
-  The precise formalization of the intuitive
-  notions of ``stuff'', ``structure'',
-  and ``properties'' was worked out
-  in terms of category theory in
-  \emph{UseNet} discussions between
-  John Baez, Toby Bartels, and James Dolan
-  on \texttt{sci.physics.research} in 1998.
-  It was clear that the simplest description
-  was in terms of homotopy types,
-  and hence it's even simpler in type theory.
-  See also \citeauthor{Baez-Shulman}\footnotemark{}
-  for further discussion.}%
-\footcitetext{Baez-Shulman}
-that any map $f : B \to A$ can be described
-as ``projecting away'' its fibers,
-by using the equivalence $e$:
-\begin{equation}\label{eq:forget-fibers}
-  \begin{tikzcd}
-    B \ar[rr,"e","\sim"']\ar[dr,"f"'] & &
-    \sum_{a:A} \inv f(a)\ar[dl,"\fst"] \\
-    & A &
-  \end{tikzcd}
-\end{equation}
-We say that $f$ \emph{forgets} these fibers.\index{forget}
-If $A$ and $B$ are groupoids,
-these fibers are themselves groupoids,
-but it can happen that they are sets, propositions, or even contractible.
-Accordingly, we say that:
-\begin{itemize}
-\item $f$ \emph{forgets at most structure} if all the fibers are sets;%
-  \index{forget!structure}
-\item $f$ \emph{forgets at most properties} if all the fibers are propositions;%
-  \index{forget!properties}
-\item $f$ \emph{forgets nothing} if all the fibers are contractible.
-\end{itemize}
-Here, the structure and properties in question are \emph{on $a$} or \emph{of $a$}, respectively, as captured by the fibers at $a$, for each $a:A$.
-Of course, a map forgets properties if and only if
-it's an injection,
-and it forgets nothing if and only if it's an equivalence.
-
-Going in the other direction,
-we say that:
-\begin{itemize}
-\item $f$ \emph{forgets at most $n$-structure}
-  if all the fibers are $n$-truncated.\index{forget!higher structure}
-  If $n\ge1$, this is therefore a kind of \emph{higher structure}.\footnote{%
-    We're updating the terminology slightly: In the above references,
-    $n$-structure is referred to as \emph{$n$-stuff},
-    but nowadays the term \emph{higher structure} is more common,
-    so we have renamed $n$-stuff into \emph{$n$-structure}.}
-\end{itemize}
-Thus, an element of a groupoid is $1$-structure
-(this is sometimes informally called \emph{stuff}\index{stuff|see{forget!higher structure}}),
-while an element of a set is a structure, or $0$-structure,
-while an proof of a proposition is a property, or $(-1)$-structure.
-
-Looking at \eqref{eq:forget-fibers} another way,
-we see that to give an element of $b$ of $B$ lying
-over a given element $a:A$ amounts to
-specifying an element on $\inv f(a)$,
-so we say that the elements of $B$
-are elements of $A$ \emph{with extra $n$-structure},
-if the fibers $\inv f(a)$ are $n$-truncated.
-
-Refining the usual image and image factorization from
-\cref{def:prop-image,xca:unique-fact-image},
-using \cref{lem:sum-of-fibers},
-we can factor $f : B \to A$ through
-first its \emph{$0$-image}
-and then its usual $(-1)$-image\index{image} as follows:%
-\footnote{Using the general $n$-truncation,
-  we can define the $n$-image
-  in a similar way and prove that
-  the $n$-image factorization is unique.
-  Since the unit type $\bn 1$ is the unique $(-2)$-type,
-  we have $\Trunc{X}_{-2} \eqto \bn 1$ for any type $X$.}
-\[
-  B \eqto \sum_{a:A} f^{-1}(a) \to
-  \sum_{a:A} \Trunc{f^{-1}(a)}_0 \to
-  \sum_{a:A} \Trunc{f^{-1}(a)}_{-1} \to A
-%  \sum_{a:A} \Trunc{f^{-1}(a)}_{-2} \eqto A. %needed? Overfull line!
-\]
-Here, the first map \emph{forgets pure higher structure},
-the second map \emph{forgets pure structure},
-while the last forgets at most properties
-(this is the inclusion of the usual image).
-Of course, each of these maps may happen to forget nothing at all.
-Saying that the second map forgets \emph{pure} structure
-indicates that not only are the fibers sets,
-they are \emph{nonempty} sets,
-so the structure in question exists, at least.
-Note also that the fibers of the first map are connected,
-which indicates that what is forgotten at this step, if anything,
-is pure higher structure.
-
-\begin{example}\label{exa:stuff-struct-prop}
-  Let us look at some examples:
-  \begin{itemize}
-  \item The first projection $\fst : \FinSet \times \FinSet \to \FinSet$
-    forgets $1$-structure (stuff), namely the second set in the pair.
-  \item The first projection $\fst : \sum_{A:\FinSet} A \to \FinSet$
-    from the type of pointed finite sets to the type of finite sets
-    forgets structure, namely the structure of a chosen point.
-  \item The inclusion of the type of sets with cardinality
-    $n$, $\FinSet_n$, into the type of all finite sets, $\FinSet$,
-    forgets properties, namely the property
-    ``having cardinality $n$''.\qedhere
-    \end{itemize}
-\end{example}
-\begin{xca}\label{xca:stuff-struct-prop}
-  Analyze more examples of maps between groupoids
-  in terms of ``what is forgotten''.
-\end{xca}
-\begin{xca}\label{xca:0Im-to-Im}
-  Let $\trunc{\_}' : \Trunc{f^{-1}(a)}_0 \to \Trunc{f^{-1}(a)}$ be the
-  map defined by the induction principle in \cref{def:set-truncation}
-  from $\trunc{\_} : f^{-1}(a) \to \Trunc{f^{-1}(a)}$.
-  In the refined image factorization above, the map for the second arrow
-  maps any pair $(a,x)$ with $x:\Trunc{f^{-1}(a)}_0$ to the pair $(a,\trunc{x}')$.
-  For any $p:\Trunc{f^{-1}(a)}$, give an equivalence from the fiber 
-  of the latter map at $(a,p)$ to $\Trunc{f^{-1}(a)}_0$. 
-  What is forgotten by this map, and what is remembered?
-\end{xca}
-
-Recall the ($-1$-)image factorization and its uniqueness 
-from~\cref{xca:unique-fact-image}.
-The $0$-image factorization and its uniqueness 
-play just as important a role, so we give a full proof.
-\begin{theorem}\label{thm:unique-fact-0image}
-  The $0$-image $\sum_{a:A} \Trunc{f^{-1}(a)}_0$ of $f : A \to B$ 
-  induces a factorization $f \eqto i\circ p$
-  \[
-    \begin{tikzcd}
-      A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
-      & \im(f)\ar[ur,"i"'] &
-    \end{tikzcd}
-  \]
-  where $p$ is $0$-connected and $i$ is $0$-truncated,
-  and the following type of $0$-image factorizations 
-  of $f : A \to B$ is contractible:
-  \[
-  \sum_{C:\UU}\sum_{g:A\to C}\sum_{h: C\to B}
-  ({f \eqto h\circ g} \times \iszeroconn(g) \times \iszerotrunc(h)).
-  \]  
-\end{theorem}
 
 \section{Higher truncations}
 \label{sec:higher-truncations}
@@ -4078,6 +3932,158 @@ which is used to stay within a given universe.
 \end{implementation}
 This construction is due to \citeauthor{Rijke-Join}\footcite{Rijke-Join},
 see also the presentation in his book\footcite{Rijke-Intro}.
+
+\section{Higher structure: stuff, structure, and properties}
+\label{sec:stuff-struct-prop}
+
+Recall from \cref{lem:sum-of-fibers}\marginnote{%
+  The precise formalization of the intuitive
+  notions of ``stuff'', ``structure'',
+  and ``properties'' was worked out
+  in terms of category theory in
+  \emph{UseNet} discussions between
+  John Baez, Toby Bartels, and James Dolan
+  on \texttt{sci.physics.research} in 1998.
+  It was clear that the simplest description
+  was in terms of homotopy types,
+  and hence it's even simpler in type theory.
+  See also \citeauthor{Baez-Shulman}\footnotemark{}
+  for further discussion.}%
+\footcitetext{Baez-Shulman}
+that any map $f : B \to A$ can be described
+as ``projecting away'' its fibers,
+by using the equivalence $e$:
+\begin{equation}\label{eq:forget-fibers}
+  \begin{tikzcd}
+    B \ar[rr,"e","\sim"']\ar[dr,"f"'] & &
+    \sum_{a:A} \inv f(a)\ar[dl,"\fst"] \\
+    & A &
+  \end{tikzcd}
+\end{equation}
+We say that $f$ \emph{forgets} these fibers.\index{forget}
+If $A$ and $B$ are groupoids,
+these fibers are themselves groupoids,
+but it can happen that they are sets, propositions, or even contractible.
+Accordingly, we say that:
+\begin{itemize}
+\item $f$ \emph{forgets at most structure} if all the fibers are sets;%
+  \index{forget!structure}
+\item $f$ \emph{forgets at most properties} if all the fibers are propositions;%
+  \index{forget!properties}
+\item $f$ \emph{forgets nothing} if all the fibers are contractible.
+\end{itemize}
+Here, the structure and properties in question are \emph{on $a$} or \emph{of $a$}, respectively, as captured by the fibers at $a$, for each $a:A$.
+Of course, a map forgets properties if and only if
+it's an injection,
+and it forgets nothing if and only if it's an equivalence.
+
+Going in the other direction,
+we say that:
+\begin{itemize}
+\item $f$ \emph{forgets at most $n$-structure}
+  if all the fibers are $n$-truncated.\index{forget!higher structure}
+  If $n\ge1$, this is therefore a kind of \emph{higher structure}.\footnote{%
+    We're updating the terminology slightly: In the above references,
+    $n$-structure is referred to as \emph{$n$-stuff},
+    but nowadays the term \emph{higher structure} is more common,
+    so we have renamed $n$-stuff into \emph{$n$-structure}.}
+\end{itemize}
+Thus, an element of a groupoid is $1$-structure
+(this is sometimes informally called \emph{stuff}\index{stuff|see{forget!higher structure}}),
+while an element of a set is a structure, or $0$-structure,
+while an proof of a proposition is a property, or $(-1)$-structure.
+
+Looking at \eqref{eq:forget-fibers} another way,
+we see that to give an element of $b$ of $B$ lying
+over a given element $a:A$ amounts to
+specifying an element on $\inv f(a)$,
+so we say that the elements of $B$
+are elements of $A$ \emph{with extra $n$-structure},
+if the fibers $\inv f(a)$ are $n$-truncated.
+
+Refining the usual image and image factorization from
+\cref{def:prop-image,xca:unique-fact-image},
+using \cref{lem:sum-of-fibers},
+we can factor $f : B \to A$ through
+first its \emph{$0$-image}
+and then its usual $(-1)$-image\index{image} as follows:%
+\footnote{Using the general $n$-truncation 
+  from \cref{sec:higher-truncations},
+  we can define the $n$-image
+  in a similar way and prove that
+  the $n$-image factorization is unique.
+  Since the unit type $\bn 1$ is the unique $(-2)$-type,
+  we have $\Trunc{X}_{-2} \eqto \bn 1$ for any type $X$.}
+\[
+  B \eqto \sum_{a:A} f^{-1}(a) \to
+  \sum_{a:A} \Trunc{f^{-1}(a)}_0 \to
+  \sum_{a:A} \Trunc{f^{-1}(a)}_{-1} \to A
+%  \sum_{a:A} \Trunc{f^{-1}(a)}_{-2} \eqto A. %needed? Overfull line!
+\]
+Here, the first map \emph{forgets pure higher structure},
+the second map \emph{forgets pure structure},
+while the last forgets at most properties
+(this is the inclusion of the usual image).
+Of course, each of these maps may happen to forget nothing at all.
+Saying that the second map forgets \emph{pure} structure
+indicates that not only are the fibers sets,
+they are \emph{nonempty} sets,
+so the structure in question exists, at least.
+Note also that the fibers of the first map are connected,
+which indicates that what is forgotten at this step, if anything,
+is pure higher structure.
+
+\begin{example}\label{exa:stuff-struct-prop}
+  Let us look at some examples:
+  \begin{itemize}
+  \item The first projection $\fst : \FinSet \times \FinSet \to \FinSet$
+    forgets $1$-structure (stuff), namely the second set in the pair.
+  \item The first projection $\fst : \sum_{A:\FinSet} A \to \FinSet$
+    from the type of pointed finite sets to the type of finite sets
+    forgets structure, namely the structure of a chosen point.
+  \item The inclusion of the type of sets with cardinality
+    $n$, $\FinSet_n$, into the type of all finite sets, $\FinSet$,
+    forgets properties, namely the property
+    ``having cardinality $n$''.\qedhere
+    \end{itemize}
+\end{example}
+\begin{xca}\label{xca:stuff-struct-prop}
+  Analyze more examples of maps between groupoids
+  in terms of ``what is forgotten''.
+\end{xca}
+\begin{xca}\label{xca:0Im-to-Im}
+  Let $\trunc{\_}' : \Trunc{f^{-1}(a)}_0 \to \Trunc{f^{-1}(a)}$ be the
+  map defined by the induction principle in \cref{def:set-truncation}
+  from $\trunc{\_} : f^{-1}(a) \to \Trunc{f^{-1}(a)}$.
+  In the refined image factorization above, the map for the second arrow
+  maps any pair $(a,x)$ with $x:\Trunc{f^{-1}(a)}_0$ to the pair $(a,\trunc{x}')$.
+  For any $p:\Trunc{f^{-1}(a)}$, give an equivalence from the fiber 
+  of the latter map at $(a,p)$ to $\Trunc{f^{-1}(a)}_0$. 
+  What is forgotten by this map, and what is remembered?
+\end{xca}
+
+Recall the ($-1$-)image factorization and its uniqueness 
+from~\cref{xca:unique-fact-image}.
+The $0$-image factorization and its uniqueness 
+play just as important a role, so we give a full proof.
+\begin{theorem}\label{thm:unique-fact-0image}
+  The $0$-image $\sum_{a:A} \Trunc{f^{-1}(a)}_0$ of $f : A \to B$ 
+  induces a factorization $f \eqto i\circ p$
+  \[
+    \begin{tikzcd}
+      A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
+      & \im(f)\ar[ur,"i"'] &
+    \end{tikzcd}
+  \]
+  where $p$ is $0$-connected and $i$ is $0$-truncated,
+  and the following type of $0$-image factorizations 
+  of $f : A \to B$ is contractible:
+  \[
+  \sum_{C:\UU}\sum_{g:A\to C}\sum_{h: C\to B}
+  ({f \eqto h\circ g} \times \iszeroconn(g) \times \iszerotrunc(h)).
+  \]  
+\end{theorem}
+
 
 % Local Variables:
 % fill-column: 144
