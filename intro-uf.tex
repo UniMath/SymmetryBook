@@ -3302,7 +3302,7 @@ weak constancy of $f : A \to B$ is a proposition.
 \subsection{Set quotients}
 
 \begin{definition}\label{def:quotient-set}
-Given a set $A$ and an equivalence relation\footnote{%
+Given a type $A$ and an equivalence relation\footnote{%
   Recall that an \emph{equivalence relation} is one that is
   (1) \emph{reflexive}: $R(x,x)$,
   (2) \emph{symmetric}: $R(x,y) \to R(y,x)$, and
@@ -3317,61 +3317,77 @@ we define the \emph{quotient set}\footnote{%
   Propositional Resizing~\cref{pri:prop-resizing} to push
   the values of $R$ into a lower universe.}
 $A/R$ as the image of the map $R : A \to (A \to \Prop)$.
+Indeed, $A/R$ is a set, since $\Prop$ is a set, and so are $A\to\Prop$
+and the image $\sum_{P:A\to\Prop}\exists_{a:A}(P\eq R(a))$of $R$.
 For $a:A$ we define $[a] \defeq (R(a),\trunc{(a,\refl{R(a)})})$ in $A/R$;
 $[a]$ is called the \emph{equivalence class containing} $a$.\footnote{%
 We recall the convention to use $[a]\jdeq(R(a),!)$ also to denote
 its first component, that is, to use $[a]$ and $R(a)$ interchangeably.
-The way in which $[a]$ contains $a$ is by observing $R(a): A\to\Prop$
-and $(a,!):\sum_{x:A} R(a,x)$, by $R(a,a)$.}
+The way in which the subtype $[a]$ of $A$ contains $a$ is by observing
+that the predicate $R(a): A\to\Prop$, when applied to any given $x:A$,
+tells whether $x$ is in $[a]$ or not, and $R(a,a)$ by reflexivity.}
+%and $(a,!):\sum_{x:A} R(a,x)$, by $R(a,a)$.}
 \end{definition}
-Any element of the image of $R$ is an equivalence class:
-a subset $P$ of $A$ for which there exists $a:A$
+Any element of the image of $R$ is merely an equivalence class:
+a subtype $P$ of $A$ for which there exists $a:A$
 such that $P(x)$ holds if and only if $R(a,x)$ holds.
 
 In the following proofs we frequently use \cref{xca:all-prop-image}.
 
 \begin{lemma}\label{lem:equiv-class-prop}
   For any equivalence class $P : A/R$ and $a:A$,
-  $P \eqto [a]$ is inhabited if and only if $P(a)$ holds.
+  $P$ and $[a]$ are equal if and only if $P(a)$ holds.
 \end{lemma}
 \begin{proof}
-  Assume we have an identification of type $P \eqto [a]$. Then $P(x)$ is equivalent to $R(a,x)$ for all $x:A$.
-  Take $x\defeq a$ and use reflexivity $R(a,a)$ to conclude $P(a)$.
+  Assume $P$ and $[a]$ are equal. 
+  Then $P(x)$ iff $R(a,x)$ for all $x:A$. Now
+  take $x\defeq a$ and use reflexivity $R(a,a)$ to conclude $P(a)$.
 
   Conversely, assume $P(a)$, and let $x:A$ be given.
-  To prove the proposition $P(x) = R(a,x)$ we may assume that
+  To prove the proposition $P(x) \eq R(a,x)$ we may assume that
   $P \jdeq [b]$ for some $b:A$.
-  Then $P(x) \jdeq R(b,x)$, and we need to show $R(b,x) = R(a,x)$.
+  Then $P(x) \jdeq R(b,x)$, and we need to show $R(b,x) \eq R(a,x)$.
   This follows from $P(a) \jdeq R(b,a)$ using symmetry and transitivity.
 \end{proof}
+
+The following theorem gives two important properties of the set quotient,
+the second is commonly called the universal property.
+
 \begin{theorem}\label{thm:quotient-property}
-  We have $([x] = [x']) = R(x,x')$ for all $x,x':A$.
-  Also, for any \emph{set} $B$, a
-  function $f : A \to B$ factors uniquely through the map $[\blank] : A \to A/R$ if
-  $f(x) = f(x')$ for all $x,x':A$ with $R(x,x')$.
-  Indeed we get a map $\bar f : A/R \to B$ with
-  $\bar f([x]) \jdeq f(x)$ for all $x:A$.
+  We have $([x] \eq [x'])$ iff $R(x,x')$ for all $x,x':A$.
+  Also, let $B$ be a \emph{set} and $f : A \to B$ a
+  function such that $f(x) \eq f(x')$ for all $x,x':A$ with $R(x,x')$.
+  Then the type $\sum_{g:f : A/R \to B} (f \eq g\circ[\blank])$ is
+  contractible. The diagram in the margin visualizes the situation.
+  \marginnote{
+  $\begin{tikzcd}[column sep=small,ampersand replacement=\&]
+    A \ar[r,"f"] \ar[d,"{[\blank]}"'] \& B \\                   
+    A/R \ar[ur,"g"']
+  \end{tikzcd}$}
+  We will construct the center of contraction $\bar f : A/R \to B$
+  such that $\bar f([x]) \jdeq f(x)$ for all $x:A$.
 \end{theorem}
 \begin{proof}
-  For the first part we use \cref{lem:equiv-class-prop} applied to $P_x \defeq [x]$ and $x'$.
+  For the first part we use \cref{lem:equiv-class-prop} 
+  applied to $P_x \defeq [x]$ and $x'$.
 
-  Now let $B$ be a set and let $f : A \to B$ a function satisfying $f(x) \eqto f(x')$
-  for all $x,x':A$ with $R(x,x')$.
-
-  Uniqueness: If $g,h$ are extensions of $f$ through $[\blank]$, then
-  for any $z:A/R$, the type $g(z) \eqto h(z)$ is a proposition since $B$ is
-  a set, so we may assume $z\jdeq [x]$ for some $x:A$. Then
-  $g([x]) \eqto f(x) \eqto h([x])$, as desired.
-
-  Existence: Let $z\jdeq(P,!):A/R$. To define the image of $z$ in $B$,
-  using the truth of the proposition $\exists_{x:A}(P \eqto [x])$,
+  Now let $B$ be a set and let $f : A \to B$ a function 
+  satisfying $f(x) \eq f(x')$ for all $x,x':A$ with $R(x,x')$.
+  We first define the center of contraction $\bar f : A/R \to B$.
+  Let $z\jdeq(P,!):A/R$. To define $\bar f(z)$ in $B$,
+  using the truth of the proposition $\exists_{x:A}(P \eq [x])$,
   it suffices by \cref{thm:wconstant-elim}
-  to give a weakly constant map $\sum_{x:A}(P \eqto [x]) \to B$,
+  to give a weakly constant map $\sum_{x:A}(P \eq [x]) \to B$,
   and $f \circ \fst$ does the trick.
+
+  Now, if $g,h$ satisfy $g\circ[\blank] \eq f \eq h\circ[\blank]$,
+  then for any $z:A/R$, the type $g(z) \eq h(z)$ is a proposition 
+  since $B$ is a set, so we may assume $z\jdeq [x]$ for some $x:A$.
+  Then $g([x]) \eq f(x) \eq h([x])$, as desired.
 
   Now we check the equality by definition: As an element of $A/R$,
   equivalence class $[x]$ is accompanied by the witness
-  $\trunc{(x, \refl{[x]})} : \exists_{y:A}([x] \eqto [y])$.
+  $\trunc{(x, \refl{[x]})} : \exists_{y:A}([x] \eq [y])$.
   By~\cref{thm:wconstant-elim}, this is mapped, by definition,
   to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
 \end{proof}
@@ -3384,12 +3400,12 @@ $R(x,y) \defeq \Trunc {x \eqto y}$.
 This is easily seen to be an equivalence relation,
 using the groupoid structure of identity types.
 Hence we get a quotient set $A/R$ that satisfies
-$(\trunc{x}_0 = \trunc{y}_0) \equiv \Trunc{x\eqto y}$,
+$(\trunc{x}_0 \eq \trunc{y}_0) \equiv \Trunc{x\eqto y}$,
 where we write $\trunc{\blank}_0$ for the equivalence classes.
 Furthermore,~\cref{thm:quotient-property} implies that
 $A/R$ satisfies the recursion principle of~\cref{def:set-truncation}:
 If $S$ is a set, and $g:A\to S$ is any function,
-then $g(x) = g(y)$ holds whenever $\Trunc{x\eqto y}$
+then $g(x) \eq g(y)$ holds whenever $\Trunc{x\eqto y}$
 by the elimination principle
 of the propositional truncation,
 and hence we get a function $f : A/R \to S$ satisfying
@@ -3438,7 +3454,7 @@ and $\neg ((m<n)\times(n<m))$ (so $<$ is irreflexive).
 We can prove the following lemma by double induction.
 
 \begin{lemma}\label{lem:dec-eq+order-N}
-The relations $=$, $\leq$ and $<$ on $\NN$ are decidable.
+The relations $\eq$, $\leq$ and $<$ on $\NN$ are decidable.
 \end{lemma}
 By Hedberg's \cref{thm:hedberg}, we get an alternate proof that $\NN$ is a set.
 
