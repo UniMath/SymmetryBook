@@ -3392,6 +3392,31 @@ the second is commonly called the universal property.
   to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
 \end{proof}
 
+It is also possible to postulate\footnote{%
+Bertrand Russell, Introduction to Mathematical Philosophy.
+\emph{The method of 'postulating' what we want has many advantages; 
+they are the same as the advantages of theft over honest toil.}}
+the quotient set as a higher inductive type.
+
+\begin{definition}\label{def:quotien-as-HIT}
+  Let $A$ be a type and $R : A \to A \to \Prop$ an equivalence relation.
+  Define the quotient $A/R$ to be type with the following constructors:
+  \begin{enumerate}
+  \item a constructor $s$ of type $\isset(A/R)$ ensuring that $A/R$ is a set;
+  \item an element constructor $[x] : A/R$ for all $x:A$;
+  \item an constructor providing a proof $r(x,y)$ of
+  $[x] \eq [y]$ for all $x,y : A$ such that $R(x,y)$.
+  \end{enumerate}
+  Let $B(z)$ be a set for every element $z:A/R$. The induction principle
+  for $A/R$ states that, in order to define an element of $B(z)$ 
+  for every $z:A/R$,
+  it suffices to give elements $b_x : B([x])$ for every vertex $x:A$
+  together with a proof of the proposition
+  $R(x,y)\to(\pathover{b_x}{B}{r(x,y)}{b_y})$ for all $x,y:A$.
+  The function $f$ thus defined satisfies $f([x])\jdeq b_x$ for all $x:A$. 
+\end{definition}
+
+
 \begin{remark}\label{rem:set-trunc-as-quotient}
 We can use set quotients to give an alternative definition
 of the set truncation $\Trunc{A}_0$ of a type $A$.
@@ -3401,6 +3426,7 @@ This is easily seen to be an equivalence relation,
 using the groupoid structure of identity types.
 Hence we get a quotient set $A/R$ that satisfies
 $(\trunc{x}_0 \eq \trunc{y}_0) \equiv \Trunc{x\eqto y}$,
+for all elements $x$ and $y$ of $A$,
 where we write $\trunc{\blank}_0$ for the equivalence classes.
 Furthermore,~\cref{thm:quotient-property} implies that
 $A/R$ satisfies the recursion principle of~\cref{def:set-truncation}:
