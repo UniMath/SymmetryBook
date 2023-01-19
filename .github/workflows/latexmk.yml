@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create the directory figures/
         run: mkdir -p figures
       - name: Make version.tex
@@ -30,10 +30,9 @@ jobs:
           mv book.pdf build/
       - name: Publish to GitHub pages
         if: success() && github.ref == 'refs/heads/master'
-        uses: crazy-max/ghaction-github-pages@v1
+        uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: gh-pages
           build_dir: build/
-          verbose: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
