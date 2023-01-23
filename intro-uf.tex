@@ -2955,7 +2955,10 @@ The above lemma has other important consequences.
   For each natural number $n$,
   if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
 \end{corollary}
-In particular, if $T$ is a set, then $T_P$ is again a set; we then call $T_P$ a {\em subset} of $T$ and we may denote it by $\setof{t:T}{P(t)}$.
+In particular, if $T$ is a set, then $T_P$ is again a set; 
+we then call $T_P$ a {\em subset} of $T$ and we may denote it by 
+$\setof{t:T}{P(t)}$.\glossary(subset){$\setof{t:T}{P(t)}$}{set comprehension}
+\index{set!comprehension}
 
 \begin{xca}\label{xca:subsets-inclusion}
   Let $T$ be a set, and $S_0$ and $S_1$ be subsets of $T$ with respective
@@ -3301,12 +3304,46 @@ weak constancy of $f : A \to B$ is a proposition.
 
 \subsection{Set quotients}
 
-\begin{definition}\label{def:quotient-set}
-Given a type $A$ and an equivalence relation\footnote{%
+As an example, we first present an abstraction of the possible
+economical situations of a person as a quotient.
+Net worth can be defined as wealth minus debt. 
+Let's assume wealth $w$ and debt $d$ are natural numbers. 
+The debt can be greater than the wealth, yielding a negative net worth, 
+but at this point in our book we do not have negative numbers at our disposal.
+However, we do have the binary product, and the pair 
+$(w,d): (\NN\times\NN)$ also completely determines the net worth. 
+However, $(w,d)$ contains more information than necessary for the net worth: 
+$(\Succ(w),\Succ(d))$, for example, determines the same net worth 
+as $(w,d)$, and $(\Succ(w),\Succ(d))\ne(w,d)$. Put differently, 
+the type $\NN\times\NN$ does not capture the notion of net worth, 
+since its identity types don't capture equality of net worth.
+
+Clearly, we need a different type to capture the notion of net worth. 
+Of course, we want a type construction that works not only for 
+the special case of net worth, but also in similar situations. 
+Common to such situations is that we have a type $A$ and an 
+equivalence relation\footnote{%
   Recall that an \emph{equivalence relation} is one that is
   (1) \emph{reflexive}: $R(x,x)$,
   (2) \emph{symmetric}: $R(x,y) \to R(y,x)$, and
   (3) \emph{transitive}: $R(x,y) \to R(y,z) \to R(x,z)$.}
+$R : A\to A\to \Prop$. In the example of net worth, we have 
+$A\defeq(\NN\times\NN)$, and the equivalence relation is
+$R((w_1,d_1),(w_2,d_2)) \defeq  (w_1+d_2 = w_2 + d_1)$, 
+precisely capturing equality of net worth, $w_1 - d_1 = w_2 - d_2$,
+without actually using subtraction and negative numbers.
+
+What we need is a new type, which is like $A$, but with $R$ as equality.
+Note that the latter requires that the new type is a set. 
+The quotient set $A/R$ that we will define and study in this 
+section fulfills these requirements. 
+In the special case of $A\defeq(\NN\times\NN)$, and
+$R((w_1,d_1),(w_2,d_2)) \defeq  (w_1+d_2 = w_2 + d_1)$, 
+the type $A/R$ could in fact be used as a type of integers, 
+cf.\ \cref{sec:integers} and see \cref{xca:ints-as-quotient}. 
+
+\begin{definition}\label{def:quotient-set}
+Given a type $A$ and an equivalence relation
 $R : A \to A \to \Prop$,
 we define the \emph{quotient set}\footnote{%
   We may wonder about the universe level of $A/R$,
@@ -3318,7 +3355,7 @@ we define the \emph{quotient set}\footnote{%
   the values of $R$ into a lower universe.}
 $A/R$ as the image of the map $R : A \to (A \to \Prop)$.
 Indeed, $A/R$ is a set, since $\Prop$ is a set, and so are $A\to\Prop$
-and the image $\sum_{P:A\to\Prop}\exists_{a:A}(P\eq R(a))$of $R$.
+and the image $\sum_{P:A\to\Prop}\exists_{a:A}(P\eq R(a))$ of $R$.
 For $a:A$ we define $[a] \defeq (R(a),\trunc{(a,\refl{R(a)})})$ in $A/R$;
 $[a]$ is called the \emph{equivalence class containing} $a$.\footnote{%
 We recall the convention to use $[a]\jdeq(R(a),!)$ also to denote
@@ -3392,19 +3429,32 @@ the second is commonly called the universal property.
   to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
 \end{proof}
 
+\begin{xca}\label{xca:A/True-prop-trunc}
+Give an equivalence $A/R \to \Trunc{A}$ when $R(x,y)\defeq\true$ 
+for all $x,y:A$.
+\end{xca}
+
+\begin{xca}\label{xca:ints-as-quotient}
+Let $A\defeq(\NN\times\NN)$ and $R: A\to A\to\Prop$ defined by
+$R((w_1,d_1),(w_2,d_2)) \defeq  (w_1+d_2 = w_2 + d_1)$.
+Let $Z \defeq \set{(w,d)\mid (d=0) \lor (w=0 \land d\ne 0)}$.
+Construct an equivalence $f: A/R\to Z$ such that for all
+$(w,d,!):Z$ we have $f([(w,d)]) = (w,d)$.
+\end{xca}
+
 It is also possible to postulate\footnote{%
 \emph{The method of 'postulating' what we want has many advantages;
   they are the same as the advantages of theft over honest toil.}\hfill
 \citeauthor{russell-intro-mp}\footnotemark{}}\footcitetext{russell-intro-mp}
 the quotient set as a higher inductive type.
 
-\begin{definition}\label{def:quotien-as-HIT}
+\begin{definition}\label{def:quotient-as-HIT}
   Let $A$ be a type and $R : A \to A \to \Prop$ an equivalence relation.
   Define the quotient $A/R$ to be type with the following constructors:
   \begin{enumerate}
   \item a constructor $s$ of type $\isset(A/R)$ ensuring that $A/R$ is a set;
   \item an element constructor $[x] : A/R$ for all $x:A$;
-  \item an constructor providing a proof $r(x,y)$ of
+  \item a constructor providing a proof $r(x,y,!)$ of
   $[x] \eq [y]$ for all $x,y : A$ such that $R(x,y)$.
   \end{enumerate}
   Let $B(z)$ be a set for every element $z:A/R$. The induction principle
@@ -3412,10 +3462,14 @@ the quotient set as a higher inductive type.
   for every $z:A/R$,
   it suffices to give elements $b_x : B([x])$ for every vertex $x:A$
   together with a proof of the proposition
-  $R(x,y)\to(\pathover{b_x}{B}{r(x,y)}{b_y})$ for all $x,y:A$.
+  $\pathover{b_x}{B}{r(x,y,!)}{b_y}$ for all $x,y:A$ such that $R(x,y)$.
   The function $f$ thus defined satisfies $f([x])\jdeq b_x$ for all $x:A$. 
 \end{definition}
 
+\begin{xca}\label{xca:quotients-equivalence}
+Give an equivalence between $A/R$ as defined in \cref{def:quotient-set}
+and $A/R$ as defined in \cref{def:quotient-as-HIT}.
+\end{xca}
 
 \begin{remark}\label{rem:set-trunc-as-quotient}
 We can use set quotients to give an alternative definition
@@ -3423,7 +3477,7 @@ of the set truncation $\Trunc{A}_0$ of a type $A$.
 Consider the relation $R : A \to A \to \Prop$ given by
 $R(x,y) \defeq \Trunc {x \eqto y}$.
 This is easily seen to be an equivalence relation,
-using the groupoid structure of identity types.
+using using $\refl{},\symm$ and $\trans$ from \cref{sec:identity-types}.
 Hence we get a quotient set $A/R$ that satisfies
 $(\trunc{x}_0 \eq \trunc{y}_0) \equiv \Trunc{x\eqto y}$,
 for all elements $x$ and $y$ of $A$,
