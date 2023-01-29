@@ -2531,7 +2531,7 @@ A function $f:A\to B$ is a \emph{surjection}, or is \emph{surjective},
 if for all $b:B$ there exists an $a:A$ such that $b \eqto f(a)$,
 that is, $\exists_{a:A} b \eqto f(a)$.\footnote{%
   A function $f:A\to B$ is a \emph{split surjection}
-  if for all $b:B$ there (purely) is an $a:A$ with $b \eqto f(a)$,
+  if for all $b:B$ we have an $a:A$ with $b \eqto f(a)$,
   in other words, we have a function of type $\prod_{b:B} \sum_{a:A} b \eqto f(a)$.
   This is equivalent to saying we have a function
   $g:B\to A$ such that $f\circ g \eqto \id_B$
@@ -2825,8 +2825,8 @@ which are then \emph{large} in comparison.\footnote{%
 Often we run into types that are not in $\UU$ (small) directly,
 but are nevertheless equivalent to types in $\UU$.
 \begin{definition}\label{def:ess-loc-small}
-  We say that a type $A$ is \emph{essentially $\UU$-small} if there
-  (purely) is a type $X:\UU$ and an equivalence $A \equivto
+  We say that a type $A$ is \emph{essentially $\UU$-small} if we
+  have a type $X:\UU$ and an equivalence $A \equivto
   X$. And $A$ is \emph{locally $\UU$-small} if all its identity types
   are essentially $\UU$-small.
 \end{definition}
@@ -2995,22 +2995,22 @@ any element of $\bool$ is equal to $\yes$ or to $\no$.
 If $P: A\to\UU$ is a decidable predicate, then
 we can define $\chi_P: A\to\bool$ by induction (actually,
 only case distinction) on $p:P(a)$, setting $\chi_P(a) \eq \yes$
-if $p\jdeq\inl{\_}$ and $\chi_P(a) \eqto \no$ if $p\jdeq\inr{\_}$.
+if $p\jdeq\inl{\_}$ and $\chi_P(a) \eq \no$ if $p\jdeq\inr{\_}$.
 We will often use a characteristic function $T\to\bool$ to
 specify a decidable predicate on a type $T$.
 
 \begin{xca}\label{xca:decidability}
 Show that $f(t) \eq \yes$ is a decidable predicate on $T$,
 for any type $T$ and function $f:T\to\bool$.
-Show $(P\equivto\true)\amalg(P\equivto\false)$ for every decidable
-proposition $P$.
+Show $(P\equivto\true)\amalg(P\equivto\false)$ is a TODOOOOOO proposition
+for every decidable proposition $P$.
 \end{xca}
 We've seen how to make a subtype from a predicate.
 Conversely, from a subtype of $T$ given by the injection
 $f : S \to T$, we can form a predicate $P_f : T \to \Prop$ 
 defined by $P_f(x) \defeq \inv f(x)$.
-We shall see in~\cref{lem:Prop-Set-pointed-families},
-that these operations form an equivalence
+We shall see in~\cref{lem:Prop-Set-pointed-families}
+(\ref{lem:Prop-families}) that these operations form an equivalence
 between predicates on $T$ and subtypes of $T$.
 
 \begin{definition}\label{def:Prop-Set}
@@ -3111,7 +3111,7 @@ We may also tacitly coerce $f:X\ptdto Y$ to $f:X_\div \to Y_\div$.
 
 \begin{xca}\label{xca:plusforgetadjoint}
 If $A$ is a type and $B$ is a pointed type,
-prove that $A\to B_\div$ is equivalent to $A_+\ptdto B$.
+give an equivalence from $A\to B_\div$ to $A_+\ptdto B$.
 \end{xca}
 
 \begin{xca}\label{xca:freemaps}
@@ -3325,7 +3325,7 @@ Clearly, we need a different type to capture the notion of net worth.
 Of course, we want a type construction that works not only for 
 the special case of net worth, but also in similar situations. 
 Common to such situations is that we have a type $A$ and an 
-equivalence relation\footnote{%
+equivalence relation\footnote{\label{ft:equiv-rel}%
   Recall that an \emph{equivalence relation} is one that is
   (1) \emph{reflexive}: $R(x,x)$,
   (2) \emph{symmetric}: $R(x,y) \to R(y,x)$, and
@@ -3360,22 +3360,42 @@ $A/R$ as the image of the map $R : A \to (A \to \Prop)$.
 Indeed, $A/R$ is a set, since $\Prop$ is a set, and so are $A\to\Prop$
 and the image $\sum_{P:A\to\Prop}\exists_{a:A}(P\eq R(a))$ of $R$.
 For $a:A$ we define $[a] \defeq (R(a),\trunc{(a,\refl{R(a)})})$ in $A/R$;
-$[a]$ is called the \emph{equivalence class containing} $a$.\footnote{%
-We recall the convention to use $[a]\jdeq(R(a),!)$ also to denote
-its first component, that is, to use $[a]$ and $R(a)$ interchangeably.
-The way in which the subtype $[a]$ of $A$ contains $a$ is by observing
-that the predicate $R(a): A\to\Prop$, when applied to any given $x:A$,
-tells whether $x$ is in $[a]$ or not, and $R(a,a)$ by reflexivity.}
-%and $(a,!):\sum_{x:A} R(a,x)$, by $R(a,a)$.}
+$[a]$ is called the \emph{equivalence predicate of} $a$.
+\footnote{%
+In set theory, $A$ would be a set and the equivalence relation $R$
+would be a subset of $A\times A$, satisfing the conditions
+in \cref{ft:equiv-rel}. 
+Equivalence \emph{classes} would be subsets of $A$.
+
+Our definition may look different, but is actually
+a natural generalization of the definition in set theory
+to type theory. First, we let $A$ be an arbitrary type.
+Recall the correspondence between subtypes of $A$ and predicates
+on $A$ from \cref{sec:subtype}. Furthermore, note that
+$R\mapsto(z\mapsto R(\fst(z))(\snd(z))$ is an equivalence
+from $A\to(A\to\Prop)$ to $(A\times A)\to\Prop)$.
+The combination of the latter two yields that indeed
+the equivalence relation $R$ corresponds to a subtype of $A\times A$.
+
+Note further that $\fst([a])\jdeq R(a)$ and that $\snd([a])$ certifies
+the (obvious) fact that $R(a)$ is in the image of $R$.
+For each $a:A$, again using the correspondence from \cref{sec:subtype},
+the predicate $R(a): A\to\Prop$ corresponds to a subtype of $A$.
+Therefore we call $[{\color{casred}{a}}]$ the \emph{equivalence 
+predicate} (instead of \emph{class}) of ${\color{casred}{a}}$,
+which is true \emph{for} ${\color{casblue}{a}}$
+since $R({\color{casred}{a}})({\color{casblue}{a}})$, 
+that is, by reflexivity.
+}
 \end{definition}
-Any element of the image of $R$ is merely an equivalence class:
-a subtype $P$ of $A$ for which there exists $a:A$
+Any element of the image of $R$ is merely an equivalence predicate:
+a predicate $P$ on $A$ for which there exists $a:A$
 such that $P(x)$ holds if and only if $R(a,x)$ holds.
 
 In the following proofs we frequently use \cref{xca:all-prop-image}.
 
 \begin{lemma}\label{lem:equiv-class-prop}
-  For any equivalence class $P : A/R$ and $a:A$,
+  For any equivalence predicate $P : A/R$ and $a:A$,
   $P$ and $[a]$ are equal if and only if $P(a)$ holds.
 \end{lemma}
 \begin{proof}
@@ -3397,7 +3417,7 @@ the second is commonly called the universal property.
   We have $([x] \eq [x'])$ iff $R(x,x')$ for all $x,x':A$.
   Also, let $B$ be a \emph{set} and $f : A \to B$ a
   function such that $f(x) \eq f(x')$ for all $x,x':A$ with $R(x,x')$.
-  Then the type $\sum_{g:f : A/R \to B} (f \eq g\circ[\blank])$ is
+  Then the type $\sum_{g: A/R \to B} (f \eq g\circ[\blank])$ is
   contractible. The diagram in the margin visualizes the situation.
   \marginnote{
   $\begin{tikzcd}[column sep=small,ampersand replacement=\&]
@@ -3426,7 +3446,7 @@ the second is commonly called the universal property.
   Then $g([x]) \eq f(x) \eq h([x])$, as desired.
 
   Now we check the equality by definition: As an element of $A/R$,
-  equivalence class $[x]$ is accompanied by the witness
+  equivalence predicate $[x]$ is accompanied by the witness
   $\trunc{(x, \refl{[x]})} : \exists_{y:A}([x] \eq [y])$.
   By~\cref{thm:wconstant-elim}, this is mapped, by definition,
   to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
@@ -3484,7 +3504,7 @@ using using $\refl{},\symm$ and $\trans$ from \cref{sec:identity-types}.
 Hence we get a quotient set $A/R$ that satisfies
 $(\trunc{x}_0 \eq \trunc{y}_0) \equiv \Trunc{x\eqto y}$,
 for all elements $x$ and $y$ of $A$,
-where we write $\trunc{\blank}_0$ for the equivalence classes.
+where we write $\trunc{\blank}_0$ for the equivalence predicates.
 Furthermore,~\cref{thm:quotient-property} implies that
 $A/R$ satisfies the recursion principle of~\cref{def:set-truncation}:
 If $S$ is a set, and $g:A\to S$ is any function,
@@ -3906,9 +3926,10 @@ analogues of \cref{lem:typefamiliesandfibrations}.
 \begin{construction}\label{lem:Prop-Set-pointed-families}
 Let $A$ be a type. Then we have equivalences of the following types:
 \begin{enumerate}
-\item $(A\to\Prop) \equivto \sum_{B:\UU}\sum_{f:B\to A}
+\item\label{lem:Prop-families}
+$(A\to\Prop) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isprop({f^{-1}(a)})$;
-\item \label{lem:Set-families}
+\item\label{lem:Set-families}
 $(A\to\Set) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isset({f^{-1}(a)})$;
 \item $(A\to\UUp) \equivto \sum_{B:\UU}\sum_{f:B\to A}
