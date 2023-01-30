@@ -2722,6 +2722,11 @@ Later we will meet other notions of image, based on other truncation operations.
   \]
 \end{xca}
 
+\begin{xca}\label{xca:prop-image-is-set}
+Let $A$ be a type and $B$ as set and $f:A\to B$.
+Show that $\im(f)$ is a set.
+\end{xca}
+
 \begin{xca}\label{xca:all-prop-image}
 Let $f:A\to B$ for $A$ and $B$ types, and let $P(b)$ be a proposition
 depending on $b:B$.
@@ -3161,35 +3166,41 @@ if all constituent types are sets.
 \begin{proof}
   We only do the case of $\NN$ and leave the other cases to the reader
   (cf.\ \cref{xca:set-sum}). The following proof is due to Simon Huber.
-  We have to prove that $n \eq m$ is a
-  proposition for all $n,m:\NN$, i.e., $p \eqto q$ for all $n,m : \NN$ and
-  $p, q : n \eq m$.  By induction on $q$ it suffices to prove $p \eqto \refl
-  n$ for all $p : n \eqto n$.  Note that we can not simply prove this by
-  induction on $p$.  Instead we first prove an inversion principle for
-  identifications in $\NN$ as follows.  We define a type $T(n,m,p)$
+  We have to give identifications of type $p \eqto q$ for all $n,m : \NN$
+  and $p, q : n \eq m$.  
+  By induction on $q$ it suffices to give identifications of type 
+  $p \eqto \refl n$ for all $p : n \eqto n$.  
+  Note that this cannot simply be done by induction on $p$.  
+  Instead we first give an inversion principle for
+  identifications in $\NN$ as follows. Define a type $T(n,m,p)$
   for $n, m : \NN$ and $p : n \eq m$ by induction on $n$ and $m$:
   \[
     T(0,0,p) \defeq (p \eqto \refl{0})%
     \text{~and~}%
-    T(\Succ(n), \Succ(m), p) \defeq \sum_{q : n \eq m} p \eqto \ap{\Succ}(q),%
+    T(\Succ(n), \Succ(m), p) \defeq \inv{\ap{\Succ}}(p),%
   \]
-  and for the other cases the choice does not matter, say $T(0, \Succ(m),
-  p) \defeq T(\Succ(n), 0 ,p) \defeq \emptytype$.  Next we prove $T(n,m,p)$
-  for all $n,m$, and $p$ by induction on $p$, leaving us with
-  $T(n,n,\refl{n})$ for all $n : \NN$, which we in turn prove by
-  distinguishing cases on $n$.  Both the case for $0$ and for $\Succ(n)$
-  hold by reflexivity, where in the successor case we use $\refl{n}$
-  for $q$ and note that $\ap S \refl{n} \jdeq \refl{\Succ(n)}$.
+  and for the other cases the choice does not matter, 
+  say $T(0, \Succ(m), p) \defeq T(\Succ(n), 0 ,p) \defeq \emptytype$.
+  Next we give elements of type $T(n,m,p)$
+  for all $n,m$, and $p$ by induction on $p$, reducing to
+  $T(n,n,\refl{n})$ for all $n : \NN$, which we deal with by
+  distinguishing cases on $n$. 
+  For $n\jdeq 0$ we use $\refl{\refl{0}}$ and for the case $\Succ(n)$
+  we use the pair $(\refl{n},\refl{\refl{\Succ(n)}}$,
+  noting that $\ap{\Succ}(\refl{n}) \jdeq \refl{\Succ(n)}$.
 
-  We can now prove $p \eqto \refl{n}$ for all $p : n \eqto n$ by induction
-  on~$n$.  In the base case this is simply $T(0,0,p)$.  And for the
-  case $\Succ(n)$ we get from $T(\Succ(n),\Succ(n),p)$ that $p \eqto \ap{S} q$ for
-  some $q : n \eqto n$.  By induction hypothesis we have $e : q \eqto 
-  \refl{n}$ and thus also
+  We can now give identifications of type $p \eqto \refl{n}$ for all 
+  $p : n \eqto n$ by induction on $n$.
+  For $n\jdeq 0$ we use the element of  $T(0,0,p)$ constructed above.
+  For the case $\Succ(n)$, the element of $T(\Succ(n),\Succ(n),p)$
+  constructed above is a pair $(q,r)$ with $q : n \eqto n$ and
+  $r: p \eqto \ap{\Succ}(q)$. By induction hypothesis we have
+  and identification $e : q \eqto \refl{n}$. We get the desired
+  identiication by concatening $r$ and $\ap{\ap{\Succ}}(e)$:
   \[
-    p \eqto \ap{S} q \eqto \ap{S} \refl{n} \jdeq \refl{S (n)}
+    p \eqto \ap{\Succ}(q) \eqto \ap{\Succ}(\refl{n}) \jdeq \refl{\Succ(n)}.
+    \qedhere
   \]
-  using $\ap{\ap{S}} e$, concluding the proof.
 \end{proof}
 
 \begin{xca}\label{xca:set-sum}
@@ -3222,7 +3233,7 @@ In the non-dependent case we get that for any set $S$ and
 any function $g: T\to S$ there is a (unique) function $f:\Trunc{T}_0\to S$
 satisfying $f(\trunc{t}_0)\jdeq g(t)$ for all $t:T$.\footnote{%
 Lemma~7.3.12\footnotemark gives an equivalence from
-$\trunc{t}_0 \eqto \trunc{t'}_0$ to $\Trunc{t \eqto t'}$ for all $t,t:T$.}%
+$\trunc{t}_0 \eq \trunc{t'}_0$ to $\Trunc{t \eqto t'}$ for all $t,t:T$.}%
 \footcitetext{hottbook}
 A consequence of this recursion principle is that,
 for any set $S$, precomposition with $\trunc{\_}_0$ is an equivalence
@@ -3283,20 +3294,17 @@ weak constancy of $f : A \to B$ is a proposition.
   Consider the image factorization (\cref{xca:unique-fact-image})
   $A \xrightarrow{p}{} \im(f) \xrightarrow{i}{} B$ of $f$,
   where $p(x) \defeq (f(x),\trunc{(x,\refl{f(x)})})$
-  and $i(y,!) \defeq y$.\footnote{%
-  Elements of a type that is a proposition carry no information
-  beyond witnessing that the proposition is non-empty,
-  since all elements of a proposition can be identified.
-  Therefore we may replace them by an exclamation mark.}
+  and $i(y,\blank) \defeq y$.
 
-  The key point is that $\im(f)$ is a proposition: 
-  Let $(y_1,z_1),(y_2,z_2):\im(f)$. Since $B$ is a set, 
-  the type $y_1 \eqto y_2$ is a proposition.
+  The key point is that $\im(f)$ is a proposition because
+  $f$ is weakly constant. First note that $\im(f)$ is a set
+  by \cref{xca:prop-image-is-set}. 
+  Let $(y_1,z_1),(y_2,z_2):\im(f)$. We have to prove
+  $(y_1,z_1) \eq (y_2,z_2)$, which is a proposition.
   Hence we may hypothesize (by truncation induction on $z_i$)
-  that we have $x_1,x_2:A$ with
-  $f(x_i) \eqto y_i$ for $i=1,2$. By concatenation, we get
-  $y_1 \eqto f(x_1) \eqto f(x_2) \eqto y_2$ and 
-  hence $(y_1,z_1) \eqto (y_2,z_2)$.
+  that we have $x_1,x_2:A$ with $y_i \eq f(x_i)$ for $i=1,2$.
+  Hence we get $y_1 \eq f(x_1) \eq f(x_2) \eq y_2$ and 
+  therefore $(y_1,z_1) \eq (y_2,z_2)$.
 
   Thus, by the universal property of the truncation,
   we get $g' : \Trunc A \to \im(f)$ such
