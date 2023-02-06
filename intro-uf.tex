@@ -3186,17 +3186,17 @@ if all constituent types are sets.
   $T(n,n,\refl{n})$ for all $n : \NN$, which we deal with by
   distinguishing cases on $n$. 
   For $n\jdeq 0$ we use $\refl{\refl{0}}$ and for the case $\Succ(n)$
-  we use the pair $(\refl{n},\refl{\refl{\Succ(n)}}$,
+  we use the pair $(\refl{n},\refl{\refl{\Succ(n)}})$,
   noting that $\ap{\Succ}(\refl{n}) \jdeq \refl{\Succ(n)}$.
 
   We can now give identifications of type $p \eqto \refl{n}$ for all 
   $p : n \eqto n$ by induction on $n$.
   For $n\jdeq 0$ we use the element of  $T(0,0,p)$ constructed above.
   For the case $\Succ(n)$, the element of $T(\Succ(n),\Succ(n),p)$
-  constructed above is a pair $(q,r)$ with $q : n \eqto n$ and
+  constructed above yields a pair $(q,r)$ with $q : n \eqto n$ and
   $r: p \eqto \ap{\Succ}(q)$. By induction hypothesis we have
   and identification $e : q \eqto \refl{n}$. We get the desired
-  identiication by concatening $r$ and $\ap{\ap{\Succ}}(e)$:
+  identification by concatening $r$ and $\ap{\ap{\Succ}}(e)$:
   \[
     p \eqto \ap{\Succ}(q) \eqto \ap{\Succ}(\refl{n}) \jdeq \refl{\Succ(n)}.
     \qedhere
@@ -3393,7 +3393,9 @@ Therefore we call $[{\color{casred}{a}}]$ the \emph{equivalence
 predicate} (instead of \emph{class}) of ${\color{casred}{a}}$,
 which is true \emph{for} ${\color{casblue}{a}}$
 since $R({\color{casred}{a}})({\color{casblue}{a}})$, 
-that is, by reflexivity.
+that is, by reflexivity. 
+
+We will use $[a]$ and $R(a)$ interchangeably.
 }
 \end{definition}
 Any element of the image of $R$ is merely an equivalence predicate:
@@ -3442,22 +3444,24 @@ the second is commonly called the universal property.
   Now let $B$ be a set and let $f : A \to B$ a function 
   satisfying $f(x) \eq f(x')$ for all $x,x':A$ with $R(x,x')$.
   We first define the center of contraction $\bar f : A/R \to B$.
-  Let $z\jdeq(P,!):A/R$. To define $\bar f(z)$ in $B$,
-  using the truth of the proposition $\exists_{x:A}(P \eq [x])$,
-  it suffices by \cref{thm:wconstant-elim}
-  to give a weakly constant map $\sum_{x:A}(P \eq [x]) \to B$,
-  and $f \circ \fst$ does the trick.
-
+  Let $z\jdeq(P,p):A/R$. To define $\bar f(z)$ in $B$,
+  we note that $f \circ \fst$ is a weakly constant map 
+  of type $\sum_{x:A}(P \eq [x]) \to B$. By \cref{thm:wconstant-elim}
+  we get a map $g: \exists_{x:A}(P \eq [x]) \to B$ and we put
+  $\bar f(z)\defeq g(p)$.
+  
+  We check the equality by definition: As an element of $A/R$,
+  equivalence predicate $[x]$ is accompanied by the witness
+  $p\jdeq \trunc{(x, \refl{[x]})} : \exists_{y:A}([x] \eq [y])$.
+  By~\cref{thm:wconstant-elim}, this is mapped by $g$, by definition,
+  to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
+   
   Now, if $g,h$ satisfy $g\circ[\blank] \eq f \eq h\circ[\blank]$,
   then for any $z:A/R$, the type $g(z) \eq h(z)$ is a proposition 
   since $B$ is a set, so we may assume $z\jdeq [x]$ for some $x:A$.
   Then $g([x]) \eq f(x) \eq h([x])$, as desired.
 
-  Now we check the equality by definition: As an element of $A/R$,
-  equivalence predicate $[x]$ is accompanied by the witness
-  $\trunc{(x, \refl{[x]})} : \exists_{y:A}([x] \eq [y])$.
-  By~\cref{thm:wconstant-elim}, this is mapped, by definition,
-  to $(f \circ \fst)(x, \refl{[x]}) \jdeq f(x)$, as desired.
+  
 \end{proof}
 
 \begin{xca}\label{xca:A/True-prop-trunc}
@@ -3470,7 +3474,7 @@ Let $A\defeq(\NN\times\NN)$ and $R: A\to A\to\Prop$ defined by
 $R((w_1,d_1),(w_2,d_2)) \defeq  (w_1+d_2 = w_2 + d_1)$.
 Let $Z \defeq \set{(w,d)\mid (d=0) \lor (w=0 \land d\ne 0)}$.
 Construct an equivalence $f: A/R\to Z$ such that for all
-$(w,d,!):Z$ we have $f([(w,d)]) = (w,d)$.
+$(w,d,p):Z$ we have $f([(w,d)]) = (w,d)$.
 \end{xca}
 
 It is also possible to postulate\footnote{%
@@ -3485,15 +3489,15 @@ the quotient set as a higher inductive type.
   \begin{enumerate}
   \item a constructor $s$ of type $\isset(A/R)$ ensuring that $A/R$ is a set;
   \item an element constructor $[x] : A/R$ for all $x:A$;
-  \item a constructor providing a proof $r(x,y,!)$ of
-  $[x] \eq [y]$ for all $x,y : A$ such that $R(x,y)$.
+  \item a constructor providing a proof $r(x,y,p)$ of
+  $[x] \eq [y]$ for all $x,y : A$ and $p:R(x,y)$.
   \end{enumerate}
   Let $B(z)$ be a set for every element $z:A/R$. The induction principle
   for $A/R$ states that, in order to define an element of $B(z)$ 
   for every $z:A/R$,
-  it suffices to give elements $b_x : B([x])$ for every vertex $x:A$
+  it suffices to give elements $b_x : B([x])$ for every $x:A$
   together with a proof of the proposition
-  $\pathover{b_x}{B}{r(x,y,!)}{b_y}$ for all $x,y:A$ such that $R(x,y)$.
+  $\pathover{b_x}{B}{r(x,y,p)}{b_y}$ for all $x,y:A$ and $p:R(x,y)$.
   The function $f$ thus defined satisfies $f([x])\jdeq b_x$ for all $x:A$. 
 \end{definition}
 
@@ -3995,10 +3999,11 @@ which is used to stay within a given universe.
     \quad
     x \mapsto (y \mapsto \Trunc{x\eqto y}_n).
   \]
-  Let $\Trunc A_{n+1} \defeq \im(I_n)$ be the image of $I_n$, \cref{def:prop-image},
-  and let $\trunc\blank_{n+1}: A\to\Trunc A_{n+1}$ be the map from the domain of $I_n$
-  to its image,
-  $x \mapsto (\Trunc{x\eqto\blank}_n, !)$.
+  Let $\Trunc A_{n+1} \defeq \im(I_n)$ be the image of $I_n$,
+  \cref{def:prop-image}, and let $\trunc\blank_{n+1}: A\to\Trunc A_{n+1}$ 
+  be the map from the domain of $I_n$ to its image,
+  $x \mapsto (I_n(x),\trunc{(x,\refl{I_n(x)})})$  with
+  $I_n(x) \jdeq \Trunc{x\eqto\blank}_n$ as defined above.
 
   Since the type of $n$-types is an $(n+1)$-type,
   $\Trunc A_{n+1}$ is an $(n+1)$-type by~\cref{lem:level-n-utils}.
