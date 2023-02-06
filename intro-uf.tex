@@ -2529,10 +2529,11 @@ This motivates the following definitions.
 \begin{definition}\label{def:surjection}
 A function $f:A\to B$ is a \emph{surjection}, or is \emph{surjective},
 if for all $b:B$ there exists an $a:A$ such that $b \eqto f(a)$,
-that is, $\exists_{a:A} b \eqto f(a)$.\footnote{%
+that is, $\exists_{a:A} (b \eqto f(a))$.\footnote{%
   A function $f:A\to B$ is a \emph{split surjection}
   if for all $b:B$ we have an $a:A$ with $b \eqto f(a)$,
-  in other words, we have a function of type $\prod_{b:B} \sum_{a:A} b \eqto f(a)$.
+  in other words, we have a function of type 
+  $\prod_{b:B} \sum_{a:A} (b \eqto f(a))$.
   This is equivalent to saying we have a function
   $g:B\to A$ such that $f\circ g \eqto \id_B$
   (such a $g$ is called a \emph{section} of $f$).}
@@ -2772,14 +2773,16 @@ Following this idea, we will
 explicitly state whenever we are assuming the Law of Excluded Middle.
 \begin{xca}\label{xca:lem-prop}
   Show that the Law of Excluded Middle is equivalent to asserting
-  that the map $(\yes \eqto \blank) : \bool \to \Prop$
+  that the map $(\yes \eq \blank) : \bool \to \Prop$
   is an equivalence.
 \end{xca}
-A useful consequence of the Law of Excluded Middle is the so called principle of ``proof by
-contradiction'': to prove a proposition $P$, assume its negation $\neg P$
-and derive a contradiction. Without the Law of Excluded Middle, this proves only the double negation of
-$P$, that is $\neg \neg P$.  However, with the Law of Excluded Middle, one can derive $P$
-from the latter: indeed, according to the Law of Excluded Middle, either $P$ or $\neg P$ holds;
+A useful consequence of the Law of Excluded Middle is the principle of 
+``proof by contradiction'': to prove a proposition $P$, 
+assume its negation $\neg P$ and derive a contradiction. 
+Without the Law of Excluded Middle, this proves only the double negation of
+$P$, that is $\neg \neg P$.  However, with the Law of Excluded Middle, 
+one can derive $P$ from the latter: indeed, according to the 
+Law of Excluded Middle, either $P$ or $\neg P$ holds;
 but $\neg P$ leads to a contradiction by hypothesis, making $P$ hold
 necessarily.
 
@@ -2835,7 +2838,9 @@ but are nevertheless equivalent to types in $\UU$.
   X$. And $A$ is \emph{locally $\UU$-small} if all its identity types
   are essentially $\UU$-small.
 \end{definition}
-Note that $\sum_{X:\UU}(A \equivto X)$ is a proposition by the univalence axiom for $\UU$.
+Note that $\sum_{X:\UU}(A \equivto X)$, the type expressing that
+$A$ is essentially $\UU$-small, is a proposition by the 
+univalence axiom for $\UU$.
 Of course, any $A:\UU$ is essentially $\UU$-small,
 and any essentially $\UU$-small type is locally $\UU$-small.
 
@@ -2843,7 +2848,7 @@ To show that a type is locally $\UU$-small
 we have to give a reflexive relation
 $\mathrm{Eq}_A : A \to A \to \UU$
 that induces, by path induction, a family of equivalences
-$(x \eqto y) \equivto \mathrm{Eq}_A\,x\,y$.
+$(x \eqto y) \equivto \mathrm{Eq}_A(x,y)$.
 
 \begin{xca}
   Show that $\UU$ is locally $\UU$-small, and investigate
@@ -2859,7 +2864,8 @@ $(x \eqto y) \equivto \mathrm{Eq}_A\,x\,y$.
   When we assume this, we get that any set is locally $\UU_0$-small.
 \end{remark}
 
-We will make use of the following (recall the definition of the image, \cref{def:prop-image}):
+We will make use of the following principle
+(recall the definition of the image, \cref{def:prop-image}).
 \begin{principle}[Replacement]
   \label{pri:replacement}\index{Replacement principle}
   For any map $f : A \to B$
@@ -2872,7 +2878,8 @@ that for a large (class-sized) function with domain a small set
 and codomain the class $V$ of all small sets,
 the image is again a small set.
 This follows from our replacement principle,
-assuming propositional resizing, or the even stronger principle of the excluded middle.
+assuming propositional resizing, 
+or the even stronger principle of the excluded middle.
 
 The replacement principle can be proved using the join construction of the image, cf.~\citeauthor{Rijke-Join}\footcite{Rijke-Join},
 which uses as an assumption that the universes
@@ -2892,8 +2899,10 @@ in~\cref{def:groupoidFin}, is essentially small.
 \section{Predicates and subtypes}
 \label{sec:subtype}
 
-In this section, we consider the relationship between predicates on a type $T$ and subtypes of $T$.  The basic idea is that the predicate tells
-whether an element of $T$ should belong to the subtype, and the predicate can be recovered from the subtype by asking whether an element of $T$
+In this section, we consider the relationship between predicates on a type $T$
+and subtypes of $T$.  The basic idea is that the predicate tells
+whether an element of $T$ belongs to the subtype. Conversely,
+the predicate can be recovered from the subtype by asking whether an element of $T$
 is in it.
 
 \begin{definition}\label{def:predicate}
@@ -2967,9 +2976,9 @@ $\setof{t:T}{P(t)}$.\glossary(subset){$\setof{t:T}{P(t)}$}{set comprehension}
 
 \begin{xca}\label{xca:subsets-inclusion}
   Let $T$ be a set, and $S_0$ and $S_1$ be subsets of $T$ with respective
-  inclusions $\fst : S_0 \to T$ and $\fst : S_1 \to T$. Prove that the type
+  inclusions $\fst_0 : S_0 \to T$ and $\fst_1 : S_1 \to T$. Prove that the type
   \begin{displaymath}
-    \sum_{f: S_0 \to S_1} \fst \circ f = \fst
+    \sum_{f: S_0 \to S_1} \fst_1 \circ f = \fst_0
   \end{displaymath}
   is a proposition. This proposition is denoted $S_0 \subseteq S_1$.
   \glossary(subset){${\subseteq}$}{subset}\index{subset}
@@ -3007,7 +3016,7 @@ specify a decidable predicate on a type $T$.
 \begin{xca}\label{xca:decidability}
 Show that $f(t) \eq \yes$ is a decidable predicate on $T$,
 for any type $T$ and function $f:T\to\bool$.
-Show $(P\equivto\true)\amalg(P\equivto\false)$ is a TODOOOOOO proposition
+Show $(P\equivto\true)\amalg(P\equivto\false)$ is a true proposition
 for every decidable proposition $P$.
 \end{xca}
 We've seen how to make a subtype from a predicate.
@@ -3043,7 +3052,7 @@ Note the slight subtlety of this definition together with
 (since each instance is contractible) and is thus a \emph{decidable set},
 even though it may not be a \emph{decidable as a proposition}.
 
-The way we phrased this definition, it builds in the condition that $A$ is a set.
+The way we phrased this definition implies that $A$ is a set.
 The following celebrated and useful theorem states that this is unnecessary.
 \begin{theorem}[Hedberg]\label{thm:hedberg}\index{Hedberg's theorem}
   Any type $A$ for which we have a function of type
