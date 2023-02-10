@@ -263,7 +263,9 @@ in traditional mathematics known as Russell's paradox.\footnote{%
   \item If $\UU$ is a universe, and $X : \UU$ is an element of $\UU$, then $X$ is a type.
   \item If $X$ is a type, then it appears as an element in some universe $\UU$.
     Moreover, if $X$ and $Y$ are types, then there is a universe $\UU$ containing both of them.
-  \item If $\UU$ and $\UU'$ are universes, $\UU:\UU'$, $X$ is a type, and $X:\UU$, then also $X:\UU'$.  (Thus we may regard $\UU'$ as being \emph{larger} than $\UU$.)
+  \item\label{it:cumulative} If $\UU$ and $\UU'$ are universes, 
+  $\UU:\UU'$, $X$ is a type, and $X:\UU$, then also $X:\UU'$.
+  (Thus we may regard $\UU'$ as being \emph{larger} than $\UU$.)
   \item There is a particular universe $\UU_0$, which we single out to serve as a repository for certain basic types to be introduced in the sequel.
     Moreover, $\UU_0 : \UU$ for every other universe $\UU$, and thus $\UU_0$ is the \emph{smallest} universe.
 \end{enumerate}
@@ -2812,8 +2814,12 @@ Sometimes we make use of the following,
 which is another consequence of the Law of Excluded Middle:
 \begin{principle}[Propositional Resizing]
   \label{pri:prop-resizing}\index{Propositional resizing}
-  For any pair of nested universes $\UU:\UU'$, the injection
-  $\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.
+  For any pair of nested universes $\UU:\UU'$, the map
+  $(P\mapsto P):\Prop_\UU \to \Prop_{\UU'}$ is an equivalence.\footnote%
+  {The map $P\mapsto P$ is well-typed by \emph{cumulativity}
+  of the universes, that is, by point (\ref{it:cumulative})
+  of \cref{sec:universes}. Note that the map is not
+  the identity function due to its type.}
 \end{principle}
 \begin{xca}\label{xca:lem-prop-sizing}
   Show that if the Law of Excluded Middle holds,
@@ -2931,8 +2937,22 @@ which will be key to saying what a \emph{subtype} is.
   \[
   \Sub^\UU_T \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).
   \]
-  We may choose to leave the choice of $\UU$ ambiguous, in which case we will write $\Sub_T$ for $\Sub^\UU_T$.
+  When no confusion can arise, we simply write $\Sub_T$ for $\Sub^\UU_T$.
 \end{definition}
+
+\begin{xca}\label{xca:subtypes-set}
+Show that $\Sub_T$ is a set, for any type $T$. Hint:
+given subtypes $T_f\defeq(S,f,p)$ and $T_{f'}\defeq(S',f',p')$ of $T$,
+show that $T_f=T_{f'}$ amounts to finding a (unique) equivalence%
+\marginnote{%
+    \[
+      \begin{tikzcd}[ampersand replacement=\&]
+        S \ar[rr,"{e}","{\sim}"']\ar[dr,"{f}"'] \& \& S'\ar[dl,"{f'}"] \\
+        \& T \&
+      \end{tikzcd}
+    \]}
+$e: S\equivto S'$ such that $f = f'\circ e$. See the diagram in the margin.
+\end{xca}
 
 \begin{lemma}\label{lem:subtype-eq-=}
   Let $T$ be a type and $P$ a predicate on $T$.
@@ -2990,8 +3010,15 @@ $\setof{t:T}{P(t)}$.\glossary(subset){$\setof{t:T}{P(t)}$}{set comprehension}
   is a proposition. This proposition is denoted $S_0 \subseteq S_1$.
   \glossary(subset){${\subseteq}$}{subset}\index{subset}
 
-  Prove that the relation $\blank \subseteq \blank$ is a partial 
-  order with a minimum and a maximum.
+  Thus the type of ${\subseteq}$ is $\Sub_T\to\Sub_T\to\Prop$,
+  and $\Sub_T$ is a set by \cref{xca:subtypes-set}.
+  Prove that the relation ${\subseteq}$ is a partial 
+  order\footnote{\label{ft:partial-order}%
+  Recall that an \emph{partial order} on a set $S$ is a relation $R$ that is
+  (1) \emph{reflexive}: $R(x,x)$,
+  (2) \emph{transitive}: $R(x,y) \to R(y,z) \to R(x,z)$, and
+  (3) \emph{antisymmetric}: $R(x,y) \to R(y,x) \to x\eq y$.}
+with a least and a greatest element (even if $T$ is the empty type).
 \end{xca}
 
 
@@ -3446,10 +3473,10 @@ the second is commonly called the universal property.
   Then the type $\sum_{g: A/R \to B} (f \eq g\circ[\blank])$ is
   contractible. The diagram in the margin visualizes the situation.
   \marginnote{
-  $\begin{tikzcd}[column sep=small,ampersand replacement=\&]
+  \[\begin{tikzcd}[column sep=small,ampersand replacement=\&]
     A \ar[r,"f"] \ar[d,"{[\blank]}"'] \& B \\                   
     A/R \ar[ur,"g"']
-  \end{tikzcd}$}
+  \end{tikzcd}\]}
   We will construct the center of contraction $\bar f : A/R \to B$
   such that $\bar f([x]) \jdeq f(x)$ for all $x:A$.
 \end{theorem}
