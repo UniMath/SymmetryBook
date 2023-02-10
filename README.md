@@ -43,6 +43,12 @@ This book will be an undergraduate textbook written in the univalent style, taki
 
 Go [here for the current draft of the book](https://unimath.github.io/SymmetryBook/book.pdf).
 
+## Compiling the book
+
+To speed up compilation while writing the book, we cache the macros as a TeX format, and we externalize most of the figures,
+so that they're only compiled once (or when necessary after changes to them).
+This is managed with the Makefile, so just run `make`. The first run takes about 5–10 minutes, but subsequent compilations should finish in seconds.
+
 ## An icosahedron for your viewing pleasure
 
 Go [here for an interactive icosahedron](https://unimath.github.io/SymmetryBook/icosahedron.html)
