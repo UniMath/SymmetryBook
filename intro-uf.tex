@@ -86,8 +86,11 @@ and which may be denoted by $T(a)$.
 Naturally, if the expression $T$ doesn't actually involve the variable $x$, then the members of the family are all the same,
 and we'll refer to the family as a \emph{constant family} of types.
 
-Here's an example of a family of types: we let $n$ be a natural number and $P_n$ be the type of $n$-sided polygons in the plane.  It gives a family
-of types parametrized by the natural numbers.\footnote{\color{casred} Well, either we should suppose $n\ge3$, or make some other stipulation about $P_n$ for $n<3$.}
+Here's an example of a family of types: let $T$ be the type
+of all natural numbers greater than $2$. For any element $n$ of $T$
+we let $P_n$ be the type of $n$-sided polygons in the plane. 
+It gives a family of types parametrized by the elements of $T$.%
+\footnote{\color{casred} See if you like my solution. If so, remove footnote.}
 One of the members of the family is the type $P_5$ of all pentagons in the plane.
 
 A family of types may be parametrized by more than one variable.  For example, after introducing a variable $x:X$ and a family of types $T$
@@ -112,9 +115,15 @@ It gives a family of real numbers parametrized by the natural numbers.
 (The family may also be called a \emph{sequence} of real numbers).
 One of the members of the family is $\sqrt{11}$.
 
-Here's an example of a family of elements in a (non-constant) family of types: we let $n$ be a natural number and $P_n$ be the type of $n$-sided
-polygons in the plane, as we did above.  Then we consider the regular $n$-sided polygon $p_n$ of radius $1$ with a vertex on the positive $x$-axis.  We
-see that $p_n : P_n$.  One of the members of the family is the regular pentagon $p_5 : P_5$ of radius $1$ with a vertex on the positive $x$-axis.
+Here's an example of a family of elements in a (non-constant) family of types.
+As above, let $T$ be the type of all natural numbers greater than $2$ and let
+$P_n$ be the type of $n$-sided polygons in the plane, for any $n:T$. 
+Now consider the regular $n$-sided polygon $p_n$ of radius $1$ with
+a vertex on the positive $x$-axis, for any $n:T$.  We see that $p_n : P_n$.
+One of the members of this family of \emph{elements} $p_n$ is the regular
+pentagon $p_5$ of radius $1$ with a vertex on the positive $x$-axis.
+The pentagon $p_5$ is an element of the type $P_5$, which is a member of the
+family of \emph{types} $P_n$ ($n:T$). In short, $5:T$ and $p_5 : P_5$.
 
 The type $X$ containing the variable for a family of types or a family of elements is called the \emph{parameter type}\index{parameter type} of
 the family. 
@@ -181,10 +190,15 @@ in that case, we will say that $x$ has been \emph{defined} to be (or to mean) $z
 \glossary(2:=){$\protect\defeq$}{definition}
 The forms allowed for the expression $x$ will be made clear by the examples we give.
 
-For example, after writing $n \defeq 12$, we will say that $n$ has been defined to be $12$.
+For example, after writing $n \defeq 12$, we will say that $n$ has 
+been defined to be $12$.
 
-For another example, the function $f$ that we named above may be introduced by writing $f \defeq ( x \mapsto e(x) )$.
-Alternatively and more traditionally, we may write $f(x) \defeq e(x)$.   ADD A REMARK.
+For another example, naming the function $x \mapsto e(x)$ as $f$ 
+(as we did above) can be done by writing $f \defeq ( x \mapsto e(x) )$.
+Alternatively and more traditionally, we may write $f(x) \defeq e(x)$.
+Both mean that $f$ has been defined to be $x \mapsto e(x)$
+and that, consequently, $f(a)$ has been defined to be $e(a)$,
+for any element $a$ of $X$.
 
 The notation $b \jdeq c$ will denote the statement that the expressions $b$ and $c$ become the same thing if all the subexpressions within $b$
 or $c$ are expanded according to their definitions, if any; in that case, we will say that $b$ and $c$ are \emph{the same by
@@ -296,7 +310,8 @@ Here are Peano's rules\footcite{peano-principia} for constructing the natural nu
   \item an element $a$ of $X(0)$; and
   \item a family of functions $g_m : X(m) \to X(\Succ(m))$.
   \end{enumerate}
-  Then from those data we are provided with a family of elements $f(m) : X(m)$, satisfying $f(0) \jdeq a$ and $f(\Succ(m)) \jdeq g_m(f(m))$.
+  Then from those data we are provided with a family of elements $f(m) : X(m)$,
+  satisfying $f(0) \jdeq a$ and $f(\Succ(m)) \jdeq g_m(f(m))$.
 \end{enumerate}
 
 The first three rules present few problems for the reader.  They provide us with the smallest natural number $0:\NN$, and we may introduce as
@@ -420,8 +435,9 @@ An example of a non-trivial symmetry will be seen in \cref{xca:C2}.
 Consider the identity type $\fact(2) \eqto 2$, where $\fact$ denotes the factorial function defined in \cref{sec:natural-numbers}.
 Expansion of the definitions in $\fact(2) \eqto 2$ simplifies it to $\Succ(\Succ(0)) \eqto \Succ(\Succ(0))$,
 so we see from rule \ref{E2} that $\refl{\Succ(\Succ(0))}$ serves
-as an element of it.\footnote{We will see later that numbers don't have non-trivial symmetries, so the
-  possibility that there are other ways to identify $\fact(2)$ with $2$ doesn't arise.}
+as an element of it.\footnote{We will see later that numbers only have
+trivial symmetries, so the possibility that there are other ways to 
+identify $\fact(2)$ with $2$ doesn't arise.}
 We may also write either $\refl{2}$ or $\refl{\fact(2)}$ for that element.
 A student might want a more detailed derivation that $\fact(2)$ may be identified with $2$,
 but as a result of our convention above that definitions may be applied without changing anything, the application of definitions, including
@@ -810,7 +826,9 @@ idea of the following definition.
   $\pathover y Y {\refl a} {y'}$ to be $y \eqto y'$, which is also in $\UU$.
 \end{definition}
 
-\begin{remark}
+\begin{remark} TODO: what if the $\UU$'s above are different?
+Also: a remark/exercise about the special case where $Y$ is the constant
+family.
 \end{remark}
 
 An element $q : \pathover y Y p {y'}$ is called an \emph{identification} of $y$ with $y'$ \emph{over} $p$, or a 
@@ -877,7 +895,7 @@ For example, we may define composition of paths over paths as follows.
   Suppose also that we have elements $x, x', x'' : X$, a path $p : x \eqto x'$, and a path $p' : x' \eqto x''$.
   Suppose further that we have elements $y : Y(x)$, $y' : Y(x')$, and $y'' : Y(x'')$, with paths $q : \pathover y Y p {y'}$ over $p$
   and $q' : \pathover {y'} Y {p'} {y''}$ over $p'$.
-  Then we define the \emph{composite} path $q' \pathovercomp q : \pathover y Y {p' \circ p} {y''}$ over $p' \circ p$ as follows.
+  Then we define the \emph{composite} path $(q' \pathovercomp q) : \pathover y Y {p' \circ p} {y''}$ over $p' \circ p$ as follows.
   First we apply path induction on $p'$ to reduce to the case where $x''$ is $x'$ and $p'$ is $\refl{x'}$.
   That also reduces the type $\pathover {y'} Y {p'} {y''}$ to the identity type $y' \eqto y''$, so we may apply path induction on $q'$ to reduce
   to the case where $y''$ is $y'$ and $q'$ is $\refl{y'}$.
@@ -885,13 +903,20 @@ For example, we may define composition of paths over paths as follows.
 \end{definition}
 
 Similarly, one can define the inverse of a path over a path,
-writing $\inv q : \pathover {b'} B {\inv p} b$ for the inverse
-of $q : \pathover b B p {b'}$.
-These operations on paths over paths
-satisfy many of the laws satisfied by the corresponding operations on paths,
-after some modification.
-We will state these laws when we need them.\footnote{%
-  Exercise: Try to state some of these laws yourself.}
+writing $\inv q : \pathover {y'} Y {\inv p} y$ for the inverse
+of $q : \pathover y Y p {y'}$.
+For these operations on paths over paths we have identifications
+analogous to those for the operations on paths in
+\cref{xca:path-groupoid-laws}, after some modification.
+For example,
+${\inv g} \pathovercomp q$ of type $\pathover {y} Y {{\inv p}\circ p} y$ and
+$\refl{y}$ of type $\pathover {y} Y {\refl{x}} y$ cannot be directly used
+to form an identity type, since their types are not equal by definition. 
+We will state these identifications when we need them.
+
+\begin{xca}\label{xca:cp}
+Try to state some of these identifications yourself.
+\end{xca}
 
 The following construction shows how to handle application of a dependent
 function $f$ to paths using the definition above.
@@ -978,7 +1003,7 @@ The following construction shows how functions of two variables may be applied t
 The function $p \mapsto q \mapsto \apap g p q$ is called \emph{application} of $g$ to paths over paths.
 For convenience, we may abbreviate $\apap g p q$ to $g(p)(q)$.
 
-The following simple lemma will be useful later.
+The following definition will be useful later.
 
 \begin{definition}\label{def:applfun2comp}
   Suppose we are given a type $X$, a family of types $Y(x)$ parametrized by the elements $x$ of $X$, and a type $Z$.  Suppose also we are given
@@ -1051,16 +1076,24 @@ $\prod_{z:\sum_{x:X} Y(x)} Y(\fst(z))$.
   \label{iterated-sums}
   One may consider sums of sums.  For example, suppose $X$ is a type, suppose $Y(x)$ is a family of types parametrized by a variable $x$ of type $X$,
   and suppose $Z(x,y)$ is a family of types parametrized by variables $x:X$ and $y:Y(x)$.  In this case, the \emph{iterated sum}
-  $\sum _{x:X} \sum_{y:Y(x)} Z(x,y)$ consists of pairs of the form $(x,(y,z))$.  For simplicity, we introduce the notation
-  $(x,y,z) \defeq (x,(y,z))$, and refer to $(x,y,z)$ as a \emph{triple} or as a \emph{$3$-tuple}.
+  $\sum_{x:X} \sum_{y:Y(x)} Z(x,y)$ consists of pairs of the form $(x,(y,z))$.  For simplicity, we introduce the notation
+  $(x,y,z) \defeq (x,(y,z))$, and refer to $(x,y,z)$ as a \emph{triple} or as a \emph{$3$-tuple}.\index{triple}
+  
+  Another example of an iterated sum is when $Z'(u)$ is a family of types
+  parameterized by a variable $u$ of type $\sum_{x:X} Y(x)$.
+  Elements of the type $\sum_{u:\sum_{x:X} Y(x)}Z'(u)$ are triples
+  $((x,y),z)$. Since rearranging brackets $((x,y),z)\mapsto (x,(y,z))$
+  is an equivalence, we use the triple-notation for all such cases.
 
-  That process can be repeated: suppose $X_1$ is a type, suppose $X_2(x_1)$ is a family of types parametrized by a variable $x_1$ of type $X_1$,
-  suppose $X_3(x_1,x_2)$ is a family of types parametrized by variables $x_1:X_1$ and $x_2:X_2(x_1)$, and so on, up to a family
+The above can be repeated: suppose $X_1$ is a type, suppose $X_2(x_1)$
+is a family of types parametrized by a variable $x_1$ of type $X_1$,
+suppose $X_3(x_1,x_2)$ is a family of types parametrized by variables 
+$x_1:X_1$ and $x_2:X_2(x_1)$, and so on, up to a family
   $X_n(x_1,\dots,x_{n-1})$ of types.  In this case, the \emph{iterated sum}
   $$\sum _{x_1:X_1} \sum_{x_2:X_2(x_1)} \dots \sum_{x_{n-1}:X_{n-1}(x_1,\dots,x_{n-2})} X_n(x_1,\dots,x_{n-1}) $$
   consists of elements of the form
   $(x_1,(x_2,(\dots (x_{n-1},x_n)\dots)))$; each such element is a pair whose second member is a pair, and so on, so we may refer to it as an \emph{iterated pair}.
-  For simplicity, we introduce the notation $(x_1,x_2,\dots,x_n)$ for such an iterated pair, and refer to it as an \emph{$n$-tuple}.
+  For simplicity, we introduce the notation $(x_1,x_2,\dots,x_n)$ for such an iterated pair, and refer to it as an \emph{$n$-tuple}.\index{tuple}
 \end{remark}
 
 \section{Equivalences}\label{sec:equivalence}
@@ -1126,7 +1159,8 @@ to Voevodsky, for types in general.
 \]
 \end{definition}
 
-We may say that $X$ and $Y$ are \emph{equivalent} if there is an equivalence between them.
+We may say that $X$ and $Y$ are \emph{equivalent} if we 
+have an equivalence between them.
 
 \begin{definition}
   \label{def:type-of-equivalences}
@@ -1137,14 +1171,15 @@ We may say that $X$ and $Y$ are \emph{equivalent} if there is an equivalence bet
 \end{definition}
 
 Suppose $f:X \equivto Y$ is an equivalence, and let $t(y): \iscontr(f^{-1}(y))$, for each $y:Y$, be the corresponding witness to contractibility of the fiber.
-Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$.\footnote{%
-  Note that $\fst(t(y)) : \inv f(y)$, so $\fst(\fst(t(y))) : X$ with
-  $\snd(\fst(t(y))) : y \eqto f(\fst(\fst(t(y)))).$}
+Using $t$ we can define an inverse function $g : Y \to X$ by setting $g(y)\defeq\fst(\fst(t(y)))$. This can be seen as follows.
 
-There is an identification of type $f(g(y)) \eqto y$, which can be seen by unfolding all the definitions.
-Moreover, we have $(x,\refl{f(x)}) : f^{-1}(f(x))$,
-where $f^{-1}(f(x))$ is the fiber that $t(f(x))$
-proves contractible. Hence the center of contraction
+By unfolding all the definitions\footnote{%
+  Note that $\fst(t(y)) : \inv f(y)$, so $\fst(\fst(t(y))) : X$ with
+  $\snd(\fst(t(y))) : y \eqto f(\fst(\fst(t(y)))).$},
+  we have an identification of type $f(g(y)) \eqto y$.
+Moreover, $(x,\refl{f(x)})$ is an element of the
+fiber $f^{-1}(f(x))$, and $t(f(x))$ is a proof 
+that this fiber is contractible. Hence the center of contraction
 $\fst(t(f(x))$ is identified with $(x,\refl{f(x)})$, and so
 $g(f(x))\jdeq(\fst(\fst(t(f(x))))) \eqto x$.
 
@@ -1216,16 +1251,16 @@ is an equivalence.
 The above lemma clearly reflects the  contractibility of the
 singleton type $\sum_{x:X}(a \eqto x)$.\footnote{%
   In fact, an alternative proof would go as follows:
-  First, we use \cref{lem:weq-iso} to show associativity of sum types,
-  i.e., to construct an element of $\sum_{x:X}\sum_{y:Y(x)}Z(x,y)
-  \equivto \sum_{w : (\sum_{x:X}Y(x))}Z(\fst w,\snd w)$,
-  where $X$ is a type,
+  First, we use \cref{lem:weq-iso} to construct an element of 
+  $\sum_{x:X}\sum_{y:Y(x)}Z(x,y)
+  \equivto \sum_{w : (\sum_{x:X}Y(x))}Z(\fst w,\snd w)$, i.e.,
+  the associativity of sum types, where $X$ is a type,
   $Y(x)$ is a family of types depending on $x:X$,
   and $Z(x,y)$ is a family of types depending on $x:X$ and $y:Y(x)$.
-  Then, we show for any contractible type $X$
+  Then, we construct for any contractible type $X$
   and for any family of types $Y(x)$ depending on $x:X$,
-  that there is an equivalence between $\sum_{x:X}Y(x)$ and $Y(c)$,
-  where $c$ is the center of contraction.}
+  an equivalence between $\sum_{x:X}Y(x)$ and $Y(c)$,
+  where $c$ is the center of contraction of $X$.}
 For this reason
 we call application of this lemma `to contract away'
 the prefix $\sum_{x:X} \sum_{i: a \eqto x}$, in order
