@@ -44,7 +44,8 @@ and we can consider the inverse $p^{-1}$ and \emph{its} iterations.
 So, by giving one symmetry we at the same time give a lot of symmetries.
 For a particular $p$ it may be that not all of the iterations are different,
 for instance it may be that there is an identification of type $p^2 \eqto p^0$ (as in \cref{xca:C2}),
-or even more dramatically: if there is an identification of type $p=\refl a$, then \emph{all} the
+or even more dramatically: if there is an identification of type 
+$p\eqto\refl a$, then \emph{all} the
 iterations of $p$ can be identified with each other.\marginnote{%
   \begin{tikzpicture}
     \node (A) at (0,-1.5) {$A$};
@@ -118,7 +119,7 @@ see Chapter~6 of the HoTT book\footcite{hottbook} for more information.
 \begin{definition}
   \label{def:circle}
 The circle is a type $\Sc:\UU$ with an element (constructor) $\base : \Sc$ and
-an identification (constructor) ${\Sloop}: \base=\base$. For convenience and
+an identification (constructor) ${\Sloop}: \base\eqto \base$. For convenience and
 clarity the (higher) induction principle for $\Sc$ is explained
 by first stating a recursion principle for $\Sc$.
 
@@ -231,12 +232,12 @@ $\ev(\ve(\ev(f)))\eqto (f(\base),f(\Sloop))$, and $(f(\base),f(\Sloop))\jdeq\ev(
 with $p\defeq\refl{f(\base)}$ and $q$ coming from the induction principle.
 \end{proof}
 \begin{corollary}\label{cor:circle-loopspace}
-  For any $a:A$, the function $\ev_A^a:((\Sc,\base)\to_* (A,a))\to (a=_Aa)$
+  For any $a:A$, the function $\ev_A^a:((\Sc,\base)\to_* (A,a))\to (a\eqto_Aa)$
   sending $(g,p)$ to $p^{-1}\cdot g(\Sloop)\cdot p$ is an equivalence.
 \end{corollary}
 \begin{proof}\hskip-5pt\footnote{%
     This can also be done directly:
-    The inverse to $\ev_A^a$ sends $l : a=_Aa$
+    The inverse to $\ev_A^a$ sends $l : a\eqto_Aa$
     to $(\ve_A(a,l), \refl{a})$.
     Try to verify this!}
 It's easy to check commutativity of the diagram
@@ -246,7 +247,7 @@ It's easy to check commutativity of the diagram
     \ar[dr,"\ev_A"'] & &
     \sum_{a:A}\bigl((\Sc,\base) \ptdto (A,a)\bigr)
     \ar[dl,"\tot(\ev_A^-)"] \\
-    &  \,\sum_{a:A}(a=_A a),
+    &  \,\sum_{a:A}(a\eqto_A a),
   \end{tikzcd}
 \]
 where the top map is an equivalence by \cref{cor:contract-away},
@@ -284,10 +285,10 @@ is an equivalence.
 \end{marginfigure}
 \begin{remark}
   A function $f:\Sc\to A$ is often called a \emph{loop} in $A$, the
-  picture being that $f$ throws $\Sloop:\base=\base$ as a lasso in the
+  picture being that $f$ throws $\Sloop:\base\eqto \base$ as a lasso in the
   type $A$.
 
-  Using the above equivalence, so that $a=_Aa$ is identified with the pointed
+  Using the above equivalence, so that $a\eqto_Aa$ is identified with the pointed
   functions from the circle, this allows for a very graphic
   interpretation of the symmetries of $a$ in $A$: they are traced out
   by a function $f$ from the circle and can be seen as loops in the type
@@ -300,28 +301,28 @@ is an equivalence.
   The circle is connected.
 \end{lemma}
 \begin{proof}
-We show $\Trunc{\base=z}$ for all $z:\Sc$ by circle induction
+We show $\Trunc{\base\eqto z}$ for all $z:\Sc$ by circle induction
 as in \cref{def:circle}.
 For the base case we take $\trunc{\refl{\base}}$.
-The loop case is immediate as $\Trunc{\base=\base}$ is a proposition.
+The loop case is immediate as $\Trunc{\base\eqto \base}$ is a proposition.
 \end{proof}
 
 In the proof above, the propositional truncation coming
 from the definition of connectedness is essential.
 If this truncation were removed we wouldn't know what to do in
-the induction step (actually, ${\base=z}$ for all $z:\Sc$ contradicts the univalence axiom).
-This said, the family $R:\Sc\to\UU$ with $R(z)\defequi (\base=z)$ is extremely
+the induction step (actually, ${\base\eqto z}$ for all $z:\Sc$ contradicts the univalence axiom).
+This said, the family $R:\Sc\to\UU$ with $R(z)\defequi (\base\eqto z)$ is extremely
 important for other purposes. We will call it in \cref{def:universalcover} the
 ``universal \covering'' of the circle and it is the key tool in proving that
 the set of integers and the symmetries in the circle can be identified.
 Recall that we
 use the phrase ``symmetries \emph{in} the circle'' to refer to the
-elements of $\base=_{\Sc}\base$,\footnote{%
+elements of $\base\eqto_{\Sc}\base$,\footnote{%
   Here we are using ``the circle'' to mean the
   \emph{pointed} type $(\Sc,\base)$.
-  But it also turns out that the type $\base=_{\Sc}\base$ is
-  equivalent to the type $x=_{\Sc}x$, for any $x:\Sc$.}
-whereas we use the phrase ``symmetries \emph{of} the circle'' to refer to the elements of $\Sc=_{\UU}\Sc$.
+  But it also turns out that the type $\base\eqto_{\Sc}\base$ is
+  equivalent to the type $x\eqto_{\Sc}x$, for any $x:\Sc$.}
+whereas we use the phrase ``symmetries \emph{of} the circle'' to refer to the elements of $\Sc\eqto_{\UU}\Sc$.
 The latter type is equivalent to $\Sc\amalg\Sc$,
 as follows from \cref{xca:S1=S1-components} and \cref{{xca:(S1->S1)_(f)-eqv-S1}}.
 
@@ -341,7 +342,7 @@ We define the type of integers in one of the many possible ways.\footnote{%
     $(n,m) \sim (n',m')$ defined by $n+m' = n'+m$,
     where $(n,m)$ represents $n-m$.
   \item As the subset of $\NN\times\NN$ consisting of those $(n,m)$ with $n=0\lor m=0$ (picking canonical representatives for the above equivalence relation).
-  \item As the loops $\base=_\Sc\base$ in the circle. %$\ddot\smile$
+  \item As the loops $\base\eqto_\Sc\base$ in the circle. %$\ddot\smile$
   \end{itemize}}
 
 \begin{definition}\label{def:zet}
@@ -358,7 +359,7 @@ We define the type of integers in one of the many possible ways.\footnote{%
 Because we used the copy $\NNN$ for the nonpositive numbers from \cref{exa:nnn},
 we can leave out the constructor symbols $\iota_\pm$
 when the type is clear from context.
-Thus we have $\ldots,-2,-1,-0,0,1,2,\ldots:\zet$ and $\zeq:-0=_\zet0$.
+Thus we have $\ldots,-2,-1,-0,0,1,2,\ldots:\zet$ and $\zeq:-0\eqto_\zet0$.
 
 The type $\zet$ comes with an induction principle:
 Let $T(z)$ be a family of types parametrized by $z:\zet$.
@@ -459,11 +460,11 @@ and $f(z-1)\jdeq h'(z,f(z))$ for all $z\leq 0$.
 \label{sec:covering}
 
 As mentioned earlier, it is possible to define the integers as the
-type $\base=_{\Sc}\base$ of symmetries in the circle.
-Our investigation of $\base=_{\Sc}\base$ will use the concept of \coverings.
+type $\base\eqto_{\Sc}\base$ of symmetries in the circle.
+Our investigation of $\base\eqto_{\Sc}\base$ will use the concept of \coverings.
 Since we are going to return to this concept several times,
 we take the time for a fuller treatment before we continue with
-proving the equivalence of $\base=_{\Sc}\base$ and $\zet$.
+proving the equivalence of $\base\eqto_{\Sc}\base$ and $\zet$.
 
 \begin{definition}\label{def:covering}
 A \emph{\covering} over a type $B$
@@ -472,7 +473,7 @@ We say that a \covering $f:A\to B$ over $B$ is
 \begin{itemize}
 \item \emph{connected}\index{connected \covering} if $A$ is connected,
 \item \emph{universal}\index{universal \covering} if $A$ and all
-the identity types $a=_Aa$ (for $a:A$) are connected,
+the identity types $a\eqto_Aa$ (for $a:A$) are connected,
 \item \emph{finite}\index{finite \covering} if all preimages are finite sets,
 \item \emph{decidable}\index{decidable \covering} if all preimages are decidable sets.
 \end{itemize}
@@ -689,7 +690,7 @@ A particularly important example is the following:
 \end{remark}
 
 We already defined a \covering $f:A\to B$ to be universal if $A$ is connected
-and all $a=_A a$ (for $a:A$) are connected.
+and all $a\eqto_A a$ (for $a:A$) are connected.
 If moreover $B$ is a pointed, connected groupoid we shall argue that
 we actually can speak of \emph{the} universal \covering.
 
@@ -713,9 +714,9 @@ $f(a)=f(a)$ is a set, since $B$ is a groupoid.
 This completes the proof that $A$ is contractible.
 
 Now assume $(B,b_0)$ is a pointed connected groupoid and $f:A\to B$
-a universal \covering. Since $A$ and $\sum_{b:B}(b_0=_Bb)$ are both
+a universal \covering. Since $A$ and $\sum_{b:B}(b_0\eqto_Bb)$ are both
 contractible, and $B$ is connected, we have
-$\Trunc{(A,f)=(\sum_{b:B}(b_0=_Bb),\fst)}$.
+$\Trunc{(A,f)=(\sum_{b:B}(b_0\eqto_Bb),\fst)}$.
 Hence if $(B,b_0)$ is a pointed connected groupoid, all
 universal \coverings can be merely identified with a canonical one.
 Moreover, the type of universal \coverings is equivalent to
@@ -728,16 +729,16 @@ This justifies the following definition.
   The \emph{universal \covering} of $B$
   is the \covering of $B$ given by the family of sets
   \[
-    \uc{b_0}:B\to\Set,\quad \uc{b_0}(b)\defequi (b_0=_Bb),
+    \uc{b_0}:B\to\Set,\quad \uc{b_0}(b)\defequi (b_0\eqto_Bb),
   \]
   or alternatively as the first projection from
-  $\uc{b_0}B\defequi\sum_{b:B}(b_0=_Bb)$ to $B$.
+  $\uc{b_0}B\defequi\sum_{b:B}(b_0\eqto_Bb)$ to $B$.
 
-  This is canonically pointed at $(b_0,\refl{b_0}) : \sum_{b:B}(b_0=_Bb)$.
+  This is canonically pointed at $(b_0,\refl{b_0}) : \sum_{b:B}(b_0\eqto_Bb)$.
 \end{definition}
 Note that, for a general pointed connected type $(B,b_0)$, we have that
-$(b_0=_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid.
-The type family $(b_0=_B b)$ is also important if $B$ is not a groupoid,
+$(b_0\eqto_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid.
+The type family $(b_0\eqto_B b)$ is also important if $B$ is not a groupoid,
 but is then not a \emph{set} bundle.\footnote{%
   Of course, the type $\sum_{b:B}(b_0=b)$ is contractibe
   by \cref{lem:thepathspaceiscontractible}, for any type $B$.}
@@ -745,7 +746,7 @@ but is then not a \emph{set} bundle.\footnote{%
 \begin{remark}
   What's so ``universal'' about this?
 The universal \covering over the pointed connected groupoid $(B,b_0)$ coincides with the constant function $\cst{b_0}:\bn 1\to B$ (with value $b_0$), and seems like an unnecessary complicated representation were it not for the manifold practical value of the formulation that we've given.
-In particular, we recognize the set of symmetries $b_0=_Bb_0$ as the preimage of $b_0$ under the first projection from $\uc{b_0}B$ to $B$; ultimately this will show that the study of symmetries coincides with the study of the universal \covering.
+In particular, we recognize the set of symmetries $b_0\eqto_Bb_0$ as the preimage of $b_0$ under the first projection from $\uc{b_0}B$ to $B$; ultimately this will show that the study of symmetries coincides with the study of the universal \covering.
 
 The first instance of this comes already in the next section, where we show in \cref{cor:S1groupoid} that the symmetries in the circle are given by the set of integers $\zet$ by showing that the universal \covering and the exponential \covering (\cref{def:RtoS1}) of the circle coincide.
 
@@ -760,7 +761,7 @@ That said, one way to see that the constant function $\cst{b_0}:\bn 1\to B$
   \]}
 Given any function $f:A\to B$ and $(a_0,p): f^{-1}(b_0)$,
 we get a function $\cst{a_0}:\bn 1\to A$, and $p:b_0=f(a_0)$ gives rise to
-an element in $\cst{b_0}=_{\bn 1\to B}f \circ \cst{a_0}$.
+an element in $\cst{b_0}\eqto_{\bn 1\to B}f \circ \cst{a_0}$.
 In other words, any such $f$ is ``a factor of $\cst{b_0}$''.
 Note, however, that this depends on $f^{-1}(b_0)$ being non-empty
 (classically, this is often demanded of a covering, which distinguishes it from our \coverings),
@@ -782,8 +783,8 @@ For now, we'll focus our attention on the circle and set bundles over it.
 
 With the set $\zet$ of integers \emph{defined} as in \cref{sec:integers},
 we will now \emph{prove} that $\zet$ is equivalent to the type
-$\base=_{\Sc}\base$, and that under this equivalence $0:\zet$ corresponds to
-$\refl{\base}:\base=\base$, and $1$ to $\Sloop$, and $-1$ to $\Sloop^{-1}$.
+$\base\eqto_{\Sc}\base$, and that under this equivalence $0:\zet$ corresponds to
+$\refl{\base}:\base\eqto \base$, and $1$ to $\Sloop$, and $-1$ to $\Sloop^{-1}$.
 More generally, the successor $\zs:\zet\to\zet$ corresponds to composition with $\Sloop$,
 while the predecessor $\inv{\zs}$ corresponds to composition with $\Sloop^{-1}$.\marginnote{
   It follows directly that \emph{addition} of integers corresponds
@@ -797,7 +798,7 @@ is equal to the universal \covering in \cref{def:universalcover},
 \]
 is equal to the family
 \[
-\uc{\base}:\Sc\to\UU,\qquad \uc{\base}(z)\defeq (\base=z).
+\uc{\base}:\Sc\to\UU,\qquad \uc{\base}(z)\defeq (\base\eqto z).
 \]
 What does it mean for the families $\uc{\base}$ and $R$ to be equal?
 Type families are a special case of functions.
@@ -812,7 +813,7 @@ a (fiberwise) equivalence $f: \uc{\base}\to R$. We will use
 We first recall from \cref{sec:heavy-transport} how
 transport behaves in families of function types.
 Given a type $A$ and two type families $P,Q:A\to\UU$,
-transport along $p:a=_Aa'$ of $h:P(a)\to Q(a)$ is
+transport along $p:a\eqto_Aa'$ of $h:P(a)\to Q(a)$ is
 $Q(p)\,h\,P(p)^{-1}:P(a') \to Q(a')$.
 In a picture,
 \[
@@ -826,7 +827,7 @@ If $A$ is $\Sc$, then the induction principle for the circle says
 that giving an $h(z):P(z)\to Q(z)$ for all $z:\Sc$ is the same as
 specifying an $h(\base):P(\base)\to Q(\base)$ and,
 using \cref{def:pathover-trp} and the discussion above, an identity
-$h(\Sloop):Q(\Sloop)\,h(\base)\,P(\Sloop)^{-1}=_{P(\base)\to Q(\base)}h(\base)$,
+$h(\Sloop):Q(\Sloop)\,h(\base)\,P(\Sloop)^{-1}\eqto_{P(\base)\to Q(\base)}h(\base)$,
 \ie   a witness that the composites in
 \[
   \begin{tikzcd}[column sep=huge]
@@ -918,17 +919,17 @@ For negative $n$ the proof is similar.
 \end{proof}
 
 In the definition of the second map,
-take into account that $R(\base)\jdeq \zet$ and $\uc{\base}(\base) \jdeq (\base=\base)$.
+take into account that $R(\base)\jdeq \zet$ and $\uc{\base}(\base) \jdeq (\base\eqto \base)$.
 
 \begin{definition}\label{def:gRtoP}
 The function $g:\prod_{z:\Sc}(R(z)\to \uc{\base}(z))$ is
 defined by circle induction:
 \[
-g(\base)\defeq \left(n \mapsto {\Sloop^n} \right) :\zet\to(\base=\base)
+g(\base)\defeq \left(n \mapsto {\Sloop^n} \right) :\zet\to(\base\eqto \base)
 \]
 and
 \[
-g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}=_{\zet\to (\base=\base)} g(\base).
+g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}\eqto_{\zet\to (\base\eqto \base)} g(\base).
 \]
 \marginnote{%
   In a picture, $g(\Sloop)$ should prove that it does not matter what
@@ -936,8 +937,8 @@ g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}=_{\zet\to (\base=\base)
   \[
     \begin{tikzcd}[row sep=large,column sep=huge,ampersand replacement=\&]
       \zet\ar[r,"\Sloop^-"]\ar[d,eqr,"\zs"] \&
-      (\base=\base)\ar[d,eqr,"\Sloop\cdot\blank"] \\
-      \zet\ar[r,"\Sloop^-"] \& (\base=\base).
+      (\base\eqto \base)\ar[d,eqr,"\Sloop\cdot\blank"] \\
+      \zet\ar[r,"\Sloop^-"] \& (\base\eqto \base).
     \end{tikzcd}
   \]
 }%
@@ -959,8 +960,8 @@ $\uc{\base}(z)$ and $R(z)$.
 \begin{proof}
 We apply \cref{lem:weq-iso} and verify the two conditions.
   First, we need to give elements $H(z,p):g(z)(f(z)(p))=p$
-for all $z:\Sc$ and $p:\uc{\base}(z)\jdeq(\base=z)$.
-By induction on $p:\base=z$ it suffices to set
+for all $z:\Sc$ and $p:\uc{\base}(z)\jdeq(\base\eqto z)$.
+By induction on $p:\base\eqto z$ it suffices to set
 $H(\base,\refl\base)\defeq\refl{\refl{\base}}$ since
 $g(\base)(f(\base)(\refl{\base}))\jdeq g(\base)(0)\jdeq\refl{\base}$.
 
@@ -977,28 +978,28 @@ This follows from \cref{lem:windingnumber}.
 \begin{corollary}\label{cor:S1groupoid}
 The circle $\Sc$ is a groupoid, and the function
 \[
-{\Sloop}^{\blank} : \zet\to(\base=_{\Sc}\base)
+{\Sloop}^{\blank} : \zet\to(\base\eqto_{\Sc}\base)
 \]
 sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
 \begin{proof}
-For any $z:\Sc$, the type $\uc{\base}(z)\jdeq (\base=_{\Sc}z)$ is a set
+For any $z:\Sc$, the type $\uc{\base}(z)\jdeq (\base\eqto_{\Sc}z)$ is a set
 since $R(z)$ is a set and $\uc{\base}(z) \equiv R(z)$.
 Since the circle is connected and being a set is a proposition, it follows
-that $y=_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
+that $y\eqto_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
 By \cref{def:gRtoP}, ${\Sloop}^{-}\jdeq g(\base)$ is an equivalence.
 \end{proof}
 \begin{definition}\label{def:windingnumber}
   The inverse function of ${\Sloop}^{\blank}$
   is called the \emph{winding number} function
-  $\wdg : (\base =_\Sc\base) \to \zet$.
+  $\wdg : (\base \eqto_\Sc\base) \to \zet$.
 \end{definition}
 The following lemma is a simple example of a technique later called \emph{delooping}.
 \begin{lemma}\label{lem:S1-delooping}
 Let $A$ be a connected type and $a:A$.
-Assume we have an equivalence $e:(\base=_{\Sc}\base) \to (a=a)$
+Assume we have an equivalence $e:(\base\eqto_{\Sc}\base) \to (a=a)$
 of symmetries such that $e(\refl{\base})=\refl{a}$
-and $e(p\cdot q)=e(p)\cdot e(q)$, for all $p,q:(\base=_{\Sc}\base)$.
+and $e(p\cdot q)=e(p)\cdot e(q)$, for all $p,q:(\base\eqto_{\Sc}\base)$.
 Then $\check e : \Sc\to A$ defined by circle recursion by setting
 $\check e(\base)\defeq a$ and $\check e(\Sloop)\defis e(\Sloop)$
 is an equivalence.
@@ -1012,7 +1013,7 @@ apply \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
 \begin{xca}\label{xca:general-winding}
   Generalizing~\cref{def:windingnumber}, of winding numbers,
   use circle induction to define, for any point $x:\Sc$ of the circle
-  an equivalence, $\wdg_x : (x =_\Sc x) \we \zet$.
+  an equivalence, $\wdg_x : (x \eqto_\Sc x) \we \zet$.
   (You'll need commutativity of addition in $\zet$.)
   Conclude from \cref{lem:S1-delooping} that we have equivalences
   $f_x : \Sc \we \Sc$ with $f_x(\base) \jdeq x$, for each $x:\Sc$.\footnote{%
@@ -1104,7 +1105,7 @@ If $p\jdeq\etop e$ for an equivalence $e:X\equiv Y$,
 this is equivalent to $e\circ t = u\circ e$, or $e t = u e$ for short.
 In total, the identity type $(X,t)=(Y,u)$ is equivalent to
 \[
-  \sum_{e: X\equiv Y} et =_{X\to Y} ue.
+  \sum_{e: X\equiv Y} et \eqto_{X\to Y} ue.
 \]
 This is a set whenever $X$ and $Y$ are; see \cref{fig:Zs=Xt} for an illustration.
 \begin{marginfigure}
@@ -1252,7 +1253,7 @@ For the first, we return to the equivalences of \cref{thm:coveringsofS1perms}.
 As we said above, these restrict to equivalences between the different components.
 In particular, $\ev_\UU : (\Sc \to \UU) \to
 \sum_{X:\UU}X=X$ maps the type family $\uc{\base}$ to the pair
-$(\base = \base, q\mapsto {{\Sloop}\cdot q})$,
+$(\base\eqto  \base, q\mapsto {{\Sloop}\cdot q})$,
 which can be identified with $(Z,s)$ through~\cref{cor:S1groupoid}.
 Hence, $\ev_\UU$ restricts to an equivalence between the
 connected component of $\uc\base$ in $\Sc \to \UU$ and the connected component
@@ -1278,8 +1279,8 @@ To finish, we observe that it doesn't matter which way you take in the diagram
 \[
   \begin{tikzcd}[row sep=large,column sep=huge]
     \zet\ar[r,"\Sloop^-"]\ar[d,"\inv{\zs}"] &
-    (\base=\base)\ar[d,"\blank\cdot\Sloop^{-1}"] \\
-    \zet\ar[r,"\Sloop^-"] & (\base=\base).
+    (\base\eqto \base)\ar[d,"\blank\cdot\Sloop^{-1}"] \\
+    \zet\ar[r,"\Sloop^-"] & (\base\eqto \base).
   \end{tikzcd}
 \]
 Note that to transport in the family $\uc{-}(\base) \jdeq (\blank = \base)$,
@@ -1328,14 +1329,14 @@ using \cref{xca:component-connected}.
 \end{theorem}
 \begin{proof}
   In view of \cref{lem:conn-eq-f-ap-f-x} we only need to show that
-$\ap{c}:(\base=_{\Sc}\base)\to((\zet,\zs)=(\zet,\zs))$ is an equivalence.
+$\ap{c}:(\base\eqto_{\Sc}\base)\to((\zet,\zs)=(\zet,\zs))$ is an equivalence.
 Note that both the domain and the co-domain of $\ap{c}$ are equivalent to $\zet$.
 Consider the following diagram in which we compose $c$ with the equivalences
 from \cref{cor:S1groupoid} and \cref{lem:IdCisZet}:
 \[
   \begin{tikzcd}[column sep=large]
     \zet\ar[r,"\Sloop^-"] &
-    (\base=\base)\ar[r,"\ap{c}"] &
+    (\base\eqto \base)\ar[r,"\ap{c}"] &
     \bigl((\zet,\zs)=(\zet,\zs)\bigr)\ar[r,"\ev_0\vphantom{\ap{c}}"] &
     \zet
   \end{tikzcd}
@@ -1362,12 +1363,12 @@ the condition that \emph{each} $\ap{f}$ is injective
 can be relaxed to $\ap{f}: (a_0=a_0)\to(f(a_0)=f(a_0))$ being injective.
 Now look at the following subset:
 \begin{equation}\label{eq:subgroup-covering-1}
-  \setof{q: \base =_\Sc \base}{{\ap{f}}^{-1}(pqp^{-1})}.
+  \setof{q: \base \eqto_\Sc \base}{{\ap{f}}^{-1}(pqp^{-1})}.
 \end{equation}
 Clearly, a classification of connected \coverings over the circle
 also classifies certain subsets of symmetries of $\base$,
 or equivalently, using~\cref{cor:S1groupoid}, certain subsets of $\zet$.
-Such subsets of $(\base=_\Sc\base)$ are closed under concatenation and inverses,
+Such subsets of $(\base\eqto_\Sc\base)$ are closed under concatenation and inverses,
 since $\ap{f}$ is compatible with these operations,
 see \cref{lem:apcomp}.
 Using language yet to be introduced, we actually ``classify the subgroups of the integers''.
@@ -1413,7 +1414,7 @@ any two points $x,x':X$ can be connected by applying $t$ some number of times.
   To define $g_0 : \prod_{z:\Sc}(E(z) \to X/\sim)$, we need
   $g_0(\base)\defeq[\blank] : X \to X/\sim$ and
   $g_0(\Sloop) : \pathover{g_0(\base)}{E(\blank) \to X/\sim}{\Sloop}{g_0(\base)}$,
-  equivalent to $g_0(\base) =_{X \to X/\sim} g_0(\base)t$.
+  equivalent to $g_0(\base) \eqto_{X \to X/\sim} g_0(\base)t$.
   The latter we get by function extensionality and \cref{thm:quotient-property},
   since $x \sim t(x)$ for any $x:X$.
 
@@ -1421,7 +1422,7 @@ any two points $x,x':X$ can be connected by applying $t$ some number of times.
   is defined as the extension of $h_0 : X \to \setTrunc A$
   with $h_0(x) \defeq \settrunc{(\base,x)}$.
   We just need to check that $h_0(x) = h_0(x')$, or equivalently,
-  $\Trunc{(\base,x)=_A(\base,x')}$, whenever $x\sim x'$.
+  $\Trunc{(\base,x)\eqto_A(\base,x')}$, whenever $x\sim x'$.
   Since this is a proposition, if $x'=t^n(x)$ with $n:\zet$,
   we may use induction on $n$ (positive and negative)
   together with the paths,
@@ -1502,13 +1503,13 @@ For $m:\NN$ positive, define the \emph{degree $m$ function} by circle induction
 \]
 \end{definition}
 On loops, the degree $m$ function is the map
-$(\blank)^m : (\base=\base) \to (\base=\base)$,
+$(\blank)^m : (\base\eqto \base) \to (\base\eqto \base)$,
 which is indeed an injection for positive $m$,
-so $\dg{m}$ is a \covering corresponding to the subset of $(\base=\base)$ consisting
-of ${\Sloop}^{mn} : \base=\base$ for all $n:\zet$.\marginnote{As a subset of $\zet$, this is simply all multiples of $m$.}
+so $\dg{m}$ is a \covering corresponding to the subset of $(\base\eqto \base)$ consisting
+of ${\Sloop}^{mn} : \base\eqto \base$ for all $n:\zet$.\marginnote{As a subset of $\zet$, this is simply all multiples of $m$.}
 
 Note that the degree $0$ function would be constant,
-and hence not a \covering since $(\blank)^0 : (\base=\base) \to (\base=\base)$
+and hence not a \covering since $(\blank)^0 : (\base\eqto \base) \to (\base\eqto \base)$
 is not injective.
 
 Just as we in~\cref{sec:symcirc} gained a lot of insight into the universal \covering,
@@ -1659,9 +1660,9 @@ This is indicated in red on the outside of the clock.
   (\cref{lem:trp-in-function-type}),
   and the codomain type is constant,
   we need to give an identity
-  $\psi_m(\Sloop) : \psi_m(\base) =_{\bn m\to\Sc} \psi_m(\base)R_m(\Sloop)$.
+  $\psi_m(\Sloop) : \psi_m(\base) \eqto_{\bn m\to\Sc} \psi_m(\base)R_m(\Sloop)$.
   We construct $\psi_m(\Sloop)$ using function extensionality,
-  by giving an element in $\bn m\to(\base=\base)$.
+  by giving an element in $\bn m\to(\base\eqto \base)$.
   Since $\psi_m$ needs to send all arcs, except the last,
   in $\tilde R_m$ to reflexivity,
   we map $k$ to $\refl\base$ for $k<m-1$,
@@ -1751,7 +1752,7 @@ Recall \cref{cor:Sub_T-is-set} implying that $\Sub_\zet$ is a set.
   and for any $a:A$, we have that $H_t$
   also equals the image of the composite
   \begin{equation}\label{eq:order-composite}
-    (a =_A a) \xrightarrow{\ap{f}}{} (f(a) =_\Sc f(a)) \we \zet,
+    (a \eqto_A a) \xrightarrow{\ap{f}}{} (f(a) \eqto_\Sc f(a)) \we \zet,
   \end{equation}
   where the second map is the winding number function
   from~\cref{xca:general-winding}.
@@ -1766,7 +1767,7 @@ Recall \cref{cor:Sub_T-is-set} implying that $\Sub_\zet$ is a set.
   $z\jdeq\base$ and $x:X$, since the circle is connected.
 
   For any point $x:X$, corresponding to the point $a\defeq(\base,x):A$,
-  the type $(a =_A a)$ is equivalent to $\sum_{n:\zet}t^n(x)=x$
+  the type $(a \eqto_A a)$ is equivalent to $\sum_{n:\zet}t^n(x)=x$
   in such a way that the composite function~\eqref{eq:order-composite}
   corresponds to the first projection.
   Hence the image of~\eqref{eq:order-composite} is precisely
@@ -1782,7 +1783,7 @@ Recall \cref{cor:Sub_T-is-set} implying that $\Sub_\zet$ is a set.
 
 \begin{lemma}\label{lem:IdCycle}
   Let $(X,t):\Cyc$ be a cycle with a chosen point $x_0:X$.
-  If $(Y,u)$ is another cycle with $H_t=_{\Sub_\zet} H_u$,
+  If $(Y,u)$ is another cycle with $H_t\eqto_{\Sub_\zet} H_u$,
   then it is in the same component as $(X,t)$,
   and any equality $(e,!) : (X,t)=(Y,u)$
   is uniquely determined by the element $e(x_0):Y$.
@@ -2407,7 +2408,7 @@ This is encapsulated by the fact that under the equivalence $c:\Sc\to C$, the tw
 \]
 are equal; we need an element in
 \[
-  \cdg{m}c=_{\Sc\to\Cyc_0}c\,\dg{m}.
+  \cdg{m}c\eqto_{\Sc\to\Cyc_0}c\,\dg{m}.
 \]
 Under the equivalence
 \[
@@ -2433,7 +2434,7 @@ $\bigl((\bn m\times\zet,\sqrt[\uproot{2}m]{\zs}), \id\times\zs^{-1}\bigr)
 = \bigl((\zet,\zs),\zs^{-m}\bigr)$.
 
 \begin{xca}\label{xca:pointed-maps-circle}
-Verify $\cdg{m}c=_{\Sc\ptdto\Cyc_0}c\,\dg{m}$ in case all maps are taken to be pointed.
+Verify $\cdg{m}c\eqto_{\Sc\ptdto\Cyc_0}c\,\dg{m}$ in case all maps are taken to be pointed.
 \end{xca}
 
 So we know that the fiber of $\cdg{m}$ at an infinite cycle $(X,t)$
