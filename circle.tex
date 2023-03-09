@@ -9,7 +9,7 @@ Here are two examples:\footnote{%
   while in~\cref{it:prop-in} we're mapping \emph{in} to $\Prop$.}
 \begin{enumerate}
 \item\label{it:one-out}
-  The coniviaactible type $\bn 1$ has the property that given
+  The contractible type $\bn 1$ has the property that given
 any type $A$ a function $\bn 1\to A$ provides exactly the
 same information as picking an element in $A$.
 For, an equivalence from $A$ to $\bn 1\to A$ is provided by
@@ -37,14 +37,15 @@ which is built \emph{exactly} so that this
 It may be surprising to see how little it takes to define it;
 especially in hindsight when we eventually discover some of the many uses of the circle.
 
-A symmetry in $A$ is an identification $p:a\eqto_Aa$ for some $a:A$.%
+A symmetry in $A$ is an identification $p:a\eqto a$ for some $a:A$.%
 \index{symmetry!in a type}
 Now, we can take any iteration of $p$ (composing $p$ with itself a number of times),
 and we can consider the inverse $p^{-1}$ and \emph{its} iterations.
 So, by giving one symmetry we at the same time give a lot of symmetries.
-For a particular $p$ it may be that not all of the iterations are different,
-for instance it may be that there is an identification of type $p^2 \eqto p^0$ (as in \cref{xca:C2}),
-or even more dramatically: if there is an identification of type 
+For a particular $p: a\eqto a$ it may be that some of the iterations 
+can be identified (in their type $a\eqto a$). For instance it may be 
+that there is an identification of type $p^2 \eqto p^0$ (as in \cref{xca:C2}).
+Even more dramatically: if there is an identification of type 
 $p\eqto\refl a$, then \emph{all} the
 iterations of $p$ can be identified with each other.\marginnote{%
   \begin{tikzpicture}
@@ -119,7 +120,7 @@ see Chapter~6 of the HoTT book\footcite{hottbook} for more information.
 \begin{definition}
   \label{def:circle}
 The circle is a type $\Sc:\UU$ with an element (constructor) $\base : \Sc$ and
-an identification (constructor) ${\Sloop}: \base\eqto \base$. For convenience and
+an identification (constructor) ${\Sloop}: \base\eqto\base$. For convenience and
 clarity the (higher) induction principle for $\Sc$ is explained
 by first stating a recursion principle for $\Sc$.
 
@@ -200,7 +201,7 @@ This is a ``universal property'' of the circle.
 \begin{theorem}\label{lem:freeloopspace}
 For all types $A$, the evaluation function
 \[
-\ev_A : (\Sc\to A)\to \sum_{a:A}(a\eqto_Aa)\text{~defined by~}
+\ev_A : (\Sc\to A)\to \sum_{a:A}(a\eqto a)\text{~defined by~}
 \ev_A(g)\defeq (g(\base),g(\Sloop))
 \]
 is an equivalence, with inverse $\ve_A$ defined by the recursion principle
@@ -232,12 +233,12 @@ $\ev(\ve(\ev(f)))\eqto (f(\base),f(\Sloop))$, and $(f(\base),f(\Sloop))\jdeq\ev(
 with $p\defeq\refl{f(\base)}$ and $q$ coming from the induction principle.
 \end{proof}
 \begin{corollary}\label{cor:circle-loopspace}
-  For any $a:A$, the function $\ev_A^a:((\Sc,\base)\to_* (A,a))\to (a\eqto_Aa)$
+  For any $a:A$, the function $\ev_A^a:((\Sc,\base)\to_* (A,a))\to (a\eqto a)$
   sending $(g,p)$ to $p^{-1}\cdot g(\Sloop)\cdot p$ is an equivalence.
 \end{corollary}
 \begin{proof}\hskip-5pt\footnote{%
     This can also be done directly:
-    The inverse to $\ev_A^a$ sends $l : a\eqto_Aa$
+    The inverse to $\ev_A^a$ sends $l : a\eqto a$
     to $(\ve_A(a,l), \refl{a})$.
     Try to verify this!}
 It's easy to check commutativity of the diagram
@@ -247,7 +248,7 @@ It's easy to check commutativity of the diagram
     \ar[dr,"\ev_A"'] & &
     \sum_{a:A}\bigl((\Sc,\base) \ptdto (A,a)\bigr)
     \ar[dl,"\tot(\ev_A^-)"] \\
-    &  \,\sum_{a:A}(a\eqto_A a),
+    &  \,\sum_{a:A}(a\eqto a),
   \end{tikzcd}
 \]
 where the top map is an equivalence by \cref{cor:contract-away},
@@ -285,11 +286,12 @@ is an equivalence.
 \end{marginfigure}
 \begin{remark}
   A function $f:\Sc\to A$ is often called a \emph{loop} in $A$, the
-  picture being that $f$ throws $\Sloop:\base\eqto \base$ as a lasso in the
+  picture being that $f$ throws $\Sloop:\base\eqto\base$ as a lasso in the
   type $A$.
 
-  Using the above equivalence, so that $a\eqto_Aa$ is identified with the pointed
-  functions from the circle, this allows for a very graphic
+  Using the equivalence in \cref{cor:circle-loopspace} and univalence,
+  $a\eqto a$ is identified with the pointed
+  functions from the circle, which allows for a very graphic
   interpretation of the symmetries of $a$ in $A$: they are traced out
   by a function $f$ from the circle and can be seen as loops in the type
   $A$ starting and ending at $a$!\footnote{%
@@ -317,12 +319,13 @@ important for other purposes. We will call it in \cref{def:universalcover} the
 the set of integers and the symmetries in the circle can be identified.
 Recall that we
 use the phrase ``symmetries \emph{in} the circle'' to refer to the
-elements of $\base\eqto_{\Sc}\base$,\footnote{%
+elements of $\base\eqto\base$,\footnote{%
   Here we are using ``the circle'' to mean the
   \emph{pointed} type $(\Sc,\base)$.
-  But it also turns out that the type $\base\eqto_{\Sc}\base$ is
-  equivalent to the type $x\eqto_{\Sc}x$, for any $x:\Sc$.}
-whereas we use the phrase ``symmetries \emph{of} the circle'' to refer to the elements of $\Sc\eqto_{\UU}\Sc$.
+  But it also turns out that the type $\base\eqto\base$ is
+  equivalent to the type $x\eqto x$, for any $x:\Sc$.}
+whereas we use the phrase ``symmetries \emph{of} the circle'' to 
+refer to the elements of $\Sc\eqto\Sc$.
 The latter type is equivalent to $\Sc\amalg\Sc$,
 as follows from \cref{xca:S1=S1-components} and \cref{{xca:(S1->S1)_(f)-eqv-S1}}.
 
@@ -342,7 +345,7 @@ We define the type of integers in one of the many possible ways.\footnote{%
     $(n,m) \sim (n',m')$ defined by $n+m' = n'+m$,
     where $(n,m)$ represents $n-m$.
   \item As the subset of $\NN\times\NN$ consisting of those $(n,m)$ with $n=0\lor m=0$ (picking canonical representatives for the above equivalence relation).
-  \item As the loops $\base\eqto_\Sc\base$ in the circle. %$\ddot\smile$
+  \item As the loops $\base\eqto\base$ in the circle. %$\ddot\smile$
   \end{itemize}}
 
 \begin{definition}\label{def:zet}
