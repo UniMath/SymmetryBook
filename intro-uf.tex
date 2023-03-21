@@ -2388,6 +2388,10 @@ $p$ is of type $x \eqto s$, and $q$ is of type $y \eqto t$.  We may
 also consider whether such a diagram is commutative by definition, or, 
 in the case where all the identity types are sets, is commutative.
 Such diagrams are again a visual way to express identity types.
+\footnote{When diagrams get more complicated, the information
+they convey is not always sufficient to find out which identity
+type(s) they express. In such cases additional information will
+be provided.}%
 For example, the above diagram expresses the identity type
 $g \circ p \eqto q \circ f$. For a concrete example, see
 the naturality square in \cref{def:naturality-square}.
@@ -2772,7 +2776,9 @@ For this reason, $\im(f)$ is called the \emph{propositional} image.
 Later we will meet other notions of image, based on other truncation operations.
 
 \begin{xca}\label{xca:unique-fact-image}
-  Show that the image of $f : A \to B$ induces a factorization $f \eqto i\circ p$
+  Show that the image of $f : A \to B$ induces a factorization 
+  $f \eqto i\circ p$, visualized by the following diagram\footnote{%
+  This diagram actually commutes by definition.}
   \[
     \begin{tikzcd}
       A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
@@ -2783,7 +2789,7 @@ Later we will meet other notions of image, based on other truncation operations.
   following type of image factorizations of $f : A \to B$ is contractible:
   \[
   \sum_{C:\UU}\sum_{g:A\to C}\sum_{h: C\to B}
-  ({f \eqto h\circ g} \times \issurj(g) \times \isinj(h)).\qedhere
+  ((f \eqto h\circ g) \times \issurj(g) \times \isinj(h)).\qedhere
   \]
 \end{xca}
 
@@ -3197,7 +3203,7 @@ Therefore the following is \emph{not} a subtype of $\UU$.
   and we have pointed functions $(f,f_0) : X\ptdto Y$ and $(g,g_0) : Y\ptdto Z$,
   then their composition
   $(g,g_0)(f,f_0) : X\ptdto Z$ is defined as the pair $(gf,g(f_0)g_0)$.
-  See the diagram below.
+  See the picture below.
   \[
     \begin{tikzcd}[baseline=(O.base)]
       & \pt_Y \ar[r, eqr, "f_0"]\ar[d, mapsto, "g"]
@@ -4130,6 +4136,9 @@ which is used to stay within a given universe.
 
   It suffices to show that for any $z:\Trunc A_{n+1}$,
   there is a contractible type of extensions
+  $\sum_{y:B}((\blank\mapsto y)
+  \eqto_{(\trunc\blank_{n+1}^{-1}(z))\to B}(g \circ \fst))$,
+  visualized by
   \[
     \begin{tikzcd}
       \trunc\blank_{n+1}^{-1}(z) \ar[dr,"g \circ \fst"]\ar[d] & \\
@@ -4137,7 +4146,7 @@ which is used to stay within a given universe.
     \end{tikzcd}
   \]
   since then there's a contractible type of extensions of $g$
-  to all of $\Trunc A_{n+1}$
+  to all of $\Trunc A_{n+1}$.
   Since this is a proposition and $\trunc\blank_{n+1}$ is surjective,
   it suffices to prove this for $z$ of the form $\trunc x_{n+1}$ with $x:A$.
   We need to show that the type
@@ -4253,6 +4262,7 @@ and then its usual $(-1)$-image\index{image} as follows:%
   we can define the $n$-image
   in a similar way and prove that
   the $n$-image factorization is unique.
+  See \cref{sec:higher-images} for the details.
   Since the unit type $\bn 1$ is the unique $(-2)$-type,
   we have $\Trunc{X}_{-2} \eqto \bn 1$ for any type $X$.}
 \[
@@ -4303,25 +4313,29 @@ is pure higher structure.
   What is forgotten by this map, and what is remembered?
 \end{xca}
 
+OBSOLETE BECAUSE OF 3.9??
 Recall the ($-1$-)image factorization and its uniqueness 
 from~\cref{xca:unique-fact-image}.
-The $0$-image factorization and its uniqueness 
-play just as important a role, so we give a full proof.
+The $0$-image factorization and its uniqueness play just as important a role.
+In \cref{sec:higher-images} we will define the even more general $n$-image.
+Here we only state the universal property for $n=0$.
 \begin{theorem}\label{thm:unique-fact-0image}
-  The $0$-image $\sum_{a:A} \Trunc{f^{-1}(a)}_0$ of $f : A \to B$ 
-  induces a factorization $f \eqto i\circ p$
+The $0$-image $\im_0(f)\defeq \sum_{a:A} \Trunc{f^{-1}(a)}_0$ of $f : A \to B$ 
+induces a factorization $f \eqto i\circ p$, visualized by
   \[
     \begin{tikzcd}
       A \ar[rr,"f"]\ar[dr,"p"'] & & B \\
-      & \im(f)\ar[ur,"i"'] &
+      & \im_0(f)\ar[ur,"i"'] &
     \end{tikzcd}
   \]
-  where $p$ is $0$-connected and $i$ is $0$-truncated,
-  and the following type of $0$-image factorizations 
-  of $f : A \to B$ is contractible:
+where $p$ is $0$-connected (i.e., the set truncation of
+any fiber of $p$ is contractible) and $i$ is $0$-truncated
+i.e., any fiber of $i$ is an $n$-type).
+Moreover, the following type of $0$-image factorizations 
+of $f : A \to B$ is contractible:
   \[
   \sum_{C:\UU}\sum_{g:A\to C}\sum_{h: C\to B}
-  ({f \eqto h\circ g} \times \iszeroconn(g) \times \iszerotrunc(h)).
+  ((f \eqto h\circ g) \times \iszeroconn(g) \times \iszerotrunc(h)).
   \]  
 \end{theorem}
 
