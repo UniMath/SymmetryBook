@@ -1071,6 +1071,8 @@ a \emph{dependent} pair. We may refer to $X$ as the \emph{parameter
     \draw[->,shorten <=.1cm,shorten >=.1cm] (Y-bot-x)
     -- node[anchor=west] {${\fst}$} (X-x);
   \end{tikzpicture}}
+\index{type!sum}\index{sum type}\index{type!Sigma}\index{type!$\Sigma$-}
+\glossary{Si}{$\sum _{x:X} Y(x)$}{type of dependent pairs $(x,y)$}
 
 If $X$ and $Y(x)$ are elements of a universe $\UU$, then so is $\sum _{x:X} Y(x)$.
 
@@ -1275,6 +1277,7 @@ is an equivalence.
 The above lemma clearly reflects the  contractibility of the
 singleton type $\sum_{x:X}(a \eqto x)$.\footnote{%
   In fact, an alternative proof would go as follows:
+  \label{ft:Sigma-assoc}
   First, we use \cref{lem:weq-iso} to construct an element of 
   $\sum_{x:X}\sum_{y:Y(x)}Z(x,y)
   \equivto \sum_{w : (\sum_{x:X}Y(x))}Z(\fst w,\snd w)$, i.e.,
@@ -1360,19 +1363,33 @@ This supports the intuition that there is nothing more to a function than the va
 it sends its arguments to.
 \end{principle}
 
-\begin{xca}
+\begin{xca}\label{xca:Xequiv1toX}
   Let $X$ be a type.  Construct an equivalence of type $( \true \to X ) \equivto X $.
 \end{xca}
 
-\begin{xca}
+\begin{xca}\label{xca:XequivXtimes1}
   Let $X$ be a type, and regard $\true$ as a constant family of types over $X$.
   Construct an equivalence of type $( \sum_{x:X} \true ) \equivto X $.
 \end{xca}
 
-\begin{xca}
+\begin{xca}\label{xca:Sigma-distrib}
   Let $X$ and $Y$ be types, and let $Z(y)$ be a type parameterized by $y:Y$.
   Construct an equivalence of type 
   $X\times\sum_{y:Y}Z(y) \equivto \sum_{y:Y}(X\times Z(y)$.
+\end{xca}
+
+\begin{xca}\label{xca:Sigma-comm}
+  Let $X$ and $Y$ be types, and let $Z(x,y)$ be a type parameterized by
+  $x:X$ and $y:Y$.
+  Construct an equivalence of type $\bigl(\sum_{x:X}\sum_{y:Y}Z(x,y)\bigr) 
+  \equivto \sum_{y:Y}\sum_{x:X}Z(x,y)$.
+\end{xca}
+
+\begin{xca}\label{xca:fib-of-comp}
+  Let $X$, $Y$ and $Z$ be types. Given functions $f: X\to Y$ and $g: Y\to Z$,
+  construct a family of equivalences of type 
+  $\inv{(gf)}(z) \equivto \sum_{w:\inv{g}(z)}\inv{f}(\fst w)$ paremeterized
+  by $z:Z$. Hint: use \cref{ft:Sigma-assoc}.
 \end{xca}
 
 
@@ -1564,6 +1581,8 @@ In this case the type of $y$
 doesn't depend on $x$, and in this special case the sum type is called
 the \emph{binary product}, or \emph{cartesian product} of the types $X$ and $Y$,
 denoted by $X \times Y$.
+\index{type!binary product}\index{type!cartesian product}
+\glossary{Product}{$X \times Y$}{cartesian product of types $X$ and $Y$}
 
 At first glance, it might seem odd that a sum is also a product, but exactly the same thing happens with numbers, for the sum $5+5+5$ is also
 referred to as the product $3 \times 5$.  Indeed, that's one way to define $3 \times 5$.
@@ -1611,8 +1630,9 @@ The following lemma follows from \cref{lem:isEq-pair=}, combined with \cref{def:
   sending $f$ to $(f(\no),f(\yes))$, is an equivalence.
 \end{xca}
 
-\begin{xca}
-  Let $X$ be a type.  Construct an equivalence of type $( X \times \true ) \equivto X$.
+\begin{xca}\label{xca:binary-prod-comm}
+  Let $X$ and $Y$ be types.  
+  Construct an equivalence of type $(X \times Y) \equivto (Y\times X)$.
 \end{xca}
 
 \section{More inductive types}
