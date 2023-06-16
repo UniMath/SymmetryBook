@@ -31,7 +31,8 @@ In this chapter we lay the foundations and provide some basic examples of groups
 
 \section{Brief overview of the chapter}
 In \cref{sec:typegroup} we give the formal definition of a group along with some basic examples.
-In \cref{sec:identity-type-as-abstract} we spell out the details, expanding on the properties of the identity type of a group and comparing these properties with those of an abstract group.  We then return in \cref {sec:identity-type-as-abstract} to groups more generally, explaining how these map to each other through ``homomorphisms'' (which to us are simply given by pointed maps) and what this entails for the identity types: all the abstract group properties are preserved.
+In \cref{sec:identity-type-as-abstract} we spell out the details, expanding on the properties of the identity type of a group and comparing these properties with those of an abstract group.  We then return in \cref{sec:homomorphisms} to groups more generally, explaining how these map to each other through ``homomorphisms'' (which to us are simply given by pointed maps), and what this entails for the identity types: all the abstract group properties are preserved.
+As an important example, we study the sign homomorphism in~\cref{sec:sign-homomorphism}.
 
 In most of our exposition we make the blanket assumption that the identity type in question is a set, but in \cref{sec:inftygps} we briefly discuss $\infty$-groups, where this assumption is dropped.
 
@@ -39,14 +40,15 @@ Classically, groups have appeared because they ``act'' on a set (or more general
 This section should remind the reader of the material in \cref{cha:circle}, where we dealt with the special case of the group of integers.
 More generally, connected \coverings now reappear in the guise of ``transitive $G$-sets'', laying the groundwork for our later discussion of the set of subgroups of a group.
 
-Another important notion, which is discussed in \cref{sec:gsets}, is the type of ``$G$-torsors'', which at first glance can appear frightening.
+Another important notion, also discussed in \cref{sec:gsets}, is the type of ``$G$-torsors'', which at first glance can appear frightening.
 However, a $G$-torsor corresponds to \emph{a} universal \covering, and the important step is to consider the \emph{type} of these.
-This idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
+The type of $G$-torsors recovers the underlying classifying type of the group $G$,
+and this idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
 
 With all this in place, the structure of the type of groups is in many aspects similar to the universe, in the sense that many of the constructions on the universe that we're accustomed to have analogues for groups, namely:
 functions are replaced by homomorphisms;
 products stay ``the same,'' as we will see in \cref{ex:productofgroups}
-(and more generally, product types over sets ``stay the same.'');
+(and more generally, product types over sets ``stay the same'');
 and the sum of two groups has a simple implementation as the sum of the underlying types with the base points identified, as defined more precisely in \cref{def:wedge}.
 In the usual treatment this is a somewhat more difficult subject involving ``words'' taken from the two groups.
 This reappears in our setting when we show that homomorphisms
@@ -135,7 +137,7 @@ See \cref{ch:grouphistory} for a brief summary of the history of groups.
     The type $a\eqto_A a'$ does have an interesting \emph{ternary}
     composition, mapping $p,q,r$ to $p\inv{q}r$.
     A set with this kind of operation is called a \emph{heap},
-    and we'll return to heaps in \cref{sec:heaps}.}
+    and we'll explore heaps further in \cref{sec:heaps}.}
 Given $f:a\eqto_Aa'$ we can use transport along $f$ to compare $a\eqto_Aa'$ with $a\eqto_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent the existence and choice of such an $f$ the identity types $a\eqto_Aa'$ and $a\eqto_Aa$ are different animals.
 We will return to this example after we have defined torsors.
 \end{remark}
@@ -376,9 +378,9 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
     (recall that $\FinSet$ and $\Set$ are the subtypes of $\UU$
     of finite sets and sets, respectively).
 
-    If the reader starts worrying about size issues, that is legitimate:
-    see the following~\cref{rem:groupsarebig}.
-  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a=to_Aa$ models all the ``permutations'' $S=_{\Set}S$ of $S$?
+    If the reader starts worrying about size issues,
+    see~\cref{rem:groupsarebig}.
+  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a\eqto_Aa$ models all the ``permutations'' $S\eqto_{\Set}S$ of $S$?
     Again, the only thing wrong with the groupoid $\Set$ of sets
     is that $\Set$ is not connected.
 %}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  %
@@ -422,7 +424,7 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
   for $m$ a positive integer, and showed that there were $m$ different
   such symmetries.
   Moreover, we showed that these symmetries can be identified with the elements
-  $0,1,\dots,m-1$ of $\bn m$,
+  $0,1,\dots,m-1$ of $\bn m$ (according to the image of $0$),
   and under this correspondence composition of symmetries correspond to
   addition modulo $m$, with $0$ the identity.
   Note that all of these can be obtained from $1$ under addition.
@@ -500,7 +502,7 @@ together with the extra structure of the ``cyclic ordering'' determined by $f$.
 
 But how do we capture the other aspect of $\CG_m$,
 mentioned in~\cref{ex:cyclicgroups},
-that all the cyclic permutations can be obtained by a single generating one.
+that all the cyclic permutations can be obtained by a single generating one?
 When thinking of the $m$\th roots of unity as in~\cref{fig:m-cycle-roots},
 we can take complex multiplication by $\xi$ to be the generating symmetry.
 
@@ -512,44 +514,27 @@ Using our new notation, we can also write this as
 \[
   R_m : \B\ZZ \to \BSG_m.
 \]
-Set truncation (\cref{def:set-truncation}) provides us with a tool for capturing only the symmetries in $\FinSet_m$ hit by $R_m$:
+Set truncation (\cref{def:set-truncation}) provides us with a tool for capturing only the symmetries in $\FinSet_m$ hit by $R_m$:\marginnote{%
+  $\begin{tikzcd}[column sep=tiny,ampersand replacement=\&]
+  \& \B\ZZ\ar[dl]\ar[rr,equivr,"c"] \& \& \Cyc_0 \ar[dr] \& \\
+  \BCG'_m \ar[rrrr,dashed,"g"']\ar[drr,"\prj"'] \& \& \& \&  \BCG_m\ar[dll,"\prj"] \\
+  \& \& \BSG_m\ar[from=uul,"R_m" near start,crossing over]
+  \ar[from=uur,"{\blank/m}"' near start,crossing over]\& \&
+  \end{tikzcd}$}
 the (in language to come) subgroup of the permutation group generated by the cyclic permutation $\zs$ is the group
 \[
   \CG'_m\defequi\mkgroup(\BCG'_m,\sh_{\CG'_m}),
 \]
 where $\BCG'_m\defequi \sum_{X:\FinSet_m}\Trunc{\inv{R_m}(X)}_0$
 and $\sh_{\CG'_m}\defequi (\bn m,\trunc{(\base,\refl{\bn m})}_0)$.
-We must prove that $\BCG'_m$ is a pointed connected groupoid for
-this to be well-defined, but since we will provide a pointed equivalence between $\BCG_m$ and $\BCG'_m$, this will follow automatically.\footnote{%
-  More precisely, but using language not yet established: $\CG_m$ is isomorphic to $\ZZ/m\ZZ$, which is the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) induced by $R_m$, whereas $\CG'_m$ is exactly the corresponding ``image'' (\cf \cref{sec:image}). Thanks to \cref{thm:fund-thm-homs} these are isomorphic groups. However, in our special case we can give a proof using only language we know.}
+That is, $\BCG'_m$ is the $0$-image of $R_m$ in the sense of~\cref{sec:higher-images},
+so is in particular a pointed connected groupoid.
+Since we have a factorization of $R_m$ as the equivalence $c:\Sc\equivto\Cyc_0$
+followed by the map $\blank/m:\Cyc_0 \to \BSG_m$,
+and since $\Cyc_m$ is the $0$-image of the latter by~\cref{thm:image-Z-to-Cm},
+we get a uniquely induced pointed equivalence $g : \BCG'_m \ptdto \BCG_m$.\footnote{%
+  More precisely, but using language not yet established: $\CG_m$, which is isomorphic to $\ZZ/m\ZZ$, is the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) induced by $R_m$, whereas $\CG'_m$ is exactly the corresponding ``image'' (\cf \cref{sec:image}). Thanks to \cref{thm:fund-thm-homs} these are isomorphic groups. However, in our special case we can give a proof using only language we know.}
 \end{example}
-
-\begin{construction}
-  \label{lem:CmisisotoZ/m}
-  We defined a pointed equivalence $g : \BCG'_m \ptdto \BCG_m$,
-  commuting with the projection maps to $\BSG_m$.\marginnote{%
-    $\begin{tikzcd}[column sep=tiny,ampersand replacement=\&]
-      \& \B\ZZ \ar[dl]\ar[dd,"R_m"' near start]\ar[dr] \& \\
-      \BCG'_m \ar[rr,dashed,"g"' near start]\ar[dr,"\prj"'] \& \& \BCG_m\ar[dl,"\prj"] \\
-      \& \BSG_m \&
-    \end{tikzcd}$}
-\end{construction}
-
-\begin{implementation}{lem:CmisisotoZ/m}
-  Note that $\BCG'_m$ is the $0$-image of $R_m$.
-  We only need to show that $\BCG_m$ is another $0$-image,
-  because then we get mediating equivalence under $\B\ZZ$ and over $\BSG_m$.
-  In particular, this will be a pointed equivalence.
-
-  The projection map from $\BCG_m$ to $\BSG_m$ is $0$-truncated,
-  since the fiber over an $m$-element set $X$ is the \emph{set}
-  of maps $t : X \to X$ that make $(X,t)$ into an $m$-cycle.
-
-  Define the map $q : \Cyc_0 \to \BCG_m$ by mapping an infinite cycle $(Y,u)$
-  to the $m$-cycle $(Y/m,\bar u)$, where $u : Y/m \to Y/m$ maps $[y]$ to $[u(y)]$.
-  Recall the equivalence $c : \Sc \to \Cyc_0$ from~\cref{def:S1toC}
-  and~\cref{thm:S1bysymmetries}.
-\end{implementation}
 
 \begin{xca}
   \label{xca:somedetailsonfinitegroupstocheck}
@@ -1052,7 +1037,7 @@ In particular, we get homomorphisms $\Sigma_m\to\Sigma_{m+n}$ and $\Sigma_m\to\S
   $\shape_G$, and pointed by $\refl {\shape_G}$.
 \item If $G$ and $H$ are groups, the projections $\BG\gets \BG\times \BH\to \BH$ and inclusions $\BG\to\BG\times\BH\gets\BH$ \marginnote{the ``projections'' $G\gets G\times H\to H$ and ``inclusions'' $G\to G\times H\gets H$ are homomorphisms}
   (\eg the inclusion $\BG\to\BG\times\BH$ is given by $z\mapsto(z,\shape_H)$) give rise to group homomorphisms between $G\times H$ and $G$ and $H$.
-\item In \cref{lem:CmisisotoZ/m} we gave an example of an isomorphism, namely one from the cyclic group $\CG_m$ to $\ZZ/m$.\qedhere
+\item In \cref{ex:cyclicgroups} we gave an example of an isomorphism, namely one from the cyclic group $\CG_m$ to $\ZZ/m\ZZ$.\qedhere
   \end{enumerate}
 \end{example}
 
