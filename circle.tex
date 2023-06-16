@@ -538,7 +538,7 @@ Let $A,B$ and $C$ be types. Show:
 \begin{enumerate}
 \item The (unique) map of type $A\to\bn 1$ is a \covering iff $A$ is a set;
 \item For any $b:B$, the map $x \mapsto b$ from $\bn 1$ to $B$ is
-a \covering iff $b=b$ is a set;
+a \covering iff $b\eqto b$ is a set;
 \item If $f: A\to B$ and $g: B\to C$ are \coverings, then $gf$ is a \covering.\qedhere
 \end{enumerate}
 \end{xca}
@@ -639,50 +639,75 @@ injections constituting $S$ as a subtype of $X$ and
 $T$ as a subtype of $Y$, respectively (see \cref{def:subtype}).
 This diagram represents the identity type $f\circ i_1 = i_2\circ g$.
 Since $i_2$ is an embedding, the type 
-$\sum_{g:S\to T} (f\circ i_1 = i_2\circ g)$ is a proposition.
+$\sum_{g:S\to T} (f\circ i_1 \eqto i_2\circ g)$ is a proposition.
 \[
 \begin{tikzcd}
   X \ar[r,"f"]  & Y &&  
   X \ar[r,"f"]  & Y                          \\
   S \ar[r,"g"] \ar[u,"i_1"]        & T \ar[u,"i_2"'] &&
-  X_P \ar[r,dashed] \ar[u,"\fst"]     & Y_Q \ar[u,"\fst"']
+  X_P \ar[r,dashed,"g"] \ar[u,"\fst"]     & Y_Q \ar[u,"\fst"']
 \end{tikzcd}
 \]
 In the right diagram we depict the case
 in which $S$ is given by a predicate $P: X\to\Prop$
 and $T$ is given by a predicate $Q: Y\to\Prop$,
 with the injections being first projections of the right type.
-Now we have $\prod_{x:X}(P(x)\to Q(f(x))$ if and only if the type
-$\sum_{g:X_P\to Y_Q} (f\circ \fst = \fst\circ g)$ is contractible.
+We can now apply the universal property of subtypes
+\cref{xca:subtype-univ-prop} to $Y_Q$ with 
+$(f\circ\fst) : X_P \to Y$ and get that the three propositions
+$\prod_{z:X_P} Q(f(\fst(z))$ and
+$\prod_{x:X}(P(x)\to Q(f(x))$ and 
+$\sum_{g:X_P\to Y_Q} (f\circ\fst \eqto \fst\circ g)$
+are logically equivalent.
 
-For a proof of the latter logical equivalence, assume
-$p: \prod_{x:X}(P(x)\to Q(f(x))$ and define $g$ by
-%$(z:X_P) \mapsto (f(\fst(z)),p(fs
+If $q$ is a proof of $\prod_{x:X}(P(x)\to Q(f(x))$,
+then we can uniquely define the function $g: X_P\to Y_Q$ 
+such that $f\circ\fst \eqto \fst\circ g$, that is,
+labelling the dashed arrow in the right diagram above,
+by $(x,p) \mapsto (f(x),q(x,p))$.
+We may call the latter the function \emph{induced by $f$ on subtypes},
+and will also denote it by $f$.
 \end{remark}
 
+
 \begin{theorem}\label{thm:coveringsofS1perms}
-  The evaluation function provides an equivalence
-  \[
-    \ev_\Set : (\Sc \to \Set) \to \sum_{X:\Set}(X=X)
-    \quad\text{defined by $\ev_\Set(E) \defeq (E(\base),E(\Sloop))$.}
-  \]
-  Consequently, we have a string of equivalences
-  \begin{align*}
-    \SetBundle(\Sc)
-    &\equiv (\Sc \to \Set)
-      \equiv \sum_{X:\Set}(X=X) \\
-    &\equiv \sum_{X:\Set}(X\equiv X)
-    \equiv \sum_{X:\UU}\sum_{f:X\to X}
-    \isset(X) \times \isEq(f).
-  \end{align*}
+We have the following composite of
+subtype diagrams (see \cref{rem:subtype-diagram}).
+Downwards along the vertical edges, the structure of the types
+stays the same, but properties are added.
+\[
+\begin{tikzcd}
+  && \sum_{X:\UU}(X\to X) \\ %& \sum_{X:\UU}(X\to X\to\UU) 
+  \bigl(\sum_{A:\UU}(A\to\Sc) \ar[r,equivr,"f"]\bigr) & 
+  \bigl(\Sc\to\UU \ar[r,equivr,"g"]\bigr) & 
+  \sum_{X:\UU}(X\equivto X) \ar[u,"\fst"]                         
+\\
+  \SetBundle \ar[r,equivl,"f"'] \ar[u,"\fst"]  &
+  \bigl(\Sc\to\Set\bigr) \ar[r,equivl,"g"'] \ar[u,"\fst"]  &
+  \sum_{X:\Set}(X\equivto X) \ar[u,"\fst"]
+\end{tikzcd}
+\]
 \end{theorem}
 \begin{proof}
-  The first part is the universal property of the circle,
+  The vertical arrows labelled $\fst$ are all minor variations of the
+  first projection.
+  
+  In the second row, the equivalence $f$ is $\preim$ from
+  \cref{lem:typefamiliesandfibrations}, and
+  the equivalence $f$ is obtained by univalence
+  from the universal property of the circle,
   \cref{lem:freeloopspace}, applied to $A\defeq\Set$.
-  The equivalences then follow from \cref{lem:Prop-Set-pointed-families}\ref{lem:Set-families} and the univalence axiom,
-  together with minor manipulations.
+ %   \ev_\Set : (\Sc \to \Set) \to \sum_{X:\Set}(X\eqto X)
+ %  \quad\text{defined by $\ev_\Set(E) \defeq (E(\base),E(\Sloop))$.}
+ %  \cref{lem:Prop-Set-pointed-families}\ref{lem:Set-families}
+ 
+  In the third row the have the induced functions. 
+  Two things remain to be proved: (1) $f$ and $g$ respect subtypes,
+  and (2) their induced functions are indeed equivalences.
 \end{proof}
-In slogan form: A \covering over the circle is a set with a permutation of its elements.
+
+In slogan form: A \covering over the circle is a set with 
+a permutation of its elements.
 The fiber over $\base:\Sc$ gives the set,
 and transporting along $\Sloop$ gives the permutation.
 
