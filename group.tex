@@ -359,12 +359,14 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
   Apart from the circle, there are some important groups that come almost for free:
   namely the symmetries in the type of sets.
   \begin{enumerate}
-  \item Recall that the set $\bn{1}$ has the single element
+  \item\label{ex:trivgroup}
+    Recall that the set $\bn{1}$ has the single element
     which we can call $*$. Then
     $\Aut_{\bn{1}}(*)$ is a group called the \emph{trivial group}.
     Of course, this is also $\Aut_{\true}(\triv)$,
     the automorphism group of the trivial element in the type $\true$.
-  \item If $n:\NN$, then the \emph{permutation group of $n$ letters} is
+  \item\label{ex:permgroup}
+    If $n:\NN$, then the \emph{permutation group of $n$ letters} is
     \[
       \SG_n\defequi \mkgroup(\FinSet_n,\bn{n}),
     \]
@@ -380,7 +382,8 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
 
     If the reader starts worrying about size issues,
     see~\cref{rem:groupsarebig}.
-  \item More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a\eqto_Aa$ models all the ``permutations'' $S\eqto_{\Set}S$ of $S$?
+  \item\label{ex:genpermgroup}
+    More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a\eqto_Aa$ models all the ``permutations'' $S\eqto_{\Set}S$ of $S$?
     Again, the only thing wrong with the groupoid $\Set$ of sets
     is that $\Set$ is not connected.
 %}!\footnote{it's so simple -- so very simple -- that only a child can do it!}  %
@@ -392,6 +395,13 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
   \end{enumerate}
 \end{example}
 
+\begin{xca}
+  \label{xca:somedetailsonfinitegroupstocheck}
+  Using~\cref{def:finiteset} compare the definitions in~\cref{ex:groups}, \ref{ex:permgroup} and \ref{ex:genpermgroup},
+  and give identifications of type $\Sigma_n\eqto\Sigma_{\bn{n} }$ for $n:\NN$.
+  Also show that $\Sigma_\false$ and $\Sigma_\true$ are trivial groups.
+\end{xca}
+
 \begin{remark}
   \label{rem:groupsarebig}
   This remark is for those who worry about size issues -- a theme we usually ignore in our exposition.  If we
@@ -400,13 +410,17 @@ Frequently we want to consider the symmetries $\loops(A,a)$ of some element $a$ 
   universe $\UU_1$.  In order to accommodate the permutation groups of sets in $\UU_0$, the universe ``$\UU$'' appearing as
   a subscript of the first $\Sigma$-type in \cref{def:pt-conn-groupoid}, appearing later in the definition of
   ``group'', needs to be at least as big as $\UU_1$.  If $\UU$ is taken to be $\UU_1$, then the type
-  $\typegroup$ of groups will not be in $\UU_1$, but in some bigger universe $\UU_2$.  If we then choose some
-  group $G:\typegroup$ and look at its group of automorphisms, $\Aut_\Group(G)$, based on the identity type $G \eqto_\Group G$, this will be an element of $\typegroup$ only if the universe $\UU$ in the definition of
+  $\typegroup$ of groups will not be in $\UU_1$, but in some bigger universe $\UU_2$.
+  If we then choose some group $G:\typegroup$
+  and look at its group of automorphisms, $\Aut_\Group(G)$,\footnote{%
+    \Cref{xca:typegroupisgroupoid} below asks you to verify that $\Group$
+    is a (large) groupoid.}
+  based on the identity type $G \eqto_\Group G$, this will be an element of $\typegroup$ only if the universe $\UU$ in the definition of
   $\typegroup$ is at least as big as $\UU_2$.  Our convention from \cref{sec:universes} is
   that the universes form an ascending chain $\UU_0\subseteq\UU_1\subseteq\UU_2\subseteq\dots$, corresponding
   to which there will an ascending chain of types of groups,
   \[
-    \typegroup_i \defequi \Copy_{\mkgroup}\bigl( (\UU_i)_*^{=1} \bigr),
+    \typegroup_i \defequi \Copy_{\mkgroup}\bigl( (\UU_i)_*^{=1} \bigr) : \UU_{i+1},
   \]
   and any group we encounter will be an element of $\typegroup_i$ for $i$
   large enough.
@@ -534,51 +548,42 @@ followed by the map $\blank/m:\Cyc_0 \to \BSG_m$,
 and since $\Cyc_m$ is the $0$-image of the latter by~\cref{thm:image-Z-to-Cm},
 we get a uniquely induced pointed equivalence $g : \BCG'_m \ptdto \BCG_m$.\footnote{%
   More precisely, but using language not yet established: $\CG_m$ is both isomorphic to $\ZZ/m\ZZ$, the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) induced by $R_m$, and to $\CG'_m$, which is the corresponding ``image'' (\cf \cref{sec:image}). This pattern will later be captured in~\cref{thm:fund-thm-homs}.}
+This identifies the set $\Trunc{\inv{R_m}(X)}_0$ with the set of cycle structures
+  on the $m$-element set $X$.
 \end{example}
-
-\begin{xca}
-  \label{xca:somedetailsonfinitegroupstocheck}
-  \begin{enumerate}
-  \item Compare the definitions of \cref{def:finiteset} and show that if $n:\NN$, then $\Sigma_n=\Sigma_{\bn{n} }$
-and (since $\FinSet_0=\FinSet_1=\bn 1$) that $\Sigma_{1}=\aut_{\bn{1} }(\triv)$.
-\item Prove that the set $\bn{n} =_{\FinSet_n}\bn{n} $ is finite of cardinality $n!$.
-\item Give an identification of the $n$-fold \covering of $S^1$ of \cref{def:mfoldS1cover} with the first projection $\sum_{z:S^1}\cy n^{-1}(z)\to S^1$ of \cref{ex:cyclicgroups}.%
-\footnote{Hint: for every $z:S^1$, $\cy n(z):\FinSet_n$ is a finite set of cardinality $n$.
-Decidability is not an issue, so you can appeal to our classification of the \coverings of the circle.}
-\item Show that, given a type $X$, the type of functions $BC_n\to X$ is equivalent to the type
-$$\sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$$ of functions $f:S^1\to X$ such that the two ways around
-$$\xymatrix{S^1\ar[d]_{(-)^n}\ar[dr]^f&\\S^1\ar[r]^f&X}$$
-agree. \footnote{Hint: define the function $F_1:(BC_n\to X)\to (S^1\to X)$ by precomposition:
-$F_1(g)(z)=g(\cy n(z),!)$ and observe that since $\cy n(z)=\cy n(z^n)$ we have a
-function $F:(BC_n\to X)\to \sum_{f:S^1\to X}\prod_{z:S^1}f(z)=f(z^n)$.}
-\end{enumerate}
-\end{xca}
 
 
 \begin{example}\label{ex:productofgroups}
-  If you have two groups $G$ and $H$, their \emph{product} $G\times H$ is given by taking the product of their classifying types:
+  If you have two groups $G$ and $H$,
+  their \emph{product} $G\times H$ is given by taking
+  the product of their classifying types:\footnote{%
+    Note that $\B(G\times H)\jdeq \BG\times \BH$ is pointed at
+  $\shape_{G\times H}\jdeq(\shape_G,\shape_H)$.}
   \[
     G\times H\defequi \mkgroup(\BG\times\BH)
   \]
-  \marginnote{Note that $\B(G\times H)\jdeq \BG\times \BH$ is pointed at
-  $\shape_{G\times H}\jdeq(\shape_G,\shape_H)$.}
-  For instance, $\Sigma_2\times\Sigma_2$ is called the
+  For instance, $\SG_2\times\SG_2$ is called the
   \emph{Klein four-group}\index{Klein four-group} or \emph{Vierergruppe}\index{Vierergruppe}, because
-    it has four symmetries.
-  \end{example}
+  it has four symmetries.
+\end{example}
 
+\begin{xca}\label{xca:klein-not-cyclic}
+  Show that we cannot identify $\CG_4$ and $\SG_2\times\SG_2$,
+  \ie the Klein four-group is not a cyclic group.
+\end{xca}
 \begin{remark}
 In \cref{lem:idtypesgiveabstractgroups} we will see that the identity type of a group satisfies a list of laws justifying the name ``group''
 and we will later show that groups are uniquely characterized by these laws.
 \end{remark}
-Some groups have the property that the order you perform the symmetries is immaterial.  The prime example is the group of integers $\ZZ\oldequiv \aut_{S^1}(\base)$  Any symmetry is of the form $\Sloop^n$ for some integer $n$, and if $\Sloop^m$, then $\Sloop^n\Sloop^m=\Sloop^{n+m}=\Sloop^{m+n}=\Sloop^m\Sloop^n$.
+Some groups have the property that the order you perform the symmetries is immaterial.  The prime example is the group of integers $\ZZ\jdeq\mkgroup(\Sc,\base)$.
+Any symmetry is of the form $\Sloop^n$ for some integer $n$, and if $\Sloop^m$, then $\Sloop^n\Sloop^m=\Sloop^{n+m}=\Sloop^{m+n}=\Sloop^m\Sloop^n$.
 
  Such cases are important enough to have their own name:
 \begin{definition}\label{def:abgp}
   A group $G$ is \emph{abelian} if all symmetries commute, in the sense that
   the proposition
   \[
-    \isAb(G)\defequi\prod_{g,h: \UG}gh=hg
+    \isAb(G)\defequi\prod_{g,h: \USymG}gh=hg
   \]
   is true.  In other words, the type of abelian groups is
   \[
@@ -586,12 +591,17 @@ Some groups have the property that the order you perform the symmetries is immat
   \]
 \end{definition}
 \begin{xca}\label{exer:first examples}
-  Show that permutation group $\Sigma_2$ is abelian, but that $\Sigma_3$ is not.  Show that if $G$ and $H$ are abelian groups, then so is their product $G\times H$.
+  Show that permutation group $\SG_2$ is abelian, but that $\SG_3$ is not.
+  Show that if $G$ and $H$ are abelian groups, then so is their product $G\times H$.
 \end{xca}
-We can envision $g$ commuting with $h$ by the picture
-$$\xymatrix{a\ar@{=}[r]^g_\to\ar@{=}[d]^\downarrow_h&a\ar@{=}[d]^\downarrow_h\\
-a\ar@{=}[r]^g_\to&a}$$
-and saying that going from (upper left hand corner) $a$ to (lower right hand corner) $a$ by either composition gives the same result.
+We can envision $g$ commuting with $h$ in a group $A \jdeq\mkgroup(A,a)$
+by the picture\marginnote{%
+  \begin{tikzcd}[ampersand replacement=\&]
+    a \ar[r,eqr,"g"]\ar[d,eql,"h"'] \& a\ar[d,eqr,"h"] \\
+    a \ar[r,eql,"g"'] \& a
+  \end{tikzcd}}
+in the margin;
+going from (upper left hand corner) $a$ to (lower right hand corner) $a$ by either composition gives the same result.
 
 \begin{remark}
   \label{rem:whatAREabeliangroups}
@@ -600,27 +610,30 @@ and saying that going from (upper left hand corner) $a$ to (lower right hand cor
   This can be used to give a very important characterization of what it means to be abelian.
   We will return to this point in \cref{sec:abelian-groups}.
 
-  Alternatively, the reference to $\mathbf{isAb}$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} (it is the sum of $X$ and $Y$ where the base points are identified); \cref{xca:whatAREabeliangroups}
+  Alternatively, the reference to $\isAb$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} below. (It is the sum of $X$ and $Y$ where the base points are identified.). \cref{xca:whatAREabeliangroups}
   \marginnote{%
     \begin{tikzcd}[ampersand replacement=\&]
       \BG\vee\BG\ar[r,"\text{fold}"]\ar[d,"\text{inclusion}"'] \& \BG \\
        \BG\times\BG\ar[ur,dashed]
     \end{tikzcd}}
-  offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $\BG\vee \BG\to \BG$ (both summands are mapped by the identity) factors over the inclusion $\BG\vee\BG\to\BG\times\BG$.
+  offers the alternative definition that a group $G$ is abelian if and only if the ``fold'' map $\BG\vee \BG\to \BG$ (where both summands are mapped by the identity) factors over the inclusion $\BG\vee\BG\to\BG\times\BG$,
+  \ie this turns out to be a proposition equivalent to $\isAb(G)$.
 \end{remark}
+
 \begin{xca}
   Let $\mkgroup(A,a):\typegroup$ and let $b$ be an arbitrary element of $A$.
   Prove that the groups $\mkgroup(A,a)$ and $\mkgroup(A,b)$ are merely identical,
   in the sense that $\Trunc{\mkgroup(A,a)=\mkgroup(A,b)}$ is true.
   Similarly for \inftygps when you get that far.
 \end{xca}
-\begin{remark}\label{rem:monoidandabsgplarge}
- In \cref{def:typegroup} the first $\sum$ in the definition of the type $\typegroup$ ranges over the entire universe $\UU$.  Hence, $\typegroup$ does not belong to $\UU$, but rather to the next universe as discussed briefly in \cref{sec:univax}.   This tendency that the ``type of all the types we are interested in'' is a ``large type'' is a regular feature of the theory and since it will not cause any trouble for us, we will not be consistent in pointing it out.
-  \end{remark}
 
   \begin{xca}\label{xca:typegroupisgroupoid}
-    Given two groups $G$ and $H$.  Prove that $G\eqto H$ is a set.\footnote{We might tone down exercises like ``prove that $\typegroup$ is a groupoid'', even though we will want to use these results.  They take the geometry/fun out of the exposition.}   Prove that the type of groups is a groupoid.  This means that, given a group $G$, the component of $\typegroup$, containing (and pointed at) $G$, is again a group, which we will call the \emph{group $\aut(G)$ of automorphisms} of $G$,
-    or the \emph{automorphism group} of $G$.
+    Given two groups $G$ and $H$.  Prove that $G\eqto H$ is a set.
+    Prove that the type of groups is a groupoid.
+    This means that, given a group $G$, the component of $\typegroup$, containing (and pointed at) $G$, is again a group, $\Aut_\Group(G)$,
+    which we will call more simply the \emph{group $\Aut(G)$ of automorphisms}%
+    \index{group!of automorphisms} of $G$,
+    or the \emph{automorphism group}\index{automorphism group} of $G$.
   \end{xca}
 
 \section{Abstract groups}
@@ -1189,7 +1202,7 @@ The following example expresses that $\ZZ$ is a ``free group with one generator'
   \label{ex:Zinitial}
   \cref{cha:circle} was all about the circle $S^1$ and its role as a
   ``universal symmetry'' and how it related to the integers.  In our
-  current language, $\ZZ\defequi\aut_{S^1}(\base)$ and large parts of
+  current language, $\ZZ\defequi\mkgroup(\Sc,\base)$ and large parts of
   the universality is found in the following observation.  If $G$ is a
   group then the evaluation equivalence
   $\ev_{\BG_\div}:(S^1\to \BG_\div)\we \sum_{y:\BG_\div}(y=y)$ of
@@ -1248,7 +1261,7 @@ $\Sloop : \USym\ZZ$.
   \item $\BG_\div\to A$,
   \item $\sum_{a:A}\sum_{f:\BG_\div \to A}(a=f(\shape_G))$,
   \item $\sum_{a:A}(\BG\ptdto(A,a))$ and
-  \item $\sum_{a:A}\Hom(G,\aut_A(a))$
+  \item $\sum_{a:A}\Hom(G,\Aut_A(a))$
   \end{enumerate}
  are all equivalent.
 \end{xca}
@@ -3565,10 +3578,10 @@ If $(H,f,!)$ and $(H',f',!)$ are monomorphisms into $G$, then the pullback is ca
 
 \section{Sums of groups}
 \label{sec:coprod}
-We have seen how the group of integers $\ZZ=(S^1,\base)$ synthesizes the notion of one symmetry with no relations: every symmetry in the circle is of the form $\Sloop^n$ for some unique $n$.  Also, given any group $G=\aut_A(a)$, the set $a=a$ of symmetries of $a$ corresponds to the set of homomorphisms $\ZZ\to G$, \ie to pointed functions $(S^1,\base)\to_*(A,a)$ by evaluation at $\Sloop$.  What happens if we want to study more than one symmetry at the time?
+We have seen how the group of integers $\ZZ=(S^1,\base)$ synthesizes the notion of one symmetry with no relations: every symmetry in the circle is of the form $\Sloop^n$ for some unique $n$.  Also, given any group $G=\Aut_A(a)$, the set $a=a$ of symmetries of $a$ corresponds to the set of homomorphisms $\ZZ\to G$, \ie to pointed functions $(S^1,\base)\to_*(A,a)$ by evaluation at $\Sloop$.  What happens if we want to study more than one symmetry at the time?
 
-For instance, is there a group $\ZZ\vee\ZZ$ so that for any group $G=\aut_A(a)$ a homomorphism $\ZZ\vee\ZZ\to G$ corresponds to \emph{two} symmetries of $a$?
-At the very least, $\ZZ\vee\ZZ$ itself would have to have two symmetries and these two can't have any relation, since in a general group $G=\aut_A(a)$ there is a priori no telling what the relation between the symmetries of $a$ might be.
+For instance, is there a group $\ZZ\vee\ZZ$ so that for any group $G=\Aut_A(a)$ a homomorphism $\ZZ\vee\ZZ\to G$ corresponds to \emph{two} symmetries of $a$?
+At the very least, $\ZZ\vee\ZZ$ itself would have to have two symmetries and these two can't have any relation, since in a general group $G=\Aut_A(a)$ there is a priori no telling what the relation between the symmetries of $a$ might be.
 Now, \emph{one} symmetry is given by a pointed function $(S^1,\base)\to_*(A,a)$ and so a \emph{pair} of symmetries is given by a function $f:S^1+S^1\to A$ with the property that $f$ sends each of the base points of the circles to $a$.  But $S^1+S^1$ is not connected, and so not a group.  To fix this we take the clue from the requirement that both the base points were to be sent to a common base point and \emph{define} $S^1\vee S^1$ to be what we get from $S^1+S^1$ when we \emph{insert an identity} between the two basepoints.
 \marginnote{$S^1\vee S^1$ if formed from $S^1+S^1$ by inserting an identity$$\xymatrix{\base\ar@(ul,dl)[]|{\Sloop}\ar@{.>}[rr]^{\text{identify!}}&&\base\ar@(ur,dr)[]|{\Sloop}}
   $$}
@@ -3628,8 +3641,8 @@ We need to be able to determine whether a symmetry is reflexivity or not, but on
 
 \begin{definition}
   \label{def:sumofgroup}
-  If $G_1=\aut_{A_1}(a_1)$ and $G_2=\aut_{A_2}(a_2)$ are groups, then their \emph{sum}\index{sum of groups} is defined as
-  $$G_1\vee G_2\defequi \aut_{A_1\vee A_2}(a_{12}).$$
+  If $G_1=\Aut_{A_1}(a_1)$ and $G_2=\Aut_{A_2}(a_2)$ are groups, then their \emph{sum}\index{sum of groups} is defined as
+  $$G_1\vee G_2\defequi \Aut_{A_1\vee A_2}(a_{12}).$$
   The homomorphisms $i_1:G_1\to G_1\vee G_2$ and $i_2:G_2\to G_1\vee G_2$ induced from the structure maps  $i_1:A_1\to A_1\vee A_2$ and  $i_2:A_2\to A_1\vee A_2$ are also referred to as \emph{structure maps}.
 \end{definition}
 \begin{lemma}
@@ -3647,22 +3660,36 @@ Specializing further, we return to our initial motivation and see that mapping o
   $$\Hom(\ZZ\vee\ZZ,G)\to \Hom(\ZZ,G)\times\Hom(\ZZ,G)\simeq \USym G\times \USym G$$
   is an equivalence.
 \end{corollary}
-\begin{xca}
-This leads to the following characterization of abelian groups formulated purely in terms of pointed connected groupoids (no reference to the identity types).
-  \label{xca:whatAREabeliangroups}
-  A group $G$ is abelian if and only if the canonical map
 
-  \marginnote{$$\xymatrix{G\vee G\ar[r]^+\ar[d]_{\text{inclusion}}&G\\
-      G\times G\ar@{.>}[ur]}$$}
-$$+:G\vee G\to G$$
-(given via \cref{lem:sumofgroupsISsum} by $\id_G:G\to G$) extends over the inclusion
-$$i:G\vee G\to G\times G$$
-(given by the inclusions $\mathrm{in}_1,\mathrm{in}_2:G\to G\times G$).\footnote{I haven't written out a formalization myself}
+\begin{xca}\label{xca:whatAREabeliangroups}
+  This leads to the following characterization of abelian groups\marginnote{%
+    \wip{Do we know at this point that this extension problem is a proposition,
+      \ie that the wedge inclusion is an epimorphism?
+      Check re pointedness.}}
+  formulated purely in terms of pointed connected groupoids
+  (with no direct reference to identity types).
+  A group $G$ is abelian if and only if the canonical map\marginnote{%
+    \begin{tikzcd}[ampersand replacement=\&]
+      \BG\vee\BG\ar[r,"\fold"]\ar[d,"\text{inclusion}"'] \& \BG \\
+       \BG\times\BG\ar[ur,dashed]
+    \end{tikzcd}}
+  \[
+    \fold :\BG\vee \BG\ptdto \BG
+  \]
+  (given via \cref{lem:sumofgroupsISsum} by $\id_G:G\to G$)
+  extends over the inclusion
+  \[
+    i:\BG\vee \BG\ptdto \BG\times \BG
+  \]
+  (given by the inclusions $\incl_1,\incl_2:G\to G\times G$).
 
-As a cute aside, one can see that the required map $\BG\times\BG\to_*\BG$ actually doesn't need to be pointed:
-factoring $+:\BG\vee\BG\to_*\BG$ over $i:\BG\vee\BG\to_*\BG\times\BG$
--- even in an unpointed way -- kills all ``commutators''
-$ghg^{-1}h^{-1}:\USym(G\vee G)$.
+  As a cute aside, one can see that the required map $\BG\times\BG\ptdto\BG$
+  actually doesn't need to be pointed:
+  factoring
+  $\fold:\BG\vee\BG\to\BG$ over $i:\BG\vee\BG\to\BG\times\BG$
+  -- even in an unpointed way -- kills all ``commutators''
+  $ghg^{-1}h^{-1}:\USym(G\vee G)$.
+  (\wip{is this still a proposition, or do we need to truncate?})
 \end{xca}
 
 We end the section by proving that wedges of decidable groups are decidable groups and that they can be given the classical description in terms of words.
@@ -3670,7 +3697,7 @@ We end the section by proving that wedges of decidable groups are decidable grou
 
 \begin{lemma}
   \label{lem:wedgeofgpoidisgpoid}
-  Let $G_1\defequi\aut_{A_1}(a_1)$ and $G_2\defequi\aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $G_1\vee G_2\defequi\aut_{A_1\vee A_2}(a_{12})$ is a decidable group.
+  Let $G_1\defequi\Aut_{A_1}(a_1)$ and $G_2\defequi\Aut_{A_2}(a_2)$ be decidable groups, then the wedge sum $G_1\vee G_2\defequi\Aut_{A_1\vee A_2}(a_{12})$ is a decidable group.
 
 Let $C_1$ be the set of strings $(p_0,n,p_1,\dots,p_n)$ with $n:\NN$ and, for $0\leq j\leq n$
 \begin{itemize}
