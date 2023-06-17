@@ -658,11 +658,13 @@ $(f\circ\fst) : X_P \to Y$ and get that the three propositions
 $\prod_{z:X_P} Q(f(\fst(z))$ and
 $\prod_{x:X}(P(x)\to Q(f(x))$ and 
 $\sum_{g:X_P\to Y_Q} (f\circ\fst \eqto \fst\circ g)$
-are logically equivalent.
+are logically equivalent. If these propositions hold,
+we may call the diagram a \emph{subtype diagram}.
+\index{diagram!subtype}
 
 If $q$ is a proof of $\prod_{x:X}(P(x)\to Q(f(x))$,
 then we can uniquely define the function $g: X_P\to Y_Q$ 
-such that $f\circ\fst \eqto \fst\circ g$, that is,
+such that $f\circ\fst \eqto \fst\circ g$, the one
 labelling the dashed arrow in the right diagram above,
 by $(x,p) \mapsto (f(x),q(x,p))$.
 We may call the latter the function \emph{induced by $f$ on subtypes},
@@ -671,38 +673,49 @@ and will also denote it by $f$.
 
 
 \begin{theorem}\label{thm:coveringsofS1perms}
-We have the following composite of
-subtype diagrams (see \cref{rem:subtype-diagram}).
-Downwards along the vertical edges, the structure of the types
-stays the same, but properties are added.
+In the diagram below, the equivalence $f$ in the second row
+is $\preim$ from \cref{lem:typefamiliesandfibrations}, and
+the equivalence $g$ in the same row is defined by univalence
+and the universal property of the circle,
+\cref{lem:freeloopspace}, applied to $A\defeq\UU$.
+Along the vertical edges we have maps that forget the
+property that constitutes its domain as a subtype of the
+codomain, all modest variations of the first projection.
+
+The statement of the theorem is now that the diagram below
+is the composite of subtype diagrams (see \cref{rem:subtype-diagram})
+in which the induced functions $f$ and $g$ 
+in the third row are equivalences as well.
+
 \[
 \begin{tikzcd}
   && \sum_{X:\UU}(X\to X) \\ %& \sum_{X:\UU}(X\to X\to\UU) 
   \bigl(\sum_{A:\UU}(A\to\Sc) \ar[r,equivr,"f"]\bigr) & 
   \bigl(\Sc\to\UU \ar[r,equivr,"g"]\bigr) & 
-  \sum_{X:\UU}(X\equivto X) \ar[u,"\fst"]                         
+  \sum_{X:\UU}(X\equivto X) \ar[u]                         
 \\
-  \SetBundle \ar[r,equivl,"f"'] \ar[u,"\fst"]  &
-  \bigl(\Sc\to\Set\bigr) \ar[r,equivl,"g"'] \ar[u,"\fst"]  &
-  \sum_{X:\Set}(X\equivto X) \ar[u,"\fst"]
+  \SetBundle \ar[r,equivl,"f"'] \ar[u]  &
+  \bigl(\Sc\to\Set\bigr) \ar[r,equivl,"g"'] \ar[u]  &
+  \sum_{X:\Set}(X\equivto X) \ar[u]
 \end{tikzcd}
 \]
 \end{theorem}
 \begin{proof}
-  The vertical arrows labelled $\fst$ are all minor variations of the
-  first projection.
+We prove first that $\preim$ respects subtypes. 
+Let $A:\UU$ and $h: \Sc\to A$ such that $(A,h)$ is a \covering.
+This means that $\inv h(a)$ is a set, for any $a:A$.
+Since $\preim(A,h)(a) \jdeq \inv h(a)$, we immediately get
+that $\preim(A,h) : \Sc\to\Set$.
+
+Next we prove that $g$ respects subtypes.
+Let $S: \Sc\to\UU$ be such that $S(z)$ is a set for all $z:\Sc$.
+This means in particular that $S(\base)$ is a set.
+Since $g(S)\jdeq (S(\base),\cast(S(\Sloop)))$, we are done.
+
+\cref{xca:Prop-Set-pointed-families}
   
-  In the second row, the equivalence $f$ is $\preim$ from
-  \cref{lem:typefamiliesandfibrations}, and
-  the equivalence $f$ is obtained by univalence
-  from the universal property of the circle,
-  \cref{lem:freeloopspace}, applied to $A\defeq\Set$.
- %   \ev_\Set : (\Sc \to \Set) \to \sum_{X:\Set}(X\eqto X)
- %  \quad\text{defined by $\ev_\Set(E) \defeq (E(\base),E(\Sloop))$.}
- %  \cref{lem:Prop-Set-pointed-families}\ref{lem:Set-families}
- 
-  In the third row the have the induced functions. 
-  Two things remain to be proved: (1) $f$ and $g$ respect subtypes,
+  
+  
   and (2) their induced functions are indeed equivalences.
 \end{proof}
 
