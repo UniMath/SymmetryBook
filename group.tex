@@ -659,42 +659,45 @@ We make the following observations about its elements and operations on them.
 
 \begin{enumerate}
 \item
-  There is an element $\refl a : a=a$.
+  There is an element $\refl a : a \eqto a$.
   (See page \pageref{rules-for-equality}, item \ref{E2}.)
   We set $e \defeq \refl a$ as notation for the time being.
 \item
-  For $g : a=a$, the inverse $g^{-1} : a=a$ was defined in \cref{def:eq-symm}.
+  For $g : a \eqto a$, the inverse $g^{-1} : a \eqto a$ was defined in \cref{def:eq-symm}.
   Because it was defined by path induction, this inverse operation satisfies $e^{-1} \jdeq e$.
 \item
-  For $g, h : a=a$, the product $h \cdot g : a=a$ was defined in \cref{def:eq-trans}.
+  For $g, h : a \eqto a$, the product $h \cdot g : a \eqto a$ was defined in \cref{def:eq-trans}.
   Because it was defined by path induction, this product operation satisfies $e \cdot g \jdeq g$.
 \end{enumerate}
 
-For any elements $g,g_1,g_2,g_3:a=a$, we consider the following four equations:
+For any elements $g,g_1,g_2,g_3:a\eqto a$, we consider the following four equations:
 \begin{enumerate}
 \item
-  \label{it:right-unit} \emph{the right unit law:} $g=g\cdot e$,
+  \label{it:right-unit} \emph{the right unit law:} $g \eqto g\cdot e$,
 \item
-  \label{it:left-unit} \emph{the left unit law:} $g=e\cdot g$,
+  \label{it:left-unit} \emph{the left unit law:} $g \eqto e\cdot g$,
 \item
-  \label{it:associativity} \emph{the associativity law:} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$,
+  \label{it:associativity} \emph{the associativity law:} $g_1\cdot(g_2\cdot g_3)
+  \eqto (g_1\cdot g_2)\cdot g_3$,
 \item
-  \label{it:inverse} \emph{the law of inverses:} $g\cdot \inv g = e$.
+  \label{it:inverse} \emph{the law of inverses:} $g\cdot \inv g \eqto e$.
 \end{enumerate}
 
-In \cref{xca:path-groupoid-laws}, the reader has constructed explicit elements of these equations.  If $a=a$ were a set, then the equations
+In \cref{xca:path-groupoid-laws}, the reader has constructed explicit elements of these equations.  If $a\eqto a$ were a set, then the equations
 above would all be propositions, and then, in line with the convention adopted in \cref{sec:props-sets-grpds}, we could simply say that
 \cref{xca:path-groupoid-laws} establishes that the equations hold.  That motivates the following definition, in which we introduce a new set $S$
-to play the role of $a=a$.  We introduce a new element $e:S$ to play the role of $\refl a$, a new multiplication operation, and a new inverse
+to play the role of $a\eqto a$.
+We introduce a new element $e:S$ to play the role of $\refl a$, a new multiplication operation, and a new inverse
 operation.  The original type $A$ and its element $a$ play no further role.
 
 \begin{definition}\label{def:abstractgroup}
-  An \emph{abstract group} consists of the following data.
+  An \emph{abstract group}\index{abstract group}\index{group!abstract}
+  consists of the following data.
   \begin{enumerate}
   \item\label{struc:under-set} A type $S$.
     \par \noindent
     Moreover, the type $S$ should be a set.  It is called the \emph{underlying set}.
-  \item\label{struc:unit} An element $e:S$, called the \emph{unit} or the \emph{neutral element}.
+  \item\label{struc:unit} An element $e:S$, called the \emph{unit} or the \emph{neutral element}.\index{neutral element}
   \item\label{struc:mult-op} A function $S\to S\to S$, called \emph{multiplication},
     taking two elements $g_1,g_2:S$ to their \emph{product}, denoted by $g_1\cdot g_2:S$.
     \par \noindent
@@ -707,7 +710,7 @@ operation.  The original type $A$ and its element $a$ play no further role.
     taking an element $g:S$ to its \emph{inverse} $g^{-1}$.
     \par \noindent
     Moreover, the following equation should hold, for all $g:S$.
-    \begin{enumerate}[label=(\alph*),ref=\ref{struc:inv-op} (\alph*)]
+    \begin{enumerate}[label=(\alph*),ref=\ref{struc:inv-op} (\alph*),resume*]
     \item\label{axiom:inv-law} $ g\cdot g^{-1} = e$ (the \emph{law of inverses})
     \qedhere
     \end{enumerate}
@@ -751,7 +754,7 @@ Taking into account the introductory comments we have made above, we may state t
   \ref{struc:inv-op} of the structure (including with the property
   \ref{axiom:inv-law}), some authors assume the existence of inverses
   by positing the following property.
-  \begin{enumerate}[resume*]
+  \begin{enumerate}[start=5]
     \item\label{axiom:mere-inverse} for all $g:S$ there exists an element
     $h:S$ such that $e = g \cdot h$.
   \end{enumerate}
@@ -769,7 +772,7 @@ Taking into account the introductory comments we have made above, we may state t
   \label{lem:group-inv-operation}%
   Given a set $S$ together with $e$ and $\cdot$ as in
   \cref{def:abstractgroup} satisfying the unit laws, the associativity
-  law, and property \ref{axiom:mere-inverse}, there is a ``inverse'' function
+  law, and property \ref{axiom:mere-inverse}, there is an ``inverse'' function
   $S \to S$ having property \ref{axiom:inv-law} of \cref{def:abstractgroup}.
 \end{lemma}
 
@@ -815,11 +818,12 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
     \mathrm{GroupLaws}(S,e,\mu,\iota) & \defequi \mathrm{MonoidLaws}(S,e,\mu) \times \mathrm{InverseLaw}(S,e,\mu,\iota)
   \end{align*}
   Now we define the type of abstract groups in terms of those propositions.
-  \begin{align*}
-    \typegroup^\abstr \defequi \sum_{S:\UU} & \sum_{e:S}\sum_{\mu{}:S\to S\to S} \sum_{\iota\colon S\to S} \mathrm{GroupLaws}(S,e,\mu,\iota)
-  \end{align*}
+  \[
+    \typegroup^\abstr \defequi \sum_{S:\UU} \sum_{e:S}\sum_{\mu{}:S\to S\to S}
+    \sum_{\iota\colon S\to S} \mathrm{GroupLaws}(S,e,\mu,\iota)
+  \]
 
-  Thus, following the convention introduced in \cref{rem:iterated-sums}, 
+  Thus, following the convention introduced in \cref{rem:iterated-sums},
   an abstract group $\mathscr G$ will be a quintuple of the form
   $\mathscr G \jdeq (S,e,\mu,\iota,!)$.  For brevity, we will usually omit the proof of the properties from the display, since it's unique, and write an abstract
   group as though it were a quadruple $\mathscr G \jdeq (S,e,\mu,\iota)$.
@@ -831,13 +835,22 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
 \end{remark}
 
 \begin{remark}
-  If $\mathcal G=(S,e,\mu,\iota)$ and $\mathcal G'=(S',e',\mu',\iota')$ are abstract groups, an element of the identity type $\mathcal
-  G=\mathcal G'$ consists of quite a lot of information, provided we interpret it by repeated application of \cref{lem:isEq-pair=}.  First and
-  foremost, we need an identity $p:S=S'$ of sets, but from there on the information is a proof of a conjunction of propositions (this is more
-  interesting for \inftygps).  An analysis shows that this conjunction can be shortened to the equations $e'=p(e)$ and
+  If $\mathcal G\jdeq (S,e,\mu,\iota)$ and $\mathcal G'\jdeq(S',e',\mu',\iota')$
+  are abstract groups, an element of the identity type
+  $\mathcal G\eqto\mathcal G'$ consists of quite a lot of information, provided we interpret it by repeated application of \cref{lem:isEq-pair=}.  First and
+  foremost, we need an identification $p:S\eqto S'$ of sets, but from there on the information is a proof of a conjunction of propositions.\footnote{%
+    This is more interesting for \inftygps:
+    In fact, we don't know how to define
+    the type of ``abstract \inftygps'' in a way similar to~\cref{def:abstractgroup}:
+    such a definition would require infinitely many levels of operations producing
+    identifications of instances of operations of lower levels.
+    And an identification would similarly require infinitely
+    many operations identifying the operations at all levels.}
+  An analysis shows that this conjunction can be shortened to the equations $e'=p(e)$ and
   $\mu'(p(s),p(t))=p(\mu(s,t))$.  A convenient way of obtaining an identity $p$ that preserves these equations is to apply univalence to an
-  equivalence $f: S \equiv S'$ that preserves them.
-  We call such a function an \emph{isomorphism of abstract groups}.
+  equivalence $f: S \equivto S'$ that preserves them.
+  We call such a function an \emph{isomorphism of abstract groups}.%
+  \index{isomorphism!of abstract groups}
 \end{remark}
 
 \begin{xca}
@@ -857,43 +870,45 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
 
 \begin{xca}
   \label{xca:conj}
-  Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $c^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identity $c^g:\mathcal G=\mathcal G$ is called \emph{conjugation} by $g$\index{conjugation}.
+  Let $\mathcal G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $c^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $c^g:\mathcal G\eqto\mathcal G$ is called \emph{conjugation} by $g$.\index{conjugation}
 \end{xca}
 
-  \begin{remark}
-    Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the
-    case when $g$ is $e$, the unit laws \ref{axiom:unit-laws} of \cref{def:abstractgroup} would provide \emph{two} (potentially different)
-    proofs that $e\cdot e = e$, and we would have to separately assume that they agree.  This problem vanishes in the setup we adopt below for
-    \inftygps.
-  \end{remark}
+\begin{remark}
+  Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the
+  case when $g$ is $e$, the unit laws \ref{axiom:unit-laws} of \cref{def:abstractgroup} would provide \emph{two} (potentially different)
+  identifications $e\cdot e \eqto e$, and we would have to separately assume that they agree.  This problem vanishes in the setup we adopt below for
+  \inftygps.
+\end{remark}
 
-  \begin{xca}
-    For an element $g$ in an abstract group, prove that
-    $e=\inv g\cdot g$ and $g=(g^{-1})^{-1}$. In other words (for the
-    machines among us), given an abstract group $(S,e,\mu,\iota)$,
-    give an element in the proposition
-    \begin{displaymath}
-      \prod_{g:S} (e=\mu(\iota(g))(g))\times
-      (g=\iota(\iota(g))).\qedhere
-    \end{displaymath}
-  \end{xca}
-  \begin{xca}\label{xca:typemonoidisgroupoid}
-    Prove that the types of monoids and abstract groups are groupoids.
-  \end{xca}
-  \begin{xca}
-    \label{xca:cheapgroup}
-    There is a leaner way of characterizing what an abstract group is:
-    define a \emph{sheargroup} to be a set $S$ together with an element $e:S$,
-    a function $\blank * \blank: S\to S\to S$, sending $a,b:S$ to $a*b:S$,
-    and the following propositions,
-    where we use the shorthand $\bar a\defequi a*e$:
-    \begin{enumerate}
-    \item $e*a=a$,
-    \item $a*a=e$ and
-    \item $c*(b*a)=\casoverline{(c*\bar b)}*a$,
-    \end{enumerate}
-    for all $a,b,c:S$.
-    Show that the type of abstract groups is equivalent to the type of sheargroups.\footnote{%
+\begin{xca}
+  For an element $g$ in an abstract group,
+  prove that $e=\inv g\cdot g$ and $g=(g^{-1})^{-1}$. In other words (for the
+  machines among us), given an abstract group $(S,e,\mu,\iota)$,
+  give an element in the proposition
+  \begin{displaymath}
+    \prod_{g:S} (e=\mu(\iota(g))(g))\times
+    (g=\iota(\iota(g))).\qedhere
+  \end{displaymath}
+\end{xca}
+
+\begin{xca}\label{xca:typemonoidisgroupoid}
+  Prove that the types of monoids and abstract groups are groupoids.
+\end{xca}
+
+\begin{xca}
+  \label{xca:cheapgroup}
+  There is a leaner way of characterizing what an abstract group is:
+  define a \emph{sheargroup} to be a set $S$ together with an element $e:S$,
+  a function $\blank * \blank: S\to S\to S$, sending $a,b:S$ to $a*b:S$,
+  and the following propositions,
+  where we use the shorthand $\bar a\defequi a*e$:
+  \begin{enumerate}
+  \item $e*a=a$,
+  \item $a*a=e$, and
+  \item $c*(b*a)=\casoverline{(c*\bar b)}*a$,
+  \end{enumerate}
+  for all $a,b,c:S$.
+  Construct an equivalence from the type of abstract groups to the type of sheargroups.\footnote{%
       Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a sheargroup and conversely, letting $a*b=b\cdot a^{-1}$ takes you back.  On your way you may need at some point to show that $\casoverline{\bar a}=a$: setting $c=\bar a$ and $b=a$ in the third formula will do the trick (after you have established that $\bar e=e$).  This exercise may be good to look back to in the many instances where the inverse inserted when ``multiplying from the right by $a$'' is forced by transport considerations.}
 \end{xca}
 \begin{xca}
@@ -903,10 +918,11 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
   $\blank\circ\blank : S \to S \to S$, sending $a,b:S$ to $a\circ b:S$,
   with the property that
   \begin{enumerate}
-  \item for all $a,b,c:S$ we have that $(a\circ c)\circ(b\circ c)=a\circ b$
+  \item for all $a,b,c:S$ we have that $(a\circ c)\circ(b\circ c)=a\circ b$, and
   \item for all $a,c:S$ there is a $b:S$ such that $a\circ b=c$.
   \end{enumerate}
-  Show that the type of Furstenberg groups is equivalent to the type of groups.\footnote{%
+  Construct an equivalence from the type of Furstenberg groups to the type of
+  abstract groups.\footnote{%
     Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is an abstract group.}
 \end{xca}
 
@@ -2810,7 +2826,7 @@ center'' of $G$ is picked out by $\abstr{(\grpcenterinc G)}$.
   evaluation at $\trunc{\refl {\shape_G}}$ under the sum. The last equivalence
   is the contractibility of singleton types.%
   % }%
-  
+
   We have just shown that for all $x:\BG$, the type $\sum_{q:x\eqto x}T(q)$ is
   contractible. We define now $\hat g(x):x\eqto x$ as the chosen center of
   contraction of that type. More precisely, by connectedness of $\BG$, the
@@ -3458,7 +3474,7 @@ been able to argue by induction on $p$ and $p'$.
   $$G \ltimes \tilde H \defeq \mkgroup { \sum_{t:\BG} \B \tilde H(t) }$$
   Here the basepoint of the sum is taken to be the point $(\shape_G,\shape_H)$.
   (We deduce from \cref{lem:level-n-utils}, \cref{level-n-utils-sum}, that $\sum_{t:\BG} \B \tilde H(t)$ is a groupoid.
-  See \cref{xca:connected-trivia-1} for a proof that 
+  See \cref{xca:connected-trivia-1} for a proof that
   $\sum_{t:\BG} \B \tilde H(t)$ is connected.)
 \end{definition}
 
@@ -3552,7 +3568,7 @@ Also the least common multiple $\lcm(a,b)=a'b$ is hidden in the pullback; in the
   \item\label{xca:cardinalityintersectionunion}
     If $S$ is finite, then the sum of the cardinalities of $A$ and $B$ is equal to the sum of the cardinalities of $A\cup B$ and $A\cap B$.\qedhere
   \end{enumerate}
-\end{xca} 
+\end{xca}
 
 \begin{definition}
   \label{def:intersectionofgroups}
