@@ -3276,7 +3276,12 @@ Therefore the following is \emph{not} a subtype of $\UU$.
   Given a pointed type $X\jdeq(A,a)$,
   the \emph{underlying type}%
   \glossary(1div){$A_\div$}{underlying type of a pointed type $A$}
-  is $X_\div\defeq A$, and the \emph{base point}%
+  is $X_\div\defeq A$,\footnote{%
+    The \emph{obelus}\index{obelus} $\div$ is sometimes used to denote division,
+    but is also used to for subtraction, especially in Northern Europe.
+    This inspired our use, considering its ``adjoint'' relationship
+    to $+$ detailed in~\cref{xca:plusforgetadjoint}.}
+  and the \emph{base point}%
   \index{base point}%
   \glossary(pt){$\pt_X$}{base point of a pointed type $X$}
   is $\pt_X\defeq a$,
@@ -3287,25 +3292,29 @@ Therefore the following is \emph{not} a subtype of $\UU$.
   Then the fiber of $\ev_a$ at $b$ is the type
   $\ev_a^{-1}\jdeq\sum_{f:A\to B}(b \eqto f(a))$. The latter type is also
   called the type of \emph{pointed functions} from  $X$ to $Y$
-  and denoted by $X\ptdto Y$. In the notation above
+  and denoted by $X\ptdto Y$. In the notation above,
   \[
     (X\ptdto Y) \jdeq \sum_{f:X_\div\to Y_\div}(\pt_{Y} \eqto f(\pt_X)).
   \]
+  Given a pointed function $g \jdeq (f,p)$, the \emph{underlying function}
+  is $g_\div \defeq f$, and the \emph{witness of pointedness}
+  is $g_\pt \defeq p$, so that $g \jdeq (g_\div,g_\pt)$.
 
   If $Z$ is also a pointed type,
-  and we have pointed functions $(f,f_0) : X\ptdto Y$ and $(g,g_0) : Y\ptdto Z$,
+  and we have pointed functions $f : X\ptdto Y$ and $g : Y\ptdto Z$,
   then their composition
-  $(g,g_0)(f,f_0) : X\ptdto Z$ is defined as the pair $(gf,g(f_0)g_0)$.
-  See the picture below.
+  $gf : X\ptdto Z$ is defined as the pair $(g_\div f_\div,g_\div(f_\pt)g_\pt)$,
+  as illustrated below.\footnote{%
+    In particular, $(gf)_\div \jdeq g_\div f_\div$.}
   \[
     \begin{tikzcd}[baseline=(O.base)]
-      & \pt_Y \ar[r, eqr, "f_0"]\ar[d, mapsto, "g"]
-      & f(\pt_X) \ar[d, mapsto, "g"]\\
-      \pt_Z \ar[r, eqr, "g_0"] & g(\pt_Y) \ar[r, eqr, "g(f_0)" ] &
-      |[alias=O]| g(f(\pt_X))
+      & \pt_Y \ar[r, eqr, "f_\pt"]\ar[d, mapsto, "g_\div"]
+      & f_\div(\pt_X) \ar[d, mapsto, "g_\div"]\\
+      \pt_Z \ar[r, eqr, "g_\pt"] & g_\div(\pt_Y) \ar[r, eqr, "g_\div(f_\pt)" ] &
+      |[alias=O]| g_\div(f_\div(\pt_X))
     \end{tikzcd}
   \]
-  We may also use the notation $(g,g_0) \circ (f,f_0)$ for the composition.
+  We may also use the notation $g \circ f$ for the composition.
 \end{definition}
 
 \begin{definition}\label{def:pointedidentity}
@@ -3313,10 +3322,14 @@ Therefore the following is \emph{not} a subtype of $\UU$.
   $\id_X : X \ptdto X$ by setting $\id_X \defeq (\id_A, \refl a)$.
 \end{definition}
 
+\begin{remark}\label{rem:coerceawaypt}
 If $X$ is a pointed type, then $X_\div $ is a type, but $X$ itself is
 \emph{not} a type. It is therefore unambiguous, and quite convenient,
 to write $x:X$ for $x:X_\div$, and $X\to\UU$ for $X_\div\to\UU$.
-We may also tacitly coerce $f:X\ptdto Y$ to $f:X_\div \to Y_\div$.
+Likewise, we can write $f : X \to Y$ for $f_\div : X_\div \to Y_\div$.
+In that case we still write $f_\pt : \pt_X \eqto f(\pt_Y)$ for the
+witness of pointedness.
+\end{remark}
 
 \begin{xca}\label{xca:plusforgetadjoint}
 If $A$ is a type and $B$ is a pointed type,
@@ -3330,6 +3343,10 @@ give an equivalence from $A\to B_\div$ to $A_+\ptdto B$.
 
 Since $\UUp$ and $X\ptdto Y$ are sum types, the results on identifying pairs
 in \cref{sec:pairpaths} apply to pointed types and pointed maps as well.
+
+\begin{xca}\label{xca:pointedequiv}
+  TODO: pointed equivalences, $f : X \ptdweq Y$
+\end{xca}
 
 \section{Operations that produce sets}
 \label{sec:operations-on-sets}
@@ -3954,14 +3971,16 @@ type of $n$ elements for any $n:\NN$.
 
 \begin{definition}\label{def:finiteset}
 For any type $X$ define $\Succ(X)\defeq X\amalg\true$.
-Define inductively the type family $F(n)$, for each $n:\NN$, by
-setting $F(0)\defeq\emptytype$ and $F(\Succ(n))\defeq\Succ(F(n))$.
-Now abbreviate $\bn{n}\defeq F(n)$. The type $\bn{n}$ is called
+Define inductively the type family $\Fin(n)$, for each $n:\NN$, by
+setting $\Fin(0)\defeq\emptytype$ and $\Fin(\Succ(n))\defeq\Succ(\Fin(n))$.
+% Now abbreviate $\bn{n}\defeq\Fin(n)$.
+The type $\Fin(n)$ is called
 the type with $n$ elements, and we denote its elements
 by $0,1,\ldots,n-1$ rather than by the corresponding expressions
 using $\inl{}$ and $\inr{}$.
 
-We also define $\bn m \defeq F(m)$ for a natural number $m$, $\bn 0 \defeq F(0)$, $\bn 1 \defeq F(1)$, and $\bn 2 \defeq F(2)$.
+We also define as abbreviation $\bn n \defeq \Fin(n)$ for a natural number $n$,
+so $\bn 0 \defeq \Fin(0)$, $\bn 1 \defeq \Fin(1)$, $\bn 2 \defeq \Fin(2)$, etc.
 \end{definition}
 
 \begin{xca}\label{xca:finite-types}
@@ -3993,8 +4012,9 @@ We also define $\bn m \defeq F(m)$ for a natural number $m$, $\bn 0 \defeq F(0)$
 \leavevmode
 \begin{enumerate}
   \item $\sum_{n:\NN} \Trunc{X\eqto\bn{n}}$ is a proposition, for all types $X$.
-  \item the map that is the identity on first components is an equivalence in
-  $(\sum_{X:\UU}\sum_{n:\NN} \Trunc{X\eqto\bn{n}}) \equivto \sum_{X:\UU}\isfinset(X).$
+  \item The map that is the identity on first components is an equivalence
+    $\bigl(\sum_{X:\UU}\sum_{n:\NN} \Trunc{X\eqto\bn{n}}\bigr)
+    \equivto \sum_{X:\UU}\isfinset(X).$
   \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -4007,7 +4027,7 @@ is a proposition, it follows that $(n,p) \eq (m,q)$.
 \item Follows from $\sum_{n:\NN}\Trunc{X\eqto\bn{n}} =
 \Trunc{\sum_{n:\NN}(X \eqto \bn{n})}$,
 which is easily proved by giving functions in both directions
-and using the univalence axiom.
+and using the univalence axiom.\qedhere
 \end{enumerate}
 \end{proof}
 
