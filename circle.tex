@@ -638,7 +638,7 @@ Consider the left diagram below, where $i_1, i_2$ are
 injections constituting $S$ as a subtype of $X$ and
 $T$ as a subtype of $Y$, respectively (see \cref{def:subtype}).
 This diagram represents the identity type $f\circ i_1 \eqto i_2\circ g$.
-Since $i_2$ is an embedding, the type
+Since $i_2$ is an injection, the type
 $\sum_{g:S\to T} (f\circ i_1 \eqto i_2\circ g)$ is a proposition.
 \[
 \begin{tikzcd}
@@ -655,15 +655,15 @@ with the injections being first projections of the right type.
 We can now apply the universal property of subtypes
 \cref{xca:subtype-univ-prop} to $Y_Q$ with
 $(f\circ\fst) : X_P \to Y$ and get that the three propositions
-$\prod_{z:X_P} Q(f(\fst(z))$ and
-$\prod_{x:X}(P(x)\to Q(f(x))$ and
+$\prod_{z:X_P} Q(f(\fst(z)))$ and
+$\prod_{x:X}(P(x)\to Q(f(x)))$ and
 $\sum_{g:X_P\to Y_Q} (f\circ\fst \eqto \fst\circ g)$
 are logically equivalent. If these propositions hold,
 we say that $f$ \emph{respects the subtypes} and
 we may call the diagram a \emph{subtype diagram}.
 \index{diagram!subtype}
 
-If $q$ is a proof of $\prod_{x:X}(P(x)\to Q(f(x))$,
+If $q$ is a proof of $\prod_{x:X}(P(x)\to Q(f(x)))$,
 then we can uniquely define the function $g: X_P\to Y_Q$, 
 the one labelling the dashed arrow in the right diagram above,
 by $(x,p) \mapsto (f(x),q(x,p))$. The functions $f\circ\fst$ and
@@ -673,7 +673,7 @@ and will also denote it by $f$.
 
 Now consider the special case in which $f: X\to Y$ is an equivalence.
 If the inverse of $f$ also respects the subtypes,
-that is, if $\prod_{y:Y}(Q(y)\to P(\inv f(y))$, then
+that is, if $\prod_{y:Y}(Q(y)\to P(\inv f(y)))$, then
 the function that is induced by $f$ on the subtypes is
 also an equivalence. Moreover, the functions induced by $f$ and $\inv f$
 are then each other's inverses.
@@ -686,7 +686,7 @@ is $\preim$ from \cref{lem:typefamiliesandfibrations}, and
 the equivalence $g$ in the same row is defined by 
 $g(S)\defeq (S(\base),\trp{S(\Sloop)})$ 
 (\cref{lem:freeloopspace} applied with $A\defeq\UU$, 
-for $\cast$ see \cref{def:idtoeq}).
+and the transport in $\id_\UU$).
 Along the vertical arrows we have maps that forget the
 property that constitutes its domain as a subtype of the
 codomain, all modest variations of the first projection.
@@ -741,22 +741,23 @@ a permutation of its elements.
 The fiber over $\base:\Sc$ gives the set,
 and transporting along $\Sloop$ gives the permutation.
 
-A particularly important example is the following:
+A particularly important example of a \covering is the following:
+
 \begin{definition}\label{def:RtoS1}
-  The \covering $R:\Sc\to\UU$ corresponds to the integers with the successor operation.
-  We have $R(\base)\defeq\zet$ and $R(\Sloop)\defis \etop{\zs}$.
-  (This is indeed a set bundle since $\Sc$ is connected,
+  Recall the set of integers $\zet$ from \cref{def:zet}
+  its successor function $\zs: \zet\equivto\zet$ being an
+  equivalence. The \covering $R:\Sc\to\UU$ is defined by
+  the recursion principle of the circle from \cref{def:circle}
+  by putting $R(\base)\defeq\zet$ and $R(\Sloop)\defis \etop{\zs}$.
+  This is indeed a set bundle since $\Sc$ is connected,
   so that $R(x)$ is a set for all $x:\Sc$.
-  Abusing notation we also write $R:\Sc\to\Set$.)
+  Abusing notation we also write $R:\Sc\to\Set$.
   Now define
   \[
-    \tilde R\defeq\sum_{z:\Sc}R(z)
+    \tilde R\defeq\sum_{z:\Sc}R(z),\text{~and~}
+    \exp\defeq\fst:\tilde R \to \Sc .
   \]
-  and let the first projection denoted by
-  \[
-    \exp:\tilde R \to \Sc
-  \]
-  be the \emph{exponential \covering of the circle}.
+  We call $\exp$ the \emph{exponential \covering of the circle}.
 \end{definition}
 
 \begin{remark} \label{rem:expforreal}%
@@ -795,13 +796,12 @@ A particularly important example is the following:
   The reason for the name ``exponential'' comes from the following
   visualization.  If $x$ is a real number, then the complex
   exponentiation $\ee^{2\pi\ii x}=\cos(2\pi x)+\ii\sin(2\pi x)$ has
-  absolute value $1$ and so defines a continuous function from the
-  real numbers to the unit circle.  Choosing any point $z$ on the unit
+  absolute value $1$ and so defines a continuous function 
+  to the unit circle $\setof{(x,y):\RR^2}{x^2+y^2=1}$. 
+  Choosing any point $z$ on the unit
   circle, we see that the preimage of $z$ under the exponential
   function is a shifted copy of the integers inside the reals.\footnote{%
-    Again, we emphasize that we are here dealing with the
-    \emph{homotopy types} of the reals $\RR$ and the unit circle,
-    $\setof{(x,y):\RR^2}{x^2+y^2=1}$.}
+    \emph{homotopy types} have to wait until Appendix B.3}
 
   This connection between the integers and the unit circle is
   precisely captured in a form that we can take further by studying the
@@ -1426,7 +1426,7 @@ is equivalent to pairs of an equivalence $e : \bn 1 \to \bn 1$ and a commuting t
   \end{tikzcd}
 \]
 But since $\bn 1$ is contractible, this just amounts to the equality $x=y$.
-Hence the map is an embedding, and we conclude by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
+Hence the map is an embedding/INJECTION?, and we conclude by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
 
 We now give the second, more direct, proof that $c$ is an equivalence.
 For this we use the following lemma, which is of independent interest.
