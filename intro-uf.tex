@@ -4109,52 +4109,66 @@ which follows by function extensionality from the definition
 of $e$ in \cref{lem:sum-of-fibers}.
 \end{proof}
 
-Let $A$ be a type and consider the subuniverse
-$\Prop\jdeq \sum_{X:\UU}\isprop(X)$ from \cref{sec:subtype}.
-A function $P: A\to\Prop$ can be viewed as a family of propositions:
-$(\fst\circ P) : A\to \UU$ is a type family, and
-$(\snd\circ P) : \prod_{a:A} \isprop(\fst(P(a)))$ witnesses
-that each $\fst(P(a))$ is a proposition.
-The inverse equivalence in \cref{lem:typefamiliesandfibrations}
-sends $(\fst\circ P)$ to
-\[
-  \fst: \Bigl(\sum_{a:A} \fst(P(a))\Bigr) \to A.
-\]
-At each $a:A$, the fiber of this function is equivalent to $\fst(P(a))$
-by \cref{lem:fst-fiber(a)=B(a)}, and is thus a proposition by $\snd\circ P$.
+The above result can be generalized to situations with more
+properties and/or structure. Examples are to be found in
+\cref{lem:Prop-Set-pointed-families} below.
+We prepare by the following exercises.
 
-Conversely, given a function $f: B\to A$ and a proof
-$g:\prod_{a:A} \isprop(f^{-1}(a))$ that all fibers of $f$
-are propositions,
-we can define $P_f : A\to\Prop$ by setting $P_f(a)\defeq (f^{-1}(a),g(a))$.
+\begin{xca}\label{xca:sum-base-path}
+Let $X$ and $Y$ be types, $p: Y\eqto X$ an identification,
+and $T: X\to\UU$ a type family.
+Construct an equivalence of type 
+$\sum_{x:X} T(x) \equivto \sum_{y:Y} T(\ptoe{p}(y))$.
+\end{xca}
 
-The above argument can be refined for each of $\Prop,\Set,\UUp$
-from \cref{sec:subtype}, and one can prove the following
-analogues of \cref{lem:typefamiliesandfibrations}.
+\begin{xca}\label{xca:sum-families}
+Let $S: \UU\to\UU$ and let $X$ be a type.
+Construct an equivalence of type 
+$(X\to\sum_{Y:\UU} S(Y)) \equivto \sum_{F:X\to\UU}\prod_{x:X}S(F(x))$.
+\end{xca}
 
 \begin{construction}\label{lem:Prop-Set-pointed-families}
-Let $A$ be a type. Then we have equivalences of the following types:
+Let $A$ be a type and $S:\UU\to\UU$. 
+Then we have equivalences of the following types:
 \begin{enumerate}
+\item\label{cnstr:families+structure}
+$(A\to\sum_{B:\UU}S(B)) \equivto
+\sum_{B:\UU}\sum_{f:B\to A}\prod_{a:A}S(\inv f(a))$.
 \item\label{lem:Prop-families}
 $(A\to\Prop) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isprop({f^{-1}(a)})$;
 \item\label{lem:Set-families}
 $(A\to\Set) \equivto \sum_{B:\UU}\sum_{f:B\to A}
 \prod_{a:A}\isset({f^{-1}(a)})$;
-\item $(A\to\UUp) \equivto \sum_{B:\UU}\sum_{f:B\to A}
-\prod_{a:A}f^{-1}(a)$.
-\item TODO For $S:\UU\to\UU$, $A\to\sum_{B:\UU}S(B)) \equivto
-\sum_{B:\UU}\sum_{f:B\to A}\prod_{a:A}S(\inv f(a))$.
+\item\label{cnstr:families+points} 
+$(A\to\UUp) \equivto \sum_{B:\UU}\sum_{f:B\to A}\prod_{a:A}f^{-1}(a)$.
 \end{enumerate}
 \end{construction}
 
-\begin{xca}\label{xca:Prop-Set-pointed-families}
-Implement the above constructions. (The last is hard,
-since $\UUp$ is not a subuniverse, but adds structure
-to each type in $\UU$!)
-\end{xca}
+\begin{implementation}{lem:Prop-Set-pointed-families}
+\ref{cnstr:families+structure} 
+In view of \cref{xca:sum-families}, and rearranging sums on the right,
+it suffices to construct an equivalence of type 
+$(\sum_{F:A\to\UU}\prod_{a:A}S(F(a))) \equivto
+\sum_{(B,f):\sum_{B:\UU}(B\to A)}\prod_{a:A}S(\inv f(a))$.
+Now we can apply the equivalence constructed in \cref{xca:sum-base-path}
+with $p$ the path induced by the equivalence $\preim$ from
+\cref{lem:typefamiliesandfibrations}. Indeed,
+for $T(F)\defeq \prod_{a:A}S(F(a))$ we have 
+$T(\preim(B,f))\jdeq \prod_{a:A}S(\inv f (a))$.
 
-Since $\Prop$ is a set, we obtain the following corollary.
+For \ref{lem:Prop-families}, use \ref{cnstr:families+structure}
+with $S\defeq \isprop$.
+
+For \ref{lem:Set-families},use \ref{cnstr:families+structure}
+with $S\defeq \isset$.
+
+For \ref{cnstr:families+points},use \ref{cnstr:families+structure}
+with $S\defeq \id_\UU$.
+\end{implementation}
+
+Since $\Prop$ is a set, we obtain the following corollary
+of \cref{lem:Prop-Set-pointed-families}\ref{lem:Prop-families}.
 \begin{corollary}\label{cor:Sub_T-is-set}
 Subtypes as in \cref{def:subtype} correspond to predicates
 and $\Sub_T$ is a set, for any type $T$.

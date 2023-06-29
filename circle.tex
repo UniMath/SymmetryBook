@@ -637,15 +637,15 @@ We start by refining the notion of diagram introduced in
 Consider the left diagram below, where $i_1, i_2$ are
 injections constituting $S$ as a subtype of $X$ and
 $T$ as a subtype of $Y$, respectively (see \cref{def:subtype}).
-This diagram represents the identity type $f\circ i_1 = i_2\circ g$.
+This diagram represents the identity type $f\circ i_1 \eqto i_2\circ g$.
 Since $i_2$ is an embedding, the type
 $\sum_{g:S\to T} (f\circ i_1 \eqto i_2\circ g)$ is a proposition.
 \[
 \begin{tikzcd}
   X \ar[r,"f"]  & Y &&
   X \ar[r,"f"]  & Y                          \\
-  S \ar[r,"g"] \ar[u,"i_1"]        & T \ar[u,"i_2"'] &&
-  X_P \ar[r,dashed,"g"] \ar[u,"\fst"]     & Y_Q \ar[u,"\fst"']
+  S \ar[r,"g"] \ar[u,hookrightarrow,"i_1"]        & T \ar[u,hookrightarrow,"i_2"'] &&
+  X_P \ar[r,dashed,"g"] \ar[u,hookrightarrow,"\fst"]     & Y_Q \ar[u,hookrightarrow,"\fst"']
 \end{tikzcd}
 \]
 In the right diagram we depict the case
@@ -684,10 +684,10 @@ are then each other's inverses.
 In the diagram below, the equivalence $f$ in the second row
 is $\preim$ from \cref{lem:typefamiliesandfibrations}, and
 the equivalence $g$ in the same row is defined by 
-$g(S)\defeq (S(\base),\cast(S(\Sloop)))$ 
+$g(S)\defeq (S(\base),\trp{S(\Sloop)})$ 
 (\cref{lem:freeloopspace} applied with $A\defeq\UU$, 
 for $\cast$ see \cref{def:idtoeq}).
-Along the vertical edges we have maps that forget the
+Along the vertical arrows we have maps that forget the
 property that constitutes its domain as a subtype of the
 codomain, all modest variations of the first projection.
 
@@ -701,11 +701,11 @@ in the third row are equivalences as well.
   && \sum_{X:\UU}(X\to X) \\ %& \sum_{X:\UU}(X\to X\to\UU) 
   \bigl(\sum_{A:\UU}(A\to\Sc) \ar[r,equivr,"f"]\bigr) & 
   \bigl(\Sc\to\UU \ar[r,equivr,"g"]\bigr) & 
-  \sum_{X:\UU}(X\equivto X) \ar[u]                         
+  \sum_{X:\UU}(X\equivto X) \ar[u,hookrightarrow]                         
 \\
-  \SetBundle \ar[r,equivl,"f"'] \ar[u]  &
-  \bigl(\Sc\to\Set\bigr) \ar[r,equivl,"g"'] \ar[u]  &
-  \sum_{X:\Set}(X\equivto X) \ar[u]
+  \SetBundle \ar[r,equivl,"f"'] \ar[u,hookrightarrow]  &
+  \bigl(\Sc\to\Set\bigr) \ar[r,equivl,"g"'] \ar[u,hookrightarrow]  &
+  \sum_{X:\Set}(X\equivto X) \ar[u,hookrightarrow]
 \end{tikzcd}
 \]
 \end{theorem}
@@ -721,7 +721,7 @@ one simply reverses this argument.
 Next we prove that $g$ respects the subtypes.
 Let $S: \Sc\to\UU$ be such that $S(z)$ is a set for all $z:\Sc$.
 This means in particular that $S(\base)$ is a set.
-Since $g(S)\jdeq (S(\base),\cast(S(\Sloop)))$, we are done.
+Since $g(S)\jdeq (S(\base),\trp{S(\Sloop)})$, we are done.
 In order to prove that $\inv g$ also respects the subtypes
 we reason as follows. Let $X:\UU$ and $h: X\equivto X$ be given.
 Assume that $X$ is a set. We have $\inv g(X,h)\jdeq
@@ -734,7 +734,6 @@ we have $\inv g(X,h): \Sc\to\Set$ and we are done.
 Note that the left subtype diagram is fully general:
 it also holds when we replace $\Sc$ by any type $B$.
 This is not true for the right subtype diagram.
-
 \end{proof}
 
 In slogan form: A \covering over the circle is a set with
