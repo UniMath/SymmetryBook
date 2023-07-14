@@ -1886,48 +1886,44 @@ We now define the function that the univalence axiom postulates to be an equival
 
 \begin{definition}\label{def:idtoeq}
   For types $X$ and $Y$ in a universe $\UU$ and a path $p : X \eqto Y$,
-  we define an equivalence $\cast_{X,Y} (p) : X\equivto Y$
-  \glossary(cast){$\protect\cast_{X,Y} (p)$}{cast along a path between types, \cref{def:idtoeq}}
-  by induction on $Y$ and $p$,
-  setting $\cast_{X,X} (\refl X) \defeq \id_X : X \equivto X$.
-  The result is a function\index{cast}
+  transport along $p$ in the type family $\id_\UU$ is a function
+  from $X$ to $Y$. We recall the definition by path induction
+  from \cref{def:transport}, setting $\trp[\id_\UU]{\refl{X}}\defeq\id_X$.
+  As observed in \cref{sec:equivalence}, transport functions are
+  equivalences, so that the result is a function
   \[
-    \cast_{X,Y} : (X \eqto Y) \to (X\equivto Y).\qedhere
+    (p\mapsto \trp[\id_\UU]{p}) : (X \eqto Y) \to (X\equivto Y).
+    \qedhere
   \]
 \end{definition}
-
-In expressions such as $\cast_{X,Y}(p)$ we may abbreviate $\cast_{X,Y}$ to $\cast$ if
-no confusion will result. We may also write $\cast (p)$ more briefly as $\ptoe p$,%
-\glossary(1cast){$\protect\ptoe p$}{cast along a path between types}
-which we also use to denote the corresponding function from $X$ to $Y$.\footnote{%
-    \emph{Cast} is here used in the sense of ``arranging into a suitable form''.
-    A more theatrical description would be that an element $x$ of $X$ is cast in the \emph{role} of an element of $Y$
-    as \emph{directed} by the path $p : X \eqto Y$.
-    But beware that some programming languages use \emph{cast} in a different sense:
-    to take a bit-pattern representing an object of type $X$ and simply \emph{reinterpreting} the same bits as an object of type $Y$.}
-
-Let $T$ be a variable of type $\UU$; then we may view $T$ as a family of types parametrized by $\UU$, of the sort required for use with
-transport as defined in \cref{def:transport}.  One may construct an identification of type $\cast(p)(x) \eqto \trp[T]{p} (x)$, for $x : X$, by induction
-on $Y$ and $p$.  As a corollary, one sees that the function $\trp[T]{p}$ is an equivalence.
+We may write $\trp[\id_\UU]{p}$ more briefly as $\ptoe p$,%
+\glossary(1trp){$\protect\ptoe p$}{transport between types along a path}
+which we also use to denote the corresponding function of type $X\to Y$,
+instead of $X\equivto Y$.
 
 We are ready to state the univalence axiom.
 
 \begin{principle}[Univalence Axiom]\label{def:univalence}
-    Voevodsky's \emph{univalence axiom}\index{univalence axiom} postulates that $\cast_{X,Y}$ is an equivalence for all $X,Y:\UU$.
-    Formally, we postulate the existence of an element
+    Voevodsky's \emph{univalence axiom}\index{univalence axiom} postulates 
+    that $p\mapsto \ptoe p$ is an equivalence 
+    of type $(X \eqto Y) \to (X\equivto Y)$, for all $X,Y:\UU$.
+    Formally, we postulate the existence of a family of elements
     \[
-      \ua_{X,Y} : \isEq(\cast_{X,Y}).\qedhere
+      \ua_{X,Y} : \isEq((p:X\eqto Y)\mapsto \trp[\id_\UU]{p})
     \]
+    \glossary(ua){$\protect\ua_{X,Y}$}%
+    {postulated element of the univalence axiom}%
+    parameterized by $X,Y:\UU$.
 \end{principle}
 
-For an equivalence $f: X\equivto Y$, we will adopt the notation $\ua(f) : X \eqto Y $ to denote $\cast_{X,Y}^{-1}(f)$,%
-\glossary(ua){$\protect\ua$}{the inverse of $\protect\cast$, from univalence}
-the result of applying the
-inverse function of $\cast_{X,Y}$ to $f$, if no confusion will result.  Thus there are identifications of type $\cast (\ua (f)) \eqto f$ and $\ua (\cast (p)) \eqto p$.
-
-We may also write $\ua (f)$ more briefly as $\etop f$.%
-\glossary(1bar){$\protect\etop f$}{$\protect\ua(f)$}
-Thus there are identifications of type $\etop {\ptoe p} \eqto p$ and $\ptoe {\etop f} \eqto f$.  There are also identifications of type $\overetop{\id_X} \eqto \refl{X}$
+For an equivalence $f: X\equivto Y$, we will adopt the 
+notation $\etop f : X \eqto Y $ to denote $\inv{(p\mapsto\ptoe p)}(f)$,%
+\glossary(1bar){$\protect\etop f$}{path obtained by univalence from $f$}
+the result of applying the inverse function of $(p\mapsto\ptoe p)$, 
+given by $\ua_{X,Y}$, to $f$.  
+Thus there are identifications of type $\etop {\ptoe p} \eqto p$ 
+and $\ptoe {\etop f} \eqto f$.  There are also identifications of 
+type $\overetop{\id_X} \eqto \refl{X}$
 and $\overetop{g\,f} \eqto \etop{g}\,\etop{f}$ if $g: Y\equivto Z$.
 
 \begin{xca}\label{xca:C2}
@@ -1984,7 +1980,7 @@ This equation is phrased as `transport by conjugation'.\marginnote[-3\baselinesk
   \normalsize
   \begin{tikzcd}[column sep=huge,ampersand replacement=\&]
     A \ar[r,"f"]\ar[d,"g"'] \& A \ar[d,"g"] \\
-    A \ar[r,"\trp{\ua(g)}(f)"',"g\circ f\circ \inv g"] \& A
+    A \ar[r,"\trp{\etop g}(f)"',"g\circ f\circ \inv g"] \& A
   \end{tikzcd}}
 The following lemma is proved by induction on $e: x \eqto x'$.
 
