@@ -1877,12 +1877,16 @@ By \cref{lem:weq-iso} we get that they are equivalences.
 
 \section{Univalence}\label{sec:univax}
 
-The univalence axiom, to be presented in this section, greatly enhances our ability to produce identifications between the two types and to use the
-resulting identifications to transport (in the sense of \cref{def:transport}) properties and structure between the types.  It asserts that if $\UU$
-is a universe, and $X$ and $Y$ are types in $\UU$, then there is an equivalence between identifications between $X$ and $Y$ and equivalences between
-$X$ and $Y$.
+The univalence axiom, to be presented in this section, greatly enhances 
+our ability to produce identifications between the two types and to use the
+resulting identifications to transport (in the sense of \cref{def:transport})
+properties and structure between the types.  It asserts that if $\UU$
+is a universe, and $X$ and $Y$ are types in $\UU$, then a specific function,
+mapping identifications between $X$ and $Y$ to equivalences between
+$X$ and $Y$, is an equivalence.
 
-We now define the function that the univalence axiom postulates to be an equivalence.
+We now define the function that the univalence axiom postulates 
+to be an equivalence.
 
 \begin{definition}\label{def:idtoeq}
   For types $X$ and $Y$ in a universe $\UU$ and a path $p : X \eqto Y$,
@@ -1904,8 +1908,9 @@ instead of $X\equivto Y$.
 We are ready to state the univalence axiom.
 
 \begin{principle}[Univalence Axiom]\label{def:univalence}
-    Voevodsky's \emph{univalence axiom}\index{univalence axiom} postulates 
-    that $p\mapsto \ptoe p$ is an equivalence 
+    Let $\UU$ be a universe.
+    Voevodsky's \emph{univalence axiom}\index{univalence axiom} for $\UU$
+    postulates that $p\mapsto \ptoe p$ is an equivalence 
     of type $(X \eqto Y) \to (X\equivto Y)$, for all $X,Y:\UU$.
     Formally, we postulate the existence of a family of elements
     \[
@@ -1969,8 +1974,8 @@ and all transports are identity functions of appropriate type.
 
 An important special case of the above lemma is with $\UU$
 as parameter type and type families $Y\defeq Z\defeq \id_\UU$.
-Then $Y\to Z$ is $X\to X$ as a type depending on $X:\UU$. Now,
-if $A:\UU$ and $e: A \eqto A$ comes from an equivalence $g:A\equivto A$
+Then $Y\to Z$ is $X \mapsto (X\to X)$. Now,
+if $A,B:\UU$ and $e: A \eqto B$ comes from an equivalence $g:A\equivto B$
 by applying the univalence axiom, 
 then the above construction combined with function extensionality
 yields that for any $f: A\to A$ (see the diagram in the margin)
@@ -1978,12 +1983,12 @@ yields that for any $f: A\to A$ (see the diagram in the margin)
 \trp[X \mapsto (X\to X)]{\etop g} (f) \eqto g\circ f \circ g^{-1}.
 \]
 \marginnote[-3\baselineskip]{%
-  Transport by conjugation:
+  Transport using univalence:
   \begin{tikzcd}[column sep=huge,ampersand replacement=\&]
     A\ar[d,eql,"\etop g"'] \&[-25pt]
     A \ar[r,"f"]\ar[d,equivl,"g"'] \& A \ar[d,equivr,"g"] \\
-    A\&[-25pt]
-    A \ar[r,"\trp{\etop g}(f)"'] \& A
+    B\&[-25pt]
+    B \ar[r,"\trp{\etop g}(f)"'] \& B
   \end{tikzcd}}
 
 The following construction is implemented by induction on $e: x \eqto x'$.
