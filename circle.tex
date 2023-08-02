@@ -488,8 +488,8 @@ is a map $f:A\to B$ such that for each $b:B$ the preimage $f^{-1}(b)$ is a set.
 We say that a \covering $f:A\to B$ over $B$ is
 \begin{itemize}
 \item \emph{connected}\index{connected \covering} if $A$ is connected,
-\item \emph{universal}\index{universal \covering} if $A$ and all
-the identity types $a\eqto a$ (for $a:A$) are connected,
+%\item \emph{universal}\index{universal \covering} if $A$ and all
+%the identity types $a\eqto a$ (for $a:A$) are connected,
 \item \emph{finite}\index{finite \covering} if all preimages are finite sets,
 \item \emph{decidable}\index{decidable \covering} if all preimages are decidable sets.
 \end{itemize}
@@ -520,11 +520,13 @@ For any type $B$, $\SetBundle(B)$ is a groupoid.
 \end{lemma}
 \begin{proof}
 By \cref{lem:Set-is-groupoid} we have that $\Set$ is a groupoid,
-and hence $B\to\Set$ is a groupoid by \cref{lem:level-n-utils}\ref{level-n-utils-codom}.
-Moreover, by \cref{cor:subtype-same-level}, all variations in \cref{def:covering}
-defined by a predicate are groupoids as well.
+and hence $B\to\Set$ is a groupoid by 
+\cref{lem:level-n-utils}\ref{level-n-utils-codom}.
 \end{proof}
-One notable exception to the above lemma is the type of \emph{pointed} \coverings:
+Moreover, by \cref{cor:subtype-same-level}, all variations 
+of \coverings in \cref{def:covering}
+defined by a predicate are groupoids as well. This does not apply
+\emph{pointed} \coverings:
 a point is extra structure, not just a property.
 
 We should notice that the notion of a \covering is just one step up from the notion of an
@@ -533,13 +535,16 @@ following the logic, injections perhaps ought to be called ``proposition bundles
 The formulation we give is not the only one and for some purposes a formulation
 based on $B\to\Set$ is more convenient.
 
-\begin{xca}\label{xca:constant-cover}
+\begin{xca}\label{xca:covering-utils}
 Let $A,B$ and $C$ be types. Show:
 \begin{enumerate}
 \item The (unique) map of type $A\to\bn 1$ is a \covering iff $A$ is a set;
 \item For any $b:B$, the map $x \mapsto b$ from $\bn 1$ to $B$ is
 a \covering iff $b\eqto b$ is a set;
-\item If $f: A\to B$ and $g: B\to C$ are \coverings, then $gf$ is a \covering.\qedhere
+\item If $f: A\to B$ and $g: B\to C$ are \coverings, then $gf$ is a \covering.
+\item If $f: A\to B$ and $g: B\to C$, and $g$ and $gf$ are \coverings, 
+then $f$ is a \covering. Hint: apply \cref{cor:fib-vs-path} to
+$\ap{g}: (b\eqto f(a))\to(g(b)\eqto g(f(a)))$.\qedhere
 \end{enumerate}
 \end{xca}
 
@@ -634,15 +639,15 @@ We start by refining the notion of diagram introduced in
 \cref{rem:diagram}.
 
 \begin{remark}\label{rem:subtype-diagram}
-Consider the left diagram below, where $i_1, i_2$\marginnote{%
+Consider the left diagram below, where $i_1, i_2$
+are injections constituting $S$ as a subtype of $X$ and
+$T$ as a subtype of $Y$, respectively (see \cref{def:subtype}).\footnote{%
 To stress that a function is an injection we may decorate
 the $\to$ in its type with a hook: $\hookrightarrow$.}
-are injections constituting $S$ as a subtype of $X$ and
-$T$ as a subtype of $Y$, respectively (see \cref{def:subtype}).
 This diagram represents the identity type $f\circ i_1 \eqto i_2\circ g$.
-Since $i_2$ is an injection, the type\marginnote{%
+Since $i_2$ is an injection, the type
+$\sum_{g:S\to T} (f\circ i_1 \eqto i_2\circ g)$ is a proposition.\footnote{%
 Use \cref{xca:prod-of-fibs} to see this.}
-$\sum_{g:S\to T} (f\circ i_1 \eqto i_2\circ g)$ is a proposition.
 \[
 \begin{tikzcd}
   X \ar[r,"f"]  & Y &&
@@ -687,9 +692,9 @@ are then each other's inverses.
 In the diagram below, the equivalence $f$ in the second row
 is $\preim$ from \cref{lem:typefamiliesandfibrations}, and
 the equivalence $g$ in the same row is defined by 
-$g(S)\defeq (S(\base),\trp{S(\Sloop)})$ 
+$g(S)\defeq (S(\base),\trp[\id_\UU]{S(\Sloop)})$ 
 (\cref{lem:freeloopspace} applied with $A\defeq\UU$, 
-and the transport in $\id_\UU$).
+and \cref{def:idtoeq}).
 Along the vertical arrows we have maps that forget the
 property that constitutes its domain as a subtype of the
 codomain, all modest variations of the first projection.
@@ -747,7 +752,7 @@ and transporting along $\Sloop$ gives the permutation.
 A particularly important example of a \covering is the following:
 
 \begin{definition}\label{def:RtoS1}
-  Recall the set of integers $\zet$ from \cref{def:zet}
+  Recall the set of integers $\zet$ from \cref{def:zet}, with
   its successor function $\zs: \zet\equivto\zet$ being an
   equivalence. The \covering $R:\Sc\to\UU$ is defined by
   the recursion principle of the circle from \cref{def:circle}
@@ -760,8 +765,21 @@ A particularly important example of a \covering is the following:
     \tilde R\defeq\sum_{z:\Sc}R(z),\text{~and~}
     \exp\defeq\fst:\tilde R \to \Sc .
   \]
-  We call $\exp$ the \emph{exponential \covering of the circle}.
+  We point $\exp$ with $(\base,\zet):\tilde R$ and $\base:\Sc$ $\exp$
+  and call it the \emph{exponential \covering of the circle}
+  and . 
 \end{definition}
+
+Now, $\exp$ turns out to be an example of a universal \covering defined next.
+
+\begin{definition}\label{def:univ-cover}
+Let $A$ and $B$ be pointed maps and $f: A\ptdto B$ a pointed \covering.
+We call $f$ \emph{universal} if for every pointed \covering $g: A\ptdto B$
+there is a unique $h: A\ptdto C$ with $f\eqto gh$, that is, if
+the following type is contractible:
+\[\sum_{h: A\ptdto C} f\eqto gh.\qedhere\]
+\end{definition}
+
 
 \begin{remark} \label{rem:expforreal}%
   \begin{marginfigure}
@@ -814,7 +832,8 @@ A particularly important example of a \covering is the following:
 We already defined a \covering $f:A\to B$ to be universal if $A$ is connected
 and all $a\eqto_A a$ (for $a:A$) are connected.
 If moreover $B$ is a pointed, connected groupoid we shall argue that
-we actually can speak of \emph{the} universal \covering.
+we actually can speak of \emph{the} universal \covering
+in \cref{def:universalcover}.
 
 Recall \cref{cor:fib-vs-path} stating that all the fibers of a map $f:A\to B$
 are sets if and only if each
@@ -833,7 +852,12 @@ it suffices to show that $a=a$ is a set.
 Using that $\ap{f}$ is an injection, we can apply the remark after
 \cref{lem:sum-of-fibers} and obtain that $a=a$ is a set since
 $f(a)=f(a)$ is a set, since $B$ is a groupoid.
-This completes the proof that $A$ is contractible.
+Thus:
+
+\begin{lemma}\label{lem:univ-cover-1type}
+If $f:A\to B$ is a universal \covering and $B$ is a groupoid,
+then $A$ is contractible.
+\end{lemma}
 
 Now assume $(B,b_0)$ is a pointed connected groupoid and $f:A\to B$
 a universal \covering. Since $A$ and $\sum_{b:B}(b_0\eqto_Bb)$ are both
@@ -2339,7 +2363,7 @@ universal \covering over $\Cyc_0$ is represented by the constant function
 $\cst{\pt_0}:\bn 1\to\Cyc_0$, sending the unique element
 of $\bn 1$ to $\pt_0\defeq(\zet,\zs):\Cyc_0$, the standard infinite cycle.\footnote{%
   In light of \cref{lem:IdCisZet} we see that the fiber
-  of this universal covering over $(X,t):\Cyc_0$ is (equivalent to) $X$ itself
+  of this universal \covering over $(X,t):\Cyc_0$ is (equivalent to) $X$ itself
   -- that's certainly a universal set associated to the
   infinite cycle $(X,t)$!}
 
@@ -2357,7 +2381,7 @@ What should we require of $\cdg{m}(X,t)$ for $(X,t):\Cyc_0$?
 Well, $\dg{m}:\Sc\to\Sc$ sends $\base$ to $\base$ and $\Sloop$ to $\Sloop^m$;
 only the $\Sloop^k$ where $k$ is a multiple of $k$ is in the image of $\dg{m}$.
 So we have to find an infinite cycle $(Y,u)$ with ``$u^m$ corresponding to $t$''.
-We achieve this by ``streching'' $X$:
+We achieve this by ``stretching'' $X$:
 Let $Y$ be $m$ copies of $X$ and let $u$ jump idly from one copy to another except every $m$\th time when $u$ also is allowed to use $t$.
 This is illustrated in \cref{fig:root} with the shift by $t$ being
 vertical and the movement from copy to copy going around a circle.
