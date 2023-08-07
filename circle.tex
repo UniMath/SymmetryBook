@@ -484,7 +484,8 @@ proving the equivalence of $\base\eqto\base$ and $\zet$.
 
 \begin{definition}\label{def:covering}
 A \emph{\covering} over a type $B$
-is a map $f:A\to B$ such that for each $b:B$ the preimage $f^{-1}(b)$ is a set.
+is a map $f:A\to B$ such that for each $b:B$ the preimage 
+(fiber) $f^{-1}(b)$ is a set.
 We say that a \covering $f:A\to B$ over $B$ is
 \begin{itemize}
 \item \emph{connected}\index{connected \covering} if $A$ is connected,
@@ -542,9 +543,13 @@ Let $A,B$ and $C$ be types. Show:
 \item For any $b:B$, the map $x \mapsto b$ from $\bn 1$ to $B$ is
 a \covering iff $b\eqto b$ is a set;
 \item If $f: A\to B$ and $g: B\to C$ are \coverings, then $gf$ is a \covering.
-\item If $f: A\to B$ and $g: B\to C$, and $g$ and $gf$ are \coverings, 
+\item\label{it:left-cancel-cover}
+If $f: A\to B$ and $g: B\to C$, and $g$ and $gf$ are \coverings, 
 then $f$ is a \covering. Hint: apply \cref{cor:fib-vs-path} to
-$\ap{g}: (b\eqto f(a))\to(g(b)\eqto g(f(a)))$.\qedhere
+$\ap{g}: (b\eqto f(a))\to(g(b)\eqto g(f(a)))$.
+\item If $A$ is connected and all $a\eqto_A a$ (for $a:A$) are connected,
+$B$ is a groupoid and $f: A\to B$ is a \covering, then $A$ is contractible.
+Hint: use \cref{cor:fib-vs-path} and \cref{xca:connected-trivia-2}.\qedhere
 \end{enumerate}
 \end{xca}
 
@@ -749,7 +754,87 @@ a permutation of its elements.
 The fiber over $\base:\Sc$ gives the set,
 and transporting along $\Sloop$ gives the permutation.
 
-A particularly important example of a \covering is the following:
+\begin{example}\label{def:universalcover}
+A particularly simple example of a \covering over a groupoid
+$B$ with an element $b_0$ is given by the family of identity types 
+$b_0 \eqto b$ parameterized by $b:B$. These identity types
+are indeed sets since $B$ is a groupoid. The alternative form
+of this (pointed) set bundle is the map $\fst: \sum_{b:B}(b_0\eqto b)\to B$,
+the domain canonically pointed at $(b_0,\refl{b_0})$, and with 
+$\refl{b_0}$ as the pointing path of $\fst$.
+
+In the above example, the reader may have noticed that,
+by \cref{lem:thepathspaceiscontractible}, 
+$\sum_{b:B}(b_0\eqto b)$ is contractible. Hence yet another
+form of this \covering is the constant map 
+$\cst{b_0}:\bn{1}\to B$, also with pointing path $\refl{b_0}$.
+%The alternative form of this \covering is given by the
+%fibers of $\cst{b_0}$. By definition, 
+%$\inv\cst{b_0}(b)\jdeq \sum_{i:\bn{1}} b\eqto b_0$,
+%so that these fibers can be identified with $b_0\eqto b$ by univalence.
+What is special about these examples is captured by the
+following definition and ensuing lemma.
+\end{example}
+
+\begin{definition}\label{def:univ-cover}
+Let $A$ and $B$ be pointed maps and $f: A\ptdto B$ a pointed \covering.
+We call $f$ \emph{universal} if for every pointed \covering $g: C\ptdto B$
+there is a unique $h: A\ptdto C$ with $f\eqto gh$, that is, if
+the following type is contractible:
+\[\sum_{h: A\ptdto C} f\eqto_{A\ptdto B} gh.\qedhere\]
+\end{definition}
+
+In the above definition we get that $h: A\ptdto C$ is a
+\covering as well by \cref{xca:covering-utils}\ref{it:left-cancel-cover}.
+The examples preceding \cref{def:univ-cover} are indeed universal
+\coverings according to the following lemma.
+
+\begin{lemma}\label{lem:univ-cover-of-groupoid}
+Let $(A,a_0)$ be a pointed type and groupoid and $(B,b_0)$ a pointed
+groupoid, and $f : (A,a_0)\ptdto (B,b_0)$ a \covering. 
+Then $f$ is universal if and only if $A$ is contractible. 
+\end{lemma}
+
+\begin{proof}
+Let conditions be as above and assume $A$ is contractible.
+Let $(C,c_0)$ be a pointed type and $g: (C,c_0)\ptdto (B,b_0)$
+a \covering. Let $f_0 : b_0\eqto f(a_0)$ and $g_0 : b_0\eqto g(c_0)$
+be the respective pointing paths. 
+Define $h: (A,a_0)\ptdto (C,c_0)$ by $a\mapsto c_0$ with
+pointing path $\refl{c_0}$.
+Clearly $g_0\inv f_0 : f(a_0) \eqto g(h(a_0))\jdeq g(c_0)$,
+which yields an identification of $f(a)$ and $g(h(a))$ for all $a:A$
+as $A$ is contractible. Apply now function extensionality
+\cref{def:funext} to get an identification of type $f \eqto_{A\to B} gh$.
+The pointing path of $gh$ is also $g_0 : b_0 \eqto g(c_0)$.
+We get an identification of type $(f,f_0)\eqto_{A\ptdto B} (gh,g_0)$
+from an identification of $g_0 = (g_0\inv f_0) f_0$.%
+\marginnote{Draw the triangle!}
+The type $(A,a_0)\ptdto (C,c_0)$ is contractible since $A$ is
+contractible, yielding that $h$ is unique. 
+
+For the other direction of the lemma we use a reasoning pattern
+that is typical for universality. Assume that $f$ is universal.
+As shown above, $\cst{b_0}: \bn{1}\ptdto (B,b_0)$ is also universal.
+Hence we have maps $h$ and $h'$ and identifications
+of all identity types represented in the following diagram,
+simplified by ignoring the points:  
+  \[
+    \begin{tikzcd}[column sep=large,ampersand replacement=\&]
+      \bn 1\ar[rr,"h'"]\ar[drrr,"\cst{b_0}"'] \& \& 
+      A \ar[rr,"h"] \ar[dr,pos=.7,"f"] \& \& 
+      \bn 1\ar[rr,"h'"]\ar[dl,pos=.7,"\cst{b_0}"'] \& \& 
+      A \ar[dlll,"f"]             \\
+      \& \& \& B \& \& \& 
+    \end{tikzcd}
+  \]
+Using the universality of $f$, we can identify $h'h$ with $\id_A$.
+Using the universality of $\cst{b_0}$, we can identify $hh'$ with $\id_\bn{1}$.
+Now \cref{lem:weq-iso} yields an equivalence between $\bn{1}$
+and $A$, implying that $A$ is contractible.
+\end{proof}
+
+A particularly important example of a pointed \covering is the following.
 
 \begin{definition}\label{def:RtoS1}
   Recall the set of integers $\zet$ from \cref{def:zet}, with
@@ -759,27 +844,15 @@ A particularly important example of a \covering is the following:
   by putting $R(\base)\defeq\zet$ and $R(\Sloop)\defis \etop{\zs}$.
   This is indeed a set bundle since $\Sc$ is connected,
   so that $R(x)$ is a set for all $x:\Sc$.
-  Abusing notation we also write $R:\Sc\to\Set$.
-  Now define
+  We also write $R:\Sc\to\Set$.
+  Recall $\Tot(R)\jdeq\sum_{z:\Sc}R(z)$ and point $\Tot(R)$ 
+  at $(\base,\zet)$. Now define
   \[
-    \Tot(R)\jdeq\sum_{z:\Sc}R(z),\text{~and~}
-    \exp\defeq\fst:\Tot(R) \to \Sc.
+    \exp\defeq\fst:\Tot(R) \to \Sc,
+    \text{~with pointing path~}\refl{\base}.
   \]
-  We point $\exp$ with $(\base,\zet):\Tot(R)$ and $\base:\Sc$ $\exp$
-  and call it the \emph{exponential \covering of the circle}
-  and . 
+  We call $\exp$ the \emph{exponential \covering of the circle}.
 \end{definition}
-
-Now, $\exp$ turns out to be an example of a universal \covering defined next.
-
-\begin{definition}\label{def:univ-cover}
-Let $A$ and $B$ be pointed maps and $f: A\ptdto B$ a pointed \covering.
-We call $f$ \emph{universal} if for every pointed \covering $g: A\ptdto B$
-there is a unique $h: A\ptdto C$ with $f\eqto gh$, that is, if
-the following type is contractible:
-\[\sum_{h: A\ptdto C} f\eqto gh.\qedhere\]
-\end{definition}
-
 
 \begin{remark} \label{rem:expforreal}%
   \begin{marginfigure}
@@ -791,7 +864,7 @@ the following type is contractible:
       \node[dot,label=left:$-1$] (mone) at (-10, 6) {};
       \node[dot,label=left:$-2$] (C)    at (-10, 2) {};
       \node[dot]                 (D)    at (-10,-5) {};
-      \node[label=above:$\Tot(R_m)$]   (R)    at (10,20) {};
+      \node[label=above:$\Tot(R)$]   (R)    at (10,20) {};
       \node[label=above left:$\zet$]  (Z)    at (-10,20) {};
       \node at (-10,20.8) {$\vdots$};
       \node at (-10,.2) {$\vdots$};
@@ -828,6 +901,12 @@ the following type is contractible:
   precisely captured in a form that we can take further by studying the
   \covering $\exp:\Tot(R)\to \Sc$.
 \end{remark}
+
+In the next section we will see that the exponential \covering
+of the circle is in fact universal.
+
+
+\subsection*{Old, discuss status 10.08.23}
 
 We already defined a \covering $f:A\to B$ to be universal if $A$ is connected
 and all $a\eqto_A a$ (for $a:A$) are connected.
@@ -869,19 +948,7 @@ Moreover, the type of universal \coverings is equivalent to
 $\bn 1 \to B$, and hence to $B$ itself,
 so the type of \emph{pointed} universal \coverings is contractible.
 This justifies the following definition.
-\begin{definition}
-  \label{def:universalcover}
-  Let $(B,b_0)$ be a pointed connected groupoid.
-  The \emph{universal \covering} of $B$
-  is the \covering of $B$ given by the family of sets
-  \[
-    \uc{b_0}:B\to\Set,\quad \uc{b_0}(b)\defequi (b_0\eqto_Bb),
-  \]
-  or alternatively as the first projection from
-  $\uc{b_0}B\defequi\sum_{b:B}(b_0\eqto_Bb)$ to $B$.
 
-  This is canonically pointed at $(b_0,\refl{b_0}) : \sum_{b:B}(b_0\eqto_Bb)$.
-\end{definition}
 Note that, for a general pointed connected type $(B,b_0)$, we have that
 $(b_0\eqto_B b)$ is a family of \emph{sets} exactly when $B$ is a groupoid.
 The type family $(b_0\eqto_B b)$ is also important if $B$ is not a groupoid,
