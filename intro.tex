@@ -108,14 +108,14 @@ In practice, one of the most important things is to be able to \emph{compare} sy
 \begin{tikzpicture}
   \begin{scope}[scale=0.8]
     \node (X) at (1,2) {$X_1$};
-    \node[dot,label=left:$x_1$] (x1) at (0,0) {};
     \draw (0,-2)
     .. controls ++(150:-1) and ++(180:1) .. (3,-2)
     .. controls ++(180:-1) and ++(-100:1.3) .. (4.5,0)
     .. controls ++(-100:-1.3) and ++(-10:2) .. (2,1.5)
     .. controls ++(-10:-2) and ++(90:1) .. (-1,0)
     .. controls ++(90:-1) and ++(150:1) .. (0,-2);
-    \draw[->] (x1) .. controls ++(80:-1) and ++(170:1) .. (.5,-1.5)
+    \node[dot,casred,label=left:$x_1$] (x1) at (0,0) {};
+    \draw[->,casblue] (x1) .. controls ++(80:-1) and ++(170:1) .. (.5,-1.5)
     .. controls ++(170:-1) and ++(200:1) .. (3,-1.4)
     .. controls ++(200:-1) and ++(-80:.5) .. (3.8,0)
     .. controls ++(-80:-.5) and ++(-10:.3) .. (3,1)
@@ -134,8 +134,8 @@ In practice, one of the most important things is to be able to \emph{compare} sy
     .. controls ++(270:-1) and ++(20:2)   .. (2,2)
     .. controls ++(20:-2)   and ++(90:1)  .. (-1,0)
     .. controls ++(90:-1)  and ++(200:1) .. (0,-1);
-    \node[dot,label=below:$x_2$] (x2) at (0,0) {};
-    \draw[->] (x2) .. controls ++(-20:1.5) and ++(170:1) ..
+    \node[dot,casred,label=below:$x_2$] (x2) at (0,0) {};
+    \draw[->,casblue] (x2) .. controls ++(-20:1.5) and ++(170:1) ..
       (2,-1) .. controls ++(170:-1) and ++(-70:1) ..
       (3.1,0) .. controls ++(-70:-1) and ++(90:.5) ..
       (3.5,0) .. controls ++(90:-.5) and ++(-120:2) ..
@@ -154,14 +154,37 @@ Some important examples have provocatively simple representations in this framew
   \end{tikzpicture}}
 Since symmetries are interpreted as loops, you see that you have a loop for every integer -- the number $7$ can be represented by looping seven times counterclockwise.  As we shall see, in our setup any loop is naturally identified with a unique integer (the ``winding number'' if you will).  Everything you can wish to know about the structure of the ``group of integers'' is encoded in the circle.
 
-Another example is the ``free group of words in two letters $a$ and $b$''.  This is represented by
-\begin{quote}
-  picture of figure eight
-\end{quote}
-(the word $ab^2a^{-1}$ is represented by looping around circle $a$ and $b$ respectively $1$, $2$ and $-1$ times in succession -- notice that since the $b^2$ is in the middle it prevents the $a$ and the $a^{-1}$ from meeting and cancelling each other out.  If you wanted the ``\emph{abelian} group on the letters $a$ and $b$'' (where $a$ and $b$ are allowed to move past each other), you should instead look at the torus
-\begin{quote}
-  picture of the torus
-\end{quote}
+Another example is the ``free group of words in two letters $a$ and $b$''.  This is represented by the figure eight in the margin.\marginnote{%
+  \begin{tikzpicture}
+    \node[dot,label=right:$x$] (base) at (1,0) {};
+    \draw (0,0) circle (1);
+    \draw (2,0) circle (1);
+    \node (a) at (-.9,.9) {$a$};
+    \node (b) at (2.9,.9) {$b$};
+  \end{tikzpicture}}
+The word $ab^2a^{-1}$ is represented by looping around circles $a$ and $b$ respectively $1$, $2$ and $-1$ times in succession -- notice that since the $b^2$ is in the middle it prevents the $a$ and the $a^{-1}$ from meeting and cancelling each other out.  If you wanted the ``\emph{abelian} group on the letters $a$ and $b$'' (where $a$ and $b$ are allowed to move past each other), you should instead look at the torus:
+\begin{center}
+\begin{tikzpicture}
+  \useasboundingbox (-3,-1.5) rectangle (3,1.5);
+  \begin{scope}[xshift=2.4cm,yshift=.35cm,xscale=cos(25)]
+  \draw[casred,line cap=round] (0,0) arc (65:148:0.7);
+  \draw[casred] (0,0) arc (65:-40:0.7);
+  \end{scope}
+  \draw[casblue] (0,.35) ellipse (2.4 and 0.9);
+  \draw (0,0) ellipse (3 and 1.5);
+  \begin{scope}
+    \clip (0,-1.8) ellipse (3 and 2.5);
+    \draw (0,2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \begin{scope}
+    \clip (0,2.2) ellipse (3 and 2.5);
+    \draw (0,-2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \node[dot] at (2.4,0.35) {};
+  \node (a) at (0,1.1) {$a$};
+  \node (b) at (2.6,-.2) {$b$};
+\end{tikzpicture}
+\end{center}
 Just why this last example works can remain a puzzle for now.
 
 In some situations, the type $X$ ``of things'' can be more difficult to draw.  For instance, what is the ``type of all squares'' which we discussed earlier, representing all rotational symmetries of $\square$?  While it is harder to draw, you have perhaps already visualized it as the type of all squares in the plane, with $\square$ being the shape the loop must start and stop in.  In addition, we see that any symmetry can be reached by doing the $90$\textdegree-rotation a few of times, together with the fact that taking any loop four times reduces to not doing anything at all: it represents the ``cyclic group of order four''.
