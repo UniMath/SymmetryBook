@@ -23,7 +23,7 @@
 
 
 Since this book is called ``symmetry'' it is reasonable to hope
-that by the time you're reached the end you'll have a clean idea of
+that by the time you're reached the end you'll have a clear idea of
 what ``symmetry'' means.
 
 Ideally the answer should give a solid foundation for dealing with
@@ -44,17 +44,47 @@ is not of essence -- the shape remains the same.
 However, the outcome of rotating by $360$ degree or not at all
 is the same - even from the point of view of each individual point in $\square$ -- so it probably feels contrived to count rotations by $0$ and $360$ degrees as different rotations.
 
-It feels reasonable to consider the rotations by $0^\circ$, $90^\circ$, $180^\circ$ and $270^\circ$ to be all the (rotational) symmetries of $\square$.  Two thoughts may strike you:
+It feels reasonable to consider the rotations by $0$\textdegree, $90$\textdegree, $180$\textdegree, and $270$\textdegree{} to be all the (rotational) symmetries of $\square$.  Two thoughts may strike you:
 \begin{enumerate}
 \item
   are these \emph{all} the symmetries?
 \item ``rotation'' indicates a \emph{motion}, through different squares, joining $\square$ with itself via a ``journey in the world of squares''.
-  \begin{quote}
-      (picture of a little stick figure tipping a square over on its side along a path containing snapshots of the loop: I can draw one if you accept my analog artistic skills).
-  \end{quote}
-
-  How is that reconcilable with a precise notion of symmetry?
 \end{enumerate}
+\begin{center}
+  \begin{tikzpicture}
+    \foreach \x/\s in {45/0,35/1,25/2,15/3,5/4,-5/5,-15/6,-25/7,-35/8,-45/9} {
+      \begin{scope}[xshift=\s cm]
+        \draw (\x:.3) -- (\x+90:.3) -- (\x+180:.3) -- (\x+270:.3) -- cycle;
+      \end{scope}
+    }
+    % stick figure pushing
+    \begin{scope}[thick,line cap=round]
+      \node[dot] at (-.3,.3) {};
+      \draw (-.4,.1) -- (-.212,.1);
+      \draw (-.5,-.1) -- (-.35,.2);
+      \draw (-.5,-.1) -- (-.35,-.1);
+      \draw (-.5,-.1) -- (-.6,-.2);
+      \draw (-.35,-.1) -- (-.38,-.3);
+      \draw (-.38,-.3) -- (-.33,-.3);
+      \draw (-.6,-.2) -- (-.78,-.28);
+      \draw (-.78,-.28) -- (-.73,-.3);
+    \end{scope}
+    % stick figure resting
+    \begin{scope}[thick,line cap=round,xshift=9cm]
+      \node[dot] at (.5,.35) {};
+      \draw (.5,.25) -- (.5,-.05);
+      \draw (.5,-.05) -- (.6,-.3);
+      \draw (.6,-.3) -- (.65,-.3);
+      \draw (.5,-.05) -- (.4,-.3);
+      \draw (.4,-.3) -- (.35,-.3);
+      \draw (.5,.25) -- (.65,.1);
+      \draw (.65,.1) -- (.5,-.02);
+      \draw (.5,.25) -- (.35,.15);
+      \draw (.35,.15) -- (.212,.212);
+    \end{scope}
+  \end{tikzpicture}
+\end{center}
+How is that reconcilable with a precise notion of symmetry?
 
 The answer to the first question clearly depends on the context.  If we allow reflections or even more exotic symmetries the answer is ``no''.  Each context has its own answer to what the symmetries of the square are.
 
@@ -73,29 +103,91 @@ Different setups have different advantages.  The theory of sets is an absolutely
 
 The setup we adopt, ``HoTT'' or ``univalent foundations'', seems custom-built for such an approach.
 
-In practice, one of the most important things is to be able to \emph{compare} symmetries of ``thing 1'' and ``thing 2''.  In our case this amounts to nothing but a function the takes thing 1 to thing 2.
-\begin{quote}
-  Picture of the function as in the original Goodnotes, putting some names to things.
-\end{quote}
+In practice, one of the most important things is to be able to \emph{compare} symmetries of ``thing~1'' and ``thing~2''.  In our case this amounts to nothing but a function, $f$, that takes thing~1, $x_1$, to thing~2, $x_2$.
+\begin{center}
+\begin{tikzpicture}
+  \begin{scope}[scale=0.8]
+    \node (X) at (1,2) {$X_1$};
+    \draw (0,-2)
+    .. controls ++(150:-1) and ++(180:1) .. (3,-2)
+    .. controls ++(180:-1) and ++(-100:1.3) .. (4.5,0)
+    .. controls ++(-100:-1.3) and ++(-10:2) .. (2,1.5)
+    .. controls ++(-10:-2) and ++(90:1) .. (-1,0)
+    .. controls ++(90:-1) and ++(150:1) .. (0,-2);
+    \node[dot,casred,label=left:$x_1$] (x1) at (0,0) {};
+    \draw[->,casblue] (x1) .. controls ++(80:-1) and ++(170:1) .. (.5,-1.5)
+    .. controls ++(170:-1) and ++(200:1) .. (3,-1.4)
+    .. controls ++(200:-1) and ++(-80:.5) .. (3.8,0)
+    .. controls ++(-80:-.5) and ++(-10:.3) .. (3,1)
+    .. controls ++(-10:-.3) and ++(80:1) .. (x1);
+    \draw (1,-1) arc(210:330:.8 and .5);
+    \draw (2.09,-1.18) arc(60:120:.8 and .7);
+    \draw (1.5,0) arc(210:330:.8 and .5);
+    \draw (2.59,-0.18) arc(60:120:.8 and .7);
+    \draw[->] (4.8,0) -- node[auto] {$f$} (6.3,0);
+  \end{scope}
+  \begin{scope}[xshift=6cm,scale=0.8]
+    \node (X) at (1,2) {$X_2$};
+    \draw (0,-1)
+    .. controls ++(200:-1) and ++(180:1) .. (2,-2)
+    .. controls ++(180:-1) and ++(270:1) .. (4,0)
+    .. controls ++(270:-1) and ++(20:2)   .. (2,2)
+    .. controls ++(20:-2)   and ++(90:1)  .. (-1,0)
+    .. controls ++(90:-1)  and ++(200:1) .. (0,-1);
+    \node[dot,casred,label=below:$x_2$] (x2) at (0,0) {};
+    \draw[->,casblue] (x2) .. controls ++(-20:1.5) and ++(170:1) ..
+      (2,-1) .. controls ++(170:-1) and ++(-70:1) ..
+      (3.1,0) .. controls ++(-70:-1) and ++(90:.5) ..
+      (3.5,0) .. controls ++(90:-.5) and ++(-120:2) ..
+      (3,1) .. controls ++(-120:-2) and ++(-20:-1.5) .. (x2);
+    \draw (1,0) arc(210:330:.8 and .5);
+    \draw (2.09,-.18) arc(60:120:.8 and .7);
+  \end{scope}
+\end{tikzpicture}
+\end{center}
 While such comparisons of symmetries are traditionally handled by something called a ``group homomorphism'' which is a function satisfying a rather long list of axioms, in our case the only thing we need to know of the function is that it really does take thing 1 to thing 2 -- everything else then follows naturally.
 
-Some important examples have provocatively simple representations in this framework.  For instance, consider the circle
-\begin{quote}
-  picture of the pointed circle
-\end{quote}
+Some important examples have provocatively simple representations in this framework.  For instance, consider the circle shown in the margin.\marginnote{%
+  \begin{tikzpicture}
+    \node[dot,label=right:$x$] (base) at (1,0) {};
+    \draw (0,0) circle (1);
+  \end{tikzpicture}}
 Since symmetries are interpreted as loops, you see that you have a loop for every integer -- the number $7$ can be represented by looping seven times counterclockwise.  As we shall see, in our setup any loop is naturally identified with a unique integer (the ``winding number'' if you will).  Everything you can wish to know about the structure of the ``group of integers'' is encoded in the circle.
 
-Another example is the ``free group of words in two letters $a$ and $b$''.  This is represented by
-\begin{quote}
-  picture of figure eight
-\end{quote}
-(the word $ab^2a^{-1}$ is represented by looping around circle $a$ and $b$ respectively $1$, $2$ and $-1$ times in succession -- notice that since the $b^2$ is in the middle it prevents the $a$ and the $a^{-1}$ from meeting and cancelling each other out.  If you wanted the ``\emph{abelian} group on the letters $a$ and $b$'' (where $a$ and $b$ are allowed to move past each other), you should instead look at the torus
-\begin{quote}
-  picture of the torus
-\end{quote}
+Another example is the ``free group of words in two letters $a$ and $b$''.  This is represented by the figure eight in the margin.\marginnote{%
+  \begin{tikzpicture}
+    \node[dot,label=right:$x$] (base) at (1,0) {};
+    \draw (0,0) circle (1);
+    \draw (2,0) circle (1);
+    \node (a) at (-.9,.9) {$a$};
+    \node (b) at (2.9,.9) {$b$};
+  \end{tikzpicture}}
+The word $ab^2a^{-1}$ is represented by looping around circles $a$ and $b$ respectively $1$, $2$ and $-1$ times in succession -- notice that since the $b^2$ is in the middle it prevents the $a$ and the $a^{-1}$ from meeting and cancelling each other out.  If you wanted the ``\emph{abelian} group on the letters $a$ and $b$'' (where $a$ and $b$ are allowed to move past each other), you should instead look at the torus:
+\begin{center}
+\begin{tikzpicture}
+  \useasboundingbox (-3,-1.5) rectangle (3,1.5);
+  \begin{scope}[xshift=2.4cm,yshift=.35cm,xscale=cos(25)]
+  \draw[casred,line cap=round] (0,0) arc (65:148:0.7);
+  \draw[casred] (0,0) arc (65:-40:0.7);
+  \end{scope}
+  \draw[casblue] (0,.35) ellipse (2.4 and 0.9);
+  \draw (0,0) ellipse (3 and 1.5);
+  \begin{scope}
+    \clip (0,-1.8) ellipse (3 and 2.5);
+    \draw (0,2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \begin{scope}
+    \clip (0,2.2) ellipse (3 and 2.5);
+    \draw (0,-2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \node[dot] at (2.4,0.35) {};
+  \node (a) at (0,1.1) {$a$};
+  \node (b) at (2.6,-.2) {$b$};
+\end{tikzpicture}
+\end{center}
 Just why this last example works can remain a puzzle for now.
 
-In some situations, the type $X$ ``of things'' can be more difficult to draw.  For instance, what is the ``type of all squares'' which we discussed earlier, representing all rotational symmetries of $\square$?  While it is harder to draw, you have perhaps already visualized it as the type of all squares in the plane, with $\square$ being the shape the loop must start and stop in.  In addition, we see that any symmetry can be reached by doing the $90^\circ$-rotation a couple of times, together with the fact that taking any loop four times reduces to not doing anything at all: it represents the ``cyclic group of order four''.
+In some situations, the type $X$ ``of things'' can be more difficult to draw.  For instance, what is the ``type of all squares'' which we discussed earlier, representing all rotational symmetries of $\square$?  While it is harder to draw, you have perhaps already visualized it as the type of all squares in the plane, with $\square$ being the shape the loop must start and stop in.  In addition, we see that any symmetry can be reached by doing the $90$\textdegree-rotation a few of times, together with the fact that taking any loop four times reduces to not doing anything at all: it represents the ``cyclic group of order four''.
 
 
 {\em From here I want to problematize when two loops are equal, univalence with the point of view that loops in the universe are conceptually simple, while equivalence gives a really compact, local description that is much easier to work with and that they describing the same thing gives a particular forceful setup
