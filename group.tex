@@ -943,7 +943,7 @@ Applying \cref{def:ap} yields a function $F \defeq \ap f : \USymG \to \USymH$, w
 \end{alignat*}
 The first one is true by definition, the second can be proved by induction on $g$, and the third one follows from \cref{lem:apcomp}.
 These three identities assert that the function $\ap f$ \emph{preserves}, in a certain sense, the operations provided by \cref{lem:idtypesgiveabstractgroups} that
-make the abstract group $\abstr(G)$ from $\USymG$ and the abstract group $\abstr(H)$ from $\USymH$.
+make up the abstract groups $\abstr(G)$ and $\abstr(H)$.
 In the traditional study of abstract groups, these three identities play an important role and entitle one to call the function $F$ a
 \emph{homomorphism of abstract groups}.\index{homomorphism}
 \end{remark}
@@ -968,18 +968,34 @@ not necessarily given by reflexivity.  Indeed, that works out, thereby motivatin
   $\mkhom : (\BG \ptdto \BH) \to \Hom(G,H)$.%
   \glossary(924Omega__){$\protect\mkhom$}{homomorphism constructor, \cref{def:grouphomomorphism}}
   We again write $\B : \Hom(G,H) \to (\BG \ptdto \BH)$ for the destructor,
-  and we call $\Bf$ \emph{classifying map}\index{classifying map} of the homomorphism.
+  and we call $\Bf$ the \emph{classifying map}\index{classifying map}
+  of the homomorphism.
 \end{definition}
 
-We would like to understand the effect of a homomorphism $f$ from $G$ to $H$
-on the underlying symmetries $\USymG$, $\USymH$.
-Since the underlying symmetries are obtained by taking loops,
-we should first study how pointed maps affect loops:
+We would like to understand explicitly the effect of a general homomorphism $f$ from $G$ to $H$
+on the underlying symmetries $\USymG$, $\USymH$,
+again without assuming that the witness of pointedness of $\Bf$ is given by
+reflexivity.
+So we should first study how pointed maps affect loops:\marginnote{%
+    \noindent\normalsize\begin{tikzpicture}
+      \node (Y) at (0,-1.5) {$Y$};
+      \draw (0,-1)
+      .. controls ++(170:-1) and ++(180:1) .. (2,-1.5)
+      .. controls ++(180:-1) and ++(270:1.5) .. (3.5,0.8)
+      .. controls ++(270:-1.5) and ++(80:1.4)  .. (-1,1)
+      .. controls ++(80:-1.4)  and ++(170:1) .. (0,-1);
+      \node[dot,label=left:$\pt_Y$] (a) at (0,0) {};
+      \node[dot,label=below:$f(\pt_X)$] (b) at (1.5,-.5) {};
+      \node (ct) at (2.6,1.1) {$\ap{f_\div}(p)$};
+      \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto,swap] {$f_\pt$} (b);
+      \draw[->] (b) .. controls ++(20:1) and ++(-40:1) ..
+      (2,1) .. controls ++(-40:-1) and ++(-80:-1) .. (b);
+    \end{tikzpicture}}
 
 \begin{definition}\label{def:loops-map}
   Given pointed types $X$ and $Y$ and a pointed function $f : X\ptdto Y$ (as defined in \cref{def:pointedtypes}),
   we define a function $\loops f : \loops X \to \loops Y$ by setting\footnote{%
-    Recall~\cref{def:ap}.}
+    Recall~\cref{def:ap} for $\ap{}$.}
   \[
     \loops f(p) \defeq f_\pt^{-1} \cdot \ap{f_\div}(p) \cdot f_\pt.\qedhere
   \]
@@ -987,7 +1003,7 @@ we should first study how pointed maps affect loops:
 
 \begin{remark}\label{rem:loops-map}
   If $f : X \ptdto Y$ has the reflexivity path $\refl{Y_\pt}$ as its witness
-  of pointedness, then we have an identification $\loops f(p) \eqto \ap{f_\div}$.
+  of pointedness, then we have an identification $\loops f \eqto \ap{f_\div}$.
 \end{remark}
 
 \begin{definition}\label{def:USym-hom}
@@ -1011,8 +1027,8 @@ we should first study how pointed maps affect loops:
 \end{lemma}
 
 \begin{proof}
-  We write $f \jdeq (p,e)$, where $p : \BG \to \BH$ and $e : \pt_{\BH} = p (\pt_{\BG})$.
-  By induction on $e$, we reduce to the case where $\pt_{\BH} \jdeq p (\pt_{\BG})$.
+  We write $f \jdeq (f_\div,p)$, where $p : \pt_{\BH} \eqto f_\div (\pt_{\BG})$.
+  By induction on $p$, we reduce to the case where $\pt_{\BH} \jdeq f_\div (\pt_{\BG})$.
   We finish by applying \cref{homom-idens}.
 \end{proof}
 
@@ -1027,7 +1043,8 @@ we should first study how pointed maps affect loops:
 \end{definition}
 
 \begin{remark}
-  \label{remark:groupsasunivalenttype}By univalence, casting identifications as equivalences gives an equivalence
+  \label{remark:groupsasunivalenttype} From~\cref{xca:pointedequiv},
+  we have an equivalence
   \[
     (G\eqto_\typegroup G')\equivto \Iso(G,G')
   \]
