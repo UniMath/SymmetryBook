@@ -759,6 +759,13 @@ The following lemma shows that $\ap f$ is compatible with composition.
 \begin{construction}\label{lem:apcomp}
   Given a function $f:X\to Y$, and elements $x,x',x'':X$, and paths $p : x \eqto x'$ and $p' : x' \eqto x''$,
   we have an identification of type $\ap f (p' \cdot p) \eqto  \ap f (p') \cdot  \ap f (p)$.
+
+  Similarly, we have that $\ap f$ is compatible with path inverse
+  in that we have an identification of type
+  $\ap f(p^{-1}) \eqto  (\ap f (p))^{-1}$ for all $p : x \eqto x'$.
+
+  Finally, we have an identification of type $\ap \id (p) \eqto p$ for all
+  $p : x \eqto x'$.
 \end{construction}
 
 \begin{implementation}{lem:apcomp}
@@ -770,16 +777,12 @@ The following lemma shows that $\ap f$ is compatible with composition.
   $\ap f ( \refl x ) \cdot  \ap f ( \refl x )$
   are equal to $\refl { f(x) }$ by definition,
   so the identification $\refl {\refl { f(x) }}$ has the desired type.
+
+  The other two parts of the construction are also easily done by induction on $p$.
 \end{implementation}
 
-In a similar way one shows that $\ap f$ is compatible with path inverse,
-by constructing an identification of type
-$\ap f(p^{-1}) \eqto  (\ap f (p))^{-1}$.
-One may also construct an identification of type $\ap \id (p) \eqto p$.
-
-
 \begin{xca}\label{xca:trp-ap}
-  Let $X$ be a type, and let $T(x)$ be a family of types parametrized by a variable $x:X$. Furthermore, let $A$ be a type, let $f:A\to X$ be a
+  Let $X$ be a type and $T(x)$ a family of types parametrized by a variable $x:X$. Furthermore, let $A$ be a type, let $f:A\to X$ be a
   function, let $a$ and $a'$ be elements of $A$, and let $p: a \eqto a'$ be a path.
   Verify that the two functions $\trp[T \circ f]{p}$ and $\trp[T]{\ap{f}(p)}$ are of type $T(f(a)) \to T(f(a'))$.
   Then construct an identification between them, i.e., construct an element of type $\trp[T \circ f]{p} \eqto \trp[T]{\ap{f}(p)}$.
