@@ -944,34 +944,49 @@ that is, recalling \cref{def:function-type-families}, giving
 a (fiberwise) equivalence $f: \uc{\base}\to R$. We will use
 \cref{lem:weq-iso}, so will also define $g: R\to\uc{\base}$.
 
-We first recall from \cref{sec:heavy-transport} how
+\begin{remark}\label{rem:univalence-transparent}
+We recall \cref{lem:trp-in-function-type} defining how
 transport behaves in families of function types.
 Given a type $A$ and two type families $P,Q:A\to\UU$,
-transport along $p:a\eqto a'$ of $h:P(a)\to Q(a)$ is
-$Q(p)\,h\,P(p)^{-1}:P(a') \to Q(a')$.
-In a picture,
+transport along $p:a\eqto a'$ of $h:P(a)\to Q(a)$ can
+be identified with the function
+$\trp[Q]{p}\circ h\circ \trp[P]{p^{-1}}$
+of type $P(a') \to Q(a')$. As a simplification we
+could use the notation $\tilde{\blank}$ introduced
+after \cref{def:univalence} for the transport functions.
+However, we now take the further step of allowing
+univalence to be completely transparent, 
+that is, leaving out both $\tilde{\blank}$ and $\bar{\blank}$
+when no confusion can occur. Here this means that
+the picture for the transport of $h$ becomes:
 \[
   \begin{tikzcd}[column sep=huge]
-    a\ar[d,eqr,"p"] & P(a)\ar[r,"h"]\ar[d,eqr,"P(p)"] &
-    Q(a)\ar[d,eqr,"Q(p)"] \\
-    a' & P(a') & \,Q(a').
+    a\ar[d,eqr,"p"] & P(a)\ar[r,"h"]\ar[d,equivr,"P(p)"] &
+    Q(a)\ar[d,equivr,"Q(p)"] \\
+    a' & P(a')\ar[r,"Q(p)\,h\,P(p)^{-1}"] & \,Q(a').
   \end{tikzcd}
 \]
+In, for example, the definition of the exponential
+\covering $R$ above, this means that we may denote $R(\Sloop)$
+as $\zs$ instead of $\etop{\zs}$, and may write $R(\Sloop)(0)=1$.
+\end{remark} 
+
 If $A$ is $\Sc$, then the induction principle for the circle says
 that giving an $h(z):P(z)\to Q(z)$ for all $z:\Sc$ is the same as
-specifying an $h(\base):P(\base)\to Q(\base)$ and,
-using \cref{def:pathover-trp} and the discussion above, an identity
-$h(\Sloop):Q(\Sloop)\,h(\base)\,P(\Sloop)^{-1}\eqto_{P(\base)\to Q(\base)}h(\base)$,
-\ie   a witness that the composites in
+specifying an element $h(\base):P(\base)\to Q(\base)$ and,
+using \cref{def:pathover-trp} and \cref{rem:univalence-transparent},
+an identification
+$h(\Sloop):Q(\Sloop)\,h(\base)\,P(\Sloop)^{-1}\eqto h(\base)$,
+see the following diagram:
 \[
   \begin{tikzcd}[column sep=huge]
-    P(\base)\ar[r,"h(\base)"]\ar[d,eqr,"P(\Sloop)"]
-    & Q(\base)\ar[d,eqr,"Q(\Sloop)"] \\
-    P(\base)\ar[r,"h(\base)"] & Q(\base)
+    P(\base)\ar[r,"h(\base)"]\ar[d,equivr,"P(\Sloop)"]
+    & Q(\base)\ar[d,equivr,"Q(\Sloop)"] \\
+    P(\base)\ar[r,"h(\base)"] & Q(\base).
   \end{tikzcd}
 \]
-are equal. If $P,Q$ are families of sets,
-then the type of $h(\Sloop)$ is a proposition.
+If $P,Q$ are families of sets,
+then $h(\Sloop)$ is a proof that this diagram commutes.
 
 We now define $f: \uc{\base}\to R$ and $g: R\to\uc{\base}$ that will turn out to
 give inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
@@ -985,7 +1000,7 @@ give inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
     \node[dot]                      (mone) at (-10, 6) {};
     \node[dot]                      (C)    at (-10, 2) {};
     \node[dot]                      (D)    at (-10,-5) {};
-    \node[label=above:$\Tot(R)$]        (R)    at (10,20) {};
+    \node[label=above:$\Tot(R)$]    (R)    at (10,20) {};
     \node[label=above left:$\zet$]  (Z)    at (-10,20) {};
     \node at (-10,.2) {$\vdots$};
     \node[label=left:$\Sloop$] (Sloop) at (10,-5) {};
@@ -1007,28 +1022,29 @@ give inverse equivalences between $\uc{\base}(z)$ and $R(z)$, for each $z:\Sc$.
     .. (0,-7) .. controls (\cx,-7) and (10,-5 - \cy) .. (10,-5);
 
     \draw[->, bend left, shorten <=2pt, shorten >=2pt] (zero) to
-    node[left] {\scriptsize$\trp[R]{\Sloop}$} (one);%
+    node[left] {\scriptsize$R(\Sloop)$} (one);%
     \draw[->, bend right, shorten <=2pt, shorten >=2pt] (zero) to
-    node[left] {\scriptsize$\trp[R]{\inv\Sloop}$} (mone);%
+    node[left] {\scriptsize$R(\inv\Sloop)$} (mone);%
     \draw[->, bend right, shorten <=2pt, shorten >=2pt, line
     width=2pt, white] (zero) to (B);%
     \draw[->, bend right, shorten <=2pt, shorten >=2pt] (zero) to
     node[right,rounded corners,fill=white,outer sep=5pt]
-    {\scriptsize$\trp[R]{\Sloop^2}$} (B);%
+    {\scriptsize$R(\Sloop^2)$} (B);%
     \draw[->, bend left, shorten <=2pt, shorten >=2pt, white, line
     width=2pt] (zero) to (C);%
     \draw[->, bend left, shorten <=2pt, shorten >=2pt] (zero) to
     node[right,rounded corners,fill=white,outer sep=5pt]
-    {\scriptsize$\trp[R]{\Sloop^{-2}}$} (C);
+    {\scriptsize$R(\Sloop^{-2})$} (C);
   \end{tikzpicture}
   \caption{Transport in the family $R$}\label{fig:transportalongloop}
 \end{marginfigure}
 \begin{definition}
   \label{def:fPtoR}
-  The function $f:\prod_{z:\Sc}(\uc{\base}(z)\to R(z))$ is defined by transport: $f(z)(p)\defequi\trp[R]{p}(0)$.
+  The function $f:\prod_{z:\Sc}(\uc{\base}(z)\to R(z))$ is defined by
+  $f(z)(p)\defequi R(p)(0)$.
 \end{definition}
-In Figure~\ref{fig:transportalongloop}, the transport in the definition
-above has been visualised for $p={\Sloop^n}$, $n=-2,-1,0,1,2$.
+In Figure~\ref{fig:transportalongloop}, the function $f(\base)(p)$
+above has been visualised for $p\jdeq{\Sloop^n}$, $n\jdeq-2,-1,0,1,2$.
 
 \begin{lemma}\label{lem:windingnumber}
 For $f$ as in \cref{def:fPtoR} we have $f(\base)(\Sloop^n)=n$ for all $n:\zet$.
