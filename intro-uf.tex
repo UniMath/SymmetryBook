@@ -1500,24 +1500,23 @@ two pairs to be identified.  We start with a definition.
   We introduce $\pathpair p q$ as notation for $\apap {\pair} p q$.
 \end{definition}
 
-\begin{lemma}\label{cor:isEq-pair=}
+\begin{construction}\label{cor:isEq-pair=}
   In the situation of \cref{def:pairtopath}, if $x'$ is $x$,
   so that we have $( \pathover y Y {\refl x} {y'} ) \jdeq ( y \eqto y' )$,
-  then for any $q : y \eqto y'$, we can construct an identification of type
+  then for any $q : y \eqto y'$, we can construct an identification of type:
   \[
     \pathpair {\refl x} q \eqto \ap {\pair (x)} q
   \]
-  holds.
-\end{lemma}
+\end{construction}
 
-\begin{proof}
-  By induction on $q$ it suffices to establish the identity
+\begin{implementation}{cor:isEq-pair=}
+  By induction on $q$ it suffices to establish an identification
   \[
     \pathpair {\refl x} {\refl y} \eqto \ap {\pair (x)} (\refl y),
   \]
   both sides of which are
   equal to $\refl {(x,y)}$ by definition.
-\end{proof}
+\end{implementation}
 
 The following lemma gives the desired characterization of paths between pairs.
 
@@ -1531,7 +1530,7 @@ The following lemma gives the desired characterization of paths between pairs.
   is an equivalence of type
   \[
     \Bigl( \sum_{p:x \eqto x'} \pathover y Y p {y'} \Bigr)
-    \weq \left ( (x,y) \eqto (x',y') \right ).
+    \equivto \bigl( (x,y) \eqto (x',y') \bigr).
   \]
 \end{lemma}
 
@@ -3355,8 +3354,22 @@ give an equivalence from $A\to B_\div$ to $A_+\ptdto B$.
 Since $\UUp$ and $X\ptdto Y$ are sum types, the results on identifying pairs
 in \cref{sec:pairpaths} apply to pointed types and pointed maps as well.
 
+\begin{definition}\label{def:pointedequiv}
+  If $X$ and $Y$ are pointed types, we define the type of pointed equivalences
+  from $X$ to $Y$ as:
+  \[
+    X \ptdweto Y \defeq \sum_{f : X \ptdto Y}\isEq(f_\div)\qedhere
+  \]
+\end{definition}
 \begin{xca}\label{xca:pointedequiv}
-  TODO: pointed equivalences, $f : X \ptdweq Y$
+  From an identification of pointed types $p : X \eqto Y$,
+  construct an identification of the underlying types, $p_\div : X_\div \eqto Y_\div$,
+  as well as an identification $q : \pt_Y \eqto \ptoe p_\div(\pt_X)$.
+  Together, this gives a map of type
+  \[
+    (X \eqto Y) \to (X \ptdweto Y).
+  \]
+  Show that this is an equivalence.
 \end{xca}
 
 \section{Operations that produce sets}

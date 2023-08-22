@@ -62,6 +62,8 @@ where they take center stage.
 \section{The type of groups}
 \label{sec:typegroup}
 
+Recall the definition of pointed types, \cref{def:pointedtypes},
+and the related conventions established in~\cref{sec:pointedtypes}.
 \begin{definition}\label{looptype}
   Given a pointed type $X\jdeq(A,a)$, we define its type of \emph{loops}
   by $\loops X \defeq (a \eqto_A a)$.%
@@ -539,7 +541,7 @@ we can take complex multiplication by $\xi$ to be the generating symmetry.
 The key insight is provided by the function $R_m:S^1\to\FinSet_m$ from~\cref{def:RmtoS1},
 with $R_m(\base)\defequi\bn m$ and
 $R_m(\Sloop)\defis \zs$, picking out exactly the cyclic permutation
-$\zs:\bn m=\bn m$ (and its iterates) among all permutations.
+$\zs:\bn m\eqto \bn m$ (and its iterates) among all permutations.
 Using our new notation, we can also write this as
 \[
   R_m : \B\ZZ \to \BSG_m.
@@ -562,7 +564,7 @@ so is in particular a pointed connected groupoid.
 Since we have a factorization of $R_m$ as the equivalence $c:\Sc\equivto\Cyc_0$
 followed by the map $\blank/m:\Cyc_0 \to \BSG_m$,
 and since $\Cyc_m$ is the $0$-image of the latter by~\cref{thm:image-Z-to-Cm},
-we get a uniquely induced pointed equivalence $g : \BCG'_m \ptdto \BCG_m$.\footnote{%
+we get a uniquely induced pointed equivalence $g : \BCG'_m \ptdweto \BCG_m$.\footnote{%
   More precisely, but using language not yet established: $\CG_m$ is both isomorphic to $\ZZ/m\ZZ$, the ``quotient group'' (\cf \cref{def:normalquotient}) of $\ZZ$ by the ``kernel'' (\cf \cref{def:kernel}) induced by $R_m$, and to $\CG'_m$, which is the corresponding ``image'' (\cf \cref{sec:image}). This pattern will later be captured in~\cref{thm:fund-thm-homs}.}
 This identifies the set $\Trunc{\inv{R_m}(X)}_0$ with the set of cycle structures
   on the $m$-element set $X$.
@@ -725,8 +727,8 @@ operation.  The original type $A$ and its element $a$ play no further role.
   propositions are unique.
 \end{remark}
 
-\begin{remark}
-  A \emph{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
+\begin{remark}\label{rem:monoids}
+  A \emph{monoid}\index{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
   \cref{def:abstractgroup}.  In other words, the existence of inverses is not assumed.  For this reason, the property that $S$ is a set, the
   unit laws, and the associativity law are, together, known as the \emph{monoid laws}.
 \end{remark}
@@ -872,7 +874,7 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
 
 \begin{xca}
   \label{xca:conj}
-  Let $\mathcal G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $c^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $c^g:\mathcal G\eqto\mathcal G$ is called \emph{conjugation} by $g$.\index{conjugation}
+  Let $\mathcal G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $\conj^g:\mathcal G\eqto\mathcal G$ is called \emph{conjugation} by $g$.\index{conjugation}
 \end{xca}
 
 \begin{remark}
@@ -932,32 +934,30 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
 \label{sec:homomorphisms}
 
 \begin{remark}\label{homom-idens}
-Let $G$ and $H$ be groups, and suppose we have a pointed function $f : \BG \ptdto \BH$.
+Let $G$ and $H$ be groups, and suppose we have a pointed function $k : \BG \ptdto \BH$.
 Suppose also, for simplicity (and without loss of generality),
-that $\pt_\BH \jdeq f ( \pt_\BG ) $ and $f_\pt \jdeq \refl{\pt_\BH}$.
-Applying \cref{def:ap} yields a function $F \defeq \ap f : \USymG \to \USymH$, which satisfies the following identities:
+that $\pt_\BH \jdeq k ( \pt_\BG ) $ and $k_\pt \jdeq \refl{\pt_\BH}$.
+Applying \cref{def:ap} yields a function $f \defeq \ap k : \USymG \to \USymH$, which satisfies the following identities:
 \begin{alignat*}2
-  F ( \refl {\pt_\BG} ) & = \refl{\pt_\BH},  &\qquad&                            \\
-  F (g ^ {-1})     & = (F (g))^{-1}         && \text {for any $g : \USymG$},    \\
-  F (g' \cdot g)   & =  F (g') \cdot  F (g) && \text {for any $g, g' : \USymG$}.
+  f ( \refl {\pt_\BG} ) & = \refl{\pt_\BH},  &\qquad&                            \\
+  f (g ^ {-1})     & = (f (g))^{-1}         && \text {for any $g : \USymG$},    \\
+  f (g' \cdot g)   & =  f (g') \cdot  f (g) && \text {for any $g, g' : \USymG$}.
 \end{alignat*}
 The first one is true by definition, the second can be proved by induction on $g$, and the third one follows from \cref{lem:apcomp}.
-These three identities assert that the function $\ap f$ \emph{preserves}, in a certain sense, the operations provided by \cref{lem:idtypesgiveabstractgroups} that
-make the abstract group $\abstr(G)$ from $\USymG$ and the abstract group $\abstr(H)$ from $\USymH$.
-In the traditional study of abstract groups, these three identities play an important role and entitle one to call the function $F$ a
+These three identities assert that the function $\ap k$ \emph{preserves}, in a certain sense, the operations provided by \cref{lem:idtypesgiveabstractgroups} that
+make up the abstract groups $\abstr(G)$ and $\abstr(H)$.
+In the traditional study of abstract groups, these three identities play an important role and entitle one to call the function $f$ a
 \emph{homomorphism of abstract groups}.\index{homomorphism}
 \end{remark}
 
 A slight generalization of the discussion above will be to suppose that we have a general pointed map with an arbitrary witness of pointedness
-$f_\pt : \pt_\BH \eqto f ( \pt_\BG ) $,
+$k_\pt : \pt_\BH \eqto k ( \pt_\BG ) $,
 not necessarily given by reflexivity.  Indeed, that works out, thereby motivating the following definition.
 
 \begin{definition}\label{def:grouphomomorphism}
   The type of \emph{group homomorphisms}\index{homomorphism!of groups}
   from $G:\typegroup$ to
   $H:\typegroup$ is defined to be\marginnote{%
-    % Sometimes we write $f : G\to_\Group H$ instead of $f : \Hom(G,H)$
-    % to emphasize that $f$ is a map of groups.
     When it is clear from context that a homomorphism is intended,
     we may write $f : G \to H$.}
   \[
@@ -968,36 +968,54 @@ not necessarily given by reflexivity.  Indeed, that works out, thereby motivatin
   $\mkhom : (\BG \ptdto \BH) \to \Hom(G,H)$.%
   \glossary(924Omega__){$\protect\mkhom$}{homomorphism constructor, \cref{def:grouphomomorphism}}
   We again write $\B : \Hom(G,H) \to (\BG \ptdto \BH)$ for the destructor,
-  and we call $\Bf$ \emph{classifying map}\index{classifying map} of the homomorphism.
+  and we call $\Bf$ the \emph{classifying map}\index{classifying map}
+  of the homomorphism.
 \end{definition}
 
-We would like to understand the effect of a homomorphism $f$ from $G$ to $H$
-on the underlying symmetries $\USymG$, $\USymH$.
-Since the underlying symmetries are obtained by taking loops,
-we should first study how pointed maps affect loops:
+We would like to understand explicitly the effect of a general homomorphism $f$ from $G$ to $H$
+on the underlying symmetries $\USymG$, $\USymH$,
+again without assuming that the witness of pointedness of $\Bf$ is given by
+reflexivity.
+So we should first study how pointed maps affect loops:\marginnote{%
+    \noindent\normalsize\begin{tikzpicture}
+      \node (Y) at (0,-1.5) {$Y$};
+      \draw (0,-1)
+      .. controls ++(170:-1) and ++(180:1) .. (2,-1.5)
+      .. controls ++(180:-1) and ++(270:1.5) .. (3.5,0.8)
+      .. controls ++(270:-1.5) and ++(80:1.4)  .. (-1,1)
+      .. controls ++(80:-1.4)  and ++(170:1) .. (0,-1);
+      \node[dot,label=left:$\pt_Y$] (a) at (0,0) {};
+      \node[dot,label=below:$k(\pt_X)$] (b) at (1.5,-.5) {};
+      \node (ct) at (2.6,1.1) {$\ap{k_\div}(p)$};
+      \draw[->] (a) .. controls ++(-20:1) and ++(170:1) .. node[auto,swap] {$k_\pt$} (b);
+      \draw[->] (b) .. controls ++(20:1) and ++(-40:1) ..
+      (2,1) .. controls ++(-40:-1) and ++(-80:-1) .. (b);
+    \end{tikzpicture}}
 
 \begin{definition}\label{def:loops-map}
-  Given pointed types $X$ and $Y$ and a pointed function $f : X\ptdto Y$ (as defined in \cref{def:pointedtypes}),
-  we define a function $\loops f : \loops X \to \loops Y$ by setting\footnote{%
-    Recall~\cref{def:ap}.}
+  Given pointed types $X$ and $Y$ and a pointed function $k : X\ptdto Y$ (as defined in \cref{def:pointedtypes}),
+  we define a function $\loops k : \loops X \to \loops Y$ by setting\footnote{%
+    Recall~\cref{def:ap} for $\ap{}$.
+    Note also that $\loops k$ is pointed: we can identify $\loops k(\refl{\pt_X})$
+  with $\refl{\pt_Y}$.}
   \[
-    \loops f(p) \defeq f_\pt^{-1} \cdot \ap{f_\div}(p) \cdot f_\pt.\qedhere
+    \loops k(p) \defeq k_\pt^{-1} \cdot \ap{k_\div}(p) \cdot k_\pt.\qedhere
   \]
 \end{definition}
 
 \begin{remark}\label{rem:loops-map}
-  If $f : X \ptdto Y$ has the reflexivity path $\refl{Y_\pt}$ as its witness
-  of pointedness, then we have an identification $\loops f(p) \eqto \ap{f_\div}$.
+  If $k : X \ptdto Y$ has the reflexivity path $\refl{Y_\pt}$ as its witness
+  of pointedness, then we have an identification $\loops k \eqto \ap{k_\div}$.
 \end{remark}
 
 \begin{definition}\label{def:USym-hom}
-  Given groups $G$ and $H$ and a homomorphism  $f$ from $G$ to, we define a function $\USymf : \USymG \to \USymH$
+  Given groups $G$ and $H$ and a homomorphism  $f$ from $G$ to $H$, we define a function $\USymf : \USymG \to \USymH$
   by setting $\USymf \defeq \loops \Bf$.
   In other words, the homomorphism $\mkhom\Bf$
   induces $\loops\Bf$ as the map on underlying symmetries.
 \end{definition}
 
-\begin{lemma}
+\begin{lemma}\label{lem:grouphomomaxioms}
   Given groups $G$ and $H$ and a homomorphism $f : \Hom(G,H)$, the function $\USymf : \USymG \to \USymH$ defined above satisfies
   the following identities:
   \begin{alignat}2
@@ -1011,8 +1029,8 @@ we should first study how pointed maps affect loops:
 \end{lemma}
 
 \begin{proof}
-  We write $f \jdeq (p,e)$, where $p : \BG \to \BH$ and $e : \pt_{\BH} = p (\pt_{\BG})$.
-  By induction on $e$, we reduce to the case where $\pt_{\BH} \jdeq p (\pt_{\BG})$.
+  We write $f \jdeq (f_\div,p)$, where $p : \pt_{\BH} \eqto f_\div (\pt_{\BG})$.
+  By induction on $p$, we reduce to the case where $\pt_{\BH} \jdeq f_\div (\pt_{\BG})$.
   We finish by applying \cref{homom-idens}.
 \end{proof}
 
@@ -1027,12 +1045,16 @@ we should first study how pointed maps affect loops:
 \end{definition}
 
 \begin{remark}
-  \label{remark:groupsasunivalenttype}By univalence, casting identifications as equivalences gives an equivalence
+  \label{remark:groupsasunivalenttype} From~\cref{xca:pointedequiv},
+  we have an equivalence
   \[
     (G\eqto_\typegroup G')\equivto \Iso(G,G')
   \]
-  between the identity type between the groups $G$ and $G'$ and the set of isomorphisms,
-  and we continue using the notation $\ptoe p$ from \cref{def:idtoeq} for the equivalence corresponding to an identification $p:G\eqto G'$.
+  between the identity type between the groups $G$ and $G'$ and the set of isomorphisms.
+  We allow ourselves to also write $p : \Iso(G,G')$ for the isomorphism
+  corresponding to an identification $p:G\eqto G'$,
+  and $\Bp : \BG \ptdweto \BG'$ for the corresponding pointed equivalence
+  of classifying types.
 \end{remark}
 
 
@@ -1054,18 +1076,20 @@ that when there is little danger of confusion, we may drop the subscript
     applied to homomorphisms as we do for groups.}
 \end{remark}
 
-  Identifications of homomorphisms $f\eqto_{\Hom(G,H)}h$\marginnote{\wip{I
-      guess we can't use $=$ until we prove that $\Hom(G,H)$
-      is indeed a set?}}
-  are equivalent to identifications of pointed maps
-  $\Bf \eqto_{\BG\ptdto\BH} \Bh$;
-  the latter are (by \cref{lem:isEq-pair=}) given by
-  pairs of an identification of (unpointed) maps
-  $H : \Bf_\div \eqto_{(\BG_\div \to \BH_\div)} \Bh_\div$ with an identification\marginnote{%
-    \wip{picture!}}
-  \[
-    K : H(\shape_G)\Bf_\pt \eqto_{(\shape_H \eqto \Bh_\div(\shape_G))} \Bh_\pt.\qedhere
-  \]
+Identifications of homomorphisms $f\eqto_{\Hom(G,H)}f'$
+are equivalent to identifications of pointed maps
+$\Bf \eqto_{\BG\ptdto\BH} \Bf'$;
+the latter are
+(by \cref{lem:isEq-pair=} and the fact that $\BH$ is a groupoid)
+given by identifications of (unpointed) maps
+$H : \Bf_\div \eqto_{(\BG_\div \to \BH_\div)} \Bf'_\div$ such that\marginnote{%
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+    \& \shape_H\ar[dl,eql,"{\Bf_\pt}"'] \ar[dr,eqr,"\Bf'_\pt"] \& \\
+    \Bf_\div(\shape_G) \ar[rr,eql,"{H(\shape_G)}"'] \& \& Bf'_\div(\shape_G)
+  \end{tikzcd}}
+\[
+  H(\shape_G)\Bf_\pt = \Bf'_\pt.
+\]
 
 We will later show that if $G$ and $H$ are groups, then $\Hom(G,H)$
 is equivalent to the \emph{set} of ``abstract group homomorphisms''
@@ -1076,67 +1100,28 @@ but it is instructive to give a direct proof of the following.
   is a set for all groups $G,H$.
 \end{lemma}
 \begin{proof}
-  but it is instructive to prove that $\Hom(G,H)$, or equivalently
+  Given homomorphisms $f,f':\Hom(G,H)$, we use the equivalence just
+  described,
   \[
-    (\BG\ptdto\BH) \defequi
-    \sum_{F:\BG_\div\to \BH_\div}(\shape_H=F(\shape_G)),
+    (f \eqto f') \equivto \sum_{H:\Bf_\div\eqto\Bf'_\div}
+    H(\shape_G)\Bf_\pt = \Bf'_\pt,
   \]
-  is a set directly from the definition. Recall our notation: a
-  homomorphism $f:\Hom(G,H)$ is recorded as the pair
+  so our goal is to prove that any two elements $(H,!),(J,!)$ of the right-hand side
+  can be identified.
+  By function extensionality, the type $H\eqto J$ is equivalent to
+  the proposition $\prod_{t:\BG_\div} H(t) = J(t)$. So now we can use
+  connectedness of $\BG_\div$, and
+  only check the equality on the point $\shape_G$. By assumption,
   \begin{displaymath}
-    \Bf \jdeq (\Bf_\div,p_f):\sum_{F:\BG_\div\to \BH_\div}(\shape_H=F(\shape_G)).
-  \end{displaymath}
-  Let us spell out the data needed to give an identity between two
-  group homomorphisms $f,f':\Hom(G,H)$.  We clearly must have a
-  $$J:\Bf_\div=\Bf_\div',$$
-  which by function extensionality (\cref{def:funext}) is equivalently
-  given by its image given by the element (with the same
-  name) in the $\Pi$-type
-  $$J:\prod_{z:\BG_\div}\Bf_\div(z)=\Bf'_\div(z).$$
-   \marginnote{  \begin{displaymath}
-    \xymatrix{&\shape_H\ar@{=}[dl]_{p_f}^{\rotatebox{35}{\footnotesize$\gets$}}
-      \ar@{=}[dr]^{p_{f'}}_{\rotatebox{-35}{\footnotesize$\to$}}&\\
-      \Bf_\div(\shape_G)\ar@{=}[rr]^{J(\shape_G)}_\to&&\,\Bf'_\div(\shape_G).}
-  \end{displaymath}}
-Transport along $J$ of $p_f:\shape_H=\Bf_\div(\shape_G)$ shows that in
-  addition we must have a path $!:J(\shape_G)\cdot p_f=p_{f'}$
- in the
-  type ${\shape_H=\Bf'_\div(\shape_G)}$.
-  In other words, we have an equivalence
-  $$(f=f')\simeq \sum_{J:\Bf_\div=\Bf'_\div}J(\shape_G)p_f=p_{f'},$$
-  and our goal is to prove that any two elements are identical.
-  \marginnote{Induction on $\gamma:\shape_G=z$ gives
-   $$\xymatrix{
-    \Bf_\div(\shape_G)\ar@{=}[rr]^{J(\shape_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&&
-    \Bf'_\div(\shape_G)\ar@{=}[d]^\downarrow_{\Bf'_\div(\gamma)}\\
-    \Bf_\div(z)\ar@{=}[rr]^{J(z)}_\to&&\,\Bf'_\div(z).}
-  $$
-  Together these two commutative diagrams (and the fact that we're in a set) show that $(J,!)$ is unique.}
-   Take two elements $(J,!),(K,!):\sum_{J:\Bf_\div=\Bf'_\div}J(\shape_G)p_f=p_{f'}$.  We must prove that $(J,!) = (K,!)$ has
-   an element.
-  % Notice that, for any $L:\Bf_\div = \Bf'_\div$, one can
-  % prove by induction on $\gamma:\shape_G=x$ that the following diagram
-  % commutes:
-  % $$\xymatrix{
-  %   \Bf_\div(\shape_G)\ar@{=}[r]^{L(\shape_G)}_\to\ar@{=}[d]^\downarrow_{\Bf_\div(\gamma)}&
-  %   \Bf'_\div(\shape_G)\ar@{=}[d]^\downarrow_{\Bf'_\div(\gamma)}\\
-  %   \Bf_\div(z)\ar@{=}[r]^{L(z)}_\to&\,\Bf'_\div(z).}
-  % $$
-  % It means in particular that, for propositional goals, $L$ is
-  % entirely determined by $L(\shape_G)$. More precisely, the remark
-  % applies to $J$ and $K$ when we try to prove $(J,!) = (K,!)$.
-  Indeed,
-  this type is equivalent to $J=K$, which is in turn equivalent to
-  $\prod_{z:\BG_\div}J(z)=K(z)$, and because $\Bf_\div(z)=\Bf'_\div(z)$
-  is a set for every $z$ ($\BH_\div$ being a groupoid), the type
-  $J(z)=K(z)$ is a proposition. Hence, with the propositional goal
-  $(J,!) = (K,!)$, one can now use connectedness of $\BG_\div$, and
-  only check the equality on the point $\shape_G$. By definition,
-  \begin{displaymath}
-    J(\shape_G) = p_{f'}\inv{p_f} = K(\shape_G).
+    H(\shape_G) = \Bf'_\pt \inv{\Bf_\pt} = J(\shape_G).
   \end{displaymath}
   This concludes the proof that $f=f'$ is a proposition, or in other
-  words that $\Hom(G,H)$ is a set.
+  words that $\Hom(G,H)$ is a set.\footnote{%
+    The same argument shows that the type $X\ptdto Y$ is a set
+    whenever $X$ is connected and $Y$ is a groupoid.
+    A more general fact is that $X \ptdto Y$ is an $n$-type
+    whenever $X$ is $(k-1)$-connected and $Y$ is $(n+k)$-truncated,
+    for all $k\ge0$ and $n\ge-1$.}
 \end{proof}
 
 \begin{example}%
@@ -1207,10 +1192,9 @@ Transport along $J$ of $p_f:\shape_H=\Bf_\div(\shape_G)$ shows that in
   Then the function $\id: \FinSet_3 \to \FinSet_3$ gives rise to two
   elements of $\Hom(\permgrp 3,\permgrp 3)$: the first one is
   $(\id,\refl{\bn 3})$, which is simply denoted $\id_{\SG_3}$;
-  the second one is $(\id,\tau)$, that we will denote $\tilde\tau$
+  the second one is $(\id,\tau)$, which we will denote $\tilde\tau$
   temporarily. Let us prove $\id_{\SG_3} \neq \tilde \tau$, that
-  is, we suppose a path $\id_{\permgrp 3}\eqto \tilde \tau$\footnote{%
-    \wip{same question as above, $=$ here ok?}}
+  is, we suppose $\id_{\permgrp 3} = \tilde \tau$
   and derive a
   contradiction. By~\cref{def:loops-map} we get
   $\sigma = \tau^{-1} \sigma \tau$ for all $\sigma : \USG_3$,
@@ -1257,22 +1241,24 @@ The following example expresses that $\ZZ$ is a ``free group with one generator'
   ``universal symmetry'' and how it related to the integers.  In our
   current language, $\ZZ\defequi\mkgroup(\Sc,\base)$ and large parts of
   the universality is found in the following observation.  If $G$ is a
-  group then the evaluation equivalence
+  group, then the evaluation equivalence
   $\ev_{\BG_\div}:(S^1\to \BG_\div)\we \sum_{y:\BG_\div}(y=y)$ of
   \cref{lem:freeloopspace} yields an equivalence of sets
-  $$\ev_{\BG}:\left((S^1,\base)\ptdto \BG\right)\we (\USym G)
-            : (f,f_0)\mapsto f_0^{-1}f(\Sloop)f_0.$$
-  The domain of this equivalence $\ev_{\BG}$ is nothing but the
-  definition of $\Hom(\ZZ,G)$. Hence, $\ev_{\BG}$ provides a way to
-  identify $\Hom(\ZZ,G)$ with the abstract group $\USym G$.
-Like in \cref{lem:freeloopspace}, the inverse of $\ev_{\BG}$
-is denoted $\ve_{\BG}$ and satisfies $\ve_{\BG}(g)(\base)\jdeq\shape_G$,
-$\ve_{\BG}(g)(\Sloop)= g$. Moreover, $\ve_{\BG}(g)$ is pointed by $\refl{\shape_G}$.
+  \[
+    \ev_{\BG}:\left((S^1,\base)\ptdto \BG\right)\equivto \USymG,
+    \qquad
+    (f_\div,f_\pt)\mapsto f_\pt^{-1}\ap{f_\div}(\Sloop)f_\pt.
+  \]
+  The domain of this equivalence is equivalent to $\Hom(\ZZ,G)$.
+  Hence, $\ev_{\BG}$ provides a way to
+  identify $\Hom(\ZZ,G)$ with the underlying set $\USymG$.
+  Like in \cref{lem:freeloopspace}, the inverse of $\ev_{\BG}$
+  is denoted $\ve_{\BG}$ and satisfies $\ve_{\BG}(g)(\base)\jdeq\shape_G$ and
+  $\ve_{\BG}(g)(\Sloop)= g$.
+  Moreover, $\ve_{\BG}(g)$ is pointed by $\refl{\shape_G}$.
 \end{example}
 
-The following lemma states ``the naturality of $\ev_{\BG}$ in the previous example''.
-(DISCUSS AMONG US)
-
+The following lemma states the ``naturality'' of $\ev_{\BG}$ in the previous example.
 \begin{lemma}\label{lem:Znatural}
 Let $G$ and $H$ be groups and $f: \Hom(G,H)$.
 Then the following diagram commutes,
@@ -1309,115 +1295,73 @@ $\Sloop : \USym\ZZ$.
 
 \begin{xca}\label{xca:BGtotype}
   Let $G$ be a group and $A$ a groupoid.  Use the definitions and
-  \cref{xca:freemaps} to show that the types
+  \cref{xca:freemaps} to construct equivalences between the types:
   \begin{enumerate}
-  \item $\BG_\div\to A$,
-  \item $\sum_{a:A}\sum_{f:\BG_\div \to A}(a=f(\shape_G))$,
-  \item $\sum_{a:A}(\BG\ptdto(A,a))$ and
-  \item $\sum_{a:A}\Hom(G,\Aut_A(a))$
+  \item $\BG_\div\to A$
+  \item $\sum_{a:A}\sum_{f:\BG_\div \to A}a \eqto f(\shape_G)$
+  \item $\sum_{a:A}(\BG\ptdto(A,a))$
+  \item $\sum_{a:A}\Hom(G,\Aut_A(a))$\qedhere
   \end{enumerate}
- are all equivalent.
 \end{xca}
 
-The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon \mathcal G\to \mathcal H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_{\mathcal H} f(g')=f(g\cdot_{\mathcal G} g')$ (where we have set the name of the abstract group as a subscript to $e$ and $\cdot$).  In our setup this is simply true,
-as we record in the following remark.
-
-\begin{remark}\label{def:grouphomomaxioms}
-  Let $G$ and $H$ be groups and assume given a group homomorphism
-  $f:G\to H$.  We now define something that we will later call an
-  ``abstract group homomorphism
-  ${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from
-  $\USymG$ to $\USymH$ ``preserving'' the abstract group
-  structure, cf.\ \cref{def:abstrG} for the definition of $\abstr(G)$
-  and \cref{def:abstrisfunctor} for a condensation of what the
-  discussion below end up with concluding that ``preserves'' means.
-
-  Recall that such an $f:\Hom(G,H)$ is recorded as a pair
-  \begin{displaymath}
-    (\Bf_\div,p_f):\sum_{F:\BG_\div\to \BH_\div}(\shape_H\eqto F(\shape_G)),
-  \end{displaymath}
-  and recall the function
-  \begin{displaymath}
-    \USymf : \USymG \to \USymH
-  \end{displaymath}
-  defined in \cref{def:USym-hom}.
-
-  We take the time to develop from first principles the properties
-  that $\USymf$ satisfies.
-  One proves easily (by induction) that
-  $\trp {\inv{p_f}} = \inv{p_f} \cdot \blank \cdot p_f$. It means that
-  the element $\US f(g)$ is the ``up, over and down'' identity of
-  $\shape_H$ depicted in the following diagram:
-  \[
-    \begin{tikzcd}
-      \Bf_\div(\shape_G)\ar[r,eqr,"\ap{\Bf_\div}(g)"] &
-      \Bf_\div(\shape_G) \\
-      \shape_H\ar[r,dashed,"\USymf(g)",eqr]\ar[u,eqr,"p_f"] &
-      \shape_H\ar[u,eqr,"p_f"].
-    \end{tikzcd}
-  \]
-  With the shorthand
-  \[
-    e_G\defequi\refl{\shape_G}:\USymG
-  \]
-  and writing (to remind us where things happen)
-  \[
-    g\cdot_Gg':\USymG
-  \]
-  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture
-  $\begin{tikzcd}[cramped,sep=small]
-    \shape_G\ar[r,eqr,"g'"] & \shape_G\ar[r,eqr,"g"] & \shape_G
-  \end{tikzcd}$)
-  and likewise with a subscript $H$, we have the following statements:
-  \begin{enumerate}
-  \item the proposition $\USymf(e_G)= e_H$ holds by \cref{gp-homo-unit};
-  \item the proposition $\USymf(g \cdot_G g')=\USymf(g)\cdot_H\USymf(g')$ holds by \cref{gp-homo-comp}.\qedhere
-  \end{enumerate}
-\end{remark}
-
+The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon \mathcal G\to \mathcal H$ of abstract groups where we must ask of a function of the underlying sets that it in addition preserves the neutral element,
+multiplication, and inverse operation.
+In our setup this is simply true, as we saw in~\cref{lem:grouphomomaxioms}.
+In terms of the abstract groups determined by $G$ and $H$, we can write these equations
+as
+\begin{alignat*}2
+  \USymf ( e_G )
+  &= e_H
+  &\qquad& \\
+  \USymf (g \cdot_G g') &= \USymf(g) \cdot_H \USymf(g')
+  && \text{for all $g, g' : \USymG$,} \\
+  \USymf (g ^ {-1})
+  &= (\USymf (g))^{-1}
+  && \text{for all $g : \USymG$.}
+\end{alignat*}
+Here we follow the usual custom of defining a homomorphism of abstract groups
+just in terms of the first two:
 \begin{definition}\label{def:abstrisfunctor}
-  If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
-  $$\Hom^\abstr(\mathcal G,\mathcal H)
-\defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times
-\prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
-$$
-  \marginnote{For $s:S$ both $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
-$f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
-propositions; hence a homomorphism of abstract groups is uniquely determined
-by its underlying function of sets, and unless there is danger of
-confusion we may write $f$ instead of $(f,!)$.
-}
-If $G$ and $H$ are groups, the function
-$$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
-is defined as the function $f\mapsto \abstr(f)\defequi(\US f,!)$
-\marginnote{%
-  $\US f\defequi \trp {\inv{p_f}}\ap {\Bf_\div}: \USym G =\USym H$, and so
-  \begin{displaymath}
-    \xymatrix{%
-      \Bf_\div(\shape_G)\ar@{=}[r]^{\ap{\Bf_\div}(g)}_\to \ar@{=}[d]^\uparrow_{p_f} &
-      \Bf_\div(\shape_G)\ar@{=}[d]^\uparrow_{p_f}
-      \\
-      \shape_H\ar@{=}[r]^{\US f(g)}_\to & \shape_H.%
-    }
-  \end{displaymath} commutes.}
-made explicit in \cref{def:grouphomomaxioms}.
+  If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is\marginnote{%
+    Both $e_{\mathcal H}=f(e_{\mathcal G})$ and
+    $f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
+    propositions; hence a homomorphism of abstract groups is uniquely determined
+    by its underlying function of sets, and unless there is danger of
+    confusion we may write $f$ instead of $(f,!)$.}
+  \[
+    \Hom^\abstr(\mathcal G,\mathcal H)
+    \defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times
+    \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
+  \]
+  If $G$ and $H$ are groups, the function
+  \[
+    \abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))
+  \]
+  is defined as the function $f\mapsto \abstr(f)\defequi(\USymf,!)$
+  made explicit in \cref{def:USym-hom} and satisfying the
+  properties by~\cref{lem:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
-  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr(\mathcal G,\mathcal H)$
-%(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$
-  then the proposition $f(g^{-1})=(f(g))^{-1}$ for all $g:\mathcal
-  G$, so that we don't have to require it separately.
+  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr(\mathcal G,\mathcal H)$,
+  then the proposition $f(g^{-1})=(f(g))^{-1}$ holds for all $g:\mathcal G$,
+  so that we don't have to require it separately.
 \end{xca}
-\begin{example}
-  \label{ex:conjhomo}
-  Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  In \cref{xca:conj} we defined $c^g:S\to S$ by setting $c^g(s)\defequi g\cdot s\cdot g^{-1}$ for $s:S$ and asked you to show that it ``preserves the group structure'', \ie represents a homomorphism
-$$c^g:\Hom^\abstr(\mathcal G,\mathcal G)$$
-called \emph{conjugation} by $g$\index{conjugation}.
-Actually, we asked more: namely that conjugation represents an identity (for which we used the same symbol) $c^g:\mathcal G=\mathcal G$.
-
-If $\mathcal H$ is some other abstract group, transport along $c^g$ gives an identity
- $c^g_*:\Hom(\mathcal H,\mathcal G)=\Hom(\mathcal H,\mathcal G)$ which should be viewed as ``postcomposing with conjugation''.  (Naturally, similar considerations goes for elements in $\mathcal H$, giving rise to ``precomposition with conjugation''.)
-\end{example}
+\begin{remark}
+  Our definition of homomorphisms of abstract groups also makes sense for monoids
+  as defined in~\cref{rem:monoids}, and with our definition it is immediate that
+  a homomorphism of abstract groups also defines a homomorphism of the underlying
+  monoids. It is possible, however to instead define the set of homomorphisms
+  from $\mathcal G \jdeq (S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$
+  to $\mathcal H\jdeq(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$
+  simply by
+  \[
+    \sum_{f:S\to T}
+    \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').\qedhere
+  \]
+\end{remark}
+\begin{xca}
+  Prove this by deriving $e_{\mathcal H}=f(e_{\mathcal G})$ from the above.
+\end{xca}
 
 \begin{xca}
 Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
@@ -1425,6 +1369,48 @@ Prove that composition of the functions on the underlying sets gives a compositi
   Prove that if $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ then
 $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)}$.
 \end{xca}
+
+\begin{example}
+  \label{ex:conjhomo}
+  Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  In \cref{xca:conj} we defined $\conj^g:S\to S$ by setting $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$ for $s:S$ and asked you to show that it ``preserves the group structure'', \ie represents a homomorphism
+  \[
+    c^g:\Hom^\abstr(\mathcal G,\mathcal G)
+  \]
+  called \emph{conjugation} by $g$\index{conjugation}.
+  Actually, we asked more: namely that conjugation by $g$ is an isomorphism,
+  and hence determines an identification
+  (for which we used the same symbol) $\conj^g:\mathcal G\eqto\mathcal G$.
+
+  If $\mathcal H$ is some other abstract group, transport along $\conj^g$
+  gives an identification
+  $\conj^g_*:\Hom(\mathcal H,\mathcal G) \eqto \Hom(\mathcal H,\mathcal G)$
+  which should be viewed as ``postcomposing with conjugation''.
+  (Naturally, similar considerations goes for elements in $\mathcal H$,
+  giving rise to ``precomposition with conjugation''.)
+\end{example}
+
+\begin{example}
+  In terms of concrete groups, it is not so easy to define the
+  classifying map of conjugation by $g$, as homomorphism (indeed, automorphism)
+  $\conj^g : \Hom(G,G)$, for any particular given $g:\USymG$.\footnote{%
+    We shall develop a general method of doing this in~\cref{sec:homabsisconcr}
+    below.}
+  However, conjugation defines uniformly a homomorphism
+  $\conj : \Hom(G,\Aut(G))$.
+  And this has a very pretty classifying map,
+  $\Bconj : \BG \ptdto \BAut(G)$, defined by $t \mapsto \mkgroup(\BG_\div,t)$,
+  that is, if we have a shape $t$ for $G$,
+  then we get a new group in the component of $G$
+  by taking $t$ as the new designed shape.
+
+  To see that this really captures conjugation as defined above on underlying
+  symmetries, we generalize, and prove for all $t:\BG$ and all $g : \shape_G \eqto t$,
+  that $\ap{\Bconj}(g)$ applied to any $s : \USymG$ equals
+  $gsg^{-1} : t \eqto t$.\footnote{%
+    Note that $\USym(\Bconj(t)) \jdeq \USym(\mkgroup(\BG_\div,t)) \jdeq \loops(BG_\div,t)
+    \jdeq (t\eqto t)$.}
+  And this follows by induction on $g$.
+\end{example}
 
 \section{The sign homomorphism}
 \label{sec:sign-homomorphism}
@@ -2368,7 +2354,7 @@ They do, and we provide two independent and somewhat different arguments.  Trans
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 in \cref{def:abstrisfunctor} as the function which takes a homomorphism, aka a pointed map $f=(\Bf_\div,p_f):\BG\ptdto\BH$ to the induced map of identity types
 $$\US f\defequi \mathrm{ad}_{p_f}\ap{\Bf_\div}:\USym G\to\USym H$$
- together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:grouphomomaxioms}.
+ together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:abstrisfunctor}.
 
 
 Going back is somewhat more involved, and it is here we consider two approaches.
@@ -2708,7 +2694,7 @@ $\BG\weq \BG$ can not possibly mean anything but
 $\BG_\div\simeq \BG_\div$ as the operator ``$\weq$'' acts on bare
 types. To refer to the type of pointed equivalences (that is the
 pointed functions whose underlying functions are equivalences), we
-shall use the notation $\BG \ptdweq \BG$.%
+shall use the notation $\BG \ptdweto \BG$.%
 
 \subsection{Center of a group}
 \label{sec:center-group}
@@ -3214,11 +3200,11 @@ identity type $x\eqto y$ is a groupoid for every $x,y:A$.
   (\cref{def:abelian-groups}), and so it yields an element of
   $\loopspace {(\BB G)} \eqto_{\typegroup} G$. %
   \marginnote[-1.5\baselineskip]{%
-    If $X \ptdweq Y$ denote the type of pointed equivalences between
+    If $X \ptdweto Y$ denote the type of pointed equivalences between
     pointed types $X,Y:\UUp$, then the univalence axiom implies that
     there is an equivalence
     \begin{displaymath}
-      (X=Y) \weq (X \ptdweq Y).
+      (X=Y) \weq (X \ptdweto Y).
     \end{displaymath}%
   }%
   Conversely, take a pointed simply connected $2$-type $(A,a)$. We
