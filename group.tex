@@ -727,8 +727,8 @@ operation.  The original type $A$ and its element $a$ play no further role.
   propositions are unique.
 \end{remark}
 
-\begin{remark}
-  A \emph{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
+\begin{remark}\label{rem:monoids}
+  A \emph{monoid}\index{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
   \cref{def:abstractgroup}.  In other words, the existence of inverses is not assumed.  For this reason, the property that $S$ is a set, the
   unit laws, and the associativity law are, together, known as the \emph{monoid laws}.
 \end{remark}
@@ -874,7 +874,7 @@ for all $g:S$ we have $g^{-1}\cdot g=e$.
 
 \begin{xca}
   \label{xca:conj}
-  Let $\mathcal G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $c^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $c^g:\mathcal G\eqto\mathcal G$ is called \emph{conjugation} by $g$.\index{conjugation}
+  Let $\mathcal G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $c^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $\conj^g:\mathcal G\eqto\mathcal G$ is called \emph{conjugation} by $g$.\index{conjugation}
 \end{xca}
 
 \begin{remark}
@@ -1015,7 +1015,7 @@ So we should first study how pointed maps affect loops:\marginnote{%
   induces $\loops\Bf$ as the map on underlying symmetries.
 \end{definition}
 
-\begin{lemma}
+\begin{lemma}\label{lem:grouphomomaxioms}
   Given groups $G$ and $H$ and a homomorphism $f : \Hom(G,H)$, the function $\USymf : \USymG \to \USymH$ defined above satisfies
   the following identities:
   \begin{alignat}2
@@ -1116,7 +1116,12 @@ but it is instructive to give a direct proof of the following.
     H(\shape_G) = \Bf'_\pt \inv{\Bf_\pt} = J(\shape_G).
   \end{displaymath}
   This concludes the proof that $f=f'$ is a proposition, or in other
-  words that $\Hom(G,H)$ is a set.
+  words that $\Hom(G,H)$ is a set.\footnote{%
+    The same argument shows that the type $X\ptdto Y$ is a set
+    whenever $X$ is connected and $Y$ is a groupoid.
+    A more general fact is that $X \ptdto Y$ is an $n$-type
+    whenever $X$ is $(k-1)$-connected and $Y$ is $(n+k)$-truncated,
+    for all $k\ge0$ and $n\ge-1$.}
 \end{proof}
 
 \begin{example}%
@@ -1187,10 +1192,9 @@ but it is instructive to give a direct proof of the following.
   Then the function $\id: \FinSet_3 \to \FinSet_3$ gives rise to two
   elements of $\Hom(\permgrp 3,\permgrp 3)$: the first one is
   $(\id,\refl{\bn 3})$, which is simply denoted $\id_{\SG_3}$;
-  the second one is $(\id,\tau)$, that we will denote $\tilde\tau$
+  the second one is $(\id,\tau)$, which we will denote $\tilde\tau$
   temporarily. Let us prove $\id_{\SG_3} \neq \tilde \tau$, that
-  is, we suppose a path $\id_{\permgrp 3}\eqto \tilde \tau$\footnote{%
-    \wip{same question as above, $=$ here ok?}}
+  is, we suppose $\id_{\permgrp 3} = \tilde \tau$
   and derive a
   contradiction. By~\cref{def:loops-map} we get
   $\sigma = \tau^{-1} \sigma \tau$ for all $\sigma : \USG_3$,
@@ -1237,22 +1241,24 @@ The following example expresses that $\ZZ$ is a ``free group with one generator'
   ``universal symmetry'' and how it related to the integers.  In our
   current language, $\ZZ\defequi\mkgroup(\Sc,\base)$ and large parts of
   the universality is found in the following observation.  If $G$ is a
-  group then the evaluation equivalence
+  group, then the evaluation equivalence
   $\ev_{\BG_\div}:(S^1\to \BG_\div)\we \sum_{y:\BG_\div}(y=y)$ of
   \cref{lem:freeloopspace} yields an equivalence of sets
-  $$\ev_{\BG}:\left((S^1,\base)\ptdto \BG\right)\we (\USym G)
-            : (f,f_0)\mapsto f_0^{-1}f(\Sloop)f_0.$$
-  The domain of this equivalence $\ev_{\BG}$ is nothing but the
-  definition of $\Hom(\ZZ,G)$. Hence, $\ev_{\BG}$ provides a way to
-  identify $\Hom(\ZZ,G)$ with the abstract group $\USym G$.
-Like in \cref{lem:freeloopspace}, the inverse of $\ev_{\BG}$
-is denoted $\ve_{\BG}$ and satisfies $\ve_{\BG}(g)(\base)\jdeq\shape_G$,
-$\ve_{\BG}(g)(\Sloop)= g$. Moreover, $\ve_{\BG}(g)$ is pointed by $\refl{\shape_G}$.
+  \[
+    \ev_{\BG}:\left((S^1,\base)\ptdto \BG\right)\equivto \USymG,
+    \qquad
+    (f_\div,f_\pt)\mapsto f_\pt^{-1}\ap{f_\div}(\Sloop)f_\pt.
+  \]
+  The domain of this equivalence is equivalent to $\Hom(\ZZ,G)$.
+  Hence, $\ev_{\BG}$ provides a way to
+  identify $\Hom(\ZZ,G)$ with the underlying set $\USymG$.
+  Like in \cref{lem:freeloopspace}, the inverse of $\ev_{\BG}$
+  is denoted $\ve_{\BG}$ and satisfies $\ve_{\BG}(g)(\base)\jdeq\shape_G$ and
+  $\ve_{\BG}(g)(\Sloop)= g$.
+  Moreover, $\ve_{\BG}(g)$ is pointed by $\refl{\shape_G}$.
 \end{example}
 
-The following lemma states ``the naturality of $\ev_{\BG}$ in the previous example''.
-(DISCUSS AMONG US)
-
+The following lemma states the ``naturality'' of $\ev_{\BG}$ in the previous example.
 \begin{lemma}\label{lem:Znatural}
 Let $G$ and $H$ be groups and $f: \Hom(G,H)$.
 Then the following diagram commutes,
@@ -1289,115 +1295,73 @@ $\Sloop : \USym\ZZ$.
 
 \begin{xca}\label{xca:BGtotype}
   Let $G$ be a group and $A$ a groupoid.  Use the definitions and
-  \cref{xca:freemaps} to show that the types
+  \cref{xca:freemaps} to construct equivalences between the types:
   \begin{enumerate}
-  \item $\BG_\div\to A$,
-  \item $\sum_{a:A}\sum_{f:\BG_\div \to A}(a=f(\shape_G))$,
-  \item $\sum_{a:A}(\BG\ptdto(A,a))$ and
-  \item $\sum_{a:A}\Hom(G,\Aut_A(a))$
+  \item $\BG_\div\to A$
+  \item $\sum_{a:A}\sum_{f:\BG_\div \to A}a \eqto f(\shape_G)$
+  \item $\sum_{a:A}(\BG\ptdto(A,a))$
+  \item $\sum_{a:A}\Hom(G,\Aut_A(a))$\qedhere
   \end{enumerate}
- are all equivalent.
 \end{xca}
 
-The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon \mathcal G\to \mathcal H$ of abstract groups where we must specify that in addition to preserving the neutral element ``$f(e_G)=e_H$'' it must preserve multiplication: ``$f(g)\cdot_{\mathcal H} f(g')=f(g\cdot_{\mathcal G} g')$ (where we have set the name of the abstract group as a subscript to $e$ and $\cdot$).  In our setup this is simply true,
-as we record in the following remark.
-
-\begin{remark}\label{def:grouphomomaxioms}
-  Let $G$ and $H$ be groups and assume given a group homomorphism
-  $f:G\to H$.  We now define something that we will later call an
-  ``abstract group homomorphism
-  ${\abstr}(f):\abstr(G)\to \abstr(H)$'', \ie a function of sets from
-  $\USymG$ to $\USymH$ ``preserving'' the abstract group
-  structure, cf.\ \cref{def:abstrG} for the definition of $\abstr(G)$
-  and \cref{def:abstrisfunctor} for a condensation of what the
-  discussion below end up with concluding that ``preserves'' means.
-
-  Recall that such an $f:\Hom(G,H)$ is recorded as a pair
-  \begin{displaymath}
-    (\Bf_\div,p_f):\sum_{F:\BG_\div\to \BH_\div}(\shape_H\eqto F(\shape_G)),
-  \end{displaymath}
-  and recall the function
-  \begin{displaymath}
-    \USymf : \USymG \to \USymH
-  \end{displaymath}
-  defined in \cref{def:USym-hom}.
-
-  We take the time to develop from first principles the properties
-  that $\USymf$ satisfies.
-  One proves easily (by induction) that
-  $\trp {\inv{p_f}} = \inv{p_f} \cdot \blank \cdot p_f$. It means that
-  the element $\US f(g)$ is the ``up, over and down'' identity of
-  $\shape_H$ depicted in the following diagram:
-  \[
-    \begin{tikzcd}
-      \Bf_\div(\shape_G)\ar[r,eqr,"\ap{\Bf_\div}(g)"] &
-      \Bf_\div(\shape_G) \\
-      \shape_H\ar[r,dashed,"\USymf(g)",eqr]\ar[u,eqr,"p_f"] &
-      \shape_H\ar[u,eqr,"p_f"].
-    \end{tikzcd}
-  \]
-  With the shorthand
-  \[
-    e_G\defequi\refl{\shape_G}:\USymG
-  \]
-  and writing (to remind us where things happen)
-  \[
-    g\cdot_Gg':\USymG
-  \]
-  for the composite $g\,g'$ of $g$ and $g'$ (note that we use functional notation, so that composition is ``first $g'$ and then $g$'' as in the picture
-  $\begin{tikzcd}[cramped,sep=small]
-    \shape_G\ar[r,eqr,"g'"] & \shape_G\ar[r,eqr,"g"] & \shape_G
-  \end{tikzcd}$)
-  and likewise with a subscript $H$, we have the following statements:
-  \begin{enumerate}
-  \item the proposition $\USymf(e_G)= e_H$ holds by \cref{gp-homo-unit};
-  \item the proposition $\USymf(g \cdot_G g')=\USymf(g)\cdot_H\USymf(g')$ holds by \cref{gp-homo-comp}.\qedhere
-  \end{enumerate}
-\end{remark}
-
+The definition of group homomorphisms in \cref{def:grouphomomorphism} should be contrasted with the usual -- and somewhat more cumbersome -- notion of a group homomorphism $f\colon \mathcal G\to \mathcal H$ of abstract groups where we must ask of a function of the underlying sets that it in addition preserves the neutral element,
+multiplication, and inverse operation.
+In our setup this is simply true, as we saw in~\cref{lem:grouphomomaxioms}.
+In terms of the abstract groups determined by $G$ and $H$, we can write these equations
+as
+\begin{alignat*}2
+  \USymf ( e_G )
+  &= e_H
+  &\qquad& \\
+  \USymf (g \cdot_G g') &= \USymf(g) \cdot_H \USymf(g')
+  && \text{for all $g, g' : \USymG$,} \\
+  \USymf (g ^ {-1})
+  &= (\USymf (g))^{-1}
+  && \text{for all $g : \USymG$.}
+\end{alignat*}
+Here we follow the usual custom of defining a homomorphism of abstract groups
+just in terms of the first two:
 \begin{definition}\label{def:abstrisfunctor}
-  If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
-  $$\Hom^\abstr(\mathcal G,\mathcal H)
-\defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times
-\prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
-$$
-  \marginnote{For $s:S$ both $(e_{\mathcal H}=f(e_{\mathcal G}))$ and
-$f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
-propositions; hence a homomorphism of abstract groups is uniquely determined
-by its underlying function of sets, and unless there is danger of
-confusion we may write $f$ instead of $(f,!)$.
-}
-If $G$ and $H$ are groups, the function
-$$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
-is defined as the function $f\mapsto \abstr(f)\defequi(\US f,!)$
-\marginnote{%
-  $\US f\defequi \trp {\inv{p_f}}\ap {\Bf_\div}: \USym G =\USym H$, and so
-  \begin{displaymath}
-    \xymatrix{%
-      \Bf_\div(\shape_G)\ar@{=}[r]^{\ap{\Bf_\div}(g)}_\to \ar@{=}[d]^\uparrow_{p_f} &
-      \Bf_\div(\shape_G)\ar@{=}[d]^\uparrow_{p_f}
-      \\
-      \shape_H\ar@{=}[r]^{\US f(g)}_\to & \shape_H.%
-    }
-  \end{displaymath} commutes.}
-made explicit in \cref{def:grouphomomaxioms}.
+  If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$ and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$ are two abstract groups, then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is\marginnote{%
+    Both $e_{\mathcal H}=f(e_{\mathcal G})$ and
+    $f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
+    propositions; hence a homomorphism of abstract groups is uniquely determined
+    by its underlying function of sets, and unless there is danger of
+    confusion we may write $f$ instead of $(f,!)$.}
+  \[
+    \Hom^\abstr(\mathcal G,\mathcal H)
+    \defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times
+    \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
+  \]
+  If $G$ and $H$ are groups, the function
+  \[
+    \abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))
+  \]
+  is defined as the function $f\mapsto \abstr(f)\defequi(\USymf,!)$
+  made explicit in \cref{def:USym-hom} and satisfying the
+  properties by~\cref{lem:grouphomomaxioms}.
 \end{definition}
 \begin{xca}
-  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr(\mathcal G,\mathcal H)$
-%(G_{\Set},e_G,\mu_G,\iota_G),(H_{\Set},e_H,\mu_H,\iota_H))$
-  then the proposition $f(g^{-1})=(f(g))^{-1}$ for all $g:\mathcal
-  G$, so that we don't have to require it separately.
+  Note that the inverses play no r\^ole in the definition of a homomorphism of abstract groups.  Prove that if $(f,!):\Hom^\abstr(\mathcal G,\mathcal H)$,
+  then the proposition $f(g^{-1})=(f(g))^{-1}$ holds for all $g:\mathcal G$,
+  so that we don't have to require it separately.
 \end{xca}
-\begin{example}
-  \label{ex:conjhomo}
-  Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  In \cref{xca:conj} we defined $c^g:S\to S$ by setting $c^g(s)\defequi g\cdot s\cdot g^{-1}$ for $s:S$ and asked you to show that it ``preserves the group structure'', \ie represents a homomorphism
-$$c^g:\Hom^\abstr(\mathcal G,\mathcal G)$$
-called \emph{conjugation} by $g$\index{conjugation}.
-Actually, we asked more: namely that conjugation represents an identity (for which we used the same symbol) $c^g:\mathcal G=\mathcal G$.
-
-If $\mathcal H$ is some other abstract group, transport along $c^g$ gives an identity
- $c^g_*:\Hom(\mathcal H,\mathcal G)=\Hom(\mathcal H,\mathcal G)$ which should be viewed as ``postcomposing with conjugation''.  (Naturally, similar considerations goes for elements in $\mathcal H$, giving rise to ``precomposition with conjugation''.)
-\end{example}
+\begin{remark}
+  Our definition of homomorphisms of abstract groups also makes sense for monoids
+  as defined in~\cref{rem:monoids}, and with our definition it is immediate that
+  a homomorphism of abstract groups also defines a homomorphism of the underlying
+  monoids. It is possible, however to instead define the set of homomorphisms
+  from $\mathcal G \jdeq (S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$
+  to $\mathcal H\jdeq(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$
+  simply by
+  \[
+    \sum_{f:S\to T}
+    \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').\qedhere
+  \]
+\end{remark}
+\begin{xca}
+  Prove this by deriving $e_{\mathcal H}=f(e_{\mathcal G})$ from the above.
+\end{xca}
 
 \begin{xca}
 Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
@@ -1405,6 +1369,48 @@ Prove that composition of the functions on the underlying sets gives a compositi
   Prove that if $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ then
 $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)}$.
 \end{xca}
+
+\begin{example}
+  \label{ex:conjhomo}
+  Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  In \cref{xca:conj} we defined $\conj^g:S\to S$ by setting $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$ for $s:S$ and asked you to show that it ``preserves the group structure'', \ie represents a homomorphism
+  \[
+    c^g:\Hom^\abstr(\mathcal G,\mathcal G)
+  \]
+  called \emph{conjugation} by $g$\index{conjugation}.
+  Actually, we asked more: namely that conjugation by $g$ is an isomorphism,
+  and hence determines an identification
+  (for which we used the same symbol) $\conj^g:\mathcal G\eqto\mathcal G$.
+
+  If $\mathcal H$ is some other abstract group, transport along $\conj^g$
+  gives an identification
+  $\conj^g_*:\Hom(\mathcal H,\mathcal G) \eqto \Hom(\mathcal H,\mathcal G)$
+  which should be viewed as ``postcomposing with conjugation''.
+  (Naturally, similar considerations goes for elements in $\mathcal H$,
+  giving rise to ``precomposition with conjugation''.)
+\end{example}
+
+\begin{example}
+  In terms of concrete groups, it is not so easy to define the
+  classifying map of conjugation by $g$, as homomorphism (indeed, automorphism)
+  $\conj^g : \Hom(G,G)$, for any particular given $g:\USymG$.\footnote{%
+    We shall develop a general method of doing this in~\cref{sec:homabsisconcr}
+    below.}
+  However, conjugation defines uniformly a homomorphism
+  $\conj : \Hom(G,\Aut(G))$.
+  And this has a very pretty classifying map,
+  $\Bconj : \BG \ptdto \BAut(G)$, defined by $t \mapsto \mkgroup(\BG_\div,t)$,
+  that is, if we have a shape $t$ for $G$,
+  then we get a new group in the component of $G$
+  by taking $t$ as the new designed shape.
+
+  To see that this really captures conjugation as defined above on underlying
+  symmetries, we generalize, and prove for all $t:\BG$ and all $g : \shape_G \eqto t$,
+  that $\ap{\Bconj}(g)$ applied to any $s : \USymG$ equals
+  $gsg^{-1} : t \eqto t$.\footnote{%
+    Note that $\USym(\Bconj(t)) \jdeq \USym(\mkgroup(\BG_\div,t)) \jdeq \loops(BG_\div,t)
+    \jdeq (t\eqto t)$.}
+  And this follows by induction on $g$.
+\end{example}
 
 \section{The sign homomorphism}
 \label{sec:sign-homomorphism}
@@ -2348,7 +2354,7 @@ They do, and we provide two independent and somewhat different arguments.  Trans
 $$\abstr:\Hom(G,H)\to\Hom^\abstr(\abstr(G),\abstr(H))$$
 in \cref{def:abstrisfunctor} as the function which takes a homomorphism, aka a pointed map $f=(\Bf_\div,p_f):\BG\ptdto\BH$ to the induced map of identity types
 $$\US f\defequi \mathrm{ad}_{p_f}\ap{\Bf_\div}:\USym G\to\USym H$$
- together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:grouphomomaxioms}.
+ together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:abstrisfunctor}.
 
 
 Going back is somewhat more involved, and it is here we consider two approaches.
