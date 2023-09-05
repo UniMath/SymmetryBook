@@ -1083,20 +1083,19 @@ g(\Sloop): \uc{\base}(\Sloop)\, g(\base)\,R(\Sloop)^{-1}\eqto g(\base).
   path you take around the square
   \[
     \begin{tikzcd}[row sep=large,column sep=huge,ampersand replacement=\&]
-      \zet\ar[r,"\Sloop^-"]\ar[d,eqr,"\zs"] \&
-      (\base\eqto \base)\ar[d,eqr,"\Sloop\cdot\blank"] \\
-      \zet\ar[r,"\Sloop^-"] \& (\base\eqto \base).
+      \zet\ar[r,"n\mapsto\Sloop^n"]\ar[d,equivr,"\zs"] \&
+      (\base\eqto \base)\ar[d,equivr,"p\mapsto\Sloop\cdot p"] \\
+      \zet\ar[r,"n\mapsto\Sloop^n"] \& (\base\eqto \base).
     \end{tikzcd}
   \]
 }%
 So far we have only given the type of $g(\Sloop)$. By definition,
-$R(\Sloop)$ is $\zs$ and $\uc{\base}(\Sloop)$ is composition with
-$\Sloop$.
-The element $g(\Sloop)$ follows by a simple calculation: the
-proposition ${\Sloop\,\Sloop^{n-1}} = {\Sloop^n}$ holds for all
-$n:\zet$.
+$R(\Sloop)$ is $\zs$. Using \cref{xca:trp-in-a/x=b/x}\ref{trp-in-a=x}
+we can identify $\uc{\base}(\Sloop)$ with composition with $\Sloop$.
+The element $g(\Sloop)$ is obtained by function extensionality and
+a simple calculation, using the identification of
+${\Sloop\,\Sloop^{n-1}}$ and $\Sloop^n$ for any $n:\zet$.
 \end{definition}
-
 
 \begin{theorem}
   \label{lem:univisexp}
@@ -1106,7 +1105,7 @@ $\uc{\base}(z)$ and $R(z)$.
 \end{theorem}
 \begin{proof}
 We apply \cref{lem:weq-iso} and verify the two conditions.
-  First, we need to give elements $H(z,p):g(z)(f(z)(p))=p$
+  First, we need to give elements $H(z,p):g(z)(f(z)(p))\eqto p$
 for all $z:\Sc$ and $p:\uc{\base}(z)\jdeq(\base\eqto z)$.
 By induction on $p:\base\eqto z$ it suffices to set
 $H(\base,\refl\base)\defeq\refl{\refl{\base}}$ since
@@ -1115,12 +1114,12 @@ $g(\base)(f(\base)(\refl{\base}))\jdeq g(\base)(0)\jdeq\refl{\base}$.
 Secondly, we need to give elements $G(z)(n):f(z)(g(z)(n))=n$
 for all $z:\Sc$ and $n: R(z)$.
 By circle induction it suffices to define $G(\base)$ and $G(\Sloop)$,
-but since $\zet$ is a set the information for $G(\Sloop)$ is redundant.
-Hence, we need to show that for all $n:\zet$ that
-$f(\base)(g(\base)(n))\jdeq  f(\base)(\Sloop^n)$ is equal to $n$.
+but the type of $G(\base)$ is a proposition (as $\zet$ is a set),
+so the information for $G(\Sloop)$ is redundant.
+Hence, it suffices to show that
+$f(\base)(g(\base)(n))\jdeq  f(\base)(\Sloop^n)= n$ for all $n:\zet$.
 This follows from \cref{lem:windingnumber}.
 \end{proof}
-
 
 \begin{corollary}\label{cor:S1groupoid}
 The circle $\Sc$ is a groupoid, and the function
@@ -1131,28 +1130,29 @@ sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
 \begin{proof}
 For any $z:\Sc$, the type $\uc{\base}(z)\jdeq (\base\eqto_{\Sc}z)$ is a set
-since $R(z)$ is a set and $\uc{\base}(z) \equiv R(z)$.
+since $R(z)$ is a set and $f(z):\uc{\base}(z) \to R(z)$ an equivalence.
 Since the circle is connected and being a set is a proposition, it follows
 that $y\eqto_{\Sc}z$ is a set, for any $y,z:\Sc$. Hence $\Sc$ is a groupoid.
 By \cref{def:gRtoP}, ${\Sloop}^{-}\jdeq g(\base)$ is an equivalence.
 \end{proof}
 \begin{definition}\label{def:windingnumber}
-  The inverse function of ${\Sloop}^{\blank}$
-  is called the \emph{winding number} function
-  $\wdg : (\base \eqto_\Sc\base) \to \zet$.
+  The inverse equivalence of ${\Sloop}^{\blank} \defeq (n\mapsto \Sloop^n)$
+  is called the \emph{winding number function}
+  $\wdg : (\base \eqto\base) \equivto \zet$.
+  \glossary(windingnumber){$\protect\wdg$}{winding number function}
 \end{definition}
 The following lemma is a simple example of a technique later called \emph{delooping}.
 \begin{lemma}\label{lem:S1-delooping}
 Let $A$ be a connected type and $a:A$.
-Assume we have an equivalence $e:(\base\eqto_{\Sc}\base) \to (a=a)$
-of symmetries such that $e(\refl{\base})=\refl{a}$
-and $e(p\cdot q)=e(p)\cdot e(q)$, for all $p,q:(\base\eqto_{\Sc}\base)$.
+Assume we have an equivalence $e:(\base\eqto\base) \to (a\eqto a)$
+of symmetries such that $e(\refl{\base})\eqto\refl{a}$
+and $e(p\cdot q)\eqto e(p)\cdot e(q)$, for all $p,q:(\base\eqto\base)$.
 Then $\check e : \Sc\to A$ defined by circle recursion by setting
 $\check e(\base)\defeq a$ and $\check e(\Sloop)\defis e(\Sloop)$
 is an equivalence.
 \end{lemma}
 \begin{proof}
-We have $\ap{\check e} = e$ since they produce equal values when applied
+We have $\ap{\check e}\eqto e$ since they produce equal values when applied
 to $\Sloop^n$, for all $n:\zet$. Now use that $A$ and $\Sc$ are connected and
 apply \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
 \end{proof}
@@ -1160,7 +1160,7 @@ apply \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
 \begin{xca}\label{xca:general-winding}
   Generalizing~\cref{def:windingnumber}, of winding numbers,
   use circle induction to define, for any point $x:\Sc$ of the circle
-  an equivalence, $\wdg_x : (x \eqto_\Sc x) \we \zet$.
+  an equivalence, $\wdg_x : (x \eqto x) \we \zet$.
   (You'll need commutativity of addition in $\zet$.)
   Conclude from \cref{lem:S1-delooping} that we have equivalences
   $f_x : \Sc \we \Sc$ with $f_x(\base) \jdeq x$, for each $x:\Sc$.\footnote{%
