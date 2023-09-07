@@ -67,7 +67,9 @@ and the related conventions established in~\cref{sec:pointedtypes}.
 \begin{definition}\label{looptype}
   Given a pointed type $X\jdeq(A,a)$, we define its type of \emph{loops}
   by $\loops X \defeq (a \eqto_A a)$.%
-  \index{loop type}\glossary(924Omega){$\protect\loops$}{loop type, \cref{looptype}}
+  \index{loop type constructor}
+  \glossary(924Omega){$\protect\loops X$}%
+  {loop type of pointed type, \cref{looptype}}
 \end{definition}
 \begin{example}\label{ex:base=base}
   We defined the circle $\Sc$ in \cref{def:circle} by declaring
@@ -996,11 +998,13 @@ So we should first study how pointed maps affect loops:\marginnote{%
   Given pointed types $X$ and $Y$ and a pointed function $k : X\ptdto Y$ (as defined in \cref{def:pointedtypes}),
   we define a function $\loops k : \loops X \to \loops Y$ by setting\footnote{%
     Recall~\cref{def:ap} for $\ap{}$.
-    Note also that $\loops k$ is pointed: we can identify $\loops k(\refl{\pt_X})$
-  with $\refl{\pt_Y}$.}
+    Note also that $\loops k$ is pointed: 
+    we can identify $\loops k(\refl{\pt_X})$ with $\refl{\pt_Y}$.}
   \[
     \loops k(p) \defeq k_\pt^{-1} \cdot \ap{k_\div}(p) \cdot k_\pt.\qedhere
   \]
+  \glossary(924Omega){$\protect\loops k$}%
+  {loop map of pointed map, \cref{def:loops-map}}
 \end{definition}
 
 \begin{remark}\label{rem:loops-map}
@@ -1048,17 +1052,17 @@ So we should first study how pointed maps affect loops:\marginnote{%
   \label{remark:groupsasunivalenttype} From~\cref{xca:pointedequiv},
   we have an equivalence
   \[
-    (G\eqto_\typegroup G')\equivto \Iso(G,G')
+    (G\eqto_\typegroup H)\equivto \Iso(G,H)
   \]
-  between the identity type between the groups $G$ and $G'$ and the 
+  between the identity type between the groups $G$ and $H$ and the 
   set of isomorphisms. We use the convention introduced in
   \cref{rem:univalence-transparent} also here. That is,
-  we allow ourselves to also write $p : \Iso(G,G')$ for the isomorphism
-  corresponding to an identification $p:G\eqto G'$,
-  and $\Bp : \BG \ptdweto \BG'$ for the corresponding pointed equivalence
+  we allow ourselves to also write $p : \Iso(G,H)$ for the isomorphism
+  corresponding to an identification $p:G\eqto H$,
+  and $\Bp : \BG \ptdweto \BH$ for the corresponding pointed equivalence
   of classifying types. Conversely, given an isomorphism
-  $f : \Iso(G,G')$, we may denote the corresponding path
-  also as $f:G\eqto G'$.
+  $f : \Iso(G,H)$, we may denote the corresponding path
+  also as $f:G\eqto H$.
 \end{remark}
 
 
@@ -1086,7 +1090,7 @@ $\Bf \eqto_{\BG\ptdto\BH} \Bf'$;
 the latter are
 (by \cref{lem:isEq-pair=} and the fact that $\BH$ is a groupoid)
 given by identifications of (unpointed) maps
-$h : \Bf_\div \eqto_{(\BG_\div \to \BH_\div)} \Bf'_\div$ such that\marginnote{%
+$h : \Bf_\div \eqto \Bf'_\div$ such that\marginnote{%
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
     \& \shape_H\ar[dl,eql,"{\Bf_\pt}"'] \ar[dr,eqr,"\Bf'_\pt"] \& \\
     \Bf_\div(\shape_G) \ar[rr,eql,"{h(\shape_G)}"'] \& \& Bf'_\div(\shape_G)
@@ -2384,8 +2388,11 @@ and the next two subsections offer two proofs.
 
 
 \sususe{``Delooping'' a group homomorphism}
-\label{sec:thierrysdelooping}
+\label{sec:delooping} %after Coquand, after Deligne
 We now explore the first approach.
+It might be helpful to review \cref{lem:S1-delooping}
+for a simple example of delooping in the special case of the circle.
+Here we elaborate the general case.
 
 \begin{proof}
   Suppose we are given an abstract group homomorphism
