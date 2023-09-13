@@ -1123,7 +1123,7 @@ This follows from \cref{lem:windingnumber}.
 \begin{corollary}\label{cor:S1groupoid}
 The circle $\Sc$ is a groupoid, and the function
 \[
-{\Sloop}^{\blank} : \zet\to(\base\eqto_{\Sc}\base)
+{\Sloop}^{-} : \zet\to(\base\eqto_{\Sc}\base)
 \]
 sending $n$ to $\Sloop^n$ is an equivalence.
 \end{corollary}
@@ -1148,7 +1148,7 @@ The exponential \covering $\exp$ from \cref{def:RtoS1} is universal.
 
 
 \begin{definition}\label{def:windingnumber}
-The inverse equivalence of $g(\base)\jdeq{\Sloop}^{\blank}
+The inverse equivalence $f(\base)$ of $g(\base)\jdeq{\Sloop}^{-}
 \jdeq(n\mapsto \Sloop^n)$ is called the \emph{winding number function}
   $\wdg : (\base \eqto\base) \equivto \zet$.
   \glossary(windingnumber){$\protect\wdg$}{winding number function}
@@ -1255,7 +1255,13 @@ So to understand the components of $\SetBundle(\Sc)$
 it suffices to understand the components of
 $\sum_{X:\Set}(X\equivto X)$, which correspond to
 components of $\sum_{X:\UU}(X \to X)$ at pairs $(X,t)$,
-where $X$ is a set with a permutation $t$.
+where $X$ is a set with a permutation $t$.\footnote{%
+Given a set $X$ with a permutation $t$, 
+we may coerce and view $(X,t)$ as an element of $\sum_{X:\UU}(X\to X)$. 
+Then, for any $(Y,u)$ in the same connected component of
+$\sum_{X:\UU}(X\to X)$ as $(X,t)$, we have that $Y$ also
+is a set and $u$ also a permutation of $Y$.
+}
 
 We are particularly interested in understanding the symmetries 
 in these components, so before we prove that the circle is equivalent 
@@ -1356,13 +1362,13 @@ consider $\zs^n$ as a symmetry of $(\zet,\zs)$.
 the \emph{equivalence}.)
 \end{remark}
 
-The following property jumps out at us when we contemplate~\cref{fig:Zs=Xt}.
+The following property jumps out at us when we contemplate~\cref{fig:Zs=Xt}:
+the equivalence $e$ is uniquely determined by the element $e(0):X$.
+More precisely:
 \begin{lemma}
   \label{lem:IdCisZet}
-  An element $(e,!) : (\zet,\zs)\eqto(X,t)$,
-  with $(X,t)$ in the component of $(\zet,\zs)$,
-  is uniquely determined by the element $e(0):X$.
-  In other words, the function
+For every $(X,t)$ in the component of $\sum_{X:\UU}(X\to X)$
+containing $(\zet,\zs)$, the function
   \[
     \ev_0:\bigl((\zet,\zs)\eqto(X,t)\bigr)\to X
     \text{~~defined by~~} \ev_0(e,!) \defeq e(0)
@@ -1375,22 +1381,21 @@ The following property jumps out at us when we contemplate~\cref{fig:Zs=Xt}.
   such that $es=te$ and $e(0)=x_0$.
   Induction on $n:\zet$ (positive and negative $n$ separately)
   shows that for such an $e$, we have $e(n) = t^n(x_0)$ for all $n:\zet$.
-  It remains to prove that this is an equivalence.
-  More precisely, it suffices to prove the proposition:
-  \begin{displaymath}
-    \prod_{x_0:X} \isEq(n\mapsto t^n(x_0))
-  \end{displaymath}
-  Since we are proving a proposition,
+  It remains to prove that $n\mapsto t^n(x_0)$ is an equivalence,
+  for every $x_0:\zet$. Since we are proving a proposition,
   and we are assuming $(X,t)$ is in the component of $(\zet,\zs)$,
   it suffices to prove it for $(X,t) \jdeq (\zet,\zs)$.
-  However, for any $x_0:\zet$,
-  the map $n \mapsto \zs^n(x_0) = n + x_0$ is an equivalence,
+  Clearly, for any $x_0,n:\zet$, we have $\zs^n(x_0) = n + x_0$,
+  and the map $n \mapsto n + x_0$ is an equivalence,
   with inverse $n \mapsto n - x_0$.
 \end{proof}
-In particular, the identity type $(\zet,\zs)=(\zet,\zs)$ is equivalent to $\zet$.
+In particular, $\ev_0: ((\zet,\zs)\eqto(\zet,\zs))\to \zet$ is an equivalence,
+mapping $\zs^n$ to $n$ for all $n:\zet$. 
+Cf.\ $\wdg : (\base\eqto\base)\to\zet$ from \cref{def:windingnumber}.
 
 \begin{definition}\label{def:S1toC}
-  Let $\InfCyc$ be the component of $\sum_{X:\UU}(X\to X)$ containing $(\zet,\zs)$.
+  Let $\InfCyc$ be the component of $\sum_{X:\UU}(X\to X)$ 
+  containing $(\zet,\zs)$.
   Elements of $\InfCyc$ are called \emph{infinite cycles}.\footnote{%
     See also~\cref{def:Cyc} below for general cycles.}
 
@@ -1399,8 +1404,8 @@ In particular, the identity type $(\zet,\zs)=(\zet,\zs)$ is equivalent to $\zet$
     c:\Sc\to\InfCyc \text{~~setting~~}
     c(\base)\defequi (\zet,\zs)
   \]
-  and $c(\Sloop): c(\base)= c(\base)$ given by the \emph{predecessor} equivalence
-  $\zs^{-1}:\zet\to\zet$
+  and $c(\Sloop): c(\base)\eqto c(\base)$ given by the 
+  \emph{predecessor} equivalence $\zs^{-1}: (\zet\to\zet)$
   and the trivial proof of the proposition $\zs^{-1}\zs=\zs\zs^{-1}$.
 \end{definition}
 \begin{marginfigure}
@@ -1450,21 +1455,30 @@ In particular, the identity type $(\zet,\zs)=(\zet,\zs)$ is equivalent to $\zet$
     (in red) in the same way.}\label{fig:plus-minus-one}
 \end{marginfigure}
 
-Note that, as usual, we leave out the propositional components of $\InfCyc$ (and other subtypes) from the notation.
+As explained in \cref{rem:bang}, we often leave out the propositional
+data pertaining to $\InfCyc$ (and other subtypes) from the notation.
 
-Since it's such a crucial result, we are going to give two proofs that $c$ from \cref{def:S1toC} is an equivalence.
-Each proof illuminates a different aspect and gives methods that will be used later.
+The main result of this section is \cref{thm:S1bysymmetries} below,
+stating that the function $c$ from \cref{def:S1toC} is an equivalence.
+Since it's such a crucial result, we are going to give two proofs.
+Each proof illuminates a different aspect and gives methods
+that will be used later.
 
 For the first, we return to the equivalences of \cref{thm:coveringsofS1perms}.
-As we said above, these restrict to equivalences between the different components.
-In particular, $\ev_\UU : (\Sc \to \UU) \to
-\sum_{X:\UU}X=X$ maps the type family $\uc{\base}$ to the pair
-$(\base\eqto  \base, q\mapsto {{\Sloop}\cdot q})$,
-which can be identified with $(Z,s)$ through~\cref{cor:S1groupoid}.
+As said above, these restrict to equivalences between corresponding components.
+In particular, $\ev_\UU : (\Sc \to \UU) \equivto
+\sum_{X:\UU} (X\equivto X)$ maps the type family $\uc{\base}$ to the pair
+$(\base\eqto  \base, {\Sloop}\cdot\blank)$,
+which can be identified with $(\zet,\zs)$ through~\cref{cor:S1groupoid}.
 Hence, $\ev_\UU$ restricts to an equivalence between the
 connected component of $\uc\base$ in $\Sc \to \UU$ and the connected component
-of $(Z,s)$ in $\sum_{X:\UU}X=X$.
-We claim that we get a commuting diagram
+of $(\zet,\zs)$ in $\sum_{X:\UU}(X\equivto X)$.
+
+Recall the constant maps $\cst z: (\bn 1\to\Sc)$ for $z:\Sc$.
+The equivalence $\preim$ maps $\cst\base$ to
+$(x:\Sc) \mapsto \sum_{\_:\bn 1}(x\eqto \base)$
+which can be identified with $\uc\base$.
+Now consider the following diagram
 \begin{equation}\label{eq:setbundle-Sc-univ-comp}
   \begin{tikzcd}
     & \Sc\ar[dl,"\cst{\blank}"']\ar[d,"\uc{\blank}"]\ar[dr,"c"] & \\
@@ -1473,15 +1487,16 @@ We claim that we get a commuting diagram
     & \InfCyc,
   \end{tikzcd}
 \end{equation}
-where the left-most diagonal arrow maps $z:\Sc$ to the constant map $\cst z:\bn 1\to\Sc$.
-The left-hand triangle commutes, because the fiber $\sum_{\_:\bn 1}(x=z)$
-of $\cst z$ at $x:\Sc$ is equivalent to $\uc{z}(x) \jdeq (z=x)$.
-We prove that the right-hand triangle commutes by circle induction.
-That is, we show $\prod_{z:\Sc}c(z) = \ev_\UU(\uc{z})$.
-The case $z\jdeq\base$ is exactly the equivalence
-$g(\base)\jdeq{\Sloop^-} : \zet \to \uc{\base}(\base)$ of \cref{lem:univisexp}
-together with the fact that $\trp[\uc\base]{\Sloop}$ corresponds to $\zs$.
-To finish, we observe that it doesn't matter which way you take in the diagram
+where indeed the components in the last row are corresponding.
+
+Both the left and the right triangle represent identity types.
+We have an identification for the left triangle
+because the fiber $\sum_{\_:\bn 1}(x\eqto z)$ of $\cst z$ at $x:\Sc$ can be identified with $\uc{z}(x) \jdeq (z\eqto x)$, for any $z:\Sc$.
+For the right triangle we apply circle induction to construct an element
+of $\prod_{z:\Sc}c(z) \eqto \ev_\UU(\uc{z})$.
+The base case $z\jdeq\base$ is exactly the abovementioned application
+of \cref{cor:S1groupoid}. For the loop step
+we observe that the following diagram commutes:
 \[
   \begin{tikzcd}[row sep=large,column sep=huge]
     \zet\ar[r,"\Sloop^-"]\ar[d,"\inv{\zs}"] &
