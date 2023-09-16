@@ -1473,7 +1473,7 @@ For the first, we return to the equivalences of \cref{thm:coveringsofS1perms}.
 As said above, these restrict to equivalences between corresponding components.
 In particular, $\ev_\UU : (\Sc \to \UU) \equivto
 \sum_{X:\UU} (X\equivto X)$ maps the type family $\uc{\base}$ to the pair
-$(\base\eqto  \base, {\Sloop}\cdot\blank)$,
+$(\base\eqto  \base, {\Sloop}{\cdot}\blank)$,
 which can be identified with $(\zet,\zs)$ through~\cref{cor:S1groupoid}.
 Hence, $\ev_\UU$ restricts to an equivalence between the
 connected component of $\uc\base$ in $\Sc \to \UU$ and the connected component
@@ -1487,8 +1487,8 @@ Now consider the following diagram:
 \begin{equation}\label{eq:setbundle-Sc-univ-comp}
   \begin{tikzcd}
     & \Sc\ar[dl,"{(\bn 1,\cst{\blank})}"']\ar[d,"\uc{\blank}"]\ar[dr,"c"] & \\
-    \conncomp{\SetBundle(\Sc)}{\bn1,\cst\base} \ar[r,"\sim"]
-    & \conncomp{(\Sc\to\UU)}{\uc\base} \ar[r,"\sim","\ev_\UU"']
+    \conncomp{\SetBundle(\Sc)}{\bn1,\cst\base} \ar[r,equivl,"\preim"']
+    & \conncomp{(\Sc\to\UU)}{\uc\base} \ar[r,equivl,"\ev_\UU"']
     & \InfCyc
   \end{tikzcd}
 \end{equation}
@@ -1499,7 +1499,7 @@ because the fiber $\sum_{\_:\bn 1}(x\eqto z)$ of $\cst z$ at $x:\Sc$ can be iden
 For the right triangle we apply circle induction to construct an element
 of $\prod_{z:\Sc}c(z) \eqto \ev_\UU(\uc{z})$.
 The base case $z\jdeq\base$ is exactly the abovementioned application
-of \cref{cor:S1groupoid}. For the loop step
+of \cref{cor:S1groupoid}. For the loop case
 we observe that the following diagram commutes:
 \[
   \begin{tikzcd}[row sep=large,column sep=huge]
@@ -1508,38 +1508,58 @@ we observe that the following diagram commutes:
     \zet\ar[r,"\Sloop^-"] & (\base\eqto \base).
   \end{tikzcd}
 \]
-Note that to transport in the family $\uc{-}(\base) \jdeq (\blank = \base)$,
+Note that to transport in the family $\uc{-}(\base) \jdeq (\blank\eqto\base)$,
 we use \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a},
 and \emph{that} is why we picked the predecessor equivalence in~\cref{def:S1toC}.
 This is also illustrated in \cref{fig:plus-minus-one}.\footnote{%
-  Another option would have been to choose the opposite equivalence $\zet\equiv\uc\base(\base)$, sending $n$ to $\Sloop^{-n}$, in the base case.
+  Another option would have been to choose the opposite equivalence $\zet\equivto\uc\base(\base)$, sending $n$ to $\Sloop^{-n}$, in the base case.
   The point is: You can move the minus sign around, but it has to pop up somewhere.}
 
 With~\eqref{eq:setbundle-Sc-univ-comp} in hand, we see that $c$ is an equivalence
 if and only if either of the two other downward maps are.\footnote{%
   At this point we could conclude with an appeal to the type theoretic Yoneda lemma,
   which states that the map $X \to (X \to \UU)$,
-  sending $x$ to the family $y \mapsto x=y$,
+  sending $x$ to the family $y \mapsto x\eqto y$,
   is an injection for any type $X$.
   Exercise: Prove this!}
-It is very direct to show that the map on the left is an equivalence.
-Indeed, the identity type $(\bn 1,\cst x)=(\bn 1,\cst y)$
-is equivalent to pairs of an equivalence $e : \bn 1 \to \bn 1$ and a commuting triangle
+It is direct to show that the map $(\bn 1,\cst{\blank})$ 
+on the left is an equivalence. Since the codomain is connected,
+it suffices to show that the fiber at $(\bn 1,\cst{\base})$ is contractible. 
+This fiber is $\sum_{z:\Sc}((\bn 1,\cst \base)\eqto(\bn 1,\cst z))$,
+where the identity type is equivalent to pairs of an equivalence 
+$e : \bn 1 \to \bn 1$ and elements of the identity type represented 
+by the triangle
+\[
+  \begin{tikzcd}
+    \bn 1 \ar[rr,"e"]\ar[dr,"\cst \base"'] & & \bn 1\ar[dl,"\cst z"] \\
+    & \Sc. &
+  \end{tikzcd}
+\]
+But since $\bn 1$ is contractible, this just amounts to the identity type
+$\base\eqto z$, and $\sum_{z:\Sc}(\base\eqto z)$ is indeed contractible.
+
+
+
+
+OLD: Indeed, the identity type $(\bn 1,\cst x)\eqto(\bn 1,\cst y)$
+is by \cref{lem:isEq-pair=} equivalent to pairs of an equivalence 
+$e : \bn 1 \to \bn 1$ and elements of the identity type represented 
+by the triangle
 \[
   \begin{tikzcd}
     \bn 1 \ar[rr,"e"]\ar[dr,"\cst x"'] & & \bn 1\ar[dl,"\cst y"] \\
     & \Sc. &
   \end{tikzcd}
 \]
-But since $\bn 1$ is contractible, this just amounts to the equality $x=y$.
-Hence the map is an embedding/INJECTION?, and we conclude by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
+But since $\bn 1$ is contractible, this just amounts to the equality $x\eqto y$.
+Hence the (WHICH?) map is injection, and we conclude by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}.
 
 We now give the second, more direct, proof that $c$ is an equivalence.
 For this we use the following lemma, which is of independent interest.
 \begin{lemma}\label{lem:conn-eq-f-ap-f-x}
 Let $X$ and $Y$ be connected types, $x$ an element of $X$,
 and $f$ a function from $X$ to $Y$. Then $f$ is an equivalence
-if and only if $\ap{f}: (x=x) \to (f(x)=f(x))$ is an equivalence.
+if and only if $\ap{f}: (x\eqto x) \to (f(x)\eqto f(x))$ is an equivalence.
 \end{lemma}
 \begin{proof}
 Using \cref{cor:fib-vs-path}\ref{conn-fib-vs-path} it suffices to show that
@@ -1554,15 +1574,16 @@ using \cref{xca:component-connected}.
 \end{theorem}
 \begin{proof}
   In view of \cref{lem:conn-eq-f-ap-f-x} we only need to show that
-$\ap{c}:(\base\eqto_{\Sc}\base)\to((\zet,\zs)=(\zet,\zs))$ is an equivalence.
-Note that both the domain and the co-domain of $\ap{c}$ are equivalent to $\zet$.
+$\ap{c}:(\base\eqto\base)\to((\zet,\zs)\eqto(\zet,\zs))$ is an equivalence.
+Note that both the domain and the co-domain of $\ap{c}$ 
+have been identified with $\zet$.
 Consider the following diagram in which we compose $c$ with the equivalences
 from \cref{cor:S1groupoid} and \cref{lem:IdCisZet}:
 \[
   \begin{tikzcd}[column sep=large]
     \zet\ar[r,"\Sloop^-"] &
     (\base\eqto \base)\ar[r,"\ap{c}"] &
-    \bigl((\zet,\zs)=(\zet,\zs)\bigr)\ar[r,"\ev_0\vphantom{\ap{c}}"] &
+    \bigl((\zet,\zs)\eqto(\zet,\zs)\bigr)\ar[r,"\ev_0\vphantom{\ap{c}}"] &
     \zet
   \end{tikzcd}
 \]
