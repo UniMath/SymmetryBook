@@ -1634,39 +1634,36 @@ Recall that \coverings over the circle are equivalent to sets with permutations.
 Which sets with permutations $(X,t)$ correspond to connected \coverings?
 It is not so surprising that the answer has to do with whether
 any two points $x,x':X$ can be connected by applying $t$ some number of times.
-\begin{definition}\label{def:Cyc}
-  Let $\Cyc$ be the subtype of $\sum_{X:\UU}(X\to X)$ of those
-  pairs $(X,t)$ where $X$ is a \emph{\nonempty} set with an \emph{equivalence} $t$
-  such that for any $x,x':X$
-  there exists some $n:\zet$ with $x' = t^n(x)$.\marginnote{%
-    Recall that the iteration $t^n$ makes sense for all integers $n$
-    since $t$ is an equivalence. Elements $x,x':X$ such that
-    $\exists_{n:\zet}(x'=t^n(x))$ are said to be \emph{connected} by $t$.}
-  Elements of $\Cyc$ are called \emph{cycles}.\footnote{%
-    Our cycles are a special case of what is elsewhere called
-    \emph{cyclically ordered sets},
-    and they are closely related to the \emph{cyclic sets} of
-    \citeauthor{Connes1983}\footnotemark{}.}\footcitetext{Connes1983}
-\end{definition}
-\begin{theorem}\label{thm:cycset-connS1cover}
-  Under the equivalence of \cref{thm:coveringsofS1perms},
-  connected \coverings of the circle correspond to cycles.
-\end{theorem}
-\begin{proof}
-  Consider a set $X$ with permutation $t$.
-  The corresponding family of sets is $E\defeq\ve_\UU(X,\etop{t}) : \Sc\to\UU$,
-  so the corresponding set bundle over the circle
-  is the first projection, $\fst : A \to \Sc$,
-  where we put $A\defeq\sum_{z:\Sc}E(z)$.
-  We need to show that $A$ is connected if and only if $X$ is \nonempty
-  and any two elements of $X$ can be connected by $t$.
 
-  We show something a little more general, namely we give a bijection
+\begin{definition}\label{def:connected-by-t}
+Let $X$ be a set with a permutation $t$. 
+Elements $x,x':X$ such that $x'=t^n(x)$ for some $n:\zet$
+are said to be \emph{connected} by $t$, denoted $x\sim x'$ 
+when $t$ is clear from the context.\marginnote{%
+    Recall that the iteration $t^n$ makes sense for all integers $n$
+    since $t$ is an equivalence.}
+    The relation $\sim$ is an equivalence relation.\footnote{%
+    Exercise: Check this.}
+\end{definition}
+
+The following construction gives the correspondence between
+subsets of elements that are connected by a permutation $t$
+and ... TBD
+
+\begin{construction}\label{con:cycset-connS1cover}
+Let $X$ be a set with a permutation $t$, defining the equivalence
+relation $\sim$ as in \cref{def:connected-by-t}.
+The \covering over the circle corresponding to $(X,t)$ in
+\cref{thm:coveringsofS1perms} is the pair $(\sum_{z:\Sc} E(z),\fst)$
+where $E\defeq\ve_\UU(X,\etop{t}) : \Sc\to\UU$, with $\ve$ defined by
+circle induction in \cref{lem:freeloopspace}.
+Then we have a bijection between $\Trunc{\sum_{z:\Sc} E(z)}_0$ and 
+the quotient $X/\sim$ as defined in \cref{def:quotient-set}.
+\end{construction}
+\begin{implementation}{con:cycset-connS1cover}
+We show something a little more general, namely we give a bijection
   $g : \setTrunc A \to X/\sim$, from the set of components of $A$
-  to the quotient set of $X$ by the equivalence relation $\sim$
-  defined by $(x\sim x') \defeq \exists_{n:\zet}(x'=t^n(x))$.\footnote{%
-    Exercise: Check that this defines an equivalence relation,
-    and that the bijection $g$ proves the theorem.}
+  to the quotient set of $X$ by 
 
   We define $g$ using the universal property of set truncation (\cref{def:set-truncation}), pair induction, and circle induction.
   To define $g_0 : \prod_{z:\Sc}(E(z) \to X/\sim)$, we need
@@ -1688,7 +1685,32 @@ any two points $x,x':X$ can be connected by applying $t$ some number of times.
   to conclude.
 
   It's easy to check that $g$ and $h$ are mutually inverse.
+\end{implementation}
+
+\begin{definition}\label{def:Cyc}
+  Let $\Cyc$ be the subtype of $\sum_{X:\UU}(X\to X)$ of those
+  pairs $(X,t)$ where $X$ is a \emph{\nonempty} set with an 
+  \emph{equivalence} $t$ any $x,x':X$ are connected by $t$.
+  Elements of $\Cyc$ are called \emph{cycles}.\footnote{%
+    Our cycles are a special case of what is elsewhere called
+    \emph{cyclically ordered sets},
+    and they are closely related to the \emph{cyclic sets} of
+    \citeauthor{Connes1983}\footnotemark{}.}\footcitetext{Connes1983}
+\end{definition}
+\begin{corollary}\label{cor:cycset-connS1cover}
+  Under the equivalence of \cref{thm:coveringsofS1perms},
+  connected \coverings of the circle correspond to cycles.
+\end{corollary}
+\begin{proof}
+  Consider a set $X$ with permutation $t$.
+  The corresponding family of sets is $E\defeq\ve_\UU(X,\etop{t}) : \Sc\to\UU$,
+  so the corresponding set bundle over the circle
+  is the first projection, $\fst : A \to \Sc$,
+  where we put $A\defeq\sum_{z:\Sc}E(z)$.
+  We need to show that $A$ is connected if and only if $X$ is \nonempty
+  and any two elements of $X$ can be connected by $t$.
 \end{proof}
+  
 In \cref{fig:two-comp-S1-cover} we see the \covering corresponding
 to the set $\set{1,2,3,4,5}$ with the permutation $1\mapsto 2\mapsto 3\mapsto 1,4\mapsto 5\mapsto 4$. There are two components, showing that the permutation splits into two cycles.
 \begin{marginfigure}
