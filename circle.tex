@@ -854,7 +854,7 @@ A particularly important example of a pointed \covering is the following.
     \exp\defeq\fst:\Tot(R) \to \Sc,
     \text{~with pointing path~}\refl{\base}.
   \]
-  We call $\exp$ the \emph{exponential \covering of the circle}.
+  We call $\exp$ the \emph{exponential \covering over the circle}.
 \end{definition}
 
 \begin{remark} \label{rem:expforreal}%
@@ -1220,7 +1220,7 @@ namely the set $\zet$ of integers together with the successor
 $\zs: \zet\equivto\zet$, defining the exponential \covering $\exp$.
 By \cref{cor:univ-covers-S1}, $\exp$ and its friends
 $\uc\base:\Sc \to \Set$ and $\cst\base : \bn 1 \to \Sc$
-are appearances of the universal \covering of the circle.
+are appearances of the universal \covering over the circle.
 
 The importance of $\exp$ will become apparent when we eventually
 explain that \emph{the circle is equivalent to the connected component of
@@ -1639,16 +1639,16 @@ any two points $x,x':X$ can be connected by applying $t$ some number of times.
 Let $X$ be a set with a permutation $t$. 
 Elements $x,x':X$ such that $x'=t^n(x)$ for some $n:\zet$
 are said to be \emph{connected} by $t$, denoted $x\sim x'$ 
-when $t$ is clear from the context.\marginnote{%
+whenever $t$ is clear from the context.\marginnote{%
     Recall that the iteration $t^n$ makes sense for all integers $n$
     since $t$ is an equivalence.}
-    The relation $\sim$ is an equivalence relation.\footnote{%
-    Exercise: Check this.}
+    The relation $\sim$ is an equivalence relation.
+    (Exercise: Check this.)
 \end{definition}
 
-The following construction gives the correspondence between
-subsets of elements that are connected by a permutation $t$
-and ... TBD
+Recall \cref{fig:covering}. We now have all the tools to
+analyze the difference between the left and the right picture
+in full generality.
 
 \begin{construction}\label{con:cycset-connS1cover}
 Let $X$ be a set with a permutation $t$, defining the equivalence
@@ -1657,23 +1657,22 @@ The \covering over the circle corresponding to $(X,t)$ in
 \cref{thm:coveringsofS1perms} is the pair $(\sum_{z:\Sc} E(z),\fst)$
 where $E\defeq\ve_\UU(X,\etop{t}) : \Sc\to\UU$, with $\ve$ defined by
 circle induction in \cref{lem:freeloopspace}.
-Then we have a bijection between $\Trunc{\sum_{z:\Sc} E(z)}_0$ and 
+Then we have a bijection between $\setTrunc{\sum_{z:\Sc} E(z)}$ and 
 the quotient $X/\sim$ as defined in \cref{def:quotient-set}.
 \end{construction}
 \begin{implementation}{con:cycset-connS1cover}
-We show something a little more general, namely we give a bijection
-  $g : \setTrunc A \to X/\sim$, from the set of components of $A$
-  to the quotient set of $X$ by 
+Abbreviate $\sum_{z:\Sc} E(z)$ by $A$. We define a map
+$g : \setTrunc A \to X/\sim$, from the set of components of $A$
+to the quotient set of $X$ using the universal property of set 
+truncation (\cref{def:set-truncation}), pair induction, and circle induction.
+To define $g_0 : \prod_{z:\Sc}(E(z) \to X/\sim)$, we put
+$g_0(\base)\defeq[\blank] : X \to X/\sim$ and need
+$g_0(\Sloop) : \pathover{g_0(\base)}{E(\blank) \to X/\sim}{\Sloop}{g_0(\base)}$,
+equivalent to $g_0(\base) \eqto_{X \to X/\sim} g_0(\base)t$.
+The latter we get by function extensionality and \cref{thm:quotient-property},
+since $x \sim t(x)$ for any $x:X$.
 
-  We define $g$ using the universal property of set truncation (\cref{def:set-truncation}), pair induction, and circle induction.
-  To define $g_0 : \prod_{z:\Sc}(E(z) \to X/\sim)$, we need
-  $g_0(\base)\defeq[\blank] : X \to X/\sim$ and
-  $g_0(\Sloop) : \pathover{g_0(\base)}{E(\blank) \to X/\sim}{\Sloop}{g_0(\base)}$,
-  equivalent to $g_0(\base) \eqto_{X \to X/\sim} g_0(\base)t$.
-  The latter we get by function extensionality and \cref{thm:quotient-property},
-  since $x \sim t(x)$ for any $x:X$.
-
-  The inverse of $g$, $h:(X/\sim) \to \setTrunc A$,
+  The inverse of $h:(X/\sim) \to \setTrunc A$ of $g$
   is defined as the extension of $h_0 : X \to \setTrunc A$
   with $h_0(x) \defeq \settrunc{(\base,x)}$.
   We just need to check that $h_0(x) = h_0(x')$, or equivalently,
@@ -1687,30 +1686,6 @@ We show something a little more general, namely we give a bijection
   It's easy to check that $g$ and $h$ are mutually inverse.
 \end{implementation}
 
-\begin{definition}\label{def:Cyc}
-  Let $\Cyc$ be the subtype of $\sum_{X:\UU}(X\to X)$ of those
-  pairs $(X,t)$ where $X$ is a \emph{\nonempty} set with an 
-  \emph{equivalence} $t$ any $x,x':X$ are connected by $t$.
-  Elements of $\Cyc$ are called \emph{cycles}.\footnote{%
-    Our cycles are a special case of what is elsewhere called
-    \emph{cyclically ordered sets},
-    and they are closely related to the \emph{cyclic sets} of
-    \citeauthor{Connes1983}\footnotemark{}.}\footcitetext{Connes1983}
-\end{definition}
-\begin{corollary}\label{cor:cycset-connS1cover}
-  Under the equivalence of \cref{thm:coveringsofS1perms},
-  connected \coverings of the circle correspond to cycles.
-\end{corollary}
-\begin{proof}
-  Consider a set $X$ with permutation $t$.
-  The corresponding family of sets is $E\defeq\ve_\UU(X,\etop{t}) : \Sc\to\UU$,
-  so the corresponding set bundle over the circle
-  is the first projection, $\fst : A \to \Sc$,
-  where we put $A\defeq\sum_{z:\Sc}E(z)$.
-  We need to show that $A$ is connected if and only if $X$ is \nonempty
-  and any two elements of $X$ can be connected by $t$.
-\end{proof}
-  
 In \cref{fig:two-comp-S1-cover} we see the \covering corresponding
 to the set $\set{1,2,3,4,5}$ with the permutation $1\mapsto 2\mapsto 3\mapsto 1,4\mapsto 5\mapsto 4$. There are two components, showing that the permutation splits into two cycles.
 \begin{marginfigure}
@@ -1766,10 +1741,39 @@ to the set $\set{1,2,3,4,5}$ with the permutation $1\mapsto 2\mapsto 3\mapsto 1,
   \label{fig:two-comp-S1-cover}
 \end{marginfigure}
 
-We already know one connected \covering of the circle, namely the universal \covering, which is also represented by the constant map $\cst\base:\bn 1\to\Sc$, and which we showed is equal to the exponential \covering, which in turn corresponds to the infinite cycle $(\zet,\zs)$
+\begin{definition}\label{def:Cyc}
+  Let $\Cyc$ be the subtype of $\sum_{X:\UU}(X\to X)$ of those
+  pairs $(X,t)$ where $X$ is a \emph{\nonempty} set with an 
+  \emph{equivalence} $t$ and any $x,x':X$ are connected by $t$.
+  Elements of $\Cyc$ are called \emph{cycles}.\footnote{%
+    Our cycles are a special case of what is elsewhere called
+    \emph{cyclically ordered sets},
+    and they are closely related to the \emph{cyclic sets} of
+    \citeauthor{Connes1983}\footnotemark{}.}\footcitetext{Connes1983}
+\end{definition}
+\begin{corollary}\label{cor:cycset-connS1cover}
+  Under the equivalence described in \cref{con:cycset-connS1cover},
+  connected \coverings over the circle correspond to cycles.
+\end{corollary}
+\begin{proof}
+  We use the notations of the implementation of \cref{con:cycset-connS1cover}.
+  If $A$ is connected, then $\setTrunc A$ is contractible and hence also
+  $X/\sim$ is contractible, so $(X,t)$ is a cycle.
+  
+  Conversely, if $(X,t)$ is a cycle, then $X/\sim$ is contractible
+  and hence also $\setTrunc A$ is contractible, so $A$ is connected. 
+\end{proof}
+  
+We already know some connected \coverings over the circle, 
+namely the universal \covering, which is also represented by 
+the constant map $\cst\base:\bn 1\to\Sc$, and which we showed 
+is equal to the exponential \covering, which in turn corresponds 
+to the infinite cycle $(\zet,\zs)$
 consisting of the set of integers $\zet$ with the successor permutation.
+Another example is the left one of the two examples given
+\cref{fig:covering}.
 
-We now introduce the remaining \coverings of the circle, first as functions to the circle, then as families of sets.
+We now introduce the remaining \coverings over the circle, first as functions to the circle, then as families of sets.
 Eventually we'll show -- assuming a weak form
 of the Law of the Excluded Middle -- that these (with the universal \covering)
 are all the decidable connected \coverings over the circle.
@@ -2131,7 +2135,7 @@ we get the following for the type of loops at the standard $m$-cycles.
 And as a second consequence,
 we get a more concrete description of the set of components of $\Cyc$,
 and hence, by \cref{thm:cycset-connS1cover},
-of the type of connected \coverings of the circle.
+of the type of connected \coverings over the circle.
 \begin{corollary}\label{cor:set-trunc-cyc}
   The map $H : \Cyc \to \Sub_\zet$ sending $(X,t)$ to $H_t$
   induces an equivalence from $\setTrunc{\Cyc}$
@@ -3306,7 +3310,7 @@ $\Cyc_n$ is mapped by $f$ to a proof of $\refl {f(\pt_n)} =
   \marginnote{The construction of $\chi$ is really an ad hoc version of the following fact: for any $G$-set $X$, the type of fixed points of $X$ is equivalent to the type of sections of $\sum_{z:\BG}X(z) \to \BG$. If we move this section forward, one can rewrite it as such.}
 \end{proof}
 
-As a direct corollary, we can classify the connected \coverings of $\Cyc_n$ for finite orders $n$.
+As a direct corollary, we can classify the connected \coverings over $\Cyc_n$ for finite orders $n$.
 Indeed, the corresponding families $S : \Cyc_n \to \Set$ are precisely those cycles $(X,t)$
 with $t^n=\id$, \ie whose order divides $n$.
 If we restrict to decidable connected \coverings, equivalently, decidable cycles,
