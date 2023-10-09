@@ -2598,7 +2598,9 @@ Given groups $G,H$, a homomorphism $f: \Hom(G,H)$ is called a\label{def:epimorph
   precomposition by $f$ is an injection from $\Hom(H,I)$ to $\Hom(G,I)$.
 \end{enumerate}
 The corresponding families of propositions are called
-$$\ismono,\isepi:\Hom(G,H)\to\Prop.$$
+\[
+  \ismono,\isepi:\Hom(G,H)\to\Prop.\qedhere
+\]
 \end{definition}
 
 \marginnote{$$\xymatrix{\USym G\ar[d]^\simeq\ar[r]^{\US f}&\USym H\ar[d]^\simeq\\
@@ -2620,17 +2622,10 @@ The following propositions are equivalent:\label{lem:eq-epi-conn}
 \item\label{it:injection} $\US f:\USym G\to\USym H$ is an injection;
 \item\label{it:cover} $\Bf_\div:\BG_\div\to \BH_\div$ is a \covering.
 \end{enumerate}
-
-Similarly, the following propositions are equivalent:
-\begin{enumerate}[label=(\arabic*')]
-\item\label{it:epi} $f$ is an epimorphism;
-\item\label{it:surjection} $\US f:\USym G\to\USym H$ is a surjection.
-\item\label{it:connfib} $\Bf_\div:\BG_\div\to \BH_\div$ has connected fibers.
-\end{enumerate}
 \end{lemma}
+
 \begin{proof}
-  We only do the monomorphism case; the epimorphism case is very similar.
-  We have already seen that condition~\ref{it:mono} implies  condition~\ref{it:injection} (let $F$ be $\ZZ$).
+  We have already seen that condition~\ref{it:mono} implies condition~\ref{it:injection} (let $F$ be $\ZZ$).
     Conversely, suppose that \ref{it:injection} holds and $F$ is a group.  Consider the commutative diagram
 $$\xymatrix{\Hom(F,G)\ar[r]\ar[d]&\Hom(F,H)\ar[d]\\
   (\Hom(\ZZ,F)\to\Hom(\ZZ,G))\ar[r]&(\Hom(\ZZ,F)\to\Hom(\ZZ,H)),}$$
@@ -2643,7 +2638,68 @@ immediately from \cref{cor:fib-vs-path}\ref{set-fib-vs-path}, using
 that $\BG$ is connected and $f$ is pointed and the equivalence between $\Hom(G,H)$ and $\BG\ptdto \BH$.
 \end{proof}
 
+Similarly, we have:
+\begin{lemma}\label{lem:epi-surj}
+  The following propositions are equivalent:
+\begin{enumerate}[label=(\arabic*')]
+\item\label{it:epi} $f$ is an epimorphism;
+\item\label{it:surjection} $\US f:\USym G\to\USym H$ is a surjection.
+\item\label{it:connfib} $\Bf_\div:\BG_\div\to \BH_\div$ has connected fibers.
+\end{enumerate}
+\end{lemma}
 
+\begin{proof}
+  The equivalence of \ref{it:surjection} and \ref{it:connfib} is immediate.
+
+  For the rest, the easy direction is that \ref{it:surjection} implies \ref{it:epi}:
+  (TODO)
+
+  The harder direction, that \ref{it:epi} implies \ref{it:surjection},
+  is a corollary of the following lemma, which states that monos are equalizers.
+  Indeed, we can factor any $f : \Hom(G,H)$ via the image as a surjection followed
+  by a mono:
+  \[
+    \begin{tikzcd}[cramped]
+      G \ar[r,"q"] & \im(f) \ar[r,"i"] & H
+    \end{tikzcd}
+  \]
+  If $f$ is an epi, then so is $i$. But $i$ is an equalizer,
+  \[
+    \begin{tikzcd}[cramped]
+      \im(f) \ar[r,"i"] & H\ar[r,shift left,"\varphi"]
+      \ar[r,shift right,"\psi"'] & L,
+    \end{tikzcd}
+  \]
+  so as an epi, $\varphi i = \psi i$ implies $\varphi = \psi$, so $i$
+  is an equalizer of already equal homomorphisms, so $i$ is an isomorphism,
+  which implies that $f$ is surjective.
+\end{proof}
+
+\begin{lemma}\label{lem:monos-are-equalizers}
+  Every monomorphism $i : H \to G$ is an equalizer.\footnote{%
+    This proof follows an idea by \citeauthor{TrimbleEpisSurjective}\footnotemark{}.}%
+  \footcitetext{TrimbleEpisSurjective}
+\end{lemma}
+\begin{proof}[Proof draft.] Consider the projection $\pi : G \to G/H$ to the set of cosets.
+  Let $j : G/H \to A$ be an injection into an abelian group.
+  (We could for instance let $A$ be the free abelian group on $G/H$. [Add xref to statement that inclusion of generators in an injection.])
+
+  Consider the group
+  \[
+    W \defeq \mkgroup \sum_{t : \BG}\bigl((\sh_G \eqto t) \to \BA\bigr),
+  \]
+  with base point $(\sh_G,\cst{\sh_A})$.
+  We have two homomorphisms $\varphi,\psi : G \to W$ with the same underlying map,
+  $t \mapsto (t , \cst{\sh_A})$, but with different pointing paths:
+  \[
+    \varphi_\pt \defeq \refl{\sh_G,\cst{\sh_A}}, \quad
+    \psi_\pt \defeq (\refl{\sh_G}, j\pi).
+  \]
+  The equalizer of $\varphi$ and $\psi$ thus consists of all $g:\UG$
+  such that $j\pi(gg') = j\pi(g')$ for all $g':\UG$. Since $j$ is injective,
+  this is equivalent to $\pi(gg')=\pi(g')$ for all $g':\UG$, and this holds
+  if and only if $g$ belongs to $H$.
+\end{proof}
 
 \subsection{Any symmetry is a symmetry in $\Set$}
 \label{sec:groupssubperm}
