@@ -2058,7 +2058,8 @@ and $\alpha_m$: send $k$ to $(\base,\Sloop^{-k})$, using the following exercise.
 \begin{xca}\label{xca:preim-eq}
   Let $A,B,C$ be types and $f:A\to C$, $g:B\to C$ functions. Assume moreover we
   have an equivalence $e: A\to B$, a element of type $h: \prod_{x:A}
-  f(x)=g(e(x))$, and an element $c:C$.  Show that $(a,p)\mapsto (e(a),h(a)p)$
+  f(x)\eqto g(e(x))$, and an element $c:C$.  
+  Show that $(a,p)\mapsto (e(a),h(a)p)$
   defines an equivalence $f^{-1}(c)\to g^{-1}(c)$.
 \end{xca}
 
@@ -2082,9 +2083,9 @@ Thus, $H_t$ is the subset of $\zet$ determined by the predicate $t^n=\id$
 for $n:\zet$.
 Recall \cref{cor:Sub_T-is-set} implying that $\Sub_\zet$ is a set.
 \begin{lemma}\label{lem:cycle-order-point-ap}
-  For any connected \covering $(A,f)$ with corresponding cycle $(X,t)$
-  according to \cref{thm:cycset-connS1cover},
-  if $x:X$, then $H_t = \setof{n:\zet}{t^n(x)=x}$,
+  Let $(A,f)$ be a connected \covering over the circle
+  with corresponding cycle $(X,t)$ according to \cref{thm:cycset-connS1cover}.
+  For any $x:X$ we have $H_t = \setof{n:\zet}{t^n(x)=x}$,
   and for any $a:A$, we have that $H_t$
   also equals the image of the composite
   \begin{equation}\label{eq:order-composite}
@@ -2117,15 +2118,17 @@ Recall \cref{cor:Sub_T-is-set} implying that $\Sub_\zet$ is a set.
   $t^n(x')=t^{n+k}(x)=t^k(x)=x'$, as desired.
 \end{proof}
 
+The following lemma generalizes \cref{lem:IdCisZet}.
+
 \begin{lemma}\label{lem:IdCycle}
   Let $(X,t):\Cyc$ be a cycle with a chosen point $x_0:X$.
-  If $(Y,u)$ is another cycle with $H_t\eqto_{\Sub_\zet} H_u$,
+  If $(Y,u)$ is another cycle with $H_t =_{\Sub_\zet} H_u$,
   then it is in the same component as $(X,t)$,
-  and any equality $(e,!) : (X,t)=(Y,u)$
+  and any equality $(e,!) : (X,t)\eqto(Y,u)$
   is uniquely determined by the element $e(x_0):Y$.
   In other words, the function
   \[
-    \ev_0:\bigl((X,t)=(Y,u)\bigr)\to Y
+    \ev_0:\bigl((X,t)\eqto(Y,u)\bigr)\to Y
     \text{~~defined by~~} \ev_0(e,!) \defeq e(x_0)
   \]
   is an equivalence.
@@ -2165,11 +2168,24 @@ Recall \cref{cor:Sub_T-is-set} implying that $\Sub_\zet$ is a set.
 As a first consequence,
 we get the following for the type of loops at the standard $m$-cycles.
 \begin{corollary}\label{cor:id-m-cycle}
-  Evaluation at $0$ gives an equivalence
-  $\bigl((\bn m,\zs)=(\bn m,\zs)\bigr) \equiv \bn m$ under which
-  reflexivity maps to $0$, and composition with the equality
-  $\pathpair{\zs}{!}: ((\bn m,\zs)=(\bn m,\zs))$
-  corresponds to the operation $\zs:\bn m\to\bn m$.
+  For cycles $(\bn m,\zs)$,
+  evaluation at $0:\bn m$ gives an equivalence
+  $\bigl((\bn m,\zs)\eqto(\bn m,\zs)\bigr) \equivto \bn m$
+  with $\ev_0(\refl{(\bn m,\zs)}) = 0$, and
+  composition with the identification\marginnote{%
+  \begin{tikzcd}[column sep=large,ampersand replacement=\&]
+    (\bn m,\zs)\eqto(\bn m,\zs)  \ar[r,"{\ev_0}"]
+                \ar[d,"{\blank\cdot(\bn m,\zs)}"] 
+        \&
+    \bn m       \ar[d,"{\zs}"] \\
+    (\bn m,\zs)\eqto(\bn m,\zs) \ar[r,"{\ev_0}"] 
+        \&
+    \bn m
+  \end{tikzcd}
+}
+$(\zs,!): (\bn m,\zs)\eqto(\bn m,\zs)$
+  corresponds to the operation $\zs:\bn m\to\bn m$,
+  that is, the diagram in the margin commutes.
 \end{corollary}
 
 \begin{remark}\label{rem:thenonuniquenessofgeneratorsofmodulararithmetic1}
@@ -2202,7 +2218,8 @@ of the type of connected \coverings over the circle.
   so it remains to prove that the image is as stated.
   It is clear that $H_t$, for a cycle $(X,t)$, contains $0$ and is closed
   under addition and negation.
-  Conversely, suppose $H$ contains $0$ and is closed under addition and negation.
+  Conversely, suppose $H \subseteq \zet$ contains $0$ and 
+  is closed under addition and negation.
   Define the relation $\sim_H$ on $\zet$ by setting $z \sim_H z'$ if and only if
   the difference $z-z'$ is in $H$.
   This is an equivalence relation:
@@ -2240,8 +2257,10 @@ mapping $0$ to the infinite order and each positive $n$ to the finite order $n$.
 The orders in the image are called \emph{principal},
 and we don't make any notational distinction between a natural number $d$
 and the corresponding principal order.
-As a subset of $\zet$, a principal order is simply $d\zet$,
-so we see that the divisibility relation on orders extends that on natural numbers.
+As a subset of $\zet$ according to \cref{cor:set-trunc-cyc}, 
+a principal order is simply $d\zet$,
+so we see that the divisibility relation on orders extends 
+that on natural numbers.
 
 The description in \cref{cor:set-trunc-cyc} is still not as concrete as we'd like.
 Is it true that any order is principal, in other words,
@@ -2274,7 +2293,7 @@ The Limited Principle of Omniscience is weaker than the Law of Excluded Middle \
   for otherwise we could simply decide the truth of every open problem in mathematics
   that can (equivalently) be expressed by a function $P:\NN\to\bn 2$ being constant with value $0$.
   This type of argument was first given by Brouwer. % and
-%  such open problems are called \emph{weak} counterexamples [ref]: in order
+%  such open problems are called \emph{weak} counterexamples \ref{TODO}: in order
 %  to maintain the argument one must find a new open problem each time the old one gets solved.
 
   Here we give an example based on the famous Goldbach conjecture,
@@ -2290,7 +2309,7 @@ The Limited Principle of Omniscience is weaker than the Law of Excluded Middle \
   or $\inl{l}$ for some element $l:L$. If $t(P)\jdeq\inr{r}$ the Goldbach conjecture is true,
   and if $t(P)\jdeq\inl{l}$ the Goldbach conjecture is false. Thus the Goldbach conjecture
   would be solved, and therefore it is unlikely that $t$ exists.
-  In the appendix [ref] we give a longer but decisive argument against the constructivity of
+  In the appendix \ref{TODO} we give a longer but decisive argument against the constructivity of
   the Limited Principle of Omniscience.
 }
 
@@ -2329,14 +2348,14 @@ and it has finite order $m$
 if and only if $H_t=m\zet$, for positive $m:\NN$.
 
 Fix now a decidable cycle $(X,t)$,
-and consider the corresponding subset $H \defeq H_t \jdeq \setof{n:\zet}{f^n=\id}$.
-This is a decidable subset, since $f^n=\id$ is a proposition, and $n$ is in $H$
-if and only if $f^n(x)=x$ for some/all $x:X$ (recall that $X$ is non-empty).
+and consider the corresponding subset $H \defeq H_t \jdeq \setof{n:\zet}{t^n=\id}$.
+This is a decidable subset, since $t^n=\id$ is a proposition, and $n$ is in $H$
+if and only if $t^n(x)=x$ for some/all $x:X$ (recall that $X$ is non-empty).
 
 Apply the Limited Principle of Omniscience (\cref{LPO}) to the function $P:\NN\to\bn 2$ defined
 by $P(n)=1$ if $n+1$ is in $H$, and $P(n)=0$ otherwise.
 If $P(n)$ is constant $0$, then $H=\set{0}$,
-so $(X,f)$ has infinite order.
+so $(X,t)$ has infinite order.
 (As a \covering, it is then equivalent to the universal \covering.)
 
 Otherwise, if $n_0$ is the smallest natural number with $m\defeq n_0+1$ in $H$,
@@ -2364,7 +2383,7 @@ the component containing the $m$-fold \covering.
 \begin{remark}
   \label{rem:flipthecircle}
 The reader may wonder how the ``orientation reversing'' map $r:\Sc\to \Sc$ given
-by $r(\base)=\base$ and $r(\Sloop)=\Sloop^{-1}$ fits into the picture.\footnote{%
+by $r(\base)\defeq\base$ and $r(\Sloop)\defis\Sloop^{-1}$ fits into the picture.\footnote{%
   As an operation on infinite cycles, see \cref{def:S1toC},
   $c r c^{-1} : \InfCyc\to\InfCyc$ maps $(X,t)$ to $(X,t^{-1})$,
   flipping the arrows.}
@@ -2381,7 +2400,8 @@ This is a special case of the general case of an equivalence\marginnote{
     A\ar[rr,eqr,"\etop{e}"]\ar[dr,"fe"'] \& \& A'\ar[dl,"f"] \\
     \& \,C \&
   \end{tikzcd}$}
-$e: A\to A'$ depicted in the diagram in the margin, implying $(A,fe,!)=(A',f,!)$.
+$e: A\to A'$ depicted in the diagram in the margin, 
+implying $(A,fe,!)\eqto(A',f,!)$.
 The point is that the degree $m$ and degree $-m$ maps give the same \emph{bundles} (by composing with $r$), while as \emph{maps} they are different.
 \end{remark}
 
