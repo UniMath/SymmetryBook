@@ -1956,7 +1956,7 @@ This is indicated in red on the outside of the clock.
   $\psi_m$ as an element of the type $\prod_{z:\Sc}(R_m(z) \to \Sc)$.
   We define $\psi_m(z) : R_m(z) \to \Sc$ by circle induction on $z$.
   The base case is $\psi_m(\base) \defeq \cst\base : \bn m \to \Sc$,
-  the constant function at $\base$.
+  the constant function at $\base$ (recall $R_m(\base)\jdeq{\bn m}$).
   Since transport in a function type is by conjugation
   (\cref{lem:trp-in-function-type}),
   and the codomain type is constant,
@@ -2056,10 +2056,14 @@ We get an explicit equivalence $\bn m \equiv \dg{m}^{-1}(\base)$ from $\psi_m$
 and $\alpha_m$: send $k$ to $(\base,\Sloop^{-k})$, using the following exercise.
 
 \begin{xca}\label{xca:preim-eq}
-  Let $A,B,C$ be types and $f:A\to C$, $g:B\to C$ functions. Assume moreover we
-  have an equivalence $e: A\to B$, a element of type $h: \prod_{x:A}
-  f(x)\eqto g(e(x))$, and an element $c:C$.  
-  Show that $(a,p)\mapsto (e(a),h(a)p)$
+  Let $A,B,C$ be types and $f:A\to C$, $g:B\to C$ functions. 
+  Assume moreover we have an equivalence $e: A\to B$, 
+  an element $h: \prod_{x:A} f(x)\eqto g(e(x))$, and an element $c:C$.  
+  Show that $(a,p)\mapsto (e(a),h(a)p)$\marginnote{
+  $\begin{tikzcd}[column sep=small,ampersand replacement=\&]
+    A\ar[rr,equivr,"e"]\ar[dr,"f"'] \& \& B\ar[dl,"g"] \\
+    \& \,C \&
+  \end{tikzcd}$}
   defines an equivalence $f^{-1}(c)\to g^{-1}(c)$.
 \end{xca}
 
@@ -2134,39 +2138,44 @@ The following lemma generalizes \cref{lem:IdCisZet}.
   is an equivalence.
 \end{lemma}
 \begin{proof}
-  Assume $H_t=H_u$, \ie $t^n(x)=x$ if and only if $u^n(y)=y$
-  for any $x:X$, $y:Y$ and $n:\zet$.
+  Assume $H_t=H_u$, \ie for any $x:X$, $y:Y$ and $n:\zet$,
+  $t^n(x)=x$ if and only if $u^n(y)=y$.
   Given $y_0:Y$ we must determine a unique equivalence $e:X\to Y$
   such that $et=ue$ and $e(x_0)=y_0$.
 
-  The key point is the following: For any $x:X$, there exists some $n:\zet$
-  with $x=t^n(x_0)$. For any such $n$, we must have
+  A necessary condition that $e$ has to fulfill is the following. 
+  For any $x:X$ and $n:\zet$ with $x=t^n(x_0)$, we must have
   \[
-    e(x)=e(t^n(x_0))=u^n(e(x_0))=u^n(y_0),
+    e(x)=e(t^n(x_0))=u^n(e(x_0))=u^n(y_0).
   \]
-  which shows uniqueness of $e$.
-  For showing existence, we need to check that it doesn't matter which $n$ we choose, if there are several.
-  Technically, to use the proposition $\exists_{n:\zet}(x=t^n(x_0))$ to construct $e(x):Y$, we consider instead the type $P_x\defeq\sum_{y:Y}\prod_{n:\zet}(x=t^n(x_0) \to y=u^n(y_0))$, which we show to be a proposition.
+  This shows uniqueness of $e$ once its existence has been established.
+  For showing existence, we use that for any $x:X$ there exists an
+  $n:\zet$ with $x=t^n(x_0)$ and that $u^n(y_0)$ is independent of such $n$.
+  Technically, to use the proposition $\exists_{n:\zet}(x=t^n(x_0))$ to
+  construct $e(x):Y$, we prove instead that the type 
+  $P_x\defeq\sum_{y:Y}\prod_{n:\zet}((x=t^n(x_0)) \to (y=u^n(y_0)))$
+  is contractible, and define $e(x)$ to be its center.
   Note that $P_x$ is a subtype of $Y$
-  (the product part is a proposition since $Y$ is a set),
-  so we need to show that any two $y,y'$ in $P_x$ are equal.
-  But this is clear, since there is \emph{some} $n:\zet$ with $x=t^n(x_0)$,
-  so $y=u^n(y_0)=y'$.
-
-  Now to prove the proposition $P_x$,
-  we may assume we have $m:\zet$ such that $x=t^m(x_0)$.
-  We let $y\defeq u^m(y_0)$, and we need to show, for any $n:\zet$,
-  that $x=t^n(x_0)$ implies $y=u^n(y_0)$.
-  So now $t^m(x_0)=t^n(x_0)$ and we must show $u^m(y_0)=u^n(y_0)$.
+  (the product part is a proposition since $Y$ is a set).
+  
+  Let $x:X$. Since being contractible is a proposition we may
+  assume a $m:\zet$ with $x=t^{m}(x_0)$.
+  As center of $P_x$ we take $y=u^{m}(y_0)$.
+  We need to show, for any $n:\zet$,
+  that $x=t^m(x_0)=t^n(x_0)$ implies $u^m(y_0)=u^n(y_0)$.
   But this follows from our starting assumption, since
   the former is equivalent to $t^{m-n}(x_0)=x_0$
   and the latter to $u^{m-n}(y_0)=y_0$.
+  Note that we also get $e(x_0)=y_0$ as the center of $P_{x_0}$.
+  We still need to show that any two $y,y'$ in $P_x$ are equal.
+  But this is clear, since $x=t^{m}(x_0)$, so $y=u^{m}(y_0)=y'$.
 
   It's easy to prove the proposition that this $e$ is indeed an equivalence,
   so this is left to the reader.
 \end{proof}
+  
 As a first consequence,
-we get the following for the type of loops at the standard $m$-cycles.
+we get the following for the type of loops at the standard $m$-cycle.
 \begin{corollary}\label{cor:id-m-cycle}
   For cycles $(\bn m,\zs)$,
   evaluation at $0:\bn m$ gives an equivalence
@@ -2203,22 +2212,25 @@ we get a more concrete description of the set of components of $\Cyc$,
 and hence, by \cref{thm:cycset-connS1cover},
 of the type of connected \coverings over the circle.
 \begin{corollary}\label{cor:set-trunc-cyc}
-  The map $H : \Cyc \to \Sub_\zet$ sending $(X,t)$ to $H_t$
-  induces an equivalence from $\setTrunc{\Cyc}$
-  onto the subset of $\Sub_\zet$ consisting of those subsets\marginnote{%
-    By $H$ being closed under addition and negation,
+  Let $H_\blank : \Cyc \to \Sub_\zet$ be the map sending $(X,t)$ to $H_t$.
+  Then the image of $H_\blank$ is equal to the 
+  the subset of $\Sub_\zet$ consisting of those\marginnote{%
+    By $H\subseteq \zet$ being closed under addition and negation,
     we simply mean that if $z,z'$ are in $H$,
     then so are $z+z'$ and $-z$.}
-  $H \subseteq \zet$ that contain $0$ and are closed under addition and negation.
+  $H\subseteq\zet$ that contain $0$ and are closed under addition and negation.
 \end{corollary}
 \begin{proof}
-  The map $H$ induces $g : \setTrunc{\Cyc} \to \Sub_\zet$
-  by the universal property of set truncation, cf.~\cref{def:set-truncation}.
-  From \cref{lem:IdCycle} we know that $g$ is an injection,
-  so it remains to prove that the image is as stated.
-  It is clear that $H_t$, for a cycle $(X,t)$, contains $0$ and is closed
-  under addition and negation.
-  Conversely, suppose $H \subseteq \zet$ contains $0$ and 
+Recall $\im(H_\blank)\jdeq\sum_{H:\Sub_\zet}\exists_{(X,t):\Cyc}(H=H_t)$.
+Let $H:\Sub_Z$.
+We have to prove that $\exists_{(X,t):\Cyc}(H=H_t)$
+if and only if $H\subseteq\zet$ contains $0$ and is closed under addition 
+and negation. 
+Assume $\exists_{(X,t):\Cyc}(H=H_t)$.
+Since we have to prove a proposition, we may assume a cycle $(X,t)$ with
+$H=H_t$. Now the required properties of $H$ follow immediately from
+the definition of $H_t\jdeq\set{n:\zet \mid t^n = \id}$.
+Conversely, suppose $H \subseteq \zet$ contains $0$ and 
   is closed under addition and negation.
   Define the relation $\sim_H$ on $\zet$ by setting $z \sim_H z'$ if and only if
   the difference $z-z'$ is in $H$.
@@ -2362,9 +2374,10 @@ Otherwise, if $n_0$ is the smallest natural number with $m\defeq n_0+1$ in $H$,
 then we claim $H=m\zet$,
 from which it follows that $(X,t)$ has order $m$.
 
-Clearly, $m\zet \subseteq H$, since if $t^m=\id$, then so is $t^{nm}=\id$.
-And if $t^q=\id$, then by Euclidean division of integers, cf.~\cref{lem:euclid-div},
-there exist $k:\ZZ$, $r:\NN$ with $r<m$ so that $q=km+r$.
+Clearly, $m\zet \subseteq H$, since if $t^m=\id$, then also $t^{nm}=\id$.
+And if $t^q=\id$, then by Euclidean division of integers, 
+cf.~\cref{lem:euclid-div},
+there exist $k:\ZZ$ and $r:\NN$ with $r<m$ so that $q=km+r$.
 Now, the number $r$ is in $H$, since $t^r=t^{q-km}=\id$,
 and is less than the minimal positive value $m$ in $H$,
 and so we must conclude that $r=0$.
@@ -2388,7 +2401,7 @@ by $r(\base)\defeq\base$ and $r(\Sloop)\defis\Sloop^{-1}$ fits into the picture.
   $c r c^{-1} : \InfCyc\to\InfCyc$ maps $(X,t)$ to $(X,t^{-1})$,
   flipping the arrows.}
 As connected decidable \coverings, we have
-$(\Sc,r) = (\Sc,\id)$, since $r$ is an equivalence:
+$(\Sc,r) \eqto (\Sc,\id)$, since $r$ is an equivalence:
 \[
   \begin{tikzcd}[column sep=small]
     \Sc\ar[rr,eqr,"\etop{r}"]\ar[dr,"r"'] && \Sc\ar[dl,"\id"] \\
