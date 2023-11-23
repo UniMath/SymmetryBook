@@ -1404,6 +1404,8 @@ Cf.\ $\wdg : (\base\eqto\base)\to\zet$ from \cref{def:windingnumber}.
 \begin{definition}\label{def:S1toC}
   Let $\InfCyc$ be the component of $\sum_{X:\UU}(X\to X)$ 
   containing $(\zet,\zs)$.
+  \glossary(InfCyc){$\protect\InfCyc$}{the type of infinite cycles,
+  \cref{def:S1toC}}\index{cycle!infinite}
   Elements of $\InfCyc$ are called \emph{infinite cycles}.\footnote{%
     See also~\cref{def:Cyc} below for general cycles.}
 
@@ -1751,7 +1753,8 @@ to the set $\set{1,2,3,4,5}$ with the permutation $1\mapsto 2\mapsto 3\mapsto 1,
   Let $\Cyc$ be the subtype of $\sum_{X:\UU}(X\to X)$ of those
   pairs $(X,t)$ where $X$ is a \emph{\nonempty} set with an 
   \emph{equivalence} $t$ and any $x,x':X$ are connected by $t$.
-  Expressed in a formula:
+  Expressed in a formula: \glossary(Cyc){$\protect\Cyc$}%
+  {the type of cycles, \cref{def:Cyc}} \index{cycle}
 \[
 \Cyc \defeq \sum_{X:\Set}\bigl( {\Trunc X} \times \sum_{t:X\equivto X}
             \prod_{x,x':X}\exists_{n:\zet}(x'=t^n(x))\bigr).
@@ -2466,13 +2469,10 @@ A $2$-cycle is also called a \emph{transposition}.
   Writing $A$ as a sum of its connected components,
   we express this \covering as a sum of connected \coverings,
   but these correspond to cycles by~\cref{thm:cycset-connS1cover}.
-
-  It's only for decidable $X$, however, that we can express these
-  cycles as cyclic permutations.
-  \MB{Alternative: Note that cyclic permutations can move at most finitely many elements,
+  Note that cyclic permutations can move at most finitely many elements,
   and cannot give, \eg the infinite cycle $(\zet,\zs)$. 
   Moreover, to define the cycle $(X,t)$ from, 
-  \eg the transposition $(x\;x')$ requires that the set $X$ is decidable.}
+  \eg the transposition $(x\;x')$ requires that the set $X$ is decidable.
 \end{remark}
 
 \begin{definition}\label{def:support-permutation}
@@ -2526,7 +2526,8 @@ then apply~\cref{xca:perm-prod-transpositions} to each cycle.\footnote{%
     $\Aut(X \coprod \bn 1) \equivto (X \coprod \bn 1)' \times \Aut(X)$,
     where
     \[
-      Y' \defeq \sum_{y : Y}\prod_{z : Y}((y \eqto z) \coprod ((y \eqto z)\to\emptytype).
+      Y' \defeq 
+      \sum_{y : Y}\prod_{z : Y}((y \eqto z) \coprod ((y \eqto z)\to\emptytype)).
     \]
     By a local version of Hedberg's~\cref{thm:hedberg},
     $Y'$ is a subtype of $Y$.}%
@@ -2573,18 +2574,35 @@ then apply~\cref{xca:perm-prod-transpositions} to each cycle.\footnote{%
 \section{The \texorpdfstring{$m$\th}{mᵗʰ} root:
   \coverings over the components of $\Cyc$}
 
+Let's first give names to some important components of $\Cyc$ that
+we have met in previous sections, \eg in \cref{lem:componentsofcoversofS1}.
+
+\begin{definition}\label{def:Cyc-components}
+Define $\Cyc_0 \defeq \Cyc_{(\zet,\zs)}$.
+\glossary(Cyc0){$\protect\Cyc_0$}{the type of infinite cycles,
+\cref{def:Cyc-components}} \index{cycle!infinite}
+For each positive $m:\NN$, define $\Cyc_m \defeq \Cyc_{(\bn m,\zs)}$.
+\glossary(Cycm){$\protect\Cyc_m$}{the type of cycles of order $m>0$,
+\cref{def:Cyc-components}} \index{cycle!of order $m>0$}
+We call $\Cyc_0$ and $\Cyc_m$ the \emph{type of infinite cycles}
+and \emph{type of $m$-cycles}, respectively.
+\end{definition}
+The following exercise justifies taking $\Cyc_0\jdeq\InfCyc$.
+\begin{xca}\label{xca:Cyc-components}
+Verify that $\Cyc_0$ and $\InfCyc$ from \cref{def:S1toC}
+are definitionally equal when we disregard proofs of propositions.
+Verify that $n:\NN$ is the (infinite or finite) order of the cycles in $\Cyc_n$. 
+\end{xca} 
+
 Recall the equivalence $c : \Sc \we \Cyc_0$ of \cref{def:S1toC}
 between the circle and the type of infinite cycles.
-Here we set $\Cyc_0 \defeq \InfCyc$.
-
-In this section, we reinterpret the degree $m$ function $\dg{m}$
-as a map of infinite cycles. In fact it makes sense as a map on all cycles,
+In this section, we reinterpret the degree $m$ function $\dg{m}$ as a
+map of infinite cycles. In fact $\dg{m}$ makes sense as a map on all cycles,
 and we'll use it to begin the classification
-of the connected \coverings on the components $\Cyc_n$,
-of $\Cyc$, determined by the standard $n$-cycles, for positive integers $n$.
+of the connected \coverings over $\Cyc_n$, for positive integers $n$.
 That's why it's instructive to rephrase connected \coverings over $\Sc$
-in terms of cycles,
-even though they could just be transported along the identity $\etop c:\Sc=\Cyc_0$ corresponding to $c$.
+in terms of cycles, even though they could just be transported 
+along the identification $\etop c:\Sc\eqto\Cyc_0$ corresponding to $c$.
 
 Before we do the degree $m$ maps, let's note that the
 universal \covering over $\Cyc_0$ is represented by the constant function
@@ -2650,8 +2668,10 @@ vertical and the movement from copy to copy going around a circle.
 
 \begin{construction}\label{con:root}
   For any type $X$ and $t:X\to X$, we define the $m$\th \emph{root}
+  %\glossary(mthroot){$\protect{\sqrt[\uproot{2}m]{\blank}}$}%
+  %{the $m$\th root, \cref{con:root}$}
   \[
-    {\textstyle\sqrt[\uproot{2}m]t} : {\bn m\times X} \to {\bn m\times X}.
+    {\textstyle\sqrt[\uproot{2}m]t} : (\bn m\times X) \to (\bn m\times X).
   \]
 \end{construction}
 \begin{implementation}{con:root}
@@ -2669,11 +2689,12 @@ vertical and the movement from copy to copy going around a circle.
 Only one $m$\th of the time does $\sqrt[\uproot{2}m]t$ use $t:X\to X$,
 the rest of the time it applies the successor in $\bn m$.
 Indeed, iterating $\sqrt[\uproot{2}m]t$
-we get $(\sqrt[\uproot{2}m]t)^m(k,x)=(k,t(x))$;
+we get $(\sqrt[\uproot{2}m]t)^m(k,x)\eqto(k,t(x))$;
 hence the term ``$m$\th root'' is apt.
 
-\begin{definition}
+\begin{definition}\label{def:root}
   The \emph{formal $m$\th root function} is defined by:
+  \glossary(917rhom){$\rho_m$}{formal $m$\th root function, \cref{def:root}}
   \[
     \cdg{m}:\sum_{X:\UU}(X\to X)\to\sum_{X:\UU}(X\to X),\qquad
     \cdg{m}(X,t)\defeq(\bn m\times X,{\textstyle\sqrt[\uproot{2}m]t}).\qedhere
@@ -2684,7 +2705,7 @@ of the degree $m$ function.
 
 \begin{lemma}\label{lem:root-pres-equiv}
   If $t:X\to X$ is an equivalence,
-  then so is $\sqrt[\uproot{2}m]t : \bn m\times X \to \bn m\times X$.
+  then so is $\sqrt[\uproot{2}m]t : (\bn m\times X) \to (\bn m\times X)$.
 \end{lemma}
 \begin{proof}
   On one hand, an element in  $(\sqrt[\uproot{2}m]t)(\ell,y) = (0,x)$ consists
@@ -2708,7 +2729,7 @@ of the degree $m$ function.
   Clearly, $\bn m\times X$ is \nonempty if $X$ is.
   And we already know $\sqrt[\uproot{2}m]{t}$ is an equivalence if $t$ is.
 
-  Suppose $(k,x),(k',x'):\bn m\times X$.
+  Suppose $(k,x),(k',x'): (\bn m\times X)$.
   We need to show the proposition that there exists $n:\zet$
   with $(k',x') = \bigl(\sqrt[\uproot{2}m]t\bigr)^n(k,x)$.
   Let $n:\zet$ be such that $x' = t^n(x)$.
