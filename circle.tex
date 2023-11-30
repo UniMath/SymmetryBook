@@ -2585,14 +2585,10 @@ For each positive $m:\NN$, define $\Cyc_m \defeq \Cyc_{(\bn m,\zs)}$.
 \glossary(Cycm){$\protect\Cyc_m$}{the type of cycles of order $m>0$,
 \cref{def:Cyc-components}} \index{cycle!of order $m>0$}
 We call $\Cyc_0$ and $\Cyc_m$ the \emph{type of infinite cycles}
-and \emph{type of $m$-cycles}, respectively.
+and \emph{type of $m$-cycles}, respectively.\marginnote{%
+The forgetful map from $\Cyc_0$ to $\InfCyc$ is an equivalence. 
+Therefore we consider $\Cyc_0$ and $\InfCyc$ as definitionally equal.}
 \end{definition}
-The following exercise justifies taking $\Cyc_0\jdeq\InfCyc$.
-\begin{xca}\label{xca:Cyc-components}
-Verify that $\Cyc_0$ and $\InfCyc$ from \cref{def:S1toC}
-are definitionally equal when we disregard proofs of propositions.
-Verify that $n:\NN$ is the (infinite or finite) order of the cycles in $\Cyc_n$. 
-\end{xca} 
 
 Recall the equivalence $c : \Sc \we \Cyc_0$ of \cref{def:S1toC}
 between the circle and the type of infinite cycles.
@@ -2633,7 +2629,7 @@ This is illustrated in \cref{fig:root} with the shift by $t$ being
 vertical and the movement from copy to copy going around a circle.
 \begin{marginfigure}
   \begin{tikzpicture}
-    \node (A) at (0,4) {$\sqrt[\uproot{2}m]t:{\bn m\times X}\to{\bn m\times X}$};
+    \node (A) at (0,4) {$\sqrt[\uproot{2}m]t:(\bn m\times X)\to(\bn m\times X)$};
     \foreach \y in {0,1,2}
     { \begin{scope}[shift={(0,\y)}]
         \foreach \x in {0,...,4}
@@ -2670,7 +2666,7 @@ vertical and the movement from copy to copy going around a circle.
   For any type $X$ and $t:X\to X$, we define the $m$\th \emph{root}%
   \glossary(1root){$\protect\mthroot mt$}{$m$\th root function on cycles}
  \[
-    {\textstyle\sqrt[\uproot{2}m]t} : {\bn m\times X} \to {\bn m\times X}.
+    {\textstyle\sqrt[\uproot{2}m]t} : (\bn m\times X) \to (\bn m\times X).
   \]
 \end{construction}
 \begin{implementation}{con:root}
@@ -2688,7 +2684,7 @@ vertical and the movement from copy to copy going around a circle.
 Only one $m$\th of the time does $\sqrt[\uproot{2}m]t$ use $t:X\to X$,
 the rest of the time it applies the successor in $\bn m$.
 Indeed, iterating $\sqrt[\uproot{2}m]t$
-we get $(\sqrt[\uproot{2}m]t)^m(k,x)\eqto(k,t(x))$;
+we get an identification of type $(\sqrt[\uproot{2}m]t)^m(k,x)\eqto(k,t(x))$;
 hence the term ``$m$\th root'' is apt.
 
 \begin{definition}\label{def:root}
@@ -2707,28 +2703,32 @@ of the degree $m$ function.
   then so is $\sqrt[\uproot{2}m]t : (\bn m\times X) \to (\bn m\times X)$.
 \end{lemma}
 \begin{proof}
-  On one hand, an element in  $(\sqrt[\uproot{2}m]t)(\ell,y) = (0,x)$ consists
-  of the assertion that  $\ell=m-1$ and an element in $t(y)=x$,
-  so  $(\sqrt[\uproot{2}m]t)^{-1}(0,x)$ is equivalent
-  to $t^{-1}(x)$, which is contractible if $t$ is an equivalence.
+  Let $t:X\to X$ be an equivalence. We prove that the fibers of 
+  $\sqrt[\uproot{2}m]t$ are contractible.
+  
+  For the fiber at $(0,x)$ we note,
+  using \cref{lem:isEq-pair=}, that identifications in 
+  $(0,x)\eqto(\sqrt[\uproot{2}m]t)(\ell,y)$ consist of pairs of proofs 
+  of  $\ell=m-1$ and identifications in $x\eqto t(y)$. 
+  Both $\sum_{\ell:\bn m}\ell=m-1$ and $t^{-1}(x)$ are contractible,
+  and so $(\sqrt[\uproot{2}m]t)^{-1}(0,x)$ is contractible.
 
-  On the other, if $k:\bn m$ is not $0$,
-  then an element in $(\sqrt[\uproot{2}m]t)(\ell,y)=(k,x)$
-  consists of the assertion that $\ell+1=k$ and an element in $y=x$,
-  and so $(\sqrt[\uproot{2}m]t)^{-1}(k,x)$ is equivalent
-  to the contractible type $\sum_{y:X}y=x$.\marginnote{%
+  For the fiber at $(k,x)$ with $k:\bn m$ not $0$,
+  identifications in $(k,x)\eqto(\sqrt[\uproot{2}m]t)(\ell,y)$
+  consist of pairs of proofs of $\ell+1=k$ and identifications in $x\eqto y$,
+  so $(\sqrt[\uproot{2}m]t)^{-1}(k,x)$ is contractible since both
+  $\sum_{\ell:\bn m}\ell+1=k$ and $\sum_{y:X}x\eqto y$ are.\marginnote{%
     Of course, it's also quite easy to write down an inverse
     of $\sqrt[\uproot{2}m]{t}$ given an inverse of $t$.}
 \end{proof}
 
-\begin{lemma}
+\begin{lemma} Let $X:\UU$ and $t:X\to X$.
   If $(X,t)$ is a cycle, then so is $\cdg{m}(X,t)$.
 \end{lemma}
 \begin{proof}
-  Clearly, $\bn m\times X$ is \nonempty if $X$ is.
-  And we already know $\sqrt[\uproot{2}m]{t}$ is an equivalence if $t$ is.
-
-  Suppose $(k,x),(k',x'): (\bn m\times X)$.
+  Clearly, $\bn m\times X$ is a \nonempty set if $X$ is.
+  We already know $\sqrt[\uproot{2}m]{t}$ is an equivalence if $t$ is.
+  For connectedness, let $(k,x),(k',x'): (\bn m\times X)$.
   We need to show the proposition that there exists $n:\zet$
   with $(k',x') = \bigl(\sqrt[\uproot{2}m]t\bigr)^n(k,x)$.
   Let $n:\zet$ be such that $x' = t^n(x)$.
@@ -2744,7 +2744,7 @@ and what can we say about the preimages $\cdg{m}^{-1}(X,t)$
 for an arbitrary cycle $(X,t)$?
 
 The first part is easy, since the product of $\bn m$ with an $n$-element set
-is an $mn$-element set. We set $\pt_n \defeq (\bn n,\zs) : \Cyc_n$.
+is an $mn$-element set.
 \begin{lemma}
   The degree $m$ function restricts to give pointed maps
   \[
@@ -2753,11 +2753,13 @@ is an $mn$-element set. We set $\pt_n \defeq (\bn n,\zs) : \Cyc_n$.
   \]
 \end{lemma}
 \begin{proof}
+  Recall \cref{def:Cyc-components}. The components $\Cyc_k$ are pointed
+  by $\pt_0\defeq(\zet,\zs)$ if $k=0$, and $\pt_k\defeq(\bn k,\zs)$ else.  
   Note\marginnote{%
     In terms of iterated addition, we have
     $\varphi(k,r) = (z \mapsto z+m)^r(k)$.}
   that the function $\varphi : (\bn m\times \zet) \to \zet$
-  given by $\varphi(k,r)=k+mr$ is an equivalence,
+  given by $\varphi(k,r) \defeq k+mr$ is an equivalence,
   with inverse given by Euclidean division by $m$.
   Moreover, we have ${\varphi\!\sqrt[\uproot{2}m]\zs} = {\zs\varphi}$, since
   \[
@@ -2766,27 +2768,27 @@ is an $mn$-element set. We set $\pt_n \defeq (\bn n,\zs) : \Cyc_n$.
     \quad\text{for all $(k,r):\bn m\times \zet$}.
   \]
   This shows that $\varphi$ gives an identification of infinite cycles
-  $(\bn m\times\zet, \sqrt[\uproot{2}m]\zs) = (\zet,\zs)$,
+  $(\bn m\times\zet, \sqrt[\uproot{2}m]\zs) \eqto (\zet,\zs)$,
   and hence the $m$\th root construction maps the component $\Cyc_0$ to itself.
 
   Analogously, we can restrict $\varphi$ to
   an equivalence $\bn m \times \bn n \we \sum_{k:\NN}(k<mn)$,
-  and get an identification of cycles $\cdg{m}(\pt_n) = \pt_{mn}$,
+  and get an identification of cycles $\cdg{m}(\pt_n) \eqto \pt_{mn}$,
   showing that $\cdg{m}$ maps the component $\Cyc_n$ to the component $\Cyc_{mn}$.
 \end{proof}
 
 We now analyze how $\cdg{m}$ acts on paths.
-Let $\pathpair{\etop{e}}{!}:(X,t)=(X',t')$.
+Let $({\etop{e}},{!}):(X,t)\eqto(X',t')$.
 Since $\cdg{m}$ maps first components $X$ to $\bn m\times X$, we get that
-the first projection of $\ap{\cdg{m}}\pathpair{\etop{e}}{!}$ is
-$\overetop{\id\times e} : (\bn m\times X) = (\bn m\times X')$.
+the first projection of $\ap{\cdg{m}}({\etop{e}},{!})$ is
+${\id\times e} : (\bn m\times X)\eqto(\bn m\times X')$.
 We are particularly interested in the case of the loops,
-that is, $\pathpair{\etop{e}}{!}:(X,t)=(X,t)$.
+that is, $({\etop{e}},{!}):(X,t)\eqto(X,t)$.
 We calculate $(\id\times e)(k,x) = (k,e(x))$,
 which by the property of the $m$\th root is equal to $(\sqrt[\uproot{2}m]e)^m(k,x)$.
 In particular, if we take $e\defeq t^{-1}$,
 then we get $(\id\times t^{-1}) = (\sqrt[\uproot{2}m]{t^{-1}})^m$, which means that
-$\ap{\cdg{m}}\pathpair{\etop{t}^{-1}}{!}$ is indeed the $m$\th power of a
+$\ap{\cdg{m}}({\etop{t}^{-1}},{!})$ is indeed the $m$\th power of a
 generating loop at the image cycle $\cdg{m}(X,t)$.
 In particular, this holds for the standard infinite cycle $(\zet,\zs):\Cyc_0$
 and the standard $n$-cycle $(\bn n,\zs):\Cyc_n$.
