@@ -2177,8 +2177,14 @@ The following lemma generalizes \cref{lem:IdCisZet}.
   It's easy to prove the proposition that this $e$ is indeed an equivalence,
   so this is left to the reader.
 \end{proof}
-  
-As a first consequence,
+
+We get the following immediate consequence (proof as an exercise).
+\begin{corollary}\label{cor:ConnCycles}
+For all cycles $(X,t),(Y,u)$: $\Trunc{(X,t)\eqto(Y,u)}$ if
+and only if $(H_t =_{\Sub_\zet} H_u)$.
+\end{corollary}
+
+As a second consequence,
 we get the following for the type of loops at the standard $m$-cycle.
 \begin{corollary}\label{cor:id-m-cycle}
   For cycles $(\bn m,\zs)$,
@@ -2211,7 +2217,7 @@ $(\zs,!): (\bn m,\zs)\eqto(\bn m,\zs)$
   have the proper machinery to put it to good use.
 \end{remark}
 
-And as a second consequence,
+And as a third consequence,
 we get a more concrete description of the set of components of $\Cyc$,
 and hence, by \cref{thm:cycset-connS1cover},
 of the type of connected \coverings over the circle.
@@ -2837,7 +2843,7 @@ in case all these maps are taken to be pointed.
 \end{xca}
 
 So we know that the fiber of $\cdg{m}$ at an infinite cycle $(X,t)$
-is an $m$-element set. In fact, we can identify this set as
+is an $m$-element set. In fact, we will identify this set as
 $X/m \defeq X/\sim_m$ where $\sim_m$ is the equivalence relation that
 identifies points that are a distance $mr$ apart, for some $r:\zet$.
 Formally, let $x\sim_m x'$ if and only if $\exists_{r:\zet}(x'=t^{mr}(x))$.
@@ -2846,10 +2852,16 @@ Indeed, the fiber is
 \[
   \sum_{(Y,u):\Cyc_0}\bigl((X,t) \eqto (\bn m\times Y, \sqrt[\uproot{2}m]{u})\bigr).
 \]
-The equivalence is obtained by sending an equivalence class $Y$ of $X/m$ to
-the corresponding infinite cycle $(Y,u^m)$ together with the
-natural identification $(X,t) \eqto (\bn m\times Y, \sqrt[\uproot{2}m]{u^m})$.
-See \cref{thm:fiber-cdg} below for a careful proof of a more general statement.
+We sketch an equivalence from $X/m$ to $\inv{\cdg{m}}(X,t)$.
+See \cref{thm:fiber-cdg} below for a careful proof of a 
+more general statement for arbitrary cycles, not only infinite ones.
+Let $Y$ be an equivalence class of $X/m$, taken as a set. 
+One should think of $Y$ as a set 
+$\set{\ldots,t^{-2m}(x),t^{-m}(x),x,t^m(x),t^{2m}(x),\ldots}$
+for some $x:X$. Then $(Y,t^m)$ is an infinite cycle and we can construct a
+natural identification $i:(X,t) \eqto (\bn m\times Y, \sqrt[\uproot{2}m]{t^m})$,
+so that $(Y,t^m,i): \inv{\cdg{m}}(X,t)$. The map $Y\mapsto(Y,t^m,i)$
+is the intended equivalence. 
 
 The reader will no doubt have noticed that $X/m$ is a \emph{finite cycle}.
 We'll return to the significance of this below in~\cref{sec:higher-images}.
@@ -2866,15 +2878,12 @@ makes sense for all cycles.
   of cycles of order $d$.
 \end{lemma}
 \begin{proof}
-  This is relatively straight-forward from \cref{lem:IdCycle}.
-  The type in question is nonempty since all cycles have a nonempty underlying set,
-  so it suffices to prove the type is a proposition.
-  So let $(X,t),(X',t')$ be cycles of order $o$, and take $x:X$ and $x':X$.
-  An identification of $((X,t),x)$ and $((X',t'),x')$ is given by an identification 
-  of cycles $e : (X,t) \eqto (X',t')$ such that $e(x)=x'$.
-  But evaluation at $x$ induces an equivalence of type
-  $\bigl((X,t) \eqto (X',t')\bigr) \equivto X'$,
-  so there exists a unique $e$ with $e(x)=x'$.
+  First we note that the goal is a proposition.
+  Clearly, for any cycle $(Y,u)$, the singleton type
+  $\sum_{(X,t):\Cyc_{(Y,u)}} ((X,y)\eqto(Y,u))$ is contractible.
+  Using \cref{lem:IdCycle} and \cref{cor:ConnCycles}, it follows that
+  $\sum_{(X,t):\Cyc_{(Y,u)}} X$ is contractible.
+  Now the lemma follows by set truncation elimination.
 \end{proof}
 \begin{lemma}\label{lem:m-root-id}
   For any cycle $(X,t)$, if $(\sqrt[\uproot{2}m]{t})^n = \id$,
@@ -2883,10 +2892,20 @@ makes sense for all cycles.
 \end{lemma}
 This follows simply by looking at the first component,
 where $\sqrt[\uproot{2}m]{t}$ acts as the successor operation on $\bn m$.
+See \cref{def:Order} for the order.
 
 We're almost ready to identify the fiber of $\cdg{m}$ at a cycle $(X,t)$.
-We know from \cref{lem:m-root-id} that the fiber
-is \nonempty only if $m$ divides the order of $t$.
+Let's explore first the problem of finding an identification of $(X,t)$ with 
+$\cdg{m}(Y,u)\jdeq(\bn m\times Y, \mthroot{m}{u})$ for a given cycle $(Y,u)$.
+By \cref{cor:ConnCycles}, a necessary condition for such an identification
+is $H_t =_{\Sub_\zet} H_{\mthroot{m}{u}}$. 
+Recall from \cref{def:subgroup-zet-of-cycle}
+that $H_t \jdeq \setof{n:\zet}{t^n=\id}$ and
+$H_{\mthroot{m}{u}} \jdeq \setof{n:\zet}{(\mthroot{m}{u})^n=\id}$.
+We know from \cref{lem:m-root-id} that $m$ divides the order of
+$\mthroot{m}{u}$, so the fiber $\inv{\cdg{m}}(X,t)$ is \nonempty only if 
+$m$ divides the order of $t$.
+
 A key ingredient for the converse is the following.
 \begin{lemma}\label{lem:X-mod-m-chosen}
   Let $(X,t):\Cyc$ be a cycle with a chosen point $x_0:X$
