@@ -2908,14 +2908,17 @@ $m$ divides the order of $t$.
 
 A key ingredient for the converse is the following.
 \begin{lemma}\label{lem:X-mod-m-chosen}
-  Let $(X,t):\Cyc$ be a cycle with a chosen point $x_0:X$
-  and with order divisible by $m$.
+  Let $(X,t):\Cyc$ be a cycle with order divisible by $m$
+  and let $x_0$ be an element of $X$.
   Then the map $f : \bn m \to X/m$, $f(k) \defeq [t^k(x_0)]$
   is an equivalence.
 \end{lemma}
 \begin{proof}
-  Fix an equivalence class $V:X/m$ and consider its preimage under $f$,
-  $f^{-1}(V) \jdeq \sum_{k:\bn m}(V=[t^k(x_0)])$.
+  Fix an equivalence class $V:X/m$\marginnote{%
+  Here we take $V$ not as a set, but as an element of the set $X\to\Prop$.
+  See the discussion after \cref{lem:subtype-eq-=} for the distinction.} 
+  and consider its 
+  preimage under $f$, $f^{-1}(V) \jdeq \sum_{k:\bn m}(V=[t^k(x_0)])$.
   The contractibility of this type is a proposition, so we may choose
   $x:X$ with $V=[x]$.
   Then $(V=[t^k(x_0)])\equiv([x]=[t^k(x_0)])\equiv(x\sim_m t^k(x_0))$.
@@ -2926,40 +2929,49 @@ A key ingredient for the converse is the following.
   Then $x = t^n(x_0) \sim_m t^r(x_0)$, so we have our center.
   Let $k:\bn m$ also satisfy $x\sim_m t^k(x_0)$.
   We need to show the proposition $k=r$.
-  But $t^{r-k}(x_0) \sim_m x_0$, so we may take $q:\zet$ with $t^{qm+r-k}(x_0)=x_0$.
+  But $t^{r-k}(x_0) \sim_m x_0$, so we may take $q':\zet$ 
+  with $t^{q'm+r-k}(x_0)=x_0$.
   Since $m$ divides the order of $t$, this implies $r=k$, as desired.
 \end{proof}
 Now we have all the pieces needed to prove the main result.
-\begin{theorem}\label{thm:fiber-cdg}
-  For \emph{any} cycle $(X,t)$, the preimage $\cdg{m}^{-1}(X,t)$
-  is equivalent to $P\times X/m$,
-  where $P\defeq (m \mid \ord(t)) \jdeq (H_t \subseteq m\zet)$
-  expresses that $m$ divides the order of $t$.
-\end{theorem}
-\begin{proof}
+\begin{construction}\label{thm:fiber-cdg}
+  For \emph{any} cycle $(X,t)$, we have an equivalence
+  between $\cdg{m}^{-1}(X,t)$ and
+  $P\times X/m$, where $P$ expresses that $m$ 
+  divides the order of $t$, formally 
+  $P \defeq (H_t \subseteq m\zet)$ (see \cref{def:Order}).\footnote{%
+  When $X$ is a decidable set then LPO allows for a simpler formulation:
+  Then $P$ is either false, in which case $\cdg{m}^{-1}(X,t)$ is empty,
+  or true, in which case the preimage is $X/m$.
+  }
+\end{construction}
+\begin{implementation}{thm:fiber-cdg}
   We'll use \cref{lem:weq-iso}, and we first define the function
   \[
     g : \cdg{m}^{-1}(X,t) \to P\times X/m,
   \]
   by mapping $(Y,u)$ and an identification of cycles
-  $e : (X,t) = (\bn m\times Y,\sqrt[\uproot{2}m]{u})$
+  $e : (X,t) \eqto (\bn m\times Y,\sqrt[\uproot{2}m]{u})$
   to the proof of $P$ from \cref{lem:m-root-id}
-  and the class $V_e\defeq [e^{-1}(0,y)]:X/m$, for any $y:Y$.
-  Note that this doesn't depend on $y$, so that \cref{thm:wconstant-elim} applies.
+  and the class $V_e\defeq [e^{-1}(0,y)]:X/m$, for any $y:Y$.\footnote{%
+  Note that this doesn't depend on $y$, so that \cref{thm:wconstant-elim}
+  applies: $(0,y)$ and $(0,y')$ are a distance $mr$ apart,
+  and $e^{-1}$ preserves this distance.}
   As a subset of $X$, $V_e=\setof{x:X}{\fst(e(x))=0}$.
 
   In the other direction, to define the function
   \[
     h : P\times X/m \to \cdg{m}^{-1}(X,t),
   \]
-  fix an equivalence class $V:X/m$,
+  fix an equivalence class $V$ of $X/m$,
   and assume that $m$ divides the order of $t$.
-  Then we have, with a bit of abuse of notation, the cycle $(V,t^m)$,
-  where we also write $V$ for the type of elements in $X$ that lie in the class $V$,
-  and $t^m$ is the restriction of this power of $t$ to $V$.\footnote{%
-    If $x$ lies in $V$, then so does $t^m(x)$.}
+  As in the discussion after \cref{xca:pointed-maps-circle},
+  we take $V$ as the set of elements in $X$ that lie in the class $V$.
+  Then $(V,t^m)$ is a cycle.\footnote{%
+  Indeed $t^m$ is properly restricted to $V$: If $x$ lies in $V$,
+  then so does $t^m(x)$.}
   We also need an identification
-  $(X,t)=(\bn m\times V,\sqrt[\uproot{2}m]{t^m})$.
+  $(X,t)\eqto\cdg{m}(V,t^m)\jdeq(\bn m\times V,\sqrt[\uproot{2}m]{t^m})$.
   This we define via a map $e : \bn m\times V \to X$, $e(k,x) \defeq t^k(x)$.
   This is an equivalence as long as the orders match.
   So let $n:\zet$, and assume first that $t^n=\id$.
@@ -2968,17 +2980,18 @@ Now we have all the pieces needed to prove the main result.
   \[
     (\sqrt[\uproot{2}m]{t^m})^n
     = (\sqrt[\uproot{2}m]{t^m})^{qm}
-    = (\id \times t^m)^q = (\id \times t^{qm}) = \id.
+    = (\id \times t^m)^q = (\id \times t^{mq}) 
+    = (\id \times \id_V)= \id.
   \]
   Conversely, we know from \cref{lem:m-root-id} again,
   that if $(\sqrt[\uproot{2}m]{t^m})^n=\id$,
   then we may write $n=qm$ for some $q:\zet$,
-  and $(t^m)^q=\id$, which by \cref{lem:cycle-order-point-ap}
-  implies that $t^n = \id$.
+  and $(t^m)^q=\id_V$, which by \cref{lem:cycle-order-point-ap}
+  implies that $t^n = \id_X$.
 
   Straight from these definitions, we see that $g\circ h=\id$.
   We leave to the reader to check that $h\circ g=\id$.
-\end{proof}
+\end{implementation}
 
 \section{Higher images}
 \label{sec:higher-images}
