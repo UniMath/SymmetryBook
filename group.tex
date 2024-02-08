@@ -2821,7 +2821,7 @@ shall use the notation $\BG \ptdweto \BG$.%
 There is a natural map
 $\ev_{\shape_G} : (\BG_\div\eqto\BG_\div) \to \BG_\div$ defined by
 $\ev_{\shape_G}(\varphi)\defequi \varphi(\shape_G)$, where the path
-$\varphi$ is coerced to a funciton through univalence. In particular,
+$\varphi$ is coerced to a function through univalence. In particular,
 $\ev_{\shape_G}(\refl{\BG_\div}) \jdeq \shape_G$. It makes the
 restriction of this map to the connected component of
 $\refl{\BG_\div}$ a pointed map. In other words, it defines a group
@@ -3179,7 +3179,7 @@ identity type $x\eqto y$ is a groupoid for every $x,y:A$.
 %   component of $\refl A$ in $A=A$.
 % \end{itemize}
 
-\begin{theorem}
+\begin{theorem}\label{thm:abelian-groups-weq-sc2types}%
   The type $\typeabgroup$ of abelian groups is equivalent to the type
   of pointed simply connected $2$-types.
 \end{theorem}
@@ -3435,53 +3435,116 @@ identity type $x\eqto y$ is a groupoid for every $x,y:A$.
   wanted.
 \end{proof}
 
-The function $\BB$ defined in the previous proof provides a delooping of $\BG$ whenever $G$ is abelian. That is, there is an identification
-$\loops \BB G \eqto \BG$. A systematic way of obtaining deloopings has been developed by David W\"{a}rn in \footcite{Warn-EM}, that can be
-applied here to give an alternative definition of $\BB G$. W\"{a}rn defines, for any pointed type $X$, a type $TX$ of {\em $X$-torsors} as
-follows:
-\begin{displaymath}
-  TX \defequi \sum_{Y : \UU} \Trunc{Y} \times \left( \prod_{y:Y}(Y,y) \ptdweto X \right)
-\end{displaymath}
-In order to compare this construction with our own, note that there is an equivalence of type
-\begin{displaymath}
-  TX \equivto \sum_{Y : \UU} \Trunc{Y} \times \secfun(\ev_{X_\div,Y})
-\end{displaymath}
-where $\ev_{X_\div,Y} : (X_\div \eqto Y) \to Y$ is the evaluation (defined by path-induction, sending $\refl X$ to the distinguished point of
-$X$), and $\secfun(f)$ is the type of sections of any function $f$. Write $\tilde TX$ for the type on the right hand side, whose elements are
-still called (abusively) $X$-torsors. We are interested here in the case $X \jdeq \BG$ for an abelian group $G$. Then, for each type $Y$, we can
-construct a function $f_Y : \Trunc{Y} \times \secfun(\ev_{X_\div,Y}) \to \setTrunc{\BG_\div \eqto Y}$ as follows: an element $(!,s)$ proves that
-$Y$ is connected (being connected is a proposition, so we can assume an actual $y:Y$ and then $s(y) : \BG_\div \eqto Y$ proves that $Y$ is as
-connected as $\BG_\div$ is), and consequently $s$ must send $Y$ into one of the connected component of $\BG_\div \eqto Y$, that we choose as the
-definition of $f_Y(!,s)$. But the fiber at $c : \setTrunc{\BG_\div \eqto Y}$ of $f_Y$ can then be identified with the type of sections $s$ of
-$\ev_{\BG_\div,Y}$ with values in $c$. However, we can show that for any $Z$ and $p: \BG_\div \eqto Z$ the restriction of the evaluation
-$\ev_{\BG_\div,Z}\restriction_p : \conncomp{\BG_\div \eqto Z} p \to Z$ is an equivalence: by induction, we only have to show it for
-$p\jdeq \refl {\BG_\div}$, but then $\ev_{\BG_\div,\BG_\div}\restriction_{\refl {\BG_\div}}$ is exactly $\B\grpcenterinc G$, which is an
-equivalence since $G$ is abelian. So we have shown that every fiber of $f_Y$ is contractible, meaning $f_Y$ is an equivalence
-$\Trunc{Y} \times \secfun(\ev_{X_\div,Y}) \equivto \setTrunc{\BG_\div \eqto Y}$. In particular, this provides an equivalence
-$\tilde T\BG \simeq \univcover \UU {\BG_\div}$ \footnote{Notice that the construction of an equivalence $TX \equivto \univcover \UU {X_\div}$ that
-  we carried for $X\jdeq\BG$ relies only on $X_\div$ being connected and $\ev_{X_\div,X_\div}\restriction_{\refl {X_\div}}$ being an
-  equivalence. Such types $X$ are called {\em central} and are studied in details by~\citeauthor{2301.02636}\footnotemark{}.}.%
-\footcitetext{2301.02636}
+\subsection{Higher deloopings}
 
-Although we have already established an equivalence between W\"arn's type of $\BG$-torsors and our type $\BB G$ when $G$ in abelian, and thus we
-have de facto proven $T\BG$ to be a delooping of $\BG$, it is worth exploring how we can directly prove this latter fact. The clever idea
-developed by W\"arn is that the type of $X$-torsors is a delooping of $X$ as soon as the type $\sum_{t : \tilde TX}\fst t$ of {\em pointed
-  $X$-torsors} is contractible. Indeed, for any center of contraction $(t,y)$, by contracting away (\cref{lem:contract-away}) in two different
-ways, we obtained a composition of equivalences:
+The function $\BB$ defined in the proof
+of~\cref{thm:abelian-groups-weq-sc2types} provides a delooping of
+$\BG$ whenever $G$ is abelian. That is, there is an identification
+$\loops \BB G \eqto \BG$. A systematic way of obtaining such
+deloopings has been developed by David W\"{a}rn\footcite{Warn-EM},
+that can be applied here to give an alternative definition of $\BB G$,
+and to obtain further deloopings of it.
+
+\begin{definition}[W\"{a}rn]
+  Given a pointed type $X$, the type of {\em $X$-torsors} is
+  \begin{displaymath}
+    TX \defequi \sum_{Y : \UU} \Trunc{Y} \times \left( \prod_{y:Y}(Y,y) \ptdweto X \right).
+  \end{displaymath}
+  The type of {\em pointed $X$-torsors} is
+  $TX_\ast \defequi \sum_{t : TX}\fst t$.
+\end{definition}
+The usefulness of these definitions in the context of deloopings comes
+from the following proposition.
+\begin{lemma}[W\"{a}rn]
+  Let $X$ be a pointed type. If $TX_\ast$ is contractible, then for
+  any pointed $X$-torsors $(t,y)$, the pointed type $(TX,t)$ is a
+  delooping of $X$.
+\end{lemma}
+\begin{proof}
+  Suppose $(t,y)$ is a center of contraction for $TX_\ast$. By
+  contracting away (\cref{lem:contract-away}) in two different ways,
+  we obtained a composition of equivalences:
+  \begin{displaymath}
+    (t \eqto t) \equivto \sum_{u : TX}\fst u \times (t \eqto u) \equivto \fst t 
+  \end{displaymath}
+  that maps $\refl t$ to $y$. In other words, this equivalence,
+  trivially pointed, presents $(TX, t)$ as a delooping of
+  $(\fst t, y)$. Moreover, the $X$-torsor $t$ comes by definition with
+  an identification $(\fst t,y) \ptdweto X$. So in the end, we have an
+  equivalence $(TX, t) \ptdweto X$.
+\end{proof}
+
+\begin{exercise}\label{xca:sections-as-dependent-functions}
+  Recall that a {\em section} (see~\cref{def:surjection} and its
+  accompanying footnote) of a function $f:A \to B$ is a function
+  $s: B \to A$ together with an identification $f\circ s \eqto \id_B$.
+  Construct an equivalence from the type $\secfun f$ of sections of
+  $f$ to the type $\prod_{b:B}\sum_{a:A}b \eqto f(a)$.
+\end{exercise}
+
+Consider the evaluation function
+$\ev_{X_\div,Y} : (X_\div \eqto Y) \to Y$ (defined by path-induction,
+sending $\refl X$ to the distinguished point of $X$). In other words,
+the function $\ev_{X_\div,Y}$ takes an identification of $X_\div$ with
+$Y$ and returns the point in $Y$ corresponding to the distinguished
+point of $X$ under this identification.  Applying
+\cref{xca:sections-as-dependent-functions} to $\ev_{X_\div,Y}$ we get
+an equivalence of type
 \begin{displaymath}
-  (t \eqto t) \equivto \sum_{u : \tilde TX}\fst u \times (t \eqto u) \equivto \fst t 
+  TX \equivto \sum_{Y : \UU} \Trunc{Y} \times \secfun(\ev_{X_\div,Y}).
 \end{displaymath}
-that maps $\refl t$ to $y$. In other words, this equivalence, trivially pointed, presents $(\tilde TX, t)$ as a delooping of $(\fst t ,
-y)$. Moreover, each $X$-torsor $t$, if pointed at $y:\fst t$, comes with an identification $p : X_\div \eqto Y$ and an identification of type
-$\ev_{X_\div \eqto Y}(p) \eqto y $. Through univalence, this amounts to a pointed equivalence $X \ptdweto (\fst t,y)$. So in the end, we have an
-equivalence $(\tilde TX, t) \ptdweto X$ whenever we can prove that the type of pointed $X$-torsors is contractible. When $X \jdeq \BG$ for an
-abelian group $G$, we know already a pointed $\BG$-torsor, namely $\BG_\div$ pointed at $\sh_G$ together with the section of
-$\ev_{\BG_\div,\BG_\div}$ provided by the inverse of the isomorphism $\grpcenterinc G$. We write $(t_G,\sh_G)$ for this pointed
-$\BG$-torsors. To conclude that $\tilde T\BG$ is a delooping of $X$, it suffices then to show that $(t_G,\sh_G)$ is a center of
-contraction. However, for any $\BG$-torsors $t$ pointed at $y: \fst t$, and with section $s$ of $\ev_{\BG_\div,\fst t}$, we obtain an
-identification $s(y) : \BG_\div \eqto \fst t$. Moreover, we know from the analysis above that $s$ is fully determined by the connected component
-of $s(y)$. Thus, to provide an identification $(t_G,\sh_G) \eqto (t , y)$, we construct $p : t_G \eqto t$ with first projection $s(y)$ by simply
-noting that … (\emph{to complete})
+This alternative description of the type of $X$-torsors is the key
+ingredient to compare W\"arn's delooping of the classifying type of
+an abelian group with our.
+
+\begin{lemma}\label{lem:warn-abelian-group}
+  For any abelian group $G$, the type $T(\BG)$ can be identified with
+  $\BB G$.
+\end{lemma}
+\begin{proof}
+  Let $G$ be an abelian group. We first construct, for each type
+  $Y$, a function
+  $f_Y : \Trunc{Y} \times \secfun(\ev_{\BG_\div,Y}) \to
+  \setTrunc{\BG_\div \eqto Y}$, and then prove that $f_Y$ is an
+  equivalence. Given a type $Y$ and an element
+  $(!,s) : \Trunc{Y} \times \secfun(\ev_{X_\div,Y})$, we can easily
+  prove that $Y$ is connected: being connected is a proposition, so
+  we can assume that we have an actual $y:Y$ and then
+  $s(y) : \BG_\div \eqto Y$ proves that $Y$ is as connected as
+  $\BG_\div$ is. Consequently $s$ must send $Y$ into one of the
+  connected component of $\BG_\div \eqto Y$, that we choose to be
+  $f_Y(!,s)$. With this definition, the fiber of $f_Y$ at any given
+  $c : \setTrunc{\BG_\div \eqto Y}$ can be identified with the type
+  of sections $s$ of $\ev_{\BG_\div,Y}$ with values in $c$. However,
+  for any $Z$ and $p: \BG_\div \eqto Z$ the restriction of the
+  evaluation
+  $\ev_{\BG_\div,Z}\restriction_p : \conncomp{(\BG_\div \eqto Z)} p
+  \to Z$ is an equivalence: indeed, by induction, we only have to
+  show it for $p\jdeq \refl {\BG_\div}$, in which case
+  $\ev_{\BG_\div,\BG_\div}\restriction_{\refl {\BG_\div}}$ is
+  exactly the map $\B\grpcenterinc G$ defined in
+  \cref{sec:center-group}, which is an equivalence since $G$ is
+  abelian by \cref{def:abelian-groups}. Thus, given any $p$, the
+  fiber of $f_Y$ at $\settrunc p$ is contractible. Being
+  contractible is a proposition, hence a set, so it follows that the
+  fiber of $f_Y$ at any $c:\setTrunc{\BG_\div \eqto Y}$ is
+  contractible. In other words, $f_Y$ is an equivalence, as
+  announced. We have thus a chain of equivalences:\footnote{Notice
+    that the construction of an equivalence
+    $TX \equivto \univcover \UU {X_\div}$ that we carried for
+    $X\jdeq\BG$ relies only on $X_\div$ being connected and
+    $\ev_{X_\div,X_\div}\restriction_{\refl {X_\div}}$ being an
+    equivalence. Such types $X$ are called {\em central} and are
+    studied in details by~\citeauthor{2301.02636}\footnotemark{}.}.%
+  \footcitetext{2301.02636}
+  \begin{displaymath}
+    T(\BG) \equivto \sum_{Y : \UU} \Trunc{Y} \times \secfun(\ev_{X_\div,Y})
+    \equivto \sum_{Y : \UU} \setTrunc{\BG_\div \eqto Y} \jdeq \BB G
+  \end{displaymath}
+\end{proof}
+
+Notice that where W\"arn's method shines, compared to our, is in
+producing further delooping $\B^n G$ for $n\geq 3$.
 
 
 \section{$G$-sets vs $\abstr(G)$-sets}
