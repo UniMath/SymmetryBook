@@ -2871,7 +2871,10 @@ Let $Y$ be an equivalence class of $X/m$, taken as a set.
 One should think of $Y$ as a set 
 $\set{\ldots,t^{-2m}(x),t^{-m}(x),x,t^m(x),t^{2m}(x),\ldots}$
 for some $x:X$. Then $(Y,t^m)$ is an infinite cycle and we can construct a
-natural identification $i:(X,t) \eqto (\bn m\times Y, \sqrt[\uproot{2}m]{t^m})$,
+natural\footnote{%
+The map defined by $e(k,x)\defeq t^k(x)$ is an equivalence from
+$\bn m\times Y$ to $X$ such that $te=e\sqrt[\uproot{2}m]{t^m})$.}
+identification $i:(X,t) \eqto (\bn m\times Y, \sqrt[\uproot{2}m]{t^m})$,
 so that $(Y,t^m,i): \inv{\cdg{m}}(X,t)$. The map $Y\mapsto(Y,t^m,i)$
 is the intended equivalence. 
 
@@ -2892,14 +2895,14 @@ makes sense for all cycles.
 \begin{proof}
   First we note that the goal is a proposition.
   Clearly, for any cycle $(Y,u)$, the singleton type
-  $\sum_{(X,t):\Cyc_{(Y,u)}} ((X,y)\eqto(Y,u))$ is contractible.
+  $\sum_{(X,t):\Cyc_{(Y,u)}} ((X,t)\eqto(Y,u))$ is contractible.
   Using \cref{lem:IdCycle} and \cref{cor:ConnCycles}, it follows that
   $\sum_{(X,t):\Cyc_{(Y,u)}} X$ is contractible.
   Now the lemma follows by set truncation elimination.
 \end{proof}
 \begin{lemma}\label{lem:m-root-id}
-  For any cycle $(X,t)$, if $(\sqrt[\uproot{2}m]{t})^n = \id$,
-  then $m$ divides $n$, \ie $n=mq$ for some $q:\zet$, and $t^q=\id$.
+  For any cycle $(X,t)$, if $(\sqrt[\uproot{2}m]{t})^n = \id_{\bn m \times X}$,
+  then $m$ divides $n$, \ie $n=mq$ for some $q:\zet$, and $t^q=\id_X$.
   In other words, $m$ divides the order of $\sqrt[\uproot{2}m]{t}$.
 \end{lemma}
 This follows simply by looking at the first component,
@@ -2909,11 +2912,11 @@ See \cref{def:Order} for the order.
 We're almost ready to identify the fiber of $\cdg{m}$ at a cycle $(X,t)$.
 Let's explore first the problem of finding an identification of $(X,t)$ with 
 $\cdg{m}(Y,u)\jdeq(\bn m\times Y, \mthroot{m}{u})$ for a given cycle $(Y,u)$.
-By \cref{cor:ConnCycles}, a necessary condition for such an identification
+By \cref{lem:IdCycle}, a necessary condition for such an identification
 is $H_t =_{\Sub_\zet} H_{\mthroot{m}{u}}$. 
 Recall from \cref{def:subgroup-zet-of-cycle}
-that $H_t \jdeq \setof{n:\zet}{t^n=\id}$ and
-$H_{\mthroot{m}{u}} \jdeq \setof{n:\zet}{(\mthroot{m}{u})^n=\id}$.
+that $H_t \jdeq \setof{n:\zet}{t^n=\id_X}$ and
+$H_{\mthroot{m}{u}} \jdeq \setof{n:\zet}{(\mthroot{m}{u})^n=\id_{\bn m \times Y}}$.
 We know from \cref{lem:m-root-id} that $m$ divides the order of
 $\mthroot{m}{u}$, so the fiber $\inv{\cdg{m}}(X,t)$ is \nonempty only if 
 $m$ divides the order of $t$.
@@ -2985,18 +2988,22 @@ Now we have all the pieces needed to prove the main result.
   We also need an identification
   $(X,t)\eqto\cdg{m}(V,t^m)\jdeq(\bn m\times V,\sqrt[\uproot{2}m]{t^m})$.
   This we define via a map $e : \bn m\times V \to X$, $e(k,x) \defeq t^k(x)$.
-  This is an equivalence as long as the orders match.
-  So let $n:\zet$, and assume first that $t^n=\id$.
+  This is an equivalence as long as the orders match.\footnote{\MB{?
+  Surjectivity: Let $x:X$. We may assume an $x_0: V$. Then also $x_0:X$,
+  and we may assume an $n:\zet$ such that $t^n(x_0)=x$.
+  Write $n=mq+r$ with $r:\bn m$, then $e(r,t^{mq}(x_0))=x$.
+  Injectivity: ...}}
+  So let $n:\zet$, and assume first that $t^n=\id_X$.
   Then $P$ implies that we may write $n=qm$ for some $q:\zet$,
   so
   \[
     (\sqrt[\uproot{2}m]{t^m})^n
     = (\sqrt[\uproot{2}m]{t^m})^{qm}
-    = (\id \times t^m)^q = (\id \times t^{mq}) 
-    = (\id \times \id_V)= \id.
+    = (\id_{\bn m} \times t^m)^q = (\id_{\bn m} \times t^{mq}) 
+    = (\id_{\bn m} \times \id_V)= \id_{\bn m \times V}.
   \]
   Conversely, we know from \cref{lem:m-root-id} again,
-  that if $(\sqrt[\uproot{2}m]{t^m})^n=\id$,
+  that if $(\sqrt[\uproot{2}m]{t^m})^n=\id_{\bn m \times V}$,
   then we may write $n=qm$ for some $q:\zet$,
   and $(t^m)^q=\id_V$, which by \cref{lem:cycle-order-point-ap}
   implies that $t^n = \id_X$.
@@ -3037,9 +3044,9 @@ Here $p$ is surjective and $i$ is injective, and any such factorization is equiv
 rely on the notion of proposition: all fibers of $p$ are nonempty
 and all fibers of $i$ are propositions.
 
-The uniqueness of the factorization $f=ip$ can be visualized
+The uniqueness of the factorization $f\eqto ip$ can be visualized
 in terms of the two diagonals of the diamond below:
-for any surjection $g$ and injection $h$ such that $f=hg$,
+for any surjection $g$ and injection $h$ such that $f\eqto hg$,
 that is, the diagram below on the left commutes,
 one can construct a (unique) equivalence $e$ such that
 the diagram on the right commutes.
@@ -3061,13 +3068,13 @@ Uniqueness of $e$ above also follows from the following two exercises.
 \begin{xca}\label{xca:cancel-injection}
 Let $A,B,X$ be types and $i:A\to B$ an injection.
 Let $i\blank : (X\to A) \to (X\to B)$ be postcomposition with $i$.
-Show that $\ap{i\blank}: (f = g) \to (if = ig)$ is an equivalence,
+Show that $\ap{i\blank}: (f \eqto g) \to (if \eqto ig)$ is an equivalence,
 for any $f,g: X\to A$.
 \end{xca}
 \begin{xca}\label{xca:cancel-surjection}
 Let $A,B,Y$ be types and $p:A\to B$ be a surjection.
 Let $\blank p : (B\to Y) \to (A\to Y)$ be precomposition with $p$.
-Show that $\ap{\blank p}: (f = g) \to (fp = gp)$ is an equivalence,
+Show that $\ap{\blank p}: (f \eqto g) \to (fp \eqto gp)$ is an equivalence,
 for any $f,g: B\to Y$.
 \end{xca}
 
@@ -3105,7 +3112,7 @@ and the $0$-connected types are those we have called connected in \cref{def:conn
 One may verify now that the $(-1)$-connected functions are the surjections, and
 the $(-1)$-truncated functions are the injections.
 
-There is a \emph{factorization} $f = i p$ of a map $f : A \to B$ through its $n$-image,
+There is a \emph{factorization} $f \eqto ip$ of a map $f : A \to B$ through its $n$-image,
 where $p$ is defined by setting $p(a)\defeq (f(a),\trunc{(a,\refl{f(a)})}_n)$,
 and where $i$ is defined by setting $i\defeq\fst$, as in the following diagram.
 
@@ -3132,13 +3139,13 @@ $n$-truncation elimination by setting
 $c(\trunc{a}_n) \defeq \trunc{(a,\refl{\trunc{a}_n})}_n$.
 
 The next step is to construct an element of
-$\prod_{x:\Trunc{A}_n} \prod_{y:\Trunc{\inv{\trunc{x}}_n}_n} (c(x)=y)$.
-Since the identity $c(x)=y$ is an $(n-1)$-type, it suffices to give an element of
-$\prod_{x:\Trunc{A}_n} \prod_{z:\inv{\trunc{x}}_n} (c(x)=\trunc{z}_n)$.
+$\prod_{x:\Trunc{A}_n} \prod_{y:\Trunc{\inv{\trunc{x}}_n}_n} (c(x)\eqto y)$.
+Since the identity $c(x)\eqto y$ is an $(n-1)$-type, it suffices to give an element of
+$\prod_{x:\Trunc{A}_n} \prod_{z:\inv{\trunc{x}}_n} (c(x)\eqto \trunc{z}_n)$.
 Since fibers are sum types,  it suffices to give an element of
-$\prod_{x:\Trunc{A}_n} \prod_{a:A} \prod_{p: x=\trunc{a}_n} (c(x)=\trunc{(a,p)}_n)$.
+$\prod_{x:\Trunc{A}_n} \prod_{a:A} \prod_{p: x\eqto \trunc{a}_n} (c(x)\eqto \trunc{(a,p)}_n)$.
 After swapping the first two products, the identity reduces by path induction
-to $c(\trunc{a}_n)=\trunc{(a,\refl{\trunc{a}_n})}_n$, for which we can use
+to $c(\trunc{a}_n)\eqto \trunc{(a,\refl{\trunc{a}_n})}_n$, for which we can use
 the reflexivity path.
 \end{proof}
 
@@ -3159,9 +3166,9 @@ for all $b:B$.
 \end{construction}
 \begin{implementation}{con:fibcomp=fibfib}
 Let, for each $b:B$, $e(b)$ map any pair $(a,p):\inv {(hg)} (b)$ to
-$((g(a),p),(a,q))$. Here $q$ is of type $(b,g(a),p) = (h(g(a)),g(a),\refl{h(g(a))})$
-and is given componentwise by $p: b=h(g(a))$, $\refl{g(a)}$, and by the
-easy path over $p$ from $p$ to $\refl{h(g(a))}$ in the identity type family $\blank=h(g(a))$.
+$((g(a),p),(a,q))$. Here $q$ is of type $(b,g(a),p) \eqto  (h(g(a)),g(a),\refl{h(g(a))})$
+and is given componentwise by $p: b\eqto h(g(a))$, $\refl{g(a)}$, and by the
+easy path over $p$ from $p$ to $\refl{h(g(a))}$ in the identity type family $\blank\eqto h(g(a))$.
 This construction uses \cref{def:pairtopath}, \cref{def:pathover-trp},
 and \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a}.
 \end{implementation}
@@ -3198,9 +3205,9 @@ and is called the \emph{universal property of the $n$-image}.
 \begin{theorem}\label{thm:n-im-univ-prop}
 Let conditions be as in \cref{eqn:n-image-factorization}.
 For a given type $X$, assume we are given an $n$-connected
-function $g:A\to X$ and an $n$-truncated function $h:X\to B$ with $f=hg$.
+function $g:A\to X$ and an $n$-truncated function $h:X\to B$ with $f\eqto hg$.
 Then there exists a unique equivalence $e: \im_n(f)\to X$
-such that $g=ep$ and $i=he$.
+such that $g\eqto ep$ and $i\eqto he$.
 \end{theorem}
 
 \begin{proof}
@@ -3246,7 +3253,7 @@ The $n$-connected map $p$ then takes the form
 $(b,y,q)\mapsto(b,\trunc{(y,q)}_n)$ as shown in
 \cref{fig:n-im-univ-prop-sumB}.
 
-Since $B=\sum_{b:B}\bn{1}$, each type in \cref{fig:n-im-univ-prop-sumB}
+Since $(\sum_{b:B}\bn{1}) = B$ via $\fst$, each type in \cref{fig:n-im-univ-prop-sumB}
 can be considered to be the sum of a type family parametrized by $b:B$.
 For constructing the equivalence $e$ that makes
 \cref{fig:n-im-univ-prop-sumB} commute, it suffices to
@@ -3276,7 +3283,7 @@ we have the canonical equivalence
 $\Trunc{\sum_{y:P(b)} Q(b,y)}_n\to\sum_{y:P(b)}\Trunc{Q(b,y)}_n$
 defined by mapping $\trunc{(y,q)}_n$ to $(y,\trunc{q}_n)$.
 For each $y:P(b)$, since $Q(y,b)$ is by assumption $n$-connected,
-so that $\Trunc{Q(b,y)}_n = \bn{1}$,
+so that $\Trunc{Q(b,y)}_n \eqto  \bn{1}$,
 we also have the canonical equivalence $\fst: \sum_{y:P(b)}\Trunc{Q(b,y)}_n \to P(b)$.
 The composite of these two equivalences is $e_b$. Regarding the commutation
 of \cref{fig:n-im-univ-prop-b:B}, we have $e_b \trunc{\blank}_n \jdeq \fst$
