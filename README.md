@@ -8,9 +8,9 @@ This book will be an undergraduate textbook written in the univalent style, taki
 - An element of a proposition can be called a *proof*.
 - Identity types are denoted in general using the macro \eqto, which produces ⥱ (that is an arrow with an = on top). An element of an identity type is called an *identification*, and otherwise a *path*. We may say that it shows how to *identify* two elements.
   If the type is a set, we may denote its identity types by a = b and call them *equations*. When a = b has an element we say that a and b are *equal*.
-- Types similar to identity types, like the type of eqivalences from A to B, are also denoted with a macro ending in "to", like \equivto, producing ⥲ (that is an arrow with an equivalence sign on top).
+- Types similar to identity types, like the type of equivalences from A to B, are also denoted with a macro ending in "to", like \equivto, producing ⥲ (that is an arrow with an equivalence sign on top).
 - The type containing the variable in a family is called the "parameter type", not the "index type", nor the "base type".
-- Being equal by definiton is denoted with three lines and is called just that, and not *definitionally equal* or *judgmentally equal*.
+- Being equal by definition is denoted with three lines and is called just that, and not *definitionally equal* or *judgmentally equal*.
 - A synonym of "function" is "map".  We don't use "mapping" or "application" as synonyms.
 - In the preliminary chapters (up to subgroups), the underlying set map U from groups to sets has to be applied explicitly. Thereafter, it can be a coercion.
 - Composition of p: a⥱b and q: b⥱c is denoted by either p∗q (p\ct q), or by q·p (q\cdot p), qp or q∘p (q\circ p). The latter is preferred when p and q come from equivalences.
@@ -36,7 +36,7 @@ This book will be an undergraduate textbook written in the univalent style, taki
     10 Κ κ, 11 Λ λ, 12 Μ μ, 13 Ν ν, 14 Ξ ξ, 15 Ο ο, 16 Π π, 17 Ρ ρ, 18 Σ σ, 19 Τ τ,
     20 Υ υ, 21 Φ φ, 22 Χ χ, 23 Ψ ψ, and 24 Ω ω;
     ```
-  + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker);
+  + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker));
 - Given a: A, we refer to elements of a ⥱ a as either symmetries *of* a, or symmetries *in* A.
 
 ## Current draft of the book
