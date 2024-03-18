@@ -3093,7 +3093,11 @@ universal property of higher images can be proved.
   \]
 \end{definition}
 
-Observe that $\im_{-1}(f) \jdeq \im(f)$.
+Observe that $\im_{-1}(f) \jdeq \im(f)$.\marginnote{%
+If $A$ and $B$ are sets, then the fibers of $f: A\to B$ are
+sets as well. Hence $\im_{0}(f)$ amounts to the set
+of pairs $(b,a)$ such that $b=f(a)$, that is, the inverse of
+the relation that is commonly known as the graph of $f$.}
 
 \begin{definition}\label{def:n-connected}
   A type $A$ is called $n$-\emph{connected}\index{type!$n$-connected}
@@ -3114,7 +3118,7 @@ and the $0$-connected types are those we have called connected in \cref{def:conn
 One may verify now that the $(-1)$-connected functions are the surjections, and
 the $(-1)$-truncated functions are the injections.
 
-There is a \emph{factorization} $f \eqto ip$ of a map $f : A \to B$ 
+There is a factorization $f \eqto ip$ of a map $f : A \to B$ 
 through its $n$-image,
 where $p$ is defined by setting $p(a)\defeq (f(a),\trunc{(a,\refl{f(a)})}_n)$,
 and where $i$ is defined by setting $i\defeq\fst$, as in the following diagram.
@@ -3196,57 +3200,63 @@ Construct an equivalence between
 $\Trunc{\sum_{x:X} Y(x)}_n$ and $\Trunc{\sum_{x:X} \Trunc{Y(x)}_n}_n$.
 \end{xca}
 
-We shall now show that the $n$-image factorization
+We shall show in \cref{thm:n-im-univ-prop} that the $n$-image factorization
 of $f:A\to B$ in \cref{eqn:n-image-factorization} is unique.
-This result can be visualized in a similar way as we
-did in \cref{eqn:image-univ-prop} for $n=-1$,
-and is called the \emph{universal property of the $n$-image}.
+This result is called the \emph{universal property of the $n$-image}.
+We start by defining a convenient abbreviation.
+
+\begin{definition}\label{def:type-of-factorizations}
+Let $X$ and $Y$ be types. For any $f:X\to Y$ we define
+the type $\Fact(f)$ of \emph{factorizations of} $f$ as follows:
+\marginnote{%
+  As a figure of speech we may speak of "a factorization $f \eqto h\circ g$."
+  Here $Z$ is implicit in the types of $g$ and $h$. The particular
+  identification of $f$ with $h\circ g$ follows from the context.} 
+\[
+\Fact(f)\defeq \sum_{Z:\UU}\sum_{g:X\to Z}\sum_{h:Z\to Y} f\eqto h\circ g
+\qedhere
+\]
+\end{definition}
+
+\begin{theorem}\label{thm:n-im-univ-prop}
+Let $f:A\to B$ and $n\geq -2$. Then the following type
+of \emph{factorizations of $f$ through its $n$-image} is contractible:
+\[
+  \sum_{(C,g,h,r):\Fact(f)} (\isnconn(g) \times \isntrunc(h)). \qedhere
+  \]
+\end{theorem}
+
+
+\begin{proof}
+As the center of contraction we take $(\im_n(f),p,i,\refl{f},!,!)$,
+with $p$ and $i$ as in \cref{eqn:n-image-factorization}.
+We can use $\refl{f} : f \eqto ip$ since $\fst(p(a))\jdeq f(a)$ for all $a:A$.
+
+Let $X$ be a type and assume we are given an $n$-connected
+function $g:A\to X$ and an $n$-truncated function $h:X\to B$ 
+and an identification $y:f\eqto hg$. Our task is
+then to construct a equivalence $e: \im_n(f)\to X$
+and to give identifications represented by the left 
+and the right triangle in \cref{fig:n-image-univ-prop},
+that is, of types $g\eqto ep$ and $i\eqto he$.
+Then the factorization $(X,g,h,s,!,!)$ can be identified
+with the center of contraction by standard transport lemmas.
 
 \begin{marginfigure}
 \noindent\begin{tikzcd}
-      & X \ar[dr,"h"] & \\
-      A \ar[rr,pos=0.7,"f"]\ar[dr,"p"'] \ar[ur,"g"]& & B\\
-      & \im_n(f)\ar[ur,"i"']\ar[uu,dotted,pos=0.3, "e"] &
+      & \im_n(f)\ar[dr,"i"]\ar[dd,dotted,"e"]   & \\
+      A \ar[dr,"g"'] \ar[ur,"p"]& & B\\
+      & X \ar[ur,"h"']&
     \end{tikzcd}
-\caption{Universal property of the $n$-image.}
+\caption{Visualization of task to construct $e$.}
 \label{fig:n-image-univ-prop}
 \end{marginfigure}
 
-\begin{theorem}\label{thm:n-im-univ-prop}
-Let conditions be as in \cref{eqn:n-image-factorization}.
-For a given type $X$, assume we are given an $n$-connected
-function $g:A\to X$ and an $n$-truncated function $h:X\to B$ with $f\eqto hg$.
-Then there exists a unique equivalence $e: \im_n(f)\to X$
-such that $g\eqto ep$ and $i\eqto he$.
-\end{theorem}
-
-\begin{proof}
-We have to construct the equivalence $e$ such that the diagram
-in \cref{fig:n-image-univ-prop} commutes; uniqueness of $e$
-follows from an easy generalization of \cref{xca:cancel-injection}
-and the left triangle in \cref{fig:n-image-univ-prop}.
-To simplify this construction,
+To simplify these constructions,
 we are going to replace $g$ and $h$ by projection maps.
-
 In view of \cref{con:fibcomp=fibfib}, we may assume without
 loss of generality that $X\jdeq \sum_{b:B} P(b)$ for some
 family of $n$-types $P(b)$, and $h\jdeq\fst$.
-
-\begin{marginfigure}
-  \noindent\begin{tikzcd}[column sep=tiny]
-      &\sum\limits_{b:B} P(b)\ar[rd,"\fst"]\\
-      \sum\limits_{b:B} R(b)
-        \ar[rd,"{(b,y,q)\mapsto(b,\trunc{(y,q)}_n)}"']
-        \ar [ru,"{(b,y,q)\mapsto(b,y)}"]
-        \ar [rr,pos=0.7,"\fst"]
-      &&B\\
-      &\sum\limits_{b:B} \Trunc{R(b)}_n
-         \ar [ru,"\fst"']
-         \ar [uu,dotted,pos=0.3,"e"']
-\end{tikzcd}
-\caption{Universal property of the $n$-image, reinterpreted.}
-\label{fig:n-im-univ-prop-sumB}
-\end{marginfigure}
 
 By \cref{lem:sum-of-fibers} we may also assume without
 loss of generality that
@@ -3257,13 +3267,32 @@ Define $R(b)\defeq\sum_{y:P(b)} Q(b,y)$ for all $b:B$.
 With $A\jdeq \sum_{b:B} R(b)$, the function $g$
 takes the form of the projection map $(b,y,q)\mapsto(b,y)$,
 as shown in \cref{fig:n-im-univ-prop-sumB}.
-By $f=hg$ we then get that $f$ is the first projection,
-with its $n$-image equivalent to $\sum_{b:B} \Trunc{R(b)}_n$.
+Using $s: f\eqto hg$ we get an identification of $f$ with the first projection,
+and an equivalence between its $n$-image and $\sum_{b:B} \Trunc{R(b)}_n$.
 The $n$-connected map $p$ then takes the form
 $(b,y,q)\mapsto(b,\trunc{(y,q)}_n)$ as shown in
 \cref{fig:n-im-univ-prop-sumB}.
 
-Since $(\sum_{b:B}\bn{1}) = B$ via $\fst$, each type in \cref{fig:n-im-univ-prop-sumB}
+\begin{marginfigure}
+  \noindent\begin{tikzcd}[column sep=tiny]
+     &\sum\limits_{b:B} \Trunc{R(b)}_n
+        \ar [dd,dotted,"e"] 
+        \ar[rd,"\fst"]\\
+      \sum\limits_{b:B} R(b)
+        \ar[rd,"{(b,y,q)\mapsto(b,y)}"']
+        \ar [ru,"{(b,y,q)\mapsto(b,\trunc{(y,q)}_n)}"]
+        %\ar [rr,pos=0.7,"\fst"]
+      &&B\\
+      &\sum\limits_{b:B} P(b)
+         \ar [ru,"\fst"']         
+\end{tikzcd}
+\caption{Visualization of task to construct $e$, reinterpreted.}
+\label{fig:n-im-univ-prop-sumB}
+\end{marginfigure}
+
+
+Since $(\sum_{b:B}\bn{1}) \eqto B$ via $\fst$, 
+each type in \cref{fig:n-im-univ-prop-sumB}
 can be considered to be the sum of a type family parametrized by $b:B$.
 For constructing the equivalence $e$ that makes
 \cref{fig:n-im-univ-prop-sumB} commute, it suffices to
@@ -3274,90 +3303,99 @@ by putting $e(b,z) \defeq (b,e_b(z))$ for all $b:B$ and $z:\Trunc{R(b)}_n$.
 
 \begin{marginfigure}
   \noindent\begin{tikzcd}
-      &P(b)\ar[rd]\\
+      &\Trunc{R(b)}_n\ar[rd]
+      \ar [dd,dotted,"e_b"]\\
       R(b)
-        \ar[rd,"{\trunc{\blank}_n}"']
-        \ar [ru,"{\fst}"]
+        \ar[rd,"{\fst}"']
+        \ar [ru,"{\trunc{\blank}_n}"]
       &&\bn{1}\\
-      &\Trunc{R(b)}_n
+      &P(b)
          \ar [ru]
-         \ar [uu,dotted,"e_b"']
 \end{tikzcd}
 \caption{Taking summands for $b:B$ in \cref{fig:n-im-univ-prop-sumB}.}
 \label{fig:n-im-univ-prop-b:B}
 \end{marginfigure}
 
 Now let $b:B$. We have $\Trunc{R(b)}_n \jdeq \Trunc{\sum_{y:P(b)} Q(b,y)}_n$.
-By \cref{xca:pullout-base-type}, since $P(b)$ is an $n$-type by assumption,
-we have the canonical equivalence
-$\Trunc{\sum_{y:P(b)} Q(b,y)}_n\to\sum_{y:P(b)}\Trunc{Q(b,y)}_n$
-defined by mapping $\trunc{(y,q)}_n$ to $(y,\trunc{q}_n)$.
-For each $y:P(b)$, since $Q(y,b)$ is by assumption $n$-connected,
-so that $\Trunc{Q(b,y)}_n \eqto  \bn{1}$,
-we also have the canonical equivalence $\fst: \sum_{y:P(b)}\Trunc{Q(b,y)}_n \to P(b)$.
-The composite of these two equivalences is $e_b$. Regarding the commutation
-of \cref{fig:n-im-univ-prop-b:B}, we have $e_b \trunc{\blank}_n \jdeq \fst$
-for the left triangle, and the right triangle commutes trivially.
+Since $P(b)$ is an $n$-type by assumption, we have the canonical equivalence 
+of type $\Trunc{\sum_{y:P(b)} Q(b,y)}_n\to\sum_{y:P(b)}\Trunc{Q(b,y)}_n$ defined 
+by mapping $\trunc{(y,q)}_n$ to $(y,\trunc{q}_n)$ 
+(\cf \cref{xca:pullout-base-type}).
+Since $Q(y,b)$ is $n$-connected for each $y:P(b)$ by assumption,
+so that $\Trunc{Q(b,y)}_n$ is contractible,
+we also have the canonical equivalence 
+$\fst: \sum_{y:P(b)}\Trunc{Q(b,y)}_n \to P(b)$.
+The composite of these two equivalences is $e_b$. 
 
-An alternative proof of the uniqueness of $e$ can be obtained
-by using the right triangle in \cref{fig:n-im-univ-prop-sumB}.
-This reduces the uniqueness of $e$ to the uniqueness of $e_b$
-for each $b:B$. The latter follows from the universal property
-of $n$-truncation and the left triangle in \cref{fig:n-im-univ-prop-b:B}.
+Finally, the identifications of type $g\eqto ep$ and $i\eqto he$,
+represented by the left and right triangle in \cref{fig:n-im-univ-prop-sumB},
+can also be constructed pointwise for every $b:B$, that is,
+in \cref{fig:n-im-univ-prop-b:B}. Indeed, we have 
+$e_b \trunc{\blank}_n \jdeq \fst$ for the left triangle, 
+and the right triangle commutes trivially.
 \end{proof}
 
-As an application, we consider the fibers of $m$\th root map
-$\cdg{m}$. On infinite cycles, this is equivalent to the degree $m$ map
+For the rest of this section, fix some natural number $m>0$. As for our
+promised application, we consider the fibers of the $m$\th root map $\cdg{m}$.
+On infinite cycles, this is equivalent to the degree $m$ map
 of the circle by~\cref{xca:pointed-maps-circle}, so we have a map
-$\blank/m : \Cyc_0 \to \Set$, which we can identify with the family
-$R_m : \Sc \to \Set$ (\cref{def:RmtoS1})
-after precomposition with the equivalence
+$\blank/m : \Cyc_0 \to \Set$, which we identify with the family
+$R_m : \Sc \to \Set$ (\cref{def:RmtoS1}) by precomposing with the equivalence
 $c : \Sc \to \Cyc_0$ from~\cref{thm:S1bysymmetries}.
 For every infinite cycle $(X,t)$, the set $X/m$ has $m$ elements,
-so the $(-1)$-image is $\FinSet_m$, the groupoid of $m$-element sets
-(\cref{def:groupoidFin}).
-But what is the $0$-image?
+and the $(-1)$-image is readily identified with $\FinSet_m$, 
+the groupoid of $m$-element sets (\cref{def:groupoidFin}).
+But what is the $0$-image? The following theorem identifies
+the $0$-image of $X/m$ with $\Cyc_m$.
 
 \begin{theorem}\label{thm:image-Z-to-Cm}
   The $0$-image factorization of the map $\blank/m : \Cyc_0 \to \Set$
-  is the composition $p\circ q$, where $q : \Cyc_0 \to \Cyc_m$
-  sends the infinite cycle $(X,t)$ to the $m$-cycle $(X/m,\bar t)$,
-  where $\bar t : X/m \to X/m$ maps $[x]$ to $[t(x)]$,
-  and $p:\Cyc_m\to\Set$ sends an $m$-cycle to its underlying set.
+  consists of the type $\Cyc_m$ and maps $q : \Cyc_0 \to \Cyc_m$
+  and $r:\Cyc_m\to\Set$. The map $q$
+  sends any infinite cycle $(X,t)$ to the $m$-cycle $(X/m,\bar t)$,
+  where $\bar t : X/m \to X/m$ maps $[x]$ to $[t(x)]$. The map
+  $r:\Cyc_m\to\Set$ sends any $m$-cycle to its underlying set,
+  so that indeed $\blank/m \jdeq rq$.
 \end{theorem}
 
 \begin{proof}
   We need to check that $q$ is $0$-connected
-  and that $p$ is $0$-truncated.
+  and that $r$ is $0$-truncated.
 
-  The latter is direct, since the preimage of $p$ at an $m$-element set $Y$
-  is the set of functions $u : Y \to Y$ that make $Y$ into an $m$-cycle.
+  The latter is direct, since the preimage of $r$ at any set $S$
+  can be identified as a subset of the set of functions $S\to S$.
 
   To show that $q$ is $0$-connected,
   it suffices to consider the fiber at the standard $m$-cycle $(\bn m,\zs)$.
-  We'll show that this fiber is equivalent to $\Cyc_0$ itself, which is indeed $0$-connected.
+  We'll show that this fiber is equivalent to $\Cyc_0$ itself, 
+  which is indeed $0$-connected.
   The mediating map is induced by our old friend $\cdg{m}$.
   Indeed, define $\varphi : \Cyc_0 \to q^{-1}(\bn m,\zs)$
-  by $\varphi(X,t)\defis(\cdg{m}(X,t), r)$,
-  where $r$ is the canonical equivalence $(\bn m\times X)/m \equivto \bn m$.
-  The inverse of $\varphi$, $\psi$, sends a pair $((Y,u), r)$,
-  with $(Y,u):\Cyc_0$ and $r : Y/m \equivto \bn m$
-  to $(r^{-1}(0), u^m)$.
+  by $\varphi(X,t)\defis(\cdg{m}(X,t),\inv e)$, where 
+  $e: (\bn m\times X)/m \equivto \bn m$ maps $[(k,x)]$ to $k$.\footnote{%
+  To see that $e$ is well defined, keep in mind that $\bn m\times X$ 
+  is equipped with permutation $\mthroot{m}{t}$ by $\cdg{m}$. Also,
+  $e$ preserves cycle structure.} 
+  As inverse of $\varphi$, define $\psi$ by 
+  $\psi((Y,u),e')\defeq(e'(0), u^m)$, for all
+  $(Y,u):\Cyc_0$ and $e' : \bn m \equivto Y/m$.
 \end{proof}
 
 \begin{xca}
-  Complete the proof by verifying that $\varphi$ and $\psi$ are indeed mutually inverse.
+  Complete the details of the proof above.
 \end{xca}
 
-The theorem and its proof in fact generalize to all orders.
+The theorem and its proof in fact generalize to cycles of all orders.
 
 \begin{xca}\label{xca:image-Cmd-to-Cm}
-  Let $d$ be any order and consider the fiber of $\cdg{m}$ on the component
-  $\Cyc_{md}$, $\blank/m : \Cyc_{md} \to \Set$.
-  Show that the $0$-image factorization of this goes via $\Cyc_m$ by
+  Let $d$ be any order and let $\cdg{m} : \Cyc_d\to\Cyc_{md}$
+  be the restriction of the $m$\th root map to $\Cyc_d$.
+  Define $\blank/m : \Cyc_{md} \to \Set$ as the family of fibers
+  of $\cdg{m}$.
+  Show that the $0$-image factorization of $\blank/m$ goes via $\Cyc_m$ by
   lifting $\blank/m$ to $q : \Cyc_{md} \to \Cyc_m$.
   In particular, show that the preimage of $q$ at the standard $m$-cycle
-  is equivalent to $\Cyc_d$.
+  can be identified with $\Cyc_d$.
 \end{xca}
 
 \section{Universal property of $\Cyc_n$}
