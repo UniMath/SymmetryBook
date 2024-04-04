@@ -3404,29 +3404,29 @@ The theorem and its proof in fact generalize to cycles of all orders.
 Fix a natural number $n>0$ and recall the definition of $\Cyc_n$
 from \cref{def:Cyc-components}.
 This section is devoted to showing that maps out of $\Cyc_n$ into a groupoid $A$
-are equivalently given by the choice of a point together with a symmetry of
-order $n$: that is any map $\Cyc_n \to A$ is fully determined by a point $a:A$ together with a symmetry $\sigma:a\eqto a$ such that
-$\sigma^n\eqto\refl a$.\footnote{Notice that this is a less general result than the universal property of the circle, or equivalently, the case $n=0$, where we don't need to assume that $A$ is a groupoid.}
+are given by the choice of a point together with a symmetry of
+order $n$: any map $\Cyc_n \to A$ is uniquely determined by a point $a:A$ together with a symmetry $\sigma:a\eqto a$ such that
+$\refl a =\sigma^n$.\footnote{Notice that this is a less general result than \cref{lem:freeloopspace}, the universal property of the circle, where we don't need to assume that $A$ is a groupoid. That's why $n>0$ in this section.}
 
 Recall that $\Cyc_n$ contains the point $\pt_n \defequi (\bn n, \zs)$,
 \ie the standard $n$-cycle. This
 point has a symmetry $\sigma_n \defequi (\inv\zs, !)$ whose second 
 projection is a proof that $\zs\inv\zs = \inv\zs\zs$.
 %
-Recall also from \cref{cor:id-m-cycle} that all elements of 
-$\pt_n \eqto \pt_n$ are of the form $\sigma_n^i$ for $i=0,\dots,n-1$.
+Recall also from \cref{cor:id-m-cycle} that all symmetries of 
+$\pt_n$ are of the form $\sigma_n^i$ for $i=0,\dots,n-1$.
 
 Given a groupoid $A$, and a map $f :
 \Cyc_n \to A$, one can consider $f(\pt_n):A$ and 
 $\ap f (\sigma_n): f(\pt_n) \eqto f(\pt_n)$. 
-Proofs of the equality $\refl{\pt_n} = \sigma_n^n$ in the
+Proofs of the equation $\refl{\pt_n} = \sigma_n^n$ in the
 set $\pt_n \eqto \pt_n$ are mapped by $\ap f$ to proofs of 
 $\refl{f(\pt_n)} = \ap f(\sigma_n)^n$. 
 Hence, the following map is well defined:
 \begin{displaymath}
   \ev_{n,A} : (\Cyc_n \to A) \to 
           \sum_{a:A}\sum_{\sigma:a\eqto a}\refl a = \sigma^n,\quad
-  f \mapsto (f(\pt_n), \ap f (\sigma_n), !)
+  f \mapsto (f(\pt_n), \ap f (\sigma_n), !).
 \end{displaymath}
 
 \begin{theorem}
@@ -3440,48 +3440,60 @@ Hence, the following map is well defined:
     \sum_{f:\Cyc_n \to A} (a,\sigma, !) \eqto \ev_{n,A}(f)
   \end{displaymath}
   is contractible. Hence we first need to construct a function $f:\Cyc_n \to A$
-  together with an identification $p:a\eqto f(\pt_n)$ such that 
-  $\ap f (\sigma_n) \cdot p = p \cdot \sigma$, see the diagram in the margin.
-\begin{marginfigure}
+  together with an identification $p:a\eqto f(\pt_n)$ such that
+   $\ap f (\sigma_n) p = p \sigma$, see the diagram in the margin.
+  \begin{marginfigure}
   \begin{tikzcd}
     a\ar[r,"p",eqr]\ar[d,"\sigma"',eql] & 
            f(\pt_n)\ar[d,"\ap{f}(\sigma_n)",eqr] \\
     a\ar[r,"p"',eql] & f(\pt_n).
   \end{tikzcd}
 \end{marginfigure}
-
+ 
   In order to do so, we will construct a function $f:\Cyc_n \to A$ together with 
   a family of functions $\hat p_x: (\pt_n \eqto x) \to (a \eqto f(x))$,
   parametrized by $x:\Cyc_n$,
   satisfying $\hat p_x(\tau\sigma_n) = \hat p_x(\tau) \sigma$ for all
   $\tau: \pt_n \eqto x$. 
   By setting $p \jdeq \hat p_{\pt_n}(\refl {\pt_n})$, we will then have succeeded.
-  Indeed, path induction on $\alpha: x \eqto x'$ shows that 
-  $\hat p_{x'}(\alpha \blank) = \ap f (\alpha) \hat p_x(\blank)$ on one hand.
+  
+  Let's explain why the above indeed suffices.
+  First, a simple path induction on $\alpha: x \eqto x'$ shows that 
+  $\ap f (\alpha) \hat p_x(\blank) = \hat p_{x'}(\alpha \blank)$.
   On the other hand,
   instantiating the condition on $\hat p$ with $x\defeq \pt_n$ proves that 
-  $\hat p_{\pt_n} (\tau) \sigma = \hat p_{\pt_n}(\tau \sigma_n)$ for all
+  $\hat p_{\pt_n}(\tau \sigma_n) = \hat p_{\pt_n} (\tau) \sigma$ for all
   $\tau: \pt_n \eqto \pt_n$. 
   This leads to the chain of equations:
   \begin{align*}
-    p \sigma &= \hat p_{\pt_n}(\refl {\pt_n}) \sigma
-               = \hat p_{\pt_n}(\refl {\pt_n}\sigma_n)
-               = \hat p_{\pt_n}(\sigma_n\refl {\pt_n}) \\
-             &= \ap f (\sigma_n) \hat p_{\pt_n}(\refl {\pt_n})
-               = \ap f (\sigma_n) p
+    \ap f (\sigma_n) p &\jdeq  \ap f (\sigma_n) \hat p_{\pt_n}(\refl {\pt_n})
+             = \hat p_{\pt_n}(\sigma_n\refl {\pt_n}) \\
+             &= \hat p_{\pt_n}(\refl {\pt_n}\sigma_n) 
+              = \hat p_{\pt_n}(\refl {\pt_n}) \sigma \jdeq p \sigma 
   \end{align*}
+  This shows that $\hat p$ suffices.
 
-  It remains to construct the promised $f$ and $\hat p$. For each $x:\Cyc_n$, consider the type
+  It remains to construct the promised $f$ and $\hat p$. 
+  For each $x:\Cyc_n$, consider the type (with the product
+  part visualized in the margin)
+  \begin{marginfigure}
+  \begin{tikzcd}
+    (\pt_n \eqto x)\ar[r,"\blank\sigma_n"]\ar[d,"\pi"'] & 
+           (\pt_n \eqto x)  \ar[d,"\pi"] \\
+    (a\eqto b)\ar[r,"\blank\sigma"'] & (a\eqto b)
+  \end{tikzcd}
+\end{marginfigure}
   \begin{displaymath}
-    T(x) \defequi \sum_{b:A}\sum_{\pi: \pt_n \eqto x \to a \eqto b}
-    \pi(\blank\sigma_n) = \pi(\blank) \sigma
+    T(x) \defequi \sum_{b:A}\,\sum_{\pi: (\pt_n \eqto x) \to (a \eqto b)}\,
+    \prod_{\tau: \pt_n \eqto x} \pi(\tau\sigma_n) =_{(a\eqto b)} \pi(\tau) \sigma.
   \end{displaymath}
-  We claim that $T(x)$ is contractible. To prove this proposition for $x$
-  ranging over the connected type $\Cyc_n$, it is enough to only prove it for
-  $x \jdeq \pt_n$. However, as $i \mapsto \sigma_n^i$ provides an equivalence
-  $\bn n \to (\pt_n = \pt_n)$, we get:
+  We claim that $T(x)$ is contractible. To prove this proposition for all $x$
+  in the connected type $\Cyc_n$, it is enough to prove it for
+  $x \jdeq \pt_n$. First, the equivalence $i \mapsto \sigma_n^i$ 
+  of type $\bn n \equivto (\pt_n = \pt_n)$ induces an equivalence of type
   \begin{displaymath}
-    T(\pt_n) \weq \sum_{b:A}\sum_{\pi: \bn n \to a \eqto b} \pi(\blank + 1) = \pi(\blank)\sigma
+    T(\pt_n) \equivto \sum_{b:A}\,\sum_{\pi': \bn n \to (a \eqto b)}\,
+    \prod_{k:\bn n} \pi'(s(k)) =_{(a\eqto b)} \pi'(k)\sigma.
   \end{displaymath}
   Now, note that $\pi:\bn n \to a\eqto b$ such that $\pi(\blank +1) = \pi(\blank)
   \sigma$ is entirely determined by $\pi(0)$, as then $\pi(i) = \pi(0)\sigma^i$
