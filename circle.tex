@@ -3401,31 +3401,36 @@ The theorem and its proof in fact generalize to cycles of all orders.
 \section{Universal property of $\Cyc_n$}
 \label{sec:universal-property-cyc-n}
 
+Fix a natural number $n>0$ and recall the definition of $\Cyc_n$
+from \cref{def:Cyc-components}.
 This section is devoted to showing that maps out of $\Cyc_n$ into a groupoid $A$
 are equivalently given by the choice of a point together with a symmetry of
-order $n$: that is any map $\Cyc_n \to A$ is fully determined by a point $a$ together with a symmetry $\sigma:a\eqto a$ such that
-$\sigma^n=\refl a$.\footnote{Notice that this is a less general result than the universal property of the circle, or equivalently, the case $n=0$, where we don't need to assume that $A$ is a groupoid.}
+order $n$: that is any map $\Cyc_n \to A$ is fully determined by a point $a:A$ together with a symmetry $\sigma:a\eqto a$ such that
+$\sigma^n\eqto\refl a$.\footnote{Notice that this is a less general result than the universal property of the circle, or equivalently, the case $n=0$, where we don't need to assume that $A$ is a groupoid.}
 
 Recall that $\Cyc_n$ contains the point $\pt_n \defequi (\bn n, \zs)$,
 \ie the standard $n$-cycle. This
-point has a symmetry $\sigma_n \defequi (\inv\zs, !)$ whose second projection is a
-proof that $\zs\inv\zs = \inv\zs\zs$.
+point has a symmetry $\sigma_n \defequi (\inv\zs, !)$ whose second 
+projection is a proof that $\zs\inv\zs = \inv\zs\zs$.
 %
-Recall also from \cref{cor:id-m-cycle} that all elements of $\pt_n = \pt_n$ are
-of the form $\sigma_n^i$ for $i=0,\dots,n-1$.
+Recall also from \cref{cor:id-m-cycle} that all elements of 
+$\pt_n \eqto \pt_n$ are of the form $\sigma_n^i$ for $i=0,\dots,n-1$.
 
 Given a groupoid $A$, and a map $f :
-\Cyc_n \to A$, one can consider $f(\pt_n):A$ and $\ap f (\sigma_n): f(\pt_n) =
-f(\pt_n)$. The equation $\refl {\pt_n} = \sigma_n^n$ in
-$\Cyc_n$ is mapped by $f$ to a proof of $\refl {f(\pt_n)} =
-\ap f(\sigma_n)^n$. Hence, the following map is well defined:
+\Cyc_n \to A$, one can consider $f(\pt_n):A$ and 
+$\ap f (\sigma_n): f(\pt_n) \eqto f(\pt_n)$. 
+Proofs of the equality $\refl{\pt_n} = \sigma_n^n$ in the
+set $\pt_n \eqto \pt_n$ are mapped by $\ap f$ to proofs of 
+$\refl{f(\pt_n)} = \ap f(\sigma_n)^n$. 
+Hence, the following map is well defined:
 \begin{displaymath}
-  \ev_{n,A} : (\Cyc_n \to A) \to \sum_{a:A}\sum_{\sigma:a\eqto a}\refl a = \sigma^n,\quad
+  \ev_{n,A} : (\Cyc_n \to A) \to 
+          \sum_{a:A}\sum_{\sigma:a\eqto a}\refl a = \sigma^n,\quad
   f \mapsto (f(\pt_n), \ap f (\sigma_n), !)
 \end{displaymath}
 
 \begin{theorem}
-  For any groupoid $A$, the map $\ev_{n,A}$ is an equivalence.
+  For any groupoid $A$, the map $\ev_{n,A}$ above is an equivalence.
   \label{prop:ump-cycn-into-groupoids}
 \end{theorem}
 \begin{proof}
@@ -3434,18 +3439,30 @@ $\Cyc_n$ is mapped by $f$ to a proof of $\refl {f(\pt_n)} =
   \begin{displaymath}
     \sum_{f:\Cyc_n \to A} (a,\sigma, !) \eqto \ev_{n,A}(f)
   \end{displaymath}
-  is contractible. Hence we first need to craft a function $f:\Cyc_n \to A$
-  together with $p:a\eqto f(\pt_n)$ such that $\ap f (\sigma_n) \cdot p = p
-  \cdot \sigma$.
+  is contractible. Hence we first need to construct a function $f:\Cyc_n \to A$
+  together with an identification $p:a\eqto f(\pt_n)$ such that 
+  $\ap f (\sigma_n) \cdot p = p \cdot \sigma$, see the diagram in the margin.
+\begin{marginfigure}
+  \begin{tikzcd}
+    a\ar[r,"p",eqr]\ar[d,"\sigma"',eql] & 
+           f(\pt_n)\ar[d,"\ap{f}(\sigma_n)",eqr] \\
+    a\ar[r,"p"',eql] & f(\pt_n).
+  \end{tikzcd}
+\end{marginfigure}
 
-  In order to do so, we will craft a function $f:\Cyc_n \to A$ together with a
-  function $\hat p_x: \pt_n \eqto x \to a \eqto f(x)$ for each $x:\Cyc_n$ such that
-  $\hat p_x(\blank\sigma_n) = \hat p_x(\blank) \sigma$. By setting $p \jdeq \hat
-  p_{\pt_n}(\refl {\pt_n})$, we would have succeeded. Indeed, path induction on
-  $\alpha: x \eqto x'$ shows that $\hat p_{x'}(\alpha \blank) = \ap f (\alpha) \hat
-  p_x(\blank)$ on one hand, and the hyptohesis on $\hat p$ proves that $\hat
-  p_{\pt_n} (\blank) \sigma = \hat p_{\pt_n}(\blank \sigma_n)$ on the other
-  hand. This leads to the chain of equations:
+  In order to do so, we will construct a function $f:\Cyc_n \to A$ together with 
+  a family of functions $\hat p_x: (\pt_n \eqto x) \to (a \eqto f(x))$,
+  parametrized by $x:\Cyc_n$,
+  satisfying $\hat p_x(\tau\sigma_n) = \hat p_x(\tau) \sigma$ for all
+  $\tau: \pt_n \eqto x$. 
+  By setting $p \jdeq \hat p_{\pt_n}(\refl {\pt_n})$, we will then have succeeded.
+  Indeed, path induction on $\alpha: x \eqto x'$ shows that 
+  $\hat p_{x'}(\alpha \blank) = \ap f (\alpha) \hat p_x(\blank)$ on one hand.
+  On the other hand,
+  instantiating the condition on $\hat p$ with $x\defeq \pt_n$ proves that 
+  $\hat p_{\pt_n} (\tau) \sigma = \hat p_{\pt_n}(\tau \sigma_n)$ for all
+  $\tau: \pt_n \eqto \pt_n$. 
+  This leads to the chain of equations:
   \begin{align*}
     p \sigma &= \hat p_{\pt_n}(\refl {\pt_n}) \sigma
                = \hat p_{\pt_n}(\refl {\pt_n}\sigma_n)
@@ -3454,7 +3471,7 @@ $\Cyc_n$ is mapped by $f$ to a proof of $\refl {f(\pt_n)} =
                = \ap f (\sigma_n) p
   \end{align*}
 
-  It remains to craft the promised $f$ and $\hat p$. For each $x:\Cyc_n$, consider the type
+  It remains to construct the promised $f$ and $\hat p$. For each $x:\Cyc_n$, consider the type
   \begin{displaymath}
     T(x) \defequi \sum_{b:A}\sum_{\pi: \pt_n \eqto x \to a \eqto b}
     \pi(\blank\sigma_n) = \pi(\blank) \sigma
