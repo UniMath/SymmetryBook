@@ -12,17 +12,20 @@ An identity type is not just any type:  in the previous sections we have seen th
     \draw[->] (a) .. controls ++(-10:3) and ++(100:2.5) .. node[auto,swap] {$p$} (a);
   \end{tikzpicture}}
 Symmetries have special properties.  For instance, you can rotate a square by $90\mathdegree$, and you can reverse that motion by rotating it by $-90\mathdegree$.
-Symmetries can also be composed, and this composition respects certain rules that holds in all examples.  One way to study the concept of ``symmetries'' would be to isolate the common rules for all our examples, and to show, conversely, that anything satisfying these rules actually \emph{is} an example.
+Symmetries can also be composed, and this composition respects certain rules that hold in all examples.  One way to study the concept of ``symmetries'' would be to isolate the common rules for all our examples, and to show, conversely, that anything satisfying these rules actually \emph{is} an example.
 
 
 
 With inspiration of geometric and algebraic origins, it became clear to mathematicians at the end of the 19\textsuperscript{th} century that the properties of such symmetries could be codified by saying that they form an abstract \emph{group}.
-In \cref{sec:identity-types} we saw that equality is ``reflexive, symmetric and transitive'' -- implemented by operations $\refl{a}$, $\symm_{a,b}$ and $\trans_{a,b,c}$,
-and an abstract group is just a set with such operations satisfying appropriate rules.
+In \cref{sec:identity-types} we saw that equality is ``reflexive, symmetric 
+and transitive'' -- implemented by operations $\refl{a}$, $\symm_{a,b}$ 
+and $\trans_{a,b,c}$, and an abstract group is just a set with such 
+operations satisfying appropriate rules.
 
 We attack the issue more concretely:
 instead of focusing on the abstract properties,
 we bring the type exhibiting the symmetries to the fore.
+\MB{This type is called the \emph{classifying type} of the group.}
 The axioms for an abstract group follow from the rules for identity types,
 without us needing to impose them.
 We will show that the two approaches give the same end result.
@@ -30,20 +33,37 @@ We will show that the two approaches give the same end result.
 In this chapter we lay the foundations and provide some basic examples of groups.
 
 \section{Brief overview of the chapter}
-In \cref{sec:typegroup} we give the formal definition of a group along with some basic examples.
-In \cref{sec:identity-type-as-abstract} we spell out the details, expanding on the properties of the identity type of a group and comparing these properties with those of an abstract group.  We then return in \cref{sec:homomorphisms} to groups more generally, explaining how these map to each other through ``homomorphisms'' (which to us are simply given by pointed maps), and what this entails for the identity types: all the abstract group properties are preserved.
-As an important example, we study the sign homomorphism in~\cref{sec:sign-homomorphism}.
+In \cref{sec:typegroup} we give the formal definition of a group 
+along with some basic examples.
+In \cref{sec:identity-type-as-abstract} we expand on the properties of a group
+and compare these with those of an abstract group.
+In \cref{sec:homomorphisms} we explain how groups map to each other through
+``homomorphisms'' (which to us are simply given by pointed maps),
+and what this entails for the identity types: 
+all the abstract group properties are preserved.
+As an important example, we study the sign homomorphism 
+in~\cref{sec:sign-homomorphism}.
 
 In most of our exposition we make the blanket assumption that the identity type in question is a set, but in \cref{sec:inftygps} we briefly discuss $\infty$-groups, where this assumption is dropped.
 
-Classically, groups have appeared because they ``act'' on a set (or more general objects), that is to say, they collect some of the symmetries of the set.  This is a point of view that we will return to many times and we give the basic theory in \cref{sec:gsets}.
-This section should remind the reader of the material in \cref{cha:circle}, where we dealt with the special case of the group of integers.
-More generally, connected \coverings now reappear in the guise of ``transitive $G$-sets'', laying the groundwork for our later discussion of the set of subgroups of a group.
+Classically, groups have appeared because they ``act'' on a set 
+(or more general objects), that is to say, they collect some of the
+symmetries of the set. This is a point of view that we will return to
+many times and we give the basic theory in \cref{sec:gsets}.
+This section should remind the reader of the material in \cref{cha:circle},
+where we dealt with the special case of the group of integers.
+More generally, connected \coverings now reappear in the guise of
+``transitive $G$-sets'', laying the groundwork for our later discussion 
+of the set of subgroups of a group.
 
 Another important notion, also discussed in \cref{sec:gsets}, is the type of ``$G$-torsors'', which at first glance can appear frightening.
-However, a $G$-torsor corresponds to \emph{a} universal \covering, and the important step is to consider the \emph{type} of these.
+However, a $G$-torsor corresponds to \emph{a} universal \covering
+(\MB{problem: u.c. are now pointed}), 
+and the important step is to consider the \emph{type} of these.
 The type of $G$-torsors recovers the underlying classifying type of the group $G$,
 and this idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
+(\MB{missing: \cref{sec:monoepi}, \cref{sec:abelian-groups}, \cref{sec:Semidirect-products}, \cref{sec:pullback}, \cref{sec:coprod}. Next para is unfinished.}.)
+
 
 With all this in place, the structure of the type of groups is in many aspects similar to the universe, in the sense that many of the constructions on the universe that we're accustomed to have analogues for groups, namely:
 functions are replaced by homomorphisms;
@@ -62,36 +82,32 @@ where they take center stage.
 \section{The type of groups}
 \label{sec:typegroup}
 
-Recall the definition of pointed types, \cref{def:pointedtypes},
-and the related conventions established in~\cref{sec:pointedtypes}.
-\begin{definition}\label{looptype}
-  Given a pointed type $X\jdeq(A,a)$, we define its type of \emph{loops}
-  by $\loops X \defeq (a \eqto_A a)$.%
-  \index{loop type constructor}
-  \glossary(924Omega){$\protect\loops X$}%
-  {loop type of pointed type, \cref{looptype}}
-\end{definition}
+In order to motivate the formal definition of a group we
+revisit some types that we have seen in earlier chapters,
+paying special attention to the symmetries in these types.
 \begin{example}\label{ex:base=base}
   We defined the circle $\Sc$ in \cref{def:circle} by declaring
   that it has a point $\base$ and an identification (``symmetry'')
-  $\Sloop:(\base\eqto\base) \jdeq \loops(\Sc,\base)$,
-  and we proved in \cref{cor:S1groupoid} that $\loops(\Sc,\base)$ is equivalent
+  $\Sloop:\base\eqto\base$.
+  In \cref{cor:S1groupoid} we proved that $\base\eqto\base$ is equivalent
   to the set $\zet$ (of integers),
   where $n\in\zet$ corresponds to the $n$-fold composition of $\Sloop$ with itself
   (which works for both positive and negative $n$).
-  We can think of this as describing the symmetries of $\base$:
-  we have one ``generating symmetry'' $\Sloop$,
-  and this can be applied any number of times,
-  giving a symmetry for each number.
-  Composition of loops here corresponds to addition of integers.
+  We can think of this as describing the symmetries of $\base$ as follows.
+  We have one ``generating symmetry'' $\Sloop$,
+  and this symmetry can be composed with itself any number of times,
+  giving a symmetry for each integer.
+  Composition of symmetries here corresponds to addition of integers.
 
-  The circle is an efficient packaging of the ``{group}'' of integers, for the declaration of $\base$ and $\Sloop$ not only gives the \emph{set}
+  The circle is an efficient packaging of the ``{group}'' of integers, 
+  for the declaration of $\base$ and $\Sloop$ not only gives the \emph{set}
   $\zet$ of integers, but also the addition operation.
 \end{example}
 \begin{example}
-  Recall the finite set $\bn{2}:\FinSet_2$ from \cref{def:finiteset}, containing two elements.
-  According to \cref{xca:C2}, the identity type $\bn{2} \eqto\bn{2} $ has exactly two distinct elements,
-  $\refl{\bn{2}}$ and $\twist$,
+  Recall the finite set $\bn{2}:\FinSet_2$ from \cref{def:finiteset},
+  containing two elements.
+  According to \cref{xca:C2}, the identity type $\bn{2} \eqto \bn{2}$ 
+  has exactly two distinct elements, $\refl{\bn{2}}$ and $\twist$,
   and doing $\twist$ twice yields $\refl{\bn{2}}$.
   We see that these are all the symmetries
   of a two point set you'd expect to have:
@@ -99,51 +115,63 @@ and the related conventions established in~\cref{sec:pointedtypes}.
   or you can swap the two elements ($\twist$).
   If you swap twice, the result leaves everything in place.
   The pointed type $\FinSet_2$ (of ``finite sets with two elements''),
-  with $\bn{2}$ as the base point,
-  is our embodiment of these symmetries, \ie they are the elements of $\loops(\FinSet_2,\bn 2)$.
+  with $\bn{2}$ as the base point, is our embodiment of these symmetries, 
+  \ie they are the elements of $\bn{2} \eqto \bn{2}$.
 
-  Observe that (by the definition of $\Sc$)
+  Observe that, by the induction principle of $\Sc$,
   there is an interesting function $\Sc\to\FinSet_2$,
   sending $\base:\Sc$ to $\bn{2} :\FinSet_2$ and $\Sloop$ to $\twist$.
   We saw this already in~\cref{fig:covering}.
 \end{example}
 
-If we take the type of loops $\loops(A,a) \jdeq (a\eqto_Aa)$
-for \emph{some} type $A$ and \emph{some} element $a:A$
-we get the notion of an \inftygp, cf.~\cref{sec:inftygps} below.
-However, in elementary texts it is customary to restrict the notion of a group to the case when $a\eqto_Aa$ is a \emph{set}, as we will do, starting in \cref{sec:identity-type-as-abstract}.
-This makes some proofs easier, since if are we given two elements $g,h:a\eqto_Aa$, then the identity type $g\eqto h$ is a proposition (and we can simply write $g = h$), \ie $g$ can be equal to $h$ in at most one way.  Hence questions relating to uniqueness of proofs of equality will never present a problem.
+Note that the types $\Sc$ and $\FinSet_2$ in the examples above are groupoids.
+For an arbitrary type $A$ and an element $a:A$,
+the symmetries of $a$ in $A$ form an \inftygp, cf.~\cref{sec:inftygps} below.
+However, in elementary texts it is customary to restrict the notion 
+of a group to the case when $a\eqto_A a$ is a \emph{set}, 
+as we will do, starting in \cref{sec:identity-type-as-abstract}.
+This makes things considerably easier: if are we given two elements 
+$g,h:a\eqto_A a$, then the identity type $g\eqto h$ is a proposition
+(and we can simply write $g = h$). That is, $g$ can be equal to $h$ in 
+at most one way, and questions relating to uniqueness of
+identification will never present a problem.
 
 The examples of groups that Klein and Lie were interested in
-often had more structure on the set $\loops(A,a)$,
-for instance a smooth structure.
-For such groups it makes sense to look at smooth maps from the real numbers
-to $\loops(A,a)$,
-or to talk about a sequence of loops converging to some loop.\footnote{%
+often had more structure on the set $a\eqto_A a$,
+for instance a topology or a smooth structure.
+For such a group it makes sense to look at smooth maps from the real numbers
+to $a\eqto_A a$, or to talk about a convergent sequence of symmetries of $a$.
+\footnote{%
   Such groups give rise to \inftygps by converting
-  smooth or continuous loops in $A$
+  smooth or continuous symmetries of $a$ in $A$
   parametrized by real intervals,
   into identifications,
   as described already in \cref{ft:cohesive}
   in \cref{ch:univalent-mathematics}.
-  Then also smooth or continuous paths in $\loops(A,a)$
-  turn into identifications of loops.
+  Then also smooth or continuous paths in $a\eqto_A a$
+  turn into identifications of symmetries.
   See also~\cref{sec:topology}.}
 See \cref{ch:grouphistory} for a brief summary of the history of groups.
 
 \begin{remark}\label{rem:heap-preview}
-  The reader may wonder about the status of the identity type $a\eqto_Aa'$ where $a,a':A$ are different elements.
-  One problem is of course that if $p,q:a\eqto_Aa'$,
+  The reader may wonder about the status of the identity type 
+  $a\eqto_A a'$ where $a,a':A$ are different elements.
+  One problem is of course that if $p,q:a\eqto_A a'$,
   there is no obvious way of composing $p$ and $q$
-  to get another element in $a\eqto_A a'$,
-  and another is that $a\eqto_Aa'$ does not have a distinguished element,
-  such as $\refl{a}:a\eqto_Aa$.\footnote{%
+  to get another element in $a\eqto_A a'$.
+  Another problem is that $a\eqto_A a'$ does not have a distinguished element,
+  such as $\refl{a}:a\eqto_A a$.\footnote{%
     The type $a\eqto_A a'$ does have an interesting \emph{ternary}
     composition, mapping $p,q,r$ to $p\inv{q}r$.
     A set with this kind of operation is called a \emph{heap},
     and we'll explore heaps further in \cref{sec:heaps}.}
-Given $f:a\eqto_Aa'$ we can use transport along $f$ to compare $a\eqto_Aa'$ with $a\eqto_Aa$ (much as affine planes can be compared with the standard plane or a finite dimensional real vector space is isomorphic to some Euclidean space), but absent the existence and choice of such an $f$ the identity types $a\eqto_Aa'$ and $a\eqto_Aa$ are different animals.
-We will return to this example after we have defined torsors.
+Given an $f:a\eqto_A a'$ we can use transport along $f$ to compare 
+$a\eqto_A a'$ with $a\eqto_A a$ (much as affine planes can be compared 
+with the standard plane or a finite dimensional real vector space is 
+isomorphic to some Euclidean space), but absent the existence and choice 
+of such an $f$ the identity types $a\eqto_Aa'$ and $a\eqto_Aa$ are 
+different animals.
+We will return to this example after we have defined torsors.\MB{Do we?}
 \end{remark}
 
 
@@ -168,14 +196,13 @@ We will return to this example after we have defined torsors.
   the inclusion of the component $\conncomp A a \defequi \sum_{x:A}\Trunc{a\eqto x}$ into $A$
   (\ie the first projection)
   induces an equivalence of identity types
-  from $(a,!)\eqto_{A_{(a)}}(a,!)$ to $a\eqto_Aa$,
-  and thus from $\loops(A_{(a)},(a,!))$ to $\loops(A,a)$.
-  This means that, when considering the loop type $\loops(A,a)$,
-  ``only the elements $x:A$ with $x$ merely equal to $a$ are relevant'',
-  and to avoid irrelevant extra components,
+  from $(a,!)\eqto_{A_{(a)}}(a,!)$ to $a\eqto_A a$. 
+  This means that, when considering the loop type $a\eqto_A a$,
+  ``only the elements $x:A$ with $x$ merely equal to $a$ are relevant''.
+  To avoid irrelevant extra components,
   we should consider only \emph{connected} types $A$ (\cf \cref{def:connected}).
 
-  Also, our preference for $\loops(A,a)$ to be a \emph{set}
+  Also, our preference for $a\eqto_A a$ to be a \emph{set}
   indicates that we should consider only the connected types $A$
   that are \emph{groupoids}.
 \end{remark}
@@ -202,12 +229,15 @@ We will return to this example after we have defined torsors.
 \end{definition}
 
 \begin{xca}\label{xca:defgroup}
-  Show that a pointed type $(A,a)$ is connected if and only if the type $\prod_{x:A}\Trunc{a \eqto_A x}$ has an element.
-  Show that a connected pointed type $X$ is a groupoid if and only if the type $\loops X$ is a set.
+  Given a type $A$ and an element $a:A$, 
+  show that $A$ is connected if and only if the proposition 
+  $\prod_{x:A}\Trunc{a \eqto_A x}$ holds.
+  Show furthermore that $A$ is a groupoid if and only if the 
+  type $a\eqto_A a$ is a set.
   Conclude by showing that the type $\UUscone$ is equivalent to the type
   \[
     \sum_{A:\UU} \sum_{a:A} \biggl( \Bigl( \prod_{x:A}\Trunc{a \eqto_A x} \Bigr)
-      \times \isset( \loops (A,a) ) \biggr).\qedhere
+      \times \isset( a\eqto_A a ) \biggr).\qedhere
   \]
 \end{xca}
 
@@ -215,17 +245,24 @@ We will return to this example after we have defined torsors.
   We shall refer to a pointed connected groupoid $(A,a,p,q)$ simply
   by the pointed type $X \defeq (A,a)$.
   There is no essential ambiguity in this, for
-  the types $\isconn(A)$ and $\isgrpd(A)$ are propositions (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}),
+  the types $\isconn(A)$ and $\isgrpd(A)$ are propositions 
+  (\cref{lem:prop-utils} and \cref{lem:isX-is-prop}),
   and so the witnesses $p$ and $q$ are unique.
-
-  We also write $\pt_X$ for the \emph{base point} $a$ of the pointed type $X$, as in \cref{def:pointedtypes}.
 \end{remark}
 
 We are now ready to define the type of groups.
 
 \begin{definition}\label{def:typegroup}
   The \emph{type of groups} is a wrapped copy (see \cref{sec:unary-sum-types})
-  of the type of pointed connected groupoids $\UUscone$,
+  of the type of pointed connected groupoids $\UUscone$,\marginnote{%
+  The reader may ask why we use $\mkgroup$, which only makes a wrapped
+  copy of each $(A,s,p,q): \UUscone$. The answer is that flatly defining
+  groups as their classifying types would be confusing.
+  In this way we avoid awkward terminology as ``the group of the integers
+  is the circle''. The symbol $\mkgroup$ has been inspired by $\loops$
+  in \cref{def:looptype}, which in \cref{sec:identity-type-as-abstract}
+  will be used to recover the traditional concept of a group.
+  }
   \[
     \typegroup \defequi \Copy_{\mkgroup}(\UUscone),
   \]
@@ -253,25 +290,39 @@ We are now ready to define the type of groups.
   by setting
   $\shape_G\defequi \pt_{\BG}$,
   \ie the designated shape of $G$ is the base point of its
-  classifying type.
+  classifying type, see \cref{def:pointedtypes}.
 \end{definition}
+
+\begin{definition}\label{def:looptype}
+  Given a pointed type $X\jdeq(A,a)$, we define
+  $\loops X \defeq (a \eqto_A a)$, \ie the type of the symmetries
+  of $a:A$. %also called the \emph{symmetries in} $X$ / $G$ below?
+  The type $\loops X$ is pointed at $\refl{a}$.%
+  \index{loop type constructor}\index{symmetry type constructor}
+  \glossary(924Omega){$\protect\loops X$}%
+  {type of symmetries (loops) in pointed type, \cref{def:looptype}}
+\end{definition}
+
 
 \begin{definition}\label{def:group-symmetries}
   Let $G$ be a group.
   We regard every group as a group of symmetries,
   and thus we refer to the elements of $\loops \BG$ as the
-  \emph{symmetries in $G$};
+  \emph{symmetries in $G$};\index{symmetries in a group $G$}
   they are the symmetries of the designated shape $\shape_G$ of $G$.
-  (Notice the careful distinction between the phrases
-  ``\emph{symmetries in}'' and ``\emph{symmetries of}''.)
-  We adopt the notation $\USymG$ for the type $\loops \BG$ of symmetries in $G$;
-  it is a set.\footnote{%
+  We adopt the notation 
+  \[
+    \USymG \defeq \loops \BG
+  \]
+  for the type of symmetries in $G$; it is a set.\footnote{%
     Taking the symmetries in a group
     thus defines a map
     $\USym : \Group \to \Set$,
     with $\mkgroup X \mapsto \loops X$.
     Just as with ``$\B$'', we write the ``$\USym$'' so that it matches
     the shape of its operand.}
+  (Notice the careful distinction above between the phrases
+  ``\emph{symmetries in}'' and ``\emph{symmetries of}''.) 
 \end{definition}
 
 \begin{remark}\label{rem:aut}
