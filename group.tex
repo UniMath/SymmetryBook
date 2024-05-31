@@ -25,7 +25,7 @@ operations satisfying appropriate rules.
 We attack the issue more concretely:
 instead of focusing on the abstract properties,
 we bring the type exhibiting the symmetries to the fore.
-\MB{This type is called the \emph{classifying type} of the group.}
+This type is called the \emph{classifying type} of the group.
 The axioms for an abstract group follow from the rules for identity types,
 without us needing to impose them.
 We will show that the two approaches give the same end result.
@@ -56,11 +56,9 @@ More generally, connected \coverings now reappear in the guise of
 ``transitive $G$-sets'', laying the groundwork for our later discussion 
 of the set of subgroups of a group.
 
-Another important notion, also discussed in \cref{sec:gsets}, is the type of ``$G$-torsors'', which at first glance can appear frightening.
-However, a $G$-torsor corresponds to \emph{a} universal \covering
-(\MB{problem: u.c. are now pointed}), 
-and the important step is to consider the \emph{type} of these.
-The type of $G$-torsors recovers the underlying classifying type of the group $G$,
+Also discussed in \cref{sec:gsets} is the notion of ``$G$-torsor''.
+A $G$-torsor is a $G$-set that is merely equal to the universal \covering.
+The type of $G$-torsors recovers the classifying type of the group $G$,
 and this idea is used in \cref{sec:Gsetforabstract} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.  This is followed up for homomorphisms in \cref{sec:homabsisconcr} and for $G$-sets in \cref{sec:Gsetsabstrconcr}.
 (\MB{missing: \cref{sec:monoepi}, \cref{sec:abelian-groups}, \cref{sec:Semidirect-products}, \cref{sec:pullback}, \cref{sec:coprod}. Next para is unfinished.}.)
 
@@ -143,8 +141,8 @@ For such a group it makes sense to look at smooth maps from the real numbers
 to $a\eqto_A a$, or to talk about a convergent sequence of symmetries of $a$.
 \footnote{%
   Such groups give rise to \inftygps by converting
-  smooth or continuous symmetries of $a$ in $A$
-  parametrized by real intervals,
+  continuous (or smooth) symmetries of $a$ in $A$
+  parametrized by the continuous (or smooth) real interval,
   into identifications,
   as described already in \cref{ft:cohesive}
   in \cref{ch:univalent-mathematics}.
@@ -171,7 +169,7 @@ with the standard plane or a finite dimensional real vector space is
 isomorphic to some Euclidean space), but absent the existence and choice 
 of such an $f$ the identity types $a\eqto_Aa'$ and $a\eqto_Aa$ are 
 different animals.
-We will return to this example after we have defined torsors.\MB{Do we?}
+We will return to this example in \cref{sec:heaps}.
 \end{remark}
 
 
@@ -187,14 +185,15 @@ We will return to this example after we have defined torsors.\MB{Do we?}
       \node (cdots) at (1.8,1.4) {$\cdots$};
       \node (A) at (2.6,2.1) {$A$};
       \node (Aa) at (.7,1.9) {$A_{(a)}$};
-      \draw[->] (a) .. controls ++(-10:1) and ++(110:1.6) .. node[auto,swap] {$p$} (a);
+      \draw[->] (a) .. controls ++(-10:1) and ++(110:1.6) .. node[auto,swap]
+      {$p$} (a);
       \draw[dashed] plot [smooth cycle] coordinates
       {(1.5,.1) (2.5,.2) (2.6,.8) (1.5,.9)};
       \draw[dashed] plot [smooth cycle] coordinates
       {(1.5,1.1) (2.5,1.2) (2.4,1.8) (1.2,2)};
     \end{tikzpicture}}
-  the inclusion of the component $\conncomp A a \defequi \sum_{x:A}\Trunc{a\eqto x}$ into $A$
-  (\ie the first projection)
+  the inclusion of the component $\conncomp A a \defequi \sum_{x:A}
+  \Trunc{a\eqto x}$ into $A$ (\ie the first projection)
   induces an equivalence of identity types
   from $(a,!)\eqto_{A_{(a)}}(a,!)$ to $a\eqto_A a$. 
   This means that, when considering the loop type $a\eqto_A a$,
@@ -254,21 +253,29 @@ We are now ready to define the type of groups.
 
 \begin{definition}\label{def:typegroup}
   The \emph{type of groups} is a wrapped copy (see \cref{sec:unary-sum-types})
-  of the type of pointed connected groupoids $\UUscone$,\marginnote{%
-  The reader may ask why we use $\mkgroup$, which only makes a wrapped
-  copy of each $(A,s,p,q): \UUscone$. The answer is that flatly defining
-  groups as their classifying types would be confusing.
-  In this way we avoid awkward terminology as ``the group of the integers
-  is the circle''. The symbol $\mkgroup$ has been inspired by $\loops$
-  in \cref{def:looptype}, which in \cref{sec:identity-type-as-abstract}
-  will be used to recover the traditional concept of a group.
-  }
+  of the type of pointed connected groupoids $\UUscone$,
   \[
     \typegroup \defequi \Copy_{\mkgroup}(\UUscone),
   \]
   with constructor $\mkgroup : \UUscone \to \Group$.%
-  \glossary(924Omega_){$\protect\mkgroup$}{group constructor, \cref{def:typegroup}}%
-  \index{group}
+  \glossary(924Omega_){$\protect\mkgroup$}{group constructor,
+  \cref{def:typegroup}}\index{group}%
+  \footnote{%
+  The reader may ask why we use $\mkgroup$, which only makes a wrapped
+  copy of each $(A,s,p,q): \UUscone$. The answer is that flatly defining
+  groups as their classifying types would be confusing.
+  Using $\mkgroup$ we avoid awkward terminology such as `
+  `the group of the integers is the circle''. 
+  The symbol $\mkgroup$ is inspired by $\loops$
+  in \cref{def:looptype}, which in \cref{sec:identity-type-as-abstract}
+  will be used to recover the traditional concept of a group.
+  Recall also the example of the negated natural numbers $\NNN$
+  from \cref{sec:unary-sum-types}:
+  Its elements are $-n$ for $n:\NN$ to remind us how to think about them.
+  And the same applies to $\Group$:
+  Its elements are $\mkgroup X$ for $X : \UUscone$
+  to remind us how to think about them.
+  }
   A \emph{group} is an element of $\typegroup$.
 \end{definition}
 
@@ -326,24 +333,11 @@ We are now ready to define the type of groups.
 \end{definition}
 
 \begin{remark}\label{rem:aut}
-  We are emphasizing that the essential feature of a group
-  is the symmetries of its designated shape.
-  That is why we defined $\Group$ to be a copy of $\UUscone$,
-  and not $\UUscone$ itself;\marginnote{%
-    Recall also the example of the negated natural numbers $\NNN$
-    from \cref{sec:unary-sum-types}:
-    Its elements are $-n$ for $n:\NN$ to remind us how to think about them.
-    And the same applies to $\Group$:
-    Its elements are $\mkgroup X$ for $X : \UUscone$
-    to remind us how to think about them.}
-  the type $\USymG$ is at least as important as $\BG$
-  -- the copying forces us to use the notation $\BG$,
-  preventing a glib identification of $G$ with its classifying type.
   As noted in \cref{sec:unary-sum-types},
   the constructor and destructor pair forms an equivalence $\Group \weq \UUscone$.
   The type $\UUscone$ is a subtype of $\UUp$, so
   once you know that a pointed type $X$ is a connected groupoid,
-  you know also that $X$ is the classifying type for a group,
+  you also know that $X$ is the classifying type of a group,
   namely $G\defeq\mkgroup X$.
 
   Note that the equivalence also entails that identifications (of groups) of type $G \eqto H$ are equivalent to identifications (of pointed
@@ -351,9 +345,9 @@ We are now ready to define the type of groups.
 \end{remark}
 
 \begin{remark}\label{rem:BG-convention}
-  To define a function $f : \prod_{G:\Group}T(G)$,
-  where $T(G)$ is a type family parametrized by $G:\Group$,
-  it suffices to consider the case $G\jdeq\mkgroup X$,
+  Defining a function $f : \prod_{G:\Group}T(G)$,
+  where $T(G)$ is a type parametrized by $G:\Group$,
+  amounts to defining $f(G)$ for $G\jdeq\mkgroup X$,
   where $X$ is a pointed connected groupoid,
   namely the classifying type $\BG$.\footnote{%
     If you are bothered by the convention
