@@ -427,16 +427,17 @@ identifications of type $\ZZ \eqto \Aut_\Cyc(\zet,\zs)$.
   in the groupoid $\Set$.
   \begin{enumerate}
   \item\label{ex:trivgroup}
-  Recall that $\bn{1} \eqto \bn{1}$ is contractible.
-  Hence $\Aut_{\Set}(\bn{1})$ is a group called the 
+  Recall that $\true$, and hence $\true \eqto \true$, is contractible.
+  Hence $\Aut_{\Set}(\true)$ is a group called the 
   \emph{trivial group}. \index{trivial group}
-  The trivial group can also be identified with
-  $\Aut_{\bn{1}}(0)$, where $0$ is the sole constructor of $\bn{1}$.
-  Unlike $\Set$, the type $\bn{1}$ is connected (in fact
-  contractible), so we can also identify the trivial group with
-  $\mkgroup (\bn{1},0)$. Similarly for $\mkgroup (\true,\triv)$ and
-  $\Aut_{\true}(\triv)$, the automorphism group of the trivial element
-  in the type $\true$.
+  In fact, for any proposition $P$ we can also identify the trivial group 
+  with $\Aut_{\Set}(P)$, see \cref{xca:group-example-details}. 
+  Unlike $\Set$, the type $\true$ is connected,
+  so we can also identify the trivial group with
+  $\mkgroup (\true,\triv)$, or with $\mkgroup (C,c)$ for
+  any contractible type $C$ and element $c:C$, or
+  with $\Aut_{S}(x)$ for any set $S$ and element $x:S$.
+ 
   \item\label{ex:permgroup}
     If $n:\NN$, then the \emph{permutation group of $n$ letters}
     (also known as the \emph{symmetric group of order $n$}) is%
@@ -450,15 +451,51 @@ identifications of type $\ZZ \eqto \Aut_\Cyc(\zet,\zs)$.
     where $\FinSet_n \jdeq \Set_{(\bn{n})}$ is the groupoid of 
     sets of cardinality $n$ (\cf \ref{def:groupoidFin}).
     
-    Again, we can identify the group $\SG_n$ also with
-    $\Aut_\FinSet(\bn{n})$, with $\Aut_{\FinSet_n}(\bn n)$
-    (by \cref{rem:symmetriesofnonconnectedgroupoids}),  
-    or even $\Aut_{\UU}(\bn n)$ (by \cref{rem:autinfgp}).
-    (Recall that $\FinSet$ and $\Set$ are the subtypes of $\UU$
-    of finite sets and sets, respectively).
+    Again, we can also identify the group $\SG_n$ with
+    $\Aut_\FinSet(\bn{n})$ (by \cref{xca:group-example-details}), with 
+    $\Aut_{\FinSet_n}(\bn n)$ (by \cref{rem:symmetriesofnonconnectedgroupoids}),
+    or even with $\Aut_{\UU}(\bn n)$ (by stretching the definition of $\Aut$,
+    using that $\UU_{(\bn n)}$ is a connected groupoid, see~\cref{rem:autinfgp}).
+
 
     If the reader starts worrying about size issues,
-    see~\cref{rem:groupsarebig}.
+    see~\cref{rem:groupsarebig}.\footnote{%
+This footnote is for those who worry about size issues -- a
+theme we usually ignore in our exposition. 
+Recall from \MB{to be updated} \cref{sec:universes} that the universes form an ascending chain $\UU_0\subseteq\UU_1\subseteq\UU_2\subseteq\dots$.
+Let $\Set_0$ be the type of sets in $\UU_0$, 
+\ie $\Set_0\defeq \sum_{S:\UU_0}\isset(S)$. Then $\true:\Set_0$ 
+and $\Set_0 : \UU_1$ (because the sum is taken over $\UU_0$).
+In order to accommodate the trivial group $\Aut_{\Set_0}(\true)$, 
+the universe ``$\UU$'' appearing as a subscript of the first 
+$\Sigma$-type in \cref{def:pt-conn-groupoid}, reappearing later in 
+\cref{def:typegroup} of the type of groups,
+needs to be at least as big as $\UU_1$. 
+If $\UU$ is taken to be $\UU_1$, then the type $\typegroup$ of groups 
+will not be in $\UU_1$, but in the bigger universe $\UU_2$.
+\Cref{xca:typegroupisgroupoid} below asks you to verify that $\Group$
+is a (large) groupoid. If we then choose some group $G:\typegroup$
+and look at its group of automorphisms, $\Aut_\Group(G)$,
+this will be an element of $\typegroup$ only if the universe $\UU$ in the
+definition of $\typegroup$ is at least as big as $\UU_2$. Clearly, 
+this doesn't stop and so we also need an ascending chain of types of groups:
+  \[
+    \typegroup_i \defequi \Copy_{\mkgroup}\bigl( (\UU_i)_*^{=1} \bigr) : \UU_{i+1}.
+  \]
+Any group we encounter will be an element of $\typegroup_i$ for $i$
+large enough. As a matter of fact, the trivial group $\Aut_{\true}(\triv)$
+is an element of $\typegroup_0$. The Replacement~\cref{pri:replacement}
+often allows us to conclude that a group $G$ belongs to $\typegroup_0$.
+This is the case for $\SG_S$, for $S:\Set_0$, and for $\Aut_\Group(G)$,
+for $G:\Group_0$, as we invite the reader to check.
+(Hint: use \cref{xca:comp-loc-small-ess-small}.)
+However, even with this principle there are groups that only belong
+to $\typegroup_i$ for $i>0$ large enough.
+
+These matters concerning universes are nontrivial and important,
+but in this text we have chosen to focus on other matters.
+}
+
   \item\label{ex:genpermgroup}
     More generally, if $S$ is a set, is there a pointed connected groupoid $(A,a)$ so that $a\eqto_Aa$ models all the ``permutations'' $S\eqto_{\Set}S$ of $S$?
     Again, the only thing wrong with the groupoid $\Set$ of sets
@@ -477,8 +514,9 @@ identifications of type $\ZZ \eqto \Aut_\Cyc(\zet,\zs)$.
 \end{example}
 
 \begin{xca}
-  \label{xca:somedetailsonfinitegroupstocheck}
-  Show that $\Sigma_\false$ is a trivial group.
+  \label{xca:group-example-details}
+  Show that $\Aut_{\Set}(P)$ is a trivial group for any proposition $P$.
+  Verify that $\SG_0$, $\SG_1$, and $\SG_\false$ are all trivial groups.
   Using~\cref{def:finiteset}, give identifications of type 
   $\Aut_\FinSet(\bn{n})\eqto\Sigma_{\bn{n}}$ for $n:\NN$.
   Also, give an identification of type $\Aut_\Set(\NN)\eqto\Aut_\Set(\zet)$. 
@@ -512,28 +550,33 @@ identifications of type $\ZZ \eqto \Aut_\Cyc(\zet,\zs)$.
     We will note, however, that the Replacement~\cref{pri:replacement}
     often allows us to conclude that a group $G$ belongs to $\typegroup_0$.
     This is the case for $\SG_S$, for $S:\Set_0$, and for $\Aut_\Group(G)$,
-    for $G:\Group_0$, as we invite the reader to check.}
+    for $G:\Group_0$, as we invite the reader to check.
+    Hint: use \cref{xca:comp-loc-small-ess-small}.}
 \end{remark}
 
 \begin{example}\label{ex:cyclicgroups}
-  In \cref{cor:id-m-cycle} we studied the symmetries of the standard $m$-cycle $(\bn m,\zs)$
-  for $m$ a positive integer, and showed that there were $m$ different
-  such symmetries.
+  In \cref{cor:id-m-cycle} we studied the symmetries of the 
+  standard $m$-cycle $(\bn m,\zs)$ for $m$ a positive integer, 
+  and showed that there were $m$ different such symmetries.
   Moreover, we showed that these symmetries can be identified with the elements
   $0,1,\dots,m-1$ of $\bn m$ (according to the image of $0$),
   and under this correspondence composition of symmetries correspond to
   addition modulo $m$, with $0$ the identity.
   Note that all of these can be obtained from $1$ under addition.
-  Corresponding, the \emph{cyclic group of order $m$} is defined to be
+  With $\Cyc,\,\Cyc_m$ from \cref{def:Cyc}, \ref{def:Cyc-components},
+  the \emph{cyclic group of order $m$} is thus defined to be
   \[
-    \CG_m \defeq \mkgroup(\Cyc_m,(\bn m,\zs)) \jdeq \Aut_\Cyc((\bn m,\zs)),
+    \CG_m \defeq \Aut_\Cyc((\bn m,\zs)),
   \]
-  with classifying type $\BCG_m \defeq (\Cyc_m, (\bn m,\zs))$.\footnote{%
+  with classifying type $\BCG_m \jdeq (\Cyc_m, (\bn m,\zs))$.\footnote{%
     Note that the cyclic group of order $1$ is the trivial group,
     the cyclic group of order $2$ is equivalent to the symmetric group $\SG_2$:
     there is exactly one nontrivial symmetry $f$ and $f^2$ is the identity.
-    When $m>2$ the cyclic group of order $m$ is a group that does not appear elsewhere in our current list.
-    In particular, the cyclic group of order $m$ has only $m$ different symmetries, whereas we will see that the group of permutations $\SG_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.}
+    When $m>2$ the cyclic group of order $m$ is a group that does not appear
+    elsewhere in our current list.
+    In particular, the cyclic group of order $m$ has only $m$ different
+    symmetries, whereas we will see that the group of 
+    permutations $\SG_m$ has $m!=1\cdot 2\cdot\dots\cdot m$ symmetries.}
 
   By using univalence on the equivalences of~\cref{thm:coveringsofS1perms}, we get a chain of identifications
   \[
