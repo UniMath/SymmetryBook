@@ -462,7 +462,9 @@ identifications of type $\ZZ \eqto \Aut_\Cyc(\zet,\zs)$.
     see~\cref{rem:groupsarebig}.\footnote{%
 This footnote is for those who worry about size issues -- a
 theme we usually ignore in our exposition. 
-Recall from \MB{to be updated} \cref{sec:universes} that the universes form an ascending chain $\UU_0\subseteq\UU_1\subseteq\UU_2\subseteq\dots$.
+Recall from \MB{to be updated} \cref{sec:universes} the chain of
+universes $\UU_0 : \UU_1 : \UU_2 : \dots$ such that for each $i$
+all types in $\UU_i$ are also in $\UU_j$ for all $j>i$.
 Let $\Set_0$ be the type of sets in $\UU_0$, 
 \ie $\Set_0\defeq \sum_{S:\UU_0}\isset(S)$. Then $\true:\Set_0$ 
 and $\Set_0 : \UU_1$ (because the sum is taken over $\UU_0$).
@@ -566,7 +568,7 @@ but in this text we have chosen to focus on other matters.
   With $\Cyc,\,\Cyc_m$ from \cref{def:Cyc}, \ref{def:Cyc-components},
   the \emph{cyclic group of order $m$} is thus defined to be
   \[
-    \CG_m \defeq \Aut_\Cyc((\bn m,\zs)),
+    \CG_m \defeq \Aut_\Cyc(\bn m,\zs),
   \]
   with classifying type $\BCG_m \jdeq (\Cyc_m, (\bn m,\zs))$.\footnote{%
     Note that the cyclic group of order $1$ is the trivial group,
@@ -625,19 +627,23 @@ We can picture the $m$-cycle as consisting of $m$ points on a circle,
     (Here $\xi=\ee^{2\pi\ii/m}$ is a primitive $m$\th root.)}
   \label{fig:m-cycle-roots}
 \end{marginfigure}
-Any cyclic permutation is in particular a permutation of the $m$-element set underlying the cycle.
-This manifests itself as the projection map $\prj : \Cyc_m \to \FinSet_m$,\footnote{%
+Any cyclic permutation is in particular a permutation 
+of the $m$-element set underlying the cycle.
+This manifests itself as the projection map 
+$\prj : \Cyc_m \to \FinSet_m : ((X,t),!) \mapsto (X,!)$,\footnote{%
   In the terminology of \cref{sec:stuff-struct-prop},
   this map forgets the cycle structure on the underlying set.}
 equivalently, using the notation introduced above, $\prj : \BCG_m \to \BSG_m$,
 where the group $\SG_m=\Aut_\Set(\bn m)$ is that of
 \emph{all} permutations of the set $\bn m$.
-The projection map,
-whose fiber at $X : \BSG_m$ is the set $\sum_{t:X\to X}\Trunc{(X,t)=(\bn m,\zs)}$,
-captures $\CG_m$ as a ``subgroup'' of the permutations, namely the cyclic ones,
-corresponding to the fact that the shapes of $\CG_m$ (\ie the elements of $\BCG_m$)
-are those of $\SG_m$
-together with the extra structure of the ``cyclic ordering'' determined by $f$.
+This projection map,
+whose fiber at $X : \BSG_m$ can be identified with
+the set $\sum_{t:X\to X}\Trunc{(X,t)\eqto(\bn m,\zs)}$,
+captures $\CG_m$ as a ``subgroup'' of the permutations, 
+namely the cyclic ones, corresponding to the fact that the 
+shapes of $\CG_m$ (\ie the elements of $\BCG_m$)
+are those of $\SG_m$ together with the extra structure of 
+the ``cyclic ordering'' determined by $t$.
 
 But how do we capture the other aspect of $\CG_m$,
 mentioned in~\cref{ex:cyclicgroups},
@@ -700,8 +706,12 @@ This identifies the set $\Trunc{\inv{R_m}(X)}_0$ with the set of cycle structure
 In \cref{lem:idtypesgiveabstractgroups} we will see that the identity type of a group satisfies a list of laws justifying the name ``group''
 and we will later show that groups are uniquely characterized by these laws.
 \end{remark}
-Some groups have the property that the order you perform the symmetries is immaterial.  The prime example is the group of integers $\ZZ\jdeq\mkgroup(\Sc,\base)$.
-Any symmetry is of the form $\Sloop^n$ for some integer $n$, and if $\Sloop^m$, then $\Sloop^n\Sloop^m=\Sloop^{n+m}=\Sloop^{m+n}=\Sloop^m\Sloop^n$.
+Some groups have the property that the order you compose the 
+symmetries is immaterial.  The prime example is the group of 
+integers $\ZZ\jdeq\mkgroup(\Sc,\base)$.
+Any symmetry is of the form $\Sloop^n$ for some integer $n$, 
+and if $\Sloop^m$ is also a symmetry, 
+then $\Sloop^n\Sloop^m=\Sloop^{n+m}=\Sloop^{m+n}=\Sloop^m\Sloop^n$.
 
  Such cases are important enough to have their own name:
 \begin{definition}\label{def:abgp}
@@ -719,14 +729,15 @@ Any symmetry is of the form $\Sloop^n$ for some integer $n$, and if $\Sloop^m$, 
   Show that symmetric group $\SG_2$ is abelian, but that $\SG_3$ is not.
   Show that if $G$ and $H$ are abelian groups, then so is their product $G\times H$.
 \end{xca}
-We can envision $g$ commuting with $h$ in a group $A \jdeq\mkgroup(A,a)$
-by the picture\marginnote{%
+We can visualize symmetries $g$ and $h$ commuting with each
+other in a group $A \jdeq\mkgroup(A,a)$ by the picture\marginnote{%
   \begin{tikzcd}[ampersand replacement=\&]
     a \ar[r,eqr,"g"]\ar[d,eql,"h"'] \& a\ar[d,eqr,"h"] \\
     a \ar[r,eql,"g"'] \& a
   \end{tikzcd}}
 in the margin;
-going from (upper left hand corner) $a$ to (lower right hand corner) $a$ by either composition gives the same result.
+going from (upper left hand corner) $a$ to (lower right hand corner) 
+$a$ by either composition gives the same result.
 
 \begin{remark}
   \label{rem:whatAREabeliangroups}
@@ -747,15 +758,17 @@ going from (upper left hand corner) $a$ to (lower right hand corner) $a$ by eith
 
 \begin{xca}
   Let $\mkgroup(A,a):\typegroup$ and let $b$ be an arbitrary element of $A$.
-  Prove that the groups $\mkgroup(A,a)$ and $\mkgroup(A,b)$ are merely identical,
-  in the sense that $\Trunc{\mkgroup(A,a)=\mkgroup(A,b)}$ is true.
-  Similarly for \inftygps when you get that far.
+  Prove that the groups $\mkgroup(A,a)$ and $\mkgroup(A,b)$ are 
+  merely identical, in the sense that the proposition
+  $\Trunc{\mkgroup(A,a)\eqto\mkgroup(A,b)}$ is true.
+  Similarly for \inftygps in \cref{sec:inftygps} when you get that far.
 \end{xca}
 
   \begin{xca}\label{xca:typegroupisgroupoid}
     Given two groups $G$ and $H$.  Prove that $G\eqto H$ is a set.
     Prove that the type of groups is a groupoid.
-    This means that, given a group $G$, the component of $\typegroup$, containing (and pointed at) $G$, is again a group, $\Aut_\Group(G)$,
+    This means that, given a group $G$, the component of $\typegroup$,
+    containing (and pointed at) $G$, is again a group, $\Aut_\Group(G)$,
     which we will call more simply the \emph{group $\Aut(G)$ of automorphisms}%
     \index{group!of automorphisms} of $G$,
     or the \emph{automorphism group}\index{automorphism group} of $G$.
