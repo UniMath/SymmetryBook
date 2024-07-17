@@ -1096,7 +1096,7 @@ Taking into account the introductory comments we have made above, we may state t
 \section{Homomorphisms}
 \label{sec:homomorphisms}
 
-\begin{remark}\label{homom-idens}
+\begin{remark}\label{rem:homom-eqs}
 Let $G$ and $H$ be groups, and suppose we have a pointed function $k : \BG \ptdto \BH$.
 Suppose also, for simplicity (and without loss of generality),
 that $\pt_\BH \jdeq k ( \pt_\BG ) $ and $k_\pt \jdeq \refl{\pt_\BH}$.
@@ -1158,11 +1158,12 @@ So we should first study how pointed maps affect loops:\marginnote{%
 \begin{definition}\label{def:loops-map}
   Given pointed types $X$ and $Y$ and a pointed function $k : X\ptdto Y$ (as defined in \cref{def:pointedtypes}),
   we define a function $\loops k : \loops X \to \loops Y$ by setting\footnote{%
-    Recall~\cref{def:ap} for $\ap{}$.
-    Note also that $\loops k$ is pointed: 
+    Recall~\cref{def:ap} for $\ap{}$, and that we may abbreviate
+    $\ap{f}(p)$ by $f(p)$. Note also that $\loops k$ is pointed: 
     we can identify $\loops k(\refl{\pt_X})$ with $\refl{\pt_Y}$.}
   \[
-    \loops k(p) \defeq k_\pt^{-1} \cdot \ap{k_\div}(p) \cdot k_\pt.\qedhere
+    \loops k(p) \defeq k_\pt^{-1} \cdot k_\div(p) \cdot k_\pt
+    \text{,\quad for all $p: \pt_X \eqto \pt_X$.}\qedhere
   \]
   \glossary(924Omega){$\protect\loops k$}%
   {loop map of pointed map, \cref{def:loops-map}}
@@ -1174,7 +1175,8 @@ So we should first study how pointed maps affect loops:\marginnote{%
 \end{remark}
 
 \begin{definition}\label{def:USym-hom}
-  Given groups $G$ and $H$ and a homomorphism  $f$ from $G$ to $H$, we define a function $\USymf : \USymG \to \USymH$
+  Given groups $G$ and $H$ and a homomorphism  $f$ from $G$ to $H$, 
+  we define the function $\USymf : \USymG \to \USymH$
   by setting $\USymf \defeq \loops \Bf$.
   In other words, the homomorphism $\mkhom\Bf$
   induces $\loops\Bf$ as the map on underlying symmetries.
@@ -1195,8 +1197,10 @@ So we should first study how pointed maps affect loops:\marginnote{%
 
 \begin{proof}
   We write $f \jdeq (f_\div,p)$, where $p : \pt_{\BH} \eqto f_\div (\pt_{\BG})$.
-  By induction on $p$, we reduce to the case where $\pt_{\BH} \jdeq f_\div (\pt_{\BG})$.
-  We finish by applying \cref{homom-idens}.
+  By induction on $p$, which is allowed since $\pt_{\BH}$ is arbitrary,
+  we reduce to the case where $\pt_{\BH} \jdeq f_\div (\pt_{\BG})$
+  and $p\jdeq \refl{\pt_{\BH}}$.
+  We finish by applying \cref{rem:homom-eqs} and \ref{rem:loops-map}.
 \end{proof}
 
 \begin{definition}\label{def:groupisomorphism}
@@ -1206,7 +1210,8 @@ So we should first study how pointed maps affect loops:\marginnote{%
 
 \begin{definition}\label{def:identity-group-homomorphism}
   If $G$ is a group, then we use \cref{def:pointedidentity} to define the \emph{identity homomorphism} $\id_G : G\to G$ by
-  setting $\id_G \defeq \mkhom (\id_\BG)$.  It is an isomorphism.
+  setting $\id_G \defeq \mkhom (\id_\BG)$.  The
+  identity homomorphism is an isomorphism.
 \end{definition}
 
 \begin{remark}
@@ -1215,7 +1220,7 @@ So we should first study how pointed maps affect loops:\marginnote{%
   \[
     (G\eqto_\typegroup H)\equivto \Iso(G,H)
   \]
-  between the identity type between the groups $G$ and $H$ and the 
+  between the identity type of the groups $G$ and $H$ and the 
   set of isomorphisms. We use the convention introduced in
   \cref{rem:univalence-transparent} also here. That is,
   we allow ourselves to also write $p : \Iso(G,H)$ for the isomorphism
@@ -1273,10 +1278,10 @@ but it is instructive to give a direct proof of the following.
   described,
   \[
     (f \eqto f') \equivto \sum_{h:\Bf_\div\eqto\Bf'_\div}
-    h(\shape_G)\Bf_\pt = \Bf'_\pt,
+    h(\shape_G)\Bf_\pt = \Bf'_\pt \,.
   \]
-  so our goal is to prove that any two elements $(h,!),(j,!)$ of the right-hand side
-  can be identified.
+  Thus our goal is to prove that any two elements $(h,!),(j,!)$ 
+  of the right-hand side can be identified.
   By function extensionality, the type $h\eqto j$ is equivalent to
   the proposition $\prod_{t:\BG_\div} h(t) = j(t)$. So now we can use
   connectedness of $\BG_\div$, and
@@ -1284,7 +1289,7 @@ but it is instructive to give a direct proof of the following.
   \begin{displaymath}
     h(\shape_G) = \Bf'_\pt \inv{\Bf_\pt} = j(\shape_G).
   \end{displaymath}
-  This concludes the proof that $f=f'$ is a proposition, or in other
+  This concludes the proof that $f\eqto f'$ is a proposition, or in other
   words that $\Hom(G,H)$ is a set.\footnote{%
     The same argument shows that the type $X\ptdto Y$ is a set
     whenever $X$ is connected and $Y$ is a groupoid.
@@ -1337,7 +1342,8 @@ but it is instructive to give a direct proof of the following.
   give rise to group homomorphisms between $G\times H$ and $G$ and $H$,
   namely projections $G\gets G\times H\to H$ and inclusions
   $G\to G\times H\gets H$.
-\item In \cref{ex:cyclicgroups} we gave an example of an isomorphism, namely one from the cyclic group $\CG_m$ to $\ZZ/m\ZZ$,
+\item In \cref{ex:cyclicgroups} we gave an example of an isomorphism, 
+  namely one from the cyclic group $\CG_m$ to $\ZZ/m\ZZ$,
   and in~\cref{ex:Cm} we looked at $R_m : \B\ZZ \to \BSG_m$,
   which induces a homomorphism $\blank/m : \ZZ \to \SG_m$
   factoring through $\ZZ/m\ZZ$ (and $\CG_m$).\footnote{%
