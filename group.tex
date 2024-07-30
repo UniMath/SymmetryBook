@@ -1678,7 +1678,8 @@ To do this, we need to assign to every $n$-element set $A$ a $2$-element set $\B
 \end{marginfigure}
 
 We get this $2$-element set as a quotient of the set of all possible ways of
-choosing elements from each $2$-element subset of $A$, where two different such
+choosing an element from each $2$-element subset of $A$, 
+where two different such
 choices are deemed the same if they differ in an \emph{even} number of pairs.
 Since choosing an element from a $2$-element set is equivalent to ordering it
 (\eg chosen element first),
@@ -1687,14 +1688,17 @@ or equivalently, ways of directing the complete graph on $A$.
 \Cref{fig:sign-orderings-3} shows all $8$ ways of directing the complete graph on
 a $3$-element set divided into the $2$ resulting equivalence classes.
 
-To see that this really defines an equivalence relation, it helps to generalize a bit.
-Thus, fix a finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-element sets parametrized by $E$.
+To see that this really defines an equivalence relation, 
+it helps to generalize a bit.
+Thus, fix a finite set $E$, and let $P : E \to \BSG_2$ be a family 
+of $2$-element sets with parameter type $E$.
 \begin{definition}
   The parity relation $\sim$ on $\prod_{e:E}P(e)$ relates functions that disagree in an even number of points. That is, $f\sim g$ holds if and only if the
   subset $\setof{e:E}{f(e) \ne g(e)}$ has an even number of elements.\footnote{%
     This makes sense because any $2$-element set is decidable,
     and a subset of a finite set specified by a decidable predicate
-    is itself a finite set.
+    is itself a finite set. We may apply the usual set-theoretic
+    operators, such as union and set difference, to these subsets.
     Note also that the parity relation is itself decidable.}
 \end{definition}
 \begin{lemma}
@@ -1750,7 +1754,7 @@ Thus, fix a finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-elemen
   We also see that at least one of the $F_{ij}$'s has even cardinality,
   so the quotient has at most $2$ elements.
 
-  Finally, if $E$ is empty, then $\prod_{e:E}P(e)$ is contractible,
+  Clearly, if $E$ is empty, then $\prod_{e:E}P(e)$ is contractible,
   so the quotient is contractible.
   Assume now that $E$ is nonempty.
   To show the proposition that the quotient is a $2$-element set,
@@ -1762,20 +1766,23 @@ Thus, fix a finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-elemen
   according to how many times it takes the value $-1$.
 \end{proof}
 
-\begin{remark}
-  The groupoid $E \to \BSG_2$ is connected whenever $E$ is a finite set,
-  and we can make it pointed by taking the constant map to $\sh_{\SG_2}$ as base point.
+\begin{definition}\label{def:mu_E}
+  Given a finite set $E$, we define a homomorphism 
+  $\mu_E : \Hom(\SG_2^E,\SG_2)$ as follows. First note that
+  the groupoid $E \to \BSG_2$ is connected; we can make it pointed 
+  by taking the constant map to $\sh_{\SG_2}$ as base point.
   We denote the corresponding group by
   $\SG_2^E \defeq \mkgroup(E \to \BSG_2,\cst{\sh_{\SG_2}})$;
   it is an $E$-fold product of the group $\SG_2$.
-  Our construction $P \mapsto \bigl(\prod_{e:E}P(e)\bigr)/\sim$,
-  for $E$ nonempty,
-  defines a map $(E \to \BSG_2) \to \BSG_2$,
+  Our construction $P \mapsto \bigl(\prod_{e:E}P(e)\bigr)/\sim$ above,
+  for $E$ nonempty, defines a map $(E \to \BSG_2) \to \BSG_2$,
   which can be pointed by the identification indicated in the proof above,
-  and thus defines a homomorphism $\mu_E : \Hom(\SG_2^E,\SG_2)$.
+  and thus defines the desired homomorphism $\mu_E$.
   We also have this homomorphism when $E$ is empty,
   since then $\BSG_2^E$ is contractible, so $\SG_2^E$ is the trivial group.
-\end{remark}
+  The definition of $\mu_E$ is uniform in the finite set $E$,
+  as we can decide whether $E$ is empty or not.
+\end{definition}
 
 \begin{xca}
   Show that the set of elements of $\SG_2^E$ can be identified with $\set{\pm1}^E$,
@@ -1802,12 +1809,16 @@ Thus, fix a finite set $E$, and let $P : E \to \BSG_2$ be a family of $2$-elemen
   The \emph{sign homomorphism} $\sgn : \Hom(\SG_n,\SG_2)$%
   \glossary(sgn){$\protect\sgn$}{sign homomorphism, \cref{def:sgn}}
   is defined via the pointed map $\Bsgn : \BSG_n \ptdto \BSG_2$,
-  where $\Bsgn(A) \defeq \B\mu_{E(A)}(P)$,
-  We make $\Bsgn$ pointed using the total ordering on the standard $n$-element set,
-  $\sh_{\SG_n}$ to identify each $2$-element subset with the standard $2$-element set,
+  where $\Bsgn(A) \defeq \B\mu_{E(A)}(P)$, with $P$ as in
+  \cref{def:sign-ordering} and $\mu_{E(A)}$ as in \cref{def:mu_E}.
+  We make $\Bsgn$ pointed using the total ordering 
+  $0 < 1 < \cdots < n-1$ on the standard $n$-element set, 
+  $\bn n \jdeq \sh_{\SG_n}$, to identify each $2$-element 
+  subset with the standard $2$-element set,
   and using the pointedness of $\B\mu$.
 \end{definition}
-Something interesting happens when we consider permutations on other shapes in $\BSG_n$,
+Something interesting happens when we consider 
+permutations on other shapes in $\BSG_n$,
 \ie arbitrary $n$-element sets $A$.
 The same map, $\Bsgn$, can be considered as a map $\BAut(A) \to \BSG_2$,
 but we can cannot make this pointed uniformly in $A$.\footnote{%
@@ -1824,8 +1835,8 @@ Hence, we can define the sign of any permutation of a finite set:
   If the cardinality of $A$ is $0$ or $1$,
   then the \emph{sign}\index{sign} of $\sigma$ is $+1$.
   Otherwise, the \emph{sign} of $\sigma$ is $\pm1$ according to whether
-  $\Bsgn_\div(\sigma)$ swaps the elements of the $2$-element set $\Bsgn_\div(A)$, or not.
-
+  $\Bsgn_\div(\sigma)$ swaps the elements of the $2$-element 
+  set $\Bsgn_\div(A)$, or not.
   We write $\sgn(\sigma):\set{\pm1}$ for the sign of $\sigma$.
 \end{definition}
 For permutations of the standard $n$-element set,
@@ -1854,9 +1865,10 @@ for all finite sets $A$.\footnote{%
 
 \begin{proof}
   For \ref{it:sign-transposition},
-  it suffices to consider the transposition $(1\;2)$ of the standard $n$-element set
-  $\set{1,2,\dots,n}$.
-  Relative to the standard local ordering ($1<2,1<3,\dots,n-1<n$),
+  it suffices to consider the transposition $(1\;2)$ of a 
+  standard $n$-element set $\set{1,2,\dots,n}$.
+  Relative to the standard local ordering 
+  ($1<2,1<3,\dots,1<n,2<3,\ldots,n-1<n$),
   the transposition only changes the ordering $1<2$ to $2<1$,
   thus differing at exactly one place.
 
