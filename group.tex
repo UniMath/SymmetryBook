@@ -2080,37 +2080,44 @@ we get the simpler notion of \inftygps:
 \section{$G$-sets}
 \label{sec:gsets}
 
-One of the goals of \cref{sec:Gsetforabstract} is to prove that the types of groups and abstract groups are equivalent.
+One of the goals of \cref{sec:Gsetforabstract} below
+is to prove that the types of groups and abstract groups are equivalent.
 In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
-However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to symmetries)!
+However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to manifestations of symmetries)!
 
 Before we handle the more complex case of abstract groups,
 let us see what this looks like for groups.
 
 \begin{definition}
   For $G$ a group, a \emph{$G$-set} is a function
-  $$X : \BG\to\Set,$$
-and $X(\shape_G)$ is referred to as the \emph{underlying set}.
-If $p:x=y$ in $\BG$, then the transport function $X(x)\to X(y)$ induced
-by $X(p)\defeq\ap{X}(p) : X(x)=X(y)$ is also denoted by $X(p)$.
-We denote $X(p)(a)$ by $p\cdot_X a$.
-The operation $\cdot_X$ is called the \emph{group action} of $X$.
-When $X$ is clear from the context we may leave out the
-subscript $X$.\footnote{%
-Note that in this case $\cdot: (x=y)\to X(x) \to X(y)$.
-See \cref{def:principaltorsor} for a special case
-where $\cdot_X$ is indeed path composition.}
-In particular, if $g:\USymG$,
-then $X(g)$ is a permutation of the underlying set of $X$.
+  \[
+    X : \BG\to\Set,
+  \]
+  and $X(\shape_G)$ is referred to as the \emph{underlying set}.
+  If $p:x\eqto y$ in $\BG$,
+  then the transport function $X(x)\to X(y)$ induced
+  by $X(p)\defeq\trp{X}(p) : X(x)\eqto X(y)$ is also denoted by $X(p)$.
+  We denote $X(p)(a)$ by $p\cdot_X a$.
+  The operation $\cdot_X$ is called the \emph{group action} of $X$.
+  When $X$ is clear from the context we may leave out the
+  subscript $X$.\footnote{%
+    Note that in this case $\cdot: (x\eqto y) \to X(x) \to X(y)$.
+    See \cref{def:principaltorsor} for a special case
+    where $\cdot_X$ is indeed path composition.}
+  In particular, if $g:\USymG$,
+  then $X(g)$ is a permutation of the underlying set of $X$.
 
-The type of $G$-sets is
-\[
-  \GSet\defequi(\BG\to\Set).\qedhere
-\]
+  The type of $G$-sets is
+  \[
+    \GSet\defequi(\BG\to\Set).\qedhere
+  \]
 \end{definition}
 \marginnote{
-  Much of what follows will work equally well for $\infty$-groups; if $G$ is an infinity group, a \emph{$G$-type} is a function $X : \BG\to\UU.$
-}
+  Much of what follows will work equally well for $\infty$-groups;
+  if $G$ is (a group or) an infinity group,
+  a \emph{$G$-type} is a function $X : \BG\to\UU.$
+  More generally, an action of $G$ on en element of type $A$
+  is a function $X : \BG\to A$, see~\cref{sec:actions} below.}
 If $x:\BG$, then $X(x)$ is a ``twisted'' version of the underlying set.
 \begin{remark}
   The reader will notice that the type of $G$-sets is equivalent to the
@@ -2120,160 +2127,221 @@ The reason we have allowed ourselves two names is that our focus is different: f
 
 \begin{example}\label{def:principaltorsor}
   If $G$ is a group, then
-$$\princ G:\BG\to\Set,\qquad\princ G(z)\defequi\pathsp{\shape_G}(z)\defequi(\shape_G=z)$$ is a $G$-set called the \emph{principal $G$-torsor}.
-We've seen this family before in the guise of the (preimages of the) ``universal \covering'' of \cref{def:universalcover}!
-\marginnote{The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-type in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.}
+  \[
+    \princ G:\BG\to\Set,
+    \qquad\princ G(z)\defequi\pathsp{\shape_G}(z)\defequi(\shape_G \eqto z)
+  \]
+  is a $G$-set called the \emph{principal $G$-torsor}.\footnote{%
+    The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-set in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.}
+  We've seen this family before in the guise of the (preimages of the) ``universal \covering'' of \cref{def:universalcover}!
 
-There is nothing sacred about starting the equality $\shape_G = z$ in $\shape_G$.
-Let
-$$\pathsp{\blank}:\BG\to\GSet$$ denote the map sending $y:\BG$ to the $G$-set $\pathsp y$.
-Applying $\pathsp{\blank}$ to a path $q:y=y'$
-induces an equivalence from $\pathsp y$ to $\pathsp {y'}$ that sends $p:y=z$ to $pq^{-1}:y'=z$. As a matter of fact, \cref{lem:BGbytorsor} will identify $\BG$ with the type of $G$-torsors via the map $\pathsp{\blank}$, simply denoted as $\pathsp{}$,
-using the full transport structure of the identity type $\pathsp y(z)\defequi(y=z)$.
+  There is nothing sacred about starting the identification
+  $\shape_G \eqto z$ at $\shape_G$.
+  Let
+  \[
+    \pathsp{\blank}:\BG\to\GSet
+  \]
+  denote the map sending $y:\BG$ to the $G$-set $\pathsp y\defeq(y\eqto\blank)$.
+  Applying $\pathsp{\blank}$ to a path $q:y\eqto y'$
+  induces an equivalence from $\pathsp y$ to $\pathsp {y'}$ that sends $p:y \eqto z$
+  to $pq^{-1}:y'\eqto z$.
+  As a matter of fact, \cref{lem:BGbytorsor} will identify $\BG$ with the type of
+  $G$-torsors via the map $\pathsp{\blank}$, simply denoted as $\pathsp{}$,
+  using the full transport structure of the identity type $\pathsp y(z)\jdeq(y \eqto z)$.
 \end{example}
 
+Note that the underlying set of $\princ G$ is
+\[
+  \princ G(\shape_G) \jdeq
+  \pathsp{\shape_G}(\shape_G) \jdeq
+  (\shape_G \eqto \shape_G) \jdeq \USymG,
+\]
+the underlying symmetries of $G$.
+If we vary both ends of the identifications simultaneously,
+we get another $G$-set:
 \begin{example}\label{def:adjointrep}
   If $G$ is a group (or \inftygp), then
-$$\Ad_G:\BG\to\UU,\qquad\Ad_G(z)\defequi(z=z)$$ is a $G$-set (or $G$-type) called the \emph{adjoint $G$-set (or $G$-type)}.
-\marginnote{The name ``adjoint'' comes from how transport works in this case; if $p:y=z$, then $\Ad_G(p):(y=y)=(z=z)$ is given by conjugation:
-$$\Ad_G(p)(q)=pqp^{-1}:z=z,$$ the picture
-$$\xymatrix{y\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&z\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
-y\ar@{=}[r]^p_\to&z}$$
-is a mnemonic device illustrating that it couldn't have been different, and should be contrasted with the picture for $\princ G (p):(\shape_G=y)=(\shape_G=z)$:
-$$\xymatrix{\shape_G\ar@{=}[r]^{\refl{\shape_G}}_\to\ar@{=}[d]_q^\downarrow&\shape_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
-  y\ar@{=}[r]^p_\to&\,z.}$$
-}
+  \[
+    \Ad_G:\BG\to\UU,\qquad\Ad_G(z)\defequi(z\eqto z)
+  \]
+  is a $G$-set (or $G$-type) called
+  the \emph{adjoint $G$-set (or $G$-type)}.\footnote{%
+    The name ``adjoint'' comes from how transport works in this case; if $p:y \eqto z$,
+    then $\Ad_G(p):(y\eqto y) \equivto (z\eqto z)$ is given by conjugation:
+    \[
+      \Ad_G(p)(q)\eqto pqp^{-1} : z \eqto z.
+    \]
+    The picture
+    \[
+      \begin{tikzcd}[ampersand replacement=\&]
+        y \ar[r,eqr,"p"]\ar[d,eql,"q"'] \& z \ar[d,eqr,"\Ad_G(p)(q)"] \\
+        y \ar[r,eql,"p"'] \& z
+      \end{tikzcd}
+    \]
+    is a mnemonic device illustrating that it couldn't have been different,
+    and should be contrasted with the picture for
+    $\princ G (p):(\shape_G\eqto y)\equivto (\shape_G\eqto z)$:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&]
+        \shape_G \ar[r,eqr,"{\refl{\shape_G}}"]\ar[d,eql,"q"']
+          \& \shape_G \ar[d,eqr,"\princ G(p)(q)"] \\
+        y \ar[r,eql,"p"'] \& z.
+      \end{tikzcd}
+    \]
+  }\label{ft:adjoint-transport}
 Notice that by the induction principle for the circle,
-$$\sum_{z:\BG}\Ad_G(z)=\sum_{z:\BG}(z=z)$$
-is equivalent to the type of (unpointed!) maps $\Sc\to\BG$, known in other contexts as the \emph{free loop space} of $\BG$, an apt name given that it is the type of ``all symmetries in $\BG$.''
+\[
+  \sum_{z:\BG}\Ad_G(z) \jdeq \sum_{z:\BG}(z \eqto z)
+\]
+is equivalent to the type of (unpointed!) maps $\Sc\to\BG$,
+known in other contexts as the \emph{free loop space} of $\BG$,
+an apt name given that it is the type of ``all symmetries in $\BG$.''
 The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(\Sc\to\BG)\to\BG$ given by evaluating at $\base$.
 \end{example}
 \begin{example}
   \label{ex:HomHGasGset}
-  Recall that a homomorphism $f:\Hom(H,G)$ consists of an unpointed map $F:\BH_\div\to \BG_\div$ together with a $p_f:\shape_G=F(\shape_H)$, so if, for $x:\BH$ and $y:\BG$, we define
-$$\Hom(H,G)(x,y)\defequi\sum_{F:\BH_\div\to \BG_\div}(y=F(x))$$
-we see that $\Hom(H,G)$ may be considered to be a $H\times G$-set
-$$\Hom(H,G) : \BH\times \BG\to\Set.$$
-We will be particularly interested in the restriction to $G$, giving a $G$-set for which we recycle the notation:
-$$\Hom(H,G)(y)\defequi\Hom(H,G)(\shape_H,y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y=F(\shape_H)).$$
+  Recall that a homomorphism $f:\Hom(H,G)$ consists of an unpointed map
+  $F:\BH_\div\to \BG_\div$ together with a $p_f:\shape_G \eqto F(\shape_H)$,
+  so if, for $x:\BH$ and $y:\BG$, we define
+  \[
+    \Hom(H,G)(x,y)\defequi\sum_{F:\BH_\div\to \BG_\div}(y\eqto F(x))
+  \]
+  we see that $\Hom(H,G)$ may be considered to be a $H\times G$-set
+  \[
+    \Hom(H,G) : \BH\times \BG\to\Set.
+  \]
+  We shall be particularly interested in the restriction to $G$,
+  giving a $G$-set for which we recycle the notation:
+  \[
+    \Hom(H,G)(y)\defequi\Hom(H,G)(\shape_H,y)\jdeq
+    \sum_{F:\BH_\div\to \BG_\div}(y \eqto F(\shape_H)).\qedhere
+  \]
 \end{example}
 \begin{xca}
   \label{xca:HomZGvsAdG}
   Provide an identification between the $G$-sets
-$\Ad_G$  and $\Hom(\ZZ,G)$
-of \cref{def:adjointrep} and \cref{ex:HomHGasGset}.
-\marginnote{%
-Hint: This is similar to \cref{ex:Zinitial}:
-identify $\Hom(\ZZ,G)(y)$ with $\sum_{z:\BG}\sum_{p:z=z}(y=z)$ and
-consider the map to $y=y$ sending $(z,p,q)$ to $q^{-1}p\,q$.
-}
+  $\Ad_G$  and $\Hom(\ZZ,G)$
+  of \cref{def:adjointrep,ex:HomHGasGset}.\footnote{%
+    Hint: This is similar to \cref{ex:Zinitial}:
+    identify $\Hom(\ZZ,G)(y)$ with $\sum_{z:\BG}\sum_{p:z\eqto z}(y \eqto z)$
+    and use~\cref{lem:contract-away}.}
 \end{xca}
-
 
 \begin{example}\label{def:trivGset}
   If $G$ is a group and $X$ is a set, then
-$$\mathrm{triv}_GX(z)\defequi X$$ is a $G$-set.
-Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets}.
+  \[\triv_G X(z)\defequi X\]
+  is a $G$-set.
+  Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets}.
 \end{example}
 
 \begin{remark}
   \label{remark:GsetsareGsets}
   A $G$-set $X$ is often presented by focusing on the underlying set $X(\shape_G)$
-and providing it with a structure relating it to $G$ determining
-the entire function $X : \BG\to\Set$.
+  and providing it with a structure relating it to $G$ determining
+  the entire function $X : \BG\to\Set$.
 
-More precisely, since $\BG$ is connected, a $G$-set $X : \BG\to\Set$ factors
-through the component $\conncomp \Set {X(\shape_G)} \defequi \sum_{Y:\Set}\Trunc{X(\shape_G)=Y}$
-which contains the point $X(\shape_G)$.
-Since $B\Sigma_{X(\shape_G)}\defequi(\conncomp \Set {X(\shape_G)},X(\shape_G))$ the $G$-set $X$ can,
-without loss of information, be considered as a homomorphism from $G$ to
-the permutation group $\Sigma_{X(\shape_G)}$ of $X(\shape_G)$,
-that is, a pointed map
-$$\BG\ptdto\BSigma_{X(\shape_G)}.$$
+  More precisely, since $\BG$ is connected, a $G$-set $X : \BG\to\Set$ factors
+  through the component
+  $\conncomp \Set {X(\shape_G)} \jdeq \sum_{Y:\Set}\Trunc{X(\shape_G) \eqto Y}$
+  that contains the point $X(\shape_G)$.
+  Since $\BSG_{X(\shape_G)}\jdeq(\conncomp \Set {X(\shape_G)},X(\shape_G))$,
+  the $G$-set $X$ can,
+  without loss of information, be considered as a homomorphism from $G$ to
+  the permutation group $\SG_{X(\shape_G)}$ of $X(\shape_G)$,
+  classified by a pointed map
+  \[
+    \BG\ptdto\BSG_{X(\shape_G)}.
+  \]
 
-Conversely, if $X$ is any set \emph{and} we have a homomorphism
-from $G$ to $\Sigma_X$, \ie a pointed map $(f,p) : \BG\ptdto \BSigma_{X}$),
-then the composite
-$$\xymatrix{\BG\ar[r]^-{f}&\conncomp \Set X \ar[r]^{\fst}&\Set}$$
-is a $G$-set, and the value at $\shape_G$ is identified with $X$.
-\marginnote{%
-We must be careful not to focus too much on the underlying set.
-For instance, even though the underlying set of both $\Ad_G$ and $\princ G$ is $\USymG$, in general  $\Ad_G$ and $\princ G$  are very different $G$-sets.
-To drive this point home, compare the illustrations of transport along a $p:\USymG$ for the two:
-$$\xymatrix{\shape_G\ar@{=}[r]^p_\to\ar@{=}[d]_q^\downarrow&\shape_G\ar@{=}[d]^{\Ad_G(p)(q)}_\downarrow\\
-  \shape_G\ar@{=}[r]^p_\to&\shape_G} $$%\qquad
-$$\xymatrix{\shape_G\ar@{=}[r]^{\refl{\shape_G}}_\to\ar@{=}[d]_q^\downarrow&\shape_G\ar@{=}[d]^{\princ G(p)(q)}_\downarrow\\
-\shape_G\ar@{=}[r]^p_\to&{\hphantom{.}}\shape_G.}$$
-A third $G$-set with underlying set $\USymG$ is $\mathrm{triv}_G(\USymG)$.}
-
-The constructions in the previous two paragraphs yields the following equivalence:
-\[
-\GSet \equivto \sum_{X:\Set} \BG \ptdto \BSigma_X.\qedhere
-\]
+  The constructions in the previous two paragraphs yields the following equivalences:
+  \[
+    \GSet \equivto \sum_{X:\Set} (\BG \ptdto \BSG_X)
+     \equivto \sum_{X:\Set}\Hom(G,\SG_X).\qedhere
+   \]
 \end{remark}
 
 \begin{xca}
-Show:  if $X$ is a type family with parameter type $\BG$ and $X(\shape_G)$ is a set,
+Show that if $X$ is a type family with parameter type $\BG$ and $X(\shape_G)$ is a set,
 then $X$ is a $G$-set.
 \end{xca}
 
-\begin{xca}
-  Prove that a group $G$ is abelian group if and only if the $G$-sets $\Ad_G$ and $\mathrm{triv}_G(\USymG)$ are identical.
+\begin{xca}\label{xca:Ad-triv-abelian}
+  Prove that a group $G$ is abelian if and only if the $G$-sets $\Ad_G$ and
+  $\triv_G(\USymG)$ are identical.
 \end{xca}
 
-\sususe{Transitive $G$-sets}
+\begin{xca}\label{xca:Ad-princ-trivial}
+  Prove that a group $G$ is the trivial group if and only if the $G$-sets $\Ad_G$ and
+  $\princ G$ are identical.
+\end{xca}
+
+\subsection{Transitive $G$-sets}
 \label{sec:transitiveGsets}
-We end the section with some observations regarding so-called transitive $G$-sets which will be valuable when we move on to discussing subgroups.
-Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists a $b:\mathcal X$ such that for all $a:\mathcal X$ there exists a $g:\mathcal X$ with $a=g\cdot b$.  In our world this translates to
+We saw in~\cref{cha:circle} that connected \coverings play a special role:
+In the case of the circle, classifying the group of integers $\ZZ$,
+they correspond to cycles (\cref{thm:cycset-connS1cover}).
+
+We hinted there that they are connected to subgroups, so
+we now study them over a general group $G$.
+As $G$-sets they are called transitive $G$-sets.
+Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists a $b:\mathcal X$ such that for all $a:\mathcal X$ there exists a $g:\mathcal X$ with $a=g\cdot b$.  In our world this translates to:
 \begin{definition}\label{def:transitiveGset}
   A $G$-set $X:\BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
   \[
-    \istrans(X) \defequi \prod_{y:\BG}
-    \exists_{b:X(y)} \prod_{a:X(y)} \exists_{g:y=y} a=g\cdot b
+    \istrans(X) \defequi
+    \exists_{x:X(\shape_G)} \prod_{y:X(\shape_G)} \exists_{g:\USymG} a=g\cdot b
   \]
   holds.
 \end{definition}
 \begin{remark}
+  In other words, $X$ is transitive if and only if there exists
+  some $x:X(\shape_G)$ such that the map $\blank\cdot x:\USymG\to X(\shape_G)$ is
+  surjective.
 
-Note that the mention of $y$ is redundant in the definition: by
-connectedness (cf.~\cref{xca:component-connected}) it is enough to
-demand
-\begin{displaymath}
-  \exists_{b:X(\shape_G)}\prod_{a:X(\shape_G)}\exists_{g:\USymG}a=g\cdot b.
-\end{displaymath}
-In other words, $X$ is transitive if and only if there exists a
-$b:X(\shape_G)$ such that the map $-\cdot b:\USymG\to X(\shape_G)$ is
-surjective.
+  Note also that by connectedness (cf.~\cref{xca:component-connected})
+  it is equivalent to demand this over all $z:\BG$:
+  \begin{equation}\label{eq:Gset-trans-gen}
+    \prod_{z:\BG}\exists_{x:X(\shape_G)}
+    \prod_{y:X(\shape_G)}\exists_{g:z\eqto z}a=g\cdot b.
+  \end{equation}
 
-Yet another equivalent way of expressing that $X$ is transitive
-is to say that $X(\shape_G)$ is nonempty and for any $a,b:X(\shape_G)$
-there exists some $g:\USymG$ with $a = g\cdot b$.
+  Yet another equivalent way of expressing that $X$ is transitive is to say
+  that $X(\shape_G)$ is nonempty and for any $x,y:X(\shape_G)$ there
+  exists some $g:\USymG$ with $x = g\cdot y$.
 \end{remark}
 
 \begin{lemma}
   \label{lem:conistrans}
-  A $G$-set  is transitive if and only if the associated set bundle is connected.
+  A $G$-set is transitive if and only if the associated \covering is connected.
 \end{lemma}
 \begin{proof}
   Consider a $G$-set $X:\BG\to\Set$ and the associated \covering
   $f:\tilde X\to\BG$ where $\tilde X\defequi\sum_{y:\BG}X(y)$ and $f$
   is the first projection.  Now, $\tilde X$ is connected if and only
-  if there exists a $y:\BG$ and a $b:X(y)$ such that for
-  all $z:\BG$ and $a:X(z)$ there exists a $g:y=z$ such that $a=g\cdot b$.
+  if there exists a $z:\BG$ and a $x:X(z)$ such that for
+  all $w:\BG$ and $y:X(w)$ there exists some $g:z\eqto w$ such that $y=g\cdot x$.
   Since $\BG$ is connected, this is equivalent to asserting that there
-  exists a $b:X(\shape_G)$ such that for all $a:X(\shape_G)$ there exists
-  a $g:\USymG$ such that $a=g\cdot b$.
+  exists some $x:X(\shape_G)$ such that for all $y:X(\shape_G)$ there exists
+  some $g:\USymG$ such that $x=g\cdot y$.
 \end{proof}
 
-Recall that for type families $X,X':T\to\UU$, and
-$f:\prod_{y:T}X(y)\to X'(y)$, we write $f_y:X(y)\to X'(y)$ (instead of
-the more correct $f(y)$) for its evaluation at $y:T$.
+The next lemma is an analog of~\cref{cor:ConnCycles},
+but for a general group and transitive \covering
+we only get injectivity, not an equivalence.
+We'll study exactly when we get surjectivity in~\cref{sec:normal}
+on ``normal'' subgroups.
+
 \begin{lemma}
   \label{lem:evisinjwhentransitive}
-  Let $X,X':\BG\to\Set$ be $G$-sets. Let $y:\BG$ and $b:X(y)$. Suppose that $X$
+  Let $X,X':\BG\to\Set$ be $G$-sets. Let $z:\BG$ and $x:X(z)$. Suppose that $X$
   is transitive. Then the evaluation map
-$$\mathrm{ev}:(X=X')\to X'(y),\qquad \mathrm{ev}(f)\defequi f_y(b)$$
-is injective.
+  \[
+    \ev_x:(X \eqto X')\to X'(z),\qquad \ev_x(f)\defequi f_z(x)
+  \]
+  is injective.\footnote{%
+    Recall that for type families $X,X':T\to\UU$, and
+    $f:\prod_{y:T}X(y)\to X'(y)$, we may write $f_y:X(y)\to X'(y)$ (instead of
+    the more correct $f(y)$) for its evaluation at $y:T$.}
 \end{lemma}
 \begin{proof}
   In view of function extensionality, our claim is that the evaluation
@@ -2306,41 +2374,50 @@ This generalizes our earlier definition of $G$-sets, $X : \BG \to \Set$.
 
 \begin{definition}\label{std-action}
   The \emph{standard action} of $G$ on its designated shape $\shape_G$ is obtained by
-  taking $A \defeq \B G$ and $X \defeq \id_{\B G}$.
+  taking $A \defeq \BG$ and $X \defeq \id_{\BG}$.
 \end{definition}
 
 \begin{example}
-  An action of $G$ on its set $\USymG$ of symmetries is provided by taking $X$ to be the principal torsor $\princ G$ as defined in
-  \cref{def:principaltorsor}.
+  By composing constructions we can build new actions
+  starting from simple building blocks.
+  For example, the standard action of symmetric group $\SG_n$
+  is to permute the elements of the standard $n$-element set $\bn n$.
+  Composing with the projection $\BSG_n \to \Set$,
+  we get the corresponding standard $\SG_n$-set.\footnote{%
+    Check that this action is transitive for $n>0$.}
+  Composing further with the operation $\blank \to \bool : \Set \to \Set$,
+  we get the action of $\SG_n$ on the set of decidable subsets of $\bn n$.
 \end{example}
 
-Notice that the type $\BG \to A$ is equivalent to the type
+Generalizing~\cref{remark:GsetsareGsets},
+notice that the type $\BG \to A$ is equivalent to the type
 \[
-  \sum_{a:A}\hom(G,\Aut_A(a)),
+  \sum_{a:A}\Hom(G,\Aut_A(a)),
 \]
 that is, the type of pairs of an element $a : A$,
 and a homomorphism from $G$ to the automorphism group of $A$.
-This equivalence maps an action $X:\BG\to A$ to the pair consisting of $X(\shape_G)$
-and the homomorphism represented by the pointed map from $\B G$ to the pointed component $A_{(a)}$ given by $X$.
-% .  arising
-% from corestricting $X$ to factor through the component of $A$ containing $a$
-% together with the trivial proof that this map takes $\shape_G:\BG$ to $a$.
+This equivalence maps an action $X:\BG\to A$
+to the pair consisting of $a \defeq X(\shape_G)$
+and the homomorphism represented by the pointed map
+from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
 
 Because of this equivalence,
 we define a \emph{$G$-action on $a:A$}
 to be a homomorphism from $G$ to $\Aut_A(a)$.
 
-
-Many times we are particularly interested in actions on types,
-i.e., $A$ is a universe:
-\[
-  X : \BG \to \UU.
-\]
-In this case we can talk about fixed points and orbits as follows.
+\subsection{Fixed points and orbits}
+\label{sec:fixpts-orbits}
+We now return to some important constructions involving $G$-sets for a group $G$.
+However, since they make equally good sense for \emph{$G$-types} for \aninftygp
+$G$, we'll work in that generality.
 \begin{definition}
-  \label{def:orbittype}\label{def:fixedpointtye}
-  If $X\colon G\to\UU$, then  \emph{orbit type}\index{orbit type} of the action as
-  \footnote{We use superscripts and subscripts many places and truncations of orbit types, and to distinguish the orbits and fixed points are decorated with ``$hG$'', following a convention in homotopy theory.}
+  \label{def:orbittype}
+  If $X\colon G\to\UU$, then the \emph{orbit type}\index{orbit type}
+  of the action is\footnote{%
+    The superscripts and subscripts are decorated with ``$hG$'',
+    following a convention in homotopy theory.
+    This helps to distinguish them from other uses, such as powers.
+    The orbit type is sometimes denoted $X \dblslash G$.}
 \[
   X_{hG} \defeq \sum_{z:\BG} X(z),
 \]
@@ -2354,8 +2431,102 @@ The \emph{set of orbits}\index{set!of orbits}\index{orbit set} is the set-trunca
 \]
 We say that the action is \emph{transitive} if $X / G$ is contractible.
 \end{definition}
-Notice that this notion of transitive coincides with the one we introduced in \cref{def:transitiveGset}: that $X/G$ is contractible exactly encodes that there is just one ``orbit'': there is a $b:X(\shape_G)$ so that for any $a:X(\shape_G)$ there is a $g:UG$ such that $a=g\cdot b$.
 
+\begin{marginfigure}
+  \begin{tikzpicture}[scale=.15]
+    \node (Sc) at (0,-5) {$\B\ZZ$};
+    \node[dot,label=left:$5$] (four)  at (-10,22) {};
+    \node[dot,label=left:$4$] (three) at (-10,18) {};
+    \node[dot,label=left:$3$] (two)   at (-10,10) {};
+    \node[dot,label=left:$2$] (one)   at (-10, 6) {};
+    \node[dot,label=left:$1$] (zero)  at (-10, 2) {};
+    \node[dot]                (D)     at (-10,-5) {};
+    \node[label=left:$\Sloop$] (Sloop) at (10,-5) {};
+
+    \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
+    \pgfmathsetmacro\cy{2*\cc}%
+    \pgfmathsetmacro\cx{10*\cc}%
+    \pgfmathsetmacro\intx{3.5}%
+    \pgfmathsetmacro\inty{1.5}%
+    \pgfmathsetmacro\ay{.35165954}%
+
+    \draw (-10,18) .. controls (-10,18 - \cy + \ay) and (-\cx,17 - \ay)
+    .. (0,17) .. controls (\cx,17 + \ay) and (10,20 - \cy - \ay) .. (10,20)
+    .. controls (10,20 + \cy + \ay) and (\cx,23 - \ay)
+    .. (0,23) .. controls (-\cx,23 + \ay) and (-10,22 + \cy - \ay)
+    .. (-10,22) .. controls (-10,22 - \cy + \ay) and (-\cx,21 - \ay)
+    .. (0,21) .. controls (\cx,21 + \ay) and (10,24 - \cy - \ay)
+    .. (10,24)
+    .. controls (10,24 + \cc) and (\intx + \cx, 24 + \inty + \ay)
+    .. (\intx,24 + \inty) .. controls (\intx - \cx,24 + \inty - \ay)
+    and (-\intx + \cx,20 + \ay)
+    .. (-\intx,18 + \inty) .. controls (-\intx - \cx,18 + \inty - \ay)
+    and (-10,18 + \cc) .. (-10,18);
+    \draw (-10,2) .. controls (-10,2 - \cy + \ay) and (-\cx,1 - \ay)
+    .. (0,1) .. controls (\cx,1 + \ay) and (10,4 - \cy - \ay)
+    .. (10,4)
+    \foreach \y in {4,8} {
+      .. controls (10,\y + \cy + \ay) and (\cx,3 + \y - \ay)
+      .. (0,3 + \y) .. controls (-\cx,3 + \y + \ay) and (-10,2 + \y + \cy - \ay)
+      .. (-10,2 + \y) .. controls (-10,2 + \y - \cy + \ay) and (-\cx,1 + \y - \ay)
+      .. (0,1 + \y) .. controls (\cx,1 + \y + \ay) and (10,4 + \y - \cy - \ay)
+      .. (10,4 + \y) }
+    .. controls (10,12 + \cc) and (\intx + \cx, 12 + \inty + \ay)
+    .. (\intx,12 + \inty) .. controls (\intx - \cx,12 + \inty - \ay)
+    and (-\intx + \cx,4 + \ay)
+    .. (-\intx,2 + \inty) .. controls (-\intx - \cx,2 + \inty - \ay)
+    and (-10,2 + \cc) .. (-10,2);
+    \draw (10,-5) .. controls (10,-5 + \cy) and (\cx,-3)
+    .. (0,-3) .. controls (-\cx,-3) and (-10,-5 + \cy)
+    .. (-10,-5) .. controls (-10,-5 - \cy) and (-\cx,-7)
+    .. (0,-7) .. controls (\cx,-7) and (10,-5 - \cy) .. (10,-5);
+  \end{tikzpicture}
+\end{marginfigure}
+We have seen many instances of orbit types before:
+When $G$-sets are considered a \coverings $f : A \to \BG$,
+they are the domains $A$.
+Recall for example~\cref{fig:two-comp-S1-cover}, reproduced in the margin,
+showing an action of $\ZZ$ on $\bn 5$ with no fixed points
+and an orbit type equivalent to $\Sc\amalg\Sc$.
+
+\begin{xca}
+  Show that the above notion of transitive coincides with the one we introduced in \cref{def:transitiveGset} for a $G$-set $X$ for an ordinary group $G$:
+  that $X/G$ is contractible exactly encodes that there is just one ``orbit'':
+  there is some $x:X(\shape_G)$ so that for any $y:X(\shape_G)$
+  there is a $g:\USymG$ such that $x=g\cdot y$.
+\end{xca}
+
+When $X : \BG \to \Set$ is a $G$-set for an ordinary group $G$,
+there is another reasonable definition of the fixed points,
+namely the subset
+\[
+  \setof{x : X(\shape_G)}{\text{$g\cdot x = x$ for all $g:\USymG$}}
+\]
+of the underlying set consisting of all those elements $x$ that
+are unmoved (\ie fixed) by all the symmetries in $G$.
+If we evaluate a fixed point $f : \prod_{z:\BG}X(z)$ at $\shape_G$
+we do indeed land in this subset. Letting $x\defeq f(\shape_G)$,
+and taking the dependent action on paths,
+$\apd{f}(g) : \pathover x X g x$,
+we can use~\cref{def:pathover-trp} to conclude
+$\trp[X] g(x)\jdeq g\cdot x = x$, for all $g:\USymG$.
+\begin{lemma}\label{lem:fixpts-are-fixed}
+  For any $G$-set $X$, evaluation gives an equivalence
+  \[
+    X^{hG} \jdeq \prod_{z:\BG}X(z) \equivto
+    \setof{x : X(\shape_G)}{\text{$g\cdot x = x$ for all $g:\USymG$}}.
+  \]
+\end{lemma}
+\begin{proof}
+  Fix $x : X(\shape_G)$ with $g\cdot x = x$ for all $g: \USymG$.
+  We need to show that the type
+  \[
+    \sum_{f : \prod_{z:\BG}X(z)}f(\shape_G)=x
+  \]
+  is contractible. [TODO: move stabilizer group here
+  from~\cref{sec:orbit-stabilizer-theorem}
+  to make this more conspicuous?]
+\end{proof}
 
 \section{The classifying type is the type of torsors}
 This section can be seen as a motivation for the use of torsors.
@@ -3774,9 +3945,9 @@ an abelian group with our.
     $TX \equivto \univcover \UU {X_\div}$ that we carried for
     $X\jdeq\BG$ relies only on $X_\div$ being connected and
     $\ev_{X_\div,X_\div}\restriction_{\refl {X_\div}}$ being an
-    equivalence. Such types $X$ are called {\em central} and are
-    studied in details by~\citeauthor{2301.02636}\footnotemark{}.}.%
-  \footcitetext{2301.02636}
+    equivalence. Such types $X$ are called \emph{central} and are
+    studied in details by~\citeauthor{BCFR}\footnotemark{}.}.%
+  \footcitetext{BCFR}
   \begin{displaymath}
     T(\BG) \equivto \sum_{Y : \UU} \Trunc{Y} \times \secfun(\ev_{X_\div,Y})
     \equivto \sum_{Y : \UU} \setTrunc{\BG_\div \eqto Y} \jdeq \BB G
