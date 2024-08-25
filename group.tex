@@ -792,11 +792,11 @@ $a$ by either composition gives the same result.
 \begin{remark}
   \label{rem:whatAREabeliangroups}
 
-  Abelian groups have the amazing property that the classifying types are themselves identity types (of certain $2$-types).
+  Abelian groups have the amazing property that their classifying types are themselves identity types (of certain $2$-types).
   This can be used to give a very important characterization of what it means to be abelian.
   We will return to this point in \cref{sec:abelian-groups}.
 
-  Alternatively, the reference to $\isAb$ in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} below. (It is the sum of $X$ and $Y$ where the base points are identified.). \cref{xca:whatAREabeliangroups}
+  Alternatively, the reference to underlying symmetries in the definition of abelian groups is avoidable using the ``one point union'' of pointed types $X\vee Y$ of \cref{def:wedge} below. (It is the sum of $X$ and $Y$ where the base points are identified.). \cref{xca:whatAREabeliangroups}
   \marginnote{%
     \begin{tikzcd}[ampersand replacement=\&]
       \BG\vee\BG\ar[r,"\text{fold}"]\ar[d,"\text{inclusion}"'] \& \BG \\
@@ -1457,19 +1457,16 @@ The following example expresses that $\ZZ$ is a ``free group with one generator'
 
 \begin{example}
   \label{ex:Zinitial}
-  \cref{cha:circle} was all about the circle $S^1$ and its role as a
+  \cref{cha:circle} was all about the circle $\Sc$ and its role as a
   ``universal symmetry'' and how it related to the integers.  In our
   current language, $\ZZ\jdeq\mkgroup(\Sc,\base)$ and much\footnote{%
   Not all: $\BG$ is a groupoid and not an arbitrary type,
   cf.~\cref{sec:inftygps}.} of the
-  universality of $S^1$ is found in the following observation. If $G$ is a
+  universality of $\Sc$ is found in the following observation. If $G$ is a
   group, then \cref{cor:circle-loopspace} yields an equivalence of sets
-  %the evaluation equivalence
-  %$\ev_{\BG_\div}:(S^1\to \BG_\div)\we \sum_{y:\BG_\div}(y=y)$ of   
   \[
-    \ev_{\BG}:\left((S^1,\base)\ptdto \BG\right)\equivto \USymG,
-    \quad 
-    %f_\pt^{-1}\ap{f_\div}(\Sloop)f_\pt
+    \ev_{\BG}:\left((\Sc,\base)\ptdto \BG\right)\equivto \USymG,
+    \quad
     \ev_{\BG}(f_\div,f_\pt)\defeq\loops(f_\div,f_\pt)(\Sloop).
   \]
   The domain of this equivalence is $\BHom(\ZZ,G)$.
@@ -2330,6 +2327,70 @@ but for a general group and transitive \covering
 we only get injectivity, not an equivalence.
 We'll study exactly when we get surjectivity in~\cref{sec:normal}
 on ``normal'' subgroups.
+\Cref{fig:not-normal} illustrates what can go wrong.
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}[scale=.1]
+    \node[dot,label=above:$x$] (two)   at (0,10) {};
+    \node[dot] (one)   at (0, 6) {};
+    \node[dot] (zero)  at (0, 2) {};
+    \node[dot] (base)   at (0,-5) {};
+
+    \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
+    \pgfmathsetmacro\cy{2*\cc}%
+    \pgfmathsetmacro\cx{10*\cc}%
+    \pgfmathsetmacro\intx{3.5}%
+    \pgfmathsetmacro\inty{1.5}%
+    \pgfmathsetmacro\ay{.35165954}%
+
+    % right 3-cycle
+    \draw (zero.center) .. controls ++(0,-\cy+\ay) and ++(-\cx,-\ay)
+    .. (10,1) .. controls ++(\cx,+\ay) and ++(0,-\cy-\ay)
+    .. (20,4)
+    \foreach \y in {4,8} {
+      .. controls ++(0,\cy + \ay) and ++(\cx,-\ay)
+      .. (10,3 + \y) .. controls ++(-\cx,\ay) and ++(0,\cy-\ay)
+      .. (0,2 + \y) .. controls ++(0,-\cy+\ay) and ++(-\cx,-\ay)
+      .. (10,1 + \y) .. controls ++(\cx,\ay) and ++(0,-\cy-\ay)
+      .. (20,4 + \y) }
+    .. controls ++(0,+\cc) and ++(\cx,\ay)
+    .. (10+\intx,12 + \inty) .. controls ++(-\cx,-\ay) and ++(\cx,\ay)
+    .. (10-\intx,2 + \inty) .. controls ++(-\cx,-\ay) and ++(0,\cc)
+    .. (zero.center);
+
+    % left 2-cycle
+    \draw (one.center) .. controls ++(0,-\cy+\ay) and ++(\cx,-\ay)
+    .. (-10,5) .. controls ++(-\cx,+\ay) and ++(0,-\cy-\ay)
+    .. (-20,8) .. controls ++(0,\cy + \ay) and ++(-\cx,-\ay)
+    .. (-10,11) .. controls ++(+\cx,\ay) and ++(0,\cy-\ay)
+    .. (two.center) .. controls ++(0,-\cy+\ay) and ++(\cx,-\ay)
+    .. (-10,9) .. controls ++(-\cx,\ay) and ++(0,-\cy-\ay)
+    .. (-20,12) .. controls ++(0,+\cc) and ++(-\cx,\ay)
+    .. (-10-\intx,12 + \inty) .. controls ++(\cx,-\ay) and ++(-\cx,\ay)
+    .. (-10+\intx,6 + \inty) .. controls ++(\cx,-\ay) and ++(0,\cc)
+    .. (one.center);
+
+    % left 1-cycle
+    \draw (zero.center) .. controls ++(0,\cy) and ++(\cx,0)
+    .. (-10,4) .. controls ++(-\cx,0) and ++(0,\cy)
+    .. (-20,2) .. controls ++(0,-\cy) and ++(-\cx,0)
+    .. (-10,0) .. controls ++(\cx,0) and ++(0,-\cy)
+    .. (zero.center);
+
+    % base right
+    \draw (base.center) .. controls (0,-5+\cy) and ++(-\cx,0)
+    .. (10,-3) .. controls ++(\cx,0) and ++(0,\cy)
+    .. (20,-5) .. controls ++(0,-\cy) and ++(\cx,0)
+    .. (10,-7) .. controls ++(-\cx,0) and ++(0,-\cy) .. (base.center);
+    % base left
+    \draw (base.center) .. controls (0,-5 + \cy) and (-10+\cx,-3)
+    .. (-10,-3) .. controls (-10-\cx,-3) and (-20,-5 + \cy)
+    .. (-20,-5) .. controls (-20,-5 - \cy) and (-10-\cx,-7)
+    .. (-10,-7) .. controls (-10+\cx,-7) and (0,-5 - \cy)
+    .. (base.center);
+  \end{tikzpicture}
+  \caption{A $\mkgroup(\Sc\vee\Sc)$-set for which $\protect\ev_x$ is not surjective.}
+  \label{fig:not-normal}
+\end{marginfigure}
 
 \begin{lemma}
   \label{lem:evisinjwhentransitive}
@@ -2409,7 +2470,7 @@ to be a homomorphism from $G$ to $\Aut_A(a)$.
 \label{sec:fixpts-orbits}
 We now return to some important constructions involving $G$-sets for a group $G$.
 However, since they make equally good sense for \emph{$G$-types} for \aninftygp
-$G$, we'll work in that generality.
+$G$, we'll mostly work in that generality.
 \begin{definition}
   \label{def:orbittype}
   If $X\colon G\to\UU$, then the \emph{orbit type}\index{orbit type}
@@ -2429,18 +2490,34 @@ The \emph{set of orbits}\index{set!of orbits}\index{orbit set} is the set-trunca
 \[
   X / G \defeq \Trunc{X_{hG}}_0.
 \]
-We say that the action is \emph{transitive} if $X / G$ is contractible.
+We say that the action is \emph{transitive}\index{transitive}
+if $X / G$ is contractible.
 \end{definition}
+
+\begin{xca}
+  Show that the above notion of transitive coincides with the one we introduced in \cref{def:transitiveGset} for a $G$-set $X$ for an ordinary group $G$:
+  that $X/G$ is contractible exactly encodes that there is just one ``orbit'':
+  there is some $x:X(\shape_G)$ so that for any $y:X(\shape_G)$
+  there is a $g:\USymG$ such that $x=g\cdot y$.
+\end{xca}
+
+We have seen many instances of orbit types before:
+When $G$-sets are considered as \coverings $f : A \to \BG$,
+they are the domains $A$.
+Recall for example~\cref{fig:two-comp-S1-cover},
+showing an action of $\ZZ$ on $\set{1,2,3,4,5}$ with no fixed points
+and an orbit type equivalent to a sum of two circles.
+In~\cref{fig:ZZ-set-orbits}, we show a similar $\ZZ$-set,
+with underlying set $\set{0,1,2,3,4,5}$, three orbits,
+and $5$ as a single fixed point.
 
 \begin{marginfigure}
   \begin{tikzpicture}[scale=.15]
     \node (Sc) at (0,-5) {$\B\ZZ$};
-    \node[dot,label=left:$5$] (four)  at (-10,22) {};
-    \node[dot,label=left:$4$] (three) at (-10,18) {};
-    \node[dot,label=left:$3$] (two)   at (-10,10) {};
-    \node[dot,label=left:$2$] (one)   at (-10, 6) {};
-    \node[dot,label=left:$1$] (zero)  at (-10, 2) {};
-    \node[dot]                (D)     at (-10,-5) {};
+    \node[dot,label=left:$5$] (five)   at (-10,30) {};
+    \node[dot,label=left:$4$] (four)   at (-10,22) {};
+    \node[dot,label=left:$3$] (three)  at (-10,18) {};
+    \node[dot]                (base)   at (-10,-5) {};
     \node[label=left:$\Sloop$] (Sloop) at (10,-5) {};
 
     \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
@@ -2462,7 +2539,7 @@ We say that the action is \emph{transitive} if $X / G$ is contractible.
     and (-\intx + \cx,20 + \ay)
     .. (-\intx,18 + \inty) .. controls (-\intx - \cx,18 + \inty - \ay)
     and (-10,18 + \cc) .. (-10,18);
-    \draw (-10,2) .. controls (-10,2 - \cy + \ay) and (-\cx,1 - \ay)
+    \draw[casblue] (-10,2) .. controls (-10,2 - \cy + \ay) and (-\cx,1 - \ay)
     .. (0,1) .. controls (\cx,1 + \ay) and (10,4 - \cy - \ay)
     .. (10,4)
     \foreach \y in {4,8} {
@@ -2476,56 +2553,174 @@ We say that the action is \emph{transitive} if $X / G$ is contractible.
     and (-\intx + \cx,4 + \ay)
     .. (-\intx,2 + \inty) .. controls (-\intx - \cx,2 + \inty - \ay)
     and (-10,2 + \cc) .. (-10,2);
-    \draw (10,-5) .. controls (10,-5 + \cy) and (\cx,-3)
-    .. (0,-3) .. controls (-\cx,-3) and (-10,-5 + \cy)
-    .. (-10,-5) .. controls (-10,-5 - \cy) and (-\cx,-7)
-    .. (0,-7) .. controls (\cx,-7) and (10,-5 - \cy) .. (10,-5);
-  \end{tikzpicture}
-\end{marginfigure}
-We have seen many instances of orbit types before:
-When $G$-sets are considered a \coverings $f : A \to \BG$,
-they are the domains $A$.
-Recall for example~\cref{fig:two-comp-S1-cover}, reproduced in the margin,
-showing an action of $\ZZ$ on $\bn 5$ with no fixed points
-and an orbit type equivalent to $\Sc\amalg\Sc$.
+    \draw (10,-5) .. controls ++(0,\cy) and ++(\cx,0)
+    .. (0,-3) .. controls ++(-\cx,0) and ++(0,\cy)
+    .. (-10,-5) .. controls ++(0,-\cy) and ++(-\cx,0)
+    .. (0,-7) .. controls ++(\cx,0) and ++(0,-\cy) .. (10,-5);
 
-\begin{xca}
-  Show that the above notion of transitive coincides with the one we introduced in \cref{def:transitiveGset} for a $G$-set $X$ for an ordinary group $G$:
-  that $X/G$ is contractible exactly encodes that there is just one ``orbit'':
-  there is some $x:X(\shape_G)$ so that for any $y:X(\shape_G)$
-  there is a $g:\USymG$ such that $x=g\cdot y$.
-\end{xca}
+    \draw (10,30) .. controls ++(0,\cy) and ++(\cx,0)
+    .. (0,32) .. controls ++(-\cx,0) and ++(0,\cy)
+    .. (-10,30) .. controls ++(0,-\cy) and ++(-\cx,0)
+    .. (0,28) .. controls ++(\cx,0) and ++(0,-\cy) .. (10,30);
+
+    \node[dot,label=left:$2$,casred] (two)   at (-10,10) {};
+    \node[dot,label=left:$1$,casred] (one)   at (-10, 6) {};
+    \node[dot,label=left:$0$,casred] (zero)  at (-10, 2) {};
+  \end{tikzpicture}
+  \caption{A $\ZZ$-set with three orbits and one fixed point.}
+  \label{fig:ZZ-set-orbits}
+\end{marginfigure}
+
+In~\cref{fig:ZZ-set-orbits} we have highlighted a single component of
+the orbit type in blue (\ie corresponding to an element of the set of orbits),
+and we see that it contains a subset of the underlying set,
+the three red elements $\set{0,1,2}$.
+Such a set is what is traditionally called an orbit.
+This connection is emphasized in the following result.
+
+\begin{lemma}\label{lem:orbit-equiv}
+  The map
+  \[
+    [\blank] : X(\shape_G) \to X/G, \qquad
+    [x] \defeq \settrunc{(\shape_G,x)}
+  \]
+  is surjective, and $[x] = [y]$ is equivalent to
+  $\exists_{g:\USymG}(g\cdot x = y)$.
+\end{lemma}
+\begin{proof}
+  Surjectivity follows from the connectivity of $\BG$.
+  By~\cref{rem:set-trunc-as-quotient},
+  $X/G \jdeq \setTrunc{X_{hG}}$ is itself the
+  set quotient of $X_{hg} \jdeq \sum_{z:\BG}X(z)$ by
+  the relation $\sim$ defined by letting $(z,x)\sim(w,y)$
+  if and only if $\exists_{g:z\eqto w}(g\cdot x=y)$.
+  Thus,~\cref{thm:quotient-property} gives the
+  desired conclusion.
+\end{proof}
+Thus, both the underlying set $X(\shape_G)$ and the orbit type
+$X_{hg}$ have equivalence relations with quotient set $X/G$.\footnote{%
+  This also justifies the notation $X/G$.
+  We have a diagram of surjective maps:
+  \[
+    \begin{tikzcd}[ampersand replacement=\&]
+      X(\shape_G) \ar[rr,"{x\mapsto(\shape_G,x)}"]\ar[dr,"{[\blank]}"']
+      \& \& X_{hG}\ar[dl,"{\settrunc\blank}"] \\
+      \& X/G \&
+    \end{tikzcd}
+  \]}
+The equivalence classes of both are important:
+\begin{definition}\label{def:orbit-stabilizer}
+  If $X : \BG \to \Set$ is a $G$-set, and $x : X(\shape_G)$ is an
+  element of the underlying set, then we let
+  \begin{enumerate}
+  \item $G_x \defeq \Aut_{X_{hg}}(\shape_G,x)$
+    be the \emph{stabilizer group}\index{stabilizer}%
+    \index{group!stabilizer} at $x$, and
+  \item $G\cdot x \defeq \setof{y : X(\shape_G)}{[x] =_{X/G} [y]}$
+    be the \emph{orbit}\index{orbit} of $x$.\qedhere
+  \end{enumerate}
+\end{definition}
+Note that the classifying type $\BG_x$ of $G_x$
+is identified with the fiber of $\settrunc{\blank} : X_{hg} \to X/G$,
+and $G\cdot x$ (pointed at $x$)
+is identified with the fiber of $[\blank] : X(\shape_G) \to X/G$,
+both taken at $[x]$, the orbit containing $x$.
+
+Also, the base point of $\BG_x$ depends on the choice of $x$,
+but the underlying type $(\BG_x)_\div$ only depends on $[x]:X/G$.
+Thus, we can decompose our diagram by writing $X(\shape_G)$ and $X_{hG}$
+as sums of the respective fibers.\footnote{%
+  Yielding the diagram
+  \[
+    \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
+      \displaystyle\sum_{b:X/G}G\cdot b \ar[rr]\ar[dr,"\fst"']
+      \& \& \displaystyle\sum_{b:X/G}(\BG_b)_\div\ar[dl,"\fst"] \\
+      \& X/G, \&
+    \end{tikzcd}
+  \]
+  where we use $b$ to denote a \emph{bane}/orbit. (Too cute?)}
+
+The stabilizer group $G_x$ comes equipped with a homomorphism
+$i_x : \Hom(G_x,G)$, classified by
+the projection $\fst:X_{hG} \to \BG$.\footnote{%
+  Since the projection is still a \covering, $\iota_x$ is a monomorphism
+  (\cref{lem:eq-mono-cover}), so $G_x$ together with $i_x$
+  becomes a \emph{subgroup} of $G$. {\color{red}REORDER?}}
+There are two possible extreme cases that are important:
+\begin{definition}\label{def:invariant-free}
+  Let $X$ be a $G$-set and $x:X(\shape_G)$ an element of the underlying set.
+  We say that
+  \begin{enumerate}
+  \item $x$ is \emph{invariant}\index{invariant}
+    if $i_x$ is an isomorphism (so $G_x$ is all of $G$),
+  \item and $x$ is \emph{free}\index{free}\index{action!free}
+    is $G_x$ is trivial.
+  \end{enumerate}
+  We say that $X$ itself is \emph{free} if each $x:X(\shape_G)$ is free.
+\end{definition}
+
+\begin{lemma}\label{lem:invariant-char}
+  Given a $G$-set $X$, an element $x:(\shape_G)$ is
+  invariant if and only if the orbit $G\cdot x$ is contractible,
+  \ie $x = g\cdot x$ for all $g:\USymG$.
+\end{lemma}
+\begin{proof}
+  The orbit $G\cdot x$ is the fiber of $\Bi_x : \BG_x \ptdto \BG$
+  at $\shape_G$. Since $\BG$ is connected,
+  this is contractible if and only if all fiber of $\Bi$ are contractible,
+  \ie $\Bi_x$ is an equivalence, which in turn is equivalent to $i_x$
+  being an isomorphism.
+\end{proof}
+
+\begin{lemma}\label{lem:free-pt-char}
+  Given a $G$-set $X$, an element $x:(\shape_G)$ is\marginnote{%
+    Doesn't fit well here; move to where?}
+  free if and only if the (surjective) map
+  $\blank \cdot x : G \to G\cdot x$ is injective
+  (and hence a bijection).
+\end{lemma}
+\begin{proof}
+  Consider two elements of the orbit, say $g\cdot x,g'\cdot x$ for $g,g':\USymG$.
+  We have $g\cdot x=g' \cdot x$ if and only if $x = \inv{g} g'\cdot x$
+  if and only if $\inv{g} g'$ lies in $\USymG_x$.
+\end{proof}
 
 When $X : \BG \to \Set$ is a $G$-set for an ordinary group $G$,
 there is another reasonable definition of the fixed points,
 namely the subset
 \[
-  \setof{x : X(\shape_G)}{\text{$g\cdot x = x$ for all $g:\USymG$}}
+  \setof{x : X(\shape_G)}{\text{$x$ is invariant}}
 \]
-of the underlying set consisting of all those elements $x$ that
-are unmoved (\ie fixed) by all the symmetries in $G$.
+consisting of the invariant elements.
 If we evaluate a fixed point $f : \prod_{z:\BG}X(z)$ at $\shape_G$
-we do indeed land in this subset. Letting $x\defeq f(\shape_G)$,
+we do indeed land in this subset:
+Letting $x\defeq f(\shape_G)$,
 and taking the dependent action on paths,
 $\apd{f}(g) : \pathover x X g x$,
 we can use~\cref{def:pathover-trp} to conclude
 $\trp[X] g(x)\jdeq g\cdot x = x$, for all $g:\USymG$.
+
 \begin{lemma}\label{lem:fixpts-are-fixed}
-  For any $G$-set $X$, evaluation gives an equivalence
+  For any $G$-set $X$, evaluation at $\shape_G$ gives an equivalence
   \[
     X^{hG} \jdeq \prod_{z:\BG}X(z) \equivto
-    \setof{x : X(\shape_G)}{\text{$g\cdot x = x$ for all $g:\USymG$}}.
+    \setof{x : X(\shape_G)}{\text{$x$ is invariant}}.
   \]
 \end{lemma}
 \begin{proof}
-  Fix $x : X(\shape_G)$ with $g\cdot x = x$ for all $g: \USymG$.
+  Fix an invariant $x : X(\shape_G)$,
+  so $g\cdot x = x$ for all $g: \USymG$.
   We need to show that the type
   \[
     \sum_{f : \prod_{z:\BG}X(z)}f(\shape_G)=x
   \]
-  is contractible. [TODO: move stabilizer group here
-  from~\cref{sec:orbit-stabilizer-theorem}
-  to make this more conspicuous?]
+  is contractible.
+  This is equivalent to the type of pointed sections
+  of the projection $\fst : (X_{hG},x) \ptdto \BG$.
+  Since $\BG$ is connected, this is in turn equivalent
+  to the type of pointed sections of $\Bi_x : \BG_x \ptdto \BG$,
+  \ie the type of sections of the inclusion homomorphism $i_x:\Hom(G_x,G)$.
+  This is a proposition, and it's true if and only if $i_x$ is an isomorphism.
 \end{proof}
 
 \section{The classifying type is the type of torsors}
