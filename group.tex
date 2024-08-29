@@ -601,7 +601,7 @@ $\prj : \Cyc_m \to \FinSet_m : ((X,t),!) \mapsto (X,!)$,\footnote{%
   In the terminology of \cref{sec:stuff-struct-prop},
   this map forgets the cycle structure on the underlying set.}
 equivalently, using the notation introduced above, $\prj : \BCG_m \to \BSG_m$,
-where the group $\SG_m=\Aut_\Set(\bn m)$ is that of
+where the group $\SG_m\jdeq\Aut_\Set(\bn m)$ is that of
 \emph{all} permutations of the set $\bn m$.
 This projection map,
 whose fiber at $X : \BSG_m$ can be identified with
@@ -1842,7 +1842,7 @@ sign homomorphism, we also get a new family of examples of groups:\footnote{%
       \cref{def:alternating-groups}}
   \[
     \AG_n \defeq \mkgroup\Bigl(\sum_{A:\BSG_n}\Bsgn(A),
-      (\bn n, \Bsgn_\pt(\sh_{\SG_2}))\Bigr),
+      \bigl(\bn n, \Bsgn_\pt(\sh_{\SG_2})\bigr)\Bigr),
   \]
   \ie the shapes of $\AG_n$ are \emph{sign ordered $n$-element sets},
   and the designated shape is $\bn n$ with the sign ordering coming
@@ -2131,11 +2131,12 @@ The reason we have allowed ourselves two names is that our focus is different: f
 
   There is nothing sacred about starting the identification
   $\shape_G \eqto z$ at $\shape_G$.
-  Let
-  \[
-    \pathsp{\blank}:\BG\to\GSet
-  \]
-  denote the map sending $y:\BG$ to the $G$-set $\pathsp y\defeq(y\eqto\blank)$.
+  Define more generally
+  \begin{equation}\label{eq:pathsp}
+    \pathsp{\blank}:\BG\to\GSet,
+    \qquad
+    \pathsp{y} \defeq(y\eqto\blank),
+  \end{equation}
   Applying $\pathsp{\blank}$ to a path $q:y\eqto y'$
   induces an equivalence from $\pathsp y$ to $\pathsp {y'}$ that sends $p:y \eqto z$
   to $pq^{-1}:y'\eqto z$.
@@ -2470,7 +2471,7 @@ However, since they make equally good sense for \emph{$G$-types} for \aninftygp
 $G$, we'll mostly work in that generality.
 \begin{definition}
   \label{def:orbittype}
-  If $X\colon G\to\UU$, then the \emph{orbit type}\index{orbit type}
+  If $X : G\to\UU$, then the \emph{orbit type}\index{orbit type}
   of the action is\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
     following a convention in homotopy theory.
@@ -2721,150 +2722,246 @@ $\trp[X] g(x)\jdeq g\cdot x = x$, for all $g:\USymG$.
 \end{proof}
 
 \section{The classifying type is the type of torsors}
-This section can be seen as a motivation for the use of torsors.
-In \cref{sec:Gsetforabstract} we'll use this concept to prove that the type of groups and the type of abstract groups are equivalent by classifying abstract groups in terms of their pointed connected groupoid of torsors.  To see how this might work it is good to start with the case of a (concrete) group $G$.  In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to get the right definition we should first explore what the torsors of $G$ look like and prove \cref{lem:BGbytorsor} showing that $\BG$ is equivalent to the type of $G$-torsors.
 \label{sec:torsors}
+This section can be seen as a motivation for the use of torsors.
+In \cref{sec:Gsetforabstract} we'll use this concept to prove that the type of groups and the type of abstract groups are equivalent by classifying abstract groups via their pointed connected groupoid of torsors.  To see how this might work it is good to start with the case of a (concrete) group $G$.
+In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to get the right definition we should first explore what the torsors of $G$ look like and prove~\cref{lem:BGbytorsor}, showing that $\BG$ is equivalent to the type of $G$-torsors.
 \begin{definition}
-  \marginnote{This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor.  There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.
-}
-  Given a group  $G$, the type of {\em$G$-torsors} is
-$$\typetorsor_G\defequi\sum_{X:\GSet}\Trunc{\princ G=X},$$
-where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
+  Given a group $G$, the type of \emph{$G$-torsors}%
+  \index{torsor@torsor}%
+  \glossary(TorsorG){$\protect\typetorsor_G$}{the type of $G$-torsors}%
+  \footnote{This works equally well with $\infty$-groups: $G$-torsors are in that case $G$-types in the component of the principal torsor $\princ G:\BG\to\UU$. There is no conflict with the case when the $\infty$-group $G$ is actually a group since then any $G$-type in the component of the principal $G$-torsor will be a $G$-set.}
+  is
+  \[
+    \typetorsor_G\defequi\sum_{X:\GSet}\Trunc{\princ G \eqto X},
+  \]
+  where $\princ G$ is the principal $G$-torsor of \cref{def:principaltorsor}.
 \end{definition}
 
+\begin{xca}\label{xca:torsor=free+transitive}
+  Show that a $G$-set is a $G$-torsor if and only if it is free and transitive.
+\end{xca}
 
 \begin{remark}
   For $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings of $\BG$ containing the universal \covering.
 
-Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid (admittedly in a higher universe) and so -- by specifying the base point $\princ G$ -- it represents a group!  Guess which one!
+  Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid\footnote{Admittedly in a higher universe, but we can use the
+    Replacement~\cref{pri:replacement} to see that $\typetorsor_G$ is equivalent
+    to a type in the same universe as $G$ -- even before we
+    have~\cref{lem:BGbytorsor} showing we can take $\BG$.}
+  and so -- by specifying the base point $\princ G$ -- it represents a group!
+  Guess which one!
 \end{remark}
 
-  For $z:\BG$, recall the definition of $\pathsp z:\BG\to\Set$ as the
-  $G$-set with $\pathsp z(y)\defequi(z=y)$ (so that in particular
-  $\princ G\defequi\pathsp{\shape_G}$).  Note that $\pathsp z$ is a $G$-torsor.
+For $z:\BG$, recall from~\cref{def:principaltorsor}\eqref{eq:pathsp}
+the definition of $\pathsp y:\BG\to\Set$ as the
+$G$-set with $\pathsp y(z)\jdeq(y\eqto z)$
+(so that in particular $\princ G\jdeq\pathsp{\shape_G}$).
+Note that $\pathsp y$ is a $G$-torsor, so we can wrap these up as follows:
 
- \begin{definition}
-  \label{def:BG2TorsG} Let $$\pathsp{}:\BG\to_*(\typetorsor_G,\princ G)$$ be the pointed map given by sending $z:\BG$ to $\pathsp z$ and by the identification $\refl{\pathsp{\shape_G}}:\pathsp{\shape_G}=\princ G$.
+\begin{definition}
+  \label{def:BG2TorsG}
+  Let
+  \[
+    \pathsp{}:\BG\ptdto(\typetorsor_G,\princ G)
+  \]
+  be the pointed map given by sending $z:\BG$ to $\pathsp z$
+  and by the identification
+  $\refl{\pathsp{\shape_G}}:\princ G\eqto\pathsp{\shape_G}$.\footnote{%
+    That is, we have classified a homomorphism from $G$
+    to $\Aut_{\GSet}(\princ G)$. We don't bother giving it a name,
+    however, since it'll turn out to an isomorphism.}
 \end{definition}
 If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ instead of $\pathsp{}$.
 
 \begin{example}\label{ex:pathsptransport}
   For $y,z:\BG$ we make the induced map
-$$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z),
-$$
-or rather its composite with the equivalence to $\prod_{x:\BG}\pathsp y(x)=\pathsp z(x)$,
-explicit.
-For $q:y=z$,  the transport
-$\pathsp q:\prod_{x:\BG}\pathsp y(x)=\pathsp z(x)$
-is obtained
-by sending $p:\pathsp y(x)\defequi (y=x)$ to
-\marginnote{In a picture,
-$$\xymatrix{y\ar@{=}[r]^q_\to\ar@{=}[d]^{p}_\downarrow&z\ar@{=}[d]^{\pathsp q(p)}_\downarrow\\
-x\ar@{=}[r]^{\refl x}_\to&\,x.}$$}
-$$\pathsp q(p)\defequi pq^{-1}:\pathsp z(x)\defequi(z=x).$$
+  \[
+    \pathsp{}:(y\eqto z)\to (\pathsp y\eqto \pathsp z),
+  \]
+  or rather its composite with the identification with
+  $\prod_{x:\BG}\pathsp y(x)\eqto \pathsp z(x)$,
+  explicit.
+  For $q:y\eqto z$, the transport
+  $\pathsp q:\prod_{x:\BG}\pathsp y(x)\eqto \pathsp z(x)$
+  is obtained
+  by sending $p:\pathsp y(x)\jdeq (y\eqto x)$ to\footnote{In a picture,
+    \[
+      \begin{tikzcd}[ampersand replacement=\&]
+        y \ar[r,eqr,"q"]\ar[d,eql,"p"'] \& z \ar[d,eqr,"{\pathsp q(p)}"] \\
+        x \ar[r,eql,"{\refl x}"'] \& x.
+      \end{tikzcd}
+    \]}
+  \[
+    \pathsp q(p)\eqto pq^{-1}:\pathsp z(x)\jdeq(z\eqto x).\qedhere
+  \]
 \end{example}
+
 \begin{lemma}\label{lem:pathsptransportiseq}
-  For  $y,z:\BG$ the induced map  (\ie transport) of identity types
-$$\pathsp{}:(y=z)\to (\pathsp y=\pathsp z)$$
-is an equivalence.
+  For $y,z:\BG$ the induced map  (\ie transport) of identity types
+  \[
+    \pathsp{}:(y\eqto z)\to (\pathsp y\eqto \pathsp z)
+  \]
+  is an equivalence.\footnote{%
+    For connoisseurs of category theory,
+    this is also a corollary of a \emph{type-theoretic Yoneda lemma},
+    stating that transport gives an equivalence
+    \[
+      X(a) \equivto \prod_{b:A}\bigl((a \eqto b) \to X(b)\bigr)
+    \]
+    for any pointed type $(A,a)$ and type family $X: A \to \UU$.
+    Try to prove this yourself!}
 \end{lemma}
 \begin{proof}
-  We craft an inverse $Q:(\pathsp y=\pathsp z) \to (y=z)$ for
-  $\pathsp{}$. Given an identity $f:\pathsp y = \pathsp z$, the map
-  $f_y: (y=y) \to (z=y)$ maps the reflexivity path $\refl y$ to a path
-  $f_y(\refl y):z=y$, and we define
-  \begin{displaymath}
-    Q(f) \defequi \inv{f_y(\refl y)}
-  \end{displaymath}
+  We craft an inverse $Q:(\pathsp y\eqto \pathsp z) \to (y\eqto z)$ for
+  $\pathsp{}$. Given an identity $f:\pathsp y \eqto \pathsp z$, the map
+  $f_y: (y\eqto y) \to (z\eqto y)$ maps the reflexivity path $\refl y$ to a path
+  $f_y(\refl y):z\eqto y$, and we define
+  \[
+    Q(f) \defequi \inv{f_y(\refl y)}.
+  \]
   First, $Q$ is an inverse on the right for $\pathsp{}$ as
-  $\pathsp {Q(f)}$ is equal to the map $p \mapsto p f_y(\refl y)$, and
-  by induction on $p:y=x$, $p f_y(\refl y) = f_x(p)$ (indeed this is
-  true for $p\jdeq \refl y$). This means that $\pathsp {Q(f)} =
-  f$. Next, we show that $Q$ is an inverse on the left for
-  $\pathsp{}$: indeed for any $q:y=z$
-  $\inv{\pathsp{q}(\refl y)} = \inv{(\refl y \inv q)} = q$; in other
-  words $Q(\pathsp q)=q$.
+  $\pathsp {Q(f)}$ is the map $p \mapsto p f_y(\refl y)$, and
+  by induction on $p:y\eqto x$, we have $p f_y(\refl y) \eqto f_x(p)$
+  (this indeed holds when $p\jdeq \refl y$).
+  This means that we have $\pathsp {Q(f)} \eqto f$.
+  Next, we show that $Q$ is an inverse on the left for
+  $\pathsp{}$: indeed for any $q:y \eqto z$ we have
+  $\inv{\pathsp{q}(\refl y)} \eqto \inv{(\refl y \inv q)} \eqto q$; in other
+  words $Q(\pathsp q)\eqto q$, as desired.
 \end{proof}
-
 
 \begin{theorem}\label{lem:BGbytorsor}
   If $G$ is a group (or \inftygp), then the function
-$$\pathsp{}:\BG\to(\typetorsor_G,\princ G),\qquad z\mapsto \pathsp z\defequi(x\mapsto(z=_{\BG}x))$$
-is an equivalence.
-Univalence then allows us to derive an identity
-$$\bar{\pathsp{}}:G\eqto\Aut_{\GSet} (\princ G)$$
-of groups (or $\infty$-groups).
+  $\pathsp{}:\BG\to\typetorsor_G$ from~\cref{def:BG2TorsG}
+  is an equivalence.
+  Univalence then allows us to derive an identity
+  \[\bar{\pathsp{}}:G\eqto\Aut_{\GSet} (\princ G)\]
+  of groups.\footnote{For $\infty$-groups: $G \eqto \Aut_{\BG\to\UU}(\princ G)$.}
 \end{theorem}
 
 \begin{proof}
   Since both $\typetorsor_G$ and $\BG$ are connected, it suffices by
   \cref{cor:fib-vs-path} to show that each
-  $\ap {\pathsp{}}:(y=z)\to(\pathsp y=\pathsp z)$ is an
-  equivalence. One prove first that $\ap {\pathsp{}}$ is indeed equal
-  to the function
-  $$\pathsp{}:(y=z)\to(\pathsp y= \pathsp z)$$
-  made explicit in \cref{ex:pathsptransport}. It is done by induction
-  on $q:y=z$, as indeed
-  \begin{displaymath}
-    \ap {\pathsp{}}(\refl y) \jdeq \refl {\pathsp y} = (p\mapsto p\inv{\refl y}).
-  \end{displaymath}
-  Then \cref{lem:pathsptransportiseq} states exactly that $\ap P$ is
+  $\ap {\pathsp{}}:(y\eqto z)\to(\pathsp y\eqto \pathsp z)$ is an
+  equivalence. We first observe that $\ap {\pathsp{}}$ is indeed
+  the function
+  \[
+    \pathsp{}:(y\eqto z)\to(\pathsp y\eqto\pathsp z)
+  \]
+  made explicit in \cref{ex:pathsptransport}. Indeed, by induction
+  on $q:y\eqto z$, we have
+  \[
+    \ap {\pathsp{}}(\refl y) \jdeq \refl {\pathsp y} \eqto (p\mapsto p\inv{\refl y}).
+  \]
+  Then~\cref{lem:pathsptransportiseq} states exactly that $\ap P$ is
   an equivalence.
 \end{proof}
 
 \subsection{Homomorphisms and torsors}
 \label{sec:homotor}
-In view of the equivalence $\pathsp{}^G$ between $\BG$ and $(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} one might ask what a group homomorphism  $f:\Hom(G,H)$ translates to on the level of torsors.  Off-hand, the answer is $(\pathsp{}^H)\Bf(\pathsp{}^G)^{-1}$, but we can be more concrete than that.  We do know that for $x:\BG$ the $G$-torsor $\pathsp x^G$ should be sent to $\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
+In view of the equivalence $\pathsp{}^G$ between $\BG$ and $(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} one might ask what a group homomorphism  $f:\Hom(G,H)$ translates to on the level of torsors.  Off-hand, the answer is the round-trip $(\pathsp{}^H)\Bf(\pathsp{}^G)^{-1}$, but we can be more concrete than that.
+We do know that for $x:\BG$ the $G$-torsor $\pathsp x^G$ should be sent to
+$\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
 \begin{definition}
   \label{def:restrictandinduce}
-  Let $f:\Hom(G,H)$ be a group homomorphism.  If $Y:\BH\to\Set$ is an $H$-set then the \emph{restriction} $f^*Y$ of $Y$ to $G$ is the $G$-set given by precomposition
-$$f^*Y\defequi Y\, f:\BG\to\Set.$$
+  Let $f:\Hom(G,H)$ be a group homomorphism.  If $Y:\BH\to\Set$ is an $H$-set,
+  then the \emph{restriction}\index{action!restricted}\index{restriction}
+  $f^*Y$ of $Y$ to $G$ is the $G$-set given by precomposition
+  \[
+    f^*Y\defequi Y\,\Bf:\BG\to\Set.
+  \]
 
-If $X:\BG\to\Set$ is a $G$-set and $y:\BH$ define
-the \emph{induced $H$-type}
-\marginnote{%
-  Note that the induced $H$-type may or may not be an $H$-\emph{set}.
-  As an example, consider the homomorphism $\cy 2:\Hom(\ZZ,\Sigma_2)$ discussed above, given by sending $\base:S^1$ to $\bn 2:\FinSet_2$ and $\Sloop$ to the twist.
-}
-\marginnote{%
-  If we consider $\cy 2$ also as a $\ZZ$-set (by including $\FinSet_2$ in the type of all sets), the induced $\Sigma_2$-set $\Sigma_2\times_{\ZZ}\cy 2:\FinSet_2\to\Set$ is given by
-  $$y\mapsto \Sigma_{z:S^1}(\cy 2(z)=y)\times \cy 2(z),$$
-  and it is instructive to see that the symmetry of $(\base,\refl{\bn 2},0)$
-  induced by $\Sloop^2$ is not identical to $\refl{}$,
-  % \footnote{I have yet to write a nice exposition of this ``instructive'' point: one application of $\Sloop$ takes you to $(\base,tw,1)$}
-  and so the induced $\Sigma_2$-type in question is \emph{not} a set.
-}\marginnote{%
-  This situation is common in algebra and is often referred to by saying that some construction is not ``exact''.
-}
-$f_*\BH\to\UU$ by
-$$f_*X(y)\defequi\sum_{x:\BG}(\Bf x =y)\times X(x).$$
+  If $X:\BG\to\Set$ is a $G$-set, we define
+  the \emph{induced $H$-type}\index{action!induced}\index{induced action}\footnote{%
+    Note that the induced $H$-type may or may not be an $H$-\emph{set}.
+    As an example, consider the homomorphism $f\defeq(\blank\mod 2) : \Hom(\ZZ,\SG_2)$
+    discussed in~\cref{ex:groups-morphisms}, given by sending $\base:\Sc$
+    to $\bn 2$ and $\Sloop$ to the twist. (This is classified by the function
+    $R_2$ from~\cref{def:RmtoS1}.)
+
+    The induced $\SG_2$-set $f_*\bn 1$ of the trivial
+    $\ZZ$-set on the unit type $\bn 1$ is given by
+    \[A\mapsto \sum_{z:\Sc}(R_2(z)\eqto A)\times \bn 1,\]
+    which has underlying type equivalent to $\sum_{z:\Sc}R_2(z)$, which we know
+    back from~\cref{rem:finitecoveringsofS1} to be a circle.
+    So the induced $\SG_2$-type in question is \emph{not} a set.
+
+    This situation is common in algebra and is often referred to by saying
+    that some construction is not ``exact''.}
+  $f_*X : \BH\to\UU$ by setting, for $y:\BH$,
+  \[
+    f_*X(y)\defequi\sum_{x:\BG}(\Bf(x) \eqto y)\times X(x).\qedhere
+  \]
 \end{definition}
+Note that the type $f_*X(y)$ is also the orbit type $(H^y \times X)_{hG}$,
+of the $G$-set $H^y\times X$,
+where $(H^y\times X)(x) \defeq (\Bf(x) \eqto y)\times X(x)$ for $x:\BG$,
+and whose underlying set is equivalent to $(\shape_H\eqto y)\times X(\shape_G)$.
 
-For $X$ being the principal $G$-torsor  $\princ G$, the contraction of $\sum_{x:\BG}(\shape_G=x)$ induces an equivalence
-$$\eta_y:f_*\princ G(y)=\sum_{x:\BG}(\Bf(x)=y)\times(\shape_G=x)\simeq (\Bf(x)=y)\oldequiv\princ{\Bf(x)}^H(y).$$  The resulting identity $\bar\eta:f_*\princ G=\princ{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-type $f_*X$ is an $H$-torsor.
+\begin{remark}
+  Dually, there is also a \emph{coinduced $H$-set}\index{action!coinduced}
+  $f_!:\BH\to\Set$ given by
+  \[
+    f_!X(y)\defeq\prod_{x:\BG}\bigl((\Bf(x)\eqto y) \to X(x)\bigr).
+  \]
+  Note that this always lands in sets when $X$ does.
+\end{remark}
 
-Summing up:
+When $X$ is the $G$-torsor $\pathsp x^G$, for some $x:\BG$,
+the contraction (recall \cref{lem:contract-away})
+of $\sum_{z:\BG}(x\eqto z)$ induces an equivalence
+\[
+  \eta_y:f_*\pathsp x^G(y) \jdeq \sum_{z:\BG}(\Bf(z) \eqto y)\times(x \eqto z)
+  \equivto (\Bf(x)\eqto y)\jdeq\pathsp{\Bf(x)}^H(y).
+\]
+The resulting identity $\bar\eta:f_*\pathsp x^G\eqto \pathsp{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-type $f_*X$ is an $H$-torsor.
+Furthermore, when $x\jdeq\shape_G$, so $\pathsp x^G\jdeq\princ G$
+is the principal $G$-torsor, the pointedness path $\Bf_\pt : \shape_H\eqto\Bf(\shape_G)$
+gives an identification $f_*\princ G\eqto \princ H$.
+
+Summing up, we have proved:
 \begin{lemma}
   \label{lem:inducedtorsor}
    Let $f:\Hom(G,H)$ be a group homomorphism.
-   If $X$ is a $G$-torsor, then the induced $H$-type $f_*X$ is an $H$-torsor and so we get an induced map
-   $$f_*:\typetorsor_G\to\typetorsor_H.$$
-   The identity
-$\bar{\eta}:f_*\pathsp x^G=\pathsp{\Bf(x)}^H$
-shows that
-$$\xymatrix{\BG\ar[r]^{\Bf}\ar[d]^{\pathsp{}^G}&\BH\ar[d]^{\pathsp{}^H}\\
-\typetorsor_G\ar[r]^{f_*}&\typetorsor_H}$$
-commutes.
+   If $X$ is a $G$-torsor, then the induced $H$-type $f_*X$ is an $H$-torsor,
+   and so we get an induced map
+   \[
+     f_*:\typetorsor_G\ptdto\typetorsor_H,
+   \]
+   such that the diagram of pointed maps
+   \[
+     \begin{tikzcd}
+       \BG \ar[r,"\Bf"]\ar[d,"{\pathsp{}^G}"'] &
+       \BH\ar[d,"{\pathsp{}^H}"] \\
+       \typetorsor_G \ar[r,"f_*"'] & \typetorsor_H
+     \end{tikzcd}
+   \]
+   commutes.
 \end{lemma}
+
 \begin{remark}
   \label{rem:inducedGsetfromabstracthomomorphisms}
-  Notice that our construction of the induced $G$-set works equally well for a homomorphism $\phi:\Hom^\abstr(\abstr(G),\abstr(H))$:
-  if $X:\BG\to\Set$ is a $G$-set, then we define the $H$-set $\phi_*X:\BH\to\Set$ by
-  $$\phi_*X(y)\defequi(\shape_H=y)\times_{\USymG}X(\shape_G)$$
-  to be the set quotient of $(\shape_H=y)\times X(\shape_G)$ by the relation $(p,x)\sim(p\, \phi(q)^{-1},X(q)x)$ for all $q:\shape_G=pt_G$.
-  Just as above, for $X$ the principal $G$-torsor we get an identity  $\eta_\phi:\phi_*\princ G=\princ H$ which, when evaluated at $y:\BH$, corresponds under univalence to the equivalence
-$$(\shape_H=y)\times_{\USymG}\USymG\to (\shape_H=y)$$
-sending $[p,q]:(\shape_H=y)\times_{\USymG}\USymG$ to $p\,\phi(q):(\shape_H=y)$.
+  Notice that our construction of the induced $G$-set works equally well for
+  a homomorphism of abstract groups $\phi:\Hom^\abstr(\abstr(G),\abstr(H))$:
+  if $X:\BG\to\Set$ is a $G$-set, then we can
+  define the $H$-set $\phi_*X:\BH\to\Set$ by
+  \[
+    \phi_*X(y)\defequi (\shape_H \eqto y) \times_G X(\shape_G)
+  \]
+  to be the set quotient of $(\shape_H\eqto y)\times X(\shape_G)$ by
+  the relation
+  $(p,x)\sim(p\, \phi(q)^{-1},q\cdot x)$ for all $q:\shape_G=\shape_G$.
+  Just as above, for $X$ the principal $G$-torsor we get an identity
+  $\eta_\phi:\phi_*\princ G=\princ H$ which, when evaluated at $y:\BH$,
+  corresponds under univalence to the equivalence
+  \[
+    (\shape_H\eqto y)\times_G\USymG\equivto (\shape_H\eqto y)
+  \]
+  sending $[(p,q)]$ to $p\,\phi(q):(\shape_H\eqto y)$.\footnote{%
+    \color{red}I'd like to rephrase this in terms of noticing
+    when $f_*X$ is a set, or maybe redefining $f_*X$ to always take the
+    set truncation.}
 \end{remark}
 
 
