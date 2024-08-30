@@ -7,6 +7,203 @@
 
 TBW (and stolen from the below)
 
+\section{Monomorphisms and epimorphisms}
+\label{sec:monoepi}
+
+In set theory we say that a function $f:B\to C$ of sets is an injection if for all $b,b':B$ we have that $f(b)=f(b')$ implies that  $b=b'$.  This conforms with our definitions.
+%\footnote{This continues to be true in type theory, but since equality needs not be unique, we should in addition require that the two identities $p, f(\sigma(p)):f(b)=f(b')$ are equal.}
+Furthermore, since giving a term $b:B$ is equivalent to giving a (necessarily constant) function $c_b:\bn 1\to B$, we could alternatively say that a function $f:B\to C$ is an injection if and only if for any two $g,h:\bn 1\to B$ such that $fg=fh$ we have that $g=h$.  In fact, by function extensionality we can replace $\bn 1$ by any set $A$ (two functions are identical if and only if they have identical values at every point).
+
+Similarly, a function $f:B\to C$ is surjective if for all $c:C$ the preimage $f^{-1}(c)=\sum_{b:B}c=f(b)$ is non-empty.  A smart way to say this is to say that the first projection from $\sum_{c:C}\Trunc{f^{-1}(c)}$ to $C$ is an equivalence.  Since $B$ is always equivalent to $\sum_{c:C}f^{-1}(c)$, we see that for a surjection $f:B\to C$ and family of propositions $P:C\to \Prop$, the propositions $\prod_{c:C}P(c)$ and $\prod_{b:B}Pf(b)$ are equivalent.  In particular, if $g,h:C\to D$ are two functions into a set $D$ the proposition $\prod_{c:C}(g(c)=h(c))$ is equivalent to $\prod_{b:B}(gf(b)=hf(c))$.
+
+From this we condense the following characterizations of injections and surjections of sets which will prove to generalize nicely to other contexts.
+% In other words, an injection between sets is a function $f:B\to C$ such that for any set $A$ and functions $g,h:A\to B$ such that $fg=fh:A\to C$
+% $$\xymatrix{A\ar[r]^f&B\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&C}$$
+% we necessarily have that $g=h$.
+\begin{lemma}
+  \label{lem:injofsetsaremono}Let $f:B\to C$ be a function between sets.
+  \begin{enumerate}
+  \item the function is an injection of and only if for any set $A$ and functions $g,h:A\to B$,
+$$\xymatrix{A\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&B\ar[r]^f&C},$$  then $fg=fh:A\to C$ implies $g=h$
+\item the function is an injection of and only if for any set $D$ and functions $g,h:C\to D$,
+$$\xymatrix{B\ar[r]^f&C\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&D},$$  then $gf=hf:A\to C$ implies $g=h$.
+  \end{enumerate}
+\end{lemma}
+
+
+By \cref{lem:injofsetsaremono} there is a pleasing reformulation which highlights that injections/surjections of sets are characterized by injections of sets of functions: a function of sets $f:B\to C$ is
+\begin{enumerate}
+\item  an injection if and only if for any set $A$ postcomposition by $f$ given an injection from $A\to B$ to $A\to C$
+\item a surjection if and only if for any set $D$ precomposition by $f$ gives an injection from $B\to D$ to $B\to D$.
+\end{enumerate}
+
+This observation about sets translates fruitfully to other contexts and in particular to groups.  To make it clear that we talk about group homomorphisms (and not about the underlying unpointed functions of connected groupoids) we resort to standard categorical notation.
+\begin{definition}\label{def:monomorphism}
+Given groups $G,H$, a homomorphism $f: \Hom(G,H)$ is called a\label{def:epimorphism}
+\begin{enumerate}
+\item \emph{monomorphism}\index{monomorphism!of groups} if for any group $F$,
+  postcomposition by $f$ is an injection from $\Hom(F,G)$ to $\Hom(F,H)$, and an
+\item \emph{epimorphism}\index{epimorphism!of groups} if for any group $I$,
+  precomposition by $f$ is an injection from $\Hom(H,I)$ to $\Hom(G,I)$.
+\end{enumerate}
+The corresponding families of propositions are called
+\[
+  \ismono,\isepi:\Hom(G,H)\to\Prop.\qedhere
+\]
+\end{definition}
+
+\marginnote{$$\xymatrix{\USymG\ar[d]^\simeq\ar[r]^{\US f}&\USymH\ar[d]^\simeq\\
+    \Hom(\ZZ,G)\ar[r]^{f_*}\ar[d]^\simeq_\abstr&\Hom(\ZZ,H)\ar[d]^\simeq_\abstr\\
+    \Hom^{\abstr}(\ZZ,\abstr(G))\ar[r]^{\abstr f_*}&\Hom^{\abstr}(\ZZ,\abstr(H))
+ }$$
+commutes (we've written $\ZZ$ also for $\abstr(\ZZ$) since otherwise it wouldn't fit.}
+We've seen that for any group $G$, the underlying set $\USymG\defequi(\shape_G=\shape_G)$ of $\abstr(G)$ is equivalent to the set of homomorphisms $\Hom(\ZZ,G)$ which in turn is equivalent to the set of abstract homomorphisms $\Hom^{\abstr}(\abstr(\ZZ),\abstr(G))$ and that abstraction preserves composition.
+Hence, if $f:\Hom(G,H)$ is a group homomorphism, then saying that
+$\US f$ is an injection is equivalent to saying that postcomposition by $f$ is an injection $\Hom(\ZZ,G)\to\Hom(\ZZ,H)$.
+In this observation, the integers $\ZZ$ plays no more of a r\^ole than $\bn 1$ does in \cref{lem:injofsetsaremono}; we can let the source vary over any group $F$:
+
+
+\begin{lemma}\label{lem:eq-mono-cover}
+Let $G$ and $H$ be groups and $f: \Hom(G,H)$ a homomorphism.
+The following propositions are equivalent:\label{lem:eq-epi-conn}
+\begin{enumerate}
+\item\label{it:mono} $f$ is a monomorphism;
+\item\label{it:injection} $\US f:\USymG\to\USymH$ is an injection;
+\item\label{it:cover} $\Bf_\div:\BG_\div\to \BH_\div$ is a \covering.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  We have already seen that condition~\ref{it:mono} implies condition~\ref{it:injection} (let $F$ be $\ZZ$).
+    Conversely, suppose that \ref{it:injection} holds and $F$ is a group.  Consider the commutative diagram
+$$\xymatrix{\Hom(F,G)\ar[r]\ar[d]&\Hom(F,H)\ar[d]\\
+  (\Hom(\ZZ,F)\to\Hom(\ZZ,G))\ar[r]&(\Hom(\ZZ,F)\to\Hom(\ZZ,H)),}$$
+where the vertical maps are the injections from the sets of (abstract) homomorphism to the sets of functions of underlying sets and the horizontal maps are postcomposition with $f$.  Since the bottom function is by assumption is an injection, so is the upper one.
+\footnote{ Alternatively:  and $g,h:\Hom(F,G)$.  Then $fg=fh$ implies that for all $p:\Hom(\ZZ,F)$ we have by associativity that $f(gp)=(fg)p=(fh)p=f(hp)$, and so, by assumption, that $gp=hp$.
+  Again, by function extensionality (of functions $\Hom(\ZZ,F)\to\Hom(\ZZ,G)$), this is exactly saying that $\US g$ is identical to $\US h$.}
+
+  The equivalence of \ref{it:cover} and \ref{it:injection} follows
+immediately from \cref{cor:fib-vs-path}\ref{set-fib-vs-path}, using
+that $\BG$ is connected and $f$ is pointed and the equivalence between $\Hom(G,H)$ and $\BG\ptdto \BH$.
+\end{proof}
+
+Similarly, we have:
+\begin{lemma}\label{lem:epi-surj}
+  The following propositions are equivalent:
+\begin{enumerate}[label=(\arabic*')]
+\item\label{it:epi} $f$ is an epimorphism;
+\item\label{it:surjection} $\US f:\USymG\to\USymH$ is a surjection.
+\item\label{it:connfib} $\Bf_\div:\BG_\div\to \BH_\div$ has connected fibers.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  The equivalence of \ref{it:surjection} and \ref{it:connfib} is immediate.
+
+  For the rest, the easy direction is that \ref{it:surjection} implies \ref{it:epi}:
+  (TODO)
+
+  The harder direction, that \ref{it:epi} implies \ref{it:surjection},
+  is a corollary of the following lemma, which states that monos are equalizers.
+  Indeed, we can factor any $f : \Hom(G,H)$ via the image as a surjection followed
+  by a mono:
+  \[
+    \begin{tikzcd}[cramped]
+      G \ar[r,"q"] & \im(f) \ar[r,"i"] & H
+    \end{tikzcd}
+  \]
+  If $f$ is an epi, then so is $i$. But $i$ is an equalizer,
+  \[
+    \begin{tikzcd}[cramped]
+      \im(f) \ar[r,"i"] & H\ar[r,shift left,"\varphi"]
+      \ar[r,shift right,"\psi"'] & L,
+    \end{tikzcd}
+  \]
+  so as an epi, $\varphi i = \psi i$ implies $\varphi = \psi$, so $i$
+  is an equalizer of already equal homomorphisms, so $i$ is an isomorphism,
+  which implies that $f$ is surjective.
+\end{proof}
+
+\begin{lemma}\label{lem:monos-are-equalizers}
+  Every monomorphism $i : H \to G$ is an equalizer.\footnote{%
+    This proof follows an idea by \citeauthor{TrimbleEpisSurjective}\footnotemark{}.}%
+  \footcitetext{TrimbleEpisSurjective}
+\end{lemma}
+\begin{proof}[Proof draft.] Consider the projection $\pi : G \to G/H$ to the set of cosets.
+  Let $j : G/H \to A$ be an injection into a group $A$.
+  (We could for instance let $A$ be the free (abelian) group on $G/H$. [Add xref to statement that inclusion of generators in an injection.])
+
+  Consider the group $W \defeq \Aut_E(\sh_G,\cst{\sh_A})$, where
+  \[
+    E \defeq \sum_{t : \BG}\bigl((\sh_G \eqto t) \to \BA\bigr).
+  \]
+  We have two homomorphisms $\varphi,\psi : G \to W$ with the same underlying map,
+  $t \mapsto (t , \cst{\sh_A})$, but with different pointing paths:
+  \[
+    \varphi_\pt \defeq \refl{\sh_G,\cst{\sh_A}}, \quad
+    \psi_\pt \defeq (\refl{\sh_G}, j\pi).
+  \]
+  The equalizer of $\varphi$ and $\psi$ thus consists of all $g:\USymG$
+  such that $j\pi(gg') = j\pi(g')$ for all $g':\USymG$. Since $j$ is injective,
+  this is equivalent to $\pi(gg')=\pi(g')$ for all $g':\USymG$, and this holds
+  if and only if $g$ belongs to $H$.
+\end{proof}
+
+\subsection{Any symmetry is a symmetry in $\Set$}
+\label{sec:groupssubperm}
+
+
+The correspondence between groups and abstract groups allows for a cute proof of what is often stated as ``any group is a permutation group'', which in our parlance translates to ``any symmetry is a symmetry in $\Set$''.
+% \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+
+Recall the principal $G$-torsor $\princ G:\BG\to\Set$.
+Since $\princ G(\shape_G)\defequi \USymG$ this defines a pointed function $\rho_G:\BG\to_* \BSigma_{\USymG}\defequi(\conncomp \Set {\USymG},\USymG)$,
+\marginnote{the letter $\rho$ commemorates the word ``regular''} \ie a homomorphism from $G$ to the permutation group
+$$\rho_G:\Hom(G,\Sigma_{\USymG}).$$
+\begin{theorem}[Cayley]
+  \label{lem:allgpsarepermutationgps}
+  \marginnote{By \cref{lem:eq-mono-cover} ``$\rho_G$ is a monomorphism'' means that the induced map $\rho_G^\abstr$ from the symmetries of $\shape_G$ in $\BG_\div$ to the symmetries of $\USymG$ in $\Set$ is an injection, \ie ``any symmetry is a symmetry in $\Set$''.}Let $G$ be a group. Then
+  $\rho_G:\Hom(G,\Sigma_{\USymG})  $ is a monomorphism.
+\end{theorem}
+\begin{proof}
+  In view of \cref{lem:eq-mono-cover} we need to show that $\rho_G:\BG\to \conncomp \Set {\USymG}$ is a
+  \covering.
+  Under the identity
+  $$\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)\oldequiv (\conncomp{\Set}{\USymG},\USymG)$$ of
+  \cref{lem:BGbytorsor}, $\rho_G$ translates to the
+  evaluation map
+  $$\mathrm{ev}_{\shape_G}:\conncomp{(\BG\to\Set)}{\princ G}\to\conncomp{\Set}{\USymG},\qquad
+  \mathrm{ev}_{\shape_G}(E)=E(\shape_G).$$
+  We must show that the preimages
+  $\inv{\ev_{\shape_G}}(X)$ for $X:\Sigma_{\USymG}$ are sets.  This
+  fiber is equivalent to
+  $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X=E(\shape_G))$ which is a
+  set precisely when $\sum_{E:\BG\to\Set}(X=E(\shape_G))$ is a set.  We
+  must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\shape_G))$,
+  then the type $(E,p)=(F,q)$, which is equivalent
+  \marginnote{Note that if $r:\shape_G=x$, then
+  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, in a picture
+  \begin{displaymath}
+    \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
+      X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
+      &F(\shape_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
+  \end{displaymath}
+and so $\phi(x)$ (which by nature is independent of such an
+$r:\shape_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$. The text says this formally.}
+to
+  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\shape_G)=qp^{-1},$$
+  is a proposition.
+If $\phi,\psi:((E,p)=(F,q))$, we
+  must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
+  $F(x)$ are sets, it is enough to show that the proposition
+  $\phi(x)=\psi(x)$ is not empty.  Let
+  $f:(\shape_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
+  composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
+  given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
+  proposition, one can consider that $\shape_G=x$ is not empty, and we
+  are done.
+\end{proof}
+
 \section{Subgroups}
 \label{sec:subgroups}
 In our discussion of the group $\ZZ\defequi\Aut_{S^1}(\base)$ of integers in \cref{cha:circle} we discovered that some of the symmetries of $\base$ were picked out by the $n$-fold covering (for some particular natural number $n$).  On the level of the set $\base\eqto{}\base$, the symmetries picked out are all the iterates (positive or negative or even zero-fold) of $\Sloop^n$.  The important thing is that we can compose or invert any of the iterates of $\Sloop^n$ and get new symmetries of the same sort (because of distributivity $nm_1+nm_2=n(m_1+m_2)$).  So, while we do not get all symmetries of $\base$ (unless $n=1$), we get what we'd like to call a subgroup of the group of integers. 
