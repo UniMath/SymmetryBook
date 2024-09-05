@@ -3,6 +3,214 @@
 
 \section{Brief overview of the chapter}
 
+In the optional~\cref{sec:heaps} we look at how general
+identities types $a \eqto_A a'$ relate to groups.
+
+\section{Monoids and abstract groups}
+\label{sec:monoids}
+
+(TBD: for now, recall~\cref{def:abstractgroup}.)
+
+\begin{remark}\label{rem:monoids}
+  A \emph{monoid}\index{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
+  \cref{def:abstractgroup}.  In other words, the existence of inverses is not assumed.  For this reason, the property that $S$ is a set, the
+  unit laws, and the associativity law are, together, known as the \emph{monoid laws}.
+\end{remark}
+
+\begin{remark}\label{rem:inverses-as-property}
+  Instead of including the inverse operation as part
+  \ref{struc:inv-op} of the structure (including with the property
+  \ref{axiom:inv-law}), some authors assume the existence of inverses
+  by positing the following property.
+  \begin{enumerate}[start=5]
+    \item\label{axiom:mere-inverse} for all $g:S$ there exists an element
+    $h:S$ such that $e = g \cdot h$.
+  \end{enumerate}
+
+  We will now compare \ref{axiom:mere-inverse} to \ref{struc:inv-op}.
+  Property \ref{axiom:mere-inverse} contains the phrase ``there exists'', and thus its translation into type theory
+  uses the quantifier $\exists$, as defined in \cref{sec:prop-trunc}.  Under this translation, property \ref{axiom:mere-inverse} does
+  not immediately allow us to speak of ``the inverse of $g$''.
+  However, the following lemma shows that we can define an inverse operation as in \ref{struc:inv-op} from a witness of \ref{axiom:mere-inverse}
+  -- its proof goes by using the properties \ref{axiom:unit-laws} and \ref{axiom:ass-law} to prove that inverses are unique.  As a consequence,
+  we \emph{can} speak ``the inverse of $g$''.
+\end{remark}
+
+\begin{lemma}%
+  \label{lem:group-inv-operation}%
+  Given a set $S$ together with $e$ and $\cdot$ as in
+  \cref{def:abstractgroup} satisfying the unit laws, the associativity
+  law, and property \ref{axiom:mere-inverse}, there is an ``inverse'' function
+  $S \to S$ having property \ref{axiom:inv-law} of \cref{def:abstractgroup}.
+\end{lemma}
+
+\begin{proof}
+  Consider the function $\mu: S \to (S \to S)$ defined as
+  $g\mapsto (h \mapsto g\cdot h)$. Let $g:S$. We claim that the fiber
+  $\inv{\mu(g)}(e)$ is contractible.  Contractibility is a proposition, hence to
+  prove it from \ref{axiom:mere-inverse}, one can as well assume the
+  actual existence of $h$ such that $g\cdot h = e$. Then $(h,!)$ is an
+  element of the fiber $\inv{\mu(g)}(e)$. We will now prove that it is
+  a center of contraction. For any other element $(h',!)$, we want to
+  prove $(h,!) = (h',!)$, which is equivalent to the equation $h=h'$. In
+  order to prove the latter, we show that $h$ is also an inverse on
+  the left of $g$, meaning that $h\cdot g=e$.  This equation is also a
+  proposition, so we can assume from \ref{axiom:mere-inverse} that we have an
+  element $k:S$ such that $h\cdot k = e$.  Multiplying that equation by
+  $g$ on the left, one obtains
+  \begin{displaymath}
+    k = e \cdot k = (g\cdot h)\cdot k = g\cdot (h\cdot k) = g\cdot e = g,
+  \end{displaymath}
+  from which we see that $h\cdot g=e$.
+  Now it follows that
+  \begin{displaymath}
+    h = h \cdot e = h \cdot (g\cdot h') = (h \cdot g) \cdot h' = e \cdot h' = h',
+  \end{displaymath}
+  as required. Hence $\inv{\mu(g)}(e)$ is contractible, and we may define $g^{-1}$ to
+  be the center of the contraction, for any $g:S$.
+  The function $g \mapsto g^{-1}$ satisfies the law of inverses \ref{axiom:inv-law}, as required.
+\end{proof}
+
+%Note that the proof above also shows the other \emph{law of inverses}:
+%for all $g:S$ we have $g^{-1}\cdot g=e$. In exercise below.
+
+\begin{remark}
+  \label{rem:typemonoidabstrgp}
+  We may encode the type of abstract groups as follows. 
+  We let $S$ denote the underlying set, $e : S$ denote the unit, 
+  $\mu:S\to S\to S$ denote the multiplication operation 
+  $g\mapsto (h \mapsto g\cdot h)$, and $\iota : S \to S$ denote 
+  the inverse operation $g \mapsto g^{-1}$.  Using
+  that notation, we introduce names for the relevant propositions.
+  \begin{align*}
+    \mathrm{UnitLaws}(S,e,\mu)   & \defequi\prod_{g:S} (\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \\
+    \mathrm{AssocLaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \\
+    \mathrm{MonoidLaws}(S,e,\mu) & \defequi \isset{(S)} \times \mathrm{UnitLaws}(S,e,\mu) \times \mathrm{AssocLaw}(S,\mu{}) \\
+    \mathrm{InverseLaw}(S,e,\mu,\iota) & \defequi \prod_{g:S}(\mu(g)(\iota(g)) = e) \\
+    \mathrm{GroupLaws}(S,e,\mu,\iota) & \defequi \mathrm{MonoidLaws}(S,e,\mu) \times \mathrm{InverseLaw}(S,e,\mu,\iota)
+  \end{align*}
+  Now we define the type of abstract groups in terms of those propositions.
+  \[
+    \typegroup^\abstr \defequi \sum_{S:\UU} \sum_{e:S}\sum_{\mu{}:S\to S\to S}
+    \sum_{\iota\colon S\to S} \mathrm{GroupLaws}(S,e,\mu,\iota)
+  \]
+
+  Thus, following the convention introduced in \cref{rem:iterated-sums},
+  an abstract group $\mathscr G$ will be a quintuple of the form
+  $\mathscr G \jdeq (S,e,\mu,\iota,!)$.  For brevity, we will usually 
+  omit the proof of the properties from the display, since it's unique,
+  and write an abstract group as though it were a quadruple 
+  $\mathscr G \jdeq (S,e,\mu,\iota)$.
+\end{remark}
+
+\begin{remark}
+  That the concept of an abstract group synthesizes the idea of symmetries
+  will be justified in \cref{sec:Gsetforabstract} where we prove that
+  the function $\abstr:\typegroup\to\typegroup^\abstr$ from 
+  \cref{def:abstrG} is an equivalence.
+\end{remark}
+
+\begin{remark}
+  If $\mathcal G\jdeq (S,e,\mu,\iota)$ and $\mathcal G'\jdeq(S',e',\mu',\iota')$
+  are abstract groups, an element of the identity type
+  $\mathcal G\eqto\mathcal G'$ consists of quite a lot of information,
+  provided we interpret it by repeated application of \cref{lem:isEq-pair=}.
+  First and foremost, we need an identification $p:S\eqto S'$ of sets, but
+  from there on the information is a proof of a conjunction of propositions.\footnote{%
+    Even though we are able to give a concise definition of \inftygps 
+    in \cref{sec:inftygps}, we don't know how to define
+    the type of ``abstract \inftygps'' in a way similar
+    to~\cref{def:abstractgroup}:
+    such a definition would require infinitely many 
+    levels of operations producing
+    identifications of instances of operations of lower levels.
+    And an identification would similarly require infinitely
+    many operations identifying the operations at all levels.
+    See also \cref{rem:ee=e_coherence}.}
+  An analysis shows that this conjunction can be shortened to the equations $e'=p(e)$ and
+  $\mu'(p(s),p(t))=p(\mu(s,t))$.  A convenient way of obtaining an identity $p$ that preserves these equations is to apply univalence to an
+  equivalence $f: S \equivto S'$ that preserves them.
+  We call such a function $f$ an \emph{isomorphism of abstract groups}.%
+  \index{isomorphism!of abstract groups}
+\end{remark}
+
+\begin{xca}
+  Perform the mentioned analysis.
+\end{xca}
+
+\begin{xca}
+  \label{xca:op-abs-group}
+  Let $\mathcal G \jdeq (S,e,\mu,\iota)$ be an abstract group.
+  Define another structure $\mathcal G\op \defeq (S,e,\mu\op,\iota)$,
+  where $\mu\op : S \to S \to S$ sends $a,b:S$ to $\mu(b,a)$,
+  \ie $\mu\op$ swaps the order of the arguments as compared to $\mu$.
+
+  Show that $\iota : S \to S$ defines an isomorphism 
+  $\mathcal G \equivto \mathcal G\op$.\footnote{%
+  Hint: in down-to-earth terms this boils down to the equations
+  $\inv e = e$ and $(a\cdot b)^{-1} = b^{-1}\cdot a^{-1}$.}
+\end{xca}
+
+\begin{xca}
+  \label{xca:conj}
+  Let $\mathcal G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  If $s:S$, let $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$.  Show that the resulting function $\conj^g:S\to S$ preserves the group structure (for instance $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $\conj^g:\mathcal G\eqto\mathcal G$ is called \emph{conjugation} by $g$.\index{conjugation}
+\end{xca}
+
+\begin{remark}\label{rem:ee=e_coherence}
+  Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the
+  case when $g$ is $e$, the unit laws \ref{axiom:unit-laws} of \cref{def:abstractgroup} would provide \emph{two} (potentially different)
+  identifications $e\cdot e \eqto e$, and we would have to separately assume that they agree.  This problem vanishes in the setup we adopt for
+  \inftygps in \cref{sec:inftygps}.
+\end{remark}
+
+\begin{xca}
+  For an element $g$ in an abstract group,
+  prove that $e=\inv g\cdot g$ and $g=(g^{-1})^{-1}$. 
+  (Hint: study the proof of \cref{lem:group-inv-operation}.)
+  In other words (for the
+  machines among us), given an abstract group $(S,e,\mu,\iota)$,
+  give an element in the proposition
+  \begin{displaymath}
+    \prod_{g:S} (e=\mu(\iota(g))(g))\times
+    (g=\iota(\iota(g))).\qedhere
+  \end{displaymath}
+\end{xca}
+
+\begin{xca}\label{xca:typemonoidisgroupoid}
+  Prove that the types of monoids and abstract groups are groupoids.
+\end{xca}
+
+\begin{xca}
+  \label{xca:cheapgroup}
+  There is a leaner way of characterizing what an abstract group is:
+  define a \emph{sheargroup} to be a set $S$ together with an element $e:S$,
+  a function $\blank * \blank: S\to S\to S$, sending $a,b:S$ to $a*b:S$,
+  and the following propositions,
+  where we use the shorthand $\bar a\defequi a*e$:
+  \begin{enumerate}
+  \item $e*a=a$,
+  \item $a*a=e$, and
+  \item $c*(b*a)=\casoverline{(c*\bar b)}*a$,
+  \end{enumerate}
+  for all $a,b,c:S$.
+  Construct an equivalence from the type of abstract groups to the type of sheargroups.\footnote{%
+      Hint: setting $a\cdot b\defequi \bar b*a$ gives you an abstract group from a sheargroup and conversely, letting $a*b=b\cdot a^{-1}$ takes you back.  On your way you may need at some point to show that $\casoverline{\bar a}=a$: setting $c=\bar a$ and $b=a$ in the third formula will do the trick (after you have established that $\bar e=e$).  This exercise may be good to look back to in the many instances where the inverse inserted when ``multiplying from the right by $a$'' is forced by transport considerations.}
+\end{xca}
+\begin{xca}
+  Another and even leaner way to define abstract groups, highlighting how we can do away with both the inverse and the unit: a \emph{Furstenberg group}\footnote{%
+    Named after Hillel Furstenberg who at the age of 20 published a paper doing this exercise.\footnotemark{}}\footcitetext{Furstenberg}
+  is a nonempty set $S$ together with a function
+  $\blank\circ\blank : S \to S \to S$, sending $a,b:S$ to $a\circ b:S$,
+  with the property that
+  \begin{enumerate}
+  \item for all $a,b,c:S$ we have that $(a\circ c)\circ(b\circ c)=a\circ b$, and
+  \item for all $a,c:S$ there is a $b:S$ such that $a\circ b=c$.
+  \end{enumerate}
+  Construct an equivalence from the type of Furstenberg groups to the type of
+  abstract groups.\footnote{%
+    Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is an abstract group.}
+\end{xca}
+
 \section{Groups}
 \label{sec:Gsetforabstract}
 
@@ -415,6 +623,137 @@ commutes.  Likewise, (using transport along the identity $p_f:\shape_{G'}=f(\sha
 % $$
 % commutes.  However, since $f$ is surjective there is a $g:\USymG$ so that $g'=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
 \end{proof}
+
+\section{Heaps \texorpdfstring{$(\dagger)$}{(\textdagger) \color{red} just moved from symmetry without proofreading BID211116}}
+\label{sec:heaps}
+
+Recall that we in \cref{rem:heap-preview} wondered about
+the status of general identity types $a=_A a'$,
+for $a$ and $a'$ elements of a groupoid $A$,
+as opposed to the more special loop types $a=_Aa$.\marginnote{%
+  This section has no implications for the rest of the book,
+  and can thus safely be skipped on a first reading.}
+Here we describe the resulting algebraic structure
+and how it relates to groups.
+
+We proceed in a fashion entirely analogous to that of \cref{sec:typegroup},
+but instead of looking a pointed types, we look at \emph{bipointed types}.
+
+\begin{definition}\label{def:bipt-conn-groupoid}
+  The type of \emph{bipointed, connected groupoids} is the type
+  \[
+    \UUppone \defeq \sum_{A:\UU^{=1}}(A \times A).\qedhere
+  \]
+\end{definition}
+Recall that $\UU^{=1}$ is the type of connected groupoids $A$,
+and that we also write $A:\UU$ for the underlying type.
+We write $(A,a,a'):\UUppone$ to indicate the two endpoints.
+
+Analogous to the loop type of a pointed type,
+we have a designated identity type of a bipointed type,
+where we use the two points as the endpoints of the identifications:
+We set $\ISym(A,a,a') \defeq (a =_A a')$.
+
+\needspace{6\baselineskip}
+\begin{definition}\label{def:heap}
+  The type of \emph{heaps}\footnote{%
+    The concept of heap (in the abelian case)
+    was first introduced by Prüfer\footnotemark{}
+    under the German name \emph{Schar} (swarm/flock).
+    In Anton Sushkevich's book
+    \casrus{Теория Обобщенных Групп}
+    (\emph{Theory of Generalized Groups}, 1937),
+    the Russian term \casrus{груда} (heap)
+    is used in contrast to \casrus{группа} (group).
+    For this reason, a heap is sometimes
+    known as a ``groud'' in English.}%
+  \footcitetext{Pruefer-AG}
+  is a wrapped copy (\cf \cref{sec:unary-sum-types})
+  of the type of bipointed, connected groupoids $\UUppone$,
+  \[
+    \Heap \defeq \Copy_{\mkheap}(\UUppone),
+  \]
+  with constructor $\mkheap : \UUppone \to \Heap$.
+\end{definition}
+We call the destructor $\B : \Heap \to \UUppone$,
+and call $\BH$ the \emph{classifying type} of the heap $H \jdeq\mkheap\BH$,
+just as for groups,
+and we call the first point in $BH$ is \emph{start shape} of $H$,
+and the second point the \emph{end shape} of $H$.
+
+The identity type construction $\ISym : \UUppone \to \Set$
+induces a map $\USym : \Heap \to \Set$,
+mapping $\mkheap X$ to $\ISym X$.
+These are the \emph{underlying identifications} of the heaps.
+
+These is an obvious map (indeed a functor) from groups to heaps,
+given by doubling the point.
+That is, we keep the classifying type and use the designated shape
+as both start and end shape of the heap.
+In fact, this map lifts to the type of heaps with a chosen identification.
+\begin{exercise}\label{xca:group+torsor-heap}
+  Define \emph{two} equivalences $l,r:\Heap \equivto \sum_{G:\Group}\BG$,
+  and one $c:\Group \equivto \sum_{H:\Heap}\USymH$.
+\end{exercise}
+Recalling the equivalence between $\BG$ and the type of $G$-torsors
+from~\cref{lem:BGbytorsor},
+we can also say that a heap is the same
+as a group $G$ together with a $G$-torsor.\footnote{%
+  But be aware that are \emph{two} such descriptions,
+  according to which endpoint is the designated shape,
+  and which is the ``twisted'' torsor.}
+It also follows that the type of heaps is a (large) groupoid.
+
+In the other direction,
+there are \emph{two} obvious maps (functors) from heaps to groups,
+taking either the start or the end shape to be the designated shape.
+
+Here's an \emph{a priori} different map from heaps to groups:
+For a heap $H$, consider all the
+symmetries of the underlying set of identifications $\USymH$
+that arise as $r \mapsto p\inv q r$ for $p,q\in \USymH$.
+
+Note that $(p,q)$ and $(p',q')$ determine the same symmetry
+if and only if $p\inv q = p'\inv{q'}$, and if and only if
+$\inv{p'}p = \inv{q'}q$.
+
+For the composition, we have $(p,q)(p',q') = (p\inv{q}p',q') = (p,q'\inv{p'}q)$.
+
+\begin{exercise}
+  Complete the argument that this defines a map
+  from heaps to groups. Can you identify the resulting group
+  with the symmetry group of the start or end shape?
+  How would you change the construction to get the other endpoint?
+\end{exercise}
+
+\begin{exercise}
+  Show that the symmetry groups of the two endpoints of a heap
+  are \emph{merely} isomorphic.
+
+  Define the notion of an \emph{abelian heap},
+  and show that for abelian heaps,
+  the symmetry groups of the endpoints are (\emph{purely}) isomorphic.
+\end{exercise}
+
+Now we come to the question of describing the algebraic structure
+of a heap.
+Whereas for groups we can define the abstract structure
+in terms of the reflexivity path and the binary operation of path composition,
+for heaps, we can define the abstract structure
+in terms of a \emph{ternary operation},
+as envisioned by the following exercise.
+
+\begin{exercise}\label{xca:heap-variety}
+  Fix a set $S$.
+  Show that the fiber $\inv{\USym}(S)\jdeq\sum_{H:\Heap}(S=\USymH)$ is a set.
+
+  Now fix in addition a ternary operation $t:S\times S\times S\to S$ on $S$.
+  Show that the fiber of the map $\Heap \to \sum_{S:\Set}(S\times S\times S \to S)$,
+  mapping $H$ to $(\USymH,(p,q,r)\mapsto p \inv{q} r)$,
+  at $(S,t)$ is a proposition,
+  and describe this proposition in terms of equations.
+\end{exercise}
+
 
 %%% Local Variables:
 %%% mode: LaTeX

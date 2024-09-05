@@ -1,7 +1,38 @@
 \chapter{Group actions}
 \label{ch:actions}
 
+Classically, groups have appeared because they can ``act'' on a set
+(or more general objects), that is to say, they collect some of the
+symmetries of the set. This is a point of view that we will return to
+many times and we give the basic theory in \cref{sec:gsets}.
+This section should remind the reader of the material in \cref{cha:circle},
+where we dealt with the special case of the group of integers.
+More generally, connected \coverings now reappear in the guise of
+``transitive $G$-sets'', and these are intimately related to
+the set of subgroups of a group.
+
+Also discussed in \cref{sec:gsets} is the notion of ``$G$-torsor''.
+A $G$-torsor is a $G$-set that is merely equal to the universal \covering.
+The type of $G$-torsors recovers the classifying type of the group $G$,
+and this idea is used in~\cref{ch:absgroup} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.
+
 \section{Brief overview of the chapter}
+
+After setting things up in~\cref{sec:gsets}, and
+studying subgroups in~\cref{sec:subgroups},
+we introduce the important
+operations of taking \emph{fixed points} and \emph{orbits} of an action
+in~\cref{sec:fixpts-orbits}.
+We then construct in~\cref{sec:torsors}
+the fundamental equivalence between the classifying type $\BG$ of a group $G$
+and the type of $G$-torsors.
+
+In~\cref{sec:orbit-stabilizer-theorem,sec:burnsides-lemma} we
+begin the study of the combinatorics of group actions.
+This allows us to count for instance how many ways there are of ``coloring''
+objects acted on by groups,
+and it lays the groundwork for the combinatorics of finite groups
+we'll be looking at in~\cref{ch:fingp}.
 
 \section{Group actions ($G$-sets)}
 \label{sec:gsets}
@@ -396,7 +427,200 @@ Because of this equivalence,
 we define a \emph{$G$-action on $a:A$}
 to be a homomorphism from $G$ to $\Aut_A(a)$.
 
-\subsection{Fixed points and orbits}
+\section{Subgroups}
+\label{sec:subgroups}
+In our discussion of the group $\ZZ\defequi\Aut_{S^1}(\base)$ of integers in \cref{cha:circle} we discovered that some of the symmetries of $\base$ were picked out by the $n$-fold covering (for some particular natural number $n$).  On the level of the set $\base\eqto{}\base$, the symmetries picked out are all the iterates (positive or negative or even zero-fold) of $\Sloop^n$.  The important thing is that we can compose or invert any of the iterates of $\Sloop^n$ and get new symmetries of the same sort (because of distributivity $nm_1+nm_2=n(m_1+m_2)$).  So, while we do not get all symmetries of $\base$ (unless $n=1$), we get what we'd like to call a subgroup of the group of integers. 
+
+% the ``subsymmetries'' formed a very organized structure.
+% For each natural number $n$ we obtained a set of subsymmetries in the identity type $\base=\base$, namely the set of all the iterates $(\Sloop^{n})^m$ where $m$ varies over the integers.
+% When $n$ was positive this was realized as the $n$-fold \covering of $S^1$, when $n=0$ this was given by the universal \covering.
+
+
+The other extreme of the idea of a subgroup was exposed in \cref{sec:groupssubperm} in the form of the slogan ``any symmetry is a symmetry in $\Set$''.
+By this we meant that, if $G \defequi \Aut_A(a)$ is a group, we produced a monomorphism $\rho_G:\Hom(G,\Aut_{\USymG}(\Set))$,
+\ie any symmetry of $a$ is uniquely given by a symmetry (``permutation'') of the set $\USymG\defequi (a\eqto{}a)$.
+
+For yet another example, consider the cyclic group $\CG_6$ of order $6$; perhaps visualized as the rotational symmetries of a regular hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
+The symmetries of the regular triangle (rotations by $2\pi\cdot m/3$, where $m=0,1,2$) can also be viewed as symmetries of the hexagon.
+Thus there is a subgroup of $\CG_6$ which, as a group, is isomorphic to $\CG_3$.\marginnote{Make a TikZ drawing of the hexagon and triangle inscribe in it.}
+There are other subgroups of $\CG_6$, and in this example they are accounted for simply by the various factorizations of the number $6$.
+
+For other groups the subgroups form more involved structures and reveal much about the nature of the object whose symmetries we study.
+There are several ways to pin down the subgroups and so capture this information.
+If $A$ is a groupoid, singling out a group of subsymmetries of $a:A$ should be a way of picking out just some of the symmetries of $a$ in $A$ in a way so that we can compose subsymmetries compatibly.  To make a long story short; we want a group $H$ and a homomorphism $i:\Hom(H,G)$ so that $\USymi:\USymH\to\USymG$ is injective.\footnote{In classical set theory there is an important difference between saying that a function is the inclusion of a subset (which is what one classically wants) and saying that it is an injection.  We'll address this in a moment, so rest assured that all is well as you read on.}  We have a name for such a setup: $i$ is a \emph{monomorphism} as laid out in different interpretations in \cref{lem:eq-mono-cover}.
+
+\subsection{Subgroups as monomorphisms}
+
+The proposition $\ismono(i)$ is equivalent to saying that $\USymi:\USymH\to \USymG$ is an injection (all preimages of $\USymi$ are propositions), and also to saying that $\Bi:\BH\to\BG$ is a \covering, which in turn is equivalent to the proposition $\isset((\Bi)^{-1}(\shape_G))$ since $\BG$ is connected.
+%\newcommand{\typemono}{Mono}
+\begin{definition}
+  \label{def:typeofmono}
+  If $G$ is a group, the \emph{type of monomorphisms into $G$}\index{type! of monomorphisms into a groups}\glossary(MonoG){$\protect{\typemono_G}$}{type of monomorphisms into the group $G$} is
+  $$\typemono_G\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i)$$
+  and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a groups}\glossary(EpiG){$\protect{\typeepi_G}$}{type of epimorphisms from the group $G$} is
+  $$\typeepi_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(G,G')}\isepi(f).$$
+  A monomorphism $(H,i,!)$ is
+      \begin{enumerate}
+      \item \emph{trivial}\index{trivial monomorphism} if $H$ is the trivial group, %.contractible (or, equivalently, if $\USymH$ is contractible),
+      \item \emph{proper}\index{proper monomorphism} if $i$ is not an isomorphism.\qedhere
+      \end{enumerate}
+    \end{definition}
+    \begin{exercise}
+      \begin{enumerate}
+      \item Show that $i:\Hom(H,G)$ is a monomorphism if and only if $Ui$ is an injection of sets and that $i$ is proper if and only $Ui$ is not a bijection.
+      \item Show that $f:\Hom(G,G')$ is a monomorphism if and only if $Uf$ is an surjection of sets.
+      \item Consider a composite $f=f_0f_2$ of homomorphisms.  Show that $f_0$ is an epimorphism if $f$ is and $f_2$ is a monomorphism if $f$ is.\qedhere
+      \end{enumerate}
+    \end{exercise}
+
+\begin{example}
+  \label{ex:sigma2inSigma3}
+   \marginnote{
+     That $i:\Sigma_2\to\Sigma_3$ is a monomorphism can visualized as follows: if $\Sigma_3$ represent all symmetries of an equilateral triangle in the plane (with vertices $1$, $2$, $3$), then $i$ is represented by the inclusion of the symmetries leaving $3$ fixed; \ie reflection through the line marked with dots in the picture.
+   $$\xymatrix{&3\ar@{.}[dd]&\\&&\\
+    1\ar@{-}[uur]\ar@{-}[rr]&&2\ar@{-}[uul]}$$}
+Consider the  homomorphism $i:\Sigma_2\to\Sigma_3$ of permutation groups corresponding to sending $A:\BSG_2\defequi \FinSet_2$ to $A+\bn1:\BSG_3$.
+%This is a monomorphism since $\US i:\USym\Sigma_2\to\USym\Sigma_3$ is an injection.
+\end{example}
+
+\begin{example}
+  \label{ex:prodinclismono}
+  If $G_1$ and $G_2$ are groups, then the first projection from $G_1\times G_2$ is an epimorphism and the first inclusion into $G_1\times G_2$ is a monomorphism because their composite is the identity.
+  % More generally, if $i:\Hom(H,G)$ is a homomorphism for which there (merely) exists a homomorphism $f:\Hom(G,H)$ such that $\id_H=fi$, then $i$ is a monomorphism.
+  \end{example}
+
+We will be interested in knowing when two monomorphisms into $G$ are identical.
+
+\begin{lemma}
+  \label{lem:setofsubgroups}
+  Let $G$ be a group and $(H,i_H,!),(H',i_{H'},!):\typemono_G$ be two monomorphisms into $G$.  The identity type $(H,i_H,!)\eqto{}(H',i_{H'},!)$ is equivalent to
+  \marginnote{$$\xymatrix{H\ar[rr]^f_\simeq\ar[dr]_{i_H}&&H'\ar[dl]^{i_{H'}}\\
+    &G&}$$}
+  $$\sum_{f:\Hom(H,H')}\isEq(\US f)\times (i_{H'}\eqto{}i_H f)$$ and is a proposition.
+  In particular, the type $\typemono_G$ of monomorphisms into $G$ is a set.
+\end{lemma}
+\marginnote{If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.
+Our use of monomorphisms can be defended because two monomorphisms into $G$ are identical exactly if they differ by precomposition by an identitification.
+In set-theoretic language this corresponds to saying that a subgroup is an injective abstract homomorphism \emph{modulo} the relation forcing that precomposing with an isomorphism yields identical subgroups.
+Classical set-theory offers the luxury of having a preferred representative in every equivalence class: namely the image of the injection, type theory does not.  We only know that the type $\typemono$ is a set.}
+\begin{proof}
+By \cref{lem:isEq-pair=} an identity between $(H,i_H,!)$ and $(H',i_{H'},!)$ is uniquely given by an identity $p:H'\eqto{}_{\typegroup}H$ such that $i_{H'}\eqto{}i_H\,p$ (a proposition since $\Hom(H',G)$ is a set).
+The description of the identity type follows since by univalence and \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, %\cref{lem:eqofconntypes},
+the identity type $H\eqto{}H'$ is equivalent to the set
+$$\sum_{f:\Hom(H,H')}\isEq(\US f).$$
+% If $(H,i_H,!)$ is a subgroup of $G$, then
+
+Now, $i_{H'}\eqto{}i_Hf$ is equivalent to $\US i_{H'}\eqto{}\US i_H \US f$, and since $\US i_H$ is an injection of sets there is at most one such function $\US f$; translating back we see that there is at most one $f$, making $\sum_{f%:\Hom(H,H')
+}\isEq(\US f)\times (i_{H'}\eqto{}i_H f)$ a proposition.
+% Consequently, the identity type
+% $(H,i_H,!)\eqto{}_{\typesubgroup_G}(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ which are such that $!:i_H^==i_H^=f^=$ and such that $f^=$ is an equivalence (as we see in a moment this last requirement is redundant).
+% Now, since $(H,i_H,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $!:f^==\refl{\USymH}$, which ultimately forces $f$ to be (identical to) the identity homomorphism.
+\end{proof}
+
+\subsection{Subgroups through $G$-sets}
+
+For many purposes it is useful to define ``subgroups'' slightly differently.
+A monomorphism into $G$ is given by a pointed connected groupoid  $\BH=(\BH_\div,\pt_H)$, a function $F:\BH_\div\to\BG_\div$ whose fibers are sets (a \covering) and an identification $p_f:\shape_G\eqto{}F(\shape_H)$.  There is really no need to specify that $\BH_\div$ is a groupoid: if $F:T\to \BG$ is a \covering, then $T$ is automatically a groupoid.
+
+On the other hand,  the type of \coverings over $\BG$ is equivalent to the type of $G$-sets: if $X:\BG\to\Set$ is a $G$-set, then the \covering is given by the first projection $\tilde X\to \BG$ where $\tilde X\defequi\sum_{y:\BG}X(y)$ and the inverse is obtained by considering the fibers of a \covering.  Furthermore, we saw in \cref{lem:conistrans} that $\tilde X$ being connected is equivalent to the condition $\istrans(X)$ of \cref{def:transitiveGset} claiming that the $G$-set $X$ is transitive.
+
+Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equivalent to the type of pointed connected \coverings over $\BG$, which again is equivalent to the type $\typesubgroup_G$ of transitive $G$-sets $X:\BG\to\Set$ together with a point in $X(\shape_G)$.
+
+\begin{definition}\label{def:set-of-subgroups}
+  Let $G$ be a group then the set of \emph{subgroups of $G$}\index{type!of subgroups of a group}\glossary(SubG){$\protect{\typesubgroup_G}$}{type of subgroups of $G$} is
+  $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}X(\shape_G)\times\mathrm{isTrans}(X).$$
+  The preferred equivalence
+  with the set of monomorphisms into $G$ is given by the function
+  \marginnote{%
+   The inverse equivalence to $E$ is given by sending $(X,\pt,!)$ to the monomorphism associated with the first projection $\sum_{z:\BG}X(z)\to\BG$.
+ }%
+ $$E:\typemono_G\to\typesubgroup_G\qquad (H,i,!)\mapsto E(H,i,!)\defequi ((Bi)^{-1},(\shape_H,p_i),!),$$
+ %\glossary(E){$E$}{equivalence from $\typemono_G$ to $\typesubgroup_G$}
+  where the monomorphism $i:\Hom(H,G)$ is -- as always -- given by the pointed map $(Bi_\div,p_i):(\BH_\div,\shape_H)\to_*(\BG_\div,\shape_G)$; and where the preimage $(Bi)^{-1}:\BG\to\Set$ is a $G$-\emph{set} since $i$ is a monomorphism  and finally $(\shape_H,p_i):(Bi)^{-1}(\shape_G)\defequi \sum_{x:\BH}(\shape_G\eqto{}Bi(x))$.
+\end{definition}
+
+\marginnote{%
+  Which of the equivalent sets $\typemono_G$ and $\typesubgroup_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
+}%
+\marginnote{%
+  An argument for our choice can be
+  as follows.  In set-based mathematics one has two options for defining subgroup: either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\typesubgroup_G$, whereas the other corresponds to $\typemono_G$
+  % that the identity type in $\typesubgroup_G$ seems more transparent than the one in $\typemono_G$  (``more things are equal'' in $\typemono_G$?), just as  $A\to\Prop$ gives more the intuition of picking out a subset by means of a characteristic function than what you get when considering the equivalent type of injections into $A$.
+}
+  \begin{example}
+    The monomorphism of $\Sigma_2$ into $\Sigma_3$ of \cref{ex:sigma2inSigma3} can be displayed as a subgroup of $\Sigma_3$ through
+    $$X:\FinSet_3\to\Set
+    $$
+    given by $A\mapsto\sum_{B:\FinSet 2}(A\eqto{}B+\bn 1)$ together with a proof that this is a set; in fact, the identity type $(B,p)\eqto{}(B',p')$ is equivalent to $\sum_{q:B\eqto{}B'}(q+\bn 1)p\eqto{}p'$ which is a proposition since $q$ is uniquely given by $q+\bn 1\eqto{}p'p^{-1}$.
+  \end{example}
+  \begin{xca}
+    Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.
+  \end{xca}
+\begin{example}
+  \label{ex:prodinclisGset}
+  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.
+  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the principal $G$-torsor $\princ G:\BG\to\Set$.
+
+  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi\eqto{}\id_H$, then $(H,i,!):\typemono_G$, corresponding to the subgroup with $G$-set given by the composite of $\Bf$ with the princial $H$-torsor $\princ H$.
+\end{example}
+
+
+
+  Translating the concepts in \cref{def:typeofmono} through the equivalence $E$ we say that a subgroup $(X,\pt,!):\typesubgroup_G$ is
+      \begin{enumerate}
+      \item \emph{trivial}\index{trivial subgroup} if $X$ is identical to the principal $G$-torsor.
+      \item \emph{proper}\index{proper subgroup} if $X(\shape_G)$ is not contractible.
+      \end{enumerate}
+
+      \begin{remark}
+      \label{rem:notationsubgroup}
+      A note on classical notation is in order.
+If $(X,\pt,!)$ is a subgroup corresponding to a monomorphism $(H,i,!)$ into a group $G$, tradition would permit us to relax the burden of notation and we could write ``a subgroup $i:H\subseteq G$'', or, if we didn't need the name of $i:\Hom(H,G)$, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
+    \end{remark}
+
+    % commented out by BID 211117 Some examples and references should be included when the cyclic subgroups are fully developed
+    % \subsection{The geometry of subgroups: some small examples}\footnote{this subsection is not touched: it needs attention}
+% \label{smallsubgpex}
+
+% As a teaser, and in order to get a geometric feel for the subgroups and their intricate interplay, it can be useful to have some fairly manageable examples to stare at.
+% Some of the main tools for analyzing the geometry of subgroups are collected in \cref{sec:fingp} on finite groups, and we hope the reader will be intrigued by our mysterious claims and go on to study \cref{sec:fingp}.
+% That said, the examples we'll present are possible to muddle through by hand without any fancy machinery, but brute force is generally not an option and even for the present examples it is not something you want to show publicly.
+
+% When presenting the subgroups of a group $G$, three types are especially revealing: the set of subgroups $\typesubgroup_G(\shape_G)$, the \emph{groupoid of subgroups} $\typesubgroup(G)\defequi\sum_{y:\BG}\typesubgroup_G(y)$ and what we for now call the ``set of normal subgroups'' $\prod_{y:\BG}\typesubgroup_G(y)$.   Our local use of ``normal subgroup'' is equivalent to the official definition to come.
+
+% The first projection $\typesubgroup(G)\to \BG$ is referred to as the \emph{\covering of subgroups}.
+
+% \footnote{Write out and fix the concrete examples (cyclic groups and $\Sigma_3$) commented out}
+% % \begin{remark}
+% % In  \cref{cha:circle} we studied the subgroups of the group of integers $G\eqto{}\ZZ$ through \coverings over the circle $S^1$ (which we showed was equivalent to $B\ZZ$).
+% % We discovered a subgroup $n\ZZ$ for each natural number $n:\NN$ and in the groupoid $\typesubgroup({\ZZ})$ these sit as elements in separate components.  Each of these components are contractible (because addition is commutative: $\ZZ$ is an abelian group).
+
+% % In general, a component $K$ of the groupoid $\sum_{y:\BG}\typesubgroup_G(y)$ of subgroups of a group $G$ may be much more interesting. For one thing the, $K$ can contain many subgroups in the sense that the preimage of the first projection $K\to \BG$ is a set that may have many different elements; each representing a subgroup.  However, this set of subgroup will be a \emph{conjugacy class} of subgroups: the different subgroups are related by the conjugation action of $G$.
+
+% % If $G$ is abelian this action is trivial, and $\sum_{y:\BG}\typesubgroup_G(y)$ consists of contractible components indexed over the subgroups of $G$.  Otherwise different subgroups may live in the same component of the groupoid of subgroups -- we'll see examples in a moment.
+
+% % In addition, the components will not in general be contractible, revealing the symmetries of the subgroups under the conjugation action.
+% % \end{remark}
+
+
+% % \begin{example}
+% %   The trivial group only has itself as a subgroup; the groupoid of subgroups and the set of normal subgroups are singletons.
+% % \end{example}
+% % \begin{example}
+% %   The cyclic group $C_p$ of prime order $p$ has only two subgroups, the trivial and the full subgroup itself and both are normal.  In fact, all subgroups of abelian groups are normal.
+
+% % In general, the cyclic group $C_n$ of order $n$ has exactly one subgroup for each divisor $i$ of $n$.
+% % \end{example}
+
+
+% % \begin{example}
+% %   The group $C_2\times C_2$ has has no less than five subgroups: the trivial one, three subgroups that as groups (as opposed as \emph{sub}groups) are equivalent to $C_2$ and the full group $C_4$ itself.
+% % \end{example}
+% % \begin{remark}
+% %   The permutation group $\Sigma_3$ has four nontrivial proper subgroups.  Three conjugate subgroups isomorphic as groups to $C_2$ and one normal one which is as a group is isomorphic to $C_3$.  The component containing the copies of $C_2$ is equivalent to a circle.
+% % \end{remark}
+
+\section{Fixed points and orbits}
 \label{sec:fixpts-orbits}
 We now return to some important constructions involving $G$-sets for a group $G$.
 However, since they make equally good sense for \emph{$G$-types} for \aninftygp
