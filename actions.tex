@@ -1,7 +1,7 @@
 \chapter{Group actions}
 \label{ch:actions}
 
-Classically, groups have appeared because they can ``act'' on a set
+Historically, groups have appeared because they can ``act'' on a set
 (or more general objects), that is to say, they collect some of the
 symmetries of the set. This is a point of view that we will return to
 many times and we give the basic theory in \cref{sec:gsets}.
@@ -39,11 +39,15 @@ we'll be looking at in~\cref{ch:fingp}.
 
 One of the goals of \cref{sec:Gsetforabstract} below
 is to prove that the types of groups and abstract groups are equivalent.
-In doing that, we are invited to explore how abstract groups should be thought of as symmetries and introduce the notion of a $G$-set.
-However, this takes a pleasant detour where we have to explore the most important feature of groups: they \emph{act} on things (giving rise to manifestations of symmetries)!
+In doing that, we are invited to explore how elements of
+abstract groups should be
+thought of as symmetries and introduce the notion of a $G$-set.
+However, this takes a pleasant detour where we have to explore a
+most important feature of groups: they can \emph{act} on things 
+(giving rise to manifestations of symmetries)!
 
-Before we handle the more complex case of abstract groups,
-let us see what this looks like for groups.
+\MB{Before we handle the more complex case of abstract groups,
+let us see what this looks like for groups. Leave out?}
 
 \begin{definition}
   For $G$ a group, a \emph{$G$-set} is a function
@@ -73,9 +77,10 @@ let us see what this looks like for groups.
   Much of what follows will work equally well for $\infty$-groups;
   if $G$ is (a group or) an infinity group,
   a \emph{$G$-type} is a function $X : \BG\to\UU.$
-  More generally, an action of $G$ on en element of type $A$
+  More generally, an action of $G$ on an element of type $A$
   is a function $X : \BG\to A$, see~\cref{sec:actions} below.}
-If $x:\BG$, then $X(x)$ is a ``twisted'' version of the underlying set.
+  \MB{Move to later:
+  If $x:\BG$, then $X(x)$ is a ``twisted'' version of the underlying set.}
 \begin{remark}
   The reader will notice that the type of $G$-sets is equivalent to the
 type of \coverings over $\BG$.
@@ -98,7 +103,7 @@ The reason we have allowed ourselves two names is that our focus is different: f
   \begin{equation}\label{eq:pathsp}
     \pathsp{\blank}:\BG\to\GSet,
     \qquad
-    \pathsp{y} \defeq(y\eqto\blank),
+    \pathsp{y} \defeq (z \mapsto (y\eqto z)),
   \end{equation}
   Applying $\pathsp{\blank}$ to a path $q:y\eqto y'$
   induces an equivalence from $\pathsp y$ to $\pathsp {y'}$ that sends $p:y \eqto z$
@@ -118,7 +123,7 @@ the underlying symmetries of $G$.
 If we vary both ends of the identifications simultaneously,
 we get another $G$-set:
 \begin{example}\label{def:adjointrep}
-  If $G$ is a group (or \inftygp), then
+  If $G$ is a group (or \inftygp \MB{to margin?}), then
   \[
     \Ad_G:\BG\to\UU,\qquad\Ad_G(z)\defequi(z\eqto z)
   \]
@@ -127,7 +132,7 @@ we get another $G$-set:
     The name ``adjoint'' comes from how transport works in this case; if $p:y \eqto z$,
     then $\Ad_G(p):(y\eqto y) \equivto (z\eqto z)$ is given by conjugation:
     \[
-      \Ad_G(p)(q)\eqto pqp^{-1} : z \eqto z.
+      \Ad_G(p)(q)\eqto pqp^{-1} \text{ in } z \eqto z.
     \]
     The picture
     \[
@@ -286,9 +291,9 @@ Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathc
 The next lemma is an analog of~\cref{cor:ConnCycles},
 but for a general group and transitive \covering
 we only get injectivity, not an equivalence.
+\Cref{fig:not-normal} illustrates what can go wrong.
 We'll study exactly when we get surjectivity in~\cref{sec:normal}
 on ``normal'' subgroups.
-\Cref{fig:not-normal} illustrates what can go wrong.
 \begin{marginfigure}
   \noindent\begin{tikzpicture}[scale=.1]
     \node[dot,label=above:$x$] (two)   at (0,10) {};
@@ -349,7 +354,9 @@ on ``normal'' subgroups.
     .. (-10,-7) .. controls (-10+\cx,-7) and (0,-5 - \cy)
     .. (base.center);
   \end{tikzpicture}
-  \caption{A $\mkgroup(\Sc\vee\Sc)$-set for which $\protect\ev_x$ is not surjective.}
+  \caption{A $\mkgroup(\Sc\vee\Sc)$-set for which $\protect\ev_x$ is not
+   surjective. At the bottom the type $\Sc\vee\Sc$ is visualized as
+   two circles with a common base point. }
   \label{fig:not-normal}
 \end{marginfigure}
 
@@ -367,15 +374,23 @@ on ``normal'' subgroups.
 \end{lemma}
 \begin{proof}
   In view of function extensionality, our claim is that the evaluation
-  map $\ev:\prod_{x:\BG}(X(x)=X(x))\to X(y)$ given by the same formula
+  map $\ev:\prod_{x:\BG}(X(x)\eqto X'(x))\to X'(y)$ given by the same formula
   is injective; that is all $f$s with the same value $f_y(b)$ are
   identical.
 
-  For $a:X'(y)$, consider an $f:X=X'$ with $f_y(b)=a$. Let $z:\BG$ and
+  For $a:X'(y)$, consider an $f:X\eqto X'$ with $f_y(b)=a$. Let $z:\BG$ and
   $c:X(z)$.  For any $g:y=z$ such that $g\cdot b=c$ we have
   $f_z(c)=f_z(g\cdot b)=g \cdot f_y(b)=g \cdot a$: the value does not
   depend on $f$. Since we try to prove a proposition we are done.
 \end{proof}
+
+\begin{xca}\label{xca:not-normal}
+Reverse engineer the $\mkgroup(\Sc\vee\Sc)$-set in \cref{fig:not-normal}.
+Let's call it $X$. Show that $X\eqto X$ is contractible.
+Conclude that $\ev_x$ cannot be surjective.
+(Hint: the induction principle for $\Sc\vee\Sc$ is a generalization
+of the induction principle for the circle to two loops.)
+\end{xca}
 
 \subsection{Actions in a type}
 \label{sec:actions}
