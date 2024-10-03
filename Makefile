@@ -32,24 +32,27 @@ always:
 
 # This list should include all the tex files that go into the book, in the order they go.
 # Compare with the \include commands in book.tex
-BOOKFILES :=						\
-	macros.tex					\
-	tikzsetup.tex					\
+BOOKFILES :=				\
+	macros.tex				\
+	tikzsetup.tex			\
 	book.tex					\
 	intro.tex					\
-	intro-uf.tex					\
-	circle.tex					\
+	intro-uf.tex			\
+	circle.tex				\
 	group.tex					\
-	subgroups.tex					\
-	symmetry.tex					\
-	fggroups.tex					\
+	actions.tex				\
+	absgroup.tex			\
+	congp.tex					\
+	subgroups.tex			\
+	symmetry.tex			\
 	fingp.tex					\
-	fields.tex					\
-	geometry.tex				\
-	galois.tex					\
-	choicefin.tex					\
-	history.tex					\
-	metamath.tex					\
+	fggroups.tex			\
+	abelian.tex				\
+	fields.tex				\
+	geometry.tex			\
+	galois.tex				\
+	history.tex				\
+	metamath.tex			\
 	choicefin.tex
 
 TAGS : Makefile $(BOOKFILES)
