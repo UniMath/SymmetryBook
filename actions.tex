@@ -496,17 +496,23 @@ of the notion of a subgroup of a group $G$.
 \subsection{Subgroups through $G$-sets}
 
 The idea is that a $G$-set $X$ picks out those symmetries in $G$
-that keep the point of $X(\sh_G)$ in place. For this to produce a
-subgroup we need to point $X(\sh_G)$ and $X$ must be transitive.
+that keep the point of $X(\sh_G)$ in place. For this to work well
+we need to point $X(\sh_G)$ and $X$ must be transitive.
 %so that the set of symmetries that are picked out is closed under composition and reverse.
 
 \begin{definition}\label{def:set-of-subgroups}
   For any group $G$, define the type of \emph{subgroups of $G$} as
   \index{type!of subgroups of a group}
-  \glossary(SubG){$\protect{\typesubgroup_G}$}{type of subgroups of $G$}
+%  \glossary(SubG){$\protect{\Sub_G}$}{type of subgroups of $G$} ERROR???
   $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}X(\shape_G)
-  \times\istrans(X).\qedhere$$
+  \times\istrans(X).$$
+  \MB{New:} The \emph{group defined by} $(X,x,!) : \Sub_G$ is
+  $$\mkgroup \bigl(\sum_{z:BG}X(z),(\sh_G,x)\bigr).\qedhere$$
 \end{definition}
+
+\begin{xca}\label{xca:group-Xx!}
+Show that $\sum_{z:BG}X(z)$ above is a connected groupoid.
+\end{xca}
 
 As an example, recall from \cref{def:RmtoS1} the $\Sc$-set
 $R_m : \Sc\to\Set$ defined by $R_m(\base) \defeq \bn m$ and
@@ -549,7 +555,8 @@ Hence $X\eqto X'$ is a proposition and the lemma is proved.
 
 \begin{example}
   \label{exa:fix1subSGn}%
-Consider the group $\SG_n$ for given $n>0$. For any $k:\bn n$, define
+Consider the group $\SG_n$ (\cref{ex:groups}\ref{ex:permgroup}) 
+for given $n>0$. For any $k:\bn n$, define
 the $\SG_n$-set $X_k : \BSG_n  \to\Set$ by $X_k(A,!)\defeq A$ for any
 $A:\FinSet_n$. Then $X_k$ is obviously transitive. We point $X_k$ by
 $k: X_k(\sh_{\SG_n}) \jdeq \bn n$.\footnote{Here the choice of the point
@@ -559,10 +566,44 @@ that satisfy $(\pi \cdot_{X_k}k) = k$.\footnote{%
 This uses the alternative notation for the group action of $X_k$
 introduced in \cref{def:Gset}.}
 In other words, $\pi$ keeps $k$ in place and can be any permutation
-of the other elements of $\bn n$. Later, in \cref{sec:delooping} 
-we will have the tools to prove that the subgroups
-of $\SG_n$ defined by $X_k$, for any $k$, are isomorphic to $\SG_{n-1}$.
+of the other elements of $\bn n$. \MB{TODO: the group defined by
+$(X_k,k,!) : \Sub_{\SG_n}$ is isomorphic to $\SG_{n-1}$, for any $k$.}
 \end{example}
+
+For yet another example, consider the cyclic group $\CG_6$ of order $6$; perhaps visualized as the rotational symmetries of a regular hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
+The symmetries of the regular triangle (rotations by $2\pi\cdot m/3$, where $m=0,1,2$) can also be viewed as symmetries of the hexagon.
+Thus there is a subgroup of $\CG_6$ which, as a group, is isomorphic to $\CG_3$.\marginnote{Make a TikZ drawing of the hexagon and triangle inscribe in it.}
+
+\begin{example}
+  \label{exa:C3subC6}%
+Recall from \cref{ex:cyclicgroups} the definition 
+$\CG_6\defeq\Aut_\Cyc(\bn6,\zs)$.
+In order to obtain $\CG_3$ as a subgroup we can define
+$F : \CG_6 \to \Set$ defined by $F(X,t) \defeq X/2$ for all $(X,t):\BCG_6$,
+where $X/2$ is defined in \cref{sec:mthroot} as the quotient of $X$
+modulo identifying elements that are an even power of $t$ away from each other.
+Clearly, $F$ is a transitive $G$-set.
+On symmetries $F$ maps $\pi : (\bn6,\zs) \eqto (\bn6,\zs)$ to 
+$([k] \mapsto [\pi(k)]) : (\bn6,\zs)/2 \eqto (\bn6,\zs)/2$.\footnote{%
+The function $[k] \mapsto [\pi(k)]$ is well-defined since
+permutations that commute with $\zs$ preserve distance.}
+The symmetries $\pi$ picked out by $F(\pi)([0])=[0]$ are the
+even powers of $\zs$.\footnote{%
+In view of \cref{cor:id-m-cycle}, these symmetries can be visualized 
+by the vertices of the regular triangle above.
+The same is true for the symmetries picked out by $F(\pi)([1])=[1]$.
+Both $F(\pi)([0])=[1]$ and $F(\pi)([1])=[0]$ give the other inscribed
+regular triangle.} 
+The subgroup that we have defined above is $(F,[0],!) : \Sub_{\CG_6}$.
+The group defined by $(F,[0],!)$ is 
+$\mkgroup(\sum_{(X,t):\Cyc_6} X/2, ((\bn6,\zs),[0]))$.
+Using $\rho_2: \BCG_3 \ptdto \BCG_6$ from \cref{lem:deg-m-on-Cyc},
+and the equivalence between $X/2$ and $\inv\rho_2 (X,t)$ from
+\cref{thm:fiber-cdg}, and the equivalence from \cref{lem:sum-of-fibers},
+we get an equivalence of the group defined by $(F,[0],!)$ and $\CG_3$.
+\end{example}
+
+There are other subgroups of $\CG_6$, and in this example they are accounted for simply by the various factorizations of the number $6$.
 
 \subsection{Subgroups as monomorphisms}
 
@@ -576,25 +617,30 @@ The proposition $\ismono(i)$ is equivalent to saying that $\USymi:\USymH\to \USy
 \begin{definition}
   \label{def:typeofmono}
   Let $G$ and $H$ be groups. A homomorphism $i: \Hom(H,G)$ is
-  a \emph{monomorphism}\index{monomorphism!of groups}
+  a \emph{monomorphism},\index{monomorphism} denoted by $\ismono(i)$,
   %\glossary(isMono){$\protect{\ismono(i)}$}{proposition stating that
   %$i$ is a monomorphism of groups} gives error: culprit \ismono(i)?
   if $\USymi:\USymH\to \USymG$ is an injection  
   (all preimages of $\USymi$ are propositions).
   
-  The \emph{type of monomorphisms into $G$}\index{type! of monomorphisms into a groups}\glossary(MonoG){$\protect{\typemono_G}$}{type of monomorphisms into the group $G$} is
+  The \emph{type of monomorphisms into $G$}
+  \index{type! of monomorphisms into a groups}\glossary(MonoG)%
+  {$\protect{\typemono_G}$}{type of monomorphisms into the group $G$} is
   $$\typemono_G\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i)$$
   
-  A monomorphism $(H,i,!)$ is
+  A monomorphism $(H,i,!)$ into $G$ is
       \begin{enumerate}
-      \item \emph{trivial}\index{trivial monomorphism} if $H$ is the trivial group, %.contractible (or, equivalently, if $\USymH$ is contractible),
-      \item \emph{proper}\index{proper monomorphism} if $i$ is not an isomorphism.\qedhere
+      \item \emph{trivial}\index{trivial monomorphism} 
+      if $H$ is the trivial group, 
+%.contractible (or, equivalently, if $\USymH$ is contractible),
+      \item \emph{proper}\index{proper monomorphism} if $i$ is 
+      not an isomorphism.\qedhere
       \end{enumerate}
-    \end{definition}
+\end{definition}
     \begin{exercise}
       \begin{enumerate}
-      \item Show that $i:\Hom(H,G)$ is a monomorphism if and only if $Ui$ is an injection of sets and that $i$ is proper if and only $Ui$ is not a bijection.
-      \item Show that $f:\Hom(G,G')$ is a monomorphism if and only if $Uf$ is an surjection of sets.
+      \item Show that $i:\Hom(H,G)$ is a monomorphism if and only if $\USymi$ is an injection of sets and that $i$ is proper if and only $Ui$ is not a bijection.
+      \item Show that $f:\Hom(G,G')$ is a monomorphism if and only if $\USymf$ is an surjection of sets.
       \item Consider a composite $f=f_0f_2$ of homomorphisms.  Show that $f_0$ is an epimorphism if $f$ is and $f_2$ is a monomorphism if $f$ is.\qedhere
       \end{enumerate}
     \end{exercise}
@@ -616,7 +662,7 @@ In the picture in the margin we have taken $\set{1,2,3}$ for $\bn{3}$.
 Two other subgroups can be obtained by taking $1$ or $2$ for $3$.
 To understand why there are three such subgroups while there are six
 possible pointing paths for $i$ you need to do the next exercise.
-\MB{Made obsolete by $i:\SG_n\to\SG_{n+1}$ above.}
+\MB{Made obsolete by \cref{exa:fix1subSGn} above?}
 %This is a monomorphism since $\US i:\USym\Sigma_2\to\USym\Sigma_3$ is an injection.
 \end{example}
 \begin{xca}
@@ -637,18 +683,34 @@ possible pointing paths for $i$ you need to do the next exercise.
   will develop in \cref{sec:homabsisconcr} and which is called `delooping'.
 \end{xca}
 
+\begin{lemma}\label{lem:SubG=MonoG}
+  Let $G$ be a group.
+  The map sending $(X,\pt,!) : \Sub_G$ to the monomorphism associated with the  
+  first projection $(\sum_{z:\BG}X(z))\to\BG$, pointed by reflexivity,
+  is an equivalence from $\Sub_G$ to $\typemono_G$.
+\end{lemma}
+
+\begin{proof}
+   The inverse equivalence is $E$ defined as follows:
+ $$E:\typemono_G\to\Sub_G,\qquad 
+   (H,i,!)\mapsto E(H,i,!)\defequi (\Bi_\div^{-1},(\sh_H,\Bi_\pt),!),$$
+ %\glossary(E){$E$}{equivalence from $\typemono_G$ to $\\Sub_G$}
+  where the monomorphism $i:\Hom(H,G)$ is -- as always -- given by 
+  the pointed map\footnote{\MB{I added all obeluses to $\Bi$ but would gladly
+  leave them out.}}
+  $(\Bi_\div,\Bi_\pt):(\BH_\div,\sh_H)\to_*(\BG_\div,\sh_G)$;
+  and where the preimage function $\Bi_\div^{-1}:\BG\to\Set$ is a $G$-set 
+  since $i$ is a monomorphism  and finally $(\sh_H,\Bi_\pt):\Bi_\div^{-1}(\sh_G)
+  \defequi \sum_{x:\BH}(\sh_G\eqto{}\Bi_\div(x))$.
+\end{proof}
+
+\begin{xca}\label{xca:SubG=MonoG}
+Complete the details of the proof above \MB{(transitivity since BH is connected
+and "sum of fibers of Bi")}.
+\end{xca}
 
 {\large cursor 1}
 
-  The preferred equivalence
-  with the set of monomorphisms into $G$ is given by the function
-  \marginnote{%
-   The inverse equivalence to $E$ is given by sending $(X,\pt,!)$ to the monomorphism associated with the first projection $\sum_{z:\BG}X(z)\to\BG$.
- }%
- $$E:\typemono_G\to\typesubgroup_G\qquad (H,i,!)\mapsto E(H,i,!)\defequi ((Bi)^{-1},(\shape_H,p_i),!),$$
- %\glossary(E){$E$}{equivalence from $\typemono_G$ to $\typesubgroup_G$}
-  where the monomorphism $i:\Hom(H,G)$ is -- as always -- given by the pointed map $(Bi_\div,p_i):(\BH_\div,\shape_H)\to_*(\BG_\div,\shape_G)$; and where the preimage $(Bi)^{-1}:\BG\to\Set$ is a $G$-\emph{set} since $i$ is a monomorphism  and finally $(\shape_H,p_i):(Bi)^{-1}(\shape_G)\defequi \sum_{x:\BH}(\shape_G\eqto{}Bi(x))$.
-%\end{definition}
 
 \marginnote{%
   Which of the equivalent sets $\typemono_G$ and $\typesubgroup_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
@@ -658,12 +720,6 @@ possible pointing paths for $i$ you need to do the next exercise.
   as follows.  In set-based mathematics one has two options for defining subgroup: either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\typesubgroup_G$, whereas the other corresponds to $\typemono_G$
   % that the identity type in $\typesubgroup_G$ seems more transparent than the one in $\typemono_G$  (``more things are equal'' in $\typemono_G$?), just as  $A\to\Prop$ gives more the intuition of picking out a subset by means of a characteristic function than what you get when considering the equivalent type of injections into $A$.
 }
-
-
-For yet another example, consider the cyclic group $\CG_6$ of order $6$; perhaps visualized as the rotational symmetries of a regular hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
-The symmetries of the regular triangle (rotations by $2\pi\cdot m/3$, where $m=0,1,2$) can also be viewed as symmetries of the hexagon.
-Thus there is a subgroup of $\CG_6$ which, as a group, is isomorphic to $\CG_3$.\marginnote{Make a TikZ drawing of the hexagon and triangle inscribe in it.}
-There are other subgroups of $\CG_6$, and in this example they are accounted for simply by the various factorizations of the number $6$.
 
 For other groups the subgroups form more involved structures and reveal much about the nature of the object whose symmetries we study.
 There are several ways to pin down the subgroups and so capture this information.
