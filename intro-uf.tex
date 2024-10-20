@@ -2819,8 +2819,8 @@ using that the conclusion is a proposition.
   for all $a,a':A$.\footnote{%
     \emph{Warning:}
     If $A$ and $B$ are sets, then each $\ap{f}$ is an equivalence
-    if and only if we have the implication $(f(a) \eqto f(a')) \to (a \eqto a')$,
-    but this is in general not sufficient.}
+    if and only if all implications $(f(a) \eqto f(a')) \to (a \eqto a')$
+    hold, but this is in general not sufficient.}
 \end{lemma}
 
 \begin{proof}
@@ -2843,8 +2843,12 @@ using that the conclusion is a proposition.
 Let $A$ and $B$ be types and let $f:A\to B$ be a function. Then we have:
 \begin{enumerate}
 \item\label{set-fib-vs-path}
-All fibers of $f$ are $n+1$-types if and only if all fibers of
+All fibers of $f$ are $(n{+}1)$-types if and only if all fibers of
 each map induced by $f$ on identity types are $n$-types;
+\item\label{set-fib-vs-path-point}
+If $A$ is connected and $a:A$, then
+all fibers of $f$ are $(n{+}1)$-types if and only if all fibers of
+$\ap{f}: (a \eqto a) \to (f(a) \eqto f(a))$ are $n$-types;
 \item\label{conn-fib-vs-path}
 If $A$ and $B$ are connected, then $f$ is an equivalence
 if and only if each map induced by $f$ on identity types is an equivalence;
@@ -2854,10 +2858,11 @@ if and only if $\ap{f}: (a \eqto a) \to (f(a) \eqto f(a))$ is an equivalence.
 \end{enumerate}
 \end{corollary}
 \begin{proof}
-(1) When $n$ is $-2$ this is \cref{lem:inj-ap}
+\ref{set-fib-vs-path} When $n$ is $-2$ this is \cref{lem:inj-ap}
 and the proof for $n\geq -1$ is similar.
-(2) By \cref{lem:inj-ap} and \cref{cor:inj+connected}.
-(3) By (2) and \cref{xca:component-connected}.
+\ref{set-fib-vs-path-point} By \ref{set-fib-vs-path} and \cref{xca:component-connected}.
+\ref{conn-fib-vs-path} By \cref{lem:inj-ap} and \cref{cor:inj+connected}.
+\ref{conn-fib-vs-path-point} By \ref{conn-fib-vs-path} and \cref{xca:component-connected}.
 \end{proof}
 
 \begin{xca}\label{xca:sum-equivalences}
@@ -3113,13 +3118,15 @@ which will be key to saying what a \emph{subtype} is.
 
 \begin{definition}\label{def:subtype}
   A \emph{subtype}\index{subtype} of a type $T$
-  is a type $S$ together with an injection
-  $f : S \to T$.  Selecting a universe $\UU$ as a repository for such types $S$ allows us to introduce
-  the type of subtypes of $T$ in $\UU$ as follows.
+  is a type $S$ together with an injection $f : S \to T$. 
+  The type $S$ is called the \emph{underlying type} of this subtype.
+  Selecting a universe $\UU$ as a repository for such types $S$ allows 
+  us to introduce the type of subtypes of $T$ in $\UU$ as follows.
   \[
   \Sub^\UU_T \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).
   \]
   When no confusion can arise, we simply write $\Sub_T$ for $\Sub^\UU_T$.
+%  \glossary(subtypetype){$\Sub_T$}{type of subtypes of $T$}
 \end{definition}
 
 \begin{xca}\label{xca:subtypes-set}
@@ -3161,14 +3168,23 @@ in the contractible type $\pathover {p_1} P {\fst(r)} {p_2}$.
 \end{proof}
 
 Combined with \cref{lem:inj-ap},
-this gives that $\fst$ is an injection.\marginnote{%
+this gives that $\fst$ is an injection.\footnote{%
 Alternatively, one uses that $\inv\fst(t)\weq P(t)$ for all $t:T$.}
 Hence, given a predicate $P$ on $T$,
-the \emph{subtype} of $T$ characterized by $P$ is defined
+the \emph{subtype of $T$ characterized by $P$} is defined
 as $T_P\defeq \sum_{t:T} P(t)$,
 together with the injection $\fst : T_P \to T$.
+Thus $T_P$ is the underlying type of this subtype.
 
-The lemma above has other important consequences.
+We've seen how to make a subtype from a predicate.
+Conversely, given a subtype of $T$ by an injection
+$f : S \to T$, all fibers $\inv f(x)$ at $x:T$ are propositions. 
+Thus the preimage function $\inv f$ is a predicate on $T$.
+We shall see in~\cref{lem:Prop-Set-pointed-families}
+\ref{lem:Prop-families} that these operations form an equivalence
+between predicates on $T$ and subtypes of $T$.
+
+\cref{lem:subtype-eq-=} has other important consequences.
 \begin{corollary}\label{cor:subtype-same-level}
   For each natural number $n$,
   if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
@@ -3263,13 +3279,6 @@ for any type $T$ and function $f:T\to\bool$.
 Show $(P\equivto\true)\amalg(P\equivto\false)$ is a true proposition
 for every decidable proposition $P$.
 \end{xca}
-We've seen how to make a subtype from a predicate.
-Conversely, from a subtype of $T$ given by the injection
-$f : S \to T$, we can form a predicate $P_f : T \to \Prop$
-defined by $P_f(x) \defeq \inv f(x)$.
-We shall see in~\cref{lem:Prop-Set-pointed-families}
-(\ref{lem:Prop-families}) that these operations form an equivalence
-between predicates on $T$ and subtypes of $T$.
 
 \begin{definition}\label{def:Prop-Set}
 The type of types that are propositions and the
