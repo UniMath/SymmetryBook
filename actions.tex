@@ -506,12 +506,13 @@ we need to point $X(\sh_G)$ and $X$ must be transitive.
 %  \glossary(SubG){$\protect{\Sub_G}$}{type of subgroups of $G$} ERROR???
   $$\typesubgroup_G\defequi\sum_{X:\BG\to\Set}{\,}X(\shape_G)
   \times\istrans(X).$$
-  \MB{New:} The \emph{group defined by} $(X,x,!) : \Sub_G$ is
+  The \emph{underlying group} of the subgroup $(X,x,!) : \Sub_G$ is
   $$\mkgroup \bigl(\sum_{z:BG}X(z),(\sh_G,x)\bigr).\qedhere$$
 \end{definition}
 
 \begin{xca}\label{xca:group-Xx!}
 Show that $\sum_{z:BG}X(z)$ above is a connected groupoid.
+Hint: use \cref{lem:conistrans}.
 \end{xca}
 
 As an example, recall from \cref{def:RmtoS1} the $\Sc$-set
@@ -561,14 +562,22 @@ the $\SG_n$-set $X_k : \BSG_n  \to\Set$ by $X_k(A,!)\defeq A$ for any
 $A:\FinSet_n$. Then $X_k$ is obviously transitive. We point $X_k$ by
 $k: X_k(\sh_{\SG_n}) \jdeq \bn n$.\footnote{Here the choice of the point
 does matter for the symmetries that are picked out.}
+Thus we have $(X_k,k,!):\Sub_{\SG_n}$.
 The symmetries that are picked out are those $\pi : \bn n \eqto \bn n$
 that satisfy $(\pi \cdot_{X_k}k) = k$.\footnote{%
 This uses the alternative notation for the group action of $X_k$
 introduced in \cref{def:Gset}.}
 In other words, $\pi$ keeps $k$ in place and can be any permutation
-of the other elements of $\bn n$. \MB{TODO: the group defined by
-$(X_k,k,!) : \Sub_{\SG_n}$ is isomorphic to $\SG_{n-1}$, for any $k$.}
+of the other elements of $\bn n$. From the next exercise
+we get that the underlying group of each $(X_k,k,!)$ 
+is isomorphic to $\SG_{n-1}$.
 \end{example}
+
+\begin{xca} \label{xca:sdfdf}
+Give an equivalence from the type of
+$n$-element sets to the type of pointed $(n{+}1)$-element sets $(n:\NN)$.
+Hint: use \cref{xca:finsets-decidable}.
+\end{xca}
 
 For yet another example, consider the cyclic group $\CG_6$ of order $6$; perhaps visualized as the rotational symmetries of a regular hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
 The symmetries of the regular triangle (rotations by $2\pi\cdot m/3$, where $m=0,1,2$) can also be viewed as symmetries of the hexagon.
@@ -583,11 +592,11 @@ $F : \CG_6 \to \Set$ defined by $F(X,t) \defeq X/2$ for all $(X,t):\BCG_6$,
 where $X/2$ is defined in \cref{sec:mthroot} as the quotient of $X$
 modulo identifying elements that are an even power of $t$ away from each other.
 Clearly, $F$ is a transitive $G$-set.
-On symmetries $F$ maps $\pi : (\bn6,\zs) \eqto (\bn6,\zs)$ to 
+On symmetries, $F$ maps $\pi : (\bn6,\zs) \eqto (\bn6,\zs)$ to 
 $([k] \mapsto [\pi(k)]) : (\bn6,\zs)/2 \eqto (\bn6,\zs)/2$.\footnote{%
 The function $[k] \mapsto [\pi(k)]$ is well-defined since
 permutations that commute with $\zs$ preserve distance.}
-The symmetries $\pi$ picked out by $F(\pi)([0])=[0]$ are the
+The symmetries $\pi$ satisfying $F(\pi)([0])=[0]$ are the
 even powers of $\zs$.\footnote{%
 In view of \cref{cor:id-m-cycle}, these symmetries can be visualized 
 by the vertices of the regular triangle above.
@@ -595,12 +604,12 @@ The same is true for the symmetries picked out by $F(\pi)([1])=[1]$.
 Both $F(\pi)([0])=[1]$ and $F(\pi)([1])=[0]$ give the other inscribed
 regular triangle.} 
 The subgroup that we have defined above is $(F,[0],!) : \Sub_{\CG_6}$.
-The group defined by $(F,[0],!)$ is 
+The underlying group of $(F,[0],!)$ is 
 $\mkgroup(\sum_{(X,t):\Cyc_6} X/2, ((\bn6,\zs),[0]))$.
 Using $\rho_2: \BCG_3 \ptdto \BCG_6$ from \cref{lem:deg-m-on-Cyc},
 and the equivalence between $X/2$ and $\inv\rho_2 (X,t)$ from
 \cref{thm:fiber-cdg}, and the equivalence from \cref{lem:sum-of-fibers},
-we get an equivalence of the group defined by $(F,[0],!)$ and $\CG_3$.
+we get an equivalence of the underlying group of  $(F,[0],!)$ and $\CG_3$.
 \end{example}
 
 There are other subgroups of $\CG_6$, and in this example they are accounted for simply by the various factorizations of the number $6$.
@@ -611,8 +620,11 @@ We now give a second, equivalent definition of a subgroup,
 generalizing the examples $\dg{m}$ and $\cst{\base}$ from
 the introduction of this chapter. Recall that both
 $\USym\dg{m}$ and $\USym\cst{\base}$ are injective.
+Also recall \cref{cor:fib-vs-path}\ref{set-fib-vs-path-point},
+which implies that $\USymf$ is injective iff $\Bf$ is a \covering,
+for any homomorphism $f$.
 
-The proposition $\ismono(i)$ is equivalent to saying that $\USymi:\USymH\to \USymG$ is an injection (all preimages of $\USymi$ are propositions), and also to saying that $\Bi:\BH\to\BG$ is a \covering, which in turn is equivalent to the proposition $\isset((\Bi)^{-1}(\shape_G))$ since $\BG$ is connected.
+
 %\newcommand{\typemono}{Mono}
 \begin{definition}
   \label{def:typeofmono}
@@ -623,10 +635,21 @@ The proposition $\ismono(i)$ is equivalent to saying that $\USymi:\USymH\to \USy
   if $\USymi:\USymH\to \USymG$ is an injection  
   (all preimages of $\USymi$ are propositions).
   
-  The \emph{type of monomorphisms into $G$}
+  The \emph{type of monomorphisms into $G$}\footnote{%
+  The similarity of this type with the type of subtypes
+  $\Sub_T \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f)$ 
+  is not coincidental. Both express the idea that a substructure
+  of a structure $X$ is given by a structure preserving map into $X$
+  that is `injective'. What `injective' means depends on the
+  structure in question. For a group, where the symmetries are key,
+  this means that $\USymi$ is injective.}
   \index{type! of monomorphisms into a groups}\glossary(MonoG)%
   {$\protect{\typemono_G}$}{type of monomorphisms into the group $G$} is
-  $$\typemono_G\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i)$$
+  \[
+  \typemono_G\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i).
+  \]
+  
+  We call $H$ the \emph{underlying group} of $(H,i,!) : \typemono_G$.
   
   A monomorphism $(H,i,!)$ into $G$ is
       \begin{enumerate}
@@ -637,16 +660,9 @@ The proposition $\ismono(i)$ is equivalent to saying that $\USymi:\USymH\to \USy
       not an isomorphism.\qedhere
       \end{enumerate}
 \end{definition}
-    \begin{exercise}
-      \begin{enumerate}
-      \item Show that $i:\Hom(H,G)$ is a monomorphism if and only if $\USymi$ is an injection of sets and that $i$ is proper if and only $Ui$ is not a bijection.
-      \item Show that $f:\Hom(G,G')$ is a monomorphism if and only if $\USymf$ is an surjection of sets.
-      \item Consider a composite $f=f_0f_2$ of homomorphisms.  Show that $f_0$ is an epimorphism if $f$ is and $f_2$ is a monomorphism if $f$ is.\qedhere
-      \end{enumerate}
-    \end{exercise}
-
+    
 \begin{example}
-  \label{ex:SG2inSG3}
+  \label{ex:SGninSGn+1}
    \marginnote{
      That $i:\SG_2\to\SG_3$ is a monomorphism can visualized as follows:
      if $\SG_3$ represent all symmetries of an equilateral triangle in the
@@ -655,38 +671,49 @@ The proposition $\ismono(i)$ is equivalent to saying that $\USymi:\USymH\to \USy
      the line marked with dots in the picture.
                          $$\xymatrix{&3\ar@{.}[dd]&\\&&\\
              1\ar@{-}[uur]\ar@{-}[rr]&            &2\ar@{-}[uul]}$$}
-Consider the  homomorphism $i:\Sigma_2\to\SG_3$ of permutation groups
-with $\Bi$ sending $A:\BSG_2\defequi \FinSet_2$ to $A+\true:\BSG_3$.
-As pointing path we take the path induced by $\id_{\bn3}$.
-In the picture in the margin we have taken $\set{1,2,3}$ for $\bn{3}$.
-Two other subgroups can be obtained by taking $1$ or $2$ for $3$.
-To understand why there are three such subgroups while there are six
-possible pointing paths for $i$ you need to do the next exercise.
-\MB{Made obsolete by \cref{exa:fix1subSGn} above?}
-%This is a monomorphism since $\US i:\USym\Sigma_2\to\USym\Sigma_3$ is an injection.
+We will present the subgroups from \cref{exa:fix1subSGn} with
+monomorphisms. For each $n:\NN$, consider the  homomorphism 
+$i_n:\Sigma_n\to\SG_{n+1}$ of permutation groups
+with $\Bi_n$ sending $A:\BSG_n\defequi \FinSet_n$ to $A+\true:\BSG_{n+1}$.
+As pointing path we take the reflexivity path.
+This is a monomorphism since $\USymi_n:\USym\SG_n\to\USym\SG_{n+1}$ 
+is an injection, extending any permutation $\pi$ of $\bn n$ to 
+a permutation of $\bn{n}+\bn1$ by adding the last element as a
+fixed point.
+
+In the picture in the margin we have taken $n=3$ and
+$\set{1,2,3}$ for $\bn{3}$. How can we obtain the other proper,
+non-trivial subgroups of $\SG_3$? First of all, one should not
+expect to find all subgroups through monomorphisms $j:\SG_2\to\SG_3$,
+see \cref{xca:C3subSG3}. Using only $\SG_2$, the
+two other subgroups can be obtained by varying the pointing
+path of $i_3$. These pointing paths are induced by the permutations 
+of $\bn{3}$. In \cref{xca:SG2subSG3} you are asked to elaborate each case.
 \end{example}
-\begin{xca}
-  \label{xca:SG2=SG2contractible} \MB{Move or shorten?}
-  Show that $\Iso(\SG_2,\SG_2)$ is contractible. Hint: use
-  \cref{xca:CG2isSG2}. Here comes another interesting solution.
-  Let $f:\Iso(\SG_2,\SG_2)$. Then $\USym f: (\bn2\eqto\bn2)\equivto_*
-  (\bn2\eqto\bn2)$. There is exactly one such pointed equivalence,
-  namely the identity on $\bn2\eqto\bn2$. Now show that 
-  \[
-  \sum_{p:A\eqto \Bf(A)}\,\prod_{q: A\eqto\bn{2}} 
-  (\Bf^{-1}_\pt\cdot \ap{\Bf}(q)\cdot p) = q
-  \]
-  is contractible for all $A:\FinSet_2$, which induces an
-  identification of type $\id_{\SG_2}\eqto f$.
-  
-  This argument is a special case of a technique that we
-  will develop in \cref{sec:homabsisconcr} and which is called `delooping'.
+
+\begin{xca}\label{xca:SG2subSG3}
+Calculate $\im(\USymi_3)$ for each pointing path $\pi:\bn{3}\eqto\bn{3}$.
 \end{xca}
+
+\begin{xca}\label{xca:C3subSG3}
+Define a monomorphism $j:\CG_3\to\SG_3$.
+\end{xca}
+
+\begin{example}
+  \label{ex:prodinclismono}
+  If $G$ and $H$ are groups, then $i_G : G \ptdto (G\times H)$ with
+  $\Bi_G(z) \defeq (z,\sh_H)$, pointed by reflexivity, is a monomorphism:
+  $\USymi_G$ maps $g:\USymG$ to $(g,\sh_H)$ and is obviously injective.
+  We call $i_G$ the \emph{first inclusion} and we have a similar
+  \emph{second inclusion} $i_H : H \ptdto (G\times H)$.
+  % More generally, if $i:\Hom(H,G)$ is a homomorphism for which there (merely) exists a homomorphism $f:\Hom(G,H)$ such that $\id_H=fi$, then $i$ is a monomorphism.
+  \end{example}
+
 
 \begin{lemma}\label{lem:SubG=MonoG}
   Let $G$ be a group.
   The map sending $(X,\pt,!) : \Sub_G$ to the monomorphism associated with the  
-  first projection $(\sum_{z:\BG}X(z))\to\BG$, pointed by reflexivity,
+  first projection $(\sum_{z:\BG}X(z))\ptdto\BG$, pointed by reflexivity,
   is an equivalence from $\Sub_G$ to $\typemono_G$.
 \end{lemma}
 
@@ -695,86 +722,75 @@ possible pointing paths for $i$ you need to do the next exercise.
  $$E:\typemono_G\to\Sub_G,\qquad 
    (H,i,!)\mapsto E(H,i,!)\defequi (\Bi_\div^{-1},(\sh_H,\Bi_\pt),!),$$
  %\glossary(E){$E$}{equivalence from $\typemono_G$ to $\\Sub_G$}
-  where the monomorphism $i:\Hom(H,G)$ is -- as always -- given by 
-  the pointed map\footnote{\MB{I added all obeluses to $\Bi$ but would gladly
-  leave them out.}}
-  $(\Bi_\div,\Bi_\pt):(\BH_\div,\sh_H)\to_*(\BG_\div,\sh_G)$;
-  and where the preimage function $\Bi_\div^{-1}:\BG\to\Set$ is a $G$-set 
-  since $i$ is a monomorphism  and finally $(\sh_H,\Bi_\pt):\Bi_\div^{-1}(\sh_G)
+  where the monomorphism $i:\Hom(H,G)$ is given by 
+  the pointed map $(\Bi_\div,\Bi_\pt):\BH\ptdto\BG$.
+  The preimage function $\Bi_\div^{-1}:\BG\to\Set$ is a transitive $G$-set 
+  since $i$ is a monomorphism, and $(\sh_H,\Bi_\pt):\Bi_\div^{-1}(\sh_G)
   \defequi \sum_{x:\BH}(\sh_G\eqto{}\Bi_\div(x))$.
 \end{proof}
 
 \begin{xca}\label{xca:SubG=MonoG}
-Complete the details of the proof above \MB{(transitivity since BH is connected
-and "sum of fibers of Bi")}.
+Complete the details of the proof above using 
+\cref{cor:fib-vs-path}\ref{set-fib-vs-path-point},
+\cref{lem:sum-of-fibers},
+\cref{lem:conistrans}.
 \end{xca}
 
-{\large cursor 1}
-
+\begin{corollary}\label{lem:setofsubgroups}
+Let $G$ be a group. Then $\typemono_G$ is a set since $\Sub_G$ is.
+\end{corollary}
 
 \marginnote{%
-  Which of the equivalent sets $\typemono_G$ and $\typesubgroup_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
+  Which of the equivalent sets $\typemono_G$ and $\Sub_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
 }%
 \marginnote{%
   An argument for our choice can be
-  as follows.  In set-based mathematics one has two options for defining subgroup: either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\typesubgroup_G$, whereas the other corresponds to $\typemono_G$
+  as follows.  In set-based mathematics one has two options for defining subgroup: either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\Sub_G$, whereas the other corresponds to $\typemono_G$.
   % that the identity type in $\typesubgroup_G$ seems more transparent than the one in $\typemono_G$  (``more things are equal'' in $\typemono_G$?), just as  $A\to\Prop$ gives more the intuition of picking out a subset by means of a characteristic function than what you get when considering the equivalent type of injections into $A$.
 }
 
-For other groups the subgroups form more involved structures and reveal much about the nature of the object whose symmetries we study.
-There are several ways to pin down the subgroups and so capture this information.
-If $A$ is a groupoid, singling out a group of subsymmetries of $a:A$ should be a way of picking out just some of the symmetries of $a$ in $A$ in a way so that we can compose subsymmetries compatibly.  To make a long story short; we want a group $H$ and a homomorphism $i:\Hom(H,G)$ so that $\USymi:\USymH\to\USymG$ is injective.\footnote{In classical set theory there is an important difference between saying that a function is the inclusion of a subset (which is what one classically wants) and saying that it is an injection.  We'll address this in a moment, so rest assured that all is well as you read on.}  We have a name for such a setup: $i$ is a \emph{monomorphism} as laid out in different interpretations in \cref{lem:eq-mono-cover}.
+\MB{Obsolete?}For other groups the subgroups form more involved structures and 
+reveal much about the nature of the object whose symmetries we study.
+There are several ways to pin down the subgroups and so capture 
+this information. If $A$ is a groupoid, picking out a subgroup of 
+symmetries of $a:A$ should be a way of picking out just some of the 
+symmetries of $a$ in $A$ in a way so that we can compose them compatibly. 
+To make a long story short, we want a group $H$ and a homomorphism 
+$i:\Hom(H,G)$ so that $\USymi:\USymH\to\USymG$ is injective.\footnote{%
+In classical set theory there is an important difference between saying 
+that a function is the inclusion of a subset (which is what one classically
+wants) and saying that it is an injection.  We'll address this in a moment,
+so rest assured that all is well as you read on.\MB{Where?}}  
+We have a name for such a setup: $i$ is a \emph{monomorphism} as laid out 
+in different interpretations in \cref{lem:eq-mono-cover}.
 
 
-
-\begin{example}
-  \label{ex:prodinclismono}
-  If $G_1$ and $G_2$ are groups, then the first projection from $G_1\times G_2$ is an epimorphism and the first inclusion into $G_1\times G_2$ is a monomorphism because their composite is the identity.
-  % More generally, if $i:\Hom(H,G)$ is a homomorphism for which there (merely) exists a homomorphism $f:\Hom(G,H)$ such that $\id_H=fi$, then $i$ is a monomorphism.
+  \begin{example}\label{exa:EforSG3}
+  In this example we explain how the equivalence between
+  $\typemono_G$ and $\Sub_G$ works in the special case
+  $G\jdeq\SG_3$ with two versions of the same subgroup,
+  both elaborated before.
+  
+  For convenience we take again $\set{1,2,3}$ for $\bn{3}$.
+  Recall $(X_3,3,!):\Sub_{\SG_3}$ from \cref{exa:fix1subSGn}, and
+  $(\SG_2,i_3,!):\typemono_{\SG_3}$ with
+  $i_3: \SG_2\ptdto\SG_3$ from \cref{ex:SGninSGn+1}.
+  The preimage function $\inv\Bi_3$ maps any $B:\BSG_3$
+  to $\sum_{A:\BSG_2}(B\eqto{}A+\true)$.
+  In particular we have $(\bn2,\refl{\bn3}):\inv\Bi_3(\bn3)$
+  (recall that $i_3$ is pointed by reflexivity).
+   
+  We have $E(\SG_2,i_3,!)\jdeq(\inv\Bi_3,(\bn2,\refl{\bn3}),!)$.
+  \MB{To be continued if you like it.}
   \end{example}
 
-We will be interested in knowing when two monomorphisms into $G$ are identical.
-
-\begin{lemma}
-  \label{lem:setofsubgroups}
-  Let $G$ be a group and $(H,i_H,!),(H',i_{H'},!):\typemono_G$ be two monomorphisms into $G$.  The identity type $(H,i_H,!)\eqto{}(H',i_{H'},!)$ is equivalent to
-  \marginnote{$$\xymatrix{H\ar[rr]^f_\simeq\ar[dr]_{i_H}&&H'\ar[dl]^{i_{H'}}\\
-    &G&}$$}
-  $$\sum_{f:\Hom(H,H')}\isEq(\US f)\times (i_{H'}\eqto{}i_H f)$$ and is a proposition.
-  In particular, the type $\typemono_G$ of monomorphisms into $G$ is a set.
-\end{lemma}
-\marginnote{If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.
-Our use of monomorphisms can be defended because two monomorphisms into $G$ are identical exactly if they differ by precomposition by an identitification.
-In set-theoretic language this corresponds to saying that a subgroup is an injective abstract homomorphism \emph{modulo} the relation forcing that precomposing with an isomorphism yields identical subgroups.
-Classical set-theory offers the luxury of having a preferred representative in every equivalence class: namely the image of the injection, type theory does not.  We only know that the type $\typemono$ is a set.}
-\begin{proof}
-By \cref{lem:isEq-pair=} an identity between $(H,i_H,!)$ and $(H',i_{H'},!)$ is uniquely given by an identity $p:H'\eqto{}_{\typegroup}H$ such that $i_{H'}\eqto{}i_H\,p$ (a proposition since $\Hom(H',G)$ is a set).
-The description of the identity type follows since by univalence and \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, %\cref{lem:eqofconntypes},
-the identity type $H\eqto{}H'$ is equivalent to the set
-$$\sum_{f:\Hom(H,H')}\isEq(\US f).$$
-% If $(H,i_H,!)$ is a subgroup of $G$, then
-
-Now, $i_{H'}\eqto{}i_Hf$ is equivalent to $\US i_{H'}\eqto{}\US i_H \US f$, and since $\US i_H$ is an injection of sets there is at most one such function $\US f$; translating back we see that there is at most one $f$, making $\sum_{f%:\Hom(H,H')
-}\isEq(\US f)\times (i_{H'}\eqto{}i_H f)$ a proposition.
-% Consequently, the identity type
-% $(H,i_H,!)\eqto{}_{\typesubgroup_G}(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ which are such that $!:i_H^==i_H^=f^=$ and such that $f^=$ is an equivalence (as we see in a moment this last requirement is redundant).
-% Now, since $(H,i_H,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $!:f^==\refl{\USymH}$, which ultimately forces $f$ to be (identical to) the identity homomorphism.
-\end{proof}
-
-
-  \begin{example}
-    The monomorphism of $\SG_2$ into $\SG_3$ of \cref{ex:SG2inSG3} can be displayed as a subgroup of $\SG_3$ through
-    $$X:\FinSet_3\to\Set
-    $$
-    given by $A\mapsto\sum_{B:\FinSet 2}(A\eqto{}B+\bn 1)$ together with a proof that this is a set; in fact, the identity type $(B,p)\eqto{}(B',p')$ is equivalent to $\sum_{q:B\eqto{}B'}(q+\bn 1)p\eqto{}p'$ which is a proposition since $q$ is uniquely given by $q+\bn 1\eqto{}p'p^{-1}$.
-  \end{example}
-  \begin{xca}
-    Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.
+ \begin{xca}
+    Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.\MB{Later!}
   \end{xca}
 \begin{example}
   \label{ex:prodinclisGset}
   We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.
-  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the principal $G$-torsor $\princ G:\BG\to\Set$.
+  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the principal $G$-torsor $\princ G:\BG\to\Set$.\MB{Later!}
 
   More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi\eqto{}\id_H$, then $(H,i,!):\typemono_G$, corresponding to the subgroup with $G$-set given by the composite of $\Bf$ with the princial $H$-torsor $\princ H$.
 \end{example}
@@ -783,6 +799,7 @@ Now, $i_{H'}\eqto{}i_Hf$ is equivalent to $\US i_{H'}\eqto{}\US i_H \US f$, and 
 
   Translating the concepts in \cref{def:typeofmono} through the equivalence $E$ we say that a subgroup $(X,\pt,!):\typesubgroup_G$ is
       \begin{enumerate}
+      \item \MB{Add that $E$ preserves the underlying group.}
       \item \emph{trivial}\index{trivial subgroup} if $X$ is identical to the principal $G$-torsor.
       \item \emph{proper}\index{proper subgroup} if $X(\shape_G)$ is not contractible.
       \end{enumerate}
@@ -813,6 +830,65 @@ Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equival
 
 and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a groups}\glossary(EpiG){$\protect{\typeepi_G}$}{type of epimorphisms from the group $G$} is
   $$\typeepi_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(G,G')}\isepi(f).$$
+  
+  
+  \begin{exercise}
+      \begin{enumerate}
+      \item Show that $i:\Hom(H,G)$ is a monomorphism if and only if $\USymi$ is an injection of sets and that $i$ is proper if and only $Ui$ is not a bijection.
+      \item Show that $f:\Hom(G,G')$ is an epimorphism if and only if $\USymf$ is an surjection of sets.
+      \item Consider a composite $f=f_0f_2$ of homomorphisms.  Show that $f_0$ is an epimorphism if $f$ is and $f_2$ is a monomorphism if $f$ is.\qedhere
+      \end{enumerate}
+    \end{exercise}
+    
+    If $G_1$ and $G_2$ are groups, then the first projection from $G_1\times G_2$ is an epimorphism 
+
+\begin{xca}
+  \label{xca:SG2=SG2contractible} \MB{Move or shorten?}
+  Show that $\Iso(\SG_2,\SG_2)$ is contractible. Hint: use
+  \cref{xca:CG2isSG2}. Here comes another interesting solution.
+  Let $f:\Iso(\SG_2,\SG_2)$. Then $\USym f: (\bn2\eqto\bn2)\equivto_*
+  (\bn2\eqto\bn2)$. There is exactly one such pointed equivalence,
+  namely the identity on $\bn2\eqto\bn2$. Now show that 
+  \[
+  \sum_{p:A\eqto \Bf(A)}\,\prod_{q: A\eqto\bn{2}} 
+  (\Bf^{-1}_\pt\cdot \ap{\Bf}(q)\cdot p) = q
+  \]
+  is contractible for all $A:\FinSet_2$, which induces an
+  identification of type $\id_{\SG_2}\eqto f$.
+  
+  This argument is a special case of a technique that we
+  will develop in \cref{sec:homabsisconcr} and which is called `delooping'.
+\end{xca}
+
+
+We will be interested in knowing when two monomorphisms into $G$ are identical.
+
+\begin{lemma}
+  \label{lem:setofsubgroups}
+  Let $G$ be a group and $(H,i_H,!),(H',i_{H'},!):\typemono_G$ be two monomorphisms into $G$.  The identity type $(H,i_H,!)\eqto{}(H',i_{H'},!)$ is equivalent to
+  \marginnote{$$\xymatrix{H\ar[rr]^f_\simeq\ar[dr]_{i_H}&&H'\ar[dl]^{i_{H'}}\\
+    &G&}$$}
+  $$\sum_{f:\Hom(H,H')}\isEq(\US f)\times (i_{H'}\eqto{}i_H f)$$ and is a proposition.
+  In particular, the type $\typemono_G$ of monomorphisms into $G$ is a set.
+\end{lemma}
+\marginnote{If you're familiar with the set-theoretic flavor of things, you know that it is important to distinguish between subgroups and injective group homomorphisms.
+Our use of monomorphisms can be defended because two monomorphisms into $G$ are identical exactly if they differ by precomposition by an identitification.
+In set-theoretic language this corresponds to saying that a subgroup is an injective abstract homomorphism \emph{modulo} the relation forcing that precomposing with an isomorphism yields identical subgroups.
+Classical set-theory offers the luxury of having a preferred representative in every equivalence class: namely the image of the injection, type theory does not.  We only know that the type $\typemono$ is a set.}
+\begin{proof}
+By \cref{lem:isEq-pair=} an identity between $(H,i_H,!)$ and $(H',i_{H'},!)$ is uniquely given by an identity $p:H'\eqto{}_{\typegroup}H$ such that $i_{H'}\eqto{}i_H\,p$ (a proposition since $\Hom(H',G)$ is a set).
+The description of the identity type follows since by univalence and \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, %\cref{lem:eqofconntypes},
+the identity type $H\eqto{}H'$ is equivalent to the set
+$$\sum_{f:\Hom(H,H')}\isEq(\US f).$$
+% If $(H,i_H,!)$ is a subgroup of $G$, then
+
+Now, $i_{H'}\eqto{}i_Hf$ is equivalent to $\US i_{H'}\eqto{}\US i_H \US f$, and since $\US i_H$ is an injection of sets there is at most one such function $\US f$; translating back we see that there is at most one $f$, making $\sum_{f%:\Hom(H,H')
+}\isEq(\US f)\times (i_{H'}\eqto{}i_H f)$ a proposition.
+% Consequently, the identity type
+% $(H,i_H,!)\eqto{}_{\typesubgroup_G}(H,i_H,!)$ is equivalent to the type of homomorphisms $f:\Hom(H,H)$ which are such that $!:i_H^==i_H^=f^=$ and such that $f^=$ is an equivalence (as we see in a moment this last requirement is redundant).
+% Now, since $(H,i_H,!)$ is a subgroup, $i_H^=$ is an injection of sets, which forces $!:f^==\refl{\USymH}$, which ultimately forces $f$ to be (identical to) the identity homomorphism.
+\end{proof}
+
 
 {\large cursor 2}
 
