@@ -580,8 +580,8 @@ Hint: use \cref{xca:finsets-decidable}.
 \end{xca}
 
 \begin{xca} \label{xca:A-is-A-1+1}
-For \MB{(check decidable set not needed)} any type $A$, 
-give an equivalence from $A$ to $\sum_{B:\UU}(A\eqto(B+\true))$.
+For any decidable set $A$, give an equivalence from $A$ to 
+$\sum_{B:\UU}(A\eqto(B+\true))$. 
 \end{xca}
 
 For yet another example, consider the cyclic group $\CG_6$ of order $6$; perhaps visualized as the rotational symmetries of a regular hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
@@ -646,9 +646,9 @@ for any homomorphism $f$.
   \cref{def:subtype} is not coincidental, and the remarks made 
   there in \cref{ft:incl-vs-inj} apply here as well.
   
-  In particular, the identity relation on $\typemono_G$
+  In particular, the identity type of $\typemono_G$
   identifies precisely the triples that define the same subgroup,
-  namely when their monomorphisms differ by precomposition by an 
+  namely when their homomorphisms differ by precomposition by an 
   identification of their underlying groups.
   
   \MB{We should add in \cref{ch:absgroup} an equivalence between
@@ -731,7 +731,7 @@ while $(\CG_3,j,!)$ and $(\CG_3,j',!)$ can be identified.
   Let $G$ be a group.
   The map sending $(X,\pt,!) : \Sub_G$ to the monomorphism classified by  
   $\fst: (\sum_{z:\BG}X(z),(\sh_G,\pt))\ptdto\BG$, pointed by
-  reflexivity, is an equivalence from $\Sub_G$ to $\typemono_G$.
+  reflexivity, yields an equivalence from $\Sub_G$ to $\typemono_G$.
 \end{lemma}
 
 \begin{proof}
@@ -787,28 +787,27 @@ Complete the details of the proof of \cref{lem:SubG=MonoG} above using
 Let $G$ be a group. Then $\typemono_G$ is a set since $\Sub_G$ is.
 \end{corollary}
 
-The following lemma states that $E$ preserves the subsets of
-symmetries that are picked out.
+The following lemma states that the equivalences in \cref{lem:SubG=MonoG} preserve the subsets of symmetries that are picked out.
 \begin{lemma}\label{lem:E-preserves-symms}
-  \MB{New:} Let $G$ be a group.
-  For all $(H,i,!) : \typemono_G$ and $g:\USymG$ we have
-  $\exists_{h:\USymH} g = \USymi(h)$ if and only if 
-  $g\cdot_{\inv\Bi}(\sh_H,\Bi_\pt) =(\sh_H,\Bi_\pt)$.
+  Let $G$ be a group and $g:\USymG$ a symmetry.
+  For all $(X,\pt,!) : \Sub_G$ and $(H,i,!) : \typemono_G$
+  that correspond via the equivalences in \cref{lem:SubG=MonoG},
+  we have $X(g)(\pt) = \pt$ if and only if there exists $h:\USymH$
+  such that $g = \USymi(h)$.
 \end{lemma}
 \begin{proof}
-We spell out:
-$g = \USymi(h)\jdeq(\loops\Bi)(h)\jdeq(\inv\Bi_\pt\cdot\Bi(h)\cdot\Bi_\pt)$.
+It suffices to prove this for one of the equivalences.
+We choose $\inv E$, that is, the equivalence in the statement
+of \cref{lem:SubG=MonoG}, so we take 
+$(H,i,!) \jdeq ((\sum_{z:\BG}X(z),(\sh_G,\pt)),\fst,!)$.
+Now we have to prove: $X(g)(\pt)=\pt$ iff there exists an
+$h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that $g = \USym\fst(h)$.
 
-The action of $g$ on $\inv\Bi(\sh_G) \defeq \sum_{x:\BH}(\sh_G\eqto\Bi(x))$
-is by mapping $(x,p)$ to $(x,p\inv g)$ for any $p:\sh_G\eqto\Bi(x)$.
-Hence, if $g = \USymi(h)$, then
-\begin{align*} 
-g\cdot_{\inv\Bi}(\sh_H,\Bi_\pt) & = (\sh_H,\Bi_\pt\cdot \inv g)\\
-& = (\sh_H,\Bi_\pt \cdot (\inv\Bi_\pt\cdot\Bi(\inv h)\cdot\Bi_\pt))\\
-& = (\sh_H,\Bi(\inv h)\cdot\Bi_\pt) \\
-& = (\sh_H,\Bi_\pt) \quad \text{by transport along $h$.}
-\end{align*}
-The other direction is easy.
+If $X(g)(\pt)=\pt$, then we can simply take $h\defeq(g,\pt)$.
+
+For the converse, assume there exists an
+$h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that $g = \USym\fst(h)$.
+Then $h = (g,p)$ for some $p: X(g)(\pt)=\pt$.
 \end{proof}
 
 \marginnote{%
@@ -838,76 +837,7 @@ Then, we say that a subgroup $(X,\pt,!):\Sub_G$ is:
 If $(X,\pt,!)$ is a subgroup corresponding to a monomorphism $(H,i,!)$ into a group $G$, tradition would permit us to relax the burden of notation and we could write ``a subgroup $i:H\subseteq G$'', or, if we didn't need the name of $i:\Hom(H,G)$, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
     \end{remark}
     
-    \subsection{Any symmetry is a symmetry in $\Set$}
-\label{sec:groupssubperm}
 
-
-For abstract groups there is a result, attributed to Cayley,
-which is often stated as ``any group is a permutation group''. 
-In our parlance this translates to ``any symmetry is a symmetry in $\Set$''.
-The aim of this section is to give a precise formulation of the latter
-and prove it.
-% \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
-
-%which is equivalent to saying that $X$ is the universal \covering
-Let $G$ be a group.
-Recall from \cref{def:universalcover} the universal \covering 
-$\uc{\sh_G}:\BG\to\Set: z\mapsto \sh_G\eqto z$, pointed by $\refl{\sh_G}$.
-Since $\uc{\sh_G}(\shape_G)\defequi \USymG$, $\uc{\sh_G}$ restricts to
-a pointed function $\BG\ptdto \BSG_{\USymG}$,
-\marginnote{The letter $\rho$ commemorates the word ``regular''} \ie 
-induces a homomorphism from $G$ to the permutation group $\SG_{\USymG}$,
-denoted by $$\rho_G:\Hom(G,\SG_{\USymG}).$$
-
-\begin{theorem}[Cayley]
-  \label{lem:allgpsarepermutationgps}
-  \marginnote{By \cref{lem:eq-mono-cover} ``$\rho_G$ is a monomorphism'' means that the induced map $\rho_G^\abstr$ from the symmetries of $\shape_G$ in $\BG_\div$ to the symmetries of $\USymG$ in $\Set$ is an injection, \ie ``any symmetry is a symmetry in $\Set$''.}Let $G$ be a group. Then
-  $\rho_G:\Hom(G,\SG_{\USymG})  $ is a monomorphism.
-\end{theorem}
-\begin{proof}
-  In view of \cref{lem:eq-mono-cover} we need to show that $\rho_G:\BG\to \conncomp \Set {\USymG}$ is a
-  \covering.
-  Under the identity
-  $$\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)\oldequiv (\conncomp{\Set}{\USymG},\USymG) \MB{typo???}$$ of
-  \cref{lem:BGbytorsor}, $\rho_G$ translates to the
-  evaluation map
-  $$\mathrm{ev}_{\shape_G}:\conncomp{(\BG\to\Set)}{\princ G}\to\conncomp{\Set}{\USymG},\qquad
-  \mathrm{ev}_{\shape_G}(E)=E(\shape_G).$$
-  We must show that the preimages
-  $\inv{\ev_{\shape_G}}(X)$ for $X:\Sigma_{\USymG}$ are sets.  This
-  fiber is equivalent to
-  $\sum_{E:\conncomp{(\BG\to\Set)}{\uc{\sh_G}}}(X=E(\shape_G))$ which is a
-  set precisely when $\sum_{E:\BG\to\Set}(X=E(\shape_G))$ is a set.  We
-  must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\shape_G))$,
-  then the type $(E,p)=(F,q)$, which is equivalent
-  \marginnote{Note that if $r:\shape_G=x$, then
-  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, in a picture
-  \begin{displaymath}
-    \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
-      X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
-      &F(\shape_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
-  \end{displaymath}
-and so $\phi(x)$ (which by nature is independent of such an
-$r:\shape_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$. The text says this formally.}
-to
-  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\shape_G)=qp^{-1},$$
-  is a proposition.
-If $\phi,\psi:((E,p)=(F,q))$, we
-  must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
-  $F(x)$ are sets, it is enough to show that the proposition
-  $\phi(x)=\psi(x)$ is not empty.  Let
-  $f:(\shape_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
-  composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
-  given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
-  proposition, one can consider that $\shape_G=x$ is not empty, and we
-  are done.
-\end{proof}
-
-\begin{xca}
-    Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.
-  \end{xca}
-  
-    
     {\large cursor 1}
     
     \subsection{Move to better place}
@@ -1277,7 +1207,7 @@ $\trp[X] g(x)\jdeq g\cdot x = x$, for all $g:\USymG$.
 This section can be seen as a motivation for the use of torsors.
 In \cref{sec:Gsetforabstract} we'll use this concept to prove that the type of groups and the type of abstract groups are equivalent by classifying abstract groups via their pointed connected groupoid of torsors.  To see how this might work it is good to start with the case of a (concrete) group $G$.
 In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to get the right definition we should first explore what the torsors of $G$ look like and prove~\cref{lem:BGbytorsor}, showing that $\BG$ is equivalent to the type of $G$-torsors.
-\begin{definition}
+\begin{definition}\label{def:Gtorsor}
   Given a group $G$, the type of \emph{$G$-torsors}%
   \index{torsor@torsor}%
   \glossary(TorsorG){$\protect\typetorsor_G$}{the type of $G$-torsors}%
@@ -1514,6 +1444,78 @@ Summing up, we have proved:
     when $f_*X$ is a set, or maybe redefining $f_*X$ to always take the
     set truncation.}
 \end{remark}
+
+\section{Any symmetry is a symmetry in $\Set$}
+\label{sec:groupssubperm}
+
+
+For abstract groups there is a result, attributed to Cayley,
+which is often stated as ``any group is a permutation group''. 
+In our parlance this translates to ``any symmetry is a symmetry in $\Set$''.
+The aim of this section is to give a precise formulation of the latter
+and prove it.
+% \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+
+%which is equivalent to saying that $X$ is the universal \covering
+Let $G$ be a group.
+Recall from \cref{def:principaltorsor} the principal torsor
+$\princ G:\BG\to\Set: z\mapsto (\sh_G\eqto z)$.
+Since $\princ G (\shape_G)\defequi \USymG$, $\princ G$ restricts to
+a pointed function $\BG\ptdto \BSG_{\USymG}$, 
+\marginnote{The letter $\rho$ commemorates the word ``regular''} \ie 
+classifies a homomorphism from $G$ to the permutation group 
+$\SG_{\USymG}\jdeq \Aut_{\Set}(\USymG)$,
+denoted by $$\rho_G:\Hom(G,\SG_{\USymG}).$$
+
+\begin{theorem}[Cayley]
+  \label{lem:allgpsarepermutationgps}
+  \marginnote{By \cref{lem:eq-mono-cover} ``$\rho_G$ is a monomorphism'' means that the induced map $\rho_G^\abstr$ from the symmetries of $\shape_G$ in $\BG_\div$ to the symmetries of $\USymG$ in $\Set$ is an injection, \ie ``any symmetry is a symmetry in $\Set$''.}Let $G$ be a group. Then
+  $\rho_G:\Hom(G,\SG_{\USymG})  $ is a monomorphism.
+\end{theorem}
+\begin{proof}
+  In view of \cref{lem:eq-mono-cover} we need to show that $\rho_G:\BG\to \conncomp \Set {\USymG}$ is a
+  \covering.
+  Under the identity
+  $$\bar{\pathsp{}}:\BG=(\typetorsor_G,\princ G)$$ of
+  \cref{lem:BGbytorsor}, $\rho_G$ translates to the
+  evaluation map
+  $$\mathrm{ev}_{\shape_G}:\conncomp{(\BG\to\Set)}{\princ G}\to\conncomp{\Set}{\USymG},\qquad
+  \mathrm{ev}_{\shape_G}(E)=E(\shape_G).$$
+  We must show that the preimages
+  $\inv{\ev_{\shape_G}}(X)$ for $X:\Sigma_{\USymG}$ are sets.  This
+  fiber is equivalent to
+  $\sum_{E:\conncomp{(\BG\to\Set)}{\uc{\sh_G}}}(X=E(\shape_G))$ which is a
+  set precisely when $\sum_{E:\BG\to\Set}(X=E(\shape_G))$ is a set.  We
+  must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\shape_G))$,
+  then the type $(E,p)=(F,q)$, which is equivalent
+  \marginnote{Note that if $r:\shape_G=x$, then
+  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, in a picture
+  \begin{displaymath}
+    \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
+      X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
+      &F(\shape_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
+  \end{displaymath}
+and so $\phi(x)$ (which by nature is independent of such an
+$r:\shape_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$. The text says this formally.}
+to
+  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\shape_G)=qp^{-1},$$
+  is a proposition.
+If $\phi,\psi:((E,p)=(F,q))$, we
+  must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
+  $F(x)$ are sets, it is enough to show that the proposition
+  $\phi(x)=\psi(x)$ is not empty.  Let
+  $f:(\shape_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
+  composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
+  given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
+  proposition, one can consider that $\shape_G=x$ is not empty, and we
+  are done.
+\end{proof}
+
+\begin{xca}
+    Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.
+  \end{xca}
+  
+    
 
 \section{The orbit-stabilizer theorem}
 \label{sec:orbit-stabilizer-theorem}
