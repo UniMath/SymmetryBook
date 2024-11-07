@@ -953,7 +953,7 @@ However, since they make equally good sense for \emph{$G$-types} for \aninftygp
 $G$, we'll mostly work in that generality.
 \begin{definition}
   \label{def:orbittype}
-  If $X : G\to\UU$, then the \emph{orbit type}\index{orbit type}
+  If $X : \BG\to\UU$, then the \emph{orbit type}\index{orbit type}
   of the action is\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
     following a convention in homotopy theory.
@@ -1071,14 +1071,14 @@ This connection is emphasized in the following result.
   Surjectivity follows from the connectivity of $\BG$.
   By~\cref{rem:set-trunc-as-quotient},
   $X/G \jdeq \setTrunc{X_{hG}}$ is itself the
-  set quotient of $X_{hg} \jdeq \sum_{z:\BG}X(z)$ by
+  set quotient of $X_{hG} \jdeq \sum_{z:\BG}X(z)$ by
   the relation $\sim$ defined by letting $(z,x)\sim(w,y)$
   if and only if $\exists_{g:z\eqto w}(g\cdot x=y)$.
   Thus,~\cref{thm:quotient-property} gives the
   desired conclusion.
 \end{proof}
 Thus, both the underlying set $X(\shape_G)$ and the orbit type
-$X_{hg}$ have equivalence relations with quotient set $X/G$.\footnote{%
+$X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
   This also justifies the notation $X/G$.
   We have a diagram of surjective maps:
   \[
@@ -1093,7 +1093,7 @@ The equivalence classes of both are important:
   If $X : \BG \to \Set$ is a $G$-set, and $x : X(\shape_G)$ is an
   element of the underlying set, then we let
   \begin{enumerate}
-  \item $G_x \defeq \Aut_{X_{hg}}(\shape_G,x)$
+  \item $G_x \defeq \Aut_{X_{hG}}(\shape_G,x)$
     be the \emph{stabilizer group}\index{stabilizer}%
     \index{group!stabilizer} at $x$, and
   \item $G\cdot x \defeq \setof{y : X(\shape_G)}{[x] =_{X/G} [y]}$
@@ -1101,13 +1101,14 @@ The equivalence classes of both are important:
   \end{enumerate}
 \end{definition}
 Note that the classifying type $\BG_x$ of $G_x$
-is identified with the fiber of $\settrunc{\blank} : X_{hg} \to X/G$,
+is identified with the fiber of $\settrunc{\blank} : X_{hG} \to X/G$,
 and $G\cdot x$ (pointed at $x$)
 is identified with the fiber of $[\blank] : X(\shape_G) \to X/G$,
 both taken at $[x]$, the orbit containing $x$.
 
 Also, the base point of $\BG_x$ depends on the choice of $x$,
-but the underlying type $(\BG_x)_\div$ only depends on $[x]:X/G$.
+but the underlying type $(\BG_x)_\div$, \MB{being a connected component,}
+only depends on $[x]:X/G$.
 Thus, we can decompose our diagram by writing $X(\shape_G)$ and $X_{hG}$
 as sums of the respective fibers.\footnote{%
   Yielding the diagram
@@ -1118,14 +1119,16 @@ as sums of the respective fibers.\footnote{%
       \& X/G, \&
     \end{tikzcd}
   \]
-  where we use $b$ to denote a \emph{bane}/orbit. (Too cute?)}
+  where we use $b$ to denote a \emph{bane}/orbit. (Too cute?
+  \MB{Unclear because of "orbit set". Orbit is pointed bane? Bane is unpointed
+  orbit? What about saying in 5.4.1 that $X/G$ is the set of (unpointed) orbits?})}
 
 The stabilizer group $G_x$ comes equipped with a homomorphism
 $i_x : \Hom(G_x,G)$, classified by
 the projection $\fst:X_{hG} \to \BG$.\footnote{%
   Since the projection is still a \covering, $\iota_x$ is a monomorphism
-  (\cref{lem:eq-mono-cover}), so $G_x$ together with $i_x$
-  becomes a \emph{subgroup} of $G$.}
+  (\cref{def:typeofmono}), so $G_x$ together with $i_x$
+  becomes a \emph{subgroup} of $G$.\MB{Promote to lemma?}}
 There are two possible extreme cases that are important:
 \begin{definition}\label{def:invariant-free}
   Let $X$ be a $G$-set and $x:X(\shape_G)$ an element of the underlying set.
@@ -1140,29 +1143,31 @@ There are two possible extreme cases that are important:
 \end{definition}
 
 \begin{lemma}\label{lem:invariant-char}
-  Given a $G$-set $X$, an element $x:(\shape_G)$ is
+  Given a $G$-set $X$, an element $x:X(\shape_G)$ is
   invariant if and only if the orbit $G\cdot x$ is contractible,
   \ie $x = g\cdot x$ for all $g:\USymG$.
 \end{lemma}
 \begin{proof}
   The orbit $G\cdot x$ is the fiber of $\Bi_x : \BG_x \ptdto \BG$
   at $\shape_G$. Since $\BG$ is connected,
-  this is contractible if and only if all fiber of $\Bi$ are contractible,
+  this is contractible if and only if all fibers of $\Bi$ are contractible,
   \ie $\Bi_x$ is an equivalence, which in turn is equivalent to $i_x$
   being an isomorphism.
 \end{proof}
 
 \begin{lemma}\label{lem:free-pt-char}
-  Given a $G$-set $X$, an element $x:(\shape_G)$ is\marginnote{%
+  Given a $G$-set $X$, an element $x:X(\shape_G)$ is\marginnote{%
     Doesn't fit well here; move to where?}
   free if and only if the (surjective) map
-  $\blank \cdot x : G \to G\cdot x$ is injective
+  $\blank \cdot x : \USymG \to G\cdot x$ is injective
   (and hence a bijection).
 \end{lemma}
 \begin{proof}
   Consider two elements of the orbit, say $g\cdot x,g'\cdot x$ for $g,g':\USymG$.
   We have $g\cdot x=g' \cdot x$ if and only if $x = \inv{g} g'\cdot x$
   if and only if $\inv{g} g'$ lies in $\USymG_x$.
+  \MB{Now apply \cref{xca:connected-trivia} yielding that that 
+  $G_x$ is trivial iff $\USymG_x$ is contractible.}
 \end{proof}
 
 When $X : \BG \to \Set$ is a $G$-set for an ordinary group $G$,
@@ -1190,18 +1195,39 @@ $\trp[X] g(x)\jdeq g\cdot x = x$, for all $g:\USymG$.
 \begin{proof}
   Fix an invariant $x : X(\shape_G)$,
   so $g\cdot x = x$ for all $g: \USymG$.
-  We need to show that the type
+  We need to show that the type\footnote{%
+  \MB{Isn't this the Yoneda lemma? Is the following argument OK?
+  Call the type $T_x$. It is a proposition since $\BG$ is connected
+  (for all $x$, useful to point out). So it suffices to construct an
+  element $f:T_x$. Since $x$ is invariant, $\Bi_x\jdeq\fst$ is an equivalence.
+  Hence all $\inv\Bi_x(z)$ are contractible, and they are equivalent with
+  $\sum_{y:X(z)}\Trunc{(z,y)\eqto(\sh_G,x)}$ (by contracting out, \cref{lem}).
+  This gives $f$, and we get the proposition $x=f(\sh_G)$ from
+  $\Trunc{(\sh_G,f(\sh_G))\eqto(\sh_G,x)}$, again by the invariance of $x$. 
+  }}
   \[
-    \sum_{f : \prod_{z:\BG}X(z)}f(\shape_G)=x
+    \sum_{f : \prod_{z:\BG}X(z)} x=f(\shape_G)
   \]
   is contractible.
-  This is equivalent to the type of pointed sections
+  This is equivalent to the type of pointed sections\footnote{%
+  \MB{See ft 52 on p. 40 which had to be corrected: a section is a pair.}}
   of the projection $\fst : (X_{hG},x) \ptdto \BG$.
   Since $\BG$ is connected, this is in turn equivalent
   to the type of pointed sections of $\Bi_x : \BG_x \ptdto \BG$,
   \ie the type of sections of the inclusion homomorphism $i_x:\Hom(G_x,G)$.
   This is a proposition, and it's true if and only if $i_x$ is an isomorphism.
 \end{proof}
+
+\begin{xca}\label{xca:Gset-A->B}
+\MB{New, w.i.p.}
+Let $G$ be the group $\SG_2\times\SG_2$ and $X$ the $G$-set mapping
+any pair $(A,B)$ of $2$-element sets to the set $A\to B$.
+Elaborate the action of $G$ on $X(\sh_G)$ and determine the
+set of orbits and the set of fixed points.
+%Using that any fixed point $f$ of $X$ is completely determined by its
+%value $f(\sh) : X(\sh_G)$, determine all fixed points.
+\end{xca}
+
 
 \section{The classifying type is the type of torsors}
 \label{sec:torsors}
