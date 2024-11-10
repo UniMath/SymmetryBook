@@ -1090,16 +1090,27 @@ $X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
   \]}
 The equivalence classes of both are important:
 \begin{definition}\label{def:orbit-stabilizer}
-  If $X : \BG \to \Set$ is a $G$-set, and $x : X(\shape_G)$ is an
-  element of the underlying set, then we let
+  Let $G$ be a group, $X : \BG \to \Set$ a $G$-set, 
+  and $x : X(\shape_G)$ an element.
   \begin{enumerate}
-  \item $G_x \defeq \Aut_{X_{hG}}(\shape_G,x)$
-    be the \emph{stabilizer group}\index{stabilizer}%
-    \index{group!stabilizer} at $x$, and
-  \item $G\cdot x \defeq \setof{y : X(\shape_G)}{[x] =_{X/G} [y]}$
-    be the \emph{orbit}\index{orbit} of $x$.\qedhere
+  \item Define the group $G_x \defeq \Aut_{X_{hG}}(\shape_G,x)$.
+  Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
+  each fiber at $z:\BG$ is a subset\footnote{%
+  $\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$} of $X(z)$.
+  Hence $(G_x,\fst,!):\typemono_G$ is monomorphism into $G$.
+  We call the subgroup $G_x$ of $G$ the 
+  \emph{stabilizer (sub)group}\index{stabilizer}%
+    \index{group!stabilizer} at $x$. The inclusion $\fst$ of $\BG_x$ in
+    $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.
+  \item Define $G\cdot x \defeq \setof{y : X(\shape_G)}{[x] =_{X/G} [y]}$
+    to be the \emph{orbit}\index{orbit} of $x$.\qedhere
   \end{enumerate}
 \end{definition}
+\begin{xca}\label{xca:Gx-in-Sub_G}
+Find $(X_x,x,!):\Sub_G$ corresponding to $(G_x,\fst,!):\typemono_G$.
+\MB{Steer away from $\inv E$.}
+\end{xca}
+
 Note that the classifying type $\BG_x$ of $G_x$
 is identified with the fiber of $\settrunc{\blank} : X_{hG} \to X/G$,
 and $G\cdot x$ (pointed at $x$)
@@ -1123,12 +1134,6 @@ as sums of the respective fibers.\footnote{%
   \MB{Unclear because of "orbit set". Orbit is pointed bane? Bane is unpointed
   orbit? What about saying in 5.4.1 that $X/G$ is the set of (unpointed) orbits?})}
 
-The stabilizer group $G_x$ comes equipped with a homomorphism
-$i_x : \Hom(G_x,G)$, classified by
-the projection $\fst:X_{hG} \to \BG$.\footnote{%
-  Since the projection is still a \covering, $\iota_x$ is a monomorphism
-  (\cref{def:typeofmono}), so $G_x$ together with $i_x$
-  becomes a \emph{subgroup} of $G$.\MB{Promote to lemma?}}
 There are two possible extreme cases that are important:
 \begin{definition}\label{def:invariant-free}
   Let $X$ be a $G$-set and $x:X(\shape_G)$ an element of the underlying set.
@@ -1184,48 +1189,53 @@ and taking the dependent action on paths,
 $\apd{f}(g) : \pathover x X g x$,
 we can use~\cref{def:pathover-trp} to conclude
 $\trp[X] g(x)\jdeq g\cdot x = x$, for all $g:\USymG$.
+The following lemma states that each invariant $x$ uniquely
+determines a fixed point.
 
 \begin{lemma}\label{lem:fixpts-are-fixed}
-  For any $G$-set $X$, evaluation at $\shape_G$ gives an equivalence
-  \[
-    X^{hG} \jdeq \prod_{z:\BG}X(z) \equivto
-    \setof{x : X(\shape_G)}{\text{$x$ is invariant}}.
-  \]
+  Let $G$ be a group\footnote{\MB{We only use that $\BG_\div$ is connected,
+  so the lemma holds for $\infty$-groups as well.}}, 
+  $X$ a $G$-set, with $X^{hG} \jdeq \prod_{z:\BG}X(z)$
+  the set of fixed points. 
+  Evaluation $\ev\defeq(f:X^{hG})\mapsto f(\sh_G)$ at $\shape_G$ gives
+  \begin{enumerate}
+  \item\label{it:ev-is-inj} 
+  an injection of type $\bigl(\prod_{z:\BG}X(z)\bigr) \to X(\shape_G)$, which is
+  \item\label{it:ev-is-eq-on-inv} an equivalence of type 
+  $\bigl(\prod_{z:\BG}X(z)\bigr) \equivto
+  \setof{x : X(\shape_G)}{\text{$x$ is invariant}}.$
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
-  Fix an invariant $x : X(\shape_G)$,
-  so $g\cdot x = x$ for all $g: \USymG$.
-  We need to show that the type\footnote{%
-  \MB{Isn't this the Yoneda lemma? Is the following argument OK?
-  Call the type $T_x$. It is a proposition since $\BG$ is connected
-  (for all $x$, useful to point out). So it suffices to construct an
-  element $f:T_x$. Since $x$ is invariant, $\Bi_x\jdeq\fst$ is an equivalence.
-  Hence all $\inv\Bi_x(z)$ are contractible, and they are equivalent with
-  $\sum_{y:X(z)}\Trunc{(z,y)\eqto(\sh_G,x)}$ (by contracting out, \cref{lem}).
-  This gives $f$, and we get the proposition $x=f(\sh_G)$ from
-  $\Trunc{(\sh_G,f(\sh_G))\eqto(\sh_G,x)}$, again by the invariance of $x$. 
-  }}
+  Let $x : X(\shape_G)$. We prove that the fiber of $\ev$ at $x$,
   \[
-    \sum_{f : \prod_{z:\BG}X(z)} x=f(\shape_G)
+    \inv\ev(x) \defeq \sum_{f : \prod_{z:\BG}X(z)} x=f(\shape_G),
   \]
-  is contractible.
-  This is equivalent to the type of pointed sections\footnote{%
-  \MB{See ft 52 on p. 40 which had to be corrected: a section is a pair.}}
-  of the projection $\fst : (X_{hG},x) \ptdto \BG$.
-  Since $\BG$ is connected, this is in turn equivalent
-  to the type of pointed sections of $\Bi_x : \BG_x \ptdto \BG$,
-  \ie the type of sections of the inclusion homomorphism $i_x:\Hom(G_x,G)$.
-  This is a proposition, and it's true if and only if $i_x$ is an isomorphism.
+  is a proposition. Let $(f,!),(g,!) : \inv\ev(x)$. 
+  Then it suffices to prove $f=g$, which follows by extensionality
+  from $f(\sh_G)=x=g(\sh_G)$ since $\BG$ is connected. This proves
+  \ref{it:ev-is-inj}.
+  
+  For \ref{it:ev-is-eq-on-inv}, assume that
+  $x : X(\shape_G)$ is invariant, so $i_x\jdeq\fst:\BG_x \to \BG$
+  is an equivalence. This means that $\inv\fst(z)$ is contractible
+  for all $z:\BG$. Spelling out $\inv\fst(z)$, using \cref{lem:contract-away},
+  identifies each fiber $\inv\fst(z)$ with
+  $\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$.
+  Projecting on the first component of each center of contraction
+  gives a fixed point $f$ such that $\Trunc{(\sh_G,x)\eqto(\sh_G,f(\sh_G))}$,
+  from which the proposition $x=f(\sh_G)$ follows. This proves that
+  $\ev$ is surjective, and hence an equivalence by \ref{it:ev-is-inj}.
 \end{proof}
 
 \begin{xca}\label{xca:Gset-A->B}
-\MB{New, w.i.p.}
 Let $G$ be the group $\SG_2\times\SG_2$ and $X$ the $G$-set mapping
 any pair $(A,B)$ of $2$-element sets to the set $A\to B$.
 Elaborate the action of $G$ on $X(\sh_G)$ and determine the
-set of orbits and the set of fixed points.
-%Using that any fixed point $f$ of $X$ is completely determined by its
-%value $f(\sh) : X(\sh_G)$, determine all fixed points.
+set of orbits and the set of fixed points. You can
+do the same exercise for the following easier cases first:
+the $G$-set that is constant $\bn2\times\bn2$, and
+the $\SG_2$-sets $X(\blank,\bn2)$ and $X(\bn2,\blank)$.
 \end{xca}
 
 
