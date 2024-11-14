@@ -1378,8 +1378,9 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ inste
     \pathsp{}:(y\eqto z)\to(\pathsp y\eqto\pathsp z)
   \]
   made explicit in \cref{ex:pathsptransport}. Indeed, by induction
-  on $q:y\eqto z$, we have\footnote{\MB{Duplication? MB confused about P's.
-  We can use $\mkgroup$ to disambuguate.}}
+  on $q:y\eqto z$, we have\footnote{\MB{Duplication? MB confused by some P's.
+  We could use $P_\blank$ to indicate that the argument is subscripted,
+  $\mkgroup P$ for the iso, adapt 5.5.7 a bit, and use $\ap{P_\blank}$ for the action. Univalence and funext are transparent.}}
   \[
     \ap {\pathsp{}}(\refl y) \jdeq \refl {\pathsp y} \eqto (p\mapsto p\inv{\refl y}).
   \]
@@ -1402,27 +1403,39 @@ $\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
   \]
 
   If $X:\BG\to\Set$ is a $G$-set, we define
-  the \emph{induced $H$-type}\index{action!induced}\index{induced action}\footnote{%
-    Note that the induced $H$-type may or may not be an $H$-\emph{set}.
-    As an example, consider the homomorphism $f\defeq(\blank\mod 2) : \Hom(\ZZ,\SG_2)$
+  the \emph{induced $H$-set}\index{action!induced}\index{induced action}\footnote{%
+    Without set truncation on the right, $f_*X$ may
+    not be an $H$-\emph{set}. As an example, let $f$ be the unique
+    homomorphism $f: \Hom(\ZZ,\mkgroup(\bn1,0))$. Let $X$ be the constant
+    $\ZZ$-set mapping each $z:\Sc$ to $\bn 1$. Then 
+    $\sum_{z:\Sc}(0=0)\times \bn 1$ is a circle, so not a set.
+    
+    
+    
+    
+    \MB{Old:} As an example, consider the homomorphism 
+    $f\defeq(\blank\mod 2) : \Hom(\ZZ,\SG_2)$
     discussed in~\cref{ex:groups-morphisms}, given by sending $\base:\Sc$
     to $\bn 2$ and $\Sloop$ to the twist. (This is classified by the function
-    $R_2$ from~\cref{def:RmtoS1}.)
-
-    The induced $\SG_2$-set $f_*\bn 1$ of the trivial
-    $\ZZ$-set on the unit type $\bn 1$ is given by
+    $R_2$ from~\cref{def:RmtoS1}.) Let $X$ be the constant
+    $\ZZ$-set mapping each $z:\Sc$ to $\bn 1$. Then 
     \[A\mapsto \sum_{z:\Sc}(R_2(z)\eqto A)\times \bn 1,\]
     which has underlying type equivalent to $\sum_{z:\Sc}R_2(z)$, which we know
     back from~\cref{rem:finitecoveringsofS1} to be a circle.
     So the induced $\SG_2$-type in question is \emph{not} a set.
 
     This situation is common in algebra and is often referred to by saying
-    that some construction is not ``exact''.}
+    that some construction is not ``exact''. \MB{Points first everywhere?}}
   $f_*X : \BH\to\UU$ by setting, for $y:\BH$,
   \[
-    f_*X(y)\defequi\sum_{x:\BG}(\Bf(x) \eqto y)\times X(x).\qedhere
+    f_*X(y)\defeq\setTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)}.\qedhere
   \]
 \end{definition}
+\begin{xca}\label{xca:id_*-is-id}
+\MB{New:} Give an equivalence from $f_*X$ to $X\inv\Bf$
+    if $f$ is an isomorphism.
+\end{xca}
+
 Note that the type $f_*X(y)$ is also the orbit type $(H^y \times X)_{hG}$,
 of the $G$-set $H^y\times X$,
 where $(H^y\times X)(x) \defeq (\Bf(x) \eqto y)\times X(x)$ for $x:\BG$,
@@ -1441,33 +1454,34 @@ When $X$ is the $G$-torsor $\pathsp x^G$, for some $x:\BG$,
 the contraction (recall \cref{lem:contract-away})
 of $\sum_{z:\BG}(x\eqto z)$ induces an equivalence
 \[
-  \eta_y:f_*\pathsp x^G(y) \jdeq \sum_{z:\BG}(\Bf(z) \eqto y)\times(x \eqto z)
+  \eta_y:f_*\pathsp x^G(y) \jdeq \setTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times(x \eqto z)}
   \equivto (\Bf(x)\eqto y)\jdeq\pathsp{\Bf(x)}^H(y).
 \]
-The resulting identity $\bar\eta:f_*\pathsp x^G\eqto \pathsp{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-type $f_*X$ is an $H$-torsor.
+The resulting identity $\bar\eta:f_*\pathsp x^G\eqto \pathsp{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-set $f_*X$ is an $H$-torsor.
 Furthermore, when $x\jdeq\shape_G$, so $\pathsp x^G\jdeq\princ G$
 is the principal $G$-torsor, the pointedness path $\Bf_\pt : \shape_H\eqto\Bf(\shape_G)$
-gives an identification $f_*\princ G\eqto \princ H$.
+gives an identification $f_*\princ G\eqto \princ H$.\footnote{%
+\MB{If $X$ is a $G$-set such that $\Trunc{\princ G \eqto X}$, then $f_*X$
+is an $H$-set such that $\Trunc{\princ H \eqto f_*X}$ by $\eta_\blank$ for
+$x\jdeq\sh_G$ and using $\Bf_\pt$.}}
 
-Summing up, we have proved:
-\begin{lemma}
+Summing up, we have implemented the following:
+\begin{construction}
   \label{lem:inducedtorsor}
-   Let $f:\Hom(G,H)$ be a group homomorphism.
-   If $X$ is a $G$-torsor, then the induced $H$-type $f_*X$ is an $H$-torsor,
-   and so we get an induced map
-   \[
-     f_*:\typetorsor_G\ptdto\typetorsor_H,
-   \]
-   such that the diagram of pointed maps
+   Let $f:\Hom(G,H)$ be a group homomorphism. Then $f$ induces a 
+   pointed map $f_*:\typetorsor_G\ptdto\typetorsor_H$,
+   and we have an element of the identity type 
+   $f_* \pathsp{}^G \eqto \pathsp{}^H \Bf$
+   represented by the following diagram:\footnote{%
+   \MB{As pointed maps. Ugly: $f_*$ has no $B$.}}
    \[
      \begin{tikzcd}
        \BG \ar[r,"\Bf"]\ar[d,"{\pathsp{}^G}"'] &
        \BH\ar[d,"{\pathsp{}^H}"] \\
-       \typetorsor_G \ar[r,"f_*"'] & \typetorsor_H
+       \typetorsor_G \ar[r,"f_*"'] & \typetorsor_H .
      \end{tikzcd}
    \]
-   commutes.
-\end{lemma}
+\end{construction}
 
 \begin{remark}
   \label{rem:inducedGsetfromabstracthomomorphisms}
