@@ -1265,7 +1265,7 @@ In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to g
 \end{xca}
 
 \begin{remark}
-  For $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings of $\BG$ containing the universal \covering.
+  For $G$ a group, the type of $G$-torsors is just another name for the component of the type of \coverings over $\BG$ containing the universal \covering.
 
   Observe that for a group $G$, $\typetorsor_G$ is a connected groupoid\footnote{Admittedly in a higher universe, but we can use the
     Replacement~\cref{pri:replacement} to see that $\typetorsor_G$ is equivalent
@@ -1283,52 +1283,58 @@ In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to g
     $X(\sh_G)$.}\footcitetext{giraud1971}.
 \end{remark}
 
-For $y:\BG$, recall from~\cref{def:principaltorsor}\eqref{eq:pathsp}
-the definition of $\pathsp y:\BG\to\Set$ as the
-$G$-set with $\pathsp y(z)\jdeq(y\eqto z)$
-(so that in particular $\princ G\jdeq\pathsp{\shape_G}$).
-Note that $\pathsp y$ is a $G$-torsor, so we can wrap these up as follows:
 
 \begin{definition}
   \label{def:BG2TorsG}
-  Let
+Recall from~\cref{def:principaltorsor}\eqref{eq:pathsp}
+the definition, for all $y:\BG$, of $\pathsp y:\BG\to\Set$
+as the $G$-set with $\pathsp y(z)\jdeq(y\eqto z)$
+(so that in particular $\princ G\jdeq\pathsp{\shape_G}$).
+Note that $\pathsp y$ is a $G$-torsor, so we can define
   \[
-    \pathsp{}:\BG\ptdto(\typetorsor_G,\princ G)
+    \pathsp{\blank}:\BG\ptdto(\typetorsor_G,\princ G): y\mapsto P_y,
   \]
-  be the pointed map given by sending $z:\BG$ to $\pathsp z$
-  and by the identification
-  $\refl{\pathsp{\shape_G}}:\princ G\eqto\pathsp{\shape_G}$.\footnote{%
+  with pointing path $\refl{\princ G}:\princ G\eqto\pathsp{\shape_G}$.\footnote{%
     That is, we have classified a homomorphism from $G$
-    to $\Aut_{\GSet}(\princ G)$. We don't bother giving it a name,
-    however, since it'll turn out to an isomorphism.}
+    to $\Aut_{\GSet}(\princ G)$. It'll turn out to be an isomorphism.}
+If $G$ is not clear from the context, we may choose to write $\pathsp{\blank}^G$ instead of $\pathsp{\blank}$.
 \end{definition}
-If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ instead of $\pathsp{}$.
 
-\begin{example}\label{ex:pathsptransport}
-  For $y,z:\BG$ we make the induced map
+\begin{remark}\label{rem:pathsptransport}
+  We will use several variants of $\pathsp{\blank}$, in combination with
+  some of the conventions introduced back in \cref{ch:univalent-mathematics}.
+  In this remark, to avoid confusion, we explain these variants.
+  
+  First, we also use $\pathsp{\blank}$ to denote its induced action on paths:
+  for $y,z:\BG$ we have
   \[
-    \pathsp{}:(y\eqto z)\to (\pathsp y\eqto \pathsp z),
+    \pathsp{\blank}:(y\eqto z)\to (\pathsp y\eqto \pathsp z),
   \]
-  or rather its composite with the identification with
-  $\prod_{x:\BG}\pathsp y(x)\eqto \pathsp z(x)$,
-  explicit.
-  For $q:y\eqto z$, the transport
-  $\pathsp q:\prod_{x:\BG}\pathsp y(x)\eqto \pathsp z(x)$
-  is obtained
-  by sending $p:\pathsp y(x)\jdeq (y\eqto x)$ to
+  defined by path induction as in \cref{def:ap}.
+  
+  Then, as $\pathsp y\eqto \pathsp z$ is an identity between
+  families of types, function extensionality (\cref{def:funext}) applies.
+  For $q:y\eqto z$, we may also use $\pathsp q$ to denote the corresponding 
+  function of type $\prod_{x:\BG}\pathsp y(x)\eqto \pathsp z(x)$.
+  
+  Finally, as $\pathsp y(x)$ and $\pathsp z(x)$ are types,
+  univalence (\cref{def:univalence}) applies.
+  Therefore we may use $\pathsp q(x)$ to denote the corresponding 
+  equivalence, \ie transport in the type family $\pathsp{\blank}(x)$,
+  sending $p:\pathsp y(x)\jdeq (y\eqto x)$ to
   $pq^{-1}:\pathsp z(x)\jdeq(z\eqto x)$.\footnote{In a commutative diagram,
     \[
       \begin{tikzcd}[ampersand replacement=\&]
-        y \ar[r,eqr,"q"]\ar[d,eql,"p"'] \& z \ar[d,eqr,"{\pathsp q(p)}"] \\
-        x \ar[r,eql,"{\refl x}"'] \& x.
+        y \ar[rr,eqr,"q"]\ar[dr,eql,"p"'] \& \& z \ar[dl,eqr,"{\pathsp q(p)}"] \\
+        \& x.
       \end{tikzcd}
     \]}
-\end{example}
+\end{remark}
 
 \begin{lemma}\label{lem:pathsptransportiseq}
-  For $y,z:\BG$ the induced map  (\ie transport) of identity types
+  Let $G$ be a group. For all $y,z:\BG$ the induced map of identity types
   \[
-    \pathsp{}:(y\eqto z)\to (\pathsp y\eqto \pathsp z)
+    \pathsp{\blank}:(y\eqto z)\to (\pathsp y\eqto \pathsp z)
   \]
   is an equivalence.\footnote{%
     For connoisseurs of category theory,
@@ -1342,30 +1348,31 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ inste
 \end{lemma}
 \begin{proof}
   We craft an inverse $Q:(\pathsp y\eqto \pathsp z) \to (y\eqto z)$ for
-  $\pathsp{}$. Given an identity $f:\pathsp y \eqto \pathsp z$, the map
+  $\pathsp{\blank}$. Given an identity $f:\pathsp y \eqto \pathsp z$, the map
   $f_y: (y\eqto y) \to (z\eqto y)$ maps the reflexivity path $\refl y$ to a path
   $f_y(\refl y):z\eqto y$, and we define
   \[
     Q(f) \defequi \inv{f_y(\refl y)} : (y\eqto z).
   \]
-  First, $Q$ is an inverse on the right for $\pathsp{}$ as
-  $\pathsp {Q(f)}$ is the map $p \mapsto p f_y(\refl y)$, and
-  by induction on $p:y\eqto x$, we have $p f_y(\refl y) \eqto f_x(p)$
-  (this\footnote{\MB{Props!}} indeed holds when $p\jdeq \refl y$).
-  This means that we have $\pathsp {Q(f)} \eqto f$.
-  Next, we show that $Q$ is an inverse on the left for
-  $\pathsp{}$: indeed for any $q:y \eqto z$ we have
-  $\inv{\pathsp{q}(\refl y)} \eqto \inv{(\refl y \inv q)} \eqto q$; in other
-  words $Q(\pathsp q)\eqto q$, as desired.
+  First we construct an identification of $\pathsp {Q(f)}$ and $f$:
+  for any $x:\BG$, 
+  $\pathsp {Q(f)}(x)$ maps any $p:\pathsp{y}(x)\jdeq(y\eqto x)$ to
+  $p f_y(\refl y)(x):\pathsp{z}(x)\jdeq(z\eqto x)$. Hence we must
+  construct an identification of type $p f_y(\refl y)(x)=f_x(p)$,
+  which is immediate by induction on $p:y\eqto x$, setting $p\jdeq \refl y$.
+  
+  Next, we prove the equality of $Q(\pathsp q)$ and $q$
+  for every $q:y\eqto z$. Indeed, 
+  $Q(\pathsp q)\jdeq\inv{(\pathsp{q})_y(\refl y)} = \inv{(\refl y \inv q)} = q$.
+  
+  Now apply \cref{lem:weq-iso} to complete the proof of the lemma.
 \end{proof}
 
 \begin{theorem}\label{lem:BGbytorsor}
   If $G$ is a group, then the function
-  $\pathsp{}:\BG\to\typetorsor_G$ from~\cref{def:BG2TorsG}
+  $\pathsp{\blank}:\BG\to\typetorsor_G$ from~\cref{def:BG2TorsG}
   is an equivalence.
-  Univalence then allows us to derive an identity
-  \[\bar{\pathsp{}}:G\eqto\Aut_{\GSet} (\princ G)\]
-  of groups.\footnote{For $\infty$-groups: $G \eqto \Aut_{\BG\to\UU}(\princ G)$.}
+  \footnote{A similar results holds for $\infty$-groups.}
 \end{theorem}
 
 \begin{proof}
@@ -1377,10 +1384,8 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{}^G$ inste
   \[
     \pathsp{}:(y\eqto z)\to(\pathsp y\eqto\pathsp z)
   \]
-  made explicit in \cref{ex:pathsptransport}. Indeed, by induction
-  on $q:y\eqto z$, we have\footnote{\MB{Duplication? MB confused by some P's.
-  We could use $P_\blank$ to indicate that the argument is subscripted,
-  $\mkgroup P$ for the iso, adapt 5.5.7 a bit, and use $\ap{P_\blank}$ for the action. Univalence and funext are transparent.}}
+  made explicit in \cref{rem:pathsptransport}. Indeed, by induction
+  on $q:y\eqto z$, we have
   \[
     \ap {\pathsp{}}(\refl y) \jdeq \refl {\pathsp y} \eqto (p\mapsto p\inv{\refl y}).
   \]
