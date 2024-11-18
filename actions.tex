@@ -1371,26 +1371,17 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{\blank}^G$
 \begin{theorem}\label{lem:BGbytorsor}
   If $G$ is a group, then the function
   $\pathsp{\blank}:\BG\to\typetorsor_G$ from~\cref{def:BG2TorsG}
-  is an equivalence.
-  \footnote{A similar results holds for $\infty$-groups.}
+  is an equivalence.\footnote{A similar results holds for $\infty$-groups.}
 \end{theorem}
 
 \begin{proof}
-  Since both $\typetorsor_G$ and $\BG$ are connected, it suffices by
-  \cref{cor:fib-vs-path} to show that each
-  $\ap {\pathsp{}}:(y\eqto z)\to(\pathsp y\eqto \pathsp z)$ is an
-  equivalence. We first observe that $\ap {\pathsp{}}$ is indeed
-  the function
-  \[
-    \pathsp{}:(y\eqto z)\to(\pathsp y\eqto\pathsp z)
-  \]
-  made explicit in \cref{rem:pathsptransport}. Indeed, by induction
-  on $q:y\eqto z$, we have
-  \[
-    \ap {\pathsp{}}(\refl y) \jdeq \refl {\pathsp y} \eqto (p\mapsto p\inv{\refl y}).
-  \]
-  Then~\cref{lem:pathsptransportiseq} states exactly that $\ap P$ is
-  an equivalence.
+  Since both $\typetorsor_G$ and $\BG$ are pointed and connected,
+  it suffices by
+  \cref{cor:fib-vs-path}\ref{conn-fib-vs-path-point} to show that 
+  $\pathsp{\blank}:(\sh_G\eqto\sh_G)\to(\pathsp{\sh_G}\eqto \pathsp{\sh_G})$
+  is an equivalence.\footnote{%
+  This holds for all variants of $\ap{\pathsp{\blank}}$.}
+  This follows directly from \cref{lem:pathsptransportiseq}.
 \end{proof}
 
 \subsection{Homomorphisms and torsors}
@@ -1408,36 +1399,28 @@ $\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
   \]
 
   If $X:\BG\to\Set$ is a $G$-set, we define
-  the \emph{induced $H$-set}\index{action!induced}\index{induced action}\footnote{%
-    Without set truncation on the right, $f_*X$ may
-    not be an $H$-\emph{set}. As an example, let $f$ be the unique
-    homomorphism $f: \Hom(\ZZ,\mkgroup(\bn1,0))$. Let $X$ be the constant
-    $\ZZ$-set mapping each $z:\Sc$ to $\bn 1$. Then 
-    $\sum_{z:\Sc}(0=0)\times \bn 1$ is a circle, so not a set.
-    
-    
-    
-    
-    \MB{Old:} As an example, consider the homomorphism 
-    $f\defeq(\blank\mod 2) : \Hom(\ZZ,\SG_2)$
-    discussed in~\cref{ex:groups-morphisms}, given by sending $\base:\Sc$
-    to $\bn 2$ and $\Sloop$ to the twist. (This is classified by the function
-    $R_2$ from~\cref{def:RmtoS1}.) Let $X$ be the constant
-    $\ZZ$-set mapping each $z:\Sc$ to $\bn 1$. Then 
-    \[A\mapsto \sum_{z:\Sc}(R_2(z)\eqto A)\times \bn 1,\]
-    which has underlying type equivalent to $\sum_{z:\Sc}R_2(z)$, which we know
-    back from~\cref{rem:finitecoveringsofS1} to be a circle.
-    So the induced $\SG_2$-type in question is \emph{not} a set.
-
-    This situation is common in algebra and is often referred to by saying
-    that some construction is not ``exact''. \MB{Points first everywhere?}}
+  the \emph{induced $H$-set}\index{action!induced}\index{induced action}
   $f_*X : \BH\to\UU$ by setting, for $y:\BH$,
   \[
-    f_*X(y)\defeq\setTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)}.\qedhere
+    f_*X(y)\defeq\myTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)}{0}.\qedhere
   \]
 \end{definition}
+The following exercise motivates the set-truncation in the definition
+of $f_*$ above.\footnote{%
+    This situation is common in algebra and is often referred to by saying
+    that some construction, in this case the untruncated
+    definiens of $f_*X$, is not ``exact''. See also \cref{xca:why-setTrunc_f_*}.}
+
+\begin{xca}\label{xca:why-setTrunc_f_*}
+\MB{New:} Find groups $G,H$, $f:\Hom(G,H)$ and $G$-set $X$ such that
+$\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)$ is not an $H$-set (but an $H$-type).
+\end{xca}
+% Solution: $G=\ZZ$, $H=\TG$, $f$ the unique homomorphism $f: \Hom(G,H)$,
+% $X$ constant $\bn 1$. Then 
+% $\sum_{z:\Sc}(0=0)\times \bn 1$ is a circle, so not a set.
+
 \begin{xca}\label{xca:id_*-is-id}
-\MB{New:} Give an equivalence from $f_*X$ to $X\inv\Bf$
+\MB{New:} Give an equivalence from $f_*\,X$ to $X\,\inv\Bf$
     if $f$ is an isomorphism.
 \end{xca}
 
@@ -1450,7 +1433,7 @@ and whose underlying set is equivalent to $(\shape_H\eqto y)\times X(\shape_G)$.
   Dually, there is also a \emph{coinduced $H$-set}\index{action!coinduced}
   $f_!:\BH\to\Set$ given by
   \[
-    f_!X(y)\defeq\prod_{x:\BG}\bigl((\Bf(x)\eqto y) \to X(x)\bigr).
+    f_!X(y)\defeq\prod_{z:\BG}\bigl((\Bf(z)\eqto y) \to X(z)\bigr).
   \]
   Note that this always lands in sets when $X$ does.
 \end{remark}
@@ -1459,31 +1442,48 @@ When $X$ is the $G$-torsor $\pathsp x^G$, for some $x:\BG$,
 the contraction (recall \cref{lem:contract-away})
 of $\sum_{z:\BG}(x\eqto z)$ induces an equivalence
 \[
-  \eta_y:f_*\pathsp x^G(y) \jdeq \setTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times(x \eqto z)}
+  \eta_y:f_*\pathsp x^G(y) \jdeq 
+  \myTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times(x \eqto z)}{0}
   \equivto (\Bf(x)\eqto y)\jdeq\pathsp{\Bf(x)}^H(y).
 \]
-The resulting identity $\bar\eta:f_*\pathsp x^G\eqto \pathsp{\Bf(x)}^H$ shows that for every $G$-torsor $X$ the $H$-set $f_*X$ is an $H$-torsor.
-Furthermore, when $x\jdeq\shape_G$, so $\pathsp x^G\jdeq\princ G$
-is the principal $G$-torsor, the pointedness path $\Bf_\pt : \shape_H\eqto\Bf(\shape_G)$
-gives an identification $f_*\princ G\eqto \princ H$.\footnote{%
-\MB{If $X$ is a $G$-set such that $\Trunc{\princ G \eqto X}$, then $f_*X$
-is an $H$-set such that $\Trunc{\princ H \eqto f_*X}$ by $\eta_\blank$ for
-$x\jdeq\sh_G$ and using $\Bf_\pt$.}}
+Taking $x\jdeq\sh_G$, so $\pathsp x^G\jdeq\princ G$, we get a
+path $\eta:f_*\,\princ G\eqto \pathsp{\Bf(\sh_G)}^H$.
+We also have the path $\Bf_\pt : \sh_H\eqto\Bf(\sh_G)$,
+so that the action of $\pathsp{\blank}^H$ gives us a path
+$\pi : \princ H \jdeq\pathsp{\sh_H}^H \eqto \pathsp{\Bf(\sh_G)}^H$.
+Combining we get $\inv\eta\pi:\princ H \eqto f_*\,\princ G$.
+
+If $X$ is a $G$-set such that $\Trunc{\princ G \eqto X}$, then $f_*X$
+is an $H$-set such that $\Trunc{\princ H \eqto f_*X}$, so that
+$f_* : \typetorsor_G \ptdto \typetorsor_H$.
 
 Summing up, we have implemented the following:
 \begin{construction}
   \label{lem:inducedtorsor}
    Let $f:\Hom(G,H)$ be a group homomorphism. Then $f$ induces a 
    pointed map $f_*:\typetorsor_G\ptdto\typetorsor_H$,
-   and we have an element of the identity type 
-   $f_* \pathsp{}^G \eqto \pathsp{}^H \Bf$
-   represented by the following diagram:\footnote{%
-   \MB{As pointed maps. Ugly: $f_*$ has no $B$.}}
+   and we have a path of type 
+   $f_*\,\pathsp{\blank}^G \eqto \pathsp{\blank}^H\,\Bf \jdeq 
+   f^*\,\pathsp{\blank}^H$,
+   all represented by the following diagram:\footnote{%
+   \MB{(MB) Ugly: $f_*$ has no $B$, while $\Bf$ has. 
+   I would like to define $\text{Tors}_G \defeq \Aut_{G-\Set}(\princ G)$
+   so that we can use $\text{BTors}_G$. Further,
+   all pointed maps without $B$, and apply $\mkgroup$
+   to lift the diagram to groups and iso/homomorphisms.
+   Can easily be implemented by starting everywhere by:
+   Let $\mkgroup f$ be a homomorphism ... If you want to have the
+   operation ${}_*$ on homomorphisms, 
+   just define $(\mkgroup f)_* \defeq \mkgroup f_*$}}
    \[
      \begin{tikzcd}
-       \BG \ar[r,"\Bf"]\ar[d,"{\pathsp{}^G}"'] &
-       \BH\ar[d,"{\pathsp{}^H}"] \\
-       \typetorsor_G \ar[r,"f_*"'] & \typetorsor_H .
+     \sh_G \ar[ddd,mapsto] \ar[rrr,mapsto] &
+     && \Bf(\sh_G)  & \ar[l,eql,"{\Bf_\pt}"'] \sh_H \ar[ddd,mapsto]\\
+       &\BG \ar[r,"\Bf"]\ar[d,"{\pathsp{\blank}^G}"'] &
+        \BH\ar[d,"{\pathsp{\blank}^H}"] \\
+       &\typetorsor_G \ar[r,"f_*"'] & \typetorsor_H \\
+     \princ G \ar[rrr,mapsto] &
+     && f_*\,\princ G&  \ar[l,eqr,"{\inv\eta\pi}"] \princ H.
      \end{tikzcd}
    \]
 \end{construction}
@@ -1499,17 +1499,17 @@ Summing up, we have implemented the following:
   \]
   to be the set quotient of $(\shape_H\eqto y)\times X(\shape_G)$ by
   the relation
-  $(p,x)\sim(p\, \phi(q)^{-1},q\cdot x)$ for all $q:\shape_G=\shape_G$.
+  $(p,x)\sim(p\, \phi(q)^{-1},q\cdot x)$ for all $q:\shape_G\eqto\shape_G$.
   Just as above, for $X$ the principal $G$-torsor we get an identity
-  $\eta_\phi:\phi_*\princ G=\princ H$ which, when evaluated at $y:\BH$,
+  $\eta_\phi:\phi_*\princ G \eqto \princ H$ which, when evaluated at $y:\BH$,
   corresponds under univalence to the equivalence
   \[
     (\shape_H\eqto y)\times_G\USymG\equivto (\shape_H\eqto y)
   \]
   sending $[(p,q)]$ to $p\,\phi(q):(\shape_H\eqto y)$.\footnote{%
-    \color{red}I'd like to rephrase this in terms of noticing
+    \color{red}UB: I'd like to rephrase this in terms of noticing
     when $f_*X$ is a set, or maybe redefining $f_*X$ to always take the
-    set truncation.}
+    set truncation. MB: OK now? BTW $[(p,q)]$ needs explanation.}
 \end{remark}
 
 \section{Any symmetry is a symmetry in $\Set$}
