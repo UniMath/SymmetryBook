@@ -1315,7 +1315,7 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{\blank}^G$
   Then, as $\pathsp y\eqto \pathsp z$ is an identity between
   families of types, function extensionality (\cref{def:funext}) applies.
   For $q:y\eqto z$, we may also use $\pathsp q$ to denote the corresponding 
-  function of type $\prod_{x:\BG}\pathsp y(x)\eqto \pathsp z(x)$.
+  function of type $\prod_{x:\BG}(\pathsp y(x)\eqto \pathsp z(x))$.
   
   Finally, as $\pathsp y(x)$ and $\pathsp z(x)$ are types,
   univalence (\cref{def:univalence}) applies.
@@ -1368,6 +1368,9 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{\blank}^G$
   Now apply \cref{lem:weq-iso} to complete the proof of the lemma.
 \end{proof}
 
+The following theorem justifies the title of this section, stating 
+that the classifying type of a group is the type of its torsors.
+
 \begin{theorem}\label{lem:BGbytorsor}
   If $G$ is a group, then the function
   $\pathsp{\blank}:\BG\to\typetorsor_G$ from~\cref{def:BG2TorsG}
@@ -1386,7 +1389,11 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{\blank}^G$
 
 \subsection{Homomorphisms and torsors}
 \label{sec:homotor}
-In view of the equivalence $\pathsp{}^G$ between $\BG$ and $(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} one might ask what a group homomorphism  $f:\Hom(G,H)$ translates to on the level of torsors.  Off-hand, the answer is the round-trip $(\pathsp{}^H)\Bf(\pathsp{}^G)^{-1}$, but we can be more concrete than that.
+In view of the equivalence $\pathsp{}^G$ between $\BG$ and 
+$(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} one might 
+ask what a group homomorphism  $f:\Hom(G,H)$ translates to on 
+the level of torsors.  Off-hand, the answer is the round-trip 
+$(\pathsp{}^H)\Bf(\pathsp{}^G)^{-1}$, but we can be more concrete than that.
 We do know that for $x:\BG$ the $G$-torsor $\pathsp x^G$ should be sent to
 $\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
 \begin{definition}
@@ -1395,7 +1402,7 @@ $\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
   then the \emph{restriction}\index{action!restricted}\index{restriction}
   $f^*Y$ of $Y$ to $G$ is the $G$-set given by precomposition
   \[
-    f^*Y\defequi Y\,\Bf:\BG\to\Set.
+    f^*Y\defequi (Y\circ\Bf) :\BG\to\Set.
   \]
 
   If $X:\BG\to\Set$ is a $G$-set, we define
@@ -1412,7 +1419,7 @@ of $f_*$ above.\footnote{%
     definiens of $f_*X$, is not ``exact''. See also \cref{xca:why-setTrunc_f_*}.}
 
 \begin{xca}\label{xca:why-setTrunc_f_*}
-\MB{New:} Find groups $G,H$, $f:\Hom(G,H)$ and $G$-set $X$ such that
+Find groups $G,H$, $f:\Hom(G,H)$ and $G$-set $X$ such that
 $\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)$ is not an $H$-set (but an $H$-type).
 \end{xca}
 % Solution: $G=\ZZ$, $H=\TG$, $f$ the unique homomorphism $f: \Hom(G,H)$,
@@ -1420,9 +1427,12 @@ $\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)$ is not an $H$-set (but an $H$-type).
 % $\sum_{z:\Sc}(0=0)\times \bn 1$ is a circle, so not a set.
 
 \begin{xca}\label{xca:id_*-is-id}
-\MB{New:} Give an equivalence from $f_*\,X$ to $X\,\inv\Bf$
-    if $f$ is an isomorphism.
+\MB{New:} Give an equivalence from $f_*\,X$ to $X\circ\inv\Bf$
+    if $f$ is an isomorphism. Give an equivalence between the identity
+    types $f_*\,X \eqto Y$ and $X \eqto f^*\,Y$, for all $G$-sets $X$
+    and $H$-sets $Y$.
 \end{xca}
+
 
 Note that the type $f_*X(y)$ is also the orbit type $(H^y \times X)_{hG}$,
 of the $G$-set $H^y\times X$,
@@ -1455,7 +1465,7 @@ Combining we get $\inv\eta\pi:\princ H \eqto f_*\,\princ G$.
 
 If $X$ is a $G$-set such that $\Trunc{\princ G \eqto X}$, then $f_*X$
 is an $H$-set such that $\Trunc{\princ H \eqto f_*X}$, so that
-$f_* : \typetorsor_G \ptdto \typetorsor_H$.
+$f_* : \typetorsor_G \ptdto \typetorsor_H$, pointed by $\inv\eta\pi$.
 
 Summing up, we have implemented the following:
 \begin{construction}
@@ -1463,18 +1473,9 @@ Summing up, we have implemented the following:
    Let $f:\Hom(G,H)$ be a group homomorphism. Then $f$ induces a 
    pointed map $f_*:\typetorsor_G\ptdto\typetorsor_H$,
    and we have a path of type 
-   $f_*\,\pathsp{\blank}^G \eqto \pathsp{\blank}^H\,\Bf \jdeq 
+   $f_*\,\pathsp{\blank}^G = \pathsp{\blank}^H\,\Bf \jdeq 
    f^*\,\pathsp{\blank}^H$,
-   all represented by the following diagram:\footnote{%
-   \MB{(MB) Ugly: $f_*$ has no $B$, while $\Bf$ has. 
-   I would like to define $\text{Tors}_G \defeq \Aut_{\GSet}(\princ G)$
-   so that we can use $\text{BTors}_G$. Further,
-   all pointed maps without $B$, and apply $\mkgroup$
-   to lift the diagram to groups and iso/homomorphisms.
-   Can easily be implemented by starting everywhere by:
-   Let $\mkgroup f$ be a homomorphism ... If you want to have the
-   operation ${}_*$ on homomorphisms, 
-   just define $(\mkgroup f)_* \defeq \mkgroup f_*$}}
+   all represented by the following diagram:
    \[
      \begin{tikzcd}
      \sh_G \ar[ddd,mapsto] \ar[rrr,mapsto] &
@@ -1487,30 +1488,6 @@ Summing up, we have implemented the following:
      \end{tikzcd}
    \]
 \end{construction}
-
-\begin{remark}
-  \label{rem:inducedGsetfromabstracthomomorphisms}
-  Notice that our construction of the induced $G$-set works equally well for
-  a homomorphism of abstract groups $\phi:\Hom^\abstr(\abstr(G),\abstr(H))$:
-  if $X:\BG\to\Set$ is a $G$-set, then we can
-  define the $H$-set $\phi_*X:\BH\to\Set$ by
-  \[
-    \phi_*X(y)\defequi (\shape_H \eqto y) \times_G X(\shape_G)
-  \]
-  to be the set quotient of $(\shape_H\eqto y)\times X(\shape_G)$ by
-  the relation
-  $(p,x)\sim(p\, \phi(q)^{-1},q\cdot x)$ for all $q:\shape_G\eqto\shape_G$.
-  Just as above, for $X$ the principal $G$-torsor we get an identity
-  $\eta_\phi:\phi_*\princ G \eqto \princ H$ which, when evaluated at $y:\BH$,
-  corresponds under univalence to the equivalence
-  \[
-    (\shape_H\eqto y)\times_G\USymG\equivto (\shape_H\eqto y)
-  \]
-  sending $[(p,q)]$ to $p\,\phi(q):(\shape_H\eqto y)$.\footnote{%
-    \color{red}UB: I'd like to rephrase this in terms of noticing
-    when $f_*X$ is a set, or maybe redefining $f_*X$ to always take the
-    set truncation. MB: OK now? BTW $[(p,q)]$ needs explanation.}
-\end{remark}
 
 \section{Any symmetry is a symmetry in $\Set$}
 \label{sec:groupssubperm}
@@ -1546,11 +1523,11 @@ denoted by $$\rho_G:\Hom(G,\SG_{\USymG}).$$
 \end{theorem}
 \begin{proof}
   In view of \cref{def:typeofmono} we need to show that 
-  $\B\rho_G\jdeq\princ G :\BG \to \conncomp \Set {\USymG}$ is a \covering.\footnote{\MB{Confusing, since families of sets are also called \coverings! Better: The fibers of $\princ G$ are sets.}}
+  $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a \covering.
   Under the pointed equivalence
   $$\pathsp{\blank}:\BG\ptdto (\typetorsor_G,\princ G)$$ of
-  \cref{lem:BGbytorsor}, $\princ G$ translates\footnote{
-  \MB{Exercise? $\princ G(\inv{\pathsp{\blank}}(E)\eqto\ev_{\sh_G}(E)$ for all $E$. Maps pointed, OK for $\sh_G$.}} to the
+  \cref{lem:BGbytorsor}, $\princ G$ is transported to\footnote{
+  \MB{Exercise? $\princ G(\inv{\pathsp{\blank}}(E))\eqto\ev_{\sh_G}(E)$ for all $E$. Maps pointed, OK for $\sh_G$.}} to the
   evaluation map
   $$\mathrm{ev}_{\shape_G}:\conncomp{(\BG\to\Set)}{\princ G}\ptdto
   \conncomp{\Set}{\USymG},\qquad
@@ -1558,47 +1535,21 @@ denoted by $$\rho_G:\Hom(G,\SG_{\USymG}).$$
   We must show that the preimages
   $\inv{\ev_{\shape_G}}(X)$ for $X:\Sigma_{\USymG}$ are sets.  This
   fiber is equivalent to
-  $\sum_{E:\conncomp{(\BG\to\Set)}{\uc{\sh_G}}}(X\eqto E(\shape_G))$ which,
-  \MB{being a subtype}, is a
+  $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X\eqto E(\shape_G))$ which,
+  being a subtype, is a
   set precisely when $\sum_{E:\BG\to\Set}(X\eqto E(\shape_G))$ is a set.
-  \MB{The latter is the type of pointed maps from $\BG$ to $(\Set,X)$
-  and hence a set by \cref{lem:hom-is-set}, in particular
-  \cref{ft:ptd-decr-h-lev}.}\footnote{%
-  \MB{Rest of the proof not needed. It is not a coincidence that
-  the type is $\Hom(G,\Aut_\Set(X))$, but why exactly? Worth a footnote!}}
-  
-  
-    We
-  must then show that if $(E,p),(F,q):\sum_{E:\BG\to\Set}(X=E(\shape_G))$,
-  then the type $(E,p)=(F,q)$, which is equivalent
-  \marginnote{Note that if $r:\shape_G=x$, then
-  $\phi(x)=F(r)qp^{-1}E(r)^{-1}$, in a picture
-  \begin{displaymath}
-    \xymatrix{&E(pt_G)\ar@{=}[r]^{E(r)}_\to\ar@{=}[dd]_{\phi(pt_G)}^\downarrow&E(x)\ar@{=}[dd]_{\phi(x)}^\downarrow\\
-      X\ar@{=}[ur]^p_{\rotatebox{35}{\footnotesize$\to$}}\ar@{=}[dr]^q_{\rotatebox{-35}{\footnotesize$\to$}}&&\\
-      &F(\shape_G)\ar@{=}[r]^{F(r)}_\to&F(x)},
-  \end{displaymath}
-and so $\phi(x)$ (which by nature is independent of such an
-$r:\shape_G=x$) is uniquely determined by $(E,p)$ and $(F,q)$. The text says this formally.}
-to
-  $$\prod_{x:\BG}\sum_{\phi(x):E(x)=F(x)}\phi(\shape_G)=qp^{-1},$$
-  is a proposition.
-If $\phi,\psi:((E,p)=(F,q))$, we
-  must show that $\phi=\psi$ and since that for $x:\BG$ both $E(x)$ and
-  $F(x)$ are sets, it is enough to show that the proposition
-  $\phi(x)=\psi(x)$ is not empty.  Let
-  $f:(\shape_G=x)\to(\phi(x)=\psi(x))$ be given by letting $f(r)$ be the
-  composite of the identities $\phi(x)=F(r)qp^{-1}E(r)^{-1}=\psi(x)$
-  given above.  Since $\BG$ is connected, and $\phi(x)=\psi(x)$ is a
-  proposition, one can consider that $\shape_G=x$ is not empty, and we
-  are done.\footnote{\MB{5.6 would become half a page now, a bit short.}}
+  The latter is the type of pointed maps from $\BG$ to $(\Set,X)$
+  and hence a set by \cref{lem:hom-is-set}, 
+  in particular \cref{ft:ptd-decr-h-lev}.
 \end{proof}
+
+\begin{xca}\label{xca:}
+qw
+\end{xca}
 
 \begin{xca}
     Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.
   \end{xca}
-
-    
 
 \section{The orbit-stabilizer theorem}
 \label{sec:orbit-stabilizer-theorem}
