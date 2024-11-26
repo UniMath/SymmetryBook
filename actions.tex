@@ -1155,7 +1155,7 @@ There are two possible extreme cases that are important:
 \begin{proof}
   The orbit $G\cdot x$ is the fiber of $\Bi_x : \BG_x \ptdto \BG$
   at $\shape_G$. Since $\BG$ is connected,
-  this is contractible if and only if all fibers of $\Bi$ are contractible,
+  this is contractible if and only if all fibers of $\Bi_x$ are contractible,
   \ie $\Bi_x$ is an equivalence, which in turn is equivalent to $i_x$
   being an isomorphism.
 \end{proof}
@@ -1505,29 +1505,28 @@ Let $G$ be a group.
 Recall from \cref{def:principaltorsor} the principal torsor
 $\princ G:\BG\to\Set: z\mapsto (\sh_G\eqto z)$.
 Since $\princ G (\shape_G)\defequi \USymG$, $\princ G$ restricts to
-a pointed function $\BG\ptdto \BSG_{\USymG}$, 
-\marginnote{The letter $\rho$ commemorates the word ``regular''} \ie 
+a pointed function $\BG\ptdto \BSG_{\USymG}$, \ie 
 classifies a homomorphism from $G$ to the permutation group 
 $\SG_{\USymG}\jdeq \Aut_{\Set}(\USymG)$,
-denoted by $$\rho_G:\Hom(G,\SG_{\USymG}).$$
+denoted by\footnote{The letter $\rho$ commemorates the word ``regular''} 
+$$\rho_G:\Hom(G,\SG_{\USymG}).$$
 
 \begin{theorem}[Cayley]
   \label{lem:allgpsarepermutationgps}
-  \marginnote{By \cref{def:typeofmono}, $\rho_G$ is a monomorphism means 
+  For all groups $G$, $\rho_G$ is a monomorphism.\footnote{By
+  \cref{def:typeofmono}, $\rho_G$ is a monomorphism means 
   that the induced map $\USym\rho_G$ from the symmetries of $\shape_G$ in 
   $\BG_\div$ to the symmetries of $\USymG$ in $\Set$ is an injection, 
-  \ie ``any symmetry is a symmetry in $\Set$''.}
-  Let $G$ be a group. Then
-  $(G,\rho_G,!)$ is a monomorphism into $\SG_{\USymG}$.
-  In other words, $G$ is a subgroup of $\SG_{\USymG}$.
+  \ie ``any symmetry is a symmetry in $\Set$''.}  
 \end{theorem}
+
 \begin{proof}
   In view of \cref{def:typeofmono} we need to show that 
   $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a \covering.
   Under the pointed equivalence
   $$\pathsp{\blank}:\BG\ptdto (\typetorsor_G,\princ G)$$ of
   \cref{lem:BGbytorsor}, $\princ G$ is transported to\footnote{
-  \MB{Exercise? $\princ G(\inv{\pathsp{\blank}}(E))\eqto\ev_{\sh_G}(E)$ for all $E$. Maps pointed, OK for $\sh_G$.}} to the
+  See \cref{xca:evP_isPrG}.} to the
   evaluation map
   $$\mathrm{ev}_{\shape_G}:\conncomp{(\BG\to\Set)}{\princ G}\ptdto
   \conncomp{\Set}{\USymG},\qquad
@@ -1542,12 +1541,58 @@ denoted by $$\rho_G:\Hom(G,\SG_{\USymG}).$$
   and hence a set by \cref{lem:hom-is-set}, 
   in particular \cref{ft:ptd-decr-h-lev}.
 \end{proof}
+  Note that the above theorem yields that 
+  $(G,\rho_G,!)$ is a monomorphism into $\SG_{\USymG}$.
+  In other words, $G$ is a subgroup of $\SG_{\USymG}$.
 
-\begin{xca}\label{xca:}
-qw
+\begin{xca}\label{xca:evP_isPrG}
+\MB{New:} Show that $\princ G$ and ${\ev_{\sh_G}}\circ{\pathsp{\blank}}$ are
+equal as pointed maps.
 \end{xca}
 
-\begin{xca}
+\begin{remark}\label{rem:CayleyMaybeLarge}
+\MB{New:} In many cases, the set $\USymG$ used in \cref{lem:allgpsarepermutationgps} is larger than necessary for
+obtaining the symmetries in $G$ as symmetries of the set.
+A case in point is the group $\SG_3$, where the symmetries \emph{are}
+already symmetries of a set, namely of the set $\bn3$. However,
+$\USG_3\jdeq(\bn3\eqto\bn3)$ is a $6$-element set. 
+Let's take a closer look at where and how this happens in the proof.
+
+As shown in \cref{xca:evP_isPrG}, the map $\princ G: 
+\BG\ptdto\conncomp{\Set}{\USymG}$ classifying the monomorphism $\rho_G$ 
+is decomposed into an equivalence $\pathsp{\blank}$
+followed by a map $\ev_{\sh_G}$ classifying a monomorphism.
+This is depicted in the following diagram, where the
+second line shows the induced maps on the symmetries.
+   \[
+     \begin{tikzcd}
+     \BG \ar[r,equivr,"\pathsp{\blank}"] & 
+     (\typetorsor_G,\princ G) \ar[r,"\ev_{\sh_G}"]&
+     \conncomp{\Set}{\USymG}\\
+     (\sh_G \eqto \sh_G) \ar[r,equivr,"\loops\pathsp{\blank}"] & 
+     (\princ G \eqto \princ G) \ar[r,"\loops\ev_{\sh_G}"]&
+     (\USymG \eqto \USymG)  
+     \end{tikzcd}
+   \]
+By function extensionality, $\princ G \eqto \princ G$ is
+equivalent to $\prod_{x:\BG}(\princ G(x) \eqto \princ G(x))$, the type of
+fixed points of the $G$-set $(x:\BG)\mapsto(\princ G(x) \eqto \princ G(x))$.
+By \cref{lem:fixpts-are-fixed}\ref{it:ev-is-inj}, such fixed points,
+and hence the corresponding symmetries of $\princ G$, are uniquely
+determined by their value at $\sh_G$. \footnote{%
+This is an alternative way to understand that $\ev_{\sh_G}$ classifies
+a monomorphism.}
+However, torsors have more structure than just a value at $\sh_G$.
+even though $f:\prod_{x:\BG}(\princ G(x) \eqto \princ G(x))$
+is uniquely determined by its value at $\sh_G$, it has an action on
+paths in $\USymG$ ...\label{it:ev-is-eq-on-inv}
+
+Coming back to the example of $\SG_3$, we see that $\princ G$ maps symmetries
+of $\bn3$ to symmetries of the $6$-element set $\USG_3\jdeq (\bn3\eqto\bn3)$.
+
+\end{remark}
+
+\begin{xca} \MB{MB doesn't understand:}
     Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.
   \end{xca}
 
