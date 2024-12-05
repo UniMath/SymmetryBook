@@ -1104,27 +1104,43 @@ The equivalence classes of both are important:
     \index{group!stabilizer} at $x$. The inclusion $\fst$ of $\BG_x$ in
     $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.
   \item Define $G\cdot x \defeq \setof{y : X(\shape_G)}{[x] =_{X/G} [y]}$
-    to be the \emph{orbit}\index{orbit} of $x$.\qedhere
+    to be the \emph{orbit}\index{orbit!of $x$} of $x$.
+    \MB{An \emph{orbit} is the orbit of $x$ for some $x:X(\sh_G)$.}\qedhere
   \end{enumerate}
 \end{definition}
 \begin{xca}\label{xca:Gx-in-Sub_G}
 Find $(X_x,x,!):\Sub_G$ corresponding to $(G_x,\fst,!):\typemono_G$.
-\MB{Steer away from $\inv E$?? $G$-\emph{sub}set in ftn 17??}
+\MB{Steer away from $\inv E$?? $G$-\emph{sub}set in ftn 18??}
 \end{xca}
 
-The following exercise explains why we call $X/G$ the set of orbits.
-\begin{xca}\label{xca:G/X-set-of-orbits}\MB{New}
+The following lemma explains why we call $X/G$ the set of orbits.
+\begin{lemma}\label{lem:G/X-set-of-orbits}\MB{New}
 Let $G$ be a group and $X$ a $G$-set. 
 Let $\inv{[\blank]} : X/G \to \Sub_{X(\sh_G)}$
-map any $z$ to its preimage $\setof{x : X(\shape_G)}{z =_{X/G} [x]}$.
-Show:
-\begin{enumerate}
-\item For all $z: X/G$ the set $\inv{[z]}$ is non-empty;
-\item The map $\inv{[\blank]}$ is an injection;
-\item The image of $\inv{[\blank]}$ consists precisely of all orbits.\footnote{%
-\MB{An \emph{orbit} is a orbit of $x$ for some $x:X(\sh_G)$.}}
-\end{enumerate}
-\end{xca}
+map any $o:X/G$ to its preimage $\setof{x : X(\shape_G)}{o =_{X/G} [x]}$.
+Then $\inv{[\blank]}$ is an injection whose
+image consists precisely of all orbits.
+\end{lemma}
+\begin{proof}
+We show first that $\inv{[o]}$ is non-empty for all $o:X/G$.
+Since the goal is a proposition, if suffices to consider
+$o\defeq\settrunc{(z,x)}$ with $z:\BG$ and $x:X(z)$,
+and we may assume a path $p:z\eqto\sh_G$ as $\BG$ is connected.
+Then $x'\defeq (p\cdot x)$ is an element of $X(\sh_G)$ and
+$(z,x)\sim(\sh_G,x')$. Hence $[x'] = o$, so $\inv{[o]}$ is non-empty.
+
+Now assume $\inv{[o]}=_{\Sub_{X(\sh_G)}}\inv{[o']}$, that is,
+the predicates $o=[\blank]$ and $o'=[\blank]$ are equal.
+We want to show the proposition $o=o'$, which follows directly
+from the non-emptiness of $\inv{[o]}$.
+
+Next we prove that every $\inv{[o]}$ is an orbit, which again
+is a proposition. By non-emptiness we may assume an $x:X(\sh_G)$ 
+such that $[x] = o$, so that indeed $\inv{[o]} = G\cdot x$.
+
+Finally, $(G\cdot x)\jdeq \inv{[[x]]}$ gives that every orbit is 
+in the image of $\inv{[\blank]}$.
+\end{proof}
 
 The following lemma states that the orbits of a $G$-set $X$
 sum up to its underlying set, with the sum taken over the set
@@ -1134,22 +1150,17 @@ of orbits $X/G$.
   \label{lem:splitting into orbits}
   The inclusions of the orbits form an equivalence
 \[
-  (z,x,!)\mapsto x \quad:\quad
-  \bigl(\sum_{z:X/G}\sum_{x:X(\shape_G)} 
-  (\inv{[z]} =_{\Sub_{X(\shape_G)}}(G\cdot x))\bigr)
-  \we X(\shape_G).
+  (o,p,!)\mapsto\fst(p) \quad:\quad
+  \bigl(\sum_{o:X/G} \inv{[o]} \bigr) \we X(\shape_G).
 \]
 \end{lemma}
 \begin{proof}
-We show for all $z:X/G$ and $x:X(\shape_G)$ that $z=[x]$
-if and only if $\inv{[z]} =_{\Sub_{X(\shape_G)}}(G\cdot x)$.
-Then the result follows by contracting away $z$.
-
-Clearly, if $z=[x]$, then the predicates $z=[\blank]$ for $\inv{[z]}$
-and $[x]=[\blank]$ for $G\cdot x$ are equal. The converse implication is
-immediate.
+Recall that $\inv{[o]}\jdeq \sum_{x:X(\sh_G)}(o=[x])$, 
+and then abstract
+away the $o$ using \cref{lem:contract-away}.\footnote{%
+In fact, for every set $A$ and every equivalence relation on $A$,
+the equivalence classes sum up to $A$.}
 \end{proof}
-
 
 
 Note that the classifying type $\BG_x$ of $G_x$
@@ -1172,8 +1183,8 @@ as sums of the respective fibers.\footnote{%
     \end{tikzcd}
   \]
   where we use $b$ to denote a \emph{bane}/orbit. (Too cute?
-  \MB{Unclear because of "set of orbits". 
-  What means $G\cdot x$ (pointed at $x$)?})}
+  MB: What means $G\cdot x$ \MB{(pointed at $x$)? Also, what is $G\cdot p$?
+  Perhaps use $\inv{[\blank]}$ from \cref{lem:G/X-set-of-orbits}?})}
 
 There are two possible extreme cases that are important:
 \begin{definition}\label{def:invariant-free}
