@@ -21,7 +21,7 @@ and this idea is used in~\cref{ch:absgroup} to build the equivalence between our
 After setting things up in~\cref{sec:gsets}, and
 studying subgroups in~\cref{sec:subgroups},
 we introduce the important
-operations of taking \emph{fixed points} and \emph{orbits} of an action
+operations of taking \emph{invariant maps} and \emph{orbits} of an action
 in~\cref{sec:fixpts-orbits}.
 We then construct in~\cref{sec:torsors}
 the fundamental equivalence between the classifying type $\BG$ of a group $G$
@@ -696,7 +696,7 @@ As pointing path we take the reflexivity path.
 This is a monomorphism since $\USymi_n:\USym\SG_n\to\USym\SG_{n+1}$ 
 is an injection, extending any permutation $\pi$ of $\bn n$ to 
 a permutation of $\bn{n}+\bn1$ by adding the last element as a
-fixed point.
+invariant map.
 
 In the picture in the margin we have taken $n=3$ and
 $\set{1,2,3}$ for $\bn{3}$. How can we obtain the other proper,
@@ -946,27 +946,33 @@ and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a 
 % %   The permutation group $\Sigma_3$ has four nontrivial proper subgroups.  Three conjugate subgroups isomorphic as groups to $C_2$ and one normal one which is as a group is isomorphic to $C_3$.  The component containing the copies of $C_2$ is equivalent to a circle.
 % % \end{remark}
 
-\section{Fixed points and orbits}
+\section{Invariant maps and orbits}
 \label{sec:fixpts-orbits}
 We now return to some important constructions involving $G$-sets for a group $G$.
 However, since they make equally good sense for \emph{$G$-types} for \aninftygp
 $G$, we'll mostly work in that generality.
 \begin{definition}
-  \label{def:orbittype}
-  If $X : \BG\to\UU$, then the \emph{orbit type}\index{orbit type}
-  of the action is\footnote{%
+%via the definition of X/G as the set truncation of the action type, that an orbit is also a connected component of the action type
+  \label{def:actiontype}
+  If $X : \BG\to\UU$, then the \emph{action type}\index{action type}
+  is the total type of $X$, denoted\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
     following a convention in homotopy theory.
     This helps to distinguish them from other uses, such as powers.
-    The orbit type is sometimes denoted $X \dblslash G$.}
+    The action type is sometimes denoted $X \dblslash G$.}
 \[
-  X_{hG} \defeq \sum_{z:\BG} X(z),
+  X_{hG} \defeq \sum_{z:\BG} X(z).
 \]
-and the type of \emph{fixed points}\index{fixed point type} as
+The type of \emph{invariant maps}\footnote{%
+These are dependent functions $f$ and the reason for the new name
+in this context is that $(g \cdot f(z)) = f(z)$ for any $z:\BG$
+and $g:z\eqto z$.}
+\index{invariant map type} is
 \[
   X^{hG} \defeq \prod_{z:\BG} X(z).
 \]
-The \emph{set of orbits}\index{set!of orbits}\index{orbit set} is the set-truncation of the orbit type,
+The \emph{set of orbits}\footnote{\MB{Homotopy orbit spaces? Above MBs head.}}
+\index{set!of orbits}\index{orbit set} is the set-truncation of the action type,
 \[
   X / G \defeq \Trunc{X_{hG}}_0.
 \]
@@ -975,21 +981,23 @@ if $X / G$ is contractible.
 \end{definition}
 
 \begin{xca}
-  Show that the above notion of transitive coincides with the one we introduced in \cref{def:transitiveGset} for a $G$-set $X$ for an ordinary group $G$:
+  Show that the above notion of transitive coincides with the one we introduced
+  in \cref{def:transitiveGset} for a $G$-set $X$ for an ordinary group $G$:
   that $X/G$ is contractible exactly encodes that there is just one ``orbit'':
   there is some $x:X(\shape_G)$ so that for any $y:X(\shape_G)$
   there is a $g:\USymG$ such that $x=g\cdot y$.
 \end{xca}
 
-We have seen many instances of orbit types before:
+We have seen many instances of action types before:
 When $G$-sets are considered as \coverings $f : A \to \BG$,
 they are the domains $A$.
 Recall for example~\cref{fig:two-comp-S1-cover},
-showing an action of $\ZZ$ on $\set{1,2,3,4,5}$ with no fixed points
-and an orbit type equivalent to a sum of two circles.
+showing an action of $\ZZ$ on $\set{1,2,3,4,5}$ with no invariant maps
+and an action type equivalent to a sum of two circles.
 In~\cref{fig:ZZ-set-orbits}, we show a similar $\ZZ$-set,
 with underlying set $\set{0,1,2,3,4,5}$, three orbits,
-and $5$ as a single fixed point.
+and $5$ corresponding to the only invariant map.\footnote{%
+Sending $\base$ to $5$ and $\Sloop$ to $\refl{5}$.}
 
 \begin{marginfigure}
   \begin{tikzpicture}[scale=.15]
@@ -1047,25 +1055,25 @@ and $5$ as a single fixed point.
     \node[dot,label=left:$1$,casred] (one)   at (-10, 6) {};
     \node[dot,label=left:$0$,casred] (zero)  at (-10, 2) {};
   \end{tikzpicture}
-  \caption{A $\ZZ$-set with three orbits and one fixed point.}
+  \caption{A $\ZZ$-set with three orbits and one invariant map.}
   \label{fig:ZZ-set-orbits}
 \end{marginfigure}
 
 In~\cref{fig:ZZ-set-orbits} we have highlighted a single component of
-the orbit type in blue (\ie corresponding to an element of the set of orbits),
+the action type in blue (\ie corresponding to an element of the set of orbits),
 and we see that it contains a subset of the underlying set,
 the three red elements $\set{0,1,2}$.
-Such a set is what is traditionally called an orbit.
+Such a set is what is traditionally called an orbit \MB{(contested!)}
 This connection is emphasized in the following result.
 
 \begin{lemma}\label{lem:orbit-equiv}
-  The map
+  Let $X : \BG\to\UU$. \MB{$\UU$ or $\Set$?} The map
   \[
     [\blank] : X(\shape_G) \to X/G, \qquad
     [x] \defeq \settrunc{(\shape_G,x)}
   \]
   is surjective, and $[x] = [y]$ is equivalent to
-  $\exists_{g:\USymG}(g\cdot x = y)$.
+  $\exists_{g:\USymG}(g\cdot x \MB{=} y)$.
 \end{lemma}
 \begin{proof}
   Surjectivity follows from the connectivity of $\BG$.
@@ -1073,12 +1081,12 @@ This connection is emphasized in the following result.
   $X/G \jdeq \setTrunc{X_{hG}}$ is itself the
   set quotient of $X_{hG} \jdeq \sum_{z:\BG}X(z)$ by
   the relation $\sim$ defined by letting $(z,x)\sim(w,y)$
-  if and only if $\exists_{g:z\eqto w}(g\cdot x=y)$.\footnote{%
+  if and only if $\exists_{g:z\eqto w}(g\cdot x\MB{=}y)$.\footnote{%
   \MB{Also iff $\Trunc{(z,x)\eqto(w,y)}$.}}
   Thus,~\cref{thm:quotient-property} gives the
   desired conclusion.
 \end{proof}
-Thus, both the underlying set $X(\shape_G)$ and the orbit type
+Thus, both the underlying set $X(\shape_G)$ and the action type
 $X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
   This also justifies the notation $X/G$.
   We have a diagram of surjective maps:
@@ -1105,7 +1113,10 @@ The equivalence classes of both are important:
     $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.
   \item Define $G\cdot x \defeq \setof{y : X(\shape_G)}{[x] =_{X/G} [y]}$
     to be the \emph{orbit}\index{orbit!of $x$} of $x$.
-    \MB{An \emph{orbit} is the orbit of $x$ for some $x:X(\sh_G)$.}\qedhere
+    An \emph{orbit} is the orbit of $x$ for some $x:X(\sh_G)$\MB{(contested!)}.\footnote{%
+    In \cref{lem:G/X-set-of-orbits} we explain how orbits correspond
+    to elements of the set of orbits $X/G$. We freely use the term
+    `orbit' for both.}\qedhere
   \end{enumerate}
 \end{definition}
 \begin{xca}\label{xca:Gx-in-Sub_G}
@@ -1177,21 +1188,20 @@ as sums of the respective fibers.\footnote{%
   Yielding the diagram
   \[
     \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
-      \displaystyle\sum_{b:X/G}G\cdot b \ar[rr]\ar[dr,"\fst"']
-      \& \& \displaystyle\sum_{b:X/G}(\BG_b)_\div\ar[dl,"\fst"] \\
+      \displaystyle\sum_{o:X/G} \inv{[o]} \ar[rr]\ar[dr,"\fst"']
+      \& \& \displaystyle\sum_{o:X/G} (\BG_o)_\div\ar[dl,"\fst"] \\
       \& X/G, \&
     \end{tikzcd}
   \]
-  where we use $b$ to denote a \emph{bane}/orbit. (Too cute?
-  MB: What means $G\cdot x$ \MB{(pointed at $x$)? Also, what is $G\cdot p$?
-  Perhaps use $\inv{[\blank]}$ from \cref{lem:G/X-set-of-orbits}?})}
+  (What means $\BG_o$? And in the text left: $G\cdot x$ 
+  \MB{(pointed at $x$)?} MB lost.)}
 
 There are two possible extreme cases that are important:
-\begin{definition}\label{def:invariant-free}
+\begin{definition}\label{def:fixed-free}
   Let $X$ be a $G$-set and $x:X(\shape_G)$ an element of the underlying set.
   We say that
   \begin{enumerate}
-  \item $x$ is \emph{invariant}\index{invariant}
+  \item $x$ is \emph{fixed}\index{fixed}
     if $i_x$ is an isomorphism (so $G_x$ is all of $G$),
   \item and $x$ is \emph{free}\index{free}\index{action!free}
     is $G_x$ is trivial.
@@ -1199,9 +1209,9 @@ There are two possible extreme cases that are important:
   We say that $X$ itself is \emph{free} if each $x:X(\shape_G)$ is free.
 \end{definition}
 
-\begin{lemma}\label{lem:invariant-char}
+\begin{lemma}\label{lem:fixed-char}
   Given a $G$-set $X$, an element $x:X(\shape_G)$ is
-  invariant if and only if the orbit $G\cdot x$ is contractible,
+ fixed if and only if the orbit $G\cdot x$ is contractible,
   \ie $x = g\cdot x$ for all $g:\USymG$.
 \end{lemma}
 \begin{proof}
@@ -1228,34 +1238,34 @@ There are two possible extreme cases that are important:
 \end{proof}
 
 When $X : \BG \to \Set$ is a $G$-set for an ordinary group $G$,
-there is another reasonable definition of the fixed points,
+there is another reasonable definition of the invariant maps,
 namely the subset
 \[
-  \setof{x : X(\shape_G)}{\text{$x$ is invariant}}
+  \setof{x : X(\shape_G)}{\text{$x$ is fixed}}
 \]
-consisting of the invariant elements.
-If we evaluate a fixed point $f : \prod_{z:\BG}X(z)$ at $\shape_G$
+consisting of thefixed elements.
+If we evaluate a invariant map $f : \prod_{z:\BG}X(z)$ at $\shape_G$
 we do indeed land in this subset:
 Letting $x\defeq f(\shape_G)$,
 and taking the dependent action on paths,
 $\apd{f}(g) : \pathover x X g x$,
 we can use~\cref{def:pathover-trp} to conclude
 $\trp[X] g(x)\jdeq g\cdot x = x$, for all $g:\USymG$.
-The following lemma states that each invariant $x$ uniquely
-determines a fixed point.
+The following lemma states that eachfixed $x$ uniquely
+determines a invariant map.
 
 \begin{lemma}\label{lem:fixpts-are-fixed}
   Let $G$ be a group\footnote{\MB{We only use that $\BG_\div$ is connected,
   so the lemma holds for $\infty$-groups as well.}}, 
   $X$ a $G$-set, with $X^{hG} \jdeq \prod_{z:\BG}X(z)$
-  the set of fixed points. 
+  the set of invariant maps. 
   Evaluation $\ev\defeq(f:X^{hG})\mapsto f(\sh_G)$ at $\shape_G$ gives
   \begin{enumerate}
   \item\label{it:ev-is-inj} 
   an injection of type $\bigl(\prod_{z:\BG}X(z)\bigr) \to X(\shape_G)$, which is
   \item\label{it:ev-is-eq-on-inv} an equivalence of type 
   $\bigl(\prod_{z:\BG}X(z)\bigr) \equivto
-  \setof{x : X(\shape_G)}{\text{$x$ is invariant}}.$
+  \setof{x : X(\shape_G)}{\text{$x$ is fixed}}.$
   \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -1269,13 +1279,13 @@ determines a fixed point.
   \ref{it:ev-is-inj}.
   
   For \ref{it:ev-is-eq-on-inv}, assume that
-  $x : X(\shape_G)$ is invariant, so $i_x\jdeq\fst:\BG_x \to \BG$
+  $x : X(\shape_G)$ is fixed, so $i_x\jdeq\fst:\BG_x \to \BG$
   is an equivalence. This means that $\inv\fst(z)$ is contractible
   for all $z:\BG$. Spelling out $\inv\fst(z)$, using \cref{lem:contract-away},
   identifies each fiber $\inv\fst(z)$ with
   $\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$.
   Projecting on the first component of each center of contraction
-  gives a fixed point $f$ such that $\Trunc{(\sh_G,x)\eqto(\sh_G,f(\sh_G))}$,
+  gives a invariant map $f$ such that $\Trunc{(\sh_G,x)\eqto(\sh_G,f(\sh_G))}$,
   from which the proposition $x=f(\sh_G)$ follows. This proves that
   $\ev$ is surjective, and hence an equivalence by \ref{it:ev-is-inj}.
 \end{proof}
@@ -1284,7 +1294,7 @@ determines a fixed point.
 Let $G$ be the group $\SG_2\times\SG_2$ and $X$ the $G$-set mapping
 any pair $(A,B)$ of $2$-element sets to the set $A\to B$.
 Elaborate the action of $G$ on $X(\sh_G)$ and determine the
-set of orbits and the set of fixed points. You can
+set of orbits and the set of invariant maps. You can
 do the same exercise for the following easier cases first:
 the $G$-set that is constant $\bn2\times\bn2$, and
 the $\SG_2$-sets $X(\blank,\bn2)$ and $X(\bn2,\blank)$.
@@ -1486,7 +1496,7 @@ $\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)$ is not an $H$-set (but an $H$-type).
 \end{xca}
 
 
-Note that the type $f_*X(y)$ is also the orbit type $(H^y \times X)_{hG}$,
+Note that the type $f_*X(y)$ is also the action type $(H^y \times X)_{hG}$,
 of the $G$-set $H^y\times X$,
 where $(H^y\times X)(x) \defeq (\Bf(x) \eqto y)\times X(x)$ for $x:\BG$,
 and whose underlying set is equivalent to $(\shape_H\eqto y)\times X(\shape_G)$.
@@ -1630,8 +1640,8 @@ Let $\PP$ be the $G$-set given by
 $\PP(z)\defeq(\princ G(z) \eqto \princ G(z))$ for all $z:\BG$.
 By function extensionality, $\princ G \eqto \princ G$ is
 equivalent to $\prod_{z:\BG}\PP(z)$, the type of
-fixed points of $\PP$.
-By \cref{lem:fixpts-are-fixed}\ref{it:ev-is-inj}, such fixed points,
+invariant maps of $\PP$.
+By \cref{lem:fixpts-are-fixed}\ref{it:ev-is-inj}, such invariant maps,
 and hence the corresponding symmetries of $\princ G$, are uniquely
 determined by their value at $\sh_G$.\footnote{%
 This is an alternative way to understand that $\ev_{\sh_G}$,
@@ -1641,23 +1651,23 @@ Note that the underlying set of $\PP$ is
 $\PP(\sh_G)\jdeq(\USymG \eqto \USymG)$.
 However, $\PP$ has more structure than its underlying set.
 \cref{lem:fixpts-are-fixed}\ref{it:ev-is-eq-on-inv} characterizes
-exactly the fixed points of $\PP$ as corresponding via $\ev_{\sh_G}$
-with invariant elements of $\USymG \eqto \USymG$. In other words,
+exactly the invariant maps of $\PP$ as corresponding via $\ev_{\sh_G}$
+withfixed elements of $\USymG \eqto \USymG$. In other words,
 $\ev_{\sh_G}$ forgets about the extra structure of $\PP$
-and maps fixed points of $\PP$ to invariant permutations of $\USymG$.
+and maps invariant maps of $\PP$ tofixed permutations of $\USymG$.
 For example, in the case of $\SG_3$, we go in total from permutations
-of $\bn3$ to invariant permutations of the $6$-element set $\bn3\eqto\bn3$.
+of $\bn3$ tofixed permutations of the $6$-element set $\bn3\eqto\bn3$.
 
-In \cref{xca:PP-invariant-permutations} you are asked to explore
-the abstract group of invariant permutations of $\USymG$.
+In \cref{xca:PP-fixed-permutations} you are asked to explore
+the abstract group offixed permutations of $\USymG$.
 \end{remark}
 
-\begin{xca}\label{xca:PP-invariant-permutations} \MB{New:}
+\begin{xca}\label{xca:PP-fixed-permutations} \MB{New:}
 Let conditions be as in \cref{rem:CayleyOversize}.
 By analyzing transport in the type family $\princ G(\blank)$,
 show that a permutation $\pi$ of $\USymG$
-is invariant if and only if $\pi(gg')=g\pi(g')$ for all $g,g':\USymG$.
-Show that the invariant permutations of $\USymG$ form an abstract group
+is fixed if and only if $\pi(gg')=g\pi(g')$ for all $g,g':\USymG$.
+Show that thefixed permutations of $\USymG$ form an abstract group
 and that evaluation of such a permutation at $\refl{\sh_G}$
 yields an abstract isomorphism from this group to $\abstr(G)$.
 \end{xca}
@@ -1672,7 +1682,7 @@ yields an abstract isomorphism from this group to $\abstr(G)$.
 
 
 Let $G$ be a group (or $\infty$-group) and  $X : \BG \to \UU$  a $G$-type.
-Recall the orbit type of \cref{def:orbittype} $X_{hG}\defequi
+Recall the action type of \cref{def:actiontype} $X_{hG}\defequi
 \sum_{z:\BG}X(z)$ and its truncation, the set of orbits $X / G \defeq \setTrunc{X_{hG}}$ and the map $X(\shape_G)\to X_{hG}$ sending $x:X(\shape_G)$ to $[x]\defequi (\shape_G,x)$.
 
 
@@ -1689,7 +1699,7 @@ For an element $x:X/G$ consider the associated subtype of $X(\shape_G)$ consisti
 %   G\cdot x \defeq \mathcal O_{[x]} \defeq \sum_{y : X(\shape_G)} [x] =_{X/G} [y].
 % \]
 Note the (perhaps) unfortunate terminology: an ``orbit'' is not an element in the
-orbit type, but rather consists of all the elements in $X(\shape_G)$ sent to a given element in the orbit set.
+action type, but rather consists of all the elements in $X(\shape_G)$ sent to a given element in the orbit set.
 % Also note that the orbit $G\cdot x\defeq \mathcal O_x$ only depends on the image of $x$ in the set $X/G$ of orbits,
 % thus justifying the names.
 
@@ -1705,14 +1715,14 @@ parametrized by the set of orbits:
 
 The \emph{stabilizer group}\index{stabilizer group}
 (also known as the \emph{isotropy group}\index{isotropy group}) of
-$x : X(\shape_G)$ is the automorphism group of $[x]$ in the orbit type
+$x : X(\shape_G)$ is the automorphism group of $[x]$ in the action type
 $$G_x\defequi\Aut_{X_{hG}}([x]),$$
 so that
 $X_{hG}$ is equivalent to the disjoint union $\sum_{z:X/G}(\BG_x)_\div$.
 
 %The \emph{stabilizer group}\index{stabilizer group}
 %(also konwn as the \emph{isotropy group}\index{isotropy group}) of
-%$x : X(\shape_G)$ is the automorphism group of $[x]$ in the orbit type
+%$x : X(\shape_G)$ is the automorphism group of $[x]$ in the action type
 %$$G_x\defequi\Aut_{X_{hG}}([x]).$$
 
   For $x:X(\shape_G)$ the restriction of the first projection $\fst:X_{hG}\to\BG$ to the component of $[x]$ gives a homomorphism $i_x:\Hom(G_x,G)$ if we point it by $\refl{\shape_G}:\shape_G=\fst([x])$.
@@ -1739,7 +1749,7 @@ We say that the action is \emph{free}\index{free $G$-type} if all stabilizer gro
   Fix a $G$-type $X$ and a point $x : X(\shape_G)$.
   There is a canonical action $\tilde G : \BG_x \to \UU$,
   acting on $\tilde G(\shape_G)\equiv G$
-  with orbit type $\tilde G_{hG_x} \equiv \mathcal O_x$.
+  with action type $\tilde G_{hG_x} \equiv \mathcal O_x$.
 \end{theorem}
 \begin{proof}
   Define $\tilde G(t,y,!) \defeq (\shape_G \eqto t)$.
@@ -1754,7 +1764,7 @@ We say that the action is \emph{free}\index{free $G$-type} if all stabilizer gro
 \end{proof}
 
 Now suppose that $G$ is a $1$-group acting on a set.
-We see that the orbit type is a set
+We see that the action type is a set
 (and is thus equivalent to the set of orbits)
 if and only if
 all stabilizer groups are trivial,
