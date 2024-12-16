@@ -980,7 +980,7 @@ and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a 
 \label{sec:fixpts-orbits}
 We now return to some important constructions involving $G$-sets for a group $G$.
 However, since they make equally good sense for \emph{$G$-types} for \aninftygp
-$G$, we'll mostly work in that generality.\footnote{\MB{\aninftygp to margin?}}
+$G$, we'll mostly work in that generality.\footnote{\MB{To margin?}}
 \begin{definition}
 %via the definition of X/G as the set truncation of the action type, that an orbit is also a connected component of the action type
   \label{def:actiontype}
@@ -995,18 +995,21 @@ $G$, we'll mostly work in that generality.\footnote{\MB{\aninftygp to margin?}}
 \]
 The type of \emph{invariant maps}\footnote{%
 These are dependent functions $f$ and the reason for the new name
-in this context is that $(g \cdot f(z)) = f(z)$ for any $z:\BG$
+in this context is that $(g \cdot f(z))\eqto f(z)$ for any $z:\BG$
 and $g:z\eqto z$.}
 \index{invariant map type} is
 \[
   X^{hG} \defeq \prod_{z:\BG} X(z).
 \]
-The \emph{set of orbits}\footnote{\MB{Homotopy orbit spaces? Above MBs head.}}
-\index{set!of orbits}\index{orbit set} is the set-truncation of the action type,
+The \emph{set of orbits}\footnote{\MB{To do: $G$-*sub*types.
+Where: terminology homotopy orbit spaces?}}
+\index{set!of orbits}\index{orbit set} is the subset of $\Sub^G_X$ consisting
+of all $G$-subtypes $P$ of $X$ such that the underlying $G$-subtype $X_P$
+is transitive:
 \[
-  X / G \defeq \Trunc{X_{hG}}_0.
+  X / G \defeq \sum_{P:\Sub^G_X}\istrans(X_P).
 \]
-We say that the action is \emph{transitive}\index{transitive}
+We say that the action is \emph{transitive}\index{transitive group action}
 if $X / G$ is contractible.
 \end{definition}
 
@@ -1093,29 +1096,39 @@ In~\cref{fig:ZZ-set-orbits} we have highlighted a single component of
 the action type in blue (\ie corresponding to an element of the set of orbits),
 and we see that it contains a subset of the underlying set,
 the three red elements $\set{0,1,2}$.
-Such a set is what is traditionally called an orbit \MB{(contested)}
+Such a set is what is traditionally called an orbit.
 This connection is emphasized in the following result.
 
 \begin{lemma}\label{lem:orbit-equiv}
-  Let $X : \BG\to\UU$. \MB{$\UU$ or $\Set$?} The map
+  Let $G$ be a group and $X : \BG\to\UU$. \MB{$\UU$ or $\Set$?} 
+  The map $[\blank] : X(\sh_G) \to X/G$, defined by
   \[
-    [\blank] : X(\sh_G) \to X/G, \qquad
-    [x] \defeq \settrunc{(\sh_G,x)}
+    [x](z,y)\defeq \Trunc{(\sh_G,x)\eqto(z,y)}\quad
+    \text{for all $x:X(\sh_G)$ and $(z,y):X_{hG}$},
   \]
   is surjective, and $[x] = [y]$ is equivalent to
-  $\exists_{g:\USymG}(g\cdot x \MB{=} y)$.
+  $\exists_{g:\USymG}(g\cdot x\eqto y)$.
 \end{lemma}
 \begin{proof}
-  Surjectivity follows from the connectivity of $\BG$.
-  By~\cref{rem:set-trunc-as-quotient},
-  $X/G \jdeq \setTrunc{X_{hG}}$ is itself the
-  set quotient of $X_{hG} \jdeq \sum_{z:\BG}X(z)$ by
-  the relation $\sim$ defined by letting $(z,x)\sim(w,y)$
-  if and only if $\exists_{g:z\eqto w}(g\cdot x\MB{=}y)$.\footnote{%
-  \MB{Also iff $\Trunc{(z,x)\eqto(w,y)}$.}}
-  Thus,~\cref{thm:quotient-property} gives the
-  desired conclusion.
+  By definition, $[x]$ is a $G$-subtype of $X$. Clearly,
+  $\Trunc{(z,x)\eqto(w,y)}$ iff $\exists_{g:z\eqto w}(g\cdot x\eqto y)$.
+  It follows that the underlying $G$-type $X_{[x]}$ is transitive,
+  so that the map $[\blank]$ is well-defined.
+  
+  For proving surjectivity, assume $P:X/G$, that is,
+  $P$ is a $G$-subtype of $X$ such that $X_P$ is transitive. 
+  We have to show that there exists an $x:X(\sh_G)$ such that $P=[x]$.
+  By the connectivity of $\BG$ it suffices to show $P(\sh_G)=[x](\sh_G)$
+  for some $x$, and this follows from the transitivity of $X_P$. 
+  The last part of the lemma follows using the connectivity of $\BG$.
 \end{proof}
+
+\begin{xca}\label{xca:orbit-set-as-quotient}\MB{New!}
+Let conditions be as in \cref{def:actiontype}.
+Construct an equivalence between $X/G$ and $\setTrunc{X_{hG}}$.
+Hint: use\cref{rem:set-trunc-as-quotient}.
+\end{xca}
+
 Thus, both the underlying set $X(\sh_G)$ and the action type
 $X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
   This also justifies the notation $X/G$.
