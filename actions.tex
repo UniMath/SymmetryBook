@@ -980,9 +980,10 @@ and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a 
 \label{sec:fixpts-orbits}
 We now return to some important constructions involving $G$-sets for a group $G$.
 However, since they make equally good sense for \emph{$G$-types} for \aninftygp
-$G$, we'll mostly work in that generality.\footnote{\MB{To margin?}}
+$G$, we'll mostly work in that generality.\footnote{\MB{MB is for
+moving all $\infty$ stuff to the margin, not having to worry
+about $\USymG$, $=$, \cref{lem:conistrans}, ...}}
 \begin{definition}
-%via the definition of X/G as the set truncation of the action type, that an orbit is also a connected component of the action type
   \label{def:actiontype}
   If $X : \BG\to\UU$, then the \emph{action type}\index{action type}
   is the total type of $X$, denoted\footnote{%
@@ -1001,8 +1002,7 @@ and $g:z\eqto z$.}
 \[
   X^{hG} \defeq \prod_{z:\BG} X(z).
 \]
-The \emph{set of orbits}\footnote{\MB{To do: $G$-*sub*types.
-Where: terminology homotopy orbit spaces?}}
+The \emph{set of orbits}\footnote{\MB{Where: terminology homotopy orbit spaces?}}
 \index{set!of orbits}\index{orbit set} is the subset of $\Sub^G_X$ consisting
 of all $G$-subtypes $P$ of $X$ such that the underlying $G$-subtype $X_P$
 is transitive:
@@ -1097,9 +1097,10 @@ the action type in blue (\ie corresponding to an element of the set of orbits),
 and we see that it contains a subset of the underlying set,
 the three red elements $\set{0,1,2}$.
 Such a set is what is traditionally called an orbit.
-This connection is emphasized in the following result.
+This connection is emphasized in the following result,
+and in particular in \cref{cor:orbit-equiv}.
 
-\begin{lemma}\label{lem:orbit-equiv}
+\begin{lemma}\label{lem:surj-set-orbit}
   Let $G$ be a group and $X : \BG\to\UU$. \MB{$\UU$ or $\Set$?} 
   The map $[\blank] : X(\sh_G) \to X/G$, defined by
   \[
@@ -1107,40 +1108,56 @@ This connection is emphasized in the following result.
     \text{for all $x:X(\sh_G)$ and $(z,y):X_{hG}$},
   \]
   is surjective, and $[x] = [y]$ is equivalent to
-  $\exists_{g:\USymG}(g\cdot x\eqto y)$.
+  $\exists_{g:\USymG}(g\cdot x = y)$.
 \end{lemma}
-\begin{proof}
+\begin{proof}\MB{New:}
   By definition, $[x]$ is a $G$-subtype of $X$. Clearly,
-  $\Trunc{(z,x)\eqto(w,y)}$ iff $\exists_{g:z\eqto w}(g\cdot x\eqto y)$.
-  It follows that the underlying $G$-type $X_{[x]}$ is transitive,
+  $\Trunc{(z,x)\eqto(w,y)}$ iff $\exists_{g:z\eqto w}(g\cdot x = y)$.
+  It follows that the underlying $G$-type $X_{[x]}\jdeq
+  (z\mapsto \sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)})$ is transitive,
   so that the map $[\blank]$ is well-defined.
   
-  For proving surjectivity, assume $P:X/G$, that is,
-  $P$ is a $G$-subtype of $X$ such that $X_P$ is transitive. 
-  We have to show that there exists an $x:X(\sh_G)$ such that $P=[x]$.
-  By the connectivity of $\BG$ it suffices to show $P(\sh_G)=[x](\sh_G)$
-  for some $x$, and this follows from the transitivity of $X_P$. 
+  For proving surjectivity, assume an orbit $O:X/G$, \ie
+  $O$ is a $G$-subtype of $X$ such that $X_O$ is transitive. 
+  We have to show that there exists an $x:X(\sh_G)$ such that $O=[x]$.
+  By the connectivity of $\BG$ it suffices to show 
+  $O(\sh_G)=_{X(\sh_G)\to\Prop}[x](\sh_G)$ for some $x$.
+  Transitivity of $X_O$ means that there exists an $x:X(\sh_G)$
+  such that $O(\sh_G,x)$ and for all $y:X(\sh_G)$ such that
+  $O(\sh_G,y)$ there
+  exists a $g:\USymG$ such that $g\cdot x = y$, \ie $[x](\sh_G,y)$.
+  Thus transitivity of $X_O$ warrants the existence of an $x$ that we need.
+  
   The last part of the lemma follows using the connectivity of $\BG$.
 \end{proof}
 
-\begin{xca}\label{xca:orbit-set-as-quotient}\MB{New!}
+\begin{remark}\label{rem:equivalents-of-[x]=[y]}\MB{New:}
+Given a $G$-set $X$ and $x,y:X(\sh_G)$,
+the following propositions are all equivalent and we may pass from
+one to another without mention:
+$[x]=_{X/G}[y]$;\quad 
+$[x](\sh_G)=_{X(\sh_G)\to\Prop}[y](\sh_G)$;\quad
+%$G\cdot x =_{\Sub_{X(\sh_G)}} G\cdot y$;\quad
+$\exists_{g:\USymG}(g\cdot x = y)$;\quad
+$\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$;\quad 
+$[x](\sh_G,y)$;\quad
+$[y](\sh_G,x)$. As functions of $x$ and $y$ they all define the equivalence
+relation on $X(\sh_G)$ induced be the surjection $[\blank]$. 
+
+\end{remark}
+
+\begin{corollary}\label{cor:orbit-equiv}\MB{New:}
+Being surjective, the map $[\blank] : X(\sh_G) \to X/G$ defines\footnote{%
+\MB{To do in Chapter 2, then refer to it.}}
+an equivalence between the induced quotient of $X(\sh_G)$ and $X/G$.
+\end{corollary}
+
+\begin{xca}\label{xca:orbit-set-as-quotient}\MB{New:}
 Let conditions be as in \cref{def:actiontype}.
 Construct an equivalence between $X/G$ and $\setTrunc{X_{hG}}$.
-Hint: use\cref{rem:set-trunc-as-quotient}.
+Hint: use \cref{rem:set-trunc-as-quotient}.
 \end{xca}
 
-Thus, both the underlying set $X(\sh_G)$ and the action type
-$X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
-  This also justifies the notation $X/G$.
-  We have a diagram of surjective maps:
-  \[
-    \begin{tikzcd}[ampersand replacement=\&]
-      X(\sh_G) \ar[rr,"{x\mapsto(\sh_G,x)}"]\ar[dr,"{[\blank]}"']
-      \& \& X_{hG}\ar[dl,"{\settrunc\blank}"] \\
-      \& X/G \&
-    \end{tikzcd}
-  \]}
-The equivalence classes of both are important:
 \begin{definition}\label{def:orbit-stabilizer}
   Let $G$ be a group, $X : \BG \to \Set$ a $G$-set, 
   and $x : X(\sh_G)$ an element.
@@ -1155,93 +1172,41 @@ The equivalence classes of both are important:
     \index{group!stabilizer} at $x$. The inclusion $\fst$ of $\BG_x$ in
     $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.
   \item Define $G\cdot x \defeq \setof{y : X(\sh_G)}{[x] =_{X/G} [y]}$
-    to be the \emph{orbit}\index{orbit!of $x$} of $x$.
-    An \emph{orbit} is the orbit of $x$ for some $x:X(\sh_G)$\MB{(contested)}.\footnote{%
-    In \cref{lem:G/X-set-of-orbits} we explain how orbits correspond
-    to elements of the set of orbits $X/G$. We freely use the term
-    `orbit' for both.}\qedhere
+    to be the \emph{orbit}\index{orbit!of $x$} of $x$.\footnote{%
+    This terminology relies on the equivalence in \cref{cor:orbit-equiv}.}
+    \qedhere
   \end{enumerate}
 \end{definition}
+
 \begin{xca}\label{xca:Gx-in-Sub_G}
 Find $(X_x,x,!):\Sub_G$ corresponding to $(G_x,\fst,!):\typemono_G$.
-\MB{Steer away from $\inv E$?? $G$-\emph{sub}set in \cref{ft:fib-fst}??}
+\MB{Steer away from $\inv E$??}
 \end{xca}
 
-The following lemma explains why we call $X/G$ the set of orbits.
-\begin{lemma}\label{lem:G/X-set-of-orbits}\MB{New}
-Let $G$ be a group and $X$ a $G$-set. 
-Let $\inv{[\blank]} : X/G \to \Sub_{X(\sh_G)}$
-map any $o:X/G$ to its preimage $\setof{x : X(\sh_G)}{o =_{X/G} [x]}$.
-Then $\inv{[\blank]}$ is an injection whose
-image consists precisely of all orbits.
-\end{lemma}
-\begin{proof}
-We show first that $\inv{[o]}$ is non-empty for all $o:X/G$.
-Since the goal is a proposition, if suffices to consider
-$o\defeq\settrunc{(z,x)}$ with $z:\BG$ and $x:X(z)$,
-and we may assume a path $p:z\eqto\sh_G$ as $\BG$ is connected.
-Then $x'\defeq (p\cdot x)$ is an element of $X(\sh_G)$ and
-$(z,x)\sim(\sh_G,x')$. Hence $[x'] = o$, so $\inv{[o]}$ is non-empty.
 
-Now assume $\inv{[o]}=_{\Sub_{X(\sh_G)}}\inv{[o']}$, that is,
-the predicates $o=[\blank]$ and $o'=[\blank]$ are equal.
-We want to show the proposition $o=o'$, which follows directly
-from the non-emptiness of $\inv{[o]}$.
-
-Next we prove that every $\inv{[o]}$ is an orbit, which again
-is a proposition. By non-emptiness we may assume an $x:X(\sh_G)$ 
-such that $[x] = o$, so that indeed $\inv{[o]} = G\cdot x$.
-
-Finally, $(G\cdot x)\jdeq \inv{[[x]]}$ gives that every orbit is 
-in the image of $\inv{[\blank]}$.
-\end{proof}
 
 The following lemma states that the orbits of a $G$-set $X$
 sum up to its underlying set, with the sum taken over the set
 of orbits $X/G$.
 
-\begin{lemma}\footnote{\MB{Replaces \cref{old:splitting into orbits}.}}
+\begin{lemma}\footnote{\MB{Replaces \cref{old:splitting into orbits}.
+Do we need it?}}
   \label{lem:splitting into orbits}
   The inclusions of the orbits form an equivalence
 \[
-  (o,p,!)\mapsto\fst(p) \quad:\quad
-  \bigl(\sum_{o:X/G} \inv{[o]} \bigr) \we X(\sh_G).
+  (O,p)\mapsto\fst(p) \quad:\quad
+  \bigl(\sum_{O:X/G} \inv{[O]} \bigr) \we X(\sh_G).
 \]
 \end{lemma}
 \begin{proof}
-Recall that $\inv{[o]}\jdeq \sum_{x:X(\sh_G)}(o=[x])$, 
+Recall that $\inv{[O]}\jdeq \sum_{x:X(\sh_G)}(O=[x])$, 
 and then abstract
-away the $o$ using \cref{lem:contract-away}.\footnote{%
+away the $O$ using \cref{lem:contract-away}.\footnote{%
 In fact, for every set $A$ and every equivalence relation on $A$,
 the equivalence classes sum up to $A$.}
 \end{proof}
 
-
-
-Note that the classifying type $\BG_x$ of $G_x$
-is identified with the fiber of $\settrunc{\blank} : X_{hG} \to X/G$,
-and $G\cdot x$ (pointed at $x$)
-is identified with the fiber of $[\blank] : X(\sh_G) \to X/G$,
-both taken at $[x]$, the orbit containing $x$.
-
-Also, the base point of $\BG_x$ depends on the choice of $x$,
-but the underlying type $(\BG_x)_\div$, \MB{being a connected component,}
-only depends on $[x]:X/G$.
-Thus, we can decompose our diagram by writing $X(\sh_G)$ and $X_{hG}$
-as sums of the respective fibers.\footnote{%
-  Yielding the diagram
-  \[
-    \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
-      \displaystyle\sum_{o:X/G} \inv{[o]} \ar[rr]\ar[dr,"\fst"']
-      \& \& \displaystyle\sum_{o:X/G} \inv{\settrunc{o}}\ar[dl,"\fst"] \\
-      \& X/G, \&
-    \end{tikzcd}
-  \]
-  Indeed, $\inv{[[x]]}\jdeq(G\cdot x)$
-  and $\inv{\settrunc{[x]}}\equivto \BG_x$ via identity on $X_{hG}$.}
-  
-
-There are two possible extreme cases that are important:
+There are two possible extreme cases for $G_x$ that are important:
 \begin{definition}\label{def:fixed-free}
   Let $X$ be a $G$-set and $x:X(\sh_G)$ an element of the underlying set.
   We say that
@@ -1428,12 +1393,49 @@ which exists since $X$ has only one orbit.
 Furthermore, $[\blank]: \USymG \to {\tilde G_x}/G_x$ is defined by
 $[g]\defeq \settrunc{(\sh_G,x,\trunc{\refl{(\sh_G,x)}},g)}$.
 Now, $\inv{[\settrunc{(\sh_G,y,!,\refl{\sh_G})}]}$ is easily
-identified with $\sum_{g:\USymG}((\sh_G,x)\eqto(\sh_G,y))$, so
-with $\USymG_x$ for all $y$ \MB{(only merely?)}. 
-Thus we get in total an equivalence
-from $\USymG$ to $X(\sh_G)\times\USymG_x$ \MB{(only merely?)}.
+identified with $\sum_{g:\USymG}((\sh_G,x)\eqto(\sh_G,y))$.
+For $y\jdeq x$ the type $(\sh_G,x)\eqto(\sh_G,y)$ is $\USymG_x$, 
+but in general this is problematic. \MB{(Finite case? Only merely? AC?)}. 
+
+\subsection{Not used}
+Thus, both the underlying set $X(\sh_G)$ and the action type
+$X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
+  This also justifies the notation $X/G$.
+  We have a diagram of surjective maps:
+  \[
+    \begin{tikzcd}[ampersand replacement=\&]
+      X(\sh_G) \ar[rr,"{x\mapsto(\sh_G,x)}"]\ar[dr,"{[\blank]}"']
+      \& \& X_{hG}\ar[dl,"{\settrunc\blank}"] \\
+      \& X/G \&
+    \end{tikzcd}
+  \]}
+The equivalence classes of both are important:
 
 
+
+Note that the classifying type $\BG_x$ of $G_x$
+is identified with the fiber of $\settrunc{\blank} : X_{hG} \to X/G$,
+and $G\cdot x$ (pointed at $x$)
+is identified with the fiber of $[\blank] : X(\sh_G) \to X/G$,
+both taken at $[x]$, the orbit containing $x$.
+
+Also, the base point of $\BG_x$ depends on the choice of $x$,
+but the underlying type $(\BG_x)_\div$, \MB{being a connected component,}
+only depends on $[x]:X/G$.
+Thus, we can decompose our diagram by writing $X(\sh_G)$ and $X_{hG}$
+as sums of the respective fibers.\footnote{%
+  Yielding the diagram
+  \[
+    \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
+      \displaystyle\sum_{o:X/G} \inv{[o]} \ar[rr]\ar[dr,"\fst"']
+      \& \& \displaystyle\sum_{o:X/G} \inv{\settrunc{o}}\ar[dl,"\fst"] \\
+      \& X/G, \&
+    \end{tikzcd}
+  \]
+  Indeed, $\inv{[[x]]}\jdeq(G\cdot x)$
+  and $\inv{\settrunc{[x]}}\equivto \BG_x$ via identity on $X_{hG}$.
+  \MB{Do we still need this?}}
+  
 
 
 
