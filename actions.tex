@@ -205,10 +205,12 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
 \end{xca}
 
 \begin{definition}\label{def:map-of-Gsets}
-  If $G$ is a group and $X,Y$ are $G$-sets, then a
+  If $G$ is a group and $X,Y$ are $G$-sets,\footnote{%
+  This definition generalizes to \inftygps and $G$-types.}
+  then a
   \emph{map from $X$ to $Y$} is an element of the type\footnote{%
   Note that, if $f$ is a map from $X$ to $Y$,
-  then $f_w(g\cdot_X x) = g\cdot_Y f_z(x)$ for all $z,w:\BG$,
+  then $f(w,g\cdot_X x) = g\cdot_Y f(z,x)$ for all $z,w:\BG$,
   $x:X(z)$, $y:X(w)$, $g:z\eqto w$. \MB{Make picture.}}
   \[
   \prod_{z:\BG}(X(z)\to Y(z)).
@@ -218,18 +220,18 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
   A \emph{$G$-subset of $X$} is a map from $X$ to the $G$-set that is
   constant $\Prop$.\footnote{%
   Note that, if $P$ is a $G$-subset of $X$, 
-  then $P_z(x) = P_w(g\cdot_X x)$ for all $z,w:\BG$,
+  then $P(z,x) = P(w,g\cdot_X x)$ for all $z,w:\BG$,
   $x:X(z)$, $y:X(w)$, $g:z\eqto w$.}
   The type of all such maps is denoted by
   \[
-   \Sub^G_X\defeq \prod_{z:\BG}(X(z)\to\Prop).
+   \Sub_{G,X}\defeq \prod_{z:\BG}(X(z)\to\Prop).
   \]
-  %\glossary(Gsubsets){\protect{$\Sub^G_X$}}{set of $G$-subsets of $X$} ERROR
-  Similarly to \cref{cor:subtype-same-level}, $\Sub^G_X$ is a set.
+  %\glossary(Gsubsets){\protect{$\Sub_{G,X}$}}{set of $G$-subsets of $X$} ERROR
+  Similarly to \cref{cor:subtype-same-level}, $\Sub_{G,X}$ is a set.
   If $P$ is a $G$-subset of $X$, then the \emph{underlying $G$-set of $P$},
   denoted by $X_P$, is defined by
   \[
-  X_P(z) \defeq \setof{x:X(z)}{P(z)(x)},\quad\text{for all $z:\BG$}.\qedhere
+  X_P(z) \defeq \sum_{x:X(z)}{P(z,x)},\quad\text{for all $z:\BG$}.\qedhere
   \]
   \glossary(Gset){$X_P$}{underlying $G$-set of $P$}
 \end{definition}
@@ -979,13 +981,13 @@ and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a 
 \section{Invariant maps and orbits}
 \label{sec:fixpts-orbits}
 We now return to some important constructions involving $G$-sets for a group $G$.
-However, since they make equally good sense for \emph{$G$-types} for \aninftygp
-$G$, we'll mostly work in that generality.\footnote{\MB{MB is for
-moving all $\infty$ stuff to the margin, not having to worry
-about $\USymG$, $=$, \cref{lem:conistrans}, ...}}
+Some of these make equally good sense for \emph{$G$-types} for \aninftygp
+$G$, in which case we add a footnote to this effect.
+% perhaps with some warnings $\USymG$, $=$, \cref{lem:conistrans}, ...
 \begin{definition}
-  \label{def:actiontype}
-  If $X : \BG\to\UU$, then the \emph{action type}\index{action type}
+  \label{def:actiontype} Let $G$ be a group and $X : \BG\to\Set$,\footnote{%
+  This definition can be generalised to to \inftygps $G$ and $G$-types $X$.}
+  then the \emph{action type}\index{action type}
   is the total type of $X$, denoted\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
     following a convention in homotopy theory.
@@ -994,31 +996,33 @@ about $\USymG$, $=$, \cref{lem:conistrans}, ...}}
 \[
   X_{hG} \defeq \sum_{z:\BG} X(z).
 \]
+By \cref{def:pathover-trp} and \cref{def:pairtopath}, 
+the identity type $(z,x)\eqto_{X_{hG}}(w,y)$
+is equivalent to the sum type $\sum_{g:z\eqto w} g\cdot x = y$,
+and so are their (often used) propositional truncations.
+%We use $(z,y):X_{hG}$ sometimes for $z:\BG,\,y:X(z)$.
+
 The type of \emph{invariant maps}\footnote{%
 These are dependent functions $f$ and the reason for the new name
-in this context is that $(g \cdot f(z))\eqto f(z)$ for any $z:\BG$
+in this context is that $f(z) = g \cdot_X f(z)$ for any $z:\BG$
 and $g:z\eqto z$.}
 \index{invariant map type} is
 \[
   X^{hG} \defeq \prod_{z:\BG} X(z).
 \]
+
 The \emph{set of orbits}\footnote{\MB{Where: terminology homotopy orbit spaces?}}
-\index{set!of orbits}\index{orbit set} is the subset of $\Sub^G_X$ consisting
+\index{set!of orbits}\index{orbit set} is the subset of $\Sub_{G,X}$ consisting
 of all $G$-subtypes $P$ of $X$ such that the underlying $G$-subtype $X_P$
-is transitive:
+is transitive:\footnote{See \cref{def:transitiveGset}.}
 \[
-  X / G \defeq \sum_{P:\Sub^G_X}\istrans(X_P).
+  X / G \defeq \sum_{P:\Sub_{G,X}}\istrans(X_P).\qedhere
 \]
-We say that the action is \emph{transitive}\index{transitive group action}
-if $X / G$ is contractible.
 \end{definition}
 
 \begin{xca}
-  Show that the above notion of transitive coincides with the one we introduced
-  in \cref{def:transitiveGset} for a $G$-set $X$ for an ordinary group $G$:
-  that $X/G$ is contractible exactly encodes that there is just one ``orbit'':
-  there is some $x:X(\sh_G)$ so that for any $y:X(\sh_G)$
-  there is a $g:\USymG$ such that $x=g\cdot y$.
+  Show: $X/G$ is contractible if and only if $X$ is transitive.
+%That $X/G$ is contractible encodes that there is just one orbit.
 \end{xca}
 
 We have seen many instances of action types before:
@@ -1100,24 +1104,29 @@ Such a set is what is traditionally called an orbit.
 This connection is emphasized in the following result,
 and in particular in \cref{cor:orbit-equiv}.
 
+Recall from \cref{def:actiontype} the equivalence of
+$\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
+
 \begin{lemma}\label{lem:surj-set-orbit}
-  Let $G$ be a group and $X : \BG\to\UU$. \MB{$\UU$ or $\Set$?} 
-  The map $[\blank] : X(\sh_G) \to X/G$, defined by
+  Let $G$ be a group and $X : \BG\to\Set$.\footnote{%
+  This lemma can be generalised to \inftygps $G$ and $G$-types $X$.}
+  The map $[\blank]$ defined by
   \[
     [x](z,y)\defeq \Trunc{(\sh_G,x)\eqto(z,y)}\quad
-    \text{for all $x:X(\sh_G)$ and $(z,y):X_{hG}$},
+    \text{for all $x:X(\sh_G)$ and $(z,y):X_{hG}$}
   \]
-  is surjective, and $[x] = [y]$ is equivalent to
-  $\exists_{g:\USymG}(g\cdot x = y)$.
+  is a well-defined, surjective map $[\blank]: X(\sh_G) \to X/G$,
+  and $[x] = [y]$ is equivalent to $\exists_{g:\USymG}(g\cdot x = y)$.
 \end{lemma}
 \begin{proof}\MB{New:}
-  By definition, $[x]$ is a $G$-subtype of $X$. Clearly,
-  $\Trunc{(z,x)\eqto(w,y)}$ iff $\exists_{g:z\eqto w}(g\cdot x = y)$.
-  It follows that the underlying $G$-type $X_{[x]}\jdeq
-  (z\mapsto \sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)})$ is transitive,
-  so that the map $[\blank]$ is well-defined.
+  By definition, $[x]$ is a $G$-subset of $X$. 
+  By \cref{def:map-of-Gsets}, the underlying $G$-type $X_{[x]}$ is
+  $(z\mapsto \sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)})$, which we
+  must show to be transitive. This follows easily from the properties
+  of $\Trunc{(\sh_G,x)\eqto(z,y)}$. We conclude that
+  $[\blank]$ is a well defined map from $X(\sh_G)$ to $X/G$
   
-  For proving surjectivity, assume an orbit $O:X/G$, \ie
+  For proving surjectivity of $[\blank]$, consider an orbit $O:X/G$, \ie
   $O$ is a $G$-subtype of $X$ such that $X_O$ is transitive. 
   We have to show that there exists an $x:X(\sh_G)$ such that $O=[x]$.
   By the connectivity of $\BG$ it suffices to show 
@@ -1128,11 +1137,18 @@ and in particular in \cref{cor:orbit-equiv}.
   exists a $g:\USymG$ such that $g\cdot x = y$, \ie $[x](\sh_G,y)$.
   Thus transitivity of $X_O$ warrants the existence of an $x$ that we need.
   
-  The last part of the lemma follows using the connectivity of $\BG$.
+  The last part of the lemma follows using the connectivity of $\BG$;
+  see also \cref{rem:equivalents-of-[x]=[y]}.
 \end{proof}
 
+\begin{corollary}\label{cor:orbit-equiv}\MB{New:}
+Being surjective, the map $[\blank] : X(\sh_G) \to X/G$ induces\footnote{%
+\MB{To do in Chapter 2, then refer to it.}}
+an equivalence between the induced quotient of $X(\sh_G)$ and $X/G$.
+\end{corollary}
+
 \begin{remark}\label{rem:equivalents-of-[x]=[y]}\MB{New:}
-Given a $G$-set $X$ and $x,y:X(\sh_G)$,
+Given a group $G$, a $G$-set $X$ and $x,y:X(\sh_G)$,
 the following propositions are all equivalent and we may pass from
 one to another without mention:
 $[x]=_{X/G}[y]$;\quad 
@@ -1143,14 +1159,7 @@ $\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$;\quad
 $[x](\sh_G,y)$;\quad
 $[y](\sh_G,x)$. As functions of $x$ and $y$ they all define the equivalence
 relation on $X(\sh_G)$ induced be the surjection $[\blank]$. 
-
 \end{remark}
-
-\begin{corollary}\label{cor:orbit-equiv}\MB{New:}
-Being surjective, the map $[\blank] : X(\sh_G) \to X/G$ defines\footnote{%
-\MB{To do in Chapter 2, then refer to it.}}
-an equivalence between the induced quotient of $X(\sh_G)$ and $X/G$.
-\end{corollary}
 
 \begin{xca}\label{xca:orbit-set-as-quotient}\MB{New:}
 Let conditions be as in \cref{def:actiontype}.
@@ -1160,7 +1169,8 @@ Hint: use \cref{rem:set-trunc-as-quotient}.
 
 \begin{definition}\label{def:orbit-stabilizer}
   Let $G$ be a group, $X : \BG \to \Set$ a $G$-set, 
-  and $x : X(\sh_G)$ an element.
+  and $x : X(\sh_G)$ an element.\footnote{%
+  This definition can be generalised to to \inftygps $G$ and $G$-types $X$.}
   \begin{enumerate}
   \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$.
   Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
@@ -1194,7 +1204,7 @@ Do we need it?}}
   \label{lem:splitting into orbits}
   The inclusions of the orbits form an equivalence
 \[
-  (O,p)\mapsto\fst(p) \quad:\quad
+  (O,x,!)\mapsto x \quad:\quad
   \bigl(\sum_{O:X/G} \inv{[O]} \bigr) \we X(\sh_G).
 \]
 \end{lemma}
@@ -1208,7 +1218,8 @@ the equivalence classes sum up to $A$.}
 
 There are two possible extreme cases for $G_x$ that are important:
 \begin{definition}\label{def:fixed-free}
-  Let $X$ be a $G$-set and $x:X(\sh_G)$ an element of the underlying set.
+  Let $G$ be a group, $X$ a $G$-set and $x:X(\sh_G)$ an element of the underlying set.\footnote{%
+  This definition can be generalised to to \inftygps $G$ and $G$-types $X$.}
   We say that
   \begin{enumerate}
   \item $x$ is \emph{fixed}\index{fixed}
@@ -1220,12 +1231,14 @@ There are two possible extreme cases for $G_x$ that are important:
 \end{definition}
 
 \begin{lemma}\label{lem:fixed-char}
-  Given a $G$-set $X$, an element $x:X(\sh_G)$ is
+  Given a group $G$ and a $G$-set $X$, an element $x:X(\sh_G)$ is
  fixed if and only if the orbit $G\cdot x$ is contractible,
-  \ie $x = g\cdot x$ for all $g:\USymG$.
+  \ie $x = g\cdot x$ for all $g:\USymG$.\footnote{%
+  This lemma can be generalised to to \inftygps $G$ and $G$-types $X$.
+  In that case $\USymG\defeq\loops\BG$ is the underlying \emph{type} of $G$.}
 \end{lemma}
 \begin{proof}
-  The orbit $G\cdot x$ is the fiber of $\Bi_x : \BG_x \ptdto \BG$
+  The orbit $G\cdot x$ of $x$ is the fiber of $\Bi_x : \BG_x \ptdto \BG$
   at $\sh_G$. Since $\BG$ is connected,
   this is contractible if and only if all fibers of $\Bi_x$ are contractible,
   \ie $\Bi_x$ is an equivalence, which in turn is equivalent to $i_x$
@@ -1295,11 +1308,12 @@ the $\SG_2$-sets $X(\blank,\bn2)$ and $X(\bn2,\blank)$.
 
 \subsection{The Orbit-stabilizer theorem and Lagrange's theorem}
 
-Recall \cref{def:orbit-stabilizer}.
+Consider a group $G$, a $G$-set $X$ and an element $x:X(\sh_G)$,
+and recall \cref{def:orbit-stabilizer}.
 The classifying type of the stabilizer group $G_x$
-is the component of $X_{hG}$ containing the shape $(\sh_G,x)$.
+is the component of $X_{hG}$ pointed by the shape $(\sh_G,x)$.
 The first projection of a symmetry of $(\sh_G,x)$ is a symmetry of 
-$\sh_G$, and the second projection is just a true proposition.
+$\sh_G$, and the second projection is a proof of a proposition.
 This suggest a simple way for $G_x$ to act on the
 symmetries of $\sh_G$, by just ignoring the second projection. 
 Then one gets a $G_x$-set whose action type can, as expected,
@@ -1308,12 +1322,14 @@ out in the following construction.
 
 \begin{construction}[Orbit-stabilizer theorem]
 \footnote{\MB{Replaces \cref{old:orbitstab}.}}
-  \label{thm:orbitstab} Let $G$ be a group.\footnote{%
-  \MB{This construction works for $\infty$-groups as well.}}
-  Fix a $G$-type $X$ and a point $x : X(\sh_G)$. Define the $G_x$-type
-  $\tilde G_x : \BG_x \to \UU$ by $\tilde G_x(z,\blank,!)\defeq(\sh_G\eqto z)$,
-  acting on $\tilde G_x(\sh_{G_x})\defeq (\sh_G\eqto\sh_G)$.
-  Then we have an equivalence from the action type $(\tilde G_x)_{hG_x}$
+  \label{thm:orbitstab} Let $G$ be a group, $X$ a $G$-set $X$,
+  $x : X(\sh_G)$ an element of the underlying set of $X$.\footnote{%
+  This construction can be generalized to \inftygps $G$ and $G$-types $X$.}
+  Define the $G_x$-set
+  $\tilde G_x : \BG_x \to \UU$ by $\tilde G_x(z,y,!)\defeq(\sh_G\eqto z)$
+  for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$. 
+  Then the underlying set of $\tilde G_x$ is $\USymG$ and 
+  we have an equivalence from the action type $(\tilde G_x)_{hG_x}$
   to the orbit $(G\cdot_X x)$ of $x$.
 \end{construction}
 \begin{implementation}{thm:orbitstab}
@@ -1323,20 +1339,16 @@ out in the following construction.
     (\tilde G_x)_{hG_x}
     &\defeq \sum_{u : \BG_x}\tilde G_x(u) \\
     &\equivto \sum_{z:\BG}\sum_{y:X(z)}
-    (\settrunc{(\sh_G,x)} =_{X/G} \settrunc{(z,y)})\times (\sh_G \eqto z) \\
+    \Trunc{(\sh_G,x) =_{X/G} (z,y)}\times (\sh_G \eqto z) \\
     &\equivto \sum_{y:X(\sh_G)}[x] =_{X/G} [y]\quad\defeq\quad(G\cdot_X x).\qedhere
   \end{align*}
 \end{implementation}
 
-The above theorem holds for $\infty$-groups $G$ and $G$-types $X$,
-but if $\BG$ is a groupoid and $X$ is a $G$-set,
-then we can draw some interesting additional conclusions. 
-In that case also $\BG_x$ is a groupoid and $(G\cdot_X x)$ is a set.
-\cref{thm:orbitstab} then tells us that $(\tilde G_x)_{hG_x}$ is a set.
-By the following exercise we get that all stabilizer subgroups $(G_x)_g$
-of the $G_x$-set $\tilde G_x$ are trivial,
-\ie the action $\tilde G_x$ is free.
-\cref{lem:free-pt-char} below will allow us to conclude that
+The above theorem has some interesting consequences:
+By the following exercise we get that the stabilizer subgroups $(G_x)_g$
+of the $G_x$-set $\tilde G_x$ are trivial, for all $g:\USymG$,
+\ie $\tilde G_x$ is free.
+\cref{lem:free-pt-char} below will then allow us to conclude that
 all orbits $(G_x \cdot_{\tilde G_x} g)$ are equivalent.
 
 \begin{xca}\label{xca:set-symms-contractible}\MB{New:}
@@ -1351,9 +1363,8 @@ stabilizer group $G_x$ is trivial.
 %each stabilizer group $G_x$ is trivial.\end{proof}
 
 \begin{lemma}\label{lem:free-pt-char}
-  Let $G$ be a group.
-  Given a $G$-set $X$, an element $x:X(\sh_G)$ is
-  free if and only if the (surjective) map
+  Let $G$ be a group and $X$ a $G$-set. Then we have for all $x:X(\sh_G)$
+  that $x$ is free if and only if the (surjective) map
   $(\blank \cdot x) : \USymG \to (G\cdot x)$ is injective
   (and hence a bijection).
 \end{lemma}
@@ -1368,23 +1379,24 @@ stabilizer group $G_x$ is trivial.
 The above results culminate in the following theorem.
 
 \begin{theorem}[Lagrange's Theorem]\label{thm:lagrange}
-\footnote{\MB{Replaces \cref{old:lagrange}.}}
+\footnote{\MB{Replaces \cref{old:lagrange}. Beware AC!}} Let $G$ be a group.
   %\cref{def:set-of-subgroups}
-  For all subgroups $(X,x,!):\Sub_G$, the $G_x$-set $\tilde G_x$ acts 
-  freely on the set $\USymG$, so all orbits under this action are
-  equivalent to $\USymG_x$ via 
+  For all subgroups $(X,x,!):\Sub_G$, the $G_x$-set $\tilde G_x$,
+  which has underlying set $\USymG$, is free. As a consequence,
+  all orbits under this action are equivalent to $\USymG_x$ via 
   $(\blank \cdot_{\tilde G_x} g): \USymG_x \equivto (G_x\cdot_{\tilde G_x} g)$
   by \cref{lem:free-pt-char}.
 \end{theorem}
 
-\MB{Extra (exercise?).}
+\MB{Ignore for the moment, but: 
+How close can we get to $\USymG = X(\sh_G) \times \USymG_x$?}
 The subgroup is given by $(X,x,!):\Sub_G$ with $X$ transitive,
 so the one and only orbit is $X(\sh_G)$. Using 
 \cref{lem:splitting into orbits} (equivalence $\settrunc{\blank}$),
 \cref{thm:orbitstab} (equivalence $(y,p)\mapsto(\sh_G,y,p,\refl{\sh_G})$),
 we get the following chain of equivalences:
 \[
-\USymG \equivto \bigl(\sum_{o:{\tilde G_x}/G_x} \inv{[o]} \bigr)
+\USymG \equivto \bigl(\sum_{O:{\tilde G_x}/G_x} \inv{[O]} \bigr)
 \equivto \bigl(\sum_{p:(\tilde G_x)_{hG_x}} \inv{[\settrunc{p}]} \bigr)
 \equivto \bigl(\sum_{y:X(\sh_G)} \inv{[\settrunc{(\sh_G,y,!,\refl{\sh_G})}]} \bigr).
 \]
