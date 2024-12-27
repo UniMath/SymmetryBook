@@ -82,6 +82,13 @@ most important feature of groups: they can \emph{act} on things
   with \emph{underlying type} $X(\sh_G)$.
   More generally, an action of $G$ on an element of type $A$
   is a function $X : \BG\to A$, see~\cref{sec:actions} below.}
+  
+\begin{example}\label{def:trivGset}
+  If $G$ is a group and $X$ is a set, then $\triv_G X$ defined by
+  \[\triv_G X(z)\defequi X, \quad\text{for all $z:\BG$,}\]
+  is a $G$-set.
+  Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets}.
+\end{example}
 \begin{remark}
 
 The reader will notice that the type of $G$-sets is equivalent to the
@@ -208,21 +215,35 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
   If $G$ is a group and $X,Y$ are $G$-sets,\footnote{%
   This definition generalizes to \inftygps and $G$-types.}
   then a
-  \emph{map from $X$ to $Y$} is an element of the type\footnote{%
-  Note that, if $f$ is a map from $X$ to $Y$,
-  then $f(w,g\cdot_X x) = g\cdot_Y f(z,x)$ for all $z,w:\BG$,
-  $x:X(z)$, $y:X(w)$, $g:z\eqto w$. \MB{Make picture.}}
+  \emph{map from $X$ to $Y$} is an element of the type
   \[
   \prod_{z:\BG}(X(z)\to Y(z)).
   \]
+  When $f$ is such a map, we may write $f_z$ for $f(z)$.
   \index{map!of $G$-sets}\index{$G$-subset}
-  
+\end{definition}
+
+\begin{remark}\label{rem:map-of-Gsets}
+  Given $G$-sets $X,Y$ and a map $f$ from $X$ to $Y$,
+  we have $f_w(g\cdot_X x) = g\cdot_Y f_z(x)$ for all $z,w:\BG$,
+  $x:X(z)$, $g:z\eqto w$. In other words, the following diagram commutes:
+\[
+\begin{tikzcd}
+  z\ar[d,eqr,"g"] &X(z) \ar[r,"f_z"] \ar[d,eql,"X(g)"'] 
+                  &Y(z) \ar[d,eqr,"Y(g)"] \\
+  w               &X(w) \ar[r,"f_w"']                & Y(w)
+\end{tikzcd}
+\]
+An important special case is when $Y$ is the $G$-set that
+is constant $\Prop$: Given a map $P$ from $X$ to $\triv_G\Prop$,
+we have $P_w(g\cdot x)$ iff $g\cdot P_z(x)$
+for all $z,w:\BG$, $x:X(z)$, $g:z\eqto w$.
+This applies to the following definition.
+\end{remark}
+
+\begin{definition}\label{def:Gsubset} 
   A \emph{$G$-subset of $X$} is a map from $X$ to the $G$-set that is
-  constant $\Prop$.\footnote{%
-  Note that, if $P$ is a $G$-subset of $X$, 
-  then $P(z,x) = P(w,g\cdot_X x)$ for all $z,w:\BG$,
-  $x:X(z)$, $y:X(w)$, $g:z\eqto w$.}
-  The type of all such maps is denoted by
+  constant $\Prop$. The type of all such maps is denoted by
   \[
    \Sub_{G,X}\defeq \prod_{z:\BG}(X(z)\to\Prop).
   \]
@@ -236,12 +257,17 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
   \glossary(Gset){$X_P$}{underlying $G$-set of $P$}
 \end{definition}
 
-\begin{example}\label{def:trivGset}
-  If $G$ is a group and $X$ is a set, then
-  \[\triv_G X(z)\defequi X\]
-  is a $G$-set.
-  Examples of this sort (regardless of $X$) are called \emph{trivial $G$-sets}.
-\end{example}
+\begin{xca}\label{xca:SubGX-closedSubXshG}
+\MB{MB unsure this was what UB meant.}
+Show that evaluation at $\sh_G$ is an equivalence from $\Sub_{G,X}$ to 
+\[
+\sum_{Q:X(\sh_G)\to\Prop}
+  \prod_{x:X(\sh_G)}
+    \bigl(Q(x)\to\prod_{g:\USymG} Q(g\cdot x)\bigr).
+\] 
+The latter type is the type of all
+subsets of $X(\sh_G)$ that are closed under the group action.
+\end{xca}
 
 \begin{remark}
   \label{remark:GsetsareGsets}
@@ -986,7 +1012,7 @@ $G$, in which case we add a footnote to this effect.
 % perhaps with some warnings $\USymG$, $=$, \cref{lem:conistrans}, ...
 \begin{definition}
   \label{def:actiontype} Let $G$ be a group and $X : \BG\to\Set$,\footnote{%
-  This definition can be generalised to to \inftygps $G$ and $G$-types $X$.}
+  This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
   then the \emph{action type}\index{action type}
   is the total type of $X$, denoted\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
@@ -1021,8 +1047,10 @@ is transitive:\footnote{See \cref{def:transitiveGset}.}
 \end{definition}
 
 \begin{xca}
-  Show: $X/G$ is contractible if and only if $X$ is transitive.
+Show: $X/G$ is contractible if and only if $X$ is transitive.
 %That $X/G$ is contractible encodes that there is just one orbit.
+Prove first that, for all $z:\BG$ and $x:X(z)$, the function $(w,y)\mapsto
+\Trunc{(z,x)\eqto(w,y)}$ defines a transitive $G$-subset of $X$.
 \end{xca}
 
 We have seen many instances of action types before:
@@ -1109,7 +1137,7 @@ $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
 
 \begin{lemma}\label{lem:surj-set-orbit}
   Let $G$ be a group and $X : \BG\to\Set$.\footnote{%
-  This lemma can be generalised to \inftygps $G$ and $G$-types $X$.}
+  This lemma can be generalized to \inftygps $G$ and $G$-types $X$.}
   The map $[\blank]$ defined by
   \[
     [x](z,y)\defeq \Trunc{(\sh_G,x)\eqto(z,y)}\quad
@@ -1120,11 +1148,11 @@ $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
 \end{lemma}
 \begin{proof}\MB{New:}
   By definition, $[x]$ is a $G$-subset of $X$. 
-  By \cref{def:map-of-Gsets}, the underlying $G$-type $X_{[x]}$ is
+  By \cref{def:Gsubset}, the underlying $G$-type $X_{[x]}$ is
   $(z\mapsto \sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)})$, which we
   must show to be transitive. This follows easily from the properties
   of $\Trunc{(\sh_G,x)\eqto(z,y)}$. We conclude that
-  $[\blank]$ is a well defined map from $X(\sh_G)$ to $X/G$
+  $[\blank]$ is a well defined map from $X(\sh_G)$ to $X/G$.
   
   For proving surjectivity of $[\blank]$, consider an orbit $O:X/G$, \ie
   $O$ is a $G$-subtype of $X$ such that $X_O$ is transitive. 
@@ -1170,7 +1198,7 @@ Hint: use \cref{rem:set-trunc-as-quotient}.
 \begin{definition}\label{def:orbit-stabilizer}
   Let $G$ be a group, $X : \BG \to \Set$ a $G$-set, 
   and $x : X(\sh_G)$ an element.\footnote{%
-  This definition can be generalised to to \inftygps $G$ and $G$-types $X$.}
+  This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
   \begin{enumerate}
   \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$.
   Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
@@ -1219,7 +1247,7 @@ the equivalence classes sum up to $A$.}
 There are two possible extreme cases for $G_x$ that are important:
 \begin{definition}\label{def:fixed-free}
   Let $G$ be a group, $X$ a $G$-set and $x:X(\sh_G)$ an element of the underlying set.\footnote{%
-  This definition can be generalised to to \inftygps $G$ and $G$-types $X$.}
+  This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
   We say that
   \begin{enumerate}
   \item $x$ is \emph{fixed}\index{fixed}
@@ -1234,7 +1262,7 @@ There are two possible extreme cases for $G_x$ that are important:
   Given a group $G$ and a $G$-set $X$, an element $x:X(\sh_G)$ is
  fixed if and only if the orbit $G\cdot x$ is contractible,
   \ie $x = g\cdot x$ for all $g:\USymG$.\footnote{%
-  This lemma can be generalised to to \inftygps $G$ and $G$-types $X$.
+  This lemma can be generalized to to \inftygps $G$ and $G$-types $X$.
   In that case $\USymG\defeq\loops\BG$ is the underlying \emph{type} of $G$.}
 \end{lemma}
 \begin{proof}
@@ -1244,6 +1272,16 @@ There are two possible extreme cases for $G_x$ that are important:
   \ie $\Bi_x$ is an equivalence, which in turn is equivalent to $i_x$
   being an isomorphism.
 \end{proof}
+
+\begin{xca}\label{xca:set-symms-contractible}\MB{New:}
+Let $G$ be a \aninftygp and $X$ a $G$-type. Then the
+action type $X_{hG}$ is a set if and only if each $x:X(\sh_G)$ is trivial.
+\end{xca}
+%solution\begin{proof}
+%Any type $T$ is a set iff all identity types $t\eqto_T t$ are contractible.
+%Since $\BG$ is connected we get that $X_{hG}$ is a set iff each
+%identity type $(\sh_G,x)\eqto (\sh_G,x)$ is contractible, \ie
+%each stabilizer group $G_x$ is trivial.\end{proof}
 
 When $X : \BG \to \Set$ is a $G$-set for an ordinary group $G$, the subset
 \[
@@ -1350,17 +1388,6 @@ of the $G_x$-set $\tilde G_x$ are trivial, for all $g:\USymG$,
 \ie $\tilde G_x$ is free.
 \cref{lem:free-pt-char} below will then allow us to conclude that
 all orbits $(G_x \cdot_{\tilde G_x} g)$ are equivalent.
-
-\begin{xca}\label{xca:set-symms-contractible}\MB{New:}
-Let $G$ be a \aninftygp and $X$ a $G$-type. Then the
-action type $X_{hG}$ is a set if and only if each
-stabilizer group $G_x$ is trivial.
-\end{xca}
-%solution\begin{proof}
-%Any type $T$ is a set iff all identity types $t\eqto_T t$ are contractible.
-%Since $\BG$ is connected we get that $X_{hG}$ is a set iff each
-%identity type $(\sh_G,x)\eqto (\sh_G,x)$ is contractible, \ie
-%each stabilizer group $G_x$ is trivial.\end{proof}
 
 \begin{lemma}\label{lem:free-pt-char}
   Let $G$ be a group and $X$ a $G$-set. Then we have for all $x:X(\sh_G)$
