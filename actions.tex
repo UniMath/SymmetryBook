@@ -1031,7 +1031,7 @@ and so are their (often used) propositional truncations.
 The type of \emph{invariant maps}\footnote{%
 These are dependent functions $f$ and the reason for the new name
 in this context is that $f(z) = g \cdot_X f(z)$ for any $z:\BG$
-and $g:z\eqto z$.}
+and $g:z\eqto z$. Cf.~\cref{lem:fixed-char}.}
 \index{invariant map type} is
 \[
   X^{hG} \defeq \prod_{z:\BG} X(z).
@@ -1049,7 +1049,7 @@ is transitive:\footnote{See \cref{def:transitiveGset}.}
 \begin{xca}
 Show: $X/G$ is contractible if and only if $X$ is transitive.
 %That $X/G$ is contractible encodes that there is just one orbit.
-Prove first that, for all $z:\BG$ and $x:X(z)$, the function $(w,y)\mapsto
+Prove first for all $z:\BG$ and $x:X(z)$ that the function $(w,y)\mapsto
 \Trunc{(z,x)\eqto(w,y)}$ defines a transitive $G$-subset of $X$.
 \end{xca}
 
@@ -1149,7 +1149,7 @@ $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
 \begin{proof}\MB{New:}
   By definition, $[x]$ is a $G$-subset of $X$. 
   By \cref{def:Gsubset}, the underlying $G$-type $X_{[x]}$ is
-  $(z\mapsto \sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)})$, which we
+  $(z\mapsto \sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)})$, which we
   must show to be transitive. This follows easily from the properties
   of $\Trunc{(\sh_G,x)\eqto(z,y)}$. We conclude that
   $[\blank]$ is a well defined map from $X(\sh_G)$ to $X/G$.
@@ -1210,18 +1210,23 @@ Hint: use \cref{rem:set-trunc-as-quotient}.
     \index{group!stabilizer} at $x$. The inclusion $\fst$ of $\BG_x$ in
     $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.
   \item Define $G\cdot x \defeq \setof{y : X(\sh_G)}{[x] =_{X/G} [y]}$
-    to be the \emph{orbit}\index{orbit!of $x$} of $x$.\footnote{%
-    This terminology relies on the equivalence in \cref{cor:orbit-equiv}.}
+    to be the \emph{underlying set of the orbit through $x$}.\footnote{%
+    This is short for. the underlying set of the underlying $G$-set of the
+    transitive $G$-subset $[x]$ of $X$. See also \cref{rem:importance-[x]}.}
     \qedhere
   \end{enumerate}
 \end{definition}
 
-\begin{xca}\label{xca:Gx-in-Sub_G}
-Find $(X_x,x,!):\Sub_G$ corresponding to $(G_x,\fst,!):\typemono_G$.
-\MB{Steer away from $\inv E$??}
-\end{xca}
-
-
+\begin{remark}\label{rem:importance-[x]}
+\MB{New:} In the above definition, the underlying $G$-set
+$(z:\BG)\mapsto\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)}$
+of the orbit $[x]$ plays an important double role: On one hand its
+action type $\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$,
+pointed at $(sh_G,x)$, is the classifying type of the stabilizer
+group $G_x$. On the other hand it is a transitive $G$-set whose
+underlying set $\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$
+is the underlying set of the orbit $[x]$.
+\end{remark}
 
 The following lemma states that the orbits of a $G$-set $X$
 sum up to its underlying set, with the sum taken over the set
@@ -1299,9 +1304,9 @@ The following lemma states that, conversely, each fixed $x$ uniquely
 determines an invariant map.
 
 \begin{lemma}\label{lem:fixpts-are-fixed}
-  Let $G$ be a group\footnote{\MB{We only use that $\BG_\div$ is connected,
-  so the lemma holds for $\infty$-groups as well.}}, 
-  $X$ a $G$-set, with $X^{hG} \jdeq \prod_{z:\BG}X(z)$
+  Let $G$ be a group and $X$ a $G$-set,\footnote{\MB{%
+  We use the connectivity of $\BG$ and that $X(\sh_G)$ is a set.}}
+  with $X^{hG} \jdeq \prod_{z:\BG}X(z)$
   the set of invariant maps. 
   Evaluation $\ev\defeq(f:X^{hG})\mapsto f(\sh_G)$ at $\sh_G$ gives
   \begin{enumerate}
@@ -1368,17 +1373,17 @@ out in the following construction.
   for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$. 
   Then the underlying set of $\tilde G_x$ is $\USymG$ and 
   we have an equivalence from the action type $(\tilde G_x)_{hG_x}$
-  to the orbit $(G\cdot_X x)$ of $x$.
+  to the underlying set $(G\cdot_X x)$ of the orbit through $x$.
 \end{construction}
 \begin{implementation}{thm:orbitstab}
   The desired equivalence is the composition of elementary equivalences
   for sums and products, followed by contracting away the variable $z$:
   \begin{align*}
     (\tilde G_x)_{hG_x}
-    &\defeq \sum_{u : \BG_x}\tilde G_x(u) \\
+    &\jdeq \sum_{u : \BG_x}\tilde G_x(u) \\
     &\equivto \sum_{z:\BG}\sum_{y:X(z)}
-    \Trunc{(\sh_G,x) =_{X/G} (z,y)}\times (\sh_G \eqto z) \\
-    &\equivto \sum_{y:X(\sh_G)}[x] =_{X/G} [y]\quad\defeq\quad(G\cdot_X x).\qedhere
+    \Trunc{(\sh_G,x) \eqto (z,y)}\times (\sh_G \eqto z) \\
+    &\equivto \sum_{y:X(\sh_G)}[x] =_{X/G} [y]\quad\jdeq\quad(G\cdot_X x).\qedhere
   \end{align*}
 \end{implementation}
 
@@ -1415,26 +1420,9 @@ The above results culminate in the following theorem.
   by \cref{lem:free-pt-char}.
 \end{theorem}
 
-\MB{Ignore for the moment, but: 
-How close can we get to $\USymG = X(\sh_G) \times \USymG_x$?}
-The subgroup is given by $(X,x,!):\Sub_G$ with $X$ transitive,
-so the one and only orbit is $X(\sh_G)$. Using 
-\cref{lem:splitting into orbits} (equivalence $\settrunc{\blank}$),
-\cref{thm:orbitstab} (equivalence $(y,p)\mapsto(\sh_G,y,p,\refl{\sh_G})$),
-we get the following chain of equivalences:
-\[
-\USymG \equivto \bigl(\sum_{O:{\tilde G_x}/G_x} \inv{[O]} \bigr)
-\equivto \bigl(\sum_{p:(\tilde G_x)_{hG_x}} \inv{[\settrunc{p}]} \bigr)
-\equivto \bigl(\sum_{y:X(\sh_G)} \inv{[\settrunc{(\sh_G,y,!,\refl{\sh_G})}]} \bigr).
-\]
-Here $!$ is the proof of the proposition $[x] =_{X/G} [y]$,
-which exists since $X$ has only one orbit.
-Furthermore, $[\blank]: \USymG \to {\tilde G_x}/G_x$ is defined by
-$[g]\defeq \settrunc{(\sh_G,x,\trunc{\refl{(\sh_G,x)}},g)}$.
-Now, $\inv{[\settrunc{(\sh_G,y,!,\refl{\sh_G})}]}$ is easily
-identified with $\sum_{g:\USymG}((\sh_G,x)\eqto(\sh_G,y))$.
-For $y\jdeq x$ the type $(\sh_G,x)\eqto(\sh_G,y)$ is $\USymG_x$, 
-but in general this is problematic. \MB{(Finite case? Only merely? AC?)}. 
+\MB{Question: 
+How close can we get to $\USymG = X(\sh_G) \times \USymG_x$?
+(Finite case? Only merely? AC?)}. 
 
 \subsection{Not used}
 Thus, both the underlying set $X(\sh_G)$ and the action type
