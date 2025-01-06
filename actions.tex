@@ -562,20 +562,49 @@ from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
   Given a $2$-element set $S$ consider the
   type $\sum_{X:\Set}S \to X\to X$ of pairs $(X,f)$ of a set $X$
   and a ``pair'' of functions $f_s:X\to X$ (one for each $s:S$).
-  Within this type we have the pair $(\bn 1 \coprod S,f)$,
+  Within this type we have the pair $(\bn 1 \amalg S,f)$,
   where
   \begin{align*}
-    f_s(\inl\triv)     &\defeq \inr s,\\
+    f_s(\inl 0)     &\defeq \inr s,\\
     f_s(\inr s)        &\defeq \inr{\swap(s)},\\
-    f_s(\inr{\swap(s)}) &\defeq \inl\triv.
+    f_s(\inr{\swap(s)}) &\defeq \inl 0.
   \end{align*}
-  Then $G(S) \defeq \Aut_{\sum_{X:\Set}S\to X\to X}(\bn1\coprod S,f)$ defines an action
-  $\BSG_2 \to \Group$.
+  Then $G(S) \defeq \Aut_{\sum_{X:\Set}S\to X\to X}(\bn1\amalg S,f)$ defines an action
+  $\BSG_2 \to \Group$.\footnote{%
+    If $S$ is $\set{s,s'}$, then we can picture the
+    designated shape as follows,
+    where the blue and red arrows denote $f_s$ and $f_{s'}$,
+    respectively:\par
+    \begin{tikzpicture}
+    \draw (-.1,1) ellipse (.35 and .35);
+    \node (X) at (0,1.5) {$\bn 1$};
+    \draw (1,1) ellipse (.4 and 1);
+    \node (Y) at (.9,2.2) {$S$};
+    \node[dot,label=left:$0$] (x) at (0,1) {};
+    \node[dot,label=above:$s$]  (s1) at (1,1.5) {};
+    \node[dot,label=below:$s'$] (s2) at (1,.5) {};
+    \draw[dashed] (0.6,1.1) ellipse (1.2 and 1.6);
+    \begin{scope}[every to/.style={bend left=30}]
+      % generator a
+      \draw[gena] (x) to (s1);
+      \draw[gena] (s1) to (s2);
+      \draw[gena] (s2) to (x);
+    \end{scope}
+    % generator b
+    \draw[genb] (x) to (s2);
+    \draw[genb] (s2) to (s1);
+    \draw[genb] (s1) to (x);
+    \node (XY) at (-0.75,2.35) {$\bn1\amalg S$};
+  \end{tikzpicture}}
   Furthermore, we identify $G(\bool)$ with $\BCG_3$ by mapping
   a shape $(X,f)$ in $\BG(\bool)$ to the $3$-cycle $(X,f_\yes)$
-  and identifying the $3$-cycle $(\bn1\coprod\bool,f_\yes)$, for the $f$ defined above,
-  with the standard $3$-cycle $(\bn3,\zs)$.
+  and identifying the $3$-cycle $(\bn1\amalg\bool,f_\yes)$, for the $f$ defined above,
+  with the standard $3$-cycle $(\bn3,\zs)$, correlating $\inl 0$ with $0:\bn 3$.
 \end{example}
+\begin{xca}\label{xca:AutC3}
+  Show that action of $\SG_2$ on $\CG_3$ from~\cref{ex:S2-acts-on-C3}
+  gives an identification $\SG_2 \eqto \Aut(\CG_3)$.
+\end{xca}
 
 \begin{example}
   By composing constructions we can build new actions
