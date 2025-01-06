@@ -80,7 +80,8 @@ most important feature of groups: they can \emph{act} on things
   if $G$ is (a group or) an infinity group,
   a \emph{$G$-type} is a function $X : \BG\to\UU$,
   with \emph{underlying type} $X(\sh_G)$.
-  More generally, an action of $G$ on an element of type $A$
+  This is an \emph{action in $\UU$}, and
+  more generally, an action of $G$ on an element of type $A$
   is a function $X : \BG\to A$, see~\cref{sec:actions} below.}
 
 \begin{example}\label{def:trivGset}
@@ -236,7 +237,7 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
 \]
 An important special case is when $Y$ is the $G$-set that
 is constant $\Prop$: Given a map $P$ from $X$ to $\triv_G\Prop$,
-we have $P_w(g\cdot x)$ iff $g\cdot P_z(x)$
+we have $P_w(g\cdot x)$ if and only if $g\cdot P_z(x)$
 for all $z,w:\BG$, $x:X(z)$, $g:z\eqto w$.
 This applies to the following definition.
 \end{remark}
@@ -293,6 +294,15 @@ subsets of $X(\sh_G)$ that are closed under the group action.
      \equivto \sum_{X:\Set}\Hom(G,\SG_X).\qedhere
    \]
 \end{remark}
+
+\begin{definition}\label{def:Gaction}
+  If $G$ is a group and $X$ is a set, then an \emph{action}
+  of $G$ on $X$
+  is a homomorphism from $G$ to the permutation group of $\SG_X$ of $X$.%
+  \index{actions!of a group on a set}
+\end{definition}
+By the construction in~\cref{remark:GsetsareGsets} we identify $G$-sets
+and sets with an action of $G$ on a set.
 
 \begin{xca}
 Show that if $X$ is a type family with parameter type $\BG$ and $X(\sh_G)$ is a set,
@@ -474,18 +484,31 @@ Oftentimes it is interesting not to have an action on a set, but on an element i
 
 \begin{definition}\label{action}
   If $G$ is any group\footnote{%
-  Even an $\infty$-group in the sense of \cref{sec:inftygps}.} 
+  Even an $\infty$-group in the sense of \cref{sec:inftygps}.}
   and $A$ is any type of objects,
-  then we define an \emph{action} by $G$ in %the world of elements of
-  $A$ as a function
+  then we define an \emph{action of $G$ in $A$} as a function
   \[
-    X : \BG \to A.\qedhere
+    X : \BG \to A.
   \]
-\end{definition}
+  The particular object of type $A$ being acted on is $X(\sh_G):A$
+  the \emph{underlying object},
+  and the action itself is given by transport.%
+  \index{action!of a group in a type}
 
-The particular object of type $A$ being acted on is $X(\sh_G):A$,
-and the action itself is given by transport.
-This generalizes our earlier definition of $G$-sets, $X : \BG \to \Set$.
+  Fixing $a:A$ as the underlying object, we define an \emph{action of $G$ on $a$}
+  to be a homomorphism from $G$ to $\Aut_A(a)$.%
+  \index{action!of a group on an element}
+\end{definition}
+This generalizes our earlier definition of $G$-sets
+from~\cref{def:Gset}, $X : \BG \to \Set$,
+and harmonizes with~\cref{remark:GsetsareGsets}, relating $G$-sets and
+actions of $G$ on a set.
+Indeed, we observe that
+an action of $G$ in $A$ can be identified with pairs of an underlying object
+$a:A$ and an action of $G$ on $a$:
+\[
+  (\BG \to A) \equivto \sum_{a:A}\Hom(G,\Aut_A(a))
+\]
 
 \begin{definition}\label{std-action}
   The \emph{standard action} of $G$ on its designated shape $\sh_G$ is obtained by
@@ -589,7 +612,7 @@ $R : \Sc\to\Set$ defined by $R(\base) \defeq \zet$ and
 $R(\Sloop) \defis \etop\zs$, see \cref{def:RtoS1}.
 Again we point by $0: R(\base)$ and transitivity of $R$ is obvious.
 The only symmetry that keeps $0$ in place is $\refl{\base}$,
-since $R(\Sloop)= \zs$ iff $k=0$.
+since $R(\Sloop)= \zs$ if and only if $k=0$.
 Again, no surprise in view of the results in \cref{sec:symcirc}
 identifying $R$ as the universal \covering over $\Sc$.
 
