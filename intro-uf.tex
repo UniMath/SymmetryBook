@@ -4206,37 +4206,26 @@ the equivalence $e_a$.
 \end{proof}
 
 \begin{lemma}\label{lem:sum-of-fibers}
-Let $A,B:\UU$ and $f:B\to A$.
-Then $e: B \to \sum_{a:A} f^{-1}(a)$ defined by
-$e(b)\defeq (f(b),b,\refl{f(b)})$ is an equivalence.
+Let $A,B:\UU$ and $f:A\to B$.
+Then $e: \bigl(\sum_{b:B} f^{-1}(b)\bigr)\to A$ defined by
+$e(b,a,p)\defeq a$ is an equivalence.
 \end{lemma}
 \begin{proof}
-Define $e^{-1}: \sum_{a:A} f^{-1}(a) \to B$ by $e^{-1}(a,b,p)\defeq b$,
-where $p: a\eqto f(b)$.
-Then $e^{-1}(e(b))\jdeq b$ for all $b:B$.
-Let $a:A$, $b:B$ and $p: a\eqto f(b) $.
-Then $e(e^{-1}(a,b,p))\jdeq (f(b),b,\refl{f(b)})$.
-We have to identify $(a,b,p)$ with $(f(b),b,\refl{f(b)})$.
-We use $p$ as identification of the first components
-\marginnote{
-  $\begin{tikzcd}[column sep=small,ampersand replacement=\&]
-    a\ar[r,eqr,"p"] \ar[d,eql,"p"'] \& f(b) \\
-    f(b)\ar[ur,eql,"\refl{f(b)}"']
-  \end{tikzcd}$}
-(the horizontal identification $p$ in the diagram in the margin),
-and $\refl{b}$ as identification of the second components
-(whose type is constant). For the third component
-we use transport in the type family $(\_ \eqto f(b))$
-and \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=a}. Visualized
-in the diagram in the margin, we transport
-the horizontal identification $p$ along the vertical one, also $p$.
-The result of this transport can be identified with $p\cdot\inv p$
-and hence with $\refl{f(b)}$, the diagonal identification in the diagram.
-Now apply \cref{lem:weq-iso}.
+The function $e$ is the composite of three equivalences
+\[
+\Bigl(\sum_{b:B} \sum_{a:A} (b\eqto f(a))\Bigr) \equivto
+\Bigl(\sum_{a:A} \sum_{b:B} (b\eqto f(a))\Bigr) \equivto
+\Bigl(\sum_{a:A} \true\Bigr) \equivto A,
+\]
+where the first one interchanges the first two arguments, 
+the second one contracts away the inner sumtype
+(using \cref{lem:thepathspaceiscontractible}), and the third one
+is $\fst$ (using \cref{xca:XequivXtimes1}).
 \end{proof}
 
-If $f$ above is an injection, then $\sum_{a:A} f^{-1}(a)$ is a subtype of $A$,
-and $B$ is a $n$-type if $A$ is a $n$-type by \cref{cor:subtype-same-level}.
+If $f$ in \cref{lem:sum-of-fibers} is an injection, 
+then $\sum_{b:B} f^{-1}(b)$ is a subtype of $B$, and hence
+$A$ is a $n$-type if $B$ is a $n$-type by \cref{cor:subtype-same-level}.
 
 \begin{lemma}\label{lem:typefamiliesandfibrations}
   Let $A:\UU$ be a type.\footnote{%
@@ -4247,7 +4236,7 @@ and $B$ is a $n$-type if $A$ is a $n$-type by \cref{cor:subtype-same-level}.
     \preim ~:~ \sum_{B:\UU}(B\to A) \quad\to\quad (A\to\UU)
   \]
   given by $\preim(B,f)(a)\defeq f^{-1}(a)$ is an equivalence.
-  An inverse equivalence is given by sending $C:A\to\UU$ to
+  The inverse equivalence is given by sending $C:A\to\UU$ to
   $(\sum_{a:A}C(a), \fst)$.
 \end{lemma}
 
