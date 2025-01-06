@@ -230,8 +230,8 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
   $x:X(z)$, $g:z\eqto w$. In other words, the following diagram commutes:
 \[
 \begin{tikzcd}
-  z\ar[d,eqr,"g"] &X(z) \ar[r,"f_z"] \ar[d,eql,"X(g)"']
-                  &Y(z) \ar[d,eqr,"Y(g)"] \\
+  z\ar[d,eql,"g"'] &X(z) \ar[r,"f_z"] \ar[d,eql,"g\cdot_X\blank"']
+                  &Y(z) \ar[d,eqr,"g\cdot_Y\blank"] \\
   w               &X(w) \ar[r,"f_w"']                & Y(w)
 \end{tikzcd}
 \]
@@ -372,15 +372,16 @@ Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathc
 The next lemma is an analog of~\cref{cor:ConnCycles},
 but for a general group and transitive \covering
 we only get injectivity, not an equivalence.
-\Cref{fig:not-normal} illustrates what can go wrong.
+The action in \cref{fig:not-normal,fig:not-normal-graph}
+illustrates what can go wrong.
 We'll study exactly when we get surjectivity in~\cref{sec:normal}
 on ``normal'' subgroups.
 \begin{marginfigure}
   \noindent\begin{tikzpicture}[scale=.1]
-    \node[dot,label=above:$x$] (two)   at (0,10) {};
-    \node[dot] (one)   at (0, 6) {};
-    \node[dot] (zero)  at (0, 2) {};
-    \node[dot] (base)   at (0,-5) {};
+    \coordinate (two)   at (0, 10);
+    \coordinate (one)   at (0, 6);
+    \coordinate (zero)  at (0, 2);
+    \coordinate (base)  at (0,-5);
 
     \pgfmathsetmacro\cc{.55228475}% = 4/3*tan(pi/8)
     \pgfmathsetmacro\cy{2*\cc}%
@@ -390,7 +391,7 @@ on ``normal'' subgroups.
     \pgfmathsetmacro\ay{.35165954}%
 
     % right 3-cycle
-    \draw (zero.center) .. controls ++(0,-\cy+\ay) and ++(-\cx,-\ay)
+    \draw[casblue] (zero) .. controls ++(0,-\cy+\ay) and ++(-\cx,-\ay)
     .. (10,1) .. controls ++(\cx,+\ay) and ++(0,-\cy-\ay)
     .. (20,4)
     \foreach \y in {4,8} {
@@ -402,38 +403,44 @@ on ``normal'' subgroups.
     .. controls ++(0,+\cc) and ++(\cx,\ay)
     .. (10+\intx,12 + \inty) .. controls ++(-\cx,-\ay) and ++(\cx,\ay)
     .. (10-\intx,2 + \inty) .. controls ++(-\cx,-\ay) and ++(0,\cc)
-    .. (zero.center);
+    .. (zero);
 
     % left 2-cycle
-    \draw (one.center) .. controls ++(0,-\cy+\ay) and ++(\cx,-\ay)
+    \draw[casred] (one) .. controls ++(0,-\cy+\ay) and ++(\cx,-\ay)
     .. (-10,5) .. controls ++(-\cx,+\ay) and ++(0,-\cy-\ay)
     .. (-20,8) .. controls ++(0,\cy + \ay) and ++(-\cx,-\ay)
     .. (-10,11) .. controls ++(+\cx,\ay) and ++(0,\cy-\ay)
-    .. (two.center) .. controls ++(0,-\cy+\ay) and ++(\cx,-\ay)
+    .. (two) .. controls ++(0,-\cy+\ay) and ++(\cx,-\ay)
     .. (-10,9) .. controls ++(-\cx,\ay) and ++(0,-\cy-\ay)
     .. (-20,12) .. controls ++(0,+\cc) and ++(-\cx,\ay)
     .. (-10-\intx,12 + \inty) .. controls ++(\cx,-\ay) and ++(-\cx,\ay)
     .. (-10+\intx,6 + \inty) .. controls ++(\cx,-\ay) and ++(0,\cc)
-    .. (one.center);
+    .. (one);
 
     % left 1-cycle
-    \draw (zero.center) .. controls ++(0,\cy) and ++(\cx,0)
+    \draw[casred] (zero) .. controls ++(0,\cy) and ++(\cx,0)
     .. (-10,4) .. controls ++(-\cx,0) and ++(0,\cy)
     .. (-20,2) .. controls ++(0,-\cy) and ++(-\cx,0)
     .. (-10,0) .. controls ++(\cx,0) and ++(0,-\cy)
-    .. (zero.center);
+    .. (zero);
 
     % base right
-    \draw (base.center) .. controls (0,-5+\cy) and ++(-\cx,0)
+    \draw (base) .. controls (0,-5+\cy) and ++(-\cx,0)
     .. (10,-3) .. controls ++(\cx,0) and ++(0,\cy)
     .. (20,-5) .. controls ++(0,-\cy) and ++(\cx,0)
-    .. (10,-7) .. controls ++(-\cx,0) and ++(0,-\cy) .. (base.center);
+    .. (10,-7) .. controls ++(-\cx,0) and ++(0,-\cy) .. (base);
     % base left
-    \draw (base.center) .. controls (0,-5 + \cy) and (-10+\cx,-3)
+    \draw (base) .. controls (0,-5 + \cy) and (-10+\cx,-3)
     .. (-10,-3) .. controls (-10-\cx,-3) and (-20,-5 + \cy)
     .. (-20,-5) .. controls (-20,-5 - \cy) and (-10-\cx,-7)
     .. (-10,-7) .. controls (-10+\cx,-7) and (0,-5 - \cy)
-    .. (base.center);
+    .. (base);
+
+    % draw dots last
+    \node[dot,label=above:$x$] (ntwo) at (two) {};
+    \node[dot] (none)   at (one) {};
+    \node[dot] (nzero)  at (zero) {};
+    \node[dot] (nbase)  at (base) {};
   \end{tikzpicture}
   \caption{A $\mkgroup(\Sc\vee\Sc)$-set for which $\protect\ev_x$ is not
    surjective. At the bottom the type $\Sc\vee\Sc$ is visualized as
@@ -441,37 +448,68 @@ on ``normal'' subgroups.
   \label{fig:not-normal}
 \end{marginfigure}
 
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}
+    \pgfmathsetmacro{\len}{1}
+    \node[vertex,label=above:$x$] (n1) at (0:\len) {};
+    \node[vertex] (n2) at (120:\len) {};
+    \node[vertex] (n3) at (240:\len) {};
+    \begin{scope}[every to/.style={bend right=22}]
+      % generator a
+      \draw[gena] (n1) to (n2);
+      \draw[gena] (n2) to (n3);
+      \draw[gena] (n3) to (n1);
+    \end{scope}
+    % generator b
+    \draw[genb] (n1) to[out=-30,in=30,looseness=25] (n1);
+    \draw[genb,out=205,in=155] (n2) to (n3);
+    \draw[genb,out=45,in=-45] (n3) to (n2);
+  \end{tikzpicture}
+  \caption{Alternative representation of the $\mkgroup(\Sc\vee\Sc)$-set
+    from~\cref{fig:not-normal},
+    using colors and arrows to represent which
+    parts lies over which circle in which orientation.}
+  \label{fig:not-normal-graph}
+\end{marginfigure}
+
 \begin{lemma}
   \label{lem:evisinjwhentransitive}
-  Let $X,X':\BG\to\Set$ be $G$-sets. Let $z:\BG$ and $x:X(z)$.
-  Suppose that $X$ is transitive. Then the evaluation map
+  Let $X,Y:\BG\to\Set$ be $G$-sets. Let $z:\BG$ and $x:X(z)$.
+  If $X$ is transitive, then the evaluation map
   \[
-    \ev_x:(X \eqto X')\to X'(z),\qquad \ev_x(f)\defequi f_z(x)
+    \ev_x:\Hom_G(X, Y)\to Y(z),\qquad \ev_x(f)\defequi f_z(x)
   \]
   is injective.\footnote{%
-    Recall that for type families $X,X':T\to\UU$, and
-    $f:\prod_{y:T}(X(y)\to X'(y))$, we may write $f_y:(X(y)\to X'(y))$
-    (instead of the more correct $f(y)$) for its evaluation at $y:T$.}
+    Recall that for type families $X,Y:T\to\UU$, and
+    $f:\prod_{z:T}(X(z)\to Y(z))$, we may write $f_z:(X(z)\to Y(z))$
+    (instead of the more correct $f(z)$) for its evaluation at $z:T$.}
 \end{lemma}
 \begin{proof}
-  In view of function extensionality, our claim is that the evaluation
-  map $\ev_x:(\prod_{s:\BG}(X(s)\eqto X'(s)))\to X'(z)$ given by the 
-  same formula is injective; that is all $f$s with the same 
-  value $f_z(x)$ are identical.
-
-  Fix a value $a:X'(z)$, and consider an $f:X\eqto X'$ with $f_z(x)=a$.
-  We will show that $f$ is uniquely determined by $f_z(x)=a$.
-  Let $s:\BG$ and  $y:X(s)$. It suffices to show that the value 
-  of $f_s(y)$ is independent of $f$. 
-  For any $g:z=s$ such that $g\cdot_X x=y$ (which exists by the 
-  transitivity of $X$, using \cref{lem:conistrans}) we have
-  $f_s(y)=f_s(g\cdot_X x)=g \cdot_{X'} f_z(x)=g \cdot_{X'} a$,
-  and the latter value does indeed not depend on $f$.
-  Since we try to prove a proposition we are done.
+  Fix a value $y:Y(z)$, and consider an $f:\Hom_G(X,Y)$ with $f_z(x)=y$.
+  We will show that $f$ is uniquely determined by this.
+  Let $w:\BG$ and  $x':X(w)$. It suffices to show that the value
+  of $f_w(x')$ is independent of $f$.
+  For any $g:z\eqto w$ such that $g\cdot_X x=x'$
+  (which exists by the transitivity of $X$, using \cref{lem:conistrans})
+  we have
+  \[
+    f_w(x')=f_w(g\cdot_X x)=g \cdot_Y f_z(x)=g \cdot_Y y,
+  \]
+  using~\cref{rem:map-of-Gsets},
+  and the latter value indeed doesn't depend on $f$.
+  Since we're proving a proposition, we are done.
 \end{proof}
 
+Via function extensionality,
+the identity type $X \eqto Y$, for $G$-sets $X,Y$
+is a subtype of the type $\Hom_G(X,Y)$.
+Hence we likewise have that evaluation at some $x:X(z)$ is an
+injection
+\[
+  \ev_x:(X \eqto Y)\to Y(z).
+\]
 \begin{xca}\label{xca:not-normal}
-Reverse engineer the $\mkgroup(\Sc\vee\Sc)$-set in \cref{fig:not-normal}.
+Reverse engineer the $\mkgroup(\Sc\vee\Sc)$-set in \cref{fig:not-normal,fig:not-normal-graph}.
 Let's call it $X$. Show that $X\eqto X$ is contractible.
 Conclude that $\ev_x$ cannot be surjective.
 (Hint: the induction principle for $\Sc\vee\Sc$ is a generalization
@@ -490,7 +528,7 @@ Oftentimes it is interesting not to have an action on a set, but on an element i
   \[
     X : \BG \to A.
   \]
-  The particular object of type $A$ being acted on is $X(\sh_G):A$
+  The particular object of type $A$ being acted on is $X(\sh_G):A$,
   the \emph{underlying object},
   and the action itself is given by transport.%
   \index{action!of a group in a type}
@@ -503,17 +541,41 @@ This generalizes our earlier definition of $G$-sets
 from~\cref{def:Gset}, $X : \BG \to \Set$,
 and harmonizes with~\cref{remark:GsetsareGsets}, relating $G$-sets and
 actions of $G$ on a set.
-Indeed, we observe that
-an action of $G$ in $A$ can be identified with pairs of an underlying object
+Indeed, we identify
+an action of $G$ in $A$ with a pair of an underlying object
 $a:A$ and an action of $G$ on $a$:
 \[
   (\BG \to A) \equivto \sum_{a:A}\Hom(G,\Aut_A(a))
 \]
+This equivalence maps an action $X:\BG\to A$
+to the pair consisting of $a \defeq X(\sh_G)$
+and the homomorphism represented by the pointed map
+from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
 
 \begin{definition}\label{std-action}
   The \emph{standard action} of $G$ on its designated shape $\sh_G$ is obtained by
   taking $A \defeq \BG$ and $X \defeq \id_{\BG}$.
 \end{definition}
+
+\begin{example}\label{ex:S2-acts-on-C3}
+  The symmetric group $\SG_2$ acts on the cyclic group $\CG_3$ as follows.
+  Given a $2$-element set $S$ consider the
+  type $\sum_{X:\Set}S \to X\to X$ of pairs $(X,f)$ of a set $X$
+  and a ``pair'' of functions $f_s:X\to X$ (one for each $s:S$).
+  Within this type we have the pair $(\bn 1 \coprod S,f)$,
+  where
+  \begin{align*}
+    f_s(\inl\triv)     &\defeq \inr s,\\
+    f_s(\inr s)        &\defeq \inr{\swap(s)},\\
+    f_s(\inr{\swap(s)}) &\defeq \inl\triv.
+  \end{align*}
+  Then $G(S) \defeq \Aut_{\sum_{X:\Set}S\to X\to X}(\bn1\coprod S,f)$ defines an action
+  $\BSG_2 \to \Group$.
+  Furthermore, we identify $G(\bool)$ with $\BCG_3$ by mapping
+  a shape $(X,f)$ in $\BG(\bool)$ to the $3$-cycle $(X,f_\yes)$
+  and identifying the $3$-cycle $(\bn1\coprod\bool,f_\yes)$, for the $f$ defined above,
+  with the standard $3$-cycle $(\bn3,\zs)$.
+\end{example}
 
 \begin{example}
   By composing constructions we can build new actions
@@ -526,22 +588,6 @@ $a:A$ and an action of $G$ on $a$:
   Composing further with the operation $\blank \to \bool : \Set \to \Set$,
   we get the action of $\SG_n$ on the set of decidable subsets of $\bn n$.
 \end{example}
-
-Generalizing~\cref{remark:GsetsareGsets},
-notice that the type $\BG \to A$ is equivalent to the type
-\[
-  \sum_{a:A}\Hom(G,\Aut_A(a)),
-\]
-that is, the type of pairs of an element $a : A$,
-and a homomorphism from $G$ to the automorphism group of $A$.
-This equivalence maps an action $X:\BG\to A$
-to the pair consisting of $a \defeq X(\sh_G)$
-and the homomorphism represented by the pointed map
-from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
-
-Because of this equivalence,
-we define a \emph{$G$-action on $a:A$}
-to be a homomorphism from $G$ to $\Aut_A(a)$.
 
 \section{Subgroups}
 \label{sec:subgroups}
