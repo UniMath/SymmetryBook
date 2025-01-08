@@ -3097,63 +3097,70 @@ in~\cref{def:groupoidFin}, is essentially small.
 \section{Predicates and subtypes}
 \label{sec:subtype}
 
-In this section, we consider the relationship between predicates on a type $T$
-and subtypes of $T$.  The basic idea is that the predicate tells
-whether an element of $T$ belongs to the subtype. Conversely,
-the predicate can be recovered from the subtype by asking whether an element of $T$
-is in it.
+In this section, we give two (equivalent) definitions of the notion
+of a subtype of a given type $T$. The first definition is based
+on the notion of a predicate on $T$. A predicate tells, or `predicates',
+whether an element of $T$ belongs to the subtype. The second definition
+is based on the notion of injection, defined in \cref{def:injection}.
 
 \begin{definition}\label{def:predicate}
   Let $T$ be a type and let $P(t)$ be a family of propositions
-  parametrized by an variable $t:T$.
+  parametrized by a variable $t:T$.
   Then we call $P$ a \emph{predicate}\index{predicate} on $T$.\footnote{%
     Note that giving a predicate on $T$ is
     equivalent to giving a map $Q: T\to\Prop_\UU$ for a suitable universe $\UU$,
-    and we sometimes say that $Q$ itself is the predicate.}
-  If $P(t)$ is a decidable proposition,
+    and we sometimes say that $Q$ itself is the predicate. 
+    We leave $\UU$ implicit.}
+  If $P(t)$ is a decidable proposition for any $t:T$,
   then we say that $P$ is a \emph{decidable predicate} on $T$.
 \end{definition}
 
-By \cref{xca:lem-prop},  the decidable predicates $P$ on $T$
-correspond uniquely to the characteristic functions $\chi_P:T\to\bool$.
-
-We recall from \cref{def:injection} the notion of \emph{injection},
-which will be key to saying what a \emph{subtype} is.
-
+The decidable predicates $P$ on $T$
+correspond uniquely to the characteristic functions $\chi_P:T\to\bool$,
+cf.\ \cref{xca:lem-prop}.
 
 \begin{definition}\label{def:subtype}
-  A \emph{subtype}\index{subtype} of a type $T$
-  is a type $S$ together with an injection $f : S \to T$.%
-  \glossary(SubT){$\protect\Sub(T)$}{type of subtypes of $T$}
-  The type $S$ is called the \emph{underlying type} of this subtype.
-  Selecting a universe $\UU$ as a repository for such types $S$ allows
-  us to introduce the type of subtypes of $T$ in $\UU$ as follows.
+  Let $T$ be a type.
+  The type of \emph{subtypes}\index{subtype} of $T$,
+  denoted by $\Sub(T)$, is defined by
   \[
-  \Sub^\UU(T) \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).
+  \Sub(T) \defeq (T\to\Prop).
   \]
-  When no confusion can arise, we simply write $\Sub(T)$ for $\Sub^\UU(T)$.
-\end{definition}
+  Given a predicate $P$ on $T$, we define $T_P\defeq \sum_{t:T} P(t)$
+  to be the \emph{underlying type} of the subtype of $T$ characterized by $P$.
+  \end{definition}
 
-\begin{xca}\label{xca:subtypes-set}
-Show that $\Sub(T)$ is a set, for any type $T$. Hint:
-given subtypes $T_f\defeq(S,f,p)$ and $T_{f'}\defeq(S',f',p')$ of $T$,
-show that $T_f=T_{f'}$ amounts to finding a (unique) equivalence%
-\marginnote{%
+Since $\Prop$ is a set, $\Sub(T)$ is also a set, for any type $T$.
+
+\begin{xca}\label{xca:subtype-univ-prop}
+  Let $T$ and $X$ be types, $f: X\to T$ a function,
+  and $P : T\to\Prop$ a predicate. Show that $\prod_{x:X} P(f(x))$
+    \marginnote{%
     \[
       \begin{tikzcd}[ampersand replacement=\&]
-        S \ar[rr,"{e}","{\sim}"']\ar[dr,"{f}"'] \& \& S'\ar[dl,"{f'}"] \\
-        \& T \&
+        X \ar[dd,dashed,"g"']\ar[r,"f"] \& T \\
+        \\
+        \sum_{t:T} P(t) \ar[uur,"{\fst}"']
       \end{tikzcd}
-    \]}
-$e: S\equivto S'$ such that $f = f'\circ e$. See the diagram in the margin.
+    \]} 
+  holds if and only if the following type, visualized in the margin,
+  is contractible:
+   \begin{displaymath}
+    \sum_{g: X \to \sum_{t:T} P(t)} f \eqto \fst\circ g.
+  \end{displaymath}
 \end{xca}
+
+We call the result in \cref{xca:subtype-univ-prop} the 
+\emph{universal property of subtypes}.
+The following lemma states that identity types in a
+subtype are equivalent to those in the type itself.
 
 \begin{lemma}\label{lem:subtype-eq-=}
   Let $T$ be a type and $P$ a predicate on $T$.
-  Consider $\sum_{t:T}P(t)$ and the corresponding projection map
-  $\fst : T_P \defeq \Bigl(\sum_{t:T}P(t)\Bigr) \to T$.
-  Then $\ap{\fst}: ((x_1,p_1) \eqto (x_2,p_2)) \to (x_1 \eqto x_2)$ is an equivalence,
-  for any elements $(x_1,p_1)$ and $(x_2,p_2)$ of $T_P$.
+  Consider the projection map $\fst$ from the underlying type 
+  $T_P \jdeq \Bigl(\sum_{t:T}P(t)\Bigr)$ to $T$.
+  Then $\ap{\fst}: ((x_1,p_1) \eqto (x_2,p_2)) \to (x_1 \eqto x_2)$ is an
+  equivalence, for any elements $(x_1,p_1)$ and $(x_2,p_2)$ of $T_P$.
 \end{lemma}
 
 \begin{proof}
@@ -3166,15 +3173,86 @@ applying \cref{lem:isEq-pair=} and the remarks after its proof.
 These give identifications in $\ap{\fst}\pathpair q {c_q} \eqto q$
 for all $q: x_1 \eqto x_2$.
 Also, for any $r: (x_1,p_1) \eqto (x_2,p_2)$ we have an identification
-in $r \eqto \pathpair{\fst(r)}{\snd(r)}$.
-The latter pair can be identified with
-$\pathpair{\ap{\fst(r)}}{c}$ for any $c$
+in $r \eqto \pathpair{\fst(r)}{\snd(r)}$.\footnote{%
+Note that $\fst(r)\jdeq\ap{\fst}(r)$, since $r$ is a path,
+and similarly for $\snd$.}
+The right hand side of the latter can be identified with
+$\pathpair {\ap{\fst}(r)} {c}$ for any $c$
 in the contractible type $\pathover {p_1} P {\fst(r)} {p_2}$.
 \end{proof}
 
-Combined with \cref{lem:inj-ap},
-this gives that $\fst$ is an injection.\footnote{%
-Alternatively, one uses that $\inv\fst(t)\weq P(t)$ for all $t:T$.}
+\cref{cor:contract-away} gives that $\inv\fst(t)\weq P(t)$ for all $t:T$,
+so $\fst: \sum_{t:T}P(t) \to T$ is an injection.
+Such a pair $(T_P,\fst)$ is actually an example of
+the second approach to subtypes, which we will explain now.  
+
+\begin{definition}\label{def:injtype}
+  A \emph{injection into a type}\index{injection!into a type} $T$
+  is a type $S$ together with an injection $f : S \to T$.%
+  \glossary(Injinto){$\protect\Inj(T)$}{type of injections into $T$}
+  The type $S$ is called the \emph{underlying type} of the injection into $T$.
+  Selecting a universe $\UU$ as a repository for such types $S$ allows
+  us to introduce the type of injections into $T$ in $\UU$ as follows.
+  \[
+  \Inj^\UU(T) \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).
+  \]
+  When no confusion can arise, we simply write $\Inj(T)$ for $\Inj^\UU(T)$.
+\end{definition}
+
+\cref{lem:subtype-eq-=} yields the following special case
+of \cref{xca:subtype-univ-prop}.
+
+\begin{lemma}\label{lem:subtype-univ-injection}
+Let $S$ and $T$ be types and $i:S\to T$ an injection, \ie all fibers
+of $i$ are propositions.
+Then the following type is contractible:
+   \begin{displaymath}  
+    \sum_{g: S \to \sum_{t:T} \inv i (t)} \isEq(g)\times (i \eqto \fst\circ g).
+  \end{displaymath}
+\end{lemma}
+\begin{proof}
+We first note that we have a proof $p(s)\defeq(s,\refl{i(s)})$ 
+of the proposition $\inv i (i(s))$, for all $s:S$.
+Hence \cref{xca:subtype-univ-prop} implies that the displayed type is
+a proposition. Thus it suffices to show that the function $g$ defined by 
+$g(s)\defeq(i(s),p(s))$ is an equivalence. We show that all fibers
+of $g$ are contractible. Let $(t,q):\sum_{t:T} \inv i (t)$. Then
+$\inv i (t)$ is contractible. 
+Now, $\inv g(t,q) \jdeq \sum_{s:S} ((t,q)\eqto(i(s),p(s)))$
+is equivalent to $\sum_{s:S} (t\eqto i(s))$, by \cref{lem:subtype-eq-=},
+and hence contractble since the latter type is $\inv i (t)$. 
+\end{proof}
+
+\begin{lemma}\label{lem:Sub(T)=Inj(T)}
+The function mapping any $P:\Sub(T)$ to $(T_P,\fst):\Inj(T)$ is an
+equivalence from $\Sub(T)$ to $\Inj(T)$, for any type $T$.
+\end{lemma}
+\begin{proof}
+We apply \cref{lem:weq-iso}.
+The inverse equivalence maps $(S,i):\Inj(T)$ to $(t\mapsto \inv i (t)):\Sub(T)$.
+One round trip thus maps $P$ to $(t\mapsto \inv\fst(t))$, and they can
+be identified using function extensionality and \cref{cor:contract-away},
+as already mentioned just above \cref{def:injtype}.
+
+The other round trip maps $(S,i)$ to $(\sum_{t:T} \inv i (t),\fst)$.
+This can be identified using \cref{lem:subtype-univ-injection},
+which provides an equivalence $g$ as visualized in the diagram
+in the margin.
+\marginnote{%
+    \[
+      \begin{tikzcd}[ampersand replacement=\&]
+        S \ar[rr,"{g}","{\sim}"']\ar[dr,"{i}"'] \& \& \sum_{t:T} \inv i (t)\ar[dl,"{\fst}"] \\
+        \& T \&
+      \end{tikzcd}
+    \]}
+\end{proof}
+
+
+Consequently, $\Inj(T)$ is a set since $\Sub(T)$ is, for any type $T$.
+
+Cursor
+
+
 Hence, given a predicate $P$ on $T$,
 the \emph{subtype of $T$ characterized by $P$} is defined
 as $T_P\defeq \sum_{t:T} P(t)$,
@@ -3242,26 +3320,6 @@ later to subgroups in \cref{def:typeofmono}.}
     (3)~\emph{antisymmetric}: $R(x,y) \to R(y,x) \to x\eq y$.}
   with a least and a greatest element (even if $T$ is the empty type).
 \end{xca}
-
-\begin{xca}\label{xca:subtype-univ-prop}
-  Let $T$ and $X$ be types, $f: X\to T$ a function,
-  and $P : T\to\Prop$ a predicate.
-  \marginnote{%
-    \[
-      \begin{tikzcd}[ampersand replacement=\&]
-        X \ar[dd,dashed,"g"']\ar[r,"f"] \& T \\
-        \\
-        \sum_{t:T} P(t) \ar[uur,"{\fst}"']
-      \end{tikzcd}
-    \]}
-  Construct an equivalence from the proposition
-  $\prod_{x:X} P(f(x))$ to the type
-  \begin{displaymath}
-    \sum_{g: X \to \sum_{t:T} P(t)} f \eqto \fst\circ g.
-  \end{displaymath}
-  We may call this result the \emph{universal property of subtypes}.
-\end{xca}
-
 
 \begin{remark}\label{rem:subtype-convention}
   Another important consequence of~\cref{lem:subtype-eq-=}
