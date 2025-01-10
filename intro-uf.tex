@@ -3151,39 +3151,29 @@ Since $\Prop$ is a set, $\Sub(T)$ is also a set, for any type $T$.
 \end{xca}
 
 We call the result in \cref{xca:subtype-univ-prop} the 
-\emph{universal property of subtypes}.
+\emph{universal property of subtypes}.\footnote{%
+\MB{New:}In set theory, if $S\subseteq T$ and $f: X\to T$ is such that
+$f(x)$ is in $S$ for all $x$ in $X$, then $f$ \emph{itself} is the
+unique function $g: X\to S$ such that $f=i\circ g$, where $i$ is the
+inclusion map of $S$ in $T$.}
+
 The following lemma states that identity types in a
 subtype are equivalent to those in the type itself.
 
 \begin{lemma}\label{lem:subtype-eq-=}
-  Let $T$ be a type and $P$ a predicate on $T$.
-  Consider the projection map $\fst$ from the underlying type 
-  $T_P \jdeq \Bigl(\sum_{t:T}P(t)\Bigr)$ to $T$.
+  Let $T$ be a type and $P: T\to\Prop$ a predicate on $T$.
+  Recall the underlying type $T_P \jdeq \sum_{t:T}P(t)$, and
+  consider the projection map $\fst$ from $T_P$ to $T$.
   Then $\ap{\fst}: ((x_1,p_1) \eqto (x_2,p_2)) \to (x_1 \eqto x_2)$ is an
   equivalence, for any elements $(x_1,p_1)$ and $(x_2,p_2)$ of $T_P$.
 \end{lemma}
 
 \begin{proof}
-We apply \cref{lem:weq-iso}. Consider $q: x_1 \eqto x_2$.
-By induction on $q$, using \cref{xca:prop-contractible=},
-we get that each $\pathover {p_1} P q {p_2}$ is contractible,
-say with center $c_q$. We show that
-mapping $q$ to $\pathpair q {c_q}$ defines an inverse of $\ap{\fst}$,
-applying \cref{lem:isEq-pair=} and the remarks after its proof.
-These give identifications in $\ap{\fst}\pathpair q {c_q} \eqto q$
-for all $q: x_1 \eqto x_2$.
-Also, for any $r: (x_1,p_1) \eqto (x_2,p_2)$ we have an identification
-in $r \eqto \pathpair{\fst(r)}{\snd(r)}$.\footnote{%
-Note that $\fst(r)\jdeq\ap{\fst}(r)$, since $r$ is a path,
-and similarly for $\snd$.}
-The right hand side of the latter can be identified with
-$\pathpair {\ap{\fst}(r)} {c}$ for any $c$
-in the contractible type $\pathover {p_1} P {\fst(r)} {p_2}$.
+\cref{cor:contract-away} gives that $\inv\fst(t)\weq P(t)$ for all $t:T$,
+so that $\fst$ is an injection. Now apply \cref{lem:inj-ap}. 
 \end{proof}
 
-\cref{cor:contract-away} gives that $\inv\fst(t)\weq P(t)$ for all $t:T$,
-so $\fst: \sum_{t:T}P(t) \to T$ is an injection.
-Such a pair $(T_P,\fst)$ is actually an example of
+A pair like $(T_P,\fst)$ above is actually an example of
 the second approach to subtypes, which we will explain now.  
 
 \begin{definition}\label{def:injtype}
@@ -3199,73 +3189,26 @@ the second approach to subtypes, which we will explain now.
   When no confusion can arise, we simply write $\Inj(T)$ for $\Inj^\UU(T)$.
 \end{definition}
 
-\cref{lem:subtype-eq-=} yields the following special case
-of \cref{xca:subtype-univ-prop}.
-
-\begin{lemma}\label{lem:subtype-univ-injection}
-Let $S$ and $T$ be types and $i:S\to T$ an injection, \ie all fibers
-of $i$ are propositions.
-Then the following type is contractible:
-   \begin{displaymath}  
-    \sum_{g: S \to \sum_{t:T} \inv i (t)} \isEq(g)\times (i \eqto \fst\circ g).
-  \end{displaymath}
-\end{lemma}
-\begin{proof}
-We first note that we have a proof $p(s)\defeq(s,\refl{i(s)})$ 
-of the proposition $\inv i (i(s))$, for all $s:S$.
-Hence \cref{xca:subtype-univ-prop} implies that the displayed type is
-a proposition. Thus it suffices to show that the function $g$ defined by 
-$g(s)\defeq(i(s),p(s))$ is an equivalence. We show that all fibers
-of $g$ are contractible. Let $(t,q):\sum_{t:T} \inv i (t)$. Then
-$\inv i (t)$ is contractible. 
-Now, $\inv g(t,q) \jdeq \sum_{s:S} ((t,q)\eqto(i(s),p(s)))$
-is equivalent to $\sum_{s:S} (t\eqto i(s))$, by \cref{lem:subtype-eq-=},
-and hence contractble since the latter type is $\inv i (t)$. 
-\end{proof}
-
 \begin{lemma}\label{lem:Sub(T)=Inj(T)}
 The function mapping any $P:\Sub(T)$ to $(T_P,\fst):\Inj(T)$ is an
 equivalence from $\Sub(T)$ to $\Inj(T)$, for any type $T$.
+The inverse equivalence maps $(S,i):\Inj(T)$ to $(t\mapsto \inv i (t)):\Sub(T)$.
 \end{lemma}
 \begin{proof}
-We apply \cref{lem:weq-iso}.
-The inverse equivalence maps $(S,i):\Inj(T)$ to $(t\mapsto \inv i (t)):\Sub(T)$.
-One round trip thus maps $P$ to $(t\mapsto \inv\fst(t))$, and they can
-be identified using function extensionality and \cref{cor:contract-away},
-as already mentioned just above \cref{def:injtype}.
-
-The other round trip maps $(S,i)$ to $(\sum_{t:T} \inv i (t),\fst)$.
-This can be identified using \cref{lem:subtype-univ-injection},
-which provides an equivalence $g$ as visualized in the diagram
-in the margin.
-\marginnote{%
-    \[
-      \begin{tikzcd}[ampersand replacement=\&]
-        S \ar[rr,"{g}","{\sim}"']\ar[dr,"{i}"'] \& \& \sum_{t:T} \inv i (t)\ar[dl,"{\fst}"] \\
-        \& T \&
-      \end{tikzcd}
-    \]}
+We postpone the proof till \cref{lem:Prop-Set-pointed-families}
+\ref{lem:Prop-families}, where this and similar results are obtained 
+by a general method. If you just can't wait, do the next exercise.
 \end{proof}
 
+\begin{xca}\label{xca:Sub(T)=Inj(T)}
+Prove \cref{lem:Sub(T)=Inj(T)}. Hints: use \cref{lem:weq-iso}.
+For the round trip starting with $P$, use function extensionality and
+\cref{cor:contract-away}. For the round trip starting with $(S,i)$,
+show that the function $g$ is an equivalence in \cref{xca:subtype-univ-prop}
+in the special case that $X\jdeq S$, $f\jdeq i$ is an injection, $P\jdeq\inv i(\blank)$.
+\end{xca}
 
-Consequently, $\Inj(T)$ is a set since $\Sub(T)$ is, for any type $T$.
-
-Cursor
-
-
-Hence, given a predicate $P$ on $T$,
-the \emph{subtype of $T$ characterized by $P$} is defined
-as $T_P\defeq \sum_{t:T} P(t)$,
-together with the injection $\fst : T_P \to T$.
-Thus $T_P$ is the underlying type of this subtype.
-
-We've seen how to make a subtype from a predicate.
-Conversely, for a subtype of $T$ given by an injection
-$f : S \to T$, all fibers $\inv f(x)$ at $x:T$ are propositions.
-Thus the preimage function $\inv f$ is a predicate on $T$.
-We shall see in~\cref{lem:Prop-Set-pointed-families}
-\ref{lem:Prop-families} that these operations form an equivalence
-between predicates on $T$ and subtypes of $T$.
+As a consequence, $\Inj(T)$ is a set since $\Sub(T)$ is, for any type $T$.
 
 \cref{lem:subtype-eq-=} has other important consequences.
 \begin{corollary}\label{cor:subtype-same-level}
@@ -3286,13 +3229,15 @@ one would define subsets through such pairs, one would have
 to solve a size issue and define an equivalence relation
 such that equivalent pairs define the same subset.
 In type theory, however,
-we have universes, and the identity type of $\Sub^\UU(T)$ identifies
+we have universes, and the identity type of $\Inj^\UU(T)$ identifies
 precisely the triples defining the same subset.
 
 Such considerations also apply to subtypes, and
 later to subgroups in \cref{def:typeofmono}.}
 \glossary(subset){$\setof{t:T}{P(t)}$}{set comprehension}
 \index{set!comprehension}
+
+Cursor
 
 \begin{xca}\label{xca:subsets-inclusion}
   Let $T$ be a set, and $S_0$ and $S_1$ be subsets of $T$ with respective
