@@ -1434,6 +1434,13 @@ it sends its arguments to.
   Hint: use \cref{def:funext}.
 \end{xca}
 
+\begin{xca}\label{xca:section-above-id}
+  Let $X$ and $Z$ be types, and let $Y(x)$ be a type parameterized by $x:X$.
+  For any function $f:Z\to X$, construct an equivalence
+  of type $\bigl(\prod_{z:Z}Y(f(z))\bigr)\equivto 
+  \sum_{g:Z\to\sum_{x:X}Y(x)}(f\eqto \fst\circ g)$.
+\end{xca}
+
 \begin{xca}\label{xca:Sigma-curry}\index{currying}
   Let $X$ and $Z$ be types, and let $Y(x)$ be a type parameterized by $x:X$.
   Construct an equivalence\footnote{%
@@ -3135,18 +3142,17 @@ Since $\Prop$ is a set, $\Sub(T)$ is also a set, for any type $T$.
 \begin{xca}\label{xca:subtype-univ-prop}
   Let $T$ and $X$ be types, $f: X\to T$ a function,
   and $P : T\to\Prop$ a predicate. Show that $\prod_{x:X} P(f(x))$
-    \marginnote{%
+  holds if and only if the following type\footnote{\label{ft:subtype-univ-prop}%
     \[
       \begin{tikzcd}[ampersand replacement=\&]
         X \ar[dd,dashed,"g"']\ar[r,"f"] \& T \\
         \\
         \sum_{t:T} P(t) \ar[uur,"{\fst}"']
       \end{tikzcd}
-    \]} 
-  holds if and only if the following type, visualized in the margin,
+    \]}
   is contractible:
    \begin{displaymath}
-    \sum_{g: X \to \sum_{t:T} P(t)} f \eqto \fst\circ g.
+    \sum_{g: X \to \sum_{t:T} P(t)} f \eqto \fst\circ g.\qedhere
   \end{displaymath}
 \end{xca}
 
@@ -3200,19 +3206,19 @@ We postpone the proof till \cref{lem:Prop-Set-pointed-families}
 by a general method. If you just can't wait, do the next exercise.
 \end{proof}
 
-\begin{xca}\label{xca:Sub(T)=Inj(T)}
-Prove \cref{lem:Sub(T)=Inj(T)}. Hints: use \cref{lem:weq-iso}.
-For the round trip starting with $P$, use function extensionality and
-\cref{cor:contract-away}. For the round trip starting with $(S,i)$,
-show that the function $g$ is an equivalence in \cref{xca:subtype-univ-prop}
-in the special case that $X\jdeq S$, $f\jdeq i$ is an injection, $P\jdeq\inv i(\blank)$.
-\end{xca}
-
 As a consequence, $\Inj(T)$ is a set since $\Sub(T)$ is, for any type $T$.
 
-\cref{lem:subtype-eq-=} has other important consequences.
+\begin{xca}\label{xca:Sub(T)=Inj(T)}
+Prove \cref{lem:Sub(T)=Inj(T)}. Hints: %use \cref{lem:weq-iso}.
+For the round trip starting with $P$, use function extensionality and
+\cref{cor:contract-away}. For the round trip starting with $(S,i)$,
+show that the function $g$ in \cref{ft:subtype-univ-prop} is an equivalence
+in case $X\jdeq S$, $f\jdeq i$ is an injection, and $P\jdeq\inv i(\blank)$.
+\end{xca}
+
+\cref{lem:subtype-eq-=} has several important consequences:
 \begin{corollary}\label{cor:subtype-same-level}
-  For each natural number $n$,
+  For any $n\geq -1$,
   if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
 \end{corollary}
 In particular, if $T$ is a set, then $T_P$ is again a set;
@@ -3237,26 +3243,12 @@ later to subgroups in \cref{def:typeofmono}.}
 \glossary(subset){$\setof{t:T}{P(t)}$}{set comprehension}
 \index{set!comprehension}
 
-Cursor
-
 \begin{xca}\label{xca:subsets-inclusion}
-  Let $T$ be a set, and $S_0$ and $S_1$ be subsets of $T$ with respective
-  inclusions $\fst_0 : S_0 \to T$ and $\fst_1 : S_1 \to T$. Prove that the type%
-  \marginnote{%
-    \[
-      \begin{tikzcd}[ampersand replacement=\&]
-        S_0 \ar[rr,dashed,"f"]\ar[dr,"{\fst_0}"'] \& \& S_1\ar[dl,"{\fst_1}"] \\
-        \& T \&
-      \end{tikzcd}
-    \]}
-  \begin{displaymath}
-    \sum_{f: S_0 \to S_1} \fst_1 \circ f = \fst_0
-  \end{displaymath}
-  is a proposition. This proposition is denoted $S_0 \subseteq S_1$.
-  \glossary(2subset){${\subseteq}$}{subset}\index{subset}
-
-  Thus the type of ${\subseteq}$ is $\Sub(T)\to\Sub(T)\to\Prop$,
-  and $\Sub(T)$ is a set by \cref{xca:subtypes-set}.
+  Let $T$ be a set. 
+  Define the relation ${\subseteq}: (\Sub(T)\times\Sub(T))\to\Prop$ 
+  by $(P_0 \subseteq P_1) \defeq \prod_{t:T}(P_0(t)\to P_1(t)$.\footnote{%
+  Recall that we can move without notice between 
+  $(\Sub(T)\times\Sub(T))\to\Prop$ and $\Sub(T)\to\Sub(T)\to\Prop$.} 
   Prove that the relation ${\subseteq}$ is a partial
   order\footnote{\label{ft:partial-order}%
     Recall that an \emph{partial order} on a set $S$ is a relation $R$ that is
@@ -3276,6 +3268,9 @@ Cursor
   to mean any pair $(t,p)$ where $p:P(t)$,
   since when $P(t)$ holds, the type $P(t)$ is contractible.
 \end{remark}
+
+Cursor
+
 Given a set $A$ and a function $\chi_B: A\to\bool$,
 \cref{lem:isset-bool} yields that $\chi_B(a) \eq \yes$ is a
 proposition, and we can form
