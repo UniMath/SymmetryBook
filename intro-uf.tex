@@ -3111,20 +3111,38 @@ whether an element of $T$ belongs to the subtype. The second definition
 is based on the notion of injection, defined in \cref{def:injection}.
 
 \begin{definition}\label{def:predicate}
-  Let $T$ be a type and let $P(t)$ be a family of propositions
-  parametrized by a variable $t:T$.
+  Let $T$ be a type and let $P(t):\Prop$\footnote{%
+    Recall that $\Prop$ abbreviates $\Prop_\UU \jdeq \sum_{T:\UU} \isprop(T)$.}
+  be a family of propositions parametrized by a variable $t:T$.
   Then we call $P$ a \emph{predicate}\index{predicate} on $T$.\footnote{%
     Note that giving a predicate on $T$ is
-    equivalent to giving a map $Q: T\to\Prop_\UU$ for a suitable universe $\UU$,
-    and we sometimes say that $Q$ itself is the predicate. 
-    We leave $\UU$ implicit.}
+    equivalent to giving a map $Q: T\to\Prop_\UU$
+    for a suitable universe $\UU$, and we often say that $Q$ itself is the
+    predicate. We leave $\UU$ implicit.}
   If $P(t)$ is a decidable proposition for any $t:T$,
   then we say that $P$ is a \emph{decidable predicate} on $T$.
 \end{definition}
 
-The decidable predicates $P$ on $T$
-correspond uniquely to the characteristic functions $\chi_P:T\to\bool$,
-cf.\ \cref{xca:lem-prop}.
+Given a type $T$ and a function $f: T\to\bool$,
+\cref{lem:isset-bool} yields that $f(t) \eq \yes$ is a
+proposition, and we can form the predicate $P(t)\defeq (f(t) \eq \yes)$.
+Then $P: T\to\Prop$ is a decidable predicate by \cref{xca:decidability}. 
+However, not every predicate can be given through a $f: T\to\bool$, since
+$\Prop$ and $\bool$ are only equivalent if LEM holds (\cref{xca:lem-prop}).
+
+In the special case that $P: T\to\UU$ is a decidable predicate
+we can define $\chi_P: T\to\bool$ by induction (actually, only case distinction)
+on $d(t) :P(t)\amalg\neg P(t)$, setting $\chi_P(t) \eq \yes$
+if $d(t)\jdeq\inl{\_}$ and $\chi_P(t) \eq \no$ if $d(t)\jdeq\inr{\_}$.
+In this way, decidable predicates on a type $T$ correspond to
+their characteristic functions $T\to\bool$.
+
+\begin{xca}\label{xca:decidability}
+Show that $f(t) \eq \yes$ is a decidable predicate on $T$,
+for any type $T$ and function $f:T\to\bool$.
+Show that $(P\equivto\true)\amalg(P\equivto\false)$ holds
+for every decidable proposition $P$.
+\end{xca}
 
 \begin{definition}\label{def:subtype}
   Let $T$ be a type.
@@ -3133,9 +3151,66 @@ cf.\ \cref{xca:lem-prop}.
   \[
   \Sub(T) \defeq (T\to\Prop).
   \]
+  \glossary[Subtype]{$\protect\Sub(T)$}{the type of subtypes of $T$}
+  \index{subtype}
   Given a predicate $P$ on $T$, we define $T_P\defeq \sum_{t:T} P(t)$
   to be the \emph{underlying type} of the subtype of $T$ characterized by $P$.
   \end{definition}
+  
+The following lemma states that identity types in a
+subtype are equivalent to those in the type itself.
+
+\begin{lemma}\label{lem:subtype-eq-=}
+  Let $T$ be a type and $P: T\to\Prop$ a predicate on $T$.
+  Recall the underlying type $T_P \jdeq \sum_{t:T}P(t)$, and
+  consider the projection map $\fst$ from $T_P$ to $T$.
+  Then $\ap{\fst}: ((x_1,p_1) \eqto (x_2,p_2)) \to (x_1 \eqto x_2)$ is an
+  equivalence, for any elements $(x_1,p_1)$ and $(x_2,p_2)$ of $T_P$.
+\end{lemma}
+
+\begin{proof}
+\cref{cor:contract-away} gives that $\inv\fst(t)\weq P(t)$ for all $t:T$,
+so that $\fst$ is an injection. Now apply \cref{lem:inj-ap}. 
+\end{proof}
+
+\begin{remark}\label{rem:subtype-convention}
+  A very convenient consequence of~\cref{lem:subtype-eq-=}
+  is that we can afford not to distinguish carefully
+  between elements $(t,p)$ of the subtype $T_P$
+  and elements $t$ of type $T$ for which the proposition $P(t)$ holds.
+  We will hence often silently coerce from $T_P$ to $T$ via the first projection,
+  and if $t:T$ is such that $P(t)$ holds, we'll write $t:T_P$
+  to mean any pair $(t,p)$ where $p:P(t)$,
+  since when $P(t)$ holds, the type $P(t)$ is contractible.
+\end{remark}
+
+\begin{example}\label{def:Prop-Set}
+The type of types that are propositions and the
+type of types that are sets are defined as:
+\[\Prop_\UU\defeq \sum_{X:\UU}\isprop(X)\quad
+\text{and}\quad\Set_\UU\defeq \sum_{X:\UU}\isset(X).\]
+\glossary[Prop]{$\Prop$}{the type of propositions}
+\glossary[Set]{$\Set$}{the type of sets}
+
+Both $\Prop_\UU$ and $\Set_\UU$ are subtypes of $\UU$, and
+both are types in a universe one higher than $\UU$.
+We just write $\Prop$ and $\Set$ when we don't care about the 
+precise universe $\UU$.
+
+Following the convention in \cref{rem:subtype-convention},
+when we have a type $A$ for which we know that it is a proposition (or a set),
+we simply write $A : \Prop$ (or $A : \Set$).
+\end{example}
+
+\begin{lemma}\label{lem:Prop-in-Set}
+The proposition $\isset(\Prop)$ holds, that is, $\Prop$ is a set.
+\end{lemma}
+\begin{proof}
+We show that $P\eqto Q$ is a proposition for all propositions $P$ and $Q$.
+By univalence, $P\eqto Q$ is equivalent to 
+$(P\equivto Q)\jdeq\sum_{f:P\to Q}\isEq(f)$.
+The latter is a proposition by \cref{lem:prop-utils}\ref{prop-utils-codom}\ref{prop-utils-sum}, using that $\isEq(f)$ is a proposition.
+\end{proof}
 
 Since $\Prop$ is a set, $\Sub(T)$ is also a set, for any type $T$.
 
@@ -3163,24 +3238,8 @@ $f(x)$ is in $S$ for all $x$ in $X$, then $f$ \emph{itself} is the
 unique function $g: X\to S$ such that $f=i\circ g$, where $i$ is the
 inclusion map of $S$ in $T$.}
 
-The following lemma states that identity types in a
-subtype are equivalent to those in the type itself.
-
-\begin{lemma}\label{lem:subtype-eq-=}
-  Let $T$ be a type and $P: T\to\Prop$ a predicate on $T$.
-  Recall the underlying type $T_P \jdeq \sum_{t:T}P(t)$, and
-  consider the projection map $\fst$ from $T_P$ to $T$.
-  Then $\ap{\fst}: ((x_1,p_1) \eqto (x_2,p_2)) \to (x_1 \eqto x_2)$ is an
-  equivalence, for any elements $(x_1,p_1)$ and $(x_2,p_2)$ of $T_P$.
-\end{lemma}
-
-\begin{proof}
-\cref{cor:contract-away} gives that $\inv\fst(t)\weq P(t)$ for all $t:T$,
-so that $\fst$ is an injection. Now apply \cref{lem:inj-ap}. 
-\end{proof}
-
-A pair like $(T_P,\fst)$ above is actually an example of
-the second approach to subtypes, which we will explain now.  
+A pair like $(T_P,\fst)$ in \cref{lem:subtype-eq-=} is actually an 
+example of the second approach to subtypes, which we will explain now.  
 
 \begin{definition}\label{def:injtype}
   A \emph{injection into a type}\index{injection!into a type} $T$
@@ -3192,6 +3251,8 @@ the second approach to subtypes, which we will explain now.
   \[
   \Inj^\UU(T) \defeq \sum_{S:\UU}\sum_{f:S\to T}\isinj(f).
   \]
+  \glossary[Inj]{$\protect\Inj(T)$}{equivalent type of subtypes of $T$}
+  \index{subtype}
   When no confusion can arise, we simply write $\Inj(T)$ for $\Inj^\UU(T)$.
 \end{definition}
 
@@ -3203,7 +3264,7 @@ The inverse equivalence maps $(S,i):\Inj(T)$ to $(t\mapsto \inv i (t)):\Sub(T)$.
 \begin{proof}
 We postpone the proof till \cref{lem:Prop-Set-pointed-families}
 \ref{lem:Prop-families}, where this and similar results are obtained 
-by a general method. If you just can't wait, do the next exercise.
+by a general method. If you just can't wait, do \cref{xca:Sub(T)=Inj(T)}.
 \end{proof}
 
 As a consequence, $\Inj(T)$ is a set since $\Sub(T)$ is, for any type $T$.
@@ -3216,7 +3277,7 @@ show that the function $g$ in \cref{ft:subtype-univ-prop} is an equivalence
 in case $X\jdeq S$, $f\jdeq i$ is an injection, and $P\jdeq\inv i(\blank)$.
 \end{xca}
 
-\cref{lem:subtype-eq-=} has several important consequences:
+\cref{lem:subtype-eq-=} has other important consequences:
 \begin{corollary}\label{cor:subtype-same-level}
   For any $n\geq -1$,
   if $T$ is a $n$-type, then $T_P$ is also a $n$-type.
@@ -3224,8 +3285,8 @@ in case $X\jdeq S$, $f\jdeq i$ is an injection, and $P\jdeq\inv i(\blank)$.
 In particular, if $T$ is a set, then $T_P$ is again a set;
 we then call $T_P$ a \emph{subset} of $T$ and we may denote it by
 $\setof{t:T}{P(t)}$.\footnote{\label{ft:incl-vs-inj}
-The full notation of this
-subset would be $(\setof{t:T}{P(t)},\fst,p)$,
+The full notation as an element of $\Inj(T)$
+would be $(\setof{t:T}{P(t)},\fst,p)$,
 with $p$ witnessing that $\fst$ is an injection.
 In traditional set theory one would call $\fst$ the inclusion
 of the subset, which is unique for each subset.
@@ -3257,57 +3318,6 @@ later to subgroups in \cref{def:typeofmono}.}
     (3)~\emph{antisymmetric}: $R(x,y) \to R(y,x) \to x\eq y$.}
   with a least and a greatest element (even if $T$ is the empty type).
 \end{xca}
-
-\begin{remark}\label{rem:subtype-convention}
-  Another important consequence of~\cref{lem:subtype-eq-=}
-  is that we can afford not to distinguish carefully
-  between elements $(t,p)$ of the subtype $T_P$
-  and elements $t$ of type $T$ for which the proposition $P(t)$ holds.
-  We will hence often silently coerce from $T_P$ to $T$ via the first projection,
-  and if $t:T$ is such that $P(t)$ holds, we'll write $t:T_P$
-  to mean any pair $(t,p)$ where $p:P(t)$,
-  since when $P(t)$ holds, the type $P(t)$ is contractible.
-\end{remark}
-
-Cursor
-
-Given a set $A$ and a function $\chi_B: A\to\bool$,
-\cref{lem:isset-bool} yields that $\chi_B(a) \eq \yes$ is a
-proposition, and we can form
-the subset $\setof{a:A}{\chi_B(a) \eq \yes}$. However,
-not every subset as in \cref{def:subtype} can be given
-through a $\chi_B: A\to\bool$. As proved in \cref{sec:finite-types},
-any element of $\bool$ is equal to $\yes$ or to $\no$.
-
-If $P: A\to\UU$ is a decidable predicate, then
-we can define $\chi_P: A\to\bool$ by induction (actually,
-only case distinction) on $p:P(a)$, setting $\chi_P(a) \eq \yes$
-if $p\jdeq\inl{\_}$ and $\chi_P(a) \eq \no$ if $p\jdeq\inr{\_}$.
-We will often use a characteristic function $T\to\bool$ to
-specify a decidable predicate on a type $T$.
-
-\begin{xca}\label{xca:decidability}
-Show that $f(t) \eq \yes$ is a decidable predicate on $T$,
-for any type $T$ and function $f:T\to\bool$.
-Show $(P\equivto\true)\amalg(P\equivto\false)$ is a true proposition
-for every decidable proposition $P$.
-\end{xca}
-
-\begin{definition}\label{def:Prop-Set}
-The type of types that are propositions and the
-type of types that are sets are defined as:
-\[\Prop_\UU\defeq \sum_{X:\UU}\isprop(X)\quad
-\text{and}\quad\Set_\UU\defeq \sum_{X:\UU}\isset(X).\]
-Both $\Prop_\UU$ and $\Set_\UU$ are subtypes of $\UU$, and
-both are types in a universe one higher than $\UU$.
-\end{definition}
-When we don't care about the precise universe $\UU$,
-we'll leave it out from the notation,
-and just write $\Prop$ and $\Set$.
-
-Following \cref{rem:subtype-convention},
-if we have a type $A$ for which we know that it is a proposition or a set,
-we write also $A : \Prop$ or $A : \Set$, respectively.
 
 \begin{definition}\label{def:decidable-set}\index{decidable set}
   A type $A$ is called a \emph{decidable set} if the identity type $x \eqto y$
