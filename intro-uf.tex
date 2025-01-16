@@ -1434,11 +1434,20 @@ it sends its arguments to.
   Hint: use \cref{def:funext}.
 \end{xca}
 
-\begin{xca}\label{xca:section-above-id}
+\begin{xca}\label{xca:AC-in-TT}
+  Let $X$ and $Y$ be types, and let $Z(x,y)$ be a type parameterized by
+  $x:X$ and $y:Y$.
+  Construct an equivalence of type $\bigl(\prod_{x:X}\sum_{y:Y}Z(x,y)\bigr)
+  \equivto \sum_{f:X\to Y}\prod_{x:X}Z(x,f(x))$.\footnote{%
+  This equivalence is called the set-theoretic axiom of choice.}
+\end{xca}
+
+\begin{xca}\label{xca:section-above-f}
   Let $X$ and $Z$ be types, and let $Y(x)$ be a type parameterized by $x:X$.
   For any function $f:Z\to X$, construct an equivalence
   of type $\bigl(\prod_{z:Z}Y(f(z))\bigr)\equivto 
-  \sum_{g:Z\to\sum_{x:X}Y(x)}(f\eqto \fst\circ g)$.
+  \sum_{g:Z\to\sum_{x:X}Y(x)}(f\eqto \fst\circ g)$.\footnote{%
+  The special case $Z\jdeq X$, $f\jdeq\id_X$ applies to any product type.}
 \end{xca}
 
 \begin{xca}\label{xca:Sigma-curry}\index{currying}
@@ -3233,8 +3242,8 @@ Since $\Prop$ is a set, $\Sub(T)$ is also a set, for any type $T$.
 
 We call the result in \cref{xca:subtype-univ-prop} the 
 \emph{universal property of subtypes}.\footnote{%
-\MB{New:}In set theory, if $S\subseteq T$ and $f: X\to T$ is such that
-$f(x)$ is in $S$ for all $x$ in $X$, then $f$ \emph{itself} is the
+In set theory, if $S\subseteq T$ and $f: X\to T$ is such that
+$f(x)$ is in $S$ for all $x$ in $X$, then $x\mapsto f(x)$ is the
 unique function $g: X\to S$ such that $f=i\circ g$, where $i$ is the
 inclusion map of $S$ in $T$.}
 
@@ -3257,9 +3266,11 @@ example of the second approach to subtypes, which we will explain now.
 \end{definition}
 
 \begin{lemma}\label{lem:Sub(T)=Inj(T)}
-The function mapping any $P:\Sub(T)$ to $(T_P,\fst):\Inj(T)$ is an
+The function mapping any subtype $P$ of $T$ to the injection 
+$\fst: T_P\to T$ defines an
 equivalence from $\Sub(T)$ to $\Inj(T)$, for any type $T$.
-The inverse equivalence maps $(S,i):\Inj(T)$ to $(t\mapsto \inv i (t)):\Sub(T)$.
+The inverse equivalence maps any injection $i:S\to T$ to 
+the subtype $(t\mapsto \inv i (t))$ of $T$.
 \end{lemma}
 \begin{proof}
 We postpone the proof till \cref{lem:Prop-Set-pointed-families}
@@ -3268,6 +3279,24 @@ by a general method. If you just can't wait, do \cref{xca:Sub(T)=Inj(T)}.
 \end{proof}
 
 As a consequence, $\Inj(T)$ is a set since $\Sub(T)$ is, for any type $T$.
+\stepcounter{footnote}\footnotetext{\label{ft:incl-vs-inj}
+The full notation as an element of $\Inj(T)$
+would be $(\setof{t:T}{P(t)},\fst,p)$,
+with $p$ witnessing that $\fst$ is an injection.
+In traditional set theory one would call $\fst$ the inclusion
+of the subset, which is unique for each subset.
+In contrast, there can be \emph{many} pairs $(X,i)$, with $i: X\to T$
+an injection, defining the same subset of $T$. If in set theory
+one would define subsets through such pairs, one would have
+to solve a size issue and define an equivalence relation
+such that equivalent pairs define the same subset.
+In type theory, however,
+we have universes, and the identity type of $\Inj^\UU(T)$ identifies
+precisely the triples defining the same subset.
+
+Such considerations also apply to subtypes, and
+later to subgroups in \cref{def:typeofmono}.
+}\addtocounter{footnote}{-1}
 
 \begin{xca}\label{xca:Sub(T)=Inj(T)}
 Prove \cref{lem:Sub(T)=Inj(T)}. Hints: %use \cref{lem:weq-iso}.
@@ -3284,23 +3313,7 @@ in case $X\jdeq S$, $f\jdeq i$ is an injection, and $P\jdeq\inv i(\blank)$.
 \end{corollary}
 In particular, if $T$ is a set, then $T_P$ is again a set;
 we then call $T_P$ a \emph{subset} of $T$ and we may denote it by
-$\setof{t:T}{P(t)}$.\footnote{\label{ft:incl-vs-inj}
-The full notation as an element of $\Inj(T)$
-would be $(\setof{t:T}{P(t)},\fst,p)$,
-with $p$ witnessing that $\fst$ is an injection.
-In traditional set theory one would call $\fst$ the inclusion
-of the subset, which is unique for each subset.
-In contrast, there can be \emph{many} pairs $(X,i)$, with $i: X\to T$
-an injection, defining the same subset of $T$. If in set theory
-one would define subsets through such pairs, one would have
-to solve a size issue and define an equivalence relation
-such that equivalent pairs define the same subset.
-In type theory, however,
-we have universes, and the identity type of $\Inj^\UU(T)$ identifies
-precisely the triples defining the same subset.
-
-Such considerations also apply to subtypes, and
-later to subgroups in \cref{def:typeofmono}.}
+$\setof{t:T}{P(t)}$.\footnotemark
 \glossary(subset){$\setof{t:T}{P(t)}$}{set comprehension}
 \index{set!comprehension}
 
