@@ -1426,14 +1426,6 @@ it sends its arguments to.
   by $z:Z$. Hint: use \cref{ft:Sigma-assoc}.
 \end{xca}
 
-\begin{xca}\label{xca:prod-of-fibs}
-  Let $X$, $Y$ and $Z$ be types. Given functions $f: X\to Z$ and $g: Y\to Z$,
-  construct an equivalence of type
-  $\bigl(\sum_{h:X\to Y} f \eqto g\circ h\bigr) \equivto
-    \prod_{x:X}\sum_{y:Y} f(x) \eqto g(y)$.
-  Hint: use \cref{def:funext}.
-\end{xca}
-
 \begin{xca}\label{xca:AC-in-TT}
   Let $X$ and $Y$ be types, and let $Z(x,y)$ be a type parameterized by
   $x:X$ and $y:Y$.
@@ -3165,9 +3157,12 @@ for every decidable proposition $P$.
   Given a predicate $P$ on $T$, we define $T_P\defeq \sum_{t:T} P(t)$
   to be the \emph{underlying type} of the subtype of $T$ characterized by $P$.
   \end{definition}
-  
-The following lemma states that identity types in a
-subtype are equivalent to those in the type itself.
+
+The following lemma states that identity types in a subtype\footnote{%
+The phrase `subtype' is often used for `underlying type of the subtype'.
+See \cref{ft:caution-subtype} for when it is important
+to be precise.}
+are equivalent to those in the type itself.
 
 \begin{lemma}\label{lem:subtype-eq-=}
   Let $T$ be a type and $P: T\to\Prop$ a predicate on $T$.
@@ -3221,7 +3216,13 @@ $(P\equivto Q)\jdeq\sum_{f:P\to Q}\isEq(f)$.
 The latter is a proposition by \cref{lem:prop-utils}\ref{prop-utils-codom}\ref{prop-utils-sum}, using that $\isEq(f)$ is a proposition.
 \end{proof}
 
-Since $\Prop$ is a set, $\Sub(T)$ is also a set, for any type $T$.
+Since $\Prop$ is a set, $\Sub(T)$ is also a set, for any type $T$.\footnote{%
+\label{ft:caution-subtype}
+Caution: When identifying `subtypes', it
+should be clear whether they are considered as elements of $\Sub(T)$ or
+as underlying types of subtypes, \ie as elements of some universe $\UU$.
+The identity types $P\eq_{\Sub(T)} Q$ and $T_P\eqto_{\UU} T_Q$ are in general
+not equivalent!}
 
 \begin{xca}\label{xca:subtype-univ-prop}
   Let $T$ and $X$ be types, $f: X\to T$ a function,
