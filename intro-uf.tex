@@ -3766,7 +3766,7 @@ the second is commonly called the universal property.
 \begin{theorem}\label{thm:quotient-property}
   We have $[x] \eq [x']$ if and only if $R(x,x')$ for all $x,x':A$.
   Also, let $B$ be a \emph{set} and $f : A \to B$ a
-  function such that $f(x) \eq f(x')$ for all $x,x':A$ with $R(x,x')$.
+  function such that $f(x) \eq f(x')$ for all $x,x':A$ such that $R(x,x')$.
   Then the type $\sum_{g: A/R \to B} (f \eq g\circ[\blank])$ is
   contractible.\footnote{In a diagram:
   \[\begin{tikzcd}[column sep=small,ampersand replacement=\&]
@@ -3781,7 +3781,7 @@ such that $\bar f([x]) \jdeq f(x)$ for all $x:A$.
   applied to $P_x \defeq [x]$ and $x'$.
 
   Now let $B$ be a set and let $f : A \to B$ a function
-  satisfying $f(x) \eq f(x')$ for all $x,x':A$ with $R(x,x')$.
+  satisfying $f(x) \eq f(x')$ for all $x,x':A$ such that $R(x,x')$.
   We first define the center of contraction $\bar f : A/R \to B$.
   Let $z\jdeq(P,p):A/R$. To define $\bar f(z)$ in $B$,
   we note that $f \circ \fst$ is a weakly constant map
@@ -3890,7 +3890,7 @@ $f(\trunc{x}_0)\jdeq g(x)$ for all $x:A$, as desired.\footnote{%
 
 \begin{xca}\label{xca:map-induces-quotient}
 Let $A$ and $B$ be types and $f:A\to B$ a function.
-The \emph{equivalence relation on $A$ induced by} $f$ is
+Consider the \emph{equivalence relation on $A$ induced by} $f$ 
 \index{equivalence relation!induced by map}
 given by 
 \[
@@ -4113,7 +4113,7 @@ so $\bn 0 \defeq \Fin(0)$, $\bn 1 \defeq \Fin(1)$, $\bn 2 \defeq \Fin(2)$, etc.
 \end{definition}
 
 \begin{xca}\label{xca:finite-types}
-\hspace{1in}
+\leavevmode
   \begin{enumerate}
   \item Denote in full the elements of $\bn{0}$, $\bn{1} $, and $\bn{2}$.
   \item Construct an equivalence in $\bn{1} \equivto \true$
@@ -4138,57 +4138,56 @@ so $\bn 0 \defeq \Fin(0)$, $\bn 1 \defeq \Fin(1)$, $\bn 2 \defeq \Fin(2)$, etc.
     here.} % And then to prove that their intersection is finite sets
 \end{definition}
 \begin{lemma}\label{lem:maxonefinitetype}
-\leavevmode
-\begin{enumerate}
-  \item $\sum_{n:\NN} \Trunc{X\eqto\bn{n}}$ is a proposition, for all types $X$.
-  \item The map that is the identity on first components is an equivalence
-    $\bigl(\sum_{X:\UU}\sum_{n:\NN} \Trunc{X\eqto\bn{n}}\bigr)
-    \equivto \sum_{X:\UU}\isfinset(X).$
+For all types $X$ we have:
+  \begin{enumerate}
+  \item $\sum_{n:\NN} \Trunc{X\eqto\bn{n}}$ is a proposition;%
+  \footnote{In other words, an $n:\NN$ such that $\Trunc{X\eqto\bn{n}}$
+  is unique if it exists.}
+  \item $\sum_{n:\NN} \Trunc{X\eqto\bn{n}}$ if and only if $\isfinset(X)$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+\leavevmode
 \begin{enumerate}
 \item Assume $(n,p),(m,q): \sum_{n:\NN}\Trunc{X\eqto\bn{n}}$.
 Then $q\circ\inv{p}: {\bn{n}\eqto\bn{m}}$, so ${n=m}$
 by \cref{xca:finite-types}. By \cref{lem:isEq-pair=},
 \cref{def:pathover-trp} and the fact that the type of $q$
 is a proposition, it follows that $(n,p) \eq (m,q)$.
-\item Follows from $\sum_{n:\NN}\Trunc{X\eqto\bn{n}} =
-\Trunc{\sum_{n:\NN}(X \eqto \bn{n})}$,
-which is easily proved by giving functions in both directions
-and using the univalence axiom.\qedhere
+\item Functions in both directions are easily defined by
+using the recursion principle of propositional truncation,
+see after \cref{def:prop-trunc}.\qedhere
 \end{enumerate}
 \end{proof}
 
-The lemma above remains true if $X$ ranges over $\Set$.
-If a set $S$ is in the same component in $\Set$\footnote{%
-  Here it doesn't matter whether we say $\Set$ or $\UU$,
-  since any finite set is a set.
+%The lemma above remains true if $X$ ranges over $\Set$. MB commented out
+
+\begin{definition}\label{def:groupoidFin}
+The \emph{groupoid of finite sets} is defined by\footnote{%
+  Here it doesn't matter whether we take the 
+  sum over $\Set$ or over $\UU$, since any finite set is a set.
   Hence we also have $\FinSet_n
   \jdeq \Set_{(\bn{n})} \eqto \FinSet_{(\bn{n})}
  \eqto \UU_{(\bn{n})}$.}
-as $\bn{n}$ we say that \emph{$S$ has cardinality $n$},
-or that \emph{the cardinality of $S$ is $n$},
-or that $S$ \emph{is an $n$-element set}.
-
-\begin{definition}\label{def:groupoidFin}
-The \emph{groupoid of finite sets} is defined by
 \[
   \FinSet\defeq\sum_{S:\Set}\isfinset(S).
 \]
 \glossary(FinSet){$\protect\FinSet$}{the groupoid of finite sets}
 For $n:\NN$, the \emph{groupoid of sets of cardinality $n$} is defined by
 \[
-  \FinSet_n\defequi \sum_{S:\Set}\Trunc{\bn{n}\eqto S}.\qedhere
+  \FinSet_n\defequi \sum_{S:\Set}\Trunc{\bn{n}\eqto S}.
 \]
-\glossary(FinSetn){$\protect\FinSet_n$}{the groupoid of sets of cardinality $1$}
+\glossary(FinSetn){$\protect\FinSet_n$}{the groupoid of sets of cardinality $n$}
+\cref{lem:maxonefinitetype} yields a function $\Card:\FinSet\to\NN$
+such that $\Card(S)$ is the cardinality of the finite set $S$.\footnote{%
+$\Card(S)=n$ is also phrased as: $S$ \emph{is in the same component in $\Set$
+as} $\bn{n}$, or \emph{$S$ has cardinality $n$},
+or $S$ \emph{is an $n$-element set}.}
 \end{definition}
+
 Observe that we have identifications in
 $\FinSet_0 \eqto \FinSet_1 \eqto \bn{1} $, and in
 $\FinSet \eqto \sum_{n:\NN}\FinSet_n$ by \cref{lem:maxonefinitetype}.
-
-Note that being a finite set implies being a set, and hence
-we can identify $\FinSet$ with $\sum_{X:\UU}\isfinset(X)$.
 Also, $\FinSet$ is the image of the map $\Fin : \NN \to \UU$
 from~\cref{def:finiteset}, and is hence essentially $\UU$-small
 (for any universe $\UU$), by~\cref{pri:replacement}, \cref{P1} in
