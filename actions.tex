@@ -1243,7 +1243,7 @@ and in particular in \cref{cor:orbit-equiv}.
 Recall from \cref{def:actiontype} the equivalence of
 $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
 
-\begin{lemma}\label{lem:surj-set-orbit}
+\begin{lemma}\label{lem:surj-set-orbits}
   Let $G$ be a group and $X : \BG\to\Set$.\footnote{%
   This lemma can be generalized to \inftygps $G$ and $G$-types $X$.}
   The map $[\blank]$ defined by
@@ -1548,7 +1548,7 @@ for all $x':X(\sh_G)$ and $z:\BG$, $y:X(z)$, $h:\sh_G\eqto z$ as
 It is perhaps easier to prove directly that $[\blank]_x$ is an equivalence.}
 
 For the $G_x$-set ${\tilde G_x}$, with underlying set $\USymG$, 
-the map $[\blank]$ from \cref{lem:surj-set-orbit} has type 
+the map $[\blank]$ from \cref{lem:surj-set-orbits} has type 
 $\USymG \to {\tilde G_x}/G_x$, and
 can be elaborated for all $g:\USymG$ and 
 $z:\BG$, $y:X(z)$, $h:\sh_G\eqto z$ as
@@ -2105,7 +2105,77 @@ tells us that
 \begin{definition}\label{def:finite-group}\MB{Where?}
 A group $G$ is a \emph{finite group} if $\isfinset(\USymG)$.
 \index{finite group}\index{group!finite}
+For any finite group $G$ we denote the number of symmetries
+in $G$ by $\Card(G)\defeq\Card(\USymG)$.
 \end{definition}
+
+\begin{xca}\label{xca:[x]=[y]-implies-||Gx=Gy||}\MB{Where?}
+Let $G$ be a group and $X: \BG\to\Set$ a $G$-set. Show:
+if $[x]=[y]$, then $\Trunc{G_x\eqto G_y}$, for any $x,y:X(\sh_G)$.
+%Solution: conclusion is prop, so we may assume we have a $g:\USymG$
+%such that $g\cdot x = y$. Hence we have $p: (\sh_G,x)\eqto(\sh_G,y)$,
+%so $\BG_x\eqto\BG_y$ by application on this path $p$.
+\end{xca}
+
+\begin{example}\label{exa:prep-burnside}
+Since the lemma to come is about counting orbits and
+elements of orbits, we start by elaborating an example.
+Recall from \cref{ex:cyclicgroups} the cyclic group $\CG_4$.
+Let $X: \BCG_4\to\Set$ be the $\CG_4$-set mapping any $(A,f):\BCG_4$
+to $A\to\bn2$. Then the underlying set of $X$ is $\bn4\to\bn2$,
+\ie binary sequences of length $4$. The group action induced by $X$
+cyclically rotates such sequences.\footnote{%
+Use \cref{cor:id-m-cycle}, univalence, and \cref{lem:trp-in-function-type}.}
+
+By \cref{cor:orbit-equiv}, the set of orbits $X/\CG_4$ is
+equivalent to the quotient of $\bn4\to\bn2$ induced by 
+$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:surj-set-orbits}.
+As also stated by that lemma, the equivalence class of any $x:\bn4\to\bn2$
+consists precisely of all cyclic rotations of $x$. Clearly, 
+$0000$ and $1111$ have singleton equivalence classes.
+The equivalence class of $0001$ ($0111$) consists of all four binary 
+sequences with exactly one $1$ ($0$).  Before you start thinking that
+swapping $0$'s and $1$'s gives a new equivalence class, consider 
+$0101$ that forms an equivalence class together with $1010$.
+Finally, $0011$ forms an equivalence class together with $1001$,
+$1100$ and $0110$. Thus we have distributed all 16 sequences over
+six orbits, as in the left column of the table in the margin.
+
+\marginnote{
+\begin{center}
+\begin{tabular}{|c|c|c|} 
+ \hline
+ elements per orbit & stabilizers \\ [0.5ex] 
+ \hline\hline
+ 0000 & 0,1,2,3 \\ 
+ \hline
+ 1111 & 0,1,2,3 \\
+ \hline
+ 0001,0010,0100,1000 & 0 \\
+ \hline
+ 0111,1011,1101,1110 & 0\\
+ \hline
+ 0101,1010 & 0,2\\
+ \hline
+ 1100,0110,0011,1001 & 0\\
+ \hline
+\end{tabular}
+\end{center}
+}
+
+In the right column of the table in the margin, we have given
+given in each row the respective stabilizing symmetries in $\BCG_4$.
+\cref{xca:[x]=[y]-implies-||Gx=Gy||} tells us that it doesn't matter
+too much which element in the orbit one chooses.\footnote{%
+  Here it matters even less since $\BCG_4$ is abelian.}
+From the point of counting the size $\Card(G_x)$ of the
+finite stabilizer groups, the particular $x$ one chooses
+in each orbit is irrelevant. Now we can observe something
+interesting: the product $\Card([x]) \times \Card(G_x)$ is
+equal to $\Card(\BCG_4) = 4$ for each $x$ in the underlying set of $X$.
+\MB{Add some more explanations here when 5.4 (Lagrange) has stabilized.}
+\end{example}
+
 
 \begin{lemma}
   \label{lem:burnside}
