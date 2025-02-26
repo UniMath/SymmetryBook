@@ -243,7 +243,7 @@ This applies to the following definition.
 \end{remark}
 
 \begin{definition}\label{def:Gsubset}
-  A \emph{$G$-predicate of $X$} is a map from $X$ to the $G$-set that is
+  A \emph{$G$-subset of $X$} is a map from $X$ to the $G$-set that is
   constant $\Prop$. The type of all such maps is denoted by%
   \glossary(SubGX){$\protect\Sub_G(X)$}{set of $G$-subsets of $X$}
   \[
@@ -1308,7 +1308,9 @@ Hint: use \cref{rem:set-trunc-as-quotient}.
   and $x : X(\sh_G)$ an element.\footnote{%
   This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
   \begin{enumerate}
-  \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$.
+  \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$,
+  which can be identified with the pointed type
+  $(\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x) \eqto (z,y)},(\sh_G,x,!))$.
   Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
   each fiber at $z:\BG$ is a subset\footnote{\label{ft:fib-fst}%
   $\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$} of $X(z)$.
@@ -1325,12 +1327,20 @@ Hint: use \cref{rem:set-trunc-as-quotient}.
   \end{enumerate}
 \end{definition}
 
+\begin{xca}\label{xca:[x]=[y]-implies-||Gx=Gy||}
+Let $G$ be a group and $X: \BG\to\Set$ a $G$-set. Show:
+if $[x]=[y]$, then $\Trunc{G_x\eqto G_y}$, for any $x,y:X(\sh_G)$.
+%Solution: conclusion is prop, so we may assume we have a $g:\USymG$
+%such that $g\cdot x = y$. Hence we have $p: (\sh_G,x)\eqto(\sh_G,y)$,
+%so $\BG_x\eqto\BG_y$ by application on this path $p$.
+\end{xca}
+
 \begin{remark}\label{rem:importance-[x]}
 \MB{New:} In the above definition, the underlying $G$-set
 $(z:\BG)\mapsto\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)}$
 of the orbit $[x]$ plays an important double role: On one hand its
 action type $\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$,
-pointed at $(sh_G,x)$, is the classifying type of the stabilizer
+pointed at $(\sh_G,x)$, is the classifying type of the stabilizer
 group $G_x$. On the other hand it is a transitive $G$-set whose
 underlying set $\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$
 is the underlying set of the orbit $[x]$.
@@ -1462,13 +1472,39 @@ the $\SG_2$-sets $X(\blank,\bn2)$ and $X(\bn2,\blank)$.
 Consider a group $G$, a $G$-set $X$ and an element $x:X(\sh_G)$,
 and recall \cref{def:orbit-stabilizer}.
 The classifying type of the stabilizer group $G_x$
-is the component of $X_{hG}$ pointed by the shape $(\sh_G,x)$.
+is the component of $X_{hG}\jdeq\sum_{z:\BG} X(z)$ 
+pointed by the shape $(\sh_G,x)$.
 The first projection of a symmetry of $(\sh_G,x)$ is a symmetry of 
 $\sh_G$, and the second projection is a proof of a proposition.
-This suggest a simple way for $G_x$ to act on the
-symmetries of $\sh_G$, by just ignoring the second projection. 
-Then one gets a $G_x$-set whose action type can, as expected,
-easily be identified with the orbit of $x$. This is spelled
+This suggest the following simple way for $G_x$ to act on the
+symmetries of $\sh_G$, by just ignoring the second projection:
+
+
+\begin{definition}\label{def:stab-action-on-G}
+Let $G$ be a group, $X$ a $G$-set and $x:X(\sh_G)$ an element of 
+the underlying set. Recall 
+$\BG_x \jdeq \sum_{(z,y):X_{hG}}\Trunc{(\sh_G,x)\eqto(z,y)}$,
+the classifying type of the stabilizer group $G_x$. 
+Define the $G_x$-set $\tilde G_x : \BG_x \to \UU$ by setting,
+for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$, 
+\[
+\tilde G_x(z,y,!)\defeq(\sh_G\eqto z).\qedhere
+\]
+
+\end{definition} 
+
+The underlying set of $\tilde G_x$ is $\USymG$. The group action of
+$\tilde G_x$ is explored in the following exercise.
+
+\begin{xca}\label{xca:stab-action-on-G}\MB{New:}
+Let $s:(\sh_G,x,!)\eqto(z,y,!)$ be a path in $\BG_x$ and
+let $g:\USymG$. Show that $s\cdot_{\tilde G_x} g = sg$, \ie
+the group action of $\tilde G_x$ is path composition. 
+\end{xca}
+
+The action type of $\tilde G_x$ can be identified with the 
+underlying set of the orbit through $x$ under $X$. This is 
+achieved by a chain of easy equivalences, spelled
 out in the following construction.
 
 \begin{construction}[Orbit-stabilizer theorem]
@@ -1476,16 +1512,20 @@ out in the following construction.
   \label{thm:orbitstab} Let $G$ be a group, $X$ a $G$-set $X$,
   $x : X(\sh_G)$ an element of the underlying set of $X$.\footnote{%
   This construction can be generalized to \inftygps $G$ and $G$-types $X$.}
-  Define the $G_x$-set
-  $\tilde G_x : \BG_x \to \UU$ by $\tilde G_x(z,y,!)\defeq(\sh_G\eqto z)$
-  for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$. 
-  Then the underlying set of $\tilde G_x$ is $\USymG$ and 
-  we have an equivalence from the action type $(\tilde G_x)_{hG_x}$
+  Recall the $G_x$-set $\tilde G_x$ from \cref{def:stab-action-on-G}.
+  Then we have an equivalence from the action type $(\tilde G_x)_{hG_x}$
   to the underlying set $(G\cdot_X x)$ of the orbit through $x$.
 \end{construction}
 \begin{implementation}{thm:orbitstab}
   The desired equivalence is the composition of elementary equivalences
-  for sums and products, followed by contracting away the variable $z$:
+  for sums and products, followed by contracting away the variable $z$:%
+\footnote{\MB{New:} To understand the proof better, it may help to look
+at elements $(\sh_G,x,!,g)$ and $(\sh_G,x,!,g')$ of $(\tilde G_x)_{hG_x}$.
+To have and identification of these means having a stabilizer $s$ of $x$
+that transports $g$ to $g'$. There can be at most
+one such stabilizer, namely $s=\inv g g'$. 
+Hence $(\sh_G,x,!,g)\eqto(\sh_G,x,!,g')$ is a proposition, and
+equivalent to $g\cdot x = g'\cdot x$.}
   \begin{align*}
     (\tilde G_x)_{hG_x}
     &\jdeq \sum_{u : \BG_x}\tilde G_x(u) \\
@@ -1496,11 +1536,11 @@ out in the following construction.
 \end{implementation}
 
 The above theorem has some interesting consequences:
-By the following exercise we get that the stabilizer subgroups $(G_x)_g$
-of the $G_x$-set $\tilde G_x$ are trivial, for all $g:\USymG$,
-\ie $\tilde G_x$ is free.
+Since $(\tilde G_x)_{hG_x}$ is a set, all its components are contractible.
+This means that for any $g:\USymG$, the stabilizer group $(G_x)_g$
+is free, \ie $\tilde G_x$ is free.
 \cref{lem:free-pt-char} below will then allow us to conclude that
-all orbits $(G_x \cdot_{\tilde G_x} g)$ are equivalent.
+all $(G_x \cdot_{\tilde G_x} g)$ are equivalent to $\USymG_x$.
 
 \begin{lemma}\label{lem:free-pt-char}
   Let $G$ be a group and $X$ a $G$-set. Then we have for all $x:X(\sh_G)$
@@ -1523,7 +1563,7 @@ The above results culminate in the following theorem.
   %\cref{def:set-of-subgroups}
   For all subgroups $(X,x,!):\Sub_G$, the $G_x$-set $\tilde G_x$,
   which has underlying set $\USymG$, is free. As a consequence,
-  all orbits under this action are equivalent to $\USymG_x$ via 
+  all orbits under this action are merely equivalent to $\USymG_x$ via 
   $(\blank \cdot_{\tilde G_x} g): \USymG_x \equivto (G_x\cdot_{\tilde G_x} g)$
   by \cref{lem:free-pt-char}.
 \end{theorem}
@@ -2102,21 +2142,6 @@ tells us that
 \label{sec:burnsides-lemma}
 \label{lem:burnsides-lemma}
 
-\begin{definition}\label{def:finite-group}\MB{Where?}
-A group $G$ is a \emph{finite group} if $\isfinset(\USymG)$.
-\index{finite group}\index{group!finite}
-For any finite group $G$ we denote the number of symmetries
-in $G$ by $\Card(G)\defeq\Card(\USymG)$.
-\end{definition}
-
-\begin{xca}\label{xca:[x]=[y]-implies-||Gx=Gy||}\MB{Where?}
-Let $G$ be a group and $X: \BG\to\Set$ a $G$-set. Show:
-if $[x]=[y]$, then $\Trunc{G_x\eqto G_y}$, for any $x,y:X(\sh_G)$.
-%Solution: conclusion is prop, so we may assume we have a $g:\USymG$
-%such that $g\cdot x = y$. Hence we have $p: (\sh_G,x)\eqto(\sh_G,y)$,
-%so $\BG_x\eqto\BG_y$ by application on this path $p$.
-\end{xca}
-
 \begin{example}\label{exa:prep-burnside}
 Since the lemma to come is about counting orbits and
 elements of orbits, we start by elaborating an example.
@@ -2124,7 +2149,7 @@ Recall from \cref{ex:cyclicgroups} the cyclic group $\CG_4$.
 Let $X: \BCG_4\to\Set$ be the $\CG_4$-set mapping any $(A,f):\BCG_4$
 to $A\to\bn2$. Then the underlying set of $X$ is $\bn4\to\bn2$,
 \ie binary sequences of length $4$. The group action induced by $X$
-cyclically rotates such sequences.\footnote{%
+cyclically rotates such sequences, by $0,1,2$ or $3$ positions.\footnote{%
 Use \cref{cor:id-m-cycle}, univalence, and \cref{lem:trp-in-function-type}.}
 
 By \cref{cor:orbit-equiv}, the set of orbits $X/\CG_4$ is
@@ -2139,13 +2164,12 @@ swapping $0$'s and $1$'s gives a new equivalence class, consider
 $0101$ that forms an equivalence class together with $1010$.
 Finally, $0011$ forms an equivalence class together with $1001$,
 $1100$ and $0110$. Thus we have distributed all 16 sequences over
-six orbits, as in the left column of the table in the margin.
+six orbits, as in the left column of \cref{fig:C4-action-on-4-bits}.
 
-\marginnote{
-\begin{center}
+\begin{marginfigure}\label{fig:C4-action-on-4-bits}
 \begin{tabular}{|c|c|c|} 
  \hline
- elements per orbit & stabilizers \\ [0.5ex] 
+ orbit & stabilizers \\ [0.5ex] 
  \hline\hline
  0000 & 0,1,2,3 \\ 
  \hline
@@ -2160,10 +2184,10 @@ six orbits, as in the left column of the table in the margin.
  1100,0110,0011,1001 & 0\\
  \hline
 \end{tabular}
-\end{center}
-}
+\caption{Underlying sets of orbits and the stabilizers of their elements.}
+\end{marginfigure}
 
-In the right column of the table in the margin, we have given
+In the right column of \cref{fig:C4-action-on-4-bits}, we have given
 given in each row the respective stabilizing symmetries in $\BCG_4$.
 \cref{xca:[x]=[y]-implies-||Gx=Gy||} tells us that it doesn't matter
 too much which element in the orbit one chooses.\footnote{%
