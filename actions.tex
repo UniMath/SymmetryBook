@@ -1518,14 +1518,12 @@ out in the following construction.
 \end{construction}
 \begin{implementation}{thm:orbitstab}
   The desired equivalence is the composition of elementary equivalences
-  for sums and products, followed by contracting away the variable $z$:%
-\footnote{\MB{New:} To understand the proof better, it may help to look
-at elements $(\sh_G,x,!,g)$ and $(\sh_G,x,!,g')$ of $(\tilde G_x)_{hG_x}$.
-To have and identification of these means having a stabilizer $s$ of $x$
-that transports $g$ to $g'$. There can be at most
-one such stabilizer, namely $s=\inv g g'$. 
-Hence $(\sh_G,x,!,g)\eqto(\sh_G,x,!,g')$ is a proposition, and
-equivalent to $g\cdot x = g'\cdot x$.}
+  for sums and products, followed by contracting away the variable $z$:
+\footnote{\MB{New:} Note that \cref{xca:stab-action-on-G} already
+implies that $(\tilde G_x)_{hG_x}$ is a set:
+given $(\sh_G,x,!,g)$ and $(z,y,!,g')$, there can be at most
+one $s : \sh_G \eqto z$ such that $s\cdot_{\tilde G_x} g = sg = g'$. 
+}
   \begin{align*}
     (\tilde G_x)_{hG_x}
     &\jdeq \sum_{u : \BG_x}\tilde G_x(u) \\
@@ -1535,10 +1533,11 @@ equivalent to $g\cdot x = g'\cdot x$.}
   \end{align*}
 \end{implementation}
 
-The above theorem has some interesting consequences:
-Since $(\tilde G_x)_{hG_x}$ is a set, all its components are contractible.
+The above theorem has some interesting consequences.
+One is that $(\tilde G_x)_{hG_x}$ is a set, 
+and hence all its components are contractible.
 This means that for any $g:\USymG$, the stabilizer group $(G_x)_g$
-is free, \ie $\tilde G_x$ is free.
+is trivial, \ie $\tilde G_x$ is free.
 \cref{lem:free-pt-char} below will then allow us to conclude that
 all $(G_x \cdot_{\tilde G_x} g)$ are equivalent to $\USymG_x$.
 
@@ -1552,25 +1551,25 @@ all $(G_x \cdot_{\tilde G_x} g)$ are equivalent to $\USymG_x$.
   Consider two elements of the orbit, say $g\cdot x,g'\cdot x$ for $g,g':\USymG$.
   We have $g\cdot x=g' \cdot x$ if and only if $x = \inv{g} g'\cdot x$
   if and only if $\inv{g} g'$ lies in $\USymG_x$.
-  \MB{Now apply \cref{xca:connected-trivia} yielding that that 
-  $G_x$ is trivial iff $\USymG_x$ is contractible.}
+  Hence the map $(\blank \cdot x)$ is injective iff $\USymG_x$ is contractible.
+  Now use \cref{xca:connected-trivia} yielding that that 
+  $G_x$ is trivial iff $\USymG_x$ is contractible.
 \end{proof}
 
 The above results culminate in the following theorem.
 
 \begin{theorem}[Lagrange's Theorem]\label{thm:lagrange}
-\footnote{\MB{Replaces \cref{old:lagrange}. Beware AC!}} Let $G$ be a group.
+\footnote{\MB{Replaces \cref{old:lagrange}. Transitivity of $X$ not needed.
+See \cref{con:lagrange} below, where transitivity is used.}} 
+  Let $G$ be a group.
   %\cref{def:set-of-subgroups}
   For all subgroups $(X,x,!):\Sub_G$, the $G_x$-set $\tilde G_x$,
   which has underlying set $\USymG$, is free. As a consequence,
-  all orbits under this action are merely equivalent to $\USymG_x$ via 
-  $(\blank \cdot_{\tilde G_x} g): \USymG_x \equivto (G_x\cdot_{\tilde G_x} g)$
-  by \cref{lem:free-pt-char}.
+  all orbits under this action are merely equivalent to $\USymG_x$.
 \end{theorem}
 
 \MB{Question: 
-How close can we get to $\USymG \eqto X(\sh_G) \times \USymG_x$?
-(Finite case? Only merely? AC?)}.
+How close can we get to $\USymG \eqto (X(\sh_G) \times \USymG_x)$?}.
 
 The subgroup in \cref{thm:lagrange} is given as 
 $(X,x,!):\Sub_G$ with $X$ transitive,
@@ -1602,7 +1601,7 @@ following chain of equivalences:
 \USymG
 \equivto \sum_{O:{\tilde G_x}/G_x} \inv{[O]}
 \equivto \sum_{y:X(\sh_G)} \inv{[[y]_x]} 
-\equivto \sum_{y:X(\sh_G)}\sum_{g:\USymG} ([y]_x = [g]) .
+\equivto \sum_{y:X(\sh_G)}\sum_{g:\USymG} [y]_x = [g] .
 \]
 Clearly, $[y]_x = [g]$ iff 
 $(\sh_G,y,!,\refl{\sh_G})=(\sh_G,x,!,g)$ iff 
@@ -1612,7 +1611,30 @@ $\sum_{y:X(\sh_G)}\sum_{g:\USymG} (g\cdot_X y = x)$.
 For $y=x$, the inner sum type on the right is the
 underlying set $\USymG_x$ of the stabilizer group of $x$.
 
+Sufficient for having an equivalence, for all $y:X(\sh_G)$, between
+$\USymG_x$ and $\sum_{g:\USymG} (g\cdot_X y = x)$  is to have
+a function $f: \prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x$,
+which provides such an equivalence by precomposition with $\fst(f(y))$.
+Thus we have implemented the following construction.
+
+
+\begin{construction}[\MB{Lagrange, alternative?}]\label{con:lagrange}\footnote{%
+This formulation has the following advantages: 
+(1) no $\tilde G_x$ in statement (only used in the proof);
+(2) transitivity of $X$ is actually used;
+(3) works for the finite case, but also, \eg for the $\ZZ$ acting on $\bn3$.
+\MB{Remove after discussion.}}
+Let $G$ be a group.
+  For all subgroups $(X,x,!):\Sub_G$, we have a function of type
+\[
+\bigl(\prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x \,\bigr) \to
+\bigl(\USymG \eqto (X(\sh_G) \times \USymG_x)\bigr).
+\]
+\end{construction}
+
+
 \subsection{Not used}
+
 Thus, both the underlying set $X(\sh_G)$ and the action type
 $X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
   This also justifies the notation $X/G$.
