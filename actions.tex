@@ -1300,7 +1300,8 @@ relation on $X(\sh_G)$ induced be the surjection $[\blank]$.
 \begin{xca}\label{xca:orbit-set-as-quotient}\MB{New:}
 Let conditions be as in \cref{def:actiontype}.
 Construct an equivalence between $X/G$ and $\setTrunc{X_{hG}}$.
-Hint: use \cref{rem:set-trunc-as-quotient}.
+Hint: use \cref{rem:set-trunc-as-quotient} and consider the
+quotient of $X_{hG}$ by the relation $\Trunc{(z,x)\eqto(z',x')}$.
 \end{xca}
 
 \begin{definition}\label{def:orbit-stabilizer}
@@ -1480,7 +1481,7 @@ This suggest the following simple way for $G_x$ to act on the
 symmetries of $\sh_G$, by just ignoring the second projection:
 
 
-\begin{definition}\label{def:stab-action-on-G}
+\begin{definition}\label{def:Gx-action-on-G}
 Let $G$ be a group, $X$ a $G$-set and $x:X(\sh_G)$ an element of 
 the underlying set. Recall 
 $\BG_x \jdeq \sum_{(z,y):X_{hG}}\Trunc{(\sh_G,x)\eqto(z,y)}$,
@@ -1496,9 +1497,9 @@ for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$,
 The underlying set of $\tilde G_x$ is $\USymG$. The group action of
 $\tilde G_x$ is explored in the following exercise.
 
-\begin{xca}\label{xca:stab-action-on-G}\MB{New:}
-Let $s:(\sh_G,x,!)\eqto(z,y,!)$ be a path in $\BG_x$ and
-let $g:\USymG$. Show that $s\cdot_{\tilde G_x} g = sg$, \ie
+\begin{xca}\label{xca:Gx-action-on-G}
+Let $s:(\sh_G,x,!)\eqto(z,y,!)$ be a path in $\BG_x$ with first component
+$s_1$, and let $g:\USymG$. Show that $s\cdot_{\tilde G_x} g = s_1 g$, \ie
 the group action of $\tilde G_x$ is path composition. 
 \end{xca}
 
@@ -1512,14 +1513,15 @@ out in the following construction.
   \label{thm:orbitstab} Let $G$ be a group, $X$ a $G$-set $X$,
   $x : X(\sh_G)$ an element of the underlying set of $X$.\footnote{%
   This construction can be generalized to \inftygps $G$ and $G$-types $X$.}
-  Recall the $G_x$-set $\tilde G_x$ from \cref{def:stab-action-on-G}.
+  Recall the $G_x$-set $\tilde G_x$ from \cref{def:Gx-action-on-G}.
   Then we have an equivalence from the action type $(\tilde G_x)_{hG_x}$
   to the underlying set $(G\cdot_X x)$ of the orbit through $x$.
 \end{construction}
 \begin{implementation}{thm:orbitstab}
   The desired equivalence is the composition of elementary equivalences
   for sums and products, followed by contracting away the variable $z$:
-\footnote{\MB{New:} Note that \cref{xca:stab-action-on-G} already
+\footnote{\label{ft:action-type-tildeGx-set} 
+Note that \cref{xca:stab-action-on-G} already
 implies that $(\tilde G_x)_{hG_x}$ is a set:
 given $(\sh_G,x,!,g)$ and $(z,y,!,g')$, there can be at most
 one $s : \sh_G \eqto z$ such that $s\cdot_{\tilde G_x} g = sg = g'$. 
@@ -1538,8 +1540,10 @@ One is that $(\tilde G_x)_{hG_x}$ is a set,
 and hence all its components are contractible.
 This means that for any $g:\USymG$, the stabilizer group $(G_x)_g$
 is trivial, \ie $\tilde G_x$ is free.
-\cref{lem:free-pt-char} below will then allow us to conclude that
-all $(G_x \cdot_{\tilde G_x} g)$ are equivalent to $\USymG_x$.
+\cref{lem:free-pt-char} below, applied to $G_x$ and $\tilde G_x$,
+will then allow us to conclude that the underlying set 
+$(G_x \cdot_{\tilde G_x} g)$ of the orbit through $g$ is equivalent to 
+$\USymG_x$, for any $g:\USymG$.
 
 \begin{lemma}\label{lem:free-pt-char}
   Let $G$ be a group and $X$ a $G$-set. Then we have for all $x:X(\sh_G)$
@@ -1556,35 +1560,56 @@ all $(G_x \cdot_{\tilde G_x} g)$ are equivalent to $\USymG_x$.
   $G_x$ is trivial iff $\USymG_x$ is contractible.
 \end{proof}
 
-The above results culminate in the following theorem.
+In the case of a subgroup of $G$, we have the following result.
+
+\begin{lemma}\label{lem:preLagrange}\MB{New:}
+  Let $G$ be a group and $(X,x,!):\Sub_G$ a subgroup of $G$ as defined
+  in \cref{def:set-of-subgroups}.
+  For any $x':X(\sh_G)$, define the function $[x']_x$ by 
+\[
+[x']_x(z,y,!,h) \defeq \bigl((\sh_G,x',!,\refl{\sh_G})=(z,y,!,h)\bigr)
+\]
+for all $(z,y,!):\BG_x$ and $h:\sh_G\eqto z$.
+Then $[\blank]_x$ is a well-defined equivalence from $X(\sh_G)$ to 
+$\tilde G_x /G_x$, the set of orbits of $\tilde G_x$.
+\end{lemma}
+\begin{proof}
+The function $[\blank]_x$ is essentially the composition of the following
+equivalences: (1) the inverse of $\fst: (G\cdot_X x)\to X(\sh_G)$,
+which is an equivalence since $X$ is transitive; (2) the inverse of
+the equivalence from \cref{thm:orbitstab}; and (3) the inverse equivalence 
+from \cref{xca:orbit-set-as-quotient}, taking
+into account that the action type $(\tilde G_x)_{hG_x}$ is already a set, 
+so no need to set-truncate.
+Want more details? Do the next exercise!
+\end{proof}
+
+\begin{xca}\label{xca:preLagrange}\MB{New:}
+Show that $[x']_x(z,y,!,h)$ above defines a $G_x$-subset of $\tilde G_x$.
+Then show that the underlying $G_x$-subset of $[x']_x$ is transitive
+(use the idea of \cref{ft:action-type-tildeGx-set}).
+Now you have shown that $[\blank]_x$ is a well-defined function 
+from $X(\sh_G)$ to $\tilde G_x /G_x$. Finally, show that $[\blank]_x$
+is injective (easy) and surjective (use transitivity, like in
+\cref{xca:orbit-set-as-quotient}).
+\end{xca}
+
+The following theorem summarizes several results in this section.
 
 \begin{theorem}[Lagrange's Theorem]\label{thm:lagrange}
-\footnote{\MB{Replaces \cref{old:lagrange}. Transitivity of $X$ not needed.
-See \cref{con:lagrange} below, where transitivity is used.}} 
-  Let $G$ be a group.
-  %\cref{def:set-of-subgroups}
-  For all subgroups $(X,x,!):\Sub_G$, the $G_x$-set $\tilde G_x$,
-  which has underlying set $\USymG$, is free. As a consequence,
-  all orbits under this action are merely equivalent to $\USymG_x$.
+\footnote{\MB{Replaces \cref{old:lagrange}.}} 
+  Let $G$ be a group and let $(X,x,!):\Sub_G$ be a subgroup of $G$,
+  with the stabilizer group $G_x$ as underlying group. 
+  Then:
+  \begin{enumerate}
+  \item The $G_x$-set $\tilde G_x$ from \cref{def:Gx-action-on-G}
+  has underlying set $\USymG$ and is free. 
+  \item The function $[\blank]_x : X(\sh_G)\to\tilde G_x /G_x$
+  from \cref{lem:preLagrange} is an equivalence,
+  and all orbits in the set $\tilde G_x /G_x$
+  are \emph{merely} equivalent to $\USymG_x$.
+  \end{enumerate}
 \end{theorem}
-
-\MB{Question: 
-How close can we get to $\USymG \eqto (X(\sh_G) \times \USymG_x)$?}.
-
-The subgroup in \cref{thm:lagrange} is given as 
-$(X,x,!):\Sub_G$ with $X$ transitive,
-so the one and only orbit is $X(\sh_G)$. 
-Then $\fst: (G\cdot x) \to X(\sh_G)$ is an equivalence.
-Also, we have that ${\tilde G_x}/G_x$ is a set by \cref{thm:orbitstab}, 
-so using \cref{xca:orbit-set-as-quotient} we get an
-equivalence from $X(\sh_G)$ to ${\tilde G_x}/G_x$. We denote 
-the latter equivalence by $[\blank]_x$ and elaborate it
-for all $x':X(\sh_G)$ and $z:\BG$, $y:X(z)$, $h:\sh_G\eqto z$ as
-\[
-[x']_x(z,y,!,h) \defeq \bigl((\sh_G,x',!,\refl{\sh_G})=(z,y,!,h)\bigr).
-\]
-\marginnote{%
-It is perhaps easier to prove directly that $[\blank]_x$ is an equivalence.}
 
 For the $G_x$-set ${\tilde G_x}$, with underlying set $\USymG$, 
 the map $[\blank]$ from \cref{lem:surj-set-orbits} has type 
