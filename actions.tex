@@ -1521,7 +1521,7 @@ out in the following construction.
   The desired equivalence is the composition of elementary equivalences
   for sums and products, followed by contracting away the variable $z$:
 \footnote{\label{ft:action-type-tildeGx-set} 
-Note that \cref{xca:stab-action-on-G} already
+Note that \cref{xca:Gx-action-on-G} already
 implies that $(\tilde G_x)_{hG_x}$ is a set:
 given $(\sh_G,x,!,g)$ and $(z,y,!,g')$, there can be at most
 one $s : \sh_G \eqto z$ such that $s\cdot_{\tilde G_x} g = sg = g'$. 
@@ -1567,7 +1567,7 @@ In the case of a subgroup of $G$, we have the following result.
   in \cref{def:set-of-subgroups}.
   For any $x':X(\sh_G)$, define the function $[x']_x$ by 
 \[
-[x']_x(z,y,!,h) \defeq \bigl((\sh_G,x',!,\refl{\sh_G})=(z,y,!,h)\bigr)
+[x']_x(z,y,!,h) \defeq \bigl((\sh_G,x',!,\refl{\sh_G})=(z,y,!,h)\bigr):\Prop
 \]
 for all $(z,y,!):\BG_x$ and $h:\sh_G\eqto z$.
 Then $[\blank]_x$ is a well-defined equivalence from $X(\sh_G)$ to 
@@ -1594,60 +1594,55 @@ is injective (easy) and surjective (use transitivity, like in
 \cref{xca:orbit-set-as-quotient}).
 \end{xca}
 
-The following theorem summarizes several results in this section.
+The results in this section culminate in the following theorem.
 
 \begin{theorem}[Lagrange's Theorem]\label{thm:lagrange}
 \footnote{\MB{Replaces \cref{old:lagrange}.}} 
-  Let $G$ be a group and let $(X,x,!):\Sub_G$ be a subgroup of $G$,
-  with the stabilizer group $G_x$ as underlying group. 
+  Let $G$ be a group and $(X,x,!):\Sub_G$ a subgroup of $G$,
+  with underlying group $G_x$, the stabilizer group. 
   Then:
   \begin{enumerate}
   \item The $G_x$-set $\tilde G_x$ from \cref{def:Gx-action-on-G}
-  has underlying set $\USymG$ and is free. 
-  \item The function $[\blank]_x : X(\sh_G)\to\tilde G_x /G_x$
-  from \cref{lem:preLagrange} is an equivalence,
-  and all orbits in the set $\tilde G_x /G_x$
-  are \emph{merely} equivalent to $\USymG_x$.
+  has underlying set $\USymG$ and is free; 
+  \item
+  The function $[\blank]_x : X(\sh_G)\to\tilde G_x /G_x$
+  from \cref{lem:preLagrange} is an equivalence;
+  \item\label{it:lagrange}
+  For all $y:X(\sh_G)$, the underlying set of the orbit $[y]_x$ 
+  is \emph{merely} equivalent to $\USymG_x$.
   \end{enumerate}
 \end{theorem}
 
-For the $G_x$-set ${\tilde G_x}$, with underlying set $\USymG$, 
-the map $[\blank]$ from \cref{lem:surj-set-orbits} has type 
-$\USymG \to {\tilde G_x}/G_x$, and
-can be elaborated for all $g:\USymG$ and 
-$z:\BG$, $y:X(z)$, $h:\sh_G\eqto z$ as
+\begin{proof}
+Only point \ref{it:lagrange} above has not been proved before.
+The underlying set of $[y]_x$ is 
 \[
-[g](z,y,!,h) \defeq \bigl((\sh_G,x,!,g)=(z,y,!,h)\bigr).
+\sum_{g:\USymG}\bigl((\sh_G,y,!,\refl{\sh_G})=(\sh_G,x,!,g)\bigr),
 \]
+which can be simplified using \cref{ft:action-type-tildeGx-set} to
+$\sum_{g:\USymG} g\cdot_X y = x$. 
+Since mere equivalence is a proposition,
+we can use the transitivity of $X$ to obtain a $g_0:\USymG_x$ such that
+$\fst(g_0)\cdot_X y = x$. Precomposition with $\fst(g_0)$ then yields
+an equivalence from $\USymG_x \jdeq \sum_{g:\USymG} g\cdot_X x = x$
+to $\sum_{g:\USymG} g\cdot_X y = x$.
+\end{proof}
 
-Combining the above with \cref{lem:sum-of-fibers}, we get the
-following chain of equivalences:
-\[
-\USymG
-\equivto \sum_{O:{\tilde G_x}/G_x} \inv{[O]}
-\equivto \sum_{y:X(\sh_G)} \inv{[[y]_x]} 
-\equivto \sum_{y:X(\sh_G)}\sum_{g:\USymG} [y]_x = [g] .
-\]
-Clearly, $[y]_x = [g]$ iff 
-$(\sh_G,y,!,\refl{\sh_G})=(\sh_G,x,!,g)$ iff 
-$g\cdot_X y = x$.
-So we get an equivalence between $\USymG$ and 
-$\sum_{y:X(\sh_G)}\sum_{g:\USymG} (g\cdot_X y = x)$.
-For $y=x$, the inner sum type on the right is the
-underlying set $\USymG_x$ of the stabilizer group of $x$.
+The reader may notice that the above theorem looks quite
+different from the traditional formulation of Lagrange's Theorem.
+Note that the ingredients of the traditional formulation are also
+present here: the (abstract) group $G$, the (abstract) subgroup $G_x$
+and the set orbits with their underlying sets (cosets),\footnote{%
+\MB{Explain better when cosets are defined!}} 
+which are all merely equivalent with $\USymG_x$
+(in bijective correspondance with the underlying set of the abstract $G_x$).
+The following construction brings us one step closer to the
+traditional formulation.
 
-Sufficient for having an equivalence, for all $y:X(\sh_G)$, between
-$\USymG_x$ and $\sum_{g:\USymG} (g\cdot_X y = x)$  is to have
-a function $f: \prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x$,
-which provides such an equivalence by precomposition with $\fst(f(y))$.
-Thus we have implemented the following construction.
-
-
-\begin{construction}[\MB{Lagrange, alternative?}]\label{con:lagrange}\footnote{%
+\begin{construction}[\MB{Lagrange's Construction}]\label{con:lagrange}\footnote{%
 This formulation has the following advantages: 
-(1) no $\tilde G_x$ in statement (only used in the proof);
-(2) transitivity of $X$ is actually used;
-(3) works for the finite case, but also, \eg for the $\ZZ$ acting on $\bn3$.
+(1) no $\tilde G_x$ in statement, only used in the proof;
+(2) works for the finite case, but also, \eg for $\ZZ$ acting on $\bn3$.
 \MB{Remove after discussion.}}
 Let $G$ be a group.
   For all subgroups $(X,x,!):\Sub_G$, we have a function of type
@@ -1656,6 +1651,37 @@ Let $G$ be a group.
 \bigl(\USymG \eqto (X(\sh_G) \times \USymG_x)\bigr).
 \]
 \end{construction}
+
+\begin{implementation}{con:lagrange}
+For the $G_x$-set ${\tilde G_x}$, with underlying set $\USymG$, 
+the map $[\blank]$ from \cref{lem:surj-set-orbits} has type 
+$\USymG \to {\tilde G_x}/G_x$, and
+can be elaborated for all $g:\USymG$ and 
+$(z,y,!):\BG_x$, $h:\sh_G\eqto z$ as
+\[
+[g](z,y,!,h) \defeq \bigl((\sh_G,x,!,g)=(z,y,!,h)\bigr).
+\]
+Composing the equivalences of \cref{lem:sum-of-fibers} and 
+\cref{lem:preLagrange}, we get
+\[
+\USymG
+\equivto \sum_{O:{\tilde G_x}/G_x} \inv{[O]}
+\equivto \sum_{y:X(\sh_G)} \inv{[[y]_x]} 
+\jdeq \sum_{y:X(\sh_G)}\sum_{g:\USymG} [y]_x = [g] .
+\]
+By extensionality we have $[y]_x = [g]$ if and only if 
+$(\sh_G,y,!,\refl{\sh_G})=(\sh_G,x,!,g)$, which in turn 
+is logically equivalent to $g\cdot_X y = x$.
+
+So we get an equivalence from $\USymG$ to 
+$\sum_{y:X(\sh_G)}\sum_{g:\USymG} (g\cdot_X y = x)$.
+In order to complete the implementation, let a function $f$ of 
+type $\prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x$ be given. 
+The type $\sum_{g:\USymG} g\cdot_X y = x$ has been shown equivalent 
+to $\USymG_x$ in the proof of point \ref{it:lagrange} of \cref{thm:lagrange},
+provided we have a $g_0:\USymG$ such that $g_0\cdot_X y = x$.
+Hence we can just take $g_0 \jdeq f(y)$ and we are done.
+\end{implementation}
 
 
 \subsection{Not used}
