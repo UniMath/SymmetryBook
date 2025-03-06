@@ -1600,7 +1600,8 @@ The results in this section culminate in the following theorem.
 \footnote{\MB{Replaces \cref{old:lagrange}.}} 
   Let $G$ be a group and $(X,x,!):\Sub_G$ giving a 
   stabilizer subgroup $G_x$ of $G$.\footnote{%
-  \MB{Every subgroup is a stabilizer subgroup}} 
+  \MB{Every subgroup is a stabilizer subgroup.
+  Ugly: $G_x$ and subgroup are not definitionally equal.}} 
   Then:
   \begin{enumerate}
   \item The $G_x$-set $\tilde G_x$ from \cref{def:Gx-action-on-G}
@@ -1641,9 +1642,11 @@ The following construction brings us one step closer to the
 traditional formulation.
 
 \begin{construction}[\MB{Lagrange's Construction}]\label{con:lagrange}\footnote{%
-This formulation has the following advantages: 
-(1) no $\tilde G_x$ in statement, only used in the proof;
-(2) works for the finite case, but also, \eg for $\ZZ$ acting on $\bn3$.
+This formulation has the advantage of not using $\tilde G_x$ in the statement
+(only in the proof). Also works for \cref{xca:lagrange}.
+Still: doesn't seem to work in the general finite
+case. Works for, \eg standard $n$-element case and for
+$\ZZ$ acting on $\bn3$.
 \MB{Remove after discussion.}}
 Let $G$ be a group.
   For all subgroups $(X,x,!):\Sub_G$, we have a function of type
@@ -1694,7 +1697,7 @@ in $X(\sh_G)$ by $\Card(X)$, also called the \emph{cardinality} of $X$.
 \index{cardinality!of finite $G$-set}
 \end{definition}
 
-\begin{xca}\label{xca:lagrange}
+\begin{xca}\label{xca:lagrange}\MB{New: }
 The goal of this exercise is to state and prove a more traditional
 formulation of  Lagrange's Theorem. 
 Let $G$ be a finite group and $(X,x,!):\Sub_G$ giving a 
@@ -1703,7 +1706,7 @@ Assume that $X$ is a finite $G$-set.
 Show that $\Card(G) = \Card(X) \times \Card(G_x)$.
 \end{xca}
 
-\begin{xca}\label{xca:lagrange-Z-action-Rm}
+\begin{xca}\label{xca:lagrange-Z-action-Rm}\MB{New: }
 The goal of this exercise is to illustrate that \cref{con:lagrange}
 also can be applied to infinite groups. 
 Recall the group of integers $\ZZ\jdeq\mkgroup{(\Sc,\base)}$ and the $\ZZ$-set
@@ -2286,40 +2289,64 @@ six orbits, as in the left column of \cref{fig:C4-action-on-4-bits}.
  1100,0110,0011,1001 & 0\\
  \hline
 \end{tabular}
-\caption{Underlying sets of orbits and the stabilizers of their elements.}
+\caption{\label{fig:C4-action-on-4-bits}
+Underlying sets of orbits and the stabilizers of their elements.}
 \end{marginfigure}
 
 In the right column of \cref{fig:C4-action-on-4-bits}, we have given
 given in each row the respective stabilizing symmetries in $\BCG_4$.
 \cref{xca:[x]=[y]-implies-||Gx=Gy||} tells us that it doesn't matter
 too much which element in the orbit one chooses.\footnote{%
-  Here it matters even less since $\BCG_4$ is abelian.}
-From the point of counting the size $\Card(G_x)$ of the
-finite stabilizer groups, the particular $x$ one chooses
-in each orbit is irrelevant. Now we can observe something
-interesting: the product $\Card([x]) \times \Card(G_x)$ is
-equal to $\Card(\BCG_4) = 4$ for each $x$ in the underlying set of $X$.
-\MB{Add some more explanations here when 5.4 (Lagrange) has stabilized.}
+  Here it matters even less since $\CG_4$ is abelian.}
+For the cardinality $\Card((\CG_4)_x)$ of the finite stabilizer groups, 
+the particular $x$ one chooses within in each orbit is irrelevant,
+but may vary from orbit to orbit. Now we can observe something
+interesting: the product $\Card(\CG_4\cdot x) \times \Card((\CG_4)_x)$
+(\ie in each row, the number of elements on the left times that on the right)
+is equal to $\Card(\CG_4) = 4$, for each $x$ in the underlying set of $X$.
+This follows from Lagrange's Theorem, in particular \cref{xca:lagrange},
+applied with $G\jdeq\CG_4$ and taking for $X$ the underlying $\CG_4$-set
+of $[x]$, which is transitive.
+
+Another observation in \cref{fig:C4-action-on-4-bits} is that, 
+since there are six orbits and the orbits induce a disjoint partition
+of $\bn4\to\bn2$, there are in total 24 pairs $(g,x)$ with $g\cdot x = x$.
+This insight leads to the following lemma.
 \end{example}
 
 
 \begin{lemma}
   \label{lem:burnside}
-  Let $G$ be a finite group acting on a finite set $X$.
-  Then the set of orbits is finite with cardinality
+  Let $G$ be a finite group and let $X:\BG\to\Set$ be a finite $G$-set.
+  Then the set of orbits $X/G$ is finite with cardinality
   \[
     \Card(X/G) = \frac1{\Card(G)}\sum_{g:\USymG}\Card(X^g),
   \]
-  where $X^g = \setof{x:X}{g\cdot x = x}$ is the set of elements
-  that are fixed by $g$.
+  where $X^g = \setof{x:X(\sh_G)}{g\cdot x = x}$ is the finite 
+  set of elements that are fixed by $g$.
 \end{lemma}
 \begin{proof}
-  Since $X$ and $G$ is finite, we can decide equality of their elements.
-  Hence each $X^g$ is a finite set, and since $G$ is finite,
+  
+  Since $X(\sh_G)$ is finite, we can decide equality of its elements
+  (see \cref{xca:finsets-decidable}).
+  Hence each $X^g$ is a finite set.\footnote{\MB{New: }%
+  A subset of a finite set is not necessarily finite itself:
+  Let $p$ be a proposition and consider $\bn1_p\defeq\sum_{x:\bn1}p$,
+  the subset of $\bn1$ defined by the predicate that is constant $p$.
+  If $\bn1_p$ is a finite set, then we have 
+  $\Card(\bn1_p) :\NN$, and we can prove that
+  $p$ holds if and only if $\Card(\bn1_p) = 1$.
+  Since equality in $\NN$ is decidable, this would mean that
+  we can decide $p$. In fact we have that $\bn1_p$ is a finite set
+  if and only if $p$ is decidable.
+  In general, if $S$ is a finite set, then every
+  decidable predicate on $S$ defines a finite subset of $S$.}
+  
+  \MB{Cursor>>>}
+  
   we can decide whether $x,y$ are in the same orbit by searching
   for a $g : \USymG$ with $g\cdot x = y$.
   Hence the set of orbits is a finite set as well.
-
   Consider now the set $R \defeq \sum_{g:\USymG} X^g$,
   and the function $q : R \to X$
   defined by $q(g,x) \defeq x$.
