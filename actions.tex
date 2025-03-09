@@ -1164,13 +1164,6 @@ is transitive:\footnote{See \cref{def:transitiveGset}.}
 \]
 \end{definition}
 
-\begin{xca}
-Show: $X/G$ is contractible if and only if $X$ is transitive.
-%That $X/G$ is contractible encodes that there is just one orbit.
-Prove first for all $z:\BG$ and $x:X(z)$ that the function $(w,y)\mapsto
-\Trunc{(z,x)\eqto(w,y)}$ defines a transitive $G$-subset of $X$.
-\end{xca}
-
 We have seen many instances of action types before:
 When $G$-sets are considered as \coverings $f : A \to \BG$,
 they are the domains $A$.
@@ -1253,45 +1246,72 @@ and in particular in \cref{cor:orbit-equiv}.
 Recall from \cref{def:actiontype} the equivalence of
 $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
 
-\begin{lemma}\label{lem:surj-set-orbits}
+\begin{lemma}\label{lem:surj-set-orbits}\MB{New:}
   Let $G$ be a group and $X : \BG\to\Set$.\footnote{%
   This lemma can be generalized to \inftygps $G$ and $G$-types $X$.}
-  The map $[\blank]$ defined by
-  \[
-    [x](z,y)\defeq \Trunc{(\sh_G,x)\eqto(z,y)}\quad
-    \text{for all $x:X(\sh_G)$ and $(z,y):X_{hG}$}
-  \]
-  is a well-defined, surjective map $[\blank]: X(\sh_G) \to X/G$,
-  and $[x] = [y]$ is equivalent to $\exists_{g:\USymG}(g\cdot x = y)$.
+  Define the map $[\blank]_0$ from the action type of $X$ to the type of
+  $G$-subsets of $X$, by $[u]_0(v) \defeq \Trunc{u\eqto v)}$
+  for all $v:X_{hG}$.\footnote{Cf.\ \cref{rem:set-trunc-as-quotient}}
+  Then the image of $[\blank]_0$ is the set of orbits.
+  Moreover, $X/G$ and $[\blank]_0$ have the universal
+  property of the set-truncation of $X_{hG}$: for every set $S$ 
+  and every map $f:X_{hG}\to S$, there is a unique map $g:X/G \to S$
+  such that $f = (g\circ [\blank]_0)$.
+% $[\blank]: X(\sh_G) \to X/G$,
+% and $[x] = [y]$ is equivalent to $\exists_{g:\USymG}(g\cdot x = y)$.
 \end{lemma}
 \begin{proof}\MB{New:}
-  By definition, $[x]$ is a $G$-subset of $X$. 
-  By \cref{def:Gsubset}, the underlying $G$-type $X_{[x]}$ is
-  $(z\mapsto \sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)})$, which we
+  Clearly, $[u]_0$ is a $G$-subset of $X$. 
+  By \cref{def:Gsubset}, the underlying $G$-type $X_{[u]_0}$ is
+  $(z\mapsto \sum_{y:X(z)}\Trunc{u\eqto(z,y)})$, which we
   must show to be transitive. This follows easily from the properties
-  of $\Trunc{(\sh_G,x)\eqto(z,y)}$. We conclude that
-  $[\blank]$ is a well defined map from $X(\sh_G)$ to $X/G$.
+  of $\Trunc{u\eqto(z,y)}$. We conclude that
+  $[\blank]_0$ is a well defined map from $X_{hG}$ to $X/G$.
   
-  For proving surjectivity of $[\blank]$, consider an orbit $O:X/G$, \ie
+  For proving surjectivity of $[\blank]_0$ on the set of orbits, 
+  consider an orbit $O:X/G$, \ie
   $O$ is a $G$-subtype of $X$ such that $X_O$ is transitive. 
-  We have to show that there exists an $x:X(\sh_G)$ such that $O=[x]$.
+  We have to show that there exists a $u:X_{hG}$ such that $O=[u]_0$.
   By the connectivity of $\BG$ it suffices to show 
-  $O(\sh_G)=_{X(\sh_G)\to\Prop}[x](\sh_G)$ for some $x$.
+  $O(\sh_G)=_{X(\sh_G)\to\Prop}[u]_0(\sh_G)$ for some $u$.
   Transitivity of $X_O$ means that there exists an $x:X(\sh_G)$
   such that $O(\sh_G,x)$ and for all $y:X(\sh_G)$ such that
   $O(\sh_G,y)$ there
-  exists a $g:\USymG$ such that $g\cdot x = y$, \ie $[x](\sh_G,y)$.
-  Thus transitivity of $X_O$ warrants the existence of an $x$ that we need.
+  exists a $g:\USymG$ such that $g\cdot x = y$, \ie $[(\sh_G,x)]_0(\sh_G,y)$.
+  So we take $u\defeq(\sh_G,x)$ and have to show $O(\sh_G,y)$ if and only if
+  $[u]_0(\sh_G,y)$, for all $y:X(\sh_G)$. But this follows directly by
+  the observation made just above the lemma.
+%    see also \cref{rem:equivalents-of-[x]=[y]}.
   
-  The last part of the lemma follows using the connectivity of $\BG$;
-  see also \cref{rem:equivalents-of-[x]=[y]}.
+  The universal property is proved as follows. 
+  Let $S$ be a set and let $f:X_{hG}\to S$. Given an orbit $O:X/G$,
+  we define $g(O)$ as the center of the contractible type
+  \[
+    \sum_{s:S}\prod_{u:X_{hG}}\bigl( ([u]_0 = O) \to (f(u)=s) \bigr), 
+  \]
+  which immediately gives $f = (g\circ [\blank]_0)$.
+  We leave the proof that the above type is contractible as an exercise.
 \end{proof}
+
+\begin{xca}\label{xca:||XhG||0-is-X/G}
+Complete the details of the proof above. Given an identification of
+$(X/G,[\blank]_0)$ and $(\setTrunc{X_{hG}},\settrunc{\blank})$
+in the type $\sum_{S:\Set}(X_{hG}\to S)$.
+\end{xca}
 
 \begin{corollary}\label{cor:orbit-equiv}\MB{New:}
 Being surjective, the map $[\blank] : X(\sh_G) \to X/G$ induces
 by \cref{xca:map-induces-quotient}\ref{it:surj-ind-quot=codomain}
 an equivalence between the induced quotient of $X(\sh_G)$ and $X/G$.
 \end{corollary}
+
+\begin{xca}
+Show: $X/G$ is contractible if and only if $X$ is transitive.
+%That $X/G$ is contractible encodes that there is just one orbit.
+Prove first for all $z:\BG$ and $x:X(z)$ that the function $(w,y)\mapsto
+\Trunc{(z,x)\eqto(w,y)}$ defines a transitive $G$-subset of $X$.
+\end{xca}
+
 
 \begin{remark}\label{rem:equivalents-of-[x]=[y]}\MB{New:}
 Given a group $G$, a $G$-set $X$ and $x,y:X(\sh_G)$,
