@@ -227,11 +227,11 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
 \begin{remark}\label{rem:map-of-Gsets}
   Given $G$-sets $X,Y$ and a map $f$ from $X$ to $Y$,
   we have $f_w(g\cdot_X x) = g\cdot_Y f_z(x)$ for all $z,w:\BG$,
-  $x:X(z)$, $g:z\eqto w$. In other words, the following diagram commutes:
+  $x:X(z)$, $g:z\eqto w$. In other words, the diagram on the right commutes:
 \[
 \begin{tikzcd}
-  z\ar[d,eql,"g"'] &X(z) \ar[r,"f_z"] \ar[d,eql,"g\cdot_X\blank"']
-                  &Y(z) \ar[d,eqr,"g\cdot_Y\blank"] \\
+  z\ar[d,eql,"g"'] &X(z) \ar[r,"f_z"] \ar[d,eql,"g\cdot_X\,\blank"']
+                  &Y(z) \ar[d,eqr,"g\cdot_Y\,\blank"] \\
   w               &X(w) \ar[r,"f_w"']                & Y(w)
 \end{tikzcd}
 \]
@@ -249,7 +249,10 @@ This applies to the following definition.
   \[
    \Sub_G(X)\defeq \Hom_G(X,\triv_G\Prop) \jdeq \prod_{z:\BG}(X(z)\to\Prop).
   \]
-  Similarly to \cref{cor:subtype-same-level}, $\Sub_{G}(X)$ is a set.
+  Similarly to \cref{cor:subtype-same-level}, $\Sub_{G}(X)$ is a set.\footnote{%
+  \label{ft:SubTotX} The type $\Sub_{G}(X)$ can be curried 
+  (\cref{xca:Sigma-curry}) as $\Tot(X)\to\Prop$, 
+  the type of subtypes of $\Tot(X)\jdeq\sum_{z:\BG}X(x)$ (\cref{def:subtype}).}
   If $P$ is a $G$-subset of $X$, then the \emph{underlying $G$-set of $P$},
   denoted by $X_P$, is defined by
   \[
@@ -1246,24 +1249,25 @@ and in particular in \cref{cor:orbit-equiv}.
 Recall from \cref{def:actiontype} the equivalence of
 $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
 
-\begin{lemma}\label{lem:surj-set-orbits}\MB{New:}
+\begin{lemma}\label{lem:[]0-surj-on-orbits}\MB{New:}
   Let $G$ be a group and $X : \BG\to\Set$.\footnote{%
   This lemma can be generalized to \inftygps $G$ and $G$-types $X$.}
   Define the map $[\blank]_0$ from the action type of $X$ to the type of
-  $G$-subsets of $X$, by $[u]_0(v) \defeq \Trunc{u\eqto v)}$
-  for all $v:X_{hG}$.\footnote{Cf.\ \cref{rem:set-trunc-as-quotient}}
+  $G$-subsets of $X$, by $[u]_0(v) \defeq \Trunc{u\eqto v}$
+  for all $v:X_{hG}$.\footnote{\MB{New:}%
+  Here we use the curried form of $\Sub_G(X)$ as
+  explained in \cref{ft:SubTotX}.}
   Then the image of $[\blank]_0$ is the set of orbits.
-  Moreover, $X/G$ and $[\blank]_0$ have the universal
-  property of the set-truncation of $X_{hG}$: for every set $S$ 
-  and every map $f:X_{hG}\to S$, there is a unique map $g:X/G \to S$
-  such that $f = (g\circ [\blank]_0)$.
+  Moreover, we have a (unique) identification of
+  $(X/G,[\blank]_0)$ and $(\setTrunc{X_{hG}},\settrunc{\blank})$
+  in the type $\sum_{S:\Set}(X_{hG}\to S)$.
 \end{lemma}
 \begin{proof}\MB{New:}
   Clearly, $[u]_0$ is a $G$-subset of $X$. 
   By \cref{def:Gsubset}, the underlying $G$-type $X_{[u]_0}$ is
-  $(z\mapsto \sum_{y:X(z)}\Trunc{u\eqto(z,y)})$, which we
+  $(z\mapsto \sum_{x:X(z)}\Trunc{u\eqto(z,x)})$, which we
   must show to be transitive. This follows easily from the properties
-  of $\Trunc{u\eqto(z,y)}$. We conclude that
+  of $\Trunc{u\eqto(z,x)}$. We conclude that
   $[\blank]_0$ is a well defined map from $X_{hG}$ to $X/G$.
   
   For proving surjectivity of $[\blank]_0$ on the set of orbits, 
@@ -1281,32 +1285,18 @@ $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
   the observation made just above the lemma
   (see also \cref{rem:equivalents-of-[x]=[y]} below).
   
-  The universal property is proved as follows. 
-  Let $S$ be a set and let $f:X_{hG}\to S$. Given an orbit $O:X/G$,
-  we define $g(O)$ as the center of the contractible type
-  \[
-    T(O)\defeq\sum_{s:S}\prod_{u:X_{hG}}\bigl( ([u]_0 = O) \to (f(u)=s) \bigr), 
-  \]
-  which immediately gives $f = (g\circ [\blank]_0)$.
-  We leave the proof that $T(O)$ is contractible
-  and that $g$ is unique as an exercise.
+  The last part of the lemma follows from \cref{rem:set-trunc-as-quotient}. 
 \end{proof}
 
-\begin{xca}\label{xca:||XhG||0-is-X/G}\MB{Check:}
-Complete the details of the proof above. Give the (unique) identification of
-$(X/G,[\blank]_0)$ and $(\setTrunc{X_{hG}},\settrunc{\blank})$
-in the type $\sum_{S:\Set}(X_{hG}\to S)$.
-\end{xca}
-
-\begin{corollary}\label{cor:orbit-equiv}\MB{New:}
+\begin{corollary}\label{cor:orbit-equiv}
 Define the map $[\blank] : X(\sh_G) \to X/G$ by $[x]\defeq[(\sh_G,x)]_0$.
 Then $[\blank]$ is surjective and induces
 by \cref{xca:map-induces-quotient}\ref{it:surj-ind-quot=codomain}
 an equivalence between the induced quotient of $X(\sh_G)$ and $X/G$.
 Moreover, $[x] = [y]$ is equivalent to $\exists_{g:\USymG}(g\cdot x = y)$.
 \end{corollary}
-\begin{proof}
-In the proof of surjectivity in \cref{lem:surj-set-orbits} we used
+\begin{proof}\MB{New:}
+In the proof of surjectivity in \cref{lem:[]0-surj-on-orbits} we used
 $u\defeq(\sh_G,x)$ to get $O=[u]_0$, so $[\blank]$ is surjective. 
 The last statement follows since
 both propositions are equivalent to $\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$.
@@ -1406,7 +1396,7 @@ There are two possible extreme cases for $G_x$ that are important:
   \item $x$ is \emph{fixed}\index{fixed}
     if $i_x$ is an isomorphism (so $G_x$ is all of $G$),
   \item and $x$ is \emph{free}\index{free}\index{action!free}
-    is $G_x$ is trivial.
+    if $G_x$ is trivial.
   \end{enumerate}
   We say that $X$ itself is \emph{free} if each $x:X(\sh_G)$ is free.
 \end{definition}
@@ -1687,7 +1677,7 @@ Let $G$ be a group.
 
 \begin{implementation}{con:lagrange}
 For the $G_x$-set ${\tilde G_x}$, with underlying set $\USymG$, 
-the map $[\blank]$ from \cref{lem:surj-set-orbits} has type 
+the map $[\blank]$ from \cref{lem:[]0-surj-on-orbits} has type 
 $\USymG \to {\tilde G_x}/G_x$, and
 can be elaborated for all $g:\USymG$ and 
 $(z,y,!):\BG_x$, $h:\sh_G\eqto z$ as
@@ -2284,7 +2274,7 @@ Use \cref{cor:id-m-cycle}, univalence, and \cref{lem:trp-in-function-type}.}
 
 By \cref{cor:orbit-equiv}, the set of orbits $X/\CG_4$ is
 equivalent to the quotient of $\bn4\to\bn2$ induced by 
-$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:surj-set-orbits}.
+$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:[]0-surj-on-orbits}.
 As also stated by that lemma, the equivalence class of any $x:\bn4\to\bn2$
 consists precisely of all cyclic rotations of $x$. Clearly, 
 $0000$ and $1111$ have singleton equivalence classes.
