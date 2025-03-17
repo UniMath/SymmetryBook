@@ -250,7 +250,7 @@ This applies to the following definition.
    \Sub_G(X)\defeq \Hom_G(X,\triv_G\Prop) \jdeq \prod_{z:\BG}(X(z)\to\Prop).
   \]
   Similarly to \cref{cor:subtype-same-level}, $\Sub_{G}(X)$ is a set.\footnote{%
-  \label{ft:SubTotX} The type $\Sub_{G}(X)$ can be curried 
+  \label{ft:SubTotX} The type $\Sub_{G}(X)$ can be uncurried 
   (\cref{xca:Sigma-curry}) as $\Tot(X)\to\Prop$, 
   the type of subtypes of $\Tot(X)\jdeq\sum_{z:\BG}X(x)$ (\cref{def:subtype}).}
   If $P$ is a $G$-subset of $X$, then the \emph{underlying $G$-set of $P$},
@@ -1255,7 +1255,7 @@ $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
   Define the map $[\blank]_0$ from the action type of $X$ to the type of
   $G$-subsets of $X$, by $[u]_0(v) \defeq \Trunc{u\eqto v}$
   for all $v:X_{hG}$.\footnote{\MB{New:}%
-  Here we use the curried form of $\Sub_G(X)$ as
+  Here we use the uncurried form of $\Sub_G(X)$ as
   explained in \cref{ft:SubTotX}.}
   Then the image of $[\blank]_0$ is the set of orbits.
   Moreover, we have a (unique) identification of
@@ -1281,7 +1281,7 @@ $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
   $O(\sh_G,y)$ there
   exists a $g:\USymG$ such that $g\cdot x = y$, \ie $[(\sh_G,x)]_0(\sh_G,y)$.
   So we take $u\defeq(\sh_G,x)$ and have to show $O(\sh_G,y)$ if and only if
-  $[u]_0(\sh_G,y)$, for all $y:X(\sh_G)$. But this follows directly by
+  $[u]_0(\sh_G,y)$, for all $y:X(\sh_G)$. But this follows directly from
   the observation made just above the lemma
   (see also \cref{rem:equivalents-of-[x]=[y]} below).
   
@@ -1322,6 +1322,62 @@ $[x](\sh_G,y)$;\quad
 $[y](\sh_G,x)$. As functions of $x$ and $y$ they all define the equivalence
 relation on $X(\sh_G)$ induced be the surjection $[\blank]$. 
 \end{remark}
+
+Thus, both the underlying set $X(\sh_G)$ and the action type
+$X_{hG}$ have equivalence relations (induced by the surjections $[\blank]$
+and $[\blank]_0$, respectively) with quotient set $X/G$.\footnote{%
+  This also justifies the notation $X/G$.
+  We have a diagram of surjective maps:
+  \[
+    \begin{tikzcd}[ampersand replacement=\&]
+      X(\sh_G) \ar[rr,"{x\mapsto(\sh_G,x)}"]\ar[dr,"{[\blank]}"']
+      \& \& X_{hG}\ar[dl,"{[\blank]_0}"] \\
+      \& X/G \&
+    \end{tikzcd}
+  \]}
+  We can write $X(\sh_G)$ and $X_{hG}$
+as sums of the respective fibers, and these fibers can be expressed
+intuitively.
+
+Let $O:X/G$ be an orbit and consider 
+$\inv{[O]_0} \jdeq \sum_{u:X_{hG}}(O=[u]_0)$.
+Recall that $O$ can be uncurried as a predicate on $X_{hG}$,
+and that its underlying $G$-set $X_O\jdeq(z:\BG \mapsto \sum_{y:X(z)}O(z,y))$
+is transitive. Consequently,
+$O(u)$ holds if and only if $O=[u]_0$, for all $u:X_{hG}$.
+Therefore, the fiber $\inv{[O]_0}$ is equivalent to the action type
+$(X_O)_{hG}\jdeq\sum_{z:\BG} X_O(z)$ by uncurrying.
+
+After the previous paragraph, the elaboration of 
+$\inv{[O]} \jdeq \sum_{x:X(\sh_G)}(O=[x])$ is easy.
+Recall that $[x]\jdeq[(\sh_G,x)]_0$, so that the fiber $\inv{[O]}$
+is equivalent to the underlying set of $X_O$,
+$X_O(\sh_G)\jdeq\sum_{x:X(\sh_G)} O(\sh_G,x)$.
+In other words, the fiber $\inv{[O]}$ is the underlying set of $X_O$.
+We depict the situation in the diagram%
+\footnote{ 
+  \[
+    \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
+      \displaystyle\sum_{O:X/G} X_O(\sh_G) \ar[rr]\ar[dr,"\fst"']
+      \& \& \displaystyle\sum_{O:X/G} (X_O)_{hG}\ar[dl,"\fst"] \\
+      \& X/G, \&
+    \end{tikzcd}
+  \]
+}
+in the margin.
+
+
+Note that the classifying type $\BG_x$ of $G_x$
+is identified with the fiber of $\settrunc{\blank} : X_{hG} \to X/G$,
+and $G\cdot x$ (pointed at $x$)
+is identified with the fiber of $[\blank] : X(\sh_G) \to X/G$,
+both taken at $[x]$, the orbit containing $x$.
+
+Also, the base point of $\BG_x$ depends on the choice of $x$,
+but the underlying type $(\BG_x)_\div$, \MB{being a connected component,}
+only depends on $[x]:X/G$.
+
+
 
 \begin{definition}\label{def:orbit-stabilizer}
   Let $G$ be a group, $X : \BG \to \Set$ a $G$-set, 
@@ -1736,46 +1792,6 @@ Recall \cref{fig:not-normal} ...
 \end{xca}
 
 
-\subsection{Not used}
-
-Thus, both the underlying set $X(\sh_G)$ and the action type
-$X_{hG}$ have equivalence relations with quotient set $X/G$.\footnote{%
-  This also justifies the notation $X/G$.
-  We have a diagram of surjective maps:
-  \[
-    \begin{tikzcd}[ampersand replacement=\&]
-      X(\sh_G) \ar[rr,"{x\mapsto(\sh_G,x)}"]\ar[dr,"{[\blank]}"']
-      \& \& X_{hG}\ar[dl,"{\settrunc\blank}"] \\
-      \& X/G \&
-    \end{tikzcd}
-  \]}
-The equivalence classes of both are important:
-
-
-
-Note that the classifying type $\BG_x$ of $G_x$
-is identified with the fiber of $\settrunc{\blank} : X_{hG} \to X/G$,
-and $G\cdot x$ (pointed at $x$)
-is identified with the fiber of $[\blank] : X(\sh_G) \to X/G$,
-both taken at $[x]$, the orbit containing $x$.
-
-Also, the base point of $\BG_x$ depends on the choice of $x$,
-but the underlying type $(\BG_x)_\div$, \MB{being a connected component,}
-only depends on $[x]:X/G$.
-Thus, we can decompose our diagram by writing $X(\sh_G)$ and $X_{hG}$
-as sums of the respective fibers.\footnote{%
-  Yielding the diagram
-  \[
-    \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
-      \displaystyle\sum_{o:X/G} \inv{[o]} \ar[rr]\ar[dr,"\fst"']
-      \& \& \displaystyle\sum_{o:X/G} \inv{\settrunc{o}}\ar[dl,"\fst"] \\
-      \& X/G, \&
-    \end{tikzcd}
-  \]
-  Indeed, $\inv{[[x]]}\jdeq(G\cdot x)$
-  and $\inv{\settrunc{[x]}}\equivto \BG_x$ via identity on $X_{hG}$.
-  \MB{Do we still need this?}}
-  
 
 
 
