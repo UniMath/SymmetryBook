@@ -1302,7 +1302,7 @@ The last statement follows since
 both propositions are equivalent to $\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$.
 \end{proof}
 
-\begin{xca}
+\begin{xca}\label{xca:transX-just1orbit}
 Show: $X/G$ is contractible if and only if $X$ is transitive.
 %That $X/G$ is contractible encodes that there is just one orbit.
 %Hint: use \cref{lem:conistrans}.
@@ -1326,6 +1326,7 @@ relation on $X(\sh_G)$ induced be the surjection $[\blank]$.
 Thus, both the underlying set $X(\sh_G)$ and the action type
 $X_{hG}$ have equivalence relations (induced by the surjections $[\blank]$
 and $[\blank]_0$, respectively) with quotient set $X/G$.\footnote{%
+  \label{ft:orbit-surj}
   This also justifies the notation $X/G$.
   We have a diagram of surjective maps:
   \[
@@ -1335,9 +1336,8 @@ and $[\blank]_0$, respectively) with quotient set $X/G$.\footnote{%
       \& X/G \&
     \end{tikzcd}
   \]}
-  We can write $X(\sh_G)$ and $X_{hG}$
-as sums of the respective fibers, and these fibers can be expressed
-intuitively.
+  We can write $X(\sh_G)$ and $X_{hG}$ as sums of the respective fibers,
+  which we will elaborate in the next paragraphs.
 
 Let $O:X/G$ be an orbit and consider 
 $\inv{[O]_0} \jdeq \sum_{u:X_{hG}}(O=[u]_0)$.
@@ -1351,33 +1351,22 @@ $(X_O)_{hG}\jdeq\sum_{z:\BG} X_O(z)$ by uncurrying.
 After the previous paragraph, the elaboration of 
 $\inv{[O]} \jdeq \sum_{x:X(\sh_G)}(O=[x])$ is easy.
 Recall that $[x]\jdeq[(\sh_G,x)]_0$, so that the fiber $\inv{[O]}$
-is equivalent to the underlying set of $X_O$,
-$X_O(\sh_G)\jdeq\sum_{x:X(\sh_G)} O(\sh_G,x)$.
-In other words, the fiber $\inv{[O]}$ is the underlying set of $X_O$.
+is equivalent to the underlying set of $X_O$, \ie
+$X_O(\sh_G)\jdeq\sum_{x:X(\sh_G)} O(\sh_G,x)$
+via identity on first components.
 We depict the situation in the diagram%
-\footnote{ 
+\footnote{\label{ft:orbit-fibs}%
+Along the horizontal arrow, $(O,x)$ maps to $(O,(\sh_G,x))$, for $x:X_O(\sh_G)$.
   \[
     \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
       \displaystyle\sum_{O:X/G} X_O(\sh_G) \ar[rr]\ar[dr,"\fst"']
       \& \& \displaystyle\sum_{O:X/G} (X_O)_{hG}\ar[dl,"\fst"] \\
-      \& X/G, \&
+      \& X/G \&
     \end{tikzcd}
   \]
 }
-in the margin.
-
-
-Note that the classifying type $\BG_x$ of $G_x$
-is identified with the fiber of $\settrunc{\blank} : X_{hG} \to X/G$,
-and $G\cdot x$ (pointed at $x$)
-is identified with the fiber of $[\blank] : X(\sh_G) \to X/G$,
-both taken at $[x]$, the orbit containing $x$.
-
-Also, the base point of $\BG_x$ depends on the choice of $x$,
-but the underlying type $(\BG_x)_\div$, \MB{being a connected component,}
-only depends on $[x]:X/G$.
-
-
+in the margin. Note how the role of $X$ in \cref{ft:orbit-surj} 
+is taken over by $X_O$. 
 
 \begin{definition}\label{def:orbit-stabilizer}
   Let $G$ be a group, $X : \BG \to \Set$ a $G$-set, 
@@ -1385,7 +1374,7 @@ only depends on $[x]:X/G$.
   This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
   \begin{enumerate}
   \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$,
-  which can be identified with the pointed type
+  with (curried) classifying type
   $(\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x) \eqto (z,y)},(\sh_G,x,!))$.
   Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
   each fiber at $z:\BG$ is a subset of $X(z)$.
@@ -1393,20 +1382,44 @@ only depends on $[x]:X/G$.
   We call the subgroup $G_x$ of $G$ the 
   \emph{stabilizer (sub)group}\index{stabilizer}%
     \index{group!stabilizer} at $x$. The inclusion $\fst$ of $\BG_x$ in
-    $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.\footnote{\label{ft:Gx-in-SubG}%
-  \MB{New:} Alternatively, we can define the stabilizer subgroup of $x$ as $(X_{[x]},(x,!),!):\Sub_G$.
-  Here $X_{[x]}$ is the (transitive) underlying $G$-set of the orbit $[x]\jdeq[(\sh_G,x)]$ and
-  $(x,!):X_{[x]}(\sh_G)\jdeq\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$
-  the point in the underlying set of $X_{[x]}$.
-  If $X$ is transitive, the stabilizer subgroup of $x$ simplifies to $(X,x,!):\Sub_G$,
-  showing that in fact every subgroup of $G$ is a stabilizer subgroup.}.
+    $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.
   \item Define $G\cdot x \defeq \setof{y : X(\sh_G)}{[x] =_{X/G} [y]}$
     to be the \emph{underlying set of the orbit through $x$}.\footnote{%
     This is short for the underlying set of the underlying $G$-set of the
-    orbit $[x]$ of $X$. See also \cref{rem:importance-[x]}.}
+    orbit $[x]$ of $X$.}
     \qedhere
   \end{enumerate}
 \end{definition}
+
+\begin{remark}\label{rem:orbit-fibs}
+In the above definition, the underlying $G$-set $X_{[x]} \jdeq
+(z:\BG)\mapsto\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)}$
+of the orbit $[x]$ plays an important double role: On one hand its
+action type $(X_{[x]})_{hG}$,
+%$\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$,
+pointed at $(\sh_G,x)$, is the classifying type of the stabilizer
+group $G_x$. On the other hand it is a transitive $G$-set whose
+underlying set $\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$
+is the underlying set of the orbit $[x]$. Thus,
+for $O\jdeq[x]$, we have easy identifications of $G\cdot x$ and $X_O(\sh_G)$,
+as well as of $\BG_x$ and $(X_O)_{hG}$, using $[x]\jdeq[(\sh_G,x)]_0$.
+Applying the maps in \cref{ft:orbit-fibs} in this particular case, 
+we obtain \cref{fig:fibs-at-[x]}.
+\begin{marginfigure}
+  \[
+    \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
+      \displaystyle([x], G\cdot x) \ar[rr,mapsto]\ar[dr,mapsto,"\fst"']
+      \& \& \displaystyle([(\sh_G,x)]_0,\BG_x)\ar[dl,mapsto,"\fst"] \\
+      \& {[x]} \&
+    \end{tikzcd}
+  \]
+  \caption{\MB{Caption}\label{fig:fibs-at-[x]}}
+\end{marginfigure}
+
+Note furthermore that the base point of $\BG_x$ depends on the choice of $x$,
+but the underlying type $(\BG_x)_\div$, being a connected component,
+only depends on $[x]:X/G$.
+\end{remark}
 
 \begin{xca}\label{xca:[x]=[y]-implies-||Gx=Gy||}
 Let $G$ be a group and $X: \BG\to\Set$ a $G$-set. Show:
@@ -1416,15 +1429,15 @@ if $[x]=[y]$, then $\Trunc{G_x\eqto G_y}$, for any $x,y:X(\sh_G)$.
 %so $\BG_x\eqto\BG_y$ by application on this path $p$.
 \end{xca}
 
-\begin{remark}\label{rem:importance-[x]}
-\MB{New:} In the above definition, the underlying $G$-set
-$(z:\BG)\mapsto\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)}$
-of the orbit $[x]$ plays an important double role: On one hand its
-action type $\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$,
-pointed at $(\sh_G,x)$, is the classifying type of the stabilizer
-group $G_x$. On the other hand it is a transitive $G$-set whose
-underlying set $\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$
-is the underlying set of the orbit $[x]$.
+\begin{remark}\label{rem:subgrp-is-stabsubgr}
+  In fact every subgroup of $G$ is a stabilizer subgroup.
+  We can equivalently define the stabilizer subgroup of $x$ 
+  by an element of $\Sub_G$, namely
+  the transitive $G$-set $X_{[x]}$, pointed by
+  $x$ as element of the subset $X_{[x]}(\sh_G)$ of $X(\sh_G)$.
+  If $X$ is transitive, then all orbits are equal (\cref{xca:transX-just1orbit})
+  and the stabilizer subgroup of $x$ simplifies to $(X,x,!):\Sub_G$,
+  a general form defining a subgroup of $G$.
 \end{remark}
 
 The following lemma states that the orbits of a $G$-set $X$
@@ -1455,8 +1468,8 @@ There are two possible extreme cases for $G_x$ that are important:
   We say that
   \begin{enumerate}
   \item $x$ is \emph{fixed}\index{fixed}
-    if $i_x$ is an isomorphism (so $G_x$ is all of $G$),
-  \item and $x$ is \emph{free}\index{free}\index{action!free}
+    if $i_x$ is an isomorphism (so $G_x$ is all of $G$), and
+  \item $x$ is \emph{free}\index{free}\index{action!free}
     if $G_x$ is trivial.
   \end{enumerate}
   We say that $X$ itself is \emph{free} if each $x:X(\sh_G)$ is free.
@@ -1566,7 +1579,8 @@ Let $G$ be a group, $X$ a $G$-set and $x:X(\sh_G)$ an element of
 the underlying set. Recall 
 $\BG_x \jdeq \sum_{(z,y):X_{hG}}\Trunc{(\sh_G,x)\eqto(z,y)}$,
 the classifying type of the stabilizer group $G_x$. 
-Define the $G_x$-set $\tilde G_x : \BG_x \to \UU$ by setting,
+Define the $G_x$-set $\tilde G_x : \BG_x \to \UU$ by setting,\footnote{%
+In short: $\tilde G_x \defeq \princ G \circ \Bi_x$.\label{ft:restriction}}
 for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$, 
 \[
 \tilde G_x(z,y,!)\defeq(\sh_G\eqto z).\qedhere
@@ -1619,7 +1633,12 @@ The above theorem has some interesting consequences.
 One is that $(\tilde G_x)_{hG_x}$ is a set, 
 and hence all its components are contractible.
 This means that for any $g:\USymG$, the stabilizer group $(G_x)_g$
-is trivial, \ie $\tilde G_x$ is free.
+is trivial. So:
+
+\begin{corollary}\label{cor:action-subgrp-free}
+\MB{New:} The $G_x$-set $\tilde G_x$ is free.
+\end{corollary}
+
 \cref{lem:free-pt-char} below, applied to $G_x$ and $\tilde G_x$,
 will then allow us to conclude that the underlying set 
 $(G_x \cdot_{\tilde G_x} g)$ of the orbit through $g$ is equivalent to 
@@ -1658,7 +1677,7 @@ The function $[\blank]_x$ is essentially the composition of the following
 equivalences: (1) the inverse of $\fst: (G\cdot_X x)\to X(\sh_G)$,
 which is an equivalence since $X$ is transitive; (2) the inverse of
 the equivalence from \cref{thm:orbitstab}; and (3) the inverse equivalence 
-from \cref{xca:orbit-set-as-quotient}, taking
+from \cref{lem:[]0-surj-on-orbits}, taking
 into account that the action type $(\tilde G_x)_{hG_x}$ is already a set, 
 so no need to set-truncate.
 Want more details? Do the next exercise!
@@ -1671,7 +1690,7 @@ Then show that the underlying $G_x$-subset of $[x']_x$ is transitive
 Now you have shown that $[\blank]_x$ is a well-defined function 
 from $X(\sh_G)$ to $\tilde G_x /G_x$. Finally, show that $[\blank]_x$
 is injective (easy) and surjective (use transitivity, like in
-\cref{xca:orbit-set-as-quotient}).
+\cref{lem:[]0-surj-on-orbits}).
 \end{xca}
 
 The following theorem summarizes several results in this section.
@@ -1679,10 +1698,7 @@ The following theorem summarizes several results in this section.
 \begin{theorem}\label{thm:summary5.4}
 \footnote{\MB{Replaces \cref{old:lagrange}.}} 
   Let $G$ be a group and $(X,x,!):\Sub_G$ giving a 
-  stabilizer subgroup $G_x$ of $G$.\footnote{%
-  \MB{Every subgroup is a stabilizer subgroup.
-  Ugly: $G_x$ and subgroup are not definitionally equal.}} 
-  Then:
+  stabilizer subgroup $G_x$ of $G$. Then:
   \begin{enumerate}
   \item The $G_x$-set $\tilde G_x$ from \cref{def:Gx-action-on-G}
   has underlying set $\USymG$ and is free; 
@@ -1957,7 +1973,8 @@ $\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
   \label{def:restrictandinduce}
   Let $f:\Hom(G,H)$ be a group homomorphism.  If $Y:\BH\to\Set$ is an $H$-set,
   then the \emph{restriction}\index{action!restricted}\index{restriction}
-  $f^*Y$ of $Y$ to $G$ is the $G$-set given by precomposition
+  $f^*Y$ of $Y$ to $G$ is the $G$-set given by precomposition\footnote{%
+  \MB{New: }Example: \cref{ft:restriction}.}
   \[
     f^*Y\defequi (Y\circ\Bf) :\BG\to\Set.
   \]
