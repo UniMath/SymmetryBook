@@ -1661,36 +1661,28 @@ $\USymG_x$, for any $g:\USymG$.
 
 In the case of a subgroup of $G$, we have the following result.
 
-\begin{lemma}\label{lem:preLagrange}\MB{New:}
-  Let $G$ be a group and $(X,x,!):\Sub_G$ a subgroup of $G$ as defined
-  in \cref{def:set-of-subgroups}.
-  For any $x':X(\sh_G)$, define the function $[x']_x$ by 
+\begin{construction}\label{con:preLagrange}\MB{New:}
+  Let $G$ be a group and let $(X,x,!):\Sub_G$ be a subgroup of $G$ as defined
+  in \cref{def:set-of-subgroups}. Then we have an equivalence
+  $[\blank]_x$ from the underlying set $X(\sh_G)$ of $X$ to 
+  $\tilde G_x /G_x$, the set of orbits of $\tilde G_x$. 
+\end{construction}
+\begin{implementation}{con:preLagrange}
+The function $[\blank]_x$ is the composition of three equivalences.
+Since $X$ is transitive, $\fst: (G\cdot_X x)\to X(\sh_G)$ is an equivalence.
+The orbit-stabilizer \cref{thm:orbitstab} gives us an equivalence $o$
+from $(G\cdot_X x)$ to $(\tilde G_x)_{hG_x}$. Since the latter type is a set,
+the function $[\blank]_0$ from \cref{lem:[]0-surj-on-orbits} 
+is an equivalence from $(\tilde G_x)_{hG_x}$ to $\tilde G_x /G_x$.
+Now define $[x']_x \defeq [o(\inv\fst(x'))]_0$ for any $x':X(\sh_G)$.
+\end{implementation}
+
+\begin{xca}\label{xca:preLagrange}\MB{New:}
+Show that $[\blank]_x$ in the above construction can be elaborated as
 \[
 [x']_x(z,y,!,h) \defeq \bigl((\sh_G,x',!,\refl{\sh_G})=(z,y,!,h)\bigr):\Prop
 \]
-for all $(z,y,!):\BG_x$ and $h:\sh_G\eqto z$.
-Then $[\blank]_x$ is a well-defined equivalence from $X(\sh_G)$ to 
-$\tilde G_x /G_x$, the set of orbits of $\tilde G_x$.
-\end{lemma}
-\begin{proof}
-The function $[\blank]_x$ is essentially the composition of the following
-equivalences: (1) the inverse of $\fst: (G\cdot_X x)\to X(\sh_G)$,
-which is an equivalence since $X$ is transitive; (2) the inverse of
-the equivalence from \cref{thm:orbitstab}; and (3) the inverse equivalence 
-from \cref{lem:[]0-surj-on-orbits}, taking
-into account that the action type $(\tilde G_x)_{hG_x}$ is already a set, 
-so no need to set-truncate.
-Want more details? Do the next exercise!
-\end{proof}
-
-\begin{xca}\label{xca:preLagrange}\MB{New:}
-Show that $[x']_x(z,y,!,h)$ above defines a $G_x$-subset of $\tilde G_x$.
-Then show that the underlying $G_x$-subset of $[x']_x$ is transitive
-(use the idea of \cref{ft:action-type-tildeGx-set}).
-Now you have shown that $[\blank]_x$ is a well-defined function 
-from $X(\sh_G)$ to $\tilde G_x /G_x$. Finally, show that $[\blank]_x$
-is injective (easy) and surjective (use transitivity, like in
-\cref{lem:[]0-surj-on-orbits}).
+for all $x':X(\sh_G)$, $(z,y,!):\BG_x$ and $h:\sh_G\eqto z$.
 \end{xca}
 
 The following theorem summarizes several results in this section.
@@ -1704,7 +1696,7 @@ The following theorem summarizes several results in this section.
   has underlying set $\USymG$ and is free; 
   \item
   The function $[\blank]_x : X(\sh_G)\to\tilde G_x /G_x$
-  from \cref{lem:preLagrange} is an equivalence;
+  from \cref{con:preLagrange} is an equivalence;
   \item\label{it:lagrange}
   For all $y:X(\sh_G)$, the underlying set of the orbit $[y]_x$ 
   is \emph{merely} equivalent to $\USymG_x$.
@@ -1713,7 +1705,7 @@ The following theorem summarizes several results in this section.
 
 \begin{proof}
 Only point \ref{it:lagrange} above has not been proved before.
-The underlying set of $[y]_x$ is 
+Using \cref{xca:preLagrange}, the underlying set of $[y]_x$ is 
 \[
 \sum_{g:\USymG}\bigl((\sh_G,y,!,\refl{\sh_G})=(\sh_G,x,!,g)\bigr),
 \]
@@ -1726,26 +1718,19 @@ an equivalence from $\USymG_x \jdeq \sum_{g:\USymG} g\cdot_X x = x$
 to $\sum_{g:\USymG} g\cdot_X y = x$.
 \end{proof}
 
-The reader may notice that the above theorem looks quite
-different from the traditional formulation of Lagrange's Theorem.
-Note that the ingredients of the traditional formulation are also
-present here: the (abstract) group $G$, the (abstract) subgroup $G_x$
-and the set orbits with their underlying sets (cosets),\footnote{%
+The reader may notice that the above theorem contains some of
+the ingredients of the traditional formulation of Lagrange's Theorem:
+the (abstract) group $G$, the (abstract) subgroup $G_x$
+and the set of orbits (cosets),\footnote{%
 \MB{Explain better when cosets are defined!}} 
-which are all merely equivalent with $\USymG_x$
-(in bijective correspondance with the underlying set of the abstract $G_x$).
+whose underlying sets are all merely equivalent to $\USymG_x$
+(in bijective correspondence with the carrier set of the subgroup).
 The following construction brings us one step closer to the
 traditional formulation.
 
-\begin{construction}[\MB{Lagrange's Construction}]\label{con:lagrange}\footnote{%
-This formulation has the advantage of not using $\tilde G_x$ in the statement
-(only in the proof). Also works for \cref{xca:lagrange}.
-Still: doesn't seem to work in the general finite
-case. Works for, \eg standard $n$-element case and for
-$\ZZ$ acting on $\bn3$.
-\MB{Remove after discussion.}}
-Let $G$ be a group.
-  For all subgroups $(X,x,!):\Sub_G$, we have a function of type
+\begin{construction}[\MB{Lagrange's Construction}]\label{con:lagrange}
+Let $G$ be a group. For all subgroups $H\defeq(X,x,!):\Sub_G$,
+we have a function $L_H$ of type
 \[
 \bigl(\prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x \,\bigr) \to
 \bigl(\USymG \eqto (X(\sh_G) \times \USymG_x)\bigr).
@@ -1759,17 +1744,18 @@ $\USymG \to {\tilde G_x}/G_x$, and
 can be elaborated for all $g:\USymG$ and 
 $(z,y,!):\BG_x$, $h:\sh_G\eqto z$ as
 \[
-[g](z,y,!,h) \defeq \bigl((\sh_G,x,!,g)=(z,y,!,h)\bigr).
+[g](z,y,!,h) \jdeq \bigl((\sh_G,x,!,g)=(z,y,!,h)\bigr) : \Prop.
 \]
-Composing the equivalences of \cref{lem:sum-of-fibers} and 
-\cref{lem:preLagrange}, we get
+Using the equivalences of \cref{lem:sum-of-fibers} and 
+\cref{con:preLagrange}, we get
 \[
 \USymG
 \equivto \sum_{O:{\tilde G_x}/G_x} \inv{[O]}
 \equivto \sum_{y:X(\sh_G)} \inv{[[y]_x]} 
 \jdeq \sum_{y:X(\sh_G)}\sum_{g:\USymG} [y]_x = [g] .
 \]
-By extensionality we have $[y]_x = [g]$ if and only if 
+By extensionality, and using \cref{xca:preLagrange}, 
+we have $[y]_x = [g]$ if and only if 
 $(\sh_G,y,!,\refl{\sh_G})=(\sh_G,x,!,g)$, which in turn 
 is logically equivalent to $g\cdot_X y = x$.
 
@@ -1777,10 +1763,11 @@ So we get an equivalence from $\USymG$ to
 $\sum_{y:X(\sh_G)}\sum_{g:\USymG} (g\cdot_X y = x)$.
 In order to complete the implementation, let a function $f$ of 
 type $\prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x$ be given. 
-The type $\sum_{g:\USymG} g\cdot_X y = x$ has been shown equivalent 
-to $\USymG_x$ in the proof of point \ref{it:lagrange} of \cref{thm:summary5.4},
+For any $y:X(\sh_G)$, the type $\sum_{g:\USymG} g\cdot_X y = x$ has been
+shown equivalent to $\USymG_x$ in the proof of point \ref{it:lagrange} of \cref{thm:summary5.4},
 provided we have a $g_0:\USymG$ such that $g_0\cdot_X y = x$.
-Hence we can just take $g_0 \jdeq f(y)$ and we are done.
+Hence we can just take $g_0 \jdeq f(y)$, and get in total an equivalence of 
+type $\USymG \eqto (X(\sh_G) \times \USymG_x)$ that we define to be $L_H(f)$.
 \end{implementation}
 
 \begin{xca}\label{xca:lagrange}\MB{New: }
