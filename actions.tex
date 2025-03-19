@@ -2358,18 +2358,18 @@ This insight leads to the following lemma.
 \begin{lemma}
   \label{lem:burnside}
   Let $G$ be a finite group and let $X:\BG\to\Set$ be a finite $G$-set.
-  Then the set of orbits $X/G$ is finite with cardinality
+  Define $X^g = \setof{x:X(\sh_G)}{g\cdot x = x}$ for any $g:\USymG$.
+  Then $X^g$, $\sum_{g:\USymG} X^g$ and the set of orbits $X/G$
+  are finite sets, and we have
   \[
-    \Card(X/G) = \frac1{\Card(G)}\sum_{g:\USymG}\Card(X^g),
+    \Card(\sum_{g:\USymG} X^g) = \Card(X/G) \times \Card(G).
   \]
-  where $X^g = \setof{x:X(\sh_G)}{g\cdot x = x}$ is the finite 
-  set of elements that are fixed by $g$.
 \end{lemma}
 \begin{proof}
-  
-  Since $X(\sh_G)$ is finite, we can decide equality of its elements
-  (see \cref{xca:finsets-decidable}).
-  Hence each $X^g$ is a finite set.\footnote{\MB{New: }%
+  We first need to prove that the sets involved are finite. 
+  Finite sets are decidable sets, see \cref{xca:finsets-decidable}.
+  Hence each $X^g$ is a finite set, as it is a decidable subset of $X(\sh_G)$.%
+ \footnote{%
   A subset of a finite set is not necessarily finite itself:
   Let $p$ be a proposition and consider $\bn1_p\defeq\sum_{x:\bn1}p$,
   the subset of $\bn1$ defined by the predicate that is constant $p$.
@@ -2380,7 +2380,29 @@ This insight leads to the following lemma.
   we can decide $p$. In fact we have that $\bn1_p$ is a finite set
   if and only if $p$ is decidable.
   In general, if $S$ is a finite set, then every
-  decidable predicate on $S$ defines a finite subset of $S$.}
+  decidable predicate on $S$ defines a finite subset of $S$.
+ }
+  Finiteness of $\sum_{g:\USymG} X^g$ follows from 
+  \cref{xca:sum-over-finite-set}. Regarding the set of orbits,
+  note that \cref{cor:orbit-equiv} yield that $X/G$ is equivalent
+  to the quotient of $X(\sh_G)$ modulo the equivalence relation
+  $\exists_{g:\USymG} x=g\cdot y$. The latter is decidable by
+  searching for such a $g$. Now apply \cref{xca:dec-quot-finite-set}.
+  
+  Since the goal is a proposition, we may even assume that we have
+  an equivalence to a standard finite set of the form $\bn n$,
+  for every finite set at hand,
+  which implies that we can enumerate its elements.
+  
+  Rearranging sums and taking the sum of fibers gives:
+  \[
+    \sum_{g:\USymG} X^g \equivto \sum_{x:X(\sh_G)} \USymG_x
+    \equivto \sum_{O:X/G} \sum_{x : X_O(\sh_G)} \USymG_x.
+  \]
+  Note that the last type in the display reflects how
+  we counted in \cref{fig:C4-action-on-4-bits}: for every orbit,
+  and every element in the underlying set of that orbit, every
+  stabilizer of that element. 
   
   \MB{Cursor>>>}
   
@@ -2404,6 +2426,18 @@ This insight leads to the following lemma.
   is the cardinality of $G$ divided by the cardinality of $\mathcal O_z$.
   We conclude that $\Card(R) = \Card(X/G)\Card(G)$, as desired.
 \end{proof}
+
+\begin{xca}\label{xca:sum-over-finite-set}\MB{Where?}
+Let $X$ be a finite set and $f:X\to\NN$ a function.
+Define the arithmetical sum $(\sum_{x:X} f(x)):\NN$.
+Consider now a family $F: X\to\FinSet$ of finite sets. Show that the sum type
+$\sum_{x:X}F(x)$ is a finite set with cardinality $\sum_{x:X} \Card(F(x))$.
+\end{xca}
+
+\begin{xca}\label{xca:dec-quot-finite-set}\MB{Where?}
+Let $X$ be a finite set and $R:X\to X\to\Prop$ a decidable
+equivalence relation. Show that the quotient $X/R$ is a finite set.
+\end{xca}
 
 %%% Local Variables:
 %%% mode: LaTeX
