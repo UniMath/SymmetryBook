@@ -1343,8 +1343,8 @@ Let $O:X/G$ be an orbit and consider
 $\inv{[O]_0} \jdeq \sum_{u:X_{hG}}(O=[u]_0)$.
 Recall that $O$ can be uncurried as a predicate on $X_{hG}$,
 and that its underlying $G$-set $X_O\jdeq(z:\BG \mapsto \sum_{y:X(z)}O(z,y))$
-is transitive. Consequently,
-$O(u)$ holds if and only if $O=[u]_0$, for all $u:X_{hG}$.
+is transitive. Consequently, for all $u:X_{hG}$,
+$O(u)$ holds if and only if $O=[u]_0$.
 Therefore, the fiber $\inv{[O]_0}$ is equivalent to the action type
 $(X_O)_{hG}\jdeq\sum_{z:\BG} X_O(z)$ by uncurrying.
 
@@ -1406,14 +1406,15 @@ as well as of $\BG_x$ and $(X_O)_{hG}$, using $[x]\jdeq[(\sh_G,x)]_0$.
 Applying the maps in \cref{ft:orbit-fibs} in this particular case, 
 we obtain \cref{fig:fibs-at-[x]}.
 \begin{marginfigure}
-  \[
+  \[\footnotesize %MB20250324: footnotesize should be default
     \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
-      \displaystyle([x], G\cdot x) \ar[rr,mapsto]\ar[dr,mapsto,"\fst"']
-      \& \& \displaystyle([(\sh_G,x)]_0,\BG_x)\ar[dl,mapsto,"\fst"] \\
+      ([x], y) \ar[rr,mapsto]\ar[dr,mapsto,"\fst"']
+      \& \& ([(\sh_G,x)]_0,(\sh_g,y))\ar[dl,mapsto,"\fst"] \\
       \& {[x]} \&
     \end{tikzcd}
   \]
-  \caption{\MB{Caption}\label{fig:fibs-at-[x]}}
+  \caption{\label{fig:fibs-at-[x]}Along the horizontal arrow,
+  the second component $y:G\cdot x$ is mapped to $(\sh_g,y):\BG_x$.}
 \end{marginfigure}
 
 Note furthermore that the base point of $\BG_x$ depends on the choice of $x$,
@@ -1766,8 +1767,14 @@ type $\prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x$ be given.
 For any $y:X(\sh_G)$, the type $\sum_{g:\USymG} g\cdot_X y = x$ has been
 shown equivalent to $\USymG_x$ in the proof of point \ref{it:lagrange} of \cref{thm:summary5.4},
 provided we have a $g_0:\USymG$ such that $g_0\cdot_X y = x$.
-Hence we can just take $g_0 \jdeq f(y)$, and get in total an equivalence of 
-type $\USymG \eqto (X(\sh_G) \times \USymG_x)$ that we define to be $L_H(f)$.
+Hence we can just take $g_0 \jdeq f(y)$, and get in total an equivalence  
+between $\USymG$ and $X(\sh_G) \times \USymG_x$ that we define to be $L_H(f)$.%
+\footnote{\label{ft:lagrange-conj} A minor modification of the above
+implementation gives an equivalence $L'_H(f)$ between $\USymG$ and
+$\sum_{y:X(\sh_G)}\USymG_y$, which does not refer to $x$.
+This is sometimes more convenient, \eg in the proof of \cref{lem:burnside}.
+Proof: conjugation $g\mapsto\inv f(y) g f(y)$ is an equivalence
+from $\USymG_x$ to $\USymG_y$, for every $y:X(\sh_G)$.}
 \end{implementation}
 
 \begin{xca}\label{xca:lagrange}\MB{New: }
@@ -2303,8 +2310,8 @@ $[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:[]0-surj-on-orbits}.
 As also stated by that lemma, the equivalence class of any $x:\bn4\to\bn2$
 consists precisely of all cyclic rotations of $x$. Clearly, 
 $0000$ and $1111$ have singleton equivalence classes.
-The equivalence class of $0001$ ($0111$) consists of all four binary 
-sequences with exactly one $1$ ($0$).  Before you start thinking that
+The equivalence class of $0001$ (resp.\ $0111$) consists of all four binary 
+sequences with exactly one $1$ (resp.\ $0$).  Before you start thinking that
 swapping $0$'s and $1$'s gives a new equivalence class, consider 
 $0101$ that forms an equivalence class together with $1010$.
 Finally, $0011$ forms an equivalence class together with $1001$,
@@ -2325,7 +2332,7 @@ six orbits, as in the left column of \cref{fig:C4-action-on-4-bits}.
 Underlying sets of orbits and the stabilizers of their elements.}
 \end{margintable}
 
-In the right column of \cref{fig:C4-action-on-4-bits}, we have given
+In the right column of \cref{fig:C4-action-on-4-bits}, we have
 given in each row the respective stabilizing symmetries in $\BCG_4$.
 \cref{xca:[x]=[y]-implies-||Gx=Gy||} tells us that it doesn't matter
 too much which element in the orbit one chooses.\footnote{%
@@ -2358,7 +2365,7 @@ This insight leads to the following lemma.
   \]
 \end{lemma}
 \begin{proof}
-  We first need to prove that the sets involved are finite. 
+  We first need to make sure that the sets involved are finite. 
   Finite sets are decidable sets, see \cref{xca:finsets-decidable}.
   Hence each $X^g$ is a finite set, as it is a decidable subset of $X(\sh_G)$.%
  \footnote{%
@@ -2373,63 +2380,77 @@ This insight leads to the following lemma.
   if and only if $p$ is decidable.
   In general, if $S$ is a finite set, then every
   decidable predicate on $S$ defines a finite subset of $S$.
+  Similarly, the quotient of a finite set modulo a decidable
+  equivalence relation is finite, see \cref{xca:dec-quot-finite-set}.
  }
   Finiteness of $\sum_{g:\USymG} X^g$ follows from 
   \cref{xca:sum-over-finite-set}. Regarding the set of orbits,
   note that \cref{cor:orbit-equiv} yield that $X/G$ is equivalent
   to the quotient of $X(\sh_G)$ modulo the equivalence relation
-  $\exists_{g:\USymG} x=g\cdot y$. The latter is decidable by
+  $\exists_{g:\USymG} x=g\cdot y$. The latter proposition is decidable by
   searching for such a $g$. Now apply \cref{xca:dec-quot-finite-set}.
   
-  Since the goal is a proposition, we may even assume that we have
-  an equivalence to a standard finite set of the form $\bn n$,
-  for every finite set at hand,
-  which implies that we can enumerate its elements.
-  
-  Rearranging sums and taking the sum of fibers gives:
+  Since the main statement (displayed) of the lemma is a proposition, 
+  we may assume that we have an equivalence to a standard finite set of 
+  the form $\bn n$, for every finite set at hand.  
+  Rearranging sums and writing $X(\sh_G)$ as the sum of fibers
+  of $[\blank]: X(\sh_G)\to X/G$ gives equivalences
   \[
     \sum_{g:\USymG} X^g \equivto \sum_{x:X(\sh_G)} \USymG_x
     \equivto \sum_{O:X/G} \sum_{x : X_O(\sh_G)} \USymG_x.
   \]
-  Note that the last type in the display reflects how
+  Note that the latter type above reflects how
   we counted in \cref{fig:C4-action-on-4-bits}: for every orbit,
-  and every element in the underlying set of that orbit, every
-  stabilizer of that element. 
+  and every element in the underlying set of that orbit,
+  we counted the stabilizers of that element.
   
-  \MB{Cursor>>>}
-  
-  we can decide whether $x,y$ are in the same orbit by searching
-  for a $g : \USymG$ with $g\cdot x = y$.
-  Hence the set of orbits is a finite set as well.
-  Consider now the set $R \defeq \sum_{g:\USymG} X^g$,
-  and the function $q : R \to X$
-  defined by $q(g,x) \defeq x$.
-  The map $q^{-1}(x) \to G_x$ that sends $(g,x)$ to $g$ is a bijection.
-  Thus, we get the equivalences
-  \[
-    R \jdeq \sum_{g:\USymG} X^g \equivto \sum_{x:X} G_x
-    \equivto \sum_{z:X/G} \sum_{x : \mathcal O_z} G_x,
-  \]
-  where the last step writes $X$ as a union of orbits.
-  Within each orbit $\mathcal O_z$,
-  the stabilizer groups are conjugate,
-  and thus have the same finite cardinality,
-  which from the orbit-stabilizer theorem (\cref{thm:orbitstab}),
-  is the cardinality of $G$ divided by the cardinality of $\mathcal O_z$.
-  We conclude that $\Card(R) = \Card(X/G)\Card(G)$, as desired.
+  We aim to apply Lagrange's \cref{con:lagrange},
+  in particular \cref{ft:lagrange-conj}, with subgroups defined by $X_O$ and
+  $x : X_O(\sh_G)$, for any orbit $O:X/G$. For this we have to give functions
+  $f_x : \prod_{y:X_O(\sh_G)}\sum_{g:\USymG} g\cdot_{X_O} y = x$,
+  for every $x:X_O(\sh_G)$.
+  Such functions are obtained by using the transitivity of $X_O$
+  in combination with the equivalence between $\USymG$ and a 
+  standard finite set: we can simply take the `least' $g:\USymG$
+  such that $g\cdot_{X_O} y = x$, \ie corresponding to the
+  smallest number under the equivalence with the standard finite set.
+  Applying \cref{con:lagrange}
+  we get and equivalence between $\USymG$ and $\sum_{x : X_O(\sh_G)} \USymG_x$. 
+  We conclude that $\Card(\sum_{g:\USymG} X^g) = \Card(X/G) \times \Card(G)$,
+  using \cref{xca:sum-over-finite-set}.
 \end{proof}
 
-\begin{xca}\label{xca:sum-over-finite-set}\MB{Where?}
-Let $X$ be a finite set and $f:X\to\NN$ a function.
-Define the arithmetical sum $(\sum_{x:X} f(x)):\NN$.
-Consider now a family $F: X\to\FinSet$ of finite sets. Show that the sum type
-$\sum_{x:X}F(x)$ is a finite set with cardinality $\sum_{x:X} \Card(F(x))$.
-\end{xca}
 
 \begin{xca}\label{xca:dec-quot-finite-set}\MB{Where?}
 Let $X$ be a finite set and $R:X\to X\to\Prop$ a decidable
 equivalence relation. Show that the quotient $X/R$ is a finite set.
 \end{xca}
+
+\begin{xca}\label{xca:sum-over-finite-set}
+Let $X$ be a finite set and $f:X\to\NN$ a function.
+Define the arithmetical sum $(\sum_{x:X} f(x)):\NN$.
+Consider now a family $F: X\to\FinSet$ of finite sets. Show that the sum type
+$\sum_{x:X}F(x)$ is a finite set with cardinality $\sum_{x:X} \Card(F(x))$.
+\MB{Hint:} Key is the invariance of the sum under permutation of $X$.
+Define the $\SG_{\Card(X)}$-set $A(Y)\defeq(Y\to\NN)\to\NN$
+for all $Y:\BSG_{\Card(X)}$. Show that summation is a fixed
+element of $A(\bn n)$ (\cref{def:fixed-free}).
+Now apply \cref{lem:fixpts-are-fixed}.
+%Alternative solution:
+%Define the type $\Sub^d(X)$ of \emph{decidable} predicates on $X$. 
+%Consider the type $A\defeq\bigl(\prod_{Y:\Sub^d(X)}(Y\to\NN)\bigr)\to\NN$
+%of functions that `aggregate' the values of a function $g:Y\to\NN$ over 
+%the subset $X_Y$ of $X$. Define the predicate $\Sigma_A: (A\to\Prop)$
+%that singles out the function(s) in $A$ that aggregate by summation:
+%$\Sigma^X_A(G)\defeq$
+%\[
+%((\prod_{g:\bn0\to\NN}G(\bn0,g)=0))\times
+%(\prod_{Y:\Sub^d(X)}\prod_{g:Y\to\NN}\prod_{y:Y}
+%G(Y,g)=f(y)+G(Y_{{\neq}y},g_{{\neq}y})).
+%\]
+%Now show that $\Tot(\Sigma^X_A)$ is contractible.
+\end{xca}
+
 
 %%% Local Variables:
 %%% mode: LaTeX
