@@ -246,7 +246,7 @@ can be reached by doing the $90$\textdegree-rotation a few times,
 together with the fact that taking any loop four times reduces to not doing
 anything at all: they represent the \emph{cyclic group of order four}.
 
-A by-product of this line of thinking is the distinguished position of the circle. To express this it is convenient to give names to things: let $\base$ be the chosen base point in the circle and $\Sloop$ the loop winding once around the circle counterclockwise. Then a symmetry of a shape $x_0$ in $X$ is uniquely given by the image of $\Sloop $ under a function $\Sc\to X$ taking $\base$ to $x_0$. So,
+A by-product of this line of thinking is the distinguished position of the circle. To express this it is convenient to give names to things: let $\base$ (\ie a dot) be the chosen base point in the circle and $\Sloop$ the loop winding once around the circle counterclockwise. Then a symmetry of a shape $x_0$ in $X$ is uniquely given by the image of $\Sloop $ under a function $\Sc\to X$ taking $\base$ to $x_0$. So,
 \begin{quote}
   the study of symmetries is the study of (pointed) functions between types of things, with the circle being the type that gives you access to individual symmetries.
 \end{quote}
@@ -269,7 +269,7 @@ in the type of sets are
 uniquely given by one-to-one correspondences between these sets,
 commonly called \emph{bijections}.
 
-Now consider the set $\{1,2,3\}$. Then a symmetry of $\{1,2,3\}$ in the type of \MB{not needed: finite} sets amounts to the same thing as a symmetry of $\{1,2,3\}$ in the type of sets with three elements: a symmetry of $\{1,2,3\}$ will not ``pass through'' sets that have, say, five elements. Think of the type of finite sets as being the disjoint union of all the types of sets with $n$-elements, where $n=0,1,2,\dots$: if a symmetry is a loop it should not be allowed to jump between the type of sets with three elements and the type of sets with five elements.\marginnote{%
+Now consider the set $\{1,2,3\}$. Then a symmetry of $\{1,2,3\}$ in the type of finite sets amounts to the same thing as a symmetry of $\{1,2,3\}$ in the type of sets with three elements: a symmetry of $\{1,2,3\}$ will not ``pass through'' sets that have, say, five elements. Think of the type of finite sets as being the disjoint union of all the types of sets with $n$-elements, where $n=0,1,2,\dots$: if a symmetry is a loop it should not be allowed to jump between the type of sets with three elements and the type of sets with five elements.\marginnote{%
   Type of empty sets:\\
   \begin{tikzpicture}
     \draw plot [smooth cycle] coordinates {(0,0) (3,-.5) (3.5,1) (1,2)};
@@ -297,12 +297,45 @@ Now consider the set $\{1,2,3\}$. Then a symmetry of $\{1,2,3\}$ in the type of 
     \node at (1.5,-1.5) {$\vdots$};
   \end{tikzpicture}}
 
-In fact, \emph{any} type $X$ can be naturally divided into ``components'': each element $x_0$ in $X$ belongs to one and only one component and the one $x_0$ belongs to we call $X_{x_0}$, and the symmetries of $x_0$ in $X$ may be identified with the symmetries of $x_0$ in $X_{x_0}$. Hence from the perspective of symmetries of $x_0$ only the component containing it matters, and we confine our discussion to ``connected'' types of things, \ie those having just one component.
+In fact, \emph{any} type $X$ can be naturally divided into ``components'': each
+element $x_0$ in $X$ belongs to one and only one component, and the one $x_0$
+belongs to we call $\conncomp X {x_0}$, and the symmetries of $x_0$ in $X$ may
+be identified with the symmetries of $x_0$ in $\conncomp X {x_0}$. Hence from
+the perspective of symmetries of $x_0$ only the component containing it matters,
+and we confine our discussion to ``connected'' types of things, \ie those having
+just one component.
 
-The geometric intuition also points to the possibility of seemingly different symmetries being identified: when looping once around the circle it shouldn't matter ``how'' or ``how fast'' you do it. In the \emph{picture} of the abelian group on two letters ${\color{red}a}$ and ${\color{blue}b}$
-[here a picture of a torus with a base point $x_0$ and the two standard generators a and b (in color), together with a more frivolous loop (in pink) homotopic to a]
-you might think of a symmetries of $x_0$ as a {\color{pink}rubber band} confined to the circle and pinned to $x_0$. In the picture we've drawn such a {\color{pink}rubber band} which will contract to ${\color{red}a}$, and this contraction we consider as an \textbf{identification of the two symmetries}.
-In the language we adopt, this is hard-wired, and so our arguments are independent of any picture: pictures serve only as inspirations and are very helpful when trying to discover proofs.
+The geometric intuition also points to the possibility of seemingly different symmetries being identified: when looping once around the circle it shouldn't matter ``how'' or ``how fast'' you do it. Consider the picture of the abelian group on two letters ${\color{casred}a}$ and ${\color{casblue}b}$ from before, but now together with a more frivolous loop (in pink) homotopic to $a$:
+\begin{center}
+\begin{tikzpicture}
+  \useasboundingbox (-3,-1.5) rectangle (3,1.5);
+  \begin{scope}[xshift=2.4cm,yshift=.35cm,xscale=cos(25)]
+  \draw[casred,line cap=round] (0,0) arc (65:148:0.7);
+  \draw[casred] (0,0) arc (65:-40:0.7);
+  \end{scope}
+  \draw[casblue] (0,.35) ellipse (2.4 and 0.9);
+  \draw[pink] (2.4,0.35) .. controls ++(.1,-.5) and ++(.2,.4) .. (2,-1.12);
+  \draw[pink] (1.2,0.1) .. controls ++(.1,.4) and ++(-.1,.5) .. (2.4,0.35);
+  \draw (0,0) ellipse (3 and 1.5);
+  \begin{scope}
+    \clip (0,-1.8) ellipse (3 and 2.5);
+    \draw (0,2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \begin{scope}
+    \clip (0,2.2) ellipse (3 and 2.5);
+    \draw (0,-2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \node[dot] at (2.4,0.35) {};
+  \node (a) at (2.6,-.2) {$a$};
+  \node (b) at (0,1) {$b$};
+\end{tikzpicture}
+\end{center}
+You might think of a symmetries of $x_0$ as a rubber band confined to the circle
+and pinned to $x_0$. In the picture we've drawn such a rubber band (in pink)
+which can be deformed to $a$, and this deformation we consider as
+an \emph{identification of the two symmetries}.  In the language we adopt, this
+is hard-wired, and so our arguments are independent of any picture: pictures
+serve only as inspirations and are very helpful when trying to discover proofs.
 
 \marginnote{There's a subtle point -- which we probably should stay quiet about in an introduction, but which may be a source of confusion if brushed under the carpet -- that a priori there could have been ``several ways'' in which two symmetries should be identified. For many purposes this poses no problem, but we want to present a theory that mirrors the classical theory faithfully, and so restrict our ``types of things'' where there aren't multiple ways of identifying symmetries [the technical term - when we get that far will be ``pointed connected groupoids'']. This means that types like the sphere
 [picture of a sphere with a$ x_0$ on the red equator]
@@ -468,6 +501,5 @@ Type Theory and Univalent Foundations during the academic year 2018/19.
 
 %%% Local Variables:
 %%% mode: latex
-%%% fill-column: 144
 %%% TeX-master: "book"
 %%% End:
