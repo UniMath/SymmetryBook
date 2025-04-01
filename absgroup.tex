@@ -2,45 +2,118 @@
 \label{ch:absgroup}
 
 \section{Brief overview of the chapter}
+Recall from \cref{sec:identity-type-as-abstract} the definition of an abstract group
+and how to obtain an abstract group from a concrete one. In this chapter we will 
+implement an inverse construction, how to obtain a (concrete) group from
+an abstract one, in \cref{sec:Gsetforabstract}. Likewise, in \cref{sec:homabsisconcr},
+we show how to obtain a (concrete) homomorphism from an abstract one.
+Thus we will have shown that, in principle,\footnote{%
+Of course this is not a reason to stop here, but to continue
+finding out which parts of group theory benefit from the concrete approach.
+Just to mention a few we have seen already: 
+the conceptual simplicity of homomorphisms being pointed maps,
+actions being maps from the classifying type to $\Set$, and the generalizations
+to infinite groups indicated in \cref{ch:actions}.}
+it doesn't matter whether
+one develops group theory on the concrete or on the abstract level.
 
-In the optional~\cref{sec:heaps} we look at how general
+Before we implement the above constructions, we first introduce in \cref{sec:monoids}
+a simpler structure, called monoid, of which abstract groups are a special case.
+
+After groups and homomorphism, it is natural to continue to group actions,
+in \cref{sec:Gsetsabstrconcr}, and again relate the abstract to the concrete.
+
+ In the optional~\cref{sec:heaps} we look at how general
 identities types $a \eqto_A a'$ relate to groups.
 
 \section{Monoids and abstract groups}
 \label{sec:monoids}
 
-(TBD: for now, recall~\cref{def:abstractgroup}.)
+  A monoid is a collection of data consisting only of \ref{struc:under-set}, 
+  \ref{struc:unit}, and \ref{struc:mult-op} from the list in
+  \cref{def:abstractgroup}. In other words, the existence of inverses is not assumed.
+  For convenience we reproduce the shortened list here.
 
-\begin{remark}\label{rem:monoids}
-  A \emph{monoid}\index{monoid} is a collection of data consisting only of \ref{struc:under-set}, \ref{struc:unit}, and \ref{struc:mult-op} from the list in
-  \cref{def:abstractgroup}.  In other words, the existence of inverses is not assumed.  For this reason, the property that $S$ is a set, the
-  unit laws, and the associativity law are, together, known as the \emph{monoid laws}.
-\end{remark}
+\begin{definition}\label{def:monoid}
+  An \emph{monoid}\index{monoid} consists of the following data.
+  \begin{enumerate}
+  \item\label{struc:monoid-set} A set $S$, called the \emph{underlying set}.
+  \item\label{struc:monoid-unit} An element $e:S$, called the \emph{unit} or the \emph{neutral element}.\index{neutral element}
+  \item\label{struc:monoid-mult} A function $S\to S\to S$, called \emph{multiplication},
+    taking two elements $g_1,g_2:S$ to their \emph{product}, denoted by $g_1\cdot g_2:S$.
+    \par \noindent
+    Moreover, the following equations should hold, for all $g,g_1,g_2,g_3 : S$.
+    \begin{enumerate}[label=(\alph*),ref=\ref{struc:monoid-mult} (\alph*)]
+    \item\label{monoid:unit-laws} $g\cdot e=g$ and $e\cdot g=g$ (the \emph{unit laws})
+    \item\label{monoid:ass-law} $g_1\cdot(g_2\cdot g_3)=(g_1\cdot g_2)\cdot g_3$ 
+         (the \emph{associativity law})
+    \end{enumerate}
+  \end{enumerate}
+ The property that $S$ is a set, the
+  unit laws, and the associativity law, are together known as the \emph{monoid laws}.
+\end{definition}
+
+
+  Building on the definition of a monoid, we may encode the type of abstract 
+  groups as follows. We let $S$ denote the underlying set, $e : S$ denote the unit, 
+  $\mu:S\to S\to S$ denote the multiplication operation 
+  $g\mapsto (h \mapsto g\cdot h)$, and $\iota : S \to S$ denote 
+  the inverse operation $g \mapsto g^{-1}$.  Using
+  that notation, we introduce names for the relevant propositions.
+  \begin{align*}
+    \mathrm{UnitLaws}(S,e,\mu)   & \defequi\prod_{g:S} (\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \\
+    \mathrm{AssocLaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \\
+    \mathrm{MonoidLaws}(S,e,\mu) & \defequi \isset{(S)} \times \mathrm{UnitLaws}(S,e,\mu) \times \mathrm{AssocLaw}(S,\mu{}) \\
+    \mathrm{InverseLaw}(S,e,\mu,\iota) & \defequi \prod_{g:S}(\mu(g)(\iota(g)) = e) \\
+    \mathrm{GroupLaws}(S,e,\mu,\iota) & \defequi \mathrm{MonoidLaws}(S,e,\mu) \times \mathrm{InverseLaw}(S,e,\mu,\iota)
+  \end{align*}
+
+\begin{definition}
+  \label{def:type-abstrgp}
+  The type of abstract groups is
+  \[
+    \typegroup^\abstr \defequi \sum_{S:\UU} \sum_{e:S}\sum_{\mu{}:S\to S\to S}
+    \sum_{\iota\colon S\to S} \mathrm{GroupLaws}(S,e,\mu,\iota).\qedhere
+  \]
+\end{definition}
+
+  Thus, following the convention introduced in \cref{rem:iterated-sums},
+  an abstract group $\mathscr G$ will be a quintuple of the form
+  $\mathscr G \jdeq (S,e,\mu,\iota,!)$.  For brevity, we will usually 
+  omit the proof of the properties from the display, since it's unique,
+  and write an abstract group as though it were a quadruple 
+  $\mathscr G \jdeq (S,e,\mu,\iota)$.
+
 
 \begin{remark}\label{rem:inverses-as-property}
   Instead of including the inverse operation as part
-  \ref{struc:inv-op} of the structure (including with the property
-  \ref{axiom:inv-law}), some authors assume the existence of inverses
-  by positing the following property.
-  \begin{enumerate}[start=5]
-    \item\label{axiom:mere-inverse} for all $g:S$ there exists an element
+  \ref{monoid:inv-op} of the structure (including the property
+  \ref{monoid:inv-law}), some authors assume the existence of inverses
+  by positing the property \ref{monoid:inv-law} below.
+  \begin{enumerate}[start=4]
+    \item\label{monoid:inv-op} A function $(\blank)^{-1}:S\to S$, 
+    the \emph{inverse operation}, satisfying:
+    \begin{enumerate}[start=3,label=(\alph*),ref=\ref{monoid:inv-op} (\alph*),resume*]
+    \item\label{monoid:inv-law} $g\cdot g^{-1} = e$ for all $g:S$ (the \emph{law of inverses}).
+    \end{enumerate}
+    \item\label{axiom:mere-inverse} For all $g:S$ there exists an element
     $h:S$ such that $e = g \cdot h$.
   \end{enumerate}
 
-  We will now compare \ref{axiom:mere-inverse} to \ref{struc:inv-op}.
+  We will now compare \ref{axiom:mere-inverse} to \ref{monoid:inv-op}.
   Property \ref{axiom:mere-inverse} contains the phrase ``there exists'', and thus its translation into type theory
   uses the quantifier $\exists$, as defined in \cref{sec:prop-trunc}.  Under this translation, property \ref{axiom:mere-inverse} does
   not immediately allow us to speak of ``the inverse of $g$''.
-  However, the following lemma shows that we can define an inverse operation as in \ref{struc:inv-op} from a witness of \ref{axiom:mere-inverse}
-  -- its proof goes by using the properties \ref{axiom:unit-laws} and \ref{axiom:ass-law} to prove that inverses are unique.  As a consequence,
+  However, the following lemma shows that we can define an inverse operation as in \ref{monoid:inv-op} from a witness of \ref{axiom:mere-inverse}
+  -- its proof goes by using the properties \ref{monoid:unit-laws} and \ref{monoid:ass-law} to prove that inverses are unique.  As a consequence,
   we \emph{can} speak ``the inverse of $g$''.
 \end{remark}
 
 \begin{lemma}%
   \label{lem:group-inv-operation}%
   Given a set $S$ together with $e$ and $\cdot$ as in
-  \cref{def:abstractgroup} satisfying the unit laws, the associativity
-  law, and property \ref{axiom:mere-inverse}, there is an ``inverse'' function
+  \cref{def:monoid} satisfying the unit laws, the associativity
+  law, and property \ref{axiom:mere-inverse}, we have a unique ``inverse'' function
   $S \to S$ having property \ref{axiom:inv-law} of \cref{def:abstractgroup}.
 \end{lemma}
 
@@ -68,40 +141,11 @@ identities types $a \eqto_A a'$ relate to groups.
   \end{displaymath}
   as required. Hence $\inv{\mu(g)}(e)$ is contractible, and we may define $g^{-1}$ to
   be the center of the contraction, for any $g:S$.
-  The function $g \mapsto g^{-1}$ satisfies the law of inverses \ref{axiom:inv-law}, as required.
+  The function $g \mapsto g^{-1}$ satisfies the law of inverses \ref{monoid:inv-law}, as required.
 \end{proof}
 
 %Note that the proof above also shows the other \emph{law of inverses}:
 %for all $g:S$ we have $g^{-1}\cdot g=e$. In exercise below.
-
-\begin{remark}
-  \label{rem:typemonoidabstrgp}
-  We may encode the type of abstract groups as follows. 
-  We let $S$ denote the underlying set, $e : S$ denote the unit, 
-  $\mu:S\to S\to S$ denote the multiplication operation 
-  $g\mapsto (h \mapsto g\cdot h)$, and $\iota : S \to S$ denote 
-  the inverse operation $g \mapsto g^{-1}$.  Using
-  that notation, we introduce names for the relevant propositions.
-  \begin{align*}
-    \mathrm{UnitLaws}(S,e,\mu)   & \defequi\prod_{g:S} (\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \\
-    \mathrm{AssocLaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \\
-    \mathrm{MonoidLaws}(S,e,\mu) & \defequi \isset{(S)} \times \mathrm{UnitLaws}(S,e,\mu) \times \mathrm{AssocLaw}(S,\mu{}) \\
-    \mathrm{InverseLaw}(S,e,\mu,\iota) & \defequi \prod_{g:S}(\mu(g)(\iota(g)) = e) \\
-    \mathrm{GroupLaws}(S,e,\mu,\iota) & \defequi \mathrm{MonoidLaws}(S,e,\mu) \times \mathrm{InverseLaw}(S,e,\mu,\iota)
-  \end{align*}
-  Now we define the type of abstract groups in terms of those propositions.
-  \[
-    \typegroup^\abstr \defequi \sum_{S:\UU} \sum_{e:S}\sum_{\mu{}:S\to S\to S}
-    \sum_{\iota\colon S\to S} \mathrm{GroupLaws}(S,e,\mu,\iota)
-  \]
-
-  Thus, following the convention introduced in \cref{rem:iterated-sums},
-  an abstract group $\mathscr G$ will be a quintuple of the form
-  $\mathscr G \jdeq (S,e,\mu,\iota,!)$.  For brevity, we will usually 
-  omit the proof of the properties from the display, since it's unique,
-  and write an abstract group as though it were a quadruple 
-  $\mathscr G \jdeq (S,e,\mu,\iota)$.
-\end{remark}
 
 \begin{remark}
   That the concept of an abstract group synthesizes the idea of symmetries
@@ -157,7 +201,7 @@ identities types $a \eqto_A a'$ relate to groups.
 \end{xca}
 
 \begin{remark}\label{rem:ee=e_coherence}
-  Without the demand that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the
+  Without the requirement that the underlying type of an abstract group or monoid is a set, life would be more complicated.  For instance, for the
   case when $g$ is $e$, the unit laws \ref{axiom:unit-laws} of \cref{def:abstractgroup} would provide \emph{two} (potentially different)
   identifications $e\cdot e \eqto e$, and we would have to separately assume that they agree.  This problem vanishes in the setup we adopt for
   \inftygps in \cref{sec:inftygps}.
