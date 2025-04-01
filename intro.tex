@@ -246,7 +246,7 @@ can be reached by doing the $90$\textdegree-rotation a few times,
 together with the fact that taking any loop four times reduces to not doing
 anything at all: they represent the \emph{cyclic group of order four}.
 
-A by-product of this line of thinking is the distinguished position of the circle. To express this it is convenient to give names to things: let $\base$ be the chosen base point in the circle and $\Sloop$ the loop winding once around the circle counterclockwise. Then a symmetry of a shape $x_0$ in $X$ is uniquely given by the image of $\Sloop $ under a function $\Sc\to X$ taking $\base$ to $x_0$. So,
+A by-product of this line of thinking is the distinguished position of the circle. To express this it is convenient to give names to things: let $\base$ (\ie a dot) be the chosen base point in the circle and $\Sloop$ the loop winding once around the circle counterclockwise. Then a symmetry of a shape $x_0$ in $X$ is uniquely given by the image of $\Sloop $ under a function $\Sc\to X$ taking $\base$ to $x_0$. So,
 \begin{quote}
   the study of symmetries is the study of (pointed) functions between types of things, with the circle being the type that gives you access to individual symmetries.
 \end{quote}
@@ -269,7 +269,7 @@ in the type of sets are
 uniquely given by one-to-one correspondences between these sets,
 commonly called \emph{bijections}.
 
-Now consider the set $\{1,2,3\}$. Then a symmetry of $\{1,2,3\}$ in the type of \MB{not needed: finite} sets amounts to the same thing as a symmetry of $\{1,2,3\}$ in the type of sets with three elements: a symmetry of $\{1,2,3\}$ will not ``pass through'' sets that have, say, five elements. Think of the type of finite sets as being the disjoint union of all the types of sets with $n$-elements, where $n=0,1,2,\dots$: if a symmetry is a loop it should not be allowed to jump between the type of sets with three elements and the type of sets with five elements.\marginnote{%
+Now consider the set $\{1,2,3\}$. Then a symmetry of $\{1,2,3\}$ in the type of finite sets amounts to the same thing as a symmetry of $\{1,2,3\}$ in the type of sets with three elements: a symmetry of $\{1,2,3\}$ will not ``pass through'' sets that have, say, five elements. Think of the type of finite sets as being the disjoint union of all the types of sets with $n$-elements, where $n=0,1,2,\dots$: if a symmetry is a loop it should not be allowed to jump between the type of sets with three elements and the type of sets with five elements.\marginnote{%
   Type of empty sets:\\
   \begin{tikzpicture}
     \draw plot [smooth cycle] coordinates {(0,0) (3,-.5) (3.5,1) (1,2)};
@@ -297,16 +297,68 @@ Now consider the set $\{1,2,3\}$. Then a symmetry of $\{1,2,3\}$ in the type of 
     \node at (1.5,-1.5) {$\vdots$};
   \end{tikzpicture}}
 
-In fact, \emph{any} type $X$ can be naturally divided into ``components'': each element $x_0$ in $X$ belongs to one and only one component and the one $x_0$ belongs to we call $X_{x_0}$, and the symmetries of $x_0$ in $X$ may be identified with the symmetries of $x_0$ in $X_{x_0}$. Hence from the perspective of symmetries of $x_0$ only the component containing it matters, and we confine our discussion to ``connected'' types of things, \ie those having just one component.
+In fact, \emph{any} type $X$ can be naturally divided into ``components'': each
+element $x_0$ in $X$ belongs to one and only one component, and the one $x_0$
+belongs to we call $\conncomp X {x_0}$, and the symmetries of $x_0$ in $X$ may
+be identified with the symmetries of $x_0$ in $\conncomp X {x_0}$. Hence from
+the perspective of symmetries of $x_0$ only the component containing it matters,
+and we confine our discussion to ``connected'' types of things, \ie those having
+just one component.
 
-The geometric intuition also points to the possibility of seemingly different symmetries being identified: when looping once around the circle it shouldn't matter ``how'' or ``how fast'' you do it. In the \emph{picture} of the abelian group on two letters ${\color{red}a}$ and ${\color{blue}b}$
-[here a picture of a torus with a base point $x_0$ and the two standard generators a and b (in color), together with a more frivolous loop (in pink) homotopic to a]
-you might think of a symmetries of $x_0$ as a {\color{pink}rubber band} confined to the circle and pinned to $x_0$. In the picture we've drawn such a {\color{pink}rubber band} which will contract to ${\color{red}a}$, and this contraction we consider as an \textbf{identification of the two symmetries}.
-In the language we adopt, this is hard-wired, and so our arguments are independent of any picture: pictures serve only as inspirations and are very helpful when trying to discover proofs.
-
-\marginnote{There's a subtle point -- which we probably should stay quiet about in an introduction, but which may be a source of confusion if brushed under the carpet -- that a priori there could have been ``several ways'' in which two symmetries should be identified. For many purposes this poses no problem, but we want to present a theory that mirrors the classical theory faithfully, and so restrict our ``types of things'' where there aren't multiple ways of identifying symmetries [the technical term - when we get that far will be ``pointed connected groupoids'']. This means that types like the sphere
-[picture of a sphere with a$ x_0$ on the red equator]
-are disallowed: there are fundamentally different ways of identifying the symmetry represented of $x_0$ by {\color{red}the equator} with the trivial symmetry: when thought of as a rubber band the {\color{blue}equator} can contract either over the North or the South poles (or more complicated ways). There's something called ``truncation'' which can fix any type to one of the desired sort where identifications of symmetries are unique.}%endmarginnote
+The geometric intuition also points to the possibility of seemingly different symmetries being identified: when looping once around the circle it shouldn't matter ``how'' or ``how fast'' you do it. Consider the picture of the abelian group on two letters ${\color{casred}a}$ and ${\color{casblue}b}$ from before, but now together with a more frivolous loop (in pink) homotopic to $a$:
+\begin{center}
+\begin{tikzpicture}
+  \useasboundingbox (-3,-1.5) rectangle (3,1.5);
+  \begin{scope}[xshift=2.4cm,yshift=.35cm,xscale=cos(25)]
+  \draw[casred!25] (0,0) arc (65:425:0.685);
+  \draw[casred,line cap=round] (0,0) arc (65:148:0.685);
+  \draw[casred] (0,0) arc (65:-55:0.685);
+  \end{scope}
+  \draw[orange] (2.4,0.35) .. controls ++(.1,-.5) and ++(.6,.3) .. (2,-1.12);
+  \draw[orange!25] (2,-1.12) .. controls ++(-.6,-.3) and ++(-.5,-.2) .. (1.21,-0.09);
+  \draw[orange] (1.21,-0.09) .. controls ++(.5,.2) and ++(-.2,-.2) .. (2.4,0.35);
+  \draw[casblue] (0,.35) ellipse (2.4 and 0.9);
+  \draw (0,0) ellipse (3 and 1.5);
+  \begin{scope}
+    \clip (0,-1.8) ellipse (3 and 2.5);
+    \draw (0,2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \begin{scope}
+    \clip (0,2.2) ellipse (3 and 2.5);
+    \draw (0,-2.2) ellipse (3 and 2.5);
+  \end{scope}
+  \node[dot] at (2.4,0.35) {};
+  \node (a) at (2.6,-.2) {$a$};
+  \node (b) at (0,1) {$b$};
+\end{tikzpicture}
+\end{center}
+You might think of a symmetries of $x_0$ as a rubber band confined to the circle
+and pinned to $x_0$. In the picture we've drawn such a rubber band (in orange)
+which can be deformed to $a$, and this deformation we consider as
+an \emph{identification of the two symmetries}.  In the language we adopt, this
+is hard-wired, and so our arguments are independent of any picture: pictures
+serve only as inspirations and are very helpful when trying to discover
+proofs.\footnote{There's a subtle point, which may be a source of
+  confusion if brushed under the carpet: a priori there could be ``several
+  ways'' in which two symmetries should be identified. For many purposes this
+  poses no problem, but we want to present a theory that mirrors the classical
+  theory faithfully, and so restrict our ``types of things'' where there aren't
+  multiple ways of identifying symmetries. The technical term -- when we get
+  that far will be ``pointed connected groupoids''. This means disallowing types
+  like the sphere:
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,0) circle (1);
+      \draw[casred] (0,0) ellipse (1 and .3);
+      \node[dot,label=right:$x_0$] at (1,0) {};
+    \end{tikzpicture}
+  \end{center}
+  There are fundamentally different ways of identifying the symmetry represented
+  of $x_0$ by the equator with the trivial symmetry: when thought of as a rubber
+  band the equator can contract either over the north or the south poles (or
+  more complicated ways). There's something called ``truncation'' which can fix
+  any type to one of the desired sort where identifications of symmetries are
+  unique.}%endfootnote
 
 Our use of univalent foundations has several advantages. Roughly, univalence is the assertion that two types are ``equivalent'' if and only if there is a ``path'' (called an ``identification'') between them in the (large) ``type of types''. In group theory, two groups share exactly the same properties if there is an ``isomorphism'' between them (an invertible homomorphism), and with univalent foundation this is manifested by the isomorphism corresponding to a path between the groups in the type of groups. Hence we can use this path to transport any theorem about one group to the other: the two groups are ``identified''. The power of univalence is hard to overstate; it will simplify many proofs and make many statements accessible that otherwise would have been out of reach.
 
@@ -321,8 +373,29 @@ and different identifications between them.
 For instance, when drawing images in perspective
 we identify planes in the scene with the image plane,
 not in a rigid Euclidean way, but
-rather via a perspectivity (see Fig.~?).
+rather via a perspectivity (see~\cref{fig:perspectivity}).
 This gives rise to projective geometry.
+\begin{marginfigure}
+  \begin{center}
+    \footnotesize
+    \begin{tikzpicture}
+      \node[dot,label=left:$O$] (O) at (0,0) {};
+      \node[dot,casred,label=below:$A$] (A) at (1,-.3) {};
+      \node[dot,casblue,label=below:$A'$] (Ap) at (2,-.6) {};
+      \node[dot,casred,label={[label distance=-1pt]-95:$B$}] (B) at (.8,.2) {};
+      \node[dot,casblue,label=right:$B'$] (Bp) at (2.4,.6) {};
+      \node[dot,casred,label=above:$C$] (C) at (1.05,.7) {};
+      \node[dot,casblue,label=above:$C'$] (Cp) at (2.1,1.4) {};
+      \draw[casred,fill=casred!25] (A.center) -- (B.center) -- (C.center) -- cycle;
+      \draw[casblue,fill=casblue!25] (Ap.center) -- (Bp.center) -- (Cp.center) -- cycle;
+      \draw[dashed] (O) -- (Ap.center);
+      \draw[dashed] (O) -- (Bp.center);
+      \draw[dashed] (O) -- (Cp.center);
+    \end{tikzpicture}
+  \end{center}
+  \caption{A perspectivity identifies the planes determined by the triangles $ABC$ and $A'B'C'$ in a way that doesn't preserve Euclidean distances or angles.}
+  \label{fig:perspectivity}
+\end{marginfigure}
 
 Does that mean that a plane from the point of view of Euclidean
 geometry is not the same as a plane from the point of view of
@@ -341,22 +414,20 @@ The collection of self-identifications (self-transformations) of a given object 
 Group theory emerged from many different directions in the latter half of the 19\th century.
 Lagrange initiated the study of the invariants under permutations
 of the roots of a polynomial equation $f(x)=0$,
-which culminated in the celebrated work of Abel and Galois.
+which culminated in the celebrated work of Abel and Galois,
+proving the unsolvability of general quintic (and higher degree)
+polynomials by radicals.
 In number theory, Gauss had made detailed studies of modular arithmetic,
-proving for instance that the group of units of 
-\MB{(p := n)} $\ZZ/n\ZZ$ is cyclic \MB{for $n=...$, leave out this sentence?}.
+proving for instance that the group of units of
+$\ZZ/n\ZZ$ is cyclic precisely when $n$ is $1$, $2$, $4$, $p^k$ or $2p^k$, where $p$ is an odd prime and $k > 0$.
 Klein was bringing order to geometry by considering groups of transformation,
 while Lie was applying group theory in analysis to the study of differential equations.
 
 Galois was the first to use the word ``group'' in a technical sense,
 speaking of collections of permutations closed under composition.
-He realized that the existence of resolvent equation is equivalent
+He realized that the existence of a resolvent equation is equivalent
 to the existence of a normal subgroup of prime index
 in the group of the equation.
-
-
-REMEMBER: a section on planar tessellations [need help here]
-
 
 \subsection{Who is this book for?}
 \label{sec:who}
@@ -371,62 +442,14 @@ The first audience may have become our predominant target as the book has progre
 %
 %(still being developed)..}
 
-
-
-
-
-
-OLD
-
-This book is about symmetry and its many manifestations in mathematics.
-
-Groupoids vs groups.
-The type of all squares in a euclidean plane form a groupoid.
-It is connected,
-because between any two there exist identifications between them.
-But there is no canonical identification.
-
-When we say ``the symmetry group of the square'',
-we can mean two things:
-1) the symmetry group of a particular square;
-this is indeed a group,
-or 2) the connected groupoid of all squares;
-this is a ``group up to conjugation''.
-
-Vector spaces. Constructions and fields. Descartes and cartesian geometry.
-
-Klein's EP:
-\begin{quote}
-  Given a manifold and a transformation group acting on it,
-  to investigate those properties of figures on that manifold
-  that are invariant under transformations of that group.
-\end{quote}
-and
-\begin{quote}
-  Given a manifold, and a transformation group acting on it,
-  to study its \emph{invariants}.
-\end{quote}
-Invariant theory had previously been introduced in algebra
-and studied by Clebsch and Gordan.
-
-(Mention continuity, differentiability, analyticity and Hilbert's 5\th problem?)
-
-Any finite automorphism group of the Riemann sphere is conjugate to a
-rotation group (automorphism group of the Euclidean sphere).
-[Dependency: diagonalizability] (Any complex representation of a
-finite group is conjugate to a unitary representation.)
-
-% Groups up to conjugation: $\Gal(\bar\Q/Q)$?
+TBD
 
 All of mathematics is a tale, not about groups,
 but about $\infty$-groupoids.
 However, a lot of the action happens already with groups.
 
-\newpage
-
 \section*{Glossary of coercions}
 
-MOVE TO BETTER PLACE
 Throughout this book we will use the following coercions to make the text more readable.
 \begin{itemize}[noitemsep]
 \item If $X$ is the pointed type $(A,a)$, then $x:X$ means $x:A$.
@@ -440,11 +463,7 @@ equivalence from $A$ to $B$ (also only as function).
 \item If $X$ is $(A,a,\ldots)$ with $a:A$, then $\pt_X$ and even just $\pt$ mean $a$.
 \end{itemize}
 
-\bigskip
-
 \section*{How to read this book}
-
-\ldots
 
 \noindent\emph{A word of warning.}\enspace
 We include a lot of figures to make it easier to follow the material.
@@ -459,15 +478,14 @@ So clear, in fact, that you could go and convince a proof assistant,
 should you so desire.
 
 \section*{Acknowledgement}
+
 The authors acknowledge the support of the Centre for Advanced Study (CAS)
 at the Norwegian Academy of Science and Letters
 in Oslo, Norway, which funded and hosted the research project Homotopy
-Type Theory and Univalent Foundations during the academic year 2018/19.
-
-
+Type Theory and Univalent Foundations during the academic year 2018/19,
+as well as the CAS Alumni Fellowship, which financed several meetings and gatherings instrumental to getting the book closer to its final form.
 
 %%% Local Variables:
 %%% mode: latex
-%%% fill-column: 144
 %%% TeX-master: "book"
 %%% End:
