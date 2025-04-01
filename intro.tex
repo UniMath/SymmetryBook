@@ -310,12 +310,14 @@ The geometric intuition also points to the possibility of seemingly different sy
 \begin{tikzpicture}
   \useasboundingbox (-3,-1.5) rectangle (3,1.5);
   \begin{scope}[xshift=2.4cm,yshift=.35cm,xscale=cos(25)]
-  \draw[casred,line cap=round] (0,0) arc (65:148:0.7);
-  \draw[casred] (0,0) arc (65:-40:0.7);
+  \draw[casred!25] (0,0) arc (65:425:0.685);
+  \draw[casred,line cap=round] (0,0) arc (65:148:0.685);
+  \draw[casred] (0,0) arc (65:-55:0.685);
   \end{scope}
+  \draw[orange] (2.4,0.35) .. controls ++(.1,-.5) and ++(.6,.3) .. (2,-1.12);
+  \draw[orange!25] (2,-1.12) .. controls ++(-.6,-.3) and ++(-.5,-.2) .. (1.21,-0.09);
+  \draw[orange] (1.21,-0.09) .. controls ++(.5,.2) and ++(-.2,-.2) .. (2.4,0.35);
   \draw[casblue] (0,.35) ellipse (2.4 and 0.9);
-  \draw[pink] (2.4,0.35) .. controls ++(.1,-.5) and ++(.2,.4) .. (2,-1.12);
-  \draw[pink] (1.2,0.1) .. controls ++(.1,.4) and ++(-.1,.5) .. (2.4,0.35);
   \draw (0,0) ellipse (3 and 1.5);
   \begin{scope}
     \clip (0,-1.8) ellipse (3 and 2.5);
@@ -331,15 +333,32 @@ The geometric intuition also points to the possibility of seemingly different sy
 \end{tikzpicture}
 \end{center}
 You might think of a symmetries of $x_0$ as a rubber band confined to the circle
-and pinned to $x_0$. In the picture we've drawn such a rubber band (in pink)
+and pinned to $x_0$. In the picture we've drawn such a rubber band (in orange)
 which can be deformed to $a$, and this deformation we consider as
 an \emph{identification of the two symmetries}.  In the language we adopt, this
 is hard-wired, and so our arguments are independent of any picture: pictures
-serve only as inspirations and are very helpful when trying to discover proofs.
-
-\marginnote{There's a subtle point -- which we probably should stay quiet about in an introduction, but which may be a source of confusion if brushed under the carpet -- that a priori there could have been ``several ways'' in which two symmetries should be identified. For many purposes this poses no problem, but we want to present a theory that mirrors the classical theory faithfully, and so restrict our ``types of things'' where there aren't multiple ways of identifying symmetries [the technical term - when we get that far will be ``pointed connected groupoids'']. This means that types like the sphere
-[picture of a sphere with a$ x_0$ on the red equator]
-are disallowed: there are fundamentally different ways of identifying the symmetry represented of $x_0$ by {\color{red}the equator} with the trivial symmetry: when thought of as a rubber band the {\color{blue}equator} can contract either over the North or the South poles (or more complicated ways). There's something called ``truncation'' which can fix any type to one of the desired sort where identifications of symmetries are unique.}%endmarginnote
+serve only as inspirations and are very helpful when trying to discover
+proofs.\footnote{There's a subtle point, which may be a source of
+  confusion if brushed under the carpet: a priori there could be ``several
+  ways'' in which two symmetries should be identified. For many purposes this
+  poses no problem, but we want to present a theory that mirrors the classical
+  theory faithfully, and so restrict our ``types of things'' where there aren't
+  multiple ways of identifying symmetries. The technical term -- when we get
+  that far will be ``pointed connected groupoids''. This means disallowing types
+  like the sphere:
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,0) circle (1);
+      \draw[casred] (0,0) ellipse (1 and .3);
+      \node[dot,label=right:$x_0$] at (1,0) {};
+    \end{tikzpicture}
+  \end{center}
+  There are fundamentally different ways of identifying the symmetry represented
+  of $x_0$ by the equator with the trivial symmetry: when thought of as a rubber
+  band the equator can contract either over the north or the south poles (or
+  more complicated ways). There's something called ``truncation'' which can fix
+  any type to one of the desired sort where identifications of symmetries are
+  unique.}%endfootnote
 
 Our use of univalent foundations has several advantages. Roughly, univalence is the assertion that two types are ``equivalent'' if and only if there is a ``path'' (called an ``identification'') between them in the (large) ``type of types''. In group theory, two groups share exactly the same properties if there is an ``isomorphism'' between them (an invertible homomorphism), and with univalent foundation this is manifested by the isomorphism corresponding to a path between the groups in the type of groups. Hence we can use this path to transport any theorem about one group to the other: the two groups are ``identified''. The power of univalence is hard to overstate; it will simplify many proofs and make many statements accessible that otherwise would have been out of reach.
 
@@ -354,8 +373,29 @@ and different identifications between them.
 For instance, when drawing images in perspective
 we identify planes in the scene with the image plane,
 not in a rigid Euclidean way, but
-rather via a perspectivity (see Fig.~?).
+rather via a perspectivity (see~\cref{fig:perspectivity}).
 This gives rise to projective geometry.
+\begin{marginfigure}
+  \begin{center}
+    \footnotesize
+    \begin{tikzpicture}
+      \node[dot,label=left:$O$] (O) at (0,0) {};
+      \node[dot,casred,label=below:$A$] (A) at (1,-.3) {};
+      \node[dot,casblue,label=below:$A'$] (Ap) at (2,-.6) {};
+      \node[dot,casred,label={[label distance=-1pt]-95:$B$}] (B) at (.8,.2) {};
+      \node[dot,casblue,label=right:$B'$] (Bp) at (2.4,.6) {};
+      \node[dot,casred,label=above:$C$] (C) at (1.05,.7) {};
+      \node[dot,casblue,label=above:$C'$] (Cp) at (2.1,1.4) {};
+      \draw[casred,fill=casred!25] (A.center) -- (B.center) -- (C.center) -- cycle;
+      \draw[casblue,fill=casblue!25] (Ap.center) -- (Bp.center) -- (Cp.center) -- cycle;
+      \draw[dashed] (O) -- (Ap.center);
+      \draw[dashed] (O) -- (Bp.center);
+      \draw[dashed] (O) -- (Cp.center);
+    \end{tikzpicture}
+  \end{center}
+  \caption{A perspectivity identifies the planes determined by the triangles $ABC$ and $A'B'C'$ in a way that doesn't preserve Euclidean distances or angles.}
+  \label{fig:perspectivity}
+\end{marginfigure}
 
 Does that mean that a plane from the point of view of Euclidean
 geometry is not the same as a plane from the point of view of
@@ -374,16 +414,18 @@ The collection of self-identifications (self-transformations) of a given object 
 Group theory emerged from many different directions in the latter half of the 19\th century.
 Lagrange initiated the study of the invariants under permutations
 of the roots of a polynomial equation $f(x)=0$,
-which culminated in the celebrated work of Abel and Galois.
+which culminated in the celebrated work of Abel and Galois,
+proving the unsolvability of general quintic (and higher degree)
+polynomials by radicals.
 In number theory, Gauss had made detailed studies of modular arithmetic,
-proving for instance that the group of units of 
-\MB{(p := n)} $\ZZ/n\ZZ$ is cyclic \MB{for $n=...$, leave out this sentence?}.
+proving for instance that the group of units of
+$\ZZ/n\ZZ$ is cyclic precisely when $n$ is $1$, $2$, $4$, $p^k$ or $2p^k$, where $p$ is an odd prime and $k > 0$.
 Klein was bringing order to geometry by considering groups of transformation,
 while Lie was applying group theory in analysis to the study of differential equations.
 
 Galois was the first to use the word ``group'' in a technical sense,
 speaking of collections of permutations closed under composition.
-He realized that the existence of resolvent equation is equivalent
+He realized that the existence of a resolvent equation is equivalent
 to the existence of a normal subgroup of prime index
 in the group of the equation.
 
