@@ -283,12 +283,12 @@ Given an abstract group ${\agp G}\jdeq(S,e,\mu,\iota)$, a \emph{$\agp G$-set}%
 is a set $\mathcal X$ together with a homomorphism
 $\agp G\to\abstr(\Sigma_{\mathcal X})$
 from $\agp G$ to the (abstract) permutation group of $\mathcal X$:
-$$\absGSet\defequi \sum_{\mathcal X:\Set}\Hom_{\abstr}({\agp G},\abstr(\Sigma_{\mathcal X})).$$
+$$\absGSet\defequi \sum_{\mathcal X:\Set}\absHom({\agp G},\abstr(\Sigma_{\mathcal X})).$$
 
 The \emph{principal ${\agp G}$-torsor} $\absprtor{\agp G}$ is the ${\agp G}$-set consisting of the underlying set $S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
-$$\typeabstor{\agp G}\defequi\sum_{S:\Set_{\agp G}^{\abstr}}\Trunc{\absprtor{\agp G} \eqto S}.$$
+$$\typeabstor{\agp G}\defequi\sum_{S:\absGSet}\Trunc{\absprtor{\agp G} \eqto S}.$$
 \end{definition}
 \begin{example}
   If $G$ is a group we can unravel the definition and see that an $\abstr(G)$-set consists of
@@ -394,7 +394,7 @@ $$\abstr:\typegroup\to\typegroup^{\abstr}$$ is an equivalence.
 Now that we know that the type of groups is identical to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.
 
 They do, and we provide two independent and somewhat different arguments.  Translating from group homomorphisms to abstract group homomorphisms is easy: if $G$ and $H$ are groups, then we defined
-$$\abstr:\Hom(G,H)\to\Hom^{\abstr}(\abstr(G),\abstr(H))$$
+$$\abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))$$
 in \cref{def:abstrisfunctor} as the function which takes a homomorphism, aka a pointed map $f=(\Bf_\div,p_f):\BG\ptdto\BH$ to the induced map of identity types
 $$\US f\defequi \mathrm{ad}_{p_f}\ap{\Bf_\div}:\USymG\to\USymH$$
  together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:abstrisfunctor}.
@@ -411,7 +411,7 @@ The statement we are after is
 \begin{lemma}
   \label{lem:homomabstrconcr}
   If $G$ and $H$ are groups, then
-$$\abstr:\Hom(G,H)\to\Hom^{\abstr}(\abstr(G),\abstr(H))$$
+$$\abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))$$
 is an equivalence.
 \end{lemma}
 and the next two subsections offer two proofs.
@@ -427,11 +427,11 @@ Here we elaborate the general case.
 
 \begin{proof}
   Suppose we are given an abstract group homomorphism
-$$f:\Hom^{\abstr}(\abstr(G),\abstr(H))$$
+$$f:\absHom(\abstr(G),\abstr(H))$$
 and we explain how to build a map $g:\BG_\div \rightarrow \BH_\div$ with
 a path $p:\shape_H = g(\shape_G)$ such that $p f(\omega) = g(\omega) p$
 for all $\omega:\shape_G = \shape_G$ (so that $g$ is a ``delooping'' of $f$, that is, $f=\abstr(g)$).
-\marginnote{We will thus have displayed a map $\mathrm{deloop}:\Hom^{\abstr}(\abstr(G),\abstr(H))\to\Hom(G,H)$ with $\abstr\,\mathrm{deloop}=\refl{}$. We leave it to the reader to prove that $\mathrm{deloop}\,\abstr=\refl{}$. }
+\marginnote{We will thus have displayed a map $\mathrm{deloop}:\absHom(\abstr(G),\abstr(H))\to\Hom(G,H)$ with $\abstr\,\mathrm{deloop}=\refl{}$. We leave it to the reader to prove that $\mathrm{deloop}\,\abstr=\refl{}$. }
 
 To get an idea of our strategy, let us assume the problem solved. The map $g:\BG_\div\rightarrow \BH_\div$
 will then send any path $\alpha:{\shape_G} = x$ to a path $g(\alpha):g({\shape_G}) = g(x)$
@@ -557,7 +557,7 @@ The second approach to \cref{lem:homomabstrconcr} is as follows:
 $$\pathsp{}:\Hom(G,H)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
 $$
 Consider the map
-$$A:((\typetorsor_G,\princ G))\to_*(\typetorsor_H,\princ H)\to \Hom^{\abstr}(\abstr(G),\abstr(H))$$
+$$A:((\typetorsor_G,\princ G))\to_*(\typetorsor_H,\princ H)\to \absHom(\abstr(G),\abstr(H))$$
 given by letting $A(f,p)$ be the composite
 $$\xymatrix{\USymG\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
   \USymH\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
@@ -569,12 +569,12 @@ $$\xymatrix{\USymG\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
 are done if we show that $A$ is an equivalence.
 \marginnote{The reason to complicate $\abstr$ this way is that it gets easier to write out the inverse function.}
 
-If $(\phi,!):\Hom^{\abstr}(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{rem:inducedGsetfromabstracthomomorphisms} and the identity $\eta_\phi:\phi_*\princ G=\princ H$.
+If $(\phi,!):\absHom(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{rem:inducedGsetfromabstracthomomorphisms} and the identity $\eta_\phi:\phi_*\princ G=\princ H$.
 Let
-$$B: \Hom^{\abstr}(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)$$
+$$B: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)$$
 be given by $B(\phi,!)=(\phi_*X,\eta_\phi)$
 
-We show that $A$ and $B$ are inverse equivalences.  Given an abstract group homomorphism $(\phi,!):\Hom^{\abstr}(\abstr(G),\abstr(H))$, then $AB(\phi,!)$ has as underlying set map
+We show that $A$ and $B$ are inverse equivalences.  Given an abstract group homomorphism $(\phi,!):\absHom(\abstr(G),\abstr(H))$, then $AB(\phi,!)$ has as underlying set map
 $$\xymatrix{\USymG\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
   \USymH\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
   (\princ G=\princ G)\ar[r]^-{\phi_*}&
@@ -586,12 +586,12 @@ and if we start with a $g:\USymG$, then $\pathsp{}^G$ sends it to $\pathsp g^G\o
 
 \section{Actions}
 \label{sec:Gsetsabstrconcr}
-\marginnote{Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-set is
-  $$\Set_{\abstr(G)}^{\abstr}\defequi \sum_{\mathcal X:\Set}\Hom_{\abstr}({\abstr(G)},\abstr(\Sigma_{\mathcal X})).$$}
+\marginnote{Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-sets is
+  $$\absGSet[\abstr(G)]\defequi \sum_{\mathcal X:\Set}\absHom({\abstr(G)},\abstr(\Sigma_{\mathcal X})).$$}
 
 Given a group $G$ it should by now come as no surprise that the type of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
 According to \cref{lem:homomabstrconcr}
-$$\abstr:\Hom(G,\Sigma_{\mathcal X})\to\Hom^{\abstr}(\abstr(G),\abstr(\Sigma_{\mathcal X}))$$
+$$\abstr:\Hom(G,\Sigma_{\mathcal X})\to\absHom(\abstr(G),\abstr(\Sigma_{\mathcal X}))$$
 is an equivalence, where the group $\Sigma_{\mathcal X}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\mathcal X$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\mathcal X})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\mathcal X=F(\shape_G))$.  Finally,
 $$\mathrm{pr}:\sum_{\mathcal X}\sum_{F:\BG_\div\to\Set}(\mathcal X=F(\shape_G))\we
 (\BG_\div\to\Set),\quad \mathrm{pr}(\mathcal X,F,p)\defequi F
@@ -601,9 +601,9 @@ Backtracking these equivalences we see that we have established
 \begin{lemma}
   \label{lem:actionsconcreteandabstract}
   Let $G$ be a group.  Then the map
-  $$\ev_{\shape_G}:\GSet\to\Set^{\abstr}_{\abstr(G)},\qquad \ev_{\shape_G}(X)\defequi(X(\shape_G),a_X)
+  $$\ev_{\shape_G}:\GSet\to\absGSet[\abstr(G)],\qquad \ev_{\shape_G}(X)\defequi(X(\shape_G),a_X)
 $$
-is an equivalence, where the homomorphism $a_X:\Hom^{\abstr}(\abstr(G), \abstr(\Sigma_{X(\shape_G)}))$ is given by transport $X:\USymG\defequi(\shape_G=\shape_G)\to (X(\shape_G)=X(\shape_G))$.
+is an equivalence, where the homomorphism $a_X:\absHom(\abstr(G), \abstr(\Sigma_{X(\shape_G)}))$ is given by transport $X:\USymG\defequi(\shape_G=\shape_G)\to (X(\shape_G)=X(\shape_G))$.
 \end{lemma}
 If $X$ is a $G$-set, $g:\USymG$ and $x:X(\shape_G)$, we seek forgiveness for writing $g\cdot x:X(\shape_G)$ instead of $\cast(a_X(g))(x)$.\footnote{and I ask forgiveness for strongly disliking the use of ``$\cast$'' as a name for some tacitly understood map!}
 
@@ -613,9 +613,9 @@ If $X$ is a $G$-set, $g:\USymG$ and $x:X(\shape_G)$, we seek forgiveness for wri
 $$\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y=F(\shape_H)).$$
 
 What abstract $\abstr(G)$-set does this correspond to?
-In particular, under the equivalence $\abstr:\Hom(H,G)\to\Hom^{\abstr}(\abstr(H),\abstr(G))$, what is the corresponding action of $\abstr(G)$ on the abstract homomorphisms?
+In particular, under the equivalence $\abstr:\Hom(H,G)\to\absHom(\abstr(H),\abstr(G))$, what is the corresponding action of $\abstr(G)$ on the abstract homomorphisms?
 
-The answer is that $g:\USymG$ acts on $\Hom^{\abstr}(\abstr(H),\abstr(G))$ by postcomposing with conjugation $\conj^g$ by $g$ as defined in \cref{ex:conjhomo}.
+The answer is that $g:\USymG$ acts on $\absHom(\abstr(H),\abstr(G))$ by postcomposing with conjugation $\conj^g$ by $g$ as defined in \cref{ex:conjhomo}.
 
 Let us spell this out in some detail:
 If $(F,p):\Hom(H,G)(\shape_G)\defequi
@@ -629,7 +629,7 @@ $q\mapsto(p\,g^{-1})^{-1}F^=(q)\,(p\,g^{-1})=g\,(p^{-1}F^=(q)\,p)\,g^{-1}$, or i
 \end{example}
 For reference we list the conclusion of this example as a lemma:
 \begin{lemma}\label{lem:abstrandconj}
-  If $H$ and $G$ are groups, then the equivalence of \cref{lem:actionsconcreteandabstract} sends the $G$-set $\Hom(H,G)$ to the $\abstr(G)$-set $\Hom^{\abstr}(\abstr(H),\abstr(G))$ with action given by postcomposing with conjugation by elements of $\abstr(G)$.
+  If $H$ and $G$ are groups, then the equivalence of \cref{lem:actionsconcreteandabstract} sends the $G$-set $\Hom(H,G)$ to the $\abstr(G)$-set $\absHom(\abstr(H),\abstr(G))$ with action given by postcomposing with conjugation by elements of $\abstr(G)$.
 \end{lemma}
 
 If $f:\Hom(G,G')$ is a homomorphism, then precomposition with $\Bf:\BG\to \BG'$ defines a map $$f^*:(G'\text{-}\Set)\to(G\text{-}\Set).$$
@@ -678,7 +678,7 @@ commutes.  Likewise, (using transport along the identity $p_f:\shape_{G'}=f(\sha
 \begin{remark}
   \label{rem:inducedGsetfromabstracthomomorphisms} \MB{From 5.5, move to fit.}
   Notice that our construction of the induced $G$-set works equally well for
-  a homomorphism of abstract groups $\phi:\Hom^{\abstr}(\abstr(G),\abstr(H))$:
+  a homomorphism of abstract groups $\phi:\absHom(\abstr(G),\abstr(H))$:
   if $X:\BG\to\Set$ is a $G$-set, then we can
   define the $H$-set $\phi_*X:\BH\to\Set$ by
   \[
