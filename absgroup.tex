@@ -264,10 +264,10 @@ As a consequence, we can speak of ``\emph{the} inverse of $g$''.
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.
 That is, in total analogy, we define the torsors for an abstract group,
-and it will then be a relative simple matter to show that the processes of
+and it will then be a relative simple matter to show that the constructions of
 \begin{enumerate}
 \item forming the abstract group of a group and
-\item taking the group represented by the torsors of an abstract group
+\item taking the group classified by the torsors of an abstract group
 \end{enumerate}
  are inverse to each other.
 \marginnote{%
@@ -280,18 +280,27 @@ Consequently, all we do in this section is set-based.
 Given an abstract group ${\agp G}\jdeq(S,e,\mu,\iota)$, a \emph{$\agp G$-set}%
 \glossary(GSet){\protect{$\absGSet$}}{type of $\agp G$-sets}
 \index{GSet@$\agp G$-set (of abstract group)}
-is a set $\mathcal X$ together with a homomorphism
-$\agp G\to\abstr(\Sigma_{\mathcal X})$
-from $\agp G$ to the (abstract) permutation group of $\mathcal X$:
-$$\absGSet\defequi \sum_{\mathcal X:\Set}\absHom({\agp G},\abstr(\Sigma_{\mathcal X})).$$
+is a set $S$ together with a homomorphism
+$\agp G\to\abstr(\Sigma_S)$
+from $\agp G$ to the abstract permutation group of $S$.
+Thus the type of $\agp G$-sets is 
+$$\absGSet\defequi \sum_{S:\Set}\absHom({\agp G},\abstr(\Sigma_{S})).$$
 
-The \emph{principal ${\agp G}$-torsor} $\absprtor{\agp G}$ is the ${\agp G}$-set consisting of the underlying set $S$ together with the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying function of sets $S\mapsto (S=S)$ given by sending $g:S$ to $\mathrm{ua}(s\mapsto s\cdot g^{-1})$.
+The \emph{principal ${\agp G}$-torsor} $\absprtor$ is the 
+${\agp G}$-set consisting of the underlying set $S$ together with 
+the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying 
+function $S\to (S=S)$ given by sending $g:S$ to $(s\mapsto s\cdot g^{-1})$.
 
 The type of \emph{${\agp G}$-torsors} is
-$$\typeabstor{\agp G}\defequi\sum_{S:\absGSet}\Trunc{\absprtor{\agp G} \eqto S}.$$
+$$\typeabstor\defequi\sum_{\absSetvar:\absGSet}
+  \Trunc{\absprtor \eqto \absSetvar}.$$
 \end{definition}
 \begin{example}
-  If $G$ is a group we can unravel the definition and see that an $\abstr(G)$-set consists of
+  Given a group $G$, recall from \cref{lem:idtypesgiveabstractgroups}
+  that the abstract group is $\abstr(G)\jdeq(\USymG,e_G,\cdot)$ 
+  with $\USymG\jdeq(\sh_G\eqto\sh_G)$ and $e_G\jdeq\refl{\sh_G}$,
+  and $\cdot$ path composition.
+  Unravelling the definition, we see that an $\abstr(G)$-set consists of
   \begin{enumerate}
   \item a set $S$,
   \item a function $f:\USymG\to (S\eqto S)$ such that
@@ -300,9 +309,14 @@ $$\typeabstor{\agp G}\defequi\sum_{S:\absGSet}\Trunc{\absprtor{\agp G} \eqto S}.
   \end{enumerate}
 \end{example}
 
-
-To help reading the coming proofs we introduce some notation that is redundant, but may aid the memory in cluttered situations:  Let $x,y,z$ be elements in some type, then
-\marginnote{We recognize $\preinv$ from \cref{lem:pathsptransportiseq} as the induced map of identity types $\pathsp{}\colon (y\eqto z)\to(\pathsp y\eqto \pathsp z)$ evaluated at $x$, while post-composition $\post$ is transport in the family $\pathsp x$.}
+To help reading the coming proofs we introduce some notation that is
+redundant, but may aid the memory in cluttered situations.
+Let $x,y,z$ be elements in some type, then define:%
+\footnote{We recognize $\preinv$ from \cref{lem:pathsptransportiseq}
+as the induced map of identity types $\pathsp{\blank}\colon (y\eqto z)
+\to(\pathsp y \eqto \pathsp z)$, followed by evaluation at $x$.
+Post-composition $\post$ is transport in the family $\pathsp x$,
+while $\preinv$ is precomposition by the inverse of its argument.}
 \begin{align*}
 %  \pre:(x\eqto y)\to ((y\eqto z)\eqto (x\eqto z)),\qquad&\pre(q)(p)\defequi pq\\
   \preinv:(y\eqto x)\to ((y\eqto z)\eqto (x\eqto z)),\quad&\preinv(q)(p)\defequi\pathsp qp\defequi pq^{-1}\\
@@ -312,18 +326,29 @@ To help reading the coming proofs we introduce some notation that is redundant, 
 
 
 \begin{example}\label{ex:qG}
-  If $G$ is a group, then for any $x:\BG$ the principal $G$-torsor \emph{evaluated at $x$}, \ie the set $\princ G(x)\defequi(\shape_G\eqto x)$, has a natural structure of an $\abstr(G)$-set by means of
-  $$\preinv:\USymG\to ((\shape_G\eqto x)\eqto (\shape_G\eqto x))$$ and the fact that $\preinv(e_G)\defequi\refl{\shape_G=x}$ and that for $p,q:\USymG$ we have that
-  \marginnote{\ie if $r\colon \shape_G=x$ we have that
-$\preinv(p\, q)(r)=r(p\,q)^{-1}=r\,q^{-1}p^{-1}=\preinv(p)\preinv(q)(r)$  -- demonstrating why we chose $\preinv$: without the inverse this would have gone badly wrong.}
-  $$\preinv(p\,q)=\preinv(p)\preinv(q).$$
+  Given a group $G$, then for any $x:\BG$ the principal $G$-torsor
+  \emph{evaluated at $x$}, \ie the set $\princ G(x)\jdeq (\shape_G\eqto x)$,
+  has a natural structure of an $\abstr(G)$-set by means of
+  $$\preinv:\USymG\to ((\shape_G\eqto x)\eqto (\shape_G\eqto x)).$$
+  Indeed, $\preinv$ is an abstract homomorphism 
+  since $\preinv(e_G)\jdeq\refl{\shape_G\eqto x}$ and 
+  for $p,q:\USymG$ we have that $\preinv(p\,q)=\preinv(p)\preinv(q)$.% 
+  \footnote{For any $r\colon \shape_G\eqto x$ we have that
+  $\preinv(p\, q)(r)=r\,(p\,q)^{-1}=r\,q^{-1} p^{-1}=
+  \preinv(p)(\preinv(q)(r))$. This explains the definition of $\preinv$:
+  without the inverse this would have gone badly wrong.}
 
+  Furthermore, for any $x:\BG$, the $\abstr(G)$-set 
+  $(\shape_G\eqto x,\preinv,!)$ is an $\abstr(G)$-torsor.
+  Since this is a proposition and $\BG$ is connected, it suffices
+  to verify this for $x\jdeq\sh_G$, for which it is obvious.
 
-That this $\abstr(G)$-set is an $\abstr(G)$-torsor then follows since $\BG$ is connected (any $\shape_G=x$ will serve as a proof of $(\shape_G=x,\preinv,!)=\absprtor{\abstr(G)}$).
+{\large cursor}
 
-Though it sounded like we made a choice ending up with $\preinv$; we really didn't -- it is precisely what happens when you abstract the homomorphism $G\to\Sigma_{\princ G(x)}$:
+  Though it looked like we made a choice ending up with $\preinv$,
+  in fact we really didn't -- it is precisely what happens when you abstract the homomorphism $G\to\Sigma_{\princ G(x)}$:
 you get the function of identity types
-$$\USymG\to (\princ G(x)=\princ G(x))$$
+$$\USymG\to (\princ G(x)\eqto \princ G(x))$$
 which by the very definition of transport for $\princ G$ is $\preinv$.
 \end{example}
 
