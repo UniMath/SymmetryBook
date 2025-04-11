@@ -2,8 +2,9 @@
 \label{ch:absgroup}
 
 \section{Brief overview of the chapter}
-Recall from \cref{sec:identity-type-as-abstract} the definition of an abstract group
-and how to obtain an abstract group from a concrete one. In this chapter we will 
+Recall from \cref{sec:identity-type-as-abstract} the definition of an 
+abstract group and how to obtain an abstract group from a concrete one. 
+In this chapter we will 
 implement an inverse construction, how to obtain a (concrete) group from
 an abstract one, in \cref{sec:Gsetforabstract}. Likewise, in \cref{sec:homabsisconcr},
 we show how to obtain a (concrete) homomorphism from an abstract one.
@@ -12,13 +13,19 @@ Of course this is not a reason to stop here, but to continue
 finding out which parts of group theory benefit from the concrete approach.
 Just to mention a few we have seen already: 
 the conceptual simplicity of homomorphisms being pointed maps,
-actions being maps from the classifying type to $\Set$, and the generalizations
-to \inftygps indicated in \cref{ch:actions}.}
+actions being maps from the classifying type to $\Set$, 
+and the generalizations to \inftygps indicated in \cref{ch:actions}.}
 it doesn't matter whether
 one develops group theory on the concrete or on the abstract level.
 
-Before we implement the above constructions, we first introduce in \cref{sec:monoids}
-a simpler structure, called monoid, of which abstract groups are a special case.
+Before we implement the above constructions, 
+we first introduce in \cref{sec:monoids} a simpler structure, 
+called monoid, of which abstract groups are a special case.\footnote{%
+One could advocate for the name `abstract monoid' here, were it not the
+case that we have no concrete analogue for monoids in our setting.
+The reason is the symmetry of the identity types.}
+We then define in \cref{sec:abshom} the notion of homomorphism for
+abstract groups.
 
 After groups and homomorphism, it is natural to continue to group actions,
 in \cref{sec:Gsetsabstrconcr}, and again relate the abstract to the concrete.
@@ -31,11 +38,12 @@ identities types $a \eqto_A a'$ relate to groups.
 
   A monoid is a collection of data consisting only of \ref{struc:under-set}, 
   \ref{struc:unit}, and \ref{struc:mult-op} from the list in
-  \cref{def:abstractgroup}. In other words, the existence of inverses is not assumed.
+  \cref{def:abstractgroup}.
+  In other words, the existence of inverses is not assumed.
   For convenience we reproduce the shortened list here.
 
 \begin{definition}\label{def:monoid}
-  An \emph{monoid}\index{monoid} consists of the following data.
+  A \emph{monoid}\index{monoid} consists of the following data.
   \begin{enumerate}
   \item\label{struc:monoid-set} A set $S$, called the \emph{underlying set}.
   \item\label{struc:monoid-unit} An element $e:S$, called the \emph{unit} or the \emph{neutral element}.\index{neutral element}
@@ -61,18 +69,26 @@ identities types $a \eqto_A a'$ relate to groups.
   the inverse operation $g \mapsto g^{-1}$.  Using
   that notation, we introduce names for the relevant propositions.
   \begin{align*}
-    \mathrm{UnitLaws}(S,e,\mu)   & \defequi\prod_{g:S} (\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \\
-    \mathrm{AssocLaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \\
-    \mathrm{MonoidLaws}(S,e,\mu) & \defequi \isset{(S)} \times \mathrm{UnitLaws}(S,e,\mu) \times \mathrm{AssocLaw}(S,\mu{}) \\
-    \mathrm{InverseLaw}(S,e,\mu,\iota) & \defequi \prod_{g:S}(\mu(g)(\iota(g)) = e) \\
-    \mathrm{GroupLaws}(S,e,\mu,\iota) & \defequi \mathrm{MonoidLaws}(S,e,\mu) \times \mathrm{InverseLaw}(S,e,\mu,\iota)
+    \mathrm{UnitLaws}(S,e,\mu)   & \defequi
+    \prod_{g:S} \bigl((\mu{}(g)(e) = g)\times(\mu{}(e)(g) = g) \bigr)\\
+    \mathrm{AssocLaw}(S,\mu{})   & \defequi\prod_{g_1,g_2,g_3:S} 
+    \bigl( \mu{}(g_1)(\mu{}(g_2)(g_3))=\mu{}(\mu{}(g_1)(g_2))(g_3) \bigr)\\
+    \mathrm{MonoidLaws}(S,e,\mu) & \defequi \isset{(S)} 
+    \times \mathrm{UnitLaws}(S,e,\mu) \times \mathrm{AssocLaw}(S,\mu{}) \\
+    \mathrm{InverseLaw}(S,e,\mu,\iota) & \defequi 
+    \prod_{g:S}\bigl( \mu(g)(\iota(g)) = e \bigr) \\
+    \mathrm{GroupLaws}(S,e,\mu,\iota) & \defequi 
+    \mathrm{MonoidLaws}(S,e,\mu) \times \mathrm{InverseLaw}(S,e,\mu,\iota)
   \end{align*}
 
 \begin{definition}
   \label{def:type-abstrgp}
+  Recall the definition of abstract group in \cref{def:abstractgroup}.
+  \index{type!of abstract groups}
+  \glossary(Groupabs){$\protect\typeabsgp$}{type of abstract groups}
   The type of abstract groups is
   \[
-    \typegroup^{\abstr} \defequi \sum_{S:\UU} \sum_{e:S}\sum_{\mu{}:S\to S\to S}
+    \typeabsgp \defequi \sum_{S:\UU} \sum_{e:S}\sum_{\mu{}:S\to S\to S}
     \sum_{\iota\colon S\to S} \mathrm{GroupLaws}(S,e,\mu,\iota).\qedhere
   \]
 \end{definition}
@@ -143,11 +159,12 @@ As a consequence, we can speak of ``\emph{the} inverse of $g$''.
   \end{displaymath}
   as required. Hence $\inv{\mu(g)}(e)$ is contractible, and we may define $g^{-1}$ to
   be the center of the contraction, for any $g:S$.
-  The function $g \mapsto g^{-1}$ satisfies the law of inverses 
+  The function $g \mapsto \inv g$ satisfies the law of inverses 
   \ref{monoid:inv-law}, as required.\footnote{%
   Note that this proof also shows that  $\inv{(\inv g)} = g$ and hence
   $\inv g \cdot g = e$, for any $g:S$.}
-  Uniqueness of this function follows from function extensionality.
+  Since the inverse of each $g:S$ is unique, it follows by function
+  extensionality that this `inverse' function is unique.
 \end{proof}
 
 \begin{remark}
@@ -158,9 +175,9 @@ As a consequence, we can speak of ``\emph{the} inverse of $g$''.
 \end{remark}
 
 \begin{remark}\label{rem:abs-iso}
-  If $\mathcal G\jdeq (S,e,\mu,\iota)$ and $\mathcal G'\jdeq(S',e',\mu',\iota')$
+  If $\agp G\jdeq (S,e,\mu,\iota)$ and $\agp G'\jdeq(S',e',\mu',\iota')$
   are abstract groups, an element of the identity type
-  $\mathcal G\eqto\mathcal G'$ consists of quite a lot of information,
+  $\agp G\eqto\agp G'$ consists of quite a lot of information,
   provided we interpret it by repeated application of \cref{lem:isEq-pair=}.
   First and foremost, we need an identification $p:S\eqto S'$ of sets, but
   from there on the information is a proof of a conjunction of propositions.\footnote{%
@@ -189,23 +206,23 @@ As a consequence, we can speak of ``\emph{the} inverse of $g$''.
 
 \begin{xca}
   \label{xca:op-abs-group}
-  Let $\mathcal G \jdeq (S,e,\mu,\iota)$ be an abstract group.
-  Define another structure $\mathcal G\op \defeq (S,e,\mu\op,\iota)$,
+  Let $\agp G \jdeq (S,e,\mu,\iota)$ be an abstract group.
+  Define another structure $\agp G\op \defeq (S,e,\mu\op,\iota)$,
   where $\mu\op : S \to S \to S$ sends $a,b:S$ to $\mu(b,a)$,
   \ie $\mu\op$ swaps the order of the arguments as compared to $\mu$.
 
   Show that $\iota : S \to S$ defines an isomorphism 
-  $\mathcal G \equivto \mathcal G\op$.\footnote{%
+  $\agp G \equivto \agp G\op$.\footnote{%
   Hint: in down-to-earth terms this boils down to the equations
   $\inv e = e$ and $(a\cdot b)^{-1} = b^{-1}\cdot a^{-1}$.}
 \end{xca}
 
 \begin{xca}
   \label{xca:conj}
-  Let $\mathcal G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  
+  Let $\agp G\jdeq(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  
   For any $s:S$, let $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$. 
   Show that the resulting function $\conj^g:S\to S$ preserves the group 
-  structure (\eg $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $\conj^g:\mathcal G\eqto\mathcal G$ is called \emph{conjugation} by $g$.\index{conjugation}
+  structure (\eg $g\cdot(s\cdot s')\cdot g^{-1}=(g\cdot s\cdot g^{-1} )\cdot(g\cdot s\cdot g^{-1})$) and is an equivalence.  The resulting identification $\conj^g:\agp G\eqto\agp G$ is called \emph{conjugation} by $g$.\index{conjugation}
 \end{xca}
 
 \begin{remark}\label{rem:ee=e_coherence}
@@ -259,7 +276,90 @@ As a consequence, we can speak of ``\emph{the} inverse of $g$''.
     Hint: show that the function $a\mapsto a\circ a$ is constant, with value, say, $e$.  Then show that $S$ together with the ``unit'' $e$, ``multiplication'' $a\cdot b\defequi a\circ(e\circ b)$ and ``inverse'' $b^{-1}\defequi e\circ b$ is an abstract group.}
 \end{xca}
 
-\section{Groups}
+\section{Abstract homomorphisms}\label{sec:abshom}
+
+In this section we define the notion of homomorphism for
+abstract groups, expanding on the discussion just above
+\cref{exa:conj-concrete}.
+
+\begin{definition}\label{def:abstrisfunctor}
+  Let $\agp G\defequi(S,e_{\agp G},\cdot_{\agp G},\iota_{\agp G})$
+  and $\agp H\defequi(T,e_{\agp H},\cdot_{\agp H},\iota_{\agp H})$
+  are two abstract groups,\footnote{%
+    Recall from~\cref{def:abstractgroup} that the components comprise
+    the underlying set, the unit element, the multiplication,
+    and the inverse operation.
+    We also need the laws to hold, but this notation elides the corresponding witnesses.
+
+    In the display, both $e_{\agp H}=_T f(e_{\agp G})$ and
+    $f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s')$ are
+    propositions; hence a homomorphism of abstract groups is uniquely determined
+    by its underlying function of sets, and unless there is danger of
+    confusion we may write $f$ instead of $(f,!)$.}
+  then the set of homomorphisms from $\agp G$ to $\agp H$ is
+  \[
+    \absHom(\agp G,\agp H)
+    \defequi\sum_{f:S\to T}(e_{\agp H}=_Tf(e_{\agp G}))\times
+    \prod_{s,s':S}f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s').
+  \]
+  If $G$ and $H$ are groups, the function
+  \[
+    \abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))
+  \]
+  is defined as the function $f\mapsto \abstr(f)\defequi(\USymf,!)$
+  made explicit in \cref{def:USym-hom} and satisfying the
+  properties by~\cref{lem:grouphomomaxioms}.
+\end{definition}
+\begin{xca}
+  Note that the inverses play no role in the definition of a homomorphism of 
+abstract groups.  Prove that if $(f,!):\absHom(\agp G,\agp H)$,
+  then the proposition $f(g^{-1})=(f(g))^{-1}$ holds for all $g:\agp G$,
+  so that we don't have to require it separately.
+\end{xca}
+\begin{remark}
+  Our definition of homomorphisms of abstract groups also makes sense for monoids
+  as defined in~\cref{def:monoid}, and with our definition it is immediate that
+  a homomorphism of abstract groups also defines a homomorphism of the underlying
+  monoids. It is possible, however to instead define the set of homomorphisms
+  from $\agp G \jdeq (S,e_{\agp G},\cdot_{\agp G},\iota_{\agp G})$
+  to $\agp H\jdeq(T,e_{\agp H},\cdot_{\agp H},\iota_{\agp H})$
+  simply by
+  \[
+    \sum_{f:S\to T}
+    \prod_{s,s':S}f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s').\qedhere
+  \]
+\end{remark}
+\begin{xca}
+  Prove this by deriving $e_{\agp H}=f(e_{\agp G})$ from the above.
+\end{xca}
+
+\begin{xca}
+Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
+
+  Prove that if $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ then
+$$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)}$.
+\end{xca}
+
+\begin{example}
+  \label{ex:conjhomo}
+  Let $\agp G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  In \cref{xca:conj} we defined $\conj^g:S\to S$ by setting $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$ for $s:S$ and asked you to show that it ``preserves the group structure'', \ie represents a homomorphism
+  \[
+    \cong^g:\absHom(\agp G,\agp G)
+  \]
+  called \emph{conjugation} by $g$\index{conjugation}.
+  Actually, we asked for more: namely that conjugation by $g$ is 
+  an isomorphism, and hence determines an identification
+  (for which we used the same symbol) $\conj^g:\agp G\eqto\agp G$.
+
+  If $\agp H$ is some other abstract group, transport along $\conj^g$
+  gives an identification
+  $\conj^g_*:\Hom(\agp H,\agp G) \eqto \Hom(\agp H,\agp G)$
+  which should be viewed as ``postcomposing with conjugation''.
+  Similar considerations go for elements in $\agp H$,
+  giving rise to ``precomposition with conjugation''.
+\end{example}
+
+\section{Groups: from concrete to abstract and back}
 \label{sec:Gsetforabstract}
 
 We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.
@@ -612,16 +712,16 @@ and if we start with a $g:\USymG$, then $\pathsp{}^G$ sends it to $\pathsp g^G\o
 \section{Actions}
 \label{sec:Gsetsabstrconcr}
 \marginnote{Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-sets is
-  $$\absGSet[\abstr(G)]\defequi \sum_{\mathcal X:\Set}\absHom({\abstr(G)},\abstr(\Sigma_{\mathcal X})).$$}
+  $$\absGSet[\abstr(G)]\defequi \sum_{\absSetvar:\Set}\absHom({\abstr(G)},\abstr(\Sigma_{\absSetvar})).$$}
 
 Given a group $G$ it should by now come as no surprise that the type of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
 According to \cref{lem:homomabstrconcr}
-$$\abstr:\Hom(G,\Sigma_{\mathcal X})\to\absHom(\abstr(G),\abstr(\Sigma_{\mathcal X}))$$
-is an equivalence, where the group $\Sigma_{\mathcal X}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\mathcal X$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\mathcal X})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\mathcal X=F(\shape_G))$.  Finally,
-$$\mathrm{pr}:\sum_{\mathcal X}\sum_{F:\BG_\div\to\Set}(\mathcal X=F(\shape_G))\we
-(\BG_\div\to\Set),\quad \mathrm{pr}(\mathcal X,F,p)\defequi F
+$$\abstr:\Hom(G,\Sigma_{\absSetvar})\to\absHom(\abstr(G),\abstr(\Sigma_{\absSetvar}))$$
+is an equivalence, where the group $\Sigma_{\absSetvar}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\absSetvar$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\absSetvar})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\shape_G))$.  Finally,
+$$\mathrm{pr}:\sum_{\absSetvar}\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\shape_G))\we
+(\BG_\div\to\Set),\quad \mathrm{pr}(\absSetvar,F,p)\defequi F
 $$
-is an equivalence (since $\sum_{\mathcal X}(\mathcal X=F(\shape_G))$ is contractible).
+is an equivalence (since $\sum_{\absSetvar}(\absSetvar=F(\shape_G))$ is contractible).
 Backtracking these equivalences we see that we have established
 \begin{lemma}
   \label{lem:actionsconcreteandabstract}

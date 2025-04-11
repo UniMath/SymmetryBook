@@ -243,6 +243,8 @@ We are now ready to define the type of groups.
     \typegroup \defequi \Copy_{\mkgroup}(\UUscone),
   \]
   with constructor $\mkgroup : \UUscone \to \Group$.%
+  \index{type!of groups}
+  \glossary(Group){$\protect\typegroup$}{type of groups}
   \glossary(924Omega_){$\protect\mkgroup$}{group constructor,
   \cref{def:typegroup}}\index{group}%
   \footnote{%
@@ -1315,89 +1317,12 @@ as
   &= (\USymf (g))^{-1}
   && \text{for all $g : \USymG$.}
 \end{alignat*}
-Here we follow the usual custom of defining a homomorphism of abstract groups
-just in terms of the first two:
-\begin{definition}\label{def:abstrisfunctor}
-  If $\mathcal G\defequi(S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$
-  and $\mathcal H\defequi(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$
-  are two abstract groups,\footnote{%
-    Recall from~\cref{def:abstractgroup} that the components comprise
-    the underlying set, the unit element, the multiplication,
-    and the inverse operation.
-    We also need the laws to hold, but this notation elides the corresponding witnesses.
-
-    In the display, both $e_{\mathcal H}=_T f(e_{\mathcal G})$ and
-    $f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s')$ are
-    propositions; hence a homomorphism of abstract groups is uniquely determined
-    by its underlying function of sets, and unless there is danger of
-    confusion we may write $f$ instead of $(f,!)$.}
-  then the set of homomorphisms from $\mathcal G$ to $\mathcal H$ is
-  \[
-    \absHom(\mathcal G,\mathcal H)
-    \defequi\sum_{f:S\to T}(e_{\mathcal H}=_Tf(e_{\mathcal G}))\times
-    \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').
-  \]
-  If $G$ and $H$ are groups, the function
-  \[
-    \abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))
-  \]
-  is defined as the function $f\mapsto \abstr(f)\defequi(\USymf,!)$
-  made explicit in \cref{def:USym-hom} and satisfying the
-  properties by~\cref{lem:grouphomomaxioms}.
-\end{definition}
-\begin{xca}
-  Note that the inverses play no role in the definition of a homomorphism of 
-abstract groups.  Prove that if $(f,!):\absHom(\mathcal G,\mathcal H)$,
-  then the proposition $f(g^{-1})=(f(g))^{-1}$ holds for all $g:\mathcal G$,
-  so that we don't have to require it separately.
-\end{xca}
-\begin{remark}
-  Our definition of homomorphisms of abstract groups also makes sense for monoids
-  as defined in~\cref{rem:monoids}, and with our definition it is immediate that
-  a homomorphism of abstract groups also defines a homomorphism of the underlying
-  monoids. It is possible, however to instead define the set of homomorphisms
-  from $\mathcal G \jdeq (S,e_{\mathcal G},\cdot_{\mathcal G},\iota_{\mathcal G})$
-  to $\mathcal H\jdeq(T,e_{\mathcal H},\cdot_{\mathcal H},\iota_{\mathcal H})$
-  simply by
-  \[
-    \sum_{f:S\to T}
-    \prod_{s,s':S}f(s\cdot_{\mathcal G}s')=_Tf(s)\cdot_{\mathcal H}f(s').\qedhere
-  \]
-\end{remark}
-\begin{xca}
-  Prove this by deriving $e_{\mathcal H}=f(e_{\mathcal G})$ from the above.
-\end{xca}
-
-\begin{xca}
-Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
-
-  Prove that if $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ then
-$$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)}$.
-\end{xca}
-
-\begin{example}
-  \label{ex:conjhomo}
-  Let $\mathcal G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  In \cref{xca:conj} we defined $\conj^g:S\to S$ by setting $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$ for $s:S$ and asked you to show that it ``preserves the group structure'', \ie represents a homomorphism
-  \[
-    \cong^g:\absHom(\mathcal G,\mathcal G)
-  \]
-  called \emph{conjugation} by $g$\index{conjugation}.
-  Actually, we asked for more: namely that conjugation by $g$ is 
-  an isomorphism, and hence determines an identification
-  (for which we used the same symbol) $\conj^g:\mathcal G\eqto\mathcal G$.
-
-  If $\mathcal H$ is some other abstract group, transport along $\conj^g$
-  gives an identification
-  $\conj^g_*:\Hom(\mathcal H,\mathcal G) \eqto \Hom(\mathcal H,\mathcal G)$
-  which should be viewed as ``postcomposing with conjugation''.
-  Similar considerations go for elements in $\mathcal H$,
-  giving rise to ``precomposition with conjugation''.
-\end{example}
+We come back to abstract homomorphisms in \cref{sec:abshom}.
 
 \begin{example}
 \label{exa:conj-concrete}
- In terms of concrete groups one can think of conjugation as moving
- the shape of the concrete group along a path in the classifying type. 
+ In this example we analyse what happens when we move
+ the shape of a group along a path in the classifying type. 
  This path can in particular be a loop at the shape. More precisely,
  let $G$ be a group, $y$ an element of $\BG$, and $p$ a path of 
  type $\shape_G\eqto y$.
@@ -1406,8 +1331,7 @@ $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)
  from $G$ to $\mkgroup(\BG_\div , y)$.\footnote{%
  One may wonder why $\inv p$ in $(\id_\BG,\inv p)$.
  The reason is our convention for the direction of the
- pointing path of a pointed map in combination with the
- convention that $\conj^p$ is transport along $p$.}
+ pointing path of a pointed map.}
  By \cref{remark:groupsasunivalenttype} we then get an 
  identification of these groups.
  Moreover, by path induction on $p$, the equivalence
@@ -1415,16 +1339,11 @@ $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)
  of type $(\sh_G\eqto\sh_G)\equivto(y\eqto y)$\footnote{%
  Note that $\USym(\mkgroup(\BG_\div,y)) \jdeq 
  \loops(BG_\div,y) \jdeq (y\eqto y)$.}
- can be identified with the map $g \mapsto p g \inv p$. 
- In the special case
- of $y\jdeq\sh_G$ this map is precisely $\conj^p$ from \cref{xca:conj}.
- \footnote{%
- One can also start from $\conj^p$ and ask for a pointed map 
- $f: \BG_\div \ptdto \BG_\div$ such that $\loops(f) = \conj^p$.
- We shall develop a general method for constructing
- such a map $f$  in~\cref{sec:homabsisconcr} below.}
- The more general form introduced here is also called conjugation.
- \index{conjugation}
+ can be identified with the map $g \mapsto p g \inv p$.
+ This map is called \emph{conjugation}.\index{conjugation}%
+ \footnote{We have seen similar maps, \eg all the way back in 
+ \cref{xca:trp-in-a/x=b/x}\ref{trp-in-x=x}.}
+ In \cref{xca:conj} we come back to the special case in which $y\jdeq\sh_G$.
 \end{example}
 
 The above example motivates and justifies the following definition of
