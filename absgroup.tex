@@ -285,11 +285,11 @@ abstract groups, expanding on the discussion just above
 \begin{definition}\label{def:abstrisfunctor}
   Let $\agp G\defequi(S,e_{\agp G},\cdot_{\agp G},\iota_{\agp G})$
   and $\agp H\defequi(T,e_{\agp H},\cdot_{\agp H},\iota_{\agp H})$
-  are two abstract groups,\footnote{%
+  be two abstract groups,\footnote{%
     Recall from~\cref{def:abstractgroup} that the components comprise
     the underlying set, the unit element, the multiplication,
-    and the inverse operation.
-    We also need the laws to hold, but this notation elides the corresponding witnesses.
+    and the inverse operation. We also need the laws to hold, 
+    but this notation elides the corresponding witnesses.
 
     In the display, both $e_{\agp H}=_T f(e_{\agp G})$ and
     $f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s')$ are
@@ -302,6 +302,8 @@ abstract groups, expanding on the discussion just above
     \defequi\sum_{f:S\to T}(e_{\agp H}=_Tf(e_{\agp G}))\times
     \prod_{s,s':S}f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s').
   \]
+  \index{type!of abstract homomorphisms}\index{homomorphism!of abstract group}
+  \glossary(){$\protect\absHom$}{type of abstract homomorphisms}
   If $G$ and $H$ are groups, the function
   \[
     \abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))
@@ -356,7 +358,7 @@ $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)
   $\conj^g_*:\Hom(\agp H,\agp G) \eqto \Hom(\agp H,\agp G)$
   which should be viewed as ``postcomposing with conjugation''.
   Similar considerations go for elements in $\agp H$,
-  giving rise to ``precomposition with conjugation''.
+  giving rise to ``precomposition with conjugation $\cong^h$''.
 \end{example}
 
 \section{Groups: from concrete to abstract and back}
@@ -427,19 +429,19 @@ while $\preinv$ is precomposition by the inverse of its argument.}
 
 \begin{example}\label{ex:qG}
   Given a group $G$, then for any $x:\BG$ the principal $G$-torsor
-  \emph{evaluated at $x$}, \ie the set $\princ G(x)\jdeq (\shape_G\eqto x)$,
+  \emph{evaluated at $x$}, \ie the set $\princ G(x)\jdeq (\sh_G\eqto x)$,
   has a natural structure of an $\abstr(G)$-set by means of
-  $$\preinv:\USymG\to ((\shape_G\eqto x)\eqto (\shape_G\eqto x)).$$
+  $$\preinv:\USymG\to ((\sh_G\eqto x)\eqto (\sh_G\eqto x)).$$
   Indeed, $\preinv$ is an abstract homomorphism 
-  since $\preinv(e_G)\jdeq\refl{\shape_G\eqto x}$ and 
+  since $\preinv(e_G)\jdeq\refl{\sh_G\eqto x}$ and 
   for $p,q:\USymG$ we have that $\preinv(p\,q)=\preinv(p)\preinv(q)$.% 
-  \footnote{For any $r\colon \shape_G\eqto x$ we have that
+  \footnote{For any $r\colon \sh_G\eqto x$ we have that
   $\preinv(p\, q)(r)=r\,(p\,q)^{-1}=r\,q^{-1} p^{-1}=
   \preinv(p)(\preinv(q)(r))$. This explains the definition of $\preinv$:
   without the inverse this would have gone badly wrong.}
 
   Furthermore, for any $x:\BG$, the $\abstr(G)$-set 
-  $(\shape_G\eqto x,\preinv,!)$ is an $\abstr(G)$-torsor.
+  $(\sh_G\eqto x,\preinv,!)$ is an $\abstr(G)$-torsor.
   Since this is a proposition and $\BG$ is connected, it suffices
   to verify this for $x\jdeq\sh_G$, for which it is obvious.
 
@@ -453,7 +455,10 @@ which by the very definition of transport for $\princ G$ is $\preinv$.
 \end{example}
 
 \begin{definition}
-  If ${\agp G}$ is an abstract group, then the \emph{concrete group $\concr({\agp G})$ associated with ${\agp G}$} is the group given by the pointed connected groupoid $(\typetorsor_{\agp G}^{\abstr},\absprtor{\agp G})$.
+  If ${\agp G}$ is an abstract group, then the (concrete)
+  \emph{group $\concr({\agp G})$ associated with ${\agp G}$} is the group
+  classified by the pointed connected groupoid 
+  $(\typeabstor,\absprtor)$.
 \end{definition}
 We give the construction of \cref{ex:qG} a short name since it will occur in important places.
 \begin{definition}
@@ -461,12 +466,12 @@ We give the construction of \cref{ex:qG} a short name since it will occur in imp
   The group homomorphism
   $$q_G:\Hom(G,\concr(\abstr(G)))$$
   is defined in terms of the pointed map by the same name
-$$q_G:\BG\to_* (\typetorsor^{\abstr}_{\abstr(G)},\absprtor{\abstr(G)}),\quad q_G(z)=(\princ G(z),\preinv,!).$$
+$$\B q_G:\BG\ptdto (\typeabstor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)=(\princ G(z),\preinv,!).$$
 \end{definition}
 
 \begin{lemma}
   \label{lem:Groupsareidentitytypes}
-For all groups $G$, the pointed function $q_G:G\to_*\concr(\abstr(G))$
+For all groups $G$, the pointed function $q_G:G\ptdto\concr(\abstr(G))$
 is a  equivalence.
 \end{lemma}
 \begin{proof}
@@ -476,23 +481,24 @@ $$
 is an equivalence.
   Now, $q_G(x)=q_G(y)$ is equivalent to the set
 $$
-((\shape_G=x),\preinv)=_{\abstr(G)\text{-set}}((\shape_G=y),\preinv)$$
+((\sh_G\eqto x),\preinv)=_{\abstr(G)\text{-set}}((\sh_G\eqto y),\preinv)$$
 which in turn is equivalent to
-$$\sum_{f:(\shape_G=x)=(\shape_G=y)}f\preinv=\preinv f
+$$\sum_{f:(\sh_G\eqto x)=(\sh_G\eqto y)}f\preinv=\preinv f
 $$
- ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\shape_G=x}\prod_{p:\shape_G=p}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by
-$$(\post,!):(x=y)\to \sum_{f:(\shape_G=x)=(\shape_G=y)}f\preinv=\preinv f.$$
+ ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\sh_G\eqto x}\prod_{p:\sh_G\eqto y}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by
+$$(\post,!):(x=y)\to \sum_{f:(\sh_G\eqto x)=(\sh_G\eqto y)}f\preinv=\preinv f.$$
 Given an element
-$(f,!):\sum_{f:(\shape_G=x)=(\shape_G=y)}f\preinv=\preinv f$, the preimage
+$(f,!):\sum_{f:(\sh_G\eqto x)=(\sh_G\eqto y)}f\preinv=\preinv f$, the preimage
 $(\post,!)^{-1}(f,!)$ is equivalent to the set
-$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\shape_G=x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.
-To show that the preimage is contractible, it is enough to construct a function $(\shape_G=x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
+$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\sh_G\eqto x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.
+To show that the preimage is contractible, it is enough to construct a function $(\sh_G\eqto x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
 \end{proof}
 
 \begin{example}
   \label{ex:abstrconcrG}
   Let ${\agp G}=(S,e,\mu,\iota)$ be an abstract group.
-Then the underlying set of $\abstr(\concr({\agp G}))$ is $\absprtor{\agp G}=_{\typetorsor^{\abstr}_{\agp G}}\absprtor{\agp G}$.
+Then the underlying set of $\abstr(\concr({\agp G}))$ is 
+$\absprtor =_{\typetorsor^{\abstr}_{\agp G}}\absprtor$.
 Unraveling the definitions we see that this set is equivalent to
 $$\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
 $$
@@ -500,7 +506,7 @@ Setting $s\defequi e$ and renaming $t\defequi q^{-1}$ in the last equation, we s
 $$r_{\agp G}:S\to  \sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_{\agp G}(u)\defequi(u\cdot\,,!)
 $$
 is an equivalence of sets, which we by univalence is converted into an identity.
-The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\absprtor{\agp G}$; translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ this corresponds via the first projection to the symmetries of $S$.
+The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\absprtor$; translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ this corresponds via the first projection to the symmetries of $S$.
 This means that we need to know that if $u,v:S$ and consider the two symmetries $u\cdot,v\cdot:S=S$, then their composite (the operation on the symmetry on $S$) is equal to $(u\cdot v)\cdot:S=S$ (the abstract group operation), but this is true by associativity ($u\cdot(v\cdot s)=(u\cdot v)\cdot s$).  That $r_{\agp G}$ also sends $e:S$ to $\refl S$ is clear.
 Hence our identity $r_{\agp G}$ underlies an identity of abstract groups
 $$r_{\agp G}:{\agp G}=_{\typegroup^{\abstr}}\abstr(\concr({\agp G})).$$
@@ -554,58 +560,58 @@ Here we elaborate the general case.
   Suppose we are given an abstract group homomorphism
 $$f:\absHom(\abstr(G),\abstr(H))$$
 and we explain how to build a map $g:\BG_\div \rightarrow \BH_\div$ with
-a path $p:\shape_H = g(\shape_G)$ such that $p f(\omega) = g(\omega) p$
-for all $\omega:\shape_G = \shape_G$ (so that $g$ is a ``delooping'' of $f$, that is, $f=\abstr(g)$).
+a path $p:\sh_H = g(\sh_G)$ such that $p f(\omega) = g(\omega) p$
+for all $\omega:\sh_G = \sh_G$ (so that $g$ is a ``delooping'' of $f$, that is, $f=\abstr(g)$).
 \marginnote{We will thus have displayed a map $\mathrm{deloop}:\absHom(\abstr(G),\abstr(H))\to\Hom(G,H)$ with $\abstr\,\mathrm{deloop}=\refl{}$. We leave it to the reader to prove that $\mathrm{deloop}\,\abstr=\refl{}$. }
 
 To get an idea of our strategy, let us assume the problem solved. The map $g:\BG_\div\rightarrow \BH_\div$
-will then send any path $\alpha:{\shape_G} = x$ to a path $g(\alpha):g({\shape_G}) = g(x)$
-and so we get a family of paths $p(\alpha) \defequi g(\alpha) p$ in ${\shape_H} = g(x)$ such that
+will then send any path $\alpha:{\sh_G} = x$ to a path $g(\alpha):g({\sh_G}) = g(x)$
+and so we get a family of paths $p(\alpha) \defequi g(\alpha) p$ in ${\sh_H} = g(x)$ such that
 $$p(\alpha\omega) = g(\alpha)g(\omega)p
   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
-for all $\omega:{\shape_G} = {\shape_G}$ and $\alpha : {\shape_G} = x$.
+for all $\omega:{\sh_G} = {\sh_G}$ and $\alpha : {\sh_G} = x$.
 
 This suggests to introduce the following family
 $$
-C(x)~:=~ \sum_{y:\BH_\div}\sum_{p:({\shape_G}=x)\rightarrow ({\shape_H} = y)}~~~\prod_{\omega:{\shape_G}={\shape_G}}\prod_{\alpha:{\shape_G}=x}~
+C(x)~:=~ \sum_{y:\BH_\div}\sum_{p:({\sh_G}=x)\rightarrow ({\sh_H} = y)}~~~\prod_{\omega:{\sh_G}={\sh_G}}\prod_{\alpha:{\sh_G}=x}~
  p(\alpha\omega) = p(\alpha)f(\omega)
 $$
  An element of $C(x)$ has three components, the last component being
  a proposition since $\BH_\div$ is a groupoid.
 
- The type $C({\shape_G})$ has a simpler description. An element of $C({\shape_G})$ is
+ The type $C({\sh_G})$ has a simpler description. An element of $C({\sh_G})$ is
  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
- $\alpha$ and $\omega$ in ${\shape_G}={\shape_G}$.
+ $\alpha$ and $\omega$ in ${\sh_G}={\sh_G}$.
  Since $f$ is an abstract group homomorphism, this condition
- can be simplified to $p(\omega) = p(1_{\shape_G})f(\omega)$, and the map $p$
- is completely determined by $p(1_{\shape_G})$.
- Thus $C({\shape_G})$ is equal to $\sum_{y:\BH_\div}{\shape_H} = y$ and is contractible.
+ can be simplified to $p(\omega) = p(1_{\sh_G})f(\omega)$, and the map $p$
+ is completely determined by $p(1_{\sh_G})$.
+ Thus $C({\sh_G})$ is equal to $\sum_{y:\BH_\div}{\sh_H} = y$ and is contractible.
 
 
  It follows that we have
  $$
- \prod_{x:\BG_\div}~ ({\shape_G} = x)\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ ({\sh_G} = x)\rightarrow\iscontr~ C(x)
  $$
 and so, since $\iscontr~C(x)$ is a proposition
  $$
- \prod_{x:\BG_\div}~ \Trunc{{\shape_G} = x}\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ \Trunc{{\sh_G} = x}\rightarrow\iscontr~ C(x)
  $$
  Since $\BG_\div$ is connected, we have
  $\prod_{x:\BG_\div}\iscontr~ C(x)$
  and so, in particular, we have an element of $\prod_{x:\BG_\div}C(x)$.
 
  We get in this way a map $g:\BG_\div\rightarrow \BH_\div$
- together with a map $p:({\shape_G}=x)\rightarrow ({\shape_H} = g(x))$ such that
+ together with a map $p:({\sh_G}=x)\rightarrow ({\sh_H} = g(x))$ such that
  $p (\alpha\omega) = p(\alpha) f(\omega)$
- for all $\alpha$ in ${\shape_G}=x$ and $\omega$ in ${\shape_G}={\shape_G}$.
-We have, for $\alpha:{\shape_G}=x$
+ for all $\alpha$ in ${\sh_G}=x$ and $\omega$ in ${\sh_G}={\sh_G}$.
+We have, for $\alpha:{\sh_G}=x$
 $$\prod_{x':\BG_\div}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
 since this holds for $\lambda = 1_x$.
-In particular, $p(\omega) = g(\omega)p(1_{\shape_G})$.
+In particular, $p(\omega) = g(\omega)p(1_{\sh_G})$.
 
-We also have $p(\omega) = p(1_{\shape_G})f(\omega)$, hence
-$p(1_{\shape_G})g(\alpha) =  f(\alpha)p(1_{\shape_G})$
-for all $\alpha:\shape_G=\shape_G$ and we have found a delooping of $f$.
+We also have $p(\omega) = p(1_{\sh_G})f(\omega)$, hence
+$p(1_{\sh_G})g(\alpha) =  f(\alpha)p(1_{\sh_G})$
+for all $\alpha:\sh_G\eqto \sh_G$ and we have found a delooping of $f$.
 
 %Security copy if things go wrong. BID: delete by May 1
 %   Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
@@ -679,10 +685,10 @@ The second approach to \cref{lem:homomabstrconcr} is as follows:
 
 \begin{proof}
   The equivalence of $\pathsp{}^G:\BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
-$$\pathsp{}:\Hom(G,H)\we((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H))
+$$\pathsp{}:\Hom(G,H)\we((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H))
 $$
 Consider the map
-$$A:((\typetorsor_G,\princ G))\to_*(\typetorsor_H,\princ H)\to \absHom(\abstr(G),\abstr(H))$$
+$$A:((\typetorsor_G,\princ G))\ptdto(\typetorsor_H,\princ H)\to \absHom(\abstr(G),\abstr(H))$$
 given by letting $A(f,p)$ be the composite
 $$\xymatrix{\USymG\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
   \USymH\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
@@ -696,7 +702,7 @@ are done if we show that $A$ is an equivalence.
 
 If $(\phi,!):\absHom(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{rem:inducedGsetfromabstracthomomorphisms} and the identity $\eta_\phi:\phi_*\princ G=\princ H$.
 Let
-$$B: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\to_*(\typetorsor_H,\princ H)$$
+$$B: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)$$
 be given by $B(\phi,!)=(\phi_*X,\eta_\phi)$
 
 We show that $A$ and $B$ are inverse equivalences.  Given an abstract group homomorphism $(\phi,!):\absHom(\abstr(G),\abstr(H))$, then $AB(\phi,!)$ has as underlying set map
@@ -717,25 +723,25 @@ and if we start with a $g:\USymG$, then $\pathsp{}^G$ sends it to $\pathsp g^G\o
 Given a group $G$ it should by now come as no surprise that the type of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
 According to \cref{lem:homomabstrconcr}
 $$\abstr:\Hom(G,\Sigma_{\absSetvar})\to\absHom(\abstr(G),\abstr(\Sigma_{\absSetvar}))$$
-is an equivalence, where the group $\Sigma_{\absSetvar}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\absSetvar$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\absSetvar})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\shape_G))$.  Finally,
-$$\mathrm{pr}:\sum_{\absSetvar}\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\shape_G))\we
+is an equivalence, where the group $\Sigma_{\absSetvar}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\absSetvar$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\absSetvar})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\sh_G))$.  Finally,
+$$\mathrm{pr}:\sum_{\absSetvar}\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\sh_G))\we
 (\BG_\div\to\Set),\quad \mathrm{pr}(\absSetvar,F,p)\defequi F
 $$
-is an equivalence (since $\sum_{\absSetvar}(\absSetvar=F(\shape_G))$ is contractible).
+is an equivalence (since $\sum_{\absSetvar}(\absSetvar=F(\sh_G))$ is contractible).
 Backtracking these equivalences we see that we have established
 \begin{lemma}
   \label{lem:actionsconcreteandabstract}
   Let $G$ be a group.  Then the map
-  $$\ev_{\shape_G}:\GSet\to\absGSet[\abstr(G)],\qquad \ev_{\shape_G}(X)\defequi(X(\shape_G),a_X)
+  $$\ev_{\sh_G}:\GSet\to\absGSet[\abstr(G)],\qquad \ev_{\sh_G}(X)\defequi(X(\sh_G),a_X)
 $$
-is an equivalence, where the homomorphism $a_X:\absHom(\abstr(G), \abstr(\Sigma_{X(\shape_G)}))$ is given by transport $X:\USymG\defequi(\shape_G=\shape_G)\to (X(\shape_G)=X(\shape_G))$.
+is an equivalence, where the homomorphism $a_X:\absHom(\abstr(G), \abstr(\Sigma_{X(\sh_G)}))$ is given by transport $X:\USymG\defequi(\sh_G\eqto \sh_G)\to (X(\sh_G)=X(\sh_G))$.
 \end{lemma}
-If $X$ is a $G$-set, $g:\USymG$ and $x:X(\shape_G)$, we seek forgiveness for writing $g\cdot x:X(\shape_G)$ instead of $\cast(a_X(g))(x)$.\footnote{and I ask forgiveness for strongly disliking the use of ``$\cast$'' as a name for some tacitly understood map!}
+If $X$ is a $G$-set, $g:\USymG$ and $x:X(\sh_G)$, we seek forgiveness for writing $g\cdot x:X(\sh_G)$ instead of $\cast(a_X(g))(x)$.\footnote{and I ask forgiveness for strongly disliking the use of ``$\cast$'' as a name for some tacitly understood map!}
 
 \begin{example}
   \label{ex:abstrandconj}
   Let $H$ and $G$ be groups.  Recall that the set of homomorphisms from $H$ to $G$ is a $G$-set in a natural way:
-$$\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y=F(\shape_H)).$$
+$$\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y=F(\sh_H)).$$
 
 What abstract $\abstr(G)$-set does this correspond to?
 In particular, under the equivalence $\abstr:\Hom(H,G)\to\absHom(\abstr(H),\abstr(G))$, what is the corresponding action of $\abstr(G)$ on the abstract homomorphisms?
@@ -743,11 +749,11 @@ In particular, under the equivalence $\abstr:\Hom(H,G)\to\absHom(\abstr(H),\abst
 The answer is that $g:\USymG$ acts on $\absHom(\abstr(H),\abstr(G))$ by postcomposing with conjugation $\conj^g$ by $g$ as defined in \cref{ex:conjhomo}.
 
 Let us spell this out in some detail:
-If $(F,p):\Hom(H,G)(\shape_G)\defequi
- \sum_{F:\BH_\div\to \BG_\div}(\shape_G=F(\shape_H))$ and $g:\USymG$, then $g\cdot(F,p)\defequi(F,p\,g^{-1})$.  If we show that the action of $g$ sends $\abstr(F,p)$ to $\conj^g\circ\abstr(F,p)$ we are done.
+If $(F,p):\Hom(H,G)(\sh_G)\defequi
+ \sum_{F:\BH_\div\to \BG_\div}(\sh_G\eqto F(\sh_H))$ and $g:\USymG$, then $g\cdot(F,p)\defequi(F,p\,g^{-1})$.  If we show that the action of $g$ sends $\abstr(F,p)$ to $\conj^g\circ\abstr(F,p)$ we are done.
 
 Recall that $\abstr(F,p)$ consists of the composite
-$$\xymatrix{\USymH\ar[r]^-{F^=}&(F(\shape_H)=F(\shape_G))\ar[rr]^-{t\mapsto p^{-1}t\,p}&&\USymG},$$
+$$\xymatrix{\USymH\ar[r]^-{F^=}&(F(\sh_H)=F(\sh_G))\ar[rr]^-{t\mapsto p^{-1}t\,p}&&\USymG},$$
 (\ie $\abstr(F,p)$ applied to $q:\USymH $ is  $p^{-1}F^=(q)\,p$)  together with the proof that this is an abstract group homomorphism.
 We see that $\abstr(F,p\,g^{-1})$ is given by conjugation:
 $q\mapsto(p\,g^{-1})^{-1}F^=(q)\,(p\,g^{-1})=g\,(p^{-1}F^=(q)\,p)\,g^{-1}$, or in other words $\conj^g\circ\abstr(F,p)$.
@@ -769,33 +775,33 @@ $$
 is an equivalence.
 \end{lemma}
 \begin{proof}
-  Evaluation at $\shape_G$  yields an injective map
-$$\mathrm{ev}_{\shape_G}:(f^*X=f^*Y)\to(X(f(\shape_G)=Y(f(\shape_G)))$$ and the composite
-$$\mathrm{ev}_{\shape_G}f^*=\mathrm{ev}_{f(\shape_G)}:(X=Y)\to(X(f(\shape_G)=Y(f(\shape_G)))$$
+  Evaluation at $\sh_G$  yields an injective map
+$$\mathrm{ev}_{\sh_G}:(f^*X=f^*Y)\to(X(f(\sh_G)=Y(f(\sh_G)))$$ and the composite
+$$\mathrm{ev}_{\sh_G}f^*=\mathrm{ev}_{f(\sh_G)}:(X=Y)\to(X(f(\sh_G)=Y(f(\sh_G)))$$
  is the likewise injective, so $f^*:(X=Y)\to(f^*X=f^*Y)$ is injective.
 
-For surjectivity, let $F':f^*X=f^*Y$ and write, for typographical convenience, $a:X(f(\shape_G)=Y(f(\shape_G))$ for $\mathrm{ev}_{\shape_G}F'\defequi F'_{\shape_G}$.
+For surjectivity, let $F':f^*X=f^*Y$ and write, for typographical convenience, $a:X(f(\sh_G)=Y(f(\sh_G))$ for $\mathrm{ev}_{\sh_G}F'\defequi F'_{\sh_G}$.
 By the equivalence between $G$-sets and $\abstr(G)$-sets, $F'$ is uniquely pinned down by $a$ and the requirement that for all $g'=f(g)$ with $g:\USymG$ the diagram
-$$\xymatrix{X(f(\shape_G))\ar@{=}[r]^{X({g'})}\ar@{=}[d]_{a}&
-  X(f(\shape_G))\ar@{=}[d]_{a}\\
-  Y(f(\shape_G))\ar@{=}[r]^{Y({g'})}&Y(f(\shape_G))}
+$$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X({g'})}\ar@{=}[d]_{a}&
+  X(f(\sh_G))\ar@{=}[d]_{a}\\
+  Y(f(\sh_G))\ar@{=}[r]^{Y({g'})}&Y(f(\sh_G))}
 $$
-commutes.  Likewise, (using transport along the identity $p_f:\shape_{G'}=f(\shape_G)$) an $F:X=Y$ in the preimage of $a$ is pinned down by the commutativity of the same diagram, but with $g':f(\shape_G)=f(\shape_G)$ arbitrary (an a priori more severe requirement, again reflecting injectivity).   However, when $f:\USymG\to\USymG'$ is surjective these requirements coincide, showing that $f^*$ is an equivalence.
+commutes.  Likewise, (using transport along the identity $p_f:\sh_{G'}=f(\sh_G)$) an $F:X=Y$ in the preimage of $a$ is pinned down by the commutativity of the same diagram, but with $g':f(\sh_G)=f(\sh_G)$ arbitrary (an a priori more severe requirement, again reflecting injectivity).   However, when $f:\USymG\to\USymG'$ is surjective these requirements coincide, showing that $f^*$ is an equivalence.
 
 
-% Fix for the moment an  $a:X(f(\shape_G)=Y(f(\shape_G))$
+% Fix for the moment an  $a:X(f(\sh_G)=Y(f(\sh_G))$
 
-% Now, by transport along the identity $p_f:\shape_{G'}=f(\shape_G)$ and the equivalence between $G'$-sets and $\abstr(G')$-sets, an identity $F':X=Y$ of $G'$-sets is uniquely pinned down by an identity $F'_{f(\shape_G)}:X(f(\shape_G)=Y(f(\shape_G))$ together with the proposition that for all $g':f(\shape_G)=f(\shape_G)$ the diagram $$\xymatrix{X(f(\shape_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F'_{f(\shape_G)}}&
-%   X(f(\shape_G))\ar@{=}[d]_{F'_{f(\shape_G)}}\\
-%   Y(f(\shape_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\shape_G))}
+% Now, by transport along the identity $p_f:\sh_{G'}=f(\sh_G)$ and the equivalence between $G'$-sets and $\abstr(G')$-sets, an identity $F':X=Y$ of $G'$-sets is uniquely pinned down by an identity $F'_{f(\sh_G)}:X(f(\sh_G)=Y(f(\sh_G))$ together with the proposition that for all $g':f(\sh_G)=f(\sh_G)$ the diagram $$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F'_{f(\sh_G)}}&
+%   X(f(\sh_G))\ar@{=}[d]_{F'_{f(\sh_G)}}\\
+%   Y(f(\sh_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\sh_G))}
 % $$
 % commutes.  Likewise, an identity $F:f^*X=f^*Y$ is given by exactly the same data, except that the diagram is only required to commute for $g'=f(g)$ for all $g:\USymG$.  But when $f:\USymG\to\USymG'$ these requirements coincide.
 
 
-% ; $F:X=Y$ is in the preimage of $a:X(f(\shape_G)=Y(f(\shape_G))$ if and only if $a=F_{f(\shape_G)}$ and for all $g':f(\shape_G)=f(\shape_G)$ the diagram
-% $$\xymatrix{X(f(\shape_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F_{f(\shape_G)}}&
-%   X(f(\shape_G))\ar@{=}[d]_{F_{f(\shape_G)}}\\
-%   Y(f(\shape_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\shape_G))}
+% ; $F:X=Y$ is in the preimage of $a:X(f(\sh_G)=Y(f(\sh_G))$ if and only if $a=F_{f(\sh_G)}$ and for all $g':f(\sh_G)=f(\sh_G)$ the diagram
+% $$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F_{f(\sh_G)}}&
+%   X(f(\sh_G))\ar@{=}[d]_{F_{f(\sh_G)}}\\
+%   Y(f(\sh_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\sh_G))}
 % $$
 % commutes.  However, since $f$ is surjective there is a $g:\USymG$ so that $g'=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
 \end{proof}
@@ -807,18 +813,18 @@ commutes.  Likewise, (using transport along the identity $p_f:\shape_{G'}=f(\sha
   if $X:\BG\to\Set$ is a $G$-set, then we can
   define the $H$-set $\phi_*X:\BH\to\Set$ by
   \[
-    \phi_*X(y)\defequi (\shape_H \eqto y) \times_G X(\shape_G)
+    \phi_*X(y)\defequi (\sh_H \eqto y) \times_G X(\sh_G)
   \]
-  to be the set quotient of $(\shape_H\eqto y)\times X(\shape_G)$ by
+  to be the set quotient of $(\sh_H\eqto y)\times X(\sh_G)$ by
   the relation
-  $(p,x)\sim(p\, \phi(q)^{-1},q\cdot x)$ for all $q:\shape_G\eqto\shape_G$.
+  $(p,x)\sim(p\, \phi(q)^{-1},q\cdot x)$ for all $q:\sh_G\eqto\sh_G$.
   Just as above, for $X$ the principal $G$-torsor we get an identity
   $\eta_\phi:\phi_*\princ G \eqto \princ H$ which, when evaluated at $y:\BH$,
   corresponds under univalence to the equivalence
   \[
-    (\shape_H\eqto y)\times_G\USymG\equivto (\shape_H\eqto y)
+    (\sh_H\eqto y)\times_G\USymG\equivto (\sh_H\eqto y)
   \]
-  sending $[(p,q)]$ to $p\,\phi(q):(\shape_H\eqto y)$.
+  sending $[(p,q)]$ to $p\,\phi(q):(\sh_H\eqto y)$.
 \end{remark}
 
 \section{Heaps \texorpdfstring{$(\dagger)$}{(\textdagger) \color{red} just moved from symmetry without proofreading BID211116}}
