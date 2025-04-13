@@ -364,9 +364,10 @@ $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)
 \section{Groups: from concrete to abstract and back}
 \label{sec:Gsetforabstract}
 
-We use \cref{lem:BGbytorsor} as our inspiration for trying to construct a group from an abstract group.
+We use \cref{lem:BGbytorsor} as our inspiration for trying to construct 
+a group from an abstract group.
 That is, in total analogy, we define the torsors for an abstract group,
-and it will then be a relative simple matter to show that the constructions of
+and it will then be relatively simple to show that the constructions of
 \begin{enumerate}
 \item forming the abstract group of a group and
 \item taking the group classified by the torsors of an abstract group
@@ -377,6 +378,26 @@ Recall \cref{ft:no-abs-inftygp}, explaining why we do not consider an
 ``abstract'' counterpart of the concept of \inftygp.
 Consequently, all we do in this section is set-based.
 }
+
+Let $G$ be a group and $X:\BG\to\Set$ a $G$-set. We can restrict the
+codomain of $X$ to $\Set_{(X(\sh_G))}$, the classifying type of 
+$\SG_{X(\sh_G)}$, and then view $X$ as the classifying function of 
+a group homomorphism from $G$ to $\SG_{X(\sh_G)}$.
+We already know the abstract versions of all three ingredients,
+the two groups and the homomorphism. Thus, the abstract version
+of $X$ can be expected to be an abstract homomorphism from the
+abstract version of $G$ to the abstract version of $\SG_{X(\sh_G)}$.
+
+A case in point is the principal $G$-torsor $\princ G \jdeq
+(z\mapsto (\sh_G\eqto z))$. Its abstract version as a homomorphism,
+defined by transport, is the function $\USymG\to(\USymG\eqto\USymG)$
+mapping $g$ to $(g\cdot\blank)$, \ie postcomposition with $g$.%
+\footnote{A free choice has been made to define $\princ G$ with
+$(\sh_G\eqto z)$ and not with $(z\eqto\sh_G)$ in the latter
+case its abstract version would map $g$ to $(\blank\cdot\inv g)$,
+precomposition with the inverse of $g$.}
+A small generalization now leads to the following definition.
+
 \begin{definition}
 \label{def:abstrGtorsors}
 Given an abstract group ${\agp G}\jdeq(S,e,\mu,\iota)$, a \emph{$\agp G$-set}%
@@ -391,12 +412,15 @@ $$\absGSet\defequi \sum_{S:\Set}\absHom({\agp G},\abstr(\Sigma_{S})).$$
 The \emph{principal ${\agp G}$-torsor} $\absprtor$ is the 
 ${\agp G}$-set consisting of the underlying set $S$ together with 
 the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying 
-function $S\to (S=S)$ given by sending $g:S$ to $(s\mapsto s\cdot g^{-1})$.
+function $S\to (S\eqto S)$ given by sending $g:S$ to $(s\mapsto s\cdot g^{-1})$.\MB{$g\cdot s$?}
 
 The type of \emph{${\agp G}$-torsors} is
-$$\typeabstor\defequi\sum_{\absSetvar:\absGSet}
-  \Trunc{\absprtor \eqto \absSetvar}.$$
+\[
+\typeabstor\defequi\sum_{\absSetvar:\absGSet}
+  \Trunc{\absprtor \eqto \absSetvar}.\qedhere
+\]
 \end{definition}
+
 \begin{example}
   Given a group $G$, recall from \cref{lem:idtypesgiveabstractgroups}
   that the abstract group is $\abstr(G)\jdeq(\USymG,e_G,\cdot)$ 
@@ -466,7 +490,10 @@ We give the construction of \cref{ex:qG} a short name since it will occur in imp
   The group homomorphism
   $$q_G:\Hom(G,\concr(\abstr(G)))$$
   is defined in terms of the pointed map by the same name
-$$\B q_G:\BG\ptdto (\typeabstor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)=(\princ G(z),\preinv,!).$$
+\[
+  \B q_G:\BG\ptdto (\typeabstor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)
+  \defeq(\princ G(z),\preinv,!).
+\]
 \end{definition}
 
 \begin{lemma}
@@ -476,38 +503,38 @@ is a  equivalence.
 \end{lemma}
 \begin{proof}
   To prove that $q_G$ is an equivalence it is, by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, enough to show that if $x,y:\BG$ then the induced map
-$$q_G:(x=_{\BG}y)\to (q_G(x)=q_G(y))
+$$q_G:(x\eqto_{\BG}y)\to (q_G(x)\eqto q_G(y))
 $$
 is an equivalence.
-  Now, $q_G(x)=q_G(y)$ is equivalent to the set
+  Now, $q_G(x)\eqto q_G(y)$ is equivalent to the set
 $$
-((\sh_G\eqto x),\preinv)=_{\abstr(G)\text{-set}}((\sh_G\eqto y),\preinv)$$
+((\sh_G\eqto x),\preinv)\eqto_{\abstr(G)\text{-set}}((\sh_G\eqto y),\preinv)$$
 which in turn is equivalent to
-$$\sum_{f:(\sh_G\eqto x)=(\sh_G\eqto y)}f\preinv=\preinv f
+$$\sum_{f:(\sh_G\eqto x)\eqto (\sh_G\eqto y)}f\preinv=\preinv f
 $$
  ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\sh_G\eqto x}\prod_{p:\sh_G\eqto y}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by
-$$(\post,!):(x=y)\to \sum_{f:(\sh_G\eqto x)=(\sh_G\eqto y)}f\preinv=\preinv f.$$
+$$(\post,!):(x\eqto y)\to \sum_{f:(\sh_G\eqto x)\eqto(\sh_G\eqto y)}f\preinv=\preinv f.$$
 Given an element
-$(f,!):\sum_{f:(\sh_G\eqto x)=(\sh_G\eqto y)}f\preinv=\preinv f$, the preimage
+$(f,!):\sum_{f:(\sh_G\eqto x)\eqto(\sh_G\eqto y)}f\preinv=\preinv f$, the preimage
 $(\post,!)^{-1}(f,!)$ is equivalent to the set
-$\sum_{r:x=y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x=y}(f=\post_r)$, then for all $p:\sh_G\eqto x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.
-To show that the preimage is contractible, it is enough to construct a function $(\sh_G\eqto x)\to \sum_{r:x=y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
+$\sum_{r:x\eqto y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x\eqto y}(f=\post_r)$, then for all $p:\sh_G\eqto x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.
+To show that the preimage is contractible, it is enough to construct a function $(\sh_G\eqto x)\to \sum_{r:x\eqto y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
 \end{proof}
 
 \begin{example}
   \label{ex:abstrconcrG}
   Let ${\agp G}=(S,e,\mu,\iota)$ be an abstract group.
 Then the underlying set of $\abstr(\concr({\agp G}))$ is 
-$\absprtor =_{\typetorsor^{\abstr}_{\agp G}}\absprtor$.
+$\absprtor \eqto_{\typeabstor}\absprtor$.
 Unraveling the definitions we see that this set is equivalent to
-$$\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
+$$\sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
 $$
 Setting $s\defequi e$ and renaming $t\defequi q^{-1}$ in the last equation, we see that $p(t)=p(e)t$; that is $p$ is simply multiplication with an element $p(e):S$.  in other words, the function
-$$r_{\agp G}:S\to  \sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_{\agp G}(u)\defequi(u\cdot\,,!)
+$$r_{\agp G}:S\to  \sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_{\agp G}(u)\defequi(u\cdot\,,!)
 $$
 is an equivalence of sets, which we by univalence is converted into an identity.
-The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\absprtor$; translated to $\sum_{p:S=S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ this corresponds via the first projection to the symmetries of $S$.
-This means that we need to know that if $u,v:S$ and consider the two symmetries $u\cdot,v\cdot:S=S$, then their composite (the operation on the symmetry on $S$) is equal to $(u\cdot v)\cdot:S=S$ (the abstract group operation), but this is true by associativity ($u\cdot(v\cdot s)=(u\cdot v)\cdot s$).  That $r_{\agp G}$ also sends $e:S$ to $\refl S$ is clear.
+The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\absprtor$; translated to $\sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ this corresponds via the first projection to the symmetries of $S$.
+This means that we need to know that if $u,v:S$ and consider the two symmetries $u\cdot,v\cdot:S\eqto S$, then their composite (the operation on the symmetry on $S$) is equal to $(u\cdot v)\cdot:S\eqto S$ (the abstract group operation), but this is true by associativity ($u\cdot(v\cdot s)=(u\cdot v)\cdot s$).  That $r_{\agp G}$ also sends $e:S$ to $\refl S$ is clear.
 Hence our identity $r_{\agp G}$ underlies an identity of abstract groups
 $$r_{\agp G}:{\agp G}=_{\typegroup^{\abstr}}\abstr(\concr({\agp G})).$$
 \end{example}
@@ -831,9 +858,9 @@ commutes.  Likewise, (using transport along the identity $p_f:\sh_{G'}=f(\sh_G)$
 \label{sec:heaps}
 
 Recall that we in \cref{rem:heap-preview} wondered about
-the status of general identity types $a=_A a'$,
+the status of general identity types $a\eqto_A a'$,
 for $a$ and $a'$ elements of a groupoid $A$,
-as opposed to the more special loop types $a=_Aa$.\marginnote{%
+as opposed to the more special loop types $a\eqto_Aa$.\marginnote{%
   This section has no implications for the rest of the book,
   and can thus safely be skipped on a first reading.}
 Here we describe the resulting algebraic structure
@@ -855,7 +882,7 @@ We write $(A,a,a'):\UUppone$ to indicate the two endpoints.
 Analogous to the loop type of a pointed type,
 we have a designated identity type of a bipointed type,
 where we use the two points as the endpoints of the identifications:
-We set $\ISym(A,a,a') \defeq (a =_A a')$.
+We set $\ISym(A,a,a') \defeq (a \eqto_A a')$.
 
 \needspace{6\baselineskip}
 \begin{definition}\label{def:heap}
