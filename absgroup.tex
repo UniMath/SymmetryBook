@@ -437,7 +437,7 @@ function $S\to (S\eqto S)$ given by sending $g:S$ to $(s\mapsto \mu(g,s))$.
 
 The type of \emph{${\agp G}$-torsors} is
 \[
-\typeabstor\defequi\sum_{\absGSetvar:\absGSet}
+\absGTor\defequi\sum_{\absGSetvar:\absGSet}
   \Trunc{\absprtor \eqto \absGSetvar}.\qedhere
 \]
 \end{definition}
@@ -508,7 +508,7 @@ in the type of $\preinv$, and likewise write $\post_x$.}
   If ${\agp G}$ is an abstract group, then the (concrete)
   \emph{group $\concr({\agp G})$ associated with ${\agp G}$} is the group
   classified by the pointed connected groupoid 
-  $(\typeabstor,\absprtor)$.
+  $(\absGTor,\absprtor)$.
 \end{definition}
 
 We give the construction of \cref{ex:qG} \MB{???} a short 
@@ -520,7 +520,7 @@ name since it will occur in important places.
   is classified by the following function, which is pointed by
   \MB{\cref{xca:absprtorsor}}:
 \[
-  \Bq_G:\BG\ptdto (\typeabstor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)
+  \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)
   \defeq(\princ G(z),\preinv_z,!).\qedhere
 \]
 \end{definition}
@@ -554,7 +554,7 @@ $\Bq_G$ is given by (with the type of $f$ as above)
 \]
 Given a function $f$ such that
 $\prod_{g:\USymG}\,\prod_{p:\sh_G\eqto x}\bigl(f(pg)= f(p)g\bigr)$,%
-\footnote{No need to invert $g$.}
+\footnote{No need to invert $g$ here.}
 the preimage $\post_{\sh_G}^{-1}(f)$ unfolds to
 $\sum_{r:x\eqto y}(f=\post_{\sh_G}(r))$. For proving that $\post_{\sh_G}$,
 and hence $\Bq_G$, is an equivalence, we have to show that the
@@ -565,7 +565,7 @@ $\post_{\sh_G}(r)= f=\post_{\sh_G}(s)$ satisfy $r\,p_0=f(p_0)=s\,p_0$,
 so that $r=s$. Thus the preimage is a proposition. It remains
 to find an $r$ such that $f=\post_{\sh_G}(r)$. 
 We take $r=f(p_0)\inv{p_0}$ and verify, using
-the property of $f$, that for any $p:\sh_G\eqto x$, 
+the property of $f$, that for any $p:\sh_G\eqto x$
 \[
 f(p) = f(p_0(\inv{p_0}p)) = f(p_0)(\inv{p_0} p) = (f(p_0) \inv{p_0}) p
 = \post_{\sh_G}(r)(p).\qedhere
@@ -576,8 +576,9 @@ f(p) = f(p_0(\inv{p_0}p)) = f(p_0)(\inv{p_0} p) = (f(p_0) \inv{p_0}) p
   \label{ex:abstrconcrG}
   Let ${\agp G}=(S,e,\mu,\iota)$ be an abstract group.
 Then the underlying set of $\abstr(\concr({\agp G}))$ is 
-$\absprtor \eqto_{\typeabstor}\absprtor$.
-Unraveling the definitions we see that this set is equivalent to
+$\absprtor \eqto_{\absGTor}\absprtor$.
+Unraveling the definitions we see that this set is equivalent to%
+\footnote{\MB{NB notation not abstract.}}
 $$\sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
 $$
 Setting $s\defequi e$ and renaming $t\defequi q^{-1}$ in the last equation, we see that $p(t)=p(e)t$; that is $p$ is simply multiplication with an element $p(e):S$.  in other words, the function
@@ -587,36 +588,41 @@ is an equivalence of sets, which we by univalence is converted into an identity.
 The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\absprtor$; translated to $\sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ this corresponds via the first projection to the symmetries of $S$.
 This means that we need to know that if $u,v:S$ and consider the two symmetries $u\cdot,v\cdot:S\eqto S$, then their composite (the operation on the symmetry on $S$) is equal to $(u\cdot v)\cdot:S\eqto S$ (the abstract group operation), but this is true by associativity ($u\cdot(v\cdot s)=(u\cdot v)\cdot s$).  That $r_{\agp G}$ also sends $e:S$ to $\refl S$ is clear.
 Hence our identity $r_{\agp G}$ underlies an identity of abstract groups
-$$r_{\agp G}:{\agp G}=_{\typegroup^{\abstr}}\abstr(\concr({\agp G})).$$
+$$r_{\agp G}:{\agp G}\eqto_{\typegroup^{\abstr}}\abstr(\concr({\agp G})).$$
 \end{example}
 
 This shows that every abstract group encodes the symmetries of something essentially unique.  Summing up the information we get
 \begin{theorem}
   \label{thm:Groupsareidentitytypes}
   Let ${\agp G}$ be an abstract group. Then
-$$\abstr:\typegroup\to\typegroup^{\abstr}$$ is an equivalence.
+$${\abstr}:\typegroup\to\typegroup^{\abstr}$$ is an equivalence.
 \end{theorem}
 
 \section{Homomorphisms}
 \label{sec:homabsisconcr}
 
-Now that we know that the type of groups is identical to the type of abstract groups, it is natural to ask if the notion of group homomorphisms also coincide.
+Now that we know how to identify the type of groups with the type 
+of abstract groups, it is natural to ask if the notion of group 
+homomorphisms also coincide.
 
-They do, and we provide two independent and somewhat different arguments.  Translating from group homomorphisms to abstract group homomorphisms is easy: if $G$ and $H$ are groups, then we defined
+They do, and we provide two independent and somewhat different arguments.
+Translating from group homomorphisms to abstract group homomorphisms is easy:
+if $G$ and $H$ are groups, then we defined
 $$\abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))$$
-in \cref{def:abstrisfunctor} as the function which takes a homomorphism, aka a pointed map $f=(\Bf_\div,p_f):\BG\ptdto\BH$ to the induced map of identity types
-$$\US f\defequi \mathrm{ad}_{p_f}\ap{\Bf_\div}:\USymG\to\USymH$$
- together with the proofs that this is an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, c.f~\cref{def:abstrisfunctor}.
+in \cref{def:USym-hom} and \cref{def:abstrisfunctor} as the function
+which takes a homomorphism, classified by a pointed map $f:\BG\ptdto\BH$,
+to the induced map of identity types
+$$\USymf \jdeq \loops\Bf:\USymG\to\USymH$$
+together with the proof that this is an abstract group 
+homomorphism from $\abstr(G)$ to $\abstr(H)$.
 
+Going back is somewhat more involved, and it is here we consider
+two approaches. The first is a compact argument showing directly how to
+reconstruct a pointed map $\Bf:\BG\ptdto\BH$ from an abstract group
+homomorphism from $\abstr(G)$ to $\abstr(H)$. The second translates 
+back and forth via our equivalence between abstract and concrete groups.
 
-Going back is somewhat more involved, and it is here we consider two approaches.
-The first is a compact argument showing directly how to reconstruct a pointed map $\Bf:\BG\ptdto\BH$ from an abstract group homomorphism from $\abstr(G)$ to $\abstr(H)$, the second translates back and forth via our equivalence between abstract and concrete groups.
-
-
-
-The statement we are after is
-
-
+The statement we are after is:
 \begin{lemma}
   \label{lem:homomabstrconcr}
   If $G$ and $H$ are groups, then
@@ -637,21 +643,25 @@ Here we elaborate the general case.
 \begin{proof}
   Suppose we are given an abstract group homomorphism
 $$f:\absHom(\abstr(G),\abstr(H))$$
-and we explain how to build a map $g:\BG_\div \rightarrow \BH_\div$ with
-a path $p:\sh_H = g(\sh_G)$ such that $p f(\omega) = g(\omega) p$
-for all $\omega:\sh_G = \sh_G$ (so that $g$ is a ``delooping'' of $f$, that is, $f=\abstr(g)$).
-\marginnote{We will thus have displayed a map $\mathrm{deloop}:\absHom(\abstr(G),\abstr(H))\to\Hom(G,H)$ with $\abstr\,\mathrm{deloop}=\refl{}$. We leave it to the reader to prove that $\mathrm{deloop}\,\abstr=\refl{}$. }
+and we explain how to build a map $\Bg:\BG_\div \rightarrow \BH_\div$ with
+a path $p:\sh_H \eqto \Bg(\sh_G)$ such that $p f(\omega) = \Bg(\omega) p$
+for all $\omega:\sh_G \eqto \sh_G$ (so that $g:\Hom(G,H)$ is a ``delooping'' of $f$, 
+that is, $f=\abstr(g)$).%
+\footnote{We will thus have displayed a map
+$\mathrm{deloop}:\absHom(\abstr(G),\abstr(H))\to\Hom(G,H)$ with 
+$({\abstr}\circ\mathrm{deloop})=\id$. We leave it to the reader 
+to prove that $\mathrm{deloop}\circ{\abstr}=\id$. }
 
 To get an idea of our strategy, let us assume the problem solved. The map $g:\BG_\div\rightarrow \BH_\div$
-will then send any path $\alpha:{\sh_G} = x$ to a path $g(\alpha):g({\sh_G}) = g(x)$
-and so we get a family of paths $p(\alpha) \defequi g(\alpha) p$ in ${\sh_H} = g(x)$ such that
+will then send any path $\alpha:\sh_G \eqto x$ to a path $g(\alpha):g(\sh_G \eqto g(x)$
+and so we get a family of paths $p(\alpha) \defequi g(\alpha) p$ in ${\sh_H} \eqto g(x)$ such that
 $$p(\alpha\omega) = g(\alpha)g(\omega)p
   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
-for all $\omega:{\sh_G} = {\sh_G}$ and $\alpha : {\sh_G} = x$.
+for all $\omega:\sh_G \eqto \sh_G$ and $\alpha : \sh_G \eqto x$.
 
 This suggests to introduce the following family
 $$
-C(x)~:=~ \sum_{y:\BH_\div}\sum_{p:({\sh_G}=x)\rightarrow ({\sh_H} = y)}~~~\prod_{\omega:{\sh_G}={\sh_G}}\prod_{\alpha:{\sh_G}=x}~
+C(x)~:=~ \sum_{y:\BH_\div}\sum_{p:({\sh_G}=x)\rightarrow (\sh_H \eqto y)}~~~\prod_{\omega:{\sh_G}={\sh_G}}\prod_{\alpha:{\sh_G}=x}~
  p(\alpha\omega) = p(\alpha)f(\omega)
 $$
  An element of $C(x)$ has three components, the last component being
@@ -663,23 +673,23 @@ $$
  Since $f$ is an abstract group homomorphism, this condition
  can be simplified to $p(\omega) = p(1_{\sh_G})f(\omega)$, and the map $p$
  is completely determined by $p(1_{\sh_G})$.
- Thus $C({\sh_G})$ is equal to $\sum_{y:\BH_\div}{\sh_H} = y$ and is contractible.
+ Thus $C({\sh_G})$ is equal to $\sum_{y:\BH_\div}\sh_H \eqto y$ and is contractible.
 
 
  It follows that we have
  $$
- \prod_{x:\BG_\div}~ ({\sh_G} = x)\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ (\sh_G \eqto x)\rightarrow\iscontr~ C(x)
  $$
 and so, since $\iscontr~C(x)$ is a proposition
  $$
- \prod_{x:\BG_\div}~ \Trunc{{\sh_G} = x}\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG_\div}~ \Trunc{\sh_G \eqto x}\rightarrow\iscontr~ C(x)
  $$
  Since $\BG_\div$ is connected, we have
  $\prod_{x:\BG_\div}\iscontr~ C(x)$
  and so, in particular, we have an element of $\prod_{x:\BG_\div}C(x)$.
 
  We get in this way a map $g:\BG_\div\rightarrow \BH_\div$
- together with a map $p:({\sh_G}=x)\rightarrow ({\sh_H} = g(x))$ such that
+ together with a map $p:({\sh_G}\eqto x)\rightarrow ({\sh_H} \eqto g(x))$ such that
  $p (\alpha\omega) = p(\alpha) f(\omega)$
  for all $\alpha$ in ${\sh_G}=x$ and $\omega$ in ${\sh_G}={\sh_G}$.
 We have, for $\alpha:{\sh_G}=x$
