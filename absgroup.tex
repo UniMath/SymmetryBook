@@ -280,8 +280,28 @@ As a consequence, we can speak of ``\emph{the} inverse of $g$''.
 
 In this section we define the notion of homomorphism for
 abstract groups, expanding on the discussion just above
-\cref{exa:conj-concrete}.
+\cref{exa:conj-concrete}. We start by an exercise
+that simplifies the requirements for abstract group homomorphisms.
 
+\begin{xca}\label{{xca:onlymult-hom}}
+  Let $\agp G\defequi(S,e_{\agp G},\cdot_{\agp G},\iota_{\agp G})$
+  and $\agp H\defequi(T,e_{\agp H},\cdot_{\agp H},\iota_{\agp H})$
+  be abstract groups, and $f:S\to T$ a function satisfying
+  $f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s')$ for all $s,s':S$.
+  Show that $f(e_{\agp G}) = e_{\agp H}$ and 
+  $f(\iota_{\agp G}(s)) = \iota_{\agp H}(f(s))$ for all $s:S$.
+\end{xca}
+
+Thus we see that, due to the properties of the abstract groups,
+if $f$ preserves multiplication, then $f$ also preserves unit and inverses.%
+\footnote{\label{ft:monoid-hom}For monoids this is not true:
+  Let $M$ be the monoid with two elements, $1$ and $\infty$,
+  with a multiplication such that $1$ is the unit and
+  $\infty*\infty=\infty$. Now consider the monoid homomorphism $h$
+  defined by $h(m)=\infty$ for all $m:M$. Note that $M$ cannot
+  be extended to an abstract group, since giving $\infty$
+  an inverse would make it equal to $1$.}
+  
 \begin{definition}\label{def:abstrisfunctor}
   Let $\agp G\defequi(S,e_{\agp G},\cdot_{\agp G},\iota_{\agp G})$
   and $\agp H\defequi(T,e_{\agp H},\cdot_{\agp H},\iota_{\agp H})$
@@ -299,8 +319,8 @@ abstract groups, expanding on the discussion just above
   then the set of homomorphisms from $\agp G$ to $\agp H$ is
   \[
     \absHom(\agp G,\agp H)
-    \defequi\sum_{f:S\to T}(e_{\agp H}=_Tf(e_{\agp G}))\times
-    \prod_{s,s':S}f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s').
+    \defequi\sum_{f:S\to T}
+    \prod_{s,s':S}\bigl(f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s')\bigr).
   \]
   \index{type!of abstract homomorphisms}\index{homomorphism!of abstract group}
   \glossary(){$\protect\absHom$}{type of abstract homomorphisms}
@@ -312,39 +332,37 @@ abstract groups, expanding on the discussion just above
   made explicit in \cref{def:USym-hom} and satisfying the
   properties by~\cref{lem:grouphomomaxioms}.
 \end{definition}
-\begin{xca}
-  Note that the inverses play no role in the definition of a homomorphism of 
-abstract groups.  Prove that if $(f,!):\absHom(\agp G,\agp H)$,
-  then the proposition $f(g^{-1})=(f(g))^{-1}$ holds for all $g:\agp G$,
-  so that we don't have to require it separately.
-\end{xca}
-\begin{remark}
-  Our definition of homomorphisms of abstract groups also makes sense for monoids
-  as defined in~\cref{def:monoid}, and with our definition it is immediate that
-  a homomorphism of abstract groups also defines a homomorphism of the underlying
-  monoids. It is possible, however to instead define the set of homomorphisms
-  from $\agp G \jdeq (S,e_{\agp G},\cdot_{\agp G},\iota_{\agp G})$
-  to $\agp H\jdeq(T,e_{\agp H},\cdot_{\agp H},\iota_{\agp H})$
-  simply by
+
+\begin{remark}\label{rem:monoid-hom}
+  With our definition it is immediate that a homomorphism of abstract
+  groups also defines a homomorphism of the underlying monoids,
+  preserving multiplication and thereby unit. However,
+  for monoids as defined in~\cref{def:monoid}, it is possible to preserve
+  multiplication but not the unit, as shown in \cref{ft:monoid-hom}.
+  Hence, for monoids we define the set of homomorphisms
+  from $M \jdeq (S,e_M,\cdot_M)$ to $N \jdeq(T,e_N,\cdot_N)$ by
   \[
-    \sum_{f:S\to T}
-    \prod_{s,s':S}f(s\cdot_{\agp G}s')=_Tf(s)\cdot_{\agp H}f(s').\qedhere
+    \sum_{f:S\to T}\Bigl(\bigl(f(e_M) =_T e_N\bigr)\times
+    \prod_{s,s':S}\bigl(f(s\cdot_M s')=_T f(s)\cdot_N f(s')\bigr)\Bigr).%
+    \qedhere
   \]
 \end{remark}
-\begin{xca}
-  Prove this by deriving $e_{\agp H}=f(e_{\agp G})$ from the above.
-\end{xca}
 
 \begin{xca}
 Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
 
-  Prove that if $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ then
-$$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that $\abstr(\id_G)=\id_{\abstr(G)}$.
+  Prove that for $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ we have
+  $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that 
+  $\abstr(\id_G)=\id_{\abstr(G)}$.
 \end{xca}
 
 \begin{example}
-  \label{ex:conjhomo}
-  Let $\agp G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$.  In \cref{xca:conj} we defined $\conj^g:S\to S$ by setting $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$ for $s:S$ and asked you to show that it ``preserves the group structure'', \ie represents a homomorphism
+  \label{ex:conjhom}
+  Let $\agp G=(S,e,\mu,\iota)$ be an abstract group and let $g:S$. 
+  In \cref{xca:conj} we defined $\conj^g:S\to S$ by setting 
+  $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$ for all $s:S$,
+  and asked you to show that it ``preserves the group structure'',
+  \ie classifies a homomorphism
   \[
     \cong^g:\absHom(\agp G,\agp G)
   \]
@@ -379,23 +397,26 @@ Recall \cref{ft:no-abs-inftygp}, explaining why we do not consider an
 Consequently, all we do in this section is set-based.
 }
 
-Let $G$ be a group and $X:\BG\to\Set$ a $G$-set. We can restrict the
+Let $G$ be a group and $X:\BG\to\Set$ a $G$-set. Using the
+underlying set $X(\sh_G)$, we can restrict the
 codomain of $X$ to $\Set_{(X(\sh_G))}$, the classifying type of 
-$\SG_{X(\sh_G)}$, and then view $X$ as the classifying function of 
+$\SG_{X(\sh_G)}$. Then we can view $X$ as the classifying function of 
 a group homomorphism from $G$ to $\SG_{X(\sh_G)}$.
 We already know the abstract versions of all three ingredients,
 the two groups and the homomorphism. Thus, the abstract version
-of $X$ can be expected to be an abstract homomorphism from the
-abstract version of $G$ to the abstract version of $\SG_{X(\sh_G)}$.
+of $X$ can be expected to consist of the set $X(\sh_G)$ and 
+$\abstr(X)$, the abstract homomorphism from $\abstr(G)$ 
+to $\abstr(\SG_{X(\sh_G)})$.
 
 A case in point is the principal $G$-torsor $\princ G \jdeq
-(z\mapsto (\sh_G\eqto z))$. Its abstract version as a homomorphism,
+(z\mapsto (\sh_G\eqto z))$. Its underlying set is $\USymG$.
+The abstract version of the corresponding homomorphism,
 defined by transport, is the function $\USymG\to(\USymG\eqto\USymG)$
 mapping $g$ to $(g\cdot\blank)$, \ie postcomposition with $g$.%
-\footnote{A free choice has been made to define $\princ G$ with
-$(\sh_G\eqto z)$ and not with $(z\eqto\sh_G)$ in the latter
+\footnote{\label{ft:choicePshG}A free choice has been made to define 
+$\princ G$ using $(\sh_G\eqto z)$ and not $(z\eqto\sh_G)$. In the latter
 case its abstract version would map $g$ to $(\blank\cdot\inv g)$,
-precomposition with the inverse of $g$.}
+precomposition with the inverse of $g$. See also \cref{xca:absprtorsor}.}
 A small generalization now leads to the following definition.
 
 \begin{definition}
@@ -406,32 +427,40 @@ Given an abstract group ${\agp G}\jdeq(S,e,\mu,\iota)$, a \emph{$\agp G$-set}%
 is a set $S$ together with a homomorphism
 $\agp G\to\abstr(\Sigma_S)$
 from $\agp G$ to the abstract permutation group of $S$.
-Thus the type of $\agp G$-sets is 
+Then the type of $\agp G$-sets is defined as 
 $$\absGSet\defequi \sum_{S:\Set}\absHom({\agp G},\abstr(\Sigma_{S})).$$
 
 The \emph{principal ${\agp G}$-torsor} $\absprtor$ is the 
 ${\agp G}$-set consisting of the underlying set $S$ together with 
 the homomorphism ${\agp G}\to\abstr(\Sigma_{S})$ with underlying 
-function $S\to (S\eqto S)$ given by sending $g:S$ to $(s\mapsto s\cdot g^{-1})$.\MB{$g\cdot s$?}
+function $S\to (S\eqto S)$ given by sending $g:S$ to $(s\mapsto \mu(g,s))$.
 
 The type of \emph{${\agp G}$-torsors} is
 \[
-\typeabstor\defequi\sum_{\absSetvar:\absGSet}
-  \Trunc{\absprtor \eqto \absSetvar}.\qedhere
+\typeabstor\defequi\sum_{\absGSetvar:\absGSet}
+  \Trunc{\absprtor \eqto \absGSetvar}.\qedhere
 \]
 \end{definition}
 
+\begin{xca}\label{xca:absprtorsor}
+In the setting of the above definition,
+give an identification of $(S,(s\mapsto \mu(g,s)))$ with
+$(S,(s\mapsto \mu(s,\iota(g))))$
+in the type $\absGSet$.\footnote{\MB{Mention co-group?}}
+\end{xca}
+
 \begin{example}
   Given a group $G$, recall from \cref{lem:idtypesgiveabstractgroups}
-  that the abstract group is $\abstr(G)\jdeq(\USymG,e_G,\cdot)$ 
+  that the abstract group is 
+  $\abstr(G)\jdeq(\USymG,e_G,\cdot,\inv{(\blank)})$ 
   with $\USymG\jdeq(\sh_G\eqto\sh_G)$ and $e_G\jdeq\refl{\sh_G}$,
-  and $\cdot$ path composition.
-  Unravelling the definition, we see that an $\abstr(G)$-set consists of
+  and $\cdot$ and $\inv{(\blank)})$ as usual for paths.
+  Unravelling the definition, and \cref{def:abstrisfunctor},
+  we see that an $\abstr(G)$-set consists of
   \begin{enumerate}
-  \item a set $S$,
+  \item a set $S$, and
   \item a function $f:\USymG\to (S\eqto S)$ such that
-  \item $f(e_G)=\refl{S}$ and for all $p,q:\USymG$ we have 
-        that $f(p\, q)=f(p)\,f(q)$.\qedhere
+  \item for all $p,q:\USymG$ we have that $f(p\, q)=f(p)\,f(q)$.\qedhere
   \end{enumerate}
 \end{example}
 
@@ -439,43 +468,40 @@ To help reading the coming proofs we introduce some notation that is
 redundant, but may aid the memory in cluttered situations.
 Let $x,y,z$ be elements in some type, then define:%
 \footnote{We recognize $\preinv$ from \cref{lem:pathsptransportiseq}
-as the induced map of identity types $\pathsp{\blank}\colon (y\eqto z)
-\to(\pathsp y \eqto \pathsp z)$, followed by evaluation at $x$.
+as the induced map of identity types $\pathsp{\blank}\colon (y\eqto x)
+\to(\pathsp y \eqto \pathsp x)$, followed by evaluation at $z$.
 Post-composition $\post$ is transport in the family $\pathsp x$,
-while $\preinv$ is precomposition by the inverse of its argument.}
+while $\preinv$ is precomposition by the inverse of its argument.
+We will sometimes write $\preinv_z$ to stress the variable $z$
+in the type of $\preinv$, and likewise write $\post_x$.}
 \begin{align*}
 %  \pre:(x\eqto y)\to ((y\eqto z)\eqto (x\eqto z)),\qquad&\pre(q)(p)\defequi pq\\
   \preinv:(y\eqto x)\to ((y\eqto z)\eqto (x\eqto z)),\quad&\preinv(q)(p)\defequi\pathsp qp\defequi pq^{-1}\\
-  \post:(y\eqto z)\to ((x\eqto y)\eqto (x\eqto z)),\quad&\post(p)(q)\defequi\post_pq\defequi pq\\
+  \post:(y\eqto z)\to ((x\eqto y)\eqto (x\eqto z)),\quad&\post(p)(q)\defequi\post_pq\defequi pq
   %\adjoint:(x\eqto y)\to((x\eqto x)\eqto (y\eqto y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
 \end{align*}
 
-
 \begin{example}\label{ex:qG}
-  Given a group $G$, then for any $x:\BG$ the principal $G$-torsor
+  Given a group $G$ and $x:\BG$, the principal $G$-torsor
   \emph{evaluated at $x$}, \ie the set $\princ G(x)\jdeq (\sh_G\eqto x)$,
   has a natural structure of an $\abstr(G)$-set by means of
-  $$\preinv:\USymG\to ((\sh_G\eqto x)\eqto (\sh_G\eqto x)).$$
-  Indeed, $\preinv$ is an abstract homomorphism 
-  since $\preinv(e_G)\jdeq\refl{\sh_G\eqto x}$ and 
-  for $p,q:\USymG$ we have that $\preinv(p\,q)=\preinv(p)\preinv(q)$.% 
+  $$\preinv_x:\USymG\to ((\sh_G\eqto x)\eqto (\sh_G\eqto x)).$$
+  Indeed, $\preinv_x$ is an abstract homomorphism since,
+  for all $p,q:\USymG$, we have that 
+  $\preinv_x(p\,q)=\preinv_x(p)\preinv_x(q)$.% 
   \footnote{For any $r\colon \sh_G\eqto x$ we have that
-  $\preinv(p\, q)(r)=r\,(p\,q)^{-1}=r\,q^{-1} p^{-1}=
-  \preinv(p)(\preinv(q)(r))$. This explains the definition of $\preinv$:
-  without the inverse this would have gone badly wrong.}
+  $\preinv_x(p\, q)(r)=r\,(p\,q)^{-1}=r\,q^{-1} p^{-1}=
+  \preinv_x(p)(\preinv_x(q)(r))$.
+  Without the inverse, this would have gone badly wrong.
+  Moreover, referring to \cref{xca:absprtorsor},
+  $\preinv$ is here more natural than $\post$:
+  $\USymG$ consists of the symmetries of $\sh_G$, and the $x$ is fixed.}
 
   Furthermore, for any $x:\BG$, the $\abstr(G)$-set 
   $(\sh_G\eqto x,\preinv,!)$ is an $\abstr(G)$-torsor.
   Since this is a proposition and $\BG$ is connected, it suffices
-  to verify this for $x\jdeq\sh_G$, for which it is obvious.
-
-{\large cursor}
-
-  Though it looked like we made a choice ending up with $\preinv$,
-  in fact we really didn't -- it is precisely what happens when you abstract the homomorphism $G\to\Sigma_{\princ G(x)}$:
-you get the function of identity types
-$$\USymG\to (\princ G(x)\eqto \princ G(x))$$
-which by the very definition of transport for $\princ G$ is $\preinv$.
+  to verify this for $x\jdeq\sh_G$, for which it follows from
+  \MB{\cref{xca:absprtorsor}}.
 \end{example}
 
 \begin{definition}
@@ -484,17 +510,23 @@ which by the very definition of transport for $\princ G$ is $\preinv$.
   classified by the pointed connected groupoid 
   $(\typeabstor,\absprtor)$.
 \end{definition}
-We give the construction of \cref{ex:qG} a short name since it will occur in important places.
+
+We give the construction of \cref{ex:qG} \MB{???} a short 
+name since it will occur in important places.
 \begin{definition}
   Let $G$ be a group.
   The group homomorphism
   $$q_G:\Hom(G,\concr(\abstr(G)))$$
-  is defined in terms of the pointed map by the same name
+  is classified by the following function, which is pointed by
+  \MB{\cref{xca:absprtorsor}}:
 \[
-  \B q_G:\BG\ptdto (\typeabstor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)
-  \defeq(\princ G(z),\preinv,!).
+  \Bq_G:\BG\ptdto (\typeabstor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)
+  \defeq(\princ G(z),\preinv_z,!).\qedhere
 \]
 \end{definition}
+
+
+{\large \MB{cursor}}
 
 \begin{lemma}
   \label{lem:Groupsareidentitytypes}
@@ -502,23 +534,42 @@ For all groups $G$, the pointed function $q_G:G\ptdto\concr(\abstr(G))$
 is a  equivalence.
 \end{lemma}
 \begin{proof}
-  To prove that $q_G$ is an equivalence it is, by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, enough to show that if $x,y:\BG$ then the induced map
-$$q_G:(x\eqto_{\BG}y)\to (q_G(x)\eqto q_G(y))
+  To prove that $\Bq_G$ is an equivalence it is, by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, enough to show that if $x,y:\BG$ then the induced map
+$$\Bq_G:(x\eqto_{\BG}y)\to (\Bq_G(x)\eqto \Bq_G(y))
 $$
 is an equivalence.
-  Now, $q_G(x)\eqto q_G(y)$ is equivalent to the set
+  Now, $\Bq_G(x)\eqto \Bq_G(y)$ can be unfolded to
 $$
-((\sh_G\eqto x),\preinv)\eqto_{\abstr(G)\text{-set}}((\sh_G\eqto y),\preinv)$$
-which in turn is equivalent to
-$$\sum_{f:(\sh_G\eqto x)\eqto (\sh_G\eqto y)}f\preinv=\preinv f
-$$
- ($f\preinv=\preinv f$ is shorthand for $\prod_{q:\sh_G\eqto x}\prod_{p:\sh_G\eqto y}f(pq^{-1})=f(p)q^{-1}$ and the rest of the data is redundant at the level of symmetries) and under these identities $q_G$ is given by
-$$(\post,!):(x\eqto y)\to \sum_{f:(\sh_G\eqto x)\eqto(\sh_G\eqto y)}f\preinv=\preinv f.$$
-Given an element
-$(f,!):\sum_{f:(\sh_G\eqto x)\eqto(\sh_G\eqto y)}f\preinv=\preinv f$, the preimage
-$(\post,!)^{-1}(f,!)$ is equivalent to the set
-$\sum_{r:x\eqto y}(f=\post_r)$.  But if $(r,!),(s,!): \sum_{r:x\eqto y}(f=\post_r)$, then for all $p:\sh_G\eqto x$ we get that $r\,p=f(p)=s\,p$, that is $r=s$, so that the preimage is in fact a proposition.
-To show that the preimage is contractible, it is enough to construct a function $(\sh_G\eqto x)\to \sum_{r:x\eqto y}(f=\post_r)$, and sending $p$ to $f(p)p^{-1}$ will do.
+((\sh_G\eqto x),\preinv_x)\eqto_{\absGSet[\abstr(G)]}((\sh_G\eqto y),\preinv_y)$$
+which, by \cref{def:pathover-trp} and \cref{lem:isEq-pair=}, is equivalent to
+\[
+\sum_{f:(\sh_G\eqto x)\equivto (\sh_G\eqto y)}
+\prod_{g:\USymG} f\circ(\preinv_x(g))=(\preinv_y(g))\circ f.
+\]
+Under these identities, and using function extensionality,
+$\Bq_G$ is given by (with the type of $f$ as above)
+\[
+\post_{\sh_G}:(x\eqto y)\to \sum_{f}
+\prod_{g:\USymG}\,\prod_{p:\sh_G\eqto x}\bigl(f(p\inv g)= f(p)\inv g\bigr).
+\]
+Given a function $f$ such that
+$\prod_{g:\USymG}\,\prod_{p:\sh_G\eqto x}\bigl(f(pg)= f(p)g\bigr)$,%
+\footnote{No need to invert $g$.}
+the preimage $\post_{\sh_G}^{-1}(f)$ unfolds to
+$\sum_{r:x\eqto y}(f=\post_{\sh_G}(r))$. For proving that $\post_{\sh_G}$,
+and hence $\Bq_G$, is an equivalence, we have to show that the
+latter preimage is contractible. This goal is a proposition
+and $\BG$ is connected, so we may assume that we have a 
+path $p_0:\sh_G\eqto x$. Then any $r,s:x\eqto y$ such that
+$\post_{\sh_G}(r)= f=\post_{\sh_G}(s)$ satisfy $r\,p_0=f(p_0)=s\,p_0$,
+so that $r=s$. Thus the preimage is a proposition. It remains
+to find an $r$ such that $f=\post_{\sh_G}(r)$. 
+We take $r=f(p_0)\inv{p_0}$ and verify, using
+the property of $f$, that for any $p:\sh_G\eqto x$, 
+\[
+f(p) = f(p_0(\inv{p_0}p)) = f(p_0)(\inv{p_0} p) = (f(p_0) \inv{p_0}) p
+= \post_{\sh_G}(r)(p).\qedhere
+\]
 \end{proof}
 
 \begin{example}
@@ -745,16 +796,16 @@ and if we start with a $g:\USymG$, then $\pathsp{}^G$ sends it to $\pathsp g^G\o
 \section{Actions}
 \label{sec:Gsetsabstrconcr}
 \marginnote{Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-sets is
-  $$\absGSet[\abstr(G)]\defequi \sum_{\absSetvar:\Set}\absHom({\abstr(G)},\abstr(\Sigma_{\absSetvar})).$$}
+  $$\absGSet[\abstr(G)]\defequi \sum_{\absGSetvar:\Set}\absHom({\abstr(G)},\abstr(\Sigma_{\absGSetvar})).$$}
 
 Given a group $G$ it should by now come as no surprise that the type of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
 According to \cref{lem:homomabstrconcr}
-$$\abstr:\Hom(G,\Sigma_{\absSetvar})\to\absHom(\abstr(G),\abstr(\Sigma_{\absSetvar}))$$
-is an equivalence, where the group $\Sigma_{\absSetvar}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\absSetvar$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\absSetvar})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\sh_G))$.  Finally,
-$$\mathrm{pr}:\sum_{\absSetvar}\sum_{F:\BG_\div\to\Set}(\absSetvar=F(\sh_G))\we
-(\BG_\div\to\Set),\quad \mathrm{pr}(\absSetvar,F,p)\defequi F
+$$\abstr:\Hom(G,\Sigma_{\absGSetvar})\to\absHom(\abstr(G),\abstr(\Sigma_{\absGSetvar}))$$
+is an equivalence, where the group $\Sigma_{\absGSetvar}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\absGSetvar$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\absGSetvar})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\absGSetvar=F(\sh_G))$.  Finally,
+$$\mathrm{pr}:\sum_{\absGSetvar}\sum_{F:\BG_\div\to\Set}(\absGSetvar=F(\sh_G))\we
+(\BG_\div\to\Set),\quad \mathrm{pr}(\absGSetvar,F,p)\defequi F
 $$
-is an equivalence (since $\sum_{\absSetvar}(\absSetvar=F(\sh_G))$ is contractible).
+is an equivalence (since $\sum_{\absGSetvar}(\absGSetvar=F(\sh_G))$ is contractible).
 Backtracking these equivalences we see that we have established
 \begin{lemma}
   \label{lem:actionsconcreteandabstract}
@@ -773,7 +824,7 @@ $$\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(y)\defequi \sum_{F:\BH_\div\to \BG_\div}(
 What abstract $\abstr(G)$-set does this correspond to?
 In particular, under the equivalence $\abstr:\Hom(H,G)\to\absHom(\abstr(H),\abstr(G))$, what is the corresponding action of $\abstr(G)$ on the abstract homomorphisms?
 
-The answer is that $g:\USymG$ acts on $\absHom(\abstr(H),\abstr(G))$ by postcomposing with conjugation $\conj^g$ by $g$ as defined in \cref{ex:conjhomo}.
+The answer is that $g:\USymG$ acts on $\absHom(\abstr(H),\abstr(G))$ by postcomposing with conjugation $\conj^g$ by $g$ as defined in \cref{ex:conjhom}.
 
 Let us spell this out in some detail:
 If $(F,p):\Hom(H,G)(\sh_G)\defequi
