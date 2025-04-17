@@ -643,7 +643,7 @@ Here we elaborate the general case.
 \begin{proof}
   Suppose we are given an abstract group homomorphism
 $$f:\absHom(\abstr(G),\abstr(H))$$
-and we explain how to build a map $\Bg:\BG_\div \rightarrow \BH_\div$ with
+and we explain how to build a map $\Bg:\BG \rightarrow \BH$ with
 a path $p:\sh_H \eqto \Bg(\sh_G)$ such that $p f(\omega) = \Bg(\omega) p$
 for all $\omega:\sh_G \eqto \sh_G$ (so that $g:\Hom(G,H)$ is a ``delooping'' of $f$, 
 that is, $f=\abstr(g)$).%
@@ -652,116 +652,54 @@ $\mathrm{deloop}:\absHom(\abstr(G),\abstr(H))\to\Hom(G,H)$ with
 $({\abstr}\circ\mathrm{deloop})=\id$. We leave it to the reader 
 to prove that $\mathrm{deloop}\circ{\abstr}=\id$. }
 
-To get an idea of our strategy, let us assume the problem solved. The map $g:\BG_\div\rightarrow \BH_\div$
-will then send any path $\alpha:\sh_G \eqto x$ to a path $g(\alpha):g(\sh_G \eqto g(x)$
-and so we get a family of paths $p(\alpha) \defequi g(\alpha) p$ in ${\sh_H} \eqto g(x)$ such that
-$$p(\alpha\omega) = g(\alpha)g(\omega)p
-  = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
+To get an idea of our strategy, let us assume the problem solved. The map $\Bg:\BG\rightarrow \BH$
+will then send any path $\alpha:\sh_G \eqto x$ to a path $\Bg(\alpha):\Bg(\sh_G) \eqto \Bg(x)$
+and so we get a family of paths $p(\alpha) \defequi \Bg(\alpha) p$ in ${\sh_H} \eqto \Bg(x)$ such that
+$$p(\alpha\omega) = \Bg(\alpha)\Bg(\omega)p
+  = \Bg(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
 for all $\omega:\sh_G \eqto \sh_G$ and $\alpha : \sh_G \eqto x$.
 
 This suggests to introduce the following family
 $$
-C(x)~:=~ \sum_{y:\BH_\div}\sum_{p:({\sh_G}=x)\rightarrow (\sh_H \eqto y)}~~~\prod_{\omega:{\sh_G}={\sh_G}}\prod_{\alpha:{\sh_G}=x}~
+C(x)~:=~ \sum_{y:\BH}\sum_{p:(\sh_G \eqto x)\rightarrow (\sh_H \eqto y)}~~~\prod_{\omega:\sh_G \eqto {\sh_G}}\prod_{\alpha:\sh_G \eqto x}~
  p(\alpha\omega) = p(\alpha)f(\omega)
 $$
  An element of $C(x)$ has three components, the last component being
- a proposition since $\BH_\div$ is a groupoid.
+ a proposition since $\BH$ is a groupoid.
 
  The type $C({\sh_G})$ has a simpler description. An element of $C({\sh_G})$ is
  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
- $\alpha$ and $\omega$ in ${\sh_G}={\sh_G}$.
+ any $\alpha$ and $\omega$ in $\sh_G \eqto {\sh_G}$.
  Since $f$ is an abstract group homomorphism, this condition
- can be simplified to $p(\omega) = p(1_{\sh_G})f(\omega)$, and the map $p$
- is completely determined by $p(1_{\sh_G})$.
- Thus $C({\sh_G})$ is equal to $\sum_{y:\BH_\div}\sh_H \eqto y$ and is contractible.
+ can be simplified to $p(\omega) = p(\refl{\sh_G})f(\omega)$, and the map $p$
+ is completely determined by $p(\refl{\sh_G})$.
+ Thus $C({\sh_G})$ is equal to $\sum_{y:\BH}\sh_H \eqto y$ and is contractible.
 
 
- It follows that we have
+ It follows that we have\footnote{\MB{Why not skip next 3 lines?}}
  $$
- \prod_{x:\BG_\div}~ (\sh_G \eqto x)\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG}~ (\sh_G \eqto x)\rightarrow\iscontr~ C(x)
  $$
 and so, since $\iscontr~C(x)$ is a proposition
  $$
- \prod_{x:\BG_\div}~ \Trunc{\sh_G \eqto x}\rightarrow\iscontr~ C(x)
+ \prod_{x:\BG}~ \Trunc{\sh_G \eqto x}\rightarrow\iscontr~ C(x)
  $$
- Since $\BG_\div$ is connected, we have
- $\prod_{x:\BG_\div}\iscontr~ C(x)$
- and so, in particular, we have an element of $\prod_{x:\BG_\div}C(x)$.
+ Since $\BG$ is connected, we have
+ $\prod_{x:\BG}\iscontr~ C(x)$
+ and so, in particular, we have an element of $\prod_{x:\BG}C(x)$.
 
- We get in this way a map $g:\BG_\div\rightarrow \BH_\div$
- together with a map $p:({\sh_G}\eqto x)\rightarrow ({\sh_H} \eqto g(x))$ such that
- $p (\alpha\omega) = p(\alpha) f(\omega)$
- for all $\alpha$ in ${\sh_G}=x$ and $\omega$ in ${\sh_G}={\sh_G}$.
-We have, for $\alpha:{\sh_G}=x$
-$$\prod_{x':\BG_\div}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
-since this holds for $\lambda = 1_x$.
-In particular, $p(\omega) = g(\omega)p(1_{\sh_G})$.
+ By projecting out the centers we get a map $\Bg:\BG\rightarrow \BH$
+ together with a map $p:({\sh_G}\eqto x)\rightarrow ({\sh_H} \eqto \Bg(x))$ 
+ such that $p (\alpha\omega) = p(\alpha) f(\omega)$
+ for all $\alpha$ in $\sh_G \eqto x$ and $\omega$ in $\sh_G \eqto {\sh_G}$.
+We have, for $\alpha:\sh_G \eqto x$
+$$\prod_{x':\BG}\prod_{\lambda:x\eqto x'}~p(\lambda\alpha) = \Bg(\lambda)p(\alpha)$$
+since this holds for $\lambda = \refl x$.
+In particular, $p(\omega) = \Bg(\omega)p(\refl{\sh_G})$.
 
-We also have $p(\omega) = p(1_{\sh_G})f(\omega)$, hence
-$p(1_{\sh_G})g(\alpha) =  f(\alpha)p(1_{\sh_G})$
+We also have $p(\omega) = p(\refl{\sh_G})f(\omega)$, hence
+$p(\refl{\sh_G})\Bg(\alpha) =  f(\alpha)p(\refl{\sh_G})$
 for all $\alpha:\sh_G\eqto \sh_G$ and we have found a delooping of $f$.
-
-%Security copy if things go wrong. BID: delete by May 1
-%   Let $(X,a)$ and $(Y,b)$ be two pointed connected $1$-types.
-% We suppose given a abstract group homomorphism
-% $$f:a = a\rightarrow b = b$$
-% and we explain how to build a map $g:X \rightarrow Y$ with
-% a path $p:b = g(a)$ such that $p f(\omega) = g(\omega) p$
-% for all $\omega:a = a$. (So $g$ is a ``delooping'' of $f$.)
-
-% \medskip
-
-% Let us assume the problem solved. The map $g:X\rightarrow Y$
-% will then send any path $\alpha:a = x$ to a path $g(\alpha):g(a) = g(x)$
-% and so we get a family of paths $p(\alpha) = g(\alpha) p$ in $b = g(x)$ such that
-% $$p(\alpha\omega) = g(\alpha)g(\omega)p
-%   = g(\alpha)pf(\omega) = p(\alpha)f(\omega)$$
-% for all $\omega:a = a$ and $\alpha : a = x$.
-
-% \medskip
-
-% This suggests to introduce the following family
-% $$
-% C(x)~:=~ \sum_{y:Y}\sum_{p:(a=x)\rightarrow (b = y)}~~~\prod_{\omega:a=a}\prod_{\alpha:a=x}~
-%  p(\alpha\omega) = p(\alpha)f(\omega)
-% $$
-
-%  An element of $C(x)$ has three components, the last component being
-%  a proof since $Y$ is a $1$-type.
-
-%  The type $C(a)$ has a simpler description. An element of $C(a)$ is
-%  a pair $y,p$ such that $p(\alpha\omega) = p(\alpha)f(\omega)$ for
-%  $\alpha$ and $\omega$ in $a=a$. Since $f$ is a group morphism, this condition
-%  can be simplified to $p(\omega) = p(1_a)f(\omega)$, and the map $p$
-%  is completely determined by $p(1_a)$.
-%  Thus $C(a)$ is equal to $\sum_{y:Y}b = y$ and is contractible.
-
-%  \medskip
-
-%  It follows that we have
-%  $$
-%  \prod_{x:X}~ a = x\rightarrow\iscontr~ C(x)
-%  $$
-% and so, since $\iscontr~C(x)$ is a proposition
-%  $$
-%  \prod_{x:X}~ \Trunc{a = x}\rightarrow\iscontr~ C(x)
-%  $$
-%  Since $X$ is connected, we have
-%  $\prod_{x:X}\iscontr~ C(x)$
-%  and so, in particular, we have an element of $\prod_{x:X}C(x)$.
-
-%  We get in this way a map $g:X\rightarrow Y$
-%  together with a map $p:(a=x)\rightarrow (b = g(x))$ such that
-%  $p (\alpha\omega) = p(\alpha) f(\omega)$
-%  for all $\alpha$ in $a=x$ and $\omega$ in $a=a$.
-% We have, for $\alpha:a=x$
-% $$\prod_{x':X}\prod_{\lambda:x=x'}~p(\lambda\alpha) = g(\lambda)p(\alpha)$$
-% since this holds for $\lambda = 1_x$.
-% In particular, $p(\omega) = g(\omega)p(1_a)$.
-
-% We also have $p(\omega) = p(1_a)f(\omega)$, hence
-% $p(1_a)g(\alpha) =  f(\alpha)p(1_a)$
-% for all $\alpha:a=a$ and we have found a delooping of $f$.
 \end{proof}
 
 
