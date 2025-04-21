@@ -295,13 +295,13 @@ that simplifies the requirements for abstract group homomorphisms.
 Thus we see that, due to the properties of the abstract groups,
 if $f$ preserves multiplication, then $f$ also preserves unit and inverses.%
 \footnote{\label{ft:monoid-hom}For monoids this is not true:
-  Let $M$ be the monoid with two elements, $1$ and $\infty$,
-  with a multiplication such that $1$ is the unit and
-  $\infty*\infty=\infty$. Now consider $h: M\to M$
-  defined by $h(m)=\infty$ for all $m:M$. Then $h$ preserves
+  Let $M$ be the monoid with two elements, $1$ and $0$,
+  with ordinary multiplication, so the unit is $1$. 
+  Consider $\bn1$ as the trivial monoid.
+  Now define $h: \bn1\to M$ by $h(0)=0$. Then $h$ preserves
   multiplication, but not the unit. Note that $M$ cannot
-  be extended to an abstract group, since giving $\infty$
-  an inverse would make it equal to $1$.}
+  be extended to an abstract group, since giving $0$
+  an inverse would make $0$ equal to $1$.}
   
 \begin{definition}\label{def:abstrisfunctor}
   Let $\agp G\defequi(S,e_{\agp G},\cdot_{\agp G},\iota_{\agp G})$
@@ -350,11 +350,15 @@ if $f$ preserves multiplication, then $f$ also preserves unit and inverses.%
 \end{remark}
 
 \begin{xca}
-Prove that composition of the functions on the underlying sets gives a composition of homomorphisms of abstract groups.
-
-  Prove that for $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$ we have
-  $$\abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ and that 
-  $\abstr(\id_G)=\id_{\abstr(G)}$.
+Prove that the composition of two composable abstract homomorphisms\footnote{%
+Composition here means composition of the functions on the underlying
+sets, and composable means that these functions have types such 
+that they indeed can be composed. The latter is sometimes tacitly assumed.}
+is again an abstract homomorphism. Prove also that
+  $$\abstr(\id_G)=\id_{\abstr(G)} \quad\text{and}\quad
+  \abstr(f_1f_0)=\abstr(f_1)\abstr(f_0)$$ 
+for all $f_0:\Hom(G_0,G_1)$ and $f_1:\Hom(G_1,G_2)$.\footnote{%
+In other words, for composable homomorphisms $f_0,f_1$.}
 \end{xca}
 
 \begin{example}
@@ -363,11 +367,11 @@ Prove that composition of the functions on the underlying sets gives a compositi
   In \cref{xca:conj} we defined $\conj^g:S\to S$ by setting 
   $\conj^g(s)\defequi g\cdot s\cdot g^{-1}$ for all $s:S$,
   and asked you to show that it ``preserves the group structure'',
-  \ie classifies a homomorphism
+  \ie it is a homomorphism
   \[
-    \cong^g:\absHom(\agp G,\agp G)
+    \conj^g:\absHom(\agp G,\agp G)
   \]
-  called \emph{conjugation} by $g$\index{conjugation}.
+  called \emph{conjugation by} $g$\index{conjugation}.
   Actually, we asked for more: namely that conjugation by $g$ is 
   an isomorphism, and hence determines an identification
   (for which we used the same symbol) $\conj^g:\agp G\eqto\agp G$.
@@ -375,16 +379,31 @@ Prove that composition of the functions on the underlying sets gives a compositi
   If $\agp H$ is some other abstract group, transport along $\conj^g$
   gives an identification
   $\conj^g_*:\Hom(\agp H,\agp G) \eqto \Hom(\agp H,\agp G)$
-  which should be viewed as ``postcomposing with conjugation''.
-  Similar considerations go for elements in $\agp H$,
-  giving rise to ``precomposition with conjugation $\cong^h$''.
+  which should be viewed as ``postcomposing with conjugation by $g$''.
+  Similarly for elements in $\agp H$,
+  giving rise to ``precomposition with conjugation by $h$''.
+  
+  The connection with inner automorphisms of a given group $G$ is
+  as follows. Recalling \cref{exa:conj-concrete} and \cref{def:inner-autos},
+  we have that $\abstr(\Binn)(g)=\loops(\id_{\BG},\inv g)=\conj^g$,
+  for every $g:\USymG$.
 \end{example}
 
 \section{Groups: from concrete to abstract and back}
 \label{sec:Gsetforabstract}
 
-We use \cref{lem:BGbytorsor} as our inspiration for trying to construct 
-a group from an abstract group.
+Cayley's Theorem for abstract groups states that every abstract
+group $\agp G$ is isomorphic to a subgroup of the abstract permutation
+group of the underlying set of $\agp G$. We did not prove this theorem,
+but instead proved \cref{lem:allgpsarepermutationgps}, in which
+the monomorphism $\rho_G$ singles out the subset of permutations of
+$\USymG$ that correspond to the symmetries of $\sh_G$ in the
+group $G$. The proof builds on \cref{def:BG2TorsG} and \cref{lem:BGbytorsor}
+and identifies the principal $G$-torsor $\princ G$ as the shape 
+corresponding to $\sh_G$.
+
+From this we draw our inspiration for constructing a group from an 
+abstract group.
 That is, in total analogy, we define the torsors for an abstract group,
 and it will then be relatively simple to show that the constructions of
 \begin{enumerate}
@@ -416,7 +435,7 @@ defined by transport, is the function $\USymG\to(\USymG\eqto\USymG)$
 mapping $g$ to $(g\cdot\blank)$, \ie postcomposition with $g$.%
 \footnote{\label{ft:choicePshG}A (free) choice has been made to define 
 $\princ G$ using $(\sh_G\eqto z)$ and not $(z\eqto\sh_G)$. In the latter
-case its abstract version would map $g$ to $(\blank\cdot\inv g)$,
+case the abstract homomorphism would map $g$ to $(\blank\cdot\inv g)$, \ie
 precomposition with the inverse of $g$. See also \cref{xca:absprtorsor}.}
 A small generalization now leads to the following definition.
 
@@ -447,7 +466,10 @@ The type of \emph{${\agp G}$-torsors} is
 In the setting of the above definition,
 give an identification of $(S,(s\mapsto \mu(g,s)))$ with
 $(S,(s\mapsto \mu(s,\iota(g))))$
-in the type $\absGSet$.\footnote{\MB{Mention co-group?}}
+in the type $\absGSet$.\footnote{Every abstract group $(S,e,\mu,\iota)$
+has an isomorphic \emph{opposite} group $(S,e,\mu',\iota)$, where
+$\mu'(g,g')=\mu(g',g)$ for all $g,g':S$. 
+The canonical isomorphism is $\iota$.}
 \end{xca}
 
 \begin{example}
@@ -464,6 +486,16 @@ in the type $\absGSet$.\footnote{\MB{Mention co-group?}}
   \item for all $p,q:\USymG$ we have that $f(p\, q)=f(p)\,f(q)$.\qedhere
   \end{enumerate}
 \end{example}
+
+Clearly, the types $\absGSet$ and $\absGTor$ are groupoids,
+and the latter is by definition connected. Thus we define:
+
+\begin{definition}\label{def:concr}
+  For any abstract group ${\agp G}$, the (concrete) 
+  \emph{group $\concr({\agp G})$ associated with ${\agp G}$} 
+  is the group classified by the pointed connected groupoid 
+  $(\absGTor,\absprtor)$.
+\end{definition}
 
 To help reading the coming proofs we introduce some notation that is
 redundant, but may aid the memory in cluttered situations.
@@ -482,60 +514,50 @@ in the type of $\preinv$, and likewise write $\post_x$.}
   %\adjoint:(x\eqto y)\to((x\eqto x)\eqto (y\eqto y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
 \end{align*}
 
-\begin{example}\label{ex:qG}
-  Given a group $G$ and $x:\BG$, the principal $G$-torsor
-  \emph{evaluated at $x$}, \ie the set $\princ G(x)\jdeq (\sh_G\eqto x)$,
+\begin{example}\label{ex:BqG}
+  Given a group $G$ and $z:\BG$, the principal $G$-torsor
+  \emph{evaluated at $z$}, \ie the set $\princ G(z)\jdeq (\sh_G\eqto z)$,
   has a natural structure of an $\abstr(G)$-set by means of
-  $$\preinv_x:\USymG\to ((\sh_G\eqto x)\eqto (\sh_G\eqto x)).$$
-  Indeed, $\preinv_x$ is an abstract homomorphism since,
+  $$\preinv_z:\USymG\to ((\sh_G\eqto z)\eqto (\sh_G\eqto z)).$$
+  Indeed, $\preinv_z$ is an abstract homomorphism since,
   for all $p,q:\USymG$, we have that 
-  $\preinv_x(p\,q)=\preinv_x(p)\preinv_x(q)$.% 
-  \footnote{For any $r\colon \sh_G\eqto x$ we have that
-  $\preinv_x(p\, q)(r)=r\,(p\,q)^{-1}=r\,q^{-1} p^{-1}=
-  \preinv_x(p)(\preinv_x(q)(r))$.
+  $\preinv_z(p\,q)=\preinv_z(p)\preinv_z(q)$.% 
+  \footnote{For any $r\colon \sh_G\eqto z$ we have that
+  $\preinv_z(p\, q)(r)=r\,(p\,q)^{-1}=r\,q^{-1} p^{-1}=
+  \preinv_z(p)(\preinv_z(q)(r))$.
   Without the inverse, this would have gone badly wrong.
   Moreover, referring to \cref{xca:absprtorsor},
   $\preinv$ is here more natural than $\post$:
-  $\USymG$ consists of the symmetries of $\sh_G$, and the $x$ is fixed.}
+  $\USymG$ consists of the symmetries of $\sh_G$, and the $z$ is fixed.}
 
-  Furthermore, for any $x:\BG$, the $\abstr(G)$-set 
-  $(\sh_G\eqto x,\preinv,!)$ is an $\abstr(G)$-torsor.
+  Furthermore, for any $z:\BG$, the $\abstr(G)$-set 
+  $(\sh_G\eqto z,\preinv,!)$ is an $\abstr(G)$-torsor.
   Since this is a proposition and $\BG$ is connected, it suffices
-  to verify this for $x\jdeq\sh_G$, for which it follows from
-  \MB{\cref{xca:absprtorsor}}.
+  to verify this for $z\jdeq\sh_G$, for which it follows from
+  \cref{xca:absprtorsor}.  
+  We give this construction a short name by defining, for all $z:\BG$,
+  the map
+  \[
+  \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad \Bq_G(z)
+  \defeq(\princ G(z),\preinv_z,!),
+  \]
+  pointed by \cref{xca:absprtorsor}. The name $\Bq_G$ anticipates
+  its use as classifier of a homomorphism.
 \end{example}
 
-\begin{definition}
-  If ${\agp G}$ is an abstract group, then the (concrete)
-  \emph{group $\concr({\agp G})$ associated with ${\agp G}$} is the group
-  classified by the pointed connected groupoid 
-  $(\absGTor,\absprtor)$.
-\end{definition}
-
-We give the construction of \cref{ex:qG} \MB{???} a short 
-name since it will occur in important places.
-\begin{definition}
+\begin{definition}\label{def:qG-concr-abstr}
   Let $G$ be a group.
   The group homomorphism
   $$q_G:\Hom(G,\concr(\abstr(G)))$$
-  is classified by the following function, which is pointed by
-  \MB{\cref{xca:absprtorsor}}:
-\[
-  \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad q_G(z)
-  \defeq(\princ G(z),\preinv_z,!).\qedhere
-\]
+  is classified by the function $\Bq_G$ defined in \cref{ex:BqG}.
 \end{definition}
-
-
-{\large \MB{cursor}}
 
 \begin{lemma}
   \label{lem:Groupsareidentitytypes}
-For all groups $G$, the pointed function $q_G:G\ptdto\concr(\abstr(G))$
-is a  equivalence.
+For all groups $G$, the homomorphism $q_G$ is an isomorphism.
 \end{lemma}
 \begin{proof}
-  To prove that $\Bq_G$ is an equivalence it is, by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, enough to show that if $x,y:\BG$ then the induced map
+  To prove that $\Bq_G$ is an equivalence it is, by \cref{cor:fib-vs-path}\ref{conn-fib-vs-path}, enough to show that for $x,y:\BG$ the induced map
 $$\Bq_G:(x\eqto_{\BG}y)\to (\Bq_G(x)\eqto \Bq_G(y))
 $$
 is an equivalence.
@@ -566,7 +588,7 @@ $\post_{\sh_G}(r)= f=\post_{\sh_G}(s)$ satisfy $r\,p_0=f(p_0)=s\,p_0$,
 so that $r=s$. Thus the preimage is a proposition. It remains
 to find an $r$ such that $f=\post_{\sh_G}(r)$. 
 We take $r=f(p_0)\inv{p_0}$ and verify, using
-the property of $f$, that for any $p:\sh_G\eqto x$
+the property of $f$, for any $p:\sh_G\eqto x$, that
 \[
 f(p) = f(p_0(\inv{p_0}p)) = f(p_0)(\inv{p_0} p) = (f(p_0) \inv{p_0}) p
 = \post_{\sh_G}(r)(p).\qedhere
@@ -578,25 +600,49 @@ f(p) = f(p_0(\inv{p_0}p)) = f(p_0)(\inv{p_0} p) = (f(p_0) \inv{p_0}) p
   Let ${\agp G}=(S,e,\mu,\iota)$ be an abstract group.
 Then the underlying set of $\abstr(\concr({\agp G}))$ is 
 $\absprtor \eqto_{\absGTor}\absprtor$.
-Unraveling the definitions we see that this set is equivalent to%
-\footnote{\MB{NB notation not abstract.}}
-$$\sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}).
-$$
-Setting $s\defequi e$ and renaming $t\defequi q^{-1}$ in the last equation, we see that $p(t)=p(e)t$; that is $p$ is simply multiplication with an element $p(e):S$.  in other words, the function
-$$r_{\agp G}:S\to  \sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1}),\qquad r_{\agp G}(u)\defequi(u\cdot\,,!)
-$$
-is an equivalence of sets, which we by univalence is converted into an identity.
-The abstract group structure of $\abstr(\concr({\agp G}))$ is given by it being the symmetries of $\absprtor$; translated to $\sum_{p:S\eqto S}\prod_{q,s:S}(p(s\,q^{-1})=p(s)\,q^{-1})$ this corresponds via the first projection to the symmetries of $S$.
-This means that we need to know that if $u,v:S$ and consider the two symmetries $u\cdot,v\cdot:S\eqto S$, then their composite (the operation on the symmetry on $S$) is equal to $(u\cdot v)\cdot:S\eqto S$ (the abstract group operation), but this is true by associativity ($u\cdot(v\cdot s)=(u\cdot v)\cdot s$).  That $r_{\agp G}$ also sends $e:S$ to $\refl S$ is clear.
-Hence our identity $r_{\agp G}$ underlies an identity of abstract groups
-$$r_{\agp G}:{\agp G}\eqto_{\typegroup^{\abstr}}\abstr(\concr({\agp G})).$$
+Unraveling the definitions and using \cref{def:pathover-trp},
+we see that this set is equivalent to
+\[
+\sum_{p:S\equivto S}\prod_{q,s:S}\bigl(p(\mu(q,s))=\mu(q,p(s)\bigr).
+\]
+Setting $s\defequi e$ in the last equation, we see that $p(q)=\mu(q,p(e))$,
+that is, $p$ is simply multiplication with an element $p(e):S$.
+In other words,\footnote{Indeed, conversely, $\mu(u,\blank)$
+satisfies the condition for $p$. Prove this!}
+the function
+\[
+r_{\agp G}:S\to  \sum_{p:S\equivto S}\prod_{q,s:S}
+\bigl(p(\mu(q,s))=\mu(q,p(s)\bigr),
+\qquad r_{\agp G}(u)\defequi(\mu(u,\blank),!)
+\]
+is an equivalence of sets, and hence an identification.
+
+The goal is an identification of $\agp G$ and $\abstr(\concr({\agp G}))$,
+not just an identification of the underlying set.
+The abstract group structure of $\abstr(\concr({\agp G}))$ is given by 
+the symmetries of $\absprtor$; translated to 
+$\sum_{p:S\equivto S}\prod_{q,s:S}\bigl(p(\mu(q,s))=\mu(q,p(s)\bigr)$ 
+this corresponds via the first projection to a subset of permutations of $S$,
+with the abstract group structure given by composition $\circ$.
+In view of \cref{def:abstrisfunctor} it suffices for the goal above
+that $r_{\agp G}$ preserves multiplication:
+$r_{\agp G}(\mu(u,v))=r_{\agp G}(u)\circ r_{\agp G}(v)$.
+This follows directly from function extensionality and 
+the associativity of $\mu$. Hence the equivalence $r_{\agp G}$ is 
+an isomorphism of abstract groups,\footnote{%
+\label{ft:abstract-Cayley}
+And this is precisely Cayley's Theorem for abstract groups.} \ie
+\[
+r_{\agp G}:{\agp G}\eqto_{\typegroup^{\abstr}}\abstr(\concr({\agp G})).
+\qedhere
+\]
 \end{example}
 
-This shows that every abstract group encodes the symmetries of something essentially unique.  Summing up the information we get
-\begin{theorem}
-  \label{thm:Groupsareidentitytypes}
-  Let ${\agp G}$ be an abstract group. Then
-$${\abstr}:\typegroup\to\typegroup^{\abstr}$$ is an equivalence.
+\cref{ex:abstrconcrG} shows that every abstract group encodes the symmetries 
+of something essentially unique.  Summing up the information we get
+\begin{theorem}\label{thm:Groupsareidentitytypes}
+The map ${\abstr}:\typegroup\to\typegroup^{\abstr}$ is an equivalence
+with inverse $\concr$.
 \end{theorem}
 
 \section{Homomorphisms}
