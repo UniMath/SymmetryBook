@@ -389,7 +389,7 @@ In other words, for composable homomorphisms $f_0,f_1$.}
   for every $g:\USymG$.
 \end{example}
 
-\section{Groups: from concrete to abstract and back}
+\section{Groups: from abstract to concrete and back}
 \label{sec:Gsetforabstract}
 
 Cayley's Theorem for abstract groups states that every abstract
@@ -631,7 +631,7 @@ This follows directly from function extensionality and
 the associativity of $\mu$. Hence the equivalence $r_{\agp G}$ is 
 an isomorphism of abstract groups,\footnote{%
 \label{ft:abstract-Cayley}
-And this is precisely Cayley's Theorem for abstract groups.} \ie
+See: Cayley's Theorem for abstract groups.} \ie
 \[
 r_{\agp G}:{\agp G}\eqto_{\typegroup^{\abstr}}\abstr(\concr({\agp G})).
 \qedhere
@@ -645,7 +645,7 @@ The map ${\abstr}:\typegroup\to\typegroup^{\abstr}$ is an equivalence
 with inverse $\concr$.
 \end{theorem}
 
-\section{Homomorphisms}
+\section{Homomorphisms, from abstract to concrete and back}
 \label{sec:homabsisconcr}
 
 Now that we know how to identify the type of groups with the type 
@@ -657,7 +657,7 @@ Translating from group homomorphisms to abstract group homomorphisms is easy:
 if $G$ and $H$ are groups, then we defined
 $$\abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))$$
 in \cref{def:USym-hom} and \cref{def:abstrisfunctor} as the function
-which takes a homomorphism, classified by a pointed map $f:\BG\ptdto\BH$,
+which takes a homomorphism, classified by a pointed map $\Bf:\BG\ptdto\BH$,
 to the induced map of identity types
 $$\USymf \jdeq \loops\Bf:\USymG\to\USymH$$
 together with the proof that this is an abstract group 
@@ -708,7 +708,7 @@ for all $\omega:\sh_G \eqto \sh_G$ and $\alpha : \sh_G \eqto x$.
 
 This suggests to introduce the following family
 $$
-C(x)~:=~ \sum_{y:\BH}\sum_{p:(\sh_G \eqto x)\rightarrow (\sh_H \eqto y)}~~~\prod_{\omega:\sh_G \eqto {\sh_G}}\prod_{\alpha:\sh_G \eqto x}~
+C(x)~:=~ \sum_{y:\BH}\,\sum_{p:(\sh_G \eqto x)\rightarrow (\sh_H \eqto y)}~\prod_{\omega:\sh_G \eqto {\sh_G}}\,\prod_{\alpha:\sh_G \eqto x}~
  p(\alpha\omega) = p(\alpha)f(\omega)
 $$
  An element of $C(x)$ has three components, the last component being
@@ -721,16 +721,6 @@ $$
  can be simplified to $p(\omega) = p(\refl{\sh_G})f(\omega)$, and the map $p$
  is completely determined by $p(\refl{\sh_G})$.
  Thus $C({\sh_G})$ is equal to $\sum_{y:\BH}\sh_H \eqto y$ and is contractible.
-
-
- It follows that we have\footnote{\MB{Why not skip next 3 lines?}}
- $$
- \prod_{x:\BG}~ (\sh_G \eqto x)\rightarrow\iscontr~ C(x)
- $$
-and so, since $\iscontr~C(x)$ is a proposition
- $$
- \prod_{x:\BG}~ \Trunc{\sh_G \eqto x}\rightarrow\iscontr~ C(x)
- $$
  Since $\BG$ is connected, we have
  $\prod_{x:\BG}\iscontr~ C(x)$
  and so, in particular, we have an element of $\prod_{x:\BG}C(x)$.
@@ -750,30 +740,71 @@ for all $\alpha:\sh_G\eqto \sh_G$ and we have found a delooping of $f$.
 \end{proof}
 
 
-\sususe{The concrete vs. abstract homomorphisms via torsors.}
+\sususe{From concrete to abstract homomorphisms via torsors.}
 \label{sec:absconctorsor}
 
-The second approach to \cref{lem:homomabstrconcr} is as follows:
+For the second approach to \cref{lem:homomabstrconcr} we need
+some preparation.
 
+\begin{definition}\label{def:abshom_*} %\MB{From old 5.5.}
+  Given groups $G$, $H$ and an abstract homomorphism
+  $\phi:\absHom(\abstr(G),\abstr(H))$, we define the map $\phi_*$
+  from $G$-sets to $H$-sets as follows. 
+  For any $G$-set $X:\BG\to\Set$ and $y:\BH$, define
+  \[
+    \phi_*X(y)\defequi \bigl((\sh_H \eqto y) \times_G X(\sh_G)\bigr)
+  \]
+  to be the set quotient of $(\sh_H\eqto y)\times X(\sh_G)$ modulo
+  the equivalence relation $(p,x)\sim(p\, \phi(\inv g),g\cdot_X x)$ for all 
+  $g:\sh_G\eqto\sh_G$.\footnote{\MB{Induction? $\exists y$?}}
+\end{definition}
 
+\begin{lemma}\label{lem:abshom_*}
+  With $\phi_*$ as in \cref{def:abshom_*}, the map 
+  $\eta_\phi:\phi_*\princ G \eqto \princ H$ sending, for all $y:\BH$,
+  $[(p,g)]: (\sh_H \eqto y) \times_G \USymG$ to $p\phi(g):(\sh_H\eqto y)$
+  is a well defined (fiberwise) equivalence.
+\end{lemma}
 \begin{proof}
-  The equivalence of $\pathsp{}^G:\BG\we(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} gives an equivalence
-$$\pathsp{}:\Hom(G,H)\we((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H))
+First, $\eta_\phi$ respects $\sim$ since
+$p\phi(\inv g)\phi(gq) = p\phi(q)$, so it is indeed well defined.
+It is also clearly a surjection. So it remains to prove that $\eta_\phi$
+is injective. Assume $(p,g)$ and $(p',g')$ are such that
+$p\phi(g) = p'\phi(g')$. Then $p'= p\phi(g\inv{g'})$, and
+hence $(p,g)\sim(p',g')$, so their classes are equal.
+This shows that $\eta_\phi$ is injective, and completes the proof.
+\end{proof}
+
+Now comes the second proof of \cref{lem:homomabstrconcr}.
+\begin{proof}
+The family of equivalences $\pathsp{\blank}^G:\BG\we(\typetorsor_G,\princ G)$,
+for any $G:\Group$, from \cref{def:BG2TorsG} and \cref{lem:BGbytorsor}
+induces an equivalence
+$$\pathsp{}:\Hom(G,H)\we
+\bigl((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)\bigr)
 $$
-Consider the map
-$$A:((\typetorsor_G,\princ G))\ptdto(\typetorsor_H,\princ H)\to \absHom(\abstr(G),\abstr(H))$$
-given by letting $A(f,p)$ be the composite
-$$\xymatrix{\USymG\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
-  \USymH\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
-  (\princ G=\princ G)\ar[r]^-f&
-  (f\princ G=f\princ G)\ar@{=}[rr]^-{q\mapsto p^{-1}qp}_\to&&
-  (\princ H=\princ H)
-}$$
-(together with the proof that this is an abstract group homomorphism).  We
-are done if we show that $A$ is an equivalence.
+by mapping $\Bf$ to $\princ H\circ \Bf \circ \invprinc G$.
+Then $A\defeq ({\abstr}\circ\pathsp{}^{-1})$ is a map
+\[
+A:\bigl((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)\bigr)
+    \to \absHom(\abstr(G),\abstr(H))
+\]
+satisfying ${\loops f}\circ \pathsp{\blank}^G=\pathsp{\blank}^H \circ A(f)$
+for all $f$ in the domain of $A$:
+%see \cref{fig:mapA}
+\[%begin{marginfigure}
+      \begin{tikzcd}[ampersand replacement=\&]
+        \USymG \ar[r,"A(f)"]\ar[d,eql,"{\pathsp{\blank}^G}"'] \& 
+        \USymH \ar[d,eqr,"{\pathsp{\blank}^H}"] \\
+        \princ G=\princ G \ar[r,"{\loops f}"'] \& \princ H=\princ H
+      \end{tikzcd}
+     % \caption{\label{fig:mapA}caption}
+\]%end{marginfigure}
+(together with the proof that $A(f)$ is an abstract group homomorphism). 
+We are done if we show that $A$ is an equivalence.
 \marginnote{The reason to complicate $\abstr$ this way is that it gets easier to write out the inverse function.}
 
-If $(\phi,!):\absHom(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{rem:inducedGsetfromabstracthomomorphisms} and the identity $\eta_\phi:\phi_*\princ G=\princ H$.
+If $(\phi,!):\absHom(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{def:abshom_*} and the identity $\eta_\phi:\phi_*\princ G=\princ H$.
 Let
 $$B: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)$$
 be given by $B(\phi,!)=(\phi_*X,\eta_\phi)$
@@ -788,7 +819,7 @@ $$\xymatrix{\USymG\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
 and if we start with a $g:\USymG$, then $\pathsp{}^G$ sends it to $\pathsp g^G\oldequiv\preinv (g)$.  Furthermore, $\phi_*\preinv (g)$ is $[\id,\preinv (g)]$ which is sent to $\preinv (\phi(g))$ in $\princ H=\princ H$ which corresponds to $\phi(g):\USymH$ under $\pathsp{}^H$.  In other words, $AB(\phi,!)=(\phi,!)$.  The composite $BA$ is similar.
 \end{proof}
 
-\section{Actions}
+\section{Actions,from abstract to concrete and back}
 \label{sec:Gsetsabstrconcr}
 \marginnote{Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-sets is
   $$\absGSet[\abstr(G)]\defequi \sum_{\absGSetvar:\Set}\absHom({\abstr(G)},\abstr(\Sigma_{\absGSetvar})).$$}
@@ -879,26 +910,6 @@ commutes.  Likewise, (using transport along the identity $p_f:\sh_{G'}=f(\sh_G)$
 % commutes.  However, since $f$ is surjective there is a $g:\USymG$ so that $g'=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
 \end{proof}
 
-\begin{remark}
-  \label{rem:inducedGsetfromabstracthomomorphisms} \MB{From 5.5, move to fit.}
-  Notice that our construction of the induced $G$-set works equally well for
-  a homomorphism of abstract groups $\phi:\absHom(\abstr(G),\abstr(H))$:
-  if $X:\BG\to\Set$ is a $G$-set, then we can
-  define the $H$-set $\phi_*X:\BH\to\Set$ by
-  \[
-    \phi_*X(y)\defequi (\sh_H \eqto y) \times_G X(\sh_G)
-  \]
-  to be the set quotient of $(\sh_H\eqto y)\times X(\sh_G)$ by
-  the relation
-  $(p,x)\sim(p\, \phi(q)^{-1},q\cdot x)$ for all $q:\sh_G\eqto\sh_G$.
-  Just as above, for $X$ the principal $G$-torsor we get an identity
-  $\eta_\phi:\phi_*\princ G \eqto \princ H$ which, when evaluated at $y:\BH$,
-  corresponds under univalence to the equivalence
-  \[
-    (\sh_H\eqto y)\times_G\USymG\equivto (\sh_H\eqto y)
-  \]
-  sending $[(p,q)]$ to $p\,\phi(q):(\sh_H\eqto y)$.
-\end{remark}
 
 \section{Heaps \texorpdfstring{$(\dagger)$}{(\textdagger) \color{red} just moved from symmetry without proofreading BID211116}}
 \label{sec:heaps}
