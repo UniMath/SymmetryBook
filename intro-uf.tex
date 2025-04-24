@@ -1925,6 +1925,82 @@ also have $-(-(-n))\jdeq -n$, and so by induction $-(-m) = m$ for all $m:\NNN$.
 By \cref{lem:weq-iso} we get that they are equivalences.
 \end{example}
 
+\subsection{Lists}\label{sec:lists}
+
+One other very common inductive type is that of \emph{lists}
+over a given type $X$.
+Intuitively, a list of elements of type $X$ is a
+sequence $x_1x_2\ldots x_n$ of elements of $X$,
+which is possibly the \emph{empty list}, denoted $\varepsilon$.
+That is, we allow $n=0$.
+The number of elements $n$ is called the \emph{length} of the list.
+
+More formally, we have the following:
+% definition
+\begin{definition}\label{def:lists}
+  For any type $X$, let $X^*$ be the type of lists of elements of $X$.\footnote{%
+    Other places, the type of lists is denoted $\casop{\typeformer{List}} X$
+    or $[X]$.}
+  This is the inductive type with constructors $\varepsilon : X^*$
+  (\emph{the empty list})\glossary(1Tstar){$X^*$}{list of elements of $X$}%
+  \index{list}
+  and \emph{concatenation}\footnote{%
+    This constructor is often called ``cons'',
+    as it is a kind of prototypical constructor,
+    since many other kinds of data can be represented
+    in terms of lists. This is the basis of Lisp:
+    the \emph{lis}t \emph{p}rocessing programming language.}
+  of type $X \to X^* \to X^*$,
+  taking an element $x:X$ and a list $\ell$ to the extended list $x\ell$
+  consisting of $x$ followed by the elements of $\ell$.
+  In the extended list $x\ell$, $x$ is called the \emph{head}
+  and $\ell$ is called the \emph{tail}.\index{list!head}\index{list!tail}
+\end{definition}
+
+As an inductive type, $X^*$ comes with a induction principle:
+Constructing a function $f$ of type $\prod_{\ell:X^*} T(\ell)$,
+where $T(\ell)$ is a type depending on $\ell:X^*$,
+may be done by giving:
+\begin{enumerate}
+\item an element $t_\varepsilon : T(\varepsilon)$; and
+\item a family of functions $g_{x,\ell} : T(\ell) \to T(x\ell)$.
+\end{enumerate}
+The resulting function satisfies $f(\varepsilon) \jdeq t_\varepsilon$
+and $f(x\ell) \jdeq g_{x,\ell}(f(\ell))$.
+That is, we can produce a function on all lists by specifying how
+to handle the empty list and how to reduce the case of an
+extended list to that of its tail.
+
+For example, we can define a function $\len : X^* \to \NN$,
+giving the length of a list,
+satisfying $\len(\varepsilon) \jdeq 0$ and $\len(x\ell) \jdeq \Succ(\len(\ell))$.
+
+\begin{xca}\label{xca:list-contr}
+  Prove that $\len : X^* \to \NN$ is an equivalence
+  whenever $X$ is contractible.
+\end{xca}
+
+Note that there are no general functions producing the
+head and tail of an arbitrary list, since the empty list
+has neither head nor tail.
+However, we can use binary sums with the one-element type $\true$
+to define
+\[
+  \hd : X^* \to X \coprod\true, \quad
+  \tl : X^* \to X^* \coprod\true
+\]
+satisfying $\hd(\varepsilon) \jdeq \inr{\triv}$,
+$\hd(x\ell) \jdeq \inl{x}$,
+$\tl(\varepsilon) \jdeq\inr{\triv}$,
+and $\tl(x\ell) \jdeq \inl{\ell}$.
+
+\begin{xca}\label{xca:reverse}
+  Define a function $\blank\;\blank : X^* \to X^* \to X^*$ that
+  concatenates two lists. (Hint: Use induction on the first argument.)
+
+  Use this to define a function $\rev: X^* \to X^*$ that reverses a list.
+\end{xca}
+
 \section{Univalence}\label{sec:univax}
 
 The univalence axiom, to be presented in this section, greatly enhances
@@ -4227,6 +4303,28 @@ $\prod_{T:\FinSet_2}((T\eqto T)\eqto\bn{2})$.
 Finally, give an element of
 $\prod_{T:\FinSet_2}(T \eqto (\bn 2\eqto T))$.
 \end{xca}
+
+\begin{xca}\label{xca:tabulation}
+  Recall the definition of lists of elements of a type $X$, $X^*$,
+  from~\cref{def:lists}. Construct an equivalence
+  \[
+    \casop{\constant{lookup}} : X^*
+    \to \sum_{n:\NN}(\Fin n \to X)
+  \]
+  that sends a list $\ell \jdeq x_1x_2\ldots x_n$ to the pair $(n, x)$
+  of its length $n$ and the function $x$ that maps an element $i$ of $\Fin(n)$
+  to the element $x_i : X$.
+\end{xca}
+\begin{corollary}\label{cor:lists-truncated}
+  For any $n\ge 0$, if $X$ is an $n$-type, then so is $X^*$.\footnote{%
+    We need $n\ge 0$, since for a contractible ($-2$-type) $X$
+    we get an equivalence $X^* \equivto \NN$ by~\cref{xca:list-contr},
+    and $\NN$ is not contractible.}
+\end{corollary}
+\begin{proof}
+  Combine~\cref{lem:level-n-utils} with the fact that $\NN$
+  is a set.
+\end{proof}
 
 \section{Type families and maps}
 \label{sec:typefam}
