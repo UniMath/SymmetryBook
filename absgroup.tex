@@ -761,9 +761,11 @@ some preparation.
 
 \begin{lemma}\label{lem:abshom_*}
   With $\phi_*$ as in \cref{def:abshom_*}, the map 
-  $\eta_\phi:\phi_*\princ G \eqto \princ H$ sending, for all $y:\BH$,
-  $[(p,g)]: (\sh_H \eqto y) \times_G \USymG$ to $p\phi(g):(\sh_H\eqto y)$
-  is a well defined (fiberwise) equivalence.
+  $\eta_\phi:\phi_*\princ G \equivto \princ H$ sending, for all $y:\BH$,
+  $[(p,g)]: (\sh_H \eqto y) \times_G \USymG$ to $p\phi(g):(\sh_H\eqto y)$,
+  is a well defined (fiberwise) equivalence. Consequently,
+  $(\phi_*,\inv{\eta_\phi})$ is a pointed map from
+  $(\typetorsor_G,\princ G)$  to $(\typetorsor_H,\princ H)$.
 \end{lemma}
 \begin{proof}
 First, $\eta_\phi$ respects $\sim$ since
@@ -796,56 +798,96 @@ for all $f$ in the domain of $A$:
       \begin{tikzcd}[ampersand replacement=\&]
         \USymG \ar[r,"A(f)"]\ar[d,eql,"{\pathsp{\blank}^G}"'] \& 
         \USymH \ar[d,eqr,"{\pathsp{\blank}^H}"] \\
-        \princ G=\princ G \ar[r,"{\loops f}"'] \& \princ H=\princ H
+        \princ G\eqto\princ G \ar[r,"{\loops f}"'] \& \princ H\eqto\princ H
       \end{tikzcd}
      % \caption{\label{fig:mapA}caption}
 \]%end{marginfigure}
 (together with the proof that $A(f)$ is an abstract group homomorphism). 
 We are done if we show that $A$ is an equivalence.
-\marginnote{The reason to complicate $\abstr$ this way is that it gets easier to write out the inverse function.}
+\marginnote{The reason to complicate $\abstr$ this way is that it gets easier to write out the inverse function.\MB{MB doesn't understand.}}
 
-If $(\phi,!):\absHom(\abstr(G),\abstr(H))$ and $X:\BG\to\Set$ is a $G$-torsor, recall the induced $H$-torsor $\phi_*X$ from \cref{def:abshom_*} and the identity $\eta_\phi:\phi_*\princ G=\princ H$.
+For any $\phi:\absHom(\abstr(G),\abstr(H))$, recall the pointed map
+\[
+(\phi_*,\inv{\eta_\phi}): 
+ \bigl((\typetorsor_G,\princ G)\ptdto (\typetorsor_H,\princ H)\bigr)
+\] 
+from \cref{def:abshom_*} and \cref{lem:abshom_*}.
 Let
-$$B: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)$$
-be given by $B(\phi,!)=(\phi_*X,\eta_\phi)$
+\[
+B: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)
+         \ptdto(\typetorsor_H,\princ H)
+\]
+be given by $B(\phi)\defeq(\phi_*,\inv{\eta_\phi})$
 
-We show that $A$ and $B$ are inverse equivalences.  Given an abstract group homomorphism $(\phi,!):\absHom(\abstr(G),\abstr(H))$, then $AB(\phi,!)$ has as underlying set map
-$$\xymatrix{\USymG\ar@{=}[d]^{\pathsp{}^G}_\downarrow&&&
-  \USymH\ar@{=}[d]^{\pathsp{}^H}_\downarrow\\
-  (\princ G=\princ G)\ar[r]^-{\phi_*}&
-  (\phi_*\princ G=\phi_*\princ G)\ar@{=}[rr]^-{q\mapsto \eta_\phi^{-1}q\eta_\phi}_\to&&
-  (\princ H=\princ H),
-}$$
-and if we start with a $g:\USymG$, then $\pathsp{}^G$ sends it to $\pathsp g^G\oldequiv\preinv (g)$.  Furthermore, $\phi_*\preinv (g)$ is $[\id,\preinv (g)]$ which is sent to $\preinv (\phi(g))$ in $\princ H=\princ H$ which corresponds to $\phi(g):\USymH$ under $\pathsp{}^H$.  In other words, $AB(\phi,!)=(\phi,!)$.  The composite $BA$ is similar.
+We show that $A$ and $B$ are inverse equivalences. 
+Given an abstract group homomorphism $\phi:\absHom(\abstr(G),\abstr(H))$, 
+we have the following commutative diagram for $AB(\phi)$ 
+\[%begin{marginfigure}
+   \begin{tikzcd}[ampersand replacement=\&]
+     \USymG \ar[r,"AB(\phi)"]\ar[d,eql,"{\pathsp{\blank}^G}"'] \& 
+     \USymH \ar[d,eqr,"{\pathsp{\blank}^H}"] \\
+     \princ G\eqto\princ G \ar[r,"{\loops B(\phi)}"'] \& \princ H\eqto\princ H
+   \end{tikzcd}
+     % \caption{\label{fig:mapA}caption}
+\]%end{marginfigure}
+We have to prove $A(B(\phi))=\phi$.
+When we start with a $g:\USymG$, then $\pathsp{\blank}^G$ sends $g$
+to $\pathsp g^G\defeq\preinv (g)$.\footnote{%
+\MB{Nope:} rather $(z\mapsto \preinv_z(g)$, or $\preinv_\blank(g)$}  
+Furthermore, $\loops(\phi_*,\inv{\eta_\phi})(\preinv (g))$
+is $[\id,\preinv(g)]$, which is sent to $\preinv (\phi(g))$ in 
+$\princ H=\princ H$, which corresponds to $\phi(g):\USymH$ under 
+$\pathsp{\blank}^H$. In other words, $AB(\phi)=\phi$.  
+The composite $BA$ is similar.\footnote{%
+Steps are rather large in this paragraph. Add more explanation?}
 \end{proof}
 
-\section{Actions,from abstract to concrete and back}
+\section{Actions, from abstract to concrete and back}
 \label{sec:Gsetsabstrconcr}
-\marginnote{Recall from \cref{def:abstrGtorsors} that the type of $\abstr(G)$-sets is
-  $$\absGSet[\abstr(G)]\defequi \sum_{\absGSetvar:\Set}\absHom({\abstr(G)},\abstr(\Sigma_{\absGSetvar})).$$}
 
-Given a group $G$ it should by now come as no surprise that the type of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
+Given a group $G$ it should by now come as no surprise that the type 
+of $G$-sets is equivalent to the type of $\abstr(G)$-sets.
+As explained in the introduction to \cref{sec:Gsetforabstract},
+just above \cref{def:abstrGtorsors}, $G$-sets are closely
+connected to homomorphisms from $G$ to a permutation group.
 According to \cref{lem:homomabstrconcr}
-$$\abstr:\Hom(G,\Sigma_{\absGSetvar})\to\absHom(\abstr(G),\abstr(\Sigma_{\absGSetvar}))$$
-is an equivalence, where the group $\Sigma_{\absGSetvar}$ (as a pointed connected groupoid) is the component of the groupoid $\Set$, pointed at $\absGSetvar$.  The component information is moot since we're talking about pointed maps from $\BG$ and we see that $\Hom(G,\Sigma_{\absGSetvar})$ is equivalent to $\sum_{F:\BG_\div\to\Set}(\absGSetvar=F(\sh_G))$.  Finally,
-$$\mathrm{pr}:\sum_{\absGSetvar}\sum_{F:\BG_\div\to\Set}(\absGSetvar=F(\sh_G))\we
-(\BG_\div\to\Set),\quad \mathrm{pr}(\absGSetvar,F,p)\defequi F
-$$
-is an equivalence (since $\sum_{\absGSetvar}(\absGSetvar=F(\sh_G))$ is contractible).
+$$\abstr:\Hom(G,\SG_S)\to\absHom(\abstr(G),\abstr(\SG_S))$$
+is an equivalence, where the group $\SG_S$ is classified by the 
+component of the groupoid $\Set$, pointed at $S$. 
+The component information is moot by the following exercise.
+\begin{xca}\label{xca:ptd-conn-to-comp}
+Let $(A,a)$ and $(B,b)$ be pointed types and let $A$ be connected.
+Give an equivalence from $(A,a)\ptdto(B,b)$ to
+$(A,a)\ptdto(B_{(b)},(b,!))$.
+% $(f,p)\mapsto((x\mapsto (f(x),!_x)),(p,!)$, with $!_x$ by
+% truncation induction from $\ap{f}(r_x) p$, $r_x: a\eqto x$.
+\end{xca}
+We thus have the following chain of known equivalences and definitions:
+\begin{align*}
+\GSet &\jdeq (\BG\to\Set) \we 
+\sum_{S:\Set} \sum_{X:(\BG\to\Set)}(S\eqto X(\sh_G)) \\
+&\jdeq \sum_{S:\Set} (\BG\ptdto(\Set,S))
+\we \sum_{S:\Set} (\BG\ptdto(\Set_{(S)}) \\ 
+&\we \sum_{S:\Set} \Hom(G,\SG_S)
+\we\sum_{S:\Set} \absHom(\abstr(G),\abstr(\SG_S)) \\
+&\jdeq \absGSet[\abstr(G)].
+\end{align*}
+
 Backtracking these equivalences we see that we have established
 \begin{lemma}
   \label{lem:actionsconcreteandabstract}
   Let $G$ be a group.  Then the map
   $$\ev_{\sh_G}:\GSet\to\absGSet[\abstr(G)],\qquad \ev_{\sh_G}(X)\defequi(X(\sh_G),a_X)
 $$
-is an equivalence, where the homomorphism $a_X:\absHom(\abstr(G), \abstr(\Sigma_{X(\sh_G)}))$ is given by transport $X:\USymG\defequi(\sh_G\eqto \sh_G)\to (X(\sh_G)=X(\sh_G))$.
+is an equivalence, where the homomorphism $a_X:\absHom(\abstr(G), \abstr(\Sigma_{X(\sh_G)}))$ is given by transport $X:\USymG\defequi(\sh_G\eqto \sh_G)\to (X(\sh_G)\eqto X(\sh_G))$.
 \end{lemma}
-If $X$ is a $G$-set, $g:\USymG$ and $x:X(\sh_G)$, we seek forgiveness for writing $g\cdot x:X(\sh_G)$ instead of $\cast(a_X(g))(x)$.\footnote{and I ask forgiveness for strongly disliking the use of ``$\cast$'' as a name for some tacitly understood map!}
+
+{\Large\MB{CURSOR}}
 
 \begin{example}
   \label{ex:abstrandconj}
   Let $H$ and $G$ be groups.  Recall that the set of homomorphisms from $H$ to $G$ is a $G$-set in a natural way:
-$$\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y=F(\sh_H)).$$
+$$\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y\eqto F(\sh_H)).$$
 
 What abstract $\abstr(G)$-set does this correspond to?
 In particular, under the equivalence $\abstr:\Hom(H,G)\to\absHom(\abstr(H),\abstr(G))$, what is the corresponding action of $\abstr(G)$ on the abstract homomorphisms?
@@ -857,7 +899,7 @@ If $(F,p):\Hom(H,G)(\sh_G)\defequi
  \sum_{F:\BH_\div\to \BG_\div}(\sh_G\eqto F(\sh_H))$ and $g:\USymG$, then $g\cdot(F,p)\defequi(F,p\,g^{-1})$.  If we show that the action of $g$ sends $\abstr(F,p)$ to $\conj^g\circ\abstr(F,p)$ we are done.
 
 Recall that $\abstr(F,p)$ consists of the composite
-$$\xymatrix{\USymH\ar[r]^-{F^=}&(F(\sh_H)=F(\sh_G))\ar[rr]^-{t\mapsto p^{-1}t\,p}&&\USymG},$$
+$$\xymatrix{\USymH\ar[r]^-{F^=}&(F(\sh_H)\eqto F(\sh_G))\ar[rr]^-{t\mapsto p^{-1}t\,p}&&\USymG},$$
 (\ie $\abstr(F,p)$ applied to $q:\USymH $ is  $p^{-1}F^=(q)\,p$)  together with the proof that this is an abstract group homomorphism.
 We see that $\abstr(F,p\,g^{-1})$ is given by conjugation:
 $q\mapsto(p\,g^{-1})^{-1}F^=(q)\,(p\,g^{-1})=g\,(p^{-1}F^=(q)\,p)\,g^{-1}$, or in other words $\conj^g\circ\abstr(F,p)$.
@@ -1032,7 +1074,7 @@ as envisioned by the following exercise.
 
 \begin{exercise}\label{xca:heap-variety}
   Fix a set $S$.
-  Show that the fiber $\inv{\USym}(S)\jdeq\sum_{H:\Heap}(S=\USymH)$ is a set.
+  Show that the fiber $\inv{\USym}(S)\jdeq\sum_{H:\Heap}(S\eqto\USymH)$ is a set.
 
   Now fix in addition a ternary operation $t:S\times S\times S\to S$ on $S$.
   Show that the fiber of the map $\Heap \to \sum_{S:\Set}(S\times S\times S \to S)$,
