@@ -1939,13 +1939,15 @@ More formally, we have the following:
 % definition
 \begin{definition}\label{def:lists}
   For any type $X$, let $X^*$ be the type of lists of elements of $X$.\footnote{%
-    Other places, the type of lists is denoted $\casop{\typeformer{List}} X$
+    In other places, the type of lists is denoted $\casop{\typeformer{List}} X$
     or $[X]$.}
   This is the inductive type with constructors $\varepsilon : X^*$
   (\emph{the empty list})\glossary(1Tstar){$X^*$}{list of elements of $X$}%
   \index{list}
   and \emph{concatenation}\footnote{%
-    This constructor is often called ``cons'',
+    This constructor doesn't have a name for us,
+    since all it does is juxtapose its two arguments.
+    It is often called ``cons'',
     as it is a kind of prototypical constructor,
     since many other kinds of data can be represented
     in terms of lists. This is the basis of Lisp:
@@ -1995,11 +1997,24 @@ $\tl(\varepsilon) \jdeq\inr{\triv}$,
 and $\tl(x\ell) \jdeq \inl{\ell}$.
 
 \begin{xca}\label{xca:reverse}
-  Define a function $\blank\;\blank : X^* \to X^* \to X^*$ that
+  Define a function of type $X^* \to X^* \to X^*$ that
   concatenates two lists. (Hint: Use induction on the first argument.)
 
   Use this to define a function $\rev: X^* \to X^*$ that reverses a list.
 \end{xca}
+
+\begin{xca}\label{xca:concat-assoc}
+  Construct an identification of type
+  $\ell_1(\ell_2\ell_3) \eqto (\ell_1\ell_2)\ell_3$
+  for any $\ell_1,\ell_2,\ell_3 : X^*$. (Hint: Use induction on $\ell_1$.)
+\end{xca}
+
+We shall see in~\cref{thm:isset-inductive-types} below
+that $X^*$ is a set whenever $X$ is.
+\Cref{xca:concat-assoc} shows that concatenation of lists
+is associative, so we don't need to use parentheses to indicate grouping
+within a list. It also justifies denoting both the binary constructor and
+concatenation as juxtaposition, with no separate symbol or name.
 
 \section{Univalence}\label{sec:univax}
 
@@ -3579,7 +3594,11 @@ would think. In fact we have the following theorem.
 
     A variation can be used to give a complete
     characterization of the identity types of
-    inductive types. For lists, we get equivalences
+    inductive types.
+    See the HoTT book, e.g., Section~2.13 for details
+    on the \emph{encode--decode method}.\footnotemark{}
+
+    For lists, this gives equivalences
     \begin{align*}
       (\varepsilon \eqto \varepsilon) &\equivto \true \\
       (x\ell \eqto x'\ell') &\equivto (x \eqto x')\times(\ell \eqto \ell') \\
@@ -3587,7 +3606,8 @@ would think. In fact we have the following theorem.
     \end{align*}
     from which we can deduce more generally that $X^*$ is an $n$-type,
     when $X$ is an $n$-type and $n\ge 0$.
-    \Cref{cor:lists-truncated} below gives a different proof of this.}
+    \Cref{cor:lists-truncated} below gives a different proof of this.}%
+  \footcitetext{hottbook}
 \end{theorem}
 
 \begin{proof}
