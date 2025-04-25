@@ -1925,6 +1925,82 @@ also have $-(-(-n))\jdeq -n$, and so by induction $-(-m) = m$ for all $m:\NNN$.
 By \cref{lem:weq-iso} we get that they are equivalences.
 \end{example}
 
+\subsection{Lists}\label{sec:lists}
+
+One other very common inductive type is that of \emph{lists}
+over a given type $X$.
+Intuitively, a list of elements of type $X$ is a
+sequence $x_1x_2\ldots x_n$ of elements of $X$,
+which is possibly the \emph{empty list}, denoted $\varepsilon$.
+That is, we allow $n=0$.
+The number of elements $n$ is called the \emph{length} of the list.
+
+More formally, we have the following:
+% definition
+\begin{definition}\label{def:lists}
+  For any type $X$, let $X^*$ be the type of lists of elements of $X$.\footnote{%
+    Other places, the type of lists is denoted $\casop{\typeformer{List}} X$
+    or $[X]$.}
+  This is the inductive type with constructors $\varepsilon : X^*$
+  (\emph{the empty list})\glossary(1Tstar){$X^*$}{list of elements of $X$}%
+  \index{list}
+  and \emph{concatenation}\footnote{%
+    This constructor is often called ``cons'',
+    as it is a kind of prototypical constructor,
+    since many other kinds of data can be represented
+    in terms of lists. This is the basis of Lisp:
+    the \emph{lis}t \emph{p}rocessing programming language.}
+  of type $X \to X^* \to X^*$,
+  taking an element $x:X$ and a list $\ell$ to the extended list $x\ell$
+  consisting of $x$ followed by the elements of $\ell$.
+  In the extended list $x\ell$, $x$ is called the \emph{head}
+  and $\ell$ is called the \emph{tail}.\index{list!head}\index{list!tail}
+\end{definition}
+
+As an inductive type, $X^*$ comes with a induction principle:
+Constructing a function $f$ of type $\prod_{\ell:X^*} T(\ell)$,
+where $T(\ell)$ is a type depending on $\ell:X^*$,
+may be done by giving:
+\begin{enumerate}
+\item an element $t_\varepsilon : T(\varepsilon)$; and
+\item a family of functions $g_{x,\ell} : T(\ell) \to T(x\ell)$.
+\end{enumerate}
+The resulting function satisfies $f(\varepsilon) \jdeq t_\varepsilon$
+and $f(x\ell) \jdeq g_{x,\ell}(f(\ell))$.
+That is, we can produce a function on all lists by specifying how
+to handle the empty list and how to reduce the case of an
+extended list to that of its tail.
+
+For example, we can define a function $\len : X^* \to \NN$,
+giving the length of a list,
+satisfying $\len(\varepsilon) \jdeq 0$ and $\len(x\ell) \jdeq \Succ(\len(\ell))$.
+
+\begin{xca}\label{xca:list-contr}
+  Prove that $\len : X^* \to \NN$ is an equivalence
+  whenever $X$ is contractible.
+\end{xca}
+
+Note that there are no general functions producing the
+head and tail of an arbitrary list, since the empty list
+has neither head nor tail.
+However, we can use binary sums with the one-element type $\true$
+to define
+\[
+  \hd : X^* \to X \coprod\true, \quad
+  \tl : X^* \to X^* \coprod\true
+\]
+satisfying $\hd(\varepsilon) \jdeq \inr{\triv}$,
+$\hd(x\ell) \jdeq \inl{x}$,
+$\tl(\varepsilon) \jdeq\inr{\triv}$,
+and $\tl(x\ell) \jdeq \inl{\ell}$.
+
+\begin{xca}\label{xca:reverse}
+  Define a function $\blank\;\blank : X^* \to X^* \to X^*$ that
+  concatenates two lists. (Hint: Use induction on the first argument.)
+
+  Use this to define a function $\rev: X^* \to X^*$ that reverses a list.
+\end{xca}
+
 \section{Univalence}\label{sec:univax}
 
 The univalence axiom, to be presented in this section, greatly enhances
@@ -3495,47 +3571,73 @@ is a set. The answer is yes, but it is harder to prove than one
 would think. In fact we have the following theorem.
 
 \begin{theorem}\label{thm:isset-inductive-types}
-All inductive types in \cref{sec:inductive-types} are sets
-if all constituent types are sets.
+  All inductive types in \cref{sec:inductive-types} are sets
+  if all constituent types are sets.\footnote{%
+    Our proof follows the same
+    idea due to Simon Huber that we used in the
+    case of $\bool$ in \cref{lem:isset-bool}.
+
+    A variation can be used to give a complete
+    characterization of the identity types of
+    inductive types. For lists, we get equivalences
+    \begin{align*}
+      (\varepsilon \eqto \varepsilon) &\equivto \true \\
+      (x\ell \eqto x'\ell') &\equivto (x \eqto x')\times(\ell \eqto \ell') \\
+      (\varepsilon \eqto x\ell) &\equivto (x\ell \eqto \varepsilon) \equivto \false
+    \end{align*}
+    from which we can deduce more generally that $X^*$ is an $n$-type,
+    when $X$ is an $n$-type and $n\ge 0$.
+    \Cref{cor:lists-truncated} below gives a different proof of this.}
 \end{theorem}
 
 \begin{proof}
-  We only do the case of $\NN$ and leave the other cases to the reader
-  (cf.\ \cref{xca:set-sum}). The following proof is due to Simon Huber.
-  We have to give identifications of type $p \eqto q$ for all $n,m : \NN$
-  and $p, q : n \eq m$.
+  We only do the case of lists $X^*$, for a set $X$,
+  and leave the other cases to the reader
+  (cf.\ \cref{xca:set-sum}).
+  We have to give identifications of type $p \eqto q$ for all $\ell, \ell' : X^*$
+  and $p, q : \ell \eq \ell'$.
   By induction on $q$ it suffices to give identifications of type
-  $p \eqto \refl n$ for all $p : n \eqto n$.
+  $p \eqto \refl \ell$ for all $p : \ell \eqto \ell$.
   Note that this cannot simply be done by induction on $p$.
   Instead we first give an inversion principle for
-  identifications in $\NN$ as follows. Define a type $T(n,m,p)$
-  for $n, m : \NN$ and $p : n \eq m$ by induction on $n$ and $m$:
-  \[
-    T(0,0,p) \defeq (p \eqto \refl{0})%
-    \text{~and~}%
-    T(\Succ(n), \Succ(m), p) \defeq \inv{\ap{\Succ}}(p),%
-  \]
-  and for the other cases the choice does not matter,
-  say $T(0, \Succ(m), p) \defeq T(\Succ(n), 0 ,p) \defeq \emptytype$.
-  Next we give elements of type $T(n,m,p)$
-  for all $n,m$, and $p$ by induction on $p$, reducing to
-  $T(n,n,\refl{n})$ for all $n : \NN$, which we deal with by
-  distinguishing cases on $n$.
-  For $n\jdeq 0$ we use $\refl{\refl{0}}$ and for the case $\Succ(n)$
-  we use the pair $(\refl{n},\refl{\refl{\Succ(n)}})$,
-  noting that $\ap{\Succ}(\refl{n}) \jdeq \refl{\Succ(n)}$.
+  identifications in $X^*$ as follows. Define a type $T(\ell,\ell',p)$
+  for $\ell, \ell : X^*$ and $p : \ell \eqto \ell'$
+  by induction on $\ell$ and $\ell'$:\footnote{%
+    Recall that the function $\constant{apap}$ from~\cref{def:applfun2}
+    gives the action on paths for a function taking two arguments.
+    Here it takes a path in $X$, $q : x = x'$, and a path in $X^*$,
+    $r : \ell \eqto \ell'$, to a path between the concatenations,
+    $\apap{} q r : x\ell \eqto x'\ell'$.
+    On reflexivities it satisfies $\apap{}{\refl x}{\refl\ell} \jdeq \refl{x\ell}$.}
+  \begin{align*}
+    T(\varepsilon,\varepsilon,p) &\defeq (p \eqto \refl\varepsilon) \\
+    T(x\ell, x'\ell', p) &\defeq \sum_{q : x = x'}\sum_{r : \ell \eqto \ell'}(p \eqto \apap{} q r)
+  \end{align*}
+  For the other cases the choice is immaterial,
+  say $T(\varepsilon, x\ell, p) \defeq T(x\ell, \varepsilon ,p) \defeq \emptytype$.
+  Next we give elements of type $T(\ell,\ell',p)$
+  for all $\ell,\ell'$, and $p$ by induction on $p$, reducing to
+  $T(\ell,\ell,\refl\ell)$ for all $\ell : X^*$, which we deal with by
+  case distinction on the list $\ell$.
+  For $\varepsilon$ we use $\refl{\refl{\varepsilon}}$,
+  and for the case $x\ell$
+  we use the triple $(\refl x,\refl\ell,\refl{\refl{x\ell}})$,
+  noting that $\apap{}{\refl x}{\refl\ell} \jdeq \refl{x\ell}$.
 
-  We can now give identifications of type $p \eqto \refl{n}$ for all
-  $p : n \eqto n$ by induction on $n$.
-  For $n\jdeq 0$ we use the element of  $T(0,0,p)$ constructed above.
-  For the case $\Succ(n)$, the element of $T(\Succ(n),\Succ(n),p)$
-  constructed above yields a pair $(q,r)$ with $q : n \eqto n$ and
-  $r: p \eqto \ap{\Succ}(q)$. By induction hypothesis we have
-  and identification $e : q \eqto \refl{n}$. We get the desired
-  identification by concatenating $r$ and $\ap{\ap{\Succ}}(e)$:
+  We can now give identifications of type $p \eqto \refl\ell$ for all
+  $p : \ell \eqto \ell$ by list induction on $\ell$.
+  For $\varepsilon$ we use the element of  $T(\varepsilon,\varepsilon,p)$ constructed above.
+  For the case $x\ell$, the element of $T(x\ell,x\ell,p)$
+  constructed above yields a triple $(q,r,s)$ with $q : x = x$,
+  $r : \ell \eqto \ell$ and
+  $s : p \eqto \apap{} q r$. Since $X$ is a set, we have $q = \refl x$
+  (as already indicated by the ordinary equals signs),
+  and by induction hypothesis we have
+  an identification $e : r \eqto \refl\ell$. We get the desired
+  identification by concatenating $s$ and $\apap{\constant{apap}}{!}{e}$:
   \[
-    p \eqto \ap{\Succ}(q) \eqto \ap{\Succ}(\refl{n}) \jdeq \refl{\Succ(n)}.
-    \qedhere
+    p \eqto \apap{} q r \eqto \apap{}{\refl x}{\refl\ell}
+    \jdeq \refl{x\ell}.\qedhere
   \]
 \end{proof}
 
@@ -4227,6 +4329,29 @@ $\prod_{T:\FinSet_2}((T\eqto T)\eqto\bn{2})$.
 Finally, give an element of
 $\prod_{T:\FinSet_2}(T \eqto (\bn 2\eqto T))$.
 \end{xca}
+
+\begin{xca}\label{xca:tabulation}
+  Recall the definition of lists of elements of a type $X$, $X^*$,
+  from~\cref{def:lists}. Construct an equivalence
+  \[
+    \casop{\constant{lookup}} : X^*
+    \to \sum_{n:\NN}(\Fin n \to X)
+  \]
+  that sends a list $\ell \jdeq x_1x_2\ldots x_n$ to the pair $(n, x)$
+  of its length $n$ and the function $x$ that maps an element $i$ of $\Fin(n)$
+  to the element $x_i : X$.
+\end{xca}
+Using this, we get a generalization of~\cref{thm:isset-inductive-types}:
+\begin{corollary}\label{cor:lists-truncated}
+  For any $n\ge 0$, if $X$ is an $n$-type, then so is $X^*$.\footnote{%
+    We need $n\ge 0$, since for a contractible ($-2$-type) $X$
+    we get an equivalence $X^* \equivto \NN$ by~\cref{xca:list-contr},
+    and $\NN$ is not contractible.}
+\end{corollary}
+\begin{proof}
+  Combine~\cref{lem:level-n-utils} with the fact that $\NN$
+  is a set.
+\end{proof}
 
 \section{Type families and maps}
 \label{sec:typefam}
