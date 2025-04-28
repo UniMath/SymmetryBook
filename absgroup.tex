@@ -61,6 +61,16 @@ identities types $a \eqto_A a'$ relate to groups.
   unit laws, and the associativity law, are together known as the \emph{monoid laws}.
 \end{definition}
 
+\begin{example}\label{exa:monoid}
+Let $S$ be a set, and consider the type $S^*$ of lists of elements of $S$
+as defined in \cref{def:lists}. Then $S^*$ is a set according to
+\cref{thm:isset-inductive-types}. We can give $S^*$ the structure
+of a monoid with the empty list $\varepsilon$ as unit, and concatenation
+from \cref{xca:reverse} as multiplication, denoted $\ast$.
+Then the monoid laws can easily be proven to hold and hence
+$(S^*,\varepsilon,\ast)$ is a monoid.
+\end{example}
+
 
   Building on the definition of a monoid, we may encode the type of abstract 
   groups as follows. We let $S$ denote the underlying set, $e : S$ denote the unit, 
@@ -654,8 +664,8 @@ indeed an isomorphism of abstract groups.\footnote{%
 \label{sec:homabsisconcr}
 
 Now that we know how to identify the type of groups with the type 
-of abstract groups, it is natural to ask if the notion of group 
-homomorphisms also coincide.
+of abstract groups, it is natural to ask if the respective notions of 
+group homomorphism also coincide.
 
 They do, and we provide two independent and somewhat different arguments.
 Translating from group homomorphisms to abstract group homomorphisms is easy:
@@ -674,16 +684,13 @@ reconstruct a pointed map $\Bf:\BG\ptdto\BH$ from an abstract group
 homomorphism from $\abstr(G)$ to $\abstr(H)$. The second translates 
 back and forth via our equivalence between abstract and concrete groups.
 
-The statement we are after is:
+The next subsections offer two proofs of the statement we are after:
 \begin{lemma}
   \label{lem:homomabstrconcr}
   If $G$ and $H$ are groups, then
 $$\abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))$$
 is an equivalence.
 \end{lemma}
-and the next two subsections offer two proofs.
-
-
 
 \sususe{``Delooping'' a group homomorphism}
 \label{sec:delooping} %after Coquand, after Deligne
@@ -838,7 +845,7 @@ we have the following commutative diagram for $AB(\phi)$
 We have to prove $A(B(\phi))=\phi$.
 When we start with a $g:\USymG$, then $\pathsp{\blank}^G$ sends $g$
 to $\pathsp g^G\defeq\preinv (g)$.\footnote{%
-\MB{Nope:} rather $(z\mapsto \preinv_z(g)$, or $\preinv_\blank(g)$}  
+\MB{Rather:}  $(z\mapsto \preinv_z(g))$, or $\preinv_\blank(g)$}  
 Furthermore, $\loops(\phi_*,\inv{\eta_\phi})(\preinv (g))$
 is $[\id,\preinv(g)]$, which is sent to $\preinv (\phi(g))$ in 
 $\princ H=\princ H$, which corresponds to $\phi(g):\USymH$ under 
@@ -859,87 +866,126 @@ According to \cref{lem:homomabstrconcr}
 $$\abstr:\Hom(G,\SG_S)\to\absHom(\abstr(G),\abstr(\SG_S))$$
 is an equivalence, where the group $\SG_S$ is classified by the 
 component of the groupoid $\Set$, pointed at $S$. 
-The component information is moot by the following exercise.
-\begin{xca}\label{xca:ptd-conn-to-comp}
-Let $(A,a)$ and $(B,b)$ be pointed types and let $A$ be connected.
-Give an equivalence from $(A,a)\ptdto(B,b)$ to
-$(A,a)\ptdto(B_{(b)},(b,!))$.
-% $(f,p)\mapsto((x\mapsto (f(x),!_x)),(p,!)$, with $!_x$ by
-% truncation induction from $\ap{f}(r_x) p$, $r_x: a\eqto x$.
-\end{xca}
-We thus have the following chain of known equivalences and definitions:
+The component information is moot by \cref{xca:ptd-conn-to-comp}.
+
+Using \cref{remark:GsetsareGsets},
+we have the following chain of known equivalences and definitions:
 \begin{align*}
-\GSet &\jdeq (\BG\to\Set) \we 
-\sum_{S:\Set} \sum_{X:(\BG\to\Set)}(S\eqto X(\sh_G)) \\
-&\jdeq \sum_{S:\Set} (\BG\ptdto(\Set,S))
-\we \sum_{S:\Set} (\BG\ptdto(\Set_{(S)}) \\ 
-&\we \sum_{S:\Set} \Hom(G,\SG_S)
-\we\sum_{S:\Set} \absHom(\abstr(G),\abstr(\SG_S)) \\
+\GSet 
+&\we \sum_{S:\Set} \Hom(G,\SG_S) \\
+&\we\sum_{S:\Set} \absHom(\abstr(G),\abstr(\SG_S)) \\
 &\jdeq \absGSet[\abstr(G)].
 \end{align*}
 
 Backtracking these equivalences we see that we have established
-\begin{lemma}
-  \label{lem:actionsconcreteandabstract}
-  Let $G$ be a group.  Then the map
-  $$\ev_{\sh_G}:\GSet\to\absGSet[\abstr(G)],\qquad \ev_{\sh_G}(X)\defequi(X(\sh_G),a_X)
-$$
-is an equivalence, where the homomorphism $a_X:\absHom(\abstr(G), \abstr(\Sigma_{X(\sh_G)}))$ is given by transport $X:\USymG\defequi(\sh_G\eqto \sh_G)\to (X(\sh_G)\eqto X(\sh_G))$.
+\begin{lemma}\label{lem:actionsconcreteandabstract}
+Let $G$ be a group. Then the map
+\[
+\ev_{\sh_G}:\GSet\to\absGSet[\abstr(G)],\qquad \ev_{\sh_G}(X)
+\defequi(X(\sh_G),a_X)
+\]
+is an equivalence, where the abstract homomorphism $a_X$ from
+$\abstr(G)\jdeq\USymG$ to 
+$\abstr(\Sigma_{X(\sh_G)})) \jdeq (X(\sh_G)\eqto X(\sh_G))$ is given by
+the group action of $X$: $a_X(g) \defeq X(g) \jdeq (g\cdot_X \blank)$,
+for all $g:\USymG$.
 \end{lemma}
 
-{\Large\MB{CURSOR}}
-
-\begin{example}
-  \label{ex:abstrandconj}
-  Let $H$ and $G$ be groups.  Recall that the set of homomorphisms from $H$ to $G$ is a $G$-set in a natural way:
-$$\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(y)\defequi \sum_{F:\BH_\div\to \BG_\div}(y\eqto F(\sh_H)).$$
+\begin{example}\label{ex:abstrandconj}
+Let $H$ and $G$ be groups.  Recall from \cref{ex:HomHGasGset}
+that the set of homomorphisms from $H$ to $G$ is a $G$-set in a natural way:
+\[
+\Hom(H,G):\BG\to\Set,\quad \Hom(H,G)(z)\defeq\Hom(H,\mkgroup(BG_\div,z)) 
+\]
 
 What abstract $\abstr(G)$-set does this correspond to?
-In particular, under the equivalence $\abstr:\Hom(H,G)\to\absHom(\abstr(H),\abstr(G))$, what is the corresponding action of $\abstr(G)$ on the abstract homomorphisms?
+In particular, under the equivalence 
+$\abstr:\Hom(H,G)\to\absHom(\abstr(H)\abstr(G))$, what is the 
+corresponding action of $\abstr(G)$ on the abstract homomorphisms?
+The answer is that $g:\USymG$ acts on $\absHom(\abstr(H),\abstr(G))$ by
+postcomposing with conjugation $\conj^g$ by $g$ as defined in
+\cref{ex:conjhom}.
 
-The answer is that $g:\USymG$ acts on $\absHom(\abstr(H),\abstr(G))$ by postcomposing with conjugation $\conj^g$ by $g$ as defined in \cref{ex:conjhom}.
-
-Let us spell this out in some detail:
-If $(F,p):\Hom(H,G)(\sh_G)\defequi
- \sum_{F:\BH_\div\to \BG_\div}(\sh_G\eqto F(\sh_H))$ and $g:\USymG$, then $g\cdot(F,p)\defequi(F,p\,g^{-1})$.  If we show that the action of $g$ sends $\abstr(F,p)$ to $\conj^g\circ\abstr(F,p)$ we are done.
-
-Recall that $\abstr(F,p)$ consists of the composite
-$$\xymatrix{\USymH\ar[r]^-{F^=}&(F(\sh_H)\eqto F(\sh_G))\ar[rr]^-{t\mapsto p^{-1}t\,p}&&\USymG},$$
-(\ie $\abstr(F,p)$ applied to $q:\USymH $ is  $p^{-1}F^=(q)\,p$)  together with the proof that this is an abstract group homomorphism.
-We see that $\abstr(F,p\,g^{-1})$ is given by conjugation:
-$q\mapsto(p\,g^{-1})^{-1}F^=(q)\,(p\,g^{-1})=g\,(p^{-1}F^=(q)\,p)\,g^{-1}$, or in other words $\conj^g\circ\abstr(F,p)$.
+Let us spell this out in some detail. Consider a path $p:\sh_G\eqto z$.
+Transport along $p$ in the family $\Hom(H,G)(z)$
+is postcomposing a homomorphism in $\Hom(H,G)$ with the
+isomorphism $\mkgroup(\id_\BG,\inv p): \Hom(G,\mkgroup(\BG_\div,z))$,
+see \cref{exa:conj-concrete}. Indeed, postcomposition with 
+$\mkgroup(\id_\BG,\inv g)$ is an abstract homomorphism from 
+$\USymG$ to the abstract permutation group of the set $\Hom(H,G)$. 
+This answers the first question above. As to the second question,
+recall from \cref{exa:conj-concrete}
+that $\abstr(\mkgroup(\id_\BG,\inv g)) = \conj^g$. Therefore the action
+of $g$ on $\absHom(\abstr(H),\abstr(G))$ is postcomposition with $\conj^g$.
 \end{example}
+
 For reference we list the conclusion of this example as a lemma:
 \begin{lemma}\label{lem:abstrandconj}
   If $H$ and $G$ are groups, then the equivalence of \cref{lem:actionsconcreteandabstract} sends the $G$-set $\Hom(H,G)$ to the $\abstr(G)$-set $\absHom(\abstr(H),\abstr(G))$ with action given by postcomposing with conjugation by elements of $\abstr(G)$.
 \end{lemma}
 
-If $f:\Hom(G,G')$ is a homomorphism, then precomposition with $\Bf:\BG\to \BG'$ defines a map $$f^*:(G'\text{-}\Set)\to(G\text{-}\Set).$$
-\marginnote{Recall that \cref{lem:eq-mono-cover} told us that $f$ is an epimorphism precisely when $\USymf$ is a surjection.}
-We will have the occasion to use the following result which essentially says that if $f:\Hom(G,G')$ is an epimorphism, then $f^*$ embeds the type of $G'$-sets as some of the components of the type of $G$-sets.
-\begin{lemma}
-  \label{lem:epifullyfaithful}
-  Let $G$ and $G'$ be groups and let $f:\Hom(G,G')$ be an epimorphism.
-  Then the map $f^*:(G'\text{-}\Set)\to(G\text{-}\Set)$ (induced by precomposition with $\Bf:\BG\to \BG'$) is ``fully faithful'' in the sense that if $X,Y$ are $G'$-sets, then
-$$f^*:(X=Y)\to(f^*X=f^*Y)
-$$
-is an equivalence.
+\begin{definition}\label{def:f-upper*}
+Let $G$ and $G'$ be groups. 
+For any homomorphism $f:\Hom(G,G')$,
+we define by precomposition with $\Bf$ the map
+\[
+f^*: \GSet[G']\to\GSet, \qquad f^*(X) \defeq X\circ \Bf.\qedhere
+\]
+\end{definition}
+
+We will have the occasion to use the following result which essentially 
+says that if $f:\Hom(G,G')$ is such that $\USymf$ is surjective,\footnote{%
+In \cref{lem:eq-mono-cover} we will call such an $f$ an \emph{epimorphism},
+just as we called in \cref{def:typeofmono} $f$ an \emph{monomorphism} 
+when $\USymf$ is injective.}
+then $f^*$ embeds the type of $G'$-sets as some of the components
+of the type of $G$-sets.
+
+\begin{lemma}\label{lem:epifullyfaithful}
+Let $G$ and $G'$ be groups and 
+let $f:\Hom(G,G')$ be such that $\USymf$ is surjective.
+Then the map $f^*$ from \cref{def:f-upper*} is an injection.
 \end{lemma}
+
 \begin{proof}
-  Evaluation at $\sh_G$  yields an injective map
-$$\mathrm{ev}_{\sh_G}:(f^*X=f^*Y)\to(X(f(\sh_G)=Y(f(\sh_G)))$$ and the composite
-$$\mathrm{ev}_{\sh_G}f^*=\mathrm{ev}_{f(\sh_G)}:(X=Y)\to(X(f(\sh_G)=Y(f(\sh_G)))$$
- is the likewise injective, so $f^*:(X=Y)\to(f^*X=f^*Y)$ is injective.
+We prove that, for all $G$-sets $X$ and $Y$, the induced map 
+$f^*:(X\eqto Y)\to(f^*X\eqto f^*Y)$ is an equivalence.
 
-For surjectivity, let $F':f^*X=f^*Y$ and write, for typographical convenience, $a:X(f(\sh_G)=Y(f(\sh_G))$ for $\mathrm{ev}_{\sh_G}F'\defequi F'_{\sh_G}$.
-By the equivalence between $G$-sets and $\abstr(G)$-sets, $F'$ is uniquely pinned down by $a$ and the requirement that for all $g'=f(g)$ with $g:\USymG$ the diagram
-$$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X({g'})}\ar@{=}[d]_{a}&
-  X(f(\sh_G))\ar@{=}[d]_{a}\\
-  Y(f(\sh_G))\ar@{=}[r]^{Y({g'})}&Y(f(\sh_G))}
+Since $\BG$ is connected, evaluation at $\sh_G$  yields an injection
+\[
+\ev_{\sh_G}:(f^*X\eqto f^*Y)\to(X(\Bf(\sh_G)\eqto Y(\Bf(\sh_G))),
+\]
+For the same reason the composite
+\[
+\ev_{\sh_G}f^*\jdeq \ev_{f(\sh_G)}:(X\eqto Y)\to(X(f(\sh_G)\eqto Y(f(\sh_G)))
+\]
+is likewise injective. Since all indentity types involved are sets,
+we can conclude that $f^*:(X\eqto Y)\to(f^*X\eqto  f^*Y)$ is injective.
+
+For surjectivity, let $F':f^*X\eqto f^*Y$ and write, for typographical
+ convenience, $a:X(\Bf(\sh_G)\eqto Y(\Bf(\sh_G))$ for 
+ $\ev_{\sh_G}F'\defequi F'_{\sh_G}$.
+By the equivalence between $G$-sets and $\abstr(G)$-sets,\footnote{%
+\MB{NB} This seems to be only place with $\abstr(\_)$.
+Can't we have a more direct argument and move the lemma to \cref{ch:actions}?
+For example, we know that the fiber of $f^*$ at $F'$ is a proposition and
+in proving it we can perhaps use connectedness of $\BG(')$, $\USymf$
+surjective and the like.} 
+$F'$ is uniquely pinned down by $a$ and the requirement that 
+for all $g'=\Bf(g)$ with $g:\USymG$ the diagram
+$$\xymatrix{X(\Bf(\sh_G))\ar@{=}[r]^{X({g'})}\ar@{=}[d]_{a}&
+  X(\Bf(\sh_G))\ar@{=}[d]_{a}\\
+  Y(\Bf(\sh_G))\ar@{=}[r]^{Y({g'})}&Y(\Bf(\sh_G))}
 $$
-commutes.  Likewise, (using transport along the identity $p_f:\sh_{G'}=f(\sh_G)$) an $F:X=Y$ in the preimage of $a$ is pinned down by the commutativity of the same diagram, but with $g':f(\sh_G)=f(\sh_G)$ arbitrary (an a priori more severe requirement, again reflecting injectivity).   However, when $f:\USymG\to\USymG'$ is surjective these requirements coincide, showing that $f^*$ is an equivalence.
-
-
+commutes.  Likewise, (using transport along the identification
+$p_f:\sh_{G'}\eqto f(\sh_G)$) an $F:X\eqto Y$ in the preimage of $a$ 
+is pinned down by the commutativity of the same diagram, 
+but with $g':\Bf(\sh_G)\eqto \Bf(\sh_G)$ arbitrary (an a priori more severe
+requirement, again reflecting injectivity).
+However, when $f:\USymG\to\USymG'$ is surjective these 
+requirements coincide, showing that $f^*$ is an equivalence.\footnote{%
+\MB{Typo???}}
+\qedhere
 % Fix for the moment an  $a:X(f(\sh_G)=Y(f(\sh_G))$
 
 % Now, by transport along the identity $p_f:\sh_{G'}=f(\sh_G)$ and the equivalence between $G'$-sets and $\abstr(G')$-sets, an identity $F':X=Y$ of $G'$-sets is uniquely pinned down by an identity $F'_{f(\sh_G)}:X(f(\sh_G)=Y(f(\sh_G))$ together with the proposition that for all $g':f(\sh_G)=f(\sh_G)$ the diagram $$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F'_{f(\sh_G)}}&

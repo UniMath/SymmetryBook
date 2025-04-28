@@ -1,4 +1,4 @@
-\chapter{Group actions}
+\chapter{Group actions and subgroups}
 \label{ch:actions}
 
 Historically, groups have appeared because they can ``act'' on a set
@@ -12,9 +12,12 @@ More generally, connected \coverings now reappear in the guise of
 the set of subgroups of a group.
 
 Also discussed in \cref{sec:gsets} is the notion of ``$G$-torsor''.
-A $G$-torsor is a $G$-set that is merely equal to the universal \covering.
+A $G$-torsor is a $G$-set that is merely equal to the universal \covering,
+see \cref{def:universalcover,def:principaltorsor}.
 The type of $G$-torsors recovers the classifying type of the group $G$,
-and this idea is used in~\cref{ch:absgroup} to build the equivalence between our definition of a group and the abstract version taught in most algebra classes.
+and this idea is used in~\cref{ch:absgroup} to build the equivalence between
+our definition of a group and the abstract version taught in most algebra
+classes.
 
 \section{Brief overview of the chapter}
 
@@ -23,14 +26,13 @@ studying subgroups in~\cref{sec:subgroups},
 we introduce the important
 operations of taking \emph{invariant maps} and \emph{orbits} of an action
 in~\cref{sec:fixpts-orbits}.
-We then construct in~\cref{sec:torsors}
-the fundamental equivalence between the classifying type $\BG$ of a group $G$
-and the type of $G$-torsors.
-
-In~\cref{sec:orbit-stabilizer-theorem,sec:burnsides-lemma} we
+The fundamental equivalence between the classifying type $\BG$ of a group $G$
+and the type of $G$-torsors is constructed in~\cref{sec:torsors}. 
+In \cref{sec:groupssubperm} we apply $G$-torsors to prove Cayley's Theorem
+for our groups, and in \cref{sec:burnsides-lemma} we
 begin the study of the combinatorics of group actions.
-This allows us to count for instance how many ways there are of ``coloring''
-objects acted on by groups,
+This allows us to count, for instance, how many ways there are of 
+``coloring'' objects acted on by groups,
 and it lays the groundwork for the combinatorics of finite groups
 we'll be looking at in~\cref{ch:fingp}.
 
@@ -67,7 +69,7 @@ most important feature of groups: they can \emph{act} on things
     See \cref{def:principaltorsor} for a special case
     where $\cdot_X$ is indeed path composition.}
   In particular, if $g:\USymG$,
-  then $X(g)$ is a permutation of the underlying set of $X$.
+  then $X(g)$ is a permutation of the underlying set $X(\sh_G)$ of $X$.
 
   The type of $G$-sets is\index{GSet@$G$-set (of group)}
   \glossary(GSet){\protect{$\GSet$}}{type of $G$-sets}
@@ -92,7 +94,7 @@ most important feature of groups: they can \emph{act} on things
 \end{example}
 \begin{remark}
   \label{rem:G-set-vs-set-bundle}
-The reader will notice that the type of $G$-sets is equivalent to the
+The reader may have noticed that the type of $G$-sets is equivalent to the
 type of \coverings over $\BG$.
 The reason we have allowed ourselves two names is that our focus is different: for a $G$-set $X:\BG\to\Set$ we focus on the sets $X(z)$, whereas when talking about \coverings the first projection $\sum_{z:\BG}X(z)\to \BG$ takes center stage.  Each focus has its advantages.
 \end{remark}
@@ -105,7 +107,8 @@ The reason we have allowed ourselves two names is that our focus is different: f
   \]
   is a $G$-set called the \emph{principal $G$-torsor}.\footnote{%
     The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-set in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.}
-  We've seen this family before in the guise of the (preimages of the) ``universal \covering'' of \cref{def:universalcover}!
+  We've seen this family before in the guise of (preimages of) the
+  ``universal \covering'' of \cref{def:universalcover}.
 
   There is nothing sacred about starting the identification
   $\sh_G \eqto z$ at $\sh_G$.
@@ -175,10 +178,10 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
 \end{example}
 \begin{example}
   \label{ex:HomHGasGset}
-  Let $G$ and $H$ be groups. Recall that $\Hom(H,G)$ is a set
-  (\cref{lem:hom-is-set}). We will define group actions on such
-  sets of homomorphisms by moving the shapes of $G$ and $H$ as
-  in \cref{exa:conj-concrete}. Reusing the notation
+  Let $G$ and $H$ be groups. Recall the set $\Hom(H,G)$ of homomorphisms from
+  $H$ to $G$ (\cref{lem:hom-is-set}). We will define group actions on 
+  $\Hom(H,G)$ by moving the shapes of $G$ and $H$ as
+  in \cref{exa:conj-concrete}: Reusing the notation
   $\Hom(H,G)$, define for any $x:\BH$ and $y:\BG$
   \[
     \Hom(H,G)(x,y)\defequi \Hom(\mkgroup(\BH_\div,x),\mkgroup(\BG_\div,y)).
@@ -186,21 +189,18 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
   Alternatively, by \cref{def:pointedtypes} and
   \cref{def:grouphomomorphism}, we have
   \[
-    \Hom(H,G)(x,y)\jdeq
-%\Copy_{\mkgroup}((\BH_\div,x) \ptdto (\BG_\div,y)). 
+    \Hom(H,G)(x,y)\jdeq 
     \Copy_{\mkgroup}\bigl(\sum_{f:\BH_\div\to \BG_\div}(y\eqto f(x))\bigr).
   \]
-  Thus the type $\Hom(H,G)$ may also be considered to be a $(H\times G)$-set
+  The type $\Hom(H,G)$ may be considered to be a $(H\times G)$-set:
   \[
-    \Hom(H,G) : (\BH\times \BG)\to\Set.
+    \Hom(H,G) : (\BH\times \BG)\to\Set,
   \]
   
-  We shall be particularly interested in the restriction to $G$,
+  and we shall be particularly interested in the restriction to $G$,
   giving a $G$-set for which we again reuse the notation:
   \[
-    \Hom(H,G)(y)\defequi\Hom(H,G)(\sh_H,y) %\jdeq avoid overflow
-%\Copy_{\mkgroup}(\sum_{f:\BH_\div\to \BG_\div}(y \eqto f(\sh_H)))
-    .\qedhere
+    \Hom(H,G)(y)\defequi\Hom(H,G)(\sh_H,y).\qedhere
   \]
 \end{example}
 \begin{xca}
@@ -217,7 +217,7 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
   If $G$ is a group and $X,Y$ are $G$-sets,\footnote{%
   This definition generalizes to \inftygps and $G$-types.}
   then a
-  \emph{map from $X$ to $Y$} is an element of the type
+  \emph{map from $X$ to $Y$} is an element of the set
   \[
     \Hom_G(X,Y) \defeq \prod_{z:\BG}(X(z)\to Y(z)).
   \]
@@ -236,19 +236,23 @@ The first projection $\sum_{z:\BG}\Ad_G(z)\to \BG$ correspond to the function $(
   w               &X(w) \ar[r,"f_w"']                & Y(w)
 \end{tikzcd}
 \]
-An important special case is when $Y$ is the $G$-set that
+An important special case is when $Y$ is the $G$-set $\triv_G\Prop$ that
 is constant $\Prop$: Given a map $P$ from $X$ to $\triv_G\Prop$,
-we have $P_w(g\cdot x)$ if and only if $g\cdot P_z(x)$
+we have $P_w(g\cdot x)$ if and only if $P_z(x)$
 for all $z,w:\BG$, $x:X(z)$, $g:z\eqto w$.
 This applies to the following definition.
 \end{remark}
 
 \begin{definition}\label{def:Gsubset}
-  A \emph{$G$-subset of $X$} is a map from $X$ to the $G$-set that is
-  constant $\Prop$. The type of all such maps is denoted by%
+  A \emph{$G$-subset} of a $G$-set $X$ is a map from $X$ to the $G$-set 
+  $\triv_G\Prop$ that is constant $\Prop$. 
+  The type of all such maps is denoted\footnote{%
+  Recall \cref{def:subtype}: $\Sub(T)\jdeq(T\to\Prop)$.}
   \glossary(SubGX){$\protect\Sub_G(X)$}{set of $G$-subsets of $X$}
   \[
-   \Sub_G(X)\defeq \Hom_G(X,\triv_G\Prop) \jdeq \prod_{z:\BG}(X(z)\to\Prop).
+   \Sub_G(X)\defeq \Hom_G(X,\triv_G\Prop) 
+%   \jdeq \bigl(\prod_{z:\BG}(X(z)\to\Prop)\bigr)
+   \jdeq \prod_{z:\BG}\Sub(X(z)).
   \]
   Similarly to \cref{cor:subtype-same-level}, $\Sub_{G}(X)$ is a set.\footnote{%
   \label{ft:SubTotX} The type $\Sub_{G}(X)$ can be uncurried 
@@ -273,45 +277,43 @@ The latter type is the type of all
 subsets of $X(\sh_G)$ that are closed under the group action.
 \end{xca}
 
+The following exercise wil be used in the subsequent remark.
+\begin{xca}\label{xca:ptd-conn-to-comp}
+Let $(A,a)$ and $(B,b)$ be pointed types and let $A$ be connected.
+Give an equivalence from $(A,a)\ptdto(B,b)$ to
+$(A,a)\ptdto(B_{(b)},(b,!))$.
+% $(f,p)\mapsto((x\mapsto (f(x),!_x)),(p,!)$, with $!_x$ by
+% truncation induction from $\ap{f}(r_x) p$, $r_x: a\eqto x$.
+\end{xca}
+
 \begin{remark}
   \label{remark:GsetsareGsets}
   A $G$-set $X$ is often presented by focusing on the underlying set $X(\sh_G)$
   and providing it with a structure relating it to $G$ determining
   the entire function $X : \BG\to\Set$.
-
-  More precisely, since $\BG$ is connected, a $G$-set $X : \BG\to\Set$ factors
-  through the component
-  $\conncomp \Set {X(\sh_G)} \jdeq \sum_{Y:\Set}\Trunc{X(\sh_G) \eqto Y}$
-  that contains the point $X(\sh_G)$.
-  Since $\BSG_{X(\sh_G)}\jdeq(\conncomp \Set {X(\sh_G)},X(\sh_G))$,
-  the $G$-set $X$ can,
-  without loss of information, be considered as a homomorphism from $G$ to
-  the permutation group $\SG_{X(\sh_G)}$ of $X(\sh_G)$,
-  classified by a pointed map
-  \[
-    \BG\ptdto\BSG_{X(\sh_G)}.
-  \]
-
-  The constructions in the previous two paragraphs yields the following equivalences:
-  \[
-    \GSet \equivto \sum_{X:\Set} (\BG \ptdto \BSG_X)
-     \equivto \sum_{X:\Set}\Hom(G,\SG_X).\qedhere
-   \]
+  More precisely, since $\BG$ is connected, 
+  using \cref{xca:ptd-conn-to-comp},
+  we have the following chain of easy equivalences:
+  \begin{align*}
+\GSet &\jdeq (\BG_\div\to\Set) \\
+&\we \sum_{S:\Set} \sum_{X:(\BG_\div\to\Set)}(S\eqto X(\sh_G)) \\
+&\jdeq \sum_{S:\Set} (\BG\ptdto(\Set,S)) \\
+&\we \sum_{S:\Set} (\BG\ptdto(\Set_{(S)},(S,!))) \\
+&\we \sum_{S:\Set} \Hom(G,\SG_S)
+  \end{align*}
+Hence a $G$-set $X$ can, without loss of information, be considered as
+a set $X(\sh_G)$ and
+a homomorphism from $G$ to the permutation group of $X(\sh_G)$.
 \end{remark}
 
 \begin{definition}\label{def:Gaction}
-  If $G$ is a group and $X$ is a set, then an \emph{action}
-  of $G$ on $X$
-  is a homomorphism from $G$ to the permutation group of $\SG_X$ of $X$.%
+  If $G$ is a group and $S$ is a set, then an \emph{action}
+  of $G$ on $S$
+  is a homomorphism from $G$ to the permutation group of $\SG_S$ of $S$.%
   \index{actions!of a group on a set}
 \end{definition}
 By the construction in~\cref{remark:GsetsareGsets} we identify $G$-sets
 and sets with an action of $G$ on a set.
-
-\begin{xca}
-Show that if $X$ is a type family with parameter type $\BG$ and $X(\sh_G)$ is a set,
-then $X$ is a $G$-set.
-\end{xca}
 
 \begin{xca}\label{xca:Ad-triv-abelian}
   Prove that a group $G$ is abelian if and only if the $G$-sets $\Ad_G$ and
@@ -319,8 +321,8 @@ then $X$ is a $G$-set.
 \end{xca}
 
 \begin{xca}\label{xca:Ad-princ-trivial}
-  Prove that a group $G$ is the trivial group if and only if the $G$-sets $\Ad_G$ and
-  $\princ G$ are identical.
+  Prove that a group $G$ is the trivial group if and only if 
+  the $G$-sets $\Ad_G$ and $\princ G$ are identical.
 \end{xca}
 
 \begin{definition}\label{def:finite-G-set}
@@ -335,19 +337,20 @@ in $X(\sh_G)$ by $\Card(X)$, also called the \emph{cardinality} of $X$.
 
 \subsection{Transitive $G$-sets}
 \label{sec:transitiveGsets}
-We saw in~\cref{cha:circle} that connected \coverings play a special role:
+We saw in~\cref{cha:circle} that \emph{connected \coverings}
+play a special role:
 In the case of the circle, classifying the group of integers $\ZZ$,
 they correspond to cycles (\cref{thm:cycset-connS1cover}).
 
 We hinted there that they are connected to subgroups, so
 we now study them over a general group $G$.
 As $G$-sets they are called transitive $G$-sets.
-Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists some $x:\mathcal X$ such that for all $y:\mathcal X$ there exists a $g:\mathcal X$ with $x=g\cdot y$.  In our world this translates to:
+Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists some $x:\mathcal X$ such that for all $y:\mathcal X$ there exists a $g:\mathcal X$ with $x=g\cdot y$.  In our world this translates to:
 \begin{definition}\label{def:transitiveGset}
   A $G$-set $X:\BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
   \[
     \istrans(X) \defequi
-    \exists_{x:X(\sh_G)} \prod_{y:X(\sh_G)} \exists_{g:\USymG} x=g\cdot y
+    \exists_{x:X(\sh_G)} \prod_{y:X(\sh_G)} \exists_{g:\USymG} (x=g\cdot y)
   \]
   holds.
 \end{definition}
@@ -360,23 +363,25 @@ Classically, a $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathc
   it is equivalent to demand this over all $z:\BG$:
   \begin{equation}\label{eq:Gset-trans-gen}
     \prod_{z:\BG}\exists_{x:X(\sh_G)}
-    \prod_{y:X(\sh_G)}\exists_{g:z\eqto z}x=g\cdot y.
+    \prod_{y:X(\sh_G)}\exists_{g:z\eqto z}(x=g\cdot y).
   \end{equation}
 
   Yet another equivalent way of expressing that $X$ is transitive is to say
   that $X(\sh_G)$ is nonempty and for any $x,y:X(\sh_G)$ there
   exists some $g:\USymG$ with $x = g\cdot y$.
+  Note that the empty $G$-set is not transitive.
 \end{remark}
 
 \begin{lemma}
   \label{lem:conistrans}
-  A $G$-set is transitive if and only if the associated \covering is connected.
+  A $G$-set is transitive if and only if 
+  the associated \covering is connected (see \cref{def:covering}).
 \end{lemma}
 \begin{proof}
   Consider a $G$-set $X:\BG\to\Set$ and the associated \covering
   $f:\tilde X\to\BG$ where $\tilde X\defequi\sum_{y:\BG}X(y)$ and $f$
   is the first projection.  Now, $\tilde X$ is connected if and only
-  if there exists a $z:\BG$ and a $x:X(z)$ such that for
+  if there exists a $z:\BG$ and an $x:X(z)$ such that for
   all $w:\BG$ and $y:X(w)$ there exists some $g:z\eqto w$ such that $y=g\cdot x$.
   Since $\BG$ is connected, this is equivalent to asserting that there
   exists some $x:X(\sh_G)$ such that for all $y:X(\sh_G)$ there exists
@@ -456,9 +461,11 @@ on ``normal'' subgroups.
     \node[dot] (nzero)  at (zero) {};
     \node[dot] (nbase)  at (base) {};
   \end{tikzpicture}
-  \caption{A $\mkgroup(\Sc\vee\Sc)$-set for which $\protect\ev_x$ is not
+  \caption{An $\mkgroup(\Sc\vee\Sc)$-set $X$ for which $\protect\ev_x$ is not
    surjective. At the bottom the type $\Sc\vee\Sc$ is visualized as
-   two circles with a common base point. }
+   two circles with a common base point. Note that the underlying
+   set of $X$ with the red and the blue permutation is a bicycle
+   in the sense of \cref{def:bicycle}.}
   \label{fig:not-normal}
 \end{marginfigure}
 
@@ -480,7 +487,7 @@ on ``normal'' subgroups.
     \draw[genb,out=45,in=-45] (n3) to (n2);
   \end{tikzpicture}
   \caption{Alternative representation of the $\mkgroup(\Sc\vee\Sc)$-set
-    from~\cref{fig:not-normal},
+    $X$ from~\cref{fig:not-normal},
     using colors and arrows to represent which
     parts lies over which circle in which orientation.}
   \label{fig:not-normal-graph}
@@ -499,60 +506,63 @@ on ``normal'' subgroups.
     (instead of the more correct $f(z)$) for its evaluation at $z:T$.}
 \end{lemma}
 \begin{proof}
-  Fix a value $y:Y(z)$, and consider an $f:\Hom_G(X,Y)$ with $f_z(x)=y$.
-  We will show that $f$ is uniquely determined by this.
-  Let $w:\BG$ and  $x':X(w)$. It suffices to show that the value
-  of $f_w(x')$ is independent of $f$.
-  For any $g:z\eqto w$ such that $g\cdot_X x=x'$
-  (which exists by the transitivity of $X$, using \cref{lem:conistrans})
-  we have
+  We show that for any $y:Y(z)$, there is at most one
+  $f:\Hom_G(X,Y)$ such that $f_z(x)=y$.
+  Let $f,f':\Hom_G(X,Y)$ such that $f_z(x)=y=f'_z(x)$.
+  Let $w:\BG$ and  $x':X(w)$. It suffices to show that $f_w(x')=f'_w(x')$.
+  Since the latter is a proposition, we may assume (by the transitivity 
+  of $X$, using \cref{lem:conistrans}) that we have a $g:z\eqto w$ such 
+  that $g\cdot_X x=x'$. Using~\cref{rem:map-of-Gsets}, we have
   \[
-    f_w(x')=f_w(g\cdot_X x)=g \cdot_Y f_z(x)=g \cdot_Y y,
+    f_w(x')=f_w(g\cdot_X x)=g \cdot_Y f_z(x)=
+    g \cdot_Y f'_z(x) = f'_w(g\cdot_X x) = f'_w(x').\qedhere
   \]
-  using~\cref{rem:map-of-Gsets},
-  and the latter value indeed doesn't depend on $f$.
-  Since we're proving a proposition, we are done.
 \end{proof}
 
 Via function extensionality,
 the identity type $X \eqto Y$, for $G$-sets $X,Y$
 is a subtype of the type $\Hom_G(X,Y)$.
-Hence we likewise have that evaluation at some $x:X(z)$ is an
-injection
+Hence we also have that evaluation at some $x:X(z)$,
+for any given $z:\BG$, is an injection
 \[
-  \ev_x:(X \eqto Y)\to Y(z).
+  \ev_x:(X \eqto_{\GSet} Y)\to Y(z).
 \]
 \begin{xca}\label{xca:not-normal}
-Reverse engineer the $\mkgroup(\Sc\vee\Sc)$-set in \cref{fig:not-normal,fig:not-normal-graph}.
-Let's call it $X$. Show that $X\eqto X$ is contractible.
-Conclude that $\ev_x$ cannot be surjective.
+Reverse engineer the $\mkgroup(\Sc\vee\Sc)$-set $X$ in 
+\cref{fig:not-normal,fig:not-normal-graph}.
+Show that $X\eqto X$ is contractible.
+Conclude that $\ev_x$, while injective, is not surjective.
 (Hint: the induction principle for $\Sc\vee\Sc$ is a generalization
 of the induction principle for the circle to two loops.)
 \end{xca}
 
 \subsection{Actions in a type}
 \label{sec:actions}
-Oftentimes it is interesting not to have an action on a set, but on an element in any given type (not necessarily the type of sets).  For instance, a group can act on another, giving rise to the notion of the semidirect product in \cref{sec:Semidirect-products}.  We will return these more general types of actions many times.
+Oftentimes it is interesting not to have an action on a set, 
+but on an element in any given type (not necessarily the type of sets).  
+For instance, a group can act on another, giving rise to the notion of 
+the semidirect product in \cref{sec:Semidirect-products}.  
+We will return these more general types of actions many times.
 
 \begin{definition}\label{action}
   If $G$ is any group\footnote{%
   Even an $\infty$-group in the sense of \cref{sec:inftygps}.}
-  and $A$ is any type of objects,
+  and $A$ is any type,
   then we define an \emph{action of $G$ in $A$} as a function
   \[
     X : \BG \to A.
   \]
-  The particular object of type $A$ being acted on is $X(\sh_G):A$,
-  the \emph{underlying object},
-  and the action itself is given by transport.%
+  The particular "object of type $A$ being acted on" is $X(\sh_G):A$,
+  the \emph{underlying object}.%
   \index{action!of a group in a type}
 
-  Fixing $a:A$ as the underlying object, we define an \emph{action of $G$ on $a$}
+  Fixing $a:A$ as the underlying object, 
+  we define an \emph{action of $G$ on $a$}
   to be a homomorphism from $G$ to $\Aut_A(a)$.%
   \index{action!of a group on an element}
 \end{definition}
-This generalizes our earlier definition of $G$-sets
-from~\cref{def:Gset}, $X : \BG \to \Set$,
+This generalizes our earlier definition of $G$-sets $X : \BG \to \Set$
+from~\cref{def:Gset},
 and harmonizes with~\cref{remark:GsetsareGsets}, relating $G$-sets and
 actions of $G$ on a set.
 Indeed, we identify
@@ -574,10 +584,11 @@ from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
 \begin{example}\label{ex:S2-acts-on-C3}
   The symmetric group $\SG_2$ acts on the cyclic group $\CG_3$ as follows.
   Given a $2$-element set $S$ consider the
-  type $\sum_{X:\Set}S \to X\to X$ of pairs $(X,f)$ of a set $X$
+  type $\sum_{X:\Set}(S \to (X\to X))$ of pairs $(X,f)$ of a set $X$
   and a ``pair'' of functions $f_s:X\to X$ (one for each $s:S$).
-  Within this type we have the pair $(\bn 1 \amalg S,f)$,
-  where
+  In this type we have the element $(\bn 1 \amalg S,f)$,
+  consisting of the $3$-element set $\bn 1 \amalg S$ and the function
+  $f:S \to ((\bn 1 \amalg S)\to (\bn 1 \amalg S))$ defined by
   \begin{align*}
     f_s(\inl 0)     &\defeq \inr s,\\
     f_s(\inr s)        &\defeq \inr{\swap(s)},\\
@@ -629,6 +640,7 @@ from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
   we get the corresponding standard $\SG_n$-set.\footnote{%
     Check that this action is transitive for $n>0$.}
   Composing further with the operation $\blank \to \bool : \Set \to \Set$,
+  mapping any set $S$ to the set $S\to\Set$,
   we get the action of $\SG_n$ on the set of decidable subsets of $\bn n$.
 \end{example}
 
