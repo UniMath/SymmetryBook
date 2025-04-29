@@ -677,10 +677,10 @@ of the notion of a subgroup of a group $G$.
 
 \subsection{Subgroups through $G$-sets}
 
-The idea is that a $G$-set $X$ picks out those symmetries in $G$
-that keep a chosen point of $X(\sh_G)$ in place. For this to work well
-we need to point $X(\sh_G)$ and $X$ must be transitive.
-%so that the set of symmetries that are picked out is closed under composition and reverse.
+The idea of this approach is to take the total type of a transitive
+$G$-set $X$ and to choose a point $x:X(\sh_G)$ in the underlying set of $X$.
+Then the symmetries of $(\sh_G,x)$ are precisely the symmetries of $\sh_G$
+that keep the chosen point $x$ in place.
 
 \begin{definition}\label{def:set-of-subgroups}
   For any group $G$, define the type of \emph{subgroups of $G$} as%
@@ -705,18 +705,19 @@ Show that $\sum_{z:BG}X(z)$ above is a connected groupoid.
 Hint: use \cref{lem:conistrans}.
 \end{xca}
 
-As an example, recall from \cref{def:RmtoS1} the $\Sc$-set
+\begin{example}\label{ex:Rm0-subgroup} 
+Recall from \cref{def:RmtoS1} the $\Sc$-set
 $R_m : \Sc\to\Set$ defined by $R_m(\base) \defeq \bn m$ and
 $R_m(\Sloop) \defis \etop\zs$. Here $m>0$ so that we can point
 $R_m$ by $0: R_m(\base)$.\footnote{Any element of $\bn m$ would do.}
 Transitivity of $R_m$ is obvious.
-Which symmetries $p: \base\eqto\base$ are picked out by $R_m$?
-Those that keep the point $0: R_m(\base)$ in place, that is,
-those that satisfy $R_m(p)(0)=0$, \ie $p=\Sloop^{mk}$ for some integer $k$.
+Which symmetries $p: \base\eqto\base$ are picked out by $R_m$,
+that keep the point $0: R_m(\base)$ in place? Those that 
+satisfy $R_m(p)(0)=0$, \ie $p=\Sloop^{mk}$ for some integer $k$.
 Given $\alpha_m$ in \cref{con:psi-alpha-m}, it should not come as a
 surprise that these are precisely the symmetries picked out by $\dg{m}$.
 
-The case of $m=0$ connects to another old friend, the $\Sc$-set
+The case of $m=0$ connects to another old friend: the $\Sc$-set
 $R : \Sc\to\Set$ defined by $R(\base) \defeq \zet$ and
 $R(\Sloop) \defis \etop\zs$, see \cref{def:RtoS1}.
 Again we point by $0: R(\base)$ and transitivity of $R$ is obvious.
@@ -724,32 +725,35 @@ The only symmetry that keeps $0$ in place is $\refl{\base}$,
 since $R(\Sloop^k)(0) = \zs^k(0) = k = 0$ if and only if $k=0$.
 Again, no surprise in view of the results in \cref{sec:symcirc}
 identifying $R$ as the universal \covering over $\Sc$.
+\end{example}
 
 The following result is analogous to the fact that $\Sub(T)$ is
 a set for any type $T$, see \cref{def:subtype}. It captures
 that the essence of picking out symmetries (or picking out elements
-of a type), is a predicate, like $R_m(p)(0)=0$ above.
+of a type), is a predicate, like $R_m(p)(0)=0$ in \cref{ex:Rm0-subgroup}.
 
 \begin{lemma}
   \label{lem:SubGisset}%
-  The type $\Sub(G)$ is a set, for any group $G$.
+  For any group $G$, the type $\Sub(G)$ of subgroups of $G$ is a set.
 \end{lemma}
 \begin{proof}
-Let $G$ be a group, and let $X$ and $X'$ be transitive $G$-sets with
-points $x:X(\sh_G)$ and $x':X'(\sh_G)$. If $f,f': X\eqto X'$,
-then both $f$ and $f'$ can be viewed as families of equivalences of
-type $X(z) \equivto X'(z)$, parameterized by $z:\BG$,
-with $f_{\sh_G}$ and $f'_{\sh_G}$ mapping $x$ to $x'$.
-Now \cref{lem:evisinjwhentransitive} applies and we get $f=f'$.
-Hence $X\eqto X'$ is a proposition and the lemma is proved.
+Let $G$ be a group, and let $(X,x,!)$ and $(X',x',!)$ be 
+elements of $\Sub(G)$, \ie subgroups of $G$. Any $f: (X,x,!)\eqto(X',x',!)$,
+can be viewed as a family of equivalences of type $X(z) \equivto X'(z)$,
+parameterized by $z:\BG$, with $f_{\sh_G}(x)=x'$.
+By the definition of $\Sub(G)$, the $G$-set $X$ is transitive,
+and $x:X(\sh_G)$.
+Now \cref{lem:evisinjwhentransitive} applies.\footnote{%
+Instance: $z\jdeq\sh_G$, $Y\jdeq X'$ and $y\jdeq x'$.}
+It follows that $(X,x,!)\eqto(X',x',!)$
+is a proposition.
 \end{proof}
 
 \begin{example}
   \label{exa:fix1subSGn}%
 Consider the symmetric group $\SG_n$ from~\cref{ex:groups}\ref{ex:permgroup},
-for some $n>0$. It has a canonical action,
-the $\SG_n$-set $X : \BSG_n \to\Set$ given by $X(A,!)\defeq A$
-for any $A:\FinSet_n$, which is obviously transitive.
+for some $n>0$. The $\SG_n$-set $X : \BSG_n \to\Set$ given by $X(A,!)\defeq A$
+for $A:\FinSet_n$ is obviously transitive.
 For any $k:\bn n$, we can point $X$ by
 $k: X(\sh_{\SG_n}) \jdeq \bn n$.\footnote{The choice of the point
 does matter for the symmetries that are picked out.}
@@ -776,15 +780,18 @@ is isomorphic to $\SG_{n-1}$.
   give an equivalence from $A$ to $\sum_{B:\UU}(A\eqto(B+\bn1))$.
 \end{xca}
 
-For yet another example, consider the cyclic group $\CG_6$ of order $6$; perhaps visualized as the rotational symmetries of a regular hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
-The symmetries of the regular triangle (rotations by $2\pi\cdot m/3$, where $m=0,1,2$) can also be viewed as symmetries of the hexagon.
-Thus there is a subgroup of $\CG_6$ which, as a group, is isomorphic to $\CG_3$.\marginnote{Make a TikZ drawing of the hexagon and triangle inscribe in it.}
-%LINK TO CH 3 AND SQUARE ROOT OF 6 BUNDLE
-
 \begin{example}
   \label{exa:C3subC6}%
 Recall from \cref{ex:cyclicgroups} the definition 
-$\CG_6\defeq\Aut_\Cyc(\bn6,\zs)$.
+$\CG_6\defeq\Aut_\Cyc(\bn6,\zs)$ of the cyclic group of order $6$.
+This group can be visualized as the rotational symmetries of a regular
+hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
+The symmetries of the regular triangle (rotations by $2\pi\cdot m/3$, 
+where $m=0,1,2$) can also be viewed as symmetries of the hexagon.
+Thus there is a subgroup of $\CG_6$ which, as a group, is isomorphic to 
+$\CG_3$, and which we now construct.
+\marginnote{TODO: TikZ drawing of the hexagon and triangle inscribed in it.}
+
 In order to obtain $\CG_3$ as a subgroup we can define
 $F : \CG_6 \to \Set$ defined by $F(X,t) \defeq X/2$ for all $(X,t):\BCG_6$,
 where $X/2$ is defined in \cref{sec:mthroot} as the quotient of $X$
@@ -826,8 +833,8 @@ for any homomorphism $f$.
 %\newcommand{\typemono}{Mono}
 \begin{definition}
   \label{def:typeofmono}
-  Let $G$ and $H$ be groups. A homomorphism $i: \Hom(H,G)$ is
-  a \emph{monomorphism},\index{monomorphism} denoted by $\ismono(i)$,
+  Let $G$ and $H$ be groups. We say that homomorphism $i: \Hom(H,G)$ is
+  a \emph{monomorphism},\index{monomorphism} denoted $\ismono(i)$,
   %\glossary(isMono){$\protect{\ismono(i)}$}{proposition stating that
   %$i$ is a monomorphism of groups} gives error: culprit \ismono(i)?
   if $\USymi:\USymH\to \USymG$ is an injection  
@@ -839,25 +846,25 @@ for any homomorphism $f$.
   \cref{def:subtype} is not coincidental, and the remarks made 
   there in \cref{ft:incl-vs-inj} apply here as well.
   
-  In particular, the identity type of $\typemono_G$
+  In particular, the identity type of $\typemono(G)$
   identifies precisely the triples that define the same subgroup,
   namely when their homomorphisms differ by precomposition by an 
   identification of their underlying groups.
   
   \MB{We should add in \cref{ch:absgroup} an equivalence between
-  $\typemono_G$ and the subsets of $\USymG$ with the usual closure
+  $\typemono(G)$ and the subsets of $\USymG$ with the usual closure
   properties --- the ultimate proof that we have the right 
   notion of concrete subgroup.}
   }
   \index{type! of monomorphisms into a group}
-  \glossary(MonoG){$\protect{\typemono_G}$}{type of monomorphisms%
+  \glossary(MonoG){$\protect{\typemono(G)}$}{type of monomorphisms%
   into the group $G$} 
   is
   \[
-  \typemono_G\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i).
+  \typemono(G)\defequi\sum_{H:\typegroup}\sum_{i:\Hom(H,G)}\ismono(i).
   \]
   
-  We call $H$ the \emph{underlying group} of $(H,i,!) : \typemono_G$.
+  We call $H$ the \emph{underlying group} of $(H,i,!) : \typemono(G)$.
   
   A monomorphism $(H,i,!)$ into $G$ is:
       \begin{enumerate}
@@ -922,28 +929,31 @@ while $(\CG_3,j,!)$ and $(\CG_3,j',!)$ can be identified.
 
 \begin{lemma}\label{lem:SubG=MonoG}
   Let $G$ be a group.
-  The map sending $(X,\pt,!) : \Sub_G$ to the monomorphism classified by  
+  The map sending $(X,\pt,!) : \Sub(G)$ to the monomorphism classified by  
   $\fst: (\sum_{z:\BG}X(z),(\sh_G,\pt))\ptdto\BG$, pointed by
-  reflexivity, yields an equivalence from $\Sub_G$ to $\typemono_G$.
+  reflexivity, yields an equivalence
+\[
+F: \Sub(G)\to \typemono(G) : (X,\pt,!) \mapsto \bigl(\mkgroup (\sum_{z:\BG}X(z),(\sh_G,\pt)),\mkgroup\fst,!\bigr).\qedhere
+\]
 \end{lemma}
 
 \begin{proof}
    The inverse equivalence is $E$ defined as follows:
- $$E:\typemono_G\to\Sub_G,\qquad 
+ $$E:\typemono(G)\to\Sub(G),\qquad 
    (H,i,!)\mapsto E(H,i,!)\defequi (\Bi_\div^{-1},(\sh_H,\Bi_\pt),!),$$
- %\glossary(E){$E$}{equivalence from $\typemono_G$ to $\\Sub_G$}
+ %\glossary(E){$E$}{equivalence from $\typemono(G)$ to $\Sub(G)$}
   where the monomorphism $i:\Hom(H,G)$ is given by 
   the pointed map $(\Bi_\div,\Bi_\pt):\BH\ptdto\BG$.
   The preimage function $\Bi_\div^{-1}:\BG\to\Set$ is a transitive $G$-set 
   since $i$ is a monomorphism, and $(\sh_H,\Bi_\pt):\Bi_\div^{-1}(\sh_G)
   \defequi \sum_{x:\BH}(\sh_G\eqto{}\Bi_\div(x))$.
+  Now do \cref{xca:SubG=MonoG} below.
 \end{proof}
 
  \begin{example}\label{exa:EforSG3}
   In this example we explain how the equivalence between
-  $\typemono_G$ and $\Sub_G$ works in the special case
-  $G\jdeq\SG_3$ and with two versions of the same subgroup,
-  both elaborated above.
+  $\typemono(G)$ and $\Sub(G)$ works in the special case
+  $G\jdeq\SG_3$ and with two versions of the same subgroup.
   
   Recall $(\SG_2,i_3,!):\typemono_{\SG_3}$ with
   $i_3: \SG_2\ptdto\SG_3 : B\mapsto (B+\true)$ from \cref{ex:SGninSGn+1}.
@@ -976,59 +986,73 @@ Complete the details of the proof of \cref{lem:SubG=MonoG} above using
 \cref{lem:conistrans}.
 \end{xca}
 
+Since $\Sub(G)$ is a set by \cref{lem:SubGisset}, 
+\cref{lem:SubG=MonoG} allows us to conclude:
+
 \begin{corollary}\label{lem:setofsubgroups}
-Let $G$ be a group. Then $\typemono_G$ is a set since $\Sub_G$ is.
+Let $G$ be a group. Then $\typemono(G)$ is a set.
 \end{corollary}
 
 The following lemma states that the equivalences in \cref{lem:SubG=MonoG} preserve the subsets of symmetries that are picked out.
 \begin{lemma}\label{lem:E-preserves-symms}
   Let $G$ be a group and $g:\USymG$ a symmetry.
-  For all $(X,\pt,!) : \Sub_G$ and $(H,i,!) : \typemono_G$
-  that correspond via the equivalences in \cref{lem:SubG=MonoG},
-  we have $X(g)(\pt) = \pt$ if and only if there exists $h:\USymH$
-  such that $g = \USymi(h)$.
+  Recall the equivalence $F$ from \cref{lem:SubG=MonoG}.
+  For all $(X,\pt,!) : \Sub(G)$ and $(H,i,!) : \typemono(G)$
+  such that $(H,i,!)=F(X,\pt,!)$,
+  we have $X(g)(\pt) = \pt$ in $X_{\sh_G}$ if and only if 
+  there exists $h:\USymH$ such that $g = \USymi(h)$ in $\USymG$.
 \end{lemma}
 \begin{proof}
-It suffices to prove this for one of the equivalences.
-We choose $\inv E$, that is, the equivalence in the statement
-of \cref{lem:SubG=MonoG}, so we take 
-$(H,i,!) \jdeq ((\sum_{z:\BG}X(z),(\sh_G,\pt)),\fst,!)$.
-Now we have to prove: $X(g)(\pt)=\pt$ iff there exists an
-$h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that $g = \USym\fst(h)$.
+Let $(X,\pt,!):\Sub(G)$. It suffices to prove the lemma for 
+$(H,i,!)\jdeq F(X,\pt,!) : \typemono(G)$.
+This means $\BH\jdeq(\sum_{z:\BG}X(z),(\sh_G,\pt))$ and $\Bi\jdeq\fst$.
+We have to prove: $X(g)(\pt)=\pt$ iff there exists an
+$h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that $g = \USymi(h)\jdeq\loops\fst(h)$.
 
-If $X(g)(\pt)=\pt$, then we can simply take $h\defeq(g,\pt)$.
+If $X(g)(\pt)=\pt$, then we can simply take $h\defeq(g,\refl{\pt})$.
 
 For the converse, assume there exists an
-$h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that $g = \USym\fst(h)$.
+$h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that $g = \USymi(h)$.
 Then $h = (g,p)$ for some $p: X(g)(\pt)=\pt$.
 \end{proof}
 
 \marginnote{%
-  Which of the equivalent sets $\typemono_G$ and $\Sub_G$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
+  Which of the equivalent sets $\typemono(G)$ and $\Sub(G)$ is allowed to be called ``the set of subgroups of $G$'' is, of course, a choice.  It could easily have been the other way around and we informally refer to elements in either sets as ``subgroups'' and use the given equivalence $E$ as needed.
 }%
 \marginnote{%
   An argument for our choice can be
-  as follows.  In set-based mathematics one has two options for defining subgroup: either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\Sub_G$, whereas the other corresponds to $\typemono_G$.
-  % that the identity type in $\typesubgroup_G$ seems more transparent than the one in $\typemono_G$  (``more things are equal'' in $\typemono_G$?), just as  $A\to\Prop$ gives more the intuition of picking out a subset by means of a characteristic function than what you get when considering the equivalent type of injections into $A$.
+ as follows.  In set-based mathematics one has two options for defining "subgroup": either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\Sub(G)$, whereas the other corresponds to $\typemono(G)$.
+  % that the identity type in $\typesubgroup_G$ seems more transparent than the one in $\typemono(G)$  (``more things are equal'' in $\typemono(G)$?), just as  $A\to\Prop$ gives more the intuition of picking out a subset by means of a characteristic function than what you get when considering the equivalent type of injections into $A$.
 }
 
 
 Through the equivalence $E$ we can translate the concepts in
-\cref{def:typeofmono} to subgroups in $\Sub_G$. 
-First, observe that the underlying groups correspond. 
-Then, we say that a subgroup $(X,\pt,!):\Sub_G$ is:
+\cref{def:typeofmono} to subgroups in $\Sub(G)$. 
+First, observe that the underlying groups of a subgroup in $\typemono(G)$
+and of its image under $E$ in $\Sub(G)$ can be identified.
+
+\begin{definition}\label{def:triv-proper-Mono}
+We say that a subgroup $(X,\pt,!):\Sub(G)$ is:
       \begin{enumerate}
       \item \emph{trivial}\index{trivial subgroup} if the underlying subgroup
       $(\sum_{z:\BG}X(z),(\sh_G,\pt))$ is trivial;
       \item \emph{proper}\index{proper subgroup} if $X(\sh_G)$ is not
-      contractible.
+      contractible.\qedhere
       \end{enumerate}
-
-      \begin{remark}
-      \label{rem:notationsubgroup}
+\end{definition}
+      
+\begin{remark}\label{rem:notationsubgroup}
       A note on classical notation is in order.
 If $(X,\pt,!)$ is a subgroup corresponding to a monomorphism $(H,i,!)$ into a group $G$, tradition would permit us to relax the burden of notation and we could write ``a subgroup $i:H\subseteq G$'', or, if we didn't need the name of $i:\Hom(H,G)$, simply ``a subgroup $H\subseteq G$'' or ``a subgroup $H$ of $G$''.
     \end{remark}
+    
+\begin{example}
+  \label{ex:prodinclisGset}
+  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.
+  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the principal $G$-torsor $\princ G:\BG\to\Set$.
+
+  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi\eqto{}\id_H$, then $(H,i,!):\typemono(G)$, corresponding to the subgroup with $G$-set given by the composite of $\Bf$ with the princial $H$-torsor $\princ H$.
+\end{example}
     
     
     \subsection{Move to better place}
@@ -1047,7 +1071,7 @@ A monomorphism into $G$ is given by a pointed connected groupoid  $\BH=(\BH_\div
 
 On the other hand,  the type of \coverings over $\BG$ is equivalent to the type of $G$-sets: if $X:\BG\to\Set$ is a $G$-set, then the \covering is given by the first projection $\tilde X\to \BG$ where $\tilde X\defequi\sum_{y:\BG}X(y)$ and the inverse is obtained by considering the fibers of a \covering.  Furthermore, we saw in \cref{lem:conistrans} that $\tilde X$ being connected is equivalent to the condition $\istrans(X)$ of \cref{def:transitiveGset} claiming that the $G$-set $X$ is transitive.
 
-Hence, the type (set, really) $\typemono_G$ of monomorphisms into $G$ is equivalent to the type of pointed connected \coverings over $\BG$, which again is equivalent to the type $\typesubgroup_G$ of transitive $G$-sets $X:\BG\to\Set$ together with a point in $X(\sh_G)$.
+Hence, the type (set, really) $\typemono(G)$ of monomorphisms into $G$ is equivalent to the type of pointed connected \coverings over $\BG$, which again is equivalent to the type $\typesubgroup_G$ of transitive $G$-sets $X:\BG\to\Set$ together with a point in $X(\sh_G)$.
 
 and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a groups}\glossary(EpiG){$\protect{\typeepi_G}$}{type of epimorphisms from the group $G$} is
   $$\typeepi_G\defequi\sum_{H:\typegroup}\sum_{f:\Hom(G,G')}\isepi(f).$$
@@ -1063,32 +1087,6 @@ and the \emph{type of epimorphisms from $G$}\index{type! of epimorphisms from a 
     
     If $G_1$ and $G_2$ are groups, then the first projection from $G_1\times G_2$ is an epimorphism 
 
-\begin{xca}
-  \label{xca:SG2=SG2contractible} \MB{Move or shorten?}
-  Show that $\Iso(\SG_2,\SG_2)$ is contractible. Hint: use
-  \cref{xca:CG2isSG2}. Here comes another interesting solution.
-  Let $f:\Iso(\SG_2,\SG_2)$. Then $\USym f: (\bn2\eqto\bn2)\equivto_*
-  (\bn2\eqto\bn2)$. There is exactly one such pointed equivalence,
-  namely the identity on $\bn2\eqto\bn2$. Now show that 
-  \[
-  \sum_{p:A\eqto \Bf(A)}\,\prod_{q: A\eqto\bn{2}} 
-  (\Bf^{-1}_\pt\cdot \ap{\Bf}(q)\cdot p) = q
-  \]
-  is contractible for all $A:\FinSet_2$, which induces an
-  identification of type $\id_{\SG_2}\eqto f$.
-  
-  This argument is a special case of a technique that we
-  will develop in \cref{sec:homabsisconcr} and which is called `delooping'.
-\end{xca}
-
-
-\begin{example}
-  \label{ex:prodinclisGset}
-  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.
-  The corresponding $G\times G'$-set is the composite of the first projection $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the principal $G$-torsor $\princ G:\BG\to\Set$.\MB{Later!}
-
-  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi\eqto{}\id_H$, then $(H,i,!):\typemono_G$, corresponding to the subgroup with $G$-set given by the composite of $\Bf$ with the princial $H$-torsor $\princ H$.
-\end{example}
 
 
     % commented out by BID 211117 Some examples and references should be included when the cyclic subgroups are fully developed
@@ -1386,7 +1384,7 @@ is taken over by $X_O$.
   $(\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x) \eqto (z,y)},(\sh_G,x,!))$.
   Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
   each fiber at $z:\BG$ is a subset of $X(z)$.
-  Hence $(G_x,\fst,!):\typemono_G$ is monomorphism into $G$.
+  Hence $(G_x,\fst,!):\typemono(G)$ is monomorphism into $G$.
   We call the subgroup $G_x$ of $G$ the 
   \emph{stabilizer (sub)group}\index{stabilizer}%
     \index{group!stabilizer} at $x$. The inclusion $\fst$ of $\BG_x$ in
@@ -1441,11 +1439,11 @@ if $[x]=[y]$, then $\Trunc{G_x\eqto G_y}$, for any $x,y:X(\sh_G)$.
 \begin{remark}\label{rem:subgrp-is-stabsubgr}
   In fact every subgroup of $G$ is a stabilizer subgroup.
   We can equivalently define the stabilizer subgroup of $x$ 
-  by an element of $\Sub_G$, namely
+  by an element of $\Sub(G)$, namely
   the transitive $G$-set $X_{[x]}$, pointed by
   $x$ as element of the subset $X_{[x]}(\sh_G)$ of $X(\sh_G)$.
   If $X$ is transitive, then all orbits are equal (\cref{xca:transX-just1orbit})
-  and the stabilizer subgroup of $x$ simplifies to $(X,x,!):\Sub_G$,
+  and the stabilizer subgroup of $x$ simplifies to $(X,x,!):\Sub(G)$,
   a general form defining a subgroup of $G$.
 \end{remark}
 
@@ -1670,7 +1668,7 @@ $\USymG_x$, for any $g:\USymG$.
 In the case of a subgroup of $G$, we have the following result.
 
 \begin{construction}\label{con:preLagrange}\MB{New:}
-  Let $G$ be a group and let $(X,x,!):\Sub_G$ be a subgroup of $G$ as defined
+  Let $G$ be a group and let $(X,x,!):\Sub(G)$ be a subgroup of $G$ as defined
   in \cref{def:set-of-subgroups}. Then we have an equivalence
   $[\blank]_x$ from the underlying set $X(\sh_G)$ of $X$ to 
   $\tilde G_x /G_x$, the set of orbits of $\tilde G_x$. 
@@ -1696,7 +1694,7 @@ for all $x':X(\sh_G)$, $(z,y,!):\BG_x$ and $h:\sh_G\eqto z$.
 The following theorem summarizes several results in this section.
 
 \begin{theorem}\label{thm:summary5.4}
-  Let $G$ be a group and $(X,x,!):\Sub_G$ giving a 
+  Let $G$ be a group and $(X,x,!):\Sub(G)$ giving a 
   stabilizer subgroup $G_x$ of $G$. Then:
   \begin{enumerate}
   \item The $G_x$-set $\tilde G_x$ from \cref{def:Gx-action-on-G}
@@ -1736,7 +1734,7 @@ The following construction brings us one step closer to the
 traditional formulation.
 
 \begin{construction}[\MB{Lagrange's Construction}]\label{con:lagrange}
-Let $G$ be a group. For all subgroups $H\defeq(X,x,!):\Sub_G$,
+Let $G$ be a group. For all subgroups $H\defeq(X,x,!):\Sub(G)$,
 we have a function $L_H$ of type
 \[
 \bigl(\prod_{y:X(\sh_G)}\sum_{g:\USymG} g\cdot_X y = x \,\bigr) \to
@@ -1791,7 +1789,7 @@ $\sum_{y:X(\sh_G)}\USymG_y$.
 \begin{xca}\label{xca:lagrange}
 The goal of this exercise is to state and prove the traditional
 formulation of  Lagrange's Theorem. 
-Let $G$ be a finite group and $(X,x,!):\Sub_G$ giving a 
+Let $G$ be a finite group and $(X,x,!):\Sub(G)$ giving a 
 stabilizer subgroup $G_x$ of $G$.
 Assume that $X$ is a finite $G$-set.
 Show that $\Card(G) = \Card(X) \times \Card(G_x)$.
