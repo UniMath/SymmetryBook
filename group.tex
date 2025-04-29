@@ -1718,14 +1718,14 @@ $\sgn^A : \Hom(\Aut(A),\SG_2)$, as announced.%
       \node[dot] (z1) at (1,1) {};
       \node[dot,gray!25] (z2) at (2,1) {};
       \node[dot,gray!25] (z3) at (3,1) {};
-      \draw[->] (x0) -- (z1);
-      \draw[->] (z1) -- (y0);
-      \draw[->,commutative diagrams/crossing over] (x1) -- (z0);
-      \draw[->,commutative diagrams/crossing over] (z0) -- (y1);
-      \draw[->] (x2) .. controls (3,1) and (3,1) .. (y2);
-      \draw[->,commutative diagrams/crossing over] (x3) .. controls (2,1) and (2,1) .. (y3);
-      \draw[->] (x4) -- (y4);
-      \draw[->] (x5) -- (y5);
+      \draw[gen] (x0) -- (z1);
+      \draw[gen] (z1) -- (y0);
+      \draw[gen,commutative diagrams/crossing over] (x1) -- (z0);
+      \draw[gen,commutative diagrams/crossing over] (z0) -- (y1);
+      \draw[gen] (x2) .. controls (3,1) and (3,1) .. (y2);
+      \draw[gen,commutative diagrams/crossing over] (x3) .. controls (2,1) and (2,1) .. (y3);
+      \draw[gen] (x4) -- (y4);
+      \draw[gen] (x5) -- (y5);
     \end{tikzpicture}
     \caption{The composition $(1\;2)(1\;2) = \id_{\bn 2}$ illustrated
       in the style of~\cref{fig:permutation-crossings}, with first two, then no
@@ -1775,13 +1775,13 @@ in~\cref{ex:cyclicgroups}.
     \node (y7) [above=of y6] {$\vdots$};
     \node (x0) [below=of x1] {$\vdots$};
     \node (y0) [below=of y1] {$\vdots$};
-    \begin{scope}[casblue,->,shorten <=1pt,shorten >=1pt]
+    \begin{scope}[genb]
       \foreach \p/\n in {0/1, 1/2, 2/3, 3/4, 4/5, 5/6, 6/7} {
         \draw (x\p)--(x\n);
         \draw (y\n)--(y\p);
       }
     \end{scope}
-    \begin{scope}[casred,<-,shorten <=1pt,shorten >=1pt]
+    \begin{scope}[gena]
       \foreach \n in {1,2,...,6} {
         \draw (x\n) to[bend right] (y\n);
         \draw (y\n) to[bend right] (x\n);
@@ -1789,31 +1789,25 @@ in~\cref{ex:cyclicgroups}.
     \end{scope}
   \end{tikzpicture}
   \end{center}
-  \caption{An infinite bicycle.}
+  \caption{The infinite dihedral bicycle.}
   \label{fig:infinite-bicycle}
 \end{marginfigure}
 \begin{marginfigure}
   \begin{center}
     \footnotesize
   \begin{tikzpicture}[node distance=10pt]
-    \begin{scope}[every node/.style={dot}]
-      \foreach \n in {0,1,...,7} {
-        \node (x\n) at (45*\n:50pt) {};
-      }
-    \end{scope}
-    \begin{scope}[casblue,->,shorten <=1pt,shorten >=1pt]
-      \foreach \p/\n in {0/1, 1/4, 2/3, 3/6, 4/5, 5/0, 6/7, 7/2} {
-        \draw (x\p)--(x\n);
-      }
-    \end{scope}
-    \begin{scope}[casred,->,shorten <=1pt,shorten >=1pt]
-      \foreach \p/\n in {0/7, 1/6, 2/1, 3/0, 4/3, 5/2, 6/5, 7/4} {
-        \draw (x\p)--(x\n);
-      }
-    \end{scope}
+    \foreach \n in {0,1,...,7} {
+      \node[dot] (x\n) at (45*\n:50pt) {};
+    }
+    \foreach \p/\n in {0/1, 1/4, 2/3, 3/6, 4/5, 5/0, 6/7, 7/2} {
+      \draw[genb] (x\p)--(x\n);
+    }
+    \foreach \p/\n in {0/7, 1/6, 2/1, 3/0, 4/3, 5/2, 6/5, 7/4} {
+      \draw[gena] (x\p)--(x\n);
+    }
   \end{tikzpicture}
   \end{center}
-  \caption{A finite bicycle.}
+  \caption{The quaternion bicycle.}
   \label{fig:quaternion-bicycle}
 \end{marginfigure}
 To give many more concrete examples of groups,
@@ -1822,8 +1816,13 @@ $a$ and $b$, such that any two elements $x,x'$
 can be connected by repeated application
 of $a$ and $b$ and their inverses,
 such as the ones depicted
-in~\cref{fig:infinite-bicycle,fig:quaternion-bicycle}.
-
+in~\cref{fig:infinite-bicycle,fig:quaternion-bicycle},
+where we use the colors {\color{casred}amaranth}
+and {\color{casblue}bluebell} to indicate the actions
+of $a$ and $b$, respectively.
+We call these bicycles the \emph{infinite dihedral}
+and the \emph{quaternion} bicycle, respectively,
+for reasons that will become clear later.
 To capture the idea of ``connectedness'' for bicycles,
 we note that it may be necessary to alternate the
 application of the two equivalences
@@ -1913,6 +1912,150 @@ as follows:
 \addtocounter{footnote}{-1}\footcitetext{Douglas1951I}%
 \stepcounter{footnote}\footcitetext{Douglas1961}
 \end{remark}
+
+Now let us investigate the identifications of bicycles:
+If $(X,a,b)$ and $(X',a',b')$ are elements of
+$\sum_{X:\UU}(X\to X)\times(X\to X)$, then univalence,
+together with \cref{def:pathover-trp,lem:isEq-pair=,lem:trp-in-function-type},
+gives an equivalence
+\[
+  \bigl( (X,a,b) \eqto (X',a',b') \bigr)
+  \equivto
+  \sum_{e:X\equivto X'}(ea \eqto a'e) \times (eb \eqto b'e),
+\]
+to a type whose three components we can visualize as:
+\[
+  \begin{tikzcd}[column sep=huge,ampersand replacement=\&]
+    X\ar[d,equivl,"e"'] \&[-25pt]
+    X \ar[r,"a"]\ar[d,equivl,"e"'] \& X \ar[d,equivr,"e"] \&[-25pt]
+    X \ar[r,"b"]\ar[d,equivl,"e"'] \& X \ar[d,equivr,"e"] \\
+    X'\&[-25pt]
+    X' \ar[r,"a'"'] \& X' \&[-25pt]
+    X' \ar[r,"b'"'] \& X'
+  \end{tikzcd}
+\]
+If $X$ and $X'$ are sets, then this the subtype of $X \to X'$
+consisting of equivalences $e$ satisfying $ea=a'e$ and $eb=b'e$.
+This means that the symmetries of a bicycle $(X,a,b)$
+are given by those self-equivalences $e : X\equivto X$
+that \emph{commute} with both $a$ and $b$ in the sense that
+$ae=ae$ and $be=eb$.
+
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}
+    \pgfmathsetmacro{\len}{1}
+    \node[dot] (n1) at (0:\len) {};
+    \node[dot] (n2) at (120:\len) {};
+    \node[dot] (n3) at (240:\len) {};
+    \begin{scope}[every to/.style={bend right=22}]
+      % generator a
+      \draw[gena] (n1) to (n2);
+      \draw[gena] (n2) to (n3);
+      \draw[gena] (n3) to (n1);
+    \end{scope}
+    % generator b
+    \draw[genb] (n1) to[out=-30,in=30,looseness=25] (n1);
+    \draw[genb,out=205,in=155] (n2) to (n3);
+    \draw[genb,out=45,in=-45] (n3) to (n2);
+  \end{tikzpicture}
+  \caption{An abnormal bicycle.}
+  \label{fig:abnormal-bicycle}
+\end{marginfigure}
+We now see the added complexity of going from cycles to bicycles:
+For a (uni)cycle $(X,t)$, any power $t^n$ of $t$ will commute with $t$
+itself, but for a bicycle $(X,a,b)$, we need not have $ab=ba$.
+Indeed, neither of the bicycles
+in~\cref{fig:infinite-bicycle,fig:quaternion-bicycle} satisfies this.
+And there are many bicycles whose \emph{only} symmetry is
+the identity, \eg the one in~\cref{fig:abnormal-bicycle}.
+
+However, all is not lost! Since all elements are connected by two
+self-equivalences, we still have that any identification
+$(X,a,b) \eqto (X',a',b')$ is determined by the image of any given
+element $x:X$, giving a weakening of~\cref{cor:ConnCycles} for cycles.
+\begin{lemma}\label{lem:evisinj-bicycle}
+  Given bicycles $(X,a,b)$ and $(X',a',b')$,
+  for any $x_0:X$, we have that the evaluation map
+  \[
+    \ev_{x_0}: \bigl((X,a,b) \eqto (X',a',b')\bigr) \to X',
+    \qquad \ev_{x_0}(e)\defequi e(x_0)
+  \]
+  is injective.
+\end{lemma}
+\begin{proof}
+  Fix $x':X'$. It suffices to show that there is at most one equivalence
+  $e : X\equivto X'$ satisfying $ea=a'e$, $eb=b'e$, and $e(x_0) = x'$.
+  It follows by list induction on $\ell:(\zet\amalg\zet)^*$
+  that $e \sem\ell = \sem\ell' e$, where $\sem\blank$ and $\sem\blank'$
+  use the respective pairs of self-equivalences, $(a,b)$ and $(a',b')$.
+
+  Now by connectivity, for every $x:X$ there exists a list $\ell$
+  with $x = \sem\ell(x_0)$. Since we're proving a proposition
+  (the uniqueness of the value of $e(x)$), we may assume we have such a list.
+  But then $e(x) = e(\sem\ell(x_0)) = \sem\ell' e(x_0) = \sem\ell' x'$
+  is independent of $e$, as desired.
+\end{proof}
+This tells us what's special about the infinite dihedral
+and the quaternion bicycles: they are \emph{normal}.
+\begin{definition}\label{def:normal-bicycle}
+  A bicycle $(X,a,b)$ is \emph{normal} if the evaluation
+  map
+  \[
+    \ev_x: \bigl((X,a,b) \eqto (X,a,b)\bigr) \to X,
+    \qquad \ev_{x}(e)\defequi e(x)
+  \]
+  is an equivalence for all $x:X$
+\end{definition}
+In other words, a normal bicycle has the maximum possible
+amount of symmetry, in that any element is just like any other.
+\begin{xca}
+  Show that if the evaluation map is an equivalence for some $x:X$,
+  then its an equivalence for all $x:X$.
+\end{xca}
+In~\cref{sec:covS1} we used the subset $H_t \jdeq \setof{n:\zet}{t^n=\id}$
+of $\zet$ to study a cycle $(X,t)$. There, we get the equal subsets
+$\setof{n:\zet}{t^n(x)=x}$ no matter which $x:X$ we pick.\footnote{%
+  This is because all cycles $(X,t)$ are normal
+  in the general sense.}
+For a bicycle $(X,a,b)$, however, the relationship between
+the subsets
+\[
+  H_x \defeq \setof{\ell:(\zet\amalg\zet)^*}{\sem\ell(x)=x}
+\]
+for varying $x:X$ is exactly what determines normality.
+We leave this as an exercise now, as we'll return to normality
+in greater generality later.
+\begin{xca}
+  Show that a bicycle $(X,a,b)$ is normal if and only if
+  $H_x = H_y$ for all $x,y:X$.
+\end{xca}
+\begin{xca}
+  Show that any \emph{commuting} bicycle $(X,a,b)$, \ie
+  one satisfying $ab=ba$, is normal.
+  Then show that the map
+  \[
+    \Cyc\times\Cyc\to\Bicyc,\qquad
+    ((X,t), (Y,u)) \mapsto (X\times Y, t\times\id_Y, \id_X\times u)
+  \]
+  induces an equivalence onto the subtype of commuting bicycles.\footnote{%
+    For example, the Klein four-group
+    from~\cref{ex:productofgroups}
+    is equivalent to the automorphism group
+    of the commuting bicycle:
+  \begin{center}
+    \noindent\begin{tikzpicture}
+      \foreach \x/\y in {0/0, 0/1, 1/0, 1/1} {
+        \node[dot] (n\x\y) at (\x,\y) {};
+      }
+      \foreach \x in {0, 1} {
+        \foreach \p/\n in {0/1, 1/0} {
+          \draw[gena] (n\x\p) to[bend right] (n\x\n);
+          \draw[genb] (n\p\x) to[bend right] (n\n\x);
+        }
+      }
+    \end{tikzpicture}
+  \end{center}}
+\end{xca}
 
 \section{Infinity groups (\texorpdfstring{\inftygps}{∞-groups})}
 \label{sec:inftygps}
