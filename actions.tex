@@ -1055,10 +1055,12 @@ If $(X,\pt,!)$ is a subgroup corresponding to a monomorphism $(H,i,!)$ into a gr
     
 \begin{example}
   \label{ex:prodinclisGset}
-  We saw in \cref{ex:prodinclismono} that the first inclusion $i_1:G\to G\times G'$ is a monomorphism.
+  We saw in \cref{ex:prodinclismono} that the first 
+  inclusion $i_1:G\to G\times G'$ is a monomorphism.
   The corresponding $G\times G'$-set is the composite of the first projection
   $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the
-  principal $G$-torsor $\princ G:\BG\to\Set$ from \cref{def:principaltorsor}.
+  principal $G$-torsor $\princ G:\BG\to\Set: z\mapsto (sh_G\eqto z)$ 
+  of \cref{def:principaltorsor}.
 
   More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi\eqto{}\id_H$,
   then $(H,i,!):\typemono(G)$, corresponding to the subgroup with $G$-set 
@@ -1141,7 +1143,7 @@ of $(R_m,0,!)$. Identify $\USym\ZZ$ with $\bn m \times \USymH_m$.
 
 \begin{xca}\label{xca:lagrange-if-subgr-not-normal}\MB{TBD: }
 The goal of this exercise is to illustrate that \cref{con:lagrange}
-also can be applied to infinite groups and a subgroup that is not normal.
+also can be applied to infinite groups and a subgroup that is "abnormal".
 Recall \cref{fig:not-normal} ...
 \end{xca}
 
@@ -1193,40 +1195,47 @@ Recall \cref{fig:not-normal} ...
 
 \section{Invariant maps and orbits}
 \label{sec:fixpts-orbits}
-We now return to some important constructions involving $G$-sets for a group $G$.
+We now return to some important constructions involving $G$-sets 
+for a group $G$.
 Some of these make equally good sense for \emph{$G$-types} for \aninftygp
 $G$, in which case we add a footnote to this effect.
+
+
 % perhaps with some warnings $\USymG$, $=$, \cref{lem:conistrans}, ...
-\begin{definition}
-  \label{def:actiontype} Let $G$ be a group and $X : \BG\to\Set$,\footnote{%
+\begin{definition}\label{def:actiontype} 
+  Let $G$ be a group and $X : \BG\to\Set$ a $G$-set,\footnote{%
   This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
   then the \emph{action type}\index{action type}
-  is the total type of $X$, denoted\footnote{%
+  $X$, denoted\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
     following a convention in homotopy theory.
-    This helps to distinguish them from other uses, such as powers.
     The action type is sometimes denoted $X \dblslash G$.}
 \[
-  X_{hG} \defeq \sum_{z:\BG} X(z).
+  X_{hG} \defeq \sum_{z:\BG} X(z),
 \]
-By \cref{def:pathover-trp} and \cref{def:pairtopath}, 
-the identity type $(z,x)\eqto_{X_{hG}}(w,y)$
-is equivalent to the sum type $\sum_{g:z\eqto w} g\cdot x = y$,
-and so are their (often used) propositional truncations.
+is the total type of $X$, see \cref{sec:sum-types}.
+By \cref{def:pathover-trp} and \cref{def:pairtopath},
+we get an equivalence
+\[
+\bigl((z,x)\eqto_{X_{hG}}(w,y)\bigr) \equivto
+\sum_{g:z\eqto w} g\cdot x = y,
+\]
+which also goes for their (often used) propositional truncations.
 %We use $(z,y):X_{hG}$ sometimes for $z:\BG,\,y:X(z)$.
 
 The type of \emph{invariant maps}\footnote{%
-These are dependent functions $f$ and the reason for the new name
+Invariant maps are dependent functions $f$ and the reason for the new name
 in this context is that $f(z) = g \cdot_X f(z)$ for any $z:\BG$
-and $g:z\eqto z$. Cf.~\cref{lem:fixed-char}. Note that there need not be invariant maps: $\prod_{z:\Sc}\base\eqto z$ is empty.}
+and $g:z\eqto z$. Cf.~\cref{lem:fixed-char}. Note that there need not 
+be any invariant maps: $\prod_{z:\Sc}\base\eqto z$ is empty.}
 \index{invariant map type} is
 \[
   X^{hG} \defeq \prod_{z:\BG} X(z).
 \]
 
-The \emph{set of orbits}\footnote{\MB{Where: terminology homotopy orbit spaces?}}
+The \emph{set of orbits}
 \index{set!of orbits}\index{orbit set} is the subset of $\Sub_G(X)$ consisting
-of all $G$-subtypes $P$ of $X$ such that the underlying $G$-subtype $X_P$
+of all $G$-subsets $P$ of $X$ such that the underlying $G$-subset $X_P$
 is transitive:\footnote{See \cref{def:transitiveGset}.}
 \[
   X / G \defeq \sum_{P:\Sub_G(X)}\istrans(X_P).\qedhere
@@ -1312,30 +1321,44 @@ Such a set is what is traditionally called an orbit.
 This connection is emphasized in the following result,
 and in particular in \cref{cor:orbit-equiv}.
 
+\begin{definition}\label{def:orbit-map}
+Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.
+We define the map $[\blank]_0$ from the action type $X_{hG}$ of
+$X$ to $\Sub_G(X)$, the set of $G$-subsets of $X$, as follows.
+For any $u:X_{hG}$, let $[u]_0$ be the $G$-subset of $X$ that
+sends $z:\BG$ to
+\[
+(x:X(z) \mapsto \Trunc{u\eqto(z,x)}) : X(z) \to \Prop.\qedhere
+\]
+\end{definition}
+
 Recall from \cref{def:actiontype} the equivalence of
 $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
+The next lemma follows easily from the properties of $\Trunc{u\eqto(z,x)}$.
 
-\begin{lemma}\label{lem:[]0-surj-on-orbits}\MB{New:}
-  Let $G$ be a group and $X : \BG\to\Set$.\footnote{%
+\begin{lemma}\label{lem:[]0-maps-to-X/G}
+Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.
+For every $u:X_{hG}$, the underlying $G$-set
+$(z\mapsto \sum_{x:X(z)}\Trunc{u\eqto(z,x)})$ of $[u]_0$,
+defined in \cref{def:Gsubset}, is transitive.
+Hence $[\blank]_0$ is a map from $X_{hG}$ to $X/G$. 
+\end{lemma}
+
+The following lemma implies that the set of orbits can 
+be identified with the set truncation of the action type.
+
+\begin{lemma}\label{lem:X/G=setTruncX_hGs}
+  Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.\footnote{%
   This lemma can be generalized to \inftygps $G$ and $G$-types $X$.}
-  Define the map $[\blank]_0$ from the action type of $X$ to the type of
-  $G$-subsets of $X$, by $[u]_0(v) \defeq \Trunc{u\eqto v}$
-  for all $v:X_{hG}$.\footnote{\MB{New:}%
-  Here we use the uncurried form of $\Sub_G(X)$ as
-  explained in \cref{ft:SubTotX}.}
-  Then the image of $[\blank]_0$ is the set of orbits.
+  The map $[\blank]_0 :X_{hG}\to X/G $ is surjective.
   Moreover, we have a (unique) identification of
   $(X/G,[\blank]_0)$ and $(\setTrunc{X_{hG}},\settrunc{\blank})$
   in the type $\sum_{S:\Set}(X_{hG}\to S)$.
 \end{lemma}
-\begin{proof}\MB{New:}
-  Clearly, $[u]_0$ is a $G$-subset of $X$. 
-  By \cref{def:Gsubset}, the underlying $G$-type $X_{[u]_0}$ is
-  $(z\mapsto \sum_{x:X(z)}\Trunc{u\eqto(z,x)})$, which we
-  must show to be transitive. This follows easily from the properties
-  of $\Trunc{u\eqto(z,x)}$. We conclude that
-  $[\blank]_0$ is a well defined map from $X_{hG}$ to $X/G$.
-  
+
+%\footnote{\MB{New:}%Here we use the uncurried form of $\Sub_G(X)$ as explained in \cref{ft:SubTotX}.}
+
+\begin{proof}
   For proving surjectivity of $[\blank]_0$ on the set of orbits, 
   consider an orbit $O:X/G$, \ie
   $O$ is a $G$-subtype of $X$ such that $X_O$ is transitive. 
@@ -1351,7 +1374,7 @@ $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
   the observation made just above the lemma
   (see also \cref{rem:equivalents-of-[x]=[y]} below).
   
-  The last part of the lemma follows from \cref{rem:set-trunc-as-quotient}. 
+  The second part of the lemma follows from \cref{rem:set-trunc-as-quotient}. 
 \end{proof}
 
 \begin{corollary}\label{cor:orbit-equiv}
@@ -1361,12 +1384,31 @@ by \cref{xca:map-induces-quotient}\ref{it:surj-ind-quot=codomain}
 an equivalence between the induced quotient of $X(\sh_G)$ and $X/G$.
 Moreover, $[x] = [y]$ is equivalent to $\exists_{g:\USymG}(g\cdot x = y)$.
 \end{corollary}
-\begin{proof}\MB{New:}
-In the proof of surjectivity in \cref{lem:[]0-surj-on-orbits} we used
+\begin{proof}
+In the proof of surjectivity in \cref{lem:X/G=setTruncX_hGs} we used
 $u\defeq(\sh_G,x)$ to get $O=[u]_0$, so $[\blank]$ is surjective. 
 The last statement follows since
 both propositions are equivalent to $\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$.
 \end{proof}
+
+\begin{remark}\label{rem:SubGX=Sub(X/G)}
+Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.
+We have the following chain of definitions and equivalences:
+\begin{align*}
+\Sub_G(X)&\jdeq \prod_{z:\BG}(X(z)\to\Prop) 
+\\
+         & \we \bigl(X_{hG}\to\Prop\bigr)
+               \quad\text{(by \cref{ft:SubTotX,xca:Sigma-curry})}
+\\
+         & \we \bigl(\setTrunc{X_{hG}}\to\Prop\bigr) 
+               \quad\text{(since $\Prop$ is a set)}
+\\        
+         & \we \bigl(X/G\to\Prop\bigr)
+               \quad\text{(by \cref{lem:X/G=setTruncX_hGs})}
+\\
+         & \jdeq \Sub(X/G).\qedhere
+\end{align*}
+\end{remark}
 
 \begin{xca}\label{xca:transX-just1orbit}
 Show: $X/G$ is contractible if and only if $X$ is transitive.
@@ -1738,7 +1780,7 @@ The function $[\blank]_x$ is the composition of three equivalences.
 Since $X$ is transitive, $\fst: (G\cdot_X x)\to X(\sh_G)$ is an equivalence.
 The orbit-stabilizer \cref{con:orbit-stabilizer} gives us an equivalence $o$
 from $(G\cdot_X x)$ to $(\tilde G_x)_{hG_x}$. Since the latter type is a set,
-the function $[\blank]_0$ from \cref{lem:[]0-surj-on-orbits} 
+the function $[\blank]_0$ from \cref{lem:X/G=setTruncX_hGs} 
 is an equivalence from $(\tilde G_x)_{hG_x}$ to $\tilde G_x /G_x$.
 Now define $[x']_x \defeq [o(\inv\fst(x'))]_0$ for any $x':X(\sh_G)$.
 \end{implementation}
@@ -2186,7 +2228,7 @@ Use \cref{cor:id-m-cycle}, univalence, and \cref{lem:trp-in-function-type}.}
 
 By \cref{cor:orbit-equiv}, the set of orbits $X/\CG_4$ is
 equivalent to the quotient of $\bn4\to\bn2$ induced by 
-$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:[]0-surj-on-orbits}.
+$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:X/G=setTruncX_hGs}.
 As also stated by that lemma, the equivalence class of any $x:\bn4\to\bn2$
 consists precisely of all cyclic rotations of $x$. Clearly, 
 $0000$ and $1111$ have singleton equivalence classes.
