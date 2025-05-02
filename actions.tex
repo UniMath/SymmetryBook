@@ -552,7 +552,7 @@ We will return these more general types of actions many times.
   \[
     X : \BG \to A.
   \]
-  The particular "object of type $A$ being acted on" is $X(\sh_G):A$,
+  The particular ``object'' of type $A$ being acted on" is $X(\sh_G):A$,
   the \emph{underlying object}.%
   \index{action!of a group in a type}
 
@@ -640,7 +640,7 @@ from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
   we get the corresponding standard $\SG_n$-set.\footnote{%
     Check that this action is transitive for $n>0$.}
   Composing further with the operation $\blank \to \bool : \Set \to \Set$,
-  mapping any set $S$ to the set $S\to\Set$,
+  mapping any set $S$ to the set $S\to\bool$,
   we get the action of $\SG_n$ on the set of decidable subsets of $\bn n$.
 \end{example}
 
@@ -937,16 +937,18 @@ while $(\CG_3,j,!)$ and $(\CG_3,j',!)$ can be identified.
   Let $G$ be a group.
   The map sending $(X,\pt,!) : \Sub(G)$ to the monomorphism classified by  
   $\fst: (\sum_{z:\BG}X(z),(\sh_G,\pt))\ptdto\BG$, pointed by
-  reflexivity, yields an equivalence
+  reflexivity, yields an equivalence\footnote{%
+  Recall that we may omit "!"'s: propositional data never dies, 
+  it just fades away!}
 \[
-F: \Sub(G)\to \typemono(G) : (X,\pt,!) \mapsto \bigl(\mkgroup (\sum_{z:\BG}X(z),(\sh_G,\pt)),\mkgroup\fst,!\bigr).\qedhere
+F: \Sub(G)\to \typemono(G) : (X,\pt) \mapsto \Bigl(\mkgroup \bigl(\sum_{z:\BG}X(z),(\sh_G,\pt)\bigr),\mkgroup\fst\Bigr).\qedhere
 \]
 \end{lemma}
 
 \begin{proof}
    The inverse equivalence is $E$ defined as follows:
  $$E:\typemono(G)\to\Sub(G),\qquad 
-   (H,i,!)\mapsto E(H,i,!)\defequi (\Bi_\div^{-1},(\sh_H,\Bi_\pt),!),$$
+   (H,i)\mapsto E(H,i)\defequi (\Bi_\div^{-1},(\sh_H,\Bi_\pt)),$$
  %\glossary(E){$E$}{equivalence from $\typemono(G)$ to $\Sub(G)$}
   where the monomorphism $i:\Hom(H,G)$ is given by 
   the pointed map $(\Bi_\div,\Bi_\pt):\BH\ptdto\BG$.
@@ -1041,7 +1043,7 @@ and of its image under $E$ in $\Sub(G)$ can be identified.
 \begin{definition}\label{def:triv-proper-Mono}
 We say that a subgroup $(X,\pt,!):\Sub(G)$ is:
       \begin{enumerate}
-      \item \emph{trivial}\index{trivial subgroup} if the underlying subgroup
+      \item \emph{trivial}\index{trivial subgroup} if the underlying group
       $(\sum_{z:\BG}X(z),(\sh_G,\pt))$ is trivial;
       \item \emph{proper}\index{proper subgroup} if $X(\sh_G)$ is not
       contractible.\qedhere
@@ -1059,7 +1061,7 @@ If $(X,\pt,!)$ is a subgroup corresponding to a monomorphism $(H,i,!)$ into a gr
   inclusion $i_1:G\to G\times G'$ is a monomorphism.
   The corresponding $G\times G'$-set is the composite of the first projection
   $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the
-  principal $G$-torsor $\princ G:\BG\to\Set: z\mapsto (sh_G\eqto z)$ 
+  principal $G$-torsor $\princ G:\BG\to\Set: z\mapsto (\sh_G\eqto z)$ 
   of \cref{def:principaltorsor}.
 
   More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi\eqto{}\id_H$,
@@ -1206,7 +1208,7 @@ $G$, in which case we add a footnote to this effect.
   Let $G$ be a group and $X : \BG\to\Set$ a $G$-set,\footnote{%
   This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
   then the \emph{action type}\index{action type}
-  $X$, denoted\footnote{%
+  of $X$, denoted\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
     following a convention in homotopy theory.
     The action type is sometimes denoted $X \dblslash G$.}
@@ -1227,13 +1229,17 @@ The type of \emph{invariant maps}\footnote{%
 Invariant maps are dependent functions $f$ and the reason for the new name
 in this context is that $f(z) = g \cdot_X f(z)$ for any $z:\BG$
 and $g:z\eqto z$. Cf.~\cref{lem:fixed-char}. Note that there need not 
-be any invariant maps: $\prod_{z:\Sc}\base\eqto z$ is empty.}
+be any invariant maps: $\prod_{z:\Sc}\base\eqto z$ is empty.
+Using \cref{lem:univisexp}, \cref{fig:transportalongloop} explains
+why: the successor function has no fixed point.
+}
 \index{invariant map type} is
 \[
   X^{hG} \defeq \prod_{z:\BG} X(z).
 \]
 
-The \emph{set of orbits}
+The \emph{set of orbits} (soon to be identified with the
+set truncation of $X_{hG}$, see \cref{lem:X/G=setTruncX_hGs})
 \index{set!of orbits}\index{orbit set} is the subset of $\Sub_G(X)$ consisting
 of all $G$-subsets $P$ of $X$ such that the underlying $G$-subset $X_P$
 is transitive:\footnote{See \cref{def:transitiveGset}.}
