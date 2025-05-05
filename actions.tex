@@ -786,10 +786,21 @@ $\CG_6\defeq\Aut_\Cyc(\bn6,\zs)$ of the cyclic group of order $6$.
 This group can be visualized as the rotational symmetries of a regular
 hexagon,  \ie the rotations by $2\pi\cdot m /6$, where $m=0,1,2,3,4,5$.
 The symmetries of the regular triangle (rotations by $2\pi\cdot m/3$, 
-where $m=0,1,2$) can also be viewed as symmetries of the hexagon.
+where $m=0,1,2$) can also be viewed as symmetries of the hexagon,
+see \cref{fig:C3inC6}.
 Thus there is a subgroup of $\CG_6$ which, as a group, is isomorphic to 
 $\CG_3$, and which we now construct.
-\marginnote{TODO: TikZ drawing of the hexagon and triangle inscribed in it.}
+
+\begin{marginfigure}
+\begin{tikzpicture}[scale=.9]
+  \newdimen\R
+\R=2cm
+  \draw (0:\R) \foreach \x in {60,120,...,360} { -- (\x:\R) } ;
+  \draw (0:\R) \foreach \x in {120,240,360} { -- (\x:\R) } ;
+\end{tikzpicture}
+\caption{\label{fig:C3inC6}Geometrical shapes illustrating 
+$\protect\CG_3$ as subgroup of $\protect\CG_6$.}
+\end{marginfigure}
 
 In order to obtain $\CG_3$ as a subgroup we can define
 $F : \CG_6 \to \Set$ defined by $F(X,t) \defeq X/2$ for all $(X,t):\BCG_6$,
@@ -803,7 +814,7 @@ permutations that commute with $\zs$ preserve distance.}
 The symmetries $\pi$ satisfying $F(\pi)([0])=[0]$ are the
 even powers of $\zs$.\footnote{%
 In view of \cref{cor:id-m-cycle}, these symmetries can be visualized 
-by the vertices of the regular triangle above.
+by the vertices of the regular triangle, see \cref{fig:C3inC6}.
 The same is true for the symmetries picked out by $F(\pi)([1])=[1]$.
 Both $F(\pi)([0])=[1]$ and $F(\pi)([1])=[0]$ give the other inscribed
 regular triangle.} 
@@ -813,7 +824,7 @@ $\mkgroup(\sum_{(X,t):\Cyc_6} X/2, ((\bn6,\zs),[0]))$.
 Using $\rho_2: \BCG_3 \ptdto \BCG_6$ from \cref{lem:deg-m-on-Cyc},
 and the equivalence between $X/2$ and $\inv\rho_2 (X,t)$ from
 \cref{thm:fiber-cdg}, and the equivalence from \cref{lem:sum-of-fibers},
-we get an equivalence of the underlying group of  $(F,[0],!)$ and $\CG_3$.
+we get an equivalence between the underlying group of  $(F,[0],!)$ and $\CG_3$.
 \end{example}
 
 There are other subgroups of $\CG_6$, and in this example they are accounted for simply by the various factorizations of the number $6$.
@@ -890,8 +901,18 @@ for any homomorphism $f$.
      plane (with vertices $1$, $2$, $3$), then $i$ is represented by the
      inclusion of the symmetries leaving $3$ fixed; \ie reflection through
      the line marked with dots in the picture.
-                         $$\xymatrix{&3\ar@{.}[dd]&\\&&\\
-             1\ar@{-}[uur]\ar@{-}[rr]&            &2\ar@{-}[uul]}$$}
+\[ \begin{tikzpicture}[scale=.9]
+  \newdimen\R
+\R=2cm
+  \newdimen\Rl
+\Rl=2.3cm
+  \draw (90:\R) \foreach \x in {210,330,450} { -- (\x:\R) } ;
+  \node at (90:\Rl) {3};
+  \node at (210:\Rl) {1};
+  \node at (330:\Rl) {2};
+  \draw[dotted] (90:\R) -- (270:\R * 0.5) ;
+\end{tikzpicture}
+\]}
 We will present the subgroups from \cref{exa:fix1subSGn} with
 monomorphisms. For each $n:\NN$, consider the  homomorphism 
 $i_n:\Sigma_n\to\SG_{n+1}$ of permutation groups
@@ -1129,7 +1150,7 @@ The goal of this exercise is to state and prove the traditional
 formulation of  Lagrange's Theorem. 
 Let $G$ be a finite group and $(X,x,!):\Sub(G)$ a subgroup,
 whose underlying group we call $H$. 
-Let $X$ be a finite $G$-set. Show that $H$ is finite and
+Assume that $X$ is a finite $G$-set. Show that $H$ is finite and
 that $\Card(G) = \Card(X) \times \Card(H)$.
 \end{xca}
 
@@ -1201,11 +1222,31 @@ for a group $G$.
 Some of these make equally good sense for \emph{$G$-types} for \aninftygp
 $G$, in which case we add a footnote to this effect.
 
+We are particularly interested in what happens when a $G$-set
+is not transitive, that is, does not satisfy the requirement of 
+\cref{def:transitiveGset}. In \cref{cha:circle}, under the name
+of \coverings over the circle, we have already seen examples of
+transitive and non-transitive $\Sc$-sets:
+In \cref{fig:covering} the left picture exhibits a transitive one,
+and the right picture  a non-transitive one. Also, 
+\cref{fig:two-comp-S1-cover} shows a non-transitive $\Sc$-set,
+whereas the $m$\th power bundle over the circle in
+\cref{fig:m-th-power} is a transitive $\Sc$-set.
+\cref{lem:conistrans} gives a good explanation of these pictures:
+A $G$-set is transitive if and only if the associated \covering is connected.
+In other words, if a $G$-set $X:\BG\to\Set$ is transitive, then the
+group action connects\footnote{In the sense that $\Trunc{(z,x)\eqto(w,y)}$
+if and only if there exists a $g:z\eqto w$ such that $g\cdot_X x = y$.} 
+any two elements in the total type $\sum_{x:\BG} X(z)$.
+If $X$ is not transitive, then the latter total type falls apart 
+in different components. Since these components are themselves
+connected, the choice of an element of them gives rise to a subgroup of $G$
+in the sense of \cref{def:set-of-subgroups}.
 
 % perhaps with some warnings $\USymG$, $=$, \cref{lem:conistrans}, ...
 \begin{definition}\label{def:actiontype} 
   Let $G$ be a group and $X : \BG\to\Set$ a $G$-set,\footnote{%
-  This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
+  This definition can be generalized to \inftygps $G$ and $G$-types $X$.}
   then the \emph{action type}\index{action type}
   of $X$, denoted\footnote{%
     The superscripts and subscripts are decorated with ``$hG$'',
@@ -1238,7 +1279,7 @@ why: the successor function has no fixed point.
 \]
 
 The \emph{set of orbits} (soon to be identified with the
-set truncation of $X_{hG}$, see \cref{lem:X/G=setTruncX_hGs})
+set truncation of $X_{hG}$, see \cref{lem:X/G=setTruncX_hG})
 \index{set!of orbits}\index{orbit set} is the subset of $\Sub_G(X)$ consisting
 of all $G$-subsets $P$ of $X$ such that the underlying $G$-subset $X_P$
 is transitive:\footnote{See \cref{def:transitiveGset}.}
@@ -1318,13 +1359,12 @@ Sending $\base$ to $5$ and $\Sloop$ to $\refl{5}$.}
   \label{fig:ZZ-set-orbits}
 \end{marginfigure}
 
-In~\cref{fig:ZZ-set-orbits} we have highlighted a single component of
+In~\cref{fig:ZZ-set-orbits} we have highlighted one single component of
 the action type in blue (\ie corresponding to an element of the set of orbits),
 and we see that it contains a subset of the underlying set,
 the three red elements $\set{0,1,2}$.
 Such a set is what is traditionally called an orbit.
-This connection is emphasized in the following result,
-and in particular in \cref{cor:orbit-equiv}.
+This connection is emphasized in \cref{cor:orbit-equiv}.
 
 \begin{definition}\label{def:orbit-map}
 Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.
@@ -1346,26 +1386,25 @@ Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.
 For every $u:X_{hG}$, the underlying $G$-set
 $(z\mapsto \sum_{x:X(z)}\Trunc{u\eqto(z,x)})$ of $[u]_0$,
 defined in \cref{def:Gsubset}, is transitive.
-Hence $[\blank]_0$ is a map from $X_{hG}$ to $X/G$. 
+Hence $[\blank]_0$ is a map from $X_{hG}$ to $X/G$.
 \end{lemma}
 
+In view of the above lemma, we call $[u]_0$ \emph{the orbit
+through} $u$. \glossary(orbit){$[u]_0$}{orbit through $u:X_{hG}$}
 The following lemma implies that the set of orbits can 
 be identified with the set truncation of the action type.
 
-\begin{lemma}\label{lem:X/G=setTruncX_hGs}
+\begin{lemma}\label{lem:X/G=setTruncX_hG}
   Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.\footnote{%
   This lemma can be generalized to \inftygps $G$ and $G$-types $X$.}
-  The map $[\blank]_0 :X_{hG}\to X/G $ is surjective.
+  Then the map $[\blank]_0 :X_{hG}\to X/G $ is surjective.
   Moreover, we have a (unique) identification of
   $(X/G,[\blank]_0)$ and $(\setTrunc{X_{hG}},\settrunc{\blank})$
   in the type $\sum_{S:\Set}(X_{hG}\to S)$.
 \end{lemma}
 
-%\footnote{\MB{New:}%Here we use the uncurried form of $\Sub_G(X)$ as explained in \cref{ft:SubTotX}.}
-
 \begin{proof}
-  For proving surjectivity of $[\blank]_0$ on the set of orbits, 
-  consider an orbit $O:X/G$, \ie
+  Consider an orbit $O:X/G$, \ie
   $O$ is a $G$-subtype of $X$ such that $X_O$ is transitive. 
   We have to show that there exists a $u:X_{hG}$ such that $O=[u]_0$.
   By the connectivity of $\BG$ it suffices to show 
@@ -1382,6 +1421,10 @@ be identified with the set truncation of the action type.
   The second part of the lemma follows from \cref{rem:set-trunc-as-quotient}. 
 \end{proof}
 
+Another way to state the above lemma is that the map 
+$[\blank]_0 :X_{hG}\to X/G$ factors as the composite of $\settrunc\blank$
+followed by a unique equivalence: $X_{hG}\to \setTrunc{X_{hG}}\equivto X/G$.
+
 \begin{corollary}\label{cor:orbit-equiv}
 Define the map $[\blank] : X(\sh_G) \to X/G$ by $[x]\defeq[(\sh_G,x)]_0$.
 Then $[\blank]$ is surjective and induces
@@ -1389,8 +1432,11 @@ by \cref{xca:map-induces-quotient}\ref{it:surj-ind-quot=codomain}
 an equivalence between the induced quotient of $X(\sh_G)$ and $X/G$.
 Moreover, $[x] = [y]$ is equivalent to $\exists_{g:\USymG}(g\cdot x = y)$.
 \end{corollary}
+
+In view of this corollary, we call $[x]$ \emph{the orbit
+through} $x$. \glossary(orbit){$[x]$}{orbit through $x:X(\sh_G)$}
 \begin{proof}
-In the proof of surjectivity in \cref{lem:X/G=setTruncX_hGs} we used
+In the proof of surjectivity in \cref{lem:X/G=setTruncX_hG} we used
 $u\defeq(\sh_G,x)$ to get $O=[u]_0$, so $[\blank]$ is surjective. 
 The last statement follows since
 both propositions are equivalent to $\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$.
@@ -1409,7 +1455,7 @@ We have the following chain of definitions and equivalences:
                \quad\text{(since $\Prop$ is a set)}
 \\        
          & \we \bigl(X/G\to\Prop\bigr)
-               \quad\text{(by \cref{lem:X/G=setTruncX_hGs})}
+               \quad\text{(by \cref{lem:X/G=setTruncX_hG})}
 \\
          & \jdeq \Sub(X/G).\qedhere
 \end{align*}
@@ -1422,17 +1468,19 @@ Show: $X/G$ is contractible if and only if $X$ is transitive.
 \end{xca}
 
 
-\begin{remark}\label{rem:equivalents-of-[x]=[y]}\MB{New:}
+\begin{remark}\label{rem:equivalents-of-[x]=[y]}
 Given a group $G$, a $G$-set $X$ and $x,y:X(\sh_G)$,
 the following propositions are all equivalent and we may pass from
 one to another without mention:
-$[x]=_{X/G}[y]$;\quad 
-$[x](\sh_G)=_{X(\sh_G)\to\Prop}[y](\sh_G)$;\quad
-%$G\cdot x =_{\Sub(X(\sh_G))} G\cdot y$;\quad
-$\exists_{g:\USymG}(g\cdot x = y)$;\quad
-$\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$;\quad 
-$[x](\sh_G,y)$;\quad
-$[y](\sh_G,x)$. As functions of $x$ and $y$ they all define the equivalence
+\begin{itemize}
+\item $[x]=_{X/G}[y]$;
+\item $[x](\sh_G)=_{X(\sh_G)\to\Prop}[y](\sh_G)$;
+\item $\exists_{g:\USymG}(g\cdot x = y)$;
+\item $\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$;
+\item $[x](\sh_G,y)$;
+\item $[y](\sh_G,x)$.
+\end{itemize}
+As functions of $x$ and $y$, all of the above define the equivalence
 relation on $X(\sh_G)$ induced by the surjection $[\blank]$. 
 \end{remark}
 
@@ -1453,13 +1501,15 @@ and $[\blank]_0$, respectively) with quotient set $X/G$.\footnote{%
   which we will elaborate in the next paragraphs.
 
 Let $O:X/G$ be an orbit and consider 
-$\inv{[O]_0} \jdeq \sum_{u:X_{hG}}(O=[u]_0)$.
-Recall that $O$ can be uncurried as a predicate on $X_{hG}$,
-and that its underlying $G$-set $X_O\jdeq(z:\BG \mapsto \sum_{y:X(z)}O(z,y))$
-is transitive. Consequently, for all $u:X_{hG}$,
-$O(u)$ holds if and only if $O=[u]_0$.
+$\inv{[O]_0} \jdeq \sum_{u:X_{hG}}(O=[u]_0)$. Note that
+the underlying $G$-set $X_O\jdeq(z:\BG \mapsto \sum_{y:X(z)}O(z,y))$
+of $O$ is transitive. It follows that
+$O(u)$ holds if and only if $O=[u]_0$, for all $u:X_{hG}$.%
+\footnote{We use the first step of \cref{rem:SubGX=Sub(X/G)}.
+If $O(u)$ and $O(v)$, then $\Trunc{u\eqto v}$
+by the transitivity of $X_O$. The rest is obvious.} 
 Therefore, the fiber $\inv{[O]_0}$ is equivalent to the action type
-$(X_O)_{hG}\jdeq\sum_{z:\BG} X_O(z)$ by uncurrying.
+$(X_O)_{hG}\jdeq\sum_{z:\BG} X_O(z)$.
 
 After the previous paragraph, the elaboration of 
 $\inv{[O]} \jdeq \sum_{x:X(\sh_G)}(O=[x])$ is easy.
@@ -1484,11 +1534,10 @@ is taken over by $X_O$.
 \begin{definition}\label{def:orbit-stabilizer}
   Let $G$ be a group, $X : \BG \to \Set$ a $G$-set, 
   and $x : X(\sh_G)$ an element.\footnote{%
-  This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
+  This definition can be generalized to \inftygps $G$ and $G$-types $X$.}
   \begin{enumerate}
-  \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$,
-  with (curried) classifying type
-  $(\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x) \eqto (z,y)},(\sh_G,x,!))$.
+  \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$.
+% $(\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x) \eqto (z,y)},(\sh_G,x,!))$.
   Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
   each fiber at $z:\BG$ is a subset of $X(z)$.
   Hence $(G_x,\fst,!):\typemono(G)$ is monomorphism into $G$.
@@ -1510,7 +1559,7 @@ In the above definition, the underlying $G$-set $X_{[x]} \jdeq
 of the orbit $[x]$ plays an important double role: On one hand its
 action type $(X_{[x]})_{hG}$,
 %$\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$,
-pointed at $(\sh_G,x)$, is the classifying type of the stabilizer
+pointed at $(\sh_G,x)$, is the classifying type $\BG_x$ of the stabilizer
 group $G_x$. On the other hand it is a transitive $G$-set whose
 underlying set $\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$
 is the underlying set of the orbit $[x]$. Thus,
@@ -1532,7 +1581,7 @@ we obtain \cref{fig:fibs-at-[x]}.
 
 Note furthermore that the base point of $\BG_x$ depends on the choice of $x$,
 but the underlying type $(\BG_x)_\div$, being a connected component,
-only depends on $[x]:X/G$.
+only depends on the orbit $[x]:X/G$.
 \end{remark}
 
 \begin{xca}\label{xca:[x]=[y]-implies-||Gx=Gy||}
@@ -1577,7 +1626,7 @@ the equivalence classes sum up to $A$.}
 There are two possible extreme cases for $G_x$ that are important:
 \begin{definition}\label{def:fixed-free}
   Let $G$ be a group, $X$ a $G$-set and $x:X(\sh_G)$ an element of the underlying set.\footnote{%
-  This definition can be generalized to to \inftygps $G$ and $G$-types $X$.}
+  This definition can be generalized to \inftygps $G$ and $G$-types $X$.}
   We say that
   \begin{enumerate}
   \item $x$ is \emph{fixed}\index{fixed}
@@ -1588,11 +1637,60 @@ There are two possible extreme cases for $G_x$ that are important:
   We say that $X$ itself is \emph{free} if each $x:X(\sh_G)$ is free.
 \end{definition}
 
+\begin{lemma}\label{lem:free-pt-char}
+  Let $G$ be a group and $X$ a $G$-set. Then we have for all $x:X(\sh_G)$
+  that $x$ is free if and only if the (surjective) map
+  $(\blank \cdot x) : \USymG \to (G\cdot x)$ is injective
+  (and hence a bijection).
+\end{lemma}
+\begin{proof}
+  Consider two elements of the orbit, say $g\cdot x,g'\cdot x$ for $g,g':\USymG$.
+  We have $g\cdot x=g' \cdot x$ if and only if $x = \inv{g} g'\cdot x$
+  if and only if $\inv{g} g'$ lies in $\USymG_x$.
+  Hence the map $(\blank \cdot x)$ is injective iff $\USymG_x$ is contractible.
+  Now use \cref{xca:connected-trivia} yielding that that 
+  $G_x$ is trivial iff $\USymG_x$ is contractible.
+\end{proof}
+
+\begin{lemma}\label{lem:X_hG-set-iff-Xfree}
+Let $G$ be a group and $X:\BG\to\Set$ a $G$-set.\footnote{%
+This lemma can be generalized to \inftygps $G$ and $G$-types $X$.}
+Then the following propositions are equivalent:
+\begin{enumerate}
+\item The action type $X_{hG}$ is a set;
+\item The map $[\blank]_0 :X_{hG}\to X/G$ from 
+      \cref{def:orbit-map} is an equivalence;
+\item The $G$-set $X$ is free.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+We prove implications in circular order.
+\begin{enumerate}
+\item Assume $X_{hG}$ is a set. The map  $[\blank]_0 :X_{hG}\to X/G$ is
+surjective by \cref{lem:X/G=setTruncX_hG}, so it suffices to show
+it is injective. Since $X_{hG}$ is a set, it suffices to
+show that $[u]_0=[v]_0$ implies $u=v$, for all $u,v:X_{hG}$.
+This follows immediately from the definition of $[\blank]_0$, 
+as the propositional truncation plays no role.
+\item Assume $[\blank]_0 :X_{hG}\to X/G$ is an equivalence.
+Then $X_{hG}$ is a set since $X/G$ is a set, and hence
+all components of $X_{hG}$ are contractible.
+It follows that all stabilizer groups $G_x$ are trivial,
+and hence $X$ is free.
+\item Assume $X$ is free. Then all stabilizer groups $G_x$ are trivial,
+so all identity types $(\sh_G,x)\eqto (\sh_G,x)$ are contractible.
+Since $\BG$ is connected we get that $u\eqto u$ is contractible
+for all $u:X_{hG}$. Hence $X_{hG}$ is a set.\footnote{%
+A type $T$ is a set 
+if and only if all identity types $t\eqto_T t$ are contractible.}\qedhere
+\end{enumerate}
+\end{proof}
+
 \begin{lemma}\label{lem:fixed-char}
   Given a group $G$ and a $G$-set $X$, an element $x:X(\sh_G)$ is
  fixed if and only if the orbit $G\cdot x$ is contractible,
   \ie $x = g\cdot x$ for all $g:\USymG$.\footnote{%
-  This lemma can be generalized to to \inftygps $G$ and $G$-types $X$.
+  This lemma can be generalized to \inftygps $G$ and $G$-types $X$.
   In that case $\USymG\defeq\loops\BG$ is the underlying \emph{type} of $G$.}
 \end{lemma}
 \begin{proof}
@@ -1602,16 +1700,6 @@ There are two possible extreme cases for $G_x$ that are important:
   \ie $\Bi_x$ is an equivalence, which in turn is equivalent to $i_x$
   being an isomorphism.
 \end{proof}
-
-\begin{xca}\label{xca:X_hG-set-iff-Xfree}\MB{New:}
-Let $G$ be a \aninftygp and $X$ a $G$-type. Then the
-action type $X_{hG}$ is a set if and only if $X$ is free.
-\end{xca}
-%solution\begin{proof}
-%Any type $T$ is a set iff all identity types $t\eqto_T t$ are contractible.
-%Since $\BG$ is connected we get that $X_{hG}$ is a set iff each
-%identity type $(\sh_G,x)\eqto (\sh_G,x)$ is contractible, \ie
-%each stabilizer group $G_x$ is trivial.\end{proof}
 
 When $X : \BG \to \Set$ is a $G$-set for an ordinary group $G$, the subset
 \[
@@ -1674,7 +1762,7 @@ the $G$-set that is constant $\bn2\times\bn2$, and
 the $\SG_2$-sets $X(\blank,\bn2)$ and $X(\bn2,\blank)$.
 \end{xca}
 
-\subsection{The Orbit-stabilizer theorem and Lagrange's theorem}
+\subsection{The Orbit-stabilizer theorem}
 
 Consider a group $G$, a $G$-set $X$ and an element $x:X(\sh_G)$,
 and recall \cref{def:orbit-stabilizer}.
@@ -1692,13 +1780,12 @@ Let $G$ be a group, $X$ a $G$-set and $x:X(\sh_G)$ an element of
 the underlying set. Recall 
 $\BG_x \jdeq \sum_{(z,y):X_{hG}}\Trunc{(\sh_G,x)\eqto(z,y)}$,
 the classifying type of the stabilizer group $G_x$. 
-Define the $G_x$-set $\tilde G_x : \BG_x \to \UU$ by setting,\footnote{%
-In short: $\tilde G_x \defeq \princ G \circ \Bi_x$.\label{ft:restriction}}
+Define the $G_x$-set $\tilde G_x : \BG_x \to \UU$ by setting
+$\tilde G_x \defeq \princ G \circ \Bi_x$.\footnote{%
+Spelled out:
 for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$, 
-\[
-\tilde G_x(z,y,!)\defeq(\sh_G\eqto z).\qedhere
-\]
-
+$\tilde G_x(z,y)\jdeq(\sh_G\eqto z)$.
+}
 \end{definition} 
 
 The underlying set of $\tilde G_x$ is $\USymG$. The group action of
@@ -1743,38 +1830,32 @@ one $s : \sh_G \eqto z$ such that $s\cdot_{\tilde G_x} g = sg = g'$.
 \end{implementation}
 
 The above theorem has some interesting consequences.
-One is that $(\tilde G_x)_{hG_x}$ is a set, 
-and hence all its components are contractible.
-This means that for any $g:\USymG$, the stabilizer group $(G_x)_g$
-is trivial. So:
+One is that $(\tilde G_x)_{hG_x}$ is a set, so that
+\cref{lem:X_hG-set-iff-Xfree} applies:
 
 \begin{corollary}\label{cor:action-subgrp-free}
-\MB{New:} The $G_x$-set $\tilde G_x$ is free.
+The $G_x$-set $\tilde G_x$ is free.
 \end{corollary}
 
-\cref{lem:free-pt-char} below, applied to $G_x$ and $\tilde G_x$,
-will then allow us to conclude that the underlying set 
-$(G_x \cdot_{\tilde G_x} g)$ of the orbit through $g$ is equivalent to 
-$\USymG_x$, for any $g:\USymG$.
+We further obtain that the underlying set of the orbit 
+through $g$ of $\tilde G_x$ can be identified with the
+underlying set of $G_x$.
 
-\begin{lemma}\label{lem:free-pt-char}
-  Let $G$ be a group and $X$ a $G$-set. Then we have for all $x:X(\sh_G)$
-  that $x$ is free if and only if the (surjective) map
-  $(\blank \cdot x) : \USymG \to (G\cdot x)$ is injective
-  (and hence a bijection).
-\end{lemma}
+\begin{corollary}\label{lem:cosets-Gx.g}
+%  Let $G$ be a group and $X$ a $G$-set. Given $x:X(\sh_G)$,
+%  consider the stabilizer subgroup $G_x$ and the $G_x$-set $\tilde G_x$.
+  For any $g:\USymG$, the map $(\blank \cdot_{\tilde G_x} g)$ is
+  an equivalence from $\USymG_x$ to $(G_x \cdot_{\tilde G_x} g)$.
+\end{corollary} 
+ 
 \begin{proof}
-  Consider two elements of the orbit, say $g\cdot x,g'\cdot x$ for $g,g':\USymG$.
-  We have $g\cdot x=g' \cdot x$ if and only if $x = \inv{g} g'\cdot x$
-  if and only if $\inv{g} g'$ lies in $\USymG_x$.
-  Hence the map $(\blank \cdot x)$ is injective iff $\USymG_x$ is contractible.
-  Now use \cref{xca:connected-trivia} yielding that that 
-  $G_x$ is trivial iff $\USymG_x$ is contractible.
+This follows directly from \cref{lem:free-pt-char}, 
+applied to $G_x$ and $\tilde G_x$, using that $\tilde G_x$ is free.
 \end{proof}
 
 In the case of a subgroup of $G$, we have the following result.
 
-\begin{construction}\label{con:preLagrange}\MB{New:}
+\begin{construction}\label{con:preLagrange}
   Let $G$ be a group and let $(X,x,!):\Sub(G)$ be a subgroup of $G$ as defined
   in \cref{def:set-of-subgroups}. Then we have an equivalence
   $[\blank]_x$ from the underlying set $X(\sh_G)$ of $X$ to 
@@ -1785,59 +1866,27 @@ The function $[\blank]_x$ is the composition of three equivalences.
 Since $X$ is transitive, $\fst: (G\cdot_X x)\to X(\sh_G)$ is an equivalence.
 The orbit-stabilizer \cref{con:orbit-stabilizer} gives us an equivalence $o$
 from $(G\cdot_X x)$ to $(\tilde G_x)_{hG_x}$. Since the latter type is a set,
-the function $[\blank]_0$ from \cref{lem:X/G=setTruncX_hGs} 
+the function $[\blank]_0$ from \cref{lem:X/G=setTruncX_hG} 
 is an equivalence from $(\tilde G_x)_{hG_x}$ to $\tilde G_x /G_x$.
 Now define $[x']_x \defeq [o(\inv\fst(x'))]_0$ for any $x':X(\sh_G)$.
 \end{implementation}
 
-\begin{xca}\label{xca:preLagrange}\MB{New:}
-Show that $[\blank]_x$ in the above construction can be elaborated as
-\[
-[x']_x(z,y,!,h) \defeq \bigl((\sh_G,x',!,\refl{\sh_G})=(z,y,!,h)\bigr):\Prop
-\]
-for all $x':X(\sh_G)$, $(z,y,!):\BG_x$ and $h:\sh_G\eqto z$.
-\end{xca}
-
-The following theorem summarizes several results in this section.
-
-\begin{theorem}\label{thm:summary5.4}
-  Let $G$ be a group and $(X,x,!):\Sub(G)$ giving a 
-  stabilizer subgroup $G_x$ of $G$. Then:
-  \begin{enumerate}
-  \item The $G_x$-set $\tilde G_x$ from \cref{def:Gx-action-on-G}
-  has underlying set $\USymG$ and is free; 
-  \item
-  The function $[\blank]_x : X(\sh_G)\to\tilde G_x /G_x$
-  from \cref{con:preLagrange} is an equivalence;
-  \item\label{it:lagrange}
-  For all $y:X(\sh_G)$, the underlying set of the orbit $[y]_x$ 
-  is \emph{merely} equivalent to $\USymG_x$.
-  \end{enumerate}
-\end{theorem}
-
-\begin{proof}
-Only point \ref{it:lagrange} above has not been proved before.
-Using \cref{xca:preLagrange}, the underlying set of $[y]_x$ is 
-\[
-\sum_{g:\USymG}\bigl((\sh_G,y,!,\refl{\sh_G})=(\sh_G,x,!,g)\bigr),
-\]
-which can be simplified using \cref{ft:action-type-tildeGx-set} to
-$\sum_{g:\USymG} g\cdot_X y = x$. 
-Since mere equivalence is a proposition,
-we can use the transitivity of $X$ to obtain a $g_0:\USymG_x$ such that
-$\fst(g_0)\cdot_X y = x$. Precomposition with $\fst(g_0)$ then yields
-an equivalence from $\USymG_x \jdeq \sum_{g:\USymG} g\cdot_X x = x$
-to $\sum_{g:\USymG} g\cdot_X y = x$.
-\end{proof}
-
-The reader may notice that the above theorem contains some of
+The reader may notice that the last two results contain some of
 the ingredients of the traditional formulation of Lagrange's Theorem:
-the (abstract) group $G$, the (abstract) subgroup $G_x$
-and the set of orbits (cosets),\footnote{%
-\MB{Explain better when cosets are defined!}} 
-whose underlying sets are all merely equivalent to $\USymG_x$
-(in bijective correspondence with the carrier set of the subgroup).
+the group $G$, the subgroup $G_x$, the orbits 
+(cosets) $(G_x \cdot_{\tilde G_x} g)$ 
+and the set of orbits $\tilde G_x /G_x$.
+It is in fact possible to obtain the counting version of
+Lagrange's Theorem, \cref{xca:lagrange}, from the above results:
 
+\begin{xca}\label{xca:lagrange2}
+Let $G$ be a finite group and $(X,x,!):\Sub(G)$ a subgroup,
+whose underlying group we call $H$. 
+Assume that $X$ is a finite $G$-set. Show that 
+$\Card(G) = \Card(X) \times \Card(H)$ using \cref{lem:splitting into orbits},
+\cref{lem:cosets-Gx.g} and \cref{con:preLagrange}, instead of
+\cref{con:lagrange}.
+\end{xca}
 
 
 \section{The classifying type is the type of torsors}
@@ -2233,7 +2282,7 @@ Use \cref{cor:id-m-cycle}, univalence, and \cref{lem:trp-in-function-type}.}
 
 By \cref{cor:orbit-equiv}, the set of orbits $X/\CG_4$ is
 equivalent to the quotient of $\bn4\to\bn2$ induced by 
-$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:X/G=setTruncX_hGs}.
+$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:X/G=setTruncX_hG}.
 As also stated by that lemma, the equivalence class of any $x:\bn4\to\bn2$
 consists precisely of all cyclic rotations of $x$. Clearly, 
 $0000$ and $1111$ have singleton equivalence classes.
