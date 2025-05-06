@@ -103,7 +103,7 @@ The reason we have allowed ourselves two names is that our focus is different: f
   If $G$ is a group, then
   \[
     \princ G:\BG\to\Set,
-    \qquad\princ G(z)\defequi\pathsp{\sh_G}(z)\defequi(\sh_G \eqto z)
+    \qquad\princ G(z)\defequi\princ G(z)\defequi(\sh_G \eqto z)
   \]
   is a $G$-set called the \emph{principal $G$-torsor}.\footnote{%
     The term ``$G$-torsor'' will reappear several times and will mean nothing but a $G$-set in the component of $\princ G$ -- a ``twisted'' version of $\princ G$.}
@@ -122,14 +122,15 @@ The reason we have allowed ourselves two names is that our focus is different: f
   induces an equivalence from $\pathsp y$ to $\pathsp {y'}$ that sends $p:y \eqto z$
   to $pq^{-1}:y'\eqto z$.
   As a matter of fact, \cref{lem:BGbytorsor} will identify $\BG$ with the type of
-  $G$-torsors via the map $\pathsp{\blank}$, simply denoted as $\pathsp{}$,
-  using the full transport structure of the identity type $\pathsp y(z)\jdeq(y \eqto z)$.
+  $G$-torsors via the map $\pathsp{\blank}$,
+  using the full transport structure of the identity 
+  type $\pathsp y(z)\jdeq(y \eqto z)$.
 \end{example}
 
 Note that the underlying set of $\princ G$ is
 \[
   \princ G(\sh_G) \jdeq
-  \pathsp{\sh_G}(\sh_G) \jdeq
+  \princ G(\sh_G) \jdeq
   (\sh_G \eqto \sh_G) \jdeq \USymG,
 \]
 the underlying symmetries of $G$.
@@ -1664,7 +1665,7 @@ Then the following propositions are equivalent:
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-We prove implications in circular order.
+We prove the relevant implications in circular order.
 \begin{enumerate}
 \item Assume $X_{hG}$ is a set. The map  $[\blank]_0 :X_{hG}\to X/G$ is
 surjective by \cref{lem:X/G=setTruncX_hG}, so it suffices to show
@@ -1838,7 +1839,7 @@ The $G_x$-set $\tilde G_x$ is free.
 \end{corollary}
 
 We further obtain that the underlying set of the orbit 
-through $g$ of $\tilde G_x$ can be identified with the
+of $\tilde G_x$ through $g$ can be identified with the
 underlying set of $G_x$.
 
 \begin{corollary}\label{lem:cosets-Gx.g}
@@ -1938,16 +1939,16 @@ In the end we want the torsors of $\abstr(G)$ to be equivalent to $\BG$, so to g
   \label{def:BG2TorsG}
 Recall from~\cref{def:principaltorsor}\eqref{eq:pathsp}
 the definition, for all $y:\BG$, of $\pathsp y:\BG\to\Set$
-as the $G$-set with $\pathsp y(z)\jdeq(y\eqto z)$
-(so that in particular $\princ G\jdeq\pathsp{\sh_G}$).
+as the $G$-set with $\pathsp y(z)\jdeq(y\eqto z)$.
 Note that $\pathsp y$ is a $G$-torsor, so we can define
   \[
     \pathsp{\blank}:\BG\ptdto(\typetorsor_G,\princ G): y\mapsto P_y,
   \]
-  with pointing path $\refl{\princ G}:\princ G\eqto\pathsp{\sh_G}$.\footnote{%
+  pointed by reflexivity.\footnote{%
     That is, we have classified a homomorphism from $G$
     to $\Aut_{\GSet}(\princ G)$. It'll turn out to be an isomorphism.}
-If $G$ is not clear from the context, we may choose to write $\pathsp{\blank}^G$ instead of $\pathsp{\blank}$.
+If $G$ is not clear from the context, 
+we may choose to write $\pathsp{\blank}^G$ instead of $\pathsp{\blank}$.
 \end{definition}
 
 \begin{remark}\label{rem:pathsptransport}
@@ -1981,49 +1982,28 @@ If $G$ is not clear from the context, we may choose to write $\pathsp{\blank}^G$
     \]}
 \end{remark}
 
+    For connoisseurs of category theory, the following lemma
+    is a corollary of a  \emph{type-theoretic Yoneda lemma},
+    and the proof is \cref{xca:TTYoneda}.\footnote{%
+    It is also possible to prove the lemma directly by an application
+    of \cref{lem:weq-iso}: Take as inverse equivalence the
+    map $Q$ mapping any $f:\pathsp y \eqto \pathsp z$ to
+    $Q(f) \defequi \inv{(f_y(\refl y))} : (y\eqto z)$.}
+
 \begin{lemma}\label{lem:pathsptransportiseq}
   Let $G$ be a group. For all $y,z:\BG$ the induced map of identity types
   \[
     \pathsp{\blank}:(y\eqto z)\to (\pathsp y\eqto \pathsp z)
   \]
-  is an equivalence.\footnote{%
-    For connoisseurs of category theory,
-    this is also a corollary of a \emph{type-theoretic Yoneda lemma},
-    stating that transport gives an equivalence
-    \[
-      X(a) \equivto \prod_{b:A}\bigl((a \eqto b) \to X(b)\bigr)
-    \]
-    for any pointed type $(A,a)$ and type family $X: A \to \UU$.
-    \MB{See \cref{xca:TTYoneda}.}}
+  is an equivalence.
 \end{lemma}
-\begin{proof}
-  We craft an inverse $Q:(\pathsp y\eqto \pathsp z) \to (y\eqto z)$ for
-  $\pathsp{\blank}$. Given an identity $f:\pathsp y \eqto \pathsp z$, the map
-  $f_y: (y\eqto y) \to (z\eqto y)$ maps the reflexivity path $\refl y$ to a path
-  $f_y(\refl y):z\eqto y$, and we define
-  \[
-    Q(f) \defequi \inv{f_y(\refl y)} : (y\eqto z).
-  \]
-  First we construct an identification of $\pathsp {Q(f)}$ and $f$:
-  for any $x:\BG$, 
-  $\pathsp {Q(f)}(x)$ maps any $p:\pathsp{y}(x)\jdeq(y\eqto x)$ to
-  $p f_y(\refl y)(x):\pathsp{z}(x)\jdeq(z\eqto x)$. Hence we must
-  construct an identification of type $p f_y(\refl y)(x)=f_x(p)$,
-  which is immediate by induction on $p:y\eqto x$, setting $p\jdeq \refl y$.
-  
-  Next, we prove the equality of $Q(\pathsp q)$ and $q$
-  for every $q:y\eqto z$. Indeed, 
-  $Q(\pathsp q)\jdeq\inv{(\pathsp{q})_y(\refl y)} = \inv{(\refl y \inv q)} = q$.
-  
-  Now apply \cref{lem:weq-iso} to complete the proof of the lemma.
-\end{proof}
 
 The following theorem justifies the title of this section, stating 
 that the classifying type of a group is the type of its torsors.
 
 \begin{theorem}\label{lem:BGbytorsor}
-  If $G$ is a group, then the function
-  $\pathsp{\blank}:\BG\to\typetorsor_G$ from~\cref{def:BG2TorsG}
+  Let $G$ be a group. Then the function
+  $\pathsp{\blank}^G:\BG\to\typetorsor_G$ from~\cref{def:BG2TorsG}
   is an equivalence.\footnote{A similar results holds for $\infty$-groups.}
 \end{theorem}
 
@@ -2031,27 +2011,29 @@ that the classifying type of a group is the type of its torsors.
   Since both $\typetorsor_G$ and $\BG$ are pointed and connected,
   it suffices by
   \cref{cor:fib-vs-path}\ref{conn-fib-vs-path-point} to show that 
-  $\pathsp{\blank}:(\sh_G\eqto\sh_G)\to(\pathsp{\sh_G}\eqto \pathsp{\sh_G})$
-  is an equivalence.\footnote{%
-  This holds for all variants of $\ap{\pathsp{\blank}}$.}
+  $\pathsp{\blank}^G:(\sh_G\eqto\sh_G)\to(\princ G\eqto \princ G)$
+  is an equivalence.
+  %\footnote{This holds for all variants of $\pathsp{\blank}$ from \cref{rem:pathsptransport}.}
   This follows directly from \cref{lem:pathsptransportiseq}.
 \end{proof}
 
 \subsection{Homomorphisms and torsors}
 \label{sec:homotor}
-In view of the equivalence $\pathsp{}^G$ between $\BG$ and 
+In view of the equivalence $\pathsp{\blank}^G$ between $\BG$ and 
 $(\typetorsor_G,\princ G)$ of \cref{lem:BGbytorsor} one might 
 ask what a group homomorphism  $f:\Hom(G,H)$ translates to on 
 the level of torsors.  Off-hand, the answer is the round-trip 
-$(\pathsp{}^H)\Bf(\pathsp{}^G)^{-1}$, but we can be more concrete than that.
-We do know that for $x:\BG$ the $G$-torsor $\pathsp x^G$ should be sent to
-$\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
+$(\pathsp{\blank}^H)\Bf(\pathsp{\blank}^G)^{-1}$, but we can be more concrete than that.
+We do know that for $z:\BG$ the $G$-torsor $\pathsp z^G$ should be sent to
+$\pathsp {\Bf(z)}^H$, but how do we express this for an arbitrary $G$-torsor?
 \begin{definition}
   \label{def:restrictandinduce}
   Let $f:\Hom(G,H)$ be a group homomorphism.  If $Y:\BH\to\Set$ is an $H$-set,
   then the \emph{restriction}\index{action!restricted}\index{restriction}
   $f^*Y$ of $Y$ to $G$ is the $G$-set given by precomposition\footnote{%
-  \MB{New: }Example: \cref{ft:restriction}.}
+  Example: $\tilde G_x$ from \cref{def:Gx-action-on-G} can
+  be written as $i_x^* \princ G$, \ie as the restriction of the
+  principal $G$-torsor to the stabilizer group $G_x$ using $i_x:\Hom(G_x,G)$.}
   \[
     f^*Y\defequi (Y\circ\Bf) :\BG\to\Set.
   \]
@@ -2063,31 +2045,32 @@ $\pathsp {\Bf(x)}^H$, but how do we express this for an arbitrary $G$-torsor?
     f_*X(y)\defeq\myTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)}{0}.\qedhere
   \]
 \end{definition}
-The following exercise motivates the set-truncation in the definition
-of $f_*$ above.\footnote{%
+The following exercise shows that the set-truncation in the definition
+of $f_*$ above really makes a difference.\footnote{%
     This situation is common in algebra and is often referred to by saying
     that some construction, in this case the untruncated
     definiens of $f_*X$, is not ``exact''. See also \cref{xca:why-setTrunc_f_*}.}
 
 \begin{xca}\label{xca:why-setTrunc_f_*}
-Find groups $G,H$, $f:\Hom(G,H)$ and $G$-set $X$ such that
-$\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)$ is not an $H$-set (but an $H$-type).
+Find groups $G,H$, a homomorphism $f:\Hom(G,H)$ and a $G$-set $X$ such 
+that $\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)$ is an $H$-type that
+is not an $H$-set.
 \end{xca}
 % Solution: $G=\ZZ$, $H=\TG$, $f$ the unique homomorphism $f: \Hom(G,H)$,
 % $X$ constant $\bn 1$. Then 
 % $\sum_{z:\Sc}(0=0)\times \bn 1$ is a circle, so not a set.
 
 \begin{xca}\label{xca:id_*-is-id}
-\MB{New:} Give an equivalence from $f_*\,X$ to $X\circ\inv\Bf$
+    Give an equivalence from $f_*\,X$ to $X\circ\inv\Bf$
     if $f$ is an isomorphism. Give an equivalence between the identity
     types $f_*\,X \eqto Y$ and $X \eqto f^*\,Y$, for all $G$-sets $X$
     and $H$-sets $Y$.
 \end{xca}
 
 
-Note that the type $f_*X(y)$ is also the action type $(H^y \times X)_{hG}$,
-of the $G$-set $H^y\times X$,
-where $(H^y\times X)(x) \defeq (\Bf(x) \eqto y)\times X(x)$ for $x:\BG$,
+Note that the type $f_*X(y)$ can also be identified
+as the orbit set $(H^y \times X)/G$ of the $G$-set $H^y\times X$,
+where $(H^y\times X)(z) \defeq (\Bf(z) \eqto y)\times X(z)$ for $z:\BG$,
 and whose underlying set is equivalent to $(\sh_H\eqto y)\times X(\sh_G)$.
 
 \begin{remark}
@@ -2096,7 +2079,7 @@ and whose underlying set is equivalent to $(\sh_H\eqto y)\times X(\sh_G)$.
   \[
     f_!X(y)\defeq\prod_{z:\BG}\bigl((\Bf(z)\eqto y) \to X(z)\bigr).
   \]
-  Note that this always lands in sets when $X$ does.
+  Note that this always lands in sets since $X$ does.
 \end{remark}
 
 When $X$ is the $G$-torsor $\pathsp x^G$, for some $x:\BG$,
@@ -2107,7 +2090,7 @@ of $\sum_{z:\BG}(x\eqto z)$ induces an equivalence
   \myTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times(x \eqto z)}{0}
   \equivto (\Bf(x)\eqto y)\jdeq\pathsp{\Bf(x)}^H(y).
 \]
-Taking $x\jdeq\sh_G$, so $\pathsp x^G\jdeq\princ G$, we get a
+Taking $x\jdeq\sh_G$, we get a
 path $\eta:f_*\,\princ G\eqto \pathsp{\Bf(\sh_G)}^H$.
 We also have the path $\Bf_\pt : \sh_H\eqto\Bf(\sh_G)$,
 so that the action of $\pathsp{\blank}^H$ gives us a path
@@ -2120,11 +2103,11 @@ $f_* : \typetorsor_G \ptdto \typetorsor_H$, pointed by $\inv\eta\pi$.
 
 Summing up, we have implemented the following:
 \begin{construction}
-  \label{lem:inducedtorsor}
+  \label{con:inducedtorsor}
    Let $f:\Hom(G,H)$ be a group homomorphism. Then $f$ induces a 
    pointed map $f_*:\typetorsor_G\ptdto\typetorsor_H$,
    and we have a path of type 
-   $f_*\,\pathsp{\blank}^G = \pathsp{\blank}^H\,\Bf \jdeq 
+   $f_*\,\pathsp{\blank}^G \eqto \pathsp{\blank}^H\,\Bf \jdeq 
    f^*\,\pathsp{\blank}^H$,
    all represented by the following diagram:
    \[
@@ -2148,7 +2131,7 @@ For abstract groups there is a result, attributed to Cayley,
 which is often stated as ``any group is a permutation group''. 
 In our parlance this translates to ``any symmetry is a symmetry in $\Set$''.
 The aim of this section is to give a precise formulation of the latter
-and prove it.
+and prove it, using what we learned in \cref{sec:torsors}.
 % \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
 
 %which is equivalent to saying that $X$ is the universal \covering
@@ -2164,7 +2147,7 @@ $$\rho_G:\Hom(G,\SG_{\USymG}).$$
 
 \begin{theorem}[Cayley]
   \label{lem:allgpsarepermutationgps}
-  For all groups $G$, $\rho_G$ is a monomorphism.\footnote{By
+  For any group $G$, $\rho_G$ is a monomorphism.\footnote{By
   \cref{def:typeofmono}, $\rho_G$ is a monomorphism means 
   that the induced map $\USym\rho_G$ from the symmetries of $\sh_G$ in 
   $\BG_\div$ to the symmetries of $\USymG$ in $\Set$ is an injection, 
@@ -2174,35 +2157,46 @@ $$\rho_G:\Hom(G,\SG_{\USymG}).$$
 \begin{proof}
   In view of \cref{def:typeofmono} we need to show that 
   $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a \covering.
-  Under the pointed equivalence
-  $$\pathsp{\blank}:\BG\ptdto (\typetorsor_G,\princ G)$$ of
-  \cref{lem:BGbytorsor}, $\princ G$ is transported to\footnote{
-  See \cref{xca:evP_isPrG}.} to the
-  evaluation map
-  $$\mathrm{ev}_{\sh_G}:\conncomp{(\BG\to\Set)}{\princ G}\ptdto
-  \conncomp{\Set}{\USymG},\qquad
-  \mathrm{ev}_{\sh_G}(E)\defeq E(\sh_G).$$
-  We must show that the preimages
-  $\inv{\ev_{\sh_G}}(X)$ for $X:\Sigma_{\USymG}$ are sets.  This
-  fiber is equivalent to
-  $\sum_{E:\conncomp{(\BG\to\Set)}{\princ G}}(X\eqto E(\sh_G))$ which,
-  being a subtype, is a
-  set precisely when $\sum_{E:\BG\to\Set}(X\eqto E(\sh_G))$ is a set.
+  Note first that $\princ G$ factors as: 
+%in \cref{fig:PrincG=evP_}.
+%\begin{figure}[h]
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+    \BG \ar[r,equivr,"{\pathsp{\blank}}"]\ar[ddr,"{\princ G}"']
+    \& (\typetorsor_G,\princ G) \ar[dd,"{\ev_{\sh_G}}"]\jdeq\bigl((\BG\to\Set)_{(\princ G)},\princ G\bigr)
+    \\ \\
+    \& \BSG_{\USymG}\jdeq(\Set_{(\USymG)},\USymG)
+\end{tikzcd}
+\]
+%\caption{\label{fig:PrincG=evP_}Factorization of $\princ G$.}
+%\end{figure}
+In this diagram, $\pathsp{\blank}:\BG\ptdto (\typetorsor_G,\princ G)$
+is the equivalence of \cref{lem:BGbytorsor}, and
+$\ev_{\sh_G}:\conncomp{(\BG\to\Set)}{\princ G}\ptdto
+  \conncomp{\Set}{\USymG}$ is the evaluation map defined by 
+$\ev_{\sh_G}(E)\defeq E(\sh_G)$ and pointed by reflexivity.
+In \cref{xca:evP_isPrG} you are asked to justify this factorization.
+
+  We must show that for $X:\Set_{(\USymG)}$ the fiber
+  $\inv{\ev_{\sh_G}}(X)$  is a set. This fiber is by definition
+  $\sum_{E:(\BG\to\Set)_{(\princ G)}}(X\eqto E(\sh_G))$, which
+  is a subtype of $\sum_{E:\BG\to\Set}(X\eqto E(\sh_G))$.
   The latter is the type of pointed maps from $\BG$ to $(\Set,X)$
   and hence a set by \cref{lem:hom-is-set}, 
   in particular \cref{ft:ptd-decr-h-lev}.
+  Therefore the fiber $\inv{\ev_{\sh_G}}(X)$ is also a set.
 \end{proof}
   Note that the above theorem yields that 
   $(G,\rho_G,!)$ is a monomorphism into $\SG_{\USymG}$.
   In other words, $G$ is a subgroup of $\SG_{\USymG}$.
 
 \begin{xca}\label{xca:evP_isPrG}
-\MB{New:} Show that $\princ G$ and ${\ev_{\sh_G}}\circ{\pathsp{\blank}}$ are
+Show that $\princ G$ and ${\ev_{\sh_G}}\circ{\pathsp{\blank}}$ are
 equal as pointed maps.
 \end{xca}
 
 \begin{remark}\label{rem:CayleyOversize}
-\MB{New:} In many cases, the set $\USymG$ used in \cref{lem:allgpsarepermutationgps} is larger than necessary for
+In many cases, the set $\USymG$ used in \cref{lem:allgpsarepermutationgps} is larger than necessary for
 obtaining the symmetries in $G$ as symmetries of a set.
 A case in point is the group $\SG_3$, where the symmetries \emph{are}
 already symmetries of a set, namely of the set $\bn3$. However,
@@ -2238,7 +2232,6 @@ and hence $\princ G$, classifies a monomorphism.}
 
 Note that the underlying set of $\PP$ is 
 $\PP(\sh_G)\jdeq(\USymG \eqto \USymG)$.
-However, $\PP$ has more structure than its underlying set.
 \cref{lem:fixpts-are-fixed}\ref{it:ev-is-eq-on-inv} characterizes
 exactly the invariant maps of $\PP$ as corresponding via $\ev_{\sh_G}$
 with fixed elements of $\USymG \eqto \USymG$. In other words,
@@ -2251,7 +2244,7 @@ In \cref{xca:PP-fixed-permutations} you are asked to explore
 the abstract group of fixed permutations of $\USymG$.
 \end{remark}
 
-\begin{xca}\label{xca:PP-fixed-permutations} \MB{New:}
+\begin{xca}\label{xca:PP-fixed-permutations}
 Let conditions be as in \cref{rem:CayleyOversize}.
 By analyzing transport in the type family $\princ G(\blank)$,
 show that a permutation $\pi$ of $\USymG$
@@ -2260,11 +2253,6 @@ Show that the fixed permutations of $\USymG$ form an abstract group
 and that evaluation of such a permutation at $\refl{\sh_G}$
 yields an abstract isomorphism from this group to $\abstr(G)$.
 \end{xca}
-  
-
-\begin{xca} \MB{MB doesn't understand:}
-    Given a group $G$ we defined in \cref{sec:groupssubperm} a monomorphism from $G$ to the permutation group $\Aut_{\USymG}(\Set)$. Write out the corresponding subgroup of $\Aut_{\USymG}(\Set)$.
-  \end{xca}
 
 \section{The lemma that is not Burnside's}
 \label{sec:burnsides-lemma}
