@@ -1762,26 +1762,22 @@ in~\cref{ex:cyclicgroups}.
 
 \begin{marginfigure}
   \begin{center}
-  \begin{tikzpicture}[node distance=10pt]
-    \begin{scope}[every node/.style={dot}]
-      \node (x1) {};
-      \node (y1) [at=(x1.east), anchor=180, shift=(0:20pt)] {};
-      \foreach \p/\n in {1/2, 2/3, 3/4, 4/5, 5/6} {
-        \node (y\n) [at=(y\p.north), anchor=south, shift=(90:20pt)] {};
-        \node (x\n) [at=(x\p.north), anchor=south, shift=(90:20pt)] {};
-      }
-    \end{scope}
-    \node (x7) [above=of x6] {$\vdots$};
-    \node (y7) [above=of y6] {$\vdots$};
-    \node (x0) [below=of x1] {$\vdots$};
-    \node (y0) [below=of y1] {$\vdots$};
-    \begin{scope}[genb]
+  \begin{tikzpicture}
+    \foreach \n in {1,...,6} {
+      \node[dot] (x\n) at (0,\n) {};
+      \node[dot] (y\n) at (1,\n) {};
+    }
+    \node[inner sep=0pt] (x0) at (0,0) {\tvdots};
+    \node[inner sep=0pt] (x7) at (0,7) {\tvdots};
+    \node[inner sep=0pt] (y0) at (1,0) {\tvdots};
+    \node[inner sep=0pt] (y7) at (1,7) {\tvdots};
+    \begin{scope}[gena]
       \foreach \p/\n in {0/1, 1/2, 2/3, 3/4, 4/5, 5/6, 6/7} {
         \draw (x\p)--(x\n);
         \draw (y\n)--(y\p);
       }
     \end{scope}
-    \begin{scope}[gena]
+    \begin{scope}[genb]
       \foreach \n in {1,2,...,6} {
         \draw (x\n) to[bend right] (y\n);
         \draw (y\n) to[bend right] (x\n);
@@ -1899,7 +1895,7 @@ as follows:
 \end{marginfigure}
 
   We shall also generalize to an arbitrary set $S$ of
-  self-equivalences, and the $S$-cycles will be the connected
+  self-equivalences, and the ``$S$-fold cycles'' will be the connected
   \coverings over the classifying type $\BFG_S$ of the ``free group''
   on $S$ many generators. We postpone this, since it requires
   some machinery to show that $\BFG_S$ is a groupoid.
@@ -1934,7 +1930,7 @@ to a type whose three components we can visualize as:
     X' \ar[r,"b'"'] \& X'
   \end{tikzcd}
 \]
-If $X$ and $X'$ are sets, then this the subtype of $X \to X'$
+If $X$ and $X'$ are sets, then this is the subtype of $X \to X'$
 consisting of equivalences $e$ satisfying $ea=a'e$ and $eb=b'e$.
 This means that the symmetries of a bicycle $(X,a,b)$
 are given by those self-equivalences $e : X\equivto X$
@@ -1958,7 +1954,7 @@ $ae=ae$ and $be=eb$.
     \draw[genb,out=205,in=155] (n2) to (n3);
     \draw[genb,out=45,in=-45] (n3) to (n2);
   \end{tikzpicture}
-  \caption{An abnormal bicycle.}
+  \caption{An ``abnormal'' bicycle with only the identity symmetry.}
   \label{fig:abnormal-bicycle}
 \end{marginfigure}
 We now see the added complexity of going from cycles to bicycles:
@@ -1967,7 +1963,28 @@ itself, but for a bicycle $(X,a,b)$, we need not have $ab=ba$.
 Indeed, neither of the bicycles
 in~\cref{fig:infinite-bicycle,fig:quaternion-bicycle} satisfies this.
 And there are many bicycles whose \emph{only} symmetry is
-the identity, \eg the one in~\cref{fig:abnormal-bicycle}.
+the identity, \eg the one in~\cref{fig:abnormal-bicycle},
+or has fewer symmetries than desired, as in~\cref{fig:somewhat-abnormal-bicycle}.
+
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}
+    \pgfmathsetmacro{\len}{1}
+    \foreach \n in {1,...,4} {
+      \node[dot] (n\n) at (90*\n:\len) {};
+    }
+    \foreach \p/\n in {1/2,2/3,3/4,4/1} {
+      \draw[gena] (n\p) to[bend right] (n\n);
+    }
+    % generator b
+    \draw[genb] (n4) to[out=-30,in=30,looseness=25] (n4);
+    \draw[genb] (n2) to[out=150,in=210,looseness=25] (n2);
+    \draw[genb] (n1) to[bend right] (n3);
+    \draw[genb] (n3) to[bend right] (n1);
+  \end{tikzpicture}
+  \caption{Another ``abnormal'' bicycle: It has four elements,
+  but only two symmetries.}
+  \label{fig:somewhat-abnormal-bicycle}
+\end{marginfigure}
 
 However, all is not lost! Since all elements are connected by two
 self-equivalences, we still have that any identification
@@ -2012,11 +2029,24 @@ amount of symmetry, in that any element is just like any other.
   Show that if the evaluation map is an equivalence for some $x:X$,
   then its an equivalence for all $x:X$.
 \end{xca}
+In other words, for a normal bicycle $(X,a,b)$ there is a unique symmetry
+(\ie permutation of $X$ commuting with $a$ and $b$)
+mapping any $x$ to $x'$ for any $x,x':X$.
+\begin{definition}\label{def:cbid-bicycle}
+  Given a normal bicycle $(X,a,b)$ with elements $x,x':X$,
+  let $\cbid{x}{x'} : (X,a,b) \eqto (X,a,b)$ be the
+  symmetry that sends $x$ to $x'$.
+\end{definition}
+It follows that $\cbid xx = \id_X$ and $\cbid{x'}{x''} \circ \cbid{x}{x'}
+= \cbid x{x''}$.
+We also have that the inverse of $\ev_x: \bigl((X,a,b) \eqto (X,a,b)\bigr) \to X$
+maps $x'$ to $\cbid x{x'}$.
+
 In~\cref{sec:covS1} we used the subset $H_t \jdeq \setof{n:\zet}{t^n=\id}$
 of $\zet$ to study a cycle $(X,t)$. There, we get the equal subsets
 $\setof{n:\zet}{t^n(x)=x}$ no matter which $x:X$ we pick.\footnote{%
   This is because all cycles $(X,t)$ are normal
-  in the general sense.}
+  in the general sense of~\cref{cor:ConnCycles}.}
 For a bicycle $(X,a,b)$, however, the relationship between
 the subsets
 \[
@@ -2055,6 +2085,170 @@ in greater generality later.
       }
     \end{tikzpicture}
   \end{center}}
+\end{xca}
+
+Assume now that we are given a normal bicycle $(X,a,b)$
+with a chosen element $x_0:X$.
+We get a surjective map $\sem\blank(x_0) : (\zet\amalg\zet)^* \to X$,
+which induces an equivalence relation on $(\zet\amalg\zet)^*$.
+\begin{xca}
+  Check that two lists $\ell,\ell' : (\zet\amalg\zet)^*$
+  are equivalent if and only if
+  $\sem{\ell} = \sem{\ell'}$.
+\end{xca}
+
+\begin{remark}\label{rem:bicycle-list-concat}
+Let us consider how list concatenation behaves with respect
+to the induced symmetries of $(X,a,b)$.
+Note that if a symmetry maps $x$ to $x'$,
+then it also maps $\sem\ell(x)$ to $\sem\ell(x')$,
+since symmetries commute with $a,b$, and hence with $\sem\ell$.
+That is, $\cbid x{x'} = \cbid{\sem\ell(x)}{\sem\ell(x')}$.
+Then we can use $\sem{\ell'}\sem{\ell} = \sem{\ell'\ell}$ to calculate:
+\begin{align*}
+  \cbid{x_0}{\sem\ell(x_0)} \circ \cbid{x_0}{\sem{\ell'}(x_0)}
+  &= \cbid{\sem{\ell'}(x_0)}{\sem{\ell'\ell}(x_0)} \circ \cbid{x_0}{\sem{\ell'}(x_0)}
+  = \cbid{x_0}{\sem{\ell'\ell}(x_0)} \\
+  \cbid{\sem\ell(x_0)}{x_0} \circ \cbid{\sem{\ell'}(x_0)}{x_0}
+  &= \cbid{\sem\ell(x_0)}{x_0} \circ \cbid{\sem{\ell\ell'}(x_0)}{\sem\ell(x_0)}
+  = \cbid{\sem{\ell\ell'}(x_0)}{x_0}
+\end{align*}
+This is the punchline: To get concatenation of lists
+to correspond to composition of symmetries, we need
+to go backwards to the symmetry takes us to $x_0$
+from $\sem{\ell}(x_0)$, rather than the other way round.
+\end{remark}
+
+\begin{marginfigure}
+  \begin{tikzpicture}
+    \foreach \n in {1,...,6} {
+      \pic at (0,\n) {tendril={1.5}{1.5}{70}{black!20}};
+      \pic at (1,\n) {tendril={1.5}{1.5}{250}{black!20}};
+    }
+    \node[inner sep=0pt] (x0) at (0,0) {\tvdots};
+    \node[inner sep=0pt] (x7) at (0,7) {\tvdots};
+    \node[inner sep=0pt] (y0) at (1,0) {\tvdots};
+    \node[inner sep=0pt] (y7) at (1,7) {\tvdots};
+  \end{tikzpicture}
+  \caption{A frieze pattern with infinite dihedral symmetry.}
+  \label{fig:first-frieze}
+\end{marginfigure}
+
+\begin{marginfigure}
+  \begin{tikzpicture}
+    \foreach \n in {1,...,6} {
+      \pic at (0,\n) {tendril={1.5}{1.5}{70}{black!10}};
+      \pic at (1,\n) {tendril={1.5}{1.5}{250}{black!10}};
+      \node[dot] (x\n) at (0,\n) {};
+      \node[dot] (y\n) at (1,\n) {};
+    }
+    \node[circle,draw,inner sep=1pt] at (.5,3) {};
+    \node at (-.75,1) {$a^{-2}x_0$}; \node at (1.75,1) {$a^2bx_0$};
+    \node at (-.75,2) {$a^{-1}x_0$}; \node at (1.75,2) {$abx_0$};
+    \node at (-.75,3) {$x_0$}; \node at (1.75,3) {$bx_0$};
+    \node at (-.75,4) {$ax_0$}; \node at (1.75,4) {$a^{-1}bx_0$};
+    \node at (-.75,5) {$a^2x_0$}; \node at (1.75,5) {$a^{-2}bx_0$};
+    \node at (-.75,6) {$a^3x_0$}; \node at (1.75,6) {$a^{-3}bx_0$};
+    \draw[->] (-1.5,4) to node[left] {$T$} (-1.5,3);
+    \draw[->] (.75,3) arc[start angle=0, end angle=180, radius=.25];
+    \node at (.5,3.5) {$R$};
+    \node[inner sep=0pt] (x0) at (0,0) {\tvdots};
+    \node[inner sep=0pt] (x7) at (0,7) {\tvdots};
+    \node[inner sep=0pt] (y0) at (1,0) {\tvdots};
+    \node[inner sep=0pt] (y7) at (1,7) {\tvdots};
+    \begin{scope}[gena]
+      \foreach \p/\n in {0/1, 1/2, 2/3, 3/4, 4/5, 5/6, 6/7} {
+        \draw (x\p)--(x\n);
+        \draw (y\n)--(y\p);
+      }
+    \end{scope}
+    \begin{scope}[genb]
+      \foreach \n in {1,2,...,6} {
+        \draw (x\n) to[bend right] (y\n);
+        \draw (y\n) to[bend right] (x\n);
+      }
+    \end{scope}
+  \end{tikzpicture}
+  \caption{The frieze in~\cref{fig:first-frieze} with
+    the infinite dihedral bicycle of~\cref{fig:infinite-bicycle}
+    superimposed.}
+  \label{fig:first-frieze-bicycle}
+\end{marginfigure}
+
+\begin{remark}\label{rem:inf-dihedral-frieze}
+  The reader may have noticed that the symmetries of the
+  infinite dihedral bicycle in~\cref{fig:infinite-bicycle}
+  can be realized as geometric symmetries of our picture of it,
+  namely vertical translations and $180$\textdegree\ rotations.
+  In fact, our figure has the same symmetries as the frieze pattern
+  of~\cref{fig:first-frieze}.
+  In~\cref{fig:first-frieze-bicycle} we superimpose the bicycle on
+  the frieze. We also fix an element $x_0$, which allows
+  us to name all the elements via applications of $a$ and $b$.
+  Finally, we indicate two generating geometric transformations:
+  $T$, a downwards translation, and $R$, a $180$\textdegree\ rotation
+  around the midpoint between $x_0$ and $bx_0$ (the white circle).
+  In other words, $T = \cbid{ax_0}{x_0} = \cbid{x_0}{\inv ax_0}$
+  and $R = \cbid{bx_0}{x_0} = \cbid{x_0}{\inv bx_0}$.
+  Notice that $R$ can map elements quite far geometrically,
+  for instance, $R(a^nx_0) = a^nbx_0$.
+  In general, we have
+  \begin{align*}
+    T(\sem\ell(x_0)) &= \cbid{\sem\ell(x_0)}{\sem\ell(\inv ax_0)}(\sem\ell(x_0))
+                       = \sem{\ell \inl{-1}}(x_0),\\
+    R(\sem\ell(x_0)) &= \cbid{\sem\ell(x_0)}{\sem\ell(\inv bx_0)}(\sem\ell(x_0))
+                       = \sem{\ell \inr{-1}}(x_0),
+  \end{align*}
+  so $T$/$R$ amounts to appending $\inl{-1}$/$\inr{-1}$ to the \emph{end} of the list,
+  respectively, that names a given point.
+  Conversely, if we named the points by applying $T$ and $R$ (and inverses)
+  to $x_0$, then it would be the geometrically local operations $a$ and $b$
+  that would correspond to inserting $\inv T$ and $\inv R$ at the end.
+  For example, $a(T^{-2}R(x_0)) = T^{-2}RT^{-1}(x_0)$.
+  We'll return to this phenomenon several times throughout the book,
+  and to friezes and other geometrical objects in~\cref{ch:euclidean}.
+\end{remark}
+\begin{xca}
+  Construct an identification between the infinite dihedral bicycle
+  $(X,a,b)$ and its geometric cousin $(X,T,R)$, where
+  $T$ and $R$ are as in~\cref{fig:first-frieze-bicycle}.
+\end{xca}
+\begin{xca}
+  Two (normal) bicycles may represent the same group even though they belong
+  two different components of $\Bicyc$:
+  Construct an isomorphism between the automorphism groups of the bicycles below:
+  \begin{center}
+    \begin{tikzpicture}[baseline=(n0.base)]
+      \foreach \n in {0,1,...,5} {
+        \node[dot] (n\n) at (\n*60:1.5) {};
+      }
+      \foreach \p/\n in {0/1,2/3,4/5} {
+        \draw[gena] (n\p) to[bend right] (n\n);
+        \draw[gena] (n\n) to[bend right] (n\p);
+      }
+      \foreach \p/\n in {1/2,3/4,5/0} {
+        \draw[genb] (n\p) to[bend right] (n\n);
+        \draw[genb] (n\n) to[bend right] (n\p);
+      }
+    \end{tikzpicture}
+    \hspace{1cm}
+    \begin{tikzpicture}[baseline=(x0.base)]
+      \foreach \n in {0,1,2} {
+        \node[dot] (x\n) at (\n*120:.6) {};
+        \node[dot] (y\n) at (\n*120:1.6) {};
+      }
+      \foreach \p/\n in {0/1,1/2,2/0} {
+        \draw[gena] (x\n) to[bend left=50] (x\p);
+        \draw[gena] (y\p) to[bend right=50] (y\n);
+      }
+      \foreach \n in {0,1,2} {
+        \draw[genb] (x\n) to[bend right] (y\n);
+        \draw[genb] (y\n) to[bend right] (x\n);
+      }
+    \end{tikzpicture}
+  \end{center}
+  Then construct an isomorphism between either of these automorphism groups
+  and the symmetric group $\SG_3$.
 \end{xca}
 
 \section{Infinity groups (\texorpdfstring{\inftygps}{∞-groups})}
