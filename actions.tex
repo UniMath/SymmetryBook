@@ -1638,6 +1638,29 @@ There are two possible extreme cases for $G_x$ that are important:
   We say that $X$ itself is \emph{free} if each $x:X(\sh_G)$ is free.
 \end{definition}
 
+\begin{example}\label{exa:fixed-free-neither}
+Let $G$ be a group. For every set $S$, every element $s:S$ is fixed
+under the trivial $G$-set $\triv_G S$, since the group action is the 
+identity function. In contrast,
+every element $g:\USymG$ is free under the $G$-set 
+$\princ G \jdeq(\sh_G \eqto \blank)$, 
+as $\sum_{z:\BG}\princ G(z))$ is contractible.
+For an example with more variation, see \cref{exa:prep-burnside} upto
+\cref{fig:C4-action-on-4-bits}. Find the fixed elements, the free elements
+and those that are neither fixed nor free.
+\end{example}
+
+\begin{xca}\label{xca:fixed-free-neither}
+Make sure you understand \cref{exa:fixed-free-neither} by
+elaborating:
+\begin{itemize}
+\item $\BG_s$ in the case of $\triv_G S$,
+\item $\BG_g$ in the case of $\princ G$, 
+\item $\BG_f$ for each $f:\bn4\to\bn2$
+in the case of \cref{exa:prep-burnside}, see \cref{fig:C4-action-on-4-bits}.
+\end{itemize}
+\end{xca}
+
 \begin{lemma}\label{lem:free-pt-char}
   Let $G$ be a group and $X$ a $G$-set. Then we have for all $x:X(\sh_G)$
   that $x$ is free if and only if the (surjective) map
@@ -1786,6 +1809,9 @@ $\tilde G_x \defeq \princ G \circ \Bi_x$.\footnote{%
 Spelled out:
 for all $(z,y):X_{hG}$ in the same component as $(\sh_G,x)$, 
 $\tilde G_x(z,y)\jdeq(\sh_G\eqto z)$.
+In \cref{def:restrictandinduce} we will see that $\princ G \circ \Bi_x$
+is a special case of the restriction of a $G$-set by
+a homomorphism in $\Hom(H,G)$.
 }
 \end{definition} 
 
@@ -1796,6 +1822,21 @@ $\tilde G_x$ is explored in the following exercise.
 Let $s:(\sh_G,x,!)\eqto(z,y,!)$ be a path in $\BG_x$ with first component
 $s_1$, and let $g:\USymG$. Show that $s\cdot_{\tilde G_x} g = s_1 g$, \ie
 the group action of $\tilde G_x$ is path composition. 
+\end{xca}
+
+The following exercise prepares for the subsequent Orbit-stabilizer theorem.
+
+\begin{xca}\label{xca:fixed-free-neither-action-types}
+Elaborate the action type of $\tilde G_x$ from \cref{def:Gx-action-on-G}
+in each of the cases of \cref{xca:fixed-free-neither}, that is, elaborate
+\begin{itemize}
+\item $(\tilde G_s)_{hG_s}$ in the case of $\triv_G S$,
+\item $(\tilde G_g)_{hG_g}$ in the case of $\princ G$, 
+\item $(\tilde G_f)_{hG_f}$ for each $f:\bn4\to\bn2$,
+in the case of \cref{exa:prep-burnside}, \cref{fig:C4-action-on-4-bits}.
+\end{itemize}
+Compare your findings with $G \cdot s$, $G \cdot g$,
+and each $G \cdot f$, respectively.
 \end{xca}
 
 The action type of $\tilde G_x$ can be identified with the 
@@ -1830,7 +1871,7 @@ one $s : \sh_G \eqto z$ such that $s\cdot_{\tilde G_x} g = sg = g'$.
   \end{align*}
 \end{implementation}
 
-The above theorem has some interesting consequences.
+The above construction has some interesting consequences.
 One is that $(\tilde G_x)_{hG_x}$ is a set, so that
 \cref{lem:X_hG-set-iff-Xfree} applies:
 
@@ -2261,7 +2302,11 @@ yields an abstract isomorphism from this group to $\abstr(G)$.
 \begin{example}\label{exa:prep-burnside}
 Since the lemma to come is about counting orbits and
 elements of orbits, we start by elaborating an example.
-Recall from \cref{ex:cyclicgroups} the cyclic group $\CG_4$.
+Recall from \cref{ex:cyclicgroups} the cyclic group 
+$\CG_4 \jdeq\Aut_{\Cyc}(\bn4,s)$, where $\Cyc$ is defined
+in \cref{def:Cyc} as the type of cycles, \ie pairs $(X,t)$ of 
+a set $X$ and a permutation $t:X\equivto X$ such that any two
+points of $X$ are some $t$-steps apart.
 Let $X: \BCG_4\to\Set$ be the $\CG_4$-set mapping any $(A,f):\BCG_4$
 to $A\to\bn2$. Then the underlying set of $X$ is $\bn4\to\bn2$,
 \ie binary sequences of length $4$. The group action induced by $X$
@@ -2322,54 +2367,54 @@ This insight leads to the following lemma.
 \begin{lemma}
   \label{lem:burnside}
   Let $G$ be a finite group and let $X:\BG\to\Set$ be a finite $G$-set.
-  Define $X^g = \setof{x:X(\sh_G)}{g\cdot x = x}$ for any $g:\USymG$.
-  Then each $X^g$, the sum type $\sum_{g:\USymG} X^g$, and the set of orbits $X/G$
-  are finite sets, and we have
-  \[
+  For any $g:\USymG$, define the set 
+  $X^g \defeq \setof{x:X(\sh_G)}{g\cdot x = x}$
+  of points fixed by $g$.
+  Then each $X^g$, the sum type $\sum_{g:\USymG} X^g$, 
+  and the set of orbits $X/G$ are finite sets, and we have
+  \begin{align}\label{eq:burnside}
+% \[
     \Card\Bigl(\sum_{g:\USymG} X^g\Bigr) = \Card(X/G) \times \Card(G).
-  \]
+% \]
+  \end{align}
 \end{lemma}
 \begin{proof}
   We first need to make sure that the sets involved are finite. 
   Finite sets are decidable sets, see \cref{xca:finsets-decidable}.
-  Hence each $X^g$ is a finite set, as it is a decidable subset of $X(\sh_G)$.%
- \footnote{%
-  A subset of a finite set is not necessarily finite itself:
-  Let $p$ be a proposition and consider $\bn1_p\defeq\sum_{x:\bn1}p$,
-  the subset of $\bn1$ defined by the predicate that is constant $p$.
-  If $\bn1_p$ is a finite set, then we have 
-  $\Card(\bn1_p) :\NN$, and we can prove that
-  $p$ holds if and only if $\Card(\bn1_p) = 1$.
-  Since equality in $\NN$ is decidable, this would mean that
-  we can decide $p$. In fact we have that $\bn1_p$ is a finite set
-  if and only if $p$ is decidable.
-  In general, if $S$ is a finite set, then every
-  decidable predicate on $S$ defines a finite subset of $S$.
-  Similarly, the quotient of a finite set modulo a decidable
-  equivalence relation is finite, see \cref{xca:dec-quot-finite-set}.
- }
+  Hence each $X^g$ is a finite set, as it is a decidable subset of $X(\sh_G)$,
+  see \cref{rem:subset-of-fin-set}.
+ 
   Finiteness of $\sum_{g:\USymG} X^g$ follows from 
-  \cref{xca:sum-over-finite-set}. Regarding the set of orbits,
+  \cref{xca:fin-sum-of-finsets}. Regarding the set of orbits,
   note that \cref{cor:orbit-equiv} yield that $X/G$ is equivalent
   to the quotient of $X(\sh_G)$ modulo the equivalence relation
   $\exists_{g:\USymG} x=g\cdot y$. The latter proposition is decidable by
-  searching for such a $g$. Now apply \cref{xca:dec-quot-finite-set}.
+  \cref{xca:dec-quant-finset}. Now apply \cref{xca:dec-quot-finite-set}.
   
-  Since the main statement (displayed) of the lemma is a proposition, 
-  we may assume that we have an equivalence to a standard finite set of 
-  the form $\bn n$, for every finite set at hand.  
+  Since the main statement \cref{eq:burnside} of the lemma is a proposition, 
+  we may assume that, for both $X(\sh_G)$ and $\USymG$, 
+  we have an equivalence to a standard finite set.  
   Rearranging sums and writing $X(\sh_G)$ as the sum of fibers
-  of $[\blank]: X(\sh_G)\to X/G$ gives equivalences
-  \[
-    \sum_{g:\USymG} X^g \equivto \sum_{x:X(\sh_G)} \USymG_x
-    \equivto \sum_{O:X/G} \sum_{x : X_O(\sh_G)} \USymG_x.
-  \]
+  of $[\blank]: X(\sh_G)\to X/G$ gives equivalences:
+  \begin{align*}
+ &\sum_{g:\USymG} X^g \jdeq
+ \sum_{g:\USymG}\sum_{x:X(\sh_G)}(g\cdot x = x)\equivto 
+ \sum_{x:X(\sh_G)}\sum_{g:\USymG}(g\cdot x = x) \equivto \\
+ &\sum_{x:X(\sh_G)} \USymG_x\equivto 
+ \sum_{O:X/G} \sum_{x : X(\sh_G)} \bigl((O=[x])\times\USymG_x\bigr)\equivto 
+ \sum_{O:X/G} \sum_{x : X_O(\sh_G)} \USymG_x
+  \end{align*}
+  In the last step we have used that $O=[x]$ is equivalent to
+  $O(\sh_G,x)$, which means that $x$ is in the underlying set
+  $X_O(\sh_G)$ of the orbit $O$, see \cref{def:actiontype}
+  and \cref{def:Gsubset}.
+  
   Note that the last type in the chain above reflects how
   we counted in \cref{fig:C4-action-on-4-bits}: for every orbit,
   and every element in the underlying set of that orbit,
   we counted the stabilizers of that element.
   
-  We aim to apply Lagrange's \cref{con:lagrange} with subgroups 
+  We aim to apply the Lagrange construction with subgroups 
   defined by $X_O$ and
   $x_O : X_O(\sh_G)$, for any orbit $O:X/G$. These points $x_O$ can
   be obtained as the `least' $x:X(\sh_G)$ such that $O=[x]$,
@@ -2382,13 +2427,13 @@ This insight leads to the following lemma.
   in combination with the equivalence between $\USymG$ and a 
   standard finite set: we can simply take the `least' $g:\USymG$
   such that $g\cdot_{X_O} y = x_O$.
-  Applying \cref{con:lagrange}, in particular \cref{cor:lagrange-dep-sum},
+  Applying \cref{cor:lagrange-dep-sum},
   we get an equivalence between $\USymG$ and $\sum_{x : X_O(\sh_G)} \USymG_x$. 
   We conclude that $\Card(\sum_{g:\USymG} X^g) = \Card(X/G) \times \Card(G)$,
-  using \cref{xca:sum-over-finite-set}.
+  using \cref{xca:fin-sum-of-finsets}.
 \end{proof}
 
-As a first application of Burnside's Lemma, we not the following
+As a first application of Burnside's Lemma, we note the following
 number-theoretic consequence, which falls out when we consider
 the analog of~\cref{exa:prep-burnside} for the case of $\CG_p$ acting
 on base-$n$ sequences of length $p$.
@@ -2417,37 +2462,6 @@ on base-$n$ sequences of length $p$.
   and since $\Card(\CG_p)=p$, we conclude that $p$ divides $n^p-n$.
 \end{proof}
 
-\begin{xca}\label{xca:dec-quot-finite-set}\MB{Where?}
-Let $X$ be a finite set and $R:X\to X\to\Prop$ a decidable
-equivalence relation. Show that the quotient $X/R$ is a finite set.
-\end{xca}
-
-\begin{xca}\label{xca:sum-over-finite-set}
-Let $X$ be a finite set and $f:X\to\NN$ a function.
-Define the arithmetical sum $(\sum_{x:X} f(x)):\NN$.
-Consider now a family $F: X\to\FinSet$ of finite sets. Show that the sum type
-$\sum_{x:X}F(x)$ is a finite set with cardinality $\sum_{x:X} \Card(F(x))$.
-\MB{Hint:} Key is the invariance of the sum under permutation of $X$.
-You could do the second part first, but you can also get the first part
-as a nice application of a fixed element:
-Define the $\SG_{\Card(X)}$-set $A(Y)\defeq(Y\to\NN)\to\NN$
-for all $Y:\BSG_{\Card(X)}$. Show that summation is a fixed
-element of $A(\bn n)$ (\cref{def:fixed-free}).
-Now apply \cref{lem:fixpts-are-fixed}.
-%Alternative solution:
-%Define the type $\Sub^d(X)$ of \emph{decidable} predicates on $X$. 
-%Consider the type $A\defeq\bigl(\prod_{Y:\Sub^d(X)}(Y\to\NN)\bigr)\to\NN$
-%of functions that `aggregate' the values of a function $g:Y\to\NN$ over 
-%the subset $X_Y$ of $X$. Define the predicate $\Sigma_A: (A\to\Prop)$
-%that singles out the function(s) in $A$ that aggregate by summation:
-%$\Sigma^X_A(G)\defeq$
-%\[
-%((\prod_{g:\bn0\to\NN}G(\bn0,g)=0))\times
-%(\prod_{Y:\Sub^d(X)}\prod_{g:Y\to\NN}\prod_{y:Y}
-%G(Y,g)=f(y)+G(Y_{{\neq}y},g_{{\neq}y})).
-%\]
-%Now show that $\Tot(\Sigma^X_A)$ is contractible.
-\end{xca}
 
 
 %%% Local Variables:
