@@ -1821,6 +1821,7 @@ of $a$ and $b$, respectively.
 We call these bicycles the \emph{infinite dihedral}
 and the \emph{quaternion} bicycle, respectively,
 for reasons that will become clear later.
+
 To capture the idea of ``connectedness'' for bicycles,
 we note that it may be necessary to alternate the
 application of the two equivalences
@@ -1831,7 +1832,7 @@ where the left/right elements indicate a power of $a$/$b$,
 respectively.
 Given a type $X$ with two self-equivalences $a,b:X\equivto X$,
 we define the \emph{meaning} $\sem\ell : X \equivto X$
-of such a list $\ell$ by induction:
+of such a list $\ell$ by induction, cf.~\cref{sec:lists}:
 \begin{align*}
   \sem\varepsilon &\defeq \id_X \\
   \sem{\inl n\ell} &\defeq a^n\circ \sem{\ell} \\
@@ -1910,6 +1911,47 @@ as follows:
 \addtocounter{footnote}{-1}\footcitetext{Douglas1951I}%
 \stepcounter{footnote}\footcitetext{Douglas1961}
 \end{remark}
+
+With the definition of bicycles in place, we can
+define the infinite dihedral
+and quaternion groups
+as automorphism groups:
+\begin{definition}\label{def:Dinfty-Q}
+  Letting $(\zet\amalg\zet, a, b)$ be the \emph{standard infinite dihedral
+    bicycle}, with
+  \begin{alignat*}2
+    a(\inl n) &\defeq \inl{n+1},\qquad & a(\inr n) &\defeq \inr{n-1}, \\
+    b(\inl n) &\defeq \inr n,          & b(\inr n) &\defeq \inl n,
+  \end{alignat*}
+  we define the \emph{infinite dihedral group}
+  to be $\D_\infty \defeq \Aut_\Bicyc(\zet\amalg\zet,a,b)$.\footnote{%
+    We'll define more dihedral groups, and gain a new perspective
+    on $\D_\infty$, in~\cref{sec:Semidirect-products}.}%
+  \index{infinite dihedral group}\index{group!infinite dihedral group}%
+  \glossary(Doo){$\protect\D_\infty$}{infinite dihedral group,
+      \cref{def:Dinfty-Q}}
+
+  Similarly, letting $(\bn 8, a, b)$ be the \emph{standard quaternion
+    bicycle}, with
+  \begin{align*}
+    a(k) &\defeq
+           \begin{cases}
+             k+1, &\text{if $k$ is even},\\
+             k+3, &\text{if $k$ is odd}
+           \end{cases} \\
+    b(k) &\defeq
+           \begin{cases}
+             k-1, &\text{if $k$ is even},\\
+             k-3, &\text{if $k$ is odd}
+           \end{cases}
+  \end{align*}
+  (all operations modulo $8$),
+  we define the \emph{quaternion group}
+  to be $\Q_8\defeq\Aut_\Bicyc(\bn 8,a,b)$.%
+  \index{quaternion group}\index{group!quaternion group}%
+  \glossary(Q8){$\protect\Q_8$}{quaternion group,
+      \cref{def:Dinfty-Q}}
+\end{definition}
 
 Now let us investigate the identifications of bicycles:
 If $(X,a,b)$ and $(X',a',b')$ are elements of
@@ -2015,7 +2057,11 @@ element $x:X$, giving a weakening of~\cref{cor:ConnCycles} for cycles.
   is independent of $e$, as desired.
 \end{proof}
 This tells us what's special about the infinite dihedral
-and the quaternion bicycles: they are \emph{normal}.
+and the quaternion bicycles: they are \emph{normal}.\footnote{%
+  What follows is a special case of a more general story
+  that resumes in~\cref{def:normal-action} (for actions)
+  and will be the focus of~\cref{ch:subgroups}
+  on normal subgroups.}
 \begin{definition}\label{def:normal-bicycle}
   A bicycle $(X,a,b)$ is \emph{normal} if the evaluation
   map
@@ -2023,11 +2069,11 @@ and the quaternion bicycles: they are \emph{normal}.
     \ev_x: \bigl((X,a,b) \eqto (X,a,b)\bigr) \to X,
     \qquad \ev_{x}(e)\defequi e(x)
   \]
-  is an equivalence for all $x:X$
+  is an equivalence for all $x:X$.
 \end{definition}
 In other words, a normal bicycle has the maximum possible
 amount of symmetry, in that any element is just like any other.
-\begin{xca}
+\begin{xca}\label{xca:normal-bicycle-equiv}
   Show that if the evaluation map is an equivalence for some $x:X$,
   then its an equivalence for all $x:X$.
 \end{xca}
@@ -2056,7 +2102,7 @@ the subsets
 \]
 for varying $x:X$ is exactly what determines normality.
 We leave this as an exercise now, as we'll return to normality
-in greater generality later.
+in greater generality later, especially in~\cref{ch:subgroups}.
 \begin{xca}
   Show that a bicycle $(X,a,b)$ is normal if and only if
   $H_x = H_y$ for all $x,y:X$.
@@ -2207,8 +2253,11 @@ from $\sem{\ell}(x_0)$, rather than the other way round.
   to $x_0$, then it would be the geometrically local operations $a$ and $b$
   that would correspond to inserting $\inv T$ and $\inv R$ at the end.
   For example, $a(T^{-2}R(x_0)) = T^{-2}RT^{-1}(x_0)$.
-  We'll return to this phenomenon several times throughout the book,
-  and to friezes and other geometrical objects in~\cref{ch:euclidean}.
+  In fact, see already saw one manifestation of this
+  in~\cref{fig:plus-minus-one} back in~\cref{sec:S1isC},
+  and we'll return to this phenomenon several times throughout the book.
+  We'll discuss friezes and other geometrical objects in
+  more detail in~\cref{ch:euclidean}.
 \end{remark}
 \begin{xca}
   Construct an identification between the infinite dihedral bicycle
