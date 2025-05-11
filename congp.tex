@@ -4,14 +4,111 @@
 \section{Brief overview of the chapter}
 
 \section{Semidirect products}
-\label{sec:Semidirect-products}{\color{red} just moved without proofreading BID 211116. Problem with $\USym$ followed by composite MAB 240815.}
+\label{sec:Semidirect-products}
 
-In this section we describe a generalization of the product of two group,
+In this section we describe a generalization of the product of two groups,
 recall~\cref{ex:productofgroups},
-called the \emph{semidirect} product, which can be constructed from an
-action of a group on a group.  Like the product, both its classifying
-type and its set of symmetries
+called the \emph{semidirect} product,
+which gives us a new way of building new groups.
+Like the product, both its classifying type and its set of symmetries
 consist of pairs.
+It takes as input the action of a group on a group.
+
+Recall from~\cref{def:action} that an action of a group $G$
+\emph{in} groups is a function $H : \BG \to \Group$.
+This acts \emph{on} the group $H(\sh_G)$.
+If the group being acted on is fixed, say $H : \Group$,
+then an action of $G$ on $H$ is given by
+a homomorphism from $G$ to $\Aut(H)$.
+
+\begin{definition}\label{def:semidirect-product}
+  Given a group $G$ and an action $H : \BG \to \Group$,
+  we define a group called the \emph{semidirect product} as follows:%
+  \index{semidirect product}\index{group!semidirect product}%
+  \glossary(2x){$G \ltimes H$}{semidirect product group,
+    \cref{def:semidirect-product}}
+  \[
+    G \ltimes H \defeq \mkgroup { \sum_{t:\BG} \BH(t) }
+  \]
+  Here the basepoint of the sum is taken to be the point $(\shape_G,\shape_H)$.%
+  \footnote{%
+    We deduce from \cref{lem:level-n-utils}\ref{level-n-utils-sum},
+    that $\sum_{t:\BG} \BH(t)$ is a groupoid.
+    See \cref{xca:connected-trivia-1} for a proof that
+    $\sum_{t:\BG} \BH(t)$ is connected.}
+\end{definition}
+
+Observe that if the action of $G$ is trivial, then $H(t) \jdeq H(\sh_G)$
+for all $t$, so $G \ltimes H \jdeq G \times H(\sh_G)$,
+reproducing the ordinary product of groups.
+
+Before we study the underlying symmetries in $G \ltimes H$,
+let us pause to look at some examples.
+In~\cref{ex:S2-acts-on-C3} we saw an action of $\SG_2$ on $\CG_3$.
+Let us generalize this by giving an action of $\SG_2$ on the cyclic group
+$\CG_n$ for any $n : \Order$.
+Recall from~\cref{def:standard-cycle}
+that we may represent $\CG_n$ as the automorphism group
+of the standard $n$-cycle $(\zet/\sim_n, \zs)$,
+where $z \sim_n z'$ if and only for $t^z = t^{z'}$ for any/all cycles $(T,t)$
+of order $n$.\footnote{%
+  Recall also~\cref{def:Order}.
+  If $n$ is principal, then either $n$ is infinite
+  and $(\zet, \zs) \to (\zet/\sim_n, \zs)$ is an equivalence,
+  or $n$ is finite, then this map factors through $\bn n$
+  to give an equivalence $(\bn n,\zs) \to (\zet/\sim_n, \zs)$.
+  If LPO (\cref{LPO}) holds, then every order is principal and
+  these are the only possibilities by~\cref{lem:componentsofcoversofS1}.}
+
+The idea is that a cycle has two ``directions'' and $\SG_2$ can act by
+swapping them.
+To implement this, let $S$ be a $2$-element set,
+and consider, as in~\cref{ex:S2-acts-on-C3},
+the type $\sum_{X:\Set}(S \to (X \to X))$.
+Let $X \defeq S\times\zet/\sim$ be the set quotient
+of $S\times\zet$ where $(s,z) \sim (s,z')$ if $z \sim_n z'$
+and $(s,z) \sim (s',z')$ if $s\ne s'$ and $z \sim_n -z'$,\footnote{%
+  Check that $\sim$ defines an equivalence relation.}
+Now we can define $f : S \to X \to X$ by setting:
+\[
+  f_s([(s,z)]) \defeq [(s,z+1)], \quad\text{and}\quad
+  f_s([(s',z)]) \defeq [(s',z-1)] \quad\text{for $s'\ne s$.}
+\]
+Note that we can construct the element $x_0\defeq [(s,0)]$
+of $X$ unambiguously, as we always have $0 \sim_n -0$.
+\begin{xca}
+  Check that $f$ is well defined, using the universal property of the set quotient,
+  \cref{thm:quotient-property}.
+
+  Give an identification of our $(X,f)$ with that of~\cref{ex:S2-acts-on-C3}
+  when $n$ is $3$.
+\end{xca}
+For any $s:S$, we can let $s$ be the ``forwards'' direction,
+and get an identification $(X,f_s) \eqto (\zet/\sim_n,\zs)$
+by sending $[(s,z)]$ to $[z]$ (and $[(s',z)]$ to $[-z]$ for $s'\ne s$).
+Thus, we've constructed an action of $\SG_2$ on $\CG_n$.
+\begin{definition}\label{def:gen-dihedral}
+  Given any order $n:\Order$, we define the corresponding
+  \emph{dihedral group of degree $n$} by $\D_n \defeq \SG_2 \ltimes \tilde\CG_n$,
+  where $\tilde\CG_n : \BSG_2 \to \Group$ is the above
+  action of $\SG_2$ on $\CG_n$.%
+  \index{dihedral group}\index{group!dihedral group}%
+  \glossary(Dn){$\protect\D_n$}{dihedral group of degree $n$}
+\end{definition}
+We shall later see that if $n$ is finite,
+then $\D_n$ is a finite group of cardinality $2n$.%
+\footnote{Since ``order'' is often used to denote the cardinality of a group,
+  it would be confusing to call $\D_n$ the dihedral group of \emph{order} $n$,
+  although it would match our notion of ``order''.}
+But first we need to remedy the potential clash with
+our previous definition of $\D_\infty$ from~\cref{def:Dinfty-Q},%
+\index{infinite dihedral group}\index{group!infinite dihedral group}
+that is, we need to provide a pointed equivalence
+\[
+  \varphi : \conncomp\Bicyc{\zet\amalg\zet,a,b} \ptdweto \sum_{S:\BSG_2}\B\tilde\CG_0(S),
+\]
+where $\B\tilde\CG_0 : \BSG_2 \to \UUp$ is the classifying type level version of
+the above action of $\SG_2$ on the infinite cyclic group.
 
 We start with some preliminaries on paths between pairs.
 Lemma \cref{lem:isEq-pair=} above takes a simpler form when $y$ and $y'$ are values of a family $x \mapsto f(x)$
@@ -90,18 +187,6 @@ The next lemma contains the formula we are seeking.
 
 The lemma above will be applied mostly in the case where $x'$ and $x''$ are $x$, but if it had been stated only for that case, we would not have
 been able to argue by induction on $p$ and $p'$.
-
-\begin{definition}\label{def:semidirect-product}
-  Given a group $G$ and an action $\tilde H : \BG \to \typegroup$ on a group $H \defeq \tilde H(\shape_G)$, we define a group called the {\em
-    semidirect product} as follows.
-  $$G \ltimes \tilde H \defeq \mkgroup { \sum_{t:\BG} \B \tilde H(t) }$$
-  Here the basepoint of the sum is taken to be the point $(\shape_G,\shape_H)$.
-  (We deduce from \cref{lem:level-n-utils}, \cref{level-n-utils-sum}, that $\sum_{t:\BG} \B \tilde H(t)$ is a groupoid.
-  See \cref{xca:connected-trivia-1} for a proof that
-  $\sum_{t:\BG} \B \tilde H(t)$ is connected.)
-\end{definition}
-
-Observe that if the action of $G$ on $H$ is trivial, then $\tilde H(t) \jdeq H$ for all $t$ and $G \ltimes \tilde H \jdeq G \times H$.
 
 Projection onto the first factor gives a homomorphism $p \defeq \mkgroup \fst : G \ltimes \tilde H \to G$.
 Moreover, there is a homomorphism $s : G \to G \ltimes \tilde H$ defined by
