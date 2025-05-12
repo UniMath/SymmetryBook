@@ -101,8 +101,8 @@ then $\D_n$ is a finite group of cardinality $2n$.%
   it would be confusing to call $\D_n$ the dihedral group of \emph{order} $n$,
   although it would match our notion of ``order''.}
 But first we need to remedy the potential clash with
-our previous definition of $\D_\infty$ from~\cref{def:Dinfty-Q},%
-\index{infinite dihedral group}\index{group!infinite dihedral group}.
+our previous definition of $\D_\infty$ from~\cref{def:Dinfty-Q}.%
+\index{infinite dihedral group}\index{group!infinite dihedral group}
 Rather than just construct a comparison for the infinite order,
 we'll do it for all orders, thus also constructing bicycles
 realizing all dihedral groups.
@@ -120,17 +120,86 @@ realizing all dihedral groups.
     a(\inr{[z]}) &\defeq \inr{[z-1]}\quad & b(\inr{[z]}) &\defeq \inl{[z]}
   \end{alignat*}
 \end{construction}
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}
+    \pgfmathsetmacro{\len}{1}
+    \foreach \n in {1,...,5} {
+      \node[dot] (n\n) at (72*\n:\len) {};
+    }
+    \foreach \p/\n in {1/2,2/3,3/4,4/5,5/1} {
+      \draw[gen,shift right] (n\p) to[bend right=25] (n\n);
+      \draw[gen,shift right] (n\n) to[bend left=25] (n\p);
+    }
+
+    \draw[<->] (0,-1.5) -- (0,-2);
+
+    \begin{scope}[yshift=-4cm]
+    \foreach \n in {1,...,5} {
+      \node[dot] (x\n) at (72*\n:.75*\len) {};
+      \node[dot] (y\n) at (72*\n:1.5*\len) {};
+      \draw[dblgenb] (x\n) -- (y\n);
+    }
+    \foreach \p/\n in {1/2,2/3,3/4,4/5,5/1} {
+      \draw[gena] (x\n) to[bend left=25] (x\p);
+      \draw[gena] (y\p) to[bend right=25] (y\n);
+    }
+    \end{scope}
+  \end{tikzpicture}
+  \caption{How a bidirectional $5$-cycle corresponds to a
+    dihedral bicycle of degree $5$. The doubled \casbluename
+    lines indicate that $b$ swaps the two endpoints.}
+  \label{fig:bidirectional-cycle}
+\end{marginfigure}
 \begin{implementation}{con:bidirectional-bicycle}
   The idea is to think of an element of $\BD_n$,
   which is a subtype of $\sum_{S:\BSG_2}\sum_{X:\Set}(S \to X \to X)$,
   as a ``bidirectional cycle'', from which we can construct
   a bicycle on two copies of $X$, more precisely on $S\times X$,
   as depicted in~\cref{fig:bidirectional-cycle}.
-\end{implementation}
+  That is, we let $\varphi(S,X,f) \defeq (S\times X,a,b)$,
+  where
+  \[
+    a(s,x) \defeq (s,f_s(x)), \quad b(s,x) \defeq (\swap(s), x).
+  \]
+  We identify the image of the base point of $\BD_n$, $(\set{\pm1}, \zet/\sim_n, f)$,
+  where $f_s([z]) = [z + s]$,
+  with the standard dihedral bicycle of degree $n$ by letting
+  $(+1,x) \mapsto \inl x$ and $(-1,x)\mapsto \inr x$.
 
-We start with some preliminaries on paths between pairs.
-Lemma \cref{lem:isEq-pair=} above takes a simpler form when $y$ and $y'$ are values of a family $x \mapsto f(x)$
-of elements of the family $x \mapsto Y(x)$, as the following lemma shows.
+  To define the inverse, suppose we have a bicycle $(Y,a,b)$
+  in the component of the standard dihedral bicycle of degree $n$.
+  Then we set $S\defeq Y/a$, the set quotient of $Y$ where we equate
+  $y$ and $y'$ if $y'=a^z(y)$ for some $z:\zet$,
+  \ie if $y$ and $y'$ are connected by the $a$ equivalence.
+  Then $S$ is a $2$-element set, because it is so in the standard case.
+  Similarly, we set $X\defeq Y/b$, which is merely equivalent to
+  the underlying set of the standard $n$-cycle, $\zet/\sim_n$.
+
+  The key observation is now that any equivalence classes $[y]_a:Y/a$
+  and $[y']_b:Y/b$, thought of a subsets of $Y$,
+  intersect in unique element $y'':Y$. In the bottom of~\cref{fig:bidirectional-cycle},
+  the two classes in $Y/a$ are the inner and outer $5$-cycles, and
+  the $5$ classes in $Y/b$ are the $5$ pairs linked by doubled \casbluename
+  lines.
+  Thus, we can define the corresponding bidirectional cycle to be
+  $(S,X,f)$, where $f_{[y]_a}([y']_b) \defeq [a(y'')]$.
+  We leave it to the reader to verify that these two constructions are
+  indeed inverse.
+\end{implementation}
+\begin{xca}
+  Complete the verification that two maps in the implementation
+  of~\cref{con:bidirectional-bicycle} are inverse.
+\end{xca}
+Thus, since we easily verify that the standard dihedral bicycles are normal
+(\cref{def:normal-bicycle}), we see that if $n$ is finite,
+then $\D_n$ has the same cardinality as $\bn n \amalg\bn n$, \ie $2n$.
+
+To better understand the underlying symmetries of a general
+semidirect product $G\ltimes H$, we note that~\cref{lem:isEq-pair=}
+(on paths in $\Sigma$-types)
+takes a simpler form when $y$ and $y'$ are values
+of a family $x \mapsto f(x)$ of elements
+of the family $x \mapsto Y(x)$, as the following lemma shows.
 
 \begin{lemma}\label{lem:pathpairsection}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
