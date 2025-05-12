@@ -102,13 +102,31 @@ then $\D_n$ is a finite group of cardinality $2n$.%
   although it would match our notion of ``order''.}
 But first we need to remedy the potential clash with
 our previous definition of $\D_\infty$ from~\cref{def:Dinfty-Q},%
-\index{infinite dihedral group}\index{group!infinite dihedral group}
-that is, we need to provide a pointed equivalence
-\[
-  \varphi : \conncomp\Bicyc{\zet\amalg\zet,a,b} \ptdweto \sum_{S:\BSG_2}\B\tilde\CG_0(S),
-\]
-where $\B\tilde\CG_0 : \BSG_2 \to \UUp$ is the classifying type level version of
-the above action of $\SG_2$ on the infinite cyclic group.
+\index{infinite dihedral group}\index{group!infinite dihedral group}.
+Rather than just construct a comparison for the infinite order,
+we'll do it for all orders, thus also constructing bicycles
+realizing all dihedral groups.
+\begin{construction}\label{con:bidirectional-bicycle}
+  For each order $n:\Order$, there is a pointed equivalence
+  \[
+    \varphi : \BD_n
+    \ptdweto \conncomp\Bicyc{(\zet/\sim_n \amalg \zet/\sim_n, a, b)},
+  \]
+  from the classifying type of the dihedral group of degree $n$
+  to the connected component of $\Bicyc$ at
+  the \emph{standard dihedral bicycle of degree $n$}, where:
+  \begin{alignat*}2
+    a(\inl{[z]}) &\defeq \inl{[z+1]}\quad & b(\inl{[z]}) &\defeq \inr{[z]} \\
+    a(\inr{[z]}) &\defeq \inr{[z-1]}\quad & b(\inr{[z]}) &\defeq \inl{[z]}
+  \end{alignat*}
+\end{construction}
+\begin{implementation}{con:bidirectional-bicycle}
+  The idea is to think of an element of $\BD_n$,
+  which is a subtype of $\sum_{S:\BSG_2}\sum_{X:\Set}(S \to X \to X)$,
+  as a ``bidirectional cycle'', from which we can construct
+  a bicycle on two copies of $X$, more precisely on $S\times X$,
+  as depicted in~\cref{fig:bidirectional-cycle}.
+\end{implementation}
 
 We start with some preliminaries on paths between pairs.
 Lemma \cref{lem:isEq-pair=} above takes a simpler form when $y$ and $y'$ are values of a family $x \mapsto f(x)$
