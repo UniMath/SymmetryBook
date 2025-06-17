@@ -2106,9 +2106,9 @@ $\pathsp {\Bf(z)}^H$, but how do we express this for an arbitrary $G$-torsor?
 
   If $X:\BG\to\Set$ is a $G$-set, we define
   the \emph{induced $H$-set}\index{action!induced}\index{induced action}
-  $f_*X : \BH\to\UU$ by setting, for $y:\BH$,
+  $f_*X : \BH\to\UU$ by setting, for $w:\BH$,
   \[
-    f_*X(y)\defeq\myTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)}{0}.\qedhere
+    f_*X(w)\defeq\myTrunc{\sum_{z:\BG}(\Bf(z) \eqto w)\times X(z)}{0}.\qedhere
   \]
 \end{definition}
 The following exercise shows that the set-truncation in the definition
@@ -2119,42 +2119,61 @@ of $f_*$ above really makes a difference.\footnote{%
 
 \begin{xca}\label{xca:why-setTrunc_f_*}
 Find groups $G,H$, a homomorphism $f:\Hom(G,H)$ and a $G$-set $X$ such 
-that $\sum_{z:\BG}(\Bf(z) \eqto y)\times X(z)$ is an $H$-type that
-is not an $H$-set.
+that $(w:\BH)\mapsto\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)$
+is an $H$-type that is not an $H$-set.
 \end{xca}
 % Solution: $G=\ZZ$, $H=\TG$, $f$ the unique homomorphism $f: \Hom(G,H)$,
 % $X$ constant $\bn 1$. Then 
 % $\sum_{z:\Sc}(0=0)\times \bn 1$ is a circle, so not a set.
 
-\begin{xca}\label{xca:id_*-is-id}
-    Give an equivalence from $f_*\,X$ to $X\circ\inv\Bf$
+\begin{xca}\label{xca:adjunction-^*-_*}
+    Give an equivalence from $f_*X$ to $X\circ\inv\Bf$
     if $f$ is an isomorphism. Give an equivalence between the
-    types $\Hom_H(f_*\,X,Y)$ and $\Hom_G(X,f^*\,Y)$, 
+    types $\Hom_H(f_*X,Y)$ and $\Hom_G(X,f^*\,Y)$, 
     for all $G$-sets $X$ and $H$-sets $Y$.
 \end{xca}
 
+\begin{remark}\label{rem:^*-_*-as-(pre)image}\MB{New:}
+One may view $f_*X$ and $f^*Y$ as generalizations of
+image and preimage, respectively. To see this, consider
+the special case of $X:\BG\to\Prop$ and $Y:\BH\to\Prop$, that is,
+$X$ is a subtype of $\BG$ and $Y$ is a subtype of $\BH$. Also,
+make the definition of $f_*X$ ``exact'' by propositional truncation
+instead of set truncation. Then $f_*X$ is the predicate
+that is true for those $w:\BH$ such that there exists an $z:\BG$
+in the fiber of $\Bf$ at $w$ such that $X(z)$ holds, that is, the
+image of $X$ under $\Bf$.
+Also, $f^*Y$ is the predicate that is true for those $z:\BG$ such
+that $Y(\Bf(z))$ holds, that is, the preimage of $Y$ under $\Bf$.
+\end{remark}
 
-Note that the type $f_*X(y)$ can also be identified
-as the orbit set $(H^y \times X)/G$ of the $G$-set $H^y\times X$,
-where $(H^y\times X)(z) \defeq (\Bf(z) \eqto y)\times X(z)$ for $z:\BG$,
-and whose underlying set is equivalent to $(\sh_H\eqto y)\times X(\sh_G)$.
+Note that the type $f_*X(w)$ can also be identified
+as the orbit set $(H^w \times X)/G$ of the $G$-set $H^w\times X$,
+where $(H^w\times X)(z) \defeq (\Bf(z) \eqto w)\times X(z)$ for $z:\BG$,
+and whose underlying set is equivalent to $(\sh_H\eqto w)\times X(\sh_G)$.
 
-\begin{remark}
+\begin{remark}\label{rem:coinduced-Hset}
   Dually, there is also a \emph{coinduced $H$-set}\index{action!coinduced}
   $f_!:\BH\to\Set$ given by
   \[
-    f_!X(y)\defeq\prod_{z:\BG}\bigl((\Bf(z)\eqto y) \to X(z)\bigr).
+    f_!X(w)\defeq\prod_{z:\BG}\bigl((\Bf(z)\eqto w) \to X(z)\bigr).
   \]
   Note that this always lands in sets since $X$ does.
 \end{remark}
 
+\begin{xca}\label{xca:adjunction-_!-^*}\MB{New:}
+    Give an equivalence between the
+    types $\Hom_G(f^*Y,X)$ and $\Hom_H(Y,f_!X)$, 
+    for all $G$-sets $X$ and $H$-sets $Y$.
+\end{xca}
+
 When $X$ is the $G$-torsor $\pathsp x^G$, for some $x:\BG$,
 the contraction (recall \cref{lem:contract-away})
-of $\sum_{z:\BG}(x\eqto z)$ induces an equivalence
+of $\sum_{z:\BG}(x\eqto z)$ induces an equivalence $\eta_w$ of type
 \[
-  \eta_y:f_*\pathsp x^G(y) \jdeq 
-  \myTrunc{\sum_{z:\BG}(\Bf(z) \eqto y)\times(x \eqto z)}{0}
-  \equivto (\Bf(x)\eqto y)\jdeq\pathsp{\Bf(x)}^H(y).
+  f_*\pathsp x^G(w) \jdeq 
+  \myTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times(x \eqto z)\bigr)}{0}
+  \equivto (\Bf(x)\eqto w)\jdeq\pathsp{\Bf(x)}^H(w).
 \]
 Taking $x\jdeq\sh_G$, we get a
 path $\eta:f_*\,\princ G\eqto \pathsp{\Bf(\sh_G)}^H$.
