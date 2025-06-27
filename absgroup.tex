@@ -758,16 +758,20 @@ For the second approach to \cref{lem:homomabstrconcr} we need
 some preparation. We first give the analogue of
 \cref{def:restrictandinduce} for inducing $H$-sets from
 $G$-sets by an \emph{abstract} homomorphism. \MB{New:}
-There we defined, for all $X:\BG\to\Set$, $f:\BG\to\BH$ and $w:\BH$,
+There we defined, for all $X:\BG\to\Set$, $f:\Hom(G,H)$ and $w:\BH$,
 $f_*X(w)\defeq
 \setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}$.
 As explained in \cref{rem:set-trunc-as-quotient},
 the set truncation can be defined by taking the quotient with
 truncated identity on $\sum_{z:\BG}((\Bf(z) \eqto w)\times X(z))$.
-This equivalence relation is
-completely determined (cf.\ \cref{cor:orbit-equiv}) at $z\jdeq \sh_G$
-by $\Trunc{(\sh_G,p,x)\eqto(\sh_G,q,y)}$, which is equivalent to
-$\exists_{g:\USymG}((p=q\ap{f}(g))\times(g\cdot_X x = y))$.
+Recall the $G$-set $(z:\BG)\mapsto((\Bf(z) \eqto w)\times X(z))$ 
+from \cref{ft:f_*X(w)-orbitset}. Using \cref{cor:orbit-equiv},
+we can equivalently quotient its underlying set 
+$\princ H(w)\times X(\sh_G)$ with the induced equivalence 
+relation $\Trunc{(p,x)\eqto(q,y)}$, 
+which is equivalent to
+$\exists_{g:\USymG}((p= q \USymf(g))\times(g\cdot_X x = y))$.
+This motivates the following:
 
 \begin{definition}\label{def:abshom_*}
   Given groups $G$, $H$ and an abstract homomorphism
@@ -813,28 +817,49 @@ $$\pathsp{}:\Hom(G,H)\we
 \bigl((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)\bigr)
 $$
 by mapping, for any $f:\Hom(G,H)$, $\Bf$ to 
-$\pathsp{\blank}^H\circ \Bf \circ (\pathsp{\blank}^G)^{-1}$.
-Then $A\defeq ({\abstr}\circ\pathsp{}^{-1})$ is a map\footnote{%
-\MB{To show that 
-$\abstr:\Hom(G,H)\to \absHom(\abstr(G),\abstr(H))$ is an equivalence,
-we factor it as $A\circ \pathsp{}$ and prove that both factors are
-equivalences.}}
+$\pathsp{\blank}^H\circ \Bf \circ (\pathsp{\blank}^G)^{-1}$. Now define
+$A\defeq ({\abstr}\circ\pathsp{}^{-1})\jdeq
+(g\mapsto\loops\B\pathsp{}^{-1}(g))$.
+Then $A$ is a map
 \[
 A:\bigl((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)\bigr)
-    \to \absHom(\abstr(G),\abstr(H))
+    \to \absHom(\abstr(G),\abstr(H)).
 \]
-satisfying, for all $g$ in the domain of $A$,
- ${\loops g}\circ \pathsp{\blank}^G=\pathsp{\blank}^H \circ A(g)$:
+In order to show that 
+$\abstr:\Hom(G,H)\to \absHom(\abstr(G),\abstr(H))$ is an equivalence,
+we factor $\abstr$ as $A\circ \pathsp{}$. It then suffices to prove that 
+$A$ is an equivalence, since we already know that $\pathsp{}$.
+
+For all $g$ in the domain of $A$, we have
+${\loops g}\circ \loops\pathsp{\blank}^G=
+\loops\pathsp{\blank}^H \circ A(g)$.
+The situation is visualized by the following ``flattened cube'':
 %see \cref{fig:mapA}
 \[%begin{marginfigure}
       \begin{tikzcd}[ampersand replacement=\&]
-        \USymG \ar[r,"A(g)"]\ar[d,eql,"{\pathsp{\blank}^G}"'] \& 
-        \USymH \ar[d,eqr,"{\pathsp{\blank}^H}"] \\
-        \princ G\eqto\princ G \ar[r,"{\loops g}"'] \& \princ H\eqto\princ H
+        (\typetorsor_G,\princ G) 
+        \ar[r,"g"]
+        \ar[ddd, bend right=80,"{\loops}"']\& 
+        (\typetorsor_H,\princ H)
+        \ar[ddd, bend left=80,"{\loops}"]  \\       
+        \BG \ar[r,"\B\pathsp{}^{-1}(g)"]
+        \ar[u,eqr,"{\pathsp{\blank}^G}"] 
+        \ar[d,"{\loops}"'] \& 
+        \BH 
+        \ar[u,eql,"{\pathsp{\blank}^H}"'] 
+        \ar[d,"{\loops}"] \\      
+        \USymG 
+        \ar[r,"A(g)"',"\loops\B\pathsp{}^{-1}(g)"]
+        \ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
+        \USymH 
+        \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
+        \princ G\eqto\princ G 
+        \ar[r,"{\loops g}"'] \& 
+        \princ H\eqto\princ H
       \end{tikzcd}
      % \caption{\label{fig:mapA}caption}
 \]%end{marginfigure}
-(together with the proof that $A(g)$ is an abstract group homomorphism). 
+It follows that $A(g)$ is an abstract group homomorphism. 
 We are done if we show that $A$ is an equivalence.
 
 For any $\phi:\absHom(\abstr(G),\abstr(H))$, recall the pointed map
@@ -855,16 +880,18 @@ Given an abstract group homomorphism $\phi:\absHom(\abstr(G),\abstr(H))$,
 we have the following commutative diagram for $AB(\phi)$ 
 \[%begin{marginfigure}
    \begin{tikzcd}[ampersand replacement=\&]
-     \USymG \ar[r,"AB(\phi)"]\ar[d,eql,"{\pathsp{\blank}^G}"'] \& 
-     \USymH \ar[d,eqr,"{\pathsp{\blank}^H}"] \\
+     \USymG \ar[r,"AB(\phi)"]\ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
+     \USymH \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
      \princ G\eqto\princ G \ar[r,"{\loops B(\phi)}"'] \& \princ H\eqto\princ H
    \end{tikzcd}
      % \caption{\label{fig:mapA}caption}
 \]%end{marginfigure}
-We have to prove $A(B(\phi))=\phi$.
-When we start with a $g:\USymG$, then $\pathsp{\blank}^G$ sends $g$
-to $\pathsp g^G\defeq\preinv (g)$.\footnote{%
-\MB{Rather:  $(z\mapsto \preinv_z(g))$, or $\preinv_\blank(g)$}}
+We have to prove $A(B(\phi))=\phi$. When we start with a $g:\USymG$, 
+then $\loops\pathsp{\blank}^G$ sends $g$ to 
+\[
+\pathsp{g}^G\defeq\preinv_{\blank}(g)\jdeq((z:\BG)\mapsto\preinv_z(g)):
+(\princ G\eqto\princ G).
+\]
 Furthermore, $\loops(\phi_*,\inv{\eta_\phi})(\preinv (g))$
 is $[\id,\preinv(g)]$, which is sent to $\preinv (\phi(g))$ in 
 $\princ H=\princ H$, which corresponds to $\phi(g):\USymH$ under 
