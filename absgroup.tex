@@ -779,7 +779,7 @@ This motivates the following:
   from $G$-sets to $H$-sets as follows. 
   For any $G$-set $X:\BG\to\Set$ and $w:\BH$, define
   \[
-    \phi_*X(w)\defequi \bigl((\sh_H \eqto w) \times_G X(\sh_G)\bigr)
+    \phi_*X(w)\defequi \bigl((\sh_H \eqto w) \times_\phi X(\sh_G)\bigr)
   \]
   to be the set quotient of $(\sh_H\eqto w)\times X(\sh_G)$ modulo
   the equivalence relation $(p,x)\sim(q,y)$ if there exists a $g:\USymG$
@@ -789,7 +789,7 @@ This motivates the following:
 \begin{lemma}\label{lem:abshom_*}
   With $\phi_*$ as in \cref{def:abshom_*}, the map 
   $\eta_\phi:\phi_*\princ G \equivto \princ H$ sending, for all $w:\BH$,
-  $[(p,x)]: (\sh_H \eqto w) \times_G \USymG$ to $p\phi(x):(\sh_H\eqto w)$,
+  $[(p,x)]: (\sh_H \eqto w) \times_\phi \USymG$ to $p\phi(x):(\sh_H\eqto w)$,
   is a well defined (fiberwise) equivalence. Consequently,
   $(\phi_*,\inv{\eta_\phi})$ is a pointed map from
   $(\typetorsor_G,\princ G)$  to $(\typetorsor_H,\princ H)$.
@@ -830,36 +830,40 @@ $\abstr:\Hom(G,H)\to \absHom(\abstr(G),\abstr(H))$ is an equivalence,
 we factor $\abstr$ as $A\circ \pathsp{}$. It then suffices to prove that 
 $A$ is an equivalence, since we already know that $\pathsp{}$.
 
-For all $g$ in the domain of $A$, we have
-${\loops g}\circ \loops\pathsp{\blank}^G=
-\loops\pathsp{\blank}^H \circ A(g)$.
-The situation is visualized by the following ``flattened cube'':
+For all $h$ in the domain of $A$, we have
+${\loops h}\circ \loops\pathsp{\blank}^G=
+\loops\pathsp{\blank}^H \circ A(h)$.
+The situation is visualized by the following ``flattened cube'':%
+\footnote{The outer square is the bottom face, the middle square
+is the top. The edges labelled with ${\loops}$ connect the back
+face with the front face.}
 %see \cref{fig:mapA}
 \[%begin{marginfigure}
       \begin{tikzcd}[ampersand replacement=\&]
         (\typetorsor_G,\princ G) 
-        \ar[r,"g"]
-        \ar[ddd, bend right=80,"{\loops}"']\& 
+          \ar[r,"h"]
+          \ar[ddd, bend right=80,"{\loops}"']\& 
         (\typetorsor_H,\princ H)
-        \ar[ddd, bend left=80,"{\loops}"]  \\       
-        \BG \ar[r,"\B\pathsp{}^{-1}(g)"]
-        \ar[u,eqr,"{\pathsp{\blank}^G}"] 
-        \ar[d,"{\loops}"'] \& 
+          \ar[ddd, bend left=80,"{\loops}"]  \\       
+        \BG 
+          \ar[r,"\B\pathsp{}^{-1}(h)"]
+          \ar[u,eqr,"{\pathsp{\blank}^G}"] 
+          \ar[d,"{\loops}"'] \& 
         \BH 
-        \ar[u,eql,"{\pathsp{\blank}^H}"'] 
-        \ar[d,"{\loops}"] \\      
+          \ar[u,eql,"{\pathsp{\blank}^H}"'] 
+          \ar[d,"{\loops}"] \\      
         \USymG 
-        \ar[r,"A(g)"',"\loops\B\pathsp{}^{-1}(g)"]
-        \ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
+          \ar[r,"A(h)"',"\loops\B\pathsp{}^{-1}(h)"]
+          \ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
         \USymH 
-        \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
-        \princ G\eqto\princ G 
-        \ar[r,"{\loops g}"'] \& 
-        \princ H\eqto\princ H
+          \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
+        (\princ G\eqto\princ G) 
+          \ar[r,"{\loops h}"'] \& 
+        (\princ H\eqto\princ H)
       \end{tikzcd}
      % \caption{\label{fig:mapA}caption}
 \]%end{marginfigure}
-It follows that $A(g)$ is an abstract group homomorphism. 
+It follows that $A(h)$ is an abstract group homomorphism. 
 We are done if we show that $A$ is an equivalence.
 
 For any $\phi:\absHom(\abstr(G),\abstr(H))$, recall the pointed map
@@ -870,35 +874,61 @@ For any $\phi:\absHom(\abstr(G),\abstr(H))$, recall the pointed map
 from \cref{def:abshom_*} and \cref{lem:abshom_*}.
 Let
 \[
-B: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)
+C: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)
          \ptdto(\typetorsor_H,\princ H)
 \]
-be given by $B(\phi)\defeq(\phi_*,\inv{\eta_\phi})$
+be given by $C(\phi)\defeq(\phi_*,\inv{\eta_\phi})$
 
-We show that $A$ and $B$ are inverse equivalences. 
+We show that $A$ and $C$ are inverse equivalences. 
 Given an abstract group homomorphism $\phi:\absHom(\abstr(G),\abstr(H))$, 
-we have the following commutative diagram for $AB(\phi)$ 
+we have the following commutative diagram%
+\footnote{This is the instance $h\jdeq C(\phi)$ of the
+front face of the ``flattened cube'' above.}
+for $A(C(\phi))$:
 \[%begin{marginfigure}
    \begin{tikzcd}[ampersand replacement=\&]
-     \USymG \ar[r,"AB(\phi)"]\ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
-     \USymH \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
-     \princ G\eqto\princ G \ar[r,"{\loops B(\phi)}"'] \& \princ H\eqto\princ H
+     \USymG 
+       \ar[r,"A(C(\phi))"]
+       \ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
+     \USymH
+       \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
+     (\princ G\eqto\princ G) 
+       \ar[r,"{\loops C(\phi)}"'] \& 
+     (\princ H\eqto\princ H)
    \end{tikzcd}
      % \caption{\label{fig:mapA}caption}
 \]%end{marginfigure}
-We have to prove $A(B(\phi))=\phi$. When we start with a $g:\USymG$, 
-then $\loops\pathsp{\blank}^G$ sends $g$ to 
+We have to prove $A(C(\phi))=\phi$. When we start with a $g:\USymG$, 
+then $\loops\pathsp{\blank}^G$ sends $g$ to\footnote{%
+Note that $\pathsp{\blank}^G$ is pointed by reflexivity.}
 \[
 \pathsp{g}^G\defeq\preinv_{\blank}(g)\jdeq((z:\BG)\mapsto\preinv_z(g)):
 (\princ G\eqto\princ G).
 \]
-Furthermore, $\loops(\phi_*,\inv{\eta_\phi})(\preinv (g))$
-is $[\id,\preinv(g)]$, which is sent to $\preinv (\phi(g))$ in 
+We have $\loops C(\phi)\jdeq \loops(\phi_*,\inv{\eta_\phi})$.
+It follows from \cref{xca:phi_*-on-paths} that the latter sends 
+$\preinv_{\blank}(g)$ to $\preinv_{\blank}(\phi(g))\jdeq
+((w:\BH)\mapsto\preinv_w(\phi(g)))$ in 
 $\princ H=\princ H$, which corresponds to $\phi(g):\USymH$ under 
-$\pathsp{\blank}^H$. In other words, $AB(\phi)=\phi$.  
-The composite $BA$ is similar.\footnote{%
-\MB{Steps are rather large in this paragraph. Add more explanation?}}
+$\loops\pathsp{\blank}^H$. In other words, $A(C(\phi))=\phi$.  
+
+``The composite $CA$ is similar.''\footnote{\MB{Work in progress}}
+Given $h:((\typetorsor_G,\princ G)\ptdto (\typetorsor_H,\princ H))$,
+we must prove the proposition $(A(h)_*,\inv{\eta_{A(h)}}) = h$.
+We know already that 
+$h_\pt\eta_{A(h)}: A(h)_*\princ G = h\princ G$. TBD...
 \end{proof}
+
+\begin{xca}\label{xca:phi_*-on-paths}
+Recall \cref{def:abshom_*} and show that $\phi_*\pi(w)$ maps $[(p,x)]$ 
+in $\phi_*X(w)$ to $[(p,\pi_{\sh_G}(x))]$ in $\phi_*X'(w)$,
+for any path $\pi: X \eqto X'$ and $w:\BH$.
+Then prove that $\loops(\phi_*,\inv{\eta_\phi})$ sends 
+$\preinv_{\blank}(g)$ to $\preinv_{\blank}(\phi(g))$.
+Hint: recall \cref{def:loops-map} and start by 
+making $\inv{\eta_\phi}$ explicit.
+\end{xca}
+
 
 \begin{xca}\label{xca:SG2=SG2-contractible} 
 Show that $\Iso(\SG_2,\SG_2)$ is contractible.
@@ -974,14 +1004,11 @@ For reference we list the conclusion of this example as a lemma:
   If $H$ and $G$ are groups, then the equivalence of \cref{lem:actionsconcreteandabstract} sends the $G$-set $\Hom(H,G)$ to the $\abstr(G)$-set $\absHom(\abstr(H),\abstr(G))$ with action given by postcomposing with conjugation by elements of $\abstr(G)$.
 \end{lemma}
 
-\begin{definition}\label{def:f-upper*}
-Let $G$ and $G'$ be groups. 
-For any homomorphism $f:\Hom(G,G')$,
-we define by precomposition with $\Bf$ the map
+Let $G$ and $G'$ be groups and $f:\Hom(G,G')$ a homomorphism.
+Recall from \cref{def:restrictandinduce} the restriction map
 \[
-f^*: \GSet[G']\to\GSet, \qquad f^*(X) \defeq X\circ \Bf.\qedhere
+f^*: \GSet[G']\to\GSet, \qquad f^*(X) \defeq X\circ \Bf.
 \]
-\end{definition}
 
 We will have the occasion to use the following result which essentially 
 says that if $f:\Hom(G,G')$ is such that $\USymf$ is surjective,\footnote{%
@@ -994,7 +1021,7 @@ of the type of $G$-sets.
 \begin{lemma}\label{lem:epifullyfaithful}
 Let $G$ and $G'$ be groups and 
 let $f:\Hom(G,G')$ be such that $\USymf$ is surjective.
-Then the map $f^*$ from \cref{def:f-upper*} is an injection.
+Then the map $f^*$ from \cref{def:restrictandinduce} is an injection.
 \end{lemma}
 
 \begin{proof}
@@ -1010,7 +1037,8 @@ For the same reason the composite
 \ev_{\sh_G}f^*\jdeq \ev_{f(\sh_G)}:(X\eqto Y)\to(X(f(\sh_G)\eqto Y(f(\sh_G)))
 \]
 is likewise injective. Since all indentity types involved are sets,
-we can conclude that $f^*:(X\eqto Y)\to(f^*X\eqto  f^*Y)$ is injective.
+we can conclude that the induced
+$f^*:(X\eqto Y)\to(f^*X\eqto  f^*Y)$ is injective.
 
 For surjectivity, let $F':f^*X\eqto f^*Y$ and write, for typographical
  convenience, $a:X(\Bf(\sh_G)\eqto Y(\Bf(\sh_G))$ for 
@@ -1028,17 +1056,16 @@ $$\xymatrix{X(\Bf(\sh_G))\ar@{=}[r]^{X({g'})}\ar@{=}[d]_{a}&
   Y(\Bf(\sh_G))\ar@{=}[r]^{Y({g'})}&Y(\Bf(\sh_G))}
 $$
 commutes.  Likewise, (using transport along the identification
-$p_f:\sh_{G'}\eqto f(\sh_G)$) an $F:X\eqto Y$ in the preimage of $a$ 
+$f_\pt:\sh_{G'}\eqto f(\sh_G)$) an $F:X\eqto Y$ in the preimage of $a$ 
 is pinned down by the commutativity of the same diagram, 
 but with $g':\Bf(\sh_G)\eqto \Bf(\sh_G)$ arbitrary (an a priori more severe
 requirement, again reflecting injectivity).
 However, when $f:\USymG\to\USymG'$ is surjective these 
-requirements coincide, showing that $f^*$ is an equivalence.\footnote{%
-\MB{Typo???}}
+requirements coincide, showing that the induced $f^*$ is an equivalence.
 \qedhere
 % Fix for the moment an  $a:X(f(\sh_G)=Y(f(\sh_G))$
 
-% Now, by transport along the identity $p_f:\sh_{G'}=f(\sh_G)$ and the equivalence between $G'$-sets and $\abstr(G')$-sets, an identity $F':X=Y$ of $G'$-sets is uniquely pinned down by an identity $F'_{f(\sh_G)}:X(f(\sh_G)=Y(f(\sh_G))$ together with the proposition that for all $g':f(\sh_G)=f(\sh_G)$ the diagram $$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F'_{f(\sh_G)}}&
+% Now, by transport along the identity $f_\pt:\sh_{G'}=f(\sh_G)$ and the equivalence between $G'$-sets and $\abstr(G')$-sets, an identity $F':X=Y$ of $G'$-sets is uniquely pinned down by an identity $F'_{f(\sh_G)}:X(f(\sh_G)=Y(f(\sh_G))$ together with the proposition that for all $g':f(\sh_G)=f(\sh_G)$ the diagram $$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X_{g'}}\ar@{=}[d]_{F'_{f(\sh_G)}}&
 %   X(f(\sh_G))\ar@{=}[d]_{F'_{f(\sh_G)}}\\
 %   Y(f(\sh_G))\ar@{=}[r]^{Y_{g'}}&Y(f(\sh_G))}
 % $$
