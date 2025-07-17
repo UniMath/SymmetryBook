@@ -2,6 +2,8 @@ $pdf_mode = 1;
 
 $pdflatex = "pdflatex -halt-on-error -synctex=1 --shell-escape -fmt macros %O %S";
 
+$success_cmd = 'cp %A.pdf bookview.pdf';
+
 @default_files = ("book");
 
 push @generated_exts, "glo", "gls";
