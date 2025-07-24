@@ -38,8 +38,8 @@ $(R,0,+,-)$ and a monoid $(R,1,\cdot)$ with the
 same underlying set $R$. Moreover, the following equations should hold,
 for all $a,b,c : R$.
     \begin{enumerate}[ref=\ref{def:abstractring} (\alph*)]
-    \item\label{ring:ldistr-law} $a \cdot (b + c) = a \cdot b + a \cdot c$, (the \emph{left distributive law})
-    \item\label{ring:rdistr-law} $(a + b) \cdot  c = a \cdot c + b \cdot c$, (the \emph{right distributive law})
+    \item\label{ring:ldistr-law} $a \cdot (b + c) = a \cdot b + a \cdot c$ (the \emph{left distributive law})
+    \item\label{ring:rdistr-law} $(a + b) \cdot  c = a \cdot c + b \cdot c$ (the \emph{right distributive law})
     \end{enumerate}
 The abstract ring $\mathscr R$ is called \emph{commutative} if its
 multiplication $\cdot$ is commutative, and \emph{non-trivial} if $0\neq 1$.
@@ -57,8 +57,9 @@ of $\mathscr R$ is abelian. Hint: elaborate $(a+1)\cdot(b+1)$.
 Note that, for any abstract ring $\mathscr R$ and elements $a,b:R$,
 both the left multiplication function $(a\cdot\blank)$ 
 and the right multiplication function $(\blank\cdot b)$ 
-are abstract homomorphisms of the additive group of $\mathscr R$ to itself.
-These functions provide two ways to write the product $a\cdot b$.
+are abstract homomorphisms of the additive group of $\mathscr R$ to itself.%
+\footnote{These functions provide two ways to write the product $a\cdot b$,
+see the coherence law in \cref{def:ring}\ref{ring:lr-coherence-law}.}
 There are two ways to compose them: $(a\cdot(\blank\cdot b))$
 and $((a\cdot\blank)\cdot b)$. Equality of the latter two functions is
 an elegant way of expressing associativity.
@@ -73,18 +74,30 @@ $R$ to $R$.
 Given $g:\USymR$, we write $\ell_g$ for the homomorphism $\ell(g)$ and 
 $r_g$ for $r(g)$.
 Moreover, the following equations should hold.
-    \begin{enumerate}[ref=\ref{def:ring} (\alph*)]
+    \begin{enumerate}
     \item\label{ring:unit-laws} $\ell_{1_R} = \id_G = r_{1_R}$ (the \emph{multiplicative unit laws})
     \item\label{ring:lr-coherence-law} $(\USym\ell_g)(h) = (\USymr_h)(g)$, 
     for all $g,h : \USymR$ (the \emph{coherence law})
         \item\label{ring:associativity-law} $\ell\circ r= r\circ\ell$ (the \emph{associativity law})
     \end{enumerate}
+The properties \ref{ring:unit-laws}-\ref{ring:associativity-law} 
+are together denoted by $\RingProps(R,1_R,\ell,r)$.
 The ring $R$ is called \emph{commutative} if $\ell=r$, 
 and \emph{non-trivial} if $\refl{\sh_R}\neq 1_R$.
 \end{definition}
-The coherence law above allows us to abbreviate both 
+
+\begin{definition}\label{def:typering}
+The type of rings is defined as
+\[
+\typering\defeq\sum_{R:\typegroup}\sum_{1_R:\USymR}\sum_{\ell,r:\USymR\to\Hom(R,R)} \RingProps(R,1_R,\ell,r).
+\]
+The type $\typecommring$ of commutative rings is similar to the type
+of rings but with $\RingProps(R,1_R,\ell,r) \times(\ell=r)$. 
+\end{definition}
+
+The coherence law \ref{ring:lr-coherence-law} allows us to abbreviate both 
 $(\USym\ell_g)(h)$ and $(\USymr_h)(g)$ by $g\cdot h$. We will do this when
-no confusion can occur. Then, \eg $\ell=r$ 
+no confusion can occur. Then, $\ell=r$ 
 amounts to $g\cdot h = h\cdot g$, for all $g,h : \USymG$,
 as could be expected from the abstract case.
 
@@ -104,9 +117,52 @@ the associativity law can easily be verified. It follows that
 $(\ZZ,1_\ZZ,\ell,!)$ is a non-trivial commutative ring.
 \end{example}
 
+\begin{definition}\label{def:ringhom}
+Given rings $(R,1_R,\ell,r),(S,1_S,\ell',r') : \typering$,
+a \emph{ring homomorphism} from $R$ to $S$ is a (group) homomorphism
+$f:\Hom(R,S)$ that preserves the multiplicative unit and 
+left and right multiplication. This means $\USymf(1_R) = 1_S$ and
+$\USymf(\USym\ell_g(h)) = \USym\ell'_{\USymf(g)}(\USymf(h))$, and
+$\USymf(\USymr_g(h)) = \USymr'_{\USymf(g)}(\USymf(h))$.
+\end{definition}
+
+\begin{remark}\label{rem:ring}\MB{Experimental:}
+Here we explore a definition of a ring that is even
+``less abstract'' than \cref{def:ring}.
+
+First, let $\agp G \defeq(S,0,+,-)$ be an abelian abstract group.
+Then $\absHom(\agp G,\agp G)$ with pointwise operations,
+denoted by $\absHom_{\ptw}(\agp G,\agp G)$, is also
+an abelian abstract group, by  \cref{xca:abshomaddition} and
+\cref{xca:abstract-group-of-maps}.
+
+Now, let $\mathscr R$ be an abstract ring as in \cref{def:abstractring}.
+Then the additive group of $\mathscr R$ is an abstract abelian group,
+which we denote by $\agp R$. We observe that
+$a\mapsto(a\cdot\blank)$ is an abstract homomorphism
+from $\agp R$ to $\absHom_{\ptw}(\agp R,\agp R)$.\footnote{%
+Left distributivity gives that $((a+b)\cdot r) = (a\cdot r)+(b\cdot r)$,
+for all $a,b,r:R$.}
+
+It is now possible to define a ring $R$ with the following data:
+\begin{enumerate}
+\item A group also denoted $R$
+\item A homomorphism $1_R:\Hom(\ZZ,R)$
+\item $\ell,r: \Hom(R,\concr(\absHom_{\ptw}(\abstr(R),\abstr(R))))$ \MB{???}
+\item Properties: $\ell\circ 1_R = \id_\MB{???} = r\circ 1_R$, ...
+\item Homomorphisms improve: $f:\Hom(R,S)$, $f\circ 1_R = 1_S$, ...\MB{???}
+\end{enumerate}
+\end{remark}
+
+
+
+
 \MB{TBD define type of (abstract) rings, prove equivalence, define
 ring homomorphisms, delooping etc. No interesting difficulties
 expected before we come to fields.}
+
+
+
 
 
 \begin{definition}
