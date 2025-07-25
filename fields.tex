@@ -54,12 +54,64 @@ Let $\mathscr R$ be an abstract ring. Show that the additive group
 of $\mathscr R$ is abelian. Hint: elaborate $(a+1)\cdot(b+1)$.
 \end{xca}
 
-Note that, for any abstract ring $\mathscr R$ and elements $a,b:R$,
-both the left multiplication function $(a\cdot\blank)$ 
-and the right multiplication function $(\blank\cdot b)$ 
-are abstract homomorphisms of the additive group of $\mathscr R$ to itself.%
-\footnote{These functions provide two ways to write the product $a\cdot b$,
-see the coherence law in \cref{def:ring}\ref{ring:lr-coherence-law}.}
+We will now elaborate an approach to rings that is more in line
+with our set up. The obvious first step is to replace the abstract
+additive group by a (concrete) group. The multiplicative monoid
+poses some challenge, since monoids have no concrete counterpart in our set up.
+However, for any abstract ring $\mathscr R$ and element $a:R$,
+the left multiplication function $(a\cdot\blank)$ is an abstract homomorphism 
+of the additive group $(R,0,+,-)$ of $\mathscr R$ to itself.\footnote{%
+The same is true for the right multiplication function $(\blank\cdot a)$,
+which will play a role later, in \cref{rem:concrabsring}.}
+Even more so, the map $a\mapsto(a\cdot\blank)$ is an abstract homomorphism
+from $(R,0,+,-)$ to the abstract group $\absHom_{\ptw}(R,R)$
+of abstract homomorphisms from $(R,0,+,-)$ to itself.\footnote{%
+The operations of $\absHom_{\ptw}(R,R)$ are pointwise,
+induced by $(R,0,+,-)$. It is an abstract abelian group by
+\cref{xca:abs-homgroup} and \cref{xca:abstract-group-of-maps}.}
+
+Given that we have replaced $(R,0,+,-)$ by an abelian group $G:\Group$,
+the plan is to deloop $\absHom_{\ptw}(\abstr(G),\abstr(G))$. 
+Denoting the result of the delooping by $\Hom(G,G)$,\footnote{%
+It will always be clear from the context whether this denotes
+the \emph{set} of homomorphisms from $G$ to $G$, or the \emph{group}
+with this set of homomorphisms as underlying set.}
+we can then define the multiplication as a homomorphism
+$\mu: \Hom(G,\Hom(G,G))$.
+
+One way of delooping $\absHom_{\ptw}(\abstr(G),\abstr(G))$ would be
+to use the inverse of $\abstr$ in \cref{lem:homomabstrconcr}.
+This involves torsors and, though equivalent, is not close to $G$.  
+A better option is to use \cref{thm:abelian-groups-weq-sc2types},
+which we will do now.
+
+Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
+$\BB$ from the type of abelian groups to the type of pointed
+simply connected $2$-types. Let $G:\AbGroup$ be an abelian group.
+Then the type $\BG\ptdto\BB G$ is a connected $1$-type\footnote{%
+Note that the maps are pointed.}, pointed at the constant map that sends
+$z:\BG$ to the point $(\BB G)_\pt\defeq (\BG_\div,\settrunc{\id_{\BG_\div}})$ 
+of $\BB G$.\footnote{Itself pointed by reflexivity.}
+Thus the type $\BG\ptdto\BB G$ classifies a group: 
+
+\begin{definition}\label{def:groupHom}
+Let $G:\AbGroup$ be an abelian group. Define the abelian group $\Hom(G,G)$
+of homomorphisms from $G$ to $G$ as the group classified
+by $\BHom(G,G) \defeq ((\BG\ptdto\BB G),(z\mapsto (\BB G)_\pt))$.
+\end{definition}
+
+The above definition of $\Hom(G,G)$ is indeed serving its purpose:
+
+\begin{construction}\label{cons:groupHomOK}
+Let $G:\AbGroup$ be an abelian group. Then we have an abstract isomorphism
+from $\USym\Hom(G,G)$ to $\absHom_{\ptw}(\abstr(G),\abstr(G))$.
+\end{construction}
+\begin{implementation}{cons:groupHomOK}
+TBD
+\end{implementation}
+
+\MB{{\color{red}CURSOR}}
+
 There are two ways to compose them: $(a\cdot(\blank\cdot b))$
 and $((a\cdot\blank)\cdot b)$. Equality of the latter two functions is
 an elegant way of expressing associativity.
@@ -77,7 +129,9 @@ Moreover, the following equations should hold.
     \begin{enumerate}
     \item\label{ring:unit-laws} $\ell_{1_R} = \id_G = r_{1_R}$ (the \emph{multiplicative unit laws})
     \item\label{ring:lr-coherence-law} $(\USym\ell_g)(h) = (\USymr_h)(g)$, 
-    for all $g,h : \USymR$ (the \emph{coherence law})
+    for all $g,h : \USymR$ (the \emph{coherence law})\footnote{%
+    These functions provide two ways to write the product $a\cdot b$,
+see the coherence law in \cref{def:ring}\ref{ring:lr-coherence-law}.}
         \item\label{ring:associativity-law} $\ell\circ r= r\circ\ell$ (the \emph{associativity law})
     \end{enumerate}
 The properties \ref{ring:unit-laws}-\ref{ring:associativity-law} 
