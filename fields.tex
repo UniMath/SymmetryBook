@@ -38,19 +38,35 @@ are denoted by $0,\,+,\,-$ and the monoid data by $1,\,\cdot\,$.
 \begin{definition}\label{def:abstractring}
 An \emph{abstract ring} $\mathscr R$ consists of an abstract group 
 $(R,0,+,-)$ and a monoid $(R,1,\cdot)$ with the
-same underlying set $R$. Moreover, the following equations should hold,
-for all $a,b,c : R$.
-    \begin{enumerate}[ref=\ref{def:abstractring} (\alph*)]
+same underlying set $R$. Moreover, the following equations should hold
+for all $a,b,c : R$:
+    \begin{enumerate}      %[ref=\ref{def:abstractring} (\alph*)]
     \item\label{ring:ldistr-law} $a \cdot (b + c) = a \cdot b + a \cdot c$ (the \emph{left distributive law})
     \item\label{ring:rdistr-law} $(a + b) \cdot  c = a \cdot c + b \cdot c$ (the \emph{right distributive law})
     \end{enumerate}
-The abstract ring $\mathscr R$ is called \emph{commutative} if its
-multiplication $\cdot$ is commutative, and \emph{non-trivial} if $0\neq 1$.
+The latter two properties
+are together denoted by $\mathrm{DistrLaws}(R,\cdot,+)$.
+
+The abstract ring $\mathscr R$ is called \emph{non-trivial} if $0\neq 1$
+and \emph{commutative} if its multiplication $\cdot$ is commutative, that is,
+if $a\cdot b= b\cdot a$ for all $a,b:R$.
 \end{definition}
 
 The abstract group $(R,0,+,-)$ is called the \emph{(additive) group}
 of $\mathscr R$, and the monoid $(R,1,\cdot)$ the 
 \emph{(multiplicative) monoid} of $\mathscr R$.
+
+\begin{definition}\label{def:typering}
+The type of abstract rings is defined as\footnote{%
+See \cref{not:GroupLaws} for the monoid laws.}
+\begin{align*}
+\typering\defeq 
+\sum_{(R,0,+,-):\Group^{\abstr}} ~ &\sum_{e:R} ~ \sum_{\mu:R\to R\to R} \\
+&\mathrm{MonoidLaws}(R,e,\mu)\times\mathrm{DistrLaws}(R,\mu,+).
+\end{align*}
+The type $\typecommring$ of commutative rings is similar to the type
+of rings with the additional property $\prod_{a,b:R}\mu(a,b)=\mu(b,a)$. 
+\end{definition}
 
 \begin{xca}\label{xca:ring-group-abelian}
 Let $\mathscr R$ be an abstract ring. Show that the additive group 
@@ -58,12 +74,13 @@ of $\mathscr R$ is abelian. Hint: elaborate $(a+1)\cdot(b+1)$.
 \end{xca}
 
 \begin{definition}\label{def:ringhom}
-Let $\mathscr R$ be an abstract ring consisting of an abstract group 
-$\agp R$ with underlying set $R$ and a monoid $(R,1_R,\cdot_R)$, 
-and likewise $\mathscr S$ consisting of an abstract group $\agp S$ 
+Let $\mathscr R,\mathscr S : \Ring$ be abstract rings, with
+$\mathscr R$ consisting of an abstract group $\agp R$ with underlying set $R$
+and a monoid $(R,1_R,\cdot_R)$, and 
+$\mathscr S$ consisting of an abstract group $\agp S$ with underlying set $S$
 and a monoid $(S,1_S,\cdot_S)$.
-An \emph{abstract ring homomorphism} from $R$ to $S$ is an abstract homomorphism
-$f:\absHom(\agp R,\agp S)$ that is a monoid homomorphisme
+An \emph{abstract ring homomorphism} from $\mathscr R$ to $\mathscr S$ is an
+abstract homomorphism $f:\absHom(\agp R,\agp S)$ that is a monoid homomorphism
 from $(R,1_R,\cdot_R)$ to $(S,1_S,\cdot_S)$.
 \end{definition}
 
@@ -74,8 +91,7 @@ We elaborate the abstract ring of polynomials with integer coefficients.
 \MB{TBD}
 \end{example}
 
-\subsection{Rings with coherent left and right multiplication}
-\label{sec:altring}
+\subsection{Alternative rings}\label{sec:altring}
 
 Here we explore a definition of a ring that is based
 on a concrete group $G$ and left and right multiplications 
@@ -109,8 +125,8 @@ Moreover, the following equations should hold.
     for all $g,h : \USymR$ (the \emph{coherence law})
         \item\label{altring:assoc-law} $\ell\circ r= r\circ\ell$ (the \emph{associativity law})
     \end{enumerate}
-The properties \ref{altring:unit-laws}-\ref{altring:assoc-law} 
-are together denoted by $\RingProps(R,1_R,\ell,r)$.
+%The properties \ref{altring:unit-laws}-\ref{altring:assoc-law} 
+%are together denoted by $\RingProps(R,1_R,\ell,r)$.
 The ring $R$ is called \emph{commutative} if $\ell=r$,
 and \emph{non-trivial} if $1_R \neq \refl{R}$.
 \end{definition}
@@ -137,7 +153,7 @@ the associativity law can easily be verified. It follows that
 $(\ZZ,1_\ZZ,\ell,!)$ is a non-trivial commutative ring.
 \end{example}
 
-\begin{definition}\label{def:typealtring}
+\DELETE{\begin{definition}\label{def:typealtring}
 The type of rings is defined as
 \[
 \typering\defeq\sum_{R:\typegroup}\sum_{1_R:\USymR}\sum_{\ell,r:\USymR\to\Hom(R,R)} \RingProps(R,1_R,\ell,r).
@@ -145,6 +161,7 @@ The type of rings is defined as
 The type $\typecommring$ of commutative rings is similar to the type
 of rings but with $\RingProps(R,1_R,\ell,r) \times(\ell=r)$. 
 \end{definition}
+}% end DELETE
 
 \begin{xca}\label{xca:Raltring->URabstring}
 Let $(R,1_r,\ell,r)$ be an alternative ring. 
@@ -153,32 +170,35 @@ additive group $\abstr(R)$ and multiplicative
 monoid $(\USymR,1_R,\cdot)$. \MB{TBD}
 \end{xca}
 
-\section{Concrete rings}\label{sec:concrings}
+\subsection{Concrete rings}\label{sec:concrings}
 
-We will now elaborate an approach to rings that is more in line
-with our set up. The obvious first step is to replace the abstract
-additive group by a (concrete) group. The multiplicative monoid
-poses some challenge, since monoids have no concrete counterpart in our set up.
-However, for any abstract ring $\mathscr R$ and element $a:R$,
-the left multiplication function $(a\cdot\blank)$ is an abstract homomorphism 
-of the additive group $(R,0,+,-)$ of $\mathscr R$ to itself.\footnote{%
-The same is true for the right multiplication function $(\blank\cdot a)$,
-which will play a role later, in \cref{ssec:altring}.}
+We will now elaborate an approach to rings that is even more concrete
+than alternative rings. For the latter rings we took the
+obvious first step to replace the abstract additive group by a 
+(concrete) group. Since monoids have no concrete counterpart in our set up,
+we replaced in \cref{def:altring} the multiplicative monoid 
+by the half abstract $\ell,r: : \USymR\to\Hom(R,R)$.
+
+The use of $\ell,r$ was based on the observation that, 
+for any abstract ring $\mathscr R$, left and right multiplication
+by a fixed but arbitrary element of $R$ is 
+an abstract homomorphism from the additive group $(R,0,+,-)$ of 
+$\mathscr R$ to itself. 
 Even more so, the map $a\mapsto(a\cdot\blank)$ is an abstract homomorphism
 from $(R,0,+,-)$ to the abstract group $\absHom_{\ptw}(R,R)$
-of abstract homomorphisms from $(R,0,+,-)$ to itself.\footnote{%
-The operations of $\absHom_{\ptw}(R,R)$ are pointwise,
-induced by $(R,0,+,-)$. It is an abstract abelian group by
+of abstract homomorphisms from $(R,0,+,-)$ to itself, with
+pointwise operations induced by $(R,0,+,-)$.\footnote{%
+$\absHom_{\ptw}(R,R)$ is an abelian abstract group by
 \cref{xca:abs-homgroup} and \cref{xca:abstract-group-of-maps}.}
 
 Given that we have replaced $(R,0,+,-)$ by an abelian group $G:\Group$,
 the plan is to deloop $\absHom_{\ptw}(\abstr(G),\abstr(G))$. 
-Denoting the result of the delooping by $\Hom(G,G)$,\footnote{%
-It will always be clear from the context whether this denotes
-the \emph{set} of homomorphisms from $G$ to $G$, or the \emph{group}
+Denoting the result of the delooping by $\grpHom(G,G)$,\footnote{%
+This notation presupposes that $G$ is abelian and distinguishes 
+the \emph{set} of homomorphisms from $G$ to $G$ from the \emph{group}
 with this set of homomorphisms as underlying set.}
 we can then define the multiplication as a homomorphism
-$\mu: \Hom(G,\Hom(G,G))$.
+$\mu: \Hom(G,\grpHom(G,G))$.
 
 One way of delooping $\absHom_{\ptw}(\abstr(G),\abstr(G))$ would be
 to use the inverse of $\abstr$ in \cref{lem:homomabstrconcr}.
@@ -189,36 +209,43 @@ which we will do now.
 Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
 $\BB$ from the type of abelian groups to the type of pointed
 simply connected $2$-types. Let $G:\AbGroup$ be an abelian group.
-Then $\BB G$ and hence also $\BG\ptdto\BB G$ is a
-simply connected $2$-type, pointed at the constant map that sends
+Then $\BB G$ and hence also $\BG\ptdto\BB G$ is a $2$-type, 
+pointed at the constant map that sends
 $z:\BG$ to the point $\pt_{\BB G}\defeq (\BG_\div,\settrunc{\id_{\BG_\div}})$ 
-of $\BB G$.\footnote{Itself pointed by reflexivity.}. Even more so,
-the type $\BG\ptdto\BB G$ is a $1$-type, since the maps in this
-type are pointed. 
+of $\BB G$.\footnote{Itself pointed by reflexivity.} Even more so,
+the type $\BG\ptdto\BB G$ is a $1$-type, since the maps are pointed. 
+It is also a connected type by the following result.
+
+\begin{lemma}\label{lem:BG->*B2G-connected}
+For every \MB{?} group $G$ the type $\BG\ptdto\BB G$ is connected.
+\end{lemma}
+\begin{proof} \MB{TBD, or else take connected component.}
+\end{proof}
+
 Thus the type $\BG\ptdto\BB G$ classifies an abelian group: 
 
 \begin{definition}\label{def:AbHomgroup}
-Let $G:\AbGroup$ be an abelian group. Define the abelian group $\Hom(G,G)$
+Let $G:\AbGroup$ be an abelian group. Define the abelian group $\grpHom(G,G)$
 of homomorphisms from $G$ to $G$ as the group classified
-by $\BHom(G,G) \defeq ((\BG\ptdto\BB G),(z\mapsto (\BB G)_\pt))$.
+by $\B\grpHom(G,G) \defeq ((\BG\ptdto\BB G),(z\mapsto (\BB G)_\pt))$.
 \end{definition}
 
-The above definition of $\Hom(G,G)$ is indeed serving its purpose:
+The above definition of $\grpHom(G,G)$ is indeed serving its purpose:
 
-\begin{construction}\label{cons:groupHomOK}
+\begin{lemma}\label{lem:grpHomOK}
 Let $G:\AbGroup$ be an abelian group. Then we have an abstract isomorphism
-from $\USym\Hom(G,G)$ to $\absHom_{\ptw}(\abstr(G),\abstr(G))$.
-\end{construction}
-\begin{implementation}{cons:groupHomOK}
+from $\USym\grpHom(G,G)$ to $\absHom_{\ptw}(\abstr(G),\abstr(G))$.
+\end{lemma}
+\begin{proof}
 \MB{TBDiscussed}
-\end{implementation}
+\end{proof}
 
-\begin{definition}\label{def:ring}\MB{Experimental:}
+\begin{definition}\label{def:ring}
 A \emph{ring} $R$ consists of the following data:
 \begin{enumerate}
 \item An abelian group also denoted $R$;
 \item A homomorphism $1_R:\Hom(\ZZ,R)$;
-\item A homomorphism $\mu: \Hom(R,\Hom(R,R))$, with $\Hom(R,R)$
+\item A homomorphism $\mu: \Hom(R,\grpHom(R,R))$, with $\grpHom(R,R)$
 the group defined in \cref{def:AbHomgroup}.
 \end{enumerate}
 Moreover, the following equations should hold:
@@ -240,16 +267,6 @@ and \emph{non-trivial} if $1_R$ is not trivial.\footnote{%
 A homomorphism is trivial if it classified by the constant function
 at the shape to the target group. Or, equivalently, if it factors
 through the trivial group.}
-\end{definition}
-
-\begin{definition}\label{def:typering}
-The type of rings is defined as
-\[
-\typering\defeq\sum_{R:\AbGroup}\sum_{1_R:\Hom(\ZZ,R)}
-                \sum_{\mu:\Hom(R,\Hom(R,R))} \RingProps(R,1_R,\mu).
-\]
-The type $\typecommring$ of commutative rings is similar to the type
-of rings but with $\RingProps(R,1_R,\mu) \times \MB{TBD}$. 
 \end{definition}
 
 We proceed by giving the standard example of the integers as a ring
