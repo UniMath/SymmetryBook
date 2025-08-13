@@ -3600,17 +3600,60 @@ in \cref{sec:pairpaths} apply to pointed types and pointed maps as well.
 
 The following result gives a useful characterization of 
 identity types of pointed maps, extending \cref{def:funext}.
+
+\begin{construction}\label{con:identity-ptd-maps}\MB{New:}
+Let $X$ and $Y$ be pointed types and
+$f,g: X\ptdto Y$ pointed maps from $X$ to $Y$.
+Then we have an equivalence $\ptw_*$ of type 
+\[
+(f\eqto g) \equivto
+\sum_{h:\prod_{x:X}(f_\div(x)\eqto g_\div(x)(x))}
+                               ((h(\pt_X)\cdot f_\pt) \eqto g_\pt ).
+\]
+\end{construction}
+
+\begin{implementation}{con:identity-ptd-maps}
+Define the type family $T$
+by $T(k) \defeq (\pt_Y\eqto k(\pt_X))$ for any $k: X\to Y$.
+The equivalence $\ptw_*$ is the composite of the following
+chain of known equivalences:
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+                                \&\& f_\div(\pt_X) \ar[d,eqr,"h(\pt_X)"] \\
+  \pt_Y\ar[urr,eqr,"f_\pt"] \ar[rr,eql,"g_\pt"']\&\& g_\div(\pt_X) 
+  \end{tikzcd}
+  \caption{Transport in $T$ \MB{font}} 
+\end{marginfigure}
+\begin{align*}
+(f\eqto g) &\equivto 
+\sum_{e: (f_\div\eqto g_\div)}(\pathover {f_\pt} T e {g_\pt})
+\quad \text{by \cref{lem:isEq-pair=}}\\
+           &\equivto 
+\sum_{e: (f_\div\eqto g_\div)}(\trp[T]{e}(f_\pt) \eqto g_\pt )
+\quad\text{by \cref{def:pathover-trp}}\\
+&\equivto 
+\sum_{h:\prod_{x:X}(f_\div(x)\eqto g_\div(x))}(\trp[T]{\inv{\ptw}(h)}(f_\pt) \eqto g_\pt )\quad\text{by \cref{xca:sum-equiv-base}}\\
+&\equivto 
+\sum_{h:\prod_{x:X}(f_\div(x)\eqto g_\div(x))}((\ptw(\inv{\ptw}(h)))(\pt_X)\cdot f_\pt) \eqto g_\pt )\quad \text{by (*)}\\
+&\equivto 
+\sum_{h:\prod_{x:X}(f_\div(x)\eqto g_\div(x))}((h(\pt_X)\cdot f_\pt) \eqto g_\pt )\quad \text{by (**)}
+\end{align*}
+Here (*) uses 
+\[ \trptw(\inv{\ptw}(h),f_\pt):\trp[T]{\inv{\ptw}(h)}(f_\pt)\eqto
+ ((\ptw(\inv{\ptw}(h)))(\pt_X)\cdot f_\pt)
+ \] 
+from \cref{xca:trp-in-y=_(x)},
+and (**) uses that $\ptw$ is an equivalence, so that we can transport
+along $u(h): \ptw(\inv\ptw(h)) \eqto h$.\footnote{%
+\MB{Doesn't compute, $u$ is unknown. Problem for 2-types?}}
+\end{implementation}
+
+
+
 \begin{lemma}\label{lem:identity-ptd-maps}
 Let $X$ and $Y$ be pointed types,and
 $f,g: X\ptdto Y$ be pointed maps from $X$ to $Y$. Define the type family $T$
 by $T(k) \defeq (\pt_Y\eqto k(\pt_X))$ for any $k: X\ptdto Y$.
-\begin{marginfigure}
-  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-                                \&\& f(\pt_X) \ar[d,eqr,"h(\pt_X)"] \\
-  \pt_Y\ar[urr,eqr,"f_\pt"] \ar[rr,eql,"g_\pt"']\&\& g(\pt_X) 
-  \end{tikzcd}
-  \caption{$g_\pt \protect\eqto (h(\pt_X)\cdot f_\pt)$ \MB{font}} 
-\end{marginfigure}
 Then the map (explained by the diagram in the proof below)
 \begin{align*}
 \ptw_* : (f\eqto g)&\to \Bigl(\sum_{h:\prod_{x:X}(f(x)\eqto g(x))}
@@ -3625,7 +3668,6 @@ is an equivalence. Here
 \item $\po_{\fst(p)}(\snd(p)) : \trp[T]{\fst(p)}(f_\pt))\eqto g_\pt$ 
 is from \cref{def:pathover-trp},
 \item $\trptw(\fst(p),f_\pt)$ 
-%:\trp[T]{\fst(p)}(f_\pt)) \eqto \ptw(\fst(p))(\pt_X)\cdot f_\pt$ 
 is from \cref{xca:trp-in-y=_(x)}, see down arrow below.
 \end{enumerate}
 \end{lemma}
