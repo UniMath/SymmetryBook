@@ -215,18 +215,16 @@ pointed at the constant map that sends
 $z:\BG$ to the point $\pt_{\BB G}\defeq (\BG_\div,\settrunc{\id_{\BG_\div}})$ 
 of $\BB G$.\footnote{Itself pointed by reflexivity.} Even more so,
 the type $\BG\ptdto\BB G$ is a $1$-type, since the maps are pointed.
- 
-
-%\begin{lemma}\label{lem:BG->*B2G-connected} % Could not prove it,
-%For every \MB{?} group $G$ the type $\BG\ptdto\BB G$ is connected.
-%\end{lemma} % not even for abelian groups
 
 
 
 \begin{definition}\label{def:AbHomgroup}
 Let $G:\AbGroup$ be an abelian group. Define the abelian group $\grpHom(G,G)$
-of homomorphisms from $G$ to $G$ as the group classified
-by $\B\grpHom(G,G) \defeq \Aut_{\BG\ptdto\BB G}((z\mapsto \pt_{\BB G}),\refl{})$.
+of homomorphisms from $G$ to $G$ by 
+\[
+\grpHom(G,G) \defeq \Aut_{\BG\ptdto\BB G}
+((z\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}}).\qedhere
+\]
 \end{definition}
 
 The above definition of $\grpHom(G,G)$ is indeed serving its purpose:
@@ -253,21 +251,64 @@ from $\USym\grpHom(G,G)$ to $\absHom_{\ptw}(\abstr(G),\abstr(G))$.
 \end{lemma}
 \begin{proof}
 %$\pathpair{h}{h_\pt}:\sh\eqto\sh$
-Ignoring pointing paths, we can trace a given $p:(\sh\eqto\sh)$ through 
+Ignoring pointing paths,\footnote{They will be used later.} 
+we can trace a given $p:(\sh\eqto\sh)$ through 
 the chain of equivalences. Abbreviating $p' \defeq \ptw(\fst(p))$ we get
 \[ 
 p \mapsto 
-\bigl(z\mapsto p'(z)\bigr) \mapsto 
-\bigl(z\mapsto \ev_{\sh_G}(p'(z)))\bigr)\mapsto 
-\bigl(\loops(z\mapsto \ev_{\sh_G}(p'(z)))\bigr)
+p' \mapsto 
+(\ev_{\sh_G}\circ p') \mapsto 
+\loops(\ev_{\sh_G}\circ p').
 \]
-The goal is to prove, for any $p,q:(\sh\eqto\sh)$ and $g:\USymG$, that
+The goal is to prove, for any $p,q:(\sh\eqto\sh)$ and $g:\USymG$, 
+the proposition
+\[
+\bigl(\loops(\ev_{\sh_G}\circ (pq)'))\bigr)(g) = 
+\bigl(\loops(\ev_{\sh_G}\circ p')\bigr)(g)\cdot
+\bigl(\loops(\ev_{\sh_G}\circ q')\bigr)(g).
+\]
+First, we have an easy identification $(pq)'\eqto(z\mapsto p'(z)q'(z))$.%
+\footnote{Obtained for $pr$ by induction on $r:w\eqto\sh_G$, 
+then take $r\jdeq q$.}
+In the following we abbreviate $\sh_G$ by $\base$. 
+Note that
+$\ev_\base(p'(\base))\jdeq p'(\base)(\base)$, and likewise for $q'$.
+Then, given $p'(\base)_\pt: \base \eqto p'(\base)(\base)$
+and $q'(\base)_\pt : \base \eqto q'(\base)(\base)$,\footnote{%
+These are obtained from the identity type $(\refl{\pt_{\BB G}}\eqto h(\sh_G))$
+in the codomain of the first equivalence of the chain in the lemma.}
+we have as usual for the composition of pointed maps:
+\[
+(pq)'(\base)_\pt = \ap{p'(\base)}(q'(\base)_\pt)\cdot p'(\base)_\pt \text{~in~} 
+\base \eqto (p'(\base)q'(\base))(\base) \jdeq p'(\base)(q'(\base)(\base)).
+\]
+%\marginnote{\MB{Aside. } Given $p:f\eqto_{A\to B}f'$, $q:g\eqto_{B\to C}g'$}
+
+Using the definition of $\loops$ from \cref{def:loops-map},
+we calculate:
 \begin{align*}
-&\bigl(\loops(z\mapsto \ev_{\sh_G}((pq)'(z)))\bigr)(g) = \\
-&\bigl(\loops(z\mapsto \ev_{\sh_G}(p'(z)))\bigr)(g)
-\bigl(\loops(z\mapsto \ev_{\sh_G}(q'(z)))\bigr)(g).
+\loops(z\mapsto \ev_{\base}(p'(z)q'(z)))(g) &= 
+\inv{(pq)'(\base)_\pt}\cdot \ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g) \cdot {(pq)'(\base)_\pt}\\
+\loops(\ev_{\base}\circ p')(g) &= 
+\inv{p'(\base)_\pt} \cdot \ev_{\base}(p'(g)) \cdot {p'(\base)_\pt}\\
+\loops(\ev_{\base}\circ q')(g) &= 
+\inv{q'(\base)_\pt} \cdot \ev_{\base}(q'(g)) \cdot {q'(\base)_\pt}
 \end{align*}
-\MB{TBD}
+By indexed E-H we have 
+\[
+\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g) = \ev_{\base}(p'(g)q'(g)) =
+\ev_{\base}(p'(g))\cdot\ev_{\base}(q'(g)).
+\]
+The above means that the goal holds when the pointing paths $p'(\base)_\pt$
+and $q'(\base)_\pt$, and hence also $(pq)'(\base)_\pt$ are reflexivity paths.
+\MB{Can we now use path induction here???}
+%$\inv{(pq)'(\base)_\pt} = \inv{p'(\base)_\pt}\inv{(\ap{p'(\base)}(q'(\base)_\pt))}$. %unfoldings, hopefully not needed
+%\begin{align*}
+%\inv{p'(\base)_\pt}\cdot\inv{(\ap{p'(\base)}(q'(\base)_\pt))}\cdot
+%\ev_{\base}(p'(g)q'(g))\cdot \ap{p'(\base)}(q'(\base)_\pt)\cdot p'(\base)_\pt 
+%=\\ \inv{p'(\base)_\pt} \cdot \ev_{\base}(p'(g)) \cdot {p'(\base)_\pt} \cdot
+%\inv{q'(\base)_\pt} \cdot \ev_{\base}(q'(g)) \cdot {q'(\base)_\pt}.
+%\end{align*}
 \end{proof}
 
 \begin{definition}\label{def:ring}
