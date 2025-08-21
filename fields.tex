@@ -274,12 +274,12 @@ In the following we abbreviate $\sh_G$ by $\base$.
 Note that
 $\ev_\base(p'(\base))\jdeq p'(\base)(\base)$, and likewise for $q'$.
 Then, given $p'(\base)_\pt: \base \eqto p'(\base)(\base)$
-and $q'(\base)_\pt : \base \eqto q'(\base)(\base)$,\footnote{%
+and $q'(\base)_\pt : \base \eqto q'(\base)(\base)$,\footnote{\label{ft:ptd-ness}
 These are obtained from the identity type $(\refl{\pt_{\BB G}}\eqto h(\sh_G))$
 in the codomain of the first equivalence of the chain in the lemma.}
 we have as usual for the composition of pointed maps:
 \[
-(pq)'(\base)_\pt = \ap{p'(\base)}(q'(\base)_\pt)\cdot p'(\base)_\pt \text{~in~} 
+(pq)'(\base)_\pt = p'(\base)(q'(\base)_\pt)\cdot p'(\base)_\pt \text{~in~} 
 \base \eqto (p'(\base)q'(\base))(\base) \jdeq p'(\base)(q'(\base)(\base)).
 \]
 %\marginnote{\MB{Aside. } Given $p:f\eqto_{A\to B}f'$, $q:g\eqto_{B\to C}g'$}
@@ -294,14 +294,53 @@ we calculate:
 \loops(\ev_{\base}\circ q')(g) &= 
 \inv{q'(\base)_\pt} \cdot \ev_{\base}(q'(g)) \cdot {q'(\base)_\pt}
 \end{align*}
-By indexed E-H we have 
+
+For calculating $k(g)\defeq\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g)$,
+loosen up the endpoint of $g$, and also use $a$ for $\sh_G$
+to distinguish various occurences of $\sh_G$:\footnote{%
+Note that $(p'(g)\cdot q'(g))$ is only well-typed if $p'(\base)$ and $q'(\base)$
+are definitionally equal, which is not warranted by the identity type
+$(\refl{\pt_{\BB G}}\eqto h(\sh_G))$, cf.\ \cref{ft:ptd-ness}.}
 \[
-\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g) = \ev_{\base}(p'(g)q'(g)) =
-\ev_{\base}(p'(g))\cdot\ev_{\base}(q'(g)).
+   \begin{tikzcd}[ampersand replacement=\&]
+     \base\ar[dd,eqr,"g"]
+     \&a 
+       \ar[r,mapsto,"q'(\base)"]
+     \&q'(\base)(a)
+       \ar[r,mapsto,"p'(\base)"]
+     \&p'(\base)(q'(\base)(a))
+       \ar[dd,bend left=40,"k(g)", "="' pos=0.2]
+       \ar[dr,eqr,"r_1"]
+\\    
+     \&\BG_\div 
+       \ar[r,"q'"]
+     \&\BG_\div 
+       \ar[r,"p'"]
+     \&\BG_\div
+     \&p'(\base)(q'(z)(a))
+        \ar[dl,eqr,"r_2"]
+\\     
+     z
+     \&a 
+       \ar[r,mapsto,"q'(z)"]
+     \&q'(z)(a) 
+       \ar[r,mapsto,"p'(z)"]
+     \&p'(z)(q'(z)(a))
+   \end{tikzcd}
 \]
-The above means that the goal holds when the pointing paths $p'(\base)_\pt$
-and $q'(\base)_\pt$, and hence also $(pq)'(\base)_\pt$ are reflexivity paths.
-\MB{Can we now use path induction here???}
+There are two ways to proceed.
+One is based on the composite of the paths
+$r_1\defeq p'(\base)(\ptw(q'(g))(a))$ and 
+$r_2\defeq \ptw(p'(g))(q'(z)(a))$ of types
+as shown above.
+The other way is analogous, based on the intermediate point
+$p'(z)(q'(\base)(a))$ instead of $p'(\base)(q'(z)(a))$. 
+Identifications are obtained by induction on $g$.
+In particular, for $g:\base\eqto\base$, we get an identification of
+$\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g)$ with
+$p'(\base)(\ptw(q'(g))(\base)) \cdot \ptw(p'(g))(q'(\base)(\base))$.
+
+\MB{W.i.p.}
 %$\inv{(pq)'(\base)_\pt} = \inv{p'(\base)_\pt}\inv{(\ap{p'(\base)}(q'(\base)_\pt))}$. %unfoldings, hopefully not needed
 %\begin{align*}
 %\inv{p'(\base)_\pt}\cdot\inv{(\ap{p'(\base)}(q'(\base)_\pt))}\cdot
@@ -321,7 +360,7 @@ the group defined in \cref{def:AbHomgroup}.
 \end{enumerate}
 Moreover, the following equations should hold:
     \begin{enumerate}
-    \item\label{ring:unit-laws}
+    \item\label{ring:unit-laws}\
     $\ev\circ(\USym(\mu\circ{1_R})(\Sloop)) = \B\id_R \approx \MB{TBD}$ 
     (the \emph{multiplicative unit laws})\footnote{%
 \MB{Not great:} $\USym(\mu\circ{1_R})$ is an abstract homomorphism
