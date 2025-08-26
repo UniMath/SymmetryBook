@@ -247,7 +247,7 @@ The third is essentially $\abstr$ from \cref{def:abstrisfunctor}.}
  &\equivto \qquad \absHom(\abstr(G),\abstr(G)).
 \end{align*}
 Then the composite of the above chain defines an abstract isomorphism
-from $\USym\grpHom(G,G)$ to $\absHom_{\ptw}(\abstr(G),\abstr(G))$.
+from $\abstr(\grpHom(G,G))$ to $\absHom_{\ptw}(\abstr(G),\abstr(G))$.
 \end{lemma}
 \begin{proof}
 %$\pathpair{h}{h_\pt}:\sh\eqto\sh$
@@ -313,9 +313,9 @@ $(\refl{\pt_{\BB G}}\eqto h(\sh_G))$, cf.\ \cref{ft:ptd-ness}.}
        \ar[dr,eqr,"r_1"]
 \\    
      \&\BG_\div 
-       \ar[r,"q'"]
+       \ar[r,"q'(\blank)"]
      \&\BG_\div 
-       \ar[r,"p'"]
+       \ar[r,"p'(\blank)"]
      \&\BG_\div
      \&p'(\base)(q'(z)(a))
         \ar[dl,eqr,"r_2"]
@@ -332,13 +332,16 @@ There are two ways to proceed.
 One is based on the composite of the paths
 $r_1\defeq p'(\base)(\ptw(q'(g))(a))$ and 
 $r_2\defeq \ptw(p'(g))(q'(z)(a))$ of types
-as shown above.
+as shown above.\footnote{%
 The other way is analogous, based on the intermediate point
-$p'(z)(q'(\base)(a))$ instead of $p'(\base)(q'(z)(a))$. 
+$p'(z)(q'(\base)(a))$ instead of $p'(\base)(q'(z)(a))$,
+with $r_1\defeq (\ptw(p'(g)))(q'(\base)(a))$
+and $r_2\defeq p'(z)((\ptw(q'(g)))(a))$.}
+ 
 Identifications are obtained by induction on $g$.
 In particular, for $g:\base\eqto\base$, we get an identification of
-$\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g)$ with
-$p'(\base)(\ptw(q'(g))(\base)) \cdot \ptw(p'(g))(q'(\base)(\base))$.
+$\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g)$ with $r_2\cdot r_1 \jdeq
+\ptw(p'(g))(q'(\base)(\base))\cdot p'(\base)(\ptw(q'(g))(\base))$.
 
 \MB{W.i.p.}
 %$\inv{(pq)'(\base)_\pt} = \inv{p'(\base)_\pt}\inv{(\ap{p'(\base)}(q'(\base)_\pt))}$. %unfoldings, hopefully not needed
@@ -349,6 +352,53 @@ $p'(\base)(\ptw(q'(g))(\base)) \cdot \ptw(p'(g))(q'(\base)(\base))$.
 %\inv{q'(\base)_\pt} \cdot \ev_{\base}(q'(g)) \cdot {q'(\base)_\pt}.
 %\end{align*}
 \end{proof}
+
+\begin{remark}\label{rem:grpHomOK}
+We explore two alternative approaches to the lemma above,
+generalizing from $\BG$ and $\BB G$.
+Assume that $X$ is a pointed $1$-type and $Y$ a
+pointed $2$-type.
+
+First approach. We start by constructing a function of type 
+$$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y).$$
+Recall the map $\loops : ((X\ptdto Y)\to(\loops X\ptdto \loops Y))$
+sending  a pointed map $f:X\ptdto Y$ to $\loops(f)$ defined by 
+\[
+\loops(f)(p) \defeq \inv{f_\pt}\cdot \ap{f_\div}(p) \cdot f_\pt
+\quad\text{for any $p:\pt_X\eqto\pt_X $,}
+\]
+pointed by an element $\loops(f)_\pt$ of 
+$\refl{\pt_Y} \eqto \inv{f_\pt}\cdot \ap{f_\div}(\refl{\pt_X}) \cdot f_\pt$.%
+\footnote{
+Obtained by path algebra, not in general a reflexivity path.}
+Before we can apply ${\loops}$ to this map we have to point it.
+The point of $X\ptdto Y$ is the constant 
+map $x\mapsto\pt_Y$ pointed by reflexivity.
+The point of $\loops X\ptdto \loops Y$ is the constant 
+map $p\mapsto\refl{\pt_Y}$ pointed by reflexivity.
+We have
+\[
+\loops(x\mapsto\pt_Y)(p) \defeq 
+\inv{\refl{\pt_Y}}\cdot \ap{x\mapsto\pt_Y}(p) \cdot \refl{\pt_Y}.
+\]
+Now, since $\ap{x\mapsto\pt_Y}(p) \eqto \refl{\pt_Y}$ 
+for all $p: \loops(X)$, by path algebra and function extensionality, 
+we get a pointing path
+$\pi: (p\mapsto \refl{\pt_Y})\eqto \loops(x\mapsto\pt_Y)$.
+
+The desired map is now $\loops(\loops)$, which is short for
+$\loops((f:X\ptdto Y) \mapsto \loops(f))$, defined by
+\[
+(\loops(\loops))(q)\defeq\inv\pi\cdot\ap{f\mapsto\loops(f)}(q)\cdot\pi
+\quad\text{for any $q:\loops(X\ptdto Y)$}.
+\]
+We can further elaborate $\ap{f\mapsto\loops(f)}(q)$:
+its type is (by the above) equivalent to 
+$(p\mapsto \refl{\pt_Y})\eqto(p\mapsto \refl{\pt_Y})$,
+so by function extensionality equivalent to 
+$\loops(X)\to\loops(\loops(Y))$. Under this equivalence,
+$\ap{f\mapsto\loops(f)}(q)$ corresponds to $\ptw(q)$ \MB{Check!}
+\end{remark}
 
 \begin{definition}\label{def:ring}
 A \emph{ring} $R$ consists of the following data:
