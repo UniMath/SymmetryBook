@@ -343,7 +343,7 @@ In particular, for $g:\base\eqto\base$, we get an identification of
 $\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g)$ with $r_2\cdot r_1 \jdeq
 \ptw(p'(g))(q'(\base)(\base))\cdot p'(\base)(\ptw(q'(g))(\base))$.
 
-\MB{W.i.p.}
+\MB{W.i.p. and use that $G$ is abelian}
 %$\inv{(pq)'(\base)_\pt} = \inv{p'(\base)_\pt}\inv{(\ap{p'(\base)}(q'(\base)_\pt))}$. %unfoldings, hopefully not needed
 %\begin{align*}
 %\inv{p'(\base)_\pt}\cdot\inv{(\ap{p'(\base)}(q'(\base)_\pt))}\cdot
@@ -387,17 +387,44 @@ we get a pointing path
 $\pi: (p\mapsto \refl{\pt_Y})\eqto \loops(x\mapsto\pt_Y)$.
 
 The desired map is now $\loops(\loops)$, which is short for
-$\loops((f:X\ptdto Y) \mapsto \loops(f))$, defined by
+$\loops((f:X\ptdto Y) \mapsto \loops(f))$ of type $\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$, defined by
 \[
 (\loops(\loops))(q)\defeq\inv\pi\cdot\ap{f\mapsto\loops(f)}(q)\cdot\pi
 \quad\text{for any $q:\loops(X\ptdto Y)$}.
 \]
-We can further elaborate $\ap{f\mapsto\loops(f)}(q)$:
-its type is (by the above) equivalent to 
+Note that the type of $q$ is 
+$(x\mapsto\pt_Y,\refl{\pt_Y})\eqto(x\mapsto\pt_Y,\refl{\pt_Y}))$.
+The type of $\ap{f\mapsto\loops(f)}(q)$ is
+$\loops(x\mapsto\pt_Y,\refl{\pt_Y})\eqto\loops(x\mapsto\pt_Y,\refl{\pt_Y}))$,
+which is (by the above) equivalent to 
 $(p\mapsto \refl{\pt_Y})\eqto(p\mapsto \refl{\pt_Y})$,
 so by function extensionality equivalent to 
 $\loops(X)\to\loops(\loops(Y))$. Under this equivalence,
-$\ap{f\mapsto\loops(f)}(q)$ corresponds to $\ptw(q)$ \MB{Check!}
+$\ap{f\mapsto\loops(f)}(q)$ corresponds to $\ptw(\fst(q))$. 
+\MB{TODO: use $\snd(q)$ to get a pointing path and check everything!}
+
+Second approach. This approach uses the equivalence
+between pointed maps from $\Sc\ptdto A$ and loops $\pt_A\eqto\pt_A$
+from \cref{cor:circle-loopspace}.
+
+The map $O: ((X\ptdto Y)\ptdto((\Sc\ptdto X)\ptdto(\Sc\ptdto Y))$
+is easy: $O(f)\defeq (p\mapsto (f\circ p))$.\footnote{%
+Notation $p$ since $(\Sc\ptdto X)\we\loops(X)$.}
+We have to point $O$ and calculate 
+\begin{align*}
+O(x\mapsto\pt_Y,\refl{\pt_Y})
+&\jdeq (p\mapsto(x\mapsto\pt_Y,\refl{\pt_Y})\circ p)\\
+&\eqto (p\mapsto (z\mapsto\pt_Y,\refl{\pt_Y}))
+ \jdeq\pt_{(\Sc\ptdto X)\ptdto(\Sc\ptdto Y)},
+\end{align*}
+with the identity in the middle by function extensionality,
+composition of pointed maps and path algebra.
+Hence we can point $O$ by the inverse identification which we denote $\tau$.
+We now get a map of type 
+$$(\Sc\ptdto(X\ptdto Y))\to(\Sc\to((\Sc\ptdto X)\ptdto(\Sc\ptdto Y))$$
+by composition with $O$. This map corresponds to the map of type
+$$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$$
+constructed in the first approach. \MB{W.i.p.}
 \end{remark}
 
 \begin{definition}\label{def:ring}
