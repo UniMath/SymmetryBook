@@ -171,7 +171,20 @@ additive group $\abstr(R)$ and multiplicative
 monoid $(\USymR,1_R,\cdot)$. \MB{TBD}
 \end{xca}
 
-\subsection{Move to better place (Ch.\ 11 or 2)}
+\subsection{Move to a better place (Ch.\ 11 or 2)}
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \pt_Y\ar[rr,eqr,"f_\pt"]\ar[ddrr,eql,"g_\pt"']
+  \& \& f(\pt_X)  \ar[dd,eqr,"k(\pt_X)"]
+  \\ \& \mbox{} \& \\
+  \pt_Y\ar[uu,"{\jdeq}"']\ar[rr,eql,"g_\pt"']\ar[ddrr,eql,"h_\pt"']    
+  \& \mbox{} \& g(\pt_X)\ar[dd,eqr,"k'(\pt_X)"]
+  \\\& \mbox{} \& \\
+ \&\& h(\pt_X)
+  \end{tikzcd}
+  \caption{\label{fig:ptd-homotopy-compo}
+  Path for $(k'\cdot_{\protect\ptw} k)$.} 
+\end{marginfigure}
 \begin{definition}\label{def:ptd-homotopy-compo}
 Let $X$ and $Y$ be pointed types and
 $f,g: X\ptdto Y$ pointed maps from $X$ to $Y$.
@@ -180,32 +193,50 @@ $(f\eqto g) \equivto H(f,g)$, where
 \[ H(f,g) \defeq \sum_{k:\prod_{x:X}(f_\div(x)\eqto g_\div(x))}
                                ((k(\pt_X)\cdot f_\pt) \eqto g_\pt ).
 \]
-Assume also $h: X\ptdto Y$ and let $(k,k_\pt): H(f,g)$ and 
-$(k',k'_\pt): H(g,h)$. Define the \emph{pointwise composition}
-$(k',k'_\pt)\cdot_{\ptw} (k,k_\pt)$ of type $H(f,h)$ by\footnote{%
-We'll use the notation ``$\cdot_{\ptw}$'' also for $k'$ and $k$.}
+
+Assume also $h: X\ptdto Y$ and let $k: H(f,g)$ and 
+$k': H(g,h)$. In line with the notation for pointed maps, 
+we denote the pair $k$ by $(k_\div,k_\pt)$, an likewise for $k'$. 
+Define the \emph{pointwise composition}
+$(k'\cdot_{\ptw} k)$ of $k'$ and $k$ by\footnote{%
+We'll use the notation ``$\cdot_{\ptw}$'' also for $k'_\div$ and $k_\div$.
+As we do for pointed maps, we will often drop the subscript ``$\div$''.}
 \begin{align*}
-\bigl((k',k'_\pt)\cdot_{\ptw} (k,k_\pt)\bigr)&\defeq
-\bigl((k'\cdot_{\ptw} k ~,~ k'_\pt\cdot\ap{(k'(\pt_X)\cdot\blank))}(k_\pt)\bigr),
+\bigl(k'\cdot_{\ptw} k\bigr)&\defeq
+\bigl(k'_\div\cdot_{\ptw} k_\div ~,~ 
+       k'_\pt\cdot\ap{(k'_\div(\pt_X)\cdot\blank)}(k_\pt)\bigr),
 \quad\text{where}\\
-(k'\cdot_{\ptw} k) &\defeq (x\mapsto k'(x)\cdot k(x)).
+(k'_\div\cdot_{\ptw} k_\div) &\defeq (x\mapsto k'_\div(x)\cdot k_\div(x)).
 \end{align*}
-In ...
+In \cref{fig:ptd-homotopy-compo}, the upper-right triangle represents
+the type of $k_\pt$, the upper-left triangle is a reflexivity triangle,
+the lower triangle represents the type of $k'_\pt$,
+and the outer diagram represents the type 
+$k'(\pt_X)\cdot k(\pt_X)\cdot f_\pt \eqto h_\pt$
+of $k'_\pt\cdot\ap{(k'_\div(\pt_X)\cdot\blank)}(k_\pt)$.
+Thus we see that $(k'\cdot_{\ptw} k)$ is an element of $H(f,h)$.
 \end{definition}
 
-\begin{marginfigure}
-  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \pt_Y\ar[rr,eqr,"f_\pt"]\ar[ddrr,eql,"g_\pt"']%\ar[dd,"{\jdeq}"']
-  \& \& f(\pt_X)  \ar[dd,eqr,"k(\pt_X)"]
-  \\ \& \mbox{} \& \\
-  \pt_Y\ar[rr,eql,"g_\pt"']\ar[ddrr,eql,"h_\pt"']    
-  \& \mbox{} \& g(\pt_X)\ar[dd,eqr,"k'(\pt_X)"]
-  \\\& \mbox{} \& \\
- \&\& h(\pt_X)
-  \end{tikzcd}
-  \caption{Tag 1: $k'(\pt_X)$, tag 2: $k'(\pt_X)$.} 
-\end{marginfigure}
-
+\begin{construction}\label{con:ptd-homotopy-compo}
+Let conditions be as in \cref{def:ptd-homotopy-compo}.
+Let $p:(f\eqto g)$ and $q:(g\eqto h)$.
+Then we have an identification of $\ptw_*(qp)$ with
+$\ptw_*(q) \cdot_{\ptw} \ptw_*(p)$.
+\end{construction}
+\begin{implementation}{con:ptd-homotopy-compo}
+By path induction on $q$, it suffices to construct an identification
+of $\ptw_*(p)$ and $\ptw_*(\refl{g}) \cdot_{\ptw} \ptw_*(p)$.
+Using \cref{con:identity-ptd-maps} and \cref{def:funext} we
+can identify $\ptw_*(\refl{g})$ with the pair
+$((x\mapsto\refl{g_\div(x)}),\refl{g_\pt)}$. 
+For use in \cref{fig:ptd-homotopy-compo} we write the latter
+pair as $(k'_\div,k'_\pt)$, noting that $h\jdeq g$ in this case.
+Writing also $(k_\div,k_\pt)$ for $\ptw_*(p)$, the goal is to
+identify $(k'\cdot_{\ptw} k)$ with $k$.
+This identification is easily obtained by using
+that $\refl{g(x)}\cdot r$ identifies as $r$,
+for all $x:X$ and $r:f(x)\eqto g(x)$.
+\end{implementation}
 
 \subsection{Concrete rings}\label{sec:concrings}
 
