@@ -234,190 +234,173 @@ pair as $(k'_\div,k'_\pt)$, noting that $h\jdeq g$ in this case.
 Writing also $(k_\div,k_\pt)$ for $\ptw_*(p)$, the goal is to
 identify $(k'\cdot_{\ptw} k)$ with $k$.
 This identification is easily obtained by using
-that $\refl{g(x)}\cdot r$ identifies as $r$,
+that $\refl{g(x)}\cdot r$ is definitionally equal to $r$,
 for all $x:X$ and $r:f(x)\eqto g(x)$.
 \end{implementation}
 
-\subsection{Concrete rings}\label{sec:concrings}
-
-We will now elaborate an approach to rings that is even more concrete
-than mixed rings. For the latter rings we took the
-obvious first step to replace the abstract additive group by a 
-(concrete) group. Since monoids have no concrete counterpart in our set up,
-we replaced in \cref{def:mixring} the multiplicative monoid 
-by the half abstract $\ell,r:\USymR\to\Hom(R,R)$.
-
-The use of $\ell,r$ was based on the observation that, 
-for any abstract ring $\mathscr R$, left and right multiplication
-by a fixed but arbitrary element of $R$ are 
-abstract homomorphisms from the additive group $(R,0,+,-)$ of 
-$\mathscr R$ to itself. 
-Even more so, the map $a\mapsto(a\cdot\blank)$ is an abstract homomorphism
-from $(R,0,+,-)$ to the abstract group $\absHom_{\ptw}(R,R)$
-of abstract homomorphisms from $(R,0,+,-)$ to itself, with
-pointwise operations induced by $(R,0,+,-)$.\footnote{%
-$\absHom_{\ptw}(R,R)$ is an abelian abstract group by
-\cref{xca:abs-homgroup} and \cref{xca:abstract-group-of-maps}.}
-
-Given that we have replaced $(R,0,+,-)$ by an abelian group $G:\Group$,
-the plan is to deloop $\absHom_{\ptw}(\abstr(G),\abstr(G))$. 
-Denoting the result of the delooping by $\grpHom(G,G)$,\footnote{%
-This notation presupposes that $G$ is abelian and distinguishes 
-the \emph{set} of homomorphisms from $G$ to $G$ from the \emph{group}
-with this set of homomorphisms as underlying set.}
-we can then define the multiplication as a homomorphism
-$\mu: \Hom(G,\grpHom(G,G))$.
-
-One way of delooping $\absHom_{\ptw}(\abstr(G),\abstr(G))$ would be
-to use the inverse of $\abstr$ in \cref{lem:homomabstrconcr}
-which involves torsors.  
-We prefer to use \cref{thm:abelian-groups-weq-sc2types},
-making use of the assumption that $G$ is abelian.
-
 Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
 $\BB$ from the type of abelian groups to the type of pointed
-simply connected $2$-types. Let $G:\AbGroup$ be an abelian group.
-Then $\BB G$ and hence also $\BG\ptdto\BB G$ is a $2$-type, 
-pointed at the constant map that sends
-$z:\BG$ to the point $\pt_{\BB G}\defeq (\BG_\div,\settrunc{\id_{\BG_\div}})$ 
-of $\BB G$.\footnote{Itself pointed by reflexivity.} Even more so,
+simply connected $2$-types. Let $H:\Group$ be a group and let
+$G:\AbGroup$ be an abelian group.
+Then $\BB G$ and hence also $\BH\ptdto\BB G$ is a $2$-type, 
+pointed at the constant map that sends any $w:\BH$ to the 
+point $\pt_{\BB G}\defeq (\BG_\div,\settrunc{\id_{\BG_\div}})$ 
+of $\BB G$.\footnote{Itself pointed by reflexivity.} In fact,
 the type $\BG\ptdto\BB G$ is a $1$-type, since the maps are pointed.
 
-
-
 \begin{definition}\label{def:AbHomgroup}
-Let $G:\AbGroup$ be an abelian group. Define the abelian group $\grpHom(G,G)$
-of homomorphisms from $G$ to $G$ by 
+Let $H:\Group$ be a group and let $G:\AbGroup$ be an abelian group. 
+Define the abelian group $\grpHom(H,G)$
+of homomorphisms from $H$ to $G$ by 
 \[
-\grpHom(G,G) \defeq \Aut_{\BG\ptdto\BB G}
-((z\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}}).\qedhere
+\grpHom(H,G) \defeq \Aut_{\BH\ptdto\BB G}
+((w \mapsto \pt_{\BB G}),\refl{\pt_{\BB G}}).\qedhere
 \]
 \end{definition}
 
-The above definition of $\grpHom(G,G)$ is indeed serving its purpose:
+The above definition of $\grpHom(H,G)$ is indeed serving its purpose:
 
 \begin{lemma}\label{lem:grpHomOK}
-Let $G:\AbGroup$ be an abelian group. Abbreviate the shape
-$((z\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}})$ of $\grpHom(G,G)$ by $\sh$. 
+Let conditions be as in \cref{def:AbHomgroup}. Abbreviate the shape
+$((w\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}})$ of $\grpHom(H,G)$ by $\sh$. 
 Consider the following chain of equivalences\footnote{%
-The first is \cref{con:identity-ptd-maps} (with path inverted). 
+The first is $\ptw_*$ from \cref{con:identity-ptd-maps} 
+(with path inverted). 
 The second is composition with $\ev_{\sh_G}$
 from \cref{sec:center-group}, which is an equivalence since $G$ is abelian.
 The third is essentially $\abstr$ from \cref{def:abstrisfunctor}.}
 \begin{align*}
 (\sh\eqto\sh) &\equivto 
-\sum_{h:\BG_\div\to(\pt_{\BB G}\eqto\pt_{\BB G})} 
-  (\refl{\pt_{\BB G}}\eqto h(\sh_G)) \\
-              &~\jdeq \qquad \bigl(\BG\ptdto((\pt_{\BB G}\eqto\pt_{\BB G}),\refl{\pt_{\BB G}})\bigr)\\
- &\equivto \qquad\! \bigl(\BG\ptdto\BG\bigr)\\
+\sum_{h:\BH_\div\to(\pt_{\BB G}\eqto\pt_{\BB G})} 
+  (\refl{\pt_{\BB G}}\eqto h(\sh_H)) \\
+              &~\jdeq \qquad \bigl(\BH\ptdto((\pt_{\BB G}\eqto\pt_{\BB G}),\refl{\pt_{\BB G}})\bigr)\\
+ &\equivto \qquad\! \bigl(\BH\ptdto\BG\bigr)\\
 % &\jdeq\qquad~\BHom(G,G)\\
- &\equivto \qquad \absHom(\abstr(G),\abstr(G)).
+ &\equivto \qquad \absHom(\abstr(H),\abstr(G)).
 \end{align*}
 Then the composite of the above chain defines an abstract isomorphism
-from $\abstr(\grpHom(G,G))$ to $\absHom_{\ptw}(\abstr(G),\abstr(G))$.
+from $\abstr(\grpHom(H,G))$ to $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
 \end{lemma}
 \begin{proof}
 %$\pathpair{h}{h_\pt}:\sh\eqto\sh$
-Ignoring pointing paths,\footnote{They will be used later.} 
-we can trace a given $p:(\sh\eqto\sh)$ through 
-the chain of equivalences. Abbreviating $p' \defeq \ptw(\fst(p))$ we get
-\[ 
-p \mapsto 
-p' \mapsto 
-(\ev_{\sh_G}\circ p') \mapsto 
-\loops(\ev_{\sh_G}\circ p').
-\]
-The goal is to prove, for any $p,q:(\sh\eqto\sh)$ and $g:\USymG$, 
+Given $p:(\sh\eqto\sh)$, the equivalence $\ptw_*$ from 
+\cref{con:identity-ptd-maps} gives a pair $\ptw_*(p)$ which
+we denote by $(\ptoe p,p_\pt)$. Here 
+$\ptoe p :\BH_\div\to(\pt_{\BB G}\eqto\pt_{\BB G})$ maps any $w:\BH$ to 
+$\ptoe p(w)$ corresponding\footnote{%
+This uses \cref{eq:id-types-universal-cover} and univalence.}
+to a pair consisting of an equivalence (by the same name)
+$\ptoe p(w):(\BG_\div\equivto\BG_\div)$ and a proof of
+$\Trunc{\ptoe p(w) \eqto \id_{\BG_\div}}$, that is,
+all $\ptoe p(w)$ are merely equal to the identity.
+The second component $p_\pt$ of $(\ptoe p,p_\pt)$ is an
+identification of $\refl{\pt_{\BB G}}$ with $\ptoe p(\sh_H)$,
+which gives us an identification $\ptw(p_\pt)$ of 
+$\id_{\BG_\div}$ with $\ptoe p(\sh_H)$.\footnote{%
+Technically, we should write $\ptw(\fst(p_\pt))$,
+but $\snd(p_\pt)$ is true propositional data and plays no role.}
+
+The goal is to prove, for any $p,q:(\sh\eqto\sh)$ and $g:\USymH$, 
 the proposition
 \[
-\bigl(\loops(\ev_{\sh_G}\circ (pq)'))\bigr)(g) = 
-\bigl(\loops(\ev_{\sh_G}\circ p')\bigr)(g)\cdot
-\bigl(\loops(\ev_{\sh_G}\circ q')\bigr)(g).
+\bigl(\loops(\ev_{\sh_G}\circ \ptw_*(pq))\bigr)(g) = 
+\bigl(\loops(\ev_{\sh_G}\circ \ptw_*(p)\bigr)(g)\cdot
+\bigl(\loops(\ev_{\sh_G}\circ \ptw_*(q)\bigr)(g).
 \]
-First, we have an easy identification $(pq)'\eqto(z\mapsto p'(z)q'(z))$.%
-\footnote{Obtained for $pr$ by induction on $r:w\eqto\sh_G$, 
-then take $r\jdeq q$.}
+
+First, by \cref{con:ptd-homotopy-compo}, we have an identification 
+$(\ptoe{pq})\eqto(w\mapsto \ptoe p(w) \ptoe q(w))$.
+%Then, by \cref{con:ptd-homotopy-compo}, we have that $(\ptoe{pq})$
+%is pointed by $p_\pt\cdot\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt):
+%(\refl{\pt_{\BB G}}\eqto \ptoe p(\sh_H)\ptoe q(\sh_H))$.
 In the following we abbreviate $\sh_G$ by $\base$. 
-Note that
-$\ev_\base(p'(\base))\jdeq p'(\base)(\base)$, and likewise for $q'$.
-Then, given $p'(\base)_\pt: \base \eqto p'(\base)(\base)$
-and $q'(\base)_\pt : \base \eqto q'(\base)(\base)$,\footnote{\label{ft:ptd-ness}
-These are obtained from the identity type $(\refl{\pt_{\BB G}}\eqto h(\sh_G))$
-in the codomain of the first equivalence of the chain in the lemma.}
-we have as usual for the composition of pointed maps:
-\[
-(pq)'(\base)_\pt = p'(\base)(q'(\base)_\pt)\cdot p'(\base)_\pt \text{~in~} 
-\base \eqto (p'(\base)q'(\base))(\base) \jdeq p'(\base)(q'(\base)(\base)).
-\]
-%\marginnote{\MB{Aside. } Given $p:f\eqto_{A\to B}f'$, $q:g\eqto_{B\to C}g'$}
+Note that $\ev_\base(\ptoe p(\sh_H))\jdeq \ptoe p(\sh_H)(\base)$, 
+and likewise for $\ptoe q$ and $(\ptoe{pq})$.
+Then, given $\ptw(p_\pt)(\sh_H): \base \eqto \ptoe p(\sh_H)(\base)$
+and $\ptw(q_\pt)(\sh_H) : \base \eqto \ptoe q(\sh_H)(\base)$,
+we have:\footnote{\MB{Verify!}}
+\begin{align*}
+\ptw((pq)_\pt)(\sh_H) &= \ptoe p(\sh_H)(\ptw(q_\pt)(\sh_H))\cdot \ptw(p_\pt)(\sh_H)\\
+ \text{~in~type}\quad
+&\base \eqto \ptoe p(\sh_H)(\ptoe q(\sh_H)(\base)).
+\end{align*}
 
 Using the definition of $\loops$ from \cref{def:loops-map},
 we calculate:
 \begin{align*}
-\loops(z\mapsto \ev_{\base}(p'(z)q'(z)))(g) &= 
-\inv{(pq)'(\base)_\pt}\cdot \ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g) \cdot {(pq)'(\base)_\pt}\\
-\loops(\ev_{\base}\circ p')(g) &= 
-\inv{p'(\base)_\pt} \cdot \ev_{\base}(p'(g)) \cdot {p'(\base)_\pt}\\
-\loops(\ev_{\base}\circ q')(g) &= 
-\inv{q'(\base)_\pt} \cdot \ev_{\base}(q'(g)) \cdot {q'(\base)_\pt}
+\loops(w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w)))(g) &= 
+\inv{\ptw((pq)_\pt)(\sh_H)}\cdot \ap{w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w))}(g) \cdot {\ptw((pq)_\pt)(\sh_H)}\\
+\loops(\ev_{\base}\circ \ptoe p)(g) &= 
+\inv{\ptw(p_\pt)(\sh_H)} \cdot \ev_{\base}(\ptoe p(g)) \cdot {\ptw(p_\pt)(\sh_H)}\\
+\loops(\ev_{\base}\circ \ptoe q)(g) &= 
+\inv{\ptw(q_\pt)(\sh_H)} \cdot \ev_{\base}(\ptoe q(g)) \cdot {\ptw(q_\pt)(\sh_H)}
 \end{align*}
 
-For calculating $k(g)\defeq\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g)$,
-loosen up the endpoint of $g$, and also use $a$ for $\sh_G$
-to distinguish various occurences of $\sh_G$:\footnote{%
-Note that $(p'(g)\cdot q'(g))$ is only well-typed if $p'(\base)$ and $q'(\base)$
-are definitionally equal, which is not warranted by the identity type
-$(\refl{\pt_{\BB G}}\eqto h(\sh_G))$, cf.\ \cref{ft:ptd-ness}.}
+For calculating $k(g)\defeq\ap{w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w))}(g)$,
+loosen up the endpoint of $g$:
 \[
    \begin{tikzcd}[ampersand replacement=\&]
-     \base\ar[dd,eqr,"g"]
-     \&a 
-       \ar[r,mapsto,"q'(\base)"]
-     \&q'(\base)(a)
-       \ar[r,mapsto,"p'(\base)"]
-     \&p'(\base)(q'(\base)(a))
+     \sh_H\ar[dd,eqr,"g"]
+     \&\base 
+       \ar[r,mapsto,"\ptoe q(\sh_H)"]
+     \&\ptoe q(\sh_H)(\base)
+       \ar[r,mapsto,"\ptoe p(\sh_H)"]
+     \&\ptoe p(\sh_H)(\ptoe q(\sh_H)(\base))
        \ar[dd,bend left=40,"k(g)", "="' pos=0.2]
        \ar[dr,eqr,"r_1"]
 \\    
      \&\BG_\div 
-       \ar[r,"q'(\blank)"]
+       \ar[r,"\ptoe q(\blank)"]
      \&\BG_\div 
-       \ar[r,"p'(\blank)"]
+       \ar[r,"\ptoe p(\blank)"]
      \&\BG_\div
-     \&p'(\base)(q'(z)(a))
+     \&\ptoe p(\sh_H)(\ptoe q(w)(\base))
         \ar[dl,eqr,"r_2"]
 \\     
-     z
-     \&a 
-       \ar[r,mapsto,"q'(z)"]
-     \&q'(z)(a) 
-       \ar[r,mapsto,"p'(z)"]
-     \&p'(z)(q'(z)(a))
+     w
+     \&\base 
+       \ar[r,mapsto,"\ptoe q(w)"]
+     \&\ptoe q(w)(\base) 
+       \ar[r,mapsto,"\ptoe p(w)"]
+     \&\ptoe p(w)(\ptoe q(w)(\base))
    \end{tikzcd}
 \]
 There are two ways to proceed.
 One is based on the composite of the paths
-$r_1\defeq p'(\base)(\ptw(q'(g))(a))$ and 
-$r_2\defeq \ptw(p'(g))(q'(z)(a))$ of types
+$r_1\defeq \ptoe p(\sh_H)(\ptw(\ptoe q(g))(\base))$ and 
+$r_2\defeq \ptw(\ptoe p(g))(\ptoe q(w)(\base))$ of types
 as shown above.\footnote{%
 The other way is analogous, based on the intermediate point
-$p'(z)(q'(\base)(a))$ instead of $p'(\base)(q'(z)(a))$,
-with $r_1\defeq (\ptw(p'(g)))(q'(\base)(a))$
-and $r_2\defeq p'(z)((\ptw(q'(g)))(a))$.}
+$\ptoe p(w)(\ptoe q(\sh_H)(\base))$ instead of $\ptoe p(\sh_H)(\ptoe q(w)(\base))$,
+with $r_1\defeq (\ptw(\ptoe p(g)))(\ptoe q(\sh_H)(\base))$
+and $r_2\defeq \ptoe p(w)((\ptw(\ptoe q(g)))(\base))$.}
  
 Identifications are obtained by induction on $g$.
-In particular, for $g:\base\eqto\base$, we get an identification of
-$\ap{z\mapsto \ev_{\base}(p'(z)q'(z))}(g)$ with $r_2\cdot r_1 \jdeq
-\ptw(p'(g))(q'(\base)(\base))\cdot p'(\base)(\ptw(q'(g))(\base))$.
+In particular, for $g:\sh_H\eqto\sh_H$, we get an identification of
+$\ap{w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w))}(g)$ with $r_2\cdot r_1 \jdeq
+\ptw(\ptoe p(g))(\ptoe q(\sh_H)(\base))\cdot \ptoe p(\sh_H)(\ptw(\ptoe q(g))(\base))$.
 
-\MB{Goal comes out if $p'(\base)_\pt,~q'(\base)_\pt$ are
-reflexivity paths. W.i.p.}
-%$\inv{(pq)'(\base)_\pt} = \inv{p'(\base)_\pt}\inv{(\ap{p'(\base)}(q'(\base)_\pt))}$. %unfoldings, hopefully not needed
+Before we start out on the final calculation we simplify as
+much as possible. There are two main simplifications.
+One us the transport of the goal along the paths
+$\ptw(p_\pt): (\id_{\BG_\div}$ with $\ptoe p(\sh_H))$,
+$\ptw(q_\pt): (\id_{\BG_\div}$ with $\ptoe q(\sh_H))$, and
+$\ptw((pq)_\pt): (\id_{\BG_\div}$ with $\ptoe p(q(\sh_H)))$.
+Thus the goal is transported to an equivalent, simpler proposition.
+
+The second simplification is that after transporting the
+goal is an equation of paths in $\sh_G\eqto\sh_G$, which
+can be seen to be true using commutativity. \MB{W.i.p.}
+
+
+
+
+%$\inv{(pq)'(\base)_\pt} = \inv{\ptoe p(\sh_H)_\pt}\inv{(\ap{\ptoe p(\sh_H)}(\ptoe q(\sh_H)_\pt))}$. %unfoldings, hopefully not needed
 %\begin{align*}
-%\inv{p'(\base)_\pt}\cdot\inv{(\ap{p'(\base)}(q'(\base)_\pt))}\cdot
-%\ev_{\base}(p'(g)q'(g))\cdot \ap{p'(\base)}(q'(\base)_\pt)\cdot p'(\base)_\pt 
-%=\\ \inv{p'(\base)_\pt} \cdot \ev_{\base}(p'(g)) \cdot {p'(\base)_\pt} \cdot
-%\inv{q'(\base)_\pt} \cdot \ev_{\base}(q'(g)) \cdot {q'(\base)_\pt}.
+%\inv{\ptoe p(\sh_H)_\pt}\cdot\inv{(\ap{\ptoe p(\sh_H)}(\ptoe q(\sh_H)_\pt))}\cdot
+%\ev_{\base}(\ptoe p(g)\ptoe q(g))\cdot \ap{\ptoe p(\sh_H)}(\ptoe q(\sh_H)_\pt)\cdot \ptoe p(\sh_H)_\pt 
+%=\\ \inv{\ptoe p(\sh_H)_\pt} \cdot \ev_{\base}(\ptoe p(g)) \cdot {\ptoe p(\sh_H)_\pt} \cdot
+%\inv{\ptoe q(\sh_H)_\pt} \cdot \ev_{\base}(\ptoe q(g)) \cdot {\ptoe q(\sh_H)_\pt}.
 %\end{align*}
 \end{proof}
 
@@ -494,6 +477,44 @@ by composition with $O$. This map corresponds to the map of type
 $$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$$
 constructed in the first approach. \MB{W.i.p.}
 \end{remark}
+
+
+\subsection{Concrete rings}\label{sec:concrings}
+
+We will now elaborate an approach to rings that is even more concrete
+than mixed rings. For the latter rings we took the
+obvious first step to replace the abstract additive group by a 
+(concrete) group. Since monoids have no concrete counterpart in our set up,
+we replaced in \cref{def:mixring} the multiplicative monoid 
+by the half abstract $\ell,r:\USymR\to\Hom(R,R)$.
+
+The use of $\ell,r$ was based on the observation that, 
+for any abstract ring $\mathscr R$, left and right multiplication
+by a fixed but arbitrary element of $R$ are 
+abstract homomorphisms from the additive group $(R,0,+,-)$ of 
+$\mathscr R$ to itself. 
+Even more so, the map $a\mapsto(a\cdot\blank)$ is an abstract homomorphism
+from $(R,0,+,-)$ to the abstract group $\absHom_{\ptw}(R,R)$
+of abstract homomorphisms from $(R,0,+,-)$ to itself, with
+pointwise operations induced by $(R,0,+,-)$.\footnote{%
+$\absHom_{\ptw}(R,R)$ is an abelian abstract group by
+\cref{xca:abs-homgroup} and \cref{xca:abstract-group-of-maps}.}
+
+Given that we have replaced $(R,0,+,-)$ by an abelian group $G:\Group$,
+the plan is to deloop $\absHom_{\ptw}(\abstr(G),\abstr(G))$. 
+Denoting the result of the delooping by $\grpHom(G,G)$,\footnote{%
+This notation presupposes that $G$ is abelian and distinguishes 
+the \emph{set} of homomorphisms from $G$ to $G$ from the \emph{group}
+with this set of homomorphisms as underlying set.}
+we can then define the multiplication as a homomorphism
+$\mu: \Hom(G,\grpHom(G,G))$.
+
+One way of delooping $\absHom_{\ptw}(\abstr(G),\abstr(G))$ would be
+to use the inverse of $\abstr$ in \cref{lem:homomabstrconcr}
+which involves torsors.  
+We prefer to use $\grpHom(G,G)$ from \cref{def:AbHomgroup},
+making direct use of the assumption that $G$ is abelian.
+
 
 \begin{definition}\label{def:ring}
 A \emph{ring} $R$ consists of the following data:
