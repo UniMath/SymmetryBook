@@ -250,8 +250,7 @@ the type $\BG\ptdto\BB G$ is a $1$-type, since the maps are pointed.
 
 \begin{definition}\label{def:AbHomgroup}
 Let $H:\Group$ be a group and let $G:\AbGroup$ be an abelian group. 
-Define the abelian group $\grpHom(H,G)$
-of homomorphisms from $H$ to $G$ by 
+Define the group $\grpHom(H,G)$ of homomorphisms from $H$ to $G$ by 
 \[
 \grpHom(H,G) \defeq \Aut_{\BH\ptdto\BB G}
 ((w \mapsto \pt_{\BB G}),\refl{\pt_{\BB G}}).\qedhere
@@ -300,22 +299,50 @@ $\id_{\BG_\div}$ with $\ptoe p(\sh_H)$.\footnote{%
 Technically, we should write $\ptw(\fst(p_\pt))$,
 but $\snd(p_\pt)$ is true propositional data and plays no role.}
 
+In the following, until the end of the proof,
+we abbreviate $\sh_G$ by $\base$.
 The goal is to prove, for any $p,q:(\sh\eqto\sh)$ and $g:\USymH$, 
 the proposition
 \[
-\bigl(\loops(\ev_{\sh_G}\circ \ptw_*(pq))\bigr)(g) = 
-\bigl(\loops(\ev_{\sh_G}\circ \ptw_*(p)\bigr)(g)\cdot
-\bigl(\loops(\ev_{\sh_G}\circ \ptw_*(q)\bigr)(g).
+\bigl(\loops(\ev_{\base}\circ \ptw_*(pq))\bigr)(g) = 
+\bigl(\loops(\ev_{\base}\circ \ptw_*(p)\bigr)(g)\cdot
+\bigl(\loops(\ev_{\base}\circ \ptw_*(q)\bigr)(g).
 \]
 
-First, by \cref{con:ptd-homotopy-compo}, we have an identification 
-$(\ptoe{pq})\eqto(w\mapsto \ptoe p(w) \ptoe q(w))$.
 %Then, by \cref{con:ptd-homotopy-compo}, we have that $(\ptoe{pq})$
 %is pointed by $p_\pt\cdot\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt):
 %(\refl{\pt_{\BB G}}\eqto \ptoe p(\sh_H)\ptoe q(\sh_H))$.
-In the following we abbreviate $\sh_G$ by $\base$. 
-Note that $\ev_\base(\ptoe p(\sh_H))\jdeq \ptoe p(\sh_H)(\base)$, 
-and likewise for $\ptoe q$ and $(\ptoe{pq})$.
+We first elaborate the right hand side.
+Note that $\ev_\base(\ptoe p(\sh_H))\jdeq \ptoe p(\sh_H)(\base)$. 
+The pointing path of $\ev_{\base}\circ (\ptoe p,p_\pt)$
+is $\ev_{\base}(p_\pt)$, which is equal to $\ptw(p_\pt)(\base)$,
+and we have $\ev_{\base}(\ptoe p(g)) = \ptw(p(g))(\base)$.\footnote{%
+By induction on $r: s \eqto_{A\eqto A} t$ one easily constructs for all
+types $A$ and elements $a:A$ an identification $\ev_a(r) \eqto \ptw(r)(a)$.}
+
+Using the definition of $\loops$ from \cref{def:loops-map},
+we calculate:
+\begin{align*}
+\loops(\ev_{\base}\circ (\ptoe p,p_\pt))(g) &= 
+\inv{\ptw(p_\pt)(\base)} \cdot \ev_{\base}(\ptoe p(g)) \cdot {\ptw(p_\pt)(\base)}\\
+              &= 
+\ptw (\inv{p_\pt} \cdot \ptoe p(g) \cdot p_\pt)(\base)
+~\text{in type $\base\eqto\base$}.
+\end{align*}
+Likewise we obtain for $\ptoe q$ and $(\ptoe{pq})$ the following
+equalities in type $\base\eqto\base$:
+\begin{align*}
+\loops(\ev_{\base}\circ (\ptoe q,q_\pt))(g) &=  
+\ptw (\inv{q_\pt} \cdot \ptoe q(g) \cdot q_\pt)(\base)
+\\
+\loops(\ev_{\base}\circ (\ptoe {pq},(pq)_\pt))(g) &=  
+\ptw (\inv{(pq)_\pt} \cdot \ptoe{pq}(g) \cdot (pq)_\pt)(\base)
+\end{align*}
+
+
+Further, by \cref{con:ptd-homotopy-compo}, we have an identification 
+$(\ptoe{pq})\eqto(w\mapsto \ptoe p(w) \ptoe q(w))$.
+
 Then, given $\ptw(p_\pt)(\sh_H): \base \eqto \ptoe p(\sh_H)(\base)$
 and $\ptw(q_\pt)(\sh_H) : \base \eqto \ptoe q(\sh_H)(\base)$,
 we have:\footnote{\MB{Verify!}}
@@ -383,8 +410,8 @@ $\ap{w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w))}(g)$ with $r_2\cdot r_1 \jdeq
 Before we start out on the final calculation we simplify as
 much as possible. There are two main simplifications.
 One us the transport of the goal along the paths
-$\ptw(p_\pt): (\id_{\BG_\div}$ with $\ptoe p(\sh_H))$,
-$\ptw(q_\pt): (\id_{\BG_\div}$ with $\ptoe q(\sh_H))$, and
+$\ptw(p_\pt): (\id_{\BG_\div}\eqto\ptoe p(\sh_H))$,
+$\ptw(q_\pt): (\id_{\BG_\div}\eqto\ptoe q(\sh_H))$, and
 $\ptw((pq)_\pt): (\id_{\BG_\div}$ with $\ptoe p(q(\sh_H)))$.
 Thus the goal is transported to an equivalent, simpler proposition.
 
