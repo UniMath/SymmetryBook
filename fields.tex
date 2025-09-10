@@ -294,9 +294,9 @@ $\Trunc{\ptoe p(w) \eqto \id_{\BG_\div}}$, that is,
 all $\ptoe p(w)$ are merely equal to the identity.
 The second component $p_\pt$ of $(\ptoe p,p_\pt)$ is an
 identification of $\refl{\pt_{\BB G}}$ with $\ptoe p(\sh_H)$,
-which gives us an identification $\ptw(p_\pt)$ of 
+which gives us an identification (by the same name) $p_\pt$ of 
 $\id_{\BG_\div}$ with $\ptoe p(\sh_H)$.\footnote{%
-Technically, we should write $\ptw(\fst(p_\pt))$,
+Technically, we should write $\fst(p_\pt)$,
 but $\snd(p_\pt)$ is true propositional data and plays no role.}
 
 In the following, until the end of the proof,
@@ -330,82 +330,136 @@ we calculate:
 ~\text{in type $\base\eqto\base$}.
 \end{align*}
 Likewise we obtain for $\ptoe q$ and $(\ptoe{pq})$ the following
-equalities in type $\base\eqto\base$:
+equalities:
 \begin{align*}
 \loops(\ev_{\base}\circ (\ptoe q,q_\pt))(g) &=  
 \ptw (\inv{q_\pt} \cdot \ptoe q(g) \cdot q_\pt)(\base)
 \\
 \loops(\ev_{\base}\circ (\ptoe {pq},(pq)_\pt))(g) &=  
-\ptw (\inv{(pq)_\pt} \cdot \ptoe{pq}(g) \cdot (pq)_\pt)(\base)
+\ptw (\inv{(pq)_\pt} \cdot (\ptoe{pq})(g) \cdot (pq)_\pt)(\base)
 \end{align*}
 
+We continue with elaboration the latter equality in three steps.
 
-Further, by \cref{con:ptd-homotopy-compo}, we have an identification 
-$(\ptoe{pq})\eqto(w\mapsto \ptoe p(w) \ptoe q(w))$.
-
-Then, given $\ptw(p_\pt)(\sh_H): \base \eqto \ptoe p(\sh_H)(\base)$
-and $\ptw(q_\pt)(\sh_H) : \base \eqto \ptoe q(\sh_H)(\base)$,
-we have:\footnote{\MB{Verify!}}
-\begin{align*}
-\ptw((pq)_\pt)(\sh_H) &= \ptoe p(\sh_H)(\ptw(q_\pt)(\sh_H))\cdot \ptw(p_\pt)(\sh_H)\\
- \text{~in~type}\quad
-&\base \eqto \ptoe p(\sh_H)(\ptoe q(\sh_H)(\base)).
-\end{align*}
-
-Using the definition of $\loops$ from \cref{def:loops-map},
-we calculate:
-\begin{align*}
-\loops(w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w)))(g) &= 
-\inv{\ptw((pq)_\pt)(\sh_H)}\cdot \ap{w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w))}(g) \cdot {\ptw((pq)_\pt)(\sh_H)}\\
-\loops(\ev_{\base}\circ \ptoe p)(g) &= 
-\inv{\ptw(p_\pt)(\sh_H)} \cdot \ev_{\base}(\ptoe p(g)) \cdot {\ptw(p_\pt)(\sh_H)}\\
-\loops(\ev_{\base}\circ \ptoe q)(g) &= 
-\inv{\ptw(q_\pt)(\sh_H)} \cdot \ev_{\base}(\ptoe q(g)) \cdot {\ptw(q_\pt)(\sh_H)}
-\end{align*}
-
-For calculating $k(g)\defeq\ap{w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w))}(g)$,
-loosen up the endpoint of $g$:
+First, by \cref{con:ptd-homotopy-compo},\footnote{%
+\label{ft:ptd-homotopy-compo-used}
+\MB{NB pointing paths inverted.} We reproduce
+\cref{fig:ptd-homotopy-compo} for $q:\sh\eqto\sh$ and
+$p:\sh\eqto t$ to be able to do path induction on $p$:
 \[
-   \begin{tikzcd}[ampersand replacement=\&]
-     \sh_H\ar[dd,eqr,"g"]
-     \&\base 
-       \ar[r,mapsto,"\ptoe q(\sh_H)"]
-     \&\ptoe q(\sh_H)(\base)
-       \ar[r,mapsto,"\ptoe p(\sh_H)"]
-     \&\ptoe p(\sh_H)(\ptoe q(\sh_H)(\base))
-       \ar[dd,bend left=40,"k(g)", "="' pos=0.2]
-       \ar[dr,eqr,"r_1"]
-\\    
+\begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \refl{\pt_{\BB G}}\ar[rr,eqr,"{\refl{\refl{}}}"]\ar[ddrr,eql,"{\refl{\refl{}}}"']
+  \& \& \refl{\pt_{\BB G}}  \ar[dd,eqr,"{\ptoe q(\sh_H)}"]
+  \\ \& \mbox{} \& \\
+  \refl{\pt_{\BB G}}\ar[uu,"{\jdeq}"']\ar[rr,eql,"{\refl{\refl{}}}"']\ar[ddrr,eql,"t_\pt"']    
+  \& \mbox{} \& \refl{\pt_{\BB G}}\ar[dd,eqr,"{\ptoe p(\sh_H)}"]
+  \\\& \mbox{} \& \\
+ \&\& t(\sh_H)
+  \end{tikzcd}
+\]
+For $p\jdeq\refl{\sh}$, so that $t\jdeq\sh$,
+$p_\pt\cdot\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt)$
+becomes identical to $q_\pt$, represented by the upper right triangle.
+Hence for $p:\sh\eqto\sh$ we get $p_\pt\cdot \ap{\ptoe p(\sh_H)}(q_\pt)$.
+\MB{Reversed order because of path inversion.}   
+}
+we have an identification
+$\ptw_*(pq) \eqto \ptw_*(p) \cdot_{\ptw} \ptw_*(q)$,
+with $\cdot_{\ptw}$ as given in \cref{def:ptd-homotopy-compo}.
+This gives an identification of type
+$(\ptoe{pq})\eqto(w\mapsto \ptoe p(w)\cdot\ptoe q(w))$,
+which we (\MB{abusively}) take to be definitional.
+Hence, $(\ptoe{pq})(\sh_H)\jdeq (\ptoe p(\sh_H)\cdot\ptoe q(\sh_H))$,
+which as function $\BG_\div\equivto\BG_\div$ corresponds to
+the composition $\ptoe p(\sh_H) \circ \ptoe q(\sh_H)$.
+
+Second, also need a path $(pq)_\pt$ from $\id_{\BG_\div}$ 
+to $(\ptoe{pq})(\sh_H)$. For this we take
+$(pq)_\pt \jdeq \ptoe p(\sh_H)(q_\pt)\cdot p_\pt$,
+which is justified by \cref{ft:ptd-homotopy-compo-used},
+and is also the usual pointing path for the composition
+of the pointed maps $\ptoe p(\sh_H)$ and $\ptoe q(\sh_H)$.
+
+%\ptw((pq)_\pt)(\sh_H) &= \ptoe p(\sh_H)(\ptw(q_\pt)(\sh_H))\cdot \ptw(p_\pt)(\sh_H)\\
+
+Third, we elaborate $(\ptoe{pq})(g)$ which is shorthand for 
+$\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g)$. In order to be able to
+do induction on $g$, we loosen up the endpoint of $g$. 
+Let $w:BH_\div$, $g:\sh_H\eqto w$, $z:\BG_\div$
+and consider the following diagram. The task is to find
+a path from $\ptoe p(\sh_H)(\ptoe q(\sh_H)$ to $\ptoe p(w)(\ptoe q(w)$
+that can be identified with $\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g)$.
+\[
+   \begin{tikzcd}[ampersand replacement=\&]    
      \&\BG_\div 
        \ar[r,"\ptoe q(\blank)"]
      \&\BG_\div 
        \ar[r,"\ptoe p(\blank)"]
      \&\BG_\div
-     \&\ptoe p(\sh_H)(\ptoe q(w)(\base))
-        \ar[dl,eqr,"r_2"]
+%     \&\ptoe p(\sh_H)(\ptoe q(w)(z)) \ar[dl,eqr,"r_2"]
+\\     
+     \sh_H\ar[dd,eqr,"g"]
+     \&z 
+       \ar[r,mapsto,"\ptoe q(\sh_H)"]
+     \&\ptoe q(\sh_H)(z)
+       \ar[r,mapsto,"\ptoe p(\sh_H)"]
+     \&\ptoe p(\sh_H)(\ptoe q(\sh_H)(z))
+%       \ar[dd,bend left=40,"?", "="' pos=0.2]
+       \ar[d,eqr,"{r_1(g,z)}"]
+\\    
+     \&
+     \&
+     \&\ptoe p(\sh_H)(\ptoe q(w)(z))
+        \ar[d,eqr,"{r_2(g,z)}"]
 \\     
      w
-     \&\base 
+     \&z 
        \ar[r,mapsto,"\ptoe q(w)"]
-     \&\ptoe q(w)(\base) 
+     \&\ptoe q(w)(z) 
        \ar[r,mapsto,"\ptoe p(w)"]
-     \&\ptoe p(w)(\ptoe q(w)(\base))
+     \&\ptoe p(w)(\ptoe q(w)(z))
    \end{tikzcd}
 \]
 There are two ways to proceed.
 One is based on the composite of the paths
-$r_1\defeq \ptoe p(\sh_H)(\ptw(\ptoe q(g))(\base))$ and 
-$r_2\defeq \ptw(\ptoe p(g))(\ptoe q(w)(\base))$ of types
+$r_1(g,z)\defeq \ptoe p(\sh_H)(\ptw(\ptoe q(g))(z))$ and 
+$r_2(g,z)\defeq \ptw(\ptoe p(g))(\ptoe q(w)(z))$ of types
 as shown above.\footnote{%
 The other way is analogous, based on the intermediate point
-$\ptoe p(w)(\ptoe q(\sh_H)(\base))$ instead of $\ptoe p(\sh_H)(\ptoe q(w)(\base))$,
-with $r_1\defeq (\ptw(\ptoe p(g)))(\ptoe q(\sh_H)(\base))$
-and $r_2\defeq \ptoe p(w)((\ptw(\ptoe q(g)))(\base))$.}
+$\ptoe p(w)(\ptoe q(\sh_H)(z))$ instead of $\ptoe p(\sh_H)(\ptoe q(w)(z))$,
+with $r_1(g,z)\defeq (\ptw(\ptoe p(g)))(\ptoe q(\sh_H)(z))$
+and $r_2(g,z)\defeq \ptoe p(w)((\ptw(\ptoe q(g)))(z))$.}
  
-Identifications are obtained by induction on $g$.
-In particular, for $g:\sh_H\eqto\sh_H$, we get an identification of
-$\ap{w\mapsto \ev_{\base}(\ptoe p(w)\ptoe q(w))}(g)$ with $r_2\cdot r_1 \jdeq
-\ptw(\ptoe p(g))(\ptoe q(\sh_H)(\base))\cdot \ptoe p(\sh_H)(\ptw(\ptoe q(g))(\base))$.
+We proceed by induction on $g$ and take
+$g\jdeq\refl{\sh_H}$, so $w\jdeq\sh_H$. Then we have
+$\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g) 
+\jdeq \refl{\ptoe p(\sh_H)(\ptoe q(\sh_H)}$. Also in this case,
+both $r_1(g,z)$ and $r_2(g,z)$ are definitionally equal to
+$\refl{\ptoe p(\sh_H)(\ptoe q(\sh_H)(z))}$.
+It follows that $\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g)$ is equal
+to $\inv\ptw(z\mapsto r_2(g,z)\cdot r_1(g,z))$ for any $g:\sh_H\eqto w$. 
+
+We can now reformulate the goal as %\footnote{%
+%The shape $\base$ is arbitrary and $\ptw$ is an equivalence.}
+the equality of the following two paths of 
+type $\base\eqto\base$  %$\id_{\BG_\div}\eqto\id_{\BG_\div}$
+\[
+\ptw\Bigl(\inv{p_\pt} \cdot \ptoe p(g) \cdot p_\pt \cdot
+\inv{q_\pt} \cdot \ptoe q(g) \cdot q_\pt\Bigr)(\base) 
+\quad\text{and the composition of}
+\]
+\begin{align*}
+\ptw\Bigl(\inv p_\pt \cdot \ptoe p(\sh_H)(\inv{q_\pt})\Bigr)(\base)
+&\quad\text{coming from $\inv{(pq)}_\pt$} \\
+\ptw\Bigl(\ptoe p(g)\Bigr)(\ptoe q(\sh_H)(\base))
+&\quad\text{coming from $r_2$} \\
+\ptoe p(\sh_H)(\ptw\Bigl(\ptoe q(g)\Bigr)(\base))
+&\quad\text{coming from $r_1$} \\
+\ptw\Bigl(\ptoe p(\sh_H)(q_\pt)\cdot p_\pt\Bigr)(\base) 
+&\quad\text{coming from $(pq)_\pt$.}
+\end{align*}
+
+
 
 Before we start out on the final calculation we simplify as
 much as possible. There are two main simplifications.
