@@ -341,29 +341,7 @@ equalities:
 
 We continue with elaboration the latter equality in three steps.
 
-First, by \cref{con:ptd-homotopy-compo},\footnote{%
-\label{ft:ptd-homotopy-compo-used}
-\MB{NB pointing paths inverted.} We reproduce
-\cref{fig:ptd-homotopy-compo} for $q:\sh\eqto\sh$ and
-$p:\sh\eqto t$ to be able to do path induction on $p$:
-\[
-\begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \refl{\pt_{\BB G}}\ar[rr,eqr,"{\refl{\refl{}}}"]\ar[ddrr,eql,"{\refl{\refl{}}}"']
-  \& \& \refl{\pt_{\BB G}}  \ar[dd,eqr,"{\ptoe q(\sh_H)}"]
-  \\ \& \mbox{} \& \\
-  \refl{\pt_{\BB G}}\ar[uu,"{\jdeq}"']\ar[rr,eql,"{\refl{\refl{}}}"']\ar[ddrr,eql,"t_\pt"']    
-  \& \mbox{} \& \refl{\pt_{\BB G}}\ar[dd,eqr,"{\ptoe p(\sh_H)}"]
-  \\\& \mbox{} \& \\
- \&\& t(\sh_H)
-  \end{tikzcd}
-\]
-For $p\jdeq\refl{\sh}$, so that $t\jdeq\sh$,
-$p_\pt\cdot\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt)$
-becomes identical to $q_\pt$, represented by the upper right triangle.
-Hence for $p:\sh\eqto\sh$ we get $p_\pt\cdot \ap{\ptoe p(\sh_H)}(q_\pt)$.
-\MB{Reversed order because of path inversion.}   
-}
-we have an identification
+First, by \cref{con:ptd-homotopy-compo}, we have an identification
 $\ptw_*(pq) \eqto \ptw_*(p) \cdot_{\ptw} \ptw_*(q)$,
 with $\cdot_{\ptw}$ as given in \cref{def:ptd-homotopy-compo}.
 This gives an identification of type
@@ -375,12 +353,14 @@ the composition $\ptoe p(\sh_H) \circ \ptoe q(\sh_H)$.
 
 Second, also need a path $(pq)_\pt$ from $\id_{\BG_\div}$ 
 to $(\ptoe{pq})(\sh_H)$. For this we take
-$(pq)_\pt \jdeq \ptoe p(\sh_H)(q_\pt)\cdot p_\pt$,
-which is justified by \cref{ft:ptd-homotopy-compo-used},
-and is also the usual pointing path for the composition
-of the pointed maps $\ptoe p(\sh_H)$ and $\ptoe q(\sh_H)$.
-
-%\ptw((pq)_\pt)(\sh_H) &= \ptoe p(\sh_H)(\ptw(q_\pt)(\sh_H))\cdot \ptw(p_\pt)(\sh_H)\\
+$(pq)_\pt \jdeq (\ptoe p(\sh_H)\cdot\blank)(q_\pt)\cdot p_\pt$,
+which follows from \cref{def:ptd-homotopy-compo}.\footnote{%
+The order is reversed wrt \ref{def:ptd-homotopy-compo}
+because the paths are reversed: 
+$q_\pt: \refl{\BG_\div}\eqto \ptoe q(\sh_H)$,
+so $(\ptoe p(\sh_H)\cdot\blank)(q_\pt): \ptoe p(\sh_H) \eqto 
+\ptoe p(\sh_H) \cdot \ptoe q(\sh_H)$, so $p_\pt$ must be precomposed.   
+}
 
 Third, we elaborate $(\ptoe{pq})(g)$ which is shorthand for 
 $\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g)$. In order to be able to
@@ -442,47 +422,30 @@ to $\inv\ptw(z\mapsto r_2(g,z)\cdot r_1(g,z))$ for any $g:\sh_H\eqto w$.
 We can now reformulate the goal as %\footnote{%
 %The shape $\base$ is arbitrary and $\ptw$ is an equivalence.}
 the equality of the following two paths of 
-type $\base\eqto\base$  %$\id_{\BG_\div}\eqto\id_{\BG_\div}$
+type $\base\eqto\base$ as follows:
 \[
 \ptw\Bigl(\inv{p_\pt} \cdot \ptoe p(g) \cdot p_\pt \cdot
 \inv{q_\pt} \cdot \ptoe q(g) \cdot q_\pt\Bigr)(\base) 
 \quad\text{and the composition of}
 \]
 \begin{align*}
-\ptw\Bigl(\inv p_\pt \cdot \ptoe p(\sh_H)(\inv{q_\pt})\Bigr)(\base)
+\ptw\Bigl(\inv p_\pt \cdot (\ptoe p(\sh_H)\cdot\blank)(\inv{q_\pt})\Bigr)(\base)
 &\quad\text{coming from $\inv{(pq)}_\pt$} \\
 \ptw\Bigl(\ptoe p(g)\Bigr)(\ptoe q(\sh_H)(\base))
 &\quad\text{coming from $r_2$} \\
 \ptoe p(\sh_H)(\ptw\Bigl(\ptoe q(g)\Bigr)(\base))
 &\quad\text{coming from $r_1$} \\
-\ptw\Bigl(\ptoe p(\sh_H)(q_\pt)\cdot p_\pt\Bigr)(\base) 
+\ptw\Bigl((\ptoe p(\sh_H)\cdot\blank)(q_\pt)\cdot p_\pt\Bigr)(\base) 
 &\quad\text{coming from $(pq)_\pt$.}
 \end{align*}
 
+\MB{Plan:}
+Transport the goal along the paths
+$p_\pt: (\id_{\BG_\div}\eqto\ptoe p(\sh_H))$ and
+$q_\pt: (\id_{\BG_\div}\eqto\ptoe q(\sh_H))$.
 
+\MB{W.i.p.}
 
-Before we start out on the final calculation we simplify as
-much as possible. There are two main simplifications.
-One us the transport of the goal along the paths
-$\ptw(p_\pt): (\id_{\BG_\div}\eqto\ptoe p(\sh_H))$,
-$\ptw(q_\pt): (\id_{\BG_\div}\eqto\ptoe q(\sh_H))$, and
-$\ptw((pq)_\pt): (\id_{\BG_\div}$ with $\ptoe p(q(\sh_H)))$.
-Thus the goal is transported to an equivalent, simpler proposition.
-
-The second simplification is that after transporting the
-goal is an equation of paths in $\sh_G\eqto\sh_G$, which
-can be seen to be true using commutativity. \MB{W.i.p.}
-
-
-
-
-%$\inv{(pq)'(\base)_\pt} = \inv{\ptoe p(\sh_H)_\pt}\inv{(\ap{\ptoe p(\sh_H)}(\ptoe q(\sh_H)_\pt))}$. %unfoldings, hopefully not needed
-%\begin{align*}
-%\inv{\ptoe p(\sh_H)_\pt}\cdot\inv{(\ap{\ptoe p(\sh_H)}(\ptoe q(\sh_H)_\pt))}\cdot
-%\ev_{\base}(\ptoe p(g)\ptoe q(g))\cdot \ap{\ptoe p(\sh_H)}(\ptoe q(\sh_H)_\pt)\cdot \ptoe p(\sh_H)_\pt 
-%=\\ \inv{\ptoe p(\sh_H)_\pt} \cdot \ev_{\base}(\ptoe p(g)) \cdot {\ptoe p(\sh_H)_\pt} \cdot
-%\inv{\ptoe q(\sh_H)_\pt} \cdot \ev_{\base}(\ptoe q(g)) \cdot {\ptoe q(\sh_H)_\pt}.
-%\end{align*}
 \end{proof}
 
 \begin{remark}\label{rem:grpHomOK}
