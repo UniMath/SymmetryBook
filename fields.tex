@@ -353,12 +353,12 @@ the composition $\ptoe p(\sh_H) \circ \ptoe q(\sh_H)$.
 
 Second, also need a path $(pq)_\pt$ from $\id_{\BG_\div}$ 
 to $(\ptoe{pq})(\sh_H)$. For this we take
-$(pq)_\pt \jdeq (\ptoe p(\sh_H)\cdot\blank)(q_\pt)\cdot p_\pt$,
+$(pq)_\pt \jdeq \ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt)\cdot p_\pt$,
 which follows from \cref{def:ptd-homotopy-compo}.\footnote{%
 The order is reversed wrt \ref{def:ptd-homotopy-compo}
 because the paths are reversed: 
 $q_\pt: \refl{\BG_\div}\eqto \ptoe q(\sh_H)$,
-so $(\ptoe p(\sh_H)\cdot\blank)(q_\pt): \ptoe p(\sh_H) \eqto 
+so $\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt): \ptoe p(\sh_H) \eqto 
 \ptoe p(\sh_H) \cdot \ptoe q(\sh_H)$, so $p_\pt$ must be precomposed.   
 }
 
@@ -421,21 +421,20 @@ to $\inv\ptw(z\mapsto r_2(g,z)\cdot r_1(g,z))$ for any $g:\sh_H\eqto w$.
 
 We can now reformulate the goal as %\footnote{%
 %The shape $\base$ is arbitrary and $\ptw$ is an equivalence.}
-the equality of the following two paths of 
-type $\base\eqto\base$ as follows:
+the equality of 
 \[
 \ptw\Bigl(\inv{p_\pt} \cdot \ptoe p(g) \cdot p_\pt \cdot
 \inv{q_\pt} \cdot \ptoe q(g) \cdot q_\pt\Bigr)(\base) 
-\quad\text{and the composition of}
 \]
+and the composition of the following four paths: 
 \begin{align*}
-\ptw\Bigl(\inv p_\pt \cdot (\ptoe p(\sh_H)\cdot\blank)(\inv{q_\pt})\Bigr)(\base)
+\ptw\Bigl(\inv p_\pt \cdot \ap{(\ptoe p(\sh_H)\cdot\blank)}(\inv{q_\pt})\Bigr)(\base)
 &\quad\text{coming from $\inv{(pq)}_\pt$} \\
 \ptw\Bigl(\ptoe p(g)\Bigr)(\ptoe q(\sh_H)(\base))
 &\quad\text{coming from $r_2$} \\
 \ptoe p(\sh_H)(\ptw\Bigl(\ptoe q(g)\Bigr)(\base))
 &\quad\text{coming from $r_1$} \\
-\ptw\Bigl((\ptoe p(\sh_H)\cdot\blank)(q_\pt)\cdot p_\pt\Bigr)(\base) 
+\ptw\Bigl(\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt)\cdot p_\pt\Bigr)(\base) 
 &\quad\text{coming from $(pq)_\pt$.}
 \end{align*}
 
@@ -452,9 +451,23 @@ $q_\pt: (\id_{\BG_\div}\eqto\ptoe q(\sh_H))$.
 We explore two alternative approaches to the lemma above,
 generalizing from $\BG$ and $\BB G$.
 Assume that $X$ is a pointed $1$-type and $Y$ a
-pointed $2$-type.
+pointed $2$-type.\footnote{This should not be needed, but intends to
+simplify by making $p=_{\loops X}q$ and $p=_{{\loops}^2 Y}q$
+proof-irrelevant.}
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \loops(X\ptdto Y)\ar[rr,eqr,"{\ptw_*}"]\ar[dd,"{\loops(\loops)}"']
+  \& \& X\ptdto \loops Y  \ar[dd,"{\loops}"]
+  \\ \& \mbox{} \& \\
+  \loops(\loops X\ptdto \loops Y) \ar[rr,eql,"{\ptw_*}"']   
+  \& \mbox{} \& \loops X\ptdto {\loops}^2 Y
+  \end{tikzcd}
+  \caption{\label{fig:ulrik}
+  Fill!} 
+\end{marginfigure}
 
-First approach. We start by constructing a function of type 
+First approach. We start by constructing the function 
+denoted by ${\loops(\loops)}$ in \cref{fig:ulrik}, with type 
 $$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y).$$
 Recall the map $\loops : ((X\ptdto Y)\to(\loops X\ptdto \loops Y))$
 sending  a pointed map $f:X\ptdto Y$ to $\loops(f)$ defined by 
@@ -501,10 +514,26 @@ $\ap{f\mapsto\loops(f)}(q)$ corresponds to $\ptw(\fst(q))$.
 Second approach. This approach uses the equivalence
 between pointed maps from $\Sc\ptdto A$ and loops $\pt_A\eqto\pt_A$
 from \cref{cor:circle-loopspace}.
+\def\Scc{\wip{\Sc}}
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \Sc(X\ptdto Y)\ar[rr,eqr,"{\ptw_*}"]\ar[dd,"{O\circ\blank}"']
+  \& \& X\ptdto \Sc Y  \ar[dd,"{\blank\circ\wip{\blank}}"]
+  \\ \& \mbox{} \& \\
+  \Sc(\Scc X\ptdto \Scc Y) \ar[rr,eql,"{\ptw_*}"']   
+  \& \mbox{} \& \Scc X \ptdto \Sc (\Scc Y)
+  \end{tikzcd}
+  \caption{\label{fig:bjørn}
+  Fill! Here $\Sc A$ means $\Sc\ptdto A$ and the colors track
+  related occurrences of $\Sc$. It is expected that
+  we must use the equivalence $-\id_\Sc : \Sc\ptdto\Scc$ defined by
+  $\base\mapsto\base$ and $\Sloop\mapsto{\Sloop}^{-1}$.} 
+\end{marginfigure}
 
 The map $O: ((X\ptdto Y)\ptdto((\Sc\ptdto X)\ptdto(\Sc\ptdto Y))$
 is easy: $O(f)\defeq (p\mapsto (f\circ p))$.\footnote{%
-Notation $p$ since $(\Sc\ptdto X)\we\loops(X)$.}
+Notation $p$ since $(\Sc\ptdto X)\we\loops(X)$.
+Similarly for $q:\Sc\ptdto (X \ptdto Y)$.}
 We have to point $O$ and calculate 
 \begin{align*}
 O(x\mapsto\pt_Y,\refl{\pt_Y})
@@ -515,11 +544,24 @@ O(x\mapsto\pt_Y,\refl{\pt_Y})
 with the identity in the middle by function extensionality,
 composition of pointed maps and path algebra.
 Hence we can point $O$ by the inverse identification which we denote $\tau$.
-We now get a map of type 
-$$(\Sc\ptdto(X\ptdto Y))\to(\Sc\to((\Sc\ptdto X)\ptdto(\Sc\ptdto Y))$$
-by composition with $O$. This map corresponds to the map of type
-$$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$$
-constructed in the first approach. \MB{W.i.p.}
+Compostion with $O$, $(O\circ\blank)\defeq(q\mapsto O\circ q)$,
+gives the desired map of type\footnote{
+This map corresponds to the map of type
+$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$
+constructed in the first approach.} 
+\[
+(O\circ\blank): (\Sc\ptdto(X\ptdto Y))\to
+(\Sc\to((\Scc\ptdto X)\ptdto(\Scc\ptdto Y)).
+\]
+The right vertical arrow in \cref{fig:bjørn} composes
+$f:X\ptdto(\Sc\ptdto Y)$ with $p:\Scc\ptdto X$ to
+$(f\circ p):\Scc\ptdto (\Sc\ptdto Y)$. Note that the latter type
+and the corresponding type in \cref{fig:bjørn} cannot be consistently
+\wip{colored}: here we expect $-\id_\Sc$ to be used.
+
+
+
+ \MB{W.i.p.}
 \end{remark}
 
 
