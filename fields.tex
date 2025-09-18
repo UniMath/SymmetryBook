@@ -515,53 +515,69 @@ Second approach. This approach uses the equivalence
 between pointed maps from $\Sc\ptdto A$ and loops $\pt_A\eqto\pt_A$
 from \cref{cor:circle-loopspace}.
 \def\Scc{\wip{\Sc}}
-\begin{marginfigure}
+\begin{figure}[h]
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \Sc(X\ptdto Y)\ar[rr,eqr,"{\ptw_*}"]\ar[dd,"{O\circ\blank}"']
-  \& \& X\ptdto \Sc Y  \ar[dd,"{\blank\circ\wip{\blank}}"]
+  \Sc(X\ptdto Y)\ar[rr,eqr,"{e_{X,Y}}"]\ar[dd,"{O\circ\blank}"']
+  \& \& X\ptdto \Sc Y  \ar[dd,"{O'}"] \ar[ddrr,"{O}"]
   \\ \& \mbox{} \& \\
-  \Sc(\Scc X\ptdto \Scc Y) \ar[rr,eql,"{\ptw_*}"']   
-  \& \mbox{} \& \Scc X \ptdto \Sc (\Scc Y)
+  \Sc(\Scc X\ptdto \Scc Y) \ar[rr,eql,"{e_{\Scc X,\Scc Y}}"']   
+  \& \mbox{} \& \Scc X \ptdto \Sc (\Scc Y) \ar[rr,eql,"{\text{swap}}"']
+  \&\&  \Scc X \ptdto \Scc (\Sc Y) 
   \end{tikzcd}
   \caption{\label{fig:bjørn}
   Fill! Here $\Sc A$ means $\Sc\ptdto A$ and the colors track
-  related occurrences of $\Sc$. It is expected that
+  related occurrences of $\Sc$. \MB{Perhaps}
   we must use the equivalence $-\id_\Sc : \Sc\ptdto\Scc$ defined by
-  $\base\mapsto\base$ and $\Sloop\mapsto{\Sloop}^{-1}$.} 
-\end{marginfigure}
+  $\base\mapsto\base$ and $\Sloop\mapsto{\Sloop}^{-1}$
+  for the pointing paths?} 
+\end{figure}
 
-The map $O: ((X\ptdto Y)\ptdto((\Sc\ptdto X)\ptdto(\Sc\ptdto Y))$
-is easy: $O(f)\defeq (p\mapsto (f\circ p))$.\footnote{%
-Notation $p$ since $(\Sc\ptdto X)\we\loops(X)$.
+The map $O: ((X\ptdto Y)\ptdto((\wip{\Sc}\ptdto X)\ptdto(\wip{\Sc}\ptdto Y))$
+is easy: $O(f)\defeq (p\mapsto (f\circ p))$ for any $f:X\ptdto Y$.\footnote{%
+We write $O$ for $O_{X,Y}$, and also for $O_{X,\Sc Y}$.
+Name $p$ since $(\Sc\ptdto X)\we\loops(X)$.
 Similarly for $q:\Sc\ptdto (X \ptdto Y)$.}
-We have to point $O$ and calculate 
+We have to point $O$ and hence calculate 
 \begin{align*}
 O(x\mapsto\pt_Y,\refl{\pt_Y})
 &\jdeq (p\mapsto(x\mapsto\pt_Y,\refl{\pt_Y})\circ p)\\
 &\eqto (p\mapsto (z\mapsto\pt_Y,\refl{\pt_Y}))
- \jdeq\pt_{(\Sc\ptdto X)\ptdto(\Sc\ptdto Y)},
+ \jdeq\pt_{(\wip{\Sc}\ptdto X)\ptdto(\wip{\Sc}\ptdto Y)},
 \end{align*}
 with the identity in the middle by function extensionality,
 composition of pointed maps and path algebra.
 Hence we can point $O$ by the inverse identification which we denote $\tau$.
-Compostion with $O$, $(O\circ\blank)\defeq(q\mapsto O\circ q)$,
-gives the desired map of type\footnote{
+Composition with $O$, \ie $(O\circ\blank)\defeq(q\mapsto O\circ q)$,
+gives the map\footnote{
 This map corresponds to the map of type
 $\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$
 constructed in the first approach.} 
+along the left down arrow in \cref{fig:bjørn}:
 \[
 (O\circ\blank): (\Sc\ptdto(X\ptdto Y))\to
 (\Sc\to((\Scc\ptdto X)\ptdto(\Scc\ptdto Y)).
 \]
-The right vertical arrow in \cref{fig:bjørn} composes
-$f:X\ptdto(\Sc\ptdto Y)$ with $p:\Scc\ptdto X$ to
-$(f\circ p):\Scc\ptdto (\Sc\ptdto Y)$. Note that the latter type
-and the corresponding type in \cref{fig:bjørn} cannot be consistently
-\wip{colored}: here we expect $-\id_\Sc$ to be used.
 
+The middle down arrow in \cref{fig:bjørn} maps
+$g:X\ptdto(\Sc\ptdto Y)$ to $O'(g)$ defined by $O'(g)(p) \defeq
+((z:\Sc) \mapsto ((w:\Scc) \mapsto g(p(w),z)))$.
+This is to be compared to $O(g)(p) \defeq
+((z:\Sc) \mapsto ((w:\Scc) \mapsto g(p(z),w)))$ in the right down arrow. 
 
-
- \MB{W.i.p.}
+Next are the horizontal equivalences, which are easy. The lower left one
+is a special case of the upper one, which we call $e_{X,Y}$ and 
+define by $e_{X,Y}(f) \defeq ((x:X) \mapsto ((z:\Sc) \mapsto f(z,x)))$ for
+any $f:\Sc\ptdto (X\ptdto Y)$.
+The lower right one makes up for the difference between $O$ and $O'$
+so that the right triangle commutes definitionally:\footnote{%
+As unpointed maps. \MB{TODOs:}
+Pointing paths. Check that $O$ corresponds to $\loops$
+and that $e$ corresponds to $\ptw_*$ (should be easy).}
+\[
+\text{swap} \defeq (h\mapsto (p:\Scc X, z:\Sc,w:\Scc) \mapsto h(p,w,z)).
+\]
+The left square in \cref{fig:bjørn} also commutes definitionally,
+as unpointed maps. \MB{W.i.p.}
 \end{remark}
 
 
