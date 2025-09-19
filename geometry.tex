@@ -624,6 +624,89 @@ See~\cref{fig:friezes,fig:friezes-gen}
 \end{sidecaption}
 \end{figure}
 
+\begin{figure}
+  \centering
+\begin{tikzpicture}
+  % forward facing
+  \foreach \i in {0,1,2} {
+    \foreach \j in {0,...,4} {
+      %\node at (-4*\i+\j,\j) {{\Huge\color{black!10}E}};
+      %\node at (-4*\i+\j-2,\j) {\rotatebox[origin=c]{180}{\Huge\color{black!10}E}};
+      \pic at (-4*\i+\j,\j) {tendril={1.5}{1.5}{120}{black!10}};
+      \pic at (-4*\i+\j-2,\j) {tendril={1.5}{1.5}{300}{black!10}};
+      \node[dot] (x\i\j) at (-4*\i+\j,\j) {};
+      \node[dot] (y\i\j) at (-4*\i+\j-2,\j) {};
+    }
+  }
+  \pic at (4,0) {tendril={1.5}{1.5}{120}{black!10}};
+  \node[dot] (xm10) at (4,0) {};
+  \foreach \j in {2,3,4} {
+    \pic at (-4*3+\j,\j) {tendril={1.5}{1.5}{120}{black!10}};
+    \node[dot] (x3\j) at (-4*3+\j,\j) {};
+  }
+  \foreach \j in {0,1,2} {
+    \pic at  (2+\j,\j) {tendril={1.5}{1.5}{300}{black!10}};
+    \node[dot] (ym1\j) at (2+\j,\j) {};
+  }
+  \pic at (-4*3+4-2,4) {tendril={1.5}{1.5}{300}{black!10}};
+  \node[dot] (y34) at (-4*3+4-2,4) {};
+
+  \foreach \i in {0,1,2} {
+    \foreach \j in {0,...,4} {
+      \draw[gena] (x\i\j) to[bend right=10] (y\i\j);
+      \draw[gena] (y\i\j) to[bend right=10] (x\i\j);
+    }
+  }
+  \draw[gena] (xm10) to[bend right=10] (ym10);
+  \draw[gena] (ym10) to[bend right=10] (xm10);
+  \draw[gena] (x34) to[bend right=10] (y34);
+  \draw[gena] (y34) to[bend right=10] (x34);
+
+  \foreach \i in {0,1,2} {
+    \foreach \jp/\jn in {0/1,1/2,2/3,3/4} {
+      \draw[genb] (x\i\jp) to[bend right=10] (y\i\jn);
+      \draw[genb] (y\i\jn) to[bend right=10] (x\i\jp);
+    }
+  }
+  \draw[genb] (xm10) to[bend right=10] (ym11);
+  \draw[genb] (ym11) to[bend right=10] (xm10);
+  \draw[genb] (x33) to[bend right=10] (y34);
+  \draw[genb] (y34) to[bend right=10] (x33);
+
+  \foreach \ip/\in in {0/1,1/2} {
+    \foreach \jp/\jn in {0/1,1/2,2/3,3/4} {
+      \draw[genc] (y\ip\jp) to[bend right=10] (x\in\jn);
+      \draw[genc] (x\in\jn) to[bend right=10] (y\ip\jp);
+    }
+  }
+  \foreach \jp/\jn in {0/1,1/2,2/3} {
+    \draw[genc] (ym1\jp) to[bend right=10] (x0\jn);
+    \draw[genc] (x0\jn) to[bend right=10] (ym1\jp);
+  }
+  \foreach \jp/\jn in {1/2,2/3,3/4} {
+    \draw[genc] (y2\jp) to[bend right=10] (x3\jn);
+    \draw[genc] (x3\jn) to[bend right=10] (y2\jp);
+  }
+  % \node[dot] (x00) at (0,0) {};
+
+
+
+%    \begin{scope}[gena]
+%      \foreach \p/\n in {0/1, 1/2, 2/3, 3/4, 4/5, 5/6, 6/7} {
+%        \draw (x\p)--(x\n);
+%        \draw (y\n)--(y\p);
+%      }
+%    \end{scope}
+%    \begin{scope}[genb]
+%      \foreach \n in {1,2,...,6} {
+%        \draw (x\n) to[bend right] (y\n);
+%        \draw (y\n) to[bend right] (x\n);
+%      }
+%    \end{scope}
+  \end{tikzpicture}
+  \caption{\label{fig:carpet}Tricycle on carpet.}
+\end{figure}
+
 \section{Incidence geometries and the Levi graph}
 
 \section{Affine geometry}
