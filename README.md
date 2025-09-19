@@ -39,7 +39,7 @@ This book will be a textbook written in the univalent style, taking advantage of
   + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker);
 - Given a: A, we refer to elements of a ⥱ a as either symmetries *of* a, or symmetries *in* A.
 
-## Current draft of the book
+## Current draft of the book (outdated since CI stopped)
 
 Go [here for the current draft of the book](https://unimath.github.io/SymmetryBook/book.pdf).
 
