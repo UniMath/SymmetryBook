@@ -41,7 +41,7 @@ This book will be a textbook written in the univalent style, taking advantage of
 
 ## Current draft of the book
 
-Go [here for the current draft of the book](https://unimath.github.io/SymmetryBook/book.pdf).
+Go [here for the current draft of the book](https://marcbezem.github.io/SymmetryMirror/book.pdf).
 
 ## Compiling the book
 
