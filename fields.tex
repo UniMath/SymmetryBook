@@ -238,6 +238,121 @@ that $\refl{g(x)}\cdot r$ is definitionally equal to $r$,
 for all $x:X$ and $r:f(x)\eqto g(x)$.
 \end{implementation}
 
+Given a pointed type $A$, recall from \cref{cor:circle-loopspace}
+the equivalence $\ev_A$ from $\Sc\ptdto A$ to $\loops{A}$.
+Also recall that $\ev$ sends $f:\Sc\ptdto A$ to 
+$\inv{f_\pt}\cdot f(\Sloop)\cdot f_\pt$, and that the
+inverse $\inv{\ev}$ sends $p:\loops{A}$ to the pointed map
+$f:\Sc\ptdto A$ defined by  $f(\base)\defeq\pt_A$ and $f(\Sloop)\defis p$,
+pointed by reflexivity.\footnote{When $A$ is clear from the context 
+we may simply write $\ev$. The equivalence $\ev$ can itself be
+pointed as follows. The point of $\Sc\ptdto A$ is the constant map 
+$\cst{\pt_A}$, pointed by reflexivity, which is sent by $\ev$ 
+to $\refl{\pt_A}\cdot \cst{\pt_A}(\Sloop)\cdot \refl{\pt_A}$. Now,
+$\cst{\pt_A}(\Sloop)$ can be identified with $\refl{\pt_A}$, giving
+a pointing path $\refl{\pt_A} \eqto \ev_A(\cst{\pt_A})$.}
+
+In order to get a more uniform notation when using this equivalence,
+we introduce the following abbreviation, mostly used in diagrams.
+\begin{definition}\label{def:prefix-Sc}
+Define $\Sc:\UUp\to\UUp$ by $\Sc A\defeq (\Sc\ptdto A)$, $A:\UUp$.\qedhere 
+\end{definition}
+
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \Sc A\ar[rr,"O(f)"]\ar[dd,eql,"\ev_A"']
+  \& \&\Sc B  \ar[dd,eqr,"\ev_B"]
+  \\ \& \mbox{} \& \\
+  \loops{A}\ar[rr,"\loops(f)"'] \& \& \loops{B}
+  \end{tikzcd}
+  \caption{\label{fig:Omega-O} $\loops(f)$ and $O(f)$ correspond.} 
+\end{marginfigure}
+
+\begin{definition}\label{def:O-mega}
+Let $A$ and $B$ be pointed types and 
+let $f: A\ptdto B$ be a pointed map.
+Define $O(f):(\Sc\ptdto A)\ptdto(\Sc\ptdto B)$ to be composition with $f$,
+that is, $O(f)\defeq (f\circ\blank)$. This defines a 
+map $O_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$.
+We point $O$\footnote{%
+We often simply write $O$ for $O_{A,B}$.
+%The point of $A\ptdto B$ is $(x\mapsto\pt_B,\refl{\pt_B})$.
+Below we name the variable $p$ since $(\Sc\ptdto A)\we\loops(A)$.
+Similarly for $q:\Sc\ptdto (A \ptdto B)$, later.}
+as follows: calculate 
+\begin{align*}
+O(\pt_{A\ptdto B})
+&\jdeq (p\mapsto((x\mapsto\pt_B,\refl{\pt_B})\circ p))\\
+&\eqto (p\mapsto (z\mapsto\pt_B,\refl{\pt_B}))
+ \jdeq\pt_{(\Sc\ptdto A)\ptdto(\Sc\ptdto B)},
+\end{align*}
+with the identity in the middle by function extensionality,
+composition of pointed maps and path algebra.
+Hence we point $O$ by the inverse identification which we denote $\tau$.
+\end{definition}
+
+\begin{xca}\label{xca:Omega-O}
+Let conditions be as in \cref{def:O-mega}.
+Give an identification of $O(f)\circ e_A$ 
+and $e_B \circ \loops f$, as represented by \cref{fig:Omega-O}.
+\end{xca}
+
+Composition with $O$, \ie $(O\circ\blank)\defeq(q\mapsto O\circ q)$,
+gives the map\footnote{
+This map corresponds to a map of type
+$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$.} 
+\[
+(O\circ\blank): (\Sc\ptdto(A\ptdto B))\to
+(\Sc\to((\Sc\ptdto A)\ptdto(\Sc\ptdto B)).
+\]
+
+\begin{construction}\label{con:swap-ptd-doms}
+Let $X$, $Y$ and $Z$ be pointed types. We use $T_\div$ to
+denote the underlying type of a pointed type $T$.
+Then we have a pointed equivalence 
+\[
+\swap: (X\ptdto (Y\ptdto Z)) \ptdto (Y\ptdto (X\ptdto Z))
+\] 
+such that the totally unpointed map $\swap_\div$ \MB{(add definition?)}
+\[
+\swap_\div:(X_\div\to (Y_\div\to Z_\div))\to(Y_\div\to (X_\div\to Z_\div))
+\]
+can be identified with the map swapping the two arguments of any input map. 
+\end{construction}
+\begin{implementation}{con:swap-ptd-doms}
+Various authors, difficult!
+\end{implementation}
+
+
+\begin{definition}\label{def:O'}
+Let $A$ and $B$ be pointed types. Define the map
+map $O'_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$
+by $O'_{A,B}\defeq (O_{A,B} \circ\swap)$.\footnote{%
+Again we often write $O'$ for $O'_{A,B}$.} 
+ \end{definition}
+
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \Sc(X\ptdto Y)\ar[rr,eqr,"\swap"] \ar[dd,eql,"{\ev}"']
+  \& \& X\ptdto \Sc Y \ar[dd,eqr,"{\ev}"]
+  \\ \& \mbox{} \& \\
+  \loops(X\ptdto Y)\ar[rr,eql,"\ptw_*"'] \& \& X\ptdto \loops Y 
+  \end{tikzcd}
+  \caption{\label{fig:ptw-swap-ptd-doms} 
+  Domain swap and $\protect\ptw_*$ correspond.} 
+\end{marginfigure}
+
+\begin{construction}\label{con:ptw-swap-ptd-doms}
+Let $X$ and $Y$ be pointed types and 
+consider the equivalence $\ptw_*: \loops(X\ptdto Y) \to (X\ptdto \loops Y)$
+from \cref{con:identity-ptd-maps} and $\swap$ and $\ev$ as above. 
+Then we have an identification of $\swap(f)\circ \ev$ 
+and $\ev \circ \ptw_* f$, as represented by \cref{fig:ptw-swap-ptd-doms}.
+\end{construction}
+\begin{implementation}{con:ptw-swap-ptd-doms}
+\MB{TBD}
+\end{implementation}
+
 Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
 $\BB$ from the type of abelian groups to the type of pointed
 simply connected $2$-types. Let $H:\Group$ be a group and let
@@ -257,17 +372,71 @@ Define the group $\grpHom(H,G)$ of homomorphisms from $H$ to $G$ by
 \]
 \end{definition}
 
-The above definition of $\grpHom(H,G)$ is indeed serving its purpose:
+The following lemma identifies the group $\grpHom(H,G)$ as the 
+delooping of $\absHom_{\ptw}(\abstr(H),\abstr(G))$, 
+the abelian abstract group of abstract homomorphisms with
+pointwise operations, as given by
+\cref{xca:abs-homgroup} and \cref{xca:abstract-group-of-maps}.
+Consequently, $\grpHom(H,G)$ is an abelian group.
+
 
 \begin{lemma}\label{lem:grpHomOK}
-Let conditions be as in \cref{def:AbHomgroup}. Abbreviate the shape
-$((w\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}})$ of $\grpHom(H,G)$ by $\sh$. 
-Consider the following chain of equivalences\footnote{%
+Let conditions be as in \cref{def:AbHomgroup}. %Abbreviate the shape
+%$((w\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}})$ of $\grpHom(H,G)$ by $\sh$. 
+Consider the diagram in \cref{fig:bjørn}. This diagram commutes and
+the composite of the chain of equivalences 
+from $\USym\grpHom(H,G)$ to $\absHom(\abstr(H),\abstr(G))$
+defines an abstract isomorphism from $\abstr(\grpHom(H,G))$ 
+to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
+\end{lemma}
+
+\def\Scc{\inred{\Sc}}
+\begin{figure}[h]
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \USym{\grpHom(H,G)}\ar[dd,equivl,"{\inv{\ev}}"']
+  \\ \& \mbox{} \& \\
+  \Sc(X\ptdto Y)
+    \ar[rr,equivr,"{\swap_{\Sc,X}}"]
+    \ar[dd,"{O\circ\blank}"']
+  \& \& X\ptdto \Sc Y  
+    \ar[dd,"{O'}"] \ar[drr,equivl,"{O}"']
+    \ar[rr,equivr,"{(\ev\circ\blank)}"]
+  \& \& \BHom(H,G) 
+  \\ 
+  \&\&\&\& \sum_{f:\Scc X \ptdto \Scc (\Sc Y)} P(f)
+    \ar[rr,equivl]
+    \ar[d,"{\fst}"]
+  \& \& \absHom(\abstr(H),\abstr(G))
+  \\
+  \Sc(\Scc X\ptdto \Scc Y) 
+    \ar[rr,equivl,"{\swap_{\Sc,\Scc X}}"']   
+  \& \& \Scc X \ptdto \Sc (\Scc Y) 
+    \ar[rr,equivl,"{(\swap\circ\blank)}"']
+  \& \& \Scc X \ptdto \Scc (\Sc Y) 
+  \end{tikzcd}
+  \caption{\label{fig:bjørn}
+  Legenda:
+  $X\defeq\BH$;
+  $Y\defeq\protect\BB G$;
+  $\protect\ev$ is from \cref{cor:circle-loopspace};
+  $\swap$ is from \cref{con:ptw-swap-ptd-doms};
+  $O$ is from \cref{def:O-mega};
+  $O'$ is from \cref{def:O'};
+  $P(f)$ expresses that $\protect\ev\circ f\circ \inv{\protect\ev}$ is a homomorphism.
+  Moreover, $\Sc A$ means $\Sc\ptdto A$ and the colors track
+  related occurrences of $\Sc$.
+  }
+\end{figure}
+
+\DELETE{
+
+\footnote{%
 The first is $\ptw_*$ from \cref{con:identity-ptd-maps} 
 (with path inverted). 
 The second is composition with $\ev_{\sh_G}$
 from \cref{sec:center-group}, which is an equivalence since $G$ is abelian.
 The third is essentially $\abstr$ from \cref{def:abstrisfunctor}.}
+
 \begin{align*}
 (\sh\eqto\sh) &\equivto 
 \sum_{h:\BH_\div\to(\pt_{\BB G}\eqto\pt_{\BB G})} 
@@ -277,9 +446,7 @@ The third is essentially $\abstr$ from \cref{def:abstrisfunctor}.}
 % &\jdeq\qquad~\BHom(G,G)\\
  &\equivto \qquad \absHom(\abstr(H),\abstr(G)).
 \end{align*}
-Then the composite of the above chain defines an abstract isomorphism
-from $\abstr(\grpHom(H,G))$ to $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
-\end{lemma}
+
 \begin{proof}
 %$\pathpair{h}{h_\pt}:\sh\eqto\sh$
 Given $p:(\sh\eqto\sh)$, the equivalence $\ptw_*$ from 
@@ -447,6 +614,7 @@ $q_\pt: (\id_{\BG_\div}\eqto\ptoe q(\sh_H))$.
 
 \end{proof}
 
+
 \begin{remark}\label{rem:grpHomOK}
 We explore two alternative approaches to the lemma above,
 generalizing from $\BG$ and $\BB G$.
@@ -510,75 +678,9 @@ so by function extensionality equivalent to
 $\loops(X)\to\loops(\loops(Y))$. Under this equivalence,
 $\ap{f\mapsto\loops(f)}(q)$ corresponds to $\ptw(\fst(q))$. 
 \MB{TODO: use $\snd(q)$ to get a pointing path and check everything!}
-
-Second approach. This approach uses the equivalence
-between pointed maps from $\Sc\ptdto A$ and loops $\pt_A\eqto\pt_A$
-from \cref{cor:circle-loopspace}.
-\def\Scc{\inred{\Sc}}
-\begin{figure}[h]
-  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \Sc(X\ptdto Y)\ar[rr,eqr,"{e_{X,Y}}"]\ar[dd,"{O\circ\blank}"']
-  \& \& X\ptdto \Sc Y  \ar[dd,"{O'}"] \ar[ddrr,"{O}"]
-  \\ \& \mbox{} \& \\
-  \Sc(\Scc X\ptdto \Scc Y) \ar[rr,eql,"{e_{\Scc X,\Scc Y}}"']   
-  \& \mbox{} \& \Scc X \ptdto \Sc (\Scc Y) \ar[rr,eql,"{\text{swap}}"']
-  \&\&  \Scc X \ptdto \Scc (\Sc Y) 
-  \end{tikzcd}
-  \caption{\label{fig:bjørn}
-  Fill! Here $\Sc A$ means $\Sc\ptdto A$ and the colors track
-  related occurrences of $\Sc$. \MB{Perhaps}
-  we must use the equivalence $-\id_\Sc : \Sc\ptdto\Scc$ defined by
-  $\base\mapsto\base$ and $\Sloop\mapsto{\Sloop}^{-1}$
-  for the pointing paths?} 
-\end{figure}
-
-The map $O: ((X\ptdto Y)\ptdto((\Scc\ptdto X)\ptdto(\Scc\ptdto Y))$
-is easy: $O(f)\defeq (p\mapsto (f\circ p))$ for any $f:X\ptdto Y$.\footnote{%
-We write $O$ for $O_{X,Y}$, and also for $O_{X,\Sc Y}$.
-Name $p$ since $(\Sc\ptdto X)\we\loops(X)$.
-Similarly for $q:\Sc\ptdto (X \ptdto Y)$.}
-We have to point $O$ and hence calculate 
-\begin{align*}
-O(x\mapsto\pt_Y,\refl{\pt_Y})
-&\jdeq (p\mapsto(x\mapsto\pt_Y,\refl{\pt_Y})\circ p)\\
-&\eqto (p\mapsto (z\mapsto\pt_Y,\refl{\pt_Y}))
- \jdeq\pt_{(\Scc\ptdto X)\ptdto(\Scc\ptdto Y)},
-\end{align*}
-with the identity in the middle by function extensionality,
-composition of pointed maps and path algebra.
-Hence we can point $O$ by the inverse identification which we denote $\tau$.
-Composition with $O$, \ie $(O\circ\blank)\defeq(q\mapsto O\circ q)$,
-gives the map\footnote{
-This map corresponds to the map of type
-$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$
-constructed in the first approach.} 
-along the left down arrow in \cref{fig:bjørn}:
-\[
-(O\circ\blank): (\Sc\ptdto(X\ptdto Y))\to
-(\Sc\to((\Scc\ptdto X)\ptdto(\Scc\ptdto Y)).
-\]
-
-The middle down arrow in \cref{fig:bjørn} maps
-$g:X\ptdto(\Sc\ptdto Y)$ to $O'(g)$ defined by $O'(g)(p) \defeq
-((z:\Sc) \mapsto ((w:\Scc) \mapsto g(p(w),z)))$.
-This is to be compared to $O(g)(p) \defeq
-((z:\Sc) \mapsto ((w:\Scc) \mapsto g(p(z),w)))$ in the right down arrow. 
-
-Next are the horizontal equivalences, which are easy. The lower left one
-is a special case of the upper one, which we call $e_{X,Y}$ and 
-define by $e_{X,Y}(f) \defeq ((x:X) \mapsto ((z:\Sc) \mapsto f(z,x)))$ for
-any $f:\Sc\ptdto (X\ptdto Y)$.
-The lower right one makes up for the difference between $O$ and $O'$
-so that the right triangle commutes definitionally:\footnote{%
-As unpointed maps. \MB{TODOs:}
-Pointing paths. Check that $O$ corresponds to $\loops$
-and that $e$ corresponds to $\ptw_*$ (should be easy).}
-\[
-\text{swap} \defeq (h\mapsto (p:\Scc X, z:\Sc,w:\Scc) \mapsto h(p,w,z)).
-\]
-The left square in \cref{fig:bjørn} also commutes definitionally,
-as unpointed maps. \MB{W.i.p.}
 \end{remark}
+
+}%end \DELETE
 
 
 \subsection{Concrete rings}\label{sec:concrings}
