@@ -250,7 +250,7 @@ pointed as follows. The point of $\Sc\ptdto A$ is the constant map
 $\cst{\pt_A}$, pointed by reflexivity, which is sent by $\ev$ 
 to $\refl{\pt_A}\cdot \cst{\pt_A}(\Sloop)\cdot \refl{\pt_A}$. Now,
 $\cst{\pt_A}(\Sloop)$ can be identified with $\refl{\pt_A}$, giving
-a pointing path $\refl{\pt_A} \eqto \ev_A(\cst{\pt_A})$.}
+a pointing path $\refl{\pt_A} \eqto \ev_A(\cst{\pt_A},\refl{\pt_A})$.}
 
 In order to get a more uniform notation when using this equivalence,
 we introduce the following abbreviation, mostly used in diagrams.
@@ -260,8 +260,8 @@ Define $\Sc:\UUp\to\UUp$ by $\Sc A\defeq (\Sc\ptdto A)$, $A:\UUp$.\qedhere
 
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \Sc A\ar[rr,"O(f)"]\ar[dd,eql,"\ev_A"']
-  \& \&\Sc B  \ar[dd,eqr,"\ev_B"]
+  \Sc A\ar[rr,"O(f)"]\ar[dd,equivl,"\ev_A"']
+  \& \&\Sc B  \ar[dd,equivr,"\ev_B"]
   \\ \& \mbox{} \& \\
   \loops{A}\ar[rr,"\loops(f)"'] \& \& \loops{B}
   \end{tikzcd}
@@ -272,30 +272,118 @@ Define $\Sc:\UUp\to\UUp$ by $\Sc A\defeq (\Sc\ptdto A)$, $A:\UUp$.\qedhere
 Let $A$ and $B$ be pointed types and 
 let $f: A\ptdto B$ be a pointed map.
 Define $O(f):(\Sc\ptdto A)\ptdto(\Sc\ptdto B)$ to be composition with $f$,
-that is, $O(f)\defeq (f\circ\blank)$. This defines a 
-map $O_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$.
-We point $O$\footnote{%
-We often simply write $O$ for $O_{A,B}$.
-%The point of $A\ptdto B$ is $(x\mapsto\pt_B,\refl{\pt_B})$.
-Below we name the variable $p$ since $(\Sc\ptdto A)\we\loops(A)$.
-Similarly for $q:\Sc\ptdto (A \ptdto B)$, later.}
-as follows: calculate 
+that is, $O(f)\defeq (f\circ\blank)$.\footnote{%
+Here we mean composition as pointed maps,
+so that the pointing path $O(f)(p)_\pt$ is defined in 
+\cref{def:pointedtypes} as $f(p_\pt)\cdot f_\pt$.}
+We point $O(f)$ as follows: calculate 
 \begin{align*}
-O(\pt_{A\ptdto B})
-&\jdeq (p\mapsto((x\mapsto\pt_B,\refl{\pt_B})\circ p))\\
-&\eqto (p\mapsto (z\mapsto\pt_B,\refl{\pt_B}))
- \jdeq\pt_{(\Sc\ptdto A)\ptdto(\Sc\ptdto B)},
+  O(f)(\pt_{\Sc\ptdto A})
+  &\jdeq O(f)(\cst{\pt_A},\refl{\pt_A})
+   \jdeq f\circ (\cst{\pt_A},\refl{\pt_A})
+\\
+  &\jdeq (\cst{f(\pt_A)},f_\pt)
+  \eqto (\cst{\pt_B},\refl{\pt_B})
+   \jdeq\pt_{\Sc\ptdto B},
 \end{align*}
-with the identity in the middle by function extensionality,
-composition of pointed maps and path algebra.
-Hence we point $O$ by the inverse identification which we denote $\tau$.
+where the identity in the second line is the reversed type of 
+the pointing path of $O(f)$ under construction.
+Using \cref{con:identity-ptd-maps}, function extensionality for pointed maps,
+we set $O(f)_\pt\defeq\inv{\ptw_*}(\cst{f_\pt},\refl{\refl{\pt_B}}')$.%
+\footnote{Here $\refl{f_\pt}' : 
+f_\pt \cdot \refl{\pt_B} \eqto f_\pt$, 
+as $f_\pt \cdot \refl{\pt_B}$ is not definitionally $f_\pt$,
+so a minor additional transport is required.}
+Indeed, $\cst{f_\pt} : \Sc\to(\pt_B \eqto f(\pt_A))$ 
+transports $\refl{\pt_B}$ to $f_\pt$.
 \end{definition}
+Above we have defined a 
+map $O_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$,
+and we often simply write $O$ for $O_{A,B}$.
 
-\begin{xca}\label{xca:Omega-O}
-Let conditions be as in \cref{def:O-mega}.
-Give an identification of $O(f)\circ e_A$ 
-and $e_B \circ \loops f$, as represented by \cref{fig:Omega-O}.
-\end{xca}
+\begin{construction}\label{con:Omega-O}
+Let $A$ and $B$ be pointed types and 
+let $f: A\ptdto B$ be a pointed map.
+Then we have an identification of $O(f)\circ \ev_A$ 
+and $\ev_B \circ {\loops(f)}$, as represented by \cref{fig:Omega-O}.
+Consequently, we have that $e\defeq(\inv{\ev_B}\circ{{\blank}\circ\ev_A})$
+is a pointed equivalence of type 
+$(\loops A\ptdto\loops B)\equivto(\Sc A\ptdto\Sc B)$
+with $O \eqto (e\circ \loops)$. 
+\end{construction}
+\begin{implementation}{con:Omega-O}
+Elaborating the situation in \cref{fig:Omega-O}, we have to
+identify (1) and (2) for all $(p,p_\pt)$ by a map $e$ and
+give an identification to fill the following diagram: 
+
+\begin{tikzcd}[ampersand replacement=\&]
+  \& \&\inv{f_\pt}\cdot f(\cst{\pt_A}(\Sloop)\cdot \refl{})\cdot f_\pt  \ar[dddd,eqr,"{e(\cst{\pt_A},\refl{\pt_A})}"]
+\\
+  \&\loops(f)(\refl{\pt_A})
+   \ar[ru,eqr,"{\loops(f)((\ev_A)_\pt)}"]
+\\
+  \refl{\pt_B}
+  \ar[rd,eql,"{(\ev_B)_\pt}"'] 
+  \ar[ru,eqr,"{\loops(f)_{\pt}}"]
+\\
+ \&(\cst{\pt_B},\refl{\pt_B})
+    \ar[rd,eql,"{\ev_B(O(f)_\pt)}"']  
+\\
+ \& \&\inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt 
+\end{tikzcd}
+
+\MB{Ongoing attempt: path induction on $f_\pt$.}
+%$\loops(f)((\ev_A)_\pt)\cdot\loops(f)_{\pt}$ to $\ev_B(O(f)_\pt)\cdot (\ev_B)_\pt$.
+\end{implementation}
+
+\begin{figure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  (\Sc\ptdto A)\ar[rr,"\ev_A"]
+  \& \& \loops A \ar[rr,"{\loops(f)}"]
+  \& \& \loops B 
+  \\ 
+  (p,p_\pt)\ar[rr,mapsto]
+  \& \& \inv{p_\pt}\cdot p(\Sloop)\cdot p_\pt \ar[rr,mapsto]
+  \& \& \inv{f_\pt}\cdot f(\inv{p_\pt}\cdot p(\Sloop)\cdot p_\pt)\cdot f_\pt
+   \quad (1)
+  \\
+  (\cst{\pt_A},\refl{\pt_A})\ar[rr,mapsto]
+  \& \& \cst{\pt_A}(\Sloop)\cdot \refl{\pt_A} \ar[rr,mapsto]
+  \& \& \inv{f_\pt}\cdot f(\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A})\cdot f_\pt
+  \\
+  \& \& \refl{\pt_A}\ar[u,eqr,"{(\ev_A)_\pt}"]
+  \& \& \loops(f)(\refl{\pt_A}) \ar[u,eqr,"{\loops(f)((\ev_A)_\pt)}"]
+  \\
+  \& \& 
+  \& \& \refl{\pt_B}\ar[u,eqr,"{\loops(f)_{\pt}}"]
+  \\
+  \& \mbox{}\arrow[dash]{r} \& \mbox{}\arrow[dash]{r} \& \mbox{} 
+  \\
+  (\Sc\ptdto A)\ar[rr,"O(f)"]
+  \& \& (\Sc\ptdto B) \ar[rr,"{\ev_B}"]
+  \& \& \loops B
+  \\ 
+  (p,p_\pt)\ar[rr,mapsto]
+  \& \& (f\circ p,f(p_\pt)\cdot f_\pt) \ar[rr,mapsto]
+  \& \& \inv{(f(p_\pt)\cdot f_\pt)}\cdot (f\circ p)(\Sloop)
+  \cdot (f(p_\pt)\cdot f_\pt)  \quad (2)
+  \\
+  (\cst{\pt_A},\refl{\pt_A})\ar[rr,mapsto]
+  \& \& (\cst{f(\pt_A)},f_\pt) \ar[rr,mapsto]
+  \& \& \inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt
+  \\
+  \& \& (\cst{\pt_B},\refl{\pt_B})\ar[u,eqr,"{O(f)_\pt}"]
+  \& \& \cst{\pt_B}(\Sloop)\cdot \refl{\pt_B} \ar[u,eqr,"{\ev_B(O(f)_\pt)}"]
+  \\
+  \& \& 
+  \& \& \refl{\pt_B}\ar[u,eqr,"{(\ev_B)_\pt}"] 
+  \end{tikzcd}
+  \caption{\label{fig:Omega-O} 
+  Elaborating the two pointed maps $(\Sc\ptdto A)\ptdto\loops B$.} 
+\end{figure}
+
+
+
 
 Composition with $O$, \ie $(O\circ\blank)\defeq(q\mapsto O\circ q)$,
 gives the map\footnote{
@@ -313,10 +401,11 @@ Then we have a pointed equivalence
 \[
 \swap: (X\ptdto (Y\ptdto Z)) \ptdto (Y\ptdto (X\ptdto Z))
 \] 
-such that the totally unpointed map $\swap_\div$ \MB{(add definition?)}
-\[
-\swap_\div:(X_\div\to (Y_\div\to Z_\div))\to(Y_\div\to (X_\div\to Z_\div))
-\]
+such that the totally unpointed map $\swap_{\div\div}$, defined by
+\begin{align*}
+\swap_{\div\div}&\defeq (f\mapsto(y\mapsto (x\mapsto f(x)(y)))) \\
+ &:~(X_\div\to (Y_\div\to Z_\div))\to(Y_\div\to (X_\div\to Z_\div))
+\end{align*}
 can be identified with the map swapping the two arguments of any input map. 
 \end{construction}
 \begin{implementation}{con:swap-ptd-doms}
@@ -327,7 +416,7 @@ Various authors, difficult!
 \begin{definition}\label{def:O'}
 Let $A$ and $B$ be pointed types. Define the map
 map $O'_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$
-by $O'_{A,B}\defeq (O_{A,B} \circ\swap)$.\footnote{%
+by $O'_{A,B}\defeq (O_{A,B} \circ\inv{\swap}\circ\blank)$.\footnote{%
 Again we often write $O'$ for $O'_{A,B}$.} 
  \end{definition}
 
@@ -400,8 +489,8 @@ to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
     \ar[dd,"{O\circ\blank}"']
   \& \& X\ptdto \Sc Y  
     \ar[dd,"{O'}"] \ar[drr,equivl,"{O}"']
-    \ar[rr,equivr,"{(\ev\circ\blank)}"]
-  \& \& \BHom(H,G) 
+    %\ar[rr,equivr,"{(\ev\circ\blank)}"]
+  %\& \& \BHom(H,G) 
   \\ 
   \&\&\&\& \sum_{f:\Scc X \ptdto \Scc (\Sc Y)} P(f)
     \ar[rr,equivl]
@@ -422,11 +511,23 @@ to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
   $\swap$ is from \cref{con:ptw-swap-ptd-doms};
   $O$ is from \cref{def:O-mega};
   $O'$ is from \cref{def:O'};
-  $P(f)$ expresses that $\protect\ev\circ f\circ \inv{\protect\ev}$ is a homomorphism.
+  $P(f)$ expresses that $\protect\ev\circ f\circ \inv{\protect\ev}$
+  classifies a homomorphism.
   Moreover, $\Sc A$ means $\Sc\ptdto A$ and the colors track
   related occurrences of $\Sc$.
   }
 \end{figure}
+
+\begin{proof}
+\begin{enumerate}
+\item In the right square, the image of $O$ is indeed given by $P$.
+\item The right square commutes.
+$O'\jdeq O_{A,B} \circ(\inv{\swap}\circ\blank)$
+\item The left square commutes. First we observe that the totally
+unpointed maps commute definitionally ...
+\end{enumerate}
+\end{proof}
+
 
 \DELETE{
 
