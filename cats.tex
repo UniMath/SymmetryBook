@@ -1,5 +1,8 @@
 \chapter{A categorical interlude}
 \label{ch:cats}
+\marginnote{%
+  This chapter introduces some useful terminology that we'll use in the rest of the book.
+  It can probably be skipped at a first reading, and only consulted as needed.}
 
 We have seen that many types carry a notion of morphism between its elements:
 \begin{itemize}
@@ -37,9 +40,10 @@ Here we give a brief primer\footnote{%
   give traditional expositions,
   and \citeauthor{MacLaneWorking}\footnotemark{}
   gives a comprehensive treatment.}%
-\footcitetext{hottbook}%
-\footcitetext{RiehlContext}%
-\footcitetext{AwodeyCat}
+\addtocounter{footnote}{-3}\footcitetext{hottbook}%
+\stepcounter{footnote}\footcitetext{AwodeyCat}%
+\stepcounter{footnote}\footcitetext{RiehlContext}%
+\stepcounter{footnote}\footcitetext{MacLaneWorking}%
 on category in order to systematize what we've done so far,
 and prepare for the main result of the next chapter, which is to give an
 \emph{equivalence of categories} between the categories of concrete and abstract groups.
@@ -67,7 +71,11 @@ There are identity morphisms and composition of morphisms,
 and this motivates the following definition:
 
 \begin{definition}\label{def:wild-cat}
-  A \emph{wild precategory}\index{category!wild precategory}
+  A \emph{wild precategory}\index{category!wild precategory}\footnote{%
+    See below for remarks on the terminology.
+    Adding further properties to the data given here eventually
+    recovers the notion of a category \emph{simpliciter},
+    see \cref{def:category}.}
   consists of the following data:
   \begin{enumerate}
   \item\label{struc:cat-ob} A type $\var{Ob}$, called the \emph{type of objects}.
@@ -79,7 +87,16 @@ and this motivates the following definition:
   \item\label{struc:cat-id} For each object $A : \var{Ob}$,
     an \emph{identity arrow} $\id_A : A \to A$.
   \item\label{struc:cat-comp} For each pair of arrows $f : A \to B$ and $g : B \to C$,
-    a \emph{composite arrow} $g\circ f : A \to C$.
+    a \emph{composite arrow} $g\circ f : A \to C$.\footnote{%
+      To be fully explicit, the composition operation has
+      type
+      \[
+        \prod_{A,B,C:\var{Ob}}(B \to C) \to (A \to B) \to (A \to C),
+      \]
+      and we might denote it $g \circ_{A,B,C} f$.
+      Since the objects $A$, $B$, and $C$ can often be inferred,
+      we leave them out, lest the notation becomes too heavy.
+      A similar remark goes for the other operations.}
   \item\label{struc:cat-unit-laws} For each arrow $f : A \to B$,
     a pair of identifications
     \[
@@ -95,6 +112,7 @@ and this motivates the following definition:
   If $\mathcal C \jdeq (\var{Ob},\hom,\id,\lambda,\rho,\alpha)$
   is a wild precategory, then we write $A, B : \mathcal C$ instead of $A, B : \var{Ob}$
   to indicate that $A, B$ are elements of the underlying type of objects of $\mathcal C$.
+  We also write $\constant{Ob}(\mathcal C)$ for this type.
   We may write $f, g : A \to_{\mathcal C} B$ to emphasize where the arrows $f$ and $g$ live, if needed,
   and sometimes $\hom_{\mathcal C}(A,B)$ or $\mathcal C(A,B)$, instead of $\hom(A,B)$.
 \end{definition}
@@ -157,7 +175,7 @@ This motivates the following definition.
 Most (wild) precategories we shall meet satisfy a further condition
 that makes them better behaved than arbitrary precategories:
 a \emph{univalence} condition.
-In fact, for the wild precategory of types and function,
+In fact, for the wild precategory of types and functions,
 this condition is exactly the Univalence Axiom (\cref{def:univalence})!
 
 In order to define this, we need the notion corresponding to equivalence
@@ -196,14 +214,14 @@ and every identity arrow is an isomorphism.
 We write $\inv f$ for the inverse of an isomorphism $f$.
 \begin{definition}
   A wild precategory $\mathcal C$ is \emph{univalent}\index{univalent} if
-  for all objects $A,B : \mathcal C$, the function
+  for all objects $A,B : \constant{Ob}(\mathcal C)$, the function
   \[
-    \constant{idtoiso}_{A,B} : (A \eqto B) \to (A \isoto B)
+    \constant{idtoiso}_{A,B} : (A \eqto_{\constant{Ob}(\mathcal C)} B) \to (A \isoto_{\mathcal C} B)
   \]
   defined by path induction sending $\refl A$ to $\id_A$,
   is an equivalence.
 \end{definition}
-\begin{definition}
+\begin{definition}\label{def:category}
   A \emph{wild category}\index{category!wild category} is a univalent wild precategory,
   and a \emph{category}\index{category} is a univalent precategory.
 \end{definition}
@@ -250,14 +268,16 @@ And important special case is when each arrow type $A \to B$ is a \emph{proposit
   of a preorder reduces to just a type $P$ and a binary relation,
   typically written $\le : P \to P \to \Prop$,
   that is reflexive, $x \le x$ (via the identities)
-  and transitive, $x\le y \to y \le z \to x\le z$ (via composition).
+  and transitive, \ie if $x\le y$ and $y\le z$ implies $x\le z$ (via composition).
 
   A \emph{partial order}\index{partial order}, also known as a \emph{poset}\index{poset},
   is a univalent preorder.
   In this case, the type of objects is a set.
-  This happens if and only if the relation is symmetric, $x \le y \to y \le x \to x = y$.
+  This happens if and only if the relation is symmetric,
+  \ie if $x \le y$ and $y \le x$ implies $x = y$.
 
-  Typical examples are $(\NN,\le)$, $(\ZZ,\le)$, and $(\Prop,\to)$.
+  Typical examples are $(\NN,\le)$, $(\ZZ,\le)$, $(\Prop,\to)$,
+  and $(\Sub(S),\subseteq)$ for a set $S$.
   A preorder that fails to be a poset is the two-element type $\bn 2$
   with the always true relation.
   This is hence also an example of a precategory that fails to be univalent.
@@ -301,8 +321,8 @@ Many notions in category theory work already at the level of wild categories,\fo
   They \emph{all} work at the level of $(\infty,1)$-categories.
   We refer to \citeauthor{LurieHTT}\footnotemark{} and
   \citeauthor{LandInftyCat}\footnotemark{} for details.}%
-\footcitetext{LurieHTT}%
-\footcitetext{LandInftyCat}
+\addtocounter{footnote}{-1}\footcitetext{LurieHTT}%
+\stepcounter{footnote}\footcitetext{LandInftyCat}
 but a notable exception is the construction of slice categories.
 \begin{example}
   The \emph{slice precategory} of a precategory $\mathcal C$ over an object $C : \mathcal{C}$,
@@ -357,7 +377,7 @@ For example, the empty type $\bn 0$ is initial in the wild category of types,
 while the trivial group $\TG$ is initial in the category of groups.
 
 The relationship between terminal and initial objects reflects
-a deep aspect of category theory: Every concepts come with a dual version
+a deep aspect of category theory: Every concept comes with a dual version
 obtained by ``reversing all the arrows''.
 More formally, can introduce for every wild precategory its opposite category
 that has its arrows reversed.
@@ -422,7 +442,12 @@ monomorphisms and epimorphisms.
   \]
   respectively.
 \end{definition}
-We already met the monomorphisms in the category of groups in~\cref{def:typeofmono}.
+We already met the monomorphisms in the category of groups in~\cref{def:typeofmono}
+using a different definition.
+\begin{xca}
+  Show that the monomorphisms in the category of groups are the same as
+  those of~\cref{def:typeofmono}.
+\end{xca}
 \begin{xca}
   Show that the monomorphisms in the wild category of types are just the injections,
   and the epimorphisms in the category of sets are just the surjections.
@@ -432,6 +457,32 @@ but are much more restricted. See~\citeauthor{BdJR2025}\footcite{BdJR2025} for d
 
 \section{Naturality and adjunctions}
 \label{sec:naturality}
+
+Not only do have arrows \emph{in} (wild pre-)categories, there's also
+a notion of arrow \emph{between} them. These are called functors.
+\begin{definition}\label{def:functor}
+  A \emph{wild functor}\index{functor}
+  $F : \mathcal C \to \mathcal D$
+  between wild precategories $\mathcal C$ and $\mathcal D$
+  consists of a function
+  $F : \constant{Ob}(\mathcal C) \to \constant{Ob}(\mathcal C)$,
+  mapping objects to objects,
+  and a family of functions\footnote{%
+    In practice, the functions on objects and arrows are named the same as
+    the functor, but they could be disambiguated with subscripts,
+    say, $F_0$ and $F_1$, if needed.}
+  $F : \prod_{A,B:\mathcal C}(A \to_{\mathcal C} B) \to (F(A) \to_{\mathcal D} F(B))$
+  together with identifications
+  \[
+    F_{\id} : F(\id_A) \eqto \id_A,\quad\text{and}\quad
+    F_{\circ} : F(g\circ f) \eqto F(g)\circ F(f),
+  \]
+  for all objects $A$ and composable arrows $f$ and $g$ in $\mathcal C$.
+
+  If $\mathcal D$ is a precategory, then the types of $F_{\id}$ and $F_{\circ}$
+  are propositions, and in this case we just call $F$ a \emph{functor}.
+\end{definition}
+
 
 % functors and natural transformations
 % functor category
