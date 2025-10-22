@@ -49,11 +49,12 @@ and prepare for the main result of the next chapter, which is to give an
 In~\cref{sec:categories} we define the kinds of categories we need, along with many examples (including the above).
 Then we discuss various abstract notions in categories (terminal and initial objects, products and coproducts)
 and remark on the importance of \emph{duality} in~\cref{sec:duality}.
-In~\cref{sec:naturality} we cover natural transformations and adjunctions; we have already seen some examples of adjunctions, for example in~\cref{xca:adjunction-^*-_*}.
+In~\cref{sec:naturality} we cover functors, natural transformations and adjunctions; we have already seen some examples of adjunctions, for example in~\cref{xca:adjunction-^*-_*}.
 
-We have also seen an incarnation of the Yoneda lemma in~\cref{xca:TTYoneda}; in~\cref{sec:yoneda} we treat the O.G.\ version. We end with a brief introduction to monoidal categories in~\cref{sec:monoidal-cats}, as we'll see in~\cref{ch:abelian} that abelian groups form an example.
+We have also seen an incarnation of the Yoneda lemma in~\cref{xca:TTYoneda};
+in~\cref{sec:yoneda} we treat the O.G.\ version. We end with a brief introduction to monoidal categories in~\cref{sec:monoidal-cats}, as we'll see in~\cref{ch:abelian} that abelian groups form an example.
 
-\section{Categories and functors}
+\section{Categories}
 \label{sec:categories}
 
 As mentioned above, many types come equipped with notion
@@ -73,6 +74,8 @@ and this motivates the following definition:
   \item\label{struc:cat-mor} For each pair of objects $A,B : \var{Ob}$,
     a type of \emph{morphisms} $\hom(A,B)$. These are also known as \emph{arrows},
     and written $A \to B$ when there's no danger of confusion.
+    If $f : A \to B$ is such an arrow, then we say that the \emph{domain} of $f$ is $A$
+    and the \emph{codomain} of $f$ is $B$.
   \item\label{struc:cat-id} For each object $A : \var{Ob}$,
     an \emph{identity arrow} $\id_A : A \to A$.
   \item\label{struc:cat-comp} For each pair of arrows $f : A \to B$ and $g : B \to C$,
@@ -86,7 +89,7 @@ and this motivates the following definition:
   \item\label{struct:cat-assoc} For each triple of arrows
     $f : A \to B$, $g : B \to C$, and $h : C \to D$, an identification
     \[
-      \alpha : (h \circ g) \circ f \eqto h \circ (g \circ f).
+      \alpha : h \circ (g \circ f) \eqto (h \circ g) \circ f.
     \]
   \end{enumerate}
   If $\mathcal C \jdeq (\var{Ob},\hom,\id,\lambda,\rho,\alpha)$
@@ -95,7 +98,7 @@ and this motivates the following definition:
   We may write $f, g : A \to_{\mathcal C} B$ to emphasize where the arrows $f$ and $g$ live, if needed,
   and sometimes $\hom_{\mathcal C}(A,B)$ or $\mathcal C(A,B)$, instead of $\hom(A,B)$.
 \end{definition}
-\begin{remark}
+\begin{remark}[On the adjective ``wild'']
   With this definition, we readily equip the universes of types $\UU$ and of pointed types $\UUp$
   with the structure of wild precategories.
   In the former case, we can use reflexivities for $\lambda$, $\rho$, and $\alpha$.
@@ -103,43 +106,337 @@ and this motivates the following definition:
 
   We use the adjective ``wild'' to highlight a deficiency of this definition as it stands:
   We haven't specified any further laws for the identifications $\lambda$, $\rho$, and $\alpha$.
-  For example, it would be sensible to require an identification of $\lambda\eqto\rho : \id_A \circ \id_A \eqto \id_A$, as well as a filler for the pentagonal diagram of $\alpha$'s coming from four composable arrows:
+  For example, it would be sensible to require an identification of $\lambda,\rho : \id_A \circ \id_A \eqto \id_A$,
+  as well as a filler for the pentagonal diagram of $\alpha$'s coming from four composable arrows:
   \[
     \begin{tikzpicture}[commutative diagrams/every diagram]
-      \node (P0) at (90:2.3cm) {$((k \circ h) \circ g) \circ f$};
-      \node (P1) at (90+72:2cm) {$(k \circ (h \circ g)) \circ f$} ;
-      \node (P2) at (90+2*72:2cm) {\makebox[5ex][r]{$k \circ ((h \circ g) \circ f)$}};
-      \node (P3) at (90+3*72:2cm) {\makebox[5ex][l]{$k \circ (h \circ (g \circ f))$}};
+      \node (P0) at (90:2.3cm) {$k \circ (h \circ (g \circ f))$};
+      \node (P1) at (90+72:2cm) {$k \circ ((h \circ g) \circ f)$};
+      \node (P2) at (90+2*72:2cm) {\makebox[5ex][r]{$(k \circ (h \circ g)) \circ f$}};
+      \node (P3) at (90+3*72:2cm) {\makebox[5ex][l]{$((k \circ h) \circ g) \circ f$}};
       \node (P4) at (90+4*72:2cm) {$(k \circ h) \circ (g \circ f)$};
       \path[commutative diagrams/.cd, every arrow, every label]
-      (P0) edge node[swap] {${\ap{[\blank\circ f]}(\alpha)}$} (P1)
-      (P1) edge node[swap] {$\alpha$} (P2)
-      (P2) edge node {$\ap{[k\circ\blank]}(\alpha)$} (P3)
-      (P4) edge node {$\alpha$} (P3)
-      (P0) edge node {$\alpha$} (P4);
+      (P0) edge[eql] node[swap] {$\ap{k\circ\blank}(\alpha)$} (P1)
+      (P1) edge[eql] node[swap] {$\alpha$} (P2)
+      (P2) edge[eql] node[swap] {$\ap{\blank\circ f}(\alpha)$} (P3)
+      (P4) edge[eqr] node {$\alpha$} (P3)
+      (P0) edge[eqr] node {$\alpha$} (P4);
     \end{tikzpicture}
   \]
   Of course, we would on occasion then need a filler for a three dimensional diagram of pentagons
-  for five composable arrows, etc., etc., \emph{ad infinitum}.
+  for five composable arrows, etc., etc., \emph{ad infinitum}.\footnote{%
+    There is a hierarchy of notions, $A_n$-precategories, for $n\ge 2$,
+    with coherence conditions involving up to $n$ composable arrows.
+    The wild precategories lie between $A_2$ and $A_3$ in this hierarchy.
+    Besides the mentioned identification of $\lambda$ and $\rho$ for two identities,
+    we'd also require fillers for diagrams like
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
+        \& f\circ g \& \\
+        f\circ(\id\circ g) \ar[rr,eql,"\alpha"']\ar[ur,eqr,"{\ap{f\circ\blank}(\lambda)}"]
+        \& \& (f\circ\id)\circ g\ar[ul,eql,"{\ap{\blank\circ g}(\rho)}"']
+      \end{tikzcd}
+    \]
+    as well as coherences when one or both of $f$ and $g$ are identities.}
   The corresponding structure is known to connoisseurs as an $(\infty,1)$-precategory.
   It is an open problem as we write this whether this notion can be defined in our type theory.
   We would certainly hope that types and pointed types would furnish examples.
 \end{remark}
-% definitions: wild cat, cat, univalent cat, margin:\infty-cat
-%monoids
+
+However, when the types of morphisms $\hom(A,B)$ are \emph{sets}, then the types
+of $\lambda$, $\rho$, and $\alpha$ are propositions, so any coherence conditions
+are automatically fulfilled.
+This motivates the following definition.
+
+\begin{definition}\label{def:precategory}
+  A \emph{precategory}\index{category!precategory}
+  is a wild precategory $\mathcal C$ in which the types
+  $A \to_{\mathcal C} B$ are sets, for all objects $A,B : \mathcal C$.
+\end{definition}
+
+Most (wild) precategories we shall meet satisfy a further condition
+that makes them better behaved than arbitrary precategories:
+a \emph{univalence} condition.
+In fact, for the wild precategory of types and function,
+this condition is exactly the Univalence Axiom (\cref{def:univalence})!
+
+In order to define this, we need the notion corresponding to equivalence
+in an general wild precategory.
+
+\begin{definition}
+  A morphism $f : A \to B$ in a wild precategory $\mathcal{C}$ is an
+  \emph{isomorphism}\index{isomorphism!in a (wild pre-)category}
+  if have $g, h : B \to A$ and identifications
+  $\sigma : \id_B \eqto f\circ g$ and $\rho : \id_A \eqto h\circ f$.
+  This condition is encoded by the type
+  \[
+    \isIso(f) \defeq \biggl(\sum_{g:B\to A}f\circ g\eqto\id_B\biggr)
+    \times\biggl(\sum_{h:B\to A}h\circ f\eqto\id_A\biggr)
+  \]
+  If $f$ is an isomorphism, we also say that $f$ is \emph{invertible}.
+
+  We define the type $A \isoto B$ of \emph{isomorphisms} from $A$ to $B$
+  in $\mathcal C$ ($A \isoto_{\mathcal C} B$ if needed)
+  by the following definition.%
+  \glossary(2isoto){$\protect\isoto$}{type of isomorphisms}
+  \[
+    (A \isoto B) \defeq \sum_{f:A\to B} \isIso(f).\qedhere
+  \]
+\end{definition}
+The type $\isIso(f)$
+is indeed a proposition,\footnote{%
+  This follows just as for functions: If $f$ is an isomorphism,
+  then each factor in the product is contractible, as, e.g.,
+  $\sum_{g:B\to A}f\circ g\eqto\id_B$ is the fiber
+  of $f\circ\blank : (B \to A) \to (B \to B)$
+  at $\id_B$, and all functions $f\circ\blank$ and $\blank\circ f$
+  are equivalences of types using the data that makes $f$ an isomorphism
+  along with $\lambda$, $\rho$, and $\alpha$.}
+and every identity arrow is an isomorphism.
+We write $\inv f$ for the inverse of an isomorphism $f$.
+\begin{definition}
+  A wild precategory $\mathcal C$ is \emph{univalent}\index{univalent} if
+  for all objects $A,B : \mathcal C$, the function
+  \[
+    \constant{idtoiso}_{A,B} : (A \eqto B) \to (A \isoto B)
+  \]
+  defined by path induction sending $\refl A$ to $\id_A$,
+  is an equivalence.
+\end{definition}
+\begin{definition}
+  A \emph{wild category}\index{category!wild category} is a univalent wild precategory,
+  and a \emph{category}\index{category} is a univalent precategory.
+\end{definition}
+Now we are ready to restate the examples mentioned in the introduction to the chapter.
+In each case we leave it to the reader to supply most of the data.
+\begin{itemize}
+\item
+  The \emph{wild category of types} (in universe $\UU$) has $\UU$
+  as its type of objects, and the function type $A \to B$ as its type of arrows
+  for $A,B :\UU$. It is univalent by the Univalence Axiom.
+\item
+  The \emph{wild category of pointed types} (in a universe $\UU$) has
+  $\UUp$ as its type of objects, and the type of pointed maps $A \ptdto B$ as its type of arrows.
+\item
+  The \emph{wild category of families} over a given type $X$ has
+  $X \to \UU$ as its type of objects, and the type of fiberwise maps
+  $(X \to_B Y) \defeq \prod_{b:B}X(b) \to Y(b)$
+  as its type of arrows.
+\item
+  The \emph{category of sets}\index{category!of sets} has $\Set$
+  as its type of objects, and the function type $A \to B$ as its type of arrows.
+  It's a category since each type $A\to B$ is a set, and it's univalent.
+\item
+  The \emph{category of groups}\index{category!of groups} has $\Group$
+  as its type of objects, and the homomorphism type $(G \to H) \defeq \Hom(G,H)$
+  as its type of arrows.
+\item
+  The \emph{category of $G$-sets}\index{category!of $G$-sets}, for a group $G$,
+  has $\GSet$ as its type of objects, and the type of morphisms of $G$-sets
+  $\Hom_G(X,Y)$ (\cref{def:map-of-Gsets}) as its type of arrows.
+\end{itemize}
+
+By the univalence condition, in a category each identity type $A \eqto B$
+is equivalent to the set $A \isoto B$, and is hence a set.
+Thus we get the following.
+\begin{lemma}
+  The type of objects of a category form a groupoid.
+\end{lemma}
+
+And important special case is when each arrow type $A \to B$ is a \emph{proposition}.
+\begin{example}\label{ex:poset}
+  A \emph{preorder}\index{preorder} is precategory in which every arrow type is a proposition.
+  In this case, the types of $\lambda$, $\rho$, and $\alpha$ are contractible, so the data
+  of a preorder reduces to just a type $P$ and a binary relation,
+  typically written $\le : P \to P \to \Prop$,
+  that is reflexive, $x \le x$ (via the identities)
+  and transitive, $x\le y \to y \le z \to x\le z$ (via composition).
+
+  A \emph{partial order}\index{partial order}, also known as a \emph{poset}\index{poset},
+  is a univalent preorder.
+  In this case, the type of objects is a set.
+  This happens if and only if the relation is symmetric, $x \le y \to y \le x \to x = y$.
+
+  Typical examples are $(\NN,\le)$, $(\ZZ,\le)$, and $(\Prop,\to)$.
+  A preorder that fails to be a poset is the two-element type $\bn 2$
+  with the always true relation.
+  This is hence also an example of a precategory that fails to be univalent.
+\end{example}
+
+Another important special case is when every morphism is an isomorphism.
+\begin{definition}
+  A (\emph{wild}) \emph{pregroupoid} is a (wild) precategory in which every
+  arrow is invertible.
+  A (\emph{wild}) \emph{groupoid} is a univalent (wild) pregroupoid.
+\end{definition}
+\begin{example}
+  Every type $X$ gives rise to a wild groupoid, its (wild) \emph{path groupoid},
+  having $X$ as its type of objects and $x \eqto y$ as its type of arrows.
+  The arrows are invertible, since paths are always invertible.
+
+  If $X$ is a $1$-type, then this structure is a groupoid.
+\end{example}
+There's no conflict with the terminology introduced in~\cref{sec:props-sets-grpds},
+because this construction gives an equivalence
+from the type of $1$-types (in $\UU$) to the type of groupoids (in $\UU$).
+
+\begin{remark}
+  This is a good moment to remark on the size issues
+  we have so far swept under the rug.
+  The definition of a wild precategory $\mathcal C$ can be parametrized by
+  \emph{two} universe levels: The type of objects belong to one, $\var{Ob}:\UU'$,
+  while the family of arrows belong to another, $\hom : \var{Ob} \to \var{Ob} \to \UU$.
+
+  If they coincide, then we call $\mathcal C$ a \emph{$\UU$-small category}\index{category!small}.
+  For instance, a path groupoid for a type $X:\UU$ is $\UU$-small.
+
+  The other common case is where $\UU:\UU'$, in which case
+  we call $\mathcal C$ \emph{locally $\UU$-small}\index{category!locally small}.
+  For example, the (wild) categories of types, sets, pointed types, groups, etc., built
+  from types in $\UU$ are all locally $\UU$-small.
+  This generalizes~\cref{def:ess-loc-small} for the case of path groupoids.
+\end{remark}
+
+Many notions in category theory work already at the level of wild categories,\footnote{%
+  They \emph{all} work at the level of $(\infty,1)$-categories.
+  We refer to \citeauthor{LurieHTT}\footnotemark{} and
+  \citeauthor{LandInftyCat}\footnotemark{} for details.}%
+\footcitetext{LurieHTT}%
+\footcitetext{LandInftyCat}
+but a notable exception is the construction of slice categories.
+\begin{example}
+  The \emph{slice precategory} of a precategory $\mathcal C$ over an object $C : \mathcal{C}$,
+  denoted $\mathcal C/C$,
+  has as objects the type $\sum_{A:\mathcal C}A \to C$ of pairs $(A,f)$ of an object $A$ and an arrow $f:A\to C$
+  with codomain $C$.
+  An arrow from $(A,f)$ to $(A',f')$ is an arrow $g : A \to A'$ such that $f' \circ g=f$.\footnote{%
+    This is a proposition since $\mathcal C$ is a precategory. We illustrate the arrow as
+    a commuting triangle:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+        A \ar[dr,"f"']\ar[rr,"g"] \& \& A' \ar[dl,"f'"] \\
+        \& C \&
+      \end{tikzcd}
+    \]}
+  The identities and compositions are inherited from $\mathcal C$.
+  If $\mathcal C$ is univalent (and hence a category), then so is $\mathcal C/C$.
+
+  If we try to define the slice $\mathcal C/C$ for an arbitrary wild precategory $\mathcal C$,
+  using identifications $f' \circ g \eqto f$, we find that we need the pentagon coherence
+  for $\alpha$ for $\mathcal C$ in order to define the $\alpha$ for $\mathcal C/C$.
+\end{example}
 
 \section{Abstract notions and duality}
 \label{sec:duality}
 
-% terminal/initial
-% duality
-% preorders and monoids
-% monos and epis (epi+mono in Set=iso, not in Mon)
+Many concepts that we introduced in~\cref{ch:univalent-mathematics}
+for the wild category of types make sense in arbitrary wild precategories.
+
+\begin{definition}
+  A \emph{terminal object}\index{terminal object}
+  in a wild precategory $\mathcal C$ is an object $1$
+  such that for any object $A:\mathcal C$,
+  the arrow type $A \to 1$ is contractible.
+\end{definition}
+\begin{xca}
+  Show that if $\mathcal C$ is univalent, then
+  the type of terminal objects is a proposition.
+\end{xca}
+The unit type $\bn 1$ is a terminal object in the wild category of types,
+and in the category of sets,
+while the trivial group $\TG$ is a terminal object in the category groups.
+
+The is a ``dual'' notion as well.
+\begin{definition}
+  An \emph{initial object}\index{initial object}
+  in a wild precategory $\mathcal C$ is an object $0$
+  such that for any object $A:\mathcal C$,
+  the arrow type $0\to A$ is contractible.
+\end{definition}
+For example, the empty type $\bn 0$ is initial in the wild category of types,
+while the trivial group $\TG$ is initial in the category of groups.
+
+The relationship between terminal and initial objects reflects
+a deep aspect of category theory: Every concepts come with a dual version
+obtained by ``reversing all the arrows''.
+More formally, can introduce for every wild precategory its opposite category
+that has its arrows reversed.
+\begin{definition}
+  For any wild precategory $\mathcal C\jdeq(\var{Ob},\hom,\id,\lambda,\rho,\alpha)$,
+  define the \emph{opposite}\index{category!opposite} $\mathcal C\op$
+  to have the same type of objects,
+  morphisms $\hom_{\mathcal C\op}(A,B) \defeq \hom_{\mathcal C}(B,A)$,
+  identities the same, and composition reversed:
+  If $f : A \to_{\mathcal C} B$ and $g : B \to_{\mathcal C} C$,
+  then $g\circ f : A \to_{\mathcal C} C$ works
+  as the composite $f \circ_{\mathcal C\op} g$ of $g : C \to_{\mathcal C\op} B$
+  and $f : B \to_{\mathcal C\op} A$.
+  We then swap the roles of $\lambda$ and $\rho$,
+  and $\inv\alpha$ plays the role of $\alpha$ in $\mathcal C\op$.
+\end{definition}
+\begin{lemma}
+  The operation of taking opposites defines an equivalence
+  from the type of wild precategories to itself,
+  with a trivially defined identification $(\mathcal C\op)\op \eqto C$.
+\end{lemma}
+It follows that any construction or theorem about wild precategories
+has a dual version, obtained by precomposition with $(\blank)\op$.
+
+As a further example of a pair dual notions, we consider that of
+monomorphisms and epimorphisms.
+\begin{definition}
+  An arrow $f : A \to B$ in a wild precategory $\mathcal C$
+  is called a \emph{monomorphism}\footnote{For short: a mono} if
+  post-composition with $f$ is an injection
+  \[
+    f\circ\blank : (C \to_{\mathcal C} A) \to (C \to_{\mathcal C} B)
+  \]
+  for all objects $C:\mathcal C$.
+
+  Dually, $f$ is called an \emph{epimorphism}\footnote{For short: an epi}
+  if pre-composition with $f$ is an injection
+  \[
+    \blank\circ f : (B \to_{\mathcal C} C) \to (A \to_{\mathcal C} C)
+  \]
+  for all objects $C:\mathcal C$.\footnote{%
+    We can illustrate these in diagrams as saying that
+    $f$ is a mono if a map into the codomain of $f$ factors in
+    at most one way through the domain of $f$,
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+        \& A \ar[d,"f"] \\
+        C \ar[ur,dashed]\ar[r] \& B
+      \end{tikzcd}
+    \]
+    and dually, $f$ is an epi if a map out of the domain of $f$
+    factors in at most one way through the codomain of $f$:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+        A \ar[d,"f"']\ar[r] \& C \\
+        B \ar[ur,dashed]
+      \end{tikzcd}
+    \]}
+  If $C$ is a precategory, then these conditions reduce to the implications
+  \[
+    f\circ g=f\circ h \to g=h, \quad\text{and}\quad g\circ f=h\circ f \to g=h,
+  \]
+  respectively.
+\end{definition}
+We already met the monomorphisms in the category of groups in~\cref{def:typeofmono}.
+\begin{xca}
+  Show that the monomorphisms in the wild category of types are just the injections,
+  and the epimorphisms in the category of sets are just the surjections.
+\end{xca}
+The epimorphisms in the wild category of types are always surjections,
+but are much more restricted. See~\citeauthor{BdJR2025}\footcite{BdJR2025} for details.
 
 \section{Naturality and adjunctions}
 \label{sec:naturality}
 
 % functors and natural transformations
+% functor category
+% equivalences of categories
+% rezk completion
 % adjunctions
 % products and coproducts, pullbacks and pushouts, (co)equalizers, (co)limits
 
@@ -155,6 +452,9 @@ and this motivates the following definition:
 % monoidal category = Mon(Cat)
 % closed category (no need for HITs)
 
+%% Move to Abstract Groups
+% pregroupoids with Ob contr = abstract groups
+% 
 
 %%% Local Variables:
 %%% mode: LaTeX
