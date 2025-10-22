@@ -56,7 +56,77 @@ We have also seen an incarnation of the Yoneda lemma in~\cref{xca:TTYoneda}; in~
 \section{Categories and functors}
 \label{sec:categories}
 
+As mentioned above, many types come equipped with notion
+of \emph{morphism} or \emph{arrow} between its elements
+which is more general than identification or \emph{isomorphism}.
+For instance
+we have type of functions $A \to B$ for $A,B:\UU$
+and the type of pointed functions $A \ptdto B$ for $A,B:\UUp$.
+There are identity morphisms and composition of morphisms,
+and this motivates the following definition:
+
+\begin{definition}\label{def:wild-cat}
+  A \emph{wild precategory}\index{category!wild precategory}
+  consists of the following data:
+  \begin{enumerate}
+  \item\label{struc:cat-ob} A type $\var{Ob}$, called the \emph{type of objects}.
+  \item\label{struc:cat-mor} For each pair of objects $A,B : \var{Ob}$,
+    a type of \emph{morphisms} $\hom(A,B)$. These are also known as \emph{arrows},
+    and written $A \to B$ when there's no danger of confusion.
+  \item\label{struc:cat-id} For each object $A : \var{Ob}$,
+    an \emph{identity arrow} $\id_A : A \to A$.
+  \item\label{struc:cat-comp} For each pair of arrows $f : A \to B$ and $g : B \to C$,
+    a \emph{composite arrow} $g\circ f : A \to C$.
+  \item\label{struc:cat-unit-laws} For each arrow $f : A \to B$,
+    a pair of identifications
+    \[
+      \lambda : \id_B \circ f \eqto f, \quad
+      \rho : f \circ \id_A \eqto f.
+    \]
+  \item\label{struct:cat-assoc} For each triple of arrows
+    $f : A \to B$, $g : B \to C$, and $h : C \to D$, an identification
+    \[
+      \alpha : (h \circ g) \circ f \eqto h \circ (g \circ f).
+    \]
+  \end{enumerate}
+  If $\mathcal C \jdeq (\var{Ob},\hom,\id,\lambda,\rho,\alpha)$
+  is a wild precategory, then we write $A, B : \mathcal C$ instead of $A, B : \var{Ob}$
+  to indicate that $A, B$ are elements of the underlying type of objects of $\mathcal C$.
+  We may write $f, g : A \to_{\mathcal C} B$ to emphasize where the arrows $f$ and $g$ live, if needed,
+  and sometimes $\hom_{\mathcal C}(A,B)$ or $\mathcal C(A,B)$, instead of $\hom(A,B)$.
+\end{definition}
+\begin{remark}
+  With this definition, we readily equip the universes of types $\UU$ and of pointed types $\UUp$
+  with the structure of wild precategories.
+  In the former case, we can use reflexivities for $\lambda$, $\rho$, and $\alpha$.
+  In the latter, we leave their definition as an exercise.
+
+  We use the adjective ``wild'' to highlight a deficiency of this definition as it stands:
+  We haven't specified any further laws for the identifications $\lambda$, $\rho$, and $\alpha$.
+  For example, it would be sensible to require an identification of $\lambda\eqto\rho : \id_A \circ \id_A \eqto \id_A$, as well as a filler for the pentagonal diagram of $\alpha$'s coming from four composable arrows:
+  \[
+    \begin{tikzpicture}[commutative diagrams/every diagram]
+      \node (P0) at (90:2.3cm) {$((k \circ h) \circ g) \circ f$};
+      \node (P1) at (90+72:2cm) {$(k \circ (h \circ g)) \circ f$} ;
+      \node (P2) at (90+2*72:2cm) {\makebox[5ex][r]{$k \circ ((h \circ g) \circ f)$}};
+      \node (P3) at (90+3*72:2cm) {\makebox[5ex][l]{$k \circ (h \circ (g \circ f))$}};
+      \node (P4) at (90+4*72:2cm) {$(k \circ h) \circ (g \circ f)$};
+      \path[commutative diagrams/.cd, every arrow, every label]
+      (P0) edge node[swap] {${\ap{[\blank\circ f]}(\alpha)}$} (P1)
+      (P1) edge node[swap] {$\alpha$} (P2)
+      (P2) edge node {$\ap{[k\circ\blank]}(\alpha)$} (P3)
+      (P4) edge node {$\alpha$} (P3)
+      (P0) edge node {$\alpha$} (P4);
+    \end{tikzpicture}
+  \]
+  Of course, we would on occasion then need a filler for a three dimensional diagram of pentagons
+  for five composable arrows, etc., etc., \emph{ad infinitum}.
+  The corresponding structure is known to connoisseurs as an $(\infty,1)$-precategory.
+  It is an open problem as we write this whether this notion can be defined in our type theory.
+  We would certainly hope that types and pointed types would furnish examples.
+\end{remark}
 % definitions: wild cat, cat, univalent cat, margin:\infty-cat
+%monoids
 
 \section{Abstract notions and duality}
 \label{sec:duality}
