@@ -126,7 +126,7 @@ and this motivates the following definition:
   We haven't specified any further laws for the identifications $\lambda$, $\rho$, and $\alpha$.
   For example, it would be sensible to require an identification of $\lambda,\rho : \id_A \circ \id_A \eqto \id_A$,
   as well as a filler for the pentagonal diagram of $\alpha$'s coming from four composable arrows:
-  \[
+  \begin{equation}\label{eq:pentagon}
     \begin{tikzpicture}[commutative diagrams/every diagram]
       \node (P0) at (90:2.3cm) {$k \circ (h \circ (g \circ f))$};
       \node (P1) at (90+72:2cm) {$k \circ ((h \circ g) \circ f)$};
@@ -140,7 +140,7 @@ and this motivates the following definition:
       (P4) edge[eqr] node {$\alpha$} (P3)
       (P0) edge[eqr] node {$\alpha$} (P4);
     \end{tikzpicture}
-  \]
+  \end{equation}
   Of course, we would on occasion then need a filler for a three dimensional diagram of pentagons
   for five composable arrows, etc., etc., \emph{ad infinitum}.\footnote{%
     There is a hierarchy of notions, $A_n$-precategories, for $n\ge 2$,
@@ -324,7 +324,7 @@ Many notions in category theory work already at the level of wild categories,\fo
 \addtocounter{footnote}{-1}\footcitetext{LurieHTT}%
 \stepcounter{footnote}\footcitetext{LandInftyCat}
 but a notable exception is the construction of slice categories.
-\begin{example}
+\begin{example}\label{def:slice-cat}
   The \emph{slice precategory} of a precategory $\mathcal C$ over an object $C : \mathcal{C}$,
   denoted $\mathcal C/C$,
   has as objects the type $\sum_{A:\mathcal C}A \to C$ of pairs $(A,f)$ of an object $A$ and an arrow $f:A\to C$
@@ -344,7 +344,17 @@ but a notable exception is the construction of slice categories.
   If we try to define the slice $\mathcal C/C$ for an arbitrary wild precategory $\mathcal C$,
   using identifications $f' \circ g \eqto f$, we find that we need the pentagon coherence
   for $\alpha$ for $\mathcal C$ in order to define the $\alpha$ for $\mathcal C/C$.
+
+  Of course, for \emph{particular} wild categories, it may very well happen
+  that $\mathcal C/C$ is again a wild categories.\footnote{%
+    This will be the case when $\mathcal C$ should be an $(\infty,1)$-category,
+    carrying the whole hierarchy of coherences, which then
+    carry over to $\mathcal C/C$.}
 \end{example}
+\begin{xca}\label{xca:univ-slice-cat}
+  Construct the wild precategory structure on the \emph{slice of the universe} $\UU/B$
+  over a fixed type $B:\UU$.
+\end{xca}
 
 \section{Abstract notions and duality}
 \label{sec:duality}
@@ -402,6 +412,9 @@ that has its arrows reversed.
 It follows that any construction or theorem about wild precategories
 has a dual version, obtained by precomposition with $(\blank)\op$.
 
+For example, the dual of the slice category construction
+is the \emph{coslice} category $C/\mathcal C$.
+
 As a further example of a pair dual notions, we consider that of
 monomorphisms and epimorphisms.
 \begin{definition}
@@ -454,6 +467,9 @@ using a different definition.
 \end{xca}
 The epimorphisms in the wild category of types are always surjections,
 but are much more restricted. See~\citeauthor{BdJR2025}\footcite{BdJR2025} for details.
+\begin{xca}
+  Show that every morphism in a preorder is both a mono and an epi.
+\end{xca}
 
 \section{Naturality and adjunctions}
 \label{sec:naturality}
@@ -471,7 +487,9 @@ a notion of arrow \emph{between} them. These are called functors.
     In practice, the functions on objects and arrows are named the same as
     the functor, but they could be disambiguated with subscripts,
     say, $F_0$ and $F_1$, if needed.}
-  $F : \prod_{A,B:\mathcal C}(A \to_{\mathcal C} B) \to (F(A) \to_{\mathcal D} F(B))$
+  \[
+    F : \prod_{A,B:\mathcal C}(A \to_{\mathcal C} B) \to (F(A) \to_{\mathcal D} F(B))
+  \]
   together with identifications
   \[
     F_{\id} : F(\id_A) \eqto \id_A,\quad\text{and}\quad
@@ -482,10 +500,153 @@ a notion of arrow \emph{between} them. These are called functors.
   If $\mathcal D$ is a precategory, then the types of $F_{\id}$ and $F_{\circ}$
   are propositions, and in this case we just call $F$ a \emph{functor}.
 \end{definition}
+\begin{xca}
+  Show that every wild functor maps isomorphisms to isomorphisms.
+\end{xca}
+\begin{example}
+  A functor between preorders $(P,\le)$ and $(Q,\le)$ amounts to a monotone map
+  $F : P\to Q$, \ie $p\le p'$ implies $F(p) \le F(p')$ for $p,p':P$.
+\end{example}
+\begin{example}
+  Taking the underlying set of symmetries $\USym$
+  gives a functor $\USym : \Group \to \Set$.
+  It's easy to check that $\USym(\id_G) = \id_{\USymG}$,
+  and we verified the preservation of composition
+  in~\cref{cor:USym-compose}.
+\end{example}
+\begin{example}\label{ex:add-remove-basepoint}
+  We can extend the operation of adding a default element
+  from~\cref{def:pointedtypes}
+  to a wild functor $(\blank)_+ : \UU \to \UUp$.
+  It takes a function $f : A \to B$
+  to the function $f_+ : A_+ \to B_+$
+  with
+  \[
+    f_+(\inl a) \defeq \inl{f(a)},\quad\text{and}\quad
+    f_+(\pt_{A_+}) \defeq \pt_{B_+}.
+  \]
+  The operation of taking underlying types of pointed types
+  likewise extends to a wild functor $(\blank)_\div : \UUp \to \UU$.
+\end{example}
+\begin{example}
+  For an object $C : \mathcal C$ recall the slice precategory
+  $\mathcal C/C$ of~\cref{def:slice-cat}.
+  Taking the domain of an object $(A,f:A\to C)$ of the slice
+  extends to a functor $\fst : \mathcal C/C \to \mathcal C$.
+\end{example}
+\begin{example}
+  Similar to the slice and coslice constructions,
+  we have the formation of the \emph{arrow precategory} $\mathcal C^\to$
+  of a precategory $\mathcal C$.
+  It has as objects triples $(A,B,f)$ of two objects $A,B:\mathcal C$
+  and an arrow $f: A\to B$.
+  The arrows from $(A,B,f)$ to $(A',B',f')$ are pairs of arrows
+  $g : A \to A'$ and $h : B\to B'$ making a commutative square:
+  \[
+    \begin{tikzcd}
+      A \ar[d,"f"']\ar[r,"g"] & A'\ar[d,"f'"] \\
+      B \ar[r,"h"'] & B'
+    \end{tikzcd}
+  \]
+  Projecting out the domain and the codomain gives
+  two functors
+  \[
+    \begin{tikzcd}
+      \mathcal C & \mathcal C^\to \ar[l,"\dom"']\ar[r,"\cod"] & \mathcal C
+    \end{tikzcd}
+  \]
+  Note that $\mathcal C^\to$ is a category if $\mathcal C$ is.
+\end{example}
+\begin{xca}
+  Define identity functors and composition of functors,
+  along with identifications $\lambda : \id_{\mathcal D}\circ F \eqto F$,
+  $\rho : F \circ \id_{\mathcal C} \eqto F$,
+  and $\alpha : H\circ (G \circ F) \eqto (H \circ G)\circ F$.
+  Define the fillers for the pentagon diagrams~\eqref{eq:pentagon}.
+\end{xca}
+There's also a notion of arrow \emph{between functors}.
+These are called natural transformations.\footnote{%
+  \citeauthor{Freyd1964}\footnotemark{} observed that ``categories are what one must define
+  in order to define functors, and that functors are what one must define
+  in order to define natural transformations.''
+  In this sense, natural transformations are at the heart of category theory.}%
+\footcitetext{Freyd1964}
+\begin{definition}
+  A \emph{wild natural transformation}\index{natural transformation}
+  $\alpha : F \to G$ between
+  two wild functors $F,G : \mathcal C \to \mathcal D$ between
+  wild precategories $\mathcal C$ and $\mathcal D$
+  consists of a family of arrows
+  \[
+    \alpha_A : F(A) \to_{\mathcal D} G(A)
+  \]
+  indexed by objects $A:\mathcal C$,
+  and a family of fillers for the squares
+  \[
+    \begin{tikzcd}
+      F(A) \ar[r,"\alpha_A"]\ar[d,"F(f)"'] & G(A) \ar[d,"G(f)"] \\
+      F(B) \ar[r,"\alpha_B"] & G(B)
+    \end{tikzcd}
+  \]
+  in $\mathcal D$
+  for each arrow $f : A \to_{\mathcal C} B$.\footnote{%
+    These squares are called the ``naturality squares'' for $\alpha$.}
 
+  If $\mathcal D$ is a precategory, then the types of the naturality square fillers
+  are propositions. In this case, we just call $\alpha$ a \emph{natural transformation}.
+\end{definition}
+\begin{example}
+  There is a wild
+  natural transformation $\eta : \id_{\UU} \to ((\blank)_+)_\div$
+  from the identity wild functor on the universe $\UU$
+  to the composition
+  \[
+    \UU \xrightarrow{(\blank)_+} \UUp \xrightarrow{(\blank)_\div} \UU
+  \]
+  of the wild functors from~\cref{ex:add-remove-basepoint}.
+  Its action on objects is $\inl{} : A \to (A_+)_\div$,
+  where $(A_+)_\div \jdeq A \coprod\bn 1$.
+  The naturality squares commute by reflexivity.
+\end{example}
 
-% functors and natural transformations
-% functor category
+With natural transformations as arrows we can elevate the
+type of functors to a precategory.
+\begin{definition}
+  For a wild precategory $\mathcal C$ and a precategory $\mathcal D$
+  we have the \emph{functor precategory}\index{functor category}%
+  \index{functor precategory|see{functor category}}
+  $\mathcal C \to \mathcal D$, also written
+  $[\mathcal C,\mathcal D]$ or $\mathcal D^{\mathcal C}$, % or $\constant{Fun}(\mathcal C,\mathcal D)$,%
+  has functors from $\mathcal C$ to $\mathcal D$ as objects
+  and natural transformations as arrows.
+  The identity arrow at $F$ is the identity natural transformation
+  $\id_F: F \to F$ that assigns to each object $A:\mathcal C$ the identity
+  arrow $\id_{F(A)}$.
+  The composition likewise forms compositions objectwise.
+\end{definition}
+\begin{xca}
+  Show that a natural transformation $\alpha : F \to G$
+  in a functor precategory $\mathcal C\to\mathcal D$
+  is invertible if and only if
+  each component $\alpha_A : F(A) \to_{\mathcal D} G(A)$ is.
+\end{xca}
+\begin{xca}
+  Show that the functor precategory $\mathcal C\to\mathcal D$
+  is univalent if $\mathcal D$ is.\footnote{%
+    This is Thm.~9.2.5 in the HoTT book\footnotemark{}.}%
+  \footcitetext{hottbook}
+  In this case we call it the \emph{functor category}.
+\end{xca}
+\begin{xca}
+  Let $A$ be a type and $\mathcal C$ category.
+  Show that restricting to the action on objects
+  induces an equivalence
+  \[
+    (A \to \mathcal C) \to (A \to \constant{Ob}(\mathcal C))
+  \]
+  from the functor category whose domain is the wild path category of $A$
+  to the type of functions from $A$ to the objects of $\mathcal C$.
+\end{xca}
 % equivalences of categories
 % rezk completion
 % adjunctions
