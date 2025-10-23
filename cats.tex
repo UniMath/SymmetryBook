@@ -53,7 +53,10 @@ and prepare for the main result of the next chapter, which is to give an
 In~\cref{sec:categories} we define the kinds of categories we need, along with many examples (including the above).
 Then we discuss various abstract notions in categories (terminal and initial objects, products and coproducts)
 and remark on the importance of \emph{duality} in~\cref{sec:duality}.
-In~\cref{sec:naturality} we cover functors, natural transformations and adjunctions; we have already seen some examples of adjunctions, for example in~\cref{xca:adjunction-^*-_*}.
+In~\cref{sec:naturality} we cover functors and natural transformations,
+and in~\cref{sec:adjunctions} we treat adjunctions;
+we have already seen some examples of adjunctions,
+for example in~\cref{xca:adjunction-_!-^*,xca:adjunction-^*-_*}.
 
 We have also seen an incarnation of the Yoneda lemma in~\cref{xca:TTYoneda};
 in~\cref{sec:yoneda} we treat the O.G.\ version. We end with a brief introduction to monoidal categories in~\cref{sec:monoidal-cats}, as we'll see in~\cref{ch:abelian} that abelian groups form an example.
@@ -118,13 +121,14 @@ and this motivates the following definition:
 \end{definition}
 \begin{remark}[On the adjective ``wild'']
   With this definition, we readily equip the universes of types $\UU$ and of pointed types $\UUp$
-  with the structure of wild precategories.
+  with a structure of wild precategories.
   In the former case, we can use reflexivities for $\lambda$, $\rho$, and $\alpha$.
   In the latter, we leave their definition as an exercise.
 
   We use the adjective ``wild'' to highlight a deficiency of this definition as it stands:
   We haven't specified any further laws for the identifications $\lambda$, $\rho$, and $\alpha$.
-  For example, it would be sensible to require an identification of $\lambda,\rho : \id_A \circ \id_A \eqto \id_A$,
+  For example, it would be sensible to require an identification of $\lambda$ and $\rho$ at an identity:
+  $\id_A \circ \id_A \eqto \id_A$,
   as well as a filler for the pentagonal diagram of $\alpha$'s coming from four composable arrows:
   \begin{equation}\label{eq:pentagon}
     \begin{tikzpicture}[commutative diagrams/every diagram]
@@ -471,7 +475,7 @@ but are much more restricted. See~\citeauthor{BdJR2025}\footcite{BdJR2025} for d
   Show that every morphism in a preorder is both a mono and an epi.
 \end{xca}
 
-\section{Naturality and adjunctions}
+\section{Functors and natural transformations}
 \label{sec:naturality}
 
 Not only do have arrows \emph{in} (wild pre-)categories, there's also
@@ -513,6 +517,29 @@ a notion of arrow \emph{between} them. These are called functors.
   It's easy to check that $\USym(\id_G) = \id_{\USymG}$,
   and we verified the preservation of composition
   in~\cref{cor:USym-compose}.
+\end{example}
+\begin{example}
+  Given a group homomorphism $f : G \to H$,
+  we have three functors
+  \[
+    \begin{tikzcd}
+      \GSet[G] \ar[r,bend left,"f_!"]\ar[r,bend right,"f_*"'] &
+      \GSet[H] \ar[l,"f^*"']
+    \end{tikzcd}
+  \]
+  with actions on objects described in~\cref{def:restrictandinduce,rem:coinduced-Hset}.
+  The action on arrows of restriction is again given by restriction:
+  If $g : X \to Y$ is a map of $H$-sets with $X,Y:\BH \to \Set$,
+  then $f^*(g) : f^*X \to f^*Y$ maps $z:\BG$ to $g_{\Bf(z)} : X(\Bf(z)) \to Y(\Bf(z))$.
+
+  The action on arrows of induction along $f$ takes a map of $G$-sets $g : X \to Y$,
+  for $X,Y : \BG\to\Set$,
+  to the functorial action of set truncation, for $w:\BH$:
+\end{example}
+\begin{example}
+  Taking $n$-truncation gives a wild functor
+  $\Trunc\blank_n : \UU \to \UU^{\le n}$.
+  For $n=0$, this is a functor from $\UU$ to $\Set_\UU$.
 \end{example}
 \begin{example}\label{ex:add-remove-basepoint}
   We can extend the operation of adding a default element
@@ -558,11 +585,20 @@ a notion of arrow \emph{between} them. These are called functors.
   Note that $\mathcal C^\to$ is a category if $\mathcal C$ is.
 \end{example}
 \begin{xca}
-  Define identity functors and composition of functors,
+  Define identity wild functors and composition of wild functors,
   along with identifications $\lambda : \id_{\mathcal D}\circ F \eqto F$,
   $\rho : F \circ \id_{\mathcal C} \eqto F$,
   and $\alpha : H\circ (G \circ F) \eqto (H \circ G)\circ F$.
-  Define the fillers for the pentagon diagrams~\eqref{eq:pentagon}.
+  Define the fillers for the pentagon diagram~\eqref{eq:pentagon}
+  for four composable functors
+  \[
+    \mathcal C_0 \xrightarrow F
+    \mathcal C_1 \xrightarrow G
+    \mathcal C_2 \xrightarrow H
+    \mathcal C_3 \xrightarrow K
+    \mathcal C_4
+  \]
+  in the case where $\mathcal C_4$ is a (non-wild) precategory.
 \end{xca}
 There's also a notion of arrow \emph{between functors}.
 These are called natural transformations.\footnote{%
@@ -647,9 +683,22 @@ type of functors to a precategory.
   from the functor category whose domain is the wild path category of $A$
   to the type of functions from $A$ to the objects of $\mathcal C$.
 \end{xca}
-% equivalences of categories
-% rezk completion
+
+\section{Adjunctions}
+\label{sec:adjunctions}
+
+We have already seen one example of an adjunction
+in~\cref{xca:adjunction-^*-_*}.
+Given a group homomorphism $f : G \to H$,
+
 % adjunctions
+% restriction and (co)induction of G-/H-sets
+% product and exponential in types
+% equivalences of categories
+% fundamental theorem
+% rezk completion
+% straightening–unstraightening
+% precategories are flagged categories
 % products and coproducts, pullbacks and pushouts, (co)equalizers, (co)limits
 
 \section{The Yoneda Lemma}
