@@ -2592,7 +2592,10 @@ for any $p, q: P$.
 
 \begin{remark}\label{rem:diagram}
 We now present the notion of a \emph{diagram}\index{diagram}.  A diagram is a graph
-whose vertices are types and whose edges are functions.  Here is an example.
+whose vertices are types and whose edges are functions or identifications. This means
+the edges have a direction. Usually there
+is one vertex with only outgoing edges, called the \emph{source},
+and one with only incoming edges, called the \emph{sink}. Here is an example.
 \[
 \begin{tikzcd}
   X \ar[r,"f"] \ar[d,"p"] & Y \ar[d,"q"] \\
@@ -2600,7 +2603,8 @@ whose vertices are types and whose edges are functions.  Here is an example.
 \end{tikzcd}
 \]
 The information conveyed by this diagram to the reader is that $X$, $Y$, $S$, and $T$ are types, and that $f$, $g$, $p$, and $q$
-are functions; moreover, $f$ is of type $X \to Y$, $g$ is of type $S \to T$, $p$ is of type $X \to S$, and $q$ is of type $Y \to T$.
+are functions; moreover, $f$ is of type $X \to Y$, $g$ is of type $S \to T$, $p$ is of type $X \to S$, and $q$ is of type $Y \to T$. The source is the left upper vertex $X$ and
+the sink is the lower right vertex $T$. 
 
 Observe that we can travel through the diagram from $X$ to $T$ by following first the arrow labeled $f$ and then the arrow labelled $q$.
 Consequently, the composite function $q \circ f$ is of type $X \to T$.
@@ -2612,15 +2616,17 @@ We say that a diagram \emph{is commutative by definition}\index{diagram!commutat
 vertex to another, the corresponding composite functions are equal by definition.  For example, in the diagram above, the condition would be that
 $g \circ p \jdeq q \circ f$.
 
-When the function type from any vertex of a diagram to any other vertex of the diagram is a set, then equality of functions is a proposition,
-and we may consider whether two functions are equal.  In that case, we say that a diagram \emph{is commutative}\index{diagram!commutative} if,
+When the sink of the diagram is a set, then equality of functions into the sink is a 
+proposition, and we may consider whether two such functions are equal.  In that case, we say that a diagram \emph{is commutative}\index{diagram!commutative} if,
 whenever there are two routes from one vertex to another, the corresponding composite functions are equal.  For example, in the diagram above,
 the condition would be that $g \circ p \eq q \circ f$.
 
 In general, a diagram is a visual way to represent identity types.
-For example, if in the above diagram the type $X\to T$ is not
+For example, if in the above diagram the type $T$ is not
 a set, then the diagram represents the identity type
-$g \circ p \eqto q \circ f$.
+$g \circ p \eqto q \circ f$. To give an element of such an identity type
+(which may or may not be possible) is called to \emph{fill} the diagram.
+\index{diagram!fill a}\index{fill a diagrams}  
 
 
 There are other sorts of diagrams.  For example, identifications may be composed, and thus we may have a diagram of identifications between
@@ -2636,7 +2642,7 @@ It indicates that $f$ is of type $x \eqto y$, $g$ is of type $s \eqto t$,
 $p$ is of type $x \eqto s$, and $q$ is of type $y \eqto t$.  We may
 also consider whether such a diagram is commutative by definition, or,
 in the case where all the identity types are sets, is commutative.
-Such diagrams are again a visual way to represent identity types.
+Such diagrams are again a visual way to represent identity types.%
 \footnote{When diagrams get more complicated, the information
 they convey is not always sufficient to find out which identity
 type(s) they represent. In such cases additional information will
@@ -3190,9 +3196,9 @@ and any essentially $\UU$-small type is locally $\UU$-small.
 
 To show that a type is locally $\UU$-small
 we have to give a reflexive relation
-$\mathrm{Eq}_A : A \to A \to \UU$
+$\constant{Eq}_A : A \to A \to \UU$
 that induces, by path induction, a family of equivalences
-$(x \eqto y) \equivto \mathrm{Eq}_A(x,y)$.
+$(x \eqto y) \equivto \constant{Eq}_A(x,y)$.
 
 \begin{xca}
   Show that $\UU$ is locally $\UU$-small, and investigate
@@ -3470,7 +3476,8 @@ $\setof{t:T}{P(t)}$.\footnotemark
     Recall that an \emph{partial order} on a set $S$ is a relation $R$ that is
     (1)~\emph{reflexive}: $R(x,x)$,
     (2)~\emph{transitive}: $R(x,y) \to R(y,z) \to R(x,z)$, and
-    (3)~\emph{antisymmetric}: $R(x,y) \to R(y,x) \to x\eq y$.}
+    (3)~\emph{antisymmetric}: $R(x,y) \to R(y,x) \to x\eq y$.
+    See also~\cref{ex:poset}.}
   with a least and a greatest element (even if $T$ is the empty type).
 \end{xca}
 
