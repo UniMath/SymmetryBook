@@ -351,57 +351,159 @@ the classifying type of $H \wr_X G$ is the type
 
 \section{The pullback}
 \label{sec:pullback}
-Given two functions $f:B\to D$ and $g:C\to D$ with common target, the ``pullback'' which we will now define should be thought about as the type of all pairs of elements $(b,c):B\times C$ so that $f(b)=g(c)$.  This construction is important in many situations also beyond group theory.
+Given two functions $f:B\to D$ and $g:C\to D$ with common target,
+the ``pullback'' which we will now define should be thought about as the type of all pairs of elements $(b,c):B\times C$ so that $f(b)\eqto g(c)$.
+This construction is important in many situations also beyond group theory.\wip{marginnote{link to~\cref{ch:cats}}}
 
 \begin{definition}
   \label{def:pullback}
   Let $B, C, D$ be types and let $f:B\to D$ and $g:C\to D$ be two maps.
-The \emph{pullback}\index{pullback} of $f$ and $g$ is the type
-$$\prod(f,g)\defequi\sum_{(b,c):B\times C}(f(b)=_Dg(c))$$
-together with the two projections $\prj_B:\prod(f,g)\to B$ and $\prj_C:\prod(f,g)\to C$ sending $(b,c,p):\prod(f,g)$ to $b:B$ or $c:C$.  If $f$ and $g$ are clear from the context, we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
-$$\xymatrix{B\times_DC\ar[r]^{\prj_C}\ar[d]^{\prj_B}&C\ar[d]^g\\B\ar[r]^f&\,D.}$$
+  The \emph{pullback}\index{pullback!in types} of $f$ and $g$ is the type
+  \[
+    \prod(f,g)\defequi\sum_{(b,c):B\times C}(f(b)\eqto_Dg(c))
+  \]
+  together with the two projections $\prj_B:\prod(f,g)\to B$
+  and $\prj_C:\prod(f,g)\to C$ sending $(b,c,p):\prod(f,g)$ to $b:B$ or $c:C$.
+  If $f$ and $g$ are clear from the context,
+  we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
+  \[
+    \begin{tikzcd}
+      B\times_DC\ar[r,"\prj_C"]\ar[d,"prj_B"'] & C\ar[d,"g"] \\
+      B\ar[r,"f"'] & D.\qedhere
+    \end{tikzcd}
+  \]
 \end{definition}
 \begin{xca}
-  \marginnote{Illustrating the exercise: if the solid diagram commutes there is a unique dotted arrow so that the resulting diagram commutes:
-    $$\xymatrix{A\ar@{.>}[dr]\ar[drr]\ar[ddr]&&\\
-    &B\times_DC\ar[r]\ar[d]&C\ar[d]\\&B\ar[r]&D}
-  $$}
   \label{xca:univpropofpullback}
-  Let $f:B\to D$ and $g:C\to D$ be two maps with common target.  If $A$ is a type show that
+  Let $f:B\to D$ and $g:C\to D$ be two maps with common target.
+  If $A$ is a type show that
   \begin{align*}
     (A\to B)\times_{(A\to D)}(A\to C)\to &(A\to B\times_DC)\\
-(\beta,\gamma,p:f\beta=g\gamma)\,\mapsto\,&(a\mapsto (f(a),g(a),p(a):f\beta(a)=g\gamma(a)))
+(\beta,\gamma,p:f\beta\eqto g\gamma)\,\mapsto\,&(a\mapsto (f(a),g(a),p(a):f\beta(a)\eqto g\gamma(a)))
   \end{align*}
- is an equivalence.
+  is an equivalence.\footnote{This verifies that our defined pullback is the pullback in the categorical sense:
+    if the solid diagram commutes there is a unique dashed arrow making the resulting diagram commute:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+        A\ar[dr,dashed]\ar[drr,bend left]\ar[ddr,bend right] \&\& \\
+        \& B\times_DC\ar[r]\ar[d] \& C\ar[d] \\
+        \& B\ar[r] \& D
+      \end{tikzcd}
+    \]}
 \end{xca}
 In view of \cref{xca:univpropofpullback} we will say that we have a \emph{pullback diagram}\index{pullback diagram}
-$$\xymatrix{A\ar[d]^{g'}\ar[r]^{f'}&C\ar[d]^g\\B\ar[r]^f&D}$$
-to indicate that we have an element in $(A\to B)\times_{(A\to D)}(A\to C)$ such that the resulting map $A\to B\times_DC$ is an equivalence.
+\[
+  \begin{tikzcd}
+    A\ar[d,"g'"']\ar[r,"f'"]\pbcorner & C\ar[d,"g"] \\
+    B\ar[r,"f"'] & D
+  \end{tikzcd}
+\]
+to indicate that we have an element in $(A\to B)\times_{(A\to D)}(A\to C)$ such that the resulting map
+$A\to B\times_DC$ is an equivalence.
+This is emphasized with the little $\lrcorner$ symbol in the upper left corner.
 
 \begin{example}
-  \marginnote{Preimage as a pullback: $$\xymatrix{f^{-1}(d)\ar[d]\ar[r]&\bn1\ar[d]^d\\B\ar[r]^f&D}$$}
-  If $g:\bn 1\to D$ has value $d:D$ and $f:B\to D$ is any map, then $\prod(f,g)\oldequiv B\times_D\bn 1$ is equivalent to the preimage $f^{-1}(d)\defequi\sum_{b:B}d=f(b)$.
+  If $d:\bn 1\to D$ denotes the constant function at $d:D$ and $g:C\to D$ is any map,
+  then $\bn 1\times_D C$ is equivalent to the preimage $g^{-1}(d)\jdeq\sum_{b:B}d\eqto g(b)$.%
+  \footnote{I.e., the preimage is a pullback:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+        g^{-1}(d)\ar[d]\ar[r]\pbcorner \& C\ar[d,"g"] \\
+        \bn 1\ar[r,"d"'] \& D
+      \end{tikzcd}
+    \]}
 \end{example}
 \begin{example}
   \label{ex:pullbackandgcd}
-  Much group theory is hidden in the pullback.  For instance, the greatest common divisor $\gcd(a,b)$ of $a,b:\NN$ is another name for the number of components you get if you pull back the $a$-fold and the $b$-fold \coverings of the circle: we % will see in \cref{lem:iso2} we
+  Much group theory is hidden in the pullback.
+  For instance, the greatest common divisor $d\defeq\gcd(a,b)$ of $a,b:\NN$
+  is another name for the number of components you get if you pull back the
+  $a$-fold and the $b$-fold \coverings of the circle: for $a,b > 0$,
   have a pullback
   \[
     \begin{tikzcd}
-      \Sc\times\UCG_{\gcd(a,b)}\ar[d]\ar[r]\pbcorner & \Sc\ar[d]^{(-)^b}\\
-      \Sc\ar[r]^{(-)^a}& \Sc
+      \Sc\times\UCG_{\gcd(a,b)}\ar[d]\ar[r]\pbcorner & \Sc\ar[d,"(-)^b"] \\
+      \Sc\ar[r,"(-)^a"'] & \Sc
     \end{tikzcd}
   \]
-(where $\CG_n$ is the cyclic group of order $n$).
-To get a geometric idea, think of the circle as the unit circle in the complex numbers so that the $a$-fold \covering is simply taking the $a$-fold power.  With this setup, the pullback should consist of pairs $(z_1,z_2)$ of unit length complex numbers with the property that $z_1^a=z_2^b$.  Let $a=a'\gcd(a,b)$ and $b=b'\gcd(a,b)$. Taking an arbitrary unit length complex number $z$, then the pair $(z^{b'},z^{a'})$ is in the pull back (since $a'b=ab'$).  But so is $(\zeta z^{b'},z^{a'})$, where $\zeta$ is any $\gcd(a,b)$\th root of unity.  Each of the $\gcd(a,b)$-choices of $\zeta$ contributes in this way to a component of the pullback.  In more detail: identifying the cyclic group $\CG_{\gcd(a,b)}$ of order $\gcd(a,b)$ with the group of $g$\th roots of unity, the top horizontal map $S^1\times \UCG_{\gcd(a,b)}\to S^1$ sends $(z,\zeta)$ to $z^{a'}$ and the left vertical map sends $(z,\zeta)$ to the product $\zeta z^{b'}$.
+  (where $\CG_n$ is the cyclic group of order $n$).
 
-Also, the least common multiple $\lcm(a,b)=a'b$ is hidden in the pullback; in the present example it is demonstrated that the map(s) across the diagram makes each component of the pullback a copy of the $\lcm(a,b)$-fold \covering.
+  To get a geometric idea, think of the circle as the unit circle in the complex numbers
+  so that the $a$-fold \covering is simply taking the $a$-fold power.
+  With this setup, the pullback should consist of pairs $(z,w)$ of unit length complex numbers
+  with the property that $z^a=w^b$.
+  Let $a=da'$ and $b=db'$.
+  Taking an arbitrary unit length complex number $z$,
+  then the pair $(z^{b'},z^{a'})$ is in the pullback (since $a'b=ab'$).
+  If $(z,w)$ is in the pullback, then so is
+  $(\zeta z,w)$, where $\zeta$ is any $a$\th root of unity.
+  Taking $\zeta=\ee^{2\pi\ii/a}$, we have that $(\zeta^k z,w)$
+  lies in the same component as $(z,w)$ if and only if $d | k$,
+  see~\cref{fig:circle-pullback}.
+  \begin{marginfigure}
+    \noindent\begin{tikzpicture}[scale=3]
+    % assumes \a < \b
+    \pgfmathsetmacro{\d}{3}
+    \pgfmathsetmacro{\ap}{2}
+    \pgfmathsetmacro{\bp}{3}
+    \pgfmathsetmacro{\a}{\d*\ap}
+    \pgfmathsetmacro{\b}{\d*\bp}
+    \draw (1,0) -- (1,1) -- (0,1);
+    \draw[->] (-.05,0) -- (1.1,0);
+    \node at (1.2,0) {$x$};
+    \node at (0,-.15) {$\scriptstyle 0$};
+    \foreach \x [parse=true] in {1,...,\a-1} {
+      \node at ({ \x/\a },-.15) {$\frac{\x}{6}$};
+    }
+    \node at (1/\a,-.4) {$\frac 1a$};
+    \node at (2/\a,-.4) {$\cdots$};
+    \node at (3/\a,-.4) {$\frac da$};
+    \node at (4.5/\a,-.4) {$\cdots$};
+    \node at (1,-.15) {$\scriptstyle 1$};
+    \draw[->] (0,-.05) -- (0,1.1);
+    \node at (0,1.2) {$y$};
+    \node at (-.15,0) {$\scriptstyle 0$};
+    \foreach \y [parse=true] in {1,...,\b-1} {
+      \node at (-.15,{ \y/\b }) {$\scriptstyle \y/9$};
+    }
+    \node at (-.15,1) {$\scriptstyle 1$};
+    \foreach \x [parse=true] in {0,...,\ap-1} {
+      \draw[casblue] ({ \x*\d/\a },0) -- (1,{ (\a - \x*\d) / \b });
+      \draw[casred] ({ (\x*\d+1)/\a },0) -- (1,{ (\a - \x*\d - 1) / \b });
+      \draw[casgreen] ({ (\x*\d+2)/\a },0) -- (1,{ (\a - \x*\d - 2) / \b });
+    }
+    \foreach \y [parse=true] in {1,...,\bp-\ap} {
+      \draw[casblue] (0,{ \y*\d/\b }) -- (1,{ (\a + \y*\d) / \b });
+      \draw[casred] (0,{ (\y*\d-1)/\b }) -- (1,{ (\a + \y*\d - 1) / \b });
+      \draw[casgreen] (0,{ (\y*\d-2)/\b }) -- (1,{ (\a + \y*\d - 2) / \b });
+    }
+    \foreach \y [parse=true] in {1,...,\ap} {
+      \draw[casblue] (0,{ (\b - \a + \y*\d )/\b }) -- ({ (\a - \y*\d) / \a }, 1);
+      \draw[casred] (0,{ (\b - \a + \y*\d - 1)/\b }) -- ({ (\a - \y*\d + 1) / \a }, 1);
+      \draw[casgreen] (0,{ (\b - \a + \y*\d - 2)/\b }) -- ({ (\a - \y*\d + 2) / \a }, 1);
+    }
+    \end{tikzpicture}
+    \caption{The pullback in the case $a=6$ and $b=9$ (so $d=3$).
+      The square represents the unit square and we've drawn the solution
+      to $ax=by \pmod1$, corresponding to $z^a=w^b$ when $z=\ee^{2\pi\ii x}$
+      and $w=\ee^{2\pi\ii y}$. On the torus $\Sc\times \Sc$, the solution consists
+      of three circles.}
+    \label{fig:circle-pullback}
+  \end{marginfigure}
+
+  In more detail:
+  the left vertical map sends $(z,k)$ to the product $\zeta^k z^{b'}$
+  and the top horizontal map $\Sc^1\times \UCG_d \to \Sc$ sends $(z,k)$ to $z^{a'}$.
+
+  Also, the least common multiple $\lcm(a,b)=a'b=da'b'=ab'$ is hidden in the pullback;
+  in the present example it is demonstrated that composite diagram map in
+  the diagram makes each component of the pullback a copy of the $\lcm(a,b)$-fold \covering.
 \end{example}
 
 
 \begin{definition}
   \label{def:intersectionand unionofsets}
-  Let $S$ be a set and consider two subsets $A$ and $B$ of $S$ given by two families of propositions (for $s:S$) $P(s)$ and $Q(s)$.  The \emph{intersection}\index{intersection! of sets} $A\cap B$ of the two subsets is given by the family of propositions $P(s)\times Q(s)$.  The \emph{union}\index{union of sets} $A\cup B$ is given by the set family of propositions $A(s)+B(s)$.
+  Let $S$ be a set and consider two subsets $A$ and $B$ of $S$ given by two families of propositions (for $s:S$) $P(s)$ and $Q(s)$.  The \emph{intersection}\index{intersection! of sets} $A\cap B$ of the two subsets is given by the family of propositions $P(s)\times Q(s)$.  The \emph{union}\index{union of sets} $A\cup B$ is given by the set family of propositions $A(s)\lor B(s)$.
 \end{definition}
 \begin{xca}
   \label{xca:intersectionpullbackofsets}
@@ -416,14 +518,22 @@ Also, the least common multiple $\lcm(a,b)=a'b$ is hidden in the pullback; in th
 \begin{definition}
   \label{def:intersectionofgroups}
   Let $f:\Hom(H,G)$ and $f':\Hom(H',G)$ be two homomorphisms with common target.  The \emph{pullback}\index{pullback!of groups} $H\times_GH'$ is the group obtained as the (pointed) component of
-$$\pt_{H\times_GH'}\defequi(\shape_H,\pt_{H'},p_{f'}p_f^{-1})$$ of the pullback $\BH\times_{\BG}\BH'$ (where $p_f:\shape_G=f(\shape_H)$ is the name we chose for the data displaying $f$ as a pointed map, so that $p_{f'}p_f^{-1}:f(\shape_H)=f'(\pt_{H'})$).
+  \[
+    \pt_{H\times_GH'}\defequi(\shape_H,\pt_{H'},p_{f'}p_f^{-1})
+  \]
+  of the pullback $\BH\times_{\BG}\BH'$
+  (where $p_f:\shape_G\eqto f(\shape_H)$ is the pointing path of $f$,
+  so that $p_{f'}p_f^{-1}:f(\shape_H)\eqto f'(\pt_{H'})$).
 
-If $(H,f,!)$ and $(H',f',!)$ are monomorphisms into $G$, then the pullback is called the \emph{intersection}\index{intersection! of monomorphisms} and if the context is clear denoted simply $H\cap H'$.
+  If $(H,f,!)$ and $(H',f',!)$ are monomorphisms into $G$,
+  then the pullback is called the \emph{intersection}\index{intersection! of
+    monomorphisms} and if the context is clear denoted simply $H\cap H'$.
 \end{definition}
 \begin{example}
-  If $a,b:\NN$ are natural number with least common multiple $L$, then $L\ZZ$ is the intersection $a\ZZ\cap b\ZZ$ of the subgroups $a\ZZ$ and $b\ZZ$ of $\ZZ$.
+  If $a,b:\NN$ are natural numbers with least common multiple $L$,
+  then $L\ZZ$ is the intersection $a\ZZ\cap b\ZZ$ of the subgroups $a\ZZ$ and $b\ZZ$ of $\ZZ$.
 \end{example}
-% \begin{example}this came out wrong DELETE June
+
 %   If $H,K:\typemono_G$ with $X,Y:\BG\to\Set$ being the corresponding transitive $G$-sets under the equivalence $E$, then the intersection of $H$ and $K$ corresponds to the $G$-set $X\times Y:\BG\to\Set$ (with $(X\times Y)(x)\defequi X(x)\times Y(x)$).
 % \end{example}
 
