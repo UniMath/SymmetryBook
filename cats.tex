@@ -34,13 +34,15 @@ Here we give a brief primer\footnote{%
   The topic is of course too vast to cover in detail here,
   so we refer to the literature for more details.
   Category theory in univalent foundations is also treated in
-  Ch.~10 of the HoTT book\footnotemark{},
+  Chapter~10 of the HoTT book\footnotemark{}
+  (based on~\citeauthor{AKS2015}\footnotemark{}),
   while \citeauthor{AwodeyCat}\footnotemark{}
   and \citeauthor{RiehlContext}\footnotemark{}
   give traditional expositions,
   and \citeauthor{MacLaneWorking}\footnotemark{}
   gives a comprehensive treatment.}%
 \addtocounter{footnote}{-3}\footcitetext{hottbook}%
+\stepcounter{footnote}\footcitetext{AKS2015}%
 \stepcounter{footnote}\footcitetext{AwodeyCat}%
 \stepcounter{footnote}\footcitetext{RiehlContext}%
 \stepcounter{footnote}\footcitetext{MacLaneWorking}%
@@ -288,7 +290,7 @@ And important special case is when each arrow type $A \to B$ is a \emph{proposit
 \end{example}
 
 Another important special case is when every morphism is an isomorphism.
-\begin{definition}
+\begin{definition}\label{def:wild-pre-groupoid}
   A (\emph{wild}) \emph{pregroupoid} is a (wild) precategory in which every
   arrow is invertible.
   A (\emph{wild}) \emph{groupoid} is a univalent (wild) pregroupoid.
@@ -302,7 +304,51 @@ Another important special case is when every morphism is an isomorphism.
 \end{example}
 There's no conflict with the terminology introduced in~\cref{sec:props-sets-grpds},
 because this construction gives an equivalence
-from the type of $1$-types (in $\UU$) to the type of groupoids (in $\UU$).
+from the type of $1$-types (in $\UU$) to the type of groupoids (in $\UU$),
+as we shall see below.
+
+\Cref{def:wild-cat,def:precategory,def:category,def:wild-pre-groupoid}
+are summarized as a diagram of inclusions in~\cref{fig:cat-summary}.
+
+\begin{figure}
+\begin{sidecaption}%
+  {The various notions of categories arranged in a cube: on the bottom face
+    we loose the adjective ``wild'' by requiring arrows to form \emph{sets};
+    on the front left face we loose the prefix ``pre'' by requiring
+    \emph{univalence}; and on the front right face we restrict to groupoids by
+    requiring all arrows be \emph{invertible}.}[fig:cat-summary]
+  \centering
+  \footnotesize
+  \begin{tikzpicture}
+    \node (wpc) at (0,3) {wild precategory};
+    \node (wc) at (-3,1) {wild category};
+    \node (wpg) at (3,1) {wild pregroupoid};
+    \node (wg) at (0,-1) {wild groupoid};
+    \node (pc) at (0,1) {precategory};
+    \node (c) at (-3,-1) {category};
+    \node (pg) at (3,-1) {pregroupoid};
+    \node (g) at (0,-3) {groupoid};
+    \begin{scope}[->,commutative diagrams/hook]
+      \draw (g) -- (pg);
+      \draw (g) -- (c);
+      \draw (pg) -- (pc);
+      \draw (c) -- (pc);
+      \draw (pc) -- (wpc);
+      \draw (wc) -- (wpc);
+      \draw (wpg) -- (wpc);
+      \draw[commutative diagrams/crossing over] (wg) -- (wc);
+      \draw[commutative diagrams/crossing over] (wg) -- (wpg);
+      \draw (c) -- (wc);
+      \draw (g) -- (wg);
+      \draw (pg) -- (wpg);
+    \end{scope}
+    \node at (-4,-.5) [casred]{hom-\emph{sets}};
+    \node at (-2,-2.5) [casred]{%
+      \begin{tabular}{c}only \\ \emph{iso}morphisms\end{tabular}};
+    \node at (2,-2.5) [casred]{\emph{univalence}};
+  \end{tikzpicture}
+\end{sidecaption}
+\end{figure}
 
 \begin{remark}
   This is a good moment to remark on the size issues
