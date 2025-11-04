@@ -240,7 +240,7 @@ for all $x:X$ and $r:f(x)\eqto g(x)$.
 
 Given a pointed type $A$, recall from \cref{cor:circle-loopspace}
 the equivalence $\ev_A$ from $\Sc\ptdto A$ to $\loops{A}$.
-Also recall that $\ev$ sends $f:\Sc\ptdto A$ to 
+This equivalence sends $f:\Sc\ptdto A$ to 
 $\inv{f_\pt}\cdot f(\Sloop)\cdot f_\pt$, and that the
 inverse $\inv{\ev}$ sends $p:\loops{A}$ to the pointed map
 $f:\Sc\ptdto A$ defined by  $f(\base)\defeq\pt_A$ and $f(\Sloop)\defis p$,
@@ -257,6 +257,125 @@ we introduce the following abbreviation, mostly used in diagrams.
 \begin{definition}\label{def:prefix-Sc}
 Define $\Sc:\UUp\to\UUp$ by $\Sc A\defeq (\Sc\ptdto A)$, $A:\UUp$.\qedhere 
 \end{definition}
+
+Given a pointed type $A$ and its pointed loop type $\loops A$,
+we will define several auxiliary functions to be used in constructions
+later.\footnote{Together these functions implement what is called a
+H-space structure on $\loops A$, see \footcite{}.
+Recall from \cref{sec:inftygps} that $A$ classifies an infinity group.
+An H-structure on $\loops A$ can be viewed as an implementation
+of some of the higher path algebra laws of the infinity group $A$.}
+
+\begin{definition}\label{def:H-loop-type}
+Let $A$ be a pointed type and $\loops A$ its pointed loop type.
+Here and below, we use $\pt$ for $\pt_A$ and $\rfl$ for $\refl{\pt_A}$.
+Define:
+\begin{align*}
+\mu_l &: \prod_{p:\loops A} (p\eqto(\rfl \cdot p),
+~~ \mu_l(p)\defeq\refl{p} \\
+\mu_r &: \prod_{p:\loops A} (p\eqto(p \cdot \rfl)), 
+~~ \mu_r(\rfl)\defeq\refl{\rfl}, \text{ using path induction}\\
+\mu_{lr} &: \mu_l (\rfl) \eqto \mu_r (\rfl), 
+~~ \mu_{lr}\defeq  \refl{\refl{\rfl}}, \text{ called \emph{coherence}}.
+\qedhere
+\end{align*}
+\end{definition}
+
+\begin{construction}\label{con:ev-section-loopsA}
+Let $\ev: (\loops A \to\loops A,\id_{\loops A})\ptdto (\loops A,\rfl)$ 
+be the evaluation map that sends $f$ to $f(\rfl)$ and is pointed 
+by $\ev_\pt\defeq\refl{\rfl}$. 
+Then $\ev$ has a pointed section, that is, a pointed 
+map $s: (\loops A,\rfl)\ptdto(\loops A \to\loops A,\id_{\loops A})$
+such that we have an identification of $(\id_{\loops A},\refl{\rfl})$ with
+${\ev}\circ{s}$.
+\end{construction}
+
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \& \rfl \jdeq \id_{\loops A}(\rfl)
+     \ar[dd,eqr,"{\mu_r(\rfl)}"]  
+  \\
+  \rfl 
+  \ar[ur,eqr,"{\refl{\rfl}}"]
+  \ar[dr,eql,"{({\ev}\circ{s})_\pt}"']
+  \\
+  \& \rfl \jdeq ({\ev}\circ{s})(\rfl) 
+  \end{tikzcd}
+  \caption{\label{fig:ev-section-loopsA} 
+  Identification of pointing paths.} 
+\end{marginfigure}
+
+\begin{implementation}{con:ev-section-loopsA}
+Let $\mu_l,\mu_r,\mu_{lr}$ be given as in \cref{def:H-loop-type}.
+Define $s$ by $s(p)\defeq (p\cdot\blank)$ and point $s$ by
+$s_\pt\defeq\inv\ptw(\mu_l): \id_{\loops A}\eqto s(\rfl)$.
+
+We use the inverse equivalence of $\ptw_*$ from \cref{con:identity-ptd-maps}
+to get the desired identification of $(\id_{\loops A},\refl{\rfl})$ with
+${\ev}\circ{s}$. This reduces our task to, first, constructing a function
+$h: \prod_{p:\loops A} (p \eqto \ev(s(p))$.
+As $\ev(s(p))\jdeq p\cdot\rfl$, we can take $\mu_r$ for $h$.
+Second, we must fill the diagram in \cref{fig:ev-section-loopsA}.
+The pointing path of $\id_{\loops A}$ is $\refl{\rfl}$.
+By \cref{def:pointedtypes} the pointing path $({\ev}\circ{s})_\pt$ is 
+$(\ap{\ev}(s_\pt)\cdot \ev_\pt) \jdeq 
+(\ap{\ev}(\inv\ptw(\mu_l))\cdot \refl{\rfl})$, 
+which can be identified\footnote{%
+By induction on $q: f \eqto_{X\eqto X} g$ one easily constructs
+an identification $\ap{\ev_x}(q) \eqto \ptw(q)(x)$ for any
+type $X$, element $x:X$, functions $f,g:X\to X$, and
+$\ev_x$ evaluation at $x$.} 
+with $\ptw(\inv\ptw(\mu_l))(\rfl)$ and hence with $\mu_l(\rfl)$.
+Now use coherence, $\mu_{lr}$.
+\end{implementation}
+
+Note that, in the above construction, 
+$\loops(\ev) :(\id_{\loops A}\eqto\id_{\loops A})\to(\rfl\eqto\rfl)$
+maps any $q:(\id_{\loops A}\eqto\id_{\loops A})$ to
+$\inv{\refl{\rfl}}\cdot\ap{\ev}(q)\cdot\refl{\rfl}$,
+which can be identified with $\ptw(q)(\rfl)$, 
+for any $q:(\id_{\loops A}\eqto\id_{\loops A})$.
+
+\begin{corollary}\label{cor:Omega-ev-section}
+\cref{con:ev-section-loopsA} induces an identification of
+$\loops({\ev}\circ{s})$ with $\id_{\rfl\eqto\rfl}$, so the unpointed
+map $\loops(s): (\pt\eqto\pt)\to (\id_{\loops A}\eqto\id_{\loops A})$ 
+is a section of $\loops(\ev)$, so of $q\mapsto\ptw(q)(\rfl)$.
+\end{corollary}
+
+The following construction is an application of the functions 
+$\mu_l,\mu_r,\mu_{lr}$, handing us a useful tool that simplifies
+identifying two pointed maps into $\loops A$
+to identifying their underlying unpointed maps.
+
+\begin{construction}\label{con:Id-B->loopsA}
+Let $A$ and $B$ be pointed types and consider pointed
+maps $f,f' : B\ptdto\loops A$ with undelying unpointed maps
+$f_\div,f'_\div : B\to\loops A$.
+Then we have a map $(f_\div\eqto f'_\div)\to(f\eqto f')$.
+\end{construction}
+
+\begin{implementation}{con:Id-B->loopsA}
+By path induction on $f_\div\eqto f'_\div$ we may assume that
+$f_\div\jdeq f'_\div$, so that the goal is to identify,
+writing simply $f$ for $f_\div$,
+$(f,f_\pt)$ with $(f,f'_\pt)$, 
+for $f_\pt,f'_\pt: \rfl\eqto f(\pt_B)$.
+By \cref{con:identity-ptd-maps}, it suffices to give
+an element $h: \prod_{b:B}(f(b)\eqto f(b))$ and an element 
+$h_\pt : (h(\pt_B)\cdot f_\pt \eqto f'_\pt$.
+
+Define $r\defeq (f'_\pt\cdot\inv{f}_\pt) : (f(\pt_B)\eqto f(\pt_B))$.
+Take $h(b)\defeq \ptw(\loops(s)(r))(f(b))$ for $b:B$,
+with $\loops(s)$ from \cref{cor:Omega-ev-section}.
+Then indeed $h(b):(f(b)\eqto f(b))$. It remains to
+identify $h(\pt_B)$ with $r$. We calculate
+$h(\pt_B)\jdeq \ptw(\loops(s)(r))(f(\pt_B))$.
+and observe that 
+
+
+\end{implementation}
 
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
@@ -320,16 +439,16 @@ identify (1) and (2) for all $(p,p_\pt)$ by a map $i$ and
 give an identification to fill the following diagram: 
 
 \begin{tikzcd}[ampersand replacement=\&]
-  \& \&\inv{f_\pt}\cdot f(\cst{\pt_A}(\Sloop)\cdot \refl{})\cdot f_\pt  \ar[dddd,eqr,"{i(\cst{\pt_A},\refl{\pt_A})}"]
+  \& \&\inv{f_\pt}\cdot f(\cst{\pt_A}(\Sloop)\cdot \rfl)\cdot f_\pt  \ar[dddd,eqr,"{i(\cst{\pt_A},\refl{\pt_A})}"]
 \\
-  \&\loops(f)(\refl{\pt_A})
+  \&\inv{f_\pt}\cdot f_\pt
    \ar[ru,eqr,"{\loops(f)((\ev_A)_\pt)}"]
 \\
   \refl{\pt_B}
   \ar[rd,eql,"{(\ev_B)_\pt}"'] 
   \ar[ru,eqr,"{\loops(f)_{\pt}}"]
 \\
- \&(\cst{\pt_B},\refl{\pt_B})
+ \&\cst{\pt_B}(\Sloop)\cdot\refl{\pt_B}
     \ar[rd,eql,"{\ev_B(O(f)_\pt)}"']  
 \\
  \& \&\inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt 
@@ -354,8 +473,8 @@ give an identification to fill the following diagram:
   \& \& \cst{\pt_A}(\Sloop)\cdot \refl{\pt_A} \ar[rr,mapsto]
   \& \& \inv{f_\pt}\cdot f(\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A})\cdot f_\pt
   \\
-  \& \& \refl{\pt_A}\ar[u,eqr,"{(\ev_A)_\pt}"]
-  \& \& \loops(f)(\refl{\pt_A}) \ar[u,eqr,"{\loops(f)((\ev_A)_\pt)}"]
+  \& \& \refl{\pt_A}\ar[u,eqr,"{(\ev_A)_\pt}"]\ar[rr,mapsto,"{\loops(f)}"]
+  \& \& \inv{f_\pt}\cdot f_\pt \ar[u,eqr,"{\loops(f)((\ev_A)_\pt)}"]
   \\
   \& \& 
   \& \& \refl{\pt_B}\ar[u,eqr,"{\loops(f)_{\pt}}"]
@@ -375,7 +494,7 @@ give an identification to fill the following diagram:
   \& \& (\cst{f(\pt_A)},f_\pt) \ar[rr,mapsto]
   \& \& \inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt
   \\
-  \& \& (\cst{\pt_B},\refl{\pt_B})\ar[u,eqr,"{O(f)_\pt}"]
+  \& \& (\cst{\pt_B},\refl{\pt_B})\ar[u,eqr,"{O(f)_\pt}"]\ar[rr,mapsto,"{\ev_B}"]
   \& \& \cst{\pt_B}(\Sloop)\cdot \refl{\pt_B} \ar[u,eqr,"{\ev_B(O(f)_\pt)}"]
   \\
   \& \& 
@@ -426,7 +545,7 @@ Again we often write $O'$ for $O'_{A,B}$.}
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
   \Sc(X\ptdto Y)\ar[rr,eqr,"\swap"] \ar[dd,eql,"{\ev}"']
-  \& \& X\ptdto \Sc Y \ar[dd,eqr,"{\ev}"]
+  \& \& X\ptdto \Sc Y \ar[dd,eqr,"{{\ev}\circ{\blank}}"]
   \\ \& \mbox{} \& \\
   \loops(X\ptdto Y)\ar[rr,eql,"\ptw_*"'] \& \& X\ptdto \loops Y 
   \end{tikzcd}
