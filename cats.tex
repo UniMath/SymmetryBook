@@ -34,13 +34,15 @@ Here we give a brief primer\footnote{%
   The topic is of course too vast to cover in detail here,
   so we refer to the literature for more details.
   Category theory in univalent foundations is also treated in
-  Ch.~10 of the HoTT book\footnotemark{},
+  Chapter~10 of the HoTT book\footnotemark{}
+  (based on~\citeauthor{AKS2015}\footnotemark{}),
   while \citeauthor{AwodeyCat}\footnotemark{}
   and \citeauthor{RiehlContext}\footnotemark{}
   give traditional expositions,
   and \citeauthor{MacLaneWorking}\footnotemark{}
   gives a comprehensive treatment.}%
 \addtocounter{footnote}{-3}\footcitetext{hottbook}%
+\stepcounter{footnote}\footcitetext{AKS2015}%
 \stepcounter{footnote}\footcitetext{AwodeyCat}%
 \stepcounter{footnote}\footcitetext{RiehlContext}%
 \stepcounter{footnote}\footcitetext{MacLaneWorking}%
@@ -288,7 +290,7 @@ And important special case is when each arrow type $A \to B$ is a \emph{proposit
 \end{example}
 
 Another important special case is when every morphism is an isomorphism.
-\begin{definition}
+\begin{definition}\label{def:wild-pre-groupoid}
   A (\emph{wild}) \emph{pregroupoid} is a (wild) precategory in which every
   arrow is invertible.
   A (\emph{wild}) \emph{groupoid} is a univalent (wild) pregroupoid.
@@ -302,7 +304,51 @@ Another important special case is when every morphism is an isomorphism.
 \end{example}
 There's no conflict with the terminology introduced in~\cref{sec:props-sets-grpds},
 because this construction gives an equivalence
-from the type of $1$-types (in $\UU$) to the type of groupoids (in $\UU$).
+from the type of $1$-types (in $\UU$) to the type of groupoids (in $\UU$),
+as we shall see below.
+
+\Cref{def:wild-cat,def:precategory,def:category,def:wild-pre-groupoid}
+are summarized as a diagram of inclusions in~\cref{fig:cat-summary}.
+
+\begin{figure}
+\begin{sidecaption}%
+  {The various notions of categories arranged in a cube: on the bottom face
+    we loose the adjective ``wild'' by requiring arrows to form \emph{sets};
+    on the front left face we loose the prefix ``pre'' by requiring
+    \emph{univalence}; and on the front right face we restrict to groupoids by
+    requiring all arrows be \emph{invertible}.}[fig:cat-summary]
+  \centering
+  \footnotesize
+  \begin{tikzpicture}
+    \node (wpc) at (0,3) {wild precategory};
+    \node (wc) at (-3,1) {wild category};
+    \node (wpg) at (3,1) {wild pregroupoid};
+    \node (wg) at (0,-1) {wild groupoid};
+    \node (pc) at (0,1) {precategory};
+    \node (c) at (-3,-1) {category};
+    \node (pg) at (3,-1) {pregroupoid};
+    \node (g) at (0,-3) {groupoid};
+    \begin{scope}[->,commutative diagrams/hook]
+      \draw (g) -- (pg);
+      \draw (g) -- (c);
+      \draw (pg) -- (pc);
+      \draw (c) -- (pc);
+      \draw (pc) -- (wpc);
+      \draw (wc) -- (wpc);
+      \draw (wpg) -- (wpc);
+      \draw[commutative diagrams/crossing over] (wg) -- (wc);
+      \draw[commutative diagrams/crossing over] (wg) -- (wpg);
+      \draw (c) -- (wc);
+      \draw (g) -- (wg);
+      \draw (pg) -- (wpg);
+    \end{scope}
+    \node at (-4,-.5) [casred]{hom-\emph{sets}};
+    \node at (-2,-2.5) [casred]{%
+      \begin{tabular}{c}only \\ \emph{iso}morphisms\end{tabular}};
+    \node at (2,-2.5) [casred]{\emph{univalence}};
+  \end{tikzpicture}
+\end{sidecaption}
+\end{figure}
 
 \begin{remark}
   This is a good moment to remark on the size issues
@@ -327,7 +373,8 @@ Many notions in category theory work already at the level of wild categories,\fo
   \citeauthor{LandInftyCat}\footnotemark{} for details.}%
 \addtocounter{footnote}{-1}\footcitetext{LurieHTT}%
 \stepcounter{footnote}\footcitetext{LandInftyCat}
-but a notable exception is the construction of slice categories.
+but a notable exception is the construction of slice categories,
+(also known as \emph{over categories}).
 \begin{example}\label{def:slice-cat}
   The \emph{slice precategory} of a precategory $\mathcal C$ over an object $C : \mathcal{C}$,
   denoted $\mathcal C/C$,
@@ -356,7 +403,7 @@ but a notable exception is the construction of slice categories.
     carry over to $\mathcal C/C$.}
 \end{example}
 \begin{xca}\label{xca:univ-slice-cat}
-  Construct the wild precategory structure on the \emph{slice of the universe} $\UU/B$
+  Construct a wild precategory structure on the \emph{slice of the universe} $\UU/B$
   over a fixed type $B:\UU$.
 \end{xca}
 
@@ -417,7 +464,8 @@ It follows that any construction or theorem about wild precategories
 has a dual version, obtained by precomposition with $(\blank)\op$.
 
 For example, the dual of the slice category construction
-is the \emph{coslice} category $C/\mathcal C$.
+is the \emph{coslice} category $C/\mathcal C$
+(also known as the \emph{under category}).
 
 As a further example of a pair dual notions, we consider that of
 monomorphisms and epimorphisms.
@@ -536,7 +584,7 @@ a notion of arrow \emph{between} them. These are called functors.
   for $X,Y : \BG\to\Set$,
   to the functorial action of set truncation, for $w:\BH$:
 \end{example}
-\begin{example}
+\begin{example}\label{def:n-trunc-functor}
   Taking $n$-truncation gives a wild functor
   $\Trunc\blank_n : \UU \to \UU^{\le n}$.
   For $n=0$, this is a functor from $\UU$ to $\Set_\UU$.
@@ -570,7 +618,8 @@ a notion of arrow \emph{between} them. These are called functors.
   We leave it to the reader to fill in the remaining data.
 \end{example}
 \begin{example}
-  For an object $C : \mathcal C$ recall the slice precategory
+  For an object $C$ of a precategory $\mathcal C$,
+  recall the slice precategory
   $\mathcal C/C$ of~\cref{def:slice-cat}.
   Taking the domain of an object $(A,f:A\to C)$ of the slice
   extends to a functor $\fst : \mathcal C/C \to \mathcal C$.
@@ -658,6 +707,16 @@ These are called natural transformations.\footnote{%
   where $(A_+)_\div \jdeq A \coprod\bn 1$.
   The naturality squares commute by reflexivity.
 \end{example}
+\begin{example}\label{ex:path-gpd-nat}
+  Every function $f : A \to B$ between types in $\UU$
+  becomes a wild functor between the corresponding wild path groupoids
+  using the action on paths, $\ap f$ from~\cref{def:ap}.
+
+  Likewise, given two functions $f,g : A \to B$, we get for
+  every family of identifications $h : \prod_{x:A} f(x) \eqto g(x)$
+  a wild natural transformation between the corresponding wild functors,
+  using the naturality squares of~\cref{def:naturality-square}.
+\end{example}
 
 With natural transformations as arrows we can elevate the
 type of functors to a precategory.
@@ -698,21 +757,140 @@ type of functors to a precategory.
   to the type of functions from $A$ to the objects of $\mathcal C$.
 \end{xca}
 
+A functor $F : \mathcal C\op \to \mathcal D$ whose domain is an opposite
+category is called \emph{contravariant}, because it reverses the directions
+of arrows: $f : C \to_{\mathcal C} C'$ in $\mathcal C$ maps to
+$F(f) : F(C') \to_{\mathcal D} F(C)$ in $\mathcal D$.
+If needed for emphasis, we may say that a functor
+$F : \mathcal C \to \mathcal D$ is \emph{covariant} by contrast.
+
+\begin{example}
+  For an object $C$ of a \emph{locally $\UU$-small}
+  wild precategory $\mathcal C$, we can form the
+  co-
+  and contravariant wild
+  functors
+  \begin{align*}
+    \Hom_{\mathcal C}(C, \blank) &: \mathcal C \to \UU, \\
+    \Hom_{\mathcal C}(\blank, C) &: \mathcal C\op \to \UU,
+  \end{align*}
+  whose actions on morphisms
+  are by post- and precomposition, respectively.
+  These are called \emph{representable} functors.
+\end{example}
+
 \section{Adjunctions}
 \label{sec:adjunctions}
 
-We have already seen one example of an adjunction
-in~\cref{xca:adjunction-^*-_*}.
+We have already seen two examples of an adjunctions
+in~\cref{xca:adjunction-_!-^*,xca:adjunction-^*-_*}.
 Given a group homomorphism $f : G \to H$,
+there are families of bijections
+\begin{align*}
+  \alpha &: \Hom_H(f_!\,X,Y) \isoto \Hom_G(X,f^*\,Y), \\
+  \beta &: \Hom_G(f^*\,Y,X) \isoto \Hom_H(Y,f_*\,X),
+\end{align*}
+for $G$-sets $X$ and $H$-sets $Y$
+that are furthermore \emph{natural}.
+This just means that if we fix either $X$ or $Y$,
+then we get natural transformations of corresponding functors.
+For example,
+fixing $X$, we can regard $\alpha$ as a natural transformation
+\[
+  \alpha : \Hom_H(f_!\,X, \blank) \to \Hom_G(X, f^*\,\blank)
+\]
+from the representable functor for $\GSet[H]$ at $f_!\,X$
+to the composition of $f^*$ and the representable functor
+for $\GSet$ at $X$.
 
-% adjunctions
-% restriction and (co)induction of G-/H-sets
+\begin{definition}\label{def:adjunction}
+  A (\emph{wild}) \emph{adjunction} between two (wild) precategories
+  $\mathcal C$ and $\mathcal D$ consists of:
+  \begin{itemize}
+  \item a (wild) functor $F : \mathcal C \to \mathcal D$ (the \emph{left adjoint}),
+  \item a (wild) functor $G : \mathcal D \to \mathcal C$ (the \emph{right adjoint}),
+  \item a (wild) natural isomorphism $\alpha : \Hom_{\mathcal D}(F\blank,\blank) \isoto
+    \Hom_{\mathcal C}(\blank, G\blank)$.
+  \end{itemize}
+  We write $F \dashv G$ to denote this situation.%
+  \glossary(2dashv){$\protect\dashv$}{adjunction}
+\end{definition}
+The essence of an adjunction is thus the ability to
+transpose between arrows $F(C) \to_{\mathcal D} D$ and
+$C \to_{\mathcal C} G(D)$.
+There is however another way of packaging this information.
+We can transpose the identity $\id_{F(C)}$
+to get an arrow $\eta_C : C \to_{\mathcal C} GF(C)$,
+and the identity $\id_{G(D)}$ to get an arrow
+$\varepsilon_D : FG(D) \to_{\mathcal D} D$.
+Naturality of $\alpha$ makes these into natural transformations
+\[
+  \eta : \id_{\mathcal C} \to GF,\quad\text{and}\quad
+  \varepsilon : FG \to \id_{\mathcal D}
+\]
+called the \emph{unit} and \emph{counit} of the adjunction.
+\begin{marginfigure}
+  \[
+    \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+      FGF(C) \ar[r,"\varepsilon_{F(C)}"] \& F(C) \\
+      F(C) \ar[u,"F(\eta_C)"]\ar[ur,"\id_{F(C)}"'] \& \\[-5mm]
+      \& G(D) \\
+      G(D) \ar[ur,"\id_{G(D)}"]\ar[r,"\eta_{G(D)}"'] \& GFG(D) \ar[u,"G(\varepsilon_D)"']
+    \end{tikzcd}
+  \]
+  \caption{Triangle laws for an adjunction $F \dashv G$.}
+  \label{fig:adj-triangles}
+\end{marginfigure}
+\begin{xca}
+  Use naturality of $\alpha$, along with unit laws to fill the
+  triangle laws in~\cref{fig:adj-triangles}.
+\end{xca}
+Conversely, given $F$, $G$, $\eta$, and $\varepsilon$, along with
+fillers for the triangle laws, we can recover $\alpha$
+by sending $f : F(C) \to_{\mathcal D} D$ to
+the composite
+\[
+  C \xrightarrow{\eta_C} GF(C) \xrightarrow{G(f)} G(D).
+\]
+\begin{xca}
+  Use the functor and triangle laws to check that $\alpha$ thus
+  defined is a natural isomorphism.
+\end{xca}
+
+\begin{example}
+  We have a wild adjunction $\Trunc\blank_n \dashv \iota_n$
+  with $\Trunc\blank_n : \UU \to \UU^{\le n}$ (cf.~\cref{def:n-trunc-functor})
+  as the left adjoint
+  and the inclusion $\iota_n : \UU^{\le n} \to \UU$ as the right adjoint.
+  Indeed, the constructor $\trunc\blank_n$ acts as the unit, precomposition with which
+  gives the equivalence
+  \[
+    (\Trunc X_n \to Y) \equivto (X \to Y)
+  \]
+  for $X : \UU$ and $Y : \UU^{\le n}$.
+\end{example}
+\begin{example}
+  Also the add/forget base points functors
+  from~\cref{ex:add-remove-basepoint} can be arranged
+  into a wild adjunction $(\blank)_+ \dashv (\blank)_\div$.
+  For $A : \UUp$ and $X : \UU$ we have
+  \[
+    \alpha : (A_+ \ptdto X) \equivto (A \to X_\div)
+  \]
+  given by precomposition with $\inl{} : A \to A_+$.
+\end{example}
+
+% being a left adjoint is a proposition (after yoneda?)
 % product and exponential in types
 % equivalences of categories
 % fundamental theorem
 % rezk completion
 % straightening–unstraightening
 % precategories are flagged categories
+
+\section{Limits and Colimits}
+\label{sec:limits}
+
 % products and coproducts, pullbacks and pushouts, (co)equalizers, (co)limits
 
 \section{The Yoneda Lemma}
