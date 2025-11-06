@@ -258,14 +258,21 @@ we introduce the following abbreviation, mostly used in diagrams.
 Define $\Sc:\UUp\to\UUp$ by $\Sc A\defeq (\Sc\ptdto A)$, $A:\UUp$.\qedhere 
 \end{definition}
 
-Given a pointed type $A$ and its pointed loop type $\loops A$,
-we will define several auxiliary functions to be used in constructions
-later.\footnote{Together these functions implement what is called a
-H-space structure on $\loops A$, see \footcite{}.
-Recall from \cref{sec:inftygps} that $A$ classifies an infinity group.
-An H-structure on $\loops A$ can be viewed as an implementation
-of some of the higher path algebra laws of the infinity group $A$.}
+The reader may have observed the definitional equality 
+$\ev_A(f)\jdeq \loops(f)(\Sloop)$ for any $f:\Sc\ptdto A$.
+This leads to the following construction.
 
+\begin{construction}\label{con:ap-ev-Omega-Sloop}
+Let $A$ be a pointed type and let ${f,g}:{\Sc\ptdto A}$ be pointed maps
+with $p: f\eqto g$ a path between them. By induction
+on $p$ we get an identification
+of $\ap{\ev_A}(p)$ with $\ptw(\ap{\loops}(p))(\Sloop)$.
+\end{construction}
+\begin{implementation}{con:ap-ev-Omega-Sloop}
+We have $\ap{\ev_A}(\refl{f})\jdeq\refl{\ev_A(f)}$ and
+$\ptw(\ap{\loops}(\refl{f}))(\Sloop)\jdeq\refl{\loops(f)(\Sloop)}$,
+which are definitionally equal.
+\end{implementation}
 
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
@@ -298,15 +305,58 @@ We point $O(f)$ as follows: calculate
 where the identity in the second line is the reversed type of 
 the pointing path of $O(f)$ under construction.
 Using \cref{con:identity-ptd-maps}, function extensionality for pointed maps,
-we set $O(f)_\pt\defeq\inv{\ptw_*}(\cst{f_\pt},\refl{\refl{\pt_B}}')$.%
-\footnote{Here $\refl{f_\pt}' : 
-f_\pt \cdot \refl{\pt_B} \eqto f_\pt$, 
-as $f_\pt \cdot \refl{\pt_B}$ is not definitionally $f_\pt$,
-so a minor additional transport is required.}
-Indeed, $\cst{f_\pt} : \Sc\to(\pt_B \eqto f(\pt_A))$ 
-transports $\refl{\pt_B}$ to $f_\pt$.
+we set $O(f)_\pt\defeq\inv{\ptw_*}(\cst{f_\pt},\refl{f_\pt}')$.
+Here $\refl{f_\pt}' : (\cst{f_\pt}(\base) \cdot \refl{\pt_B} \eqto f_\pt)$
+is defined by easy path algebra, as $\cst{f_\pt}(\base)\jdeq f_\pt$.\footnote{%
+A minor adjustment of $\refl{f_\pt}$ is needed since
+$f_\pt \cdot \refl{\pt_B}$ is not definitionally $f_\pt$.
+In case $f_\pt \jdeq \refl{\pt_B}$, the prime can be left out.}
 \end{definition}
-Above we have defined a 
+
+\begin{construction}\label{con:ev(O(f)pt)-refl}
+Let $A$ and $B$ be pointed types and $f :{A\ptdto B}$ a pointed map.
+For every $b:B$ and $p:\pt_B\eqto b$, define the type $T(b,p)$ by
+\[
+T(b,p)\defeq\bigl((\cst{\pt_B}(\Sloop)\cdot\refl{\pt_B})\eqto_{\loops B}
+(\inv p \cdot\cst{b}(\Sloop) \cdot p)\bigr).
+\]
+We have a reflexivity path $r$ in $T(\pt_B,\refl{\pt_B})$,
+and $\ev(O(f)_\pt)$ is an element of $T(f(\pt_A),f_\pt)$.\footnote{%
+See \cref{def:O-mega} and apply $\ev$ to the endpoints of $O(f)_\pt$.}
+We have an identification of $\ev(O(f)_\pt)$ with 
+$\trp[F]{(f_\pt,\refl{f_\pt}')}(r)$.
+\end{construction}
+
+In words, the above construction tell us that $\ev(O(f)_\pt$ is the result 
+of transporting the reflexivity path
+along $(f_\pt,\refl{f_\pt}') : (\pt_B,\refl{\pt_B}) \eqto (f(\pt_A),f_\pt)$.
+
+\begin{implementation}{con:ev(O(f)pt)-refl}
+We apply induction on $f_\pt$, setting $\pt_B\jdeq f(\pt_A)$ and
+$f_\pt\jdeq\refl{\pt_B}$.\footnote{%
+\MB{NB (omit?)} We use $\pt_B$ as a convenient abbreviation of $f(\pt_A)$.
+A more correct view is that $\pt_B$ is a variable that gets
+instantiated by $f(\pt_A)$.}
+
+In this case the transport is along
+the reflexivity path and it suffices to identify $\ev(O(f)_\pt)$ with $r$.
+Unfolding definitions we get
+\begin{align*}
+O(f)_\pt &\jdeq \inv{\ptw_*}(\cst{f_\pt},\refl{f_\pt}')\\
+         &\jdeq \inv{\ptw_*}(\cst{\refl{\pt_B}},\refl{\refl{\pt_B}})\\
+         &\jdeq \refl{(\cst{\pt_B},\refl{\pt_B})} \jdeq \refl{\pt_{\Sc\ptdto B}}
+\end{align*}
+\MB{no surprise!} Using \cref{con:ap-ev-Omega-Sloop} we get identifications
+\begin{align*}
+\ev(O(f)_\pt) &\eqto \ptw(\ap{\loops}(\refl{\pt_{\Sc\ptdto B}}))(\Sloop)\\
+         &\jdeq \ptw(\refl{\loops(\pt_{\Sc\ptdto B})}(\Sloop)\\
+         &\jdeq \refl{\loops(\cst{\pt_B},\refl{\pt_B})(\Sloop)} 
+          \jdeq \refl{(\cst{\pt_B}(\Sloop)\cdot\refl{\pt_B})} \jdeq r.\qedhere
+\end{align*}
+\end{implementation}
+
+
+In \cref{def:O-mega} we have defined a 
 map $O_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$,
 and we often simply write $O$ for $O_{A,B}$.
 The following construction shows that $\loops$ on pointed maps
@@ -344,7 +394,28 @@ give an identification to fill the following diagram:
  \& \&\inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt 
 \end{tikzcd}
 
-\MB{Ongoing attempt: path induction on $f_\pt$.}
+The task can be simplified by applying path induction on $f_\pt$,
+that is, setting $\pt_B\jdeq f(\pt_A)$ (also used as shorthand)
+and $f_\pt\jdeq\refl{\pt_B}$. This yields the following diagram:
+
+\begin{tikzcd}[ampersand replacement=\&]
+  \& \&f(\cst{\pt_A}(\Sloop)\cdot \rfl)\cdot \refl{\pt_B}  \ar[dddd,eqr,"{i(\cst{\pt_A},\refl{\pt_A})}"]
+\\
+  \& \refl{\pt_B}
+   \ar[ru,eqr,"{\loops(f)((\ev_A)_\pt)}"]
+\\
+  \refl{\pt_B}
+   \ar[rd,eql,"{(\ev_B)_\pt}"'] 
+   \ar[ru,eqr,"{\refl{\refl{\pt_B}}}"]
+\\
+ \&\cst{\pt_B}(\Sloop)\cdot\refl{\pt_B}
+    \ar[rd,eql,"{\ev_B(O(f)_\pt)}"']  
+\\
+ \& \&\cst{\pt_B}(\Sloop)\cdot \refl{\pt_B} 
+\end{tikzcd}
+
+By \cref{con:ev(O(f)pt)-refl} we can identify $\ev(O(f)_\pt)$ with
+the reflexivity path. \MB{TBC}
 %$\loops(f)((\ev_A)_\pt)\cdot\loops(f)_{\pt}$ to $\ev_B(O(f)_\pt)\cdot (\ev_B)_\pt$.
 \end{implementation}
 
