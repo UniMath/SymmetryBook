@@ -313,7 +313,8 @@ we may simply write $\ev$. Similarly for $\varepsilon_A$ defined next.}
 The equivalence $\ev_A$ can itself be
 pointed as follows. The point of $\Sc\ptdto A$ is the constant map 
 $\cst{\pt_A}$, pointed by reflexivity, which is sent by $\ev_A$ 
-to $\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A}$. Define 
+to $\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A}$.\footnote{%
+Recall that reflexivity paths cancel definitionally on the left.} Define 
 $\varepsilon_A(p): \refl{\pt_A} \eqto (\cst{\pt_A}(p)\cdot\refl{\pt_A})$,
 for any $z:\Sc$, $p:\base\eqto z$, by path induction, setting
 $\varepsilon_A(\refl{\base})\defeq \refl{\refl{\pt_A}}$.\footnote{%
@@ -330,12 +331,12 @@ $\loops, \Sc\blank : \UUp\ptdto\UUp$, cf.\ \cref{ch:cats}.}}
 
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \OO A\ar[rr,"O(f)"]\ar[dd,equivl,"\ev_A"']
+  \OO A\ar[rr,"\OO(f)"]\ar[dd,equivl,"\ev_A"']
   \& \&\OO B  \ar[dd,equivr,"\ev_B"]
   \\ \& \mbox{} \& \\
   \loops{A}\ar[rr,"\loops(f)"'] \& \& \loops{B}
   \end{tikzcd}
-  \caption{\label{fig:Omega-O} $\loops(f)$ and $O(f)$ correspond.} 
+  \caption{\label{fig:Omega-O} $\loops(f)$ and $\protect\OO(f)$ correspond.} 
 \end{marginfigure}
 
 
@@ -343,11 +344,11 @@ $\loops, \Sc\blank : \UUp\ptdto\UUp$, cf.\ \cref{ch:cats}.}}
 Let $A$ and $B$ be pointed types and 
 let $f: A\ptdto B$ be a pointed map.
 Then we have an identification of $\loops(f)\circ \ev_A$ 
-and ${\ev_B} \circ {O(f)}$, as represented by \cref{fig:Omega-O}.
+and ${\ev_B} \circ {\OO(f)}$, as represented by \cref{fig:Omega-O}.
 Consequently, we have that $e\defeq(\inv{\ev_B}\circ{{\blank}\circ\ev_A})$
 is an equivalence of type 
 $(\loops A\ptdto\loops B)\equivto(\OO A\ptdto\OO B)$,
-and $O \eqto (e\circ \loops)$. 
+and $\OO \eqto (e\circ \loops)$. 
 \end{construction}
 
 \begin{figure}
@@ -374,7 +375,7 @@ and $O \eqto (e\circ \loops)$.
   \& \mbox{}\arrow[dash]{r} \& \mbox{}\arrow[dash]{r} \& \mbox{}
   }
   \\
-  (\Sc\ptdto A)\ar[rr,"O(f)"]
+  (\Sc\ptdto A)\ar[rr,"\OO(f)"]
   \& \& (\Sc\ptdto B) \ar[rr,"{\ev_B}"]
   \& \& \loops B
   \\ 
@@ -387,8 +388,8 @@ and $O \eqto (e\circ \loops)$.
   \& \& (\cst{f(\pt_A)},f_\pt) \ar[rr,mapsto]
   \& \& \inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt
   \\
-  \& \& (\cst{\pt_B},\refl{\pt_B})\ar[u,eqr,"{O(f)_\pt}"]\ar[rr,mapsto,"{\ev_B}"]
-  \& \& \cst{\pt_B}(\Sloop)\cdot \refl{\pt_B} \ar[u,eqr,"{\ev_B(O(f)_\pt)}"]
+  \& \& (\cst{\pt_B},\refl{\pt_B})\ar[u,eqr,"{\OO(f)_\pt}"]\ar[rr,mapsto,"{\ev_B}"]
+  \& \& \cst{\pt_B}(\Sloop)\cdot \refl{\pt_B} \ar[u,eqr,"{\ev_B(\OO(f)_\pt)}"]
   \\
   \& \& 
   \& \& \refl{\pt_B}\ar[u,eqr,"{(\ev_B)_\pt}"] }
@@ -407,7 +408,7 @@ and $(2)\jdeq \inv{(f(p_\pt)\cdot f_\pt)}\cdot (f\circ p)(\Sloop)
 for all $(p,p_\pt)$.\footnote{We often leave out the ``$\ap{\blank}$'s''.}
 Moreover, we must fill the following triangle:
 \[
-\begin{tikzcd}[ampersand replacement=\&]
+\begin{tikzcd}[ampersand replacement=\&,row sep=tiny]
   \& \&\inv{f_\pt}\cdot f(\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A})\cdot f_\pt  \ar[dddd,eqr,"{i(f,f_\pt)(\cst{\pt_A},\refl{\pt_A})}"]
 \\
   \&\inv{f_\pt}\cdot f_\pt
@@ -418,7 +419,7 @@ Moreover, we must fill the following triangle:
   \ar[ru,eqr,"{\loops(f)_{\pt}}"]
 \\
  \&\cst{\pt_B}(\Sloop)\cdot\refl{\pt_B}
-    \ar[rd,eql,"{\ev_B(O(f)_\pt)}"']  
+    \ar[rd,eql,"{\ev_B(\OO(f)_\pt)}"']  
 \\
  \& \&\inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt 
 \end{tikzcd}
@@ -431,15 +432,15 @@ reduces to the task of identifying
 $f(p(\Sloop)\cdot \refl{p(\base)})\cdot \refl{f(p(\base))}$ and 
 $(f\circ p)(\Sloop)\cdot \refl{f(p(\base))}$.
 
-The above identification stays well typed when we replace
-$\Sloop$ by an arbitrary $g:\base\eqto z$, $z:\Sc$. We define
+The latter identity type stays well typed when we replace
+$\Sloop$ by an arbitrary $g:\base\eqto z$, $z:\Sc$. 
+By induction on $g$, we define an element
 \[
 \iota(f,p,g) :
 \bigl((f(p(g)\cdot \refl{p(\base)})\cdot \refl{f(p(\base))})
 \eqto %_{f(p(\base)) \eqto f(p(z))}
-((f\circ p)(g)\cdot \refl{f(p(\base))})\bigr)
+((f\circ p)(g)\cdot \refl{f(p(\base))})\bigr),
 \]
-by induction on $g$, 
 setting $\iota(f,p,\refl{\base})\defeq\refl{\refl{f(p(\base))}}$.
 We complete the definition of $i(f,f_\pt)(p,p_\pt)$ by setting
 $i(f,\refl{f(p(\base))})(p,\refl{p(\base)})\defeq\iota(f,p,\Sloop)$.
@@ -448,7 +449,7 @@ Again applying path induction on $f_\pt$, assuming
 that $\pt_B\jdeq f(\pt_A)$ and $f_\pt \jdeq \refl{\pt_B}$, 
 the triangle above reduces to the following triangle:
 \[
-\begin{tikzcd}[ampersand replacement=\&]
+\begin{tikzcd}[ampersand replacement=\&,row sep=tiny]
   \& \&f(\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A})\cdot \refl{\pt_B}  
    \ar[dddd,eqr,"{i(f,\refl{f(\pt_A)})(\cst{\pt_A},\refl{\pt_A})}"]
 \\
@@ -460,19 +461,19 @@ the triangle above reduces to the following triangle:
    \ar[ru,eqr,"{\refl{\refl{\pt_B}}}"]
 \\
  \&\cst{\pt_B}(\Sloop)\cdot\refl{\pt_B}
-    \ar[rd,eql,"{\ev_B(O(f)_\pt)}"']  
+    \ar[rd,eql,"{\ev_B(\OO(f)_\pt)}"']  
 \\
  \& \&\cst{\pt_B}(\Sloop)\cdot \refl{\pt_B} 
 \end{tikzcd}
 \]
 Note that $i(f,\refl{f(\pt_A)})(\cst{\pt_A},\refl{\pt_A})\jdeq
 \iota(f,\cst{\pt_A},\Sloop)$. By \cref{def:O-functor}, as $f_\pt$ is
-a reflexivity path, we get that $O(f)_\pt$ and $\ev_B(O(f)_\pt)$ are
+a reflexivity path, we get that $\OO(f)_\pt$ and $\ev_B(\OO(f)_\pt)$ are
 also reflexivity paths. Hence, recalling \cref{rem:pointing-ev} for 
 the pointing paths $(\ev_A)_\pt$, $(\ev_B)_\pt$, 
 we have to fill the following triangle:
 \[
-\begin{tikzcd}[ampersand replacement=\&]
+\begin{tikzcd}[ampersand replacement=\&,row sep=small,column sep=large]
   \&f(\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A})\cdot \refl{\pt_B}  
   \ar[dd,eqr,"{\iota(f,\cst{\pt_A},\Sloop)}"]
  \\
@@ -494,16 +495,17 @@ on $f_\pt$. Also, $\iota(f,\cst{\pt_A},g)$ has the right type.}
 Then apply induction on $g$, setting $g\jdeq\refl{\base}$,
 which boils down to the same triangle with $\Sloop$ replaced by $\refl{\base}$.
 The whole diagram has now become a reflexivity diagram,
-as also $\iota(f,\cst{\pt_A},\refl{\base})$ is reflexivity, and we are done.
+as also $\iota(f,\cst{\pt_A},\refl{\base})$ is reflexivity by definition, 
+and we are done.
 \end{implementation}
 
 
-Composition with $O$, \ie $(O\circ\blank)\defeq(q\mapsto O\circ q)$,
+Composition with $\OO$, \ie $(\OO\circ\blank)\defeq(q\mapsto \OO\circ q)$,
 gives the map\footnote{
 This map corresponds to a map of type
 $\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$.} 
 \[
-(O\circ\blank): (\Sc\ptdto(A\ptdto B))\to
+(\OO\circ\blank): (\Sc\ptdto(A\ptdto B))\to
 (\Sc\to((\Sc\ptdto A)\ptdto(\Sc\ptdto B)).
 \]
 
@@ -529,7 +531,7 @@ Various authors, difficult!
 \begin{definition}\label{def:O'}
 Let $A$ and $B$ be pointed types. Define the map
 map $O'_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$
-by $O'_{A,B}\defeq (O_{A,B} \circ\inv{\swap}\circ\blank)$.\footnote{%
+by $O'_{A,B}\defeq (\OO_{A,B} \circ\inv{\swap}\circ\blank)$.\footnote{%
 Again, we often write $O'$ for $O'_{A,B}$.} 
  \end{definition}
 
@@ -599,9 +601,9 @@ to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
   \\ \& \mbox{} \& \\
   \Sc(X\ptdto Y)
     \ar[rr,equivr,"{\swap_{\Sc,X}}"]
-    \ar[dd,"{O\circ\blank}"']
+    \ar[dd,"{\OO\circ\blank}"']
   \& \& X\ptdto \Sc Y  
-    \ar[dd,"{O'}"] \ar[drr,equivl,"{O}"']
+    \ar[dd,"{O'}"] \ar[drr,equivl,"{\OO}"']
     %\ar[rr,equivr,"{(\ev\circ\blank)}"]
   %\& \& \BHom(H,G) 
   \\ 
@@ -622,7 +624,7 @@ to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
   $Y\defeq\protect\BB G$;
   $\protect\ev$ is from \cref{cor:circle-loopspace};
   $\swap$ is from \cref{con:ptw-swap-ptd-doms};
-  $O$ is from \cref{def:O-functor};
+  $\protect\OO$ is from \cref{def:O-functor};
   $O'$ is from \cref{def:O'};
   $P(f)$ expresses that $\protect\ev\circ f\circ \inv{\protect\ev}$
   classifies a homomorphism.
@@ -633,9 +635,9 @@ to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
 
 \begin{proof}
 \begin{enumerate}
-\item In the right square, the image of $O$ is indeed given by $P$.
+\item In the right square, the image of $\OO$ is indeed given by $P$.
 \item The right square commutes.
-$O'\jdeq O_{A,B} \circ(\inv{\swap}\circ\blank)$
+$O'\jdeq \OO_{A,B} \circ(\inv{\swap}\circ\blank)$
 \item The left square commutes. First we observe that the totally
 unpointed maps commute definitionally ...
 \end{enumerate}
