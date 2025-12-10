@@ -238,6 +238,98 @@ that $\refl{g(x)}\cdot r$ is definitionally equal to $r$,
 for all $x:X$ and $r:f(x)\eqto g(x)$.
 \end{implementation}
 
+The following construction is useful since it
+will allow us to simplify identifying two pointed maps
+to identifying their underlying unpointed maps
+in some important cases. The construction is based on BCFR which
+in turn uses a result by Cavallo.
+
+\begin{construction}\label{con:Id-(B->*A)}
+Let $A$ be a pointed type and let $\ev: (\id_A\eqto\id_A)\to(\pt_A\eqto\pt_A)$
+be the evaluation map that sends identifications $i:(\id_A\eqto\id_A)$ 
+to paths $\ptw(i)(\pt_A) : (\pt_A\eqto\pt_A)$.
+Furthermore, let  $s: (\pt_A\eqto\pt_A)\to(\id_A\eqto\id_A)$
+be a section of $\ev$, that is, we are given
+identifications $\ev(s(p))\eqto p$ for all $p:(\pt_A\eqto\pt_A)$.
+Let also $B$ be a pointed type and consider pointed
+maps $f,f' : B\ptdto A$ with underlying unpointed maps
+$f_\div,f'_\div : B\to A$.
+
+Then we have a map $(f_\div\eqto f'_\div)\to(f\eqto f')$.
+\end{construction}
+
+\begin{implementation}{con:Id-(B->*A)}
+By path induction on $f_\div\eqto f'_\div$ we may take
+$f_\div\jdeq f'_\div$, so that the goal is to identify\footnote{%
+Henceforth we simply write $f$ for $f_\div$.}
+$(f,f_\pt)$ with $(f,f'_\pt)$, 
+for two paths $f_\pt,f'_\pt: (\pt_A\eqto f(\pt_B))$.
+
+Define $r\defeq (f'_\pt\cdot\inv{f}_\pt) : (f(\pt_B)\eqto f(\pt_B))$.
+By \cref{con:identity-ptd-maps}, it suffices to give
+an element $h: \prod_{b:B}(f(b)\eqto f(b))$ and an identification
+of $h(\pt_B)$ with $r$.
+By path induction on $f_\pt$ we may take $\pt_A\jdeq f(\pt_B)$,
+so that the domain of $s$ is $f(\pt_B)\eqto f(\pt_B)$,
+and so $r$ is an element of this domain. 
+Now take $h(b)\defeq \ptw(s(r))(f(b))$ for any $b:B$.
+Then indeed $h(b):(f(b)\eqto f(b))$, and we can identify
+$h(\pt_B)\jdeq \ptw(s(r))(f(\pt_B))\jdeq\ev(s(r))$ with $r$ 
+since $s$ is a section of $\ev$.
+\end{implementation}
+
+\begin{construction}\label{con:ev-section-loopsA}
+Let $A$ be a pointed type and $\loops A$ its pointed loop type.
+We use $\pt$ for $\pt_A$ and $\rfl$ for $\refl{\pt_A}$.
+Let $\ev: (\id_{\loops A}\eqto\id_{\loops A})\to (\rfl\eqto\rfl)$ 
+be the evaluation map that sends $i:(\id_{\loops A}\eqto\id_{\loops A})$
+to $\ptw(i)(\rfl)$. 
+Then $\ev$ has a section, that is, a 
+map $s: (\rfl\eqto\rfl)\to(\id_{\loops A}\eqto\id_{\loops A})$
+with identifications $\ev(s(\alpha))\eqto\alpha$ for 
+all $\alpha: (\rfl\eqto\rfl)$.
+\end{construction}
+
+\begin{implementation}{con:ev-section-loopsA}
+Recall from \cref{def:funext} the equivalence $\ptw$ identifying
+$\id_{\loops A}\eqto\id_{\loops A}$ with $\prod_{p:\loops A}(p\eqto p)$.
+Since $(\rfl\cdot p)$ and $p$ are definitionally equal for any $p:\loops A$,
+any $\alpha: (\rfl\eqto\rfl)$ gives a path 
+$\ap{\blank\cdot p}(\alpha): (p\eqto p)$.
+Taking $\rfl$ for $p$, $\ap{\blank\cdot \rfl}(\alpha)$
+can be identified with $\alpha$.\footnote{%
+As obvious as this may seem, it requires a generalization of
+the type of $\alpha$ to enable path induction, and we delegate
+this to \cref{xca:ev-section-loopsA}.} 
+For any $\alpha: (\rfl\eqto\rfl)$ and $p:\loops A$,
+define $s_\alpha$ by $s_\alpha(p)\defeq\ap{\blank\cdot p}(\alpha)$.
+Then $\inv{\ptw}(s_\alpha):(\id_{\loops A}\eqto\id_{\loops A})$.
+Hence 
+\[
+s\defeq(\alpha\mapsto\inv{\ptw}(s_\alpha)) : 
+(\rfl\eqto\rfl)\to(\id_{\loops A}\eqto\id_{\loops A}),
+\]
+and we have 
+$\ev(s(\alpha)) \jdeq \ptw(\inv{\ptw}(s_\alpha))(\rfl) \eqto \alpha$ 
+by \cref{def:funext} and \cref{xca:ev-section-loopsA}.
+\end{implementation}
+
+\begin{exercise}\label{xca:ev-section-loopsA}
+Given a type $A$ with elements $a,x:A$ and a path $q:a\eqto x$,
+define $\refl{q}' : (q\cdot\refl{a}) \eqto q$ by induction on $q$.
+For any $p:a\eqto a$ and $\beta:(p\eqto \refl{a})$,
+define $i(\beta): \ap{\blank\cdot\refl{a}}(\beta) \eqto
+\beta\cdot\refl{p}' $ by induction on $\beta$.
+Now, give an identification of $\ap{\blank\cdot\refl{a}}(\alpha)$ and 
+$\alpha$ for any $\alpha:(\refl{a}\eqto \refl{a})$.
+\end{exercise}
+
+\begin{corollary}\label{cor:Id-(B->*loopsA)}
+The combination of \cref{con:Id-(B->*A)} and \cref{con:ev-section-loopsA}
+yields a function from $(f_\div\eqto f'_\div)$ to $(f\eqto f')$ for all pointed
+maps $f,f' : B\ptdto \loops A$.
+\end{corollary}
+
 \begin{definition}\label{def:cst-ptd}
 Let $A$ and $B$ be pointed types.
 For any $b:B$ and $p:\pt_B\eqto b$, 
