@@ -295,7 +295,18 @@ Recall from \cref{def:funext} the equivalence $\ptw$ identifying
 $\id_{\loops A}\eqto\id_{\loops A}$ with $\prod_{p:\loops A}(p\eqto p)$.
 Since $(\rfl\cdot p)$ and $p$ are definitionally equal for any $p:\loops A$,
 any $\alpha: (\rfl\eqto\rfl)$ gives a path 
-$\ap{\blank\cdot p}(\alpha): (p\eqto p)$.
+$\ap{\blank\cdot p}(\alpha): (p\eqto p)$.\footnote{%
+In a picture:
+\[
+  \begin{tikzcd}[ampersand replacement=\&,column sep=large]
+  \rfl \ar[r,mapsto,"{\blank\cdot p}"]\ar[d,eql,"\alpha"']
+  \& (\rfl\cdot p)  \ar[d,eqr,shift right=1em,"{\ap{\blank\cdot p}(\alpha)}"] \jdeq p
+\\
+  \rfl \ar[r,mapsto,"{\blank\cdot p}"]
+  \& (\rfl\cdot p) \jdeq p
+  \end{tikzcd}
+\]
+}
 Taking $\rfl$ for $p$, $\ap{\blank\cdot \rfl}(\alpha)$
 can be identified with $\alpha$.\footnote{%
 As obvious as this may seem, it requires a generalization of
@@ -316,10 +327,10 @@ by \cref{def:funext} and \cref{xca:ev-section-loopsA}.
 
 \begin{exercise}\label{xca:ev-section-loopsA}
 Given a type $A$ with elements $a,x:A$ and a path $q:a\eqto x$,
-define $\refl{q}' : (q\cdot\refl{a}) \eqto q$ by induction on $q$.
+define $\rho_{q} : (q\cdot\refl{a}) \eqto q$ by induction on $q$.
 For any $p:a\eqto a$ and $\beta:(p\eqto \refl{a})$,
 define $i(\beta): \ap{\blank\cdot\refl{a}}(\beta) \eqto
-\beta\cdot\refl{p}' $ by induction on $\beta$.
+\beta\cdot\rho_{p} $ by induction on $\beta$.
 Now, give an identification of $\ap{\blank\cdot\refl{a}}(\alpha)$ and 
 $\alpha$ for any $\alpha:(\refl{a}\eqto \refl{a})$.
 \end{exercise}
@@ -361,24 +372,23 @@ $\pt_{\OO B}\jdeq\pt_{\Sc\ptdto B}\jdeq(\cst{\pt_B},\refl{\pt_B})$ and
 $\OO(\pt_{\OO A})\jdeq f\circ\pt_{\OO A}\jdeq (\cst{f(\pt_A)},f_\pt)$.
 So both $\pt_{\OO B}$ and $\OO(\pt_{\OO A})$ are images of
 $\cst{\ast}^\Sc$, and we can obtain a path between them 
-by applying $\cst{\ast}^\Sc$ to the unique path $(f_\pt,\refl{f_\pt}')$
+by applying $\cst{\ast}^\Sc$ to the unique path $(f_\pt,\rho_{f_\pt})$
 between $(\pt_B,\refl{\pt_B})$ and $(f(\pt_A),f_\pt)$ 
 in the contractible type $\sum_{x:B}(\pt_B\eqto x)$.\footnote{%
-Here $\refl{f_\pt}' : f_\pt \cdot \refl{\pt_B} \eqto f_\pt$
+Here $\rho_{f_\pt} : f_\pt \cdot \refl{\pt_B} \eqto f_\pt$
 is defined by induction on $f_\pt$, 
-setting $\refl{\refl{\pt_B}}'\defeq\refl{\refl{\pt_B}}$.
-This minor adjustment of $\refl{f_\pt}$ is needed since
-$f_\pt \cdot \refl{\pt_B}$ is not definitionally $f_\pt$.}
+setting $\rho_{\refl{\pt_B}}\defeq\refl{\refl{\pt_B}}$.
+}
 The situation is illustrated in the diagram below and we define 
-$\OO(f)_\pt\defeq\ap{\cst{\ast}}(f_\pt,\refl{f_\pt}')$.
+$\OO(f)_\pt\defeq\ap{\cst{\ast}}(f_\pt,\rho_{f_\pt})$.
 \end{definition}
 \[
 \begin{tikzcd}[ampersand replacement=\&,column sep=small]
    (\pt_B,\refl{\pt_B})
     \ar[r,mapsto,"{\cst{\ast}}"]
-    \ar[d,eql,"{(f_\pt,\refl{f_\pt}')}"']
+    \ar[d,eql,"{(f_\pt,\rho_{f_\pt})}"']
   \& (\cst{\pt_B},\refl{\pt_B})\jdeq\pt_{\OO B}
-    \ar[d,eqr,"{\ap{\cst{\ast}}(f_\pt,\refl{f_\pt}')}"]
+    \ar[d,eqr,"{\ap{\cst{\ast}}(f_\pt,\rho_{f_\pt})}"]
 \\
   (f(\pt_A),f_\pt)
     \ar[r,mapsto,"{\cst{\ast}}"] 
@@ -388,7 +398,7 @@ $\OO(f)_\pt\defeq\ap{\cst{\ast}}(f_\pt,\refl{f_\pt}')$.
 Note that $\OO(f)_\pt$ is a reflexivity path if $f_\pt\jdeq\refl{\pt_B}$.
 \begin{xca}\label{xca:O-functor}
 Complete the structure of $\OO$ as a wild functor, \cf \cref{sec:naturality}.
-Identify $\OO(f)_\pt$ with $\inv{\ptw_*}(\cst{f_\pt},\refl{f_\pt}')$.
+Identify $\OO(f)_\pt$ with $\inv{\ptw_*}(\cst{f_\pt},\rho_{f_\pt})$.
 \end{xca}
 
 
