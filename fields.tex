@@ -154,7 +154,7 @@ the associativity law can easily be verified. It follows that
 $(\ZZ,1_\ZZ,\ell,!)$ is a non-trivial commutative ring.
 \end{example}
 
-\DELETE{\begin{definition}\label{def:typemixring}
+\begin{definition}\label{def:typemixring}
 The type of rings is defined as
 \[
 \typering\defeq\sum_{R:\typegroup}\sum_{1_R:\USymR}\sum_{\ell,r:\USymR\to\Hom(R,R)} \RingProps(R,1_R,\ell,r).
@@ -162,7 +162,7 @@ The type of rings is defined as
 The type $\typecommring$ of commutative rings is similar to the type
 of rings but with $\RingProps(R,1_R,\ell,r) \times(\ell=r)$. 
 \end{definition}
-}% end DELETE
+% end wip
 
 \begin{xca}\label{xca:Rmixring->URabstring}
 Let $(R,1_r,\ell,r)$ be an mixed ring. 
@@ -199,8 +199,11 @@ $k': H(g,h)$. In line with the notation for pointed maps,
 we denote the pair $k$ by $(k_\div,k_\pt)$, an likewise for $k'$. 
 Define the \emph{pointwise composition}
 $(k'\cdot_{\ptw} k)$ of $k'$ and $k$ by\footnote{%
-We'll use the notation ``$\cdot_{\ptw}$'' also for $k'_\div$ and $k_\div$.
-As we do for pointed maps, we will often drop the subscript ``$\div$''.}
+We use $k_\div$ to denote the first component of $k$,
+as we do for non-dependent pointed maps, but we will often drop
+this subscript ``$\div$''.
+We use the notation ``$\cdot_{\ptw}$'' for pointwise composition
+of $k$ and $k'$, as well as of $k_\div$ and $k'_\div$.}
 \begin{align*}
 \bigl(k'\cdot_{\ptw} k\bigr)&\defeq
 \bigl(k'_\div\cdot_{\ptw} k_\div ~,~ 
@@ -237,6 +240,36 @@ This identification is easily obtained by using
 that $\refl{g(x)}\cdot r$ is definitionally equal to $r$,
 for all $x:X$ and $r:f(x)\eqto g(x)$.
 \end{implementation}
+
+\begin{definition}\label{def:cst-ptd}
+Let $A$ and $B$ be pointed types.
+For any $b:B$ and $p:\pt_B\eqto b$, 
+define the \emph{pointed constant map} $\cst{\ast}^A(b,p) : A\ptdto B$
+\emph{at} $(b,p)$ by setting $\cst{\ast}^A(b,p)\defeq (\cst{b}^A,p)$.\footnote{%
+Here $\cst{b}^A$ is from \cref{def:cst-map}.
+We may omit superscripts $A$ if $A$ is clear from the context.}
+Thus $\cst{\ast}^A$ is a function from $\sum_{x:B}(\pt_B\eqto x)$ to
+$A\ptdto B$.\footnote{%
+Of course, $\sum_{x:B}(\pt_B\eqto x)$ is contractible.
+In \cref{def:O-functor} we will see why $\cst{\ast}^A$ is useful.}
+\end{definition}
+
+\begin{remark}\label{rem:loops-at-cst-ptd}
+In case $f$ and $g$ in \cref{def:ptd-homotopy-compo} are both the point of
+$X\ptdto Y$, \ie $f\jdeq g\jdeq\pt_{X\ptdto Y}\jdeq(\cst{\pt_Y},\refl{\pt_Y})$,
+it is an advantage to work with a minor variant of $\ptw_*$ of type 
+$\loops({X\ptdto Y}) \equivto (X\ptdto\loops Y)$.
+The latter type is obtained by definitional simplifications
+and replacing $(h(\pt_X)\cdot \refl{\pt_Y})\eqto \refl{\pt_Y}$
+in $H(\pt_{X\ptdto Y},\pt_{X\ptdto Y})$ 
+by an equivalent type:\footnote{By laws of symmetry and right unit.}
+\[ H(\pt_{X\ptdto Y},\pt_{X\ptdto Y}) \equivto 
+\sum_{h:X\to\loops Y}(\refl{\pt_Y}\eqto h(\pt_X)) \jdeq
+(X\ptdto\loops Y).
+\]
+Abusing notations, we denote this variant also by $\ptw_*$.
+\end{remark}
+
 
 The following construction is useful since it
 will allow us to simplify identifying two pointed maps
@@ -340,19 +373,6 @@ The combination of \cref{con:Id-(B->*A)} and \cref{con:ev-section-loopsA}
 yields a function from $(f_\div\eqto f'_\div)$ to $(f\eqto f')$ for all pointed
 maps $f,f' : B\ptdto \loops A$.
 \end{corollary}
-
-\begin{definition}\label{def:cst-ptd}
-Let $A$ and $B$ be pointed types.
-For any $b:B$ and $p:\pt_B\eqto b$, 
-define the \emph{pointed constant map} $\cst{\ast}^A(b,p) : A\ptdto B$
-\emph{at} $(b,p)$ by setting $\cst{\ast}^A(b,p)\defeq (\cst{b}^A,p)$.\footnote{%
-Here $\cst{b}^A$ is from \cref{def:cst-map}.
-We may omit superscripts $A$ if $A$ is clear from the context.}
-Thus $\cst{\ast}^A$ is a function from $\sum_{x:B}(\pt_B\eqto x)$ to
-$A\ptdto B$.\footnote{%
-Of course, $\sum_{x:B}(\pt_B\eqto x)$ is contractible.
-In \cref{def:O-functor} we will why $\cst{\ast}^A$ is useful.}
-\end{definition}
 
 Recall $\loops$ from \cref{def:looptype} and \cref{def:loops-map},
 which together form a wild functor $\UUp\to\UUp$, \cf \cref{sec:naturality}. 
@@ -463,19 +483,6 @@ and $\OO \eqto (e\circ \loops)$.
   \& \& \inv{p_\pt}\cdot p(\Sloop)\cdot p_\pt \ar[rr,mapsto]
   \& \& \inv{f_\pt}\cdot f(\inv{p_\pt}\cdot p(\Sloop)\cdot p_\pt)\cdot f_\pt
    \quad (1)
-  \DELETE{\\
-  (\cst{\pt_A},\refl{\pt_A})\ar[rr,mapsto]
-  \& \& \cst{\pt_A}(\Sloop)\cdot \refl{\pt_A} \ar[rr,mapsto]
-  \& \& \inv{f_\pt}\cdot f(\cst{\pt_A}(\Sloop)\cdot \refl{\pt_A})\cdot f_\pt
-  \\
-  \& \& \refl{\pt_A}\ar[u,eqr,"{(\ev_A)_\pt}"]\ar[rr,mapsto,"{\loops(f)}"]
-  \& \& \inv{f_\pt}\cdot f_\pt \ar[u,eqr,"{\loops(f)((\ev_A)_\pt)}"]
-  \\
-  \& \& 
-  \& \& \refl{\pt_B}\ar[u,eqr,"{\loops(f)_{\pt}}"]
-  \\
-  \& \mbox{}\arrow[dash]{r} \& \mbox{}\arrow[dash]{r} \& \mbox{}
-  }
   \\
   (\Sc\ptdto A)\ar[rr,"\OO(f)"]
   \& \& (\Sc\ptdto B) \ar[rr,"{\ev_B}"]
@@ -485,16 +492,6 @@ and $\OO \eqto (e\circ \loops)$.
   \& \& (f\circ p,f(p_\pt)\cdot f_\pt) \ar[rr,mapsto]
   \& \& \inv{(f(p_\pt)\cdot f_\pt)}\cdot (f\circ p)(\Sloop)
   \cdot (f(p_\pt)\cdot f_\pt)  \quad (2)
-  \DELETE{\\
-  (\cst{\pt_A},\refl{\pt_A})\ar[rr,mapsto]
-  \& \& (\cst{f(\pt_A)},f_\pt) \ar[rr,mapsto]
-  \& \& \inv{f_\pt}\cdot \cst{f(\pt_A)}(\Sloop)\cdot f_\pt
-  \\
-  \& \& (\cst{\pt_B},\refl{\pt_B})\ar[u,eqr,"{\OO(f)_\pt}"]\ar[rr,mapsto,"{\ev_B}"]
-  \& \& \cst{\pt_B}(\Sloop)\cdot \refl{\pt_B} \ar[u,eqr,"{\ev_B(\OO(f)_\pt)}"]
-  \\
-  \& \& 
-  \& \& \refl{\pt_B}\ar[u,eqr,"{(\ev_B)_\pt}"] }
   \end{tikzcd}
   \caption{\label{fig:Omega-O-elab} 
   Elaborating the two composites $(\Sc\ptdto A)\to\loops B$.} 
@@ -626,38 +623,11 @@ such that the totally unpointed map $\swap_{\div\div}$, defined by
 can be identified with the map swapping the two arguments of any input map. 
 \end{construction}
 \begin{implementation}{con:swap-ptd-doms}
-Various authors, difficult!
+\MB{TBD} (Do first the equivalence of $(X\ptdto (Y\ptdto Z))$
+with the sum type of totally unpointed maps with additional structure,
+including coherence.)
 \end{implementation}
 
-
-\begin{definition}\label{def:O'}
-Let $A$ and $B$ be pointed types. Define the map
-map $O'_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$
-by $O'_{A,B}\defeq (\OO_{A,B} \circ\inv{\swap}\circ\blank)$.\footnote{%
-Again, we often write $O'$ for $O'_{A,B}$.} 
- \end{definition}
-
-\begin{marginfigure}
-  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \Sc(X\ptdto Y)\ar[rr,eqr,"\swap"] \ar[dd,eql,"{\ev}"']
-  \& \& X\ptdto \Sc Y \ar[dd,eqr,"{{\ev}\circ{\blank}}"]
-  \\ \& \mbox{} \& \\
-  \loops(X\ptdto Y)\ar[rr,eql,"\ptw_*"'] \& \& X\ptdto \loops Y 
-  \end{tikzcd}
-  \caption{\label{fig:ptw-swap-ptd-doms} 
-  Domain swap and $\protect\ptw_*$ correspond.} 
-\end{marginfigure}
-
-\begin{construction}\label{con:ptw-swap-ptd-doms}
-Let $X$ and $Y$ be pointed types and 
-consider the equivalence $\ptw_*: \loops(X\ptdto Y) \to (X\ptdto \loops Y)$
-from \cref{con:identity-ptd-maps} and $\swap$ and $\ev$ as above. 
-Then we have an identification of $\swap(f)\circ \ev$ 
-and $\ev \circ \ptw_* f$, as represented by \cref{fig:ptw-swap-ptd-doms}.
-\end{construction}
-\begin{implementation}{con:ptw-swap-ptd-doms}
-\MB{TBD}
-\end{implementation}
 
 Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
 $\BB$ from the type of abelian groups to the type of pointed
@@ -696,241 +666,12 @@ defines an abstract isomorphism from $\abstr(\grpHom(H,G))$
 to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
 \end{lemma}
 
-\def\Scc{\inred{\Sc}}
-\begin{figure}[h]
-  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \USym{\grpHom(H,G)}\ar[dd,equivl,"{\inv{\ev}}"']
-  \\ \& \mbox{} \& \\
-  \Sc(X\ptdto Y)
-    \ar[rr,equivr,"{\swap_{\Sc,X}}"]
-    \ar[dd,"{\OO\circ\blank}"']
-  \& \& X\ptdto \Sc Y  
-    \ar[dd,"{O'}"] \ar[drr,equivl,"{\OO}"']
-    %\ar[rr,equivr,"{(\ev\circ\blank)}"]
-  %\& \& \BHom(H,G) 
-  \\ 
-  \&\&\&\& \sum_{f:\Scc X \ptdto \Scc (\Sc Y)} P(f)
-    \ar[rr,equivl]
-    \ar[d,"{\fst}"]
-  \& \& \absHom(\abstr(H),\abstr(G))
-  \\
-  \Sc(\Scc X\ptdto \Scc Y) 
-    \ar[rr,equivl,"{\swap_{\Sc,\Scc X}}"']   
-  \& \& \Scc X \ptdto \Sc (\Scc Y) 
-    \ar[rr,equivl,"{(\swap\circ\blank)}"']
-  \& \& \Scc X \ptdto \Scc (\Sc Y) 
-  \end{tikzcd}
-  \caption{\label{fig:bjørn}
-  Legenda:
-  $X\defeq\BH$;
-  $Y\defeq\protect\BB G$;
-  $\protect\ev$ is from \cref{cor:circle-loopspace};
-  $\swap$ is from \cref{con:ptw-swap-ptd-doms};
-  $\protect\OO$ is from \cref{def:O-functor};
-  $O'$ is from \cref{def:O'};
-  $P(f)$ expresses that $\protect\ev\circ f\circ \inv{\protect\ev}$
-  classifies a homomorphism.
-  Moreover, the colors track
-  related occurrences of $\Sc$.
-  }
-\end{figure}
 
-\begin{proof}
-\begin{enumerate}
-\item In the right square, the image of $\OO$ is indeed given by $P$.
-\item The right square commutes.
-$O'\jdeq \OO_{A,B} \circ(\inv{\swap}\circ\blank)$
-\item The left square commutes. First we observe that the totally
-unpointed maps commute definitionally ...
-\end{enumerate}
-\end{proof}
-
-
-\DELETE{
 
 \footnote{%
-The first is $\ptw_*$ from \cref{con:identity-ptd-maps} 
-(with path inverted). 
-The second is composition with $\ev_{\sh_G}$
-from \cref{sec:center-group}, which is an equivalence since $G$ is abelian.
-The third is essentially $\abstr$ from \cref{def:abstrisfunctor}.}
-
-\begin{align*}
-(\sh\eqto\sh) &\equivto 
-\sum_{h:\BH_\div\to(\pt_{\BB G}\eqto\pt_{\BB G})} 
-  (\refl{\pt_{\BB G}}\eqto h(\sh_H)) \\
-              &~\jdeq \qquad \bigl(\BH\ptdto((\pt_{\BB G}\eqto\pt_{\BB G}),\refl{\pt_{\BB G}})\bigr)\\
- &\equivto \qquad\! \bigl(\BH\ptdto\BG\bigr)\\
-% &\jdeq\qquad~\BHom(G,G)\\
- &\equivto \qquad \absHom(\abstr(H),\abstr(G)).
-\end{align*}
-
-\begin{proof}
-%$\pathpair{h}{h_\pt}:\sh\eqto\sh$
-Given $p:(\sh\eqto\sh)$, the equivalence $\ptw_*$ from 
-\cref{con:identity-ptd-maps} gives a pair $\ptw_*(p)$ which
-we denote by $(\ptoe p,p_\pt)$. Here 
-$\ptoe p :\BH_\div\to(\pt_{\BB G}\eqto\pt_{\BB G})$ maps any $w:\BH$ to 
-$\ptoe p(w)$ corresponding\footnote{%
-This uses \cref{eq:id-types-universal-cover} and univalence.}
-to a pair consisting of an equivalence (by the same name)
-$\ptoe p(w):(\BG_\div\equivto\BG_\div)$ and a proof of
-$\Trunc{\ptoe p(w) \eqto \id_{\BG_\div}}$, that is,
-all $\ptoe p(w)$ are merely equal to the identity.
-The second component $p_\pt$ of $(\ptoe p,p_\pt)$ is an
-identification of $\refl{\pt_{\BB G}}$ with $\ptoe p(\sh_H)$,
-which gives us an identification (by the same name) $p_\pt$ of 
-$\id_{\BG_\div}$ with $\ptoe p(\sh_H)$.\footnote{%
-Technically, we should write $\fst(p_\pt)$,
-but $\snd(p_\pt)$ is true propositional data and plays no role.}
-
-In the following, until the end of the proof,
-we abbreviate $\sh_G$ by $\base$.
-The goal is to prove, for any $p,q:(\sh\eqto\sh)$ and $g:\USymH$, 
-the proposition
-\[
-\bigl(\loops(\ev_{\base}\circ \ptw_*(pq))\bigr)(g) = 
-\bigl(\loops(\ev_{\base}\circ \ptw_*(p)\bigr)(g)\cdot
-\bigl(\loops(\ev_{\base}\circ \ptw_*(q)\bigr)(g).
-\]
-
-%Then, by \cref{con:ptd-homotopy-compo}, we have that $(\ptoe{pq})$
-%is pointed by $p_\pt\cdot\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt):
-%(\refl{\pt_{\BB G}}\eqto \ptoe p(\sh_H)\ptoe q(\sh_H))$.
-We first elaborate the right hand side.
-Note that $\ev_\base(\ptoe p(\sh_H))\jdeq \ptoe p(\sh_H)(\base)$. 
-The pointing path of $\ev_{\base}\circ (\ptoe p,p_\pt)$
-is $\ev_{\base}(p_\pt)$, which is equal to $\ptw(p_\pt)(\base)$,
-and we have $\ev_{\base}(\ptoe p(g)) = \ptw(p(g))(\base)$.\footnote{%
-By induction on $r: s \eqto_{A\eqto A} t$ one easily constructs for all
-types $A$ and elements $a:A$ an identification $\ev_a(r) \eqto \ptw(r)(a)$.}
-
-Using the definition of $\loops$ from \cref{def:loops-map},
-we calculate:
-\begin{align*}
-\loops(\ev_{\base}\circ (\ptoe p,p_\pt))(g) &= 
-\inv{\ptw(p_\pt)(\base)} \cdot \ev_{\base}(\ptoe p(g)) \cdot {\ptw(p_\pt)(\base)}\\
-              &= 
-\ptw (\inv{p_\pt} \cdot \ptoe p(g) \cdot p_\pt)(\base)
-~\text{in type $\base\eqto\base$}.
-\end{align*}
-Likewise we obtain for $\ptoe q$ and $(\ptoe{pq})$ the following
-equalities:
-\begin{align*}
-\loops(\ev_{\base}\circ (\ptoe q,q_\pt))(g) &=  
-\ptw (\inv{q_\pt} \cdot \ptoe q(g) \cdot q_\pt)(\base)
-\\
-\loops(\ev_{\base}\circ (\ptoe {pq},(pq)_\pt))(g) &=  
-\ptw (\inv{(pq)_\pt} \cdot (\ptoe{pq})(g) \cdot (pq)_\pt)(\base)
-\end{align*}
-
-We continue with elaboration the latter equality in three steps.
-
-First, by \cref{con:ptd-homotopy-compo}, we have an identification
-$\ptw_*(pq) \eqto \ptw_*(p) \cdot_{\ptw} \ptw_*(q)$,
-with $\cdot_{\ptw}$ as given in \cref{def:ptd-homotopy-compo}.
-This gives an identification of type
-$(\ptoe{pq})\eqto(w\mapsto \ptoe p(w)\cdot\ptoe q(w))$,
-which we (\MB{abusively}) take to be definitional.
-Hence, $(\ptoe{pq})(\sh_H)\jdeq (\ptoe p(\sh_H)\cdot\ptoe q(\sh_H))$,
-which as function $\BG_\div\equivto\BG_\div$ corresponds to
-the composition $\ptoe p(\sh_H) \circ \ptoe q(\sh_H)$.
-
-Second, also need a path $(pq)_\pt$ from $\id_{\BG_\div}$ 
-to $(\ptoe{pq})(\sh_H)$. For this we take
-$(pq)_\pt \jdeq \ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt)\cdot p_\pt$,
-which follows from \cref{def:ptd-homotopy-compo}.\footnote{%
-The order is reversed wrt \ref{def:ptd-homotopy-compo}
-because the paths are reversed: 
-$q_\pt: \refl{\BG_\div}\eqto \ptoe q(\sh_H)$,
-so $\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt): \ptoe p(\sh_H) \eqto 
-\ptoe p(\sh_H) \cdot \ptoe q(\sh_H)$, so $p_\pt$ must be precomposed.   
+REMARK needed about $\ptw_*$ from \cref{con:identity-ptd-maps} 
+(path inverted, etc). 
 }
-
-Third, we elaborate $(\ptoe{pq})(g)$ which is shorthand for 
-$\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g)$. In order to be able to
-do induction on $g$, we loosen up the endpoint of $g$. 
-Let $w:BH_\div$, $g:\sh_H\eqto w$, $z:\BG_\div$
-and consider the following diagram. The task is to find
-a path from $\ptoe p(\sh_H)(\ptoe q(\sh_H)$ to $\ptoe p(w)(\ptoe q(w)$
-that can be identified with $\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g)$.
-\[
-   \begin{tikzcd}[ampersand replacement=\&]    
-     \&\BG_\div 
-       \ar[r,"\ptoe q(\blank)"]
-     \&\BG_\div 
-       \ar[r,"\ptoe p(\blank)"]
-     \&\BG_\div
-%     \&\ptoe p(\sh_H)(\ptoe q(w)(z)) \ar[dl,eqr,"r_2"]
-\\     
-     \sh_H\ar[dd,eqr,"g"]
-     \&z 
-       \ar[r,mapsto,"\ptoe q(\sh_H)"]
-     \&\ptoe q(\sh_H)(z)
-       \ar[r,mapsto,"\ptoe p(\sh_H)"]
-     \&\ptoe p(\sh_H)(\ptoe q(\sh_H)(z))
-%       \ar[dd,bend left=40,"?", "="' pos=0.2]
-       \ar[d,eqr,"{r_1(g,z)}"]
-\\    
-     \&
-     \&
-     \&\ptoe p(\sh_H)(\ptoe q(w)(z))
-        \ar[d,eqr,"{r_2(g,z)}"]
-\\     
-     w
-     \&z 
-       \ar[r,mapsto,"\ptoe q(w)"]
-     \&\ptoe q(w)(z) 
-       \ar[r,mapsto,"\ptoe p(w)"]
-     \&\ptoe p(w)(\ptoe q(w)(z))
-   \end{tikzcd}
-\]
-There are two ways to proceed.
-One is based on the composite of the paths
-$r_1(g,z)\defeq \ptoe p(\sh_H)(\ptw(\ptoe q(g))(z))$ and 
-$r_2(g,z)\defeq \ptw(\ptoe p(g))(\ptoe q(w)(z))$ of types
-as shown above.\footnote{%
-The other way is analogous, based on the intermediate point
-$\ptoe p(w)(\ptoe q(\sh_H)(z))$ instead of $\ptoe p(\sh_H)(\ptoe q(w)(z))$,
-with $r_1(g,z)\defeq (\ptw(\ptoe p(g)))(\ptoe q(\sh_H)(z))$
-and $r_2(g,z)\defeq \ptoe p(w)((\ptw(\ptoe q(g)))(z))$.}
- 
-We proceed by induction on $g$ and take
-$g\jdeq\refl{\sh_H}$, so $w\jdeq\sh_H$. Then we have
-$\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g) 
-\jdeq \refl{\ptoe p(\sh_H)(\ptoe q(\sh_H)}$. Also in this case,
-both $r_1(g,z)$ and $r_2(g,z)$ are definitionally equal to
-$\refl{\ptoe p(\sh_H)(\ptoe q(\sh_H)(z))}$.
-It follows that $\ap{w\mapsto \ptoe p(w)\ptoe q(w)}(g)$ is equal
-to $\inv\ptw(z\mapsto r_2(g,z)\cdot r_1(g,z))$ for any $g:\sh_H\eqto w$. 
-
-We can now reformulate the goal as %\footnote{%
-%The shape $\base$ is arbitrary and $\ptw$ is an equivalence.}
-the equality of 
-\[
-\ptw\Bigl(\inv{p_\pt} \cdot \ptoe p(g) \cdot p_\pt \cdot
-\inv{q_\pt} \cdot \ptoe q(g) \cdot q_\pt\Bigr)(\base) 
-\]
-and the composition of the following four paths: 
-\begin{align*}
-\ptw\Bigl(\inv p_\pt \cdot \ap{(\ptoe p(\sh_H)\cdot\blank)}(\inv{q_\pt})\Bigr)(\base)
-&\quad\text{coming from $\inv{(pq)}_\pt$} \\
-\ptw\Bigl(\ptoe p(g)\Bigr)(\ptoe q(\sh_H)(\base))
-&\quad\text{coming from $r_2$} \\
-\ptoe p(\sh_H)(\ptw\Bigl(\ptoe q(g)\Bigr)(\base))
-&\quad\text{coming from $r_1$} \\
-\ptw\Bigl(\ap{(\ptoe p(\sh_H)\cdot\blank)}(q_\pt)\cdot p_\pt\Bigr)(\base) 
-&\quad\text{coming from $(pq)_\pt$.}
-\end{align*}
-
-\MB{Plan:}
-Transport the goal along the paths
-$p_\pt: (\id_{\BG_\div}\eqto\ptoe p(\sh_H))$ and
-$q_\pt: (\id_{\BG_\div}\eqto\ptoe q(\sh_H))$.
-
-\MB{W.i.p.}
-
-\end{proof}
 
 
 \begin{remark}\label{rem:grpHomOK}
@@ -998,7 +739,6 @@ $\ap{f\mapsto\loops(f)}(q)$ corresponds to $\ptw(\fst(q))$.
 \MB{TODO: use $\snd(q)$ to get a pointing path and check everything!}
 \end{remark}
 
-}%end \DELETE
 
 
 \subsection{Concrete rings}\label{sec:concrings}
