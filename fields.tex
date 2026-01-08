@@ -255,16 +255,17 @@ In \cref{def:O-functor} we will see why $\cst{\ast}^A$ is useful.}
 \end{definition}
 
 \begin{remark}\label{rem:loops-at-cst-ptd}
-In case $f$ and $g$ in \cref{def:ptd-homotopy-compo} are both the point of
+In case $f$ and $g$ in \cref{con:identity-ptd-maps} are both the point of
 $X\ptdto Y$, \ie $f\jdeq g\jdeq\pt_{X\ptdto Y}\jdeq(\cst{\pt_Y},\refl{\pt_Y})$,
-it is an advantage to work with a minor variant of $\ptw_*$ of type 
+it is convenient to work with a minor variant of $\ptw_*$ of type 
 $\loops({X\ptdto Y}) \equivto (X\ptdto\loops Y)$.
 The latter type is obtained by definitional simplifications
 and replacing $(h(\pt_X)\cdot \refl{\pt_Y})\eqto \refl{\pt_Y}$
-in $H(\pt_{X\ptdto Y},\pt_{X\ptdto Y})$ 
+in $H(\pt_{X\ptdto Y},\pt_{X\ptdto Y})$ from \cref{def:ptd-homotopy-compo}
 by an equivalent type:\footnote{By laws of symmetry and right unit.}
-\[ H(\pt_{X\ptdto Y},\pt_{X\ptdto Y}) \equivto 
-\sum_{h:X\to\loops Y}(\refl{\pt_Y}\eqto h(\pt_X)) \jdeq
+\[ 
+H(\pt_{X\ptdto Y},\pt_{X\ptdto Y}) \equivto 
+\Bigl(\sum_{h:X\to\loops Y}(\refl{\pt_Y}\eqto h(\pt_X))\Bigr) \jdeq
 (X\ptdto\loops Y).
 \]
 Abusing notations, we denote this variant also by $\ptw_*$.
@@ -628,7 +629,7 @@ with the sum type of totally unpointed maps with additional structure,
 including coherence.)
 \end{implementation}
 
-
+\DELETE{%temporarily
 Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
 $\BB$ from the type of abelian groups to the type of pointed
 simply connected $2$-types. Let $H:\Group$ be a group and let
@@ -665,26 +666,12 @@ from $\USym\grpHom(H,G)$ to $\absHom(\abstr(H),\abstr(G))$
 defines an abstract isomorphism from $\abstr(\grpHom(H,G))$ 
 to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
 \end{lemma}
+}%end DELETE
 
-
-
-\footnote{%
-REMARK needed about $\ptw_*$ from \cref{con:identity-ptd-maps} 
-(path inverted, etc). 
-}
-
-
-\begin{remark}\label{rem:grpHomOK}
-We explore two alternative approaches to the lemma above,
-generalizing from $\BG$ and $\BB G$.
-Assume that $X$ is a pointed $1$-type and $Y$ a
-pointed $2$-type.\footnote{This should not be needed, but intends to
-simplify by making $p=_{\loops X}q$ and $p=_{{\loops}^2 Y}q$
-proof-irrelevant.}
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \loops(X\ptdto Y)\ar[rr,eqr,"{\ptw_*}"]\ar[dd,"{\loops(\loops)}"']
-  \& \& X\ptdto \loops Y  \ar[dd,"{\loops}"]
+  \loops(X\ptdto Y)\ar[rr,eqr,"{\ptw_*}"]\ar[dd,"{\loops{''}(\loops)}"']
+  \& \& X\ptdto \loops Y  \ar[dd,"{\loops{'}}"]
   \\ \& \mbox{} \& \\
   \loops(\loops X\ptdto \loops Y) \ar[rr,eql,"{\ptw_*}"']   
   \& \mbox{} \& \loops X\ptdto {\loops}^2 Y
@@ -692,54 +679,62 @@ proof-irrelevant.}
   \caption{\label{fig:ulrik}
   Fill!} 
 \end{marginfigure}
+\begin{remark}\label{rem:grpHomOK}
+Consider the diagram in \cref{fig:ulrik}, where $X$ and $Y$ are pointed types,
+and $\ptw_*$ is from \cref{rem:loops-at-cst-ptd}.
+Recall \cref{def:looptype} for $\loops$ applied to types.
+The three remaining occurrences of $\loops$ in the labels of the
+downward arrows are all instances of \cref{def:loops-map}.
+The argument $\loops$ in $\loops{''}(\loops)$ has type
+$(X\ptdto Y) \ptdto (\loops X\ptdto \loops Y)$.\footnote{%
+This actually extends \cref{def:loops-map} in that we have to point
+$\loops$, which we do in the next paragraph.}
+For clarity, we have added primes to the two other instances of 
+\cref{def:loops-map}: $\loops{'}$ has the type as given in \cref{fig:ulrik},
+and $\loops{''}$ has as codomain the type given in \cref{fig:ulrik},
+whereas its domain is of course the type of its argument $\loops$.
 
-First approach. We start by constructing the function 
-denoted by ${\loops(\loops)}$ in \cref{fig:ulrik}, with type 
-$$\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y).$$
-Recall the map $\loops : ((X\ptdto Y)\to(\loops X\ptdto \loops Y))$
-sending  a pointed map $f:X\ptdto Y$ to $\loops(f)$ defined by 
+In order to define $\loops{''}(\loops)$, we need
+to define the pointing path $\loops_\pt$ of $\loops$.
+Note that $\pt_{X\ptdto Y} \jdeq (\cst{\pt_Y},\refl{\pt_Y})$,
+\ie the point of $X\ptdto Y$ is the constant map 
+$x\mapsto\pt_Y$ pointed by reflexivity.
+Likewise, the point of $\loops X\ptdto \loops Y$ is the pointed constant 
+map $(\cst{\refl{\pt_Y}},\refl{\refl{\pt_Y}})$.
+We want a path $\loops_\pt$ of type
+$(\cst{\refl{\pt_Y}},\refl{\refl{\pt_Y}}) \eqto 
+\loops(\cst{\pt_Y},\refl{\pt_Y})$, where\footnote{%
+Recall that $\loops(f)$ is pointed by the inverse law
+identifying $\refl{\pt_Y}$ with $\inv f_\pt \cdot f_\pt$, by
+induction on $f_\pt$.}
 \[
-\loops(f)(p) \defeq \inv{f_\pt}\cdot \ap{f_\div}(p) \cdot f_\pt
-\quad\text{for any $p:\pt_X\eqto\pt_X $,}
+\loops(\cst{\pt_Y},\refl{\pt_Y}) \jdeq
+(p\mapsto \ap{\cst{\pt_Y}}(p) \cdot \refl{\pt_Y},\refl{\refl{\pt_Y}}).
 \]
-pointed by an element $\loops(f)_\pt$ of 
-$\refl{\pt_Y} \eqto \inv{f_\pt}\cdot \ap{f_\div}(\refl{\pt_X}) \cdot f_\pt$.%
-\footnote{
-Obtained by path algebra, not in general a reflexivity path.}
-Before we can apply ${\loops}$ to this map we have to point it.
-The point of $X\ptdto Y$ is the constant 
-map $x\mapsto\pt_Y$ pointed by reflexivity.
-The point of $\loops X\ptdto \loops Y$ is the constant 
-map $p\mapsto\refl{\pt_Y}$ pointed by reflexivity.
-We have
+By induction on $p:(\pt_X\eqto x)$, define
+$h(p): \refl{\pt_Y} \eqto (\ap{\cst{\pt_Y}}(p)\cdot \refl{\pt_Y})$
+setting $h(\refl{\pt_X})\defeq \refl{\refl{\pt_Y}}$.
+Applying $\ptw_*$ we can now define
 \[
-\loops(x\mapsto\pt_Y)(p) \defeq 
-\inv{\refl{\pt_Y}}\cdot \ap{x\mapsto\pt_Y}(p) \cdot \refl{\pt_Y}.
+\loops_\pt \defeq \inv{\ptw}_*(h,\refl{\refl{\refl{\pt_Y}}}):
+\bigl((\cst{\refl{\pt_Y}},\refl{\refl{\pt_Y}}) \eqto 
+\loops(\cst{\pt_Y},\refl{\pt_Y})\bigr).
 \]
-Now, since $\ap{x\mapsto\pt_Y}(p) \eqto \refl{\pt_Y}$ 
-for all $p: \loops(X)$, by path algebra and function extensionality, 
-we get a pointing path
-$\pi: (p\mapsto \refl{\pt_Y})\eqto \loops(x\mapsto\pt_Y)$.
+Now we can state the definition of $\loops{''}(\loops)$:
+\[
+\loops{''}(\loops)(q) \jdeq
+\inv{\loops{}}_\pt \cdot \ap{\loops}(q) \cdot \loops_\pt
+\quad\text{for all $q:\loops(X\ptdto Y)$}.
+\]
+ 
+We want to fill the diagram in \cref{fig:ulrik}
+in full generality, even though we will only need it
+for $X$ a pointed $1$-type and $Y$ a pointed $2$-type.\footnote{%
+Then $p=_{\loops X}p'$ and $q=_{{\loops}^2 Y}q'$ are proof-irrelevant.}
 
-The desired map is now $\loops(\loops)$, which is short for
-$\loops((f:X\ptdto Y) \mapsto \loops(f))$ of type $\loops(X\ptdto Y) \to \loops(\loops X\ptdto \loops Y)$, defined by
-\[
-(\loops(\loops))(q)\defeq\inv\pi\cdot\ap{f\mapsto\loops(f)}(q)\cdot\pi
-\quad\text{for any $q:\loops(X\ptdto Y)$}.
-\]
-Note that the type of $q$ is 
-$(x\mapsto\pt_Y,\refl{\pt_Y})\eqto(x\mapsto\pt_Y,\refl{\pt_Y}))$.
-The type of $\ap{f\mapsto\loops(f)}(q)$ is
-$\loops(x\mapsto\pt_Y,\refl{\pt_Y})\eqto\loops(x\mapsto\pt_Y,\refl{\pt_Y}))$,
-which is (by the above) equivalent to 
-$(p\mapsto \refl{\pt_Y})\eqto(p\mapsto \refl{\pt_Y})$,
-so by function extensionality equivalent to 
-$\loops(X)\to\loops(\loops(Y))$. Under this equivalence,
-$\ap{f\mapsto\loops(f)}(q)$ corresponds to $\ptw(\fst(q))$. 
-\MB{TODO: use $\snd(q)$ to get a pointing path and check everything!}
+\MB{TODO: elaborate the composites $\ptw_*\circ$ and $\loops{'}\circ\ptw_*$ 
+and identify their first components, then using \cref{cor:Id-(B->*loopsA)}.}
 \end{remark}
-
-
 
 \subsection{Concrete rings}\label{sec:concrings}
 
