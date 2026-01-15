@@ -668,33 +668,39 @@ to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
 \end{lemma}
 }%end DELETE
 
+\begin{remark}\label{rem:grpHomOK}
+In \cref{fig:ulrik}, $X$ and $Y$ are pointed types,
+and $\ptw_*$ is from \cref{rem:loops-at-cst-ptd}.
+%Recall \cref{def:looptype} for $\loops$ applied to types.
+The three occurrences of $\loops$ in the labels of the
+downward arrows are all instances of \cref{def:loops-map}.
+We use the following instances, starting with the most general one:
+\begin{align*}
+\loops \jdeq \loops{}_{X,Y} &: 
+(X\ptdto Y) \ptdto (\loops X\ptdto \loops Y)\\
+\loops{'} \jdeq {\loops}_{X,\loops Y} &: 
+(X\ptdto \loops Y) \ptdto (\loops X\ptdto {\loops}{\loops} Y)\\
+\loops{''} \jdeq {\loops}_{X\ptdto  Y,\loops X \ptdto\loops Y} &: 
+\bigl((X\ptdto Y) \ptdto (\loops X\ptdto \loops Y)\bigr) \ptdto \\
+ & \quad\bigl(\loops(X\ptdto Y) \ptdto \loops(\loops X\ptdto \loops Y)\bigr).
+\end{align*}
+In \cref{fig:ulrik}, we have also added primes to the other
+occurrences of $\loops$, to make clear where they come from.
+
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \loops(X\ptdto Y)\ar[rr,eqr,"{\ptw_*}"]\ar[dd,"{\loops{''}(\loops)}"']
-  \& \& X\ptdto \loops Y  \ar[dd,"{\loops{'}}"]
+  \loops{''}(X\ptdto Y)\ar[rr,equivr,"{\ptw_*}"]\ar[dd,"{\loops{''}(\loops)}"']
+  \& \& X\ptdto \loops{''} Y  \ar[dd,"{\loops{'}}"]
   \\ \& \mbox{} \& \\
-  \loops(\loops X\ptdto \loops Y) \ar[rr,eql,"{\ptw_*}"']   
-  \& \mbox{} \& \loops X\ptdto {\loops}^2 Y
+  \loops{''}(\loops X\ptdto \loops Y) \ar[dd,equivl,"{\ptw_*}"']   
+  \& \mbox{} \& \loops{'} X\ptdto \loops{'}\loops{''} Y \ar[lldd,equivr,"{?}"]
+  \\ \& \mbox{} \& \\
+  \loops X\ptdto \loops{''}\loops Y  
   \end{tikzcd}
-  \caption{\label{fig:ulrik}
-  Fill!} 
+  \caption{\label{fig:ulrik}Complete and fill!} 
 \end{marginfigure}
-\begin{remark}\label{rem:grpHomOK}
-Consider the diagram in \cref{fig:ulrik}, where $X$ and $Y$ are pointed types,
-and $\ptw_*$ is from \cref{rem:loops-at-cst-ptd}.
-Recall \cref{def:looptype} for $\loops$ applied to types.
-The three remaining occurrences of $\loops$ in the labels of the
-downward arrows are all instances of \cref{def:loops-map}.
-The argument $\loops$ in $\loops{''}(\loops)$ has type
-$(X\ptdto Y) \ptdto (\loops X\ptdto \loops Y)$.\footnote{%
-This actually extends \cref{def:loops-map} in that we have to point
-$\loops$, which we do in the next paragraph.}
-For clarity, we have added primes to the two other instances of 
-\cref{def:loops-map}: $\loops{'}$ has the type as given in \cref{fig:ulrik},
-and $\loops{''}$ has as codomain the type given in \cref{fig:ulrik},
-whereas its domain is of course the type of its argument $\loops$.
 
-In order to define $\loops{''}(\loops)$, we need
+In order to formally define $\loops{''}(\loops)$, we need
 to define the pointing path $\loops_\pt$ of $\loops$.
 Note that $\pt_{X\ptdto Y} \jdeq (\cst{\pt_Y},\refl{\pt_Y})$,
 \ie the point of $X\ptdto Y$ is the constant map 
@@ -704,8 +710,8 @@ map $(\cst{\refl{\pt_Y}},\refl{\refl{\pt_Y}})$.
 We want a path $\loops_\pt$ of type
 $(\cst{\refl{\pt_Y}},\refl{\refl{\pt_Y}}) \eqto 
 \loops(\cst{\pt_Y},\refl{\pt_Y})$, where\footnote{%
-Recall that $\loops(f)$ is pointed by the inverse law
-identifying $\refl{\pt_Y}$ with $\inv f_\pt \cdot f_\pt$, by
+Recall that $\loops(f)$ is pointed by path algebra
+identifying $\refl{\pt_Y}$ with $\inv f_\pt\cdot\refl{\pt_Y}\cdot f_\pt$, by
 induction on $f_\pt$.}
 \[
 \loops(\cst{\pt_Y},\refl{\pt_Y}) \jdeq
@@ -732,8 +738,24 @@ in full generality, even though we will only need it
 for $X$ a pointed $1$-type and $Y$ a pointed $2$-type.\footnote{%
 Then $p=_{\loops X}p'$ and $q=_{{\loops}^2 Y}q'$ are proof-irrelevant.}
 
-\MB{TODO: elaborate the composites $\ptw_*\circ$ and $\loops{'}\circ\ptw_*$ 
+\MB{TODO: Define the $?$, elaborate the composites,
 and identify their first components, then using \cref{cor:Id-(B->*loopsA)}.}
+\end{remark}
+
+\begin{remark}\label{rem:diag-ulrik}
+\MB{Experimental.} In the \cref{fig:ulrik} we see
+$\loops{''}$ shifting position from first to second along arrow ``$?$''. 
+It is not clear how to deal with $\loops$ versus $\loops{'}$.
+For $X$ one can perhaps ignore the difference:
+is the same parameter in both. Anyway, we need an equivalence 
+$\loops{}^2 Y \to \loops{}^2 Y$ that is not the identity.
+Possible attempts include:
+\begin{itemize}
+\item Loosen $\refl{\pt_Y}\eqto\refl{\pt_Y}$ (squares)
+\item Use sphere, $\mathbb{S}^2 \ptdto Y$ and $-\id_{\mathbb{S}^2}$
+\item Use $\OO$ (twice), $\Sc \ptdto(\Sc \ptdto Y)$ and $\swap$
+\item Halfway, use $\Sc \ptdto \loops Y$ and $-\id_{\Sc}$ 
+\end{itemize}
 \end{remark}
 
 \subsection{Concrete rings}\label{sec:concrings}
