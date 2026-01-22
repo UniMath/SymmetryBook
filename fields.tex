@@ -254,7 +254,7 @@ Of course, $\sum_{x:B}(\pt_B\eqto x)$ is contractible.
 In \cref{def:O-functor} we will see why $\cst{\ast}^A$ is useful.}
 \end{definition}
 
-\begin{remark}\label{rem:loops-at-cst-ptd}
+\begin{remark}\label{rem:loops-at-ptd-cst}
 In case $f$ and $g$ in \cref{con:identity-ptd-maps} are both the point of
 $X\ptdto Y$, \ie $f\jdeq g\jdeq\pt_{X\ptdto Y}\jdeq(\cst{\pt_Y},\refl{\pt_Y})$,
 it is convenient to work with a minor variant of $\ptw_*$ of type 
@@ -629,78 +629,35 @@ with the sum type of totally unpointed maps with additional structure,
 including coherence.)
 \end{implementation}
 
-\DELETE{%temporarily
-Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
-$\BB$ from the type of abelian groups to the type of pointed
-simply connected $2$-types. Let $H:\Group$ be a group and let
-$G:\AbGroup$ be an abelian group.
-Then $\BB G$ and hence also $\BH\ptdto\BB G$ is a $2$-type, 
-pointed at the constant map that sends any $w:\BH$ to the 
-point $\pt_{\BB G}\defeq (\BG_\div,\settrunc{\id_{\BG_\div}})$ 
-of $\BB G$.\footnote{Itself pointed by reflexivity.} In fact,
-the type $\BG\ptdto\BB G$ is a $1$-type, since the maps are pointed.
-
-\begin{definition}\label{def:AbHomgroup}
-Let $H:\Group$ be a group and let $G:\AbGroup$ be an abelian group. 
-Define the group $\grpHom(H,G)$ of homomorphisms from $H$ to $G$ by 
-\[
-\grpHom(H,G) \defeq \Aut_{\BH\ptdto\BB G}
-((w \mapsto \pt_{\BB G}),\refl{\pt_{\BB G}}).\qedhere
-\]
-\end{definition}
-
-The following lemma identifies the group $\grpHom(H,G)$ as the 
-delooping of $\absHom_{\ptw}(\abstr(H),\abstr(G))$, 
-the abelian abstract group of abstract homomorphisms with
-pointwise operations, as given by
-\cref{xca:abs-homgroup} and \cref{xca:abstract-group-of-maps}.
-Consequently, $\grpHom(H,G)$ is an abelian group.
-
-
-\begin{lemma}\label{lem:grpHomOK}
-Let conditions be as in \cref{def:AbHomgroup}. %Abbreviate the shape
-%$((w\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}})$ of $\grpHom(H,G)$ by $\sh$. 
-Consider the diagram in \cref{fig:bjørn}. This diagram commutes and
-the composite of the chain of equivalences 
-from $\USym\grpHom(H,G)$ to $\absHom(\abstr(H),\abstr(G))$
-defines an abstract isomorphism from $\abstr(\grpHom(H,G))$ 
-to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
-\end{lemma}
-}%end DELETE
 
 \begin{remark}\label{rem:grpHomOK}
+\newcommand{\redloops}[1]{\inred{\loops{#1}}}
 In \cref{fig:ulrik}, $X$ and $Y$ are pointed types,
-and $\ptw_*$ is from \cref{rem:loops-at-cst-ptd}.
+and $\ptw_*$ is from \cref{rem:loops-at-ptd-cst}.
 %Recall \cref{def:looptype} for $\loops$ applied to types.
 The three occurrences of $\loops$ in the labels of the
 downward arrows are all instances of \cref{def:loops-map}.
-We use the following instances, starting with the most general one:
-\begin{align*}
-\loops \jdeq \loops{}_{X,Y} &: 
-(X\ptdto Y) \ptdto (\loops X\ptdto \loops Y)\\
-\loops{'} \jdeq {\loops}_{X,\loops Y} &: 
-(X\ptdto \loops Y) \ptdto (\loops X\ptdto {\loops}{\loops} Y)\\
-\loops{''} \jdeq {\loops}_{X\ptdto  Y,\loops X \ptdto\loops Y} &: 
-\bigl((X\ptdto Y) \ptdto (\loops X\ptdto \loops Y)\bigr) \ptdto \\
- & \quad\bigl(\loops(X\ptdto Y) \ptdto \loops(\loops X\ptdto \loops Y)\bigr).
-\end{align*}
-In \cref{fig:ulrik}, we have also added primes to the other
-occurrences of $\loops$, to make clear where they come from.
+In \cref{fig:ulrik}, we have colored occurrences of 
+$\loops$ that come from the $\loops$ in the left upper corner.
+Note that $\redloops{}$ shifts position from first to 
+second along the arrow labelled $(i\circ\blank)$,
+where $i\defeq (q:\loops{}^2 Y \mapsto \inv q)$.
 
 \begin{marginfigure}
   \begin{tikzcd}[ampersand replacement=\&,column sep=small]
-  \loops{''}(X\ptdto Y)\ar[rr,equivr,"{\ptw_*}"]\ar[dd,"{\loops{''}(\loops)}"']
-  \& \& X\ptdto \loops{''} Y  \ar[dd,"{\loops{'}}"]
+  \redloops(X\ptdto Y)\ar[rr,equivr,"{\ptw_*}"]\ar[dd,"{\redloops{}(\loops)}"']
+  \& \& X\ptdto \redloops{} Y  \ar[dd,"{\loops{}}"]
   \\ \& \mbox{} \& \\
-  \loops{''}(\loops X\ptdto \loops Y) \ar[dd,equivl,"{\ptw_*}"']   
-  \& \mbox{} \& \loops{'} X\ptdto \loops{'}\loops{''} Y \ar[lldd,equivr,"{?}"]
+  \redloops{}(\loops X\ptdto \loops Y) \ar[dd,equivl,"{\ptw_*}"']   
+  \& \mbox{} \& \loops X\ptdto \loops \redloops{} Y
+                 \ar[lldd,equivr,"{(i\circ\blank)}"]
   \\ \& \mbox{} \& \\
-  \loops X\ptdto \loops{''}\loops Y  
+  \loops X\ptdto \redloops{}\loops Y  
   \end{tikzcd}
   \caption{\label{fig:ulrik}Complete and fill!} 
 \end{marginfigure}
 
-In order to formally define $\loops{''}(\loops)$, we need
+In order to formally define $\redloops(\loops)$, we need
 to define the pointing path $\loops_\pt$ of $\loops$.
 Note that $\pt_{X\ptdto Y} \jdeq (\cst{\pt_Y},\refl{\pt_Y})$,
 \ie the point of $X\ptdto Y$ is the constant map 
@@ -726,9 +683,9 @@ Applying $\ptw_*$ we can now define
 \bigl((\cst{\refl{\pt_Y}},\refl{\refl{\pt_Y}}) \eqto 
 \loops(\cst{\pt_Y},\refl{\pt_Y})\bigr).
 \]
-Now we can state the definition of $\loops{''}(\loops)$:
+Now we can state the definition of $\redloops{}(\loops)$:
 \[
-\loops{''}(\loops)(q) \jdeq
+\redloops{}(\loops)(q) \jdeq
 \inv{\loops{}}_\pt \cdot \ap{\loops}(q) \cdot \loops_\pt
 \quad\text{for all $q:\loops(X\ptdto Y)$}.
 \]
@@ -737,26 +694,170 @@ We want to fill the diagram in \cref{fig:ulrik}
 in full generality, even though we will only need it
 for $X$ a pointed $1$-type and $Y$ a pointed $2$-type.\footnote{%
 Then $p=_{\loops X}p'$ and $q=_{{\loops}^2 Y}q'$ are proof-irrelevant.}
-
-\MB{TODO: Define the $?$, elaborate the composites,
+\MB{TODO: Elaborate the composites,
 and identify their first components, then using \cref{cor:Id-(B->*loopsA)}.}
 \end{remark}
 
-\begin{remark}\label{rem:diag-ulrik}
-\MB{Experimental.} In the \cref{fig:ulrik} we see
-$\loops{''}$ shifting position from first to second along arrow ``$?$''. 
-It is not clear how to deal with $\loops$ versus $\loops{'}$.
-For $X$ one can perhaps ignore the difference:
-is the same parameter in both. Anyway, we need an equivalence 
-$\loops{}^2 Y \to \loops{}^2 Y$ that is not the identity.
-Possible attempts include:
-\begin{itemize}
-\item Loosen $\refl{\pt_Y}\eqto\refl{\pt_Y}$ (squares)
-\item Use sphere, $\mathbb{S}^2 \ptdto Y$ and $-\id_{\mathbb{S}^2}$
-\item Use $\OO$ (twice), $\Sc \ptdto(\Sc \ptdto Y)$ and $\swap$
-\item Halfway, use $\Sc \ptdto \loops Y$ and $-\id_{\Sc}$ 
-\end{itemize}
-\end{remark}
+\begin{definition}\label{def:O'}
+Let $A$ and $B$ be pointed types. Define the map
+map $O'_{A,B}: ((A\ptdto B)\ptdto((\Sc\ptdto A)\ptdto(\Sc\ptdto B))$
+by $O'_{A,B}\defeq (\OO_{A,B} \circ\inv{\swap}\circ\blank)$.\footnote{%
+Again, we often write $O'$ for $O'_{A,B}$.} 
+ \end{definition}
+
+\begin{marginfigure}
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \OO(X\ptdto Y)\ar[rr,equivr,"\swap"] \ar[dd,equivl,"{\ev}"']
+  \& \& X\ptdto \OO Y \ar[dd,equivr,"{{\ev}\circ{\blank}}"]
+  \\ \& \mbox{} \& \\
+  \loops(X\ptdto Y)\ar[rr,equivl,"\ptw_*"'] \& \& X\ptdto \loops Y 
+  \end{tikzcd}
+  \caption{\label{fig:ptw-swap-ptd-doms} 
+  $\swap$ and $\protect\ptw_*$ correspond.} 
+\end{marginfigure}
+
+\begin{construction}\label{con:ptw-swap-ptd-doms}
+Let $X$ and $Y$ be pointed types and 
+consider the equivalences $\ptw_*: \loops(X\ptdto Y) \to (X\ptdto \loops Y)$
+from \cref{rem:loops-at-ptd-cst}, $\swap$ from \cref{con:swap-ptd-doms},
+and $\ev$ from \cref{rem:pointing-ev}. 
+Then we have an identification of $\ev\circ\swap(\blank)$ 
+and $(\ptw_*\circ\ev)$, as represented by \cref{fig:ptw-swap-ptd-doms}.
+\end{construction}
+\begin{implementation}{con:ptw-swap-ptd-doms}
+Using function extensionality, it suffices to identify ${\ev}\circ{\swap(f)}$
+and $(\ptw_*\circ\ev)(f)$ for every $f:\Sc\ptdto(X\ptdto Y)$. The latter
+identifications are in the type $X\ptdto\loops Y$, which means that we only 
+have to identify the underlying functions, due to \cref{cor:Id-(B->*loopsA)}.
+This greatly simplifies our task: given $f:\Sc\ptdto(X\ptdto Y)$,
+the pointing path of $\swap(f)$ plays no role in 
+the underlying function of $\ev\circ\swap(f)$.
+In contrast, the pointing path $f_\pt: \pt_{X\ptdto Y} \eqto f(\base)$
+is important, but only in so far it applies to the underlying functions
+of $\pt_{X\ptdto Y}$ and $f(\base)$. Therefore we abbreviate
+$f'_\pt \defeq \ptw(\fst(f_\pt))$, so that 
+$f'_\pt(x): (\pt_Y \eqto f(\base)(x))$ for $x:X$.
+
+The underlying function of $\swap(f)$ maps any $x:X$ to the 
+function $(z:\Sc)\mapsto f(z)(x)$, pointed by $f'_\pt(x)$.
+Evaluating the latter pointed map at $\Sloop$ gives
+$({\ev}\circ{\swap(f)})(x) \jdeq 
+\inv{f'_\pt(x)}\cdot f(\Sloop)(x)\cdot f'_\pt(x)$.\footnote{%
+Here $f(\Sloop)(x)$ is short for $\ap{z\mapsto\fst(f_\div(z))(x)}(\Sloop)$.}
+This is the result of going first right and then down in
+\cref{fig:ptw-swap-ptd-doms}, applied to $x:X$.
+
+Now we go first down and then right in \cref{fig:ptw-swap-ptd-doms}.
+Evaluating $f$ as above at $\Sloop$ gives
+$\ev(f) \jdeq \inv{f}_\pt\cdot f(\Sloop)\cdot f_\pt$.
+Applying $\ptw_*$ and taking the underlying function gives
+$\ptw(\fst(\inv{f}_\pt\cdot f(\Sloop)\cdot f_\pt))$.
+Applying the latter function to $x:X$ gives a result
+that is easily identified with 
+$\inv{f'_\pt(x)}\cdot \ptw(\fst(f(\Sloop)))(x)\cdot f'_\pt(x)$,
+as both $\fst$ and $\ptw$ preserve composition.\footnote{%
+Here $\ptw(\fst(f(\Sloop)))(x)$ is in fact 
+$\ptw(\fst(\ap{f_\div}(\Sloop)))(x)$.}
+
+Finally, we complete the construction by identifying the results
+of the last two paragraphs, for which it suffices to identify
+the elements as given in the footnotes. We generalize them from $\Sloop$
+to an arbitrary $p:\base\eqto z$, $z:\Sc$, and note that both
+$\ap{z\mapsto\fst(f_\div(z))(x)}(p)$ and
+$\ptw(\fst(\ap{f_\div}(p)))(x)$ have type
+$\fst(f_\div(\base))(x) \eqto \fst(f_\div(z))(x)$.
+They are readily identified by induction on $p$. 
+\end{implementation}
+
+\def\Scc{\inred{\Sc}}
+\begin{figure}[h]
+  \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+  \USym{\grpHom(H,G)}\ar[dd,equivl,"{\inv{\ev}}"']
+  \\ \& \mbox{} \& \\
+  \Scc(X\ptdto Y)
+    \ar[rr,equivr,"{\swap_{\Scc,X}}"]
+    \ar[dd,"{\OO\circ\blank}"']
+  \& \& X\ptdto \Scc Y  
+    \ar[dd,"{O'}"] \ar[drr,equivl,"{\OO}"']
+    %\ar[rr,equivr,"{(\ev\circ\blank)}"]
+  %\& \& \BHom(H,G) 
+  \\ 
+  \&\&\&\& \sum_{f:\Sc X \ptdto \Sc (\Scc Y)} P(f)
+    \ar[rr,equivl]
+    \ar[d,"{\fst}"]
+  \& \& \absHom(\abstr(H),\abstr(G))
+  \\
+  \Scc(\Sc X\ptdto \Sc Y) 
+    \ar[rr,equivl,"{\swap_{\Scc,\Sc X}}"']   
+  \& \& \Sc X \ptdto \Scc (\Sc Y) 
+    \ar[rr,equivl,"{(\swap\circ\blank)}"']
+  \& \& \Sc X \ptdto \Sc (\Scc Y) 
+  \end{tikzcd}
+  \caption{\label{fig:bjørn}
+  Legenda:
+  $X\defeq\BH$;
+  $Y\defeq\protect\BB G$;
+  $\protect\ev$ is from \cref{cor:circle-loopspace};
+  $\swap$ is from \cref{con:ptw-swap-ptd-doms};
+  $\protect\OO$ is from \cref{def:O-functor};
+  $O'$ is from \cref{def:O'};
+  $P(f)$ expresses that $\protect\ev\circ f\circ \inv{\protect\ev}$
+  classifies a homomorphism.
+  Moreover, the colors track
+  related occurrences of $\Sc$.
+  }
+\end{figure}
+
+Recall from \cref{thm:abelian-groups-weq-sc2types} the equivalence
+$\BB$ from the type of abelian groups to the type of pointed
+simply connected $2$-types. Let $H:\Group$ be a group and let
+$G:\AbGroup$ be an abelian group.
+Then $\BB G$ and hence also $\BH\ptdto\BB G$ is a $2$-type, 
+pointed at the constant map that sends any $w:\BH$ to the 
+point $\pt_{\BB G}\defeq (\BG_\div,\settrunc{\id_{\BG_\div}})$ 
+of $\BB G$.\footnote{Itself pointed by reflexivity.} In fact,
+the type $\BG\ptdto\BB G$ is a $1$-type, since the maps are pointed.
+
+\begin{definition}\label{def:AbHomgroup}
+Let $H:\Group$ be a group and let $G:\AbGroup$ be an abelian group. 
+Define the group $\grpHom(H,G)$ of homomorphisms from $H$ to $G$ by 
+\[
+\grpHom(H,G) \defeq \Aut_{\BH\ptdto\BB G}
+((w \mapsto \pt_{\BB G}),\refl{\pt_{\BB G}}).\qedhere
+\]
+\end{definition}
+
+\DELETE{%temporarily
+The following lemma identifies the group $\grpHom(H,G)$ as the 
+delooping of $\absHom_{\ptw}(\abstr(H),\abstr(G))$, 
+the abelian abstract group of abstract homomorphisms with
+pointwise operations, as given by
+\cref{xca:abs-homgroup} and \cref{xca:abstract-group-of-maps}.
+Consequently, $\grpHom(H,G)$ is an abelian group.
+
+
+\begin{lemma}\label{lem:grpHomOK}
+Let conditions be as in \cref{def:AbHomgroup}. %Abbreviate the shape
+%$((w\mapsto \pt_{\BB G}),\refl{\pt_{\BB G}})$ of $\grpHom(H,G)$ by $\sh$. 
+Consider the diagram in \cref{fig:bjørn}. This diagram commutes and
+the composite of the chain of equivalences 
+from $\USym\grpHom(H,G)$ to $\absHom(\abstr(H),\abstr(G))$
+defines an abstract isomorphism from $\abstr(\grpHom(H,G))$ 
+to the abstract group $\absHom_{\ptw}(\abstr(H),\abstr(G))$.
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item In the right square, the image of $\OO$ is indeed given by $P$.
+\item The right square commutes.
+$O'\jdeq \OO_{A,B} \circ(\inv{\swap}\circ\blank)$
+\item The left square commutes. First we observe that the totally
+unpointed maps commute definitionally ...
+\end{enumerate}
+\end{proof}
+}%end DELETE
+
+
 
 \subsection{Concrete rings}\label{sec:concrings}
 
