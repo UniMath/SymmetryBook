@@ -629,6 +629,62 @@ with the sum type of totally unpointed maps with additional structure,
 including coherence.)
 \end{implementation}
 
+\begin{xca}\label{xca:allptd-S1-contractible}
+Let $X,Y,Z$ be pointed types and let $X,Y$ be connected
+and $Z$ a $1$-type.
+Show that $X\ptdto(Y\ptdto Z)$ is contractible.
+\end{xca}
+
+\begin{example}\label{exa:allS1*-swap}
+In this example we will explore the type $$M\defeq(\Sc\ptdto(\Sc\ptdto\BB\ZZ)),$$
+where $\BB\ZZ$ is the simply connected $2$-type $\sum_{X:\UU}\setTrunc{\Sc\eqto X}$
+from \cref{sec:abelian-groups}, pointed at 
+$\pt\defeq(\Sc,\settrunc{\refl{\Sc}})$. 
+
+There are several ways to see that $\loops(\BB\ZZ) \jdeq (\pt=\pt,\refl{\pt})$
+is equivalent to $\B\ZZ \jdeq \Sc$. One is to use
+\cref{thm:abelian-groups-weq-sc2types}, as $\ZZ$ is abelian.
+Another is to
+recall from the proof of
+\cref{lemma:universal-cover-simply-connected} the equivalence
+between $\pt\eqto\pt$ and the component of $\Sc\eqto\Sc$ at $\id_\Sc$.%
+\footnote{We use $\refl{\pt}$ and $\id_\Sc$ interchangeably.}
+The latter component is equivalent to $\Sc$ by 
+\cref{xca:(S1->S1)_(f)-eqv-S1}. Using $\ev$ from \cref{rem:pointing-ev},
+it follows that $M$ is equivalent to $\loops\loops(\BB\ZZ)$ 
+and hence to $\zet$.
+
+Via the above equivalence between $\loops(\BB\ZZ)$ and $\Sc$, 
+combined with the equivalence $\ptw_*$ from \cref{con:identity-ptd-maps},
+we get an equivalence between $\loops(\Sc\ptdto\BB\ZZ)$ and $\Sc\ptdto\Sc$.
+This means that we have maps corresponding to the degree $k$ map $\dg{k}$
+in $\loops(\Sc\ptdto\BB\ZZ)$, for any $k>0$. We will need such maps for
+all $k:\zet$ and define them explicitly in the following paragraph.
+
+
+For any $k:\zet$, define $\dg{k}': \Sc\ptdto\loops(\BB\ZZ)$ by 
+$\dg{k}'(\base)\defeq\id_\Sc$, taking for $\dg{k}'(\Sloop)$
+the $k$-loop around $\id_\Sc$ given by function extensionality and
+$\Sloop^k:\base\eqto\base$ (the loop case is a true proposition).
+We point $\dg{k}'$ by reflexivity.
+
+Now let $k:\zet$ and define $m_k:M$ as follows:
+\begin{align*}
+m_k(\base) &\defeq\pt_{\Sc\ptdto\BB\ZZ}\jdeq(\cst{\pt},\refl{\pt}) \\
+m_k(\Sloop) &\defis\ptw_*^{-1} (\dg{k}') :\loops(\Sc\ptdto\BB\ZZ)\\
+(m_k)_\pt &\defeq\refl{\pt_{\Sc\ptdto\BB\ZZ}}
+\end{align*}
+We see that applying $\ptw_*(m_k(\Sloop))=\dg{k}'$ to $\Sloop^j$ 
+gives the $jk$-loop around $\id_\Sc$.
+Also, using \cref{con:ptd-homotopy-compo}, 
+applying $\ptw_*(m_k(\Sloop^i))$ to $\Sloop^j$ 
+gives the $ijk$-loop around $\id_\Sc$.
+
+\MB{TBD1}: clarify the relation between $m_k$ and multiplication of
+its arguments by $k$ ($m_1$ is useful for the concrete ring of the integers).
+
+\MB{TBD2}: Find out if $\swap(m_k)$ is equal to $m_k$ or to $m_{-k}$.
+\end{example}
 
 \begin{remark}\label{rem:grpHomOK}
 \newcommand{\redloops}[1]{\inred{\loops{#1}}}
@@ -727,11 +783,11 @@ and $(\ptw_*\circ\ev)$, as represented by \cref{fig:ptw-swap-ptd-doms}.
 \begin{implementation}{con:ptw-swap-ptd-doms}
 Using function extensionality, it suffices to identify ${\ev}\circ{\swap(f)}$
 and $(\ptw_*\circ\ev)(f)$ for every $f:\Sc\ptdto(X\ptdto Y)$. The latter
-identifications are in the type $X\ptdto\loops Y$, which means that we only 
+identification is in the type $X\ptdto\loops Y$, which means that we only 
 have to identify the underlying functions, due to \cref{cor:Id-(B->*loopsA)}.
 This greatly simplifies our task: given $f:\Sc\ptdto(X\ptdto Y)$,
 the pointing path of $\swap(f)$ plays no role in 
-the underlying function of $\ev\circ\swap(f)$.
+the underlying function of $\ev\circ{\swap(f)}$.
 In contrast, the pointing path $f_\pt: \pt_{X\ptdto Y} \eqto f(\base)$
 is important, but only in so far it applies to the underlying functions
 of $\pt_{X\ptdto Y}$ and $f(\base)$. Therefore we abbreviate
@@ -740,7 +796,7 @@ $f'_\pt(x): (\pt_Y \eqto f(\base)(x))$ for $x:X$.
 
 The underlying function of $\swap(f)$ maps any $x:X$ to the 
 function $(z:\Sc)\mapsto f(z)(x)$, pointed by $f'_\pt(x)$.
-Evaluating the latter pointed map at $\Sloop$ gives
+Evaluating this pointed map at $\Sloop$ gives
 $({\ev}\circ{\swap(f)})(x) \jdeq 
 \inv{f'_\pt(x)}\cdot f(\Sloop)(x)\cdot f'_\pt(x)$.\footnote{%
 Here $f(\Sloop)(x)$ is short for $\ap{z\mapsto\fst(f_\div(z))(x)}(\Sloop)$.}
@@ -765,8 +821,8 @@ the elements as given in the footnotes. We generalize them from $\Sloop$
 to an arbitrary $p:\base\eqto z$, $z:\Sc$, and note that both
 $\ap{z\mapsto\fst(f_\div(z))(x)}(p)$ and
 $\ptw(\fst(\ap{f_\div}(p)))(x)$ have type
-$\fst(f_\div(\base))(x) \eqto \fst(f_\div(z))(x)$.
-They are readily identified by induction on $p$. 
+$\fst(f_\div(\base))(x) \eqto \fst(f_\div(z))(x)$,
+and are readily identified by induction on $p$. 
 \end{implementation}
 
 \def\Scc{\inred{\Sc}}
