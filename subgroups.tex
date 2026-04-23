@@ -14,24 +14,28 @@ In set theory we say that a function $f:B\to C$ of sets is an injection if for a
 Furthermore, since giving an element $b:B$ is equivalent to giving a (necessarily constant) function $c_b:\bn 1\to B$, we could alternatively say that a function $f:B\to C$ is an injection if and only if for any two $g,h:\bn 1\to B$ such that $fg=fh$ we have that $g=h$.  In fact, by function extensionality we can replace $\bn 1$ by any set $A$ (two functions are identical if and only if they have identical values at every point).
 
 Similarly, a function $f:B\to C$ is surjective if for all $c:C$ the preimage $f^{-1}(c)\jdeq\sum_{b:B}(c=f(b))$ is non-empty (\cref{def:surjection}). A smart way to say this is to say that the first projection from $\sum_{c:C}\Trunc{f^{-1}(c)}$, the propostitional image of $f$, to $C$ is an equivalence. Using \cref{xca:all-prop-image}, we see that for a surjection $f:B\to C$ and family of propositions $P:C\to \Prop$, the propositions $\prod_{c:C}P(c)$ and $\prod_{b:B}P(f(b))$ are equivalent.\footnote{This actually holds for any
-map $f:B\to C$ with $B$ and $C$ types.}  In particular, if $g,h:C\to D$ are two functions into a set $D$ the proposition $\prod_{c:C}(g(c)=h(c))$ is equivalent to $\prod_{b:B}(gf(b)=hf(b))$.\footnote{\wip{Cf. 6.3.6-8. Caveat in 6.3.6,
+map $f:B\to C$ with $B$ and $C$ types.}  In particular, if $g,h:C\to D$ are two functions into a set $D$ the proposition $\prod_{c:C}(g(c)=h(c))$ is equivalent to $\prod_{b:B}(gf(b)=hf(b))$.\footnote{\wip{For the converse:
+take $\Prop$ for $D$ and define $g(c)\defeq\Trunc{f^{-1}(c)}$
+and $h(c)\defeq\true$ for all $c:C$, then $gf=hf$, whereas $g=h$
+expresses surjectivity of $f$. Add? Cf. 6.3.6-8. Caveat in 6.3.6,
 where injection is not in $\Set$.}}
 
 From this we condense the following characterizations of injections and surjections of sets which will prove to generalize nicely to other contexts.
 
 \begin{lemma}
-  \label{lem:injofsetsaremono}Let $f:B\to C$ be a function of sets.
+  \label{lem:injmonosurjepiSet}Let $f:B\to C$ be a function of sets.
   \begin{enumerate}
-  \item The function $f$ is an injection if and only if for any set $A$ and functions $g,h:A\to B$, if
+\item\label{it:injmono} The function $f$ is an injection 
+if and only if for any set $A$ and functions $g,h:A\to B$, if
 $$\xymatrix{A\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&B\ar[r]^f&C}$$
 commutes, \ie $fg=_{A\to C}fh$, then $g=h$.
-\item The function $f$ is an surjection if and only if for any set $D$ and functions $g,h:C\to D$, if
+\item\label{it:surjepi} The function $f$ is an surjection if and only if for any set $D$ and functions $g,h:C\to D$, if
 $$\xymatrix{B\ar[r]^f&C\ar@<1ex>[r]^g\ar@<-1ex>[r]_h&D}$$
 commutes, \ie $gf=_{B\to D}hf$, then $g=h$.
   \end{enumerate}
 \end{lemma}
 
-By \cref{lem:injofsetsaremono} there is a pleasing reformulation which highlights that injections/surjections of sets are characterized by injections of sets of functions: a function of sets $f:B\to C$ is
+By \cref{lem:injmonosurjepiSet} there is a pleasing reformulation which highlights that injections/surjections of sets are characterized by injections of sets of functions: a function of sets $f:B\to C$ is
 \begin{enumerate}
 \item  an injection if and only if for any set $A$ postcomposition by $f$ gives an injection from $A\to B$ to $A\to C$
 \item a surjection if and only if for any set $D$ precomposition by $f$ gives an injection from $C\to D$ to $B\to D$.
@@ -80,7 +84,7 @@ Good example of epi: For groups $G_1$ and $G_2$, then the first projection from 
 \end{definition}
 
  
-\begin{exercise}
+\begin{exercise}\label{xca:mono1st-epi2nd}
 Consider a composite $f=f_2f_1$ of homomorphisms.  Show that $f_2$ is an epimorphism if $f$ is, and $f_1$ is a monomorphism if $f$ is.
 \end{exercise}
     
@@ -101,7 +105,7 @@ Hence, in this situation, saying that
 $\US f$ is an injection is equivalent to saying that 
 postcomposition by $f$ is an injection $\Hom(\ZZ,G)\to\Hom(\ZZ,H)$.
 
-In this observation, the integers $\ZZ$ plays no more of a role than $\bn 1$ does in \cref{lem:injofsetsaremono}; we can let the source vary over any group $F$:
+In this observation, the integers $\ZZ$ plays no more of a role than $\bn 1$ does in \cref{lem:injmonosurjepiSet}; we can let the source vary over any group $F$:
 
 
 \begin{lemma}\label{lem:eq-mono-cover}
@@ -151,35 +155,46 @@ Similarly, we have:
   The equivalence of \ref{it:surjection} and \ref{it:connfib} is immediate.
 
   For the rest, the easy direction is that \ref{it:surjection} implies \ref{it:epi}:
-  (TODO)
+  (TODO) \wip{Since by \cref{xxx} the categories of groups and of abstract
+  groups are equivalent, it suffices to show that $\USymf$ is an epimorphism
+  of abstract groups whenever it is surjective. Since abstract
+  homomorphisms are just functions with additional properties,
+  we can just apply \cref{lem:injmonosurjepiSet}\ref{it:surjepi}.}
 
   The harder direction, that \ref{it:epi} implies \ref{it:surjection},
-  is a corollary of the following lemma, which states that monos are equalizers.
-  Indeed, we can factor any $f : \Hom(G,H)$ via the image as a surjection followed
-  by a mono:
+  is a consequence of \cref{con:monos-are-equalizers}.
+  Indeed, we can factor any $f : \Hom(G,H)$ via the image as a 
+  an epi followed by a mono \wip{(\cref{xxx} TBD in 9.3)}:
   \[
     \begin{tikzcd}[cramped]
       G \ar[r,"q"] & \im(f) \ar[r,"i"] & H
     \end{tikzcd}
   \]
-  If $f$ is an epi, then so is $i$. But $i$ is an equalizer,
+  If $f$ is an epi, then so is $i$ by \cref{xca:mono1st-epi2nd}. 
+  But $i$ is an equalizer 
+  \wip{(\cref{con:monos-are-equalizers}), that is, 
+  we have $\varphi,\psi$ such that},
   \[
     \begin{tikzcd}[cramped]
       \im(f) \ar[r,"i"] & H\ar[r,shift left,"\varphi"]
-      \ar[r,shift right,"\psi"'] & L,
+      \ar[r,shift right,"\psi"'] & L.
     \end{tikzcd}
   \]
-  so as an epi, $\varphi i = \psi i$ implies $\varphi = \psi$, so $i$
+  As an epi, $\varphi i = \psi i$ implies $\varphi = \psi$, so $i$
   is an equalizer of already equal homomorphisms, so $i$ is an isomorphism,
-  which implies that $f$ is surjective.
+  which implies that $f$ is an epimorphism.
 \end{proof}
 
-\begin{lemma}\label{lem:monos-are-equalizers}
-  Every monomorphism $i : H \to G$ is an equalizer.\footnote{%
+\begin{construction}\label{con:monos-are-equalizers}
+  Given groups $G$ and $H$ and mmonomorphism $i : H \to G$,
+  we have a group $W$ and
+  two homomorphisms $\varphi,\psi:\Hom(G,W)$ such that $i$ is an equalizer
+  of $\varphi,\psi$.\footnote{%
     This proof follows an idea by \citeauthor{TrimbleEpisSurjective}\footnotemark{}.}%
   \footcitetext{TrimbleEpisSurjective}
-\end{lemma}
-\begin{proof}[Proof draft.] Consider the projection $\pi : G \to G/H$ to the set of cosets.
+\end{construction}
+\begin{implementation}{con:monos-are-equalizers}[draft] 
+Consider the projection $\pi : G \to G/H$ to the set of cosets.
   Let $j : G/H \to A$ be an injection into a group $A$.
   (We could for instance let $A$ be the free (abelian) group on $G/H$. [Add xref to statement that inclusion of generators in an injection.])
 
@@ -187,18 +202,33 @@ Similarly, we have:
   \[
     E \defeq \sum_{t : \BG}\bigl((\sh_G \eqto t) \to \BA\bigr).
   \]
-  We have two homomorphisms $\varphi,\psi : G \to W$ with the same underlying map,
-  $t \mapsto (t , \cst{\sh_A})$, but with different pointing paths:
+  We have two homomorphisms $\varphi,\psi : G \to W$ with the same 
+  classifying map,
+  $t \mapsto (t , \cst{\sh_A})$, but with different pointing paths:\footnote{%
+  \wip{For $t\jdeq\sh_G$, $\cst{\sh_A}\eqto\cst{\sh_A}$ can be given by
+  functions $\USymG\to\USymA$, so I'd like $\pi : \BG \to G/H$
+  and $j : G/H \to \BA$ so that $\ap{j\pi}: \USymG\to\USymA$.}}
   \[
-    \varphi_\pt \defeq \refl{\sh_G,\cst{\sh_A}}, \quad
-    \psi_\pt \defeq (\refl{\sh_G}, j\pi).
+    \varphi_\pt \defeq \refl{(\sh_G,\cst{\sh_A})}, \quad
+    \psi_\pt \defeq (\refl{\sh_G}, j\pi),
   \]
+  where $j\pi$ is short for $\inv\ptw(\ap{j\pi})$.
   The equalizer of $\varphi$ and $\psi$ thus consists of all $g:\USymG$
   such that $j\pi(gg') = j\pi(g')$ for all $g':\USymG$. Since $j$ is injective,
   this is equivalent to $\pi(gg')=\pi(g')$ for all $g':\USymG$, and this holds
   if and only if $g$ belongs to $H$.
-\end{proof}
+\end{implementation}
 
+\wip{\begin{lemma}\label{lem:epimonoiso}
+Given groups $G$ and $H$, a homomorphism $f: \Hom(G,H)$ is an isomorphism
+if and only if $f$ is both a monomorphism and an epimorphism.
+\end{lemma}}
+\begin{proof}
+By \cref{lem:eq-mono-cover}\ref{it:injection}
+\cref{lem:epi-surj}\ref{it:surjection}, 
+using that the categories of groups and of abstract
+groups are equivalent by \cref{xxx}.
+\end{proof}
 
 \section{Images, kernels and cokernels}
 \label{subsec:ker}
