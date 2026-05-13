@@ -38,6 +38,8 @@ This book will be a textbook written in the univalent style, taking advantage of
     ```
   + for identifiers in the Roman alphabet use the name (e.g., for $\Ker$ use (Ker) or (ker);
 - Given a: A, we refer to elements of a ⥱ a as either symmetries *of* a, or symmetries *in* A.
+- footnotes (appearing in the margin) are preferred over marginnotes,
+the latter being restricted to more general (minor) remarks.
 
 ## Current draft of the book
 
