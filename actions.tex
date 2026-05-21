@@ -1,3 +1,4 @@
+
 \chapter{Group actions and subgroups}
 \label{ch:actions}
 
@@ -82,10 +83,12 @@ we'll be looking at in~\cref{ch:fingp}.
     X : \BG\to\Set,
   \]
   and $X(\sh_G)$ is referred to as the \emph{underlying set}.  If $p:x\eqto y$
-  in $\BG$, then the transport function $\trp{X}(p) : X(x)\eqto X(y)$ is also
-  denoted by $X(p)$.  We denote $X(p)(a)$ by $p\cdot_X a$.  The operation
-  $\cdot_X$ is called the \emph{group action} of $X$.  When $X$ is clear from
-  the context we may leave out the subscript $X$.\footnote{%
+  in $\BG$, then the transport function $\trp{X}(p) : X(x)\eqto X(y)$ \wip{(is
+    the use of transparent univalaence warranted here? it feels like
+    $p \cdot_X \blank$ is better thought as a function anyway)} is also denoted
+  by $X(p)$.  We denote $X(p)(a)$ by $p\cdot_X a$.  The operation $\cdot_X$ is
+  called the \emph{group action} of $X$.  When $X$ is clear from the context we
+  may leave out the subscript $X$.\footnote{%
     The reader might worry that this notation conflicts with that of path
     composition. The type of the operation
     ${}\cdot{}: (x\eqto y) \to X(x) \to X(y)$ helps identify which is which.
@@ -229,7 +232,6 @@ $(\Sc\to\BG)\to\BG$ at the base point $\base$.
   \[
     \Hom(H,G)(y)\defequi\Hom(H,G)(\sh_H,y).\qedhere
   \]
-  \wip{For show: git rebase}
 \end{example}
 \begin{xca}
   \label{xca:HomZGvsAdG}
@@ -254,10 +256,20 @@ $(\Sc\to\BG)\to\BG$ at the base point $\base$.
   \glossary(HomG){$\protect\Hom_G(X,Y)$}{type of maps of $G$-sets}
 \end{definition}
 
+\wip{
+  \begin{xca}\label{xca:equivariant-map-totalization}
+    Show that $\Hom_G(X,Y)$ is equivalent to the type of functions from the
+    totalization of $X$ to that of $Y$ that commute to the projections, i.e.,
+    $\sum_{f : \Tot(X) \to \Tot(Y)}\fst = \fst \circ f$.
+  \end{xca}
+}
+
 \begin{remark}\label{rem:map-of-Gsets}
-  Given $G$-sets $X,Y$ and a map $f$ from $X$ to $Y$,
-  we have $f_w(g\cdot_X x) = g\cdot_Y f_z(x)$ for all $z,w:\BG$,
-  $x:X(z)$, $g:z\eqto w$. In other words, the diagram on the right commutes:
+  Given $G$-sets $X,Y$ and a map\footnote{\wip{Any reason we don't use the word
+      {\em equivariant} at all in the book?}} $f$ from $X$ to $Y$, we have
+  $f_w(g\cdot_X x) = g\cdot_Y f_z(x)$ for all $z,w:\BG$, $x:X(z)$, $g:z\eqto
+  w$. In other words, the diagram on the right commutes:\footnote{\wip{Remove
+      the ``='' signs in the square?}}
 \[
 \begin{tikzcd}
   z\ar[d,eql,"g"'] &X(z) \ar[r,"f_z"] \ar[d,eql,"g\cdot_X\,\blank"']
@@ -265,16 +277,15 @@ $(\Sc\to\BG)\to\BG$ at the base point $\base$.
   w               &X(w) \ar[r,"f_w"']                & Y(w)
 \end{tikzcd}
 \]
-An important special case is when $Y$ is the $G$-set $\triv_G\Prop$ that
-is constant $\Prop$: Given a map $P$ from $X$ to $\triv_G\Prop$,
-we have $P_w(g\cdot x)$ if and only if $P_z(x)$
-for all $z,w:\BG$, $x:X(z)$, $g:z\eqto w$.
-This applies to the following definition.
+An important special case is when $Y$ is the trivial $G$-set $\triv_G\Prop$ that
+is constantly the set $\Prop$: Given a map $P$ from $X$ to $\triv_G\Prop$, we
+have $P_w(g\cdot x)$ if and only if $P_z(x)$ for all $z,w:\BG$, $x:X(z)$,
+$g:z\eqto w$.  This applies to the following definition.
 \end{remark}
 
 \begin{definition}\label{def:Gsubset}
   A \emph{$G$-subset} of a $G$-set $X$ is a map from $X$ to the $G$-set 
-  $\triv_G\Prop$ that is constant $\Prop$. 
+  $\triv_G\Prop$ \wip{Remove, it has already been recalled above:[}that is constant $\Prop$.\wip{]} 
   The type of all such maps is denoted\footnote{%
   Recall \cref{def:subtype}: $\Sub(T)\jdeq(T\to\Prop)$.}
   \glossary(SubGX){$\protect\Sub_G(X)$}{set of $G$-subsets of $X$}
@@ -290,7 +301,7 @@ This applies to the following definition.
   If $P$ is a $G$-subset of $X$, then the \emph{underlying $G$-set of $P$},
   denoted by $X_P$, is defined by
   \[
-  X_P(z) \defeq \sum_{x:X(z)}{P(z,x)},\quad\text{for all $z:\BG$}.\qedhere
+  X_P(z) \defeq \sum_{x:X(z)}{P(z,x)}\wip{P(z)(x)},\quad\text{for all $z:\BG$}.\qedhere
   \]
   \glossary(Gset){$X_P$}{underlying $G$-set of $P$}
 \end{definition}
@@ -302,8 +313,10 @@ Show that evaluation at $\sh_G$ is an equivalence from $\Sub_G(X)$ to
   \prod_{x:X(\sh_G)}
   \Bigl(Q(x)\to\prod_{g:\USymG} Q(g\cdot x)\Bigr).
 \]
-The latter type is the type of all
-subsets of $X(\sh_G)$ that are closed under the group action.
+The latter type is the type of all subsets of $X(\sh_G)$ that are closed under
+the group action.\footnote{\wip{Very difficult to read out of the blue: why not
+    establish in 2.20 the notations ``$P\subseteq X$'' for $P:\Sub(X)$ and for
+    any $x: X$, ``$x\in P$'' for $P(x)$?}}
 \end{xca}
 
 The following exercise wil be used in the subsequent remark.
@@ -332,7 +345,7 @@ $(A,a)\ptdto(B_{(b)},(b,!))$.
   \end{align*}
 Hence a $G$-set $X$ can, without loss of information, be considered as
 a set $X(\sh_G)$ and
-a homomorphism from $G$ to the permutation group of $X(\sh_G)$.
+a homomorphism from $G$ to the permutation group of $X(\sh_G)$. \wip{Conversely, a set $S$ together with a homomorphism $f$ from $G$ to $\SG_S$ can be described as a $G$-set with underlying set $S$ and whose group action $g \cdot \blank$ for $g : \USymG$ coincides with $f(g)(s)$.\footnote{The $G$-set associated to the homomorphism $f$ is the ``delooping'' of $f$, and it will be formally defined in \ref{sec:delooping}}.}
 \end{remark}
 
 \begin{definition}\label{def:Gaction}
