@@ -295,7 +295,7 @@ We spell out the details.
   \glossary(ker){$\protect\ker(f)$}{the inclusion of the kernel group of $f$
     into its codomain}
   If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in
-  $\ker(f)\defeq(\Ker(f),\incl_{\ker(f)},!):\typemono(G)$.
+  $\ker(f)\defeq(\Ker(f),\kermap{f},!):\typemono(G)$.
   The classifying type $\BKer(f)$ of the \emph{kernel group}%
   \footnote{There is an inherent ambiguity in our notation:
     is the kernel of $f$ a group or a monomorphism into $G$?
@@ -314,10 +314,8 @@ We spell out the details.
   The first projection $\BKer(f)\to \BG$ is a \covering,
   since by \cref{cor:contract-away} the preimages are equivalent to the sets
   $\sum_{p:\sh_{G'}\eqto\Bf(z)}\Trunc{\sh_{\Ker(f)}\eqto(z,p)}$,
-  giving a monomorphism
-  % $\kermap f$
-  $\incl_{\ker(f)}$ of $\Ker(f)$ into $G$;
-  together defining $\ker(f)\defeq(\Ker(f),\incl_{\ker(f)},!):\typemono(G)$.
+  giving a monomorphism $\kermap{f}$ of $\Ker(f)$ into $G$;
+  together defining $\ker(f)\defeq(\Ker(f),\kermap{f},!):\typemono(G)$.
 \end{definition}
 
 Written out, the classifying type of the kernel, $\BKer(f)$, is\footnote{%
@@ -413,9 +411,9 @@ is the ``image'' of $f$ defined in the next section.}}
     trivial homomorphism (equivalently, 
     $fh$ factors through the trivial group $\TG$),
     then there is a unique $k:\Hom(L,\ker(f))$ such that
-    $h\eqto \incl_{\ker(f)}k$.\footnote{Hint: consider the corresponding property of the preimage of $\Bf$.
+    $h\eqto \kermap{f}k$.\footnote{Hint: consider the corresponding property of the preimage of $\Bf$.
       $$\xymatrix{L\ar[drr]^h\ar@{.>}[dr]^{k}\ar[ddr]&&\\
-        &\ker(f)\ar[r]_{\incl_{\ker(f)}}\ar[d]&G\ar[d]^f\\
+        &\Ker(f)\ar[r]_{\kermap{f}}\ar[d]&G\ar[d]^f\\
         &{\TG}\ar[r]&\,G'.}$$}\qedhere
   \end{enumerate}
 \end{xca}
@@ -428,8 +426,8 @@ explicit.
 \begin{marginfigure}\label{fig:fibersofcomposites}
 %$$
 \xymatrix{
-      F_2^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]_{\fst}&f_1^{-1}(x_1)\ar[d]^{\fst}\ar[dl]_{F_1}&\\
-      (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^{F_2}&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar[d]^{\id}\\
+      F_1^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]_{\fst}&f_1^{-1}(x_1)\ar[d]^{\fst}\ar[dl]_{F_2}&\\
+      (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^{F_1}&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar[d]^{\id}\\
     f_2^{-1}(x_2)\ar[r]^{\fst}&X_1\ar[r]^{f_2}&X_2.}
 % $$
 \caption{\label{fig:fibersofcomposites}\wip{Crossing horizontal
@@ -438,38 +436,38 @@ and vertical fiber sequences.}}
 
 \begin{lemma}
   \label{lem:fibersofcomposites}
-  Consider pointed functions $(f_1,p_1):(X_0,x_0)\ptdto (X_1,x_1)$ and $(f_2,p_2):(X_1,x_1)\ptdto (X_2,x_2)$ and the following functions
-  $$F_1:f_1^{-1}(x_1)\to(f_2f_1)^{-1}(x_2),\qquad F_1(x,p)\defeq(x,f_2(p)p_2),$$
-  $$F_2:(f_2f_1)^{-1}(x_2)\to f_2^{-1}(x_2),\qquad F_2(x,q)\defeq(f_1x,q)$$
-  $$H:F_2^{-1}(x_1,p_2)%\defeq\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)\eqto (f_1x,q))\to \\
-  \to f_1^{-1}(x_1),\qquad H(x,q,\pathpair p r)\defeq (x,p)$$
-Then we have the following:
+  Consider pointed functions $(f_1,p_1):(X_0,x_0)\ptdto (X_1,x_1)$ and $(f_2,p_2):(X_1,x_1)\ptdto (X_2,x_2)$ and the following functions:
+\begin{align*}
+  F_1:(f_2f_1)^{-1}(x_2)\to f_2^{-1}(x_2),\qquad &F_1(x,q)\defeq(f_1x,q)\\
+  F_2:f_1^{-1}(x_1)\to(f_2f_1)^{-1}(x_2),\qquad &F_2(x,p)\defeq(x,f_2(p)p_2)\\
+  H:F_1^{-1}(x_1,p_2)%\defeq\sum_{(x,q)\in (f_2f_1)^{-1}(x_2)}((x_1,p_2)\eqto (f_1x,q))\to \\
+  \to f_1^{-1}(x_1),\qquad &H(x,q,\pathpair p r)\defeq (x,p)
+\end{align*}
+Then we have the following:\footnote{%
+\wip{Note that the codomain $f_1^{-1}(x_1)$ of $H$ does not depend on $f_2$.}} 
 \begin{enumerate}
 \item $H$ is an equivalence with inverse
 $$H^{-1}(x,p)\defeq((x,f_2(p)p_2),\pathpair p {\refl{f_2(p)p_2}});$$
 \item The lower square and its adjacent triangles commute by definition;
 \item The left upper triangle, representing the identity
-$F_1H \eqto\fst$, can be filled using function extensionality as follows:
-if $(x,q,\pathpair p r):F_2^{-1}(x_1,p_2)$, then $\fst(x,q,\pathpair p r)\jdeq (x,q)$, whereas $F_1H(x,q,\pathpair p r)\jdeq(x,f_2(p)p_2)$, and the latter
-two pairs can be identified using $r:f_2(p)p_2\eqto q$.\footnote{%
-\wip{Hmm, this is a construction within the statement of a lemma.}} 
+$F_2H \eqto\fst$, can be filled using function extensionality as follows:
+if $(x,q,\pathpair p r):F_1^{-1}(x_1,p_2)$, then $\fst(x,q,\pathpair p r)\jdeq (x,q)$, whereas $F_2H(x,q,\pathpair p r)\jdeq(x,f_2(p)p_2)$, and the latter
+two pairs can be identified using $r:f_2(p)p_2\eqto q$.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-  That $H$ is an equivalence is seen by noting that $F_2^{-1}(x_1,p_2)$ 
+  That $H$ is an equivalence is seen by noting that $F_1^{-1}(x_1,p_2)$ 
   is equivalent to $\sum_{x:X_0}\sum_{q:x_2\eqto (f_2f_1)(x)}\sum_{p:x_1\eqto f_1(x)} (q\eqto f_2(p)p_2)$ and that $H$ contracts away the $q$ as in \cref{lem:contract-away}, resulting in values in the (equivalent) 
-  codomain $f_1^{-1}(x_1)\jdeq\sum_{x:X_0}(x_1\eqto f_1(x))$.\footnote{%
-\wip{Note that $f_1^{-1}(x_1)$ only depends on $p_2$ and is otherwise
-independent of $f_2$.}} 
+  codomain $f_1^{-1}(x_1)\jdeq\sum_{x:X_0}(x_1\eqto f_1(x))$.
 \end{proof}
 % When referring to \cref{lem:fibersofcomposites}
 % it is often useful to display an
 
 Hence, through univalence, $H$ provides an identification
-  $$\etop H:(F_2^{-1}(x_1,p_2),\fst)\eqto (f_1^{-1}(x_1),F_1)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$.
+  $$\etop H:(F_1^{-1}(x_1,p_2),\fst)\eqto (f_1^{-1}(x_1),F_2)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$.
   % ($\fst(t)$ refers to the discussion following \cref{def:pairtopath} so that if $t\oldequiv(\overline{a,b}):(x_1,p_1)\eqto (x,p_1f_2q)$, then $\fst(t)\defeq a:x_1\eqto f_1x$).
   
-From the universal property of the preimage (\cref{lem:typefamiliesandfibrations}) it furthermore follows that $F_1$ is the unique map such that $(\fst F_1)\eqto _{f_1^{-1}(x_1)\to X_0}\fst$ and $H^{-1}$ is similarly unique with respect to $(\fst H^{-1})\eqto F_1$.
+From the universal property of the preimage (\cref{lem:typefamiliesandfibrations}) it furthermore follows that $F_2$ is the unique map such that $(\fst F_2)\eqto _{f_1^{-1}(x_1)\to X_0}\fst$ and $H^{-1}$ is similarly unique with respect to $(\fst H^{-1})\eqto F_2$.
 \begin{figure}
 \[
 \begin{tikzcd}[ampersand replacement=\&, column sep={0.9cm, between origins}]
@@ -482,8 +480,8 @@ X_2\\
 \ar[rrrrd]\ar[dd,no head]\&\&\&\&
 \&\&\&\&
 \\
-\ar[rrrrd]\ar[<->,casred,bend right=30,"{f_1^{-1}(x_1)}"']{dd}\&\&\&\&
-\ar[rrrrd]\ar[d,no head]\ar[<->,bend left=30,"{f_2^{-1}(x_2)}"]{dd}\&\&\&\&
+\ar[rrrrd]\ar[dashed,no head,casred,bend right=30,"{f_1^{-1}(x_1)}"']{dd}\&\&\&\&
+\ar[rrrrd]\ar[d,no head]\ar[dashed,no head,bend left=30,"{f_2^{-1}(x_2)}"]{dd}\&\&\&\&
 \\
 x_0\&\&\&\&
 x_1\&\&\&\&
@@ -492,7 +490,7 @@ x_2\\
 \ar[rrrru]\ar[u,no head]\&\&\&\&
 \\
 \ar[rrrru]
-\ar[uu,no head]\ar[<->,casblue,bend left=60,"{(f_2f_1)^{-1}(x_2)}"]{uuuu}
+\ar[uu,no head]\ar[dashed,no head,casblue,bend left=60,"{(f_2f_1)^{-1}(x_2)}"]{uuuu}
 \&\&\&\&
 \&\&\&\&
 \\
@@ -501,64 +499,75 @@ x_2\\
 \ar[uuu,dotted,no head]
 \end{tikzcd}
 \]
-\caption{\wip{New:} Ice cream illustrating \cref{lem:fibersofcomposites}.
+\caption{Ice cream illustrating \cref{lem:fibersofcomposites}.
 Vertical lines represent the types, dotted parts play no role.
 Only the first projections of the fibers are shown.
-$F_2$ goes from the blue fiber to the black one, defined
+$F_1$ goes from the blue fiber to the black one, defined
 as $f_1$ on first components. 
-$F_1$ goes from the red fiber to the blue one, defined as
+$F_2$ goes from the red fiber to the blue one, defined as
 the identity on first components. 
 Note that $f_2^{-1}(x_2)$ may contain elements not in the
-image of $F_2$. \wip{Swap names $F_2$ and $F_1$?}}
+image of $F_1$.}
 \end{figure}
 
 \begin{example}\label{exa:fibersofcomposites}\wip{New:}
 A simple case of \cref{lem:fibersofcomposites} is when the types
 $X_0,X_1,X_2$ are sets. Then all fibers involved are subsets and
-$F_1(x,!)=(x,!)$, $F_2(x,!)=(f_1(x),!)$, and $H$ is an equivalence
+$F_2(x,!)=(x,!)$, $F_1(x,!)=(f_1(x),!)$, and $H$ is an equivalence
 since $x_1=f_1(x)$ implies $x_2=(f_2f_1)(x)$ for any $x:X_0$.
 
-A more interesting example is obtained by considering
+A more interesting example is obtained by considering %for $m>0$
+\[
+\begin{tikzcd}[ampersand replacement=\&, column sep={0.8cm, between origins}]
+\Sc\ar[rrrr,"{R_4^\Cyc}"]\&\&\&\&
+\Cyc_4\ar[rrrr,"{\Bsgn\prj}"]\&\&\&\&
+\BSG_2.
+\end{tikzcd}
+\]
+Here $R_4^\Cyc$ extends the $4$-fold \covering from \cref{def:RmtoS1}
+by adding cycle structure, mapping $\base$ to the point $(\bn 4,\zs):\Cyc_4$
+and $\Sloop$ to the successor $\zs$, see \cref{def:Cyc-components}.
+Note that $\zs$ is here
+the odd cyclic permutation $(3 2)(2 1)(1 0) = (0 1 2 3)$ 
+(\cref{def:sgn-permutation}).
+The cycle structure is forgotten by $\prj : \Cyc_4 \to \FinSet_4$,
+$(X,t)\mapsto X$,
+from \cref{ex:Cm}, after which $\Bsgn$ from \cref{def:sgn},
+the classifying map of the sign homomorphim, is applied.
+All maps involved are pointed by reflexivity. 
+
+The fibers involved are
+\begin{align*}
+f_1^{-1}(x_1)&\jdeq\sum_{z:\Sc}((\bn4,\zs)\eqto R_4^\Cyc(z)),\\
+f_2^{-1}(x_2)&\jdeq\sum_{(X,t):\Cyc_4}(\bn2\eqto \Bsgn(X)), \text{ and}\\
+(f_2f_1)^{-1}(x_2)&\jdeq\sum_{z:\Sc}(\bn2\eqto (\Bsgn\prj\ R_4^\Cyc)(z)).
+\end{align*}
+These are action types (\cref{def:actiontype}), so groupoids,
+and they happen to be connected, so classifying subgroups, respectively. 
+In this case $F_1$ (pointed by reflexivity) is a homomorphism,
+and $F_1^{\abstr}$ maps TBD.%$\Sloop^{2k}$ to $(0 1 2 3)^{2k} = ((0 2)(1 3))^k$.
+The lemma now states that contracting away $q$ in
+\[
+F_1^{-1}(\bn4,\zs,\refl{\bn2}) \jdeq 
+\sum_{(z,q):(f_2f_1)^{-1}(x_2)}
+(\bn4,\zs,\refl{\bn2})\eqto(R_4^\Cyc(z),q)
+\]
+identifies the latter type
+with the action type $\sum_{z:\Sc}((\bn4,\zs)\eqto R_4^\Cyc(z))$.
+%\cref{xca:fibersofcomposites}.
+\end{example}
+The example above is not as general as possible since all fibers are
+connected. See the following exercise for a more general case.
+\begin{xca}\label{xca:fibersofcomposites}
+Elaborate the details of \cref{exa:fibersofcomposites} in the
+following case:
 \[
 \begin{tikzcd}[ampersand replacement=\&, column sep={0.8cm, between origins}]
 \Sc\ar[rrrr,"{R_4}"]\&\&\&\&
-\B\SG_4\ar[rrrr,"{\Bsgn}"]\&\&\&\&
-\B\SG_2,
+\BSG_4\ar[rrrr,"{\Bsgn}"]\&\&\&\&
+\BSG_2,
 \end{tikzcd}
 \]
-where $\Bsgn: \BSG_4\ptdto\BSG_2$ is
-the classifying map of the sign homomorphim from \cref{def:sgn}.
-Further, the \covering $R_4$ is from \cref{def:RmtoS1},\footnote{%
-\wip{Confusing terminology: no mono.}} 
-restricted to $\BSG_4$ and pointed by reflexivity.
-That is, $R_4$ maps $\base$ to $\bn4$ and 
-$\Sloop$ to the successor $\zs$. Note that $\zs$ is here
-the odd cyclic permutation $(3 2)(2 1)(1 0) = (0 1 2 3)$ 
-(\cref{def:sgn-permutation}). Note that $\base\mapsto\id_{\bn2}$
-gives rise to an identification $\Bsgn R_4\eqto R_2$ that
-we (mis)treat as definitional.
-
-The fibers involved are $\sum_{z:\Sc}(\bn4\eqto R_4(z))$,
-$\sum_{X:\BSG_4}(\bn2\eqto \Bsgn(X))$, $\sum_{z:\Sc}(\bn2\eqto R_2(z))$.
-These are action types, groupoids that need not be connected,
-but here the latter two are. \wip{Does this have to do with epi?}
-This means that the latter two classify subgroups consisting of, 
-abstractly speaking,
-the even permutations of $\bn4$ and the even integers, respectively. 
-In this case $F_2$ (pointed by reflexivity) is a homomorphism,
-and $F_2^{\abstr}$ maps $\Sloop^{2k}$ to $(0 1 2 3)^{2k} = ((0 2)(1 3))^k$.
-The lemma now states that contracting away $q$ in
-\[
-F_2^{-1}(x_1,p_2) \jdeq \sum_{(z,q):\sum_{z:\Sc}(\bn2\eqto R_2(z))}
-(\bn4,\refl{\bn2})\eqto(R_4(z),q)
-\]
-identifies the latter type
-with the action type $\sum_{z:\Sc}(\bn4\eqto R_4(z))$. You are asked to
-explore the orbit set of this action type in \cref{xca:fibersofcomposites}.
-\end{example}
-
-\begin{xca}\label{xca:fibersofcomposites}
-Elaborate the details of \cref{exa:fibersofcomposites}.
 \end{xca}
 
  
@@ -567,31 +576,31 @@ the composition of two homomorphisms.
 
 \begin{corollary}
   \label{cor:cokermaps}
-  \marginnote{$$\xymatrix{\Ker(f_1) \ar[r]^{\id_{\Ker(f_1)}}\ar[d]^{F_1}&\Ker(f_1)  \ar[d]^{\incl_{\ker(f_1)  }}\\
-      \Ker(f_2 f_1)\ar[d]^{F_2}\ar[r]^-{\incl_{\ker(f_2 f_1)}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar[d]^{\id_{G_2}}\\
-      \Ker(f_2)  \ar[r]^-{\incl_{\ker(f_2)  }}&G_1\ar[r]^{f_2}&G_2% \\
+  \marginnote{$$\xymatrix{\Ker(f_1) \ar[r]^{\id_{\Ker(f_1)}}\ar[d]^{F_2}&\Ker(f_1)  \ar[d]^{\kermap{f_1}}\\
+      \Ker(f_2 f_1)\ar[d]^{F_1}\ar[r]^-{\kermap{f_2f_1}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar[d]^{\id_{G_2}}\\
+      \Ker(f_2)  \ar[r]^-{\kermap{f_2}}&G_1\ar[r]^{f_2}&G_2% \\
    % \coker(f_2) &\coker(f_1) 
  }
   $$}
   Consider two composable homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
-  There is a unique monomorphism $F_1$ from $\Ker(f_1)  $ to $\Ker(f_2f_1)$
-  and a unique homomorphism $F_2$ from $\Ker(f_2f_1)$ to $\Ker(f_2)  $ such that $\incl_{\ker(f_1)  }\eqto \incl_{\ker(f_2 f_1)}F_1$ and $f_1\incl_{\ker(f_2 f_1)}\eqto \incl_{\ker(f_2)  }F_2$.
-  Furthermore, $$F_1\eqto _{\typemono(G_1)}\incl_{\ker(f_2)  }$$ and $$(\coker(f_1) )\,\B\incl_{\ker(f_2)  }\eqto _{\B\Ker(f_2)  \to\Set}\coker (F_2).$$
+  There is a unique monomorphism $F_2$ from $\Ker(f_1)  $ to $\Ker(f_2f_1)$
+  and a unique homomorphism $F_1$ from $\Ker(f_2f_1)$ to $\Ker(f_2)  $ such that $\kermap{f_1}\eqto \kermap{f_2f_1}F_2$ and $f_1\kermap{f_2f_1}\eqto \kermap{f_2}F_1$.
+  Furthermore, $$F_2\eqto _{\typemono(G_1)}\kermap{f_2}$$ and $$(\coker(f_1) )\,\B\kermap{f_2}\eqto _{\B\Ker(f_2)  \to\Set}\coker (F_1).$$
 
   Consequently,
   \begin{enumerate}
-  \item if $f_2$ is a monomorphism then $F_1:\Ker(f_1)  \to\Ker(f_2 f_1)$ is an isomorphism and
-  \item if $f_1$ is a monomorphism then $F_2:\Ker(f_2 f_1)\to\Ker(f_2)  $ is an isomorphism.
+  \item if $f_2$ is a monomorphism then $F_2:\Ker(f_1)  \to\Ker(f_2 f_1)$ is an isomorphism and
+  \item if $f_1$ is a monomorphism then $F_1:\Ker(f_2 f_1)\to\Ker(f_2)  $ is an isomorphism.
   \end{enumerate}
-Likewise, the set truncations $F'_1$ and $F'_2$ of the maps $F_1$ and $F_2$ constructed in \cref{lem:fibersofcomposites} give maps of $G_1$- and $G_2$-sets,\footnote{%
+Likewise, the set truncations $F'_1$ and $F'_2$ of the maps $F_2$ and $F_1$ constructed in \cref{lem:fibersofcomposites} give maps of $G_1$- and $G_2$-sets,\footnote{%
 Recall the notion of a map of $G$-sets from 
 \cref{def:map-of-Gsets} and the notation $\Hom_G(X,Y)\jdeq\prod_{z:\BG}(X(z)\to Y(z))$ for the type of such maps. Recall also that $\phi:\Hom_G(X,Y)$ is called an equivalence if $\prod_{z:\BG}\isEq\phi(z)$, see \cref{lem:fiberwise}.}
 respectively:
-$$F_1':\Hom_{G_1}(\coker(f_1),\coker(f_2f_1)\,\Bf_2),\quad F_2':\Hom_{G_2}(\coker(f_2f_1),\coker(f_2)) $$
+$$F_2':\Hom_{G_1}(\coker(f_1),\coker(f_2f_1)\,\Bf_2),\quad F_1':\Hom_{G_2}(\coker(f_2f_1),\coker(f_2)) $$
   such that
   \begin{enumerate}
-  \item if $f_2$ is an epimorphism then $F_1'$ is an equivalence, and
-  \item if $f_1$ is an epimorphism then $F_2'$  is an equivalence.
+  \item if $f_2$ is an epimorphism then $F_2'$ is an equivalence, and
+  \item if $f_1$ is an epimorphism then $F_1'$  is an equivalence.
   \end{enumerate}
 \end{corollary}
 \begin{xca}
@@ -825,7 +834,7 @@ This is forced by the uniqueness as follows.
 %   \marginnote{and if the wrapping destroys this fact in some ugly manner, it is an argument against wrapping}
 %   That $\prj_{\img f}$ is an epimorphims is best seen by using the equivalence between $BG$ and $\sum_{z:\BG'}(\Bf)^{-1}(z)$ which translates $\prj_{\img f}$ to the sum over $z:\BG'$ of the truncation $(\Bf)^{-1}(z)\to\Trunc{(\Bf)^{-1}(z)}_0\oldequiv\coker(f)(z)$ which has connected fiber (recall that a homomorphism is an epimorphism iff its classifying map has connected fibers).
 
-%   Assume given homomorphisms $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.  The claimed homomorphism $u:\Hom(\Img f_2f_1,\Img f_2)$ has classifying map $Bu:\sum_{z:\BG_2}(\coker(f_2) f_1)(z)\ptdto \sum_{z:\BG_2}(coker(f_2) )(z)$ given by $F_2'(z):(\coker(f_2) f_1)(z)\to(\coker(f_2) )(z)$ from \cref{cor:cokermaps} (which was the truncation of the map of preimages $F_2:(\Bf_2f_1)^{-1}(z)\to(\Bf_2)^{-1}(z)$ with $F_2(x,p)\oldequiv(f_1x,p)$).  That $\incl_{\img f_2f_1}=\incl_{\img f_2}u$ and $\prj_{\img f_2}f_1=u\,prj_{\img f_2f_1}$ follows by the definitions of the maps and the uniqueness of $u$ follows from the fact that $\incl_{\img f_2}$ is a monomorphism and the demand $\incl_{\img f_2f_1}=\incl_{\img f_2}u$ -- which also forces $u$ to be a monomorphism since $\incl_{\img f_2f_1}$ is a monomorphism.  Conversely, if $f_1$ is an epimorphism, then the composite $\prj_{\img f_2}f_1$ is an epimorphism and $\prj_{\img f_2}f_1=u\,prj_{\img f_2f_1}$ forces $u$ to be an epimorphism, and so an isomorphims.
+%   Assume given homomorphisms $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.  The claimed homomorphism $u:\Hom(\Img f_2f_1,\Img f_2)$ has classifying map $Bu:\sum_{z:\BG_2}(\coker(f_2) f_1)(z)\ptdto \sum_{z:\BG_2}(coker(f_2) )(z)$ given by $F_1'(z):(\coker(f_2) f_1)(z)\to(\coker(f_2) )(z)$ from \cref{cor:cokermaps} (which was the truncation of the map of preimages $F_1:(\Bf_2f_1)^{-1}(z)\to(\Bf_2)^{-1}(z)$ with $F_1(x,p)\oldequiv(f_1x,p)$).  That $\incl_{\img f_2f_1}=\incl_{\img f_2}u$ and $\prj_{\img f_2}f_1=u\,prj_{\img f_2f_1}$ follows by the definitions of the maps and the uniqueness of $u$ follows from the fact that $\incl_{\img f_2}$ is a monomorphism and the demand $\incl_{\img f_2f_1}=\incl_{\img f_2}u$ -- which also forces $u$ to be a monomorphism since $\incl_{\img f_2f_1}$ is a monomorphism.  Conversely, if $f_1$ is an epimorphism, then the composite $\prj_{\img f_2}f_1$ is an epimorphism and $\prj_{\img f_2}f_1=u\,prj_{\img f_2f_1}$ forces $u$ to be an epimorphism, and so an isomorphims.
 
 %   As for the uniqueness of the factorization, assume given $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$ such that $f_1$ is an epimorphism and $f_2$ in a monomorphism, we let $t:\Hom(G_1,\Img f_2f_1)$ be the composite $u^{-1}\prj_{\img f_2}$, where $u$ is invertible since $f_1$ is an epimorphism.  Since $f_1$ is an epimorphism, $f_2$ a monomorphism and the claimed diagram commutes this forces $t$ to be an isomorphism. % Since  $\incl_{\img f_2f_1}$ is a monomorphism, there is at most one homomorphism $t:\Hom(G_1,\Img f_2,f_1)$ such that $f_2=\incl_{\img f_2f_1}t$.  We must show that such a $t$ exist and that it furthermore satisfies  $t\,f_1=\prj_{\img f_2f_1}$.  This is achieved by setting
 %   % $$Bt_\div(y)\defeq (\Bf_2(y),|(\Bf_2(y),\refl{}|.
@@ -1235,7 +1244,7 @@ Letting the proposition that $\mathrm{ass}(N)$ is a kernel be invisible in the n
 
 \begin{definition}
   \label{def:associatednormal}
-  If $N:\typenormal_G$ is a normal subgroup we call the kernel $\mathrm{ass}(N):\typekernel_G$ the \emph{kernel assocaited to $N$}\index{kernel!associated to}.
+  If $N:\typenormal_G$ is a normal subgroup we call the kernel $\mathrm{ass}(N):\typekernel_G$ the \emph{kernel associated to $N$}\index{kernel!associated to}.
 \end{definition}
 \marginnote{\begin{remark}
     In forming the kernel associated to $N$, where did we use that $N$ was a fixed point of the $G$-set $\Sub(G)$?
