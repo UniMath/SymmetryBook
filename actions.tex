@@ -2152,7 +2152,7 @@ Note that the set $f_!X(w)$ can also be identified as the orbit set of
 the $G$-set $(z:\BG) \mapsto (\Bf(z) \eqto w)\times X(z)$,
 whose underlying set is equivalent to $\princ H(w)\times X(\sh_G)$.}
   \[
-    f_*X(w)\defeq\setTrunc[\bigg]%
+    f_!X(w)\defeq\setTrunc[\bigg]%
     {\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}.\qedhere
   \]
 \end{definition}
@@ -2184,7 +2184,71 @@ is an $H$-type that is not an $H$-set.
 % over $z:\BG$ into an upfront product. Then eliminate the product
 % over $w:\BH$ by using $f(z)\eqto w$.
 
-\begin{remark}\label{rem:^*-_!-as-(pre)image}\MB{New:}
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}
+    % Name the coordinates so they are easy to change
+    % first the base : B
+    \coordinate (B-left) at (-1,-1);
+    \coordinate (B-X) at (0,-1.1);
+    \coordinate (B-mid) at (1,-1.3);
+    \coordinate (B-Y) at (1.9,-1.2);
+    \coordinate (B-right) at (2.8,-1);
+    \node (B) at (3.2,-1) {$B$};
+    \node (A) at (3.2,1) {$A$};
+    % then: A top and bottom
+    \coordinate (A-top-left) at (-1,1.1);
+    \coordinate (A-bot-left) at (-1,0.7);
+    \coordinate (A-top-X) at (0,1.8);
+    \coordinate (A-bot-X) at (0,.1);
+    \coordinate (A-top-mid) at (1,1.9);
+    \coordinate (A-bot-mid) at (1,-.1);
+    \coordinate (A-top-Y) at (1.9,1.8);
+    \coordinate (A-bot-Y) at (1.9,0);
+    \coordinate (A-top-right) at (2.8,1.2);
+    \coordinate (A-bot-right) at (2.8,0.8);
+    % coordinates of X
+    \coordinate (X-left) at (0,1);
+    \coordinate (X-mid) at (0.5,1.3);
+    \coordinate (X-right) at (1,0.9);
+    \draw[dashed,fill=casblue!30] (X-left) .. controls +(-90:.2) and +(-90:.2) .. (X-right)
+    .. controls +(90:.2) and +(0:.2) .. (X-mid)
+    .. controls +(0:-.2) and +(90:.2) .. (X-left);
+    \fill[casred!30] (A-top-Y) -- (A-bot-Y)
+    .. controls +(15:.5) and +(90:-.5) .. (A-bot-right)
+    -- (A-top-right)
+    .. controls +(90:.5) and +(-10:.3) .. (A-top-Y);
+    \draw[dashed] (A-top-Y) -- (A-bot-Y);
+    \draw (A-bot-left) .. controls +(-90:.5) and +(10:-.5) .. (A-bot-X)
+    .. controls +(10:.5) and +(0:-.5) .. (A-bot-mid)
+    .. controls +(0:.5) and +(15:-.5) .. (A-bot-Y)
+    .. controls +(15:.5) and +(90:-.5) .. (A-bot-right)
+    -- (A-top-right)
+    .. controls +(90:.5) and +(-10:.3) .. (A-top-Y)
+    .. controls +(-10:-.3) and +(0:.4) .. (A-top-mid)
+    .. controls +(0:-.4) and +(-1:.4) .. (A-top-X)
+    .. controls +(-10:-.4) and +(90:.5) .. (A-top-left)
+    -- (A-bot-left);
+    \draw (B-left) .. controls +(20:.3) and +(-10:-.3) .. (B-X)
+    .. controls +(-10:.3) and +(0:-.3) .. (B-mid)
+    .. controls +(0:.3) and +(10:-.3) .. (B-Y)
+    .. controls +(10:.3) and +(0:-.1) .. (B-right);
+    % projection map f
+    \draw[->,shorten <=.1cm,shorten >=.1cm] (A)
+    -- node[anchor=west] {$f$} (B);
+    % subset Y of B
+    \draw[line width=2pt,casred!30] (B-Y) .. controls +(10:.3) and +(0:-.1) .. (B-right);
+    \node (Y) at (2.45,-1.4) {$Y$};
+    \node (fY) at (2.45,1) {$f^* Y$};
+    % subset X of A
+    \draw[line width=2pt,casblue!30] (B-X)
+    .. controls +(-10:.3) and +(0:-.3) .. (B-mid);
+    \node (X) at (.5,-1.6) {$\oldexists_fX$};
+    \node (fX) at (.5,1.04) {$X$};
+  \end{tikzpicture}
+  \caption{Image ($\oldexists_f$) and preimage ($f^*$) of subsets for a map $f : A \to B$.}
+  \label{fig:im-preim-subsets}
+\end{marginfigure}
+\begin{remark}\label{rem:^*-_!-as-(pre)image}
 The purpose of this remark is to explain how
 $f_!X$ and $f^*Y$ may be viewed as a certain kind of
 image and preimage, respectively. In \cref{def:prop-image}
@@ -2205,11 +2269,16 @@ in other words, the premimage of $Y$ under $f$.
 
 Now let $X:\Sub(A)$ be a subtype of $A$ and consider the subtype of
 $B$ defined by the predicate
-$(b:B)\mapsto\Trunc{\sum_{a:A}((f(a) \eqto b)\times X(a))}$.
+\[
+  \oldexists_fX (b) \defeq \Trunc[\Big]{\sum_{a:A}\bigl((f(a) \eqto b)\times X(a)\bigr)}
+  \jdeq \exists_{a:A}\bigl((f(a) \eqto b)\times X(a)\bigr).
+\]
 This is $f_!X$ with propositional truncation instead of set truncation,
 and it holds precisely for all $b:B$ for which there
 exists an $a$ in $X$ with $f(a)\eqto b$,
 in other words, the image of $X$ under $f$.
+These operations are illustrated in~\cref{fig:im-preim-subsets}
+where we view $f$ as a projection, so the fibers are vertical.
 
 Note that the above makes little sense for $A\jdeq\BG$ and $B\jdeq\BH$,
 since predicates on connected types are constant. However, the intuition
@@ -2228,6 +2297,74 @@ $f_!X$, analogously to higher images defined in \cref{sec:higher-images}.
 The type $f_*X(w)$ can also be identified
 as the set of invariant maps of the $G$-set $\pathsp{\Bf}(w)\to X$,
 where $(\pathsp{\Bf}(w)\to X)(z) \defeq (\Bf(z) \eqto w)\to X(z)$ for $z:\BG$.}
+\end{remark}
+
+\begin{marginfigure}
+  \noindent\begin{tikzpicture}
+    % Name the coordinates so they are easy to change
+    % first the base : B
+    \coordinate (B-left) at (-1,-1);
+    \coordinate (B-X) at (0,-1.1);
+    \coordinate (B-mid) at (1,-1.3);
+    \coordinate (B-Y) at (1.9,-1.2);
+    \coordinate (B-right) at (2.8,-1);
+    \node (B) at (3.2,-1) {$B$};
+    \node (A) at (3.2,1) {$A$};
+    % then: A top and bottom
+    \coordinate (A-top-left) at (-1,1.1);
+    \coordinate (A-bot-left) at (-1,0.7);
+    \coordinate (A-top-X) at (0,1.8);
+    \coordinate (A-bot-X) at (0,.1);
+    \coordinate (A-top-mid) at (1,1.9);
+    \coordinate (A-bot-mid) at (1,-.1);
+    \coordinate (A-top-Y) at (1.9,1.8);
+    \coordinate (A-bot-Y) at (1.9,0);
+    \coordinate (A-top-right) at (2.8,1.2);
+    \coordinate (A-bot-right) at (2.8,0.8);
+    % coordinates of X
+    \coordinate (X-left) at (.2,1);
+    \coordinate (X-right) at (2.45,0.9);
+    \draw[dashed,fill=casblue!30] (A-top-mid)
+    .. controls +(0:-.4) and +(90:.5) .. (X-left)
+    .. controls +(-90:.5) and +(0:-.5) .. (A-bot-mid)
+    .. controls +(0:.5) and +(15:-.5) .. (A-bot-Y)
+    .. controls +(15:.5) and +(90:-.5) .. (X-right)
+    .. controls +(90:.5) and +(-10:.3) .. (A-top-Y)
+    .. controls +(-10:-.3) and +(0:.4) .. (A-top-mid);
+    \draw[dotted] (A-top-mid) -- (A-bot-mid);
+    \draw[dotted] (A-top-Y) -- (A-bot-Y);
+    \draw (A-bot-left) .. controls +(-90:.5) and +(10:-.5) .. (A-bot-X)
+    .. controls +(10:.5) and +(0:-.5) .. (A-bot-mid)
+    .. controls +(0:.5) and +(15:-.5) .. (A-bot-Y)
+    .. controls +(15:.5) and +(90:-.5) .. (A-bot-right)
+    -- (A-top-right)
+    .. controls +(90:.5) and +(-10:.3) .. (A-top-Y)
+    .. controls +(-10:-.3) and +(0:.4) .. (A-top-mid)
+    .. controls +(0:-.4) and +(-1:.4) .. (A-top-X)
+    .. controls +(-10:-.4) and +(90:.5) .. (A-top-left)
+    -- (A-bot-left);
+    \draw (B-left) .. controls +(20:.3) and +(-10:-.3) .. (B-X)
+    .. controls +(-10:.3) and +(0:-.3) .. (B-mid)
+    .. controls +(0:.3) and +(10:-.3) .. (B-Y)
+    .. controls +(10:.3) and +(0:-.1) .. (B-right);
+    % projection map f
+    \draw[->,shorten <=.1cm,shorten >=.1cm] (A)
+    -- node[anchor=west] {$f$} (B);
+    % subset X of A
+    \draw[line width=2pt,casblue!30] (B-mid) -- (B-Y);
+    \node (fX) at (1.5,-1.6) {$\forall\!_fX$};
+    \node (X) at (1.5,1.04) {$X$};
+  \end{tikzpicture}
+  \caption{Coinduced image of a subset for a map $f : A \to B$.}
+  \label{fig:coinduced-image}
+\end{marginfigure}
+\begin{remark}\label{rem:coinduced-subset}
+  As in~\cref{rem:^*-_!-as-(pre)image}, we can also consider
+  $f_*$ as an operation on subsets $f_* : \Sub(A) \to \Sub(B)$
+  for $f:A\to B$. The coinduced subset $\forall\!_fX \defeq f_*X$
+  is less familiar than the image; it contains those $b:B$
+  for which the entire preimage $\inv f(b)$ is contained in $X$,
+  as illustrated in~\cref{fig:coinduced-image}.
 \end{remark}
 
 \begin{xca}\label{xca:adjunction-^*-_*}
