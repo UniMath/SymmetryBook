@@ -77,8 +77,10 @@ we'll be looking at in~\cref{ch:fingp}.
 %let us see what this looks like for groups. Leave out?}
 
 \begin{definition}\label{def:Gset}
-  For $G$ a group, a \emph{$G$-set} is a function
-  \index{group!acting on a set}\index{group action!of $G$-set}
+  For $G$ a group, a \emph{$G$-set} is a function\footnote{Recall that, to make
+    things more lisible, we write $\BG\to\Set$ instead of the more correct
+    $\BG_\div\to\Set$.}  \index{group!acting on a set}\index{group action!of
+    $G$-set}
   \[
     X : \BG\to\Set,
   \]
@@ -355,7 +357,7 @@ a homomorphism from $G$ to the permutation group of $X(\sh_G)$. \wip{Conversely,
   \index{actions!of a group on a set}
 \end{definition}
 By the construction in~\cref{remark:GsetsareGsets} we identify $G$-sets
-and sets with an action of $G$ on a set.
+and sets with an action of $G$ on a set.\footnote{\wip{This definition is never referenced by label. Do we really need it?}}
 
 \begin{xca}\label{xca:Ad-triv-abelian}
   Prove that a group $G$ is abelian if and only if the $G$-sets $\Ad_G$ and
@@ -369,9 +371,8 @@ and sets with an action of $G$ on a set.
 
 \begin{definition}\label{def:finite-G-set}
 Let $G$ be a group and $X:\BG\to\Set$ a $G$-set.
-We say $X$ is \emph{finite} if the underlying set $X(\sh_G)$ is finite.
+We say $X$ is \emph{finite} if the underlying set $X(\sh_G)$ is finite.\footnote{Since $\BG$ is connected, $X(\sh_G)$ is finite if and only if $X(z)$ is finite for any $z:\BG$. Similarly, for any $n:\mathbb N$, $X(\sh_G)$ is an $n$-element set if and only if $X(z)$ is such for any $z:\BG$.}
 \index{finite $G$-set}
-(If $X(\sh_G)$ is an $n$-element set, then so is $X(z)$, for any $z:\BG$.)
 For any finite $G$-set $X$ we denote the number of elements
 in $X(\sh_G)$ by $\Card(X)$, also called the \emph{cardinality} of $X$.
 \index{cardinality!of finite $G$-set}
@@ -386,10 +387,11 @@ they correspond to cycles (\cref{thm:cycset-connS1cover}).
 
 We hinted there that they are connected to subgroups, so
 we now study them over a general group $G$.
-As $G$-sets they are called transitive $G$-sets.
-Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists some $x:\mathcal X$ such that for all $y:\mathcal X$ there exists a $g:\mathcal X$ with $x=g\cdot y$.  In our world this translates to:
+When seen as $G$-sets, connected \coverings over $\BG$ are called transitive $G$-sets:
+% Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\mathcal X$ is said to be \emph{transitive} if there exists some $x:\mathcal X$ such that for all $y:\mathcal X$ there exists a $g:\mathcal X$ with $x=g\cdot y$.
+% In our world this translates to:
 \begin{definition}\label{def:transitiveGset}
-  A $G$-set $X:\BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition
+  A $G$-set $X:\BG\to\Set$ is \emph{transitive}\index{transitive $G$-set} if the proposition\footnote{This is a natural translation in the concrete world of the usual definition of transitivity in ordinary group theory: An action of an abstract group of a set $\mathcal X$ is transitive when there exists $x$ in $\mathcal X$ such that for all $y$ in $\mathcal X$ there exists an element $g$ of the group such that $x=g\cdot y$.}
   \[
     \istrans(X) \defequi
     \exists_{x:X(\sh_G)} \prod_{y:X(\sh_G)} \exists_{g:\USymG} (x=g\cdot y)
@@ -404,8 +406,8 @@ Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\math
   Note also that by connectedness (cf.~\cref{xca:component-connected})
   it is equivalent to demand this over all $z:\BG$:
   \begin{equation}\label{eq:Gset-trans-gen}
-    \prod_{z:\BG}\exists_{x:X(\sh_G)}
-    \prod_{y:X(\sh_G)}\exists_{g:z\eqto z}(x=g\cdot y).
+    \prod_{z:\BG}\exists_{x:X(z)}
+    \prod_{y:X(z)}\exists_{g:z\eqto z}(x=g\cdot y).
   \end{equation}
 
   Yet another equivalent way of expressing that $X$ is transitive is to say
@@ -420,14 +422,22 @@ Classically, an $\abstr(G)$-set (a notion \emph{we} have yet not defined) $\math
   the associated \covering is connected (see \cref{def:covering}).
 \end{lemma}
 \begin{proof}
-  Consider a $G$-set $X:\BG\to\Set$ and the associated \covering
-  $f:\tilde X\to\BG$ where $\tilde X\defequi\sum_{y:\BG}X(y)$ and $f$
-  is the first projection.  Now, $\tilde X$ is connected if and only
-  if there exists a $z:\BG$ and an $x:X(z)$ such that for
-  all $w:\BG$ and $y:X(w)$ there exists some $g:z\eqto w$ such that $y=g\cdot x$.
-  Since $\BG$ is connected, this is equivalent to asserting that there
-  exists some $x:X(\sh_G)$ such that for all $y:X(\sh_G)$ there exists
-  some $g:\USymG$ such that $x=g\cdot y$.
+  Consider a $G$-set $X:\BG\to\Set$ and its associated \covering
+  $\fst:\Tot(X)\to\BG$. Recall that $\Tot(X)\defequi\sum_{w:\BG}X(w)$.
+  \wip{Delete? (The use of the elimination rule for connectedness is not easy to
+    see here since the proposition doesn't start with a universal
+    quantification.)} Now, $\Tot(X)$ is connected if and only if there exists a
+  $z:\BG$ and an $x:X(z)$ such that for all $w:\BG$ and $y:X(w)$ there exists
+  some $g:z\eqto w$ such that $y=g\cdot x$. Since $\BG$ is connected, this is
+  equivalent to asserting that there exists some $x:X(\sh_G)$ such that for all
+  $y:X(\sh_G)$ there exists some $g:\USymG$ such that $x=g\cdot y$.
+
+  \wip{Replace by: Now,
+  $\Tot(X)$ is connected if and only if it isn't empty and for all $z:\BG$ and $x:X(z)$
+  and all $w:\BG$ and $y:X(w)$ there exists some $g:z\eqto w$ such
+  that $y=g\cdot x$. Since $\BG$ is connected, this is equivalent to asserting
+  that $\Tot(X)$ isn't empty and for all $x,y:X(\sh_G)$ there
+  exists some $g:\USymG$ such that $y=g\cdot x$.}
 \end{proof}
 
 The next lemma is an analog of~\cref{cor:ConnCycles} (for cycles),
@@ -436,8 +446,6 @@ The action in \cref{fig:not-normal}
 corresponds to the bicycle back in~\cref{fig:abnormal-bicycle}
 (and reproduced in~\cref{fig:not-normal-graph})
 illustrates what can go wrong.
-We'll study exactly when we get surjectivity in~\cref{sec:normal}
-on ``normal'' subgroups.
 \begin{marginfigure}
   \noindent\begin{tikzpicture}[scale=.1]
     \coordinate (two)   at (0, 10);
@@ -562,6 +570,10 @@ on ``normal'' subgroups.
   \]
 \end{proof}
 
+In~\cref{sec:normal}, in our study of {\em normal} subgroups, we will see exactly when
+we also get surjectivity of the evaluation map.
+
+
 Via function extensionality,
 the identity type $X \eqto Y$, for $G$-sets $X,Y$
 is a subtype of the type $\Hom_G(X,Y)$.
@@ -585,14 +597,14 @@ transitive $G$-sets:
   A transitive $G$-set $X : \BG \to \Set$
   is \emph{normal} if the evaluation map
   \[
-    \ev_x: \bigl(X \eqto_{\GSet} X) \to X(x),
-    \qquad \ev_{x}(e)\defequi e(x)
+    \ev_x: \bigl(X \eqto_{\GSet} X) \to X(z),
+    \qquad \ev_{x}(e)\defequi e_z(x)
   \]
-  is an equivalence for all $x:X$.
+  is an equivalence for all $z:\BG$ and $x:X(z)$.
 \end{definition}
 \begin{xca}\label{xca:normal-action-equiv}
-  Show that if the evaluation map is an equivalence for some $x:X$,
-  then its an equivalence for all $x:X$.
+  Show that if the evaluation map is an equivalence for some pair of a $z:\BG$ and a $x:X(z)$,
+  then it is an equivalence for all such pairs.
   (This generalizes~\cref{xca:normal-bicycle-equiv}.)
 \end{xca}
 
@@ -601,8 +613,8 @@ transitive $G$-sets:
 Oftentimes it is interesting not to have an action on a set, 
 but on an element in any given type (not necessarily the type of sets).  
 For instance, a group can act on another, giving rise to the notion of 
-the semidirect product in \cref{sec:Semidirect-products}.  
-We will return these more general types of actions many times.
+the semidirect product in~\cref{sec:Semidirect-products}.  
+We will return to these more general types of actions many times.
 
 \begin{definition}\label{def:action}
   If $G$ is any group\footnote{%
@@ -634,7 +646,7 @@ This equivalence,
 hinted at in~\cref{xca:BGtotype},
 maps an action $X:\BG\to A$
 to the pair consisting of $a \defeq X(\sh_G)$
-and the homomorphism represented by the pointed map
+and the homomorphism classified by the pointed map
 from $\BG$ to the pointed component $\conncomp A a$ given by $X$.
 
 \begin{definition}\label{std-action}

@@ -796,14 +796,15 @@ maps all $x:X$ to $y$. If $X$ and $Y$ are pointed, then the function $\cst
   \end{displaymath}
 \end{definition}
 
-Notice that, since $\BB H$ is a 2-type, the type $\BG \ptdto \BB H$ is 1-type and thus $\grpHom(G,H)$ is well-defined.
+Notice that, since $\BB H$ is a 2-type, the type $\BG \ptdto \BB H$ a is 1-type
+and thus $\grpHom(G,H)$ is well-defined.
 
-\begin{lemma}
+\begin{construction}
   Let $G$ and $H$ be abelian groups. There is a bijection of sets of type
   \begin{displaymath}
-    \US{\grpHom(G,H)} \equivto \Hom(G,H).
+    \US{\grpHom(G,H)} \equivto \absHom(G,H).
   \end{displaymath}
-\end{lemma} 
+\end{construction} 
 \begin{proof}
   We simply follow the chain of equivalences:
   \begin{align*}
@@ -815,10 +816,114 @@ Notice that, since $\BB H$ is a 2-type, the type $\BG \ptdto \BB H$ is 1-type an
     &\equivto \sum_{e : \BG \to \BH} \sh_H = e ({\sh_G}) 
     \\
     &\equivto \Hom(G,H)
+    \\
+    &\equivto \absHom(G,H)
   \end{align*}
 \end{proof}
+
+\begin{lemma}
+  The previous equivalence is a homomorphism of abstract group from
+  $\abstr{\grpHom(G,H)}$ to the pointwise abstract group structure on
+  $\absHom(G,H)$.
+\end{lemma}
+
+\begin{proof}
+  We have to verify that any concatenation of symmetries in $\US{\grpHom(G,H)}$
+  is sent by the previous equivalence to the pointwise multiplication of
+  $\absHom(G,H)$. Recall that the pointwise multiplication
+  $\varphi\cdot_{\ptw}\psi:\USymG \to \USymH$ of $\varphi,\psi:\absHom(G,H)$ is
+  defined as $\varphi\cdot_{\ptw}\psi (g) \defequi \varphi (g) \cdot \psi (g)$.
   
-Notice that the previous equivalence equips $\Hom(G,H)$ with the structure of an abstract group. Its unit is the image of the unit of $\grpHom(G,H)$, i.e.\ the constant homomorphism $\mkhom{\cst {\sh_H}}$. Its multiplication is the image of the multiplication of $\grpHom(G,H)$. To understand it better, we need to unfold how the composition of symmetries of $\cst {\pt_{\BB H}}$ translates through the first equivalence of the chain above. Given $p,q : \cst {\pt_{\BB H}} \eqto \cst {\pt_{\BB H}}$ with $p$ sent to the pair $(e,e_\ast)$ and $q$ to the pair $(f,f_\ast)$, the composition $p\cdot q$ is sent to the pair $(g,g_\ast)$ for which, for all $x:\BG$, there is a path $\alpha_x : g(x) = e(x) \cdot f(x)$ such that $g_\ast = \alpha_{\pt_{\BG}} \cdot (e_\ast \ast f_\ast)$ where $\ast$ is the horizontal composition. In other words, for $\phi,\psi:\Hom(G,H)$, their multiplication $\phi\psi$ comes together with $\alpha: \B (\phi\psi) \eqto \B \phi \cdot \B \psi$ where the right hand-side is the pointwise composition of path-valued pointed function. If we follow through with the bijection $\Hom(G,H) \equivto \absHom(G,H)$, then this equips $\absHom(G,H)$ with the pointwise group structure. 
+  We now generalize the goal. Consider two pointed functions
+  $s,t : \BG \ptdto \BB H$, pointed by $s_0$ and $t_0$ repectively. Then
+  consider the following composition:
+  \begin{align*}
+    (s \eqto t)
+    &\equivto \sum_{e : \prod_{x:\BG} s(x) \eqto t(x)} t_0 = e ({\pt_{\BG}}) \cdot s_0
+    \\
+    &\overset{\Omega_g}\to \prod_{g:\USymG} \Omega(s)(g) \eqto \Omega(t)(g)
+  \end{align*}
+  where $\Omega_g(e,e_0)(g) \defequi e_0 \triangleleft \apd e (g) \triangleright e_0$ is
+  the pasting:
+  \begin{displaymath}
+    \begin{tikzcd}
+      {} & {s(\sh_G)} \rar["\ap s (g)"] \ar[dd,"e(\sh_G)"{name=A}]
+      & {s(\sh_G)} \ar[dd,"e(\sh_G)"swap] & {} \\
+      {\pt_{\BB H}} \urar["s_0"] \drar["t_0"]
+      & {} & {} & {\pt_{\BB H}} \ular["s_0"] \dlar["t_0"] \\
+      {} & {t(\sh_G)} \rar["\ap t (g)"] & {t(\sh_G)} & {}
+      \ar[from=2-1,to=A]
+    \end{tikzcd}
+  \end{displaymath}
+
+  [TODO: defn of pasting triangles on both sides of a square]
+
+  By induction, we prove easily that the composition above identifies with
+  $\ap {\Omega}$. Since $\ap \Omega$ preserves concatenation, we only need to
+  see that, when both $s$ and $t$ are $\cst {\pt_{\BB H}}$, the above
+  composition identifies with the (forward direction of the) previous
+  equivalence. This is immediate when noticing that $\Omega_g$ identifies to
+  $\Omega$ by path algebra when both $s$ and $t$ are $\cst {\pt_{\BB H}}$.
+\end{proof}
+
+%   is equivalently given by a dependent function
+%   $e: \prod_{x:\BG}s(x) \eqto t(x)$ and an identification
+%   $e_*: t_* \eqto e(\sh_G) \cdot s_*$ where $s_*$ and $t_*$ are the pointing
+%   idendifications of $s$ and $t$, respectively. We can then consider
+%   $\Omega e : \prod_{g:\UG}\Omega s(g) \eqto \Omega t(g)$
+  
+  
+%   First, recall that for any pointed maps $f,g : A \ptdto \loops B$ between a
+%   pointed type $A$ and the pointed type $\loops B$, we can define
+%   $f \cdot_{\ptw} g: A \ptdto \loops B$ as the pointed map defined on any $a:A$
+%   as $f(a) \cdot g(a)$ and pointed by the horizontal composition of the pointing
+%   paths of $f$ and $g$. Since $\BH$ is identified with the loopspace of $\BB H$,
+%   this defines a binary operation on $\Hom(G,H)$ that we abusively also write
+%   $\blank \cdot_{\ptw} \blank$.
+  
+%   Then, we simply have to prove that:
+%   \begin{enumerate}
+%   \item The bijection from $\US{\grpHom(H,G)}$ to $\Hom(G,H)$ sends the
+%     multiplication to the operation $\blank \cdot_{\ptw} \blank$ defined above.
+%   \item The bijection $\abstr : \Hom(G,H) \to \absHom(G,H)$ sends the operation
+%     $\blank \cdot_{\ptw} \blank$ to the pointwise multiplication. In other
+%     words, $\loops$ respects pointwise concatenation.
+%   \end{enumerate}
+
+%   Both steps become fairly easy once we generalize the statements, as in ???. 
+% \end{proof}
+
+% \marginnote{A $\bn 1$-path in any pointed type $B$ with source and target
+%   $\cst {\pt_B}$ is simply a symmetry in $B$.}
+% \begin{definition}
+%   Let $A$ and $B$ be pointed types. Let $x,y : A \ptdto B$. A dependent map
+%   $f: \prod_{a:A}x(a) \eqto y(a)$ is called a {\em generalized $A$-path in
+%     $B$}. We define $\partial_0 f \defequi x$ and $\partial_1 f \defequi y$ and
+%   call them the source and target, respectively, of $f$. We write
+% \end{definition}
+
+% \begin{construction}
+%   Let $A$ and $B$ be pointed types. Let $x,y,z : A \ptdto B$. For any paths
+%   $p : x \eqto y$ and $q : y \eqto z$, then 
+% \end{construction}
+
+% Notice that the previous equivalence equips $\Hom(G,H)$ with the structure of an
+% abstract group. Its unit is the image of the unit of $\grpHom(G,H)$, i.e.\ the
+% constant homomorphism $\mkhom{\cst {\sh_H}}$. Its multiplication is the image of
+% the multiplication of $\grpHom(G,H)$. To understand it better, we need to unfold
+% how the composition of symmetries of $\cst {\pt_{\BB H}}$ translates through the
+% first equivalence of the chain above. Given
+% $p,q : \cst {\pt_{\BB H}} \eqto \cst {\pt_{\BB H}}$ with $p$ sent to the pair
+% $(e,e_\ast)$ and $q$ to the pair $(f,f_\ast)$, the composition $p\cdot q$ is
+% sent to the pair $(g,g_\ast)$ for which, for all $x:\BG$, there is a path
+% $\alpha_x : g(x) = e(x) \cdot f(x)$ such that
+% $g_\ast = \alpha_{\pt_{\BG}} \cdot (e_\ast \ast f_\ast)$ where $\ast$ is the
+% horizontal composition. In other words, for $\phi,\psi:\Hom(G,H)$, their
+% multiplication $\phi\psi$ comes together with
+% $\alpha: \B (\phi\psi) \eqto \B \phi \cdot \B \psi$ where the right hand-side is
+% the pointwise composition of path-valued pointed function. If we follow through
+% with the bijection $\Hom(G,H) \equivto \absHom(G,H)$, then this equips
+% $\absHom(G,H)$ with the pointwise group structure.
 
 \begin{lemma}
   Let $G$ and $H$ be abelian groups. There is a bijection of sets of type
