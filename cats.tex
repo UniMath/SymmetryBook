@@ -117,7 +117,7 @@ and this motivates the following definition:
   If $\mathcal C \jdeq (\var{Ob},\hom,\id,\lambda,\rho,\alpha)$
   is a wild precategory, then we write $A, B : \mathcal C$ instead of $A, B : \var{Ob}$
   to indicate that $A, B$ are elements of the underlying type of objects of $\mathcal C$.
-  We also write $\constant{Ob}(\mathcal C)$ for this type.
+  We also write $\Ob(\mathcal C)$ for this type.
   We may write $f, g : A \to_{\mathcal C} B$ to emphasize where the arrows $f$ and $g$ live, if needed,
   and sometimes $\hom_{\mathcal C}(A,B)$ or $\mathcal C(A,B)$, instead of $\hom(A,B)$.
 \end{definition}
@@ -220,9 +220,9 @@ and every identity arrow is an isomorphism.
 We write $\inv f$ for the inverse of an isomorphism $f$.
 \begin{definition}\label{def:univalent-cat}
   A wild precategory $\mathcal C$ is \emph{univalent}\index{univalent} if
-  for all objects $A,B : \constant{Ob}(\mathcal C)$, the function
+  for all objects $A,B : \Ob(\mathcal C)$, the function
   \[
-    \constant{idtoiso}_{A,B} : (A \eqto_{\constant{Ob}(\mathcal C)} B) \to (A \isoto_{\mathcal C} B)
+    \constant{idtoiso}_{A,B} : (A \eqto_{\Ob(\mathcal C)} B) \to (A \isoto_{\mathcal C} B)
   \]
   defined by path induction sending $\refl A$ to $\id_A$,
   is an equivalence.
@@ -259,6 +259,18 @@ In each case we leave it to the reader to supply most of the data.
   has $\GSet$ as its type of objects, and the type of morphisms of $G$-sets
   $\Hom_G(X,Y)$ (\cref{def:map-of-Gsets}) as its type of arrows.
 \end{itemize}
+Note that the category of sets sits inside the wild category of types.
+This situation is quite typical is a rich source of further examples,
+captured by the following definition.
+\begin{definition}\label{def:full-subcat}
+  If $\mathcal C$ is a wild precategory, and $P : \Ob(\mathcal C) \to \Prop$
+  is a predicate on the objects, then we get a new wild precategory
+  $\mathcal C_P$ with $\Ob(\mathcal C_P) \defeq \Ob(\mathcal C)_P$,
+  using the notation of~\cref{def:subtype}, inheriting all the rest of the
+  structure of $\mathcal C$. It is non-wild/univalent, if $\mathcal C$ is,
+  and is called the \emph{full (wide) sub(pre)category}
+  of $\mathcal C$ on the predicate $P$.\index{category!full subcategory}
+\end{definition}
 
 By the univalence condition, in a category each identity type $A \eqto B$
 is equivalent to the set $A \isoto B$, and is hence a set.
@@ -546,7 +558,7 @@ a notion of arrow \emph{between} them. These are called functors.
   $F : \mathcal C \to \mathcal D$
   between wild precategories $\mathcal C$ and $\mathcal D$
   consists of a function
-  $F : \constant{Ob}(\mathcal C) \to \constant{Ob}(\mathcal C)$,
+  $F : \Ob(\mathcal C) \to \Ob(\mathcal D)$,
   mapping objects to objects,
   and a family of functions\footnote{%
     In practice, the functions on objects and arrows are named the same as
@@ -599,7 +611,10 @@ a notion of arrow \emph{between} them. These are called functors.
 \end{example}
 \begin{example}\label{def:n-trunc-functor}
   Taking $n$-truncation gives a wild functor
-  $\Trunc\blank_n : \UU \to \UU^{\le n}$.
+  $\Trunc\blank_n : \UU \to \UU^{\le n}$,
+  with action on arrows given by the universal property.\footnote{%
+    Here, $\UU^{\le n}$ is the full subcategory (\cref{def:full-subcat})
+    of $\UU$ on the $n$-truncated types.}
   For $n=0$, this is a functor from $\UU$ to $\Set_\UU$.
 \end{example}
 \begin{example}\label{ex:add-remove-basepoint}
@@ -616,7 +631,7 @@ a notion of arrow \emph{between} them. These are called functors.
   The operation of taking underlying types of pointed types
   likewise extends to a wild functor $(\blank)_\div : \UUp \to \UU$.
 \end{example}
-\begin{example}
+\begin{example}\label{ex:loop-functor}
   Taking loop types extends to a wild functor $\Omega : \UUp \to \UUp$.
   We defined the action on maps in~\cref{def:loops-map},
   except we didn't equip $\Omega k$ with a pointing path, for $k : X \ptdto Y$.
@@ -630,14 +645,14 @@ a notion of arrow \emph{between} them. These are called functors.
   \]
   We leave it to the reader to fill in the remaining data.
 \end{example}
-\begin{example}
+\begin{example}\label{ex:slice-projection}
   For an object $C$ of a precategory $\mathcal C$,
   recall the slice precategory
   $\mathcal C/C$ of~\cref{def:slice-cat}.
   Taking the domain of an object $(A,f:A\to C)$ of the slice
   extends to a functor $\fst : \mathcal C/C \to \mathcal C$.
 \end{example}
-\begin{example}
+\begin{example}\label{ex:arrow-cat}
   Similar to the slice and coslice constructions,
   we have the formation of the \emph{arrow precategory} $\mathcal C^\to$
   of a precategory $\mathcal C$.
@@ -660,21 +675,33 @@ a notion of arrow \emph{between} them. These are called functors.
   \]
   Note that $\mathcal C^\to$ is a category if $\mathcal C$ is.
 \end{example}
-\begin{xca}
+\begin{xca}\label{xca:wildprecat-of-wildprecats}
   Define identity wild functors and composition of wild functors,
   along with identifications $\lambda : \id_{\mathcal D}\circ F \eqto F$,
   $\rho : F \circ \id_{\mathcal C} \eqto F$,
   and $\alpha : H\circ (G \circ F) \eqto (H \circ G)\circ F$.
-  Define the fillers for the pentagon diagram~\eqref{eq:pentagon}
-  for four composable functors
+  This defines a wild precategory of (small) wild precategories.
+  If you're feeling adventurous, define the fillers for the pentagon diagram~\eqref{eq:pentagon}
+  for four composable wild functors
   \[
     \mathcal C_0 \xrightarrow F
     \mathcal C_1 \xrightarrow G
     \mathcal C_2 \xrightarrow H
     \mathcal C_3 \xrightarrow K
-    \mathcal C_4
+    \mathcal C_4.
   \]
-  in the case where $\mathcal C_4$ is a (non-wild) precategory.
+  How much easier is this if $C_4$ is non-wild?
+\end{xca}
+\begin{xca}\label{xca:wildcat-of-precats}
+  Show that the wild full subprecategory $\PreCat$ on the precategories of the
+  wild precategory of small wild precategories is univalent.
+  Conclude that the further wild full subcategory $\Cat$ on the categories
+  is univalent as well.\footnote{%
+    There is in fact also a wild category of all wild precategories,
+    but its notion of arrow is more refined
+    than the wild functors of~\cref{def:functor}:
+    We would need to include components corresponding to
+    the unit and associativity laws as well.}
 \end{xca}
 There's also a notion of arrow \emph{between functors}.
 These are called natural transformations.\footnote{%
@@ -683,7 +710,7 @@ These are called natural transformations.\footnote{%
   in order to define natural transformations.''
   In this sense, natural transformations are at the heart of category theory.}%
 \footcitetext{Freyd1964}
-\begin{definition}
+\begin{definition}\label{def:nat-trans}
   A \emph{wild natural transformation}\index{natural transformation}
   $\alpha : F \to G$ between
   two wild functors $F,G : \mathcal C \to \mathcal D$ between
@@ -707,7 +734,7 @@ These are called natural transformations.\footnote{%
   If $\mathcal D$ is a precategory, then the types of the naturality square fillers
   are propositions. In this case, we just call $\alpha$ a \emph{natural transformation}.
 \end{definition}
-\begin{example}
+\begin{example}\label{ex:pt-unpt-unit}
   There is a wild
   natural transformation $\eta : \id_{\UU} \to ((\blank)_+)_\div$
   from the identity wild functor on the universe $\UU$
@@ -733,38 +760,38 @@ These are called natural transformations.\footnote{%
 
 With natural transformations as arrows we can elevate the
 type of functors to a precategory.
-\begin{definition}
+\begin{definition}\label{def:functor-cat}
   For a wild precategory $\mathcal C$ and a precategory $\mathcal D$
   we have the \emph{functor precategory}\index{functor category}%
   \index{functor precategory|see{functor category}}
   $\mathcal C \to \mathcal D$, also written
   $[\mathcal C,\mathcal D]$ or $\mathcal D^{\mathcal C}$, % or $\constant{Fun}(\mathcal C,\mathcal D)$,%
-  has functors from $\mathcal C$ to $\mathcal D$ as objects
+  with functors from $\mathcal C$ to $\mathcal D$ as objects
   and natural transformations as arrows.
   The identity arrow at $F$ is the identity natural transformation
   $\id_F: F \to F$ that assigns to each object $A:\mathcal C$ the identity
   arrow $\id_{F(A)}$.
   The composition likewise forms compositions objectwise.
 \end{definition}
-\begin{xca}
+\begin{xca}\label{xca:funext-nat-trans}
   Show that a natural transformation $\alpha : F \to G$
   in a functor precategory $\mathcal C\to\mathcal D$
   is invertible if and only if
   each component $\alpha_A : F(A) \to_{\mathcal D} G(A)$ is.
 \end{xca}
-\begin{xca}
+\begin{xca}\label{xca:functor-cat-univalent}
   Show that the functor precategory $\mathcal C\to\mathcal D$
   is univalent if $\mathcal D$ is.\footnote{%
     This is Thm.~9.2.5 in the HoTT book\footnotemark{}.}%
   \footcitetext{hottbook}
   In this case we call it the \emph{functor category}.
 \end{xca}
-\begin{xca}
+\begin{xca}\label{xca:path-core-adj}
   Let $A$ be a type and $\mathcal C$ category.
   Show that restricting to the action on objects
   induces an equivalence
   \[
-    (A \to \mathcal C) \to (A \to \constant{Ob}(\mathcal C))
+    [A, \mathcal C] \to (A \to \Ob(\mathcal C))
   \]
   from the functor category whose domain is the wild path category of $A$
   to the type of functions from $A$ to the objects of $\mathcal C$.
@@ -777,15 +804,15 @@ $F(f) : F(C') \to_{\mathcal D} F(C)$ in $\mathcal D$.
 If needed for emphasis, we may say that a functor
 $F : \mathcal C \to \mathcal D$ is \emph{covariant} by contrast.
 
-\begin{example}
+\begin{example}\label{ex:repr-functors}
   For an object $C$ of a \emph{locally $\UU$-small}
   wild precategory $\mathcal C$, we can form the
   co-
   and contravariant wild
   functors
   \begin{align*}
-    \Hom_{\mathcal C}(C, \blank) &: \mathcal C \to \UU, \\
-    \Hom_{\mathcal C}(\blank, C) &: \mathcal C\op \to \UU,
+    k_C \defeq \Hom_{\mathcal C}(C, \blank) &: \mathcal C \to \UU, \\
+    h_C \defeq \Hom_{\mathcal C}(\blank, C) &: \mathcal C\op \to \UU,
   \end{align*}
   whose actions on morphisms
   are by post- and precomposition, respectively.
