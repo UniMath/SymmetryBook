@@ -1157,6 +1157,68 @@ gives one of the fundamental theorems of category theory:
 % products and coproducts, pullbacks and pushouts, (co)equalizers, (co)limits
 % product and exponential in types
 
+Given two functions $f:B\to D$ and $g:C\to D$ with common target,
+the ``pullback'' which we will now define should be thought about as the type of all pairs of elements $(b,c):B\times C$ so that $f(b)\eqto g(c)$.
+This construction is important in many situations also beyond group theory.
+
+\begin{definition}
+  \label{def:pullback}
+  Let $B, C, D$ be types and let $f:B\to D$ and $g:C\to D$ be two maps.
+  The \emph{pullback}\index{pullback!in types} of $f$ and $g$ is the type
+  \[
+    \prod(f,g)\defequi\sum_{(b,c):B\times C}(f(b)\eqto_Dg(c))
+  \]
+  together with the two projections $\prj_B:\prod(f,g)\to B$
+  and $\prj_C:\prod(f,g)\to C$ sending $(b,c,p):\prod(f,g)$ to $b:B$ or $c:C$.
+  If $f$ and $g$ are clear from the context,
+  we may write $B\times_DC$ instead of $\prod(f,g)$ and summarize the situation by the diagram
+  \[
+    \begin{tikzcd}
+      B\times_DC\ar[r,"\prj_C"]\ar[d,"prj_B"'] & C\ar[d,"g"] \\
+      B\ar[r,"f"'] & D.\qedhere
+    \end{tikzcd}
+  \]
+\end{definition}
+\begin{xca}
+  \label{xca:univpropofpullback}
+  Let $f:B\to D$ and $g:C\to D$ be two maps with common target.
+  If $A$ is a type show that
+  \begin{align*}
+    (A\to B)\times_{(A\to D)}(A\to C)\to &(A\to B\times_DC)\\
+(\beta,\gamma,p:f\beta\eqto g\gamma)\,\mapsto\,&(a\mapsto (f(a),g(a),p(a):f\beta(a)\eqto g\gamma(a)))
+  \end{align*}
+  is an equivalence.\footnote{This verifies that our defined pullback is the pullback in the categorical sense:
+    if the solid diagram commutes there is a unique dashed arrow making the resulting diagram commute:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+        A\ar[dr,dashed]\ar[drr,bend left]\ar[ddr,bend right] \&\& \\
+        \& B\times_DC\ar[r]\ar[d] \& C\ar[d] \\
+        \& B\ar[r] \& D
+      \end{tikzcd}
+    \]}
+\end{xca}
+In view of \cref{xca:univpropofpullback} we will say that we have a \emph{pullback diagram}\index{pullback diagram}
+\[
+  \begin{tikzcd}
+    A\ar[d,"g'"']\ar[r,"f'"]\pbcorner & C\ar[d,"g"] \\
+    B\ar[r,"f"'] & D
+  \end{tikzcd}
+\]
+to indicate that we have an element in $(A\to B)\times_{(A\to D)}(A\to C)$ such that the resulting map
+$A\to B\times_DC$ is an equivalence.
+This is emphasized with the little $\lrcorner$ symbol in the upper left corner.
+
+\begin{example}
+  If $d:\bn 1\to D$ denotes the constant function at $d:D$ and $g:C\to D$ is any map,
+  then $\bn 1\times_D C$ is equivalent to the preimage $g^{-1}(d)\jdeq\sum_{b:B}d\eqto g(b)$.%
+  \footnote{I.e., the preimage is a pullback:
+    \[
+      \begin{tikzcd}[ampersand replacement=\&,column sep=small]
+        g^{-1}(d)\ar[d]\ar[r]\pbcorner \& C\ar[d,"g"] \\
+        \bn 1\ar[r,"d"'] \& D
+      \end{tikzcd}
+    \]}
+\end{example}
 
 
 \section{Monoidal categories}
