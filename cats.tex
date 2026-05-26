@@ -703,6 +703,20 @@ a notion of arrow \emph{between} them. These are called functors.
     We would need to include components corresponding to
     the unit and associativity laws as well.}
 \end{xca}
+
+\begin{definition}\label{def:full-faithful}
+  A functor $F : \mathcal C \to \mathcal D$ is \emph{faithful}
+  if all the maps on morphisms, $F : \hom_{\mathcal C}(A, B) \to
+  \hom_{\mathcal D}(F(A), F(B))$, are injective,
+  and \emph{full} if they are surjective. We say that $F$ is
+  \emph{fully faithful} if they are both (and hence equivalences).
+\end{definition}
+\wip{\begin{example}
+    core inclusion is faithful,
+    projections can be full, not faithful,
+    full subcategory inclusions are fully faithful.
+\end{example}}
+
 There's also a notion of arrow \emph{between functors}.
 These are called natural transformations.\footnote{%
   \citeauthor{Freyd1964}\footnotemark{} observed that ``categories are what one must define
@@ -833,7 +847,7 @@ there are families of bijections
 for $G$-sets $X$ and $H$-sets $Y$
 that are furthermore \emph{natural}.
 This just means that if we fix either $X$ or $Y$,
-then we get natural transformations of corresponding functors.
+then we get natural transformations of the corresponding functors.
 For example,
 fixing $X$, we can regard $\alpha$ as a natural transformation
 \[
@@ -853,7 +867,7 @@ for $\GSet$ at $X$.
     \Hom_{\mathcal C}(\blank, G\blank)$.
   \end{itemize}
   We write $F \dashv G$ to denote this situation.%
-  \glossary(2dashv){$\protect\dashv$}{adjunction}
+  \glossary(2dashv){$\protect\dashv$}{adjunction}\index{adjunction}
 \end{definition}
 The essence of an adjunction is thus the ability to
 transpose between arrows $F(C) \to_{\mathcal D} D$ and
@@ -864,11 +878,12 @@ to get an arrow $\eta_C : C \to_{\mathcal C} GF(C)$,
 and the identity $\id_{G(D)}$ to get an arrow
 $\varepsilon_D : FG(D) \to_{\mathcal D} D$.
 Naturality of $\alpha$ makes these into natural transformations
-\[
+\begin{equation}\label{eq:adj-unit-counit}
   \eta : \id_{\mathcal C} \to GF,\quad\text{and}\quad
   \varepsilon : FG \to \id_{\mathcal D}
-\]
-called the \emph{unit} and \emph{counit} of the adjunction.
+\end{equation}
+called the \emph{unit}\index{adjunction!unit of}
+and \emph{counit}\index{adjunction!counit of} of the adjunction.
 \begin{marginfigure}
   \[
     \begin{tikzcd}[ampersand replacement=\&,column sep=small]
@@ -881,7 +896,7 @@ called the \emph{unit} and \emph{counit} of the adjunction.
   \caption{Triangle laws for an adjunction $F \dashv G$.}
   \label{fig:adj-triangles}
 \end{marginfigure}
-\begin{xca}
+\begin{xca}\label{xca:adj-triangles}
   Use naturality of $\alpha$, along with unit laws to fill the
   triangle laws in~\cref{fig:adj-triangles}.
 \end{xca}
@@ -892,14 +907,17 @@ the composite
 \[
   C \xrightarrow{\eta_C} GF(C) \xrightarrow{G(f)} G(D).
 \]
-\begin{xca}
+\begin{xca}\label{xca:adj-from-triangles}
   Use the functor and triangle laws to check that $\alpha$ thus
-  defined is a natural isomorphism.
+  defined is a natural isomorphism.\footnote{%
+    We can thus go back and forth between
+    the different bundles of data for a wild adjunction.
+    We shall see later in~\cref{cor:adj-unique} for a functor
+    whose domain is a category,
+    that the data of a right adjoint is a proposition.}
 \end{xca}
-%% How far are these from being an equivalence?
 
-
-\begin{example}
+\begin{example}\label{ex:trunc-adj}
   We have a wild adjunction $\Trunc\blank_n \dashv \iota_n$
   with $\Trunc\blank_n : \UU \to \UU^{\le n}$ (cf.~\cref{def:n-trunc-functor})
   as the left adjoint
@@ -909,9 +927,9 @@ the composite
   \[
     (\Trunc X_n \to Y) \equivto (X \to Y)
   \]
-  for $X : \UU$ and $Y : \UU^{\le n}$.
+  for $X : \UU$ and $Y : \UU^{\le n}$. Naturality follows from the universal property.
 \end{example}
-\begin{example}
+\begin{example}\label{ex:pt-unpt-adj}
   Also the add/forget base points functors
   from~\cref{ex:add-remove-basepoint} can be arranged
   into a wild adjunction $(\blank)_+ \dashv (\blank)_\div$.
@@ -922,27 +940,224 @@ the composite
   given by precomposition with $\inl{} : A \to A_+$.
 \end{example}
 
+\begin{example}\label{ex:Sigma-Pi-adj}
+  Generalizing~\cref{xca:adjunction-_!-^*,xca:adjunction-^*-_*}
+  slightly, we have for any function $f : A \to B$,
+  a string of adjunctions $f_! \dashv f^* \dashv f_*$,
+  \[
+    \begin{tikzcd}
+      \Set^A \ar[r,bend left=30,"f_!"]\ar[r,bend right=30,"f_*"']
+      \ar[r,bend left=20,phantom,"\scriptscriptstyle\bot"]
+      \ar[r,bend right=20,phantom,"\scriptscriptstyle\bot"] &
+      \Set^B, \ar[l,"f^*"' description]
+    \end{tikzcd}
+  \]
+  where $f^*(Y) \defeq Y\circ f$, and we set
+  \begin{align*}
+    f_!(X)(b) &\defeq \setTrunc[\bigg]{\sum_{a:A} (f(a)\eqto b) \times X(a)},\\
+    f_*(X)(b) &\defeq \prod_{a:A} (f(a)\eqto b) \to X(a).
+  \end{align*}
+  Generalizing a bit further, we have a similar string of wild adjunctions
+  \[
+    \begin{tikzcd}
+      \UU^A \ar[r,<-,"f^*"' description]
+      \ar[r,bend left=30,"f_!"]\ar[r,bend right=30,"f_*"']
+      \ar[r,bend left=20,phantom,"\scriptscriptstyle\bot"]
+      \ar[r,bend right=20,phantom,"\scriptscriptstyle\bot"] &
+      \UU^B,
+    \end{tikzcd}
+  \]
+  where we leave out the set truncation in the definition of $f_!$.
 
-% being a left adjoint is a proposition (after yoneda?)
-% equivalences of categories
-% fundamental theorem (fully faithful+eso = equivalence)
-% cor: Cat is a 2-type
-% rezk completion
-% straightening–unstraightening
-% precategories are flagged categories
+  For the special case of the terminal projection $! : A \to \bn 1$,
+  these simplify to
+  \[
+    \begin{tikzcd}[column sep=large]
+      \UU^A \ar[r,<-,"{\cst{}}"' description]
+      \ar[r,bend left=30,"\Sigma_A"]\ar[r,bend right=30,"\Pi_A"']
+      \ar[r,bend left=20,phantom,"\scriptscriptstyle\bot"]
+      \ar[r,bend right=20,phantom,"\scriptscriptstyle\bot"] &
+      \UU,
+    \end{tikzcd}
+  \]
+  where $\Sigma_A(X) \defeq \sum_{a:A}X(a)$ and $\Pi_A(X) \defeq \prod_{a:A}X(a)$.
+\end{example}
 
-\section{Limits and Colimits}
-\label{sec:limits}
+\begin{remark}\label{rem:adj-in-posets}
+  For a monotone map $F : P \to Q$ of preorders,
+  we have that $G : Q \to P$ is a right adjoint if and only if
+  we have the logical biimplication
+  \[
+    F(p) \le q \leftrightarrow p \le G(q).
+  \]
+  For example, the inclusion of the integers into the rationals with their usual order,
+  $\iota : \ZZ \hookrightarrow \QQ$ has both adjoints,
+  the left adjoint being rounding up, and the right adjoint rounding down:
+  $\ceil\blank \dashv \iota \dashv \floor\blank$.
 
-% products and coproducts, pullbacks and pushouts, (co)equalizers, (co)limits
+  We also have the propositional analog of~\cref{ex:Sigma-Pi-adj},
+  using the operations from~\cref{rem:^*-_!-as-(pre)image,rem:coinduced-subset}:
+  \[
+    \begin{tikzcd}
+      \Sub(A) \ar[r,<-,"f^*"' description]
+      \ar[r,bend left=30,"\oldexists_f"]\ar[r,bend right=30,"\forall\!_f"']
+      \ar[r,bend left=20,phantom,"\scriptscriptstyle\bot"]
+      \ar[r,bend right=20,phantom,"\scriptscriptstyle\bot"] &
+      \Sub(B),
+    \end{tikzcd}
+  \]
+  for any map $f : A \to B$.
+\end{remark}
 
 \section{The Yoneda Lemma}
 \label{sec:yoneda}
 
+\begin{definition}\label{def:yoneda}
+  For a locally small precategory $\mathcal C$,
+  taking contravariant representable functors
+  (recall \cref{ex:repr-functors}) induces a functor
+  \[
+    \yo : \mathcal C \to \Set^{\mathcal C\op} ,
+    \qquad \yo(C) \defeq h_C \jdeq \Hom_{\mathcal C}(\blank, C).\qedhere
+  \]
+\end{definition}
+
+\begin{theorem}\label{thm:yoneda-lemma}
+  For any locally small precategory $\mathcal C$,
+  functor $F : \Set^{\mathcal C\op}$, and $C:\mathcal C$,
+  evaluation at $\id_C$ gives an isomorphism
+  \[
+    \Hom_{\Set^{\mathcal C\op}}(\yo(C), F) \isoto F(C)
+  \]
+  that is moreover natural in $F$ and $C$.
+\end{theorem}
+
+\begin{corollary}\label{cor:yo-ff}
+  The Yoneda embedding $\yo : \mathcal C \to \Set^{\mathcal C\op}$
+  is fully faithful.
+\end{corollary}
+
+\begin{corollary}\label{cor:yo-emb-obj}
+  If $\mathcal C$ is a category, then the action on objects of the
+  Yoneda embedding is an injection
+  $\Ob(\mathcal C) \hookrightarrow \Ob(\Set^{\mathcal C\op})$.
+\end{corollary}
+
+\begin{definition}\label{def:repr}
+  A functor $F : \Set^{\mathcal C\op}$ is called
+  \emph{representable}\index{functor!representable}
+  if there exists $C : \mathcal C$ together with an isomorphism
+  $\alpha : \yo(C) \isoto F$.
+\end{definition}
+
+\begin{corollary}\label{cor:repr-prop}
+  Representability is a proposition when $\mathcal C$ is a category, \ie
+  the type of pairs $(C,\alpha)$ in~\cref{def:repr} is a proposition.
+\end{corollary}
+
+One benefit of the Yoneda lemma is that we can characterize adjoint functors
+in terms of representability, and then derive the uniqueness of adjoint functors
+in the case of categories.
+\begin{lemma}\label{lem:adj-via-repr}
+  Suppose $\mathcal C,\mathcal D$ are precategories ($\mathcal D$ could be wild),
+  and $F : \mathcal C \to \mathcal D$ is a (wild) functor.
+  If we have a map on objects $G : \Ob(\mathcal D) \to \Ob(\mathcal C)$
+  along with natural isomorphisms
+  $\alpha_D : \Hom_{\mathcal D}(F\blank, D) \isoto \yo(G(D))$
+  for each $D : \Ob(\mathcal D)$, then there is a unique
+  extension to the data of a wild adjunction, \ie
+  extensions of $G$ to a functor $G : \mathcal D \to \mathcal C$,
+  such that $\alpha_D$ is natural in $D:\mathcal D$.
+\end{lemma}
+
+\begin{corollary}\label{cor:adj-unique}
+  If $F : \mathcal C \to \mathcal D$ is a (wild) functor defined on a category
+  $\mathcal C$, then the data of a right adjoint $F \dashv G$ is a proposition.
+\end{corollary}
+
+\section{Equivalences of categories}
+
+\begin{definition}\label{def:cat-equiv}
+  A functor $F : \mathcal C \to \mathcal D$ is an \emph{equivalence of (pre)categories}%
+  \index{equivalence!of categories}
+  if it is a left adjoint whose unit and counit transformations $\eta$ and $\varepsilon$
+  from~\eqref{eq:adj-unit-counit} are isomorphisms.
+  We write $\mathcal C \equivto \mathcal D$ for
+  the type of equivalences.
+\end{definition}
+From~\cref{cor:adj-unique} we immediately see the following:
+\begin{lemma}\label{lem:cat-equiv-is-prop}
+  If $\mathcal C$ is a category, then being an equivalence
+  is a proposition for a functor $F : \mathcal C \to \mathcal D$.
+\end{lemma}
+It's often useful to show that a functor $F : \mathcal C \to \mathcal D$ is an equivalence by giving just a functor $G : \mathcal D \to \mathcal C$
+along with natural isomorphisms $\eta : \id_{\mathcal C} \isoto GF$
+and $\varepsilon : FG \isoto \id_{\mathcal D}$.
+This is analogous to~\cref{lem:weq-iso}, and we refer to~\textcite[Lemma~6.2]{AKS2015}
+for the implementation.
+
+\begin{lemma}\label{lem:cat-equiv-ff}
+  Any equivalence of precategories is fully faithful.
+\end{lemma}
+
+\begin{definition}\label{def:functor-split-eso}
+  A functor $F : \mathcal C \to \mathcal D$ is
+  \emph{split essentially surjective on objects}
+  if for all objects $D : \mathcal D$ we have a pair of an object $C:\mathcal C$
+  and a isomorphism $h : F(C) \isoto D$.
+
+  We say that $F$ is \emph{essentially surjective on objects} if for all $D$,
+  we merely have such a pair.
+\end{definition}
+
+\begin{lemma}\label{lem:equiv-precat-is-ff-split-eso}
+  For precategories $\mathcal C$ and $\mathcal D$
+  and a functor $F : \mathcal C \to \mathcal D$,
+  the map from the type
+  \begin{enumerate}
+  \item $F$ is an equivalence of precategories
+  \end{enumerate}
+  to the type
+  \begin{enumerate}[resume]
+  \item $F$ is fully faithful and split essentially surjective on objects,
+  \end{enumerate}
+  defined using~\cref{lem:cat-equiv-ff} and sending $D:\mathcal D$
+  to the pair $(G(D), \varepsilon_D)$,
+  is an equivalence.
+\end{lemma}
+We again refer to~\textcite[Lemma~6.6]{AKS2015} for details.
+
+\begin{lemma}\label{lem:ff-eso}
+  If $F : \mathcal C \to \mathcal D$ is fully faithful and $\mathcal C$
+  is a category, then for any $D : \mathcal D$ the type
+  $\sum_{C:\mathcal C}F(C) \isoto D$ is a proposition.
+\end{lemma}
+From this we conclude that if $\mathcal C$ is category,
+then split essential surjectivity
+is equivalent to essential surjectivity,
+and then~\cref{lem:equiv-precat-is-ff-split-eso}
+gives one of the fundamental theorems of category theory:
+\begin{theorem}\label{thm:ff-eso-equiv}
+  If $\mathcal C$ is a category, then the projection
+  $(\mathcal C\equivto \mathcal D) \to (\mathcal C \to \mathcal D)$
+  is an injection with image given
+  by the fully faithful and essentially surjective functors.
+\end{theorem}
+\begin{corollary}\label{cor:cat-2-type}
+  The type of categories $\Cat$ is $2$-truncated.
+\end{corollary}
+
+% rezk completion
+% straightening–unstraightening
+% precategories are flagged categories
+
+\section{Limits and colimits}
+\label{sec:limits}
+
+% products and coproducts, pullbacks and pushouts, (co)equalizers, (co)limits
 % product and exponential in types
-% Yoneda lemma
-% cor : \yo is fully faithful
-% 
+
+
 
 \section{Monoidal categories}
 \label{sec:monoidal-cats}
