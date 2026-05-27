@@ -528,14 +528,14 @@ illustrates what can go wrong.
     \node[vertex] (n3) at (240:\len) {};
     \begin{scope}[every to/.style={bend right=22}]
       % generator a
-      \draw[gena] (n1) to (n2);
-      \draw[gena] (n2) to (n3);
-      \draw[gena] (n3) to (n1);
+      \draw[genb] (n1) to (n2);
+      \draw[genb] (n2) to (n3);
+      \draw[genb] (n3) to (n1);
     \end{scope}
     % generator b
-    \draw[genb] (n1) to[out=-30,in=30,looseness=25] (n1);
-    \draw[genb,out=205,in=155] (n2) to (n3);
-    \draw[genb,out=45,in=-45] (n3) to (n2);
+    \draw[gena] (n1) to[out=-30,in=30,looseness=25] (n1);
+    \draw[gena,out=205,in=155] (n2) to (n3);
+    \draw[gena,out=45,in=-45] (n3) to (n2);
   \end{tikzpicture}
   \caption{Alternative representation of the $\mkgroup(\Sc\vee\Sc)$-set
     $X$ from~\cref{fig:not-normal},
@@ -779,26 +779,26 @@ The reader could be surprised that the definition of a subgroup of a group $G$
 is \textbf{not} that of a group with some relationship to $G$. Let us thus unfold a
 bit the definition above. Given a subgroup\footnote{%
     To lighten the notation, we leave out the proof that $X$ is transitive.
-    (Otherwise, we would write $(X,x,!):\Sub(G)$.)
+    (Otherwise, we would write $(X,\pt,!):\Sub(G)$.)
     In~\cref{rem:notationsubgroup} below we'll set out further notational
-    conveniences regarding subgroups.} $(X,x):\Sub(G)$ in the sense above,
+    conveniences regarding subgroups.} $(X,\pt):\Sub(G)$ in the sense above,
 we can consider the total type $\Tot(X) \defeq \sum_{z:BG}X(z)$ of the
 transitive $G$-set $X$. Together with the first projection, it makes a connected
 \covering over $\BG$ and its fiber (at $\sh_G$) contains a particular point,
-namely $(\sh_G,x)$. \cref{xca:group-Xx!} above tells us that this choice of
+namely $(\sh_G,\pt)$. \cref{xca:group-Xx!} above tells us that this choice of
 point makes a group. The first projection then becomes (the classifying map of)
 a homomorphism from that group to $G$ that embeds\footnote{More will be said on
   that ``embedding'' in~\cref{sec:subgroups-mono}.} the symmetries of
-$(\sh_G,x)$ in $\Tot(X)$ into these of $\sh_G$ in $\BG$. This explain the
+$(\sh_G,\pt)$ in $\Tot(X)$ into these of $\sh_G$ in $\BG$. This explain the
 following definition:
 
 \begin{definition}\label{def:underlying-group-of-subgroup}
   Let $G$ be a group. The \emph{underlying group} %
   \index{type!of subgroups of a group}%
   of a subgroup
-  $(X,x) : \Sub(G)$ is
+  $(X\pt) : \Sub(G)$ is
   \[
-    \mkgroup \left(\Tot(X),(\sh_G,x)\right).\qedhere
+    \mkgroup \left(\Tot(X),(\sh_G,\pt)\right).\qedhere
   \]
 \end{definition}
 
@@ -834,16 +834,16 @@ of a type), is a predicate, like $R_m(p)(0)=0$ in \cref{ex:Rm0-subgroup}.
   For any group $G$, the type $\Sub(G)$ of subgroups of $G$ is a set.
 \end{lemma}
 \begin{proof}
-  Let $G$ be a group, and let $(X,x)$ and $(X',x')$ be subgroups of $G$. Since
+  Let $G$ be a group, and let $(X,\pt)$ and $(X',\pt')$ be subgroups of $G$. Since
   $X$ is transitive we can use the remark following
-  \cref{lem:evisinjwhentransitive} that $\ev_x : (X \eqto X') \to X'(\sh_G)$ is
-  injective. In particular, the preimage of $x'$ is thus a proposition. Now, we
+  \cref{lem:evisinjwhentransitive} that $\ev_{\pt} : (X \eqto X') \to X'(\sh_G)$ is
+  injective. In particular, the preimage of $\pt'$ is thus a proposition. Now, we
   have a chain of equivalences:
   \begin{eqnarray*}  
-    \left((X,x)\eqto(X',x')\right)
-    & \equivto & \displaystyle\sum_{p:X \eqto X'} x' = \trp p x \\
-    & \equivto & \displaystyle\sum_{p:X \eqto X'} x' = \ev_x(p) \\
-    & \jdeq & {\ev_x}^{-1} (x'). 
+    \left((X,\pt)\eqto(X',\pt')\right)
+    & \equivto & \displaystyle\sum_{p:X \eqto X'} \pt' = \trp p {\pt} \\
+    & \equivto & \displaystyle\sum_{p:X \eqto X'} \pt' = \ev_{\pt}(p) \\
+    & \jdeq & {\ev_{\pt}}^{-1} (\pt'). 
   \end{eqnarray*}
 \end{proof}
 
@@ -1065,11 +1065,11 @@ while $(\CG_3,j)$ and $(\CG_3,j')$ can be identified in $\typemono(\SG_3)$.
 
 \begin{lemma}\label{lem:SubG=MonoG}
   Let $G$ be a group.  The map $F: \Sub(G)\to \typemono(G)$ sending the subgroup
-  $(X,x) : \Sub(G)$ to the element
+  $(X,\pt) : \Sub(G)$ to the element
   \begin{displaymath}
-    \bigl(\mkgroup\bigl(\Tot(X),(\sh_G,x)\bigr),\mkgroup(\fst)\bigr) : \typemono(G),
+    \bigl(\mkgroup\bigl(\Tot(X),(\sh_G,\pt)\bigr),\mkgroup(\fst)\bigr) : \typemono(G),
   \end{displaymath}
-  where $\fst: \bigl(\Tot(X),(\sh_G,x)\bigr)\ptdto\BG$ is pointed by
+  where $\fst: \bigl(\Tot(X),(\sh_G,\pt)\bigr)\ptdto\BG$ is pointed by
   reflexivity, is an equivalence.% \footnote{%
     % Recall that we may omit ``!''s: propositional data never dies,
     % it just fades away!}
@@ -1086,7 +1086,7 @@ while $(\CG_3,j)$ and $(\CG_3,j')$ can be identified in $\typemono(\SG_3)$.
   preimage function $\Bi_\div^{-1} : \BG \to \Set$ is a transitive
   $G$-set. Moreover, the pair $(\sh_H,\Bi_\pt)$ is an element of
   $\Bi_\div^{-1}(\sh_G) \defequi \sum_{x:\BH}(\sh_G\eqto{}\Bi_\div(x))$. Hence,
-  we can define a map $E$ defined as follows:%
+  we can define a map $E$ as follows:%
   \glossary(E){$E$}{equivalence from $\protect\typemono(G)$ to
     $\protect\Sub(G)$}
   \[
@@ -1143,26 +1143,26 @@ Let $G$ be a group. Then $\typemono(G)$ is a set.
 The following lemma states that the equivalences in \cref{lem:SubG=MonoG} preserve the subsets of symmetries that are picked out.
 \begin{lemma}\label{lem:E-preserves-symms}
   Let $G$ be a group and $g:\USymG$ a symmetry.  Recall the equivalence $F$ from
-  \cref{lem:SubG=MonoG}.  For all $(X,x) : \Sub(G)$ and $(H,i) : \typemono(G)$
-  such that $(H,i)=F(X,x)$, we have $g \cdot_X x = x$ in $X_{\sh_G}$ if and only
+  \cref{lem:SubG=MonoG}.  For all $(X,\pt) : \Sub(G)$ and $(H,i) : \typemono(G)$
+  such that $(H,i)=F(X,\pt)$, we have $g \cdot_X \pt = \pt$ in $X_{\sh_G}$ if and only
   if $g$ is in the image\footnote{\ie there exists $h:\USymH$ such that
     $g = \USymi(h)$ in $\USymG$.} of $\USymi$.
 \end{lemma}
 \begin{proof}
-Let $(X,x):\Sub(G)$. It suffices to prove the lemma for 
-$(H,i)\jdeq F(X,x) : \typemono(G)$.
-This means $\BH\jdeq(\Tot(X),(\sh_G,x))$ and $\Bi\jdeq\fst$.
-We have to prove: $g \cdot_X x = x$ iff there exists an
-$h:(\sh_G,x)\eqto(\sh_G,x)$ such that $g = \USymi(h)\jdeq\loops\fst(h)$.
+Let $(X,\pt):\Sub(G)$. It suffices to prove the lemma for 
+$(H,i)\jdeq F(X,\pt) : \typemono(G)$.
+This means $\BH\jdeq(\Tot(X),(\sh_G,\pt))$ and $\Bi\jdeq\fst$.
+We have to prove: $g \cdot_X \pt = \pt$ iff there exists an
+$h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that $g = \USymi(h)\jdeq\loops\fst(h)$.
 
-If $g \cdot_X x = x$, then we can simply take $h$ to the symmetry defined by the
-pair $(g,\refl x)$.
+If $g \cdot_X \pt = \pt$, then we can simply take $h$ to the symmetry defined by the
+pair $(g,\refl \pt)$.
 
-For the converse, assume there exists an $h:(\sh_G,x)\eqto(\sh_G,x)$ such that
+For the converse, assume there exists an $h:(\sh_G,\pt)\eqto(\sh_G,\pt)$ such that
 $g = \USymi(h)$.  Then $h$ is defined by a pair of the form $(g,p)$ for some
-$p: \pathover x {X} g x$.\footnote{This path $p$ is in fact equal to
-  $\refl{\pt}$ since $X_{\sh_G}$ is a set.} But $\trp [X] p x$ is precisely
-$X(g)(x)$ (\ie $g \cdot_X x$).
+$p: \pathover {\pt} {X} g {\pt}$.\footnote{This path $p$ is in fact equal to
+  $\refl{\pt}$ since $X_{\sh_G}$ is a set.} But $\trp [X] p {\pt}$ is precisely
+$X(g)(\pt)$ (\ie $g \cdot_X {\pt}$).
 \end{proof}
 
 \marginnote{%
@@ -1170,7 +1170,7 @@ $X(g)(x)$ (\ie $g \cdot_X x$).
 }%
 \marginnote{%
   An argument for our choice can be
- as follows.  In set-based mathematics one has two options for defining "subgroup": either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\Sub(G)$, whereas the other corresponds to $\typemono(G)$.
+ as follows.  In set-based mathematics one has two options for defining "subgroup": either as a certain subset (uniquely given by its characteristic function to $\Prop$) or as an equivalence class of injections (taking care of size issues since the class of monomorphisms will not form a small set).  The former is the usual choice and is the one we model here with $\Sub(G)$, whereas the other corresponds to $\typemono(G)$. \wip{I strongly disagree with this note: $\typemono(G)$ is akin to the collection of injections, not the set of equivalence classes of those; and our $\Sub(G)$ is certainly not akin to the subset definition since it is equivalent to $\typemono(G)$ (and thus have the same ``size'').}
   % that the identity type in $\Sub(G)$ seems more transparent than the one in $\typemono(G)$  (``more things are equal'' in $\typemono(G)$?), just as  $A\to\Prop$ gives more the intuition of picking out a subset by means of a characteristic function than what you get when considering the equivalent type of injections into $A$.
 }
 
@@ -1181,17 +1181,17 @@ underlying groups of an element in $\typemono(G)$ and of its image under $E$ in
 $\Sub(G)$ can be identified.
 
 \begin{definition}\label{def:triv-proper-Mono}
-We say that a subgroup $(X,x):\Sub(G)$ is:
+We say that a subgroup $(X,\pt):\Sub(G)$ is:
 \begin{enumerate}
 \item \emph{trivial}\index{trivial subgroup} if the underlying group
-  $(\Tot(X),(\sh_G,x))$ is trivial\wip{, \ie when $\Tot(X)$ is contractible};
+  $(\Tot(X),(\sh_G,\pt))$ is trivial\wip{, \ie when $\Tot(X)$ is contractible};
 \item \emph{proper}\index{proper subgroup} if $X(\sh_G)$ is not
   contractible.\qedhere
 \end{enumerate}
 \end{definition}
       
 \begin{remark}\label{rem:notationsubgroup}
-  A note on classical notation is in order.  If $(X,x)$ is a subgroup
+  A note on classical notation is in order.  If $(X,\pt)$ is a subgroup
   corresponding to a monomorphism $(H,i)$ into a group $G$, tradition would
   permit us to relax the burden of notation and we could write ``a subgroup
   $i:H\subseteq G$'', or, if we didn't need the name of $i:\Hom(H,G)$, simply
@@ -1202,14 +1202,24 @@ We say that a subgroup $(X,x):\Sub(G)$ is:
   \label{ex:prodinclisGset}
   We saw in \cref{ex:prodinclismono} that the first 
   inclusion $i_1:G\to G\times G'$ is a monomorphism.
-  The corresponding $G\times G'$-set is the composite of the first projection
-  $\mathrm{proj}_1:\BG_\div\times\BG'_\div\to \BG_\div$ followed by the
-  principal $G$-torsor $\princ G:\BG\to\Set: z\mapsto (\sh_G\eqto z)$ 
+  The corresponding $G\times G'$-set is the composite of the second projection
+  $\mathrm{proj}_2:\BG_\div\times\BG'_\div\to \BG'_\div$ followed by the
+  principal $G'$-torsor $\princ {G'}:\BG'\to\Set: z'\mapsto (\sh_{G'}\eqto z')$ 
   of \cref{def:principaltorsor}.
 
-  More generally, if $i:\Hom(H,G)$ and $f:\Hom(G,H)$, and $fi\eqto{}\id_H$,
-  then $(H,i):\typemono(G)$ corresponds to the subgroup with $G$-set 
-  given by the composite of $\Bf$ with the principal $H$-torsor $\princ H$.
+  Indeed, let us compute the image through $F$ of the latter. First,
+  \begin{eqnarray*}
+    \Tot(\princ {G'}\circ \mathrm{proj}_2)
+    & \jdeq & \sum_{(z,z') : \BG_\div\times\BG'_\div}(\sh_{G'}\eqto z') \\
+    & \equivto & \BG_\div \times \sum_{z' : \BG'_\div}(\sh_{G'}\eqto z') \\
+    & \equivto & \BG_\div
+  \end{eqnarray*}
+  Notice that this equivalence $\phi$ can easily be pointed by $\refl{\sh_G}$
+  and that, as pointed maps, we have an identification of type
+  $\fst \eqto i_1 \circ \phi$. In other words, $\phi$ gives rise to an equality
+  of pointed set bundles over $\BG\times\BG'$. This, in turn, gives rise to the
+  equality $(\BG, i_1) = F(\princ {G'}\circ \mathrm{proj}_2, \refl{\sh_G'})$ in
+  $\typemono(G\times G')$, as promised.
 \end{example}
     
     
@@ -1220,7 +1230,7 @@ It serves as a basis for more traditional versions, such as the
 counting version in \cref{xca:lagrange} below.
 
 \begin{construction}\label{con:lagrange}
-Let $G$ be a group. For every subgroup $(X,\pt,!):\Sub(G)$ of $G$,
+Let $G$ be a group. For every subgroup $(X,\pt):\Sub(G)$ of $G$,
 with underlying group called $H$, we have a function $L_H$ of type
 \[
 \bigl(\prod_{x:X(\sh_G)}\sum_{g:\USymG} g\cdot_X x = \pt \,\bigr) \to
@@ -1235,7 +1245,7 @@ equivalence from $\USymG$ to the sum of fibers
 $\sum_{x:X(\sh_G)}\inv{[x]}$.
 For every $x:X(\sh_G)$, the fiber $\inv{[x]}$ of $[\blank]$ at $x$ is 
 $\sum_{g:\USymG} (x = g\cdot_X \pt)$, and the latter subset
-of $\USymG$ is equal to subset $(\sh_G,\pt)\eqto(\sh_G,x)$.
+of $\USymG$ is equivalent to the set $(\sh_G,\pt)\eqto(\sh_G,x)$.
 So we get an equivalence from $\USymG$ to 
 $\sum_{x:X(\sh_G)}((\sh_G,\pt)\eqto(\sh_G,x))$. We are done if
 we can replace this irritating little last $x$ with $\pt$, since
@@ -1245,16 +1255,16 @@ $\prod_{x:X(\sh_G)}\sum_{g:\USymG} (g\cdot_X x = \pt)$.
 Applying \cref{xca:AC-in-TT} to this premiss, we obtain
 a function $g:X(\sh_G)\to\USymG$ such that $g(x)\cdot_X x = \pt$
 for all $x:X(\sh_G)$. In other words, $(g(x),!)$ is a path of type
-$(\sh_G,x)\eqto(\sh_G,\pt)$, and hence postcomposition\footnote{%
+$(\sh_G,x)\eqto(\sh_G,\pt)$, and hence postconcatenation\footnote{%
 \label{ft:lagrange-dep-sum}
-Precomposition with the inverse gives an equivalence between
+Preconcatenation with the inverse gives an equivalence between
 $(\sh_G,\pt)\eqto(\sh_G,x)$ and $(\sh_G,x)\eqto(\sh_G,x)$,
 leading to the equivalence $L'_H$ in \cref{cor:lagrange-dep-sum}.}
 gives the desired equivalence between $(\sh_G,\pt)\eqto(\sh_G,x)$ and 
 $(\sh_G,\pt)\eqto(\sh_G,\pt)$. Thus we get in total an equivalence  
 between $\USymG$ and $X(\sh_G) \times \USymH$, and we define $L_H(g)$
 to be that equivalence.\footnote{This construction also works 
-\inftygps acting on types. However, the premiss may be harder to
+for \inftygps acting on types. However, the premiss may be harder to
 fulfill in such general cases.}
 \end{implementation}
 
@@ -1263,15 +1273,16 @@ indicated in \cref{ft:lagrange-dep-sum} gives \cref{cor:lagrange-dep-sum},
 which is sometimes more convenient, \eg in the proof of \cref{lem:burnside}.
 
 \begin{construction}\label{cor:lagrange-dep-sum}
-Let conditions be as in \cref{con:lagrange}. Then
-we have an equivalence $L'_H(f)$ between $\USymG$ and
-$\sum_{x:X(\sh_G)}((\sh_G,x)\eqto(\sh_G,x))$.
+  Let conditions be as in \cref{con:lagrange}. Then, for each
+  $f : \prod_{x:X(\sh_G)}\sum_{g:\USymG} (g\cdot_X x = \pt)$, we have an
+  equivalence $L'_H(f)$ between $\USymG$ and
+  $\sum_{x:X(\sh_G)}((\sh_G,x)\eqto(\sh_G,x))$.
 \end{construction}
 
 \begin{xca}\label{xca:lagrange}
 The goal of this exercise is to state and prove the traditional
 formulation of  Lagrange's Theorem. 
-Let $G$ be a finite group and $(X,x,!):\Sub(G)$ a subgroup,
+Let $G$ be a finite group and $(X,\pt):\Sub(G)$ a subgroup,
 whose underlying group we call $H$. 
 Assume that $X$ is a finite $G$-set. Show that $H$ is finite and
 that $\Card(G) = \Card(X) \times \Card(H)$.
@@ -1286,11 +1297,21 @@ and $R_m(\Sloop) \defis \zs$, for $m>0$. Let $H_m$ be the underlying group
 of $(R_m,0,!)$. Identify $\USym\ZZ$ with $\bn m \times \USymH_m$.
 \end{xca}
 
-\begin{xca}\label{xca:lagrange-if-subgr-not-normal}\MB{TBD: }
-The goal of this exercise is to illustrate that \cref{con:lagrange}
-also can be applied to infinite groups and a subgroup that is "abnormal".
-Recall \cref{fig:not-normal} ...
-\end{xca}
+\wip{\begin{xca}\label{xca:lagrange-if-subgr-not-normal}
+  Recall the example from \cref{fig:not-normal}. The group here is
+  $G\defeq \mkgroup (\Sc \wedge \Sc)$, the free group on two generators
+  (see~\ref{rem:F2-first-look}). Consider the $G$-set $X$ constructed by
+  induction as follows: the base point $\base$ is mapped to $\bn 3 = \{0,1,2\}$;
+  the first loop $\Sloop_1$ is mapped to the successor modulo 3
+  $s: \bn 3 \to \bn 3$; the second loop $\Sloop_2$ is mapped to the
+  transposition that swaps $0$ and $1$ and leaves $2$ untouched. Our subgroup of
+  interest here is $(X,0):\Sub(G)$.
+  \begin{enumerate}
+  \item Compute the underlying group of $(X,0)$.
+  \item Find a ``choice map'' $f:\prod_{x:\bn 3}\sum_{g:\USymG} (g\cdot x = 0)$
+    and apply Lagrange's construction.
+  \end{enumerate}
+\end{xca}}
 
 
 
