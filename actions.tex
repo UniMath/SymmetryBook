@@ -1297,24 +1297,23 @@ and $R_m(\Sloop) \defis \zs$, for $m>0$. Let $H_m$ be the underlying group
 of $(R_m,0,!)$. Identify $\USym\ZZ$ with $\bn m \times \USymH_m$.
 \end{xca}
 
-\wip{\begin{xca}\label{xca:lagrange-if-subgr-not-normal}
-  Recall the example from \cref{fig:not-normal}. The group here is
-  $G\defeq \mkgroup (\Sc \wedge \Sc)$, the free group on two generators
-  (see~\ref{rem:F2-first-look}). Consider the $G$-set $X$ constructed by
-  induction as follows: the base point $\base$ is mapped to $\bn 3 = \{0,1,2\}$;
-  the first loop $\Sloop_1$ is mapped to the successor modulo 3
-  $s: \bn 3 \to \bn 3$; the second loop $\Sloop_2$ is mapped to the
-  transposition that swaps $0$ and $1$ and leaves $2$ untouched. Our subgroup of
-  interest here is $(X,0):\Sub(G)$.
-  \begin{enumerate}
-  \item Compute the underlying group of $(X,0)$.
-  \item Find a ``choice map'' $f:\prod_{x:\bn 3}\sum_{g:\USymG} (g\cdot x = 0)$
-    and apply Lagrange's construction.
-  \end{enumerate}
-\end{xca}}
-
-
-
+\wip{
+  \begin{xca}\label{xca:lagrange-if-subgr-not-normal}
+    Recall the example from \cref{fig:not-normal}. The group here is
+    $G\defeq \mkgroup (\Sc \wedge \Sc)$, the free group on two generators
+    (see~\ref{rem:F2-first-look}). Consider the $G$-set $X$ constructed by
+    induction as follows: the base point $\base$ is mapped to $\bn 3 = \{0,1,2\}$;
+    the first loop $\Sloop_1$ is mapped to the successor modulo 3
+    $s: \bn 3 \to \bn 3$; the second loop $\Sloop_2$ is mapped to the
+    transposition that swaps $0$ and $1$ and leaves $2$ untouched. Our subgroup of
+    interest here is $(X,0):\Sub(G)$.
+    \begin{enumerate}
+    \item Compute the underlying group of $(X,0)$.
+    \item Find a ``choice map'' $f:\prod_{x:\bn 3}\sum_{g:\USymG} (g\cdot x = 0)$
+      and apply Lagrange's construction. \qedhere
+    \end{enumerate}
+  \end{xca}
+}
 
 
     % commented out by BID 211117 Some examples and references should be included when the cyclic subgroups are fully developed
@@ -1370,18 +1369,18 @@ We are particularly interested in what happens when a $G$-set
 is not transitive, that is, does not satisfy the requirement of 
 \cref{def:transitiveGset}. In \cref{cha:circle}, under the name
 of \coverings over the circle, we have already seen examples of
-transitive and non-transitive $\Sc$-sets:
+transitive and non-transitive $\ZZ$-sets:
 In \cref{fig:covering} the left picture exhibits a transitive one,
 and the right picture  a non-transitive one. Also, 
-\cref{fig:two-comp-S1-cover} shows a non-transitive $\Sc$-set,
+\cref{fig:two-comp-S1-cover} shows a non-transitive $\ZZ$-set,
 whereas the $m$\th power bundle over the circle in
-\cref{fig:m-th-power} is a transitive $\Sc$-set.
+\cref{fig:m-th-power} is a transitive $\ZZ$-set.
 \cref{lem:conistrans} gives a good explanation of these pictures:
 A $G$-set is transitive if and only if the associated \covering is connected.
 In other words, if a $G$-set $X:\BG\to\Set$ is transitive, then the
 group action connects\footnote{In the sense that $\Trunc{(z,x)\eqto(w,y)}$
 if and only if there exists a $g:z\eqto w$ such that $g\cdot_X x = y$.} 
-any two elements in the total type $\sum_{x:\BG} X(z)$.
+any two elements in the total type $\Tot(X) \\sum_{x:\BG} X(z)$.
 If $X$ is not transitive, then the latter total type falls apart 
 in different components. Since these components are themselves
 connected, the choice of an element of them gives rise to a subgroup of $G$
@@ -1389,48 +1388,55 @@ in the sense of \cref{def:set-of-subgroups}.
 
 % perhaps with some warnings $\USymG$, $=$, \cref{lem:conistrans}, ...
 \begin{definition}\label{def:actiontype} 
-  Let $G$ be a group and $X : \BG\to\Set$ a $G$-set,\footnote{%
-  This definition can be generalized to \inftygps $G$ and $G$-types $X$.}
-  then the \emph{action type}\index{action type}
-  of $X$, denoted\footnote{%
-    The superscripts and subscripts are decorated with ``$hG$'',
-    following a convention in homotopy theory.
-    The action type is sometimes denoted $X \dblslash G$.}
-\[
-  X_{hG} \defeq \sum_{z:\BG} X(z),
-\]
-is the total type of $X$, see \cref{sec:sum-types}.
-By \cref{def:pathover-trp} and \cref{def:pairtopath},
-we get an equivalence
-\[
-\bigl((z,x)\eqto_{X_{hG}}(w,y)\bigr) \equivto
-\sum_{g:z\eqto w} g\cdot x = y,
-\]
-which also goes for their (often used) propositional truncations.
-%We use $(z,y):X_{hG}$ sometimes for $z:\BG,\,y:X(z)$.
+  \begin{enumerate}
+  \item Let $G$ be a group and $X : \BG\to\Set$ a $G$-set,\footnote{%
+      This definition can be generalized to \inftygps $G$ and $G$-types $X$.}
+    then the \emph{action type}\index{action type}
+    of $X$, denoted\footnote{%
+      The superscripts and subscripts are decorated with ``$hG$'',
+      following a convention in homotopy theory.
+      The action type is sometimes denoted $X \dblslash G$.}
+    \[
+      X_{hG} \defeq \sum_{z:\BG} X(z),
+    \]
+    is the total type of $X$, see \cref{sec:sum-types}.
+   
+  \item The type of \emph{invariant maps}\footnote{%
+      Invariant maps are dependent functions $f$ and the reason for the new name in
+      this context is that $f(z) = g \cdot_X f(z)$ for any $z:\BG$ and $g:z\eqto
+      z$. Cf.~\cref{lem:fixed-char}. Note that there need not be any invariant maps:
+      the type of invariant maps of $\princ{\ZZ}$, \ie $\prod_{z:\Sc}\base\eqto z$,
+      is empty.  Using \cref{lem:univisexp}, \cref{fig:transportalongloop} explains
+      why: the successor function has no fixed point.%
+    } \index{invariant map type} is
+    \[
+      X^{hG} \defeq \prod_{z:\BG} X(z).
+    \]
 
-The type of \emph{invariant maps}\footnote{%
-Invariant maps are dependent functions $f$ and the reason for the new name
-in this context is that $f(z) = g \cdot_X f(z)$ for any $z:\BG$
-and $g:z\eqto z$. Cf.~\cref{lem:fixed-char}. Note that there need not 
-be any invariant maps: $\prod_{z:\Sc}\base\eqto z$ is empty.
-Using \cref{lem:univisexp}, \cref{fig:transportalongloop} explains
-why: the successor function has no fixed point.
-}
-\index{invariant map type} is
-\[
-  X^{hG} \defeq \prod_{z:\BG} X(z).
-\]
-
-The \emph{set of orbits} (soon to be identified with the
-set truncation of $X_{hG}$, see \cref{lem:X/G=setTruncX_hG})
-\index{set!of orbits}\index{orbit set} is the subset of $\Sub_G(X)$ consisting
-of all $G$-subsets $P$ of $X$ such that the underlying $G$-subset $X_P$
-is transitive:\footnote{See \cref{def:transitiveGset}.}
-\[
-  X / G \defeq \sum_{P:\Sub_G(X)}\istrans(X_P).\qedhere
-\]
+  \item The \emph{set of orbits}\index{set!of orbits}\index{orbit set} is the
+    subset of $\Sub_G(X)$ consisting of all $G$-subsets $P$ of $X$ such that the
+    underlying $G$-subset $X_P$ is transitive:\footnote{See
+      \cref{def:transitiveGset}.}
+    \[
+      X / G \defeq \sum_{P:\Sub_G(X)}\istrans(X_P).\qedhere
+    \]
+  \end{enumerate}
 \end{definition}
+
+\begin{remark}\label{rem:path-in-action-type}
+  Note that, by \cref{def:pathover-trp} and \cref{def:pairtopath}, we get an
+  equivalence that allows for a more practical form of identifications in the
+  action type:
+  \[
+    \bigl((z,x)\eqto_{X_{hG}}(w,y)\bigr) \equivto
+    \sum_{g:z\eqto w} g\cdot x = y,
+  \]
+  which also goes for their (often used) propositional truncations.
+\end{remark}
+
+These various definitions are closely related. For example, we will soon
+identify the set of orbits with the set truncation of the action type (see
+\cref{lem:X/G=setTruncX_hG}).
 
 We have seen many instances of action types before:
 When $G$-sets are considered as \coverings $f : A \to \BG$,
@@ -1517,20 +1523,19 @@ $X$ to $\Sub_G(X)$, the set of $G$-subsets of $X$, as follows.
 For any $u:X_{hG}$, let $[u]_0$ be the $G$-subset of $X$ that
 sends $z:\BG$ to
 \[
-(x:X(z) \mapsto \Trunc{u\eqto(z,x)}) : X(z) \to \Prop.\qedhere
+(x \mapsto \Trunc{u\eqto(z,x)}) : X(z) \to \Prop.\qedhere
 \]
 \end{definition}
 
-Recall from \cref{def:actiontype} the equivalence of
+Recall from \cref{rem:path-in-action-type} the equivalence of
 $\Trunc{(z,x)\eqto(w,y)}$ and $\exists_{g:z\eqto w}(g\cdot x = y)$.
 The next lemma follows easily from the properties of $\Trunc{u\eqto(z,x)}$.
 
 \begin{lemma}\label{lem:[]0-maps-to-X/G}
-Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.
-For every $u:X_{hG}$, the underlying $G$-set
-$(z\mapsto \sum_{x:X(z)}\Trunc{u\eqto(z,x)})$ of $[u]_0$,
-defined in \cref{def:Gsubset}, is transitive.
-Hence $[\blank]_0$ is a map from $X_{hG}$ to $X/G$.
+  Let $G$ be a group and $X : \BG\to\Set$ a $G$-set.  For every $u:X_{hG}$, the
+  underlying $G$-set\footnote{See \cref{def:Gsubset}.} of $[u]_0$, mapping $z$
+  to $\sum_{x:X(z)}\Trunc{u\eqto(z,x)}$, is transitive.  Hence $[\blank]_0$ is
+  a map from $X_{hG}$ to $X/G$.
 \end{lemma}
 
 In view of the above lemma, we call $[u]_0$ \emph{the orbit
@@ -1554,13 +1559,15 @@ be identified with the set truncation of the action type.
   By the connectivity of $\BG$ it suffices to show 
   $O(\sh_G)=_{X(\sh_G)\to\Prop}[u]_0(\sh_G)$ for some $u$.
   Transitivity of $X_O$ means that there exists an $x:X(\sh_G)$
-  such that $O(\sh_G,x)$ and for all $y:X(\sh_G)$ such that
-  $O(\sh_G,y)$ there
-  exists a $g:\USymG$ such that $g\cdot x = y$, \ie $[(\sh_G,x)]_0(\sh_G,y)$.
-  So we take $u\defeq(\sh_G,x)$ and have to show $O(\sh_G,y)$ if and only if
-  $[u]_0(\sh_G,y)$, for all $y:X(\sh_G)$. But this follows directly from
-  the observation made just above the lemma
-  (see also \cref{rem:equivalents-of-[x]=[y]} below).
+  that belongs to the subset $O(\sh_G)$ and for all $y:X(\sh_G)$ in that subset
+  $O(\sh_G)$ there
+  exists a $g:\USymG$ such that $g\cdot x = y$, \ie $[(\sh_G,x)]_0(\sh_G)(y)$.
+  Since we are proving a proposition (namely, that the preimage of $[\blank]_0$
+  at $O$ is non-empty), we can assume an actual $x:X(\sh_G)$ with the property
+  above, and then we take $u\defeq(\sh_G,x)$ and have to show $O(\sh_G)$ is logically equivalent to
+  $[u]_0(\sh_G)$. But this follows directly
+  from the observation made just above the lemma (see also
+  \cref{rem:equivalents-of-[x]=[y]} below).
   
   The second part of the lemma follows from \cref{rem:set-trunc-as-quotient}. 
 \end{proof}
@@ -1645,16 +1652,16 @@ and $[\blank]_0$, respectively) with quotient set $X/G$.\footnote{%
   We can write $X(\sh_G)$ and $X_{hG}$ as sums of the respective fibers,
   which we will elaborate in the next paragraphs.
 
-Let $O:X/G$ be an orbit and consider 
-$\inv{[O]_0} \jdeq \sum_{u:X_{hG}}(O=[u]_0)$. Note that
-the underlying $G$-set $X_O\jdeq(z:\BG \mapsto \sum_{y:X(z)}O(z,y))$
-of $O$ is transitive. It follows that
-$O(u)$ holds if and only if $O=[u]_0$, for all $u:X_{hG}$.%
-\footnote{We use the first step of \cref{rem:SubGX=Sub(X/G)}.
-If $O(u)$ and $O(v)$, then $\Trunc{u\eqto v}$
-by the transitivity of $X_O$. The rest is obvious.} 
-Therefore, the fiber $\inv{[O]_0}$ is equivalent to the action type
-$(X_O)_{hG}\jdeq\sum_{z:\BG} X_O(z)$.
+  Let $O:X/G$ be an orbit and consider
+  $\inv{[O]_0} \jdeq \sum_{u:X_{hG}}(O=[u]_0)$. Note that the underlying $G$-set
+  of O, \ie $X_O\jdeq(z:\BG \mapsto \sum_{y:X(z)}O(z)(y))$, is transitive. It
+  follows that $O(u)$ holds\footnote{Notice the abuse here where $O(u)$ stands
+    for $O(z)(x)$ where $u \jdeq (z,x)$.} if and only if $O=[u]_0$, for all
+  $u:X_{hG}$.%
+  \footnote{We use the first step of \cref{rem:SubGX=Sub(X/G)}.  If $O(u)$ and
+    $O(v)$, then $\Trunc{u\eqto v}$ by the transitivity of $X_O$. The rest is
+    obvious.}  Therefore, the fiber $\inv{[O]_0}$ is equivalent to the action
+  type $(X_O)_{hG}\jdeq\sum_{z:\BG} X_O(z)$.
 
 After the previous paragraph, the elaboration of 
 $\inv{[O]} \jdeq \sum_{x:X(\sh_G)}(O=[x])$ is easy.
@@ -1683,13 +1690,16 @@ is taken over by $X_O$.
   \begin{enumerate}
   \item Define the group $G_x \defeq \Aut_{X_{hG}}(\sh_G,x)$.
 % $(\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x) \eqto (z,y)},(\sh_G,x,!))$.
-  Clearly, $\fst:\BG_x \to \BG$ is a set bundle:
-  each fiber at $z:\BG$ is a subset of $X(z)$.
-  Hence $(G_x,\fst,!):\typemono(G)$ is monomorphism into $G$.
-  We call the subgroup $G_x$ of $G$ the 
-  \emph{stabilizer (sub)group}\index{stabilizer}%
-    \index{group!stabilizer} at $x$. The inclusion $\fst$ of $\BG_x$ in
-    $\BG$ classifies a monomorphism denoted by $i_x : \Hom(G_x,G)$.
+    Clearly, $\fst:\BG_x \to \BG$ is a set bundle: each fiber at $z:\BG$ is a
+    subset of $X(z)$. It is pointed trivially. Hence
+    $(G_x,\mkgroup(\fst)):\typemono(G)$ is a monomorphism into $G$.  We call the
+    subgroup $G_x$ of $G$ the \emph{stabilizer (sub)group}\index{stabilizer}%
+    \index{group!stabilizer} at $x$. We shall write $i_x : \Hom(G_x,G)$ for
+    $\mkgroup(\fst)$.
+
+    \wip{Notice that for $(X,\pt):\Sub(G)$, the group $G_\pt$ is the underlying group
+    of the subgroup $(X,\pt)$, and $(G_\pt, i_\pt)$ is the corresponding
+    monomorphism into $G$.}
   \item Define $G\cdot x \defeq \setof{y : X(\sh_G)}{[x] =_{X/G} [y]}$
     to be the \emph{underlying set of the orbit through $x$}.\footnote{%
     This is short for the underlying set of the underlying $G$-set of the
@@ -1699,19 +1709,22 @@ is taken over by $X_O$.
 \end{definition}
 
 \begin{remark}\label{rem:orbit-fibs}
-In the above definition, the underlying $G$-set $X_{[x]} \jdeq
-(z:\BG)\mapsto\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)}$
-of the orbit $[x]$ plays an important double role: On one hand its
-action type $(X_{[x]})_{hG}$,
+In the above definition, the underlying $G$-set of the orbit $[x]$, that is
+\begin{displaymath}
+  X_{[x]} \jdeq (z:\BG)\mapsto\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(z,y)}
+\end{displaymath}
+plays an important double role: On one hand its action type $(X_{[x]})_{hG}$,
 %$\sum_{z:\BG}\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$,
-pointed at $(\sh_G,x)$, is the classifying type $\BG_x$ of the stabilizer
-group $G_x$. On the other hand it is a transitive $G$-set whose
-underlying set $\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$
-is the underlying set of the orbit $[x]$. Thus,
-for $O\jdeq[x]$, we have easy identifications of $G\cdot x$ and $X_O(\sh_G)$,
-as well as of $\BG_x$ and $(X_O)_{hG}$, using $[x]\jdeq[(\sh_G,x)]_0$.
-Applying the maps in \cref{ft:orbit-fibs} in this particular case, 
-we obtain \cref{fig:fibs-at-[x]}.
+pointed at $(\sh_G,x)$, is the classifying type $\BG_x$ of the stabilizer group
+$G_x$. On the other hand it is a transitive $G$-set whose underlying set
+$\sum_{y:X(\sh_G)}\Trunc{(\sh_G,x)\eqto(\sh_G,y)}$ is precisely $G \cdot
+x$.
+
+\wip{Remove until next paragraph, it resays the same thing again.}Thus, for
+$O\jdeq[x]$, we have easy identifications of $G\cdot x$ and $X_O(\sh_G)$, as
+well as of $\BG_x$ and $(X_O)_{hG}$, using $[x]\jdeq[(\sh_G,x)]_0$.  Applying
+the maps in \cref{ft:orbit-fibs} in this particular case, we obtain
+\cref{fig:fibs-at-[x]}.
 \begin{marginfigure}
   \[\footnotesize %MB20250324: footnotesize should be default
     \begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
@@ -1738,14 +1751,12 @@ if $[x]=[y]$, then $\Trunc{G_x\eqto G_y}$, for any $x,y:X(\sh_G)$.
 \end{xca}
 
 \begin{remark}\label{rem:subgrp-is-stabsubgr}
-  In fact, every subgroup of $G$ is a stabilizer subgroup.
-  We can equivalently define the stabilizer subgroup of $x$ 
-  by an element of $\Sub(G)$, namely
-  the transitive $G$-set $X_{[x]}$, pointed by
-  $x$ as element of the subset $X_{[x]}(\sh_G)$ of $X(\sh_G)$.
-  If $X$ is transitive, then all orbits are equal (\cref{xca:transX-just1orbit})
-  and the stabilizer subgroup of $x$ simplifies to $(X,x,!):\Sub(G)$,
-  a general form defining a subgroup of $G$.
+  % In fact, every subgroup of $G$ is a stabilizer subgroup.
+  The element of $\Sub(G)$ associated with the stabilizer subgroup
+  $(G_x,i_x) : \typemono(G)$ of $x$ is the transitive $G$-set $X_{[x]}$, pointed
+  by $x$ as element of the subset $X_{[x]}(\sh_G)$ of $X(\sh_G)$.  If $X$ is
+  transitive to begin with, then all orbits are equal (\cref{xca:transX-just1orbit}) and the
+  stabilizer subgroup of $x$ simplifies to $(X,x):\Sub(G)$.
 \end{remark}
 
 The following lemma states that the orbits of a $G$-set $X$
@@ -1756,7 +1767,7 @@ of orbits $X/G$.
   \label{lem:splitting into orbits}
   The inclusions of the orbits form an equivalence
 \[
-  (O,x,!)\mapsto x \quad:\quad
+  (O,x)\mapsto x \quad:\quad
   \bigl(\sum_{O:X/G} \inv{[O]} \bigr) \we X(\sh_G).
 \]
 \end{lemma}
@@ -1775,7 +1786,7 @@ There are two possible extreme cases for $G_x$ that are important:
   We say that
   \begin{enumerate}
   \item $x$ is \emph{fixed}\index{fixed}
-    if $i_x$ is an isomorphism (so $G_x$ is all of $G$), and
+    if $i_x$ is an isomorphism (so ``$G_x$ is all of $G$''), and
   \item $x$ is \emph{free}\index{free}\index{action!free}
     if $G_x$ is trivial.
   \end{enumerate}
@@ -1788,7 +1799,7 @@ under the trivial $G$-set $\triv_G S$, since the group action is the
 identity function. In contrast,
 every element $g:\USymG$ is free under the $G$-set 
 $\princ G \jdeq(\sh_G \eqto \blank)$, 
-as $\sum_{z:\BG}\princ G(z))$ is contractible.
+as $\sum_{z:\BG}\princ G(z)$ is contractible.
 For an example with more variation, see \cref{exa:prep-burnside} upto
 \cref{fig:C4-action-on-4-bits}. Find the fixed elements, the free elements
 and those that are neither fixed nor free.
@@ -1798,8 +1809,8 @@ and those that are neither fixed nor free.
 Make sure you understand \cref{exa:fixed-free-neither} by
 elaborating:
 \begin{itemize}
-\item $\BG_s$ in the case of $\triv_G S$,
-\item $\BG_g$ in the case of $\princ G$, 
+\item $\BG_s$ (for $s:S$) in the case of $\triv_G S$,
+\item $\BG_g$ (for $g:G$) in the case of $\princ G$,
 \item $\BG_f$ for each $f:\bn4\to\bn2$
 in the case of \cref{exa:prep-burnside}, see \cref{fig:C4-action-on-4-bits}.\qedhere
 \end{itemize}
@@ -1885,39 +1896,34 @@ The following lemma states that, conversely, each fixed $x$ uniquely
 determines an invariant map.
 
 \begin{lemma}\label{lem:fixpts-are-fixed}
-  Let $G$ be a group and $X$ a $G$-set,\marginnote{\MB{%
-  We use the connectivity of $\BG$ and that $X(\sh_G)$ is a set.}}
-  with $X^{hG} \jdeq \prod_{z:\BG}X(z)$
-  the set of invariant maps. 
-  Evaluation $\ev\defeq(f:X^{hG})\mapsto f(\sh_G)$ at $\sh_G$ gives
+  Let $G$ be a group and $X$ a $G$-set,% \marginnote{\MB{%
+  % We use the connectivity of $\BG$ and that $X(\sh_G)$ is a set.}}
+  % with $X^{hG} \jdeq \prod_{z:\BG}X(z)$
+  % the set of invariant maps
+  . 
+  The evaluation map $\ev : X^{hG} \to X(\sh_G)$ at $\sh_G$, defined by $\ev (f) \defeq f(\sh_G)$,
   \begin{enumerate}
   \item\label{it:ev-is-inj} 
-  an injection of type $\bigl(\prod_{z:\BG}X(z)\bigr) \to X(\sh_G)$, which is
-  \item\label{it:ev-is-eq-on-inv} an equivalence of type 
-  $\bigl(\prod_{z:\BG}X(z)\bigr) \equivto
-  \setof{x : X(\sh_G)}{\textup{$x$ is fixed}}.$
+  is injective, and
+\item\label{it:ev-is-eq-on-inv} has image $\setof{x :
+    X(\sh_G)}{\textup{$x$ is fixed}}.$
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  Let $x : X(\sh_G)$. We prove that the fiber of $\ev$ at $x$,
-  \[
-    \inv\ev(x) \defeq \sum_{f : \prod_{z:\BG}X(z)} x=f(\sh_G),
-  \]
-  is a proposition. Let $(f,!),(g,!) : \inv\ev(x)$. 
-  Then it suffices to prove $f=g$, which follows by extensionality
-  from $f(\sh_G)=x=g(\sh_G)$ since $\BG$ is connected. This proves
+  Let $f,g : X^{hG}$ be invariant maps such that $f(\sh_G) = g(\sh_G)$. Since
+  $\BG$ is connected, this inplies $f(z) = g(z)$ for all $z:\BG$. By
+  extensionality for dependent functions, we get $f = g$. This thus proves
   \ref{it:ev-is-inj}.
   
   For \ref{it:ev-is-eq-on-inv}, assume that
-  $x : X(\sh_G)$ is fixed, so $i_x\jdeq\fst:\BG_x \to \BG$
+  $x : X(\sh_G)$ is fixed, so that $\Bi_x\jdeq\fst:\BG_x \to \BG$
   is an equivalence. This means that $\inv\fst(z)$ is contractible
-  for all $z:\BG$. Spelling out $\inv\fst(z)$, using \cref{lem:contract-away},
-  identifies each fiber $\inv\fst(z)$ with
+  for all $z:\BG$. Spelling out $\inv\fst(z)$, and using \cref{lem:contract-away},
+  we get an identification of $\inv\fst(z)$ with
   $\sum_{y:X(z)}\Trunc{(\sh_G,x)\eqto(z,y)}$.
   Projecting on the first component of each center of contraction
-  gives a invariant map $f$ such that $\Trunc{(\sh_G,x)\eqto(\sh_G,f(\sh_G))}$,
-  from which the proposition $x=f(\sh_G)$ follows. This proves that
-  $\ev$ is surjective, so an equivalence by \ref{it:ev-is-inj}.
+  gives a dependent map $f:X^{hG}$ such that $\Trunc{(\sh_G,x)\eqto(\sh_G,f(\sh_G))}$,
+  from which the proposition $x=f(\sh_G)$ follows.
 \end{proof}
 
 \begin{xca}\label{xca:Gset-A->B}
