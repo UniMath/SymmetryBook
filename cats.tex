@@ -1150,24 +1150,101 @@ gives one of the fundamental theorems of category theory:
   is an injection with image given
   by the fully faithful and essentially surjective functors.
 \end{theorem}
+\begin{corollary}\label{cor:Cat-ua}
+  For categories $\mathcal C$ and $\mathcal D$ we have that
+  the map $(\mathcal C \eqto \mathcal D) \to (\mathcal C \equivto \mathcal D)$
+  that sends $\refl{\mathcal C}$ to the identity equivalence on $\mathcal C$
+  is an equivalence.\footnote{%
+    There is also a version of this statement for precategories,
+    but it concerns the stronger notion of \emph{isomorphism of precategories},
+    \ie fully faithful functors that induce an equivalence on the types of objects.
+    The point is that for categories, this is the same as equivalence.}
+\end{corollary}
+
+Since the type of functors between categories is $1$-truncated,
+we conclude as well:
 \begin{corollary}\label{cor:cat-2-type}
   The type of categories $\Cat$ is $2$-truncated.
 \end{corollary}
 
+This result is one of the reasons that the primary objects
+of interest in category theory are the categories (\ie
+univalent precategories), rather than the more general precategories.
+
+However, it's occasionally useful to present a category
+via a non-univalent precategory.
+This will not be \emph{equivalent} to the corresponding category,
+so we need a notion that establishes their connection.
 \begin{definition}\label{def:we-cat}
   A functor $F : \mathcal C \to \mathcal D$ of precategories
   is a \emph{weak equivalence} if it is fully faithful
   and essentially surjective on objects.
 \end{definition}
+From the point of view of categories, however,
+weak equivalences are as good as equivalences.
 \begin{lemma}\label{lem:precomp-equiv-cat}
   If $H : \mathcal C \to \mathcal D$ is a weak equivalence of precategories,
   and $\mathcal E$ is a category,
   then $\blank\circ H : \mathcal E^{\mathcal D} \to \mathcal E^{\mathcal C}$
   is an equivalence of categories.
 \end{lemma}
-% rezk completion
-% straightening–unstraightening
+Our goal now is to construct for every precategory $\mathcal C$
+a category $L(\mathcal C)$ along with a weak equivalence
+$\eta : \mathcal C \to L(\mathcal C)$.
+Here, $L(\mathcal C)$ is called the \emph{Rezk completion} of $\mathcal C$.
+
+The idea is a generalization of the Cayley's~\cref{lem:allgpsarepermutationgps},
+which is also how we'll go from abstract groups to concrete groups
+in~\cref{ch:absgroup}.
+The reader may want to read that first,
+and then come back here before reading the comparison
+between Rezk completion and delooping of abstract groups
+in~\cref{sec:Rezk-delooping}.
+
+Note that $\Set$ is a category,
+and hence so is the functor category $\Set^{\mathcal C\op}$
+by~\cref{xca:functor-cat-univalent}.
+From~\cref{cor:yo-ff} we know that the Yoneda embedding
+$\yo : \mathcal C \to \Set^{\mathcal C\op}$ is fully faithful,
+motivating the following definition.
+\begin{definition}\label{def:Rezk-completion}
+  For any precategory $\mathcal C$,
+  we define its Rezk completion\index{Rezk completion}
+  as the full subcategory of $\Set^{\mathcal C\op}$
+  on the representable functors,
+  $L(\mathcal C)\defeq (\Set^{\mathcal C\op})_{\constant{isRepr}}$.
+  We define $\eta : \mathcal C \to L(\mathcal C)$%
+  \glossary(LC){$L(\mathcal C)$}{Rezk completion, \cref{def:Rezk-completion}}
+  to be the factorization of $\yo$ via the trivial proofs that any $\yo(C)$
+  is representable.
+\end{definition}
+\begin{theorem}\label{thm:Rezk-completion}
+  The inclusion $\eta:\mathcal C \to L(\mathcal C)$ is a weak equivalence.
+  Furthermore, if $\mathcal C$ is essentially $\UU$-small,
+  then so $L(\mathcal C)$.
+\end{theorem}
+\begin{proof}
+  We have that $\eta$ is fully faithful since $\yo$ is,
+  and it's essentially surjective by definition.
+  Suppose now that $\mathcal C$ is essentially $\UU$-small,
+  meaning that the type of objects $\Ob(\mathcal C)$
+  and all hom-sets are essentially $\UU$-small.
+  Then we have the hom-functor
+  $\hom_{\mathcal C} : \mathcal C\op \times \mathcal C \to \Set_\UU$,
+  so we get a Yoneda embedding $\mathcal C \to \Set_\UU^{\mathcal C\op}$.
+  Since $\Ob(\mathcal C)$ is essentially $\UU$-small,
+  then $\Set_\UU^{\mathcal C\op}$ is locally $\UU$-small,
+  and hence so is $L(\mathcal C)$.
+  And now $\Ob(L(\mathcal C))$ is the image of
+  $\Ob(\yo) : \Ob(\mathcal C) \to \Ob(\Set_\UU^{\mathcal C\op})$,
+  which is then essentially $\UU$-small
+  by the Replacement~\cref{pri:replacement}.
+\end{proof}
+
+% xca: failure of preservation of local UU-smallness
+% straightening–unstraightening example
 % precategories are flagged categories
+% groupoids are 1-types
 
 \section{Limits and colimits}
 \label{sec:limits}
