@@ -291,8 +291,8 @@ As a consequence, we can speak of ``\emph{the} inverse of $g$''.
 \section{Abstract homomorphisms}\label{sec:abshom}
 
 In this section we define the notion of homomorphism for
-abstract groups, which we touched upon just above
-\cref{exa:conj-concrete}. We start by an exercise
+abstract groups, which we touched upon in~\cref{rem:first-abs-hom}.
+We start by an exercise
 that simplifies the requirements for abstract group homomorphisms.
 
 \begin{xca}\label{{xca:onlymult-hom}}
@@ -956,6 +956,107 @@ making $\inv{\eta_\phi}$ explicit.
 \begin{xca}\label{xca:SG2=SG2-contractible} 
 Show that $\Iso(\SG_2,\SG_2)$ is contractible.
 \end{xca}
+
+\sususe{Direct equivalence of categories}
+
+We now define a functor
+\[
+  \concr : \absGroup \to \Group
+\]
+which we prove directly is a inverse functor
+to $\abstr : \Group \to \absGroup$.
+
+On objects, $\concr$ is defined
+via the type of $\agp G$-torsors from~\cref{def:abstrGtorsors}
+as $\concr(\agp G) \defeq \mkgroup(\absGTor, \absprtor)$.
+This we proved is the inverse
+of $\concr$ on objects via two identifications
+$q_G : G \isoto \concr(\abstr(G))$, from~\cref{def:qG-concr-abstr,%
+  lem:Groupsareidentitytypes},
+and $r_{\agp G} : \agp G \isoto \abstr(\concr(\agp G))$,
+from~\cref{thm:Groupsareidentitytypes}.
+
+To define the action on morphisms, suppose $\agp G$ and $\agp H$
+are abstract groups with underlying sets $S$ and $T$, respectively.
+Then $\concr$ sends an abstract group homomorphism
+$\varphi : \absHom(\agp G, \agp H)$ to the group homomorphism
+classified by the pointed map
+\[
+  \Bconcr(\varphi) : \absGTor[G] \ptdto \absGTor[H], \quad
+  X \mapsto \absprtor[\agp H] \times_{\agp G} X,
+\]
+where $\absprtor[\agp H] \times_{\agp G} X$ is the set quotient $T \times X/\sim$
+for the equivalence relation on $T\times X$ defined by
+\[
+  (t,x) \sim (u,y) \defeq \exists_{g:S} (\varphi(g)\cdot t = u) \times (x = g\cdot y).
+\]
+Note that the $g$ is uniquely determined, since $X$ is a $\agp G$-torsor;
+this makes it particularly easy to check that $\sim$ is an equivalence
+relation.
+\begin{theorem}\label{thm:concr-equiv-cats}
+  Thus defined, $\concr$ is functorial and gives an equivalence
+  of categories.
+\end{theorem}
+\begin{proof}
+  It remains to show that $q$ and $r$ give natural isomorphisms
+  \[
+    q : \id_{\Group} \isoto \concr\circ\abstr, \quad
+    r : \id_{\absGroup} \isoto \abstr\circ\concr.
+  \]
+  For naturality of $q$, consider a homomorphism $f : \Hom(G,H)$
+  classified by a pointed map $\Bf : \BG \ptdto \BH$.
+  We need to show that the square of pointed maps
+  \[
+    \begin{tikzcd}
+      \BG \ar[d,"\Bf"']\ar[r,"\Bq_G"] & \absGTor[\abstr(G)]\ar[d,"\Bconcr(\abstr(f))"]\\
+      \BH \ar[r,"\Bq_H"'] & \absGTor[\abstr(H)]
+    \end{tikzcd}
+  \]
+  commutes. For $z:\BG$, we have
+  \begin{align*}
+    \Bconcr(\abstr(f))(q_G(z))
+    &\jdeq \absprtor[\abstr(H)] \times_{\abstr(H)} \princ G(z) \\
+    &\jdeq (\sh_H \eqto \sh_H) \times_{\abstr(H)} (\sh_G \eqto z)
+  \end{align*}
+  and
+  \[
+    \Bq_H(\Bf(z)) \jdeq \princ H(\Bf(z)) \jdeq (\sh_H \eqto \Bf(z))
+  \]
+  Concatenation $(h,p)\mapsto (\Bf(p) \pt_\Bf h)$
+  descends to the quotient as an isomorphism of $\abstr(H)$-torsors:
+  \[
+    c_z : (\sh_H \eqto \sh_H) \times_{\abstr(H)} (\sh_G \eqto z)
+    \isoto (\sh_H \eqto \Bf(z))
+  \]
+  And for $z\jdeq\sh_G$, this agrees with our chosen pointing paths.
+
+  For naturality of $r$, consider an abstract group homomorphism
+  $\varphi : \agp G \to \agp H$, where again $S$ and $T$ are the underlying
+  sets of $\agp G$ and $\agp H$, respectively. It suffices to check that
+  square of underlying sets commutes:
+  \[
+    \begin{tikzcd}
+      S \ar[r,"r_{\agp G}"]\ar[d,"\varphi"'] &
+      (\absprtor[\agp G] \eqto \absprtor[\agp G]) \ar[d,"\abstr(\concr(\varphi))"] \\
+      T \ar[r,"r_{\agp H}"] &
+      (\absprtor[\agp H] \eqto \absprtor[\agp H])
+    \end{tikzcd}
+  \]
+  For $g:S$, this amounts to showing that the following square commutes,
+  where the left isomorphism is $r_{\agp H}(\varphi(g))$, and the right--down--left
+  detour is $\abstr(\concr(\varphi))(r_{\agp G}(g))$:
+  \[
+    \begin{tikzcd}
+      \absprtor[\agp H] \ar[r,equivl]\ar[d,equivl,"\preinv(\varphi(g))"']
+      & \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G]
+      \ar[d,equivr,"\id \times_{\agp G} \preinv(g)"] \\
+      \absprtor[\agp H] \ar[r,equivr]
+      & \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G]
+    \end{tikzcd}
+  \]
+  The vertical isomorphisms map $h$ to $[(h,e)]$, so the square commutes
+  since $(h,\inv g) \sim (\inv{\varphi(g)}h,e)$.
+\end{proof}
 
 \section{Actions, from abstract to concrete and back}
 \label{sec:Gsetsabstrconcr}
