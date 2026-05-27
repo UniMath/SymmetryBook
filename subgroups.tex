@@ -132,7 +132,7 @@ The following propositions are equivalent:\label{lem:eq-epi-conn}:
 \begin{enumerate}
 \item\label{it:mono} $f$ is a monomorphism in the sense of \cref{def:monomorphism};
 \item\label{it:injection} $\USymf:\USymG\to\USymH$ is an injection;
-\item\label{it:cover} $B\!f_\div:\BG_\div\to \BH_\div$ is a \covering.
+\item\label{it:cover} $B\!f_\div:\BG_\div\to \BH_\div$ is a \covering (or: is $0$-truncated, see \cref{def:n-truncated}).
 \end{enumerate}
 \end{lemma}
 
@@ -163,7 +163,7 @@ Similarly, we have:
 \begin{enumerate}[label=(\arabic*')]
 \item\label{it:epi} $f$ is an epimorphism;
 \item\label{it:surjection} $\USymf:\USymG\to\USymH$ is a surjection;
-\item\label{it:connfib} $B\!f_\div:\BG_\div\to \BH_\div$ has connected fibers.
+\item\label{it:connfib} $B\!f_\div:\BG_\div\to \BH_\div$ has connected fibers (or: is $0$-connected, see \cref{def:n-connected}).
 \end{enumerate}
 \end{lemma}
 
@@ -470,7 +470,8 @@ Hence, through univalence, $H$ provides an identification
   $$\etop H:(F_1^{-1}(x_1,p_2),\fst)\eqto (f_1^{-1}(x_1),F_2)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$.
   % ($\fst(t)$ refers to the discussion following \cref{def:pairtopath} so that if $t\oldequiv(\overline{a,b}):(x_1,p_1)\eqto (x,p_1f_2q)$, then $\fst(t)\defeq a:x_1\eqto f_1x$).
   
-From the universal property of the preimage (\cref{lem:xxx}) it furthermore follows that $F_2$ is the unique map such that $(\fst F_2)\eqto _{f_1^{-1}(x_1)\to X_0}\fst$ and $H^{-1}$ is similarly unique with respect to $(\fst H^{-1})\eqto F_2$.
+From the universal property of the pullback (\cref{def:pullback}),\footnote{The fiber $(f_2f_2)^{-1}$ is the pullback of
+$X_0\xrightarrow{f_2f_1} X_2 \xleftarrow{x_2}\bn1$.} it furthermore follows that $F_2$ is the unique map such that $(\fst F_2)\eqto _{f_1^{-1}(x_1)\to X_0}\fst$ and $H^{-1}$ is similarly unique with respect to $(\fst H^{-1})\eqto F_2$.
 \begin{figure}
 \[
 \begin{tikzcd}[ampersand replacement=\&, column sep={0.9cm, between origins}]
@@ -634,23 +635,24 @@ $$A\to\sum_{b:B}\Trunc{f^{-1}(b)}\to B$$
 is unique (\cref{xca:unique-fact-image}).
 
 For a homomorphism $f:\Hom(G,G')$ of groups we similarly have a unique factorization
-$$G\to \Img f \to G'
+$$G\to \Img(f) \to G'
 $$
 through an epimorphism followed by a monomorphism which, in terms of the classifying types and maps, 
-is given by
+is given by\footnote{The formula for the image of a homomorphism $f$ of groups
+is essentially the same as the one for types, but uses the set image from \cref{sec:higher-images} 
+of the classifying map $\Bf$, instead of the propositional image of $f$.}
+
 $$\xymatrix{
-  {\BG}\ar[rrr]^-{x\mapsto(\Bf(x),\settrunc{(x, \refl {\Bf(x)})})}&&&
-  \sum_{z:{BG'}}\setTrunc{({\Bf})^{-1}(z)}\ar[rr]^-{\fst} &&BG',
+  {\BG}\ar[rrr]^-{z\mapsto(\Bf(z),\settrunc{(z, \refl {\Bf(z)})})}&&&
+  \sum_{w:{BG'}}\setTrunc{({\Bf})^{-1}(w)}\ar[rr]^-{\fst} &&BG',
 }$$
-together with base point information.\marginnote{The formula for the image of a group homomorphism $f$
-is essentially the same as the one for types, but uses the set image from \cref{sec:higher-image} of the classifying map $\Bf$.}
-In particular, we choose the base point $(\sh_{G'},\settrunc{(\sh_G,\Bfpt)})$, so that the \emph{image group} is  %type $\sum_{b:B}\Trunc{f^{-1}(b)}$ is simply replaces by
-$$\Img f\defeq\Aut_{\sum_{z:\BG'}\setTrunc{(\Bf)^{-1}(z)}}((\sh_{G'},\settrunc{(\sh_G,\Bfpt)})).$$
+together with base point information.In particular, we choose the base point $(\sh_{G'},\settrunc{(\sh_G,\Bfpt)})$, so that the \emph{image group} is  %type $\sum_{b:B}\Trunc{f^{-1}(b)}$ is simply replaces by
+$$\Img(f)\defeq\Aut_{\sum_{w:\BG'}\setTrunc{(\Bf)^{-1}(w)}}((\sh_{G'},\settrunc{(\sh_G,\Bfpt)})).$$
 In other words, the image is nothing but the subgroup of ${G'}$ associated with the cokernel as discussed in \cref{rem:imageandcokernel}.
 
 \begin{xca}\label{xca:IMg_pointed}
-With the choice of point of $\Img f$ above, give paths for
-${x\mapsto(\Bf(x),\settrunc{(x, \refl {\Bf(x)})})}$ and ${\fst}$
+With the choice of point of $\Img(f)$ above, give paths for
+${z\mapsto(\Bf(z),\settrunc{(z, \refl {\Bf(z)})})}$ and ${\fst}$
 so that these maps become pointed maps whose composition is indeed 
 equal to the pointed map $\Bf$.
 Show that these pointed maps indeed give an epimorphism and a monomorphism, respectively.
@@ -667,7 +669,7 @@ We use the pullback construction from \cref{def:pullback} to express the type of
     $$
     \circ:\typeepi(G)\times_{\typegroup}\typemono(G')\to\Hom(G,G')
     $$
-    given by composition,\footnote{here $p$ is an epimorphism from $G$ to the group $Z$, $j$ a monomorphims from the group $Z'$ to $G'$, $\alpha\colon Z\eqto Z$
+    given by composition,\footnote{Here $p$ is an epimorphism from $G$ to the group $Z$, $j$ a monomorphims from the group $Z'$ to $G'$, $\alpha$ is an identification of $Z$ and $Z'$
       and $\ptoe\alpha$ is the isomorphism corresponding to the identification $\alpha\colon Z\eqto Z'$, as in \cref{def:idtoeq},
       so that the composite looks like
     $$\xymatrix{G\ar[r]^p& Z\ar[r]^{\ptoe\alpha}_\sim&Z'\ar[r]^j&G'}$$}
@@ -712,33 +714,33 @@ We use the pullback construction from \cref{def:pullback} to express the type of
     z_0\ar@{=}[r]^{\Bfpt}_\to&f(x_0)\ar@{=}[r]_\to^{a_{x_0}}&j(q(x_0)).}$$
 \end{implementation}
 
-  \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img f}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img f}}}
+  \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img(f)}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img(f)}}}
   $$}
 \begin{definition}
   \label{def:image}
 Explicitly, the image factorization for groups is the function
 \begin{align*}
 \circ^{-1}:\Hom(G,G')&\to\typeepi(G)\times_{\typegroup}\typemono(G')\\
-\circ^{-1}(f)&\defeq ((\Img f,\prj_{\img f},!),(\Img f,\incl_{\img f},!),\refl{\Img f}),
+\circ^{-1}(f)&\defeq ((\Img(f),\prj_{\img(f)},!),(\Img(f),\incl_{\img(f)},!),\refl{\Img(f)}),
 \end{align*}
     where as before the \index{image group}\emph{image group} is the group
-    $$\Img f\defeq \Aut_{\sum_{z:\BG'}\coker(f)(z)}(\sh_{G'},\trunc{(\sh_G,\Bfpt)}_0),$$
-    the monomorphism $\incl_{\img f}$ is obtained from the wrapping of the first projection
-    $$\B\incl_{\img f}\defeq\fst: B\Img f\to \BG'$$
+    $$\Img(f)\defeq \Aut_{\sum_{z:\BG'}\coker(f)(z)}(\sh_{G'},\trunc{(\sh_G,\Bfpt)}_0),$$
+    the monomorphism $\incl_{\img(f)}$ is obtained from the wrapping of the first projection
+    $$\B\incl_{\img(f)}\defeq\fst: B\Img(f)\to \BG'$$
     and
 the epimorphism
-  $\prj_{\img f}$  is given on the level of classifying types by sending $x:\BG$ to
-  $$B\prj_{\Img f} f(x)\defeq (\Bf(x),\trunc{(x,\refl{\Bf(x)})}_0):\B\image f.$$
+  $\prj_{\img(f)}$  is given on the level of classifying types by sending $x:\BG$ to
+  $$B\prj_{\Img(f)} f(x)\defeq (\Bf(x),\trunc{(x,\refl{\Bf(x)})}_0):\B\image f.$$
 
     
  Occasionally we may refer to the two projections of the image factorization
  \begin{align*}
-    \img:\Hom(G,G')\to\typemono(G'),\qquad&\img(f)\defeq(\Img f,\incl_{\img f},!)\\
- \prjim:\Hom(G,G')\to\typeepi(G), \qquad&\prjim f\defeq(\Img f,\prj_{\img f},!)
+    \img:\Hom(G,G')\to\typemono(G'),\qquad&\img(f)\defeq(\Img(f),\incl_{\img(f)},!)\\
+ \prjim:\Hom(G,G')\to\typeepi(G), \qquad&\prjim f\defeq(\Img(f),\prj_{\img(f)},!)
   \end{align*}
   as the \emph{image}\index{image!function} and the \emph{projection to the image}.\index{image!projection to}
 \end{definition}
-% $$f_{\Hom(G,G')}\incl_{\Img f}\prj_{\Img f},$$
+% $$f_{\Hom(G,G')}\incl_{\Img(f)}\prj_{\Img(f)},$$
 % referred to as the \emph{factorization of $f$ through its image.}
 
 
@@ -755,7 +757,7 @@ of propositions that a given homomorphism is an epimorphism or monomorphism have
     \item $f$ is an epimorphism,
     \item $\USymf$ is a surjection
     \item the cokernel of $f$ is contractible,
-    \item the inclusion of the image $\incl_{\img f}:\Hom(\image f,G')$ is an isomorphism,
+    \item the inclusion of the image $\incl_{\img(f)}:\Hom(\image f,G')$ is an isomorphism,
     \end{enumerate}
   \item the following are equivalent
     \begin{enumerate}
@@ -763,7 +765,7 @@ of propositions that a given homomorphism is an epimorphism or monomorphism have
     \item $\USymf$ is an injection
 \item the kernel of $f$ is trivial
 \item $\Bf:\BG\to \BG'$ is a \covering.
-\item the projection onto the image $\prj_{\img f}:\Hom(G,\Img f)$ is an isomorphism.
+\item the projection onto the image $\prj_{\img(f)}:\Hom(G,\Img(f))$ is an isomorphism.
     \end{enumerate}
   \end{enumerate}
 \end{xca}
@@ -773,20 +775,20 @@ This is forced by the uniqueness as follows.
 
 \marginnote{
   $$\xymatrix{
-    &&G_0\ar[dl]_{\prj_{\img f_1}}\ar[dd]_{\prj_{\img f_2f_1}}\\
-   & \Img f_1\ar[dl]_{\incl_{\img f_1}}\ar[d]^{\prj_{\img(\prj_{\img f_2}\incl_{\img f_1})}}&\\
-    G_1\ar[dr]_{\prj_{\img f_2}}&
-    \Img(\prj_{\img f_2}\incl_{\img f_1})\ar[d]^{\incl_{\img(\prj_{\img f_2}\incl_{\img f_1})}}
-    \ar@{=}[r]&\Img(f_2f_1)\ar[dd]_{\incl_{\img f_2f_1}}\\
-    &\Img f_2\ar[dr]_{\incl_{\img f_2}}&\\
+    &&G_0\ar[dl]_{\prj_{\img(f_1)}}\ar[dd]_{\prj_{\img(f_2f_1)}}\\
+   & \Img(f)_1\ar[dl]_{\incl_{\img(f_1)}}\ar[d]^{\prj_{\img(\prj_{\img(f_2)}\incl_{\img(f_1)})}}&\\
+    G_1\ar[dr]_{\prj_{\img(f_2)}}&
+    \Img(\prj_{\img(f_2)}\incl_{\img(f_1)})\ar[d]^{\incl_{\img(\prj_{\img(f_2)}\incl_{\img(f_1)})}}
+    \ar@{=}[r]&\Img(f_2f_1)\ar[dd]_{\incl_{\img(f_2f_1)}}\\
+    &\Img(f_2)\ar[dr]_{\incl_{\img(f_2)}}&\\
     &&G_2
   }$$}
 \begin{lemma}
   Given composable homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$, unique factorization induces identifications
   \begin{align*}
-    \img(f_2f_1)&\eqto _{\typemono(G_2)}(\Img(\prj_{\img f_2}\incl_{\img f_1}),\incl_{\img f_2}\incl_{\img(\prj_{\img f_2}\incl_{\img f_1})},!)\\
-    \prjim(f_2f_1)&\eqto _{\typeepi(G_0)}(\Img(\prj_{\img f_2}\incl_{\img f_1}),
-  \prj_{\img(\prj_{\img f_2}\incl_{\img f_1})}\prj_{\img f_1},!)\\%\prj^{\img}(\prj_{\img f_2}\prj_{\img f_1})
+    \img(f_2f_1)&\eqto _{\typemono(G_2)}(\Img(\prj_{\img(f_2)}\incl_{\img(f_1)}),\incl_{\img(f_2)}\incl_{\img(\prj_{\img(f_2)}\incl_{\img(f_1)})},!)\\
+    \prjim(f_2f_1)&\eqto _{\typeepi(G_0)}(\Img(\prj_{\img(f_2)}\incl_{\img(f_1)}),
+  \prj_{\img(\prj_{\img(f_2)}\incl_{\img(f_1)})}\prj_{\img(f_1)},!)\\%\prj^{\img}(\prj_{\img(f_2)}\prj_{\img(f_1)})
   \end{align*}
   
   
@@ -794,63 +796,63 @@ This is forced by the uniqueness as follows.
 \begin{proof}
   Since composition preserves monomorphisms and epimorphisms
   -- in particular
-  $\incl_{\img f_2} \incl_{\img(\prj_{\img f_2}\incl_{\img f_1})}:\Hom(\Img(\prj_{\img f_2}\incl_{\img f_1}),G_2)$ is a monomorphism and
-  $\prj_{\img(\prj_{\img f_2}\incl_{\img f_1})} \prj_{\img f_1}:\Hom(G_0,\Img(\prj_{\img f_2}\incl_{\img f_1}))$ is an epimorphism --
+  $\incl_{\img(f_2)} \incl_{\img(\prj_{\img(f_2)}\incl_{\img(f_1)})}:\Hom(\Img(\prj_{\img(f_2)}\incl_{\img(f_1)}),G_2)$ is a monomorphism and
+  $\prj_{\img(\prj_{\img(f_2)}\incl_{\img(f_1)})} \prj_{\img(f_1)}:\Hom(G_0,\Img(\prj_{\img(f_2)}\incl_{\img(f_1)}))$ is an epimorphism --
   this is just uniqueness of the image factorization of the composite $f_2f_1$.
 \end{proof}
 
 
 % there is a unique homomorphism
-% $u:\Hom(\Img f_2f_1,\Img f_2)$ satisfying
-% \marginnote{$$\xymatrix{G_0\ar[rr]^{\prj_{\img f_2f_1}}\ar[d]_{f_1}&&
-%     \Img f_2f_1\ar[r]^-{\incl_{\img f_2f_1}}\ar[d]_{u}&G_2\ar@{=}[d]\\
-% G_1\ar[rr]_-{\prj_{\img f_2}}&&\Img f_2\ar[r]_{\incl_{\img f_2}}&G_2}$$}
+% $u:\Hom(\Img(f_2f_1),\Img(f_2))$ satisfying
+% \marginnote{$$\xymatrix{G_0\ar[rr]^{\prj_{\img(f_2f_1)}}\ar[d]_{f_1}&&
+%     \Img(f_2f_1)\ar[r]^-{\incl_{\img(f_2f_1)}}\ar[d]_{u}&G_2\ar@{=}[d]\\
+% G_1\ar[rr]_-{\prj_{\img(f_2)}}&&\Img(f_2)\ar[r]_{\incl_{\img(f_2)}}&G_2}$$}
 % \begin{enumerate}
-% \item $\incl_{\img f_2f_1}=\incl_{\img f_2}u$ and
-% \item $\prj_{\img f_2}f_1=u\,prj_{\img f_2f_1}$.
+% \item $\incl_{\img(f_2f_1)}=\incl_{\img(f_2)}u$ and
+% \item $\prj_{\img(f_2)}f_1=u\,prj_{\img(f_2f_1)}$.
 % \end{enumerate}
 % The homomorphism $u$ is always a monomorphism and is an isomorphism if and only if  $f_1$ is an epimorphism.
 % % Given two homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$, the homomorphism
-% % $\incl_{\img \prj_{\img f_2}f_1}:\Hom(\Img f_2f_1,\Img f_2)$ is a monomorphism satisfying
-% % \marginnote{$$\xymatrix{G_0\ar[rr]^{\prj_{\img f_2f_1}}\ar[d]_{f_1}&&
-% %     \Img f_2f_1\ar[dr]^-{\incl_{\img f_2f_1}}\ar[d]_{\incl_{\img{\prj_{\img f_2}f_1}}}&\\
-% % G_1\ar[rr]_-{\prj_{\img f_2}}&&\Img f_2\ar[r]_{\incl_{\img f_2}}&G_2}$$}
+% % $\incl_{\img \prj_{\img(f_2)}f_1}:\Hom(\Img(f_2f_1),\Img(f_2))$ is a monomorphism satisfying
+% % \marginnote{$$\xymatrix{G_0\ar[rr]^{\prj_{\img(f_2f_1)}}\ar[d]_{f_1}&&
+% %     \Img(f_2f_1)\ar[dr]^-{\incl_{\img(f_2f_1)}}\ar[d]_{\incl_{\img{\prj_{\img(f_2)}f_1}}}&\\
+% % G_1\ar[rr]_-{\prj_{\img(f_2)}}&&\Img(f_2)\ar[r]_{\incl_{\img(f_2)}}&G_2}$$}
 % % \begin{enumerate}
-% % \item $\incl_{\img \prj_{\img f_2}f_1}$ is an isomorphism if and only if  $f_1$ is an epimorphism,
-% % \item $\incl_{\img f_2f_1}=\incl_{\img f_2}\incl_{\img \prj_{\img f_2} f_1}$ and
-% % \item $\prj_{\img f_2}f_1=\incl_{\img \prj_{\img f_2} f_1}\prj_{\img f_2f_1}$.
+% % \item $\incl_{\img \prj_{\img(f_2)}f_1}$ is an isomorphism if and only if  $f_1$ is an epimorphism,
+% % \item $\incl_{\img(f_2f_1)}=\incl_{\img(f_2)}\incl_{\img \prj_{\img(f_2)} f_1}$ and
+% % \item $\prj_{\img(f_2)}f_1=\incl_{\img \prj_{\img(f_2)} f_1}\prj_{\img(f_2f_1)}$.
 % % \end{enumerate}
 
 % The factorization of $f:\Hom(G,G')$ through its image is unique
 % in the sense that if given two homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$ such that $f_1$ is an epimorphism and $f_2$ in a monomorphism,
 % \marginnote{%
-% $$\xymatrix{G_0\ar[d]_{f_1}\ar[r]^-{\prj_{\img f_2f_1}}&\Img f_2f_1\ar[d]^{\incl_{\img f_2f_1}}\\
+% $$\xymatrix{G_0\ar[d]_{f_1}\ar[r]^-{\prj_{\img(f_2f_1)}}&\Img(f_2f_1)\ar[d]^{\incl_{\img(f_2f_1)}}\\
 %   G_1\ar@{.>}[ur]^t\ar[r]_{f_2}&G_2}
 % $$
-% % $$\xymatrix{&\Img f_2f_1\ar[dr]^{\incl_{\img f_2f_1}}\ar@{.>}[dd]^t&\\
-% %     G_0\ar[dr]_{f_1}\ar[ur]^{\prj_{\img f_2f_1}}&&G_2\\
+% % $$\xymatrix{&\Img(f_2f_1)\ar[dr]^{\incl_{\img(f_2f_1)}}\ar@{.>}[dd]^t&\\
+% %     G_0\ar[dr]_{f_1}\ar[ur]^{\prj_{\img(f_2f_1)}}&&G_2\\
 % %   &G_1\ar[ur]_{f_2}&}
 % % $$
 % }
-% then there is a unique isomorphism $t:\Hom(\Img f_2f_1,G_1)$ such that $f_1=t\,\prj_{\img f_2f_1}$ and $f_2\,t=\incl_{\img f_2f_1}$.  Through univalence $t$ gives rise to identifications
-% $$f_1=_{\typeepi(G)}\prj_{\img f_2f_1}\text{ and }f_2=_{\typemono(G')}\incl_{\img f_2f_1}.$$
+% then there is a unique isomorphism $t:\Hom(\Img(f_2f_1),G_1)$ such that $f_1=t\,\prj_{\img(f_2f_1)}$ and $f_2\,t=\incl_{\img(f_2f_1)}$.  Through univalence $t$ gives rise to identifications
+% $$f_1=_{\typeepi(G)}\prj_{\img(f_2f_1)}\text{ and }f_2=_{\typemono(G')}\incl_{\img(f_2f_1)}.$$
 
 %   Consider the element
-%   $$\sh_{\Img f}\defeq (\sh_{G'},|\sh_G,\Bfpt|):\sum_{z:\BG'}\coker(f)(z)$$ and define the image group of $f$ to be
-%   $$\Img f\defeq \aut_{\sum_{z:\BG'}\coker(f)(z)}(\sh_{\Img f}).$$
+%   $$\sh_{\Img(f)}\defeq (\sh_{G'},|\sh_G,\Bfpt|):\sum_{z:\BG'}\coker(f)(z)$$ and define the image group of $f$ to be
+%   $$\Img(f)\defeq \aut_{\sum_{z:\BG'}\coker(f)(z)}(\sh_{\Img(f)}).$$
 %   The first projection $\fst: B\image f\to \BG'$ is a \covering
-%   (since $\coker(f)(z)$ is a set) giving the desired monomorphism $\incl_{\img f}$ of $\Img f$ into $G$.
+%   (since $\coker(f)(z)$ is a set) giving the desired monomorphism $\incl_{\img(f)}$ of $\Img(f)$ into $G$.
 
 %   The homomorphism
-%   $\prj_{\img f}:\Hom(G,\Img f)$  is given on the level of classifying types by sending $x:\BG$ to
-%   $$B\prj_{\Img f} f(x)\defeq (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$
-%   From this it is clear that $\Bf$ is equal by definition to the composite of $B\incl_{\Img f}$ and $B\prj_{\Img f}$.
+%   $\prj_{\img(f)}:\Hom(G,\Img(f))$  is given on the level of classifying types by sending $x:\BG$ to
+%   $$B\prj_{\Img(f)} f(x)\defeq (\Bf(x),|x,\refl{\Bf(x)}|):\image f.$$
+%   From this it is clear that $\Bf$ is equal by definition to the composite of $B\incl_{\Img(f)}$ and $B\prj_{\Img(f)}$.
 %   \marginnote{and if the wrapping destroys this fact in some ugly manner, it is an argument against wrapping}
-%   That $\prj_{\img f}$ is an epimorphims is best seen by using the equivalence between $BG$ and $\sum_{z:\BG'}(\Bf)^{-1}(z)$ which translates $\prj_{\img f}$ to the sum over $z:\BG'$ of the truncation $(\Bf)^{-1}(z)\to\Trunc{(\Bf)^{-1}(z)}_0\oldequiv\coker(f)(z)$ which has connected fiber (recall that a homomorphism is an epimorphism iff its classifying map has connected fibers).
+%   That $\prj_{\img(f)}$ is an epimorphims is best seen by using the equivalence between $BG$ and $\sum_{z:\BG'}(\Bf)^{-1}(z)$ which translates $\prj_{\img(f)}$ to the sum over $z:\BG'$ of the truncation $(\Bf)^{-1}(z)\to\Trunc{(\Bf)^{-1}(z)}_0\oldequiv\coker(f)(z)$ which has connected fiber (recall that a homomorphism is an epimorphism iff its classifying map has connected fibers).
 
-%   Assume given homomorphisms $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.  The claimed homomorphism $u:\Hom(\Img f_2f_1,\Img f_2)$ has classifying map $Bu:\sum_{z:\BG_2}(\coker(f_2) f_1)(z)\ptdto \sum_{z:\BG_2}(coker(f_2) )(z)$ given by $F_1'(z):(\coker(f_2) f_1)(z)\to(\coker(f_2) )(z)$ from \cref{cor:cokermaps} (which was the truncation of the map of preimages $F_1:(\Bf_2f_1)^{-1}(z)\to(\Bf_2)^{-1}(z)$ with $F_1(x,p)\oldequiv(f_1x,p)$).  That $\incl_{\img f_2f_1}=\incl_{\img f_2}u$ and $\prj_{\img f_2}f_1=u\,prj_{\img f_2f_1}$ follows by the definitions of the maps and the uniqueness of $u$ follows from the fact that $\incl_{\img f_2}$ is a monomorphism and the demand $\incl_{\img f_2f_1}=\incl_{\img f_2}u$ -- which also forces $u$ to be a monomorphism since $\incl_{\img f_2f_1}$ is a monomorphism.  Conversely, if $f_1$ is an epimorphism, then the composite $\prj_{\img f_2}f_1$ is an epimorphism and $\prj_{\img f_2}f_1=u\,prj_{\img f_2f_1}$ forces $u$ to be an epimorphism, and so an isomorphims.
+%   Assume given homomorphisms $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.  The claimed homomorphism $u:\Hom(\Img(f_2f_1),\Img(f_2))$ has classifying map $Bu:\sum_{z:\BG_2}(\coker(f_2) f_1)(z)\ptdto \sum_{z:\BG_2}(coker(f_2) )(z)$ given by $F_1'(z):(\coker(f_2) f_1)(z)\to(\coker(f_2) )(z)$ from \cref{cor:cokermaps} (which was the truncation of the map of preimages $F_1:(\Bf_2f_1)^{-1}(z)\to(\Bf_2)^{-1}(z)$ with $F_1(x,p)\oldequiv(f_1x,p)$).  That $\incl_{\img(f_2f_1)}=\incl_{\img(f_2)}u$ and $\prj_{\img(f_2)}f_1=u\,prj_{\img(f_2f_1)}$ follows by the definitions of the maps and the uniqueness of $u$ follows from the fact that $\incl_{\img(f_2)}$ is a monomorphism and the demand $\incl_{\img(f_2f_1)}=\incl_{\img(f_2)}u$ -- which also forces $u$ to be a monomorphism since $\incl_{\img(f_2f_1)}$ is a monomorphism.  Conversely, if $f_1$ is an epimorphism, then the composite $\prj_{\img(f_2)}f_1$ is an epimorphism and $\prj_{\img(f_2)}f_1=u\,prj_{\img(f_2f_1)}$ forces $u$ to be an epimorphism, and so an isomorphims.
 
-%   As for the uniqueness of the factorization, assume given $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$ such that $f_1$ is an epimorphism and $f_2$ in a monomorphism, we let $t:\Hom(G_1,\Img f_2f_1)$ be the composite $u^{-1}\prj_{\img f_2}$, where $u$ is invertible since $f_1$ is an epimorphism.  Since $f_1$ is an epimorphism, $f_2$ a monomorphism and the claimed diagram commutes this forces $t$ to be an isomorphism. % Since  $\incl_{\img f_2f_1}$ is a monomorphism, there is at most one homomorphism $t:\Hom(G_1,\Img f_2,f_1)$ such that $f_2=\incl_{\img f_2f_1}t$.  We must show that such a $t$ exist and that it furthermore satisfies  $t\,f_1=\prj_{\img f_2f_1}$.  This is achieved by setting
+%   As for the uniqueness of the factorization, assume given $f_1\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$ such that $f_1$ is an epimorphism and $f_2$ in a monomorphism, we let $t:\Hom(G_1,\Img(f_2f_1))$ be the composite $u^{-1}\prj_{\img(f_2)}$, where $u$ is invertible since $f_1$ is an epimorphism.  Since $f_1$ is an epimorphism, $f_2$ a monomorphism and the claimed diagram commutes this forces $t$ to be an isomorphism. % Since  $\incl_{\img(f_2f_1)}$ is a monomorphism, there is at most one homomorphism $t:\Hom(G_1,\Img(f_2),f_1)$ such that $f_2=\incl_{\img(f_2f_1)}t$.  We must show that such a $t$ exist and that it furthermore satisfies  $t\,f_1=\prj_{\img(f_2f_1)}$.  This is achieved by setting
 %   % $$Bt_\div(y)\defeq (\Bf_2(y),|(\Bf_2(y),\refl{}|.
 %   % $$
 
@@ -860,12 +862,12 @@ This is forced by the uniqueness as follows.
 % %  We define a function
 % %   $$\img:\Hom(G,G')\to\typemono(G)$$
 % %   which we call the \emph{image}\index{image}.
-% %   If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in $\img f\defeq(\Img f,\incl_{\img f},!):\typemono(G)$.
+% %   If $f:\Hom(G,G')$  is a homomorphism we must specify the ingredients in $\img(f)\defeq(\Img(f),\incl_{\img(f)},!):\typemono(G)$.
 % %   The \emph{image group}\index{image!group} (or most often just the image) of $f$ is the group
-% %   $$\Img f\defeq \aut_{\sum_{z:\BG'}\coker(f)(z)}(\sh_{G'},|\sh_G,\Bfpt|).$$
+% %   $$\Img(f)\defeq \aut_{\sum_{z:\BG'}\coker(f)(z)}(\sh_{G'},|\sh_G,\Bfpt|).$$
 % %   The first projection $\fst: B\image f\to \BG'$ is a \covering
-% %   (since $\coker(f)(z)$ is a set) giving a monomorphism $\incl_{\img f}$ of $\Img f$ into $G$;
-% %   together defining $\img f=(\Img f,\incl_{\img f},!):\typemono(G)$.
+% %   (since $\coker(f)(z)$ is a set) giving a monomorphism $\incl_{\img(f)}$ of $\Img(f)$ into $G$;
+% %   together defining $\img(f)=(\Img(f),\incl_{\img(f)},!):\typemono(G)$.
 
 
 % % The \emph{induced homomorphism} $\tilde f:\Hom(G,\image f)$ is given by sending $x:\BG$ to
@@ -884,22 +886,22 @@ This is forced by the uniqueness as follows.
 \begin{lemma}
   \label{lem:kerandcoker}
   Let $f:\Hom(G,G')$ be a group homomorphism.
-  The induced map $(B\prj_{\img f})^{-1}(\sh_{\Img f})\to (\Bf)^{-1}(\sh_{G'})$ gives an identification
+  The induced map $(B\prj_{\img(f)})^{-1}(\sh_{\Img(f)})\to (\Bf)^{-1}(\sh_{G'})$ gives an identification
   \[
-    \ker\prj_{\img f}\eqto _{\typemono(G)} \ker(f).
+    \ker\prj_{\img(f)}\eqto _{\typemono(G)} \ker(f).
   \]
 \end{lemma}
 \begin{proof}
-  Using univalence, this is a special case of \cref{cor:cokermaps} with $f_2\defeq\incl_{\img f}$ and $f_1\defeq\prj_{\img f}$.
-% This follows by univalence and connectivity since since for $x:\BG$ the first projection from the identity type $\sh_{\Img f}\eqto (\Bf(x),\trunc{(x,\refl{\Bf(x)})}_0)$ to $\sh_{G'}\eqto \Bf(x)$ is an equivalence (the fibers are true propositions).
+  Using univalence, this is a special case of \cref{cor:cokermaps} with $f_2\defeq\incl_{\img(f)}$ and $f_1\defeq\prj_{\img(f)}$.
+% This follows by univalence and connectivity since since for $x:\BG$ the first projection from the identity type $\sh_{\Img(f)}\eqto (\Bf(x),\trunc{(x,\refl{\Bf(x)})}_0)$ to $\sh_{G'}\eqto \Bf(x)$ is an equivalence (the fibers are true propositions).
   \footnote{%\color{blue}
     See also counting results for finite groups.
   }
 \end{proof}
 \begin{xca}
   \begin{enumerate}
-  \item If $f:\typemono(G')$, then $\ua(\prj_{\img f}):f\eqto _{\typemono(G')}\incl_{\img f}$.
-  \item If $f:\typeepi(G)$, then $\ua(\incl_{\img f}):f\eqto _{\typeepi(G)}\prj_{\img f}$.
+  \item If $f:\typemono(G')$, then $\ua(\prj_{\img(f)}):f\eqto _{\typemono(G')}\incl_{\img(f)}$.
+  \item If $f:\typeepi(G)$, then $\ua(\incl_{\img(f)}):f\eqto _{\typeepi(G)}\prj_{\img(f)}$.
   \end{enumerate}
 (True propositions suppressed).
 \end{xca}
