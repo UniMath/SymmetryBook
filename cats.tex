@@ -324,7 +324,7 @@ Another important special case is when every morphism is an isomorphism.
 There's no conflict with the terminology introduced in~\cref{sec:props-sets-grpds},
 because this construction gives an equivalence
 from the type of $1$-types (in $\UU$) to the type of groupoids (in $\UU$),
-as we shall see below.
+as we shall see below in~\cref{thm:1types-are-groupoids}.
 
 \Cref{def:wild-cat,def:precategory,def:category,def:wild-pre-groupoid}
 are summarized as a diagram of inclusions in~\cref{fig:cat-summary}.
@@ -1020,7 +1020,14 @@ the composite
 \label{sec:yoneda}
 
 \begin{definition}\label{def:yoneda}
-  For a locally small precategory $\mathcal C$,
+  For a locally small\footnote{%
+    We suppress the universe $\UU$,
+    even though any precategory is $\UU$-small
+    for some universe $\UU$;
+    the point is that we should consider the category
+    of $\UU$-small sets for the same universe
+    as the one containing the hom-sets.}
+  precategory $\mathcal C$,
   taking contravariant representable functors
   (recall \cref{ex:repr-functors}) induces a functor
   \[
@@ -1148,7 +1155,10 @@ gives one of the fundamental theorems of category theory:
   If $\mathcal C$ is a category, then the projection
   $(\mathcal C\equivto \mathcal D) \to (\mathcal C \to \mathcal D)$
   is an injection with image given
-  by the fully faithful and essentially surjective functors.
+  by the fully faithful and essentially surjective functors.\footnote{%
+    Compare~\cref{lem:inj+surj}, stating that a function
+    $f : A \to B$ of types is an equivalence if and only if it is
+    injective and surjective.}
 \end{theorem}
 \begin{corollary}\label{cor:Cat-ua}
   For categories $\mathcal C$ and $\mathcal D$ we have that
@@ -1240,8 +1250,54 @@ motivating the following definition.
   which is then essentially $\UU$-small
   by the Replacement~\cref{pri:replacement}.
 \end{proof}
+\begin{xca}\label{xca:Rezk-completion-locally-small}
+  Show that if $\mathcal C$ is a locally $\UU$-small,
+  then so is $L(\mathcal C)$, even though $\Set_\UU^{\mathcal C\op}$
+  is only locally $\UU$-small when $\mathcal C$ is essentially $\UU$-small
+  \parencite{FreydStreet1995}.
+\end{xca}
+% Solution: by Yoneda, Hom(\yo A, \yo B) is \UU-small
 
-% xca: failure of preservation of local UU-smallness
+Another consequence of~\cref{cor:Cat-ua} is the following.
+\begin{theorem}\label{thm:1types-are-groupoids}
+  For $1$-types $A$ and $B$,
+  the projection from the functor groupoid
+  $[A,B]$ to the function type $(A\to B)$ is an equivalence.
+  Consequently, the path groupoid construction (\cref{ex:path-groupoid})
+  is an equivalence $\UU^{\le1} \to \Gpd$,
+  where $\Gpd$ is the subtype of groupoids in $\Cat$.
+\end{theorem}
+\begin{proof}
+  Let's write out the definition of type of functors
+  in the case of path groupoids:
+  \begin{align*}
+    [A,B] \jdeq &\sum_{f : A \to B}
+    \sum_{g : \prod_{x,y:A}(x\eqto y) \to (f(x) \eqto f(y))}
+    \biggl(\prod_{x:A} g(\refl x) = \refl{f(x)}\biggr) \\
+    &\;\times \biggl(\prod_{x,y,z:A}\prod_{p:x\eqto y}\prod_{q:y\eqto z}
+    g(qp) = g(q)g(p)\biggr)
+  \end{align*}
+  Here, the two bracketed components are propositions.
+  By path induction, $g$ is determined by its action on reflexivity,
+  so the first bracketed component nails it down,
+  so only the first component, the function $f:A\to B$,
+  remains up to equivalence.
+
+  As a first consequence, the projection from the type of
+  equivalences of groupoids, $A \equivto B$,
+  to the type of equivalences of types, confusingly also denoted
+  $A \equivto B$, is an equivalence. (Hence the confusion is harmless.)
+
+  This shows that $\UU^{\le 1} \to \Gpd$ is injective, so by~\cref{lem:inj+surj},
+  it remains to show it is surjective. Observe that for a groupoid $\mathcal A$
+  with type of objects $A \defeq \Ob(\mathcal A)$, the hom-sets and the identity arrows
+  are determined by the univalence condition. And relative to this,
+  the composition operation is determined (by path induction) by its
+  values at $\refl{y}p$, for all $p:x\eqto y$.
+  But these values are forced to be $p$ by the left unit law.
+  This identifies any groupoid with the path groupoid on its objects,
+  show that $\UU^{\le 1} \to \Gpd$ is surjective.
+\end{proof}
 % straightening–unstraightening example
 % precategories are flagged categories
 % groupoids are 1-types
