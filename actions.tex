@@ -325,7 +325,7 @@ $(A,a)\ptdto(B_{(b)},(b,!))$.
   If $G$ is a group and $S$ is a set, then an \emph{action}
   of $G$ on $S$
   is a homomorphism from $G$ to the permutation group of $\SG_S$ of $S$.%
-  \index{actions!of a group on a set}
+  \index{action!of a group on a set}
 \end{definition}
 By the construction in~\cref{remark:GsetsareGsets} we identify $G$-sets
 and sets with an action of $G$ on a set.
@@ -2643,7 +2643,7 @@ Use \cref{cor:id-m-cycle}, univalence, and \cref{lem:trp-in-function-type}.}
 
 By \cref{cor:orbit-equiv}, the set of orbits $X/\CG_4$ is
 equivalent to the quotient of $\bn4\to\bn2$ induced by 
-$[\blank] : (\bn4\to\bn2) \to X/\CG_4$ from \cref{lem:X/G=setTruncX_hG}.
+$[\blank] : (\bn4\to\bn2) \to X/\CG_4$. % from \cref{lem:X/G=setTruncX_hG}.
 As also stated by that lemma, the equivalence class of any $x:\bn4\to\bn2$
 consists precisely of all cyclic rotations of $x$. Clearly, 
 $0000$ and $1111$ have singleton equivalence classes.
@@ -2770,24 +2770,34 @@ on base-$n$ sequences of length $p$.
   For any prime $p$ and natural number $n$, we have $p \mid {n^p-n}$.
 \end{theorem}
 \begin{proof}
-  Consider the action $X : \BCG_p \to \Set$ of the cyclic group $\CG_p$ on
-  a set of size $n^p$ given by
+  Consider the $\CG_p$-set $X : \BCG_p \to \Set$ defined by
   \[
     X(S,t) \defeq (S \to \bn n),
   \]
   for any $p$-cycle $(S,t)$. The underlying set is the type of functions
   $\bn p \to \bn n$, which is finite of cardinality $n^p$.
 
-  Now apply Burnside's~\cref{lem:burnside}. The stabilizer subgroup
-  of a function $f : \bn p \to \bn n$ is either trivial or all of $\CG_p$.
-  In the former case, $f$ is one of the $n$ constant functions,
-  and all the other $n^p-n$ possible functions are free.
-  We get:
+
+  
+  For any $f : \bn p \to \bn n$, we can apply \cref{xca:lagrange} to the
+  stabilizer subgroup $(\CG_p)_f$. But since $p = \Card(\CG_p)$ is prime,
+  $(\CG_p)_f$ can only be trivial or all of $\CG_p$. The latter happens when $f$
+  is one of the $n$ constant functions. Otherwise,\footnote{The set
+    $\bn p \to \bn n$ is finite, hence decidable, so there is no risk to make a
+    case-by-base analysis.} select $k$ such that $f(k) \neq f(0)$, and surely
+  $s^k \cdot f \neq f$: then $s^k$ is not in $\UCG_p$\footnote{More rigorously,
+    $s^k$ is not in the image of $\USymi_f$ where $i_f: (\CG_p)_f \to \CG_p$ is the
+    monomorphism defining the stablizer.} the only option is that $(\CG_p)_f$ is
+  trivial. In other words, $X^g$ is all of $X(\bn p,s)$ for
+  $g = \refl{(\bn p, s)}$, and only the constant functions for anyof the other
+  $p-1$ symmetries in $\UCG_p$.
+  
+  Now apply Burnside's~\cref{lem:burnside}. We get:
   \[
-    \Card\Bigl(\sum_{g:\UCG_p} X^g\Bigr)
-    = np + (n^p-n) = \Card(X/\CG_p) \times \Card(\CG_p),
+    n^p + n(p-1) = \Card\Bigl(\sum_{g:\UCG_p} X^g\Bigr) = \Card(X/\CG_p) \times
+    \Card(\CG_p) = \Card(X/\CG_p) \times p,
   \]
-  and since $\Card(\CG_p)=p$, we conclude that $p$ divides $n^p-n$.
+  and so we conclude that $p$ divides $n^p-n$.
 \end{proof}
 
 
@@ -2798,5 +2808,5 @@ on base-$n$ sequences of length $p$.
 %%% latex-block-names: ("lemma" "theorem" "remark" "definition" "corollary" "fact" "properties" "conjecture" "proof" "question" "proposition" "exercise")
 %%% TeX-master: "book"
 %%% TeX-command-extra-options: "-fmt=macros"
-%%% compile-command: "make book.pdf"
+%%% compile-command: "make"
 %%% End:
