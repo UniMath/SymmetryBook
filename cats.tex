@@ -54,7 +54,8 @@ and prepare for the main result of the next chapter,
 \section{Brief overview of the chapter}
 
 In~\cref{sec:categories} we define the kinds of categories we need, along with many examples (including the above).
-Then we discuss various abstract notions in categories (terminal and initial objects, products and coproducts)
+Then we discuss various abstract notions in categories
+(terminal and initial objects, monomorphisms and epimorphisms)
 and remark on the importance of \emph{duality} in~\cref{sec:duality}.
 In~\cref{sec:naturality} we cover functors and natural transformations,
 and in~\cref{sec:adjunctions} we treat adjunctions;
@@ -62,7 +63,13 @@ we have already seen some examples of adjunctions,
 for example in~\cref{xca:adjunction-_!-^*,xca:adjunction-^*-_*}.
 
 We have also seen an incarnation of the Yoneda lemma in~\cref{xca:TTYoneda};
-in~\cref{sec:yoneda} we treat the O.G.\ version. We end with a brief introduction to monoidal categories in~\cref{sec:monoidal-cats}, as we'll see in~\cref{ch:abelian} that abelian groups form an example.
+in~\cref{sec:yoneda} we treat the O.G.\ version.
+This is leveraged both in~\cref{sec:cat-equiv},
+where we cover equivalences of categories
+and the relationship with univalence,
+and in~\cref{sec:limits}, where we treat general limits and colimits.
+
+We end with a brief introduction to monoidal categories in~\cref{sec:monoidal-cats}, as we'll see in~\cref{ch:abelian} that abelian groups form an example.
 
 \section{Categories}
 \label{sec:categories}
@@ -1323,16 +1330,176 @@ This motivates the following definition.
 \begin{definition}\label{def:flagged-cat}
   A \emph{flagged category}\index{category!flagged}\index{flagged category}
   is a triple $(\mathcal C,A,f)$ of a category $\mathcal C$, a type $A$,
-  and a function $f : A \to \Ob(\mathcal C)$.\footnote{%
+  and a surjection $f : A \to \Ob(\mathcal C)$.\footnote{%
     The terminology is a bit whimsical:
-    it's meant to indicate that we have a ``fat'' object, a category $\mathcal C$,
-    equipped with a ``thinner'' object, a (higher) groupoid $A$,
-  glued together by the function $f$.}
+    it's meant to indicate that we have a fat ``flag'' object, the category $\mathcal C$,
+    equipped with a thinner ``flagpole'' object, the (higher) groupoid $A$,
+    connected by the function $f$:\\
+    \begin{center}
+    \begin{tikzpicture}
+      \draw[fill=casblue!30] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+      \node at (.5,.5) {$\mathcal C$};
+      \draw[fill=casred!30] (-.5,-1) -- (-.6,-1) -- (-.6,1) -- (-.5,1) -- cycle;
+      \node at (-.8,0) {$A$};
+      \draw[->] (-.4,.5) -- (-.1,.5);
+      \node at (-.25,.7) {$f$};
+    \end{tikzpicture}
+    \end{center}
+  }
+  We define the type of flagged categories to be
+  \[
+    \FlCat \defeq \sum_{\mathcal C:\Cat}
+    \sum_{A:\UU}\sum_{f:A\to\Ob(\mathcal C)}\issurj(f).\qedhere
+  \]
 \end{definition}
-% precategories are flagged categories
+The flagged categories describe the fibers
+of the Rezk completion.
+\begin{theorem}\label{thm:flagged-cat-equiv}
+  The map $F : \PreCat \to \FlCat$ sending a category $\mathcal C$
+  to the triple $(L(\mathcal C), \Ob(\mathcal C), \Ob(\eta))$
+  is an equivalence.\footnote{%
+    We conclude that the following triangle commutes definitionally,
+    displaying the fiber of Rezk completion
+    at a category $\mathcal C$ as the type
+    $\sum_{A:\UU}\sum_{f:A\to\Ob(\mathcal C)}\issurj(f)$:
+    \[
+      \begin{tikzcd}[column sep=small,ampersand replacement=\&]
+        \PreCat\ar[dr,"L"']\ar[rr,equivr,"F"] \& \&
+        \FlCat \ar[dl,"\fst"] \\
+        \& \Cat \&
+      \end{tikzcd}
+    \]}
+\end{theorem}
+\begin{proof}
+  The inverse at a triple $(\mathcal C,A,f)$
+  ``pulls back'' the (pre)category structure $\mathcal C$
+  along $f$ to get a precategory $\mathcal A$ on the object type $A$ and
+  \[
+    \hom(x,y) \defeq \hom_{\mathcal C}(f(x), f(y)),
+  \]
+  and likewise using $f$ to define identity arrows, composition, as well
+  as unit and associativity laws. By construction, this extends $f$
+  to a fully faithful functor $f : \mathcal A \to \mathcal C$.
+  This is also essentially surjective by the surjectivity of $f$,
+  hence inducing an equivalence $L(\mathcal A) \equivto \mathcal C$.
+
+  For the other round trip, starting with a precategory $\mathcal C$,
+  we use the fully faithfulness of $\eta : \mathcal C \to L(\mathcal C)$
+  to identify the precategory structure on $\Ob(\mathcal C)$ with that
+  pulled back from $L(\mathcal C)$.
+\end{proof}
+\begin{remark}\label{rem:chicken-or-egg}
+  We have seen that precategories and categories
+  are connected by an injection and retraction $L$:
+  \[
+    \begin{tikzcd}[column sep=large]
+      \Cat\ar[r,bend left,hook] &
+      \PreCat\ar[l,bend left,"L"]
+    \end{tikzcd}
+  \]
+  From the point of view of precategories,
+  categories are precategories with an extra property
+  (univalence), while from the point of view of categories,
+  precategories are categories equipped with extra (higher) structure
+  (the flagged structure).
+\end{remark}
 
 \section{Limits and colimits}
 \label{sec:limits}
+
+We have also seen two instances of limits and colimits,
+namely terminal and initial objects
+(\cref{def:terminal-obj,def:initial-obj}, respectively).
+We now build up to the general notions by first looking at
+another dual pair of examples: products and coproducts.
+
+\begin{marginfigure}
+  \footnotesize\raggedright(1)
+  $\begin{tikzcd}
+    & P \ar[dl,"p_1"']\ar[dr,"p_2"] & \\
+    A & & B
+  \end{tikzcd}$\\
+  (2)
+  $\begin{tikzcd}
+    & X \ar[ddl,"x_1"',bend right=5]\ar[ddr,"x_2",bend left=5]
+    \ar[d,dashed,"f"] & \\[4mm]
+    & P \ar[dl,"p_1"]\ar[dr,"p_2"'] & \\
+    A & & B
+  \end{tikzcd}$
+  \caption{(1) A product cone, and (2) its universal property.}
+  \label{fig:product-cone}
+\end{marginfigure}
+\begin{definition}\label{def:prod-in-a-cat}
+  In a wild precategory $\mathcal C$, a \emph{product cone}
+  for a pair of objects $A$ and $B$ is a triple $(P,p_1,p_2)$
+  as in the diagram in~\cref{fig:product-cone}(1),
+  satisfying the \emph{universal property of the product},
+  namely that for any other cone of the same form $(X,x_1,x_2)$,
+  there is a unique arrow $f : X \to P$ with $x_i \eqto p_if$, for $i=1,2$,
+  \ie filling the triangles in~\cref{fig:product-cone}(2).
+\end{definition}
+\begin{xca}\label{xca:product-cone-prop}
+  Show that if $\mathcal C$ is univalent, then the type of products cones
+  on given objects $A,B$ is a proposition.
+\end{xca}
+
+We immediately recognize the product of types $A\times B$,
+along with the first and second projections,
+as a product cone $(A\times B,\fst,snd)$ in the wild category of types.
+Likewise, in the category of groups,
+the product $G\times H$ from~\cref{ex:productofgroups}
+forms a product cone when equipped with the projection homomorphisms.
+
+We say that a (wild) category \emph{has binary products}
+if every pair of objects $A,B$ as a product cone.
+In this case we are justified by~\cref{xca:product-cone-prop}
+in writing $(A\times B,\fst,\snd)$ for the (unique) product cone
+on $A,B$.
+
+\begin{remark}\label{def:product-cones-as-terminal}
+  We can recover the notion of product cone from that
+  of terminal objects by considering the wild (pre)\emph{category of cones}
+  given fixed objects $A,B$. This has a objects the cones
+  of~\cref{fig:product-cone}(1) and as arrows
+  the filled triangles of~\cref{fig:product-cone}(2).
+  A product cone is then simply a terminal cone.
+\end{remark}
+
+Like every categorical notion, there is of course a dual notion,
+obtained by turning all the arrows around.
+\begin{marginfigure}
+  \footnotesize\raggedright(1)
+  $\begin{tikzcd}
+    A & & B \\
+    & C \ar[<-,ul,"i_1"]\ar[<-,ur,"i_2"'] &
+  \end{tikzcd}$\\
+  (2)
+  $\begin{tikzcd}
+    A & & B \\
+    & C \ar[<-,ul,"i_1"']\ar[<-,ur,"i_2"] & \\[4mm]
+    & X \ar[<-,uul,"x_1",bend left=5]\ar[<-,uur,"x_2"',bend right=5]
+    \ar[<-,u,dashed,"f"'] &
+  \end{tikzcd}$
+  \caption{(1) A coproduct cocone, and (2) its universal property.}
+  \label{fig:coproduct-cone}
+\end{marginfigure}
+\begin{definition}\label{def:coprod-in-a-cat}
+  In a wild precategory $\mathcal C$, a \emph{coproduct cocone}
+  for a pair of objects $A$ and $B$ is a triple $(C,i_1,i_2)$
+  as in the diagram in~\cref{fig:coproduct-cone}(1),
+  satisfying the \emph{universal property of the coproduct},
+  namely that for any other cocone of the same form $(X,x_1,x_2)$,
+  there is a unique arrow $f : C \to X$ with $x_j \eqto fi_j$, for $j=1,2$,
+  \ie filling the triangles in~\cref{fig:product-cone}(2).
+\end{definition}
+In other words, a coproduct cocone is an initial cocone
+under the pair of objects $A,B$.
+
+In the wild category of types, we have coproduct cocones $(A \coprod B, \inl{}, \inr{})$. We haven't yet seen the coproduct of groups;
+knowing about products and categorical duality, we'd be bound to discover
+them! We shall study them in~\cref{sec:coprod}.
+
+Let's look at another pair of examples: pullbacks and pushouts.
 
 % products and coproducts, pullbacks and pushouts, (co)equalizers, (co)limits
 % product and exponential in types
