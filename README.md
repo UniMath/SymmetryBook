@@ -10,7 +10,7 @@ This book will be a textbook written in the univalent style, taking advantage of
   If the type is a set, we may denote its identity types by a = b and call them *equations*. When a = b has an element we say that a and b are *equal*.
 - Types similar to identity types, like the type of eqivalences from A to B, are also denoted with a macro ending in "to", like \equivto, producing ⥲ (that is an arrow with an equivalence sign on top).
 - The type containing the variable in a family is called the "parameter type", not the "index type", nor the "base type".
-- Being equal by definiton is denoted with three lines and is called just that, and not *definitionally equal* or *judgmentally equal*.
+- Being equal by definiton is denoted with three lines and is called just that, and not *judgmentally equal*.
 - A synonym of "function" is "map".  We don't use "mapping" or "application" as synonyms.
 - In the preliminary chapters (up to subgroups), the underlying set map U from groups to sets has to be applied explicitly. Thereafter, it can be a coercion.
 - Composition of p: a⥱b and q: b⥱c is denoted by either p∗q (p\ct q), or by q·p (q\cdot p), qp or q∘p (q\circ p). The latter is preferred when p and q come from equivalences.
@@ -23,6 +23,7 @@ This book will be a textbook written in the univalent style, taking advantage of
 - Hints to exercises go in footnotes in the margin, with the footnote marker at the end of the exercise.
 - Margin notes should usually to be made as footnotes (i.e., with a footnote marker).
 - For a G-set X, we also write X for the underlying set, and we may write X^z to mean X twisted by a G-shape z : BG.
+- Abstract G-sets have the action on the left, because many groups are built out of functions. As a consequence, for groups we prefer the covariant Yoneda embedding BGᵒᵖ → (BG → Set), z ↦ w ↦ (z ⥱ w). Hence the Cayley representation, in all its instances, is z ↦ (z = sh).
 - Whenever possible, do not use a letter for a variable when the same letter is being used as an operator. E.g., try to avoid a variable B when the classifying type/map operator B is used in the same paragraph.
 - Use macros with mathematical meaning, such as \conncomp, whenever possible, for uniformity of notation.
 - Avoid the use of acronyms, such as LEM and LPO.
