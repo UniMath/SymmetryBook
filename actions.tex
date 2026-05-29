@@ -2119,9 +2119,11 @@ $pq^{-1}:\pathsp z(x)\jdeq(z\eqto x)$.\footnote{In a commutative diagram,
 \end{remark}
 
 For connoisseurs of category theory, the following lemma is a corollary of a
-\emph{type-theoretic Yoneda lemma},\footnote{This is not just an analogy: using
-  \cref{thm:1types-are-groupoids} and \cref{thm:yoneda-lemma}, we obtain the same
-  result.} and the proof is \cref{xca:TTYoneda}.\footnote{%
+\emph{type-theoretic Yoneda lemma},\footnote{This is more than an analogy: using
+  \cref{thm:1types-are-groupoids} and \cref{thm:yoneda-lemma}, we obtain almost
+  the same result. The only difference lies in that our $\princ G$ here
+  translates to a \emph{covariant} representable instead of a contravariant
+  one.} and the proof is \cref{xca:TTYoneda}.\footnote{%
   It is also possible to prove the lemma directly by an application of
   \cref{lem:weq-iso}: Take as inverse equivalence the map $Q$ mapping any
   $f:\pathsp y \eqto \pathsp z$ to
@@ -2179,9 +2181,9 @@ $\pathsp {\Bf(z)}^H$, but how do we express this for an arbitrary $G$-torsor?
   the \emph{induced $H$-set}\index{action!induced}\index{induced action}
   $f_!X : \BH\to\Set$ by setting, for $w:\BH$,\footnote{%
 \label{ft:f_!X(w)-orbitset}
-Note that the set $f_!X(w)$ can also be identified as the orbit set of
-the $G$-set $(z:\BG) \mapsto (\Bf(z) \eqto w)\times X(z)$,
-whose underlying set is equivalent to $\princ H(w)\times X(\sh_G)$.}
+Note that the set $f_!X(w)$ can also be identified as the set of orbits of the
+$G$-set $(z:\BG) \mapsto (\Bf(z) \eqto w)\times X(z)$, whose underlying set is
+equivalent to $\princ H(w)\times X(\sh_G)$.}
   \[
     f_!X(w)\defeq\setTrunc[\bigg]%
     {\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}.\qedhere
@@ -2192,7 +2194,9 @@ The following exercise shows that the set-truncation in the definition
 of $f_!$ above really makes a difference.\footnote{%
     This situation is common in algebra and is often referred to by saying
     that some construction, in this case the untruncated
-    definiens of $f_!X$, is not ``exact''. See also \cref{xca:why-setTrunc_f_!}.}
+    definiens of $f_!X$, is not ``exact''. %
+    % See also \cref{xca:why-setTrunc_f_!}. <-- already referenced in text
+  }
 
 \begin{xca}\label{xca:why-setTrunc_f_!}
 Find groups $G,H$, a homomorphism $f:\Hom(G,H)$ and a $G$-set $X$ such
@@ -2477,104 +2481,147 @@ $$\rho_G:\Hom(G,\SG_{\USymG}).$$
 \end{theorem}
 
 \begin{proof}
-  In view of \cref{def:typeofmono} we need to show that 
-  $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a \covering.
-  Note first that $\princ G$ factors as: 
-%in \cref{fig:PrincG=evP_}.
-%\begin{figure}[h]
-\[
-\begin{tikzcd}[ampersand replacement=\&]
-    \BG \ar[r,equivr,"{\pathsp{\blank}}"]\ar[ddr,"{\princ G}"']
-    \& (\typetorsor_G,\princ G) \ar[dd,"{\ev_{\sh_G}}"]\jdeq\bigl((\BG\to\Set)_{(\princ G)},\princ G\bigr)
-    \\ \\
-    \& \BSG_{\USymG}\jdeq(\Set_{(\USymG)},\USymG)
-\end{tikzcd}
-\]
-%\caption{\label{fig:PrincG=evP_}Factorization of $\princ G$.}
-%\end{figure}
-In this diagram, $\pathsp{\blank}:\BG\ptdto (\typetorsor_G,\princ G)$
-is the equivalence of \cref{lem:BGbytorsor}, and
-$\ev_{\sh_G}:\conncomp{(\BG\to\Set)}{\princ G}\ptdto
-  \conncomp{\Set}{\USymG}$ is the evaluation map defined by 
-$\ev_{\sh_G}(E)\defeq E(\sh_G)$ and pointed by reflexivity.
-In \cref{xca:evP_isPrG} you are asked to justify this factorization.
+  In view of \cref{def:typeofmono} we need to show that
+  $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a \covering.  Note first
+  that $\princ G$ can be factorized as:
+  \[
+    \begin{tikzcd}[ampersand replacement=\&]
+      \BG \ar[r,equivr,"{\pathsp{\blank}^G}"]\ar[dr,"{\princ G}"']
+      \& (\typetorsor_G,\princ G) \ar[d,"{\ev_{\sh_G}}"]%\jdeq\bigl((\BG\to\Set)_{(\princ G)},\princ G\bigr)
+      \\
+      \& \BSG_{\USymG}%\jdeq(\Set_{(\USymG)},\USymG)
+    \end{tikzcd}
+  \]
+  Here, $\pathsp{\blank}^G:\BG\to (\typetorsor_G,\princ G)$ is the map from
+  \cref{lem:BGbytorsor}, and
+  $\ev_{\sh_G}: (\typetorsor_G,\princ G)\to \conncomp{\Set}{\USymG}$ is the
+  evaluation map defined by $\ev_{\sh_G}(X)\defeq X(\sh_G)$. This is a diagram
+  of unpointed maps that can be filled through function extensionality: for any
+  $x:\BG$, path symmetry gives an equivalence from
+  $\pathsp x^G(\sh_G) \jdeq (x \eqto \sh_G)$ to
+  $\princ G (x) \jdeq (\sh_G \eqto x)$. In other words, we have an
+  identification $\sigma : \ev_{\sh_G} \circ \pathsp{\blank}^G \eqto \princ G$.
 
-  We must show that for $X:\Set_{(\USymG)}$ the fiber
-  $\inv{\ev_{\sh_G}}(X)$  is a set. This fiber is by definition
-  $\sum_{E:(\BG\to\Set)_{(\princ G)}}(X\eqto E(\sh_G))$, which
-  is a subtype of $\sum_{E:\BG\to\Set}(X\eqto E(\sh_G))$.
-  The latter is the type of pointed maps from $\BG$ to $(\Set,X)$
-  and hence a set by \cref{lem:hom-is-set}, 
-  in particular \cref{ft:ptd-decr-h-lev}.
-  Therefore the fiber $\inv{\ev_{\sh_G}}(X)$ is also a set.
+  Since $\princ G$ is an equivalence, we are done if we show that, for any
+  $S:\Set_{(\USymG)}$, the fiber $\inv{\ev_{\sh_G}}(S)$ is a set. This fiber is
+  by definition $\sum_{X:\typetorsor_G}(S\eqto X(\sh_G))$, which is a subtype of
+  $\sum_{X:\BG\to\Set}(S\eqto X(\sh_G))$. The latter is the type of pointed maps
+  from $\BG$ to $(\Set,S)$ and hence a set by \cref{lem:hom-is-set} (more
+  speicifcallu \cref{ft:ptd-decr-h-lev} since $\BG$ is connected and $\Set$ is a
+  groupoid). Therefore the fiber $\inv{\ev_{\sh_G}}(S)$ a set.
 \end{proof}
-  Note that the above theorem yields that 
-  $(G,\rho_G,!)$ is a monomorphism into $\SG_{\USymG}$.
-  In other words, $G$ is a subgroup of $\SG_{\USymG}$.
+\wip{%
+  Isn't it a bit overkill to use the equivalence with torsors? I feel the
+  following proof is much simpler:
+  \begin{proof}
+    We need to show that $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a
+    \covering. For any set $X:\BSG_{\USymG}$, the fiber of $\rho_G$ at $X$ is
+    \begin{displaymath}
+      \inv {\rho_G} (X) \jdeq \sum_{z : \BG}X \eqto \princ G (z).
+    \end{displaymath}
+    Take two elements $(z_1,\phi_1)$ and $(z_2,\phi_2)$ of this fiber. Then an
+    identification of type $(z_1,\phi_1) \eqto (z_2,\phi_2)$ is given by
+    $p: z_1 \eqto z_2$ and such that commutes the triangle
+    \begin{displaymath}
+      \begin{tikzcd}[ampersand replacement=\&]
+        X \rar["\phi_1"] \drar["\phi_2"swap]
+        \& (\sh_G \eqto z_1) \dar["p\cdot\blank"]
+        \\
+        \& (\sh_G \eqto z_2)
+      \end{tikzcd}
+    \end{displaymath}
+    In proving the proposition that such a $p$ is unique, we can use the
+    connectedness of $\BG$ and suppose that $z_1\jdeq\sh_G$, in which case we
+    can see that $p$ is fully determined by the other data: $p$ must be
+    $\phi_2(\inv{\phi_1}(\refl{\sh_G}))$.
+  \end{proof}%
+}
 
-\begin{xca}\label{xca:evP_isPrG}
-Show that $\princ G$ and ${\ev_{\sh_G}}\circ{\pathsp{\blank}}$ are
-equal as pointed maps.
-\end{xca}
+
+Note that the above theorem yields that $(G,\rho_G)$ is a monomorphism into
+$\SG_{\USymG}$. In other words, $G$ is a subgroup of $\SG_{\USymG}$.
+
+%% --- This exercise is just plain false --- 
+% \begin{xca}\label{xca:evP_isPrG}
+% Show that $\princ G$ and ${\ev_{\sh_G}}\circ{\pathsp{\blank}}$ are
+% equal as pointed maps.
+% \end{xca}
 
 \begin{remark}\label{rem:CayleyOversize}
-In many cases, the set $\USymG$ used in \cref{lem:allgpsarepermutationgps} is larger than necessary for
-obtaining the symmetries in $G$ as symmetries of a set.
-A case in point is the group $\SG_3$, where the symmetries \emph{are}
-already symmetries of a set, namely of the set $\bn3$. However,
-$\USG_3\jdeq(\bn3\eqto\bn3)$ is a $6$-element set. 
-Let's take a closer look at where and how this happens in the proof.
+  In many cases, the set $\USymG$ used in \cref{lem:allgpsarepermutationgps} is
+  larger than necessary for obtaining the symmetries in $G$ as symmetries of a
+  set. A case in point is the group $\SG_3$, where the symmetries \emph{are}
+  already symmetries of a set, namely of the set $\bn3$. However,
+  $\USG_3\jdeq(\bn3\eqto\bn3)$ is a $6$-element set.  Let's take a closer look
+  at where and how this happens in the proof.
 
-As stated in \cref{xca:evP_isPrG}, the map $\princ G: 
-\BG\ptdto\conncomp{\Set}{\USymG}$ classifying the monomorphism $\rho_G$ 
-is decomposed as an equivalence $\pathsp{\blank}$
-followed by the evaluation map $\ev_{\sh_G}$.
-This is depicted in the following diagram, where the
-second line shows the induced maps on the symmetries.
+  As we noticed in the proof of \cref{lem:allgpsarepermutationgps}, the map
+  $\princ G: \BG\ptdto\conncomp{\Set}{\USymG}$ classifying the monomorphism
+  $\rho_G$ is decomposed as an equivalence $\pathsp{\blank}$ (pointed by
+  reflexivity) followed by the evaluation map $\ev_{\sh_G}$ pointed by
+  $\sigma_{\sh_G} \jdeq \inv{(\blank)} : \USymG \eqto \USymG$. This is depicted in the
+  following diagram, where the second line shows the induced maps on the
+  symmetries.
    \[
      \begin{tikzcd}
-     \BG \ar[r,equivr,"\pathsp{\blank}"] & 
-     (\typetorsor_G,\princ G) \ar[r,"\ev_{\sh_G}"]&
+     \BG \ar[rr,equivr,"\pathsp{\blank}"] && 
+     (\typetorsor_G,\princ G) \ar[rr,"\ev_{\sh_G}"]&&
      \conncomp{\Set}{\USymG}\\
-     \USymG \ar[r,equivr,"\pathsp{\blank}"] &   %\loops?
-     (\princ G \eqto \princ G) \ar[r,"\ev_{\sh_G}"]&  %\loops?
+     \USymG \ar[rr,equivr,"\pathsp{\blank}"] &&   %\loops?
+     (\princ G \eqto \princ G)
+     \ar[rr,"\inv{\sigma_{\sh_G}} \circ\ev_{\sh_G}(\blank)\circ \sigma_{\sh_G}"]&&  %\loops?
      (\USymG \eqto \USymG)  
      \end{tikzcd}
    \]
-Let $\PP$ be the $G$-set given by 
-$\PP(z)\defeq(\princ G(z) \eqto \princ G(z))$ for all $z:\BG$.
-By function extensionality, $\princ G \eqto \princ G$ is
-equivalent to $\prod_{z:\BG}\PP(z)$, the type of
-invariant maps of $\PP$.
-By \cref{lem:fixpts-are-fixed}\ref{it:ev-is-inj}, such invariant maps,
-and hence the corresponding symmetries of $\princ G$, are uniquely
-determined by their value at $\sh_G$.\footnote{%
-This is an alternative way to understand that $\ev_{\sh_G}$,
-and hence $\princ G$, classifies a monomorphism.}
+   Let $\PP$ be the $G$-set given by
+   $\PP(z)\defeq(\princ G(z) \eqto \princ G(z))$ for all $z:\BG$. By function
+   extensionality, $\princ G \eqto \princ G$ is equivalent to
+   $\prod_{z:\BG}\PP(z)$, the type of invariant maps of $\PP$. By
+   \cref{lem:fixpts-are-fixed}\ref{it:ev-is-inj}, an invariant map $h$, and
+   hence the corresponding symmetries of $\princ G$, is uniquely determined by
+   its value $h_{\sh_G}$ at $\sh_G$, and thus also by the permuatation
+   $\inv{(h_{\sh_G}(\inv\blank))}$.\footnote{%
+     This is an alternative way to understand that $\ev_{\sh_G}$, and hence
+     $\princ G$, classifies a monomorphism.%
+   } %
+   The underlying set of $\PP$ is $\PP(\sh_G)\jdeq(\USymG \eqto \USymG)$.
+   \cref{lem:fixpts-are-fixed}\ref{it:ev-is-eq-on-inv} characterizes exactly the
+   invariant maps of $\PP$ as corresponding via $\ev_{\sh_G}$ with elements of
+   $\USymG \eqto \USymG$ fixed by the action of $\PP$. How does $\PP$ act on
+   $\USymG$? See exercise \cref{xca:PP-fixed-permutations}.
 
-Note that the underlying set of $\PP$ is 
-$\PP(\sh_G)\jdeq(\USymG \eqto \USymG)$.
-\cref{lem:fixpts-are-fixed}\ref{it:ev-is-eq-on-inv} characterizes
-exactly the invariant maps of $\PP$ as corresponding via $\ev_{\sh_G}$
-with fixed elements of $\USymG \eqto \USymG$. In other words,
-$\ev_{\sh_G}$ forgets about the extra structure of $\PP$
-and sends invariant maps of $\PP$ to fixed permutations of $\USymG$.
-For example, in the case of $\SG_3$, we go in total from permutations
-of $\bn3$ to fixed permutations of the $6$-element set $\bn3\eqto\bn3$.
-
-In \cref{xca:PP-fixed-permutations} you are asked to explore
-the abstract group of fixed permutations of $\USymG$.
+   In other words, $\ev_{\sh_G}$ forgets about the extra structure of $\PP$ and
+   sends invariant maps of $\PP$ to fixed permutations of $\USymG$. For example,
+   in the case of $\SG_3$, the fixed permutations are the 3 elements of
+   $\bn3\eqto\bn3$ given by multiplication by each of the 3 elements of $\bn3$.
 \end{remark}
 
 \begin{xca}\label{xca:PP-fixed-permutations}
-Let conditions be as in \cref{rem:CayleyOversize}.
-By analyzing transport in the type family $\princ G(\blank)$,
-show that a permutation $\pi$ of $\USymG$
-is fixed if and only if $\pi(gg')=g\pi(g')$ for all $g,g':\USymG$.
-Show that the fixed permutations of $\USymG$ form an abstract group
-and that evaluation of such a permutation at $\refl{\sh_G}$
-yields an abstract isomorphism from this group to $\abstr(G)$.
+  Let conditions be as in \cref{rem:CayleyOversize}.  By analyzing transport in
+  the type family $\princ G(\blank)$, show that a permutation $\pi$ of $\USymG$
+  is fixed if and only if $\pi(gg')=g\pi(g')$ for all $g,g':\USymG$.  Show that
+  the fixed permutations of $\USymG$ form an abstract group and that evaluation
+  of such a permutation at $\refl{\sh_G}$ yields an abstract isomorphism from
+  this group to \wip{the opposite of} $\abstr(G)$.
 \end{xca}
+
+\wip{%
+  Double checking the exercise's solution:
+  \begin{proof}
+    Note that a quick induction on $p: z\eqto z'$ in $\BG$ shows that, for all
+    $q: (\sh_G\eqto z') \eqto (\sh_G\eqto z')$, we have
+    $\PP(p)(q) = p \cdot q(\inv p \cdot \blank)$. So the action of $g:\USymG$ on
+    a symmetry $\varphi:\USymG \eqto\USymG$ is
+    $g\cdot\varphi = g\varphi(\inv g \cdot \blank)$. When such a $\varphi$ is
+    fixed by the action, then $g\varphi(\inv g \blank) = \varphi$ for all
+    $g$. That is $\forall g,g', \varphi(g g') = g\varphi(g')$. In other words,
+    $\varphi = \blank \varphi(\refl{\sh_G})$. So, all in all,
+    $\USym (\mkgroup(\ev_G,\sigma_{\sh_G})) (h) = x \mapsto
+    \inv(h_{\sh_G}(\refl{\sh_G}))x$. When $h \jdeq \princ g$ for some
+    $g:\USymG$, we get $h_{\sh_G}(\refl{\sh_G}) = \refl{\sh_G} \inv g$, so the
+    selected permutation is indeed the left multiplication $x \mapsto g x$.
+  \end{proof}%
+}
 
 \section{The lemma that is not Burnside's}
 \label{sec:burnsides-lemma}
