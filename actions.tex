@@ -2453,71 +2453,75 @@ Summing up, we have implemented the following:
 \label{sec:groupssubperm}
 
 
-For abstract groups there is a result, attributed to Cayley,
-which is often stated as ``any group is a permutation group''. 
-In our parlance this translates to ``any symmetry is a symmetry in $\Set$''.
-The aim of this section is to give a precise formulation of the latter
-and prove it, using what we learned in \cref{sec:torsors}.
-% \footnote{which reminds me of the following: my lecturer in cosmology once tried to publish a paper about rotating black holes, only to have it rejected because it turned out that it was his universe, not the black hole, that was rotating}
+For abstract groups there is a result, attributed to Cayley, which is often
+stated as ``any group is a permutation group''.  In our parlance this translates
+to ``any symmetry is a symmetry in $\Set$''.  The aim of this section is to give
+a precise formulation of the latter and prove it, using what we learned in
+\cref{sec:torsors}.
+% \footnote{which reminds me of the following: my lecturer in cosmology once
+% tried to publish a paper about rotating black holes, only to have it rejected
+% because it turned out that it was his universe, not the black hole, that was
+% rotating}
 
 %which is equivalent to saying that $X$ is the universal \covering
-Let $G$ be a group.
-Recall from \cref{def:principaltorsor} the principal torsor
-$\princ G:\BG\to\Set: z\mapsto (\sh_G\eqto z)$.
-Since $\princ G (\sh_G)\defequi \USymG$, $\princ G$ restricts to
-a pointed function $\BG\ptdto \BSG_{\USymG}$, \ie 
-classifies a homomorphism from $G$ to the permutation group 
-$\SG_{\USymG}\jdeq \Aut_{\Set}(\USymG)$,
-denoted by\footnote{The letter $\rho$ commemorates the word ``regular''} 
-$$\rho_G:\Hom(G,\SG_{\USymG}).$$
+Let $G$ be a group. Recall from \cref{lem:BGbytorsor} the equivalence
+\begin{displaymath}
+  \pathsp{\blank}^G:\BG\equivto\typetorsor_G : z \mapsto \{ y \mapsto (z \eqto y)\}.
+\end{displaymath}
+Fixing the second argument to $\sh_G$, we obtain a map
+$\pathsp{\blank}^G(\sh_G):\BG\to\Set$. And since
+$\pathsp(\sh_G)^G(\sh_G)\jdeq \USymG$, we can point $\pathsp{\blank}^G(\sh_G)$
+with reflexivity to make it a pointed function $\BG\ptdto \BSG_{\USymG}$, \ie it
+classifies a homomorphism from $G$ to the permutation group
+$\SG_{\USymG}\jdeq \Aut_{\Set}(\USymG)$, denoted by\footnote{The letter $\rho$
+  commemorates the word ``regular''}
+\begin{displaymath}
+  \rho_G:\Hom(G,\SG_{\USymG}).
+\end{displaymath}
 
 \begin{theorem}[Cayley]
   \label{lem:allgpsarepermutationgps}
   For any group $G$, $\rho_G$ is a monomorphism.\footnote{By
-  \cref{def:typeofmono}, $\rho_G$ is a monomorphism means 
-  that the induced map $\USym\rho_G$ from the symmetries of $\sh_G$ in 
-  $\BG_\div$ to the symmetries of $\USymG$ in $\Set$ is an injection, 
-  \ie ``any symmetry is a symmetry in $\Set$''.}  
+    \cref{def:typeofmono}, $\rho_G$ is a monomorphism means that the induced map
+    $\USym\rho_G$ from the symmetries of $\sh_G$ in $\BG_\div$ to the symmetries
+    of $\USymG$ in $\Set$ is an injection, \ie ``any symmetry is a symmetry in
+    $\Set$''.}
 \end{theorem}
 
 \begin{proof}
   In view of \cref{def:typeofmono} we need to show that
-  $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a \covering.  Note first
-  that $\princ G$ can be factorized as:
+  $\B\rho_G\jdeq\pathsp{\blank}^G(\sh_G) :\BG \to \BSG_{\USymG}$ is a \covering.
+  Note first that $\pathsp{\blank}^G(\sh_G)$ can be factorized, as a pointed
+  map, as:\footnote{All the maps involved are pointed maps between groupoids, so
+    the commutativity of this triangle is a proposition.}
   \[
     \begin{tikzcd}[ampersand replacement=\&]
-      \BG \ar[r,equivr,"{\pathsp{\blank}^G}"]\ar[dr,"{\princ G}"']
+      \BG \ar[r,equivr,"{\pathsp{\blank}^G}"]\ar[dr,"\B\rho_G"']
       \& (\typetorsor_G,\princ G) \ar[d,"{\ev_{\sh_G}}"]%\jdeq\bigl((\BG\to\Set)_{(\princ G)},\princ G\bigr)
       \\
       \& \BSG_{\USymG}%\jdeq(\Set_{(\USymG)},\USymG)
     \end{tikzcd}
   \]
-  Here, $\pathsp{\blank}^G:\BG\to (\typetorsor_G,\princ G)$ is the map from
-  \cref{lem:BGbytorsor}, and
-  $\ev_{\sh_G}: (\typetorsor_G,\princ G)\to \conncomp{\Set}{\USymG}$ is the
-  evaluation map defined by $\ev_{\sh_G}(X)\defeq X(\sh_G)$. This is a diagram
-  of unpointed maps that can be filled through function extensionality: for any
-  $x:\BG$, path symmetry gives an equivalence from
-  $\pathsp x^G(\sh_G) \jdeq (x \eqto \sh_G)$ to
-  $\princ G (x) \jdeq (\sh_G \eqto x)$. In other words, we have an
-  identification $\sigma : \ev_{\sh_G} \circ \pathsp{\blank}^G \eqto \princ G$.
+  Here, $\ev_{\sh_G}: \typetorsor_G\to \conncomp{\Set}{\USymG}$ is the
+  evaluation map defined by $\ev_{\sh_G}(X)\defeq X(\sh_G)$ and pointed by
+  reflexivity.
 
-  Since $\princ G$ is an equivalence, we are done if we show that, for any
-  $S:\Set_{(\USymG)}$, the fiber $\inv{\ev_{\sh_G}}(S)$ is a set. This fiber is
-  by definition $\sum_{X:\typetorsor_G}(S\eqto X(\sh_G))$, which is a subtype of
-  $\sum_{X:\BG\to\Set}(S\eqto X(\sh_G))$. The latter is the type of pointed maps
-  from $\BG$ to $(\Set,S)$ and hence a set by \cref{lem:hom-is-set} (more
-  speicifcallu \cref{ft:ptd-decr-h-lev} since $\BG$ is connected and $\Set$ is a
+  Since $\pathsp{\blank}^G$ is an equivalence, we are done if we show that, for
+  any $S:\Set_{(\USymG)}$, the fiber $\inv{\ev_{\sh_G}}(S)$ is a set. This fiber
+  is by definition $\sum_{X:\typetorsor_G}(S\eqto X(\sh_G))$, which is a subtype
+  of $\sum_{X:\BG\to\Set}(S\eqto X(\sh_G))$. The latter is the type of pointed
+  maps from $\BG$ to $(\Set,S)$ and hence a set by \cref{lem:hom-is-set} (more
+  speicifcally \cref{ft:ptd-decr-h-lev}, since $\BG$ is connected and $\Set$ is a
   groupoid). Therefore the fiber $\inv{\ev_{\sh_G}}(S)$ a set.
 \end{proof}
 \wip{%
   Isn't it a bit overkill to use the equivalence with torsors? I feel the
   following proof is much simpler:
   \begin{proof}
-    We need to show that $\B\rho_G\jdeq\princ G :\BG \to \BSG_{\USymG}$ is a
-    \covering. For any set $X:\BSG_{\USymG}$, the fiber of $\rho_G$ at $X$ is
+    We need to show that $\B\rho_G :\BG \to \BSG_{\USymG}$ is a \covering. For
+    any set $X:\BSG_{\USymG}$, the fiber of $\rho_G$ at $X$ is
     \begin{displaymath}
-      \inv {\rho_G} (X) \jdeq \sum_{z : \BG}X \eqto \princ G (z).
+      \inv {\rho_G} (X) \jdeq \sum_{z : \BG}X \eqto \pathsp z^G (\sh_G).
     \end{displaymath}
     Take two elements $(z_1,\phi_1)$ and $(z_2,\phi_2)$ of this fiber. Then an
     identification of type $(z_1,\phi_1) \eqto (z_2,\phi_2)$ is given by
@@ -2525,9 +2529,9 @@ $$\rho_G:\Hom(G,\SG_{\USymG}).$$
     \begin{displaymath}
       \begin{tikzcd}[ampersand replacement=\&]
         X \rar["\phi_1"] \drar["\phi_2"swap]
-        \& (\sh_G \eqto z_1) \dar["p\cdot\blank"]
+        \& (z_1 \eqto \sh_G) \dar["p\cdot\blank"]
         \\
-        \& (\sh_G \eqto z_2)
+        \& (z_2 \eqto \sh_G)
       \end{tikzcd}
     \end{displaymath}
     In proving the proposition that such a $p$ is unique, we can use the
@@ -2539,7 +2543,11 @@ $$\rho_G:\Hom(G,\SG_{\USymG}).$$
 
 
 Note that the above theorem yields that $(G,\rho_G)$ is a monomorphism into
-$\SG_{\USymG}$. In other words, $G$ is a subgroup of $\SG_{\USymG}$.
+$\SG_{\USymG}$. In other words, $G$ is a subgroup of $\SG_{\USymG}$. Note that
+the induced map on symmetries is:
+\begin{displaymath}
+  \USym\rho_G:\USym G \to (\USym G \eqto \USym G): g \mapsto \{x \mapsto x\inv g\}
+\end{displaymath}
 
 %% --- This exercise is just plain false --- 
 % \begin{xca}\label{xca:evP_isPrG}
@@ -2556,21 +2564,19 @@ $\SG_{\USymG}$. In other words, $G$ is a subgroup of $\SG_{\USymG}$.
   at where and how this happens in the proof.
 
   As we noticed in the proof of \cref{lem:allgpsarepermutationgps}, the map
-  $\princ G: \BG\ptdto\conncomp{\Set}{\USymG}$ classifying the monomorphism
-  $\rho_G$ is decomposed as an equivalence $\pathsp{\blank}$ (pointed by
-  reflexivity) followed by the evaluation map $\ev_{\sh_G}$ pointed by
-  $\sigma_{\sh_G} \jdeq \inv{(\blank)} : \USymG \eqto \USymG$. This is depicted in the
-  following diagram, where the second line shows the induced maps on the
-  symmetries.
+  $\pathsp{\blank}^G(\sh_G): \BG\ptdto\conncomp{\Set}{\USymG}$ classifying the
+  monomorphism $\rho_G$ is decomposed as an equivalence $\pathsp{\blank}^G$
+  (pointed by reflexivity) followed by the evaluation map $\ev_{\sh_G}$ (also
+  pointed by reflexivity). This is depicted in the following diagram, where the
+  second line shows the induced maps on the symmetries.
    \[
      \begin{tikzcd}
-     \BG \ar[rr,equivr,"\pathsp{\blank}"] && 
-     (\typetorsor_G,\princ G) \ar[rr,"\ev_{\sh_G}"]&&
-     \conncomp{\Set}{\USymG}\\
-     \USymG \ar[rr,equivr,"\pathsp{\blank}"] &&   %\loops?
-     (\princ G \eqto \princ G)
-     \ar[rr,"\inv{\sigma_{\sh_G}} \circ\ev_{\sh_G}(\blank)\circ \sigma_{\sh_G}"]&&  %\loops?
-     (\USymG \eqto \USymG)  
+       \BG \ar[rr,equivr,"\pathsp{\blank}"] && (\typetorsor_G,\princ G)
+       \ar[rr,"\ev_{\sh_G}"]&&
+       \conncomp{\Set}{\USymG}\\
+       \USymG \ar[rr,equivr,"\pathsp{\blank}"] && %\loops?
+       (\princ G \eqto \princ G) \ar[rr,"\ev_{\sh_G}"]&& %\loops?
+       (\USymG \eqto \USymG)
      \end{tikzcd}
    \]
    Let $\PP$ be the $G$-set given by
@@ -2579,30 +2585,29 @@ $\SG_{\USymG}$. In other words, $G$ is a subgroup of $\SG_{\USymG}$.
    $\prod_{z:\BG}\PP(z)$, the type of invariant maps of $\PP$. By
    \cref{lem:fixpts-are-fixed}\ref{it:ev-is-inj}, an invariant map $h$, and
    hence the corresponding symmetries of $\princ G$, is uniquely determined by
-   its value $h_{\sh_G}$ at $\sh_G$, and thus also by the permuatation
-   $\inv{(h_{\sh_G}(\inv\blank))}$.\footnote{%
+   its value $h_{\sh_G}$ at $\sh_G$.\footnote{%
      This is an alternative way to understand that $\ev_{\sh_G}$, and hence
-     $\princ G$, classifies a monomorphism.%
+     $\pathsp\blank^G$, classifies a monomorphism.%
    } %
-   The underlying set of $\PP$ is $\PP(\sh_G)\jdeq(\USymG \eqto \USymG)$.
+   The underlying set of $\PP$ being $\PP(\sh_G)\jdeq(\USymG \eqto \USymG)$,
    \cref{lem:fixpts-are-fixed}\ref{it:ev-is-eq-on-inv} characterizes exactly the
    invariant maps of $\PP$ as corresponding via $\ev_{\sh_G}$ with elements of
    $\USymG \eqto \USymG$ fixed by the action of $\PP$. How does $\PP$ act on
-   $\USymG$? See exercise \cref{xca:PP-fixed-permutations}.
-
-   In other words, $\ev_{\sh_G}$ forgets about the extra structure of $\PP$ and
+   $\USymG$? That's for you to determine in \cref{xca:PP-fixed-permutations}. In
+   other words, $\ev_{\sh_G}$ forgets about the extra structure of $\PP$ and
    sends invariant maps of $\PP$ to fixed permutations of $\USymG$. For example,
-   in the case of $\SG_3$, the fixed permutations are the 3 elements of
-   $\bn3\eqto\bn3$ given by multiplication by each of the 3 elements of $\bn3$.
+   in the case of $\SG_3$, the fixed permutations are the 6 elements of
+   $\USG_3\eqto\USG_3$ given by $\blank\circ\inv\sigma$ for each of the 6
+   possible $\sigma:\bn3 \eqto \bn3$.
 \end{remark}
 
 \begin{xca}\label{xca:PP-fixed-permutations}
   Let conditions be as in \cref{rem:CayleyOversize}.  By analyzing transport in
-  the type family $\princ G(\blank)$, show that a permutation $\pi$ of $\USymG$
+  the type family $\princ G$, show that a permutation $\pi$ of $\USymG$
   is fixed if and only if $\pi(gg')=g\pi(g')$ for all $g,g':\USymG$.  Show that
   the fixed permutations of $\USymG$ form an abstract group and that evaluation
   of such a permutation at $\refl{\sh_G}$ yields an abstract isomorphism from
-  this group to \wip{the opposite of} $\abstr(G)$.
+  this group to $\abstr(G)$.
 \end{xca}
 
 \wip{%
@@ -2612,16 +2617,21 @@ $\SG_{\USymG}$. In other words, $G$ is a subgroup of $\SG_{\USymG}$.
     $q: (\sh_G\eqto z') \eqto (\sh_G\eqto z')$, we have
     $\PP(p)(q) = p \cdot q(\inv p \cdot \blank)$. So the action of $g:\USymG$ on
     a symmetry $\varphi:\USymG \eqto\USymG$ is
-    $g\cdot\varphi = g\varphi(\inv g \cdot \blank)$. When such a $\varphi$ is
-    fixed by the action, then $g\varphi(\inv g \blank) = \varphi$ for all
-    $g$. That is $\forall g,g', \varphi(g g') = g\varphi(g')$. In other words,
-    $\varphi = \blank \varphi(\refl{\sh_G})$. So, all in all,
-    $\USym (\mkgroup(\ev_G,\sigma_{\sh_G})) (h) = x \mapsto
-    \inv(h_{\sh_G}(\refl{\sh_G}))x$. When $h \jdeq \princ g$ for some
-    $g:\USymG$, we get $h_{\sh_G}(\refl{\sh_G}) = \refl{\sh_G} \inv g$, so the
-    selected permutation is indeed the left multiplication $x \mapsto g x$.
+    $g\cdot\pi = g\pi(\inv g \cdot \blank)$. When such a $\pi$ is fixed by the
+    action, then $g\pi(\inv g \blank) = \pi$ for all $g$. That is
+    $\forall g,g', \pi(g g') = g\pi(g')$. In other words,
+    $\pi = \blank \pi(\refl{\sh_G})$. Since
+    $\USym (\ev_G) (h) = x \mapsto x\cdot
+    h_{\sh_G}(\refl{\sh_G})$. When $h \jdeq \pathsp g^G$ for some $g:\USymG$, we
+    get $h_{\sh_G}(\refl{\sh_G}) = \refl{\sh_G} \inv g$, so the selected
+    permutation is indeed the ``left action by multiplication on the right''
+    $x \mapsto x \inv g$.
   \end{proof}%
 }
+
+\wip{Should we add a little remark on the other natural $\B\rho_G$ possible,
+  namely $\princ G$? (It is equal to the current one if we point it with
+  $\inv\blank$.)}
 
 \section{The lemma that is not Burnside's}
 \label{sec:burnsides-lemma}
@@ -2778,7 +2788,6 @@ on base-$n$ sequences of length $p$.
   $\bn p \to \bn n$, which is finite of cardinality $n^p$.
 
 
-  
   For any $f : \bn p \to \bn n$, we can apply \cref{xca:lagrange} to the
   stabilizer subgroup $(\CG_p)_f$. But since $p = \Card(\CG_p)$ is prime,
   $(\CG_p)_f$ can only be trivial or all of $\CG_p$. The latter happens when $f$
