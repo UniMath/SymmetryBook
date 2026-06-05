@@ -529,7 +529,7 @@ in the type of $\preinv$, and likewise write $\post_x$.}
 \begin{align*}
 %  \pre:(x\eqto y)\to ((y\eqto z)\eqto (x\eqto z)),\qquad&\pre(q)(p)\defequi pq\\
   \preinv:(y\eqto x)\to ((y\eqto z)\eqto (x\eqto z)),\quad&\preinv(q)(p)\defequi\pathsp qp\defequi pq^{-1}\\
-  \post:(y\eqto z)\to ((x\eqto y)\eqto (x\eqto z)),\quad&\post(p)(q)\defequi\post_pq\defequi pq
+  \post:(y\eqto z)\to ((x\eqto y)\eqto (x\eqto z)),\quad&\post(p)(q)\defeq pq
   %\adjoint:(x\eqto y)\to((x\eqto x)\eqto (y\eqto y)),\qquad&\adjoint(q)(p)\defequi\adjoint_qp\defequi qpq^{-1}
 \end{align*}
 
@@ -538,6 +538,7 @@ in the type of $\preinv$, and likewise write $\post_x$.}
   \emph{evaluated at $z$}, \ie the set $\princ G(z)\jdeq (\sh_G\eqto z)$,
   has a natural structure of an $\abstr(G)$-set by means of
   $$\preinv_z:\USymG\to ((\sh_G\eqto z)\eqto (\sh_G\eqto z)).$$
+  \wip{$$\post_z:\USymG\to ((z\eqto\sh_G)\eqto (z\eqto\sh_G)).$$}
   Indeed, $\preinv_z$ is an abstract homomorphism since,
   for all $p,q:\USymG$, we have that 
   $\preinv_z(p\,q)=\preinv_z(p)\preinv_z(q)$.% 
@@ -559,6 +560,10 @@ in the type of $\preinv$, and likewise write $\post_x$.}
   \[
   \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad \Bq_G(z)
   \defeq(\princ G(z),\preinv_z,!),
+  \]
+  \[\wip{
+  \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad \Bq_G(z)
+  \defeq(\pathsp{z}(\sh_G),\post_z,!),}
   \]
   pointed by \cref{xca:absprtorsor}. The name $\Bq_G$ anticipates
   its use as classifier of a homomorphism.
@@ -647,7 +652,8 @@ r_{\agp G}:S\to  \sum_{\pi:S\equivto S}\prod_{s,t:S}
 \]
 is an equivalence of sets.\footnote{Indeed, conversely, $\mu(\blank,\inv u)$
 satisfies the condition for $\pi$. Prove this! The reason for
-using $\inv u$ here, and not $u$, becomes clear in the next paragraph.}
+using $\inv u$ here, and not $u$, becomes clear in the next paragraph.
+\wip{We may have to reconsider this}.}
 
 We have to promote $r_{\agp G}$ from an equivalence of sets to
 an isomorphism of abstract groups, with $\agp G$ as domain.
@@ -985,7 +991,9 @@ classified by the pointed map
   \Bconcr(\varphi) : \absGTor[\agp G] \ptdto \absGTor[\agp H], \quad
   X \mapsto \absprtor[\agp H] \times_{\agp G} X,
 \]
-where $\absprtor[\agp H] \times_{\agp G} X$ is the set quotient $T \times X/\sim$
+where $\absprtor[\agp H] \times_{\agp G} X$\footnote{%
+  \wip{OK with $\times_{\varphi}$??}} 
+is the set quotient $T \times X/\sim$
 for the equivalence relation on $T\times X$ defined by
 \[
   (t,x) \sim (u,y) \defeq \exists_{g:S} (t\varphi(g) = u) \times (x = gy).
@@ -1015,18 +1023,18 @@ relation.
   commutes. For $z:\BG$, we have
   \begin{align*}
     \Bconcr(\abstr(f))(\Bq_G(z))
-    &\jdeq \absprtor[\abstr(H)] \times_{\abstr(G)} \princ G(z) \\
-    &\jdeq (\sh_H \eqto \sh_H) \times_{\abstr(G)} (\sh_G \eqto z)
+    &\jdeq \absprtor[\abstr(H)] \times_{\abstr(G)} \pathsp{z}(\sh_G) \\
+    &\jdeq (\sh_H \eqto \sh_H) \times_{\abstr(G)} (z\eqto\sh_G)
   \end{align*}
   and
   \[
-    \Bq_H(\Bf(z)) \jdeq \princ H(\Bf(z)) \jdeq (\sh_H \eqto \Bf(z))
+    \Bq_H(\Bf(z)) \jdeq \pathsp{\Bf(z)}(\sh_H) \jdeq (\Bf(z)\eqto \sh_H)
   \]
   Concatenation $(h,p)\mapsto (\Bf(p) \pt_\Bf h)$
   descends to the quotient as an isomorphism of $\abstr(H)$-torsors:
   \[
-    c_z : (\sh_H \eqto \sh_H) \times_{\abstr(G)} (\sh_G \eqto z)
-    \isoto (\sh_H \eqto \Bf(z))
+    c_z : \bigl((\sh_H \eqto \sh_H) \times_{\abstr(G)} (\sh_G \eqto z)\bigr)
+    \isoto (\Bf(z)\eqto \sh_H )
   \]
   And for $z\jdeq\sh_G$, this agrees with our chosen pointing paths.
 
@@ -1057,7 +1065,25 @@ relation.
   The horizontal isomorphisms map $h$ to $[(h,e)]$, so the square commutes
   since $(h,\inv g) \sim (h\inv{\varphi(g)},e)$.
 \end{proof}
-
+\begin{figure}[h]\small
+   \[
+     \begin{tikzcd}
+     \sh_G \ar[dddd,mapsto,bend right=30] \ar[rrr,mapsto] &
+     && (\USymG,g\mapsto(g\blank)) \ar[dddr,mapsto]\\
+       &\BG \ar[r,"\Bq_G"]\ar[d,"{\Bf}"'] &
+        \absGTor[\abstr(G)]\ar[d,"{\Bconcr(\abstr(f))}"] \\
+       &\BH \ar[r,"\Bq_H"'] & \absGTor[\abstr(H)] \\
+     \sh_H \ar[d,"{\Bfpt}"]\ar[rrr,mapsto] &&& 
+     (\USymH,h\mapsto(h\blank))
+       \ar[d,"\Bq_H(\Bfpt)"]
+       \ar[r,eql,"{\Bconcr(\abstr(f))_\pt}"']&
+     \absprtor[\abstr(H)] \times_{\abstr(G)} (\USymG,...) 
+       \ar[ld,"c_{\sh_G}"] \\
+     \Bf(\sh_G)\ar[rrr,mapsto] &&& ((\Bf(\sh_G)\eqto\sh_H),h\mapsto(h\blank))
+     \end{tikzcd}
+   \]
+\caption{\wip{TBD}The lower right triangle commutes.}
+\end{figure}
 \wip{
   \section{Benefits from having the categorical equivalence}
 
