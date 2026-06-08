@@ -565,7 +565,7 @@ in the type of $\preinv$, and likewise write $\post_x$.}
   \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad \Bq_G(z)
   \defeq(\pathsp{z}(\sh_G),\post_z,!),}
   \]
-  pointed by \cref{xca:absprtorsor}. The name $\Bq_G$ anticipates
+  pointed by \cref{xca:absprtorsor} \wip{reflexivity}. The name $\Bq_G$ anticipates
   its use as classifier of a homomorphism.
 \end{example}
 
@@ -996,11 +996,32 @@ where $\absprtor[\agp H] \times_{\agp G} X$\footnote{%
 is the set quotient $T \times X/\sim$
 for the equivalence relation on $T\times X$ defined by
 \[
-  (t,x) \sim (u,y) \defeq \exists_{g:S} (t\varphi(g) = u) \times (x = gy).
+  (t,x) \sim (u,y) \defeq 
+  \exists_{g:S} (t\varphi(g) = u) \times (x = gy).
 \]
+In addition, the abstract homomorphism of $\Bconcr(\varphi)(X)$
+maps any $h:T$ to the permutation
+of $\absprtor[\agp H] \times_{\agp G} X$ induced by $(t,x)\mapsto(ht,x)$.
+In \cref{xca:Bconcr-OK} we have collected the technicalities
+needed to prove that $\Bconcr(\varphi)$ is well defined.
+In particular \ref{xca:Bconcr-OK}\ref{it:Bconcr_pt} gives the 
+inverse of the pointing path that we choose.
 Note that the $g$ is uniquely determined, since $X$ is a $\agp G$-torsor;
 this makes it particularly easy to check that $\sim$ is an equivalence
-relation.
+relation.\footnote{\wip{Yes, but why?} The notation $gy$ in the definition stands for
+the action of $g$ on $y$ as given by the abstract homomorphism that
+comes with $X$; if $X$ is the principal $\agp G$-torsor this is indeed
+left multiplication.}
+\begin{xca}\label{xca:Bconcr-OK}
+Show the following:
+\begin{enumerate}
+\item $\sim$ is an equivalence relation;
+\item $(t,x)\mapsto(ht,x)$ respects $\sim$ and induces an abstract homomorphism;
+\item\label{it:Bconcr_pt} $(t,x)\mapsto t\varphi(x)$ induces a path from
+$\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$.\qedhere
+\end{enumerate}
+\end{xca}
+
 \begin{theorem}\label{thm:concr-equiv-cats}
   Thus defined, $\concr$ is functorial and gives an equivalence
   of categories.
@@ -1030,13 +1051,28 @@ relation.
   \[
     \Bq_H(\Bf(z)) \jdeq \pathsp{\Bf(z)}(\sh_H) \jdeq (\Bf(z)\eqto \sh_H)
   \]
-  Concatenation $(h,p)\mapsto (\Bf(p) \pt_\Bf h)$
-  descends to the quotient as an isomorphism of $\abstr(H)$-torsors:
+  Concatenation $(h,p)\mapsto h \inv\Bfpt \Bf(p)$ descends to 
+  the quotient as an isomorphism of $\abstr(H)$-torsors:\footnote{%
+  If $h\USymf(g)=h'$ and $p=gp'$ for some (unique) $g:\USymG$,
+  then we have:
+  \begin{align*}
+  &h'\inv\Bfpt \Bf(p')=
+  h\USymf(g) \inv\Bfpt \Bf(p')=\\
+  &h\inv\Bfpt\Bf(g)\Bf(p')=
+  h\inv\Bfpt \Bf(p)
+  \end{align*}}
   \[
-    c_z : \bigl((\sh_H \eqto \sh_H) \times_{\abstr(G)} (\sh_G \eqto z)\bigr)
+    c_z : \bigl((\sh_H \eqto \sh_H) \times_{\abstr(G)} (z \eqto\sh_G)\bigr)
     \isoto (\Bf(z)\eqto \sh_H )
   \]
-  And for $z\jdeq\sh_G$, this agrees with our chosen pointing paths.
+  And for $z\jdeq\sh_G$, this agrees with our chosen pointing paths,
+  see \cref{fig:q-natural}.\footnote{%
+  Indeed, $\Bq(\Bfpt)$ is right multiplication by $\inv\Bfpt$,
+  which makes up for the difference between 
+  \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt} and the
+  function defining $c_{\sh_G}$. The dotted second components, the
+  homomorphisms, give rise to propositional data in the paths and
+  can safely be ignored.}
 
   For naturality of $r$, consider an abstract group homomorphism
   $\varphi : \agp G \to \agp H$, where again $S$ and $T$ are the underlying
@@ -1074,15 +1110,15 @@ relation.
         \absGTor[\abstr(G)]\ar[d,"{\Bconcr(\abstr(f))}"] \\
        &\BH \ar[r,"\Bq_H"'] & \absGTor[\abstr(H)] \\
      \sh_H \ar[d,"{\Bfpt}"]\ar[rrr,mapsto] &&& 
-     (\USymH,h\mapsto(h\blank))
+     (\USymH,...))
        \ar[d,"\Bq_H(\Bfpt)"]
-       \ar[r,eql,"{\Bconcr(\abstr(f))_\pt}"']&
+       \ar[r,eqr,"{\Bconcr(\abstr(f))_\pt}"]&
      \absprtor[\abstr(H)] \times_{\abstr(G)} (\USymG,...) 
-       \ar[ld,"c_{\sh_G}"] \\
-     \Bf(\sh_G)\ar[rrr,mapsto] &&& ((\Bf(\sh_G)\eqto\sh_H),h\mapsto(h\blank))
+       \ar[ld,eqr,"c_{\sh_G}"] \\
+     \Bf(\sh_G)\ar[rrr,mapsto] &&& ((\Bf(\sh_G)\eqto\sh_H),...)
      \end{tikzcd}
    \]
-\caption{\wip{TBD}The lower right triangle commutes.}
+\caption{\label{fig:q-natural}The lower right triangle commutes.}
 \end{figure}
 \wip{
   \section{Benefits from having the categorical equivalence}
