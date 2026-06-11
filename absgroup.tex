@@ -653,7 +653,7 @@ r_{\agp G}:S\to  \sum_{\pi:S\equivto S}\prod_{s,t:S}
 is an equivalence of sets.\footnote{Indeed, conversely, $\mu(\blank,\inv u)$
 satisfies the condition for $\pi$. Prove this! The reason for
 using $\inv u$ here, and not $u$, becomes clear in the next paragraph.
-\wip{We may have to reconsider this}.}
+}
 
 We have to promote $r_{\agp G}$ from an equivalence of sets to
 an isomorphism of abstract groups, with $\agp G$ as domain.
@@ -992,7 +992,7 @@ classified by the pointed map
   X \mapsto \absprtor[\agp H] \times_{\agp G} X,
 \]
 where $\absprtor[\agp H] \times_{\agp G} X$\footnote{%
-  \wip{OK with $\times_{\varphi}$??}} 
+  \wip{Better with $\times_{\varphi}$??}} 
 is the set quotient $T \times X/\sim$
 for the equivalence relation on $T\times X$ defined by
 \[
@@ -1008,7 +1008,7 @@ In particular \ref{xca:Bconcr-OK}\ref{it:Bconcr_pt} gives the
 inverse of the pointing path that we choose.
 Note that the $g$ is uniquely determined, since $X$ is a $\agp G$-torsor;
 this makes it particularly easy to check that $\sim$ is an equivalence
-relation.\footnote{\wip{Yes, but why?} The notation $gy$ in the definition stands for
+relation.\wip{Hardly, works for $\agp G$-sets too?} \footnote{The notation $gy$ in the definition stands for
 the action of $g$ on $y$ as given by the abstract homomorphism that
 comes with $X$; if $X$ is the principal $\agp G$-torsor this is indeed
 left multiplication.}
@@ -1032,16 +1032,31 @@ $\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$.\qedhere
     q : \id_{\Group} \isoto \concr\circ\abstr, \quad
     r : \id_{\absGroup} \isoto \abstr\circ\concr.
   \]
+  
+\begin{figure}[h]%\small
+   \[
+     \begin{tikzcd}
+     \sh_G \ar[dddd,mapsto,bend right=30] \ar[rrr,mapsto] &
+     && (\USymG,g\mapsto(g\blank)) \ar[dddr,mapsto]\\
+       &\BG \ar[r,equivr,"\Bq_G"]\ar[d,"{\Bf}"'] &
+        \absGTor[\abstr(G)]\ar[d,"{\Bconcr(\abstr(f))}"] \\
+       &\BH \ar[r,equivl,"\Bq_H"'] & \absGTor[\abstr(H)] \\
+     \sh_H \ar[d,"{\Bfpt}"]\ar[rrr,mapsto] &&& 
+     (\USymH,...))
+       \ar[d,eqr,"\Bq_H(\Bfpt)"]
+       \ar[r,eqr,"{\Bconcr(\abstr(f))_\pt}"]&
+     \absprtor[\abstr(H)] \times_{\abstr(G)} (\USymG,...) 
+       \ar[ld,eqr,"c_{\sh_G}"] \\
+     \Bf(\sh_G)\ar[rrr,mapsto] &&& ((\Bf(\sh_G)\eqto\sh_H),...)
+     \end{tikzcd}
+   \]
+\caption{\label{fig:q-natural}Commuting inner square of maps and
+lower right triangle of pointing paths.}
+\end{figure}
   For naturality of $q$, consider a homomorphism $f : \Hom(G,H)$
   classified by a pointed map $\Bf : \BG \ptdto \BH$.
-  We need to show that the square of pointed maps
-  \[
-    \begin{tikzcd}
-      \BG \ar[d,"\Bf"']\ar[r,"\Bq_G"] & \absGTor[\abstr(G)]\ar[d,"\Bconcr(\abstr(f))"]\\
-      \BH \ar[r,"\Bq_H"'] & \absGTor[\abstr(H)]
-    \end{tikzcd}
-  \]
-  commutes. For $z:\BG$, we have
+  We need to show that the inner square of pointed maps 
+  in \cref{fig:q-natural} commutes. For $z:\BG$, we have
   \begin{align*}
     \Bconcr(\abstr(f))(\Bq_G(z))
     &\jdeq \absprtor[\abstr(H)] \times_{\abstr(G)} \pathsp{z}(\sh_G) \\
@@ -1059,15 +1074,17 @@ $\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$.\qedhere
   &h'\inv\Bfpt \Bf(p')=
   h\USymf(g) \inv\Bfpt \Bf(p')=\\
   &h\inv\Bfpt\Bf(g)\Bf(p')=
-  h\inv\Bfpt \Bf(p)
+  h\inv\Bfpt \Bf(p).
   \end{align*}}
   \[
     c_z : \bigl((\sh_H \eqto \sh_H) \times_{\abstr(G)} (z \eqto\sh_G)\bigr)
-    \isoto (\Bf(z)\eqto \sh_H )
+    \isoto (\Bf(z)\eqto \sh_H ),
   \]
+  commuting with the homomorphisms which are both based on left multiplication.
   And for $z\jdeq\sh_G$, this agrees with our chosen pointing paths,
   see \cref{fig:q-natural}.\footnote{%
-  Indeed, $\Bq(\Bfpt)$ is right multiplication by $\inv\Bfpt$,
+  Indeed, $\Bq(\Bfpt)$ in \cref{fig:q-natural} is 
+  right multiplication by $\inv\Bfpt$,
   which makes up for the difference between 
   \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt} and the
   function defining $c_{\sh_G}$. The dotted second components, the
@@ -1076,50 +1093,51 @@ $\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$.\qedhere
 
   For naturality of $r$, consider an abstract group homomorphism
   $\varphi : \agp G \to \agp H$, where again $S$ and $T$ are the underlying
-  sets of $\agp G$ and $\agp H$, respectively. It suffices to check that
-  square of underlying sets commutes:
+  sets of $\agp G$ and $\agp H$, respectively. 
+  Recall from \cref{thm:Groupsareidentitytypes}
+  that $r(s)$ is right multiplication by $\inv s$.
+  It suffices to check that
+  the square of underlying sets commutes:
   \[
     \begin{tikzcd}
-      S \ar[r,"r_{\agp G}"]\ar[d,"\varphi"'] &
+      S \ar[rr,equivr,"r_{\agp G}"]\ar[d,"\varphi"'] &&
       (\absprtor[\agp G] \eqto \absprtor[\agp G]) \ar[d,"\abstr(\concr(\varphi))"] \\
-      T \ar[r,"r_{\agp H}"] &
+      T \ar[rr,equivl,"r_{\agp H}"'] &&
       (\absprtor[\agp H] \eqto \absprtor[\agp H])
     \end{tikzcd}
   \]
-  For $g:S$, this amounts to showing that the following square commutes,
-  where the left isomorphism is $r_{\agp H}(\varphi(g))$, and the right--down--left
-  detour is $\abstr(\concr(\varphi))(r_{\agp G}(g))$:
+  For $s:S$, this amounts to showing that $\abstr(\concr(\varphi))$
+  maps $\mu_{\agp G}(\blank,\inv s)$ 
+  to $\mu_{\agp H}(\blank,\inv{\varphi(s)})$.%
+  \footnote{The application of $\B\concr(\varphi)$ on an identification
+  $e:X\eqto X'$ can be analyzed step for step. 
+  First, between the products $\absprtor[\agp H] \times X$ 
+  and $\absprtor[\agp H] \times X$ we get the equivalence 
+  $\id_{\absprtor[\agp H]}\times e$.
+  
+  Second, concerning the quotients modulo $\sim$ and $\sim'$, respectively,
+  we observe that $x=gy$ in $X$ and $e(x)=ge(y)$ in $X'$ are equivalent,
+  as the respective homomorphisms of $X$ and $X'$ correspond via $e$.
+  All this means that we can completely focus on the sets.
+  }
+  For this we have to show that the following square commutes,
+  where the left isomorphism is $r_{\agp H}(\varphi(s))$, and the right--down--left
+  detour is $\abstr(\concr(\varphi))(r_{\agp G}(s))$:
   \[
     \begin{tikzcd}
-      \absprtor[\agp H] \ar[r,equivl]\ar[d,equivl,"\preinv(\varphi(g))"']
-      & \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G]
-      \ar[d,equivr,"\id \times_{\agp G} \preinv(g)"] \\
-      \absprtor[\agp H] \ar[r,equivr]
-      & \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G]
+      \absprtor[\agp H] \ar[rr,eqr,"{\B\concr(\varphi)_{\pt}}"]\ar[d,equivl,"{\mu_{\agp H}(\blank,\inv{\varphi(s)})}"']
+      && \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G]
+      \ar[d,equivr,"{\id \times_{\agp G} \mu_{\agp G}(\blank,\inv s)}"] \\
+      \absprtor[\agp H] \ar[rr,eql,"{\B\concr(\varphi)_{\pt}}"']
+      && \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G].
     \end{tikzcd}
   \]
-  The horizontal isomorphisms map $h$ to $[(h,e)]$, so the square commutes
-  since $(h,\inv g) \sim (h\inv{\varphi(g)},e)$.
+  The pointing path of $\B\concr(\varphi)$ corresponds with
+  the inverse of the map in \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt},
+  and maps $t$ to $[(t,e_{\agp G})]$. Hence the square commutes
+  since $(t,\inv s) \sim (t\inv{\varphi(s)},e_{\agp G})$.
 \end{proof}
-\begin{figure}[h]\small
-   \[
-     \begin{tikzcd}
-     \sh_G \ar[dddd,mapsto,bend right=30] \ar[rrr,mapsto] &
-     && (\USymG,g\mapsto(g\blank)) \ar[dddr,mapsto]\\
-       &\BG \ar[r,"\Bq_G"]\ar[d,"{\Bf}"'] &
-        \absGTor[\abstr(G)]\ar[d,"{\Bconcr(\abstr(f))}"] \\
-       &\BH \ar[r,"\Bq_H"'] & \absGTor[\abstr(H)] \\
-     \sh_H \ar[d,"{\Bfpt}"]\ar[rrr,mapsto] &&& 
-     (\USymH,...))
-       \ar[d,"\Bq_H(\Bfpt)"]
-       \ar[r,eqr,"{\Bconcr(\abstr(f))_\pt}"]&
-     \absprtor[\abstr(H)] \times_{\abstr(G)} (\USymG,...) 
-       \ar[ld,eqr,"c_{\sh_G}"] \\
-     \Bf(\sh_G)\ar[rrr,mapsto] &&& ((\Bf(\sh_G)\eqto\sh_H),...)
-     \end{tikzcd}
-   \]
-\caption{\label{fig:q-natural}The lower right triangle commutes.}
-\end{figure}
+
 \wip{
   \section{Benefits from having the categorical equivalence}
 
