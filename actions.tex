@@ -2515,53 +2515,60 @@ $\SG_{\USymG}\jdeq \Aut_{\Set}(\USymG)$, denoted by\footnote{The letter $\rho$
   speicifcally \cref{ft:ptd-decr-h-lev}, since $\BG$ is connected and $\Set$ is a
   groupoid). Therefore the fiber $\inv{\ev_{\sh_G}}(S)$ a set.
 \end{proof}
-\wip{%
-  Isn't it a bit overkill to use the equivalence with torsors? 
-  I (MB too) feel the following proof is much simpler:
-  \begin{proof}
-    We need to show that $\B\rho_G :\BG \to \BSG_{\USymG}$ is a \covering. For
-    any set $X:\BSG_{\USymG}$, the fiber of $\B\rho_G$ at $X$ is
-    \begin{displaymath}
-      \inv {\B\rho_G} (X) \jdeq \sum_{z : \BG}X \eqto (z\eqto\sh_G).
-    \end{displaymath}
-    Take two elements $(z_1,\phi_1)$ and $(z_2,\phi_2)$ of this fiber. Then an
-    identification of type $(z_1,\phi_1) \eqto (z_2,\phi_2)$ is given by
-    a path $p: z_1 \eqto z_2$ such that the following triangle commutes:
-    \begin{displaymath}
-      \begin{tikzcd}[ampersand replacement=\&]
-        X \rar["\phi_1"] \drar["\phi_2"swap]
-        \& (z_1 \eqto \sh_G) \dar["\blank\cdot\inv p"]
-        \\
-        \& (z_2 \eqto \sh_G)
-      \end{tikzcd}
-    \end{displaymath}
-    In proving the proposition that such a $p$ is unique, we can use the
-    connectedness of $\BG$ and suppose that $z_1,z_2\jdeq\sh_G$, 
-    in which case we can see that $p$ is fully determined by the other data: 
-    $X$ is non-empty and $\phi_1(x)=\phi_2(x)\cdot p$ for any $x:X$.
-  \end{proof}%
-}
 
+\begin{remark}
+  Note that there is a more elementary proof of the result above, that doesn't
+  rely on \cref{lem:BGbytorsor} (a very strong result!). All we need to show is
+  that $\B\rho_G :\BG \to \BSG_{\USymG}$ is a \covering. But, for any set
+  $X:\BSG_{\USymG}$, the fiber of $\B\rho_G$ at $X$ is
+  \begin{displaymath}
+    \inv {\B\rho_G} (X) \jdeq \sum_{z : \BG}X \eqto (z\eqto\sh_G).
+  \end{displaymath}
+  Take two elements $(z_1,\phi_1)$ and $(z_2,\phi_2)$ of this fiber. Then an
+  identification of type $(z_1,\phi_1) \eqto (z_2,\phi_2)$ is given by a path
+  $p: z_1 \eqto z_2$ such that the following triangle commutes:
+  \begin{displaymath}
+    \begin{tikzcd}[ampersand replacement=\&]
+      X \rar["\phi_1"] \drar["\phi_2"swap]
+      \& (z_1 \eqto \sh_G) \dar["\blank\cdot\inv p"]
+      \\
+      \& (z_2 \eqto \sh_G)
+    \end{tikzcd}
+  \end{displaymath}
+  The goal is to prove that $(z_1,\phi_1) \eqto (z_2,\phi_2)$ is a proposition,
+  and so we can use the connectedness of $\BG$ and suppose that
+  $z_1\jdeq\sh_G$. In this case, the commutative triangle above fully determines
+  $p$: indeed, looking at the image of $\refl {\sh_G}$ (in the upper right
+  corner), we get $p = \inv{\phi_2(\inv{\phi_1}(\refl {\sh_G}))}$.
 
-Note that the above theorem yields that $(G,\rho_G)$ is a monomorphism into
-$\SG_{\USymG}$. In other words, $G$ is a subgroup of $\SG_{\USymG}$. 
-Note that the induced map on symmetries is:
+  However, the proof presented with the theorem's statement is conceptually more
+  interesting, and offers a preview into the Yoneda Lemma (see
+  \cref{thm:yoneda-lemma}).
+\end{remark}
+
+Note that the \cref{lem:allgpsarepermutationgps} yields that $(G,\rho_G)$ is a
+monomorphism into $\SG_{\USymG}$. In other words, $G$ is a subgroup of
+$\SG_{\USymG}$.  Note that the induced map on symmetries is:
 \begin{displaymath}
   \USym\rho_G:\USym G \to (\USym G \eqto \USym G): 
   g \mapsto (x \mapsto x\inv g)
 \end{displaymath}
-
-\wip{The reader may ask for a more informative underlying group of this
-subgroup than $G$ itself. To this end we apply $E$ from \cref{lem:SubG=MonoG}
-to $(G,\rho_G)$ to obtain a subgroup in the sense of 
-\cref{def:set-of-subgroups}. The underlying group of $E(G,\rho_G)$
-has classifying type $\sum_{X:\BSG_{\USymG}} \inv{\B\rho_G} (X)$
-and shape $(\USymG,(\sh_G,\id_{\USymG}))$.
-As illustrated in the following diagram, the symmetries of this shape
-are precisely those permutations $\pi$ of $\USymG$ for with there exist
-a $g:\USymG$ such that $\pi$ is right multiplication by $\inv g$.\footnote{%
-The other traditional way to understand Cayley's Theorem is
-by left multiplication by $g$.}  
+The reader may ask for a more informative underlying group of this subgroup than
+$G$ itself. To this end we apply $E$ from \cref{lem:SubG=MonoG} to $(G,\rho_G)$
+to obtain a subgroup in the sense of \cref{def:set-of-subgroups}. The underlying
+group of $E(G,\rho_G)$ has classifying type
+$\sum_{X:\BSG_{\USymG}} \inv{\B\rho_G} (X)$ and shape
+$(\USymG,(\sh_G,\id_{\USymG}))$.  As illustrated in the following diagram, the
+symmetries of this shape are precisely those permutations $\pi$ of $\USymG$ for
+with there exist a $g:\USymG$ such that $\pi$ is right multiplication by
+$\inv g$.\footnote{%
+  Those who have read Caley's theorem in ordinary abstract group theory might
+  find this computation suprising. Indeed, traditionally, Cayley's Theorem
+  selects the permutations that are left multiplications by some $g$. We could
+  have arranged for $\USym\rho_G$ to select the same permutations here (by
+  chosing $\B\rho_G$ to be $\princ G$ instead), but then the triangle of the
+  proof does not commute anymore: to recover the commutativity, one must point
+  $\ev_{\sh_G}$ by the non-trivial path $\inv{\blank}: \USymG \equivto \USymG$.}
 
 \[\begin{tikzcd}[ampersand replacement=\&, column sep={1cm, between origins}]
 \USymG\arrow[d,equivl,"\pi"']\arrow[rr,equivr,"\id"]
@@ -2570,13 +2577,6 @@ by left multiplication by $g$.}
  \&\sh_G)\\
 \USymG\arrow[rr,equivl,"\id"']\&\&(\sh_G\&=\&\sh_G)
 \end{tikzcd}\]
-}
-
-%% --- This exercise is just plain false --- 
-% \begin{xca}\label{xca:evP_isPrG}
-% Show that $\princ G$ and ${\ev_{\sh_G}}\circ{\pathsp{\blank}}$ are
-% equal as pointed maps.
-% \end{xca}
 
 \begin{remark}\label{rem:CayleyOversize}
   In many cases, the set $\USymG$ used in \cref{lem:allgpsarepermutationgps} is
@@ -2633,24 +2633,22 @@ by left multiplication by $g$.}
   this group to $\abstr(G)$.
 \end{xca}
 
-\wip{%
-  Double checking the exercise's solution:
-  \begin{proof}
-    Note that a quick induction on $p: z\eqto z'$ in $\BG$ shows that, for all
-    $q: (\sh_G\eqto z') \eqto (\sh_G\eqto z')$, we have
-    $\PP(p)(q) = p \cdot q(\inv p \cdot \blank)$. So the action of $g:\USymG$ on
-    a symmetry $\varphi:\USymG \eqto\USymG$ is
-    $g\cdot\pi = g\pi(\inv g \cdot \blank)$. When such a $\pi$ is fixed by the
-    action, then $g\pi(\inv g \blank) = \pi$ for all $g$. That is
-    $\forall g,g', \pi(g g') = g\pi(g')$. In other words,
-    $\pi = \blank \pi(\refl{\sh_G})$. Since
-    $\USym (\ev_G) (h) = x \mapsto x\cdot
-    h_{\sh_G}(\refl{\sh_G})$. When $h \jdeq \pathsp g^G$ for some $g:\USymG$, we
-    get $h_{\sh_G}(\refl{\sh_G}) = \refl{\sh_G} \inv g$, so the selected
-    permutation is indeed the ``left action by multiplication on the right''
-    $x \mapsto x \inv g$.
-  \end{proof}%
-}
+%%% Double checking the exercise's solution:
+% \begin{proof}
+%   Note that a quick induction on $p: z\eqto z'$ in $\BG$ shows that, for all
+%   $q: (\sh_G\eqto z') \eqto (\sh_G\eqto z')$, we have
+%   $\PP(p)(q) = p \cdot q(\inv p \cdot \blank)$. So the action of $g:\USymG$ on
+%   a symmetry $\varphi:\USymG \eqto\USymG$ is
+%   $g\cdot\pi = g\pi(\inv g \cdot \blank)$. When such a $\pi$ is fixed by the
+%   action, then $g\pi(\inv g \blank) = \pi$ for all $g$. That is
+%   $\forall g,g', \pi(g g') = g\pi(g')$. In other words,
+%   $\pi = \blank \pi(\refl{\sh_G})$. Since
+%   $\USym (\ev_G) (h) = x \mapsto x\cdot
+%   h_{\sh_G}(\refl{\sh_G})$. When $h \jdeq \pathsp g^G$ for some $g:\USymG$, we
+%   get $h_{\sh_G}(\refl{\sh_G}) = \refl{\sh_G} \inv g$, so the selected
+%   permutation is indeed the ``left action by multiplication on the right''
+%   $x \mapsto x \inv g$.
+% \end{proof}%
 
 \wip{Should we add a little remark on the other natural $\B\rho_G$ possible,
   namely $\princ G$? (It is equal to the current one if we point it with
