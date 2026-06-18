@@ -453,7 +453,8 @@ mapping $g$ to $(g\cdot\blank)$, \ie postcomposition with $g$.%
 \footnote{\label{ft:choicePshG}A (free) choice has been made to define 
 $\princ G$ using $(\sh_G\eqto z)$ and not $(z\eqto\sh_G)$. In the latter
 case the abstract homomorphism would map $g$ to $(\blank\cdot\inv g)$, \ie
-precomposition with the inverse of $g$. See also \cref{xca:absprtorsor}.}
+precomposition with the inverse of $g$. See also \cref{xca:absprtorsor}
+and \cref{ex:BqG}.}
 A small generalization now leads to the following definition.
 
 \begin{definition}
@@ -538,7 +539,6 @@ in the type of $\preinv$, and likewise write $\post_x$.}
   \emph{evaluated at $z$}, \ie the set $\princ G(z)\jdeq (\sh_G\eqto z)$,
   has a natural structure of an $\abstr(G)$-set by means of
   $$\preinv_z:\USymG\to ((\sh_G\eqto z)\eqto (\sh_G\eqto z)).$$
-  \wip{$$\post_z:\USymG\to ((z\eqto\sh_G)\eqto (z\eqto\sh_G)).$$}
   Indeed, $\preinv_z$ is an abstract homomorphism since,
   for all $p,q:\USymG$, we have that 
   $\preinv_z(p\,q)=\preinv_z(p)\preinv_z(q)$.% 
@@ -554,19 +554,25 @@ in the type of $\preinv$, and likewise write $\post_x$.}
   $(\sh_G\eqto z,\preinv,!)$ is an $\abstr(G)$-torsor.
   Since this is a proposition and $\BG$ is connected, it suffices
   to verify this for $z\jdeq\sh_G$, for which it follows from
-  \cref{xca:absprtorsor}.  
-  We give this construction a short name by defining, for all $z:\BG$,
-  the map
+  \cref{xca:absprtorsor}. \wip{This exercise, however, introduces some
+  unnecessary technicalities that are easily avoided by complying 
+  with the choice made in \cref{def:abstrGtorsors}, which here
+  means reversing the direction of the path. 
+   
+  For any $z:\BG$, the set $\pathsp{z}(\sh_G)\jdeq (z\eqto\sh_G)$
+  is a $\abstr(G)$-set by means of 
+  $$\post_z:\USymG\to ((z\eqto\sh_G)\eqto (z\eqto\sh_G)),$$
+  which is an abstract homomorphism mapping $g$ to $(g\blank)$,
+  left multiplication by $g$.
+  For $z\jdeq\sh_G$, this is definitionally equal to the principal
+  $\abstr(G)$-torsor. We give this construction a short name by defining, 
+  for all $z:\BG$, the map
   \[
   \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad \Bq_G(z)
-  \defeq(\princ G(z),\preinv_z,!),
+  \defeq(\pathsp{z}(\sh_G),\post_z,!),
   \]
-  \[\wip{
-  \Bq_G:\BG\ptdto (\absGTor[\abstr(G)],\absprtor[\abstr(G)]),\quad \Bq_G(z)
-  \defeq(\pathsp{z}(\sh_G),\post_z,!),}
-  \]
-  pointed by \cref{xca:absprtorsor} \wip{reflexivity}. The name $\Bq_G$ anticipates
-  its use as classifier of a homomorphism.
+  reflexivity. 
+  The name $\Bq_G$ anticipates its use as classifier of a homomorphism.}
 \end{example}
 
 \begin{definition}\label{def:qG-concr-abstr}
@@ -706,16 +712,8 @@ homomorphism from $\abstr(G)$ to $\abstr(H)$.
 Going back is somewhat more involved, and it is here we consider
 two approaches. The first is a compact argument showing directly how to
 reconstruct a pointed map $\Bf:\BG\ptdto\BH$ from an abstract group
-homomorphism from $\abstr(G)$ to $\abstr(H)$. The second translates 
-back and forth via our equivalence between abstract and concrete groups.
-
-The next subsections offer two proofs of the statement we are after:
-\begin{lemma}
-  \label{lem:homomabstrconcr}
-  If $G$ and $H$ are groups, then
-$$\abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))$$
-is an equivalence.
-\end{lemma}
+homomorphism from $\abstr(G)$ to $\abstr(H)$. The second approach offers
+a direct equivalence between the categories $\typegroup$ and $\typeabsgp$.
 
 \sususe{``Delooping'' a group homomorphism}
 \label{sec:delooping} %after Coquand, after Deligne
@@ -723,6 +721,13 @@ We now explore the first approach.
 It might be helpful to review \cref{lem:S1-delooping}
 for a simple example of delooping in the special case of the circle.
 Here we elaborate the general case.
+
+\begin{lemma}
+  \label{lem:homomabstrconcr}
+  If $G$ and $H$ are groups, then
+$$\abstr:\Hom(G,H)\to\absHom(\abstr(G),\abstr(H))$$
+is an equivalence.
+\end{lemma}
 
 \begin{proof}
   Suppose we are given an abstract group homomorphism
@@ -776,193 +781,6 @@ $p(\refl{\sh_G})\Bg(\alpha) =  f(\alpha)p(\refl{\sh_G})$
 for all $\alpha:\sh_G\eqto \sh_G$ and we have found a delooping of $f$.
 \end{proof}
 
-
-\sususe{From concrete to abstract homomorphisms via torsors.}
-\label{sec:absconctorsor}
-
-For the second approach to \cref{lem:homomabstrconcr} we need
-some preparation. We first give the analogue of
-\cref{def:restrictandinduce} for inducing $H$-sets from
-$G$-sets by an \emph{abstract} homomorphism. \MB{New:}
-There we defined, for all $X:\BG\to\Set$, $f:\Hom(G,H)$ and $w:\BH$,
-$f_!X(w)\defeq
-\setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}$.
-As explained in \cref{rem:set-trunc-as-quotient},
-the set truncation can be defined by taking the quotient with
-truncated identity on $\sum_{z:\BG}((\Bf(z) \eqto w)\times X(z))$.
-Recall the $G$-set $(z:\BG)\mapsto((\Bf(z) \eqto w)\times X(z))$ 
-from \cref{ft:f_!X(w)-orbitset}. Using \cref{cor:orbit-equiv},
-we can equivalently quotient its underlying set 
-$\princ H(w)\times X(\sh_G)$ with the induced equivalence 
-relation $\Trunc{(p,x)\eqto(q,y)}$, 
-which is equivalent to
-$\exists_{g:\USymG}((p=(q\cdot\USymf(g)))\times(g\cdot_X x = y))$.
-This motivates the following:
-
-\begin{definition}\label{def:abshom_!}
-  Given groups $G$, $H$ and an abstract homomorphism
-  $\phi:\absHom(\abstr(G),\abstr(H))$, we define the map $\phi_!$
-  from $G$-sets to $H$-sets as follows. 
-  For any $G$-set $X:\BG\to\Set$ and $w:\BH$, define
-  \[
-    \phi_!X(w)\defequi \bigl((\sh_H \eqto w) \times_\phi X(\sh_G)\bigr)
-  \]
-  to be the set quotient of $(\sh_H\eqto w)\times X(\sh_G)$ modulo
-  the equivalence relation $(p,x)\sim(q,y)$ if there exists a $g:\USymG$
-  such that $p=q\phi(g)$ and $g\cdot_X x = y$.
-\end{definition}
-
-\begin{lemma}\label{lem:abshom_!}
-  With $\phi_!$ as in \cref{def:abshom_!}, the map 
-  $\eta_\phi:\phi_!\princ G \equivto \princ H$ sending, for all $w:\BH$,
-  $[(p,x)]: (\sh_H \eqto w) \times_\phi \USymG$ to $p\phi(x):(\sh_H\eqto w)$,
-  is a well defined (fiberwise) equivalence. Consequently,
-  $(\phi_!,\inv{\eta_\phi})$ is a pointed map from
-  $(\typetorsor_G,\princ G)$  to $(\typetorsor_H,\princ H)$.
-\end{lemma}
-\begin{proof}
-First we show that $\eta_\phi$ respects the equivalence relation.
-Let $(p,x)\sim(q,y)$ with $p,q:(\sh_H \eqto w)$ and $x,y:\USymG$.
-Then there exists a $g:\USymG$ such that $p=q\phi(g)$ and $g\cdot_X x = y$.
-Now, $p\phi(x)=q\phi(gx) = q\phi(y)$, so $\eta_\phi$
-is indeed well defined.
-It is also clearly a surjection. So it remains to prove that $\eta_\phi$
-is injective. Assume $(p,x)$ and $(q,y)$ are such that
-$p\phi(x) = q\phi(y)$. Then $p= q\phi(y\inv{x})$ and 
-$y\inv{x}\cdot_X x = y$. 
-Hence $(p,x)\sim(q,y)$, so their classes are equal.
-This shows that $\eta_\phi$ is injective, and completes the proof.
-\end{proof}
-
-Now comes the second proof of \cref{lem:homomabstrconcr}.
-\begin{proof}
-The family of equivalences $\pathsp{\blank}^G:\BG\we(\typetorsor_G,\princ G)$,
-for any $G:\Group$, from \cref{def:BG2TorsG} and \cref{lem:BGbytorsor}
-induces an equivalence
-$$\pathsp{}:\Hom(G,H)\we
-\bigl((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)\bigr)
-$$
-by mapping, for any $f:\Hom(G,H)$, $\Bf$ to 
-$\pathsp{\blank}^H\circ \Bf \circ (\pathsp{\blank}^G)^{-1}$. Now define
-$A\defeq ({\abstr}\circ\pathsp{}^{-1})\jdeq
-(g\mapsto\USym\pathsp{}^{-1}(g))$.
-Then $A$ is a map\footnote{\MB{Better first the type and then the definition.
-Also $C$ could be defined here, for stating more clearly what we have
-to prove, including moving the smaller diagram to here. Finally,
-there could be an easier proof using a HIT (zoom 17/7/2025).}}
-\[
-A:\bigl((\typetorsor_G,\princ G)\ptdto(\typetorsor_H,\princ H)\bigr)
-    \to \absHom(\abstr(G),\abstr(H)).
-\]
-In order to show that 
-$\abstr:\Hom(G,H)\to \absHom(\abstr(G),\abstr(H))$ is an equivalence,
-we factor $\abstr$ as $A\circ \pathsp{}$. It then suffices to prove that 
-$A$ is an equivalence, since we already know that $\pathsp{}$.
-
-For all $h$ in the domain of $A$, we have
-${\loops h}\circ \loops\pathsp{\blank}^G=
-\loops\pathsp{\blank}^H \circ A(h)$.
-The situation is visualized by the following ``flattened cube'':%
-\footnote{The outer square is the bottom face, the middle square
-is the top. The edges labelled with ${\loops}$ connect the back
-face with the front face.}
-%see \cref{fig:mapA}
-\[%begin{marginfigure}
-      \begin{tikzcd}[ampersand replacement=\&]
-        (\typetorsor_G,\princ G) 
-          \ar[r,"h"]
-          \ar[ddd, bend right=80,"{\loops}"']\& 
-        (\typetorsor_H,\princ H)
-          \ar[ddd, bend left=80,"{\loops}"]  \\       
-        \BG 
-          \ar[r,"\B\pathsp{}^{-1}(h)"]
-          \ar[u,eqr,"{\pathsp{\blank}^G}"] 
-          \ar[d,"{\loops}"'] \& 
-        \BH 
-          \ar[u,eql,"{\pathsp{\blank}^H}"'] 
-          \ar[d,"{\loops}"] \\      
-        \USymG 
-          \ar[r,"\jdeq A(h)"',"\USym\pathsp{}^{-1}(h)"]
-          \ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
-        \USymH 
-          \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
-        (\princ G\eqto\princ G) 
-          \ar[r,"{\loops h}"'] \& 
-        (\princ H\eqto\princ H)
-      \end{tikzcd}
-     % \caption{\label{fig:mapA}caption}
-\]%end{marginfigure}
-It follows that $A(h)$ is an abstract group homomorphism. 
-We are done if we show that $A$ is an equivalence.
-
-For any $\phi:\absHom(\abstr(G),\abstr(H))$, recall the pointed map
-\[
-(\phi_!,\inv{\eta_\phi}): 
- \bigl((\typetorsor_G,\princ G)\ptdto (\typetorsor_H,\princ H)\bigr)
-\] 
-from \cref{def:abshom_!} and \cref{lem:abshom_!}.
-Let
-\[
-C: \absHom(\abstr(G),\abstr(H))\to ((\typetorsor_G,\princ G)
-         \ptdto(\typetorsor_H,\princ H)
-\]
-be given by $C(\phi)\defeq(\phi_!,\inv{\eta_\phi})$
-
-We show that $A$ and $C$ are inverse equivalences. 
-Given an abstract group homomorphism $\phi:\absHom(\abstr(G),\abstr(H))$, 
-we have the following commutative diagram%
-\footnote{This is the instance $h\jdeq C(\phi)$ of the
-front face of the ``flattened cube'' above.}
-for $A(C(\phi))$:
-\[%begin{marginfigure}
-   \begin{tikzcd}[ampersand replacement=\&]
-     \USymG 
-       \ar[r,"A(C(\phi))"]
-       \ar[d,eql,"{\loops\pathsp{\blank}^G}"'] \& 
-     \USymH
-       \ar[d,eqr,"{\loops\pathsp{\blank}^H}"] \\
-     (\princ G\eqto\princ G) 
-       \ar[r,"{\loops C(\phi)}"'] \& 
-     (\princ H\eqto\princ H)
-   \end{tikzcd}
-     % \caption{\label{fig:mapA}caption}
-\]%end{marginfigure}
-We have to prove $A(C(\phi))=\phi$. When we start with a $g:\USymG$, 
-then $\loops\pathsp{\blank}^G$ sends $g$ to\footnote{%
-Note that $\pathsp{\blank}^G$ is pointed by reflexivity.}
-\[
-\pathsp{g}^G\defeq\preinv_{\blank}(g)\jdeq((z:\BG)\mapsto\preinv_z(g)):
-(\princ G\eqto\princ G).
-\]
-We have $\loops C(\phi)\jdeq \loops(\phi_!,\inv{\eta_\phi})$.
-It follows from \cref{xca:phi_!-on-paths} that the latter sends 
-$\preinv_{\blank}(g)$ to $\preinv_{\blank}(\phi(g))\jdeq
-((w:\BH)\mapsto\preinv_w(\phi(g)))$ in 
-$\princ H=\princ H$, which corresponds to $\phi(g):\USymH$ under 
-$\loops\pathsp{\blank}^H$. In other words, $A(C(\phi))=\phi$.  
-
-The composite $CA$ is similar.\footnote{\MB{Work in progress
-Given $h:((\typetorsor_G,\princ G)\ptdto (\typetorsor_H,\princ H))$,
-we must prove the proposition $(A(h)_!,\inv{\eta_{A(h)}}) = h$.
-We know already that 
-$h_\pt\eta_{A(h)}: A(h)_!\princ G = h\princ G$.}}
-\end{proof}
-
-\begin{xca}\label{xca:phi_!-on-paths}
-Recall \cref{def:abshom_!} and show that $\phi_!\pi(w)$ maps $[(p,x)]$ 
-in $\phi_!X(w)$ to $[(p,\pi_{\sh_G}(x))]$ in $\phi_!X'(w)$,
-for any path $\pi: X \eqto X'$ and $w:\BH$.
-Then prove that $\loops(\phi_!,\inv{\eta_\phi})$ sends 
-$\preinv_{\blank}(g)$ to $\preinv_{\blank}(\phi(g))$.
-Hint: recall \cref{def:loops-map} and start by 
-making $\inv{\eta_\phi}$ explicit.
-\end{xca}
-
-
-\begin{xca}\label{xca:SG2=SG2-contractible} 
-Show that $\Iso(\SG_2,\SG_2)$ is contractible.
-\end{xca}
-
 \sususe{Direct equivalence of categories}
 
 We now define a functor
@@ -991,34 +809,51 @@ classified by the pointed map
   \Bconcr(\varphi) : \absGTor[\agp G] \ptdto \absGTor[\agp H], \quad
   X \mapsto \absprtor[\agp H] \times_{\agp G} X,
 \]
-where $\absprtor[\agp H] \times_{\agp G} X$\footnote{%
-  \wip{Better with $\times_{\varphi}$??}} 
+where $\absprtor[\agp H] \times_{\agp G} X$
 is the set quotient $T \times X/\sim$
 for the equivalence relation on $T\times X$ defined by
 \[
   (t,x) \sim (u,y) \defeq 
   \exists_{g:S} (t\varphi(g) = u) \times (x = gy).
 \]
+Note that the $g$ is uniquely determined, since $X$ is a $\agp G$-torsor.%
+\footnote{The notation $gy$ in the definition stands for
+the action of $g$ on $y$ as given by the abstract homomorphism that
+comes with $X$; if $X$ is the principal $\agp G$-torsor this is indeed
+left multiplication.
+
+\wip{New:} The definition of $\Bconcr$ can be understood as a version
+of \cref{def:restrictandinduce} for abstract torsors.
+There we defined, for all $X:\BG\to\Set$, $f:\Hom(G,H)$ and $w:\BH$,
+$f_!X(w)\defeq
+\setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}$.
+By \cref{lem:X/G=setTruncX_hG}, this set is equivalent to the set of orbits
+of the $G$-set $(z:\BG)\mapsto((\Bf(z) \eqto w)\times X(z))$. 
+Using $\Bfpt$, the underlying set of the latter is equivalent to
+$\princ H(w)\times X(\sh_G)$. By \cref{cor:orbit-equiv},
+quotienting the latter set with the equivalence
+relation $(p,x)\sim(q,y)$ defined by
+$\exists_{g:\USymG}((p\USymf(g)=q)\times(x = g\cdot_X y))$
+gives an equivalent of the orbit set.
+}
 In addition, the abstract homomorphism of $\Bconcr(\varphi)(X)$
 maps any $h:T$ to the permutation
 of $\absprtor[\agp H] \times_{\agp G} X$ induced by $(t,x)\mapsto(ht,x)$.
-In \cref{xca:Bconcr-OK} we have collected the technicalities
-needed to prove that $\Bconcr(\varphi)$ is well defined.
-In particular \ref{xca:Bconcr-OK}\ref{it:Bconcr_pt} gives the 
-inverse of the pointing path that we choose.
-Note that the $g$ is uniquely determined, since $X$ is a $\agp G$-torsor;
-this makes it particularly easy to check that $\sim$ is an equivalence
-relation.\wip{Hardly, works for $\agp G$-sets too?} \footnote{The notation $gy$ in the definition stands for
-the action of $g$ on $y$ as given by the abstract homomorphism that
-comes with $X$; if $X$ is the principal $\agp G$-torsor this is indeed
-left multiplication.}
+This completes the definition of the unpointed map $\Bconcr(\varphi)$.
+The pointing path of this map is defined by taking the
+inverse of the path given in \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt}.
+In that exercise we have collected the technicalities
+needed to prove that $\Bconcr(\varphi)$ is well defined
+and has all the desired properties.
+
 \begin{xca}\label{xca:Bconcr-OK}
 Show the following:
 \begin{enumerate}
 \item $\sim$ is an equivalence relation;
 \item $(t,x)\mapsto(ht,x)$ respects $\sim$ and induces an abstract homomorphism;
 \item\label{it:Bconcr_pt} $(t,x)\mapsto t\varphi(x)$ induces a path from
-$\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$.\qedhere
+$\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$;
+\item $\concr$ is a functor from $\absGroup$ to $\Group$.\qedhere
 \end{enumerate}
 \end{xca}
 
@@ -1037,17 +872,17 @@ $\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$.\qedhere
    \[
      \begin{tikzcd}
      \sh_G \ar[dddd,mapsto,bend right=30] \ar[rrr,mapsto] &
-     && (\USymG,g\mapsto(g\blank)) \ar[dddr,mapsto]\\
+     && (\USymG,g\mapsto g\blank) \ar[dddr,mapsto]\\
        &\BG \ar[r,equivr,"\Bq_G"]\ar[d,"{\Bf}"'] &
         \absGTor[\abstr(G)]\ar[d,"{\Bconcr(\abstr(f))}"] \\
        &\BH \ar[r,equivl,"\Bq_H"'] & \absGTor[\abstr(H)] \\
      \sh_H \ar[d,"{\Bfpt}"]\ar[rrr,mapsto] &&& 
-     (\USymH,...))
+     (\USymH,\dots)
        \ar[d,eqr,"\Bq_H(\Bfpt)"]
        \ar[r,eqr,"{\Bconcr(\abstr(f))_\pt}"]&
-     \absprtor[\abstr(H)] \times_{\abstr(G)} (\USymG,...) 
+     \absprtor[\abstr(H)] \times_{\abstr(G)} (\USymG,\dots) 
        \ar[ld,eqr,"c_{\sh_G}"] \\
-     \Bf(\sh_G)\ar[rrr,mapsto] &&& ((\Bf(\sh_G)\eqto\sh_H),...)
+     \Bf(\sh_G)\ar[rrr,mapsto] &&& (\Bf(\sh_G)\eqto\sh_H,\dots)
      \end{tikzcd}
    \]
 \caption{\label{fig:q-natural}Commuting inner square of maps and
@@ -1055,7 +890,7 @@ lower right triangle of pointing paths.}
 \end{figure}
   For naturality of $q$, consider a homomorphism $f : \Hom(G,H)$
   classified by a pointed map $\Bf : \BG \ptdto \BH$.
-  We need to show that the inner square of pointed maps 
+  We need to show that the square of pointed maps 
   in \cref{fig:q-natural} commutes. For $z:\BG$, we have
   \begin{align*}
     \Bconcr(\abstr(f))(\Bq_G(z))
@@ -1064,7 +899,7 @@ lower right triangle of pointing paths.}
   \end{align*}
   and
   \[
-    \Bq_H(\Bf(z)) \jdeq \pathsp{\Bf(z)}(\sh_H) \jdeq (\Bf(z)\eqto \sh_H)
+    \Bq_H(\Bf(z)) \jdeq \pathsp{\Bf(z)}(\sh_H) \jdeq (\Bf(z)\eqto \sh_H).
   \]
   Concatenation $(h,p)\mapsto h \inv\Bfpt \Bf(p)$ descends to 
   the quotient as an isomorphism of $\abstr(H)$-torsors:\footnote{%
@@ -1087,7 +922,7 @@ lower right triangle of pointing paths.}
   right multiplication by $\inv\Bfpt$,
   which makes up for the difference between 
   \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt} and the
-  function defining $c_{\sh_G}$. The dotted second components, the
+  function defining $c_{\sh_G}$. The dotted second components, which are the
   homomorphisms, give rise to propositional data in the paths and
   can safely be ignored.}
 
@@ -1109,10 +944,10 @@ lower right triangle of pointing paths.}
   For $s:S$, this amounts to showing that $\abstr(\concr(\varphi))$
   maps $\mu_{\agp G}(\blank,\inv s)$ 
   to $\mu_{\agp H}(\blank,\inv{\varphi(s)})$.%
-  \footnote{The application of $\B\concr(\varphi)$ on an identification
+  \footnote{The application of $\Bconcr(\varphi)$ on an identification
   $e:X\eqto X'$ can be analyzed step for step. 
   First, between the products $\absprtor[\agp H] \times X$ 
-  and $\absprtor[\agp H] \times X$ we get the equivalence 
+  and $\absprtor[\agp H] \times X'$ we get the equivalence 
   $\id_{\absprtor[\agp H]}\times e$.
   
   Second, concerning the quotients modulo $\sim$ and $\sim'$, respectively,
@@ -1125,21 +960,29 @@ lower right triangle of pointing paths.}
   detour is $\abstr(\concr(\varphi))(r_{\agp G}(s))$:
   \[
     \begin{tikzcd}
-      \absprtor[\agp H] \ar[rr,eqr,"{\B\concr(\varphi)_{\pt}}"]\ar[d,equivl,"{\mu_{\agp H}(\blank,\inv{\varphi(s)})}"']
+      \absprtor[\agp H] \ar[rr,eqr,"{\Bconcr(\varphi)_{\pt}}"]\ar[d,equivl,"{\mu_{\agp H}(\blank,\inv{\varphi(s)})}"']
       && \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G]
       \ar[d,equivr,"{\id \times_{\agp G} \mu_{\agp G}(\blank,\inv s)}"] \\
-      \absprtor[\agp H] \ar[rr,eql,"{\B\concr(\varphi)_{\pt}}"']
+      \absprtor[\agp H] \ar[rr,eql,"{\Bconcr(\varphi)_{\pt}}"']
       && \absprtor[\agp H] \times_{\agp G} \absprtor[\agp G].
     \end{tikzcd}
   \]
-  The pointing path of $\B\concr(\varphi)$ corresponds with
+  The pointing path of $\Bconcr(\varphi)$ corresponds with
   the inverse of the map in \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt},
   and maps $t$ to $[(t,e_{\agp G})]$. Hence the square commutes
   since $(t,\inv s) \sim (t\inv{\varphi(s)},e_{\agp G})$.
 \end{proof}
 
+\wip{As a corollary, we get a different proof of \cref{lem:homomabstrconcr}
+by applying \cref{lem:equiv-precat-is-ff-split-eso} to the above theorem.}
+ 
+
 \wip{
   \section{Benefits from having the categorical equivalence}
+  
+  \begin{xca}\label{xca:SG2=SG2-contractible} 
+Show that $\Iso(\SG_2,\CG_2)$ is contractible.
+\end{xca}
 
   Equivalence of monos in both categories.
 }
@@ -1254,7 +1097,7 @@ For surjectivity, let $F':f^*X\eqto f^*Y$ and write, for typographical
  convenience, $a:X(\Bf(\sh_G)\eqto Y(\Bf(\sh_G))$ for 
  $\ev_{\sh_G}F'\defequi F'_{\sh_G}$.
 By the equivalence between $G$-sets and $\abstr(G)$-sets,\footnote{%
-\MB{NB This seems to be only place with $\abstr(\_)$.
+\wip{NB This seems to be only place with $\abstr(\_)$ in this lemma.
 Can't we have a more direct argument and move the lemma to \cref{ch:actions}?
 For example, we know that the fiber of $f^*$ at $F'$ is a proposition and
 in proving it we can perhaps use connectedness of $\BG(')$, $\USymf$
