@@ -1125,61 +1125,53 @@ let $f:\Hom(G,H)$ be such that $\USymf$ is surjective.
 Then the map $f^*$ from \cref{def:restrictandinduce} is an injection.
 \end{lemma}
 
+\begin{figure}[h]%\small
+   \[
+     \begin{tikzcd}
+     X(\sh_H) \ar[d,"p"'] \ar[r,"{X(\Bfpt)}"]
+              \ar[dr,phantom,"{\odot}"]
+              \ar[rrr,bend left=30,"{X(\USymf(g))}"]&
+     X(\Bf(\sh_G)) 
+              \ar[d,"{Z(\Bfpt)(p)}"] 
+              \ar[r,"{X(\Bf(g))}"]
+              \ar[r,phantom,bend left=45,"\odot"]
+     &
+     X(\Bf(\sh_G)) \ar[d,"{Z(\Bfpt)(p)}"'] & 
+     X(\sh_H) \ar[l,"{X(\Bfpt)}"'] \ar[d,"p"]\\
+     Y(\sh_H) \ar[rrr,bend right=30,"{Y(\USymf(g))}"'] \ar[r,"{Y(\Bfpt)}"'] &
+     Y(\Bf(\sh_G)) \ar[r,"{Y(\Bf(g))}"']\ar[r,phantom,bend right=45,"\odot"]&
+     Y(\Bf(\sh_G)) & 
+     Y(\sh_H) \ar[l,"{Y(\Bfpt)}"] \ar[ul,phantom,"{\odot}"]
+     \end{tikzcd}
+   \]
+\caption{\label{fig:epifullyfaithful}
+All arrows are paths. The squares marked with $\odot$
+commmute as per definition, hence the middle square commutes
+if and only if the outer one (the contour) does.}
+\end{figure}
+
 \begin{proof}
 We prove that, for all $H$-sets $X$ and $Y$, the induced map 
 $f^*:(X\eqto Y)\to(f^*X\eqto f^*Y)$ is an equivalence.
-
-\wip{Can this perhaps be simplified by using
-\cref{lem:fixpts-are-fixed} ($\Set$ is a groupoid so that the identity types
-involved are sets) and \cref{xca:concr2abstrGset}?}
-
-Since $\BG$ is connected,\footnote{%
-\wip{Uses already here that $\Set$ is a groupoid?}} 
- evaluation at $\sh_G$  yields an injection
-\[
-\ev_{\sh_G}:(f^*X\eqto f^*Y)\to(X(\Bf(\sh_G)\eqto Y(\Bf(\sh_G))),
-\]
-For the same reason the composite
-\[
-\ev_{\sh_G}f^*\jdeq \ev_{f(\sh_G)}:(X\eqto Y)\to(X(\Bf(\sh_G)\eqto Y(\Bf(\sh_G)))
-\]
-is likewise injective. Since all indentity types involved are sets,
-we can conclude that the induced
-$f^*:(X\eqto Y)\to(f^*X\eqto  f^*Y)$ is injective.
-
-For surjectivity, let $F':f^*X\eqto f^*Y$ and write, for typographical
- convenience, $a:X(\Bf(\sh_G)\eqto Y(\Bf(\sh_G))$ for 
- $\ev_{\sh_G}F'\defequi F'_{\sh_G}$.
-By the equivalence between $G$-sets and $\abstr(G)$-sets,
-$F'$ is uniquely pinned down by $a$ and the requirement that 
-for all $h=\Bf(g)$ with $g:\USymG$ the diagram
-$$\xymatrix{X(\Bf(\sh_G))\ar[r]^{X(h)}_{=}\ar[d]_{a}^{=}&
-  X(\Bf(\sh_G))\ar[d]_{=}^{a}\\
-  Y(\Bf(\sh_G))\ar[r]^{=}_{Y({h})}&Y(\Bf(\sh_G))}
-$$
-commutes.  Likewise, (using transport along the identification
-$f_\pt:\sh_{H}\eqto f(\sh_G)$) an $F:X\eqto Y$ in the preimage of $a$ 
-is pinned down by the commutativity of the same diagram, 
-but with $h:\Bf(\sh_G)\eqto \Bf(\sh_G)$ arbitrary (an a priori more severe
-requirement, again reflecting injectivity).
-However, when $f:\USymG\to\USymH$ is surjective these 
-requirements coincide, showing that the induced $f^*$ is an equivalence.
-\qedhere
-% Fix for the moment an  $a:X(f(\sh_G)=Y(f(\sh_G))$
-
-% Now, by transport along the identity $f_\pt:\sh_{H}=f(\sh_G)$ and the equivalence between $H$-sets and $\abstr(H)$-sets, an identity $F':X=Y$ of $H$-sets is uniquely pinned down by an identity $F'_{f(\sh_G)}:X(f(\sh_G)=Y(f(\sh_G))$ together with the proposition that for all $h:f(\sh_G)=f(\sh_G)$ the diagram $$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X_{h}}\ar@{=}[d]_{F'_{f(\sh_G)}}&
-%   X(f(\sh_G))\ar@{=}[d]_{F'_{f(\sh_G)}}\\
-%   Y(f(\sh_G))\ar@{=}[r]^{Y_{h}}&Y(f(\sh_G))}
-% $$
-% commutes.  Likewise, an identity $F:f^*X=f^*Y$ is given by exactly the same data, except that the diagram is only required to commute for $h=f(g)$ for all $g:\USymG$.  But when $f:\USymG\to\USymH$ these requirements coincide.
-
-
-% ; $F:X=Y$ is in the preimage of $a:X(f(\sh_G)=Y(f(\sh_G))$ if and only if $a=F_{f(\sh_G)}$ and for all $h:f(\sh_G)=f(\sh_G)$ the diagram
-% $$\xymatrix{X(f(\sh_G))\ar@{=}[r]^{X_{h}}\ar@{=}[d]_{F_{f(\sh_G)}}&
-%   X(f(\sh_G))\ar@{=}[d]_{F_{f(\sh_G)}}\\
-%   Y(f(\sh_G))\ar@{=}[r]^{Y_{h}}&Y(f(\sh_G))}
-% $$
-% commutes.  However, since $f$ is surjective there is a $g:\USymG$ so that $h=f(g)$.  Therefore, anything in $f^*X=f^*Y$ which is in the preimage of $a$ is in the image of $f^*:X=Y$ and we have shown that $f^*$ is also a surjection.
+By function extensionality, the domain of $f^*$ is equivalent 
+to the type $Z^{hH}$ of invariant maps of 
+the $H$-set $Z$ defined by $Z(w)\defeq(X(w)\eqto Y(w))$ for all
+$w:\BH$. By \cref{lem:fixpts-are-fixed}, $Z^{hH}$ is equivalent
+to the subset of $Z(\sh_H)$ consisting of the fixed elements,
+\ie those $p:Z(\sh_H)$ such that $p\cdot X(h) = Y(h)\cdot p$ for all $h:\USymH$.
+Likewise, for the codomain we get equivalence to $(f^*Z)^{hG}$ and
+to the subset of $(f^*Z)(\sh_G)$ consisting of the fixed elements,
+\ie those $q:Z(\Bf(\sh_G))$ such that $q\cdot X(\Bf(g)) = Y(\Bf(g))\cdot q$ 
+for all $g:\USymG$. It remains to show that the latter two subsets
+are equivalent. The path $\Bfpt$ induces an equivalence
+$Z(\Bfpt):Z(\sh_H)\equivto Z(\Bf(\sh_G))$ mapping 
+$p:(X(\sh_H)\eqto Y(\sh_H))$ to $Y(\Bfpt)\cdot p \cdot \inv{X(\Bfpt)}$.
+\cref{fig:epifullyfaithful} shows that the propositions
+$Z(\Bfpt)(p)\cdot X(\Bf(g)) = Y(\Bf(g))\cdot Z(\Bfpt)(p)$ and
+$p\cdot X(\USymf(g)) = Y(\USymf(g))\cdot p$, for any $g:\USymG$
+are equivalent. Since $\USymf$ is surjective we can use
+\cref{xca:all-prop-image}, and get that $Z(\Bfpt)$ is an equivalence 
+of the respective subsets of fixed elements.
 \end{proof}
 
 \wip{%
