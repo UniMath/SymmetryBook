@@ -830,31 +830,10 @@ left multiplication.
 
 The definition of $\Bconcr$, which works equally well as map
 from $\absGSet[\agp G]$ to $\absGSet[\agp H]$, can be understood as an
-abstract version of \cref{def:restrictandinduce}.
-There we defined, for all $X:\BG\to\Set$, $f:\Hom(G,H)$ and $w:\BH$,
-$f_!X(w)\defeq
-\setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}$.
-By \cref{lem:X/G=setTruncX_hG}, this set is equivalent to the set of orbits
-of the $G$-set $(z:\BG)\mapsto((\Bf(z) \eqto w)\times X(z))$. 
-Using $\Bfpt$, the underlying set of the latter is equivalent to
-$\princ H(w)\times X(\sh_G)$. By \cref{cor:orbit-equiv},
-quotienting the latter set with the equivalence
-relation $(p,x)\sim(q,y)$ defined by
-$\exists_{g:\USymG}((p\USymf(g)=q)\times(x = g\cdot_X y))$
-gives an equivalent of the orbit set. \wip{New:} 
-There is a clear similarity between this equivalence relation $\sim$
-and the one defined in the main text. In \cref{lem:actionsconcr2abstr} 
-we'll give equivalences $\ev_{\sh_G}$ between $\GSet$ and $\absGSet[\abstr(G)]$,
-for any group $G$, such that the following diagram can be filled:
-\[
-  \begin{tikzcd}[column sep=large,row sep=large,ampersand replacement=\&]
-      \GSet \ar[r,equivr,"{\ev_{\sh_G}}"] \ar[d,"f_!"'] \& 
-      \absGSet[\abstr(G)] \ar[d,"{\Bconcr(\abstr(f))}"] \\
-      \GSet[H] \ar[r,equivl,"{\ev_{\sh_H}}"']        \& \absGSet[\abstr(H)].
-  \end{tikzcd}
-\]
-\wip{TODO in \cref{sec:Gsetsabstrconcr}, also for $f^*$?}
+abstract version of \cref{def:restrictandinduce}, as explained by
+\cref{lem:f!-abs(f)!}.
 }
+
 \[
   (t,x) \sim (u,y) \defeq 
   \exists_{g:S} (t\varphi(g) = u) \times (x = gy).
@@ -969,7 +948,7 @@ lower right triangle of pointing paths.}
   maps $\mu_{\agp G}(\blank,\inv s)$ 
   to $\mu_{\agp H}(\blank,\inv{\varphi(s)})$.%
   \footnote{The application of $\Bconcr(\varphi)$ on an identification
-  $e:X\eqto X'$ can be analyzed step for step. 
+  $e:X\eqto X'$ can be analyzed stepwise. 
   First, between the products $\absprtor[\agp H] \times X$ 
   and $\absprtor[\agp H] \times X'$ we get the equivalence 
   $\id_{\absprtor[\agp H]}\times e$.
@@ -997,8 +976,8 @@ lower right triangle of pointing paths.}
   since $(t,\inv s) \sim (t\inv{\varphi(s)},e_{\agp G})$.
 \end{proof}
 
-\wip{As a corollary, we get a different proof of \cref{lem:homomabstrconcr}
-by applying \cref{lem:cat-equiv-ff} to the above theorem.}
+As a corollary, we get a different proof of \cref{lem:homomabstrconcr}
+by applying \cref{lem:cat-equiv-ff} to the above theorem.
  
 
 \wip{
@@ -1086,12 +1065,11 @@ Recall from \cref{def:restrictandinduce} the restriction map
 \[
 f^*: \GSet[H]\to\GSet, \qquad f^*(X) \defeq X\circ \Bf.
 \]
-\wip{New: }Similarly, given abstract groups $\agp G$ and $\agp H$
+Similarly, given abstract groups $\agp G$ and $\agp H$
 and an abstract group homomorphism $\varphi : \absHom(\agp G, \agp H)$,
 we can define 
 a map $\varphi^*: \absGSet[\agp H] \to \absGSet[\agp G]$ which maps
-any $\agp H$-set $(X,\psi)$ to the $\agp G$-set $(X,\psi\circ\varphi)$.%
-\footnote{\wip{Is there a natural way to point this map?}}
+any $\agp H$-set $(X,\psi)$ to the $\agp G$-set $(X,\psi\circ\varphi)$.
 
 Since $f^*$ and $\varphi^*$ are both defined by precomposition,
 the following diagram can easily be filled, which we leave as
@@ -1104,14 +1082,72 @@ an exercise to the reader.
   \end{tikzcd}
 \] 
 
-\begin{exercise}\label{xca:concr2abstrGset}
+\begin{exercise}\label{xca:f^*-abs(f)^*}
   Fill the diagram above.
 \end{exercise}
 
+Also recall from \cref{def:restrictandinduce}, for given $f:\Hom(G,H)$
+and $G$-set $X$, the induced $H$-set $f_!(X)$ defined by, 
+for all $X:\BG\to\Set$, $f:\Hom(G,H)$ and $w:\BH$,
+$f_!X(w)\defeq
+\setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}$.
+Unlike in the case of $f^*$, precomposition with $f$, 
+the abstract version of $f^!$ is not immediately clear,
+so we apply some equivalences first.
+
+By \cref{lem:X/G=setTruncX_hG}, the set $f_!X(w)$ 
+is equivalent to the set of orbits
+of the $G$-set $(z:\BG)\mapsto((\Bf(z) \eqto w)\times X(z))$. 
+Using $\Bfpt$, the underlying set of the latter is equivalent to
+$\princ H(w)\times X(\sh_G)$. By \cref{cor:orbit-equiv},
+quotienting the latter set with the equivalence
+relation $(p,x)\sim(q,y)$ defined by
+$\exists_{g:\USymG}((p\USymf(g)=q)\times(x = g\cdot_X y))$ gives an 
+equivalent of $f_!X(w)$ in terms that have abstract counterparts.\footnote{%
+The dependence on $w$ is in the type $\princ H(w)$ of $p$ and $q$.}
+This motivates the following definition.
+
+\begin{definition}\label{def:phi_!}
+Let $\agp G$ and $\agp H$ be abstract groups
+with underlying sets $S$ and $T$, respectively.
+Let $\varphi : \absHom(\agp G, \agp H)$ be an abstract homomorphism.
+Define\footnote{%
+$\varphi_!$ is the first component of the unpointed map 
+$\Bconcr(\varphi)$ \wip{no label}.
+The first two points of \cref{xca:Bconcr-OK} justify the definition
+of $\varphi_!$. }
+\[
+  \varphi_! : \absGSet \to \absGSet[\agp H], \quad
+  \varphi_!(X) \defeq \absprtor[\agp H] \times_{\agp G} X,
+\]
+where $\absprtor[\agp H] \times_{\agp G} X$
+is the set quotient $T \times X/\sim$
+for the equivalence relation on $T\times X$ defined by
+\[
+  (t,x) \sim (u,y) \defeq 
+  \exists_{g:S} (t\varphi(g) = u) \times (x = g\cdot_X y).
+\]
+The abstract homomorphism of $\varphi_!(X)$
+maps any $h:T$ to the permutation
+of $\absprtor[\agp H] \times_{\agp G} X$ induced by $(t,x)\mapsto(ht,x)$.
+\end{definition}
 
 
+Let $G$ and $H$ be groups and let $f:\Hom(G,H)$. 
+Recall the equivalences $\ev_\blank$ from \cref{lem:actionsconcr2abstr}.
+The following diagram can be filled:
+\[
+  \begin{tikzcd}[column sep=large,row sep=large,ampersand replacement=\&]
+      \GSet \ar[r,equivr,"{\ev_{\sh_G}}"] \ar[d,"f_!"'] \& 
+      \absGSet[\abstr(G)] \ar[d,"{\abstr(f)_!}"] \\
+      \GSet[H] \ar[r,equivl,"{\ev_{\sh_H}}"']        \& \absGSet[\abstr(H)].
+  \end{tikzcd}
+\]
+\begin{xca}\label{xca:f_!-abs(f)_!}
+Fill the diagram above.
+\end{xca}
 
-We will have the occasion to use the following result which essentially 
+\wip{Where?} We will have the occasion to use the following result which essentially 
 says that if $f:\Hom(G,H)$ is such that $\USymf$ is surjective,\footnote{%
 In \cref{sec:epis} we will call such an $f$ an \emph{epimorphism},
 just as we called in \cref{def:typeofmono} $f$ a \emph{monomorphism} 
@@ -1146,11 +1182,11 @@ Then the map $f^*$ from \cref{def:restrictandinduce} is an injection.
    \]
 \caption{\label{fig:epifullyfaithful}
 All arrows are paths. The squares marked with $\odot$
-commmute as per definition, hence the middle square commutes
+commute as per definition, hence the middle square commutes
 if and only if the outer one (the contour) does.}
 \end{figure}
 
-\begin{proof}
+\begin{proof}\wip{New.}
 We prove that, for all $H$-sets $X$ and $Y$, the induced map 
 $f^*:(X\eqto Y)\to(f^*X\eqto f^*Y)$ is an equivalence.
 By function extensionality, the domain of $f^*$ is equivalent 
