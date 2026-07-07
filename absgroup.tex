@@ -698,8 +698,92 @@ indeed an isomorphism of abstract groups.\footnote{%
 \end{proof}
 
 %The proof above shows that every abstract group encodes the symmetries 
-%of something essentially unique.  
+%of something essentially unique.
 
+\subsection{The action functors in the case of abstract groups}
+\label{sec:phi-functors}
+In \cref{def:abstrGtorsors} we defined the notion of $\agp G$-set
+for any abstract group $\agp G$. A natural question that comes
+up is: what are the abstract versions of the action functors $f^*$ and $f_!$ 
+defined for concrete groups in \cref{def:restrictandinduce}?\footnote{%
+See also \cref{ex:action-functors} and \cref{ex:Sigma-Pi-adj}
+for examples of these functors in the categorical setting.}
+We answer this question here; the precise correspondence of the 
+abstract and the concrete versions will come in \cref{sec:Gsetsabstrconcr}.
+
+In the following paragraphs, $G$ and $H$ are groups and $f:\Hom(G,H)$ 
+is a homomorphism.
+
+Recall from \cref{def:restrictandinduce} the action map called restriction map
+\[
+f^*: \GSet[H]\to\GSet, \qquad f^*(Y) \defeq Y\circ \Bf.
+\]
+The abstract version of the restriction map is no surprise:
+
+\begin{definition}\label{def:phi^*}
+Given abstract groups $\agp G$ and $\agp H$
+and an abstract group homomorphism $\varphi : \absHom(\agp G, \agp H)$,
+we define  the map $\varphi^*: \absGSet[\agp H] \to \absGSet[\agp G]$ sending
+any $\agp H$-set $(S,\psi)$ to the $\agp G$-set $(S,\psi\circ\varphi)$.
+\end{definition}
+
+Also recall from \cref{def:restrictandinduce} the induced action map 
+\[
+f_!: \GSet\to\GSet[H], \qquad f_!X(w)\defeq
+\setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)},
+\] 
+for all $X:\BG\to\Set$, and $w:\BH$.
+Unlike in the case of $f^*$, 
+the abstract version of $f_!$ is not immediately clear,
+so we apply some equivalences first.
+
+By \cref{lem:X/G=setTruncX_hG}, the set $f_!X(w)$ 
+is equivalent to the set of orbits
+of the $G$-set $(z:\BG)\mapsto((\Bf(z) \eqto w)\times X(z))$. 
+Using $\Bfpt$, the underlying set of the latter is equivalent to
+$\princ H(w)\times X(\sh_G)$. By \cref{cor:orbit-equiv},
+quotienting the latter set with the equivalence
+relation $(p,x)\sim(q,y)$ defined by
+$\exists_{g:\USymG}((p\USymf(g)=q)\times(x = g\cdot_X y))$ gives an 
+equivalent of $f_!X(w)$ in terms that have abstract counterparts.\footnote{%
+The dependence on $w$ is in the type $\princ H(w)$ of $p$ and $q$.}
+This motivates the following definition.
+
+\begin{definition}\label{def:phi_!}
+Let $\agp G$ and $\agp H$ be abstract groups
+with underlying sets $S$ and $T$, respectively.
+Let $\varphi : \absHom(\agp G, \agp H)$ be an abstract homomorphism.
+Define (and justify by doing \cref{xca:phi_!-OK}!)
+\[
+  \varphi_! : \absGSet \to \absGSet[\agp H], \quad
+  \varphi_!(X) \defeq \absprtor[\agp H] \times_{\agp G} X,
+\]
+where $\absprtor[\agp H] \times_{\agp G} X$
+is the set quotient $T \times X/\sim$
+for the equivalence relation on $T\times X$ defined by
+\[
+  (t,x) \sim (u,y) \defeq 
+  \exists_{g:S} (t\varphi(g) = u) \times (x = g\cdot_X y).
+\]
+The abstract homomorphism of $\varphi_!(X)$
+maps any $h:T$ to the permutation
+of $\absprtor[\agp H] \times_{\agp G} X$ induced by $(t,x)\mapsto(ht,x)$.
+\end{definition}
+
+\begin{xca}\label{xca:phi_!-OK}
+Show the following:
+\begin{enumerate}
+\item $\sim$ is an equivalence relation;
+\item $(t,x)\mapsto(ht,x)$ respects $\sim$;
+\item $(t,x)\mapsto(ht,x)$ induces an abstract homomorphism.\qedhere
+\end{enumerate}
+\end{xca}
+
+\wip{What about $\varphi_*X$? Must be known. Looking at $f_*X(w)$,
+which is a type of invariant maps, with underunderlying set
+$(\Bf(\sh_G)\eqto\sh_H) \to X(\sh_G)$, my best guess is the subset of 
+fixed elements of $T\to S$, with homomorphism sending $h:T$ to the
+permutation of $T\to S$ sending $\alpha$ to $\alpha\circ(h\blank)$.}
 
 \section{Homomorphisms, from abstract to concrete and back}
 \label{sec:homabsisconcr}
@@ -813,49 +897,25 @@ from~\cref{thm:Groupsareidentitytypes}.
 To define the action on morphisms, suppose $\agp G$ and $\agp H$
 are abstract groups with underlying sets $S$ and $T$, respectively.
 Then $\concr$ sends an abstract group homomorphism
-$\varphi : \absHom(\agp G, \agp H)$ to \wip{the concrete group homomorphism
-$\concr(\varphi):\Hom(\concr(\agp G),\concr(\agp H))$}
+$\varphi : \absHom(\agp G, \agp H)$ to the concrete group homomorphism
+$\concr(\varphi):\Hom(\concr(\agp G),\concr(\agp H))$
 classified by the pointed map
 \[
-  \Bconcr(\varphi) : \absGTor[\agp G] \ptdto \absGTor[\agp H], \quad
-  X \mapsto \absprtor[\agp H] \times_{\agp G} X,
+  \Bconcr(\varphi) : \absGTor[\agp G] \ptdto \absGTor[\agp H]
 \]
-where $\absprtor[\agp H] \times_{\agp G} X$
-is the set quotient $T \times X/\sim$
-for the equivalence relation on $T\times X$ defined by\footnote{%
-The notation $gy$ in the definition stands for
-the action of $g$ on $y$ as given by the abstract homomorphism that
-comes with $X$; if $X$ is the principal $\agp G$-torsor this is indeed
-left multiplication.
-
-The definition of $\Bconcr$, which works equally well as map
-from $\absGSet[\agp G]$ to $\absGSet[\agp H]$, can be understood as an
-abstract version of \cref{def:restrictandinduce}, as explained by
-\cref{lem:f!-abs(f)!}.
-}
-
-\[
-  (t,x) \sim (u,y) \defeq 
-  \exists_{g:S} (t\varphi(g) = u) \times (x = gy).
-\]
-Note that the $g$ is uniquely determined, since $X$ is a $\agp G$-torsor.%
-In addition, the abstract homomorphism of $\Bconcr(\varphi)(X)$
-maps any $h:T$ to the permutation
-of $\absprtor[\agp H] \times_{\agp G} X$ induced by $(t,x)\mapsto(ht,x)$.
-This completes the definition of the unpointed map $\Bconcr(\varphi)$.
-The pointing path of this map is defined by taking the
-inverse of the path given in \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt}.
-In that exercise we have collected the technicalities
-needed to prove that $\Bconcr(\varphi)$ is well defined
-and has all the desired properties.
+defined as follows. \wip{Changed} First, recall $\varphi_!$ from \cref{def:phi_!}
+as unpointed map from $\agp G$-sets to $\agp H$-sets. Second, do 
+\cref{xca:Bconcr-OK}\ref{it:Bconcr_pt} to justify the restriction of $\varphi_!$
+to the components at the respective abstract principal torsors.
+Define the unpointed $\Bconcr(\varphi)$ as the restriction of $\varphi_!$
+to these components. Finally, define $\Bconcr(\varphi)_\pt$ as the
+inverse of the path given in \cref{xca:Bconcr-OK}\ref{it:Bconcr_pt}.\wip{End changed} 
 
 \begin{xca}\label{xca:Bconcr-OK}
 Show the following:
 \begin{enumerate}
-\item $\sim$ is an equivalence relation;
-\item $(t,x)\mapsto(ht,x)$ respects $\sim$ and induces an abstract homomorphism;
 \item\label{it:Bconcr_pt} $(t,x)\mapsto t\varphi(x)$ induces a path from
-$\Bconcr(\varphi)(\absprtor[\agp G])$ to $\absprtor[\agp H]$;
+$\varphi_!\absprtor[\agp G]$ to $\absprtor[\agp H]$;
 \item $\concr$ is a functor from $\absGroup$ to $\Group$.\qedhere
 \end{enumerate}
 \end{xca}
@@ -1060,23 +1120,22 @@ For reference we list the conclusion of this example as a lemma:
   If $H$ and $G$ are groups, then the equivalence of \cref{lem:actionsconcr2abstr} sends the $G$-set $\Hom(H,G)$ to the $\abstr(G)$-set $\absHom(\abstr(H),\abstr(G))$ with action given by postcomposing with conjugation by elements of $\abstr(G)$.
 \end{lemma}
 
-Let $G$ and $H$ be groups and $f:\Hom(G,H)$ a homomorphism.
-Recall from \cref{def:restrictandinduce} the restriction map
-\[
-f^*: \GSet[H]\to\GSet, \qquad f^*(X) \defeq X\circ \Bf.
-\]
-Similarly, given abstract groups $\agp G$ and $\agp H$
-and an abstract group homomorphism $\varphi : \absHom(\agp G, \agp H)$,
-we can define 
-a map $\varphi^*: \absGSet[\agp H] \to \absGSet[\agp G]$ which maps
-any $\agp H$-set $(X,\psi)$ to the $\agp G$-set $(X,\psi\circ\varphi)$.
 
-Since $f^*$ and $\varphi^*$ are both defined by precomposition,
+Recall from \cref{sec:phi-functors} the action functors $\varphi^*$ 
+and $\varphi_!$ for a given abstract homomorphism $\varphi$.
+Let $G$ and $H$ be groups and let $f:\Hom(G,H)$ be a homomorphism.
+Also recall the action functors $f^*$ and $f_!$ from
+\cref{def:restrictandinduce}. 
+In the following we address how $f^*$ and $\abstr(f)^*$ correspond,
+and how $f_!$ and $\abstr(f)_!$ correspond.
+Recall the equivalences $\ev_\blank$ from \cref{lem:actionsconcr2abstr}.
+
+Since $f^*$ and $\abstr(f)^*$ are both defined by precomposition,
 the following diagram can easily be filled, which we leave as
 an exercise to the reader.
 \[
   \begin{tikzcd}[column sep=large,row sep=large,ampersand replacement=\&]
-      \GSet[H] \ar[r,equivr,"{\ev_{\sh_G}}"] \ar[d,"f^*"'] \& 
+      \GSet[H] \ar[r,equivr,"{\ev_{\sh_H}}"] \ar[d,"f^*"'] \& 
       \absGSet[\abstr(H)] \ar[d,"{\abstr(f)^*}"] \\
       \GSet \ar[r,equivl,"{\ev_{\sh_G}}"']        \& \absGSet[\abstr(G)].
   \end{tikzcd}
@@ -1086,56 +1145,9 @@ an exercise to the reader.
   Fill the diagram above.
 \end{exercise}
 
-Also recall from \cref{def:restrictandinduce}, for given $f:\Hom(G,H)$
-and $G$-set $X$, the induced $H$-set $f_!(X)$ defined by, 
-for all $X:\BG\to\Set$, $f:\Hom(G,H)$ and $w:\BH$,
-$f_!X(w)\defeq
-\setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)}$.
-Unlike in the case of $f^*$, precomposition with $f$, 
-the abstract version of $f_!$ is not immediately clear,
-so we apply some equivalences first.
-
-By \cref{lem:X/G=setTruncX_hG}, the set $f_!X(w)$ 
-is equivalent to the set of orbits
-of the $G$-set $(z:\BG)\mapsto((\Bf(z) \eqto w)\times X(z))$. 
-Using $\Bfpt$, the underlying set of the latter is equivalent to
-$\princ H(w)\times X(\sh_G)$. By \cref{cor:orbit-equiv},
-quotienting the latter set with the equivalence
-relation $(p,x)\sim(q,y)$ defined by
-$\exists_{g:\USymG}((p\USymf(g)=q)\times(x = g\cdot_X y))$ gives an 
-equivalent of $f_!X(w)$ in terms that have abstract counterparts.\footnote{%
-The dependence on $w$ is in the type $\princ H(w)$ of $p$ and $q$.}
-This motivates the following definition.
-
-\begin{definition}\label{def:phi_!}
-Let $\agp G$ and $\agp H$ be abstract groups
-with underlying sets $S$ and $T$, respectively.
-Let $\varphi : \absHom(\agp G, \agp H)$ be an abstract homomorphism.
-Define\footnote{%
-$\varphi_!$ is the first component of the unpointed map 
-$\Bconcr(\varphi)$ \wip{no label}.
-The first two points of \cref{xca:Bconcr-OK} justify the definition
-of $\varphi_!$. }
-\[
-  \varphi_! : \absGSet \to \absGSet[\agp H], \quad
-  \varphi_!(X) \defeq \absprtor[\agp H] \times_{\agp G} X,
-\]
-where $\absprtor[\agp H] \times_{\agp G} X$
-is the set quotient $T \times X/\sim$
-for the equivalence relation on $T\times X$ defined by
-\[
-  (t,x) \sim (u,y) \defeq 
-  \exists_{g:S} (t\varphi(g) = u) \times (x = g\cdot_X y).
-\]
-The abstract homomorphism of $\varphi_!(X)$
-maps any $h:T$ to the permutation
-of $\absprtor[\agp H] \times_{\agp G} X$ induced by $(t,x)\mapsto(ht,x)$.
-\end{definition}
-
-
-Let $G$ and $H$ be groups and let $f:\Hom(G,H)$. 
-Recall the equivalences $\ev_\blank$ from \cref{lem:actionsconcr2abstr}.
-The following diagram can be filled:
+For $f_!$ and $\abstr(f)_!$ we have a similar diagram. Filling this requires 
+the equivalences preceding \cref{def:phi_!} motivating the definition
+of $\varphi_!$ in view of the definition of $f_!$. 
 \[
   \begin{tikzcd}[column sep=large,row sep=large,ampersand replacement=\&]
       \GSet \ar[r,equivr,"{\ev_{\sh_G}}"] \ar[d,"f_!"'] \& 
@@ -1146,6 +1158,8 @@ The following diagram can be filled:
 \begin{xca}\label{xca:f_!-abs(f)_!}
 Fill the diagram above.
 \end{xca}
+
+
 
 
 \wip{%
