@@ -426,11 +426,11 @@ The kernel, cokernel and image constructions satisfy a lot of important relation
 Here, for clarity, we have made the equivalence $\pathpair \blank \blank$
 from \cref{def:pairtopath}, mapping pairs of paths to paths between pairs,
 explicit.
-\begin{marginfigure}\label{fig:fibersofcomposites}
+\begin{marginfigure}
 $$
 \xymatrix{
       F_1^{-1}(x_1,p_2)\ar[r]^H_\simeq\ar[d]_{\fst}&f_1^{-1}(x_1)\ar[d]^{\fst}\ar[dl]_{F_2}&\\
-      (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^{F_1}&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar[d]^{\id}\\
+      (f_2f_1)^{-1}(x_2)\ar[r]^{\fst}\ar[d]^{F_1}&X_0\ar[r]^{f_2f_1}\ar[d]^{f_1}&X_2\ar[d]^{\id_{X_2}}\\
     f_2^{-1}(x_2)\ar[r]^{\fst}&X_1\ar[r]^{f_2}&X_2.}
 $$
 \caption{\label{fig:fibersofcomposites}\wip{Crossing horizontal
@@ -470,8 +470,95 @@ Hence, through univalence, $H$ provides an identification
   $$\etop H:(F_1^{-1}(x_1,p_2),\fst)\eqto (f_1^{-1}(x_1),F_2)$$ in the type $\sum_{X:\UU}(X\to(f_2f_1)^{-1}(x_2))$.
   % ($\fst(t)$ refers to the discussion following \cref{def:pairtopath} so that if $t\oldequiv(\overline{a,b}):(x_1,p_1)\eqto (x,p_1f_2q)$, then $\fst(t)\defeq a:x_1\eqto f_1x$).
   
-From the universal property of the pullback (\cref{def:pullback}),\footnote{The fiber $(f_2f_2)^{-1}$ is the pullback of
-$X_0\xrightarrow{f_2f_1} X_2 \xleftarrow{x_2}\bn1$.} it furthermore follows that $F_2$ is the unique map such that $(\fst F_2)\eqto _{f_1^{-1}(x_1)\to X_0}\fst$ and $H^{-1}$ is similarly unique with respect to $(\fst H^{-1})\eqto F_2$.
+From the universal property of the pullback (\cref{def:pullback}),%
+\footnote{The fiber $(f_2f_2)^{-1}$ is the pullback of
+$X_0\xrightarrow{f_2f_1} X_2 \xleftarrow{x_2}\bn1$.}
+it furthermore follows that $F_2$ is the unique map such 
+that $(\fst F_2)\eqto _{f_1^{-1}(x_1)\to X_0}\fst$ and $H^{-1}$ is 
+similarly unique with respect to $(\fst H^{-1})\eqto F_2$.
+
+\begin{xca}\label{xca:fibersofcomposites}\wip{New: }
+Fill the diagram in \cref{fig:fibersofcomposites}
+with all maps pointed. Here the maps $F_2$, $H$, 
+and every occurrence of $\fst$ are pointed by reflexivity,
+and the pointing path of $F_1$ is that of $f_1$ paired with
+the filling of a triangle, which is unique if $X_2$ is a $1$-type.\footnote{%
+Difficult: not unique in general, but plays no role since ignored by $H$.}
+\end{xca}
+
+The following corollary states how kernel and cokernel work on the composition
+of two homomorphisms, illustrated by \cref{fig:kernelsofcomposites}.
+\cref{fig:kernelsofcomposites} is an instantiation for groups of
+\cref{fig:fibersofcomposites}, enhanced with pointing data
+as in \cref{xca:fibersofcomposites}.
+
+\begin{corollary}
+  \label{cor:cokermaps}
+\begin{marginfigure}
+$$
+\xymatrix{
+  \Ker(F_1)\ar[d]_{\kermap{F_1}} \ar[r]^{\mkgroup H} &
+  \Ker(f_1)\ar[d]^{\kermap{f_1}}\ar[dl]_{F_2}\\
+%
+  \Ker(f_2 f_1)\ar[d]_{F_1}\ar[r]^-{\kermap{f_2f_1}} &
+  G_0\ar[d]^{f_1}\ar[r]^{f_2f_1} &
+  G_2\ar[d]^{\id_{G_2}}\\
+%
+  \Ker(f_2)  \ar[r]^-{\kermap{f_2}} &
+  G_1\ar[r]^{f_2} &
+  G_2% \\
+% \coker(f_2) &\coker(f_1) 
+}
+$$
+\caption{\label{fig:kernelsofcomposites}\wip{Kernels of composite
+homomorphisms.}}
+\end{marginfigure} 
+  Consider two composable homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
+  There is a unique monomorphism $F_2$ from $\Ker(f_1)  $ to $\Ker(f_2f_1)$
+	and a unique homomorphism $F_1$ from $\Ker(f_2f_1)$ to $\Ker(f_2)  $ such that $\kermap{f_1}\eq(\kermap{f_2f_1}F_2)$ and $(f_1\kermap{f_2f_1})\eq(\kermap{f_2}F_1)$. 
+\wip{The equivalence $H$ from \cref{lem:fibersofcomposites}, 
+pointed by reflexivity,
+classifies and isomorphism $\mkgroup H : \Ker(F_1) \equivto \Ker(f_1)$.}
+  Furthermore,\footnote{\wip{Was: $F_2\eq_{\typemono(G_1)}\kermap{F_1}$.}
+  This is by the left upper commuting triangle in \cref{fig:fibersofcomposites}.}
+	$$(\Ker(f_1),F_2)\eq_{\typemono(\Ker(f_2f_1))}(\Ker(F_1),\kermap{F_1})$$ 
+and the restriction of the cokernel of $f_1$ to the kernel map of $f_2$
+can be identified with the cokernel of $F_1$:\footnote{%
+\wip{Construction: for $w:\BKer(f_2)$, 
+define $H_w: \inv{B\mkern -2mu F_1}(w) \to \inv{\Bf_1}(w)$ like $H$,
+which is well typed with $p:\fst(w)\eqto\Bf_1(x)$. 
+Then $H_w\jdeq H$ for $w\jdeq\sh_{\Ker(f_2)}$ and $H$ is an equivalence,
+so $H_w$ is an equivalence for all $w:\BKer(f_2)$.
+}}
+	$$\coker(f_1)\B\!\kermap{f_2}\eqto_{\BKer(f_2)\to\Set}\coker (F_1).$$
+
+  Consequently, since monomorphisms have trivial kernel groups,
+  \begin{enumerate}
+  \item if $f_2$ is a monomorphism then $F_2:\Ker(f_1)\to\Ker(f_2 f_1)$ is an isomorphism, and
+  \item if $f_1$ is a monomorphism then $F_1:\Ker(f_2 f_1)\to\Ker(f_2)  $ is an isomorphism.
+  \end{enumerate}
+	Likewise, the set truncations $\setTrunc{F_1}$ and $\setTrunc{F_2}$ (see \cref{def:n-trunc-functor}) of the maps $F_1$ and $F_2$ defined in \cref{lem:fibersofcomposites} give maps of $G_1$- and $G_2$-sets,\footnote{%
+Recall the notion of a map of $G$-sets from 
+\cref{def:map-of-Gsets} and the notation $\Hom_G(X,Y)\jdeq\prod_{z:\BG}(X(z)\to Y(z))$ for the type of such maps. Recall also that $\phi:\Hom_G(X,Y)$ is called an equivalence if $\prod_{z:\BG}\isEq\phi(z)$, see \cref{lem:fiberwise}.}
+respectively:
+\begin{align*}
+\setTrunc{F_2}:\Hom_{G_1}(\coker(f_1),\coker(f_2f_1)\,\Bf_2),\\
+\setTrunc{F_1}:\Hom_{G_2}(\coker(f_2f_1),\coker(f_2)),
+\end{align*}
+  such that
+  \begin{enumerate}
+  \item if $f_2$ is an epimorphism then $\setTrunc{F_2}$ is an equivalence, and
+  \item if $f_1$ is an epimorphism then $\setTrunc{F_1}$  is an equivalence.
+  \end{enumerate}
+\end{corollary}
+\begin{proof}
+The maps $F_1$, $F_2$, and $H$ are easily pointed by $(\B$
+\end{proof}
+
+\begin{proof}
+The maps $F_1$, $F_2$, and $H$ are easily pointed by $(\B$
+\end{proof}
+
 \begin{figure}
 \[
 \begin{tikzcd}[ampersand replacement=\&, column sep={0.9cm, between origins}]
@@ -577,45 +664,7 @@ following case:
 \end{xca}
 
  
-The following corollary analyzes how kernel and cokernel work on
-the composition of two homomorphisms.
 
-\begin{corollary}
-  \label{cor:cokermaps}
-  \marginnote{$$\xymatrix{\Ker(f_1) \ar[r]^{\id_{\Ker(f_1)}}\ar[d]^{F_2}&\Ker(f_1)  \ar[d]^{\kermap{f_1}}\\
-      \Ker(f_2 f_1)\ar[d]^{F_1}\ar[r]^-{\kermap{f_2f_1}}&G_0\ar[d]^{f_1}\ar[r]^{f_2f_1}&G_2\ar[d]^{\id_{G_2}}\\
-      \Ker(f_2)  \ar[r]^-{\kermap{f_2}}&G_1\ar[r]^{f_2}&G_2% \\
-   % \coker(f_2) &\coker(f_1) 
- }
-  $$}
-  Consider two composable homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
-  There is a unique monomorphism $F_2$ from $\Ker(f_1)  $ to $\Ker(f_2f_1)$
-	and a unique homomorphism $F_1$ from $\Ker(f_2f_1)$ to $\Ker(f_2)  $ such that $\kermap{f_1}\eq(\kermap{f_2f_1}F_2)$ and $(f_1\kermap{f_2f_1})\eq(\kermap{f_2}F_1)$.
-  Furthermore,\footnote{\wip{Was: $F_2\eq_{\typemono(G_1)}\kermap{F_1}$}}
-	$$(\Ker(f_1),F_2)\eq_{\typemono(\Ker(f_2f_1))}(\BKer(F_1),\kermap{F_1})$$ 
-and the restriction of the cokernel of $f_1$ to the kernel map of $f_2$ is 
-the cokernel of $F_1$:
-	$$\coker(f_1)\B\!\kermap{f_2}\eq_{\BKer(f_2)\to\Set}\coker (F_1).$$
-
-  Consequently, since monomorphisms have trivial kernel groups,
-  \begin{enumerate}
-  \item if $f_2$ is a monomorphism then $F_2:\Ker(f_1)\to\Ker(f_2 f_1)$ is an isomorphism, and
-  \item if $f_1$ is a monomorphism then $F_1:\Ker(f_2 f_1)\to\Ker(f_2)  $ is an isomorphism.
-  \end{enumerate}
-	Likewise, the set truncations $\setTrunc{F_1}$ and $\setTrunc{F_2}$ (see \cref{def:n-trunc-functor}) of the maps $F_1$ and $F_2$ defined in \cref{lem:fibersofcomposites} give maps of $G_1$- and $G_2$-sets,\footnote{%
-Recall the notion of a map of $G$-sets from 
-\cref{def:map-of-Gsets} and the notation $\Hom_G(X,Y)\jdeq\prod_{z:\BG}(X(z)\to Y(z))$ for the type of such maps. Recall also that $\phi:\Hom_G(X,Y)$ is called an equivalence if $\prod_{z:\BG}\isEq\phi(z)$, see \cref{lem:fiberwise}.}
-respectively:
-\begin{align*}
-\setTrunc{F_2}:\Hom_{G_1}(\coker(f_1),\coker(f_2f_1)\,\Bf_2),\\
-\setTrunc{F_1}:\Hom_{G_2}(\coker(f_2f_1),\coker(f_2)),
-\end{align*}
-  such that
-  \begin{enumerate}
-  \item if $f_2$ is an epimorphism then $\setTrunc{F_2}$ is an equivalence, and
-  \item if $f_1$ is an epimorphism then $\setTrunc{F_1}$  is an equivalence.
-  \end{enumerate}
-\end{corollary}
 \begin{xca}\label{xca:abstract-kernel}
   Let $f:\Hom(G,G')$.  Give an equivalence from the subgroup $E(\ker(f)):\Sub(G)$ associated with the kernel to the $G$-set sending $z:\BG$ to
   $$\sum_{p:\sh_{G'}\eqto \Bf(z)}\Trunc{\sum_{g:\sh_G\eqto z}p\eqto \Bf(g)\Bfpt}.$$
