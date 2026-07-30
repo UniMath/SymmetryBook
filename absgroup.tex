@@ -464,7 +464,12 @@ Given an abstract group ${\agp G}\jdeq(S,e,\mu,\iota)$, a \emph{$\agp G$-set}%
 \index{GSet@$\agp G$-set (of abstract group)}
 is a set $T$ together with a homomorphism
 $\agp G\to\abstr(\Sigma_T)$
-from $\agp G$ to the abstract permutation group of $T$.
+from $\agp G$ to the abstract permutation group of $T$.\footnote{\wip{New: }
+This homomorphism is also called the \emph{action} of the
+$\agp G$-set and denoted as $\cdot_T$.
+In case $\agp G$ is $\abstr(G)$ and $T$ is $\USymG$ for some group $G$,
+this notation complies with the notation for the group action $\cdot_X$
+of a $G$-set $X$ in \cref{def:Gset}.}
 Then the type of $\agp G$-sets is defined as
 \[
   \absGSet\defequi \sum_{T:\Set}\absHom({\agp G},\abstr(\SG_T)).
@@ -781,11 +786,112 @@ With conditions as in \cref{def:phi_!}, show the following:
 \end{enumerate}
 \end{xca}
 
-\wip{What about $\varphi_*X$? Must be known. Looking at $f_*X(w)$,
-which is a type of invariant maps, with underunderlying set
-$(\Bf(\sh_G)\eqto\sh_H) \to X(\sh_G)$, my best guess is the subset of 
-fixed elements of $T\to X$, with homomorphism sending $h:T$ to the
-permutation of $T\to X$ sending $\alpha$ to $\alpha\circ(h\blank)$.}
+\wip{Rest of subsec is new.}
+
+Like maps of $G$-sets in \cref{def:map-of-Gsets}, 
+we have a notion of map of $\agp G$-sets:
+\def\ags{\agp} %experimental
+\begin{definition}\label{def:Hom-absG}
+  Let $\agp G$ be an abstract group with underlying set $S$, 
+  and let $\ags X \jdeq (X,\cdot_X)$ and $\ags Y \jdeq (Y,\cdot_Y)$ be
+  $\agp G$-sets. Then the type of maps from  $\ags X$ to $\ags Y$
+  is defined as\footnote{\wip{Do we like this new notation?}}   
+  \[
+    \Hom_{\agp G}(\ags X,\ags Y) \defeq 
+    \sum_{f:X\to Y}\prod_{s:S}
+      \bigl(f\circ(s\cdot_X\blank)=(s\cdot_Y\blank)\circ f\bigr).\qedhere
+  \]
+  \index{map!of $\agp G$-sets}\index{Gsubset@$\agp G$-subset}
+  \glossary(HomG){$\protect\Hom_{\agp G}(\ags X,\ags Y)$}%
+  {type of maps of $\agp G$-sets}
+\end{definition}
+The following exercise asks you to prove $\varphi_! \dashv \varphi^*$,
+which is the abstract version of the adjunction $f_! \dashv f^*$ 
+from \cref{ex:action-functors}.
+\begin{xca}\label{xca:phi_!-|phi^*}
+Let $\agp G$ and $\agp H$ be abstract groups
+and $\varphi : \absHom(\agp G, \agp H)$ an abstract homomorphism.
+Give an equivalence between 
+$\Hom_{\agp H}(\varphi_!\ags X,\ags Y)$ and 
+$\Hom_{\agp G}(\ags X,\varphi^*\ags Y)$ for all
+$\agp G$-sets $\ags X$ and $\agp H$-sets $\ags Y$. 
+\end{xca}
+
+For the other adjunction, $\varphi^*\dashv\varphi_*$, we must
+first find a suitable definition of $\varphi_*{\ags X}$. To get an idea,
+we recall $f_*X$ defined in \cref{rem:coinduced-Hset}:
+\[
+f_*: \GSet\to\GSet[H], \quad
+f_*X(w)\jdeq\prod_{z:\BG}\bigl((\Bf(z)\eqto w) \to X(z)\bigr), 
+\text{for $w:\BH$.}
+\]
+Following \cref{rem:GSet=SetHomG}, we look at the underlying set
+$f_*X(\sh_H)$ of the $H$-set $f_*X$. This underlying set
+$\prod_{z:\BG}\bigl((\Bf(z)\eqto\sh_H) \to X(z)\bigr)$
+is a set of invariant maps for the $G$-set sending $z:\BG$ to
+$(\Bf(z)\eqto\sh_H) \to X(z)$. \cref{xca:HomGsets-ev} gives
+an equivalence between $f_*X(\sh_H)$ and the subset of fixed
+elements of $(\Bf(\sh_G)\eqto\sh_H) \to X(\sh_G)$. This provides
+the clue for the definition of $\varphi_*{\ags X}$.
+However, since $\varphi$ corresponds to $\USymf\jdeq\abstr(f)$,
+we must transport $\Bf(\sh_G)\eqto\sh_H$ to $\USymH$ by precomposition
+with $\Bfpt$. The following diagram\footnote{Here $g:\USymG$ is
+inverted in $\Bf(\inv g),\USymf(\inv g)$ as $\Bf(\sh_G)$ occurs
+on the left in $\Bf(\sh_G)\eqto\sh_H$.}
+shows how to transport a fixed $a:(\Bf(\sh_G)\eqto\sh_H) \to X(\sh_G)$ 
+to an element $a(\blank\inv{\Bfpt}):\USymH\to X(\sh_G)$ and why
+the latter function is also fixed:
+\[
+\begin{tikzcd}[ampersand replacement=\&, column sep=1cm]
+\USymH\ar[d,equivl,"{\blank\USymf(\inv g)}"']
+ \&\&(\Bf(\sh_G)\ar[ll,equivl,"{\blank\Bfpt}"']
+ =\ar[d,equivr,"{\blank\Bf(\inv g)}"]
+ \sh_H)\ar[rr,"a"]
+ \&\&X(\sh_G)\ar[d,equivr,"X(g)"]\\
+\USymH
+ \&\&(\Bf(\sh_G) \ar[ll,equivr,"{\blank\Bfpt}"]
+ =
+ \sh_H)\ar[rr,"a"']
+ \&\&X(\sh_G)
+\end{tikzcd}
+\]
+It remains to understand the action of $f_*X$ under the above equivalences.
+Taking into account how $w$ occurs in $f_*X(w)$,\footnote{%
+Namely, as the endpoint of a path that is the domain of a function type,
+\ie a negative or contravariant position.}
+one sees that the action of $h$ maps any $a:(\Bf(\sh_G)\eqto\sh_H)\to X(\sh_G)$
+to $a(\inv h \blank)$.\footnote{%
+We don't have to worry about the latter being fixed whenever $a$ is,
+since everything comes from the $H$-set $f_*X$.
+However, you may check this as an exercise.}
+The same action works for functions $\USymH\to X(\sh_G)$,
+since $(\inv h\blank)\Bfpt = \inv h(\blank\Bfpt)$.
+We are now ready to define $\varphi_*$.
+
+\begin{definition}\label{def:phi_!}
+Let $\agp G$ and $\agp H$ be abstract groups
+with underlying sets $S$ and $T$, respectively.
+Let $\varphi : \absHom(\agp G, \agp H)$ be an abstract homomorphism.
+Define $\varphi_* : \absGSet \to \absGSet[\agp H]$
+by mapping every $\agp G$-set $\ags X \jdeq (X,\cdot_X)$ to
+\[
+  \varphi_*(\ags X) \defeq 
+  \{ b:T\to X \mid \prod_{s:S}\bigl(b\circ(\blank\varphi(\inv s)) =
+                                   (s\cdot_X\blank)\circ b\bigr)\},
+\]
+with action $h\cdot_{T\to X} b$ defined as $b(\inv h \cdot_X \blank)$.
+\end{definition}
+The following exercise asks you to prove $\varphi^* \dashv \varphi_*$,
+which is the abstract version of the adjunction $f^* \dashv f_*$ 
+from \cref{ex:action-functors}.
+\begin{xca}\label{xca:phi^*-|phi_*}
+Let $\agp G$ and $\agp H$ be abstract groups
+and $\varphi : \absHom(\agp G, \agp H)$ an abstract homomorphism.
+Give an equivalence between
+$\Hom_{\agp G}(\varphi^*\ags Y,\ags X)$ and 
+$\Hom_{\agp H}(\ags Y,\varphi_*\ags X)$
+for all $\agp G$-sets $\ags X$ and $\agp H$-sets $\ags Y$.
+\end{xca}
 
 \section{Homomorphisms, from abstract to concrete and back}
 \label{sec:homabsisconcr}
@@ -1050,6 +1156,10 @@ Show that $\Iso(\SG_2,\CG_2)$ is contractible.
 \end{xca}
 
   Equivalence of monos in both categories.
+  
+  \cref{xca:phi_!-|phi^*,xca:phi^*-|phi_*} follow from
+  \cref{xca:adjunction-_!-^*,xca:adjunction-^*-_*}, resp.
+  
 }
 
 \section{Actions, from abstract to concrete and back}
@@ -1066,7 +1176,7 @@ is an equivalence, where the group $\SG_S$ is classified by the
 component of the groupoid $\Set$, pointed at $S$. 
 The component information is moot by \cref{xca:ptd-conn-to-comp}.
 
-Using \cref{rem:GSet=absGset},
+Using \cref{rem:GSet=SetHomG},
 we have the following chain of known equivalences and definitions:
 \begin{align*}
 \GSet 
