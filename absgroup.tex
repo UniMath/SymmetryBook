@@ -462,17 +462,21 @@ A small generalization now leads to the following definition.
 Given an abstract group ${\agp G}\jdeq(S,e,\mu,\iota)$, a \emph{$\agp G$-set}%
 \glossary(GSet){\protect{$\absGSet$}}{type of $\agp G$-sets}
 \index{GSet@$\agp G$-set (of abstract group)}
-is a set $T$ together with a homomorphism
-$\agp G\to\abstr(\Sigma_T)$
-from $\agp G$ to the abstract permutation group of $T$.\footnote{\wip{New: }
-This homomorphism is also called the \emph{action} of the
-$\agp G$-set and denoted as $\cdot_T$.
-In case $\agp G$ is $\abstr(G)$ and $T$ is $\USymG$ for some group $G$,
-this notation complies with the notation for the group action $\cdot_X$
-of a $G$-set $X$ in \cref{def:Gset}.}
-Then the type of $\agp G$-sets is defined as
+$\agp X$ is a pair $(X,\cdot_X)$ where $X$ is a set and $\cdot_X$
+an abstract homomorphism from $\agp G$ to 
+to $\abstr(\Sigma_X)$, the abstract permutation group of $X$.\footnote{%
+For any $s:S$, the application of $\cdot_X$ to $s$ is denoted as $s\cdot_X$
+of type $X\eqto X$; by univalence $s\cdot_X$ can be applied
+to $x:X$ which is denoted as $s\cdot_X x : X$.
+ 
+The abstract homomorphism $\cdot_X$ is also called the \emph{action} of the
+$\agp G$-set, similarly to the action of a $G$-set $X$ in \cref{def:Gset}.
+In particular when $\agp G$ is $\abstr(G)$ for some group $G$,
+the notations $\cdot_X$ for group action and abstract group action comply,
+see \cref{rem:GSet=SetHomG}.}
+Thus the type of $\agp G$-sets is defined as
 \[
-  \absGSet\defequi \sum_{T:\Set}\absHom({\agp G},\abstr(\SG_T)).
+  \absGSet\defequi \sum_{X:\Set}\absHom({\agp G},\abstr(\SG_X)).
 \]
 
 The \emph{principal ${\agp G}$-torsor} $\absprtor$ is the
@@ -705,13 +709,12 @@ indeed an isomorphism of abstract groups.\footnote{%
 %The proof above shows that every abstract group encodes the symmetries 
 %of something essentially unique.
 
-\subsection{The adjoint triple in the case of abstract groups}
+\subsection{The left and right adjoint of restriction, abstractly}
 \label{sec:phi-functors}
 In \cref{def:abstrGtorsors} we defined the notion of $\agp G$-set
 for any abstract group $\agp G$. A natural question that comes
-up is: what are the abstract versions of the adjoint triple 
-$f_!\dashv f^*\dashv f_*$ 
-defined for concrete groups in 
+up is: what are the abstract versions of the string of adjunctions
+$f_!\dashv f^*\dashv f_*$ defined for concrete groups in 
 \cref{def:restrictandinduce,rem:coinduced-Hset}?\footnote{%
 See also \cref{ex:action-functors,ex:Sigma-Pi-adj}
 for examples of these functors in the categorical setting.}
@@ -721,11 +724,11 @@ abstract and the concrete versions will come in \cref{sec:Gsetsabstrconcr}.
 In the following paragraphs, $G$ and $H$ are groups and $f:\Hom(G,H)$ 
 is a homomorphism.
 
-Recall from \cref{def:restrictandinduce} the action map called restriction map
+Recall from \cref{def:restrictandinduce} the restriction map
 \[
 f^*: \GSet[H]\to\GSet, \qquad f^*(Y) \defeq Y\circ \Bf.
 \]
-The abstract version of the restriction map is no surprise:
+The abstract version of restriction, \ie precompostion, is no surprise:
 
 \begin{definition}\label{def:phi^*}
 Given abstract groups $\agp G$ and $\agp H$
@@ -734,7 +737,7 @@ we define  the map $\varphi^*: \absGSet[\agp H] \to \absGSet[\agp G]$ sending
 any $\agp H$-set $(S,\psi)$ to the $\agp G$-set $(S,\psi\circ\varphi)$.
 \end{definition}
 
-Also recall from \cref{def:restrictandinduce} the induced action map 
+Also recall from \cref{def:restrictandinduce} the left adjoint of $f^*$: 
 \[
 f_!: \GSet\to\GSet[H], \qquad f_!X(w)\defeq
 \setTrunc{\sum_{z:\BG}\bigl((\Bf(z) \eqto w)\times X(z)\bigr)},
@@ -763,18 +766,20 @@ Let $\varphi : \absHom(\agp G, \agp H)$ be an abstract homomorphism.
 Define (and justify by doing \cref{xca:phi_!-OK}!)
 \[
   \varphi_! : \absGSet \to \absGSet[\agp H], \quad
-  \varphi_!(X) \defeq \absprtor[\agp H] \times_{\agp G} X,
+  \varphi_!(\agp X) \defeq \absprtor[\agp H] \times_{\agp G} {\agp X}
+  \text{~~for all $\agp G$-sets $\agp X$.}
 \]
-where $\absprtor[\agp H] \times_{\agp G} X$
-is the set quotient $T \times X/\sim$
+Here $\absprtor[\agp H] \times_{\agp G} {\agp X}$, with
+${\agp X}\jdeq(X,\cdot_X)$, is the $\agp H$-set
+consisting of the set quotient $T \times X/\sim$
 for the equivalence relation on $T\times X$ defined by
 \[
   (t,x) \sim (u,y) \defeq 
-  \exists_{g:S} (t\varphi(g) = u) \times (x = g\cdot_X y).
+  \exists_{g:S} (t\varphi(g) = u) \times (x = g\cdot_X y),
 \]
-The abstract homomorphism of $\varphi_!(X)$
+paired with the abstract homomorphism that
 maps any $h:T$ to the permutation
-of $\absprtor[\agp H] \times_{\agp G} X$ induced by $(t,x)\mapsto(ht,x)$.
+of $T \times X/\sim$ induced by $(t,x)\mapsto(ht,x)$.
 \end{definition}
 
 \begin{xca}\label{xca:phi_!-OK}
@@ -790,19 +795,19 @@ With conditions as in \cref{def:phi_!}, show the following:
 
 Like maps of $G$-sets in \cref{def:map-of-Gsets}, 
 we have a notion of map of $\agp G$-sets:
-\def\ags{\agp} %experimental
+
 \begin{definition}\label{def:Hom-absG}
   Let $\agp G$ be an abstract group with underlying set $S$, 
-  and let $\ags X \jdeq (X,\cdot_X)$ and $\ags Y \jdeq (Y,\cdot_Y)$ be
-  $\agp G$-sets. Then the type of maps from  $\ags X$ to $\ags Y$
-  is defined as\footnote{\wip{Do we like this new notation?}}   
+  and let $\agp X \jdeq (X,\cdot_X)$ and $\agp Y \jdeq (Y,\cdot_Y)$ be
+  $\agp G$-sets. Then the type of maps from  $\agp X$ to $\agp Y$
+  is defined as   
   \[
-    \Hom_{\agp G}(\ags X,\ags Y) \defeq 
+    \Hom_{\agp G}(\agp X,\agp Y) \defeq 
     \sum_{f:X\to Y}\prod_{s:S}
       \bigl(f\circ(s\cdot_X\blank)=(s\cdot_Y\blank)\circ f\bigr).\qedhere
   \]
   \index{map!of $\agp G$-sets}\index{Gsubset@$\agp G$-subset}
-  \glossary(HomG){$\protect\Hom_{\agp G}(\ags X,\ags Y)$}%
+  \glossary(HomG){$\protect\Hom_{\agp G}(\agp X,\agp Y)$}%
   {type of maps of $\agp G$-sets}
 \end{definition}
 The following exercise asks you to prove $\varphi_! \dashv \varphi^*$,
@@ -812,13 +817,13 @@ from \cref{ex:action-functors}.
 Let $\agp G$ and $\agp H$ be abstract groups
 and $\varphi : \absHom(\agp G, \agp H)$ an abstract homomorphism.
 Give an equivalence between 
-$\Hom_{\agp H}(\varphi_!\ags X,\ags Y)$ and 
-$\Hom_{\agp G}(\ags X,\varphi^*\ags Y)$ for all
-$\agp G$-sets $\ags X$ and $\agp H$-sets $\ags Y$. 
+$\Hom_{\agp H}(\varphi_!\agp X,\agp Y)$ and 
+$\Hom_{\agp G}(\agp X,\varphi^*\agp Y)$ for all
+$\agp G$-sets $\agp X$ and $\agp H$-sets $\agp Y$. 
 \end{xca}
 
 For the other adjunction, $\varphi^*\dashv\varphi_*$, we must
-first find a suitable definition of $\varphi_*{\ags X}$. To get an idea,
+first find a suitable definition of $\varphi_*{\agp X}$. To get an idea,
 we recall $f_*X$ defined in \cref{rem:coinduced-Hset}:
 \[
 f_*: \GSet\to\GSet[H], \quad
@@ -832,7 +837,7 @@ is a set of invariant maps for the $G$-set sending $z:\BG$ to
 $(\Bf(z)\eqto\sh_H) \to X(z)$. \cref{xca:HomGsets-ev} gives
 an equivalence between $f_*X(\sh_H)$ and the subset of fixed
 elements of $(\Bf(\sh_G)\eqto\sh_H) \to X(\sh_G)$. This provides
-the clue for the definition of $\varphi_*{\ags X}$.
+the clue for the definition of $\varphi_*{\agp X}$.
 However, since $\varphi$ corresponds to $\USymf\jdeq\abstr(f)$,
 we must transport $\Bf(\sh_G)\eqto\sh_H$ to $\USymH$ by precomposition
 with $\Bfpt$. The following diagram\footnote{Here $g:\USymG$ is
@@ -873,9 +878,9 @@ Let $\agp G$ and $\agp H$ be abstract groups
 with underlying sets $S$ and $T$, respectively.
 Let $\varphi : \absHom(\agp G, \agp H)$ be an abstract homomorphism.
 Define $\varphi_* : \absGSet \to \absGSet[\agp H]$
-by mapping every $\agp G$-set $\ags X \jdeq (X,\cdot_X)$ to
+by mapping every $\agp G$-set $\agp X \jdeq (X,\cdot_X)$ to
 \[
-  \varphi_*(\ags X) \defeq 
+  \varphi_*(\agp X) \defeq 
   \{ b:T\to X \mid \prod_{s:S}\bigl(b\circ(\blank\varphi(\inv s)) =
                                    (s\cdot_X\blank)\circ b\bigr)\},
 \]
@@ -888,9 +893,9 @@ from \cref{ex:action-functors}.
 Let $\agp G$ and $\agp H$ be abstract groups
 and $\varphi : \absHom(\agp G, \agp H)$ an abstract homomorphism.
 Give an equivalence between
-$\Hom_{\agp G}(\varphi^*\ags Y,\ags X)$ and 
-$\Hom_{\agp H}(\ags Y,\varphi_*\ags X)$
-for all $\agp G$-sets $\ags X$ and $\agp H$-sets $\ags Y$.
+$\Hom_{\agp G}(\varphi^*\agp Y,\agp X)$ and 
+$\Hom_{\agp H}(\agp Y,\varphi_*\agp X)$
+for all $\agp G$-sets $\agp X$ and $\agp H$-sets $\agp Y$.
 \end{xca}
 
 \section{Homomorphisms, from abstract to concrete and back}
