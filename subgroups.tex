@@ -531,18 +531,23 @@ since $H$ is an equivalence.
   Consequently, since monomorphisms have trivial kernel groups,
   \begin{enumerate}
   \item if $f_2$ is a monomorphism then $F_2:\Ker(f_1)\to\Ker(f_2 f_1)$ is an isomorphism, and
-  \item if $f_1$ is a monomorphism then $F_1:\Ker(f_2 f_1)\to\Ker(f_2)  $ is an isomorphism.
+  \item if $f_1$ is a monomorphism then $F_1:\Ker(f_2 f_1)\to\Ker(f_2)  $ is an isomorphism.\footnote{\wip{The abstract version doesn't seem true:
+  left inject the 2-elt group 2 in V=2x2, followed by the 1-st projection.}}
   \end{enumerate}
-	Likewise, the set truncations $\setTrunc{F_1}$ and $\setTrunc{F_2}$ (see \cref{def:n-trunc-functor}) of the maps $F_1$ and $F_2$ defined in \cref{lem:fibersofcomposites} give maps of $G_1$- and $G_2$-sets,\footnote{%
+	Likewise, the set truncations $\setTrunc{F_1}$ and $\setTrunc{F_2}$ (see \cref{def:n-trunc-functor}) of the maps $F_1$ and $F_2$ defined in \cref{lem:fibersofcomposites} give maps of $G_2$- and $G_1$-sets,\footnote{%
 Recall the notion of a map of $G$-sets from 
-\cref{def:map-of-Gsets} and the notation $\Hom_G(X,Y)\jdeq\prod_{z:\BG}(X(z)\to Y(z))$ for the type of such maps. Recall also that $\phi:\Hom_G(X,Y)$ is called an equivalence if $\prod_{z:\BG}\isEq\phi(z)$, see \cref{lem:fiberwise}.}
+\cref{def:map-of-Gsets} and the notation $\Hom_G(X,Y)\jdeq\prod_{z:\BG}(X(z)\to Y(z))$ for the type of such maps. Recall also that $\phi:\Hom_G(X,Y)$ is called an equivalence if $\prod_{z:\BG}\isEq\phi(z)$, see \cref{lem:fiberwise}.
+
+\wip{Not exactly $F_2$, but $(x,p)\mapsto(x,\Bf_2(p))$.
+No proofs are given. They don't seem obvious.%By \cref{xca:mono1st-epi2nd},
+}}
 respectively:
 \begin{align*}
 \setTrunc{F_2}:\Hom_{G_1}(\coker(f_1),\coker(f_2f_1)\,\Bf_2),\\
 \setTrunc{F_1}:\Hom_{G_2}(\coker(f_2f_1),\coker(f_2)),
 \end{align*}
   such that
-  \begin{enumerate}
+  \begin{enumerate}[resume]
   \item if $f_2$ is an epimorphism then $\setTrunc{F_2}$ is an equivalence, and
   \item if $f_1$ is an epimorphism then $\setTrunc{F_1}$  is an equivalence.
   \end{enumerate}
@@ -653,38 +658,44 @@ following case, with $R_4$ as in \cref{ex:Cm}:
  
 
 \begin{xca}\label{xca:abstract-kernel}
-  Let $f:\Hom(G,G')$.  Give an equivalence from the subgroup $E(\ker(f)):\Sub(G)$ associated with the kernel to the $G$-set sending $z:\BG$ to
-  $$\sum_{p:\sh_{G'}\eqto \Bf(z)}\Trunc{\sum_{g:\sh_G\eqto z}p\eqto \Bf(g)\Bfpt}.$$
-%\USymf(g) replaced by \Bf(g)
-  Also show that, if $f$ is an epimorphism, the latter simplifies to  $$z\mapsto(\sh_{G'}\eqto \Bf(z)).$$\qedhere
-%Non-emptyness of the truncated part then follows easily for $z\jdeq\sh_G$, and $\BG$ is connected. 
-\end{xca}
+Let $f:\Hom(G,H)$.  Let $X(f):\Sub(G)$ be the transitive $G$-set 
+sending $z:\BG$ to
+\[
+  \sum_{p:\sh_{H}\eqto \Bf(z)}\exists_{g:\sh_G\eqto z}(p\eqto \Bf(g)\Bfpt),
+\]
+with the chosen point $\Bfpt: X(f)(\sh_G)$. 
+Give an identification of $X(f)$ with the subgroup 
+$E(\ker(f)):\Sub(G)$ associated with the kernel, see \cref{lem:SubG=MonoG}.
+Also show that, if $f$ is an epimorphism, $X(f)$ can be simplified to  
+\[
+  z\mapsto(\sh_{H}\eqto \Bf(z)).\qedhere
+\]
+\end{xca}%If $f$ epi, $\exists$ true for $z\jdeq\sh_G$, and $\BG$ is connected. 
 
-\wip{CURSOR}
-\subsection{The image}
+\subsection{The image of a homomorphism of groups}
 \label{sec:image}
 
 
-For a function $f:A\to B$ of of types, the notion of the ``image'' gives us a factorization through a surjection followed by an injection: noting that $a\mapsto (f(a),!)$ is a surjection from $A$ to the ``image'' $\sum_{b:B}\Trunc{f^{-1}(b)}$, from which we have an injection (first projection) to $B$.
+For a function $f:A\to B$ of of types, recall from \cref{def:prop-image} the notion of the image that gives us a factorization through a surjection followed by an injection: noting that $a\mapsto (f(a),!)$ is a surjection from $A$ to the image $\sum_{b:B}\Trunc{f^{-1}(b)}$, from which we have an injection (first projection) to $B$.
 This factorization
 $$A\to\sum_{b:B}\Trunc{f^{-1}(b)}\to B$$
 is unique (\cref{xca:unique-fact-image}).
 
-For a homomorphism $f:\Hom(G,G')$ of groups we similarly have a unique factorization
-$$G\to \Img(f) \to G'
+For a homomorphism $f:\Hom(G,H)$ of groups we similarly have a unique factorization
+$$G\to \Img(f) \to H
 $$
 through an epimorphism followed by a monomorphism which, in terms of the classifying types and maps, 
 is given by\footnote{The formula for the image of a homomorphism $f$ of groups
 is essentially the same as the one for types, but uses the set image from \cref{sec:higher-images} 
-of the classifying map $\Bf$, instead of the propositional image of $f$.}
+of the classifying map $\Bf$, instead of the propositional image.}
 
 $$\xymatrix{
   {\BG}\ar[rrr]^-{z\mapsto(\Bf(z),\settrunc{(z, \refl {\Bf(z)})})}&&&
-  \sum_{w:{BG'}}\setTrunc{({\Bf})^{-1}(w)}\ar[rr]^-{\fst} &&BG',
+  \sum_{w:{\BH}}\setTrunc{({\Bf})^{-1}(w)}\ar[rr]^-{\fst} &&\BH,
 }$$
-together with base point information.In particular, we choose the base point $(\sh_{G'},\settrunc{(\sh_G,\Bfpt)})$, so that the \emph{image group} is  %type $\sum_{b:B}\Trunc{f^{-1}(b)}$ is simply replaces by
-$$\Img(f)\defeq\Aut_{\sum_{w:\BG'}\setTrunc{(\Bf)^{-1}(w)}}((\sh_{G'},\settrunc{(\sh_G,\Bfpt)})).$$
-In other words, the image is nothing but the subgroup of ${G'}$ associated with the cokernel as discussed in \cref{rem:imageandcokernel}.
+together with base point information.In particular, we choose the base point $(\sh_{H},\settrunc{(\sh_G,\Bfpt)})$, so that the \emph{image group} is  %type $\sum_{b:B}\Trunc{f^{-1}(b)}$ is simply replaces by
+$$\Img(f)\defeq\Aut_{\sum_{w:\BH}\setTrunc{(\Bf)^{-1}(w)}}((\sh_{H},\settrunc{(\sh_G,\Bfpt)})).$$
+In other words, the image is nothing but the subgroup of ${H}$ associated with the cokernel as discussed in \cref{rem:imageandcokernel}.
 
 \begin{xca}\label{xca:IMg_pointed}
 With the choice of point of $\Img(f)$ above, give paths for
@@ -696,20 +707,20 @@ Hint: for the epimorphism, use \cref{lem:trunc-n-connected}.
 \end{xca}
 
 That the image gives a \emph{unique factorization} is elegantly expressed by saying that it is the unique inverse of composition.
-We use the pullback construction from \cref{def:pullback} to express the type of epi/mono factorizations of homomorphisms from $G$ to $G'$ as $\typeepi(G)\times_{\typegroup}\typemono(G')$ where the maps to $\typegroup$ are understood to be the first projections
+We use the pullback construction from \cref{def:pullback} to express the type of epi/mono factorizations of homomorphisms from $G$ to $H$ as $\typeepi(G)\times_{\typegroup}\typemono(H)$ where the maps to $\typegroup$ are understood to be the first projections
 (so that the epimorphisms and monomorphisms in question can, indeed, be composed).
 
 
   \begin{construction}\label{con:im}
-    For all groups $G,$ and $G'$ the map
+    For all groups $G,$ and $H$ the map
     $$
-    \circ:\typeepi(G)\times_{\typegroup}\typemono(G')\to\Hom(G,G')
+    \circ:\typeepi(G)\times_{\typegroup}\typemono(H)\to\Hom(G,H)
     $$
-    given by composition,\footnote{Here $p$ is an epimorphism from $G$ to the group $Z$, $j$ a monomorphims from the group $Z'$ to $G'$, $\alpha$ is an identification of $Z$ and $Z'$
+    given by composition,\footnote{Here $p$ is an epimorphism from $G$ to the group $Z$, $j$ a monomorphims from the group $Z'$ to $H$, $\alpha$ is an identification of $Z$ and $Z'$
       and $\ptoe\alpha$ is the isomorphism corresponding to the identification $\alpha\colon Z\eqto Z'$, as in \cref{def:idtoeq},
       so that the composite looks like
-    $$\xymatrix{G\ar[r]^p& Z\ar[r]^{\ptoe\alpha}_\sim&Z'\ar[r]^j&G'}$$}
-    %\marginnote{$\xymatrix{G\ar[r]^p& Z\ar@{=}[r]^\alpha_\to&Z'\ar[r]^j&G'}$}
+    $$\xymatrix{G\ar[r]^p& Z\ar[r]^{\ptoe\alpha}_\sim&Z'\ar[r]^j&H}$$}
+    %\marginnote{$\xymatrix{G\ar[r]^p& Z\ar@{=}[r]^\alpha_\to&Z'\ar[r]^j&H}$}
     $$\circ((Z,p,!),(Z',j,!),\alpha)\defeq j\ptoe \alpha p$$
     is an equivalence
     with inverse given by the image factorization.
@@ -746,12 +757,15 @@ We use the pullback construction from \cref{def:pullback} to express the type of
   and note that the equivalence $\sum_{z:Z}\Trunc{f^{-1}(z)}_n\we Y$ is 
   pointed via $p_q:y_0\eqto q(x_0)$ and
   $$b:\xymatrix{
-    z_0\ar@{=}[rr]_\to^{p_j}\ar@{=}[d]_{\refl{z_0}}&&j(y_0)\ar@{=}[d]_{j{p_q}}^\uparrow\\
+    z_0\ar@{=}[rr]_\to^{p_j}\ar@{=}[d]_{\refl{z_0}}&&j(y_0)\ar@{=}[d]_{j(p_q)}^\downarrow\\
     z_0\ar@{=}[r]^{\Bfpt}_\to&f(x_0)\ar@{=}[r]_\to^{a_{x_0}}&j(q(x_0)).}$$
 \end{implementation}
 
   \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img(f)}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img(f)}}}
   $$}
+  
+\wip{CURSOR, the above duplicates 3.9 but does more (the pointing).}
+
 \begin{definition}
   \label{def:image}
 Explicitly, the image factorization for groups is the function
