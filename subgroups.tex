@@ -482,18 +482,25 @@ Fill the diagram in \cref{fig:fibersofcomposites}
 with all maps pointed.
 \end{xca}
 
-The following corollary states how kernel and cokernel work on the composition
-of two homomorphisms, illustrated by \cref{fig:kernelsofcomposites}.
+The following corollary list a number of useful facts about the
+kernel and cokernel of the composition of two homomorphisms, 
+illustrated by \cref{fig:kernelsofcomposites}.
 \cref{fig:kernelsofcomposites} is an instantiation for groups of
 \cref{fig:fibersofcomposites}, enhanced with pointing data
-as in \cref{xca:ptd-fibersofcomposites}.
+as in \cref{xca:ptd-fibersofcomposites}, with all maps being induced
+maps on components.\footnote{\label{ft:cmpnt:UUp->UUp}
+Recall that any $f:A\to B$,
+given an element $a:A$, induces a map $A_{(a)} \to B_{(f(a))}$ of the
+respective components. If $B$ has a given point $b:B$ and 
+$f:(A,a)\ptdto(B,b)$ is pointed, then $f$ induces a pointed map on 
+the components in the obvious way. 
+The operation $(A,a) \mapsto (A_{(a)},a)$ is a wild functor from
+$\UUp$ to itself.}
 
-\begin{corollary}
-  \label{cor:cokermaps}
 \begin{marginfigure}
 $$
 \xymatrix{
-  \Ker(F_1)\ar[d]_{\kermap{F_1}} \ar[r]^{\mkgroup H} &
+  \Ker(F_1)\ar[d]_{\kermap{F_1}} \ar[r]^{H} &
   \Ker(f_1)\ar[d]^{\kermap{f_1}}\ar[dl]_{F_2}\\
 %
   \Ker(f_2 f_1)\ar[d]_{F_1}\ar[r]^-{\kermap{f_2f_1}} &
@@ -508,55 +515,125 @@ $$
 $$
 \caption{\label{fig:kernelsofcomposites}Kernels of composite homomorphisms.}
 \end{marginfigure} 
-  Consider two composable homomorphisms $f_1:\Hom(G_0,G_1)$ and $f_2:\Hom(G_1,G_2)$.
-  There is a unique monomorphism $F_2$ from $\Ker(f_1)  $ to $\Ker(f_2f_1)$
-	and a unique homomorphism $F_1$ from $\Ker(f_2f_1)$ to $\Ker(f_2)  $ such that $\kermap{f_1}\eq \kermap{f_2f_1}F_2$ and $f_1\kermap{f_2f_1}\eq\kermap{f_2}F_1$. 
-The equivalence $H$ from \cref{lem:fibersofcomposites}, 
-pointed by reflexivity,
-classifies and isomorphism $\mkgroup H : \Ker(F_1) \equivto \Ker(f_1)$.
-  Furthermore,\footnote{This is the equality represented 
-  by the left upper commuting triangle in \cref{fig:fibersofcomposites}.}
-$$(\Ker(f_1),F_2)\eq_{\typemono(\Ker(f_2f_1))}(\Ker(F_1),\kermap{F_1})$$ 
-and the restriction of the cokernel of $f_1$ along the kernel map of $f_2$
-can be identified with the cokernel of $F_1$:\footnote{%
-Construction: for $w:\BKer(f_2)$, define
-$H_w: \inv{B\mkern -2mu F_1}(w) \to \inv{\Bf_1}(\fst(w))$
-similar to $H$ in \cref{lem:fibersofcomposites}. 
-Then $H_w\jdeq H$ for $w\jdeq\sh_{\Ker(f_2)}$,
-so $H_w$ is an equivalence for all $w$ in the connected type $\BKer(f_2)$,
-since $H$ is an equivalence.
-}
-	$$\coker(f_1)\B\!\kermap{f_2}\eqto_{\BKer(f_2)\to\Set}\coker (F_1).$$
+\begin{corollary}\label{cor:cokermaps}\wip{New:}
+Consider two composable homomorphisms $f_1:\Hom(G_0,G_1)$ and
+$f_2:\Hom(G_1,G_2)$.
 
-  Consequently,
-  \begin{enumerate}
-  \item if $f_1$ is a isomorphism then $F_1:\Ker(f_2 f_1)\to\Ker(f_2)  $ is an isomorphism, and
-  \item if $f_2$ is a monomorphism then $F_2:\Ker(f_1)\to\Ker(f_2 f_1)$ is an isomorphism.\footnote{\wip{With notations as in \cref{fig:fibersofcomposites},
-the fiber of $F_2$ at the point $(x_0,f_2(p_1)p_2)$
-  can be identified with $\sum_{p:(x_1\eqto f_1(x_0))}(f_2(p_1)p_2=f_2(p)p_2)$
-  by contracting away, and the latter type is contractible when $f_2$ is
-  a set bundle, \ie an injection on paths.}}
-  \end{enumerate}
-	Likewise, the set truncations $\setTrunc{F_1}$ and $\setTrunc{F_2}$ (see \cref{def:n-trunc-functor}) of the maps $F_1$ and $F_2$ defined in \cref{lem:fibersofcomposites} give maps of $G_2$- and $G_1$-sets,\footnote{%
-Recall the notion of a map of $G$-sets from 
-\cref{def:map-of-Gsets} and the notation $\Hom_G(X,Y)\jdeq\prod_{z:\BG}(X(z)\to Y(z))$ for the type of such maps. Recall also that $\phi:\Hom_G(X,Y)$ is called an equivalence if $\prod_{z:\BG}\isEq\phi(z)$, see \cref{lem:fiberwise}.
-
-\wip{Not exactly $F_2$, but $(x,p)\mapsto(x,\Bf_2(p))$.
-No proofs are given. They don't seem obvious.%By \cref{xca:mono1st-epi2nd},
-}}
+\begin{enumerate}
+\item\label{it:H-equiv} 
+The equivalence $H$ from \cref{lem:fibersofcomposites}, pointed by reflexivity,
+induces an isomorphism $\Ker(F_1) \equivto \Ker(f_1)$
+which we also denote by $H$.  
+\item\label{it:F1} 
+There is a unique homomorphism $F_1$ from $\Ker(f_2f_1)$ to $\Ker(f_2)$
+such that $f_1\kermap{f_2f_1}\eq\kermap{f_2}F_1$.
+%\end{enumerate}
+%Furthermore, with additional arguments using properties of groups:
+%\begin{enumerate}[resume]
+\item\label{it:F2-mono}  
+There is a unique monomorphism $F_2$ from $\Ker(f_1)$ to $\Ker(f_2f_1)$
+such that $\kermap{f_1}\eq \kermap{f_2f_1}F_2$.\footnote{%
+This nails the fact that $\Ker(f_1)$ is a subgroup of $\Ker(f_2f_1)$.}
+\item\label{it:Ker-f1-F1} 
+We have $(\Ker(f_1),F_2)\eq_{\typemono(\Ker(f_2f_1))}(\Ker(F_1),\kermap{F_1})$, 
+\ie they are equal as subgroups of $\Ker(f_2f_1)$.
+\item\label{it:coker-f1-F1}
+The equivalence $H$ from \cref{lem:fibersofcomposites} induces an 
+identification $\etop H'$ of the restriction of the cokernel of $f_1$ along 
+the kernel map of $f_2$ with the cokernel of $F_1$, that is,
+$\etop H': \coker(F_1)\eqto_{\BKer(f_2)\to\Set}\coker(f_1)\B\!\kermap{f_2}$.
+\item\label{it:isof1->isoF1} If $f_1$ is an isomorphism, 
+then $F_1:\Hom(\Ker(f_2 f_1),\Ker(f_2))$ is an isomorphism.
+\item\label{it:monof2->isoF2}If $f_2$ is a monomorphism,
+then $F_2:\Hom(\Ker(f_1),\Ker(f_2 f_1))$ is an isomorphism.
+\end{enumerate} \wip{TBsplit off}
+Furthermore, the maps $F_1$ and $F_2$ defined in \cref{lem:fibersofcomposites}
+can be generalized to $F'_1(w):(f_2f_1)^{-1}(w)\to f_2^{-1}(w)$ and 
+$F'_2(z):f_1^{-1}(z)\to(f_2f_1)^{-1}(f_2(z))$ by abstracting from the
+points and, in case of $F_2$, replacing $x_2$ by $f_2(z)$.\footnote{%
+The (untyped) code of $F'_1(w)$ and $F_1$ are the same, but we define
+$F'_2(z)\defeq ((x,p)\mapsto(x,f_2(p)))$ to comply with its type.}
+Doing this for the classifying maps $\BF_i$ in the setting of 
+\cref{fig:kernelsofcomposites}, we get
+by set-truncation (\cref{def:n-trunc-functor}) followed by
+%$\setTrunc{F'_1(w)}:(\coker(f_2f_1)(w) to \coker(f_2)(w))$
+%$\setTrunc{F'_2(z)}:(\coker(f_1)(w) \to (\coker(f_2f_1)\,\Bf_2)(w))$
+by totalization (\cref{def:fiberwise}), maps of $G_2$- and $G_1$-sets,%
+\footnote{
+Recall the notion of a map of $G$-sets from \cref{def:map-of-Gsets} 
+and the notation $\Hom_G(X,Y)\jdeq\prod_{z:\BG}(X(z)\to Y(z))$ for the 
+type of such maps. Recall also that $\phi:\Hom_G(X,Y)$ is called an 
+equivalence if $\prod_{z:\BG}\isEq\phi(z)$, see \cref{lem:fiberwise}.}
 respectively:
 \begin{align*}
-\setTrunc{F_2}:\Hom_{G_1}(\coker(f_1),\coker(f_2f_1)\,\Bf_2),\\
-\setTrunc{F_1}:\Hom_{G_2}(\coker(f_2f_1),\coker(f_2)),
+\tot(\setTrunc{\BF'_1(\blank)})&:\Hom_{G_2}(\coker(f_2f_1),\coker(f_2)),\\
+\tot(\setTrunc{\BF'_2(\blank)})&:\Hom_{G_1}(\coker(f_1),\coker(f_2f_1)\,\Bf_2),
 \end{align*}
-  such that
-  \begin{enumerate}[resume]
-  \item if $f_2$ is an epimorphism then $\setTrunc{F_2}$ is an equivalence, and
-  \item if $f_1$ is an epimorphism then $\setTrunc{F_1}$  is an equivalence.
+Then we have the following:
+\begin{enumerate}[resume]
+  \item\label{it:isof1->equivBF'1} if $f_1$ is an isomorphism then $\tot(\setTrunc{\BF'_1(\blank)})$  is an equivalence.
+  \item\label{it:epif2->equivBF'2} if $f_2$ is an epimorphism then $\tot(\setTrunc{\BF'_2(\blank)})$ is an equivalence.
   \end{enumerate}
 \end{corollary}
 
-\begin{figure}
+\begin{proof}
+The commutativity of \cref{fig:kernelsofcomposites} follows
+from that of \cref{fig:fibersofcomposites} using \cref{ft:cmpnt:UUp->UUp}.
+Points \ref{it:H-equiv}-\ref{it:Ker-f1-F1} follow immediately from
+\cref{lem:fibersofcomposites}, with \ref{it:Ker-f1-F1} represented 
+by the left upper commuting triangle. Unicity of $F_1,F_2$ follows
+by \cref{def:monomorphism} since injection into a kernel is mono.
+
+Point \ref{it:coker-f1-F1} requires a construction, abstracting
+from the points $(x_1,p_2)$ and $x_1$ in the type of $H$
+in \cref{lem:fibersofcomposites}.
+For any $u:\BKer(f_2)$, define
+$H'(u): \inv{B\mkern -2mu F_1}(u) \to \inv{\Bf_1}(\fst(u))$
+by the same (untyped) code as $H$. 
+For $u\jdeq\sh_{\Ker(f_2)}$ we have $H'(u)\jdeq H$ and
+$\coker(F_1)(u)\jdeq \setTrunc{\inv\BF_1(\sh_{\Ker(f_2)})}$ and
+$(\coker(f_1)\B\!\kermap{f_2})(u) \jdeq \setTrunc{\inv\Bf_1(x_1)}$.
+Since $\BKer(f_2)$ is connected and $H$ is an equivalence,
+it follows that $H'(u)$ is an equivalence for all $u$,
+from which the path $\etop H'$ is obtained.
+
+Point \ref{it:isof1->isoF1} is immediate by induction on 
+paths in $G_0 \eqto G_1$.
+
+For Point \ref{it:monof2->isoF2} we use notations as in
+\cref{fig:fibersofcomposites}, \ie $x_i$ for $\sh_{G_i}$ ($i=0,1,2$)
+and $p_j$ for the pointing path of $\Bf_{\!j}$ ($j=1,2$).
+Assume $f_2$ is a monomorphism, then $\Bf_2$ is
+a set bundle, \ie an injection on paths.
+The fiber of $\BF_2$ at the point $(x_0,\Bf_2(p_1)p_2)$
+of $\BKer(f_2 f_1)$ can be identified with 
+$\sum_{p:(x_1\eqto \Bf_1(x_0))}(\Bf_2(p_1)p_2=\Bf_2(p)p_2)$
+by contracting away, and the latter type is contractible since $\Bf_2$ is
+an injection on paths. Since $\BKer(f_2 f_1)$ is connected,
+all fibers of $\BF_2$ are contractible.
+
+Point \ref{it:isof1->equivBF'1} is immediate by induction on 
+paths in $G_0 \eqto G_1$.
+
+For Point \ref{it:epif2->equivBF'2}, again with notations 
+$x_i$ and $p_j$ as in \ref{it:monof2->isoF2} above, we first consider
+the map $\BF'_2(x_1): \inv\Bf_1(x_1) \to \inv{(B(f_2f_1))}(\Bf_2(x_1))$
+sending $(x,p)$ to $(x,\Bf_2(p))$. The point of $\inv{(B(f_2f_1))}(\Bf_2(x_1))$
+is $(x_0,\Bf_2(p_1))$, and the fiber of $\BF'_2(x_1)$ at this point
+can be elaborated as
+$$\sum_{x:\BG_0}\sum_{p:x_1=\Bf_1(x)}((x_0,\Bf_2(p_1))\eqto(x,\Bf_2(p)).$$
+Contracting away $x$ in this type gives the equivalent type
+$\sum_{p:x_1\eqto\Bf_1(x_0)}(\Bf_2(p_1)=\Bf_2(p))$. This is a fiber
+of the action of $\Bf_2$ on paths.
+Now assume that $f_2$ is an epimorphism. TBD
+\wip{Do we now get that $\setTrunc{\BF'_2(x_1)}$ is an equivalence?
+Plan: $F_2$ is mono, so (hopefully) also $\setTrunc{\BF'_2(x_1)}$,
+and surjectivity follows from the above.} 
+
+\qedhere  
+\end{proof}
+
+\begin{figure}[h]
 \[
 \begin{tikzcd}[ampersand replacement=\&, column sep={0.9cm, between origins}]
 X_0\ar[rrrr,"{f_1}"]\&\&\&\&
@@ -677,6 +754,27 @@ Also show that, if $f$ is an epimorphism, $X(f)$ can be simplified to
 
 \subsection{The image of a homomorphism of groups}
 \label{sec:image}
+
+\wip{New text by Bjørn:
+
+Recall the image factorization constructions from Section 3.9.
+If $f\colon Hom(G,H)$ is a homomorphism, let
+$$im(f):=\Aut_{\sum_{z\colon BH}|Bf^{-1}(z)|_0} (f(\sh_G),|sh_G,\refl{f(\sh_G)}|).$$
+The maps $Bf\to_*^{x\mapsto (f(x),|x,refl_{f(x)}|)}Bim(f)$ and
+$fst\colon Bim(f)\to_*BH$ are pointed enhancements of the $0$-image factorization in (3.9.2) of $Bf$ and so gives a factorization $f=i(f)p(f)$
+of the homomorphism $f$ where $i(f)\colon im(f)\to H$ is a monomorphism and, by Lemma 3.9.6, $p(f)\colon G\to im(f)$ is an epimorphism.
+Hence, $Fact(f):=(p(f),i(f),id_{\im(f)})$ defines a map
+$$Fact\colon Hom(G,H)\to epi(G)\times_{groups} mono(H)
+$$
+which is split (in the sense that $f=i(f)\circ p(f)=\circ Fact(f)$) by the composition (display).
+
+We now prove that image factorization is an equivalence.  The composition, already presented as a one-sided inverse, will then be an inverse.
+
+Proposition
+Given groups $G$ and $H$.
+$$Fact\colon Hom(G,H)\to Epi(G)\times_{groups} mono(H)
+$$
+is an equivalence.}
 
 
 For a function $f:A\to B$ of of types, recall from \cref{def:prop-image} the notion of the image that gives us a factorization through a surjection followed by an injection: noting that $a\mapsto (f(a),!)$ is a surjection from $A$ to the image $\sum_{b:B}\Trunc{f^{-1}(b)}$, from which we have an injection (first projection) to $B$.
