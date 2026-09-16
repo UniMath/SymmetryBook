@@ -546,6 +546,7 @@ $\etop H': \coker(F_1)\eqto_{\BKer(f_2)\to\Set}\coker(f_1)\B\!\kermap{f_2}$.
 %then $F_1:\Hom(\Ker(f_2 f_1),\Ker(f_2))$ is an isomorphism.
 \item\label{it:monof2->isoF2}If $f_2$ is a monomorphism,
 then $F_2:\Hom(\Ker(f_1),\Ker(f_2 f_1))$ is an isomorphism.
+So, postcomposing with a monomorphism doesn't change the kernel.
 \end{enumerate} 
 \wip{TBsplit off}
 Furthermore, the map $F_1$ defined in \cref{lem:fibersofcomposites}
@@ -570,6 +571,7 @@ Then we have the following:
 \begin{enumerate}[resume]
   \item\label{it:epif1->equivF'1} If $f_1$ is an epimorphism,
    then $\tot(\setTrunc{F'_1(\blank)})$ is an equivalence.
+So, precomposing with an epimorphism doesn't change the cokernel.
 %  \item\label{it:epif2->equivF'2} If $f_2$ is an epimorphism,
 %   then $\tot(\setTrunc{F'_2(\blank)})$ is an equivalence.
   \end{enumerate}
@@ -681,47 +683,6 @@ The last point follows by the assumption that $f_1$ is an epimorphism,
 as argued above.
 \end{proof}
 
-\begin{figure}[h]
-\[
-\begin{tikzcd}[ampersand replacement=\&, column sep={0.9cm, between origins}]
-X_0\ar[rrrr,"{f_1}"]\&\&\&\&
-X_1\ar[rrrr,"{f_2}"]\&\&\&\&
-X_2\\
-\ar[d,dotted,no head]\&\&\&\&
-\ar[dd,dotted,no head]\&\&\&\&
-\ar[ddd,dotted,no head] \\
-\ar[rrrrd]\ar[dd,no head]\&\&\&\&
-\&\&\&\&
-\\
-\ar[rrrrd]\ar[dashed,no head,casred,bend right=30,"{f_1^{-1}(x_1)}"']{dd}\&\&\&\&
-\ar[rrrrd]\ar[d,no head]\ar[dashed,no head,bend left=30,"{f_2^{-1}(x_2)}"]{dd}\&\&\&\&
-\\
-x_0\&\&\&\&
-x_1\&\&\&\&
-x_2\\
-\ar[rrrru]\&\&\&\&
-\ar[rrrru]\ar[u,no head]\&\&\&\&
-\\
-\ar[rrrru]
-\ar[uu,no head]\ar[dashed,no head,casblue,bend left=60,"{(f_2f_1)^{-1}(x_2)}"]{uuuu}
-\&\&\&\&
-\&\&\&\&
-\\
-\ar[u,dotted,no head]\&\&\&\&
-\ar[uu,dotted,no head]\&\&\&\&
-\ar[uuu,dotted,no head]
-\end{tikzcd}
-\]
-\caption{Ice cream illustrating \cref{lem:fibersofcomposites}.
-Vertical lines represent the types, dotted parts play no role.
-Only the first projections of the fibers are shown.
-$F_1$ goes from the blue fiber to the black one, defined
-as $f_1$ on first components. 
-$F_2$ goes from the red fiber to the blue one, defined as
-the identity on first components. 
-Note that $f_2^{-1}(x_2)$ may contain elements not in the
-image of $F_1$.}
-\end{figure}
 
 \begin{example}\label{exa:fibersofcomposites}\wip{New:}
 A simple case of \cref{lem:fibersofcomposites} is when the types
@@ -759,7 +720,8 @@ f_2^{-1}(x_2)&\jdeq\sum_{(X,t):\Cyc_4}(\bn2\eqto \Bsgn(X))
 These fibers are action types (\cref{def:actiontype}) 
 of $G$-sets (\cref{def:Gset}),
 so they are groupoids. 
-They happen to be connected and with canonical points given above.
+They happen to be connected (since the maps classify epimorphisms)
+and with canonical points given above.
 Hence they classify subgroups, see \cref{def:set-of-subgroups},
 which we elaborate now.
 
@@ -1161,98 +1123,126 @@ This is forced by the uniqueness as follows.
 \section{The action on the set of subgroups}
 \label{sec:actiononsub}
 
-Not only is the type of subgroups  of $G$ a set, it is in a natural way (equivalent to the value at $\sh_G$ of) a $G$-set which we denote by the same name.  We first do the monomorphism interpretation based on
+Not only is the type of subgroups  of $G$ a set, it is in a natural way also a $G$-set, which we denote by the same name.\footnote{%
+Just as we did for $\Hom(H,G)$ in \cref{ex:HomHGasGset}.}
+We first do the monomorphism interpretation based on
 $\typemono(G)$ from \cref{def:typeofmono}.
 \begin{definition}
-Let $G$ be a group. The \emph{$G$-set of monomorphisms into $G$}
+Let $G$ be a group. The $G$-set $\typemono(G)$
+\emph{of monomorphisms into $G$}
 \glossary(MonoG){$\protect\typemono(G)$}{$G$-set of monomorphisms into $G$}
-is defined by
-%\Sub(G):\BG\to\Set,\qquad\typemono(G)(y)\defeq \sum_{H:\typegroup}\sum_{f:\Hom(H,G)(y)}\isset(\Bf^{-1}(\sh_G))
-\[\typemono(\mkgroup(\BG_\div,\blank)):\BG\to\Set,
-\qquad z\mapsto \typemono(\mkgroup(\BG_\div,z)).\qedhere  
+is defined as the family of sets $\typemono(\mkgroup(\BG_\div,\blank))$:
+\[\typemono(G):\BG\to\Set,
+\qquad z\mapsto \typemono(\mkgroup(\BG_\div,z)).
 \]
+The group action of the $G$-set $\typemono(G)$, elaborated below in
+\cref{rem:action-Mono(G)}, is called \emph{conjugation}.\index{conjugation}
 \end{definition}
-We use the notation $\typemono(G)$ for both the set and the $G$-set,
-so $\typemono(G)(z)\defeq\typemono(\mkgroup(\BG_\div,z))$,
-as we did for $\Hom(H,G)$ in \cref{ex:HomHGasGset}.\footnote{%
+Note that the underlying set $\typemono(G)(\sh_G)$ of the $G$-set 
+$\typemono(G)$ is definitionally equal to the set $\typemono(G)$.
+Further,
 $\typemono(G)(z)$ can be unpacked as 
-$\sum_{H:\typegroup}\sum_{f:\Hom(H,G)(z)}\ismono(f)$.}
+$\sum_{H:\typegroup}\sum_{f:\Hom(H,\mkgroup(\BG_\div,z))}\ismono(f)$.
 
 \begin{remark}\label{rem:action-Mono(G)}
-The type of monomorphisms into $G$ is $\typemono(\sh_G)$, and as $z:\BG$ varies, the only thing that changes in $\typemono(G)(z)$ is that $\BG\jdeq (\BG_\div,\sh_G)$ is replaced by $(\BG_\div,z)$, \ie
-the shape of $G$ is moved, as analyzed in 
-\cref{exa:conj-concrete} and \cref{ex:abstrandconj}.
-Hence the action of $\typemono(G)$ on $p:\sh_G\eqto z$ maps
-$(H,f,!):\typemono(\sh_G)(\sh_g)$ to 
-$(H,\mkgroup(\id_\BG,\inv p)f,!):\typemono(\sh_G)(z)$, \ie
-postcomposing the monomorphism $f$ with the isomorphism 
-$\mkgroup(\id_\BG,\inv p): \Hom(G,\mkgroup(\BG_\div,z))$.\footnote{%
-Note that this transports the pointing path $\Bfpt:\sh_G\eqto\Bf(\sh_H)$ 
-to $\Bfpt\inv p:z\eqto\Bf(\sh_H)$.}
+As $z:\BG$ varies in $\typemono(\mkgroup(\BG_\div,z))$, the only thing that changes is the shape $z$. This has been analyzed in 
+\cref{exa:conj-concrete} for the group $\mkgroup(\BG_\div,z)$,
+and in \cref{ex:abstrandconj} for $\Hom(H,\mkgroup(\BG_\div,z))$.
+Here we must do this for 
+\[
+\typemono(\mkgroup(\BG_\div,z))\jdeq
+\sum_{H:\typegroup}\sum_{f:\Hom(H,\mkgroup(\BG_\div,z))}\ismono(f),
+\]
+in which $H$ and $\ismono(f)$ do not depend on $z$.\footnote{Recall
+that $\ismono(f)$ is equivalent to $\Bf_\div$ being a set bundle.}
 
-\wip{Move the terminology in \cref{def:conjactonmonos} to here?}
+Hence \cref{ex:abstrandconj} applies and the application of 
+$\typemono(G)$ to a path $p: (z\eqto z')$ maps $(H,f):\typemono(G)(z)$ to 
+$(H,\mkgroup(\id_\BG,\inv p) f):\typemono(G)(z')$.\footnote{%
+Note that this transports the pointing path $\Bfpt:z\eqto\Bf(\sh_H)$ 
+to $\Bfpt\inv p:z'\eqto\Bf(\sh_H)$.}
+In other words, the action of the $G$-set $\typemono(G)$ is 
+postcomposing the monomorphism $f$ in $(H,f)$ with the isomorphism 
+$\mkgroup(\id_\BG,\inv p)$. We call this action \emph{conjugation},
+\index{conjugation}\index{conjugate!by $g$}
+and we call $(H,\mkgroup(\id_\BG,\inv p) f)$ the \emph{conjugate of $(H,f)$ 
+by $p$.}\footnote{\cref{exa:conj-concrete} observes that
+$\loops(\id_\BG,\inv p)$ and $p\blank\,\inv p$ are equal maps
+from $(z\eqto z)\to(z'\eqto z')$,
+explaining this terminology.\wip{ BTW, how do you move the shape
+in the case of strictly pointed maps?}}
 \end{remark}
 
-\begin{definition}
-  \label{def:conjactonmonos}
-  If $G$ is a group, then the action of $G$ on the set of monomorphisms into $G$ is called \emph{conjugation}\index{conjugation}.\footnote{\wip{This
-seemingly only defines terminology. 
-We have already conjugation on p.113,170,172, not limited to monos.
-Overload? Can't we call this postconjugation?
-}}
-
-  \label{def:conjugate}
-  If $(H,F,p,!):\typemono(G)(\sh_G)$ is a monomorphism into $G$ and $g:\USymG$, then the monomorphisms  $(H,F,p,!),(H,F,p\inv g,!):\typemono(G)(\sh_G)$ are said to be \emph{conjugate}\index{conjugate}\index{conjugate}.\footnote{\wip{Relations map to $\Prop$. 
-If $g$ is not unique (\eg abelian $G$), we have to truncate.}}
-\end{definition}
-\begin{remark}
-  \label{rem:whyconjugate}
-  The term ``conjugation'' may seem confusing as the %(abstract)
-action of $g:\USymG$ on a monomorphism $(H,F,p,!):\typemono(G)(\sh_G)$ (where $p:x\eqto F(\sh_H)$) is simply $(H,F,p\,g^{-1},!)$, which does not seem much like conjugation.
-However, as we saw in \cref{ex:abstrandconj}, under the equivalence $\abstr:\Hom(H,G)\we\absHom(\abstr(H),\abstr(G))$, the corresponding action on $\absHom(\abstr(H),\abstr(G))$ is exactly (postcomposition with) conjugation $c^g:\abstr(G)\eqto \abstr(G)$.
-\footnote{The same phenomenon appeared in \cref{xca:HomZGvsAdG} where we gave an equivalence between the $G$-sets $\Hom(\ZZ,G)$ and $\Ad_G$ (where the action is very visibly by conjugation).}
-  \label{rem:conjactiononmonos}
-\end{remark}
-Summing up the remark:
-\begin{lemma}
-  \label{lem:conjugationabstractly}
-  Under the equivalence of \cref{lem:actionsconcr2abstr} between $G$-sets and $\abstr(G)$-sets, the $G$-set $\typemono(G)$ corresponds to the $\abstr(G)$-set\footnote{\wip{Better with $\agp H : \absGroup$ and $\ismono(\phi)$?}}
-$$\sum_{H:\typegroup}\sum_{\phi:\absHom(\abstr(H),\abstr(G))}\isprop(\phi^{-1}(e_G))$$ of \emph{abstract monomorphisms}\index{abstract monomorphisms} of $\abstr(G)$, with action $g\cdot(H,\phi,!)\defeq(H,c^g\,\phi,!)$ for $g:\abstr(G)$, where  $c^g:\abstr(G)\eqto \abstr(G)$ is conjugation as defined in \cref{ex:conjhom}.
+As a consequence of \cref{rem:action-Mono(G)}, taking the equivalence
+of \cref{thm:concr-equiv-cats} between the categories $\Group$ and
+$\absGroup$ into account, we get:
+\begin{lemma}\label{lem:conj-abstract}
+Under the equivalence of \cref{lem:actionsconcr2abstr} between $G$-sets and 
+$\abstr(G)$-sets, the $G$-set $\typemono(G)$ corresponds to the $\abstr(G)$-set
+\[
+\sum_{\agp H:\absGroup}\sum_{\varphi:\absHom(\agp H,\abstr(G))}\ismono(\varphi)
+\]
+of abstract monomorphisms into $\abstr(G)$, with action 
+\[
+g\cdot(\agp H,\varphi)\defeq(\agp H,\conj^g \varphi),\quad
+\text{for all $g:\abstr(G)$.}
+\]
+Here  $\conj^g:\abstr(G)\eqto \abstr(G)$ is conjugation 
+as defined in \cref{ex:conjhom}.
 \end{lemma}
-\begin{remark}
-  \label{rem:typeofsubgpstrivifab}
-  We know that a group $G$ is abelian if and only if conjugation is trivial: for all $g:\USymG$ we have $c^g\eqto \id$, and so we get that $\typemono(G)$ is a trivial $G$-set if and only if $G$ is abelian.
+
+\begin{xca}\label{xca:conj-abstract}
+Prove \cref{lem:conj-abstract}.
+\end{xca}
+
+\begin{remark}\label{rem:typeofsubgpstrivifab}
+As defined in \cref{def:abgp}, a group $G$ is abelian if 
+all symmetries of its shape commute. This condition
+is equivalent to $\conj^g = \id$ for all $g:\USymG$.
+It follows that the $\abstr(G)$-set from \cref{lem:conj-abstract},
+and hence the $G$-set $\typemono(G)$, is trivial if and only if
+$G$ is abelian.
 \end{remark}
 
-The subgroup analog of $z\mapsto\typemono(G)(z)$ is
+The subgroup analog of $\typemono(G)$ as a $G$-set is based
+on $\Sub(G)$ from \cref{def:set-of-subgroups}. Again we use 
+the notation $\Sub(G)$ for both the set and the $G$-set,
+and $\Sub(G)(\sh_G)\jdeq\Sub(G)$.
 
 \begin{definition}
   Let $G$ be a group. The $G$-set of \emph{subgroups of $G$} is defined
-  as\footnote{\wip{Could be denoted by $\Sub(\mkgroup(\BG_\div,\blank))$, experimental.}}
-  $$\Sub(G)(\blank):\BG\to\Set,\qquad\Sub(G)(z)\defeq\sum_{X:\BG\to\Set}
-  % \sum_{\pt_y:X(y)}
-  X(z)\times\istrans(X).$$
+  as the family of sets $\Sub(\mkgroup(\BG_\div,\blank))$:
+\[
+\Sub(G):\BG\to\Set,\qquad z\mapsto \Sub(\mkgroup(\BG_\div,\blank)).\qedhere
+\]
 \end{definition}
+$\Sub(G)(z)$ can be unpacked as $\sum_{X:\BG\to\Set}(X(z)\times\istrans(X))$.
 The only thing depending on $z$ in $\Sub(G)(z)$ is where the 
-``base'' point is residing, namely in $X(z)$ rather than in $X(\sh_G)$.
-Again we use the notation $\Sub(G)$ for both the set and the $G$-set,
-and $\Sub(G)(\sh_G)\jdeq\Sub(G)$.
+chosen point is residing, namely in $X(z)$ rather than in $X(\sh_G)$.
+Hence the action of the $G$-set $\Sub(G)$ applied to $(X,x)$ does
+nothing with $X$ and applies the action of $X$ to $x$.
 
 \begin{definition}
   Extending the equivalence of $\typemono(G)$ and $\Sub(G)$ as sets 
 from \cref{lem:SubG=MonoG}, we get an equivalence
-$E:\Hom_G(\typemono(G),\Sub(G))$ of $G$-sets via
-\[
-E_z:\typemono(G)(z)\to\Sub(G)(z),\qquad 
-E_z(H,f,!)\defeq(\inv\Bf,(\sh_H,\Bfpt),!)
-\]
-for $z:\BG$, $H$ a group, 
-and $f:\Hom(H,\mkgroup{(\BG_\div,z)})$ a monomorphism.\footnote{%
+$E:\Hom_G(\typemono(G),\Sub(G))$ of $G$-sets via\footnote{%
 Note that $(\sh_H,\Bfpt) : \inv\Bf(z)\jdeq(\sum_{w:\BH}(z\eqto\Bf(w)))$,
 the variable $z$ occurs on the right only in the types.}
+\[
+E_z:\typemono(G)(z)\to\Sub(G)(z),\qquad 
+E_z(H,f)\defeq(\inv\Bf,(\sh_H,\Bfpt) )
+\]
+for $z:\BG$, $H$ a group, 
+and $f:\Hom(H,\mkgroup{(\BG_\div,z)})$ a monomorphism.
 \end{definition}
 Note that $E_{\sh_G} \jdeq E$.
 Since the $G$-sets are equivalent (via $E$) we use $\typemono(G)$ and $\Sub(G)$ interchangeably.
+
+\begin{xca}\label{xca:Sub(Sigma3)}\wip{Check: }
+Let $G$ be a group.
+Prove that $\Sub(G)$ is a transitive $G$-set if and only if $G$ is trivial.
+Elaborate the orbit structure of $\Sub(G)(\sh_G)$ for $G\jdeq\SG_3$.
+\end{xca}
 
 \section{Normal subgroups}
 \label{sec:normal}
@@ -1484,7 +1474,7 @@ Summing up, using the various interpretations of subgroups, we get the following
 \item the set $\typekernel_G$ of kernels of epimorphisms from $G$,
 \item the set $\Nor(G)$ of fixed points of the $G$-set $\Sub(G)$ (aka.~normal subgroups),
 \item the set of fixed points of the $G$-set $\typemono(G)$,
-\item the set of fixed points of the $G$-set of abstract subgroups of $\abstr(G)$ of \cref{lem:conjugationabstractly}.
+\item the set of fixed points of the $G$-set of abstract subgroups of $\abstr(G)$ of \cref{lem:conj-abstract}.
 \end{enumerate}
 \end{lemma}
 
