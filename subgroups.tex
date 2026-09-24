@@ -365,7 +365,7 @@ or, using the convention of \cref{rem:notationsubgroup}, $G\subseteq G'$.
 In that case we may write $G'/G$ for the cokernel of $i$,
 generalizing the notation of \cref{def:normalquotient}.
 \begin{lemma}
-  \label{lem:coker is transitive}
+  \label{lem:isTrans(coker)}
   For any $f:\Hom(G,G')$, the cokernel $\coker(f)$ is a transitive $G'$-set.
 \end{lemma}
 \begin{proof}
@@ -793,83 +793,177 @@ Also show that, if $f$ is an epimorphism, $X(f)$ can be simplified to
 \subsection{The image of a homomorphism of groups}
 \label{sec:image}
 
-\wip{New text by Bjørn:
-
-If $f\colon Hom(G,H)$ is a homomorphism, let
-$$im(f):=\Aut_{\sum_{z\colon BH}|Bf^{-1}(z)|_0} (f(\sh_G),|sh_G,\refl{f(\sh_G)}|).$$
-The maps $Bf\to_*^{x\mapsto (f(x),|x,refl_{f(x)}|)}Bim(f)$ and
-$fst\colon Bim(f)\to_*BH$ are pointed enhancements of the $0$-image factorization in (3.9.2) of $Bf$ and so gives a factorization $f=i(f)p(f)$
-of the homomorphism $f$ where $i(f)\colon im(f)\to H$ is a monomorphism and, by Lemma 3.9.6, $p(f)\colon G\to im(f)$ is an epimorphism.
-Hence, $Fact(f):=(p(f),i(f),id_{\im(f)})$ defines a map
-$$Fact\colon Hom(G,H)\to epi(G)\times_{groups} mono(H)
-$$
-which is split (in the sense that $f=i(f)\circ p(f)=\circ Fact(f)$) by the composition (display).
-
-We now prove that image factorization is an equivalence.  The composition, already presented as a one-sided inverse, will then be an inverse.
-
-Proposition
-Given groups $G$ and $H$.
-$$Fact\colon Hom(G,H)\to Epi(G)\times_{groups} mono(H)
-$$
-is an equivalence.
-}%end text Bjørn
-
-
-Recall the higher images, in particular the $0$-image,
-from \cref{sec:higher-images}.
+Given types $A,B$ and a function $f:A\to B$, we defined in \cref{def:image}
+the propositional image $\im(f)$ of $f$ as a subtype of $B$, 
+as well as the unique
+factorization of $f$ into a surjection $A\to\im(f)$ followed by an
+injection $\im(f)\to B$. In this section we will study these concepts
+for groups. Since the classifying types of groups are connected,
+$\im(\Bf)$ is uninformative from the group perspective.\footnote{%
+For groups $G,H$ and homomorphism $f:\Hom(G,H)$, the map
+$\fst: \im(\Bf)\to\BH$ is an equivalence, as $\Trunc{(\Bf)^{-1}(w)}$
+is contractible for all $w:\BH$.}
+Therefore we use the set image, or $0$-image from \cref{sec:higher-images}:
+\[\im_0(\Bf) \jdeq
+\sum_{w:\BH}\setTrunc{\sum_{z:\BG}(w\eqto\Bf(z))}.
+\] 
 
 \begin{definition}\label{def:Im(grphom)}
 Let $G$ and $H$ be groups and $f:\Hom(G,H)$ a homomorphism. Define
 the \emph{image of $f$} to be the group\footnote{%
-Here $\sum_{w:\BH}\setTrunc{(\Bf)^{-1}(w)}$ is the set image, or
-$0$-image from \cref{def:n-image}, of the classifying map $\Bf$.
-It is also the action type (\cref{def:actiontype}) of the cokernel
-of $f$ (\cref{def:cokernel}).}
+The groupoid $\im_0(\Bf)$ is also the action type (\cref{def:actiontype})
+of the cokernel of $f$ (\cref{def:cokernel}), and is connected
+since the cokernel is transitive (\cref{lem:isTrans(coker)}).}
+\glossary(Image){$\protect\Img(f)$}{image group of homomorphism $f$}
 \[
-\Img(f)\defeq\Aut_{\sum_{w:\BH}\setTrunc{(\Bf)^{-1}(w)}}
-((\sh_{H},\settrunc{(\sh_G,\Bfpt)})).\qedhere
+\Img(f)\defeq\mkgroup({\im_0(\Bf)},
+(\sh_{H},\settrunc{(\sh_G,\Bfpt)})).\qedhere
 \]
 \end{definition}
+In other words, the image is nothing but the subgroup of $H$ associated with the cokernel as discussed in \cref{rem:imageandcokernel},
+including the choice of the shape.
+
 We will show that every $f:\Hom(G,H)$ has a unique factorization as
-an epimorphism $p:\Hom(G,\Img(f))$ followed by a monomorphism
-$i:\Hom(\Img(f),H)$. This factorization extends \cref{thm:n-im-univ-prop}
-in that the classifying maps of the homomorphisms $f,p,i$ are pointed.
+an epimorphism $p(f):\Hom(G,\Img(f))$ followed by a monomorphism
+$i(f):\Hom(\Img(f),H)$. For the underlying unpointed maps 
+of $\Bf,\Bp(f),\Bi(f)$ (denoted in the same way)
+we use the factorization of \cref{thm:n-im-univ-prop},
+point $\Bi(f)$ by reflexivity, and leave it as an exercise
+to point $\Bp(f)$:
+\begin{align*}
+\Bp(f):\BG\to\im_0(\Bf)&\qquad 
+\Bp(f)(z)\defeq(\Bf(z),\settrunc{(z,\refl{\Bf(z)})}),\\
+\Bi(f):\im_0(\Bf)\to\BH&\qquad 
+\Bi(f)\defeq\fst,\text{ pointed by reflexivity.}
+\end{align*}
+%\begin{tikzcd}[ampersand replacement=\&,column sep=large]
+%\BG\ar[rrr,"{\Bp(f)\defeq}","{z\mapsto(\Bf(z),\settrunc{(z\refl{\Bf(z)})})}"']\&\&\&\im_0(\Bf)\ar[rr,"{\Bi(f)\defeq}","{\fst}"'] \&\&\BH,
+%\end{tikzcd}
+\noindent
+Under these definitions we have $\Bf\jdeq\Bi(f)\circ\Bp(f)$ for the unpointed maps.
 
-of groups we similarly have a unique factorization
-$$G\to \Img(f) \to H
-$$
-through an epimorphism followed by a monomorphism which, in terms of the classifying types and maps, 
-is given by\footnote{The formula for the image of a homomorphism $f$ of groups
-is essentially the same as the one for types, but uses the set image from  
-of the classifying map $\Bf$, instead of the propositional image.}
-
-$$\xymatrix{
-  {\BG}\ar[rrr]^-{z\mapsto(\Bf(z),\settrunc{(z, \refl {\Bf(z)})})}&&&
-  \sum_{w:{\BH}}\setTrunc{({\Bf})^{-1}(w)}\ar[rr]^-{\fst} &&\BH,
-}$$
-together with base point information.In particular, we choose the base point $(\sh_{H},\settrunc{(\sh_G,\Bfpt)})$, so that the \emph{image group} is  %type $\sum_{b:B}\Trunc{f^{-1}(b)}$ is simply replaces by
-$$\Img(f)\defeq\Aut_{\sum_{w:\BH}\setTrunc{(\Bf)^{-1}(w)}}((\sh_{H},\settrunc{(\sh_G,\Bfpt)})).$$
-In other words, the image is nothing but the subgroup of ${H}$ associated with the cokernel as discussed in \cref{rem:imageandcokernel}.
-
-\begin{xca}\label{xca:IMg_pointed}
-With the choice of point of $\Img(f)$ above, give paths for
-${z\mapsto(\Bf(z),\settrunc{(z, \refl {\Bf(z)})})}$ and ${\fst}$
-so that these maps become pointed maps whose composition is indeed 
-equal to the pointed map $\Bf$.
-Show that these pointed maps indeed give an epimorphism and a monomorphism, respectively.
+\begin{xca}\label{xca:p-epi-i-mono}
+Give the pointing path of $\Bp(f)$ such that
+$\Bf=\Bi(f)\circ\Bp(f)$ for the pointed maps.
+Show that $\Bp(f)$ and $\Bi(f)$ are an epimorphism and a monomorphism, respectively.
 Hint: for the epimorphism, use \cref{lem:trunc-n-connected}.
 \end{xca}
 
-That the image gives a \emph{unique factorization} is elegantly expressed by saying that it is the unique inverse of composition.
-We use the pullback construction from \cref{def:pullback} to express the type of epi/mono factorizations of homomorphisms from $G$ to $H$ as $\typeepi(G)\times_{\typegroup}\typemono(H)$ where the maps to $\typegroup$ are understood to be the first projections
-(so that the epimorphisms and monomorphisms in question can, indeed, be composed).
+That the image gives a \emph{unique factorization} is elegantly expressed 
+using the pullback construction from \cref{def:pullback} to express the 
+type of epi/mono factorizations of homomorphisms from $G$ to $H$ as 
+$\typeepi(G)\times_{\Group}\typemono(H)$ where the maps to $\Group$ are understood to be the first projections
+(so that the epimorphisms and monomorphisms in question can, indeed, 
+be composed\wip{, using a mediating path/isomorphism}).\footnote{%
+This is the price one has to pay for using the pullback.
+Alternatively, one could use the simpler type obtained by
+contracting away $Z'$ in the displayed pullback type.}
+Recall that the pullback type in question is defined by
+\[
+\sum_{(Z,p):\typeepi(G)}\sum_{(Z',i):\typemono(H)}(Z\eqto Z').
+\]
+
+After all these preparations we can now define the factorization map
+and state the property that it is an equivalence.
+
+\begin{definition}\label{def:Im-fact}
+For all groups $G$ and $H$ the map
+\[
+\Imfact:\Hom(G,H) \to (\typeepi(G)\times_{\Group}\typemono(H))
+\]
+is defined by
+$
+\Imfact(f) \defeq ((\Img(f),p(f)),(\Img(f),i(f)),\refl{\Img(f)})
+$.% for all $f:\Hom(G,H)$.
+\end{definition}
+\begin{lemma}\label{lem:Im-fact-unique}
+For all groups $G$ and $H$ the map $\Imfact(f)$ is an equivalence.
+\end{lemma}
+
+We prove this lemma by applying \cref{thm:n-im-univ-prop} in the 
+special case $n=0$, but in the more general situation of pointed maps.
+We use the occasion to generalize \cref{thm:n-im-univ-prop} to
+pointed maps for all $n\geq-2$, 
+reusing several results from \cref{sec:higher-images}.\wip{ Not sure}
+
+\begin{remark}\label{rem:n-im-ptd-map}
+We extend the type $\Fact(f)$ from \cref{def:type-of-factorizations}
+to pointed maps $f$.
+Let $X$ and $Z$ be pointed types. For any pointed map $f:X\ptdto Z$ we define
+the type $\Fact_*(f)$ of factorizations of $f$ as follows:
+\[
+\Fact_*(f)\defeq \sum_{Y:\UUp}\sum_{p:X\ptdto Y}\sum_{i:Y\ptdto Z} 
+f\eqto i p.
+\]
+Then the following type $\Fact_*^n$ of \emph{factorizations of $f$ through 
+its $n$-image} is contractible for any $n\geq -2$:
+\[
+  \Fact_*^n \defeq\sum_{(C,p,i,h):\Fact_*(f)} 
+                   (\isnconn(p) \times \isntrunc(i)).
+  \]
+
+Consider the factorization of the unpointed $f: X\to Z$ as
+  $$\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),\trunc{(x,\refl{f(x)})}_n)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z.
+  }$$
+By the same argument as used for \cref{eqn:n-image-factorization},
+the left map is $n$-connected, and $\fst$ is $n$-truncated.
+By giving a pointing path for the first map as in \cref{xca:p-epi-i-mono}, 
+generalized for $n>0$, and with $\fst$ pointed by reflexivity,
+we already have an element of $\Fact_*^n$.
+
+Given $h:f\eqto ip$, where $p: X\to Y$ is $n$-connected 
+(\ie for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible)
+and $i:Y\to Z$ is $n$-truncated (\ie for all $z:Z$ the fiber $i^{-1}(z)$ is $n$-truncated),  then for each $z:Z$ we have (depending on $h,i,p$)
+an equivalence\footnote{To construct this equivalence,
+use $h$ and known equivalences to get 
+\begin{align*}
+f^{-1}(z)\weq\inv{(ip)}(z)\jdeq\sum_{x:X}(z\eqto i(p(x))) \\
+\weq\sum_{x:X}\sum_{y:Y}((z\eqto i(y))\times(y\eqto p(x)))\\
+\weq\sum_{y:Y}((z\eqto i(y))\times\inv p(y)).
+\end{align*}
+Now $n$-truncate left and right, then use \cref{xca:trunc-sum-type+fam}
+to also $n$-truncate $\inv p(y)$. By the assumption on $p$,
+the latter type is contractible, and by the assumption on $i$ the
+right hand side then simplifies to $\inv i(z)$.
+}
+  \marginnote{
+    $$\xymatrix{
+      X\ar[r]^p\ar[d]&Y\ar[d]^i\\\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[r]_-{\fst}\ar@{.>}[ur]^{(i,p)}_\simeq&Z
+    }$$}
+  $$(i,p)^h_z:\Trunc{f^{-1}(z)}_n\simeq i^{-1}(z)
+  $$
+  identifying (under univalence) the two factorizations of $f$.
 
 
-  \begin{construction}\label{con:im}
-    For all groups $G,$ and $H$ the map
-    $$
-    \circ:\typeepi(G)\times_{\typegroup}\typemono(H)\to\Hom(G,H)
-    $$
+  
+  If $X$ and $Z$ are connected groupoids, then so is $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$, and so when applying the factorization to groups (when $n=0$), the only thing we need to worry about is the base point.
+  If if the point-data is given by $x_0:X$, $y_0:Y$, $z_0:Z$,
+  $p_\pt:y_0\eqto p(x_0)$,
+  $i_\pt:z_0\eqto i(y_0)$ and
+  $f_\pt:z_0\eqto f(x_0)$ with
+  $b:f_\pt\eqto h_{x_0}^{-1}i(p_\pt)i_\pt$, 
+  where $h:\prod_{x:X}f(x)\eqto i(p(x))$ witnesses that we have a factorization, 
+  then we point $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ 
+at $(z_0,\trunc{(x_0,f_\pt)}_n)$ 
+  and note that the equivalence $\sum_{z:Z}\Trunc{f^{-1}(z)}_n\we Y$ is 
+  pointed via $p_\pt:y_0\eqto p(x_0)$\footnote{\wip{Following the equivalences,
+$(i,p)$ maps $(z_0,\trunc{(x_0,f_\pt)}_n)$ (via the type $\inv i(z_0)$) to $p(x_0):Y$.}}
+ and\footnote{\wip{Does this more than explaining that $b$ is the path from $f_\pt$ to $(ip)_\pt$ over $h_{x_0}$?}}
+  $$b:\xymatrix{
+    z_0\ar@{=}[rr]_\to^{i_\pt}\ar@{=}[d]_{\refl{z_0}}&&i(y_0)\ar@{=}[d]_{i(p_\pt)}^\downarrow\\
+    z_0\ar@{=}[r]^{f_\pt}_\to&f(x_0)\ar@{=}[r]_\to^{h_{x_0}}&i(p(x_0)).}$$
+\end{remark}
+
+\wip{Where are the fillers of the triangles 
+for the \emph{pointed} maps? For $n>0$, path induction on $f_\pt$
+could help. CURSOR}
+
+  \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img(f)}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img(f)}}}
+  $$}
+  
+
+
+\begin{proof}
     given by composition,\footnote{Here $p$ is an epimorphism from $G$ to the group $Z$, $j$ a monomorphism from the group $Z'$ to $H$, $\alpha$ is an identification of $Z$ and $Z'$
       and $\ptoe\alpha$ is the isomorphism corresponding to the identification $\alpha\colon Z\eqto Z'$, as in \cref{def:idtoeq},
       so that the composite looks like
@@ -878,47 +972,8 @@ We use the pullback construction from \cref{def:pullback} to express the type of
     $$\circ((Z,p,!),(Z',j,!),\alpha)\defeq j\ptoe \alpha p$$
     is an equivalence
     with inverse given by the image factorization.
-\end{construction}
-\begin{implementation}{con:im}
-  For any integer $n\geq -1$ -- and in our case for $n=0$ -- on the level of types the factorization of a function $f\colon X\to Z$ as
-  $$\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),\trunc{(x,\refl{f(x)})}_n)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z
-  }$$
-  is unique in the sense that
-  \begin{quote}
-    if $p:f\eqto jq$ where $q\colon X\to Y$ is so that for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible and $j\colon Y\to Z$ is so that for all $z:Z$ the fiber $j^{-1}(z)$ is $n$-truncated, then for each $z:Z$ the function $f^{-1}(z)\to j^{-1}(z)$ induced by ($p$ and) $q$ 
-  gives an equivalence\footnote{To see that the function is an equivalence notice that it can be obtained as follows: rewrite $f^{-1}(z)$ first as
-    $$\sum_{x:X}\sum_{y:Y}(z\eqto f(x))\times(y\eqto q(x)),$$ then as
-    $$\sum_{y:Y}\sum_{x:X}(z\eqto j(y))\times(y\eqto q(x))$$ and finally use that the $n$-truncation of
-    $\sum_{x:X}y\eqto q(x)$ is contractible}
-  \marginnote{
-    $$\xymatrix{
-      X\ar[r]^q\ar[d]&Y\ar[d]^j\\\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[r]_-{\fst}\ar@{.>}[ur]^{(j,q)}_\simeq&Z
-    }$$}
-  $$(j,q):\Trunc{f^{-1}(z)}_n\simeq j^{-1}(z)
-  $$
-  identifying (under univalence) the two factorizations of $f$.
-  \end{quote}
 
-  
-  If $X$ and $Z$ are connected groupoids, then so is $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$, and so when applying the factorization to groups (when $n=0$), the only thing we need to worry about is the base point.
-  If if the point-data is given by $x_0:X$, $y_0:Y$, $z_0:Z$,
-  $p_q:y_0\eqto q(x_0)$,
-  $p_j:z_0\eqto j(y_0)$ and
-  $\Bfpt:z_0\eqto f(x_0)$ with
-  $b:\Bfpt\eqto a_{x_0}^{-1}j(p_q)p_j$, 
-  where $a:\prod_{x:X}f(x)\eqto j(q(x))$ witnesses that we have a factorization, 
-  then we point $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ in $(z_0,\trunc{(x_0,\Bfpt)}_n)$ 
-  and note that the equivalence $\sum_{z:Z}\Trunc{f^{-1}(z)}_n\we Y$ is 
-  pointed via $p_q:y_0\eqto q(x_0)$ and
-  $$b:\xymatrix{
-    z_0\ar@{=}[rr]_\to^{p_j}\ar@{=}[d]_{\refl{z_0}}&&j(y_0)\ar@{=}[d]_{j(p_q)}^\downarrow\\
-    z_0\ar@{=}[r]^{\Bfpt}_\to&f(x_0)\ar@{=}[r]_\to^{a_{x_0}}&j(q(x_0)).}$$
-\end{implementation}
-
-  \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img(f)}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img(f)}}}
-  $$}
-  
-\wip{CURSOR, the above duplicates 3.9 but does more (the pointing).}
+\end{proof}
 
 \begin{definition}
   \label{def:image}
