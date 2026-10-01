@@ -660,7 +660,7 @@ $(b,p)=e(c)=e(c')$, so $(\settrunc{a},p)=(\settrunc{a'},p')$,
 so $\Trunc{a\eqto a'}$. It follows that $c=c'$ and hence $\inv e(b,p)$
 is a proposition. For proving $\inv e(b,p)$ we may take $b\jdeq\settrunc{a}$
 for some $a:A$, and then for $c\defeq\settrunc{(a,p)}$ we have $e(c)\jdeq(b,p)$.
-\wip{Move to Ch.2 as xca.}}  
+\wip{Move to Ch.2 as xca, formulated with set-of-components.}}  
 \item $\setTrunc{\sum_{d:\inv{B\mkern -2mu (f_2f_1)}(x_2)}(\settrunc{b}=
 \setTrunc{F'_1(x_2)}(\settrunc{d}))}$ is contractible
 \item $\setTrunc{\sum_{d:\inv{B\mkern -2mu (f_2f_1)}(x_2)}\Trunc{b\eqto
@@ -675,7 +675,7 @@ to prove $c=c'$ for $c\jdeq\settrunc{(a,\trunc{t})}$,
 $c'\jdeq\settrunc{(a',\trunc{t'})}$, with $a,a':A$, $t:T(a)$, $t':T(a')$.
 By assumption, $\setTrunc{\sum_{a:A}T(a)}$ is contractible, so
 $\settrunc{(a,{t})}=\settrunc{(a',{t'})}$, so $\Trunc{a\eqto a'}$, so $c=c'$.
-\wip{Move to Ch.2 as xca.}}  
+\wip{Move to Ch.2 as xca, formulated with set-of-components.}}  
 \item $\setTrunc{\sum_{d:\inv{B\mkern -2mu (f_2f_1)}(x_2)}(b\eqto
 F'_1(x_2)(d))}$ is contractible 
 \end{enumerate}
@@ -793,15 +793,17 @@ Also show that, if $f$ is an epimorphism, $X(f)$ can be simplified to
 \subsection{The image of a homomorphism of groups}
 \label{sec:image}
 
-Given types $A,B$ and a function $f:A\to B$, we defined in \cref{def:image}
-the propositional image $\im(f)$ of $f$ as a subtype of $B$, 
+Given types $A,B$ and a function $f:A\to B$, 
+we defined in \cref{def:prop-image}
+the (propositional) image $\im(f)$ of $f$ as a subtype of $B$, 
 as well as the unique
 factorization of $f$ into a surjection $A\to\im(f)$ followed by an
-injection $\im(f)\to B$. In this section we will study these concepts
-for groups. Since the classifying types of groups are connected,
+injection $\im(f)\to B$. Here we will study these concepts for groups.
+
+Given groups $G,H$ and a homomorphism $f:\Hom(G,H)$, 
+as the classifying types of groups are connected,
 $\im(\Bf)$ is uninformative from the group perspective.\footnote{%
-For groups $G,H$ and homomorphism $f:\Hom(G,H)$, the map
-$\fst: \im(\Bf)\to\BH$ is an equivalence, as $\Trunc{(\Bf)^{-1}(w)}$
+The map $\fst: \im(\Bf)\to\BH$ is an equivalence, as $\Trunc{(\Bf)^{-1}(w)}$
 is contractible for all $w:\BH$.}
 Therefore we use the set image, or $0$-image from \cref{sec:higher-images}:
 \[\im_0(\Bf) \jdeq
@@ -820,7 +822,8 @@ since the cokernel is transitive (\cref{lem:isTrans(coker)}).}
 (\sh_{H},\settrunc{(\sh_G,\Bfpt)})).\qedhere
 \]
 \end{definition}
-In other words, the image is nothing but the subgroup of $H$ associated with the cokernel as discussed in \cref{rem:imageandcokernel},
+In other words, the image is the subgroup of $H$ associated with the 
+cokernel as discussed in \cref{rem:imageandcokernel},
 including the choice of the shape.
 
 We will show that every $f:\Hom(G,H)$ has a unique factorization as
@@ -844,7 +847,7 @@ Under these definitions we have $\Bf\jdeq\Bi(f)\circ\Bp(f)$ for the unpointed ma
 
 \begin{xca}\label{xca:p-epi-i-mono}
 Give the pointing path of $\Bp(f)$ such that
-$\Bf=\Bi(f)\circ\Bp(f)$ for the pointed maps.
+$\Bf=\Bi(f)\circ\Bp(f)$ for the pointed maps. Hint: use induction on $\Bfpt$.
 Show that $\Bp(f)$ and $\Bi(f)$ are an epimorphism and a monomorphism, respectively.
 Hint: for the epimorphism, use \cref{lem:trunc-n-connected}.
 \end{xca}
@@ -881,10 +884,10 @@ For all groups $G$ and $H$ the map $\Imfact(f)$ is an equivalence.
 \end{lemma}
 
 We prove this lemma by applying \cref{thm:n-im-univ-prop} in the 
-special case $n=0$, but in the more general situation of pointed maps.
-We use the occasion to generalize \cref{thm:n-im-univ-prop} to
+special case $n=0$, but for pointed maps instead of unpointed ones.
+We use the occasion to extend \cref{thm:n-im-univ-prop} to
 pointed maps for all $n\geq-2$, 
-reusing several results from \cref{sec:higher-images}.\wip{ Not sure}
+reusing several results from \cref{sec:higher-images}.
 
 \begin{remark}\label{rem:n-im-ptd-map}
 We extend the type $\Fact(f)$ from \cref{def:type-of-factorizations}
@@ -895,27 +898,30 @@ the type $\Fact_*(f)$ of factorizations of $f$ as follows:
 \Fact_*(f)\defeq \sum_{Y:\UUp}\sum_{p:X\ptdto Y}\sum_{i:Y\ptdto Z} 
 f\eqto i p.
 \]
-Then the following type $\Fact_*^n$ of \emph{factorizations of $f$ through 
+Then the following type $\Fact_*^n(f)$ of \emph{factorizations of $f$ through 
 its $n$-image} is contractible for any $n\geq -2$:
 \[
-  \Fact_*^n \defeq\sum_{(C,p,i,h):\Fact_*(f)} 
+  \Fact_*^n(f) \defeq\sum_{(I,p,i,h):\Fact_*(f)} 
                    (\isnconn(p) \times \isntrunc(i)).
   \]
 
-Consider the factorization of the unpointed $f: X\to Z$ as
-  $$\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),\trunc{(x,\refl{f(x)})}_n)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z.
-  }$$
+Consider the factorization of $f: X\to Z$ from \cref{thm:n-im-univ-prop}:
+\[
+\xymatrix{X\ar[rrr]^-{x\mapsto (f(x),\trunc{(x,\refl{f(x)})}_n)}&&&\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[rr]^\fst&&Z.
+}\]
 By the same argument as used for \cref{eqn:n-image-factorization},
 the left map is $n$-connected, and $\fst$ is $n$-truncated.
-By giving a pointing path for the first map as in \cref{xca:p-epi-i-mono}, 
+By giving a pointing path for the left map as in \cref{xca:p-epi-i-mono}, 
 generalized for $n>0$, and with $\fst$ pointed by reflexivity,
-we already have an element of $\Fact_*^n$.
+we already have a candidate center of $\Fact_*^n(f)$.
 
-Given $h:f\eqto ip$, where $p: X\to Y$ is $n$-connected 
-(\ie for all $y:Y$ the $n$-truncation of $q^{-1}(y)$ is contractible)
-and $i:Y\to Z$ is $n$-truncated (\ie for all $z:Z$ the fiber $i^{-1}(z)$ is $n$-truncated),  then for each $z:Z$ we have (depending on $h,i,p$)
-an equivalence\footnote{To construct this equivalence,
-use $h$ and known equivalences to get 
+Given an $n$-connected $p: X\to Y$ (\ie for all $y:Y$ the $n$-truncation 
+of $p^{-1}(y)$ is contractible), an $n$-truncated $i:Y\to Z$
+(\ie for all $z:Z$ the fiber $i^{-1}(z)$ is $n$-truncated), and
+$h:\prod_{x:X}(f(x)\eqto i(p(x)))$ (coming from the identification
+$f\eqto ip$ in $\Fact_*(f)$),
+we have for each $z:Z$ an equivalence\footnote{\label{ft:(i,p)-equiv}%
+To construct this equivalence, use $h$ and known equivalences to get 
 \begin{align*}
 f^{-1}(z)\weq\inv{(ip)}(z)\jdeq\sum_{x:X}(z\eqto i(p(x))) \\
 \weq\sum_{x:X}\sum_{y:Y}((z\eqto i(y))\times(y\eqto p(x)))\\
@@ -923,40 +929,99 @@ f^{-1}(z)\weq\inv{(ip)}(z)\jdeq\sum_{x:X}(z\eqto i(p(x))) \\
 \end{align*}
 Now $n$-truncate left and right, then use \cref{xca:trunc-sum-type+fam}
 to also $n$-truncate $\inv p(y)$. By the assumption on $p$,
-the latter type is contractible, and by the assumption on $i$ the
-right hand side then simplifies to $\inv i(z)$.
+the latter type is contractible, and the right hand side simplifies 
+to $\inv i(z)$ by the assumption on $i$.
 }
-  \marginnote{
-    $$\xymatrix{
-      X\ar[r]^p\ar[d]&Y\ar[d]^i\\\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[r]_-{\fst}\ar@{.>}[ur]^{(i,p)}_\simeq&Z
-    }$$}
-  $$(i,p)^h_z:\Trunc{f^{-1}(z)}_n\simeq i^{-1}(z)
-  $$
-  identifying (under univalence) the two factorizations of $f$.
+\begin{marginfigure}
+\xymatrix{
+      X\ar[r]^p\ar[d]&Y\ar[d]^i\\\sum_{z:Z}\Trunc{f^{-1}(z)}_n\ar[r]_-{\fst}\ar@{.>}[ur]^{p^h}_\simeq&Z
+    }
+\caption{\label{fig:n-im-fact-ptd}Two $n$-Image factorizations of $f$.}
+\end{marginfigure}
+\[
+(i,p)^h_z:\Trunc{f^{-1}(z)}_n\simeq i^{-1}(z), \quad
+\trunc{(x,q)}_n \mapsto (p(x),h(x)q).
+\]
+Hence $(i,p)^h_z$ induces an equivalence 
+from $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ to $\sum_{z:Z}i^{-1}(z)$,
+and further to $Y$ by using \cref{lem:sum-of-fibers}.
+This equivalence  maps
+$(z,\trunc{(x,q)}_n)$ to $p(x)$ and is denoted by $p^h$ in
+\cref{fig:n-im-fact-ptd}. For the unpointed maps, this diagram
+can easily be filled by reflexivity for the upper left triangle,
+and $(z,\trunc{(x,q)}_n)\mapsto h(x)q$ for the lower right triangle.%
+\footnote{Here $q:z\eqto f(x)$, so $h(x)q:z\eqto i(p(x))$.
 
+\wip{New:} This definition is not justified by truncation induction,
+as $Z$ need not be truncated. Instead, we first elaborate $\inv{(p^h)}$.
+Given $y:Y$, we have a center $c_y$ of the contractible type 
+$\Trunc{\inv p(y)}_n$, by the assumption on $p$. For the purpose
+of constructing elements of $n$-truncated types we may assume
+$x_y:X$ and $r_y: y\eqto p(x_y)$ and take $c_y \jdeq \trunc{(x_y,r_y)}_n$.
+Note that now $\inv{h(x_y)}i(r_y): i(y)\eqto f(x_y)$.
+Tracing back the ($n$-truncated) equivalences in 
+\cref{ft:(i,p)-equiv}, we get, after using \cref{lem:sum-of-fibers},
+that $\inv{(p^h)}$ maps $y$ to $(i(y),\trunc{(x_y,\inv{h(x_y)}i(r_y))}_n)$.
+This matches the format $(z,\trunc{(x,q)}_n)$, so we may use that
+to define functions from the $n$-image of $f$, 
+since we can always start with the roundtrip $\inv{(p^h)} p^h$. \wip{Weird?}
 
-  
-  If $X$ and $Z$ are connected groupoids, then so is $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$, and so when applying the factorization to groups (when $n=0$), the only thing we need to worry about is the base point.
-  If if the point-data is given by $x_0:X$, $y_0:Y$, $z_0:Z$,
-  $p_\pt:y_0\eqto p(x_0)$,
-  $i_\pt:z_0\eqto i(y_0)$ and
-  $f_\pt:z_0\eqto f(x_0)$ with
-  $b:f_\pt\eqto h_{x_0}^{-1}i(p_\pt)i_\pt$, 
-  where $h:\prod_{x:X}f(x)\eqto i(p(x))$ witnesses that we have a factorization, 
-  then we point $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ 
-at $(z_0,\trunc{(x_0,f_\pt)}_n)$ 
-  and note that the equivalence $\sum_{z:Z}\Trunc{f^{-1}(z)}_n\we Y$ is 
-  pointed via $p_\pt:y_0\eqto p(x_0)$\footnote{\wip{Following the equivalences,
-$(i,p)$ maps $(z_0,\trunc{(x_0,f_\pt)}_n)$ (via the type $\inv i(z_0)$) to $p(x_0):Y$.}}
- and\footnote{\wip{Does this more than explaining that $b$ is the path from $f_\pt$ to $(ip)_\pt$ over $h_{x_0}$?}}
-  $$b:\xymatrix{
-    z_0\ar@{=}[rr]_\to^{i_\pt}\ar@{=}[d]_{\refl{z_0}}&&i(y_0)\ar@{=}[d]_{i(p_\pt)}^\downarrow\\
-    z_0\ar@{=}[r]^{f_\pt}_\to&f(x_0)\ar@{=}[r]_\to^{h_{x_0}}&i(p(x_0)).}$$
+Alternatively, we can use the inverse of $p^h$ and identify
+$\fst\circ\inv{(p^h)}$ with $i$ by reflexivity.
+} 
+This identifies the two unpointed factorizations of $f$.
+
+The are two remaining proof obligations before we can conclude
+that $\Fact_*^n(f)$ is contractible: (1) we have to point $p^h$,
+and (2) we have to fill the diagram in \cref{fig:n-im-fact-ptd}
+for pointed maps. For both we need the point data, which we
+give next.
+
+The pointing paths of $f,p$ and $i$ are
+$f_\pt:\pt_Z\eqto f(\pt_X)$,
+$p_\pt:\pt_Y\eqto p(\pt_X)$ and
+$i_\pt:\pt_Z\eqto i(\pt_Y)$, respectively.
+We point $\sum_{z:Z}\Trunc{f^{-1}(z)}_n$ at $(\pt_Z,\trunc{(\pt_X,f_\pt)}_n)$,
+using $(\pt_X,f_\pt)$ as the natural point of the fiber $f^{-1}(\pt_Z)$.
+The pointing path of the equivalence $p^h$ is $p_\pt$.
+Furthermore, from the identification $f\eqto ip$ in $\Fact_*(f)$ we get
+not only $h:\prod_{x:X}(f(x)\eqto i(p(x)))$ as mentioned above,
+but also a path 
+\[
+h_\pt: (h(\pt_X)f_\pt)\eqto (ip)_\pt.
+\]
+%where $(ip)_\pt \jdeq i(p_\pt)i_\pt$.
+
+We are now ready to fill the lower right triangle for the pointed maps.
+Recall that the filler for the unpointed maps in this triangle sends
+$(\pt_Z,\trunc{(\pt_X,f_\pt)}_n)$ to $h(\pt_X)f_\pt$.
+Now $h_\pt$ fills the triangle for the pointing paths $(ip)_\pt$
+and $\fst_\pt\jdeq\refl{\pt_Z}$.
+
+For the upper left triangle, recall that the left vertical 
+map $x\mapsto (f(x),\trunc{(x,\refl{f(x)})}_n)$
+is pointed by the path $(\pt_Z,\trunc{(\pt_X,f_\pt)}_n) \eqto 
+(f(\pt_X),\trunc{(\pt_X,\refl{f(\pt_X)})}_n)$ obtained by path induction 
+on $f_\pt$ and reflexivity. Hence the left upper triangle can also
+be filled by path induction on $f_\pt$ and reflexivity, given that
+both $p$ and $p^h$ are pointed by $p_\pt$.
+
+We can now conclude that the type $\Fact_*^n(f)$ is contractible
+since we have proved that
+all its elements are equal and we had already given an element.
 \end{remark}
 
-\wip{Where are the fillers of the triangles 
-for the \emph{pointed} maps? For $n>0$, path induction on $f_\pt$
-could help. CURSOR}
+\begin{xca}\label{xca:adjointify}\wip{**Check: }
+Let conditions be as in \cref{rem:n-im-ptd-map}. Note that the
+equivalence $p^h$ with pointing path $p_\pt$ induces in a natural way
+a pointing path for $\inv{(p^h)}$. Then elaborate the details of an
+identification of $\inv{(p^h)} p^h$ with $\id_{\im_n(f)}$ and of
+an identification of $p^h\inv{(p^h)}$ with $\id_{Y}$
+as pointed maps. \wip{Presumably one of the unpointed homotopies
+must be adjointified. If so, a hint is needed.} 
+\end{xca}
+
+\wip{CURSOR}
 
   \marginnote{$$\xymatrix{G\ar[rr]^f\ar@{->>}_{\prj_{\Img(f)}}[dr]&&G'\\&\,\image f.\,\ar@{>->}[ur]_{\incl_{\Img(f)}}}
   $$}
