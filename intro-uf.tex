@@ -2830,18 +2830,20 @@ identifications of elements.
   for any $x,y:A$ with $\Trunc {x=y}$.
 \end{xca}
 
-\begin{xca}\label{xca:connected-trivia-2}
-  Show that any connected set is contractible.
-\end{xca}
-
 \begin{xca}\label{xca:connected-trivia}
-Let $A$ be a connected type, and suppose that $a \eqto a$ is a proposition for every $a:A$.
-Show that $A$ is contractible.
+Let $A$ be a connected type, and suppose that $a \eqto a$ is a proposition for every $a:A$. Show that $A$ is contractible.
+Show that any connected set is contractible.
 \end{xca}
 
 \begin{xca}\label{xca:connected-trivia-1}
+  Let $A$ be a type and $B:A\to\UU$ a type family.
   Show that $\sum_{x:A}B(x)$ is connected when $A$ is connected
   and $B(x)$ is connected for any $x:A$.
+\end{xca}
+
+\begin{xca}\label{xca:connected-trivia-2}\wip{New: }
+Let $A$ be a type and $B:A\to\UU$ a type family. Show: if
+$\sum_{a:A}B(a)$ is connected, then so is $\sum_{a:A}\Trunc{B(a)}$. 
 \end{xca}
 
 In the following definition we introduce the adverb \emph{merely}, which serves as a quicker way to say \emph{the propositional truncation of}
@@ -3611,8 +3613,8 @@ Since $\UUp$ and $X\ptdto Y$ are sum types, the results on identifying pairs
 in \cref{sec:pairpaths} apply to pointed types and pointed maps as well.
 
 \begin{definition}\label{def:pointedequiv}
-  If $X$ and $Y$ are pointed types, we define the type of pointed equivalences
-  from $X$ to $Y$ as:
+Given pointed types $X$ and $Y$, we define the type of pointed
+equivalences from $X$ to $Y$ as:
   \[
     X \ptdweto Y \defeq \sum_{f : X \ptdto Y}\isEq(f_\div)\qedhere
   \]
@@ -3625,7 +3627,7 @@ in \cref{sec:pairpaths} apply to pointed types and pointed maps as well.
   \[
     (X \eqto Y) \to (X \ptdweto Y).
   \]
-  Show that this is an equivalence.
+  Show that this map is an equivalence.
 \end{xca}
 
 The following result gives a useful characterization of 
@@ -3679,6 +3681,22 @@ and (**) uses that $\ptw$ is an equivalence.
 \begin{xca}\label{xca:identity-ptd-maps}
 Implement the function $\ptw_*$ by induction on $f\eqto g$.
 (You would then still have to prove that it is an equivalence.)
+\end{xca}
+
+\begin{xca}\label{xca:ptd-equiv-inv}\wip{New: }
+Given pointed types $X,Y$, and a pointed equivalence
+$f: X \ptdweto Y$, we define $\inv f: Y \ptdweto X$
+as the (unpointed) inverse equivalence of $f$, pointed
+by the data included in $f$, \ie
+%NB $\inv f_\pt$ versus $(\inv f)_\pt$!}
+\[
+(\inv f)_\pt \defeq \inv{\bigl(\ptw(h)(\pt_X)\cdot\inv f(f_\pt)\bigr)} :
+ \bigl(\pt_X\eqto\inv f(\pt_Y)\bigr),
+\]
+where $h: \inv f f \eqto \id_X$.
+Give identifications of $\inv f f$ with $(\id_X,\refl{\pt_X})$ and of
+$f\inv f$ with $(\id_Y,\refl{\pt_Y})$.
+Hint: See Theorem~4.2.3 of the HoTT Book.\footcite{hottbook}
 \end{xca}
 
 \section{Operations that produce sets}
@@ -3855,6 +3873,25 @@ constructor $\trunc{t}_{-2}\defeq\triv$.
   \]
   Prove that $A$ is connected iff $\Trunc{A}_0$ is contractible.
 \end{xca}
+
+\begin{xca}\label{xca:subset-of-set-trunc}\wip{New: } 
+Let $A$ be a type and $P:\setTrunc{A}\to\Prop$ a subset of
+its set truncation. Give an 
+equivalence from $\setTrunc{\sum_{a:A}P(\settrunc{a})}$ to
+$\sum_{b:\setTrunc{A}}P(b)$.
+\end{xca}
+\DELETE{Solution: $(a,p) \mapsto (\settrunc{a},p)$ defines a map $e$ 
+with $e(\settrunc{(a,p)})\jdeq(\settrunc{a},p)$. 
+We show that all fibers
+of $e$ are contractible. Let $(b,p):\sum_{b:\setTrunc{A}}P(b)$. Then 
+$\inv e(b,p)\jdeq \sum_{c:\setTrunc{\sum_{a:A}P(\settrunc{a})}}((b,p)=e(c))$.
+For proving that this fiber is a proposition, consider
+$c\jdeq\settrunc{(a,p)}$ and $c'\jdeq\settrunc{(a',p')}$ with 
+$(b,p)=e(c)=e(c')$, so $(\settrunc{a},p)=(\settrunc{a'},p')$,
+so $\Trunc{a\eqto a'}$. It follows that $c=c'$ and hence $\inv e(b,p)$
+is a proposition. For proving $\inv e(b,p)$ we may take $b\jdeq\settrunc{a}$
+for some $a:A$, and then for $c\defeq\settrunc{(a,p)}$ we have $e(c)\jdeq(b,p)$.}
+
 
 \subsection{Weakly constant maps}
 
