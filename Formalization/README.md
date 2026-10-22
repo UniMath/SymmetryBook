@@ -5,8 +5,9 @@ Here are the instructions for Claude:
 The LaTeX sources are at github.com/UniMath/SymmetryBook/*.tex.
 Use rocq with the Coq-HoTT library.
 All formalization results should be uploaded to 
-github.com/UniMath/SymmetryBook/Formalization, where you are allowed to commit and push.
-You are NOT allowed to commit and push to github.com/UniMath/SymmetryBook/ 
+github.com/UniMath/SymmetryBook/Formalization, where you are allowed to commit and 
+push, directly to the master branch.
+You are NOT allowed to commit or push to github.com/UniMath/SymmetryBook/ 
 any LaTeX sources, but you are allowed to propose changes to the local copy of these,
 changes which I may or may not make myself, commit and push.
 Always build on earlier results in github.com/UniMath/SymmetryBook/Formalization.
@@ -63,11 +64,12 @@ Labels:
   diagram), the anchor is a short comment at the right place saying what
   the item is, marked "(informal)"; the summary need not list these.
 - If a label in the book is wrong (e.g. swapped labels), propose the fix
-  of the .tex file, including the \cref's to the label, and
+  of the .tex file, including the \cref's to the label(s).
+  After I have committed and pushed the fix (or a variant thereof),
   update the anchors in the .v files. Until then, cite the label verbatim
   with a note at the anchor and a NOTE in the summary.
 - The same holds for small errors in the book text (typos, stray
-  punctuation): show the fix first, then fix the .tex file. 
+  punctuation): propose a fix of the .tex file. 
 - Before committing, check both directions: every cited [label] exists
   in the .tex sources, and every label of the formalized sections that
   is not exempt (see above) is cited in some .v file.
