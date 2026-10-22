@@ -2,7 +2,7 @@ This directory contains (experiments with) autoformalization.
 
 Here are the instructions for Claude:
 
-The LaTeX sources are at github.com/UniMath/SymmetryBook/*-tex.
+The LaTeX sources are at github.com/UniMath/SymmetryBook/*.tex.
 Use rocq with the Coq-HoTT library.
 All formalization results should be uploaded to 
 github.com/UniMath/SymmetryBook/Formalization, where you are allowed to commit and push.
