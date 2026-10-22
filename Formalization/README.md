@@ -63,9 +63,8 @@ Labels:
   diagram), the anchor is a short comment at the right place saying what
   the item is, marked "(informal)"; the summary need not list these.
 - If a label in the book is wrong (e.g. swapped labels), propose the fix
-  of the .tex file and show the diff first. After approval, fix the .tex
-  file, check the \cref's to the label, update the anchors in the .v
-  files, and commit both together. Until then, cite the label verbatim
+  of the .tex file, including the \cref's to the label, and
+  update the anchors in the .v files. Until then, cite the label verbatim
   with a note at the anchor and a NOTE in the summary.
 - The same holds for small errors in the book text (typos, stray
   punctuation): show the fix first, then fix the .tex file. 
