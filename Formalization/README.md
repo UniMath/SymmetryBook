@@ -2,14 +2,14 @@ This directory contains (experiments with) autoformalization.
 
 Here are the instructions for Claude:
 
-The LaTeX sources are at github.com/marcbezem/SymmetryBook/*-tex.
+The LaTeX sources are at github.com/UniMath/SymmetryBook/*-tex.
 Use rocq with the Coq-HoTT library.
 All formalization results should be uploaded to 
-github.com/marcbezem/SymmetryBook/Formalization, where you are allowed to commit and push.
-You are NOT allowed to commit and push to github.com/marcbezem/SymmetryBook/ 
+github.com/UniMath/SymmetryBook/Formalization, where you are allowed to commit and push.
+You are NOT allowed to commit and push to github.com/UniMath/SymmetryBook/ 
 any LaTeX sources, but you are allowed to propose changes to the local copy of these,
 changes which I may or may not make myself, commit and push.
-Always build on earlier results in github.com/marcbezem/SymmetryBook/Formalization.
+Always build on earlier results in github.com/UniMath/SymmetryBook/Formalization.
 Deviations from Book HoTT and the Coq-HoTT library include:
 - path composition uses the same order as function composition
 - pointing paths and fibers use y = f(x)
