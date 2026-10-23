@@ -62,7 +62,7 @@ Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 This work is licensed under a
 [Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
 The book is progressively checked using AI through a process commonly called autoformalization.
-The results are in the directory `Formalization`. All remaining error are entirely ours.
+The results are in the directory `Formalization`. All remaining errors are entirely ours.
 
 [![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
 
