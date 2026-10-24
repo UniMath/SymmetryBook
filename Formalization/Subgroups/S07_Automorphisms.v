@@ -1,0 +1,92 @@
+(** * Section 9.7 Automorphisms of groups
+
+    Part of Chapter 9 ([subgroups.tex]); see [Subgroups.v] for an
+    overview of the chapter and [Symmetry.v] for the conventions.
+
+    ** Summary of this formalization
+
+    - [Aut(G)] ([AutGrp]): [Group] is universe polymorphic, so
+      [Aut_Group(G)] is a group (in a larger universe than [G]); its
+      classifying type is [BAutG] of Section 4.4 by definition.  NOTE:
+      the summaries of Sections 4.2 and 4.4 say that [Group] is not
+      universe polymorphic; that is outdated.
+    - [inn : Hom(G, Aut(G))] ([mkhom (Binn G)], pointed by [(inc_out G)⁻¹]);
+      [out(G)] ([outG], the cokernel of [inn]); [Inn(G)] ([InnG], the
+      image of [inn]); [Out(G)] ([OutG]).
+
+    Left out (statements only)
+    - The remark on [USym inn] ([USym_inn_stmt]); the kernel of [inn] as
+      the center ([ker_inn_center_stmt]; the center is defined in
+      [sec:abelian-groups], not yet formalized); lemma
+      [lemma:coker-out-action] ([coker_out_action_stmt]); that [Inn(G)] is
+      normal ([Inn_normal_stmt]); construction [cons:simpler-version-Out]
+      ([cons_simpler_version_Out_stmt], as an isomorphism, with
+      [Trunc1U_isGrpd]).
+ *)
+
+From HoTT Require Import
+  Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
+  Types.Forall Types.Paths Truncations.Core.
+From SymmetryBook Require Export Subgroups.S06_IntersectNormal.
+
+Local Open Scope uf_scope.
+
+(** ** 9.7 Automorphisms of groups *)
+
+Section Automorphisms.
+
+  Context `{ua : Univalence} (G : Group).
+
+  (** [Aut(G) :≡ Aut_Group(G)]; its classifying type is [BAutG G] of
+      Section 4.4 by definition.  [Group] is universe polymorphic, so
+      [Aut(G)] is a group (in a larger universe than [G]). *)
+  Definition AutGrp : Group := AutG Group_isGrpd G.
+
+  Definition BAutGrp_is_BAutG : BG AutGrp = BAutG G := refl.
+
+  (** The homomorphism [inn : G → Aut(G)] with [Binn(y) :≡ mkgroup(BG_÷, y)]
+      ([Binn], [def:inner-autos], Section 4.4; pointed by [(inc_out G)⁻¹]
+      instead of [refl_G], since [Copy] has no definitional eta). *)
+  Definition inn : Hom G AutGrp := @mkhom G AutGrp (Binn G).
+
+  (** The remark on [USym inn] (statement only): [USym inn(g)] is the inner
+      automorphism [h ↦ g⁻¹ h g]; up to the identification
+      [path_Group_Iso_eqv] of Section 4.4 it is [conj_hom G g]. *)
+  Definition USym_inn_stmt : Type
+    := forall g h : USym G,
+         USymf (fst (fst (path_Group_Iso_eqv G G) (ap fst (USymf inn g)))) h = g⁻¹ ⋅ (h ⋅ g).
+
+  (** The kernel of [inn] is [Aut_{BG_÷ = BG_÷}(refl)], the center [Z(G)]
+      of [sec:abelian-groups] (Chapter 12, not formalized yet; statement
+      only). *)
+  Definition ker_inn_center_stmt : Type
+    := forall gp : isGrpd (utype (BG G) = utype (BG G)), Iso (Ker inn) (AutG gp refl).
+
+  (** The definition of [out(G)]: the cokernel of [inn], an [Aut(G)]-set. *)
+  Definition outG : GSet AutGrp := coker inn.
+
+  (** Lemma [lemma:coker-out-action] (statement only):
+      [out(G)(G') = ‖BG'_÷ = BG_÷‖₀]. *)
+  Definition coker_out_action_stmt : Type
+    := forall G' : utype (BG AutGrp),
+         el outG G' ≃ strunc (utype (BG (fst G')) = utype (BG G)).
+
+  (** The definition of [Inn(G) :≡ Im(inn)]. *)
+  Definition InnG : Group := Img inn.
+
+  (** The lemma that [Inn(G)] is normal in [Aut(G)] (statement only). *)
+  Definition Inn_normal_stmt : Type
+    := {N : Nor AutGrp & inor AutGrp N = imsub inn}.
+
+  (** The definition of [Out(G) :≡ Aut_{Aut(G)-Set}(out(G))]. *)
+  Definition OutG : Group := AutG GSet_isGrpd outG.
+
+  (** Construction [cons:simpler-version-Out] (statement only):
+      [Aut_{‖U‖₁}(|BG_÷|₁) = Out(G)], stated as an isomorphism since the
+      two groups live in different universes. *)
+  Definition Trunc1U_isGrpd : isGrpd (Trunc 1 Type) := IsTrunc_ntype 1 _.
+
+  Definition cons_simpler_version_Out_stmt : Type
+    := Iso (AutG Trunc1U_isGrpd (tr (utype (BG G)))) OutG.
+
+End Automorphisms.

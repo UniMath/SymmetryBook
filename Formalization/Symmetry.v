@@ -14,8 +14,10 @@
       [Actions/Actions.v] (Chapter 5, [actions.tex], Sections 5.2 - 5.7),
       [Cats/Cats.v] (Chapter 6, [cats.tex], Sections 6.2 - 6.8),
       [AbsGroup/AbsGroup.v] (Chapter 7, [absgroup.tex], Sections
-      7.2 - 7.7) and [ConGroups/ConGroups.v] (Chapter 8, [congp.tex],
-      Sections 8.2 - 8.4, 8.6, 8.7).
+      7.2 - 7.7), [ConGroups/ConGroups.v] (Chapter 8, [congp.tex],
+      Sections 8.2 - 8.4, 8.6, 8.7), [Subgroups/Subgroups.v] (Chapter 9,
+      [subgroups.tex], Sections 9.2 - 9.8) and [FinGroups/FinGroups.v]
+      (Chapter 10, [fingp.tex], Sections 10.2 - 10.4).
     - Results that are left out are stated without proof, as definitions
       of their statements (named [..._stmt]) at their proper place, and
       listed in the summary of their file.
@@ -49,4 +51,6 @@ From SymmetryBook Require Export
   Actions.Actions
   Cats.Cats
   AbsGroup.AbsGroup
-  ConGroups.ConGroups.
+  ConGroups.ConGroups
+  Subgroups.Subgroups
+  FinGroups.FinGroups.

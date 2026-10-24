@@ -52,8 +52,8 @@
       in [ex:cyclicgroups], end to end ([ex_cyclicgroups_chain_stmt]).
     - [xca:typegroupisgroupoid] is postponed to Section 4.4
       ([Group_isGrpd]), where it follows from [lem:hom-is-set].
-    - Size issues: [UUscone] and [Group] are not universe polymorphic, so
-      [Aut_Group(G)] is not a group in the same [Group].
+    - Size issues: [Aut_Group(G)] is a group in a larger universe than
+      [G] ([AutGrp], Section 9.7).
  *)
 
 From HoTT Require Import

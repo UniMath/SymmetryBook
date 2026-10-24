@@ -40,9 +40,8 @@
       isomorphism [conj_hom G p], and its action on symmetries is
       conjugation [g ↦ p g p⁻¹] ([conj_hom_USym]).
     - Definition [def:inner-autos]: [Binn : BG →* BAut(G)] ([BAutG] is the
-      component of [G] in [Group], pointed at [G]).  Since [UUscone] and
-      [Group] are not universe polymorphic, [BAut(G)] is not wrapped as a
-      group.  The pointing path is [(inc_out G)⁻¹] rather than [refl]:
+      component of [G] in [Group], pointed at [G]); the group [Aut(G)],
+      in a larger universe, is [AutGrp] of Section 9.7.  The pointing path is [(inc_out G)⁻¹] rather than [refl]:
       [Copy] has no definitional eta rule, so [mkgroup(BG_÷, sh_G)] is
       not judgmentally [G].
 
@@ -464,8 +463,8 @@ Definition conj_hom_USym (G : Group) {y : utype (BG G)} (p : sh G = y) (g : USym
 Proof. destruct p. exact (ap (fun q => q ⋅ refl) (ap_idmap g)). Defined.
 
 (** Definition [def:inner-autos]: [Binn : BG →* BAut(G)], [y ↦ mkgroup(BG_÷, y)].
-    [BAut(G)] is the component of [G] in [Group]; since [Group] is not
-    universe polymorphic, we do not wrap it as a group.  The pointing path
+    [BAut(G)] is the component of [G] in [Group]; it is wrapped as a group
+    in Section 9.7 ([AutGrp]).  The pointing path
     is [inc_out G] rather than [refl], since [Copy] has no definitional
     eta rule. *)
 Definition BAutG (G : Group) : Ustar := (component Group G; (G; trunc refl)).
