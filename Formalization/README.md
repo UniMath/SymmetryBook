@@ -83,6 +83,29 @@ Contents of a section file:
   cannot be stated formally (informal remarks, alternative proofs) are only
   listed in the summary.
 
+Working copies:
+- Claude works in its own clone of UniMath/SymmetryBook (on a Mac:
+  ~/git/SymmetryBook-Formalization); my own working copy (on a Mac:
+  ~/git/SymmetryBook) is read-only for Claude. I work on several
+  machines: pull before starting, push when done.
+
+Proposals for the LaTeX sources:
+- Write proposed .tex fixes to the directory proposals/ at the top of
+  Claude's clone, which is NOT under git control (it is listed in
+  .git/info/exclude; never git add it): a patch chN-chM.patch with the
+  mechanical fixes, checked with git apply --check against my working
+  copy, and a note chN-chM.md explaining each fix and listing the points
+  that need a decision by the authors.
+
+Review before I commit:
+- When I ask, review my uncommitted changes (git diff in my working
+  copy) before I commit and push, plus pushed commits that Claude's clone
+  lacks (I also edit on other machines and on GitHub). Check mathematical
+  correctness, notation consistent with the surrounding text and
+  macros.tex, typos in nearby lines, and labels that are anchored in the
+  .v files. Report only; do not commit .tex changes. The aim is one
+  reviewed push instead of many small ones, each of which runs CI.
+
 Naming: use the book's names (from macros.tex). If a name clashes with an
 earlier notion, add a suffix (e.g. isIsoC/IsoC for categories, since
 isIso/Iso are the group isomorphisms).
