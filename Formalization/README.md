@@ -3,8 +3,8 @@ This directory contains (experiments with) autoformalization.
 Here are the instructions for Claude:
 
 The LaTeX sources are at github.com/UniMath/SymmetryBook/*.tex.
-Use rocq with the Coq-HoTT library (Rocq 9.1.0, with the Coq-HoTT
-release for that version).
+Use rocq with the Coq-HoTT library (Rocq 9.1.0 with Coq-HoTT 9.1;
+see "Building" below).
 All formalization results should be uploaded to 
 github.com/UniMath/SymmetryBook/Formalization, where you are allowed to commit and 
 push, directly to the master branch.
@@ -116,3 +116,19 @@ Review before I commit:
 Naming: use the book's names (from macros.tex). If a name clashes with an
 earlier notion, add a suffix (e.g. isIsoC/IsoC for categories, since
 isIso/Iso are the group isomorphisms).
+
+Building:
+- Requirements: Rocq 9.1.0 and Coq-HoTT 9.1 (opam packages
+  rocq-core.9.1.0 and coq-hott.9.1, from the repository
+  https://rocq-prover.org/opam/released).
+- Build everything, in Formalization/, with rocq on the PATH:
+    rocq makefile -f _CoqProject -o Makefile.rocq
+    make -f Makefile.rocq -j
+  The generated Makefile.rocq* files are not under git control.
+- Build before committing; a commit must build without errors.
+- Linux: opam 2.6.1 in ~/.local/bin (installed without sudo), switch
+  rocq-9.1 with ocaml-base-compiler.4.14.2, rocq-core.9.1.0 and
+  coq-hott.9.1; activate it with
+    eval $(opam env --switch=rocq-9.1)
+  The full build takes about 3 minutes.
+- Mac: to be filled in on the Mac.
