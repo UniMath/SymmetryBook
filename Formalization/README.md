@@ -3,7 +3,8 @@ This directory contains (experiments with) autoformalization.
 Here are the instructions for Claude:
 
 The LaTeX sources are at github.com/UniMath/SymmetryBook/*.tex.
-Use rocq with the Coq-HoTT library.
+Use rocq with the Coq-HoTT library (Rocq 9.1.0, with the Coq-HoTT
+release for that version).
 All formalization results should be uploaded to 
 github.com/UniMath/SymmetryBook/Formalization, where you are allowed to commit and 
 push, directly to the master branch.
@@ -13,7 +14,8 @@ changes which I may or may not make myself, commit and push.
 Always build on earlier results in github.com/UniMath/SymmetryBook/Formalization.
 Deviations from Book HoTT and the Coq-HoTT library include:
 - path composition uses the same order as function composition
-- pointing paths and fibers use y = f(x)
+- pointing paths and fibers use y = f(x), e.g. f : (X,x) →* (Y,y) has
+  pointing path y = f(x)
 
 If a notion occurs definitionally in the Coq-Hott library, use it to define our notion,
 such as: Definition book_name := library_name. Use book_name henceforth.
@@ -32,7 +34,12 @@ File structure:
 - Each section file does Require Export of the previous section; the first
   section of a chapter exports the previous chapter file.
 - Material the book repeats is formalized once, at its first occurrence;
-  later sections refer to it.
+  later sections refer to it.  Chapters 1-7 are almost done; the later
+  chapters are still in flux and may still duplicate material from the
+  earlier ones (e.g. the pullback, now in cats.tex, of which an old copy
+  is commented out in subgroups.tex).  Such duplication will be removed
+  from the book: formalize at the first occurrence and ignore the copy.
+  If a duplicate is not commented out, report it as a NOTE.
 
 Anchoring in the LaTeX source:
 - The labels of the LaTeX source (\label{...}) are the anchor points of the
