@@ -131,4 +131,9 @@ Building:
   coq-hott.9.1; activate it with
     eval $(opam env --switch=rocq-9.1)
   The full build takes about 3 minutes.
-- Mac: to be filled in on the Mac.
+- Mac (macOS 15, x86_64): opam 2.4.1 from Homebrew, switch default
+  with ocaml-base-compiler.5.4.0 and rocq-core.9.1.0 (active by
+  default); coq-hott is pinned to dev from a local clone
+    opam pin coq-hott git+file:///Users/marc/git/Coq-HoTT#master
+  (commit 5c938e4) rather than coq-hott.9.1. The full build (-j8)
+  takes about 3.5 minutes, without errors or warnings.
