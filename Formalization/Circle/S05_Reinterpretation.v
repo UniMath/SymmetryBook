@@ -17,10 +17,11 @@
     - [lem:conn-eq-f-ap-f-x] is [conn_isEquiv_iff_point] from 2.17.
     - [thm:S1bysymmetries]: [c] is an equivalence, by the book's second
       proof ([ev_0 (ap_c (loop^n)) = -n]).
-    - Exercise [xca:TTYoneda], first part ([yoneda_eqv]).
-
-    Left out (statements only, no proofs yet)
-    - The second part of [xca:TTYoneda] ([xca_TTYoneda_inj_stmt]).
+    - Exercise [xca:TTYoneda], first part ([yoneda_eqv]), and second
+      part: [x ↦ (y ↦ x = y)] is injective ([xca_TTYoneda_inj]), since
+      its fibers are contractible when inhabited: by function
+      extensionality, univalence and Yoneda, the fiber over
+      [y ↦ (x₀ = y)] is [∑_x (x = x₀)] ([yon_fiber_contr]).
 
     Left out (not formalized)
     - The first proof of [thm:S1bysymmetries] (via diagram
@@ -30,7 +31,7 @@
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
   Types.Forall Types.Paths Truncations.Core Colimits.Coeq Colimits.Pushout
-  Spaces.Nat.Core Spaces.Int Spaces.Circle.
+  Spaces.Nat.Core Spaces.Int Spaces.Circle Universes.HProp.
 From SymmetryBook Require Export Circle.S04_SymmetriesCircle.
 
 Local Open Scope uf_scope.
@@ -168,10 +169,53 @@ Section Reinterpretation.
     intro k. apply ptw_inv. intro y. apply ptw_inv. intro p. destruct p. exact refl.
   Defined.
 
-  (** Exercise [xca:TTYoneda], second part (statement only): the map
-      [x ↦ (y ↦ (x = y))] is an injection. *)
-  Definition xca_TTYoneda_inj_stmt : Type
-    := forall X : Type, isInj (fun x : X => fun y : X => x = y).
+  (** Exercise [xca:TTYoneda], second part: the map [x ↦ (y ↦ (x = y))] is
+      an injection.  We show that its fibers are contractible when inhabited
+      (the alternative mentioned in the book): over [y ↦ (x₀ = y)] the fiber
+      is [∑_x ((y ↦ (x₀ = y)) = (y ↦ (x = y)))], and by function
+      extensionality, univalence and the first part (with [F :≡ (y ↦ (x = y))])
+      the type of identifications is [x = x₀], with [∑_x (x = x₀)]
+      contractible.  The natural maps [(x₀ = y) → (x = y)] obtained from
+      [u : x = x₀] are [p ↦ u · p], which are all equivalences. *)
+  Definition yon_base_equiv {X : Type} (x0 x : X)
+    : (x = x0) <~> (forall y : X, x0 = y -> x = y).
+  Proof.
+    refine (equiv_adjointify (fun u y p => u @ p) (fun k => k x0 idpath) _ _).
+    - intro k. funext y p. destruct p. exact (concat_p1 _).
+    - intro u. exact (concat_p1 u).
+  Defined.
+
+  Definition yon_path_equiv {X : Type} (x0 x : X)
+    : (forall y : X, (x0 = y) <~> (x = y)) <~> (x = x0).
+  Proof.
+    refine (_ oE (equiv_sig_coind (fun y => x0 = y -> x = y) (fun y f => IsEquiv f))^-1
+              oE equiv_functor_forall_id (fun y => (issig_equiv (x0 = y) (x = y))^-1)).
+    transitivity {u : x = x0 & forall y, IsEquiv (fun p : x0 = y => u @ p)}.
+    - symmetry.
+      pose (e := yon_base_equiv x0 x).
+      exact (equiv_functor_sigma' (Q := fun k : forall y, x0 = y -> x = y => forall y, IsEquiv (k y))
+               e (fun u => equiv_idmap)).
+    - apply equiv_sigma_contr. intro u.
+      apply (contr_inhabited_hprop _). intro y. exact _.
+  Defined.
+
+  Definition yon_fiber_contr {X : Type} (x0 : X)
+    : Contr {x : X & (fun y => x0 = y) = (fun y => x = y)}.
+  Proof.
+    refine (contr_equiv' {x : X & x = x0} _).
+    apply equiv_functor_sigma_id. intro x.
+    exact (equiv_inverse (yon_path_equiv x0 x
+           oE equiv_functor_forall_id (fun y => equiv_equiv_path _ _) oE equiv_apD10 _ _ _)).
+  Defined.
+
+  (** The injection of the second part. *)
+  Definition xca_TTYoneda_inj (X : Type) : isInj (fun x : X => fun y : X => x = y).
+  Proof.
+    intros F z z'.
+    pose (C := transport (fun G => Contr {x : X & G = (fun y => x = y)})
+                 (snd z)^ (yon_fiber_contr (fst z))).
+    exact (@path_contr _ C z z').
+  Defined.
 
   (** Lemma [lem:conn-eq-f-ap-f-x] is [conn_isEquiv_iff_point] from 2.17. *)
   Definition conn_eq_f_ap_f_x `{Funext} {X Y : Type} (cX : isConn X)
