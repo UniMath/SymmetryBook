@@ -632,7 +632,8 @@ End IdCycle.
 (** Corollary [cor:id-m-cycle] (statement only): for the cycles
     [(Fin m, zs)], evaluation at [0] is an equivalence
     [((Fin m, zs) = (Fin m, zs)) ≃ Fin m], sending [refl] to [0], under
-    which composition with [(zs, !)] corresponds to [zs]. *)
+    which composition with [(zs, !)] corresponds to [zs]; this is the
+    diagram of Figure [fig:id-m-cycle] for [e ≡ zs]. *)
 Definition cor_id_m_cycle_stmt `{Univalence} : Type
   := forall k : ℕ,
        let zsk := fst (finsuccEqv k) in
@@ -642,8 +643,10 @@ Definition cor_id_m_cycle_stmt `{Univalence} : Type
 
 (** Remark [rem:thenonuniquenessofgeneratorsofmodulararithmetic1]: for
     [m > 2], [zs] is not the only [e] with [(Fin m, e)] a cycle, [e]
-    commuting with [zs], and the diagram of [cor:id-m-cycle] commuting;
-    [e ≡ zs⁻¹] also works (informal). *)
+    commuting with [zs] (the precondition [P(e)] of Figure
+    [fig:id-m-cycle]), and the diagram of [cor:id-m-cycle] commuting;
+    [e ≡ zs⁻¹] also works.  The solutions are the [zs^k] with
+    [1 ≤ k ≤ m] and [k] relatively prime to [m] (informal). *)
 
 (** Corollary [cor:set-trunc-cyc], first half: each [H_t] contains [0] and
     is closed under addition and negation. *)
