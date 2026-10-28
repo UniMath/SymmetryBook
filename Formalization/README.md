@@ -102,7 +102,13 @@ Proposals for the LaTeX sources:
   .git/info/exclude; never git add it): a patch chN-chM.patch with the
   mechanical fixes, checked with git apply --check against my working
   copy, and a note chN-chM.md explaining each fix and listing the points
-  that need a decision by the authors.
+  that need a decision by the authors. N-M are the chapters the patch
+  touches, e.g. ch3-ch3 for circle.tex only.
+- After I have pushed a fix (or a variant of it), Claude updates the
+  anchors and NOTEs in the .v files and deletes the proposal files
+  that are settled.
+- Claude may commit and push changes to Formalization/README.md, and
+  leaves a note on each change in proposals/README-README.md.
 
 Review before I commit:
 - When I ask, review my uncommitted changes (git diff in my working
