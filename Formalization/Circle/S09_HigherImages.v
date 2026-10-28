@@ -55,13 +55,8 @@
       [ρ_m], i.e. [Cyc_B] ([tot_fib_rho]).  [r] is [0]-truncated since its
       fibers are those of [Cyc_m → Cyc] (propositions) over those of
       [Cyc → Set] (sets of cycle structures).
-    NOTEs for the book:
-    - In the proof of [thm:image-Z-to-Cm], [ψ((Y,u),e') :≡ (e'(0), u^m)]:
-      [e'(0)] is an element of [Y/m], i.e. an equivalence class (orbit of
-      [u^m]); [ψ] should take the corresponding subset of [Y] (the fiber
-      of [Y → Y/m] at [e'(0)]) with [u^m] restricted to it.
-    - The label [xca:image-Z-to-Cm] is in the authors' working copy of
-      [circle.tex] only (not yet pushed). *)
+    - In [ψ((Y,u),e') :≡ (e'(0), u^m)], [e'(0)] stands for the subset
+      [Y_{e'(0)}] of [Y] ([def:subtype]); we do not construct [ψ]. *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -732,8 +727,7 @@ Proof.
 Defined.
 
 (** Exercise [xca:image-Z-to-Cm]: the details of the proof above; the
-    fiber of [q] at the standard [m]-cycle is [Cyc_0].  (The label exists
-    only in the authors' working copy of [circle.tex] so far.)  Instead of
+    fiber of [q] at the standard [m]-cycle is [Cyc_0].  Instead of
     the book's inverse [ψ], we use that the type of pointed [m]-cycles is
     contractible ([lem:sum-cycle-point-contr]), so the fiber at the
     standard cycle is the sum of the fibers [Y/m] over [Cyc_0], i.e. the

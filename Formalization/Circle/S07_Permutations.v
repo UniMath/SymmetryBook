@@ -58,10 +58,8 @@
       ([fcard_DL]), and each [k]-cycle [σ] comes from exactly [k] of them,
       one for each element of its support, since such a list is the orbit
       list of its first element ([list_seg], [fcard_F]).
-      NOTE for the book text: the expected answer [binom n k ⋅ (k-1)!]
-      holds for [2 ≤ k ≤ n] only: the only [1]-cycle [(a)] is the
-      identity (and [k = 0] is degenerate).  The exercise could ask for
-      [2 ≤ k ≤ n].
+      The book assumes [2 ≤ k ≤ n] for both parts (the only [1]-cycle
+      is the identity); the subsets are counted for all [k ≤ n].
 
     Left out (statements only, no proofs yet)
     - That [(ℤ, zs)] is not a cyclic permutation ([zs_not_cyc_stmt]).
@@ -827,8 +825,8 @@ Definition perm_transpositions_ne_stmt `{Univalence} : Type
     [def:support-permutation]): a set [A] of cardinality [n] has
     [n!/(k!(n-k)!)] subsets with [k] elements ([xca_binomial_subsets]),
     and [n!/(k!(n-k)!) ⋅ (k-1)!] [k]-cycle permutations for [2 ≤ k ≤ n]
-    ([xca_kcycles]); we avoid division by multiplying out.  For [k = 1]
-    the only [1]-cycle is the identity, so the formula needs [k ≥ 2].
+    ([xca_kcycles]); we avoid division by multiplying out.  The book
+    assumes [2 ≤ k ≤ n]; the subsets are counted for all [k ≤ n].
 
     Subsets: a [k]-element subset of [Fin n] is decidable, so it is given
     by its characteristic map [Fin n → Bool] with [k] values [true]

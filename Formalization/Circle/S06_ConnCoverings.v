@@ -640,9 +640,10 @@ Definition cor_id_m_cycle_stmt `{Univalence} : Type
          (fst e refl = fin_zero)
          × (forall p, fst e (endo_path (finsuccEqv k) refl ⋅ p) = zsk (fst e p))}.
 
-(** Remark [rem:thenonuniquenessofgeneratorsofmodulararithmetic1]: the
-    equivalence [zs] in [cor:id-m-cycle] is in general not uniquely
-    determined by the stated property (informal). *)
+(** Remark [rem:thenonuniquenessofgeneratorsofmodulararithmetic1]: for
+    [m > 2], [zs] is not the only [e] with [(Fin m, e)] a cycle, [e]
+    commuting with [zs], and the diagram of [cor:id-m-cycle] commuting;
+    [e ≡ zs⁻¹] also works (informal). *)
 
 (** Corollary [cor:set-trunc-cyc], first half: each [H_t] contains [0] and
     is closed under addition and negation. *)
