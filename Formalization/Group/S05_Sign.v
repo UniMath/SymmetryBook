@@ -38,17 +38,24 @@
       and [shAG] (definition [def:alternating-groups], given proofs that
       [BAG] is a connected groupoid); definition [def:sgn-permutation]
       ([sign], via [Bsgn] and [two_element_loops_Bool]).
+    - The exercise after [def:mu_E] ([xca_Umu_product], statement
+      [xca_Umu_product_stmt]): [Uμ_E(s)] is [+1] iff the number of [e]
+      with [s(e) = -1] is even.  Placed at the end, since it uses
+      [loops2_Bool].  Instead of computing the pointing path we use that
+      a loop of a 2-element set is trivial iff it has a fixed point
+      ([fix_refl]), and that [Uμ_E(s)] has one iff the action of [s] on
+      sign orderings fixes a class ([sact_fix]).
 
-    Left out (statements only, no proofs yet; time limit per section)
+    Left out (statements only, no proofs yet)
     - The pointing of [Bsgn] by the standard sign ordering of [Fin n]
       ([Bsgn_pt_stmt]) and that [BAG] is a connected groupoid
       ([BAG_isConn_stmt]).
-    - The exercise on [Uμ_E] ([xca_Umu_product_stmt]),
-      [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]), [lem:sign-properties]
-      ([lem_sign_properties_stmt]), [cor:sign-defined]
-      ([cor_sign_defined_stmt]), [xca:sign-by-crossings]
-      ([xca_sign_by_crossings_stmt], with [inversions]), and the count
-      [n!/2] of even permutations ([even_perms_count_stmt]). *)
+    - [lem:sign-properties] ([lem_sign_properties_stmt]) and
+      [cor:sign-defined] ([cor_sign_defined_stmt]), and the exercises
+      that need them: [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]),
+      [xca:sign-by-crossings] ([xca_sign_by_crossings_stmt], with
+      [inversions]) and the count [n!/2] of even permutations
+      ([even_perms_count_stmt]). *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -541,8 +548,8 @@ Section Sign.
          {h : isFinSet {σ : sh (SG n) = sh (SG n) & sign σ = yes} &
            mul 2 (cardF h) = fact n}.
 
-  (** The exercise after [def:mu_E]: [Uμ_E] maps [s : E → {±1}] to the
-      product of its values.  (Placed here since it uses [loops2_Bool].) *)
+  (** The statement of the exercise after [def:mu_E] (proved below,
+      [xca_Umu_product]). *)
   Definition xca_Umu_product_stmt : Type
     := forall (E : Type) (hE : isFinSet E) (s : E -> USym (SG 2)),
          loops2_Bool (sh (SG 2))
@@ -553,3 +560,175 @@ Section Sign.
                              then 0%nat else 1%nat)).
 
 End Sign.
+
+(** ** The exercise after [def:mu_E]
+
+    We do not compute the pointing path [Bmu_pt]: a loop of a 2-element
+    set is trivial iff it has a fixed point ([fix_refl]), and the loop
+    [Uμ_E(s)] has a fixed point iff the action [g ↦ s·g] of [s] on
+    sign orderings fixes a class [[g]] ([sact_fix]), i.e. iff [g] and
+    [s·g] differ in an even number of points. *)
+Section UmuProduct.
+
+  Context `{Univalence}.
+
+  Definition T2' (T : utype (BG (SG 2))) : FinSet_n 2
+    := (fst T; ptrunc_rec ptrunc_isProp (fun q => trunc (ap fst q)) (snd T)).
+
+  Definition loops2_Bool_loop (T : utype (BG (SG 2))) (q : el2 T = el2 T)
+    : loops2_Bool T q = loop_Bool (T2' T) q
+    := ap (fun e => fst e q) (ptoe_etop (loop_Bool (T2' T); loop_Bool_isEquiv (T2' T))).
+
+  Definition loop2_dec (T : utype (BG (SG 2))) (q : el2 T = el2 T) : (q = refl) ⨿ (q ≠ refl)
+    := loop_refl_dec (T2' T) q.
+
+  Definition loops2_yes (T : utype (BG (SG 2))) (q : el2 T = el2 T) (r : q = refl)
+    : loops2_Bool T q = yes.
+  Proof.
+    refine (loops2_Bool_loop T q @ _). unfold loop_Bool.
+    destruct (loop_refl_dec (T2' T) q) as [_|n]; [exact refl | destruct (n r)].
+  Defined.
+
+  Definition loops2_no (T : utype (BG (SG 2))) (q : el2 T = el2 T) (n : q ≠ refl)
+    : loops2_Bool T q = no.
+  Proof.
+    refine (loops2_Bool_loop T q @ _). unfold loop_Bool.
+    destruct (loop_refl_dec (T2' T) q) as [r|_]; [destruct (n r) | exact refl].
+  Defined.
+
+  (** A loop of a 2-element set with a fixed point is trivial. *)
+  Definition fix_refl (T : BSG2) (q : el2 T = el2 T) (x : el2 T) (h : ptoe q x = x)
+    : q = refl.
+  Proof.
+    refine ((etop_ptoe q)^ @ _ @ etop_id _).
+    apply ap. apply path_Eqv. apply ptw_inv. intro y.
+    destruct (el2_dec T y x) as [r|n].
+    - destruct r^. exact h.
+    - refine (el2_two T _ x _ _ (fun r => n r⁻¹)).
+      intro r. apply n. apply (Eqv_inj (idtoeqv q)). exact (r @ h^).
+  Defined.
+
+  Definition ptoe_ap_trans {A : Type} (f : A -> Type) {a b c : A} (r : a = b) (q : b = c) (x : f a)
+    : ptoe (ap f (q ⋅ r)) x = ptoe (ap f q) (ptoe (ap f r) x).
+  Proof. destruct q. exact refl. Defined.
+
+  Definition ptoe_ap_inv {A : Type} (f : A -> Type) {a b : A} (q : a = b) (x : f b)
+    : ptoe (ap f q) (ptoe (ap f q⁻¹) x) = x.
+  Proof. destruct q. exact refl. Defined.
+
+  Definition ptoe_ap_inv' {A : Type} (f : A -> Type) {a b : A} (q : a = b) (x : f a)
+    : ptoe (ap f q⁻¹) (ptoe (ap f q) x) = x.
+  Proof. destruct q. exact refl. Defined.
+
+  Context {E : Type} (hE : isFinSet E).
+
+  #[local] Instance FE' : Finite E := isFinSet_Finite hE.
+
+  Definition sact (s : forall e : E, USym (SG 2)) (g : forall e, el2 (P0 (E := E) e))
+    : forall e, el2 (P0 (E := E) e)
+    := fun e => ptoe (ap el2 (s e)) (g e).
+
+  Definition nsw (s : forall e : E, USym (SG 2)) : nat
+    := @finadd E (isFinSet_Finite hE)
+         (fun e => if loops2_Bool (sh (SG 2)) (ap (fun B => el2 B) (s e)) then 0%nat else 1%nat).
+
+  Definition dis_sact (s : forall e : E, USym (SG 2)) (g : forall e, el2 (P0 (E := E) e)) (e : E)
+    : dis (P0 (E := E)) g (sact s g) e
+      = (if loops2_Bool (sh (SG 2)) (ap (fun B => el2 B) (s e)) then 0%nat else 1%nat).
+  Proof.
+    unfold dis, sact.
+    destruct (loop2_dec (sh (SG 2)) (ap el2 (s e))) as [r|n].
+    - rewrite (loops2_yes _ _ r).
+      destruct (el2_dec (P0 (E := E) e) (g e) (ptoe (ap el2 (s e)) (g e))) as [_|m].
+      + exact refl.
+      + destruct (m (ap (fun q => ptoe q (g e)) r)^).
+    - rewrite (loops2_no _ _ n).
+      destruct (el2_dec (P0 (E := E) e) (g e) (ptoe (ap el2 (s e)) (g e))) as [m|_].
+      + destruct (n (fix_refl (P0 (E := E) e) _ (g e) m^)).
+      + exact refl.
+  Defined.
+
+  Definition ndis_sact (s : forall e : E, USym (SG 2)) (g : forall e, el2 (P0 (E := E) e))
+    : ndis (P0 (E := E)) g (sact s g) = nsw s
+    := ap finadd (path_forall _ _ (dis_sact s g)).
+
+  Definition trp_SignQ (ne : ptrunc E) {P P' : E -> BSG2} (p : P = P') (g : forall e, el2 (P e))
+    : ptoe (ap (fun P => el2 (SignQ_BSG2 P ne)) p) (class_of _ g)
+      = class_of _ (fun e => ptoe (ap el2 (apD10 p e)) (g e)).
+  Proof. destruct p. exact refl. Defined.
+
+  (** The action of [s] on sign orderings fixes a point iff the number of
+      nontrivial [s(e)] is even. *)
+  Definition sact_fix (ne : ptrunc E) (s : forall e : E, USym (SG 2))
+    (p : P0 (E := E) = P0 (E := E)) (hp : apD10 p = s) (y : SignQ (P0 (E := E)))
+    : (ptoe (ap (fun P => el2 (SignQ_BSG2 P ne)) p) y = y) <-> (even (nsw s) = true).
+  Proof.
+    revert y. refine (Quotient_ind_hprop _ _ _). intro g.
+    rewrite trp_SignQ, hp.
+    change (class_of (parity (P0 (E := E))) (sact s g) = class_of (parity (P0 (E := E))) g
+            <-> even (nsw s) = true).
+    split.
+    - intro r. refine (trp (fun k => even k = true) (ndis_sact s g) _).
+      pose (r' := ap (phi (P0 (E := E)) g) r). exact (r' @ parity_refl (P0 (E := E)) g).
+    - intro r. apply qglue. apply parity_symm.
+      exact (trp (fun k => even k = true) (ndis_sact s g)^ r).
+  Defined.
+
+  Definition ptoe_ap_compose {A B : Type} (f : A -> B) (h : B -> Type) {a b : A} (q : a = b) (z : h (f a))
+    : ptoe (ap h (ap f q)) z = ptoe (ap (fun x => h (f x)) q) z.
+  Proof. destruct q. exact refl. Defined.
+
+  Context (s : forall e : E, USym (SG 2)) (p : P0 (E := E) = P0 (E := E)) (hp : apD10 p = s).
+
+  Definition Umu_product_ne (ne : ptrunc E)
+    : loops2_Bool (sh (SG 2))
+        (ap (fun B => el2 B) ((Bmu_pt hE ne)⁻¹ ⋅ (ap (fun P => SignQ_BSG2 P ne) p ⋅ Bmu_pt hE ne)))
+      = even (nsw s).
+  Proof.
+    pose (B := Bmu_pt hE ne).
+    pose (x := fin2_0 : el2 (sh (SG 2))).
+    pose (y := ptoe (ap el2 B) x).
+    pose (T := ptoe (ap (fun P => el2 (SignQ_BSG2 P ne)) p)).
+    assert (hL : forall z, ptoe (ap el2 (B⁻¹ ⋅ (ap (fun P => SignQ_BSG2 P ne) p ⋅ B))) z
+                           = ptoe (ap el2 B⁻¹) (T (ptoe (ap el2 B) z))).
+    { intro z. refine (ptoe_ap_trans _ _ _ _ @ _). apply ap.
+      exact (ptoe_ap_trans _ _ _ _ @ ptoe_ap_compose (fun P => SignQ_BSG2 P ne) el2 p _). }
+    destruct (sact_fix ne s p hp y) as [f1 f2].
+    destruct (loop2_dec (sh (SG 2)) (ap el2 (B⁻¹ ⋅ (ap (fun P => SignQ_BSG2 P ne) p ⋅ B)))) as [r|n].
+    - refine (loops2_yes _ _ r @ _). symmetry. apply f1.
+      refine ((ptoe_ap_inv el2 B (T y))^ @ _). apply ap.
+      exact ((hL x)^ @ ap (fun q => ptoe q x) r).
+    - refine (loops2_no _ _ n @ _). revert f1 f2. destruct (even (nsw s)); intros f1 f2.
+      + destruct (n (fix_refl (sh (SG 2)) _ x (hL x @ ap (ptoe (ap el2 B⁻¹)) (f2 refl)
+                                                  @ ptoe_ap_inv' el2 B x))).
+      + exact refl.
+  Defined.
+
+  Definition Umu_product_empty (ne : ¬ ptrunc E)
+    : loops2_Bool (sh (SG 2))
+        (ap (fun B => el2 B) (refl⁻¹ ⋅ (ap (fun _ : E -> BSG2 => sh (SG 2)) p ⋅ refl)))
+      = even (nsw s).
+  Proof.
+    refine (loops2_yes _ _ (ap (fun q => ap el2 (refl⁻¹ ⋅ (q ⋅ refl))) (ap_const p _)) @ _).
+    unfold nsw.
+    assert (r : (fun e => if loops2_Bool (sh (SG 2)) (ap (fun B => el2 B) (s e)) then 0%nat else 1%nat)
+                = (fun _ : E => 0%nat)).
+    { apply path_forall. intro e. destruct (ne (trunc e)). }
+    rewrite r, (finadd_const E 0), nat_mul_zero_r. exact refl.
+  Defined.
+
+End UmuProduct.
+
+(** The exercise after [def:mu_E]: [Uμ_E] maps [s : E → {±1}] to the
+    product of its values, i.e. [Uμ_E(s)] is [+1] iff the number of [e]
+    with [s(e) = -1] is even.  (Placed here since it uses [loops2_Bool].) *)
+Definition xca_Umu_product `{Univalence} : xca_Umu_product_stmt.
+Proof.
+  intros E hE s.
+  pose (p := eqinv (snd (USym_PiG hE (fun _ => SG 2))) s).
+  pose (hp := eqinv_r (snd (USym_PiG hE (fun _ => SG 2))) s : apD10 p = s).
+  change (loops2_Bool (sh (SG 2)) (ap (fun B => el2 B) (USymf (mu_E hE) p)) = even (nsw hE s)).
+  unfold USymf, mu_E. destruct (@decidable_merely_finite E (FE hE)) as [ne|ne].
+  - exact (Umu_product_ne hE s p hp ne).
+  - exact (Umu_product_empty hE s p ne).
+Defined.

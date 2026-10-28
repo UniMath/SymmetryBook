@@ -29,27 +29,42 @@
       ([ex:productofgroups]) with [USym_prodG], finite products [PiG] with
       [USym_PiG] ([ex:bigproductofgroups], [xca:bigproductfunext](1), via
       the library's [finite_choice]).
-    - Exercise [xca:group-example-details], all but the last part:
-      [AutProp_trivial], [AutG_set_trivial], [contr_group_trivial],
-      [SG0_trivial], [SG1_trivial], [SG_False_trivial], and
-      [AutFinSet_SG], from the general [AutG_subtype] (components of a
-      subtype are components of the ambient type).
+    - Exercise [xca:groups] ([xca_groups]): two identifications
+      [ℤ = Aut_Cyc(ℤ, zs)], from the equivalence [c : S1 ≃ InfCyc] of 3.5
+      (with [InfCyc] the component of [(ℤ, zs)] in [Cyc]) and from [c]
+      composed with [-id].  They differ because the pointed equivalence
+      can be recovered from an identification of groups
+      ([path_Group_pEqv_path_Group]) and [id ≠ -id] (3.4).
+    - Exercise [xca:group-example-details]: [AutProp_trivial],
+      [AutG_set_trivial], [contr_group_trivial], [SG0_trivial],
+      [SG1_trivial], [SG_False_trivial], and [AutFinSet_SG], from the
+      general [AutG_subtype] (components of a subtype are components of
+      the ambient type); [Aut_Set(ℕ) = Aut_Set(ℤ)] ([SG_N_Z]), from the
+      bijection [0, 1, 2, 3, … ↦ 0, -1, 1, -2, …] ([nat_Int]).
+    - Exercise [xca:CG2isSG2] ([xca_CG2isSG2]): the fiber of [R_2] at
+      [Fin 2] is connected, since every symmetry of [Fin 2] is [R_2] of
+      [refl] or of [loop] ([RmFin1_loops]).
+    - Exercise [xca:RmloopCGm] ([xca_RmloopCGm]): a symmetry [σ] of
+      [Fin m] comes from a symmetry of [sh_{C'_m}] iff it is merely a
+      power of [R_m(loop) = zs]; a symmetry of [sh_{C'_m}] is given by a
+      loop [l] in [S1] ([Cm'_sym]), using that equal elements of a set
+      truncation are merely equal.
+    - Exercise [xca:klein-not-cyclic] ([xca_klein_not_cyclic]): every
+      symmetry [g] of [Σ_2 × Σ_2] has [g g = refl] ([Klein_sq]), but the
+      generator of [C_4] does not ([CG_gen_sq_ne]).
+    - Exercise [xca:bigproductfunext](2) ([xca_bigproductfunext_2]).
     - Definition [def:abgp]: [isAb], a proposition, and [AbGroup];
-      [ZZ_isAb]; exercise [exer:first examples]: [SG2_isAb] and
-      [prodG_isAb].  Commutation is reflected along injective maps
-      ([comm_reflect]).
+      [ZZ_isAb]; exercise [exer:first examples]: [SG2_isAb], [prodG_isAb]
+      and [SG3_not_isAb] (two transpositions of [Fin 3] do not commute).
+      Commutation is reflected along injective maps ([comm_reflect]) and
+      carried forward along them ([comm_forward]).
     - The exercise that [mkgroup(A,a)] and [mkgroup(A,b)] are merely
       identical ([mkgroup_merely_eq]).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - [xca:groups] ([xca_groups_stmt]), the identification
-      [Aut_Set(ℕ) = Aut_Set(ℤ)] ([SG_N_Z_stmt]), example [ex:Cm]
-      ([ex_Cm_stmt], with [RmFin], [BCm'], [shCm']) with [xca:CG2isSG2]
-      and [xca:RmloopCGm] ([xca_CG2isSG2_stmt], [xca_RmloopCGm_stmt]),
-      [xca:klein-not-cyclic] ([xca_klein_not_cyclic_stmt]), that [Σ_3] is
-      not abelian ([SG3_not_isAb_stmt]), [xca:bigproductfunext](2)
-      ([xca_bigproductfunext_2_stmt]), and the chain of identifications
-      in [ex:cyclicgroups], end to end ([ex_cyclicgroups_chain_stmt]).
+    - Example [ex:Cm] ([ex_Cm_stmt], with [RmFin], [BCm'], [shCm']), and
+      the chain of identifications in [ex:cyclicgroups], end to end
+      ([ex_cyclicgroups_chain_stmt]).
     - [xca:typegroupisgroupoid] is postponed to Section 4.4
       ([Group_isGrpd]), where it follows from [lem:hom-is-set].
     - Size issues: [Aut_Group(G)] is a group in a larger universe than
@@ -58,7 +73,8 @@
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core Spaces.Circle Spaces.Finite.Fin Spaces.Finite.Finite Spaces.Int Projective.
+  Types.Forall Types.Paths Types.Sum Truncations.Core Truncations.SeparatedTrunc
+  Spaces.Circle Spaces.Finite.Fin Spaces.Finite.FinNat Spaces.Finite.Finite Spaces.Int Projective.
 From SymmetryBook Require Export Circle.Circle.
 
 Local Open Scope uf_scope.
@@ -388,16 +404,122 @@ Section FirstExamples.
   Definition ZmodmZ (k : ℕ) : Group
     := AutG (fun_ntype 1 SetU_isGrpd) (RmSet k).
 
-  (** Left-out results of this part (statements only). *)
+  (** [InfCyc] is the component of [(ℤ, zs)] in [Cyc]. *)
+  Definition CycP_Zs : CycP Zs := (ℤ_isSet; (snd zsEqv; Z_isCycle)).
+
+  Definition IC_to_cyc (w : InfCyc) : component Cyc Zcyc.
+  Proof.
+    pose (Cp := ptrunc_rec (CycP_isProp _) (fun p => trp CycP p CycP_Zs) (snd w)).
+    refine (cyc_of (fst w; Cp); _).
+    exact (ptrunc_rec ptrunc_isProp
+             (fun p : Zs = fst w => trunc (cyc_path Zcyc (cyc_of (fst w; Cp)) p)) (snd w)).
+  Defined.
+
+  Definition cyc_to_IC (d : component Cyc Zcyc) : InfCyc
+    := (cyc_endo (fst d); ptrunc_rec ptrunc_isProp (fun p => trunc (ap cyc_endo p)) (snd d)).
+
+  Definition IC_to_cyc_isEquiv : isEquiv IC_to_cyc.
+  Proof.
+    refine (iso_to_isEquiv _ cyc_to_IC _ _).
+    - intro w. exact (path_sigma_prop (fun _ => ptrunc_isProp) (u := cyc_to_IC (IC_to_cyc w))
+                        (v := w) refl).
+    - intro d. exact (path_sigma_prop (fun _ => ptrunc_isProp) (u := IC_to_cyc (cyc_to_IC d))
+                        (v := d) (cyc_path (fst (IC_to_cyc (cyc_to_IC d))) (fst d) refl)).
+  Defined.
+
+  (** The pointed equivalence [S1 ≃ Cyc_(ℤ,zs)], [z ↦ c(z)]. *)
+  Definition f1 : S1 -> component Cyc Zcyc := IC_to_cyc ∘ c.
+
+  Definition f1_isEquiv : isEquiv f1 := comp_isEquiv c_isEquiv IC_to_cyc_isEquiv.
+
+  Definition f1_pt : (Zcyc; trunc refl) = f1 base
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := ((Zcyc; trunc refl) : component Cyc Zcyc)) (v := f1 base)
+         (cyc_path Zcyc (fst (f1 base)) refl).
+
+  Definition e1 : BG ZZ ≃* BG (AutG Cyc_isGrpd Zcyc) := ((f1; f1_pt); f1_isEquiv).
+
+  Definition e2 : BG ZZ ≃* BG (AutG Cyc_isGrpd Zcyc)
+    := ((f1 ∘ negid; f1_pt); comp_isEquiv (snd negidEqv) f1_isEquiv).
+
+  (** The pointed equivalence underlying an identification of groups. *)
+  Definition path_Group_pEqv {G G' : Group} (p : G = G') : BG G ≃* BG G'
+    := path_to_pEqv (fst (UUscone_paths_eqv (B G) (B G')) (ap B p)).
+
+  Definition path_Group_pEqv_path_Group (X Y : UUscone)
+    (e : BG (mkgroup X) ≃* BG (mkgroup Y))
+    : path_Group_pEqv (path_Group e) = e.
+  Proof.
+    unfold path_Group_pEqv, path_Group.
+    refine (ap (fun r : mkgroup X = mkgroup Y =>
+                  path_to_pEqv (fst (UUscone_paths_eqv X Y) (ap out r))) (trans_1p _) @ _).
+    refine (ap (fun r : X = Y => path_to_pEqv (fst (UUscone_paths_eqv X Y) r))
+              ((ap_compose inc out _)^ @ ap_idmap _) @ _).
+    refine (ap path_to_pEqv (eqinv_r (snd (UUscone_paths_eqv X Y)) _) @ _).
+    exact (eqinv_r (path_to_pEqv_isEquiv _ _) e).
+  Defined.
 
   (** Exercise [xca:groups]: two different identifications
-      [ℤ = Aut_Cyc(ℤ, zs)].
+      [ℤ = Aut_Cyc(ℤ, zs)], from [c] and from [c ∘ (-id)].  They are
+      different since the pointed equivalence can be recovered from the
+      identification ([path_Group_pEqv_path_Group]) and [id ≠ -id]
+      ([id_negid_not_conn]).
     (Placed after [ex:cyclicgroups], since it uses [Cyc_isGrpd].) *)
-  Definition xca_groups_stmt : Type
-    := {p : ZZ = AutG Cyc_isGrpd Zcyc & {q : ZZ = AutG Cyc_isGrpd Zcyc & p ≠ q}}.
+  Definition xca_groups
+    : {p : ZZ = AutG Cyc_isGrpd Zcyc & {q : ZZ = AutG Cyc_isGrpd Zcyc & p ≠ q}}.
+  Proof.
+    refine (path_Group e1; (path_Group e2; _)).
+    intro h.
+    pose (h1 := (path_Group_pEqv_path_Group _ _ e1)^ @ ap path_Group_pEqv h
+                @ path_Group_pEqv_path_Group _ _ e2).
+    pose (h2 := ap (fun e : BG ZZ ≃* BG (AutG Cyc_isGrpd Zcyc) => fst (fst e)) h1).
+    apply id_negid_not_conn. apply trunc. apply ptw_inv. intro x.
+    exact (Eqv_inj (f1; f1_isEquiv) (ptw h2 x)).
+  Defined.
 
-  (** The identification [Aut_Set(ℕ) = Aut_Set(ℤ)]. *)
-  Definition SG_N_Z_stmt : Type := SG_S (ℕ; ℕ_isSet) = SG_S (ℤ; ℤ_isSet).
+  (** The identification [Aut_Set(ℕ) = Aut_Set(ℤ)] of exercise
+      [xca:group-example-details], from an explicit bijection [ℕ ≃ Int]:
+      [0, 1, 2, 3, 4, …] ↦ [0, -1, 1, -2, 2, …]. *)
+  Fixpoint dbl (k : nat) : nat := match k with O => O | S k => S (S (dbl k)) end.
+
+  Definition int_to_nat (z : Int) : nat
+    := match z with negS k => S (dbl k) | zero => O | posS k => S (S (dbl k)) end.
+
+  Definition int_shift (z : Int) : Int
+    := match z with negS k => negS (S k) | zero => posS O | posS k => posS (S k) end.
+
+  Fixpoint nat_to_int (n : nat) : Int
+    := match n with
+       | O => zero
+       | S O => negS O
+       | S (S n) => int_shift (nat_to_int n)
+       end.
+
+  Definition int_to_nat_shift (z : Int) : int_to_nat (int_shift z) = S (S (int_to_nat z)).
+  Proof. destruct z; exact refl. Defined.
+
+  Fixpoint nat_int_nat (n : nat) : int_to_nat (nat_to_int n) = n
+    := match n with
+       | O => refl
+       | S O => refl
+       | S (S n) => int_to_nat_shift (nat_to_int n) @ ap (fun m => S (S m)) (nat_int_nat n)
+       end.
+
+  Definition int_nat_int (z : Int) : nat_to_int (int_to_nat z) = z.
+  Proof.
+    destruct z as [k| |k].
+    - induction k as [|k IH]; [exact refl|]. exact (ap int_shift IH).
+    - exact refl.
+    - induction k as [|k IH]; [exact refl|]. exact (ap int_shift IH).
+  Defined.
+
+  Definition nat_Int : nat ≃ Int := mkEqv nat_to_int int_to_nat nat_int_nat int_nat_int.
+
+  Definition SG_N_Z : SG_S (ℕ; ℕ_isSet) = SG_S (ℤ; ℤ_isSet).
+  Proof.
+    apply ap.
+    refine (path_sigma_prop (fun X => isSet_isProp X) _).
+    exact (etop (Eqv_comp nat_Int (Eqv_inv ℤ_Int))).
+  Defined.
 
   (** The chain of identifications in example [ex:cyclicgroups], end to
       end: [C_m = Aut_{S1 → Set}(R_m)]. *)
@@ -419,17 +541,162 @@ Section FirstExamples.
     := forall k : ℕ, isConn (BCm' k) × isGrpd (BCm' k)
                      × ((BCm' k; shCm' k) ≃* BG (CG k)).
 
-  (** Exercise [xca:CG2isSG2]. *)
-  Definition xca_CG2isSG2_stmt : Type := isContr (strunc (fiber (RmFin 1) (RmFin 1 base))).
+  (** The loops of a [2]-element type other than [refl] are all equal. *)
+  Definition two_loops (A : Type0) (e : (Bool : Type0) = A) (q q' : A = A)
+    (n : q <> refl) (n' : q' <> refl) : q = q'.
+  Proof.
+    destruct e.
+    destruct (Bool_paths_cases q) as [eq|eq]; [destruct (n eq)|].
+    destruct (Bool_paths_cases q') as [eq'|eq']; [destruct (n' eq')|].
+    exact (eq @ eq'^).
+  Defined.
 
-  (** Exercise [xca:RmloopCGm]: the symmetries of [sh_{C'_m}] give
-      exactly the permutations of [Fin m] generated by [R_m(loop)]. *)
-  Definition xca_RmloopCGm_stmt : Type
-    := forall (k : ℕ) (σ : fst (fst (fst (shCm' k))) = fst (fst (fst (shCm' k)))),
-         ptrunc (fiber (fun p : shCm' k = shCm' k => ap (fun w : BCm' k => fst (fst (fst w))) p) σ)
-         <-> ptrunc {n : Int & σ = loopexp (etop (finsuccEqv k)) n}.
+  Definition loops_dec (A : Type0) (e : (Bool : Type0) = A) (q : A = A)
+    : (q = refl) + (q <> refl).
+  Proof.
+    destruct e.
+    destruct (Bool_paths_cases q) as [eq|eq]; [left; exact eq|].
+    right. intro r. exact (refl_ne_swap (r^ @ eq)).
+  Defined.
+
+  Definition finsucc1_ne_refl : etop (finsuccEqv 1) <> refl.
+  Proof.
+    intro h.
+    pose (h1 := ap fst ((ptoe_etop _)^ @ ap idtoeqv h)).
+    pose (e := Eqv_of_Equiv (equiv_fin_finnat 2)).
+    pose (x := eqinv (snd e) (fn0 1)).
+    assert (E : fst (fsEqv 1) (fn0 1) = fn0 1).
+    { refine (_ @ ap (fst e) (ptw h1 x) @ eqinv_r (snd e) _).
+      change (fst (fsEqv 1) (fn0 1)
+              = fst e (eqinv (snd e) (fst (fsEqv 1) (fst e x)))).
+      refine (_ @ (eqinv_r (snd e) _)^).
+      exact (ap (fst (fsEqv 1)) (eqinv_r (snd e) _)^). }
+    pose (E2 := ap fst E). cbn in E2.
+    exact (Spaces.Nat.Core.neq_nat_zero_succ _ E2^).
+  Defined.
+
+  Definition carrier2 (X : FinSet_n 2) : Type0 := fst (fst X).
+
+  Definition carrier2_ap_isEquiv (X Y : FinSet_n 2)
+    : isEquiv (@ap _ _ carrier2 X Y).
+  Proof.
+    refine (isEquiv_homotopic (fun p : X = Y => ap fst (ap fst p)) (ap carrier2) _ _).
+    - intro p. exact (ap_compose fst fst p)^.
+    - exact (comp_isEquiv (isInj_ap_isEquiv (fst_isInj (fun _ => ptrunc_isProp)) X Y)
+               (isInj_ap_isEquiv (fst_isInj (fun X => isSet_isProp X)) _ _)).
+  Defined.
+
+  (** Every symmetry of [R_2(base)] in [FinSet_2] is [R_2] applied to
+      [refl] or to [loop]. *)
+  Definition RmFin1_loops (p : RmFin 1 base = RmFin 1 base)
+    : {l : base = base & ap (RmFin 1) l = p}.
+  Proof.
+    pose (ce := carrier2_ap_isEquiv (RmFin 1 base) (RmFin 1 base)).
+    assert (A2 : (Bool : Type0) = carrier2 (RmFin 1 base)) by exact Fin2_Bool_path⁻¹.
+    destruct (loops_dec _ A2 (ap carrier2 p)) as [e|n].
+    - refine (refl; _). apply (Eqv_inj (_; ce)).
+      change (refl = ap carrier2 p). exact e^.
+    - refine (loop; _). apply (Eqv_inj (_; ce)).
+      change (ap carrier2 (ap (RmFin 1) loop) = ap carrier2 p).
+      refine (two_loops _ A2 _ _ _ n).
+      intro r. apply finsucc1_ne_refl.
+      refine (_ @ r).
+      refine ((S1_rec_loop _ _ _)^ @ _).
+      exact (ap_compose (RmFin 1) carrier2 loop).
+  Defined.
+
+  (** Exercise [xca:CG2isSG2]. *)
+  Definition xca_CG2isSG2 : isContr (strunc (fiber (RmFin 1) (RmFin 1 base))).
+  Proof.
+    apply isConn_strunc_isContr.
+    refine (isConn_from_pt ((base; refl) : fiber (RmFin 1) (RmFin 1 base)) _).
+    intros [z p]. revert z p.
+    refine (S1_ind_prop _ (fun _ => Pi_isProp (fun _ => ptrunc_isProp)) _).
+    intro p. apply trunc.
+    destruct (RmFin1_loops p) as [l e].
+    refine (pathpair l _).
+    exact (trp_fiber_path _ _ _ @ trans_1p _ @ e).
+  Defined.
 
 End FirstExamples.
+
+Section RmloopCGm.
+
+  Context `{Univalence} (k : ℕ).
+
+  Definition projCm' (w : BCm' k) : Type0 := fst (fst (fst w)).
+
+  Definition trp_strunc {A : Type} (F : A -> Type) {X X' : A} (r : X = X') (w : F X)
+    : trp (fun X => strunc (F X)) r (settrunc w) = settrunc (trp F r w)
+    := match r with refl => refl end.
+
+  Definition trp_fiber_target {A B : Type} (f : A -> B) {X X' : B} (r : X = X')
+    (w : fiber f X) : trp (fun X => fiber f X) r w = (fst w; snd w ⋅ r⁻¹).
+  Proof.
+    destruct r, w as [a p].
+    exact (ap (fun q => (a; q) : fiber f X) (trans_1p p)^).
+  Defined.
+
+  Definition fiber_path_inv {A B : Type} (f : A -> B) {y : B} (w w' : fiber f y)
+    (e : w = w') : {l : fst w = fst w' & snd w' = ap f l ⋅ snd w}
+    := match e with refl => (refl; refl) end.
+
+  Definition ap_Rm_loopexp (n : Int)
+    : ap (Rm k) (loopexp loop n) = loopexp (etop (finsuccEqv k)) n
+    := ap_loopexp (Rm k) loop n @ ap (fun q => loopexp q n) (S1_rec_loop _ _ _).
+
+  (** The symmetry of [sh_{C'_m}] given by [l : base = base]. *)
+  Definition Cm'_sym (l : base = base) : shCm' k = shCm' k.
+  Proof.
+    refine (pathpair (ap (RmFin k) l)
+              (trp_strunc (fiber (RmFin k)) _ _
+               @ ap settrunc (trp_fiber_target (RmFin k) (ap (RmFin k) l)
+                                ((base; refl) : fiber (RmFin k) (RmFin k base))
+                              @ pathpair (y' := refl) l _))).
+    exact (trp_fiber_path _ _ _ @ trans_Vp _).
+  Defined.
+
+  Definition ap_proj_Cm'_sym (l : base = base)
+    : ap projCm' (Cm'_sym l) = ap (Rm k) l.
+  Proof.
+    unfold Cm'_sym.
+    refine (ap_compose (fun w : BCm' k => fst w) (fun X : FinSet_n (S k) => fst (fst X)) _ @ _).
+    refine (ap (ap (fun X : FinSet_n (S k) => fst (fst X))) (ap_fst_pathpair _ _) @ _).
+    exact (ap_compose (RmFin k) (fun X : FinSet_n (S k) => fst (fst X)) l)^.
+  Defined.
+
+  (** Exercise [xca:RmloopCGm]. *)
+  Definition xca_RmloopCGm (σ : projCm' (shCm' k) = projCm' (shCm' k))
+    : ptrunc (fiber (fun p : shCm' k = shCm' k => ap projCm' p) σ)
+      <-> ptrunc {n : Int & σ = loopexp (etop (finsuccEqv k)) n}.
+  Proof.
+    split.
+    - refine (ptrunc_rec ptrunc_isProp _). intros [P e].
+      pose (r := ap fst P).
+      pose (E := (trp_strunc (fiber (RmFin k)) r ((base; refl) : fiber (RmFin k) (RmFin k base)))^
+                 @ (transport_compose (fun X => strunc (fiber (RmFin k) X)) fst P _)^
+                 @ apD snd P).
+      pose (E2 := ap settrunc (trp_fiber_target _ r _)^ @ E).
+      refine (ptrunc_rec ptrunc_isProp _ (equiv_inverse (equiv_path_Tr (n := -1) _ _) E2)).
+      intro F. destruct (fiber_path_inv _ _ _ F) as [l hl]. cbn in l, hl.
+      refine (trunc (toInt (fst wdg l); _)).
+      refine (e @ _).
+      assert (Er : r = ap (RmFin k) l).
+      { exact (ap (fun q => q ⋅ r) hl @ (trans_assoc _ _ _)^
+               @ ap (fun q => _ ⋅ q) (trans_pV r) @ trans_1p _). }
+      refine (ap_compose (fun w : BCm' k => fst w) (fun X : FinSet_n (S k) => fst (fst X)) P @ _).
+      change (ap (fun X : FinSet_n (S k) => fst (fst X)) r
+              = loopexp (etop (finsuccEqv k)) (toInt (fst wdg l))).
+      refine (ap _ Er @ (ap_compose (RmFin k) (fun X : FinSet_n (S k) => fst (fst X)) l)^ @ _).
+      refine (ap (ap (Rm k)) (loopZ_wdg l)^ @ _).
+      exact (ap_Rm_loopexp _).
+    - refine (ptrunc_rec ptrunc_isProp _). intros [n e].
+      refine (trunc (Cm'_sym (loopexp loop n); _)).
+      exact (e @ (ap_Rm_loopexp n)^ @ (ap_proj_Cm'_sym _)^).
+  Defined.
+
+End RmloopCGm.
+
 
 (** Example [ex:productofgroups]: [G × H :≡ mkgroup(BG × BH)]. *)
 Definition prodG `{Funext} (G G' : Group) : Group
@@ -445,8 +712,120 @@ Definition USym_prodG `{Funext} (G G' : Group)
 (** The Klein four-group [Σ_2 × Σ_2]. *)
 Definition Klein `{Univalence} : Group := prodG (SG 2) (SG 2).
 
-(** Exercise [xca:klein-not-cyclic] (statement only). *)
-Definition xca_klein_not_cyclic_stmt `{Univalence} : Type := CG 3 ≠ Klein.
+(** Loops whose squares are trivial, transported along injective maps. *)
+Definition sq_reflect {X Y : Type} (F : X -> Y) (j : isInj F) (x : X)
+  (c : forall h : F x = F x, h ⋅ h = refl)
+  : forall g : x = x, g ⋅ g = refl.
+Proof.
+  intro g.
+  pose (e := isInj_ap_isEquiv j x x).
+  refine ((eqinv_l e (g ⋅ g))^ @ ap (eqinv e) _ @ eqinv_l e refl).
+  exact (ap_trans F g g @ c _).
+Defined.
+
+(** Exercise [xca:klein-not-cyclic]: [C_4 ≠ Σ_2 × Σ_2], since every
+    symmetry [g] of the Klein four-group has [g g = refl] ([Klein_sq]),
+    while the generator [zs] of [C_4] does not. *)
+Section KleinNotCyclic.
+
+  Context `{Univalence}.
+
+  Definition swap_swap : swap ⋅ swap = refl.
+  Proof.
+    unfold swap. refine ((etop_comp swapEqv swapEqv)^ @ _ @ etop_id Bool).
+    apply ap. apply path_Eqv. apply ptw_inv. intros []; exact refl.
+  Defined.
+
+  Definition Bool_loops_sq (A : Type) (e : (Bool : Type) = A)
+    : forall g : A = A, g ⋅ g = refl.
+  Proof.
+    destruct e. intro g.
+    destruct (Bool_paths_cases g) as [eg|eg]; destruct eg^.
+    - exact refl.
+    - exact swap_swap.
+  Defined.
+
+  Definition SG2_sq (g : USym (SG 2)) : g ⋅ g = refl.
+  Proof.
+    revert g.
+    refine (sq_reflect fst (fst_isInj (fun _ => ptrunc_isProp)) _ _).
+    refine (sq_reflect fst (fst_isInj (fun X => isSet_isProp X)) _ _).
+    exact (Bool_loops_sq _ Fin2_Bool_path⁻¹).
+  Defined.
+
+  Definition Klein_sq (g : USym Klein) : g ⋅ g = refl.
+  Proof.
+    revert g.
+    refine (sq_reflect (fst (binprod_prod _ _))
+              (isEquiv_isInj (snd (binprod_prod _ _))) _ _).
+    intro g.
+    refine (trans_is_concat _ _ @ _).
+    apply (equiv_inj (equiv_path_prod _ _)^-1); cbn.
+    refine (path_prod' _ _).
+    - refine (ap_pp _ g g @ _).
+      exact ((trans_is_concat _ _)^ @ SG2_sq _).
+    - refine (ap_pp _ g g @ _).
+      exact ((trans_is_concat _ _)^ @ SG2_sq _).
+  Defined.
+
+  (** The generator of [C_4]: [(Fin 4, zs) = (Fin 4, zs)] given by [zs]. *)
+  Definition CG_gen (k : ℕ) : USym (CG k).
+  Proof.
+    refine (path_sigma_prop (fun _ => ptrunc_isProp) _).
+    exact (cyc_path (Fincyc k) (Fincyc k) (endo_path (finsuccEqv k) refl)).
+  Defined.
+
+  Definition ap_carrier_CG_gen (k : ℕ)
+    : ap (fun w : component Cyc (Fincyc k) => fst (fst (fst w))) (CG_gen k)
+      = etop (finsuccEqv k).
+  Proof.
+    unfold CG_gen, path_sigma_prop.
+    refine (ap_compose (fun w : component Cyc (Fincyc k) => fst w)
+              (fun c : Cyc => fst (fst c)) _ @ _).
+    refine (ap (ap (fun c : Cyc => fst (fst c))) (ap_fst_pathpair _ _) @ _).
+    refine (ap_carrier_cyc_path _ _ _ @ _).
+    exact (ap_fst_endo_path _ _).
+  Defined.
+
+  (** [zs² ≠ id] on [Fin 4]. *)
+  Definition finsucc_sq_ne
+    : fst (finsuccEqv 3) ∘ fst (finsuccEqv 3) <> id (Fin 4).
+  Proof.
+    intro h.
+    pose (e := Eqv_of_Equiv (equiv_fin_finnat 4)).
+    pose (x := eqinv (snd e) (fn0 3)).
+    assert (E : fst (fsEqv 3) (fst (fsEqv 3) (fn0 3)) = fn0 3).
+    { refine (_ @ ap (fst e) (ptw h x) @ eqinv_r (snd e) _).
+      change (fst (fsEqv 3) (fst (fsEqv 3) (fn0 3))
+              = fst e (eqinv (snd e) (fst (fsEqv 3) (fst e (eqinv (snd e)
+                  (fst (fsEqv 3) (fst e x))))))).
+      refine (_ @ (eqinv_r (snd e) _)^).
+      refine (ap (fst (fsEqv 3)) _).
+      refine (_ @ (eqinv_r (snd e) _)^).
+      exact (ap (fst (fsEqv 3)) (eqinv_r (snd e) _)^). }
+    pose (E2 := ap fst E). cbn in E2.
+    exact (Spaces.Nat.Core.neq_nat_zero_succ _ E2^).
+  Defined.
+
+  Definition CG_gen_sq_ne : CG_gen 3 ⋅ CG_gen 3 <> refl.
+  Proof.
+    intro h. apply finsucc_sq_ne.
+    pose (h2 := (ap_trans _ (CG_gen 3) (CG_gen 3))^
+                @ ap (ap (fun w : component Cyc (Fincyc 3) => fst (fst (fst w)))) h).
+    rewrite ap_carrier_CG_gen in h2.
+    pose (h3 := (etop_comp (finsuccEqv 3) (finsuccEqv 3) @ h2 @ (etop_id _)^)).
+    exact (ap fst ((ptoe_etop _)^ @ ap idtoeqv (h3) @ ptoe_etop _)).
+  Defined.
+
+  (** Exercise [xca:klein-not-cyclic]. *)
+  Definition xca_klein_not_cyclic : CG 3 <> Klein.
+  Proof.
+    intro p. apply CG_gen_sq_ne.
+    exact (trp (fun G => forall g : USym G, g ⋅ g = refl) p⁻¹ Klein_sq _).
+  Defined.
+
+End KleinNotCyclic.
+
 
 (** Example [ex:bigproductofgroups] and exercise [xca:bigproductfunext](1)
     ([it:bigproductfunext-i]):
@@ -477,12 +856,20 @@ Section BigProduct.
 
 End BigProduct.
 
-(** Exercise [xca:bigproductfunext](2) (statement only): for [S = 𝟚]
-    the product is the binary product. *)
+(** Exercise [xca:bigproductfunext](2): for [S = 𝟚] the product is the
+    binary product. *)
 Definition Bool_isFinSet `{Univalence} : isFinSet Bool := trunc (2%nat; etop (Eqv_inv Fin2_Bool)).
 
-Definition xca_bigproductfunext_2_stmt `{Univalence} : Type
-  := forall G : Bool -> Group, PiG Bool_isFinSet G = prodG (G yes) (G no).
+Definition xca_bigproductfunext_2 `{Univalence} (G : Bool -> Group)
+  : PiG Bool_isFinSet G = prodG (G yes) (G no).
+Proof.
+  apply path_Group.
+  refine (((fun f : forall b, utype (BG (G b)) =>
+             ((f yes; f no) : utype (BG (G yes)) × utype (BG (G no)))); refl); _).
+  refine (iso_to_isEquiv _ (fun (w : utype (BG (G yes)) × utype (BG (G no))) (b : Bool) => if b as b return utype (BG (G b)) then fst w else snd w) _ _).
+  - intro f. apply ptw_inv. intros []; exact refl.
+  - intros [x y]. exact refl.
+Defined.
 
 (** Definition [def:abgp]: abelian groups. *)
 Definition isAb (G : Group) : Type := forall g h : USym G, g ⋅ h = h ⋅ g.
@@ -560,8 +947,63 @@ Section AbelianExamples.
 
 End AbelianExamples.
 
-(** [Σ_3] is not abelian (statement only). *)
-Definition SG3_not_isAb_stmt `{Univalence} : Type := ¬ isAb (SG 3).
+(** Commutation transported forward along maps with [ap] an equivalence. *)
+Definition comm_forward {X Y : Type} (F : X -> Y) (j : isInj F) (x : X)
+  (c : forall g h : x = x, g ⋅ h = h ⋅ g)
+  : forall g h : F x = F x, g ⋅ h = h ⋅ g.
+Proof.
+  intros g h.
+  pose (e := isInj_ap_isEquiv j x x).
+  refine (ap011 (fun u v => u ⋅ v) (eqinv_r e g)^ (eqinv_r e h)^ @ _).
+  refine ((ap_trans F _ _)^ @ ap (ap F) (c _ _) @ ap_trans F _ _ @ _).
+  exact (ap011 (fun u v => u ⋅ v) (eqinv_r e h) (eqinv_r e g)).
+Defined.
+
+(** Exercise [exer:first examples]: [Σ_3] is not abelian; two
+    transpositions of [Fin 3] do not commute. *)
+Section SG3NotAb.
+
+  Context `{Univalence}.
+
+  Definition f3a (x : Fin 3) : Fin 3
+    := match x with
+       | inl (inl (inl e)) => match e with end
+       | inl (inl (inr _)) => inl (inr tt)
+       | inl (inr _) => inl (inl (inr tt))
+       | inr _ => inr tt
+       end.
+
+  Definition f3b (x : Fin 3) : Fin 3
+    := match x with
+       | inl (inl (inl e)) => match e with end
+       | inl (inl (inr _)) => inl (inl (inr tt))
+       | inl (inr _) => inr tt
+       | inr _ => inl (inr tt)
+       end.
+
+  Definition f3a_inv (x : Fin 3) : f3a (f3a x) = x.
+  Proof. destruct x as [[[[]|[]]|[]]|[]]; exact refl. Defined.
+
+  Definition f3b_inv (x : Fin 3) : f3b (f3b x) = x.
+  Proof. destruct x as [[[[]|[]]|[]]|[]]; exact refl. Defined.
+
+  Definition f3aEqv : Fin 3 ≃ Fin 3 := mkEqv f3a f3a f3a_inv f3a_inv.
+  Definition f3bEqv : Fin 3 ≃ Fin 3 := mkEqv f3b f3b f3b_inv f3b_inv.
+
+  Definition SG3_not_isAb : ¬ isAb (SG 3).
+  Proof.
+    intro c.
+    pose (c1 := comm_forward fst (fst_isInj (fun _ => ptrunc_isProp)) _ c).
+    pose (c2 := comm_forward fst (fst_isInj (fun X => isSet_isProp X)) _ c1).
+    pose (h := c2 (etop f3aEqv) (etop f3bEqv)).
+    pose (h2 := etop_comp f3bEqv f3aEqv @ h @ (etop_comp f3aEqv f3bEqv)^).
+    pose (h3 := ap fst ((ptoe_etop _)^ @ ap idtoeqv h2 @ ptoe_etop _)).
+    pose (h4 := ap10 h3 (inl (inl (inr tt)))). cbn in h4.
+    exact (inl_ne_inr _ _ h4).
+  Defined.
+
+End SG3NotAb.
+
 
 (** Remark [rem:whatAREabeliangroups]: the classifying types of abelian
     groups are identity types of [2]-types; see Chapter [abelian.tex]
