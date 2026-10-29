@@ -45,14 +45,27 @@
       a loop of a 2-element set is trivial iff it has a fixed point
       ([fix_refl]), and that [Uμ_E(s)] has one iff the action of [s] on
       sign orderings fixes a class ([sact_fix]).
+    - Lemma [lem:sign-properties] ([lem_sign_properties]: parts
+      [sign_transp], [sign_kcycle], [identity_even]) and corollary
+      [cor:sign-defined] ([cor_sign_defined]), for any finite set [A];
+      placed at the end, with statements [lem_sign_properties_stmt] and
+      [cor_sign_defined_stmt] at the anchors.  [sign] is multiplicative
+      ([sign_comp]).  Transport along [perm_of A σ] acts on sign
+      orderings as [σ] acts on local orderings ([actLO], [trp_sign]), so
+      [sign σ] is the parity of the number of 2-element subsets on which
+      [g] and [σ·g] disagree, for any local ordering [g] ([sign_ndis]).
+      Deviation: for part [it:sign-transposition] the book uses the
+      standard local ordering of [{1,…,n}] and the transposition [(1 2)];
+      we take any transposition [(a b)] of any [A] and a local ordering
+      that chooses [a] where possible, and else [b] where possible
+      ([gab]).  It disagrees with its image under [(a b)] only at
+      [{a, b}] ([dis_gab]).
 
     Left out (statements only, no proofs yet)
     - The pointing of [Bsgn] by the standard sign ordering of [Fin n]
       ([Bsgn_pt_stmt]) and that [BAG] is a connected groupoid
       ([BAG_isConn_stmt]).
-    - [lem:sign-properties] ([lem_sign_properties_stmt]) and
-      [cor:sign-defined] ([cor_sign_defined_stmt]), and the exercises
-      that need them: [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]),
+    - The exercises [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]),
       [xca:sign-by-crossings] ([xca_sign_by_crossings_stmt], with
       [inversions]) and the count [n!/2] of even permutations
       ([even_perms_count_stmt]). *)
@@ -488,7 +501,7 @@ Section Sign.
 
   (** Exercise [xca:isos_A3_C3]. *)
   Definition xca_isos_A3_C3_stmt : Type
-    := forall p c g, {i : Iso (AG 3 p c g) (CG 2) & {j : Iso (AG 3 p c g) (CG 2) & i ≠ j}}.
+    := forall p c g, {i : Iso (AG 3 p c g) (CG 3) & {j : Iso (AG 3 p c g) (CG 3) & i ≠ j}}.
 
   (** The identification of the symmetries of a [2]-element set with
       [Bool] ([+1] is [yes]). *)
@@ -507,7 +520,8 @@ Section Sign.
          (path_sigma_prop (fun X => isSet_isProp X) (u := fst A) (v := fst A) (etop e)).
 
   (** Lemma [lem:sign-properties]: parts [it:sign-transposition],
-      [it:sign-cycle] and [it:identity-even], in this order. *)
+      [it:sign-cycle] and [it:identity-even], in this order (proved
+      below, [lem_sign_properties]). *)
   Definition lem_sign_properties_stmt : Type
     := (forall n (A : utype (BG (SG n))) (a b : fst (fst A)) (ne : a ≠ b),
           sign (perm_of A (transpEqv (finset_isDecSet (comp_isFinSet A)) a b)) = no)
@@ -519,7 +533,7 @@ Section Sign.
             (forall x, transpsL (finset_isDecSet (comp_isFinSet A)) l x = x) ->
             even (length l) = true).
 
-  (** Corollary [cor:sign-defined]. *)
+  (** Corollary [cor:sign-defined] (proved below, [cor_sign_defined]). *)
   Definition cor_sign_defined_stmt : Type
     := forall n (A : utype (BG (SG n))) (σ : fst (fst A) ≃ fst (fst A))
               (l l' : list (fst (fst A) × fst (fst A))),
@@ -731,4 +745,503 @@ Proof.
   unfold USymf, mu_E. destruct (@decidable_merely_finite E (FE hE)) as [ne|ne].
   - exact (Umu_product_ne hE s p hp ne).
   - exact (Umu_product_empty hE s p ne).
+Defined.
+
+
+(** ** Lemma [lem:sign-properties] and corollary [cor:sign-defined]
+
+    The book's proof uses that [sgn] is a homomorphism and computes the
+    sign of a transposition relative to the standard local ordering of
+    [{1,…,n}].  We work with an arbitrary finite set [A]:
+    - [sign] is multiplicative ([sign_comp]), since a loop of a 2-element
+      set is trivial iff it fixes a point ([loops2_at], [loops2_trans]);
+    - transport along [perm_of A σ] acts on sign orderings by
+      [[g] ↦ [σ·g]], with [(σ·g)(S) :≡ σ(g(σ⁻¹S))] ([actLO], [trp_sign]);
+      hence [sign σ] is the parity of the number of 2-element subsets on
+      which [g] and [σ·g] disagree, for any local ordering [g]
+      ([sign_ndis]);
+    - for the transposition [(a b)] we take a local ordering [g] that
+      chooses [a] in every subset containing [a], and [b] in every subset
+      containing [b] but not [a] ([gab]); then [g] and [(a b)·g]
+      disagree only at [{a, b}] ([dis_gab]), so the sign is [-1]
+      ([sign_transp]).  No ordering of [A] is needed. *)
+
+Section SignHom.
+  Context `{Univalence}.
+
+  (** Whether a loop of a 2-element set is trivial, decided at any point. *)
+  Definition loops2_at (T : utype (BG (SG 2))) (q : el2 T = el2 T) (x : el2 T)
+    : loops2_Bool T q = (match el2_dec T (ptoe q x) x with inl _ => yes | inr _ => no end).
+  Proof.
+    destruct (loop2_dec T q) as [r|n].
+    - refine (loops2_yes T q r @ _).
+      destruct (el2_dec T (ptoe q x) x) as [_|m]; [exact refl|].
+      destruct (m (ap (fun q => ptoe q x) r)).
+    - refine (loops2_no T q n @ _).
+      destruct (el2_dec T (ptoe q x) x) as [m|_]; [|exact refl].
+      destruct (n (fix_refl T q x m)).
+  Defined.
+
+  Definition ptoe_trans {X Y Z : Type} (r : X = Y) (q : Y = Z) (x : X)
+    : ptoe (q ⋅ r) x = ptoe q (ptoe r x).
+  Proof. destruct q. exact refl. Defined.
+
+  (** Multiplication in [{±1}], with [+1] as [yes]. *)
+  Definition bmul (b c : Bool) : Bool := if b then c else negb c.
+
+  (** [loops2_Bool] is a homomorphism. *)
+  Definition loops2_trans (T : utype (BG (SG 2))) (q r : el2 T = el2 T)
+    : loops2_Bool T (q ⋅ r) = bmul (loops2_Bool T q) (loops2_Bool T r).
+  Proof.
+    refine (ptrunc_rec (isSet_bool _ _) _ (el2_Fin2 T)). intro w.
+    pose (x0 := trp idmap w fin2_0).
+    rewrite (loops2_at T (q ⋅ r) x0), (loops2_at T r x0), (loops2_at T q (ptoe r x0)).
+    rewrite (ptoe_trans r q x0).
+    destruct (el2_dec T (ptoe r x0) x0) as [e1|n1],
+      (el2_dec T (ptoe q (ptoe r x0)) (ptoe r x0)) as [e2|n2],
+      (el2_dec T (ptoe q (ptoe r x0)) x0) as [e3|n3]; try exact refl.
+    - destruct (n3 (e2 @ e1)).
+    - destruct (n2 (e3 @ e1^)).
+    - destruct (n1 (e2^ @ e3)).
+    - destruct (n3 (el2_two T _ _ _ n2 n1)).
+  Defined.
+End SignHom.
+
+Section PermOf.
+  Context `{Univalence}.
+
+  (** Identifications in a sum with proposition-valued second component
+      are determined by their first component. *)
+  Definition path_sigma_prop_eta {A : Type} {P : A -> Type} (hP : forall a, isProp (P a))
+    {u v : {a : A & P a}} (w : u = v) : w = path_sigma_prop hP (ap fst w).
+  Proof.
+    destruct w. destruct u as [a b]. unfold path_sigma_prop. cbn.
+    assert (r : hP a b b = refl) by apply (prop_is_set (hP a)).
+    rewrite r. exact refl.
+  Defined.
+
+  Definition ap_fst_sigma_prop {A : Type} {P : A -> Type} (hP : forall a, isProp (P a))
+    {u v : {a : A & P a}} (e : fst u = fst v) : ap fst (path_sigma_prop hP e) = e
+    := ap_fst_pathpair e _.
+
+  (** [perm_of] turns composition into concatenation, so that [sign] is
+      multiplicative ([sign_comp]). *)
+  Definition path_sigma_prop_trans {A : Type} {P : A -> Type} (hP : forall a, isProp (P a))
+    {u v w : {a : A & P a}} (e : fst u = fst v) (e' : fst v = fst w)
+    : path_sigma_prop hP (u := u) (v := w) (e' ⋅ e)
+      = path_sigma_prop hP e' ⋅ path_sigma_prop hP e.
+  Proof.
+    refine (_ @ (path_sigma_prop_eta hP _)^).
+    apply ap. refine (_ @ (ap_trans fst _ _)^).
+    exact (ap011 trans (ap_fst_sigma_prop hP e)^ (ap_fst_sigma_prop hP e')^).
+  Defined.
+
+  Definition path_sigma_prop_refl {A : Type} {P : A -> Type} (hP : forall a, isProp (P a))
+    (u : {a : A & P a}) : path_sigma_prop hP (u := u) (v := u) refl = refl
+    := (path_sigma_prop_eta hP refl)^.
+
+  Context {n : ℕ} (A : utype (BG (SG n))).
+
+  Definition perm_of_comp (σ τ : fst (fst A) ≃ fst (fst A))
+    : perm_of A (Eqv_comp σ τ) = perm_of A τ ⋅ perm_of A σ.
+  Proof.
+    unfold perm_of. rewrite etop_comp.
+    rewrite (path_sigma_prop_trans (fun X => isSet_isProp X) (u := fst A) (v := fst A) (w := fst A)).
+    exact (path_sigma_prop_trans _ _ _).
+  Defined.
+
+  Definition perm_of_id : perm_of A (idEqv _) = refl.
+  Proof.
+    unfold perm_of. rewrite etop_id.
+    rewrite (path_sigma_prop_refl (fun X => isSet_isProp X) (fst A)).
+    exact (path_sigma_prop_refl _ _).
+  Defined.
+
+  Definition perm_of_ext (σ τ : fst (fst A) ≃ fst (fst A)) (h : forall x, fst σ x = fst τ x)
+    : perm_of A σ = perm_of A τ
+    := ap (perm_of A) (path_Eqv σ τ (ptw_inv h)).
+
+  Definition sign_trans (q r : A = A) : sign (q ⋅ r) = bmul (sign q) (sign r).
+  Proof.
+    unfold sign. rewrite ap_trans. exact (loops2_trans _ _ _).
+  Defined.
+
+  Definition sign_refl : sign (refl : A = A) = yes
+    := loops2_yes _ _ refl.
+
+  Definition sign_comp (σ τ : fst (fst A) ≃ fst (fst A))
+    : sign (perm_of A (Eqv_comp σ τ)) = bmul (sign (perm_of A τ)) (sign (perm_of A σ))
+    := ap sign (perm_of_comp σ τ) @ sign_trans _ _.
+End PermOf.
+
+Section Action.
+  Context `{Univalence}.
+
+  (** Pulling back a 2-element subset along an equivalence. *)
+  Definition pullEA {X Y : Type} {FX : Finite X} {FY : Finite Y} (e : X ≃ Y)
+    (E : EA Y) : EA X.
+  Proof.
+    refine (fun x => fst E (fst e x); _).
+    refine (_ @ snd E).
+    exact (fcard_equiv' (equiv_functor_sigma' (Equiv_of_Eqv e) (fun x => equiv_idmap _))).
+  Defined.
+
+  (** The action of an equivalence on local orderings,
+      [(e·g)(S) :≡ e(g(e⁻¹ S))]. *)
+  Definition actLO {X Y : Type} {FX : Finite X} {FY : Finite Y} (e : X ≃ Y)
+    (g : LocalOrdering X) : LocalOrdering Y
+    := fun E => (fst e (fst (g (pullEA e E))); snd (g (pullEA e E))).
+
+  Definition LO_irr {X : Type} {FX : Finite X} (g : LocalOrdering X)
+    (E E' : EA X) (r : fst E = fst E') : fst (g E) = fst (g E')
+    := ap (fun E => fst (g E)) (path_sigma_prop (fun _ => ℕ_isSet _ _) r).
+
+  Context {n : ℕ}.
+
+  (** For [B : BΣ_n]: local orderings [LOB B], sign orderings [SOB B],
+      and the map [iota B] from sign orderings to [Bsgn(B)] (the
+      identity if [B] has a 2-element subset, as in [mu_E]). *)
+  Definition hEB (B : utype (BG (SG n))) : isFinSet (EA (fst (fst B)) (H0 := comp_Finite B))
+    := Finite_isFinSet (@EA_Finite _ _ (comp_Finite B)).
+
+  Definition PB (B : utype (BG (SG n))) := @PA _ (fst (fst B)) (comp_Finite B).
+
+  Definition LOB (B : utype (BG (SG n))) := @LocalOrdering _ (fst (fst B)) (comp_Finite B).
+
+  Definition SOB (B : utype (BG (SG n))) : Type
+    := @SignQ _ _ (FE (hEB B)) (PB B).
+
+  Definition iota (B : utype (BG (SG n))) : SOB B -> el2 (Bsgn n B).
+  Proof.
+    intro y. unfold Bsgn, mu_E.
+    destruct (@decidable_merely_finite _ _) as [ne|ne].
+    - exact y.
+    - exact fin2_0.
+  Defined.
+
+  Definition iota_inj (B : utype (BG (SG n))) (ne : ptrunc (EA (fst (fst B)) (H0 := comp_Finite B)))
+    (y y' : SOB B) : iota B y = iota B y' -> y = y'.
+  Proof.
+    unfold iota, Bsgn, mu_E.
+    destruct (@decidable_merely_finite _ _) as [ne'|ne'].
+    - exact idmap.
+    - destruct (ne' ne).
+  Defined.
+
+  (** Transport along [p : A = B] in [Bsgn] acts on sign orderings via
+      the equivalence [ptoe p]. *)
+  Definition trp_sign {A B : utype (BG (SG n))} (p : A = B) (g : LOB A)
+    : trp (fun B => el2 (Bsgn n B)) p (iota A (class_of _ g))
+      = iota B (class_of _ (actLO (idtoeqv (ap (fun B => fst (fst B)) p)) g)).
+  Proof.
+    destruct p. apply (ap (fun g => iota A (class_of _ g))).
+    apply path_forall. intro E.
+    refine (path_sigma_prop (fun x => isSet_bool _ _) _).
+    exact (LO_irr g E (pullEA (idEqv _) E) refl).
+  Defined.
+End Action.
+
+Section SignNdis.
+  Context `{Univalence} {n : ℕ}.
+
+  Definition ptoe_ap {A : Type} (f : A -> Type) {a b : A} (p : a = b) (x : f a)
+    : ptoe (ap f p) x = trp f p x.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition ap_fst_fst_perm_of (A : utype (BG (SG n))) (σ : fst (fst A) ≃ fst (fst A))
+    : ap (fun B => fst (fst B)) (perm_of A σ) = etop σ.
+  Proof.
+    refine (ap_compose fst fst _ @ _). unfold perm_of.
+    rewrite ap_fst_sigma_prop. exact (ap_fst_sigma_prop _ _).
+  Defined.
+
+  (** The sign of [σ] is the parity of the number of 2-element subsets
+      on which a local ordering [g] and [σ·g] disagree. *)
+  Definition sign_ndis (A : utype (BG (SG n))) (σ : fst (fst A) ≃ fst (fst A))
+    (ne : ptrunc (EA (fst (fst A)) (H0 := comp_Finite A))) (g : LOB A)
+    : sign (perm_of A σ) = even (@ndis _ _ (FE (hEB A)) (PB A) g (actLO σ g)).
+  Proof.
+    unfold sign. rewrite (loops2_at _ _ (iota A (class_of _ g))).
+    assert (e : ptoe (ap (fun B => el2 (Bsgn n B)) (perm_of A σ)) (iota A (class_of _ g))
+                = iota A (class_of _ (actLO σ g))).
+    { refine (ptoe_ap (fun B => el2 (Bsgn n B)) (perm_of A σ) _ @ trp_sign _ g @ _).
+      refine (ap (fun q => iota A (class_of _ (actLO (idtoeqv q) g))) (ap_fst_fst_perm_of A σ) @ _).
+      exact (ap (fun e => iota A (class_of _ (actLO e g))) (ptoe_etop σ)). }
+    destruct (el2_dec _ (ptoe (ap (fun B => el2 (Bsgn n B)) (perm_of A σ)) (iota A (class_of _ g)))
+                (iota A (class_of _ g))) as [r|m].
+    - pose (r' := ap (@phi _ _ (FE (hEB A)) (PB A) g) (iota_inj A ne _ _ (e^ @ r))).
+      exact ((@phi_class _ _ (FE (hEB A)) (PB A) g _)^ @ r'
+                   @ @phi_class _ _ (FE (hEB A)) (PB A) g g
+                   @ @parity_refl _ _ (FE (hEB A)) (PB A) g)^.
+    - assert (k : even (@ndis _ _ (FE (hEB A)) (PB A) g (actLO σ g)) ≠ true).
+      { intro k. apply m. refine (e @ _). apply ap. apply qglue.
+        exact (@parity_symm _ _ (FE (hEB A)) (PB A) g _ k). }
+      revert k. destruct (even (@ndis _ _ (FE (hEB A)) (PB A) g (actLO σ g))); intro k.
+      + destruct (k refl).
+      + exact refl.
+  Defined.
+End SignNdis.
+
+Definition not_true_false {b : Bool} (k : b ≠ true) : b = false
+  := match b as b' return (b' ≠ true -> b' = false) with
+     | true => fun k => match k refl with end
+     | false => fun _ => refl
+     end k.
+
+Section Transposition.
+  Context `{Univalence} {n : ℕ} (A : utype (BG (SG n))).
+
+  Local Notation X := (fst (fst A)).
+  Local Notation dA := (finset_isDecSet (comp_isFinSet A)).
+
+  Context (a b : X) (nab : a ≠ b).
+
+  #[local] Instance FinA : Finite X := comp_Finite A.
+
+  Definition transp_a : transp dA a b a = b.
+  Proof.
+    unfold transp. destruct (deceq dA a a) as [_|m]; [exact refl | destruct (m refl)].
+  Defined.
+
+  Definition transp_b : transp dA a b b = a.
+  Proof.
+    unfold transp. destruct (deceq dA b a) as [r|_]; [destruct (nab r^)|].
+    destruct (deceq dA b b) as [_|m]; [exact refl | destruct (m refl)].
+  Defined.
+
+  Definition transp_ne (x : X) (na : x ≠ a) (nb : x ≠ b) : transp dA a b x = x.
+  Proof.
+    unfold transp. destruct (deceq dA x a) as [r|_]; [destruct (na r)|].
+    destruct (deceq dA x b) as [r|_]; [destruct (nb r) | exact refl].
+  Defined.
+
+  (** The 2-element subset [{a, b}]. *)
+  Definition Sab (x : X) : Bool
+    := match deceq dA x a with
+       | inl _ => true
+       | inr _ => match deceq dA x b with inl _ => true | inr _ => false end
+       end.
+
+  Definition Sab_a : Sab a = true.
+  Proof. unfold Sab. destruct (deceq dA a a) as [_|m]; [exact refl | destruct (m refl)]. Defined.
+
+  Definition Sab_b : Sab b = true.
+  Proof.
+    unfold Sab. destruct (deceq dA b a) as [_|_]; [exact refl|].
+    destruct (deceq dA b b) as [_|m]; [exact refl | destruct (m refl)].
+  Defined.
+
+  Definition Sab_ne (x : X) (na : x ≠ a) (nb : x ≠ b) : Sab x = false.
+  Proof.
+    unfold Sab. destruct (deceq dA x a) as [r|_]; [destruct (na r)|].
+    destruct (deceq dA x b) as [r|_]; [destruct (nb r) | exact refl].
+  Defined.
+
+  Definition sub_el_path {S : X -> Bool} (u v : sub_el X S) (r : fst u = fst v) : u = v
+    := path_sigma_prop (fun x => isSet_bool _ _) r.
+
+  Definition Sab_eqv : sub_el X Sab ≃ Fin 2.
+  Proof.
+    refine (mkEqv (fun u => match deceq dA (fst u) a with inl _ => fin2_0 | inr _ => fin2_1 end)
+                  (fun i => match i with inl _ => (a; Sab_a) | inr _ => (b; Sab_b) end) _ _).
+    - intros [x r]. cbn. destruct (deceq dA x a) as [e|m].
+      + apply sub_el_path. exact e^.
+      + apply sub_el_path. cbn.
+        destruct (deceq dA x b) as [e|m']; [exact e^|].
+        destruct (false_ne_true ((Sab_ne x m m')^ @ r)).
+    - intros [[[]|[]]|[]]; cbn.
+      + destruct (deceq dA a a) as [_|m]; [exact refl | destruct (m refl)].
+      + destruct (deceq dA b a) as [e|_]; [destruct (nab e^) | exact refl].
+  Defined.
+
+  Local Notation EAX := (EA X (H0 := comp_Finite A)).
+
+  Definition e_ab : EAX.
+  Proof.
+    refine (Sab; _).
+    exact (@fcard_equiv' _ _ (Equiv_of_Eqv Sab_eqv) _ (finite_fin 2)).
+  Defined.
+
+  Local Notation τ := (transpEqv dA a b).
+
+  (** A local ordering choosing [a] in subsets containing [a], and [b] in
+      subsets containing [b] but not [a]. *)
+  Definition gab (h : LOB A) : LOB A
+    := fun E => match dec_paths (fst E a) true with
+                | inl r => (a; r)
+                | inr _ => match dec_paths (fst E b) true with
+                           | inl r => (b; r)
+                           | inr _ => h E
+                           end
+                end.
+
+  Definition gab_a (h : LOB A) (E : EAX) (ra : fst E a = true) : fst (gab h E) = a.
+  Proof.
+    unfold gab. destruct (dec_paths (fst E a) true) as [r0|m]; [exact refl | destruct (m ra)].
+  Defined.
+
+  Definition gab_b (h : LOB A) (E : EAX) (na : fst E a ≠ true) (rb : fst E b = true)
+    : fst (gab h E) = b.
+  Proof.
+    unfold gab. destruct (dec_paths (fst E a) true) as [r|_]; [destruct (na r)|].
+    destruct (dec_paths (fst E b) true) as [r0|m]; [exact refl | destruct (m rb)].
+  Defined.
+
+  Definition gab_h (h : LOB A) (E : EAX) (na : fst E a ≠ true) (nb : fst E b ≠ true)
+    : fst (gab h E) = fst (h E).
+  Proof.
+    unfold gab. destruct (dec_paths (fst E a) true) as [r|_]; [destruct (na r)|].
+    destruct (dec_paths (fst E b) true) as [r|_]; [destruct (nb r) | exact refl].
+  Defined.
+
+  (** A 2-element subset containing [a] and [b] is [{a, b}]. *)
+  Definition both_e_ab (E : EAX) (ra : fst E a = true) (rb : fst E b = true) : E = e_ab.
+  Proof.
+    refine (path_sigma_prop (fun _ => ℕ_isSet _ _) (path_forall _ _ _)). intro x.
+    destruct (deceq dA x a) as [r|na]; [exact (ap (fst E) r @ ra @ Sab_a^ @ (ap Sab r)^)|].
+    destruct (deceq dA x b) as [r|nb]; [exact (ap (fst E) r @ rb @ Sab_b^ @ (ap Sab r)^)|].
+    refine (_ @ (Sab_ne x na nb)^). apply not_true_false. intro rx.
+    refine (nb (ap fst (el2_two (PB A E) (x; rx) (a; ra) (b; rb) _ _))).
+    - intro q. exact (na (ap fst q)).
+    - intro q. exact (nab (ap fst q)).
+  Defined.
+
+  (** [gab h] and [(a b)·gab h] disagree only at [{a, b}]. *)
+  Definition dis_gab (h : LOB A) (E : EAX)
+    : dis (PB A) (gab h) (actLO τ (gab h)) E = @delta _ _ (FE (hEB A)) e_ab E.
+  Proof.
+    unfold delta. destruct (dec_paths E e_ab) as [r|r].
+    - refine (trp (fun E => dis (PB A) (gab h) (actLO τ (gab h)) E = 1%nat) r^ _).
+      unfold dis.
+      destruct (el2_dec (PB A e_ab) (gab h e_ab) (actLO τ (gab h) e_ab)) as [q|_]; [|exact refl].
+      apply Empty_rec. apply nab.
+      refine ((gab_a h e_ab Sab_a)^ @ ap fst q @ _).
+      change (transp dA a b (fst (gab h (pullEA τ e_ab))) = b).
+      exact (ap (transp dA a b) (gab_a h (pullEA τ e_ab) (ap Sab transp_a @ Sab_b)) @ transp_a).
+    - unfold dis.
+      destruct (el2_dec (PB A E) (gab h E) (actLO τ (gab h) E)) as [_|q]; [exact refl|].
+      apply Empty_rec. apply q. apply sub_el_path.
+      change (fst (gab h E) = transp dA a b (fst (gab h (pullEA τ E)))).
+      destruct (dec_paths (fst E a) true) as [ra|na], (dec_paths (fst E b) true) as [rb|nb].
+      + destruct (r (both_e_ab E ra rb)).
+      + refine (gab_a h E ra @ _ @ ap (transp dA a b) (gab_b h (pullEA τ E) _ _)^).
+        * exact transp_b^.
+        * exact (fun k => nb (ap (fst E) transp_a^ @ k)).
+        * exact (ap (fst E) transp_b @ ra).
+      + refine (gab_b h E na rb @ _ @ ap (transp dA a b) (gab_a h (pullEA τ E) _)^).
+        * exact transp_a^.
+        * exact (ap (fst E) transp_a @ rb).
+      + refine (gab_h h E na nb @ _ @ ap (transp dA a b) (gab_h h (pullEA τ E) _ _)^).
+        * pose (y := fst (h E)).
+          refine ((transp_ne y _ _)^ @ ap (transp dA a b) (LO_irr h E (pullEA τ E) _)).
+          -- intro e. apply na. exact (ap (fst E) e^ @ snd (h E)).
+          -- intro e. apply nb. exact (ap (fst E) e^ @ snd (h E)).
+          -- apply path_forall. intro x. change (fst E x = fst E (transp dA a b x)).
+             destruct (deceq dA x a) as [e|xa].
+             { refine (ap (fst E) e @ _ @ ap (fst E) (ap (transp dA a b) e @ transp_a)^).
+               exact (not_true_false na @ (not_true_false nb)^). }
+             destruct (deceq dA x b) as [e|xb].
+             { refine (ap (fst E) e @ _ @ ap (fst E) (ap (transp dA a b) e @ transp_b)^).
+               exact (not_true_false nb @ (not_true_false na)^). }
+             exact (ap (fst E) (transp_ne x xa xb))^.
+        * exact (fun k => nb (ap (fst E) transp_a^ @ k)).
+        * exact (fun k => na (ap (fst E) transp_b^ @ k)).
+  Defined.
+
+  Definition ndis_gab (h : LOB A)
+    : @ndis _ _ (FE (hEB A)) (PB A) (gab h) (actLO τ (gab h)) = 1%nat
+    := ap (@finadd _ (FE (hEB A))) (path_forall _ _ (dis_gab h)) @ finadd_delta e_ab.
+
+  (** Part [it:sign-transposition] of [lem:sign-properties]: the sign of
+      a transposition is [-1]. *)
+  Definition sign_transp : sign (perm_of A τ) = no.
+  Proof.
+    refine (ptrunc_rec (isSet_bool _ _) _
+              (@finite_choice EAX (FE (hEB A)) (fun e => el2 (PB A e)) (fun _ => tt)
+                 (fun e => ptrunc_rec ptrunc_isProp
+                             (fun p : Fin 2 = el2 (PB A e) => tr (trp idmap p fin2_0))
+                             (el2_Fin2 (PB A e))))).
+    intro h.
+    exact (sign_ndis A τ (trunc e_ab) (gab h) @ ap even (ndis_gab h)).
+  Defined.
+End Transposition.
+
+(** [τ(l)] as an equivalence. *)
+Fixpoint transpsLE `{Funext} {X : Type} (dA : isDecSet X) (l : list (X × X)) : X ≃ X
+  := match l with
+     | nil => idEqv X
+     | cons p l' => Eqv_comp (transpEqv dA (fst p) (snd p)) (transpsLE dA l')
+     end.
+
+Definition transpsLE_fst `{Funext} {X : Type} (dA : isDecSet X) (l : list (X × X)) (x : X)
+  : fst (transpsLE dA l) x = transpsL dA l x.
+Proof. revert x. induction l as [|p l IH]; intro x; [exact refl | exact (IH _)]. Defined.
+
+Definition pairsL_ne {X : Type} (a : X) (r : list X) (h : notin a r) : all_pairs_ne (pairsL a r).
+Proof.
+  induction r as [|b r IH]; [exact tt | exact (fst h; IH (snd h))].
+Defined.
+
+Definition length_pairsL {X : Type} (a : X) (r : list X) : length (pairsL a r) = length r.
+Proof. induction r as [|b r IH]; [exact refl | exact (ap S IH)]. Defined.
+
+Section SignProperties.
+  Context `{Univalence} {n : ℕ} (A : utype (BG (SG n))).
+
+  Local Notation X := (fst (fst A)).
+  Local Notation dA := (finset_isDecSet (comp_isFinSet A)).
+
+  (** The sign of a composite of [k] transpositions is [(-1)^k]. *)
+  Definition sign_transpsL (l : list (X × X)) (h : all_pairs_ne l)
+    : sign (perm_of A (transpsLE dA l)) = even (length l).
+  Proof.
+    induction l as [|p l IH].
+    - exact (ap sign (perm_of_id A) @ sign_refl A).
+    - refine (sign_comp A _ _ @ _).
+      rewrite (IH (snd h)), (sign_transp A (fst p) (snd p) (fst h)).
+      cbn. destruct (even (length l)); exact refl.
+  Defined.
+
+  Definition sign_of_transpsL (σ : X ≃ X) (l : list (X × X)) (h : all_pairs_ne l)
+    (hσ : forall x, fst σ x = transpsL dA l x)
+    : sign (perm_of A σ) = even (length l)
+    := ap sign (perm_of_ext A σ (transpsLE dA l) (fun x => hσ x @ (transpsLE_fst dA l x)^))
+       @ sign_transpsL l h.
+
+  (** Part [it:sign-cycle] of [lem:sign-properties], via exercise
+      [xca:perm-prod-transpositions]: the sign of a [k]-cycle is [(-1)^{k-1}]. *)
+  Definition sign_kcycle (k : ℕ) (σ : X ≃ X) (c : isKCycle dA k σ)
+    : sign (perm_of A σ) = even (pred k).
+  Proof.
+    refine (ptrunc_rec (isSet_bool _ _) _ c). intros [a1 [r [[len d] hσ]]].
+    refine (sign_of_transpsL σ (pairsL a1 r) (pairsL_ne a1 r (fst d)) _ @ _).
+    - intro x. exact (hσ x @ cyc_transps dA a1 r d x @ transps_pairsL dA a1 r x).
+    - exact (ap even (length_pairsL a1 r @ len)).
+  Defined.
+
+  (** Part [it:identity-even] of [lem:sign-properties]: the identity is
+      only a composite of an even number of transpositions. *)
+  Definition identity_even (l : list (X × X)) (h : all_pairs_ne l)
+    (hl : forall x, transpsL dA l x = x)
+    : even (length l) = true
+    := (sign_of_transpsL (idEqv X) l h (fun x => (hl x)^))^
+       @ ap sign (perm_of_id A) @ sign_refl A.
+End SignProperties.
+
+(** Lemma [lem:sign-properties]. *)
+Definition lem_sign_properties `{Univalence} : lem_sign_properties_stmt.
+Proof.
+  refine ((_; _); _).
+  - intros n A a b ne. exact (sign_transp A a b ne).
+  - intros n A k σ c. exact (sign_kcycle A k σ c).
+  - intros n A l h hl. exact (identity_even A l h hl).
+Defined.
+
+(** Corollary [cor:sign-defined]: two ways of writing [σ] as a composite
+    of transpositions have the same parity, which gives the sign. *)
+Definition cor_sign_defined `{Univalence} : cor_sign_defined_stmt.
+Proof.
+  intros n A σ l l' h h' hl hl'.
+  pose (s := sign_of_transpsL A σ l h hl).
+  exact (s^ @ sign_of_transpsL A σ l' h' hl'; s).
 Defined.
