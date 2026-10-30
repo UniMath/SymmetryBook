@@ -16,7 +16,9 @@
       ([PlusFun], [ForgetFun]), [ex:loop-functor] ([LoopFun], with
       [loops_map_pid] and [loops_map_pcomp]), [ex:slice-projection]
       ([SliceProj]) and [ex:arrow-cat] ([ArrowCat], a precategory, with
-      [DomFun] and [CodFun]).
+      [DomFun] and [CodFun]); if [C] is a category, then so is [C^→]
+      ([ArrowCat_isUnivalent], by contractibility of the isomorphisms
+      out of an arrow, [arr_tot_contr]).
     - Exercise [xca:wildprecat-of-wildprecats]: [idF], [compF], and [λ],
       [ρ], [α] for functors into precategories ([compF_idF_l],
       [compF_idF_r], [compF_assoc]); hence the wild precategory of
@@ -39,7 +41,6 @@
     - Example [ex:repr-functors] ([RepCo], [RepContra]).
 
     Left out (statements only, no proofs yet)
-    - That [C^→] is a category if [C] is ([ArrowCat_isUnivalent_stmt]).
     - Exercise [xca:wildprecat-of-wildprecats] for wild functors into
       wild precategories ([wild_functor_laws_stmt]); the pentagon fillers
       are left out.
@@ -314,8 +315,84 @@ Section ArrowCat.
     := Build_Functor ArrowCat C (fun X => fst (snd X)) (fun X Y u => fst (snd u))
          (fun X => refl) (fun X Y Z u v => refl).
 
-  (** If [C] is a category, then so is [C^→] (statement only). *)
+  (** If [C] is a category, then so is [C^→]. *)
   Definition ArrowCat_isUnivalent_stmt : Type := isUnivalent C -> isUnivalent ArrowCat.
+
+  (** The components of an isomorphism of arrows are isomorphisms. *)
+  Definition arr_iso_dom {X Y : ArrOb} (e : IsoC (C := ArrowCat) X Y) : IsoC (fst X) (fst Y)
+    := (fst (fst e); ((fst (fst (fst (snd e))); ap fst (snd (fst (snd e))));
+                      (fst (fst (snd (snd e))); ap fst (snd (snd (snd e)))))).
+
+  Definition arr_iso_cod {X Y : ArrOb} (e : IsoC (C := ArrowCat) X Y)
+    : IsoC (fst (snd X)) (fst (snd Y))
+    := (fst (snd (fst e));
+        ((fst (snd (fst (fst (snd e)))); ap (fun u => fst (snd u)) (snd (fst (snd e))));
+         (fst (snd (fst (snd (snd e)))); ap (fun u => fst (snd u)) (snd (snd (snd e)))))).
+
+  (** Identifications of arrows from identifications of the endpoints
+      and a conjugation equation. *)
+  Definition arr_path {A A' B B' : Ob C} (p : A = A') (q : B = B') (f : homC A B)
+    (f' : homC A' B') (w : f' = fst (idtoiso q) ∘c (f ∘c invC (idtoiso p)))
+    : ((A; (B; f)) : ArrOb) = (A'; (B'; f')).
+  Proof.
+    destruct p, q. destruct (w @ lamC _ @ rhoC _). exact refl.
+  Defined.
+
+  Definition ap_arr_path {A A' B B' : Ob C} (p : A = A') (q : B = B') (f : homC A B)
+    (f' : homC A' B') (w : f' = fst (idtoiso q) ∘c (f ∘c invC (idtoiso p)))
+    : (ap (fun X : ArrOb => fst X) (arr_path p q f f' w) = p)
+      × (ap (fun X : ArrOb => fst (snd X)) (arr_path p q f f' w) = q).
+  Proof.
+    destruct p, q. unfold arr_path. destruct (w @ lamC _ @ rhoC _). exact (refl; refl).
+  Defined.
+
+  Definition trp_idIso_arr {X Y : ArrOb} (P : X = Y)
+    : (fst (fst (trp (fun Z => IsoC (C := ArrowCat) X Z) P (idIsoC (C := ArrowCat) X)))
+       = fst (idtoiso (ap (fun Z : ArrOb => fst Z) P)))
+      × (fst (snd (fst (trp (fun Z => IsoC (C := ArrowCat) X Z) P (idIsoC (C := ArrowCat) X))))
+         = fst (idtoiso (ap (fun Z : ArrOb => fst (snd Z)) P))).
+  Proof. destruct P. exact (refl; refl). Defined.
+
+  Section ArrUnivalent.
+
+    Context (u : isUnivalent C).
+
+    Definition arr_iso_path {A B : Ob C} (f : homC A B) {Y : ArrOb}
+      (e : IsoC (C := ArrowCat) (A; (B; f)) Y) : ((A; (B; f)) : ArrOb) = Y.
+    Proof.
+      destruct Y as [A' [B' f']].
+      refine (arr_path (eqinv (u _ _) (arr_iso_dom e)) (eqinv (u _ _) (arr_iso_cod e)) f f' _).
+      refine (_ @ (ap011 (fun x y => fst x ∘c (f ∘c invC y))
+                     (eqinv_r (u _ _) (arr_iso_cod e)) (eqinv_r (u _ _) (arr_iso_dom e)))^).
+      cbn.
+      exact ((rhoC f')^ @ ap (fun k => f' ∘c k) (snd (fst (snd (arr_iso_dom e))))^
+             @ alphaC _ _ _ @ ap (fun k => k ∘c fst (fst (fst (snd e)))) (snd (snd (fst e)))
+             @ (alphaC _ _ _)^).
+    Defined.
+
+    Definition arr_tot_contr (X : ArrOb) : isContr {Y : ArrOb & IsoC (C := ArrowCat) X Y}.
+    Proof.
+      refine ((X; idIsoC (C := ArrowCat) X); _). intros [Y e].
+      destruct X as [A [B f]].
+      refine (pathpair (arr_iso_path f e) _).
+      apply path_IsoC. destruct Y as [A' [B' f']].
+      apply path_ArrHom.
+      - refine (fst (trp_idIso_arr _) @ _).
+        refine (ap (fun r => fst (idtoiso r)) (fst (ap_arr_path _ _ _ _ _)) @ _).
+        exact (ap fst (eqinv_r (u _ _) (arr_iso_dom e))).
+      - refine (snd (trp_idIso_arr _) @ _).
+        refine (ap (fun r => fst (idtoiso r)) (snd (ap_arr_path _ _ _ _ _)) @ _).
+        exact (ap fst (eqinv_r (u _ _) (arr_iso_cod e))).
+    Defined.
+
+  End ArrUnivalent.
+
+  Definition ArrowCat_isUnivalent : ArrowCat_isUnivalent_stmt.
+  Proof.
+    intros u X.
+    apply (isEquiv_from_tot (fun Y (p : X = Y) => @idtoiso ArrowCat X Y p)).
+    exact (contr_map_isEquiv (singleton_contr X) (arr_tot_contr u X) _).
+  Defined.
 
 End ArrowCat.
 
