@@ -13,11 +13,14 @@
       [refl]) and in [C₀] ([yoneda_nat_C]).
     - Corollary [cor:yo-ff] ([yo_ff]).
     - Definition [def:repr] ([isRepr]).
+    - Corollaries [cor:yo-emb-obj] ([cor_yo_emb_obj]) and [cor:repr-prop]
+      ([cor_repr_prop]), under univalence (so that [Set], and hence the
+      presheaf category, is a category: [PSh_isUnivalent]).  A fully
+      faithful functor between categories is injective on objects
+      ([ff_isInj], via [ff_reflects_iso] and [ff_ap_isEquiv]), and
+      [isRepr(F)] is equivalent to the fiber of [yo] over [F].
 
     Left out (statements only, no proofs yet)
-    - Corollaries [cor:yo-emb-obj] ([cor_yo_emb_obj_stmt]) and
-      [cor:repr-prop] ([cor_repr_prop_stmt]); both need the univalence of
-      the presheaf category (exercise [xca:functor-cat-univalent]).
     - Lemma [lem:adj-via-repr] ([lem_adj_via_repr_stmt]) and corollary
       [cor:adj-unique] ([cor_adj_unique_stmt]). *)
 
@@ -29,6 +32,54 @@ From SymmetryBook Require Export Cats.S05_Adjunctions.
 Local Open Scope uf_scope.
 
 (** ** 6.6 The Yoneda Lemma *)
+
+(** A fully faithful functor between categories is injective on
+    objects (in the strong sense of [isInj]): [ap(F)] is the composite
+    of [idtoiso], the action on isomorphisms and [idtoiso⁻¹]. *)
+Section FFEmbedding.
+
+  Context `{Funext} {C D : WildPreCat} (F : Functor C D) (ff : isFullyFaithful F).
+
+  Definition ff_reflects_iso {A B : Ob C} (f : homC A B) (i : isIsoC (fmap F f)) : isIsoC f.
+  Proof.
+    destruct i as [[g s] [h r]].
+    refine ((eqinv (ff B A) g; _); (eqinv (ff B A) h; _)).
+    - refine ((eqinv_l (ff B B) _)^ @ ap (eqinv (ff B B)) _ @ eqinv_l (ff B B) (idC B)).
+      exact (fcomp F _ _ @ ap (fun k => fmap F f ∘c k) (eqinv_r (ff B A) g) @ s @ (fid F B)^).
+    - refine ((eqinv_l (ff A A) _)^ @ ap (eqinv (ff A A)) _ @ eqinv_l (ff A A) (idC A)).
+      exact (fcomp F _ _ @ ap (fun k => k ∘c fmap F f) (eqinv_r (ff B A) h) @ r @ (fid F A)^).
+  Defined.
+
+  Definition fmap_iso {A B : Ob C} (e : IsoC A B) : IsoC (fob F A) (fob F B)
+    := (fmap F (fst e); fmap_isIso F (snd e)).
+
+  Definition fmap_iso_isEquiv (A B : Ob C) : isEquiv (@fmap_iso A B).
+  Proof.
+    refine (iso_to_isEquiv _ (fun e => (eqinv (ff A B) (fst e);
+                                        ff_reflects_iso _ (trp isIsoC (eqinv_r (ff A B) (fst e))^
+                                                            (snd e)))) _ _).
+    - intro e. apply path_IsoC. exact (eqinv_l (ff A B) (fst e)).
+    - intro e. apply path_IsoC. exact (eqinv_r (ff A B) (fst e)).
+  Defined.
+
+  Definition idtoiso_ap_fob {A B : Ob C} (p : A = B)
+    : idtoiso (ap (fob F) p) = fmap_iso (idtoiso p).
+  Proof. destruct p. apply path_IsoC. exact (fid F A)^. Defined.
+
+  Definition ff_ap_isEquiv (uC : isUnivalent C) (uD : isUnivalent D) (A B : Ob C)
+    : isEquiv (@ap _ _ (fob F) A B).
+  Proof.
+    refine (isEquiv_homotopic (eqinv (uD _ _) ∘ (fmap_iso ∘ idtoiso)) _ _
+              (comp_isEquiv (comp_isEquiv (uC A B) (fmap_iso_isEquiv A B))
+                 (eqinv_isEquiv (uD _ _)))).
+    intro p. unfold comp.
+    exact (ap (eqinv (uD _ _)) (idtoiso_ap_fob p)^ @ eqinv_l (uD _ _) _).
+  Defined.
+
+  Definition ff_isInj (uC : isUnivalent C) (uD : isUnivalent D) : isInj (fob F)
+    := ap_isEquiv_isInj (ff_ap_isEquiv uC uD).
+
+End FFEmbedding.
 
 Section Yoneda.
 
@@ -117,10 +168,35 @@ Section Yoneda.
   (** Definition [def:repr]. *)
   Definition isRepr (F : Ob PSh) : Type := {C0 : Ob C & IsoC (C := PSh) (yo_ob C0) F}.
 
-  (** Corollary [cor:repr-prop] (statement only). *)
+  (** Corollary [cor:repr-prop]. *)
   Definition cor_repr_prop_stmt : Type := isUnivalent C -> forall F : Ob PSh, isProp (isRepr F).
 
+  (** Both corollaries, given that [Set] is a category (which holds
+      under univalence, see [cor_yo_emb_obj] and [cor_repr_prop] below). *)
+  Definition PSh_isUnivalent (us : isUnivalent SetCat) : isUnivalent PSh
+    := FunctorCat_isUnivalent (Op C) SetCat SetCat_isPreCat us.
+
+  Definition yo_isInj (us : isUnivalent SetCat) : cor_yo_emb_obj_stmt
+    := fun u => ff_isInj yo yo_ff u (PSh_isUnivalent us).
+
+  Definition repr_isProp (us : isUnivalent SetCat) : cor_repr_prop_stmt.
+  Proof.
+    intros u F.
+    refine (isProp_Eqv (_ ; tot_isEquiv
+              (fun C0 (p : F = yo_ob C0) => idtoiso (C := PSh) p⁻¹)
+              (fun C0 => comp_isEquiv (snd symm_eqv) (PSh_isUnivalent us _ _)))
+              (yo_isInj us u F)).
+  Defined.
+
 End Yoneda.
+
+Definition cor_yo_emb_obj `{Univalence} (C : WildPreCat) (pc : isPreCat C)
+  : cor_yo_emb_obj_stmt C pc
+  := yo_isInj C pc (snd SetCat_isCat).
+
+Definition cor_repr_prop `{Univalence} (C : WildPreCat) (pc : isPreCat C)
+  : cor_repr_prop_stmt C pc
+  := repr_isProp C pc (snd SetCat_isCat).
 
 (** Lemma [lem:adj-via-repr] (statement only): a map on objects [G] with
     natural isomorphisms [Hom_D(F -, D) ≅ yo(G(D))] extends uniquely to a
