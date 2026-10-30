@@ -18,15 +18,14 @@
       [absHom_monoid G] and [Hom_monoid G] (with the monoid laws of
       pointed maps [pcomp_pid_l], [pcomp_pid_r], [pcomp_assoc], now in
       Section 6.2 as the laws of the wild category of pointed types).
-    - Example [ex:conjhom]: [conj_absHom].
+    - Example [ex:conjhom]: [conj_absHom]; transport along [conj^g] in
+      [absHom(H, -)] and [absHom(-, G)] ([conjhom_trp], from
+      [path_AbsGroup_S]), and [abstr(Binn)(g) = conj^g] ([abstr_Binn],
+      by injectivity of [idtoAbsIso]: transport of [USym] along
+      [Binn(g)] is conjugation, [trp_loop_conj]).
     - Exercise [xca:abs-homgroup]: [ptw_mul_hom_of_isAb] and, for the
       converse, it suffices that [id · id] is a homomorphism
       ([isAb_of_ptw_mul_hom]).
-
-    Left out (statements only, no proofs yet; time limit per result)
-    - In example [ex:conjhom]: transport along [conj^g] in
-      [absHom(H, -)] ([conjhom_trp_stmt]), and [abstr(Binn)(g) = conj^g]
-      ([abstr_Binn_stmt]).
  *)
 
 From HoTT Require Import
@@ -147,7 +146,7 @@ Defined.
 Definition conj_absHom (G : AbsGroup) (g : ag_S G) : absHom G G
   := (conj G g; conj_mul G g).
 
-(** The rest of example [ex:conjhom] (statements only): transport along
+(** The rest of example [ex:conjhom]: transport along
     [conj^g] is postcomposition with [conj^g] in [absHom(H, -)] and
     precomposition with [conj^{h⁻¹}] in [absHom(-, G)]; and
     [abstr(Binn)(g) = conj^g]. *)
@@ -158,10 +157,101 @@ Definition conjhom_trp_stmt `{Univalence} : Type
           trp (fun K => absHom K G) (conj_path H h) f
           = absHom_comp f (conj_absHom H (ag_inv H h))).
 
+Section ConjTrp.
+
+  Context `{ua : Univalence}.
+
+  Definition trp_absHom_cod {H G G' : AbsGroup} (p : G = G') (f : absHom H G) (x : ag_S H)
+    : fst (trp (absHom H) p f) x = ptoe (ap ag_S p) (fst f x).
+  Proof. destruct p. exact refl. Defined.
+
+  Definition trp_absHom_dom {G H H' : AbsGroup} (p : H = H') (f : absHom H G) (x : ag_S H')
+    : fst (trp (fun K => absHom K G) p f) x = fst f (ptoe (ap ag_S p)^ x).
+  Proof. destruct p. exact refl. Defined.
+
+  Definition ptoe_V_ptoe {X Y : Type} (q : X = Y) (x : X) : ptoe q^ (ptoe q x) = x.
+  Proof. destruct q. exact refl. Defined.
+
+  (** Transport along [conj_path] acts on the underlying set by
+      conjugation ([path_AbsGroup_S]). *)
+  Definition conj_path_S (G : AbsGroup) (g x : ag_S G)
+    : ptoe (ap ag_S (conj_path G g)) x = conj G g x
+    := ptw (path_AbsGroup_S (conj_iso G g)) x.
+
+  Definition conj_conj_inv (G : AbsGroup) (g y : ag_S G)
+    : conj G g (conj G (ag_inv G g) y) = y
+    := conj_comp G _ _ y @ ap (fun a => conj G a y) (ag_rinv G g) @ conj_e G y.
+
+  Definition conjhom_trp : conjhom_trp_stmt.
+  Proof.
+    refine ((fun H G g f => path_absHom _ _ (fun x => _)); (fun H G h f => path_absHom _ _ (fun x => _))).
+    - exact (trp_absHom_cod _ f x @ conj_path_S G g (fst f x)).
+    - refine (trp_absHom_dom _ f x @ ap (fst f) _).
+      refine (ap (ptoe (ap ag_S (conj_path H h))^) (conj_path_S H h _ @ conj_conj_inv H h x)^ @ _).
+      exact (ptoe_V_ptoe _ _).
+  Defined.
+
+End ConjTrp.
+
 Definition abstr_Binn_stmt `{Univalence} : Type
   := forall (G : Group) (g : USym G),
        ap (fun c : component Group G => abstr (fst c)) (loops_fun (Binn G) g)
        = conj_path (abstr G) g.
+
+Section AbstrBinn.
+
+  Context `{ua : Univalence}.
+
+  Definition path_idtoAbsIso {G K : AbsGroup} (P : G = K) : path_AbsGroup (idtoAbsIso P) = P.
+  Proof.
+    pose (t := path_AbsGroup_isEquiv G K).
+    refine (ap (fun Q => path_AbsGroup (idtoAbsIso Q)) (eqinv_r t P)^ @ _ @ eqinv_r t P).
+    exact (ap path_AbsGroup (idtoAbsIso_path _)).
+  Defined.
+
+  Definition ptoe_ap_abstr {G : Group} {c c' : component Group G} (q : c = c') (x : USym (fst c))
+    : ptoe (ap ag_S (ap (fun c0 : component Group G => abstr (fst c0)) q)) x
+      = trp (fun c0 : component Group G => USym (fst c0)) q x.
+  Proof. destruct q. exact refl. Defined.
+
+  Definition trp_trans_gen {A : Type} (F : A -> Type) {a b c : A} (p : a = b) (q : b = c) (x : F a)
+    : trp F (q ⋅ p) x = trp F q (trp F p x).
+  Proof. destruct q. exact refl. Defined.
+
+  Definition trp_fst {G : Group} {c c' : component Group G} (r : c = c') (y : USym (fst c))
+    : trp (fun c0 : component Group G => USym (fst c0)) r y = trp USym (ap fst r) y.
+  Proof. destruct r. exact refl. Defined.
+
+  Definition trp_fst_inv {G : Group} {c c' : component Group G} (r : c = c') (y : USym (fst c'))
+    : trp (fun c0 : component Group G => USym (fst c0)) r⁻¹ y = trp USym (ap fst r)⁻¹ y.
+  Proof. destruct r. exact refl. Defined.
+
+  Definition trp_loop_conj {A : Type} {a b : A} (p : a = b) (x : a = a)
+    : trp (fun y => y = y) p x = (p ⋅ x) ⋅ p⁻¹.
+  Proof. destruct p. exact (trans_1p x)^. Defined.
+
+  Definition abstr_Binn : abstr_Binn_stmt.
+  Proof.
+    intros [X] g.
+    refine ((path_idtoAbsIso _)^ @ _). unfold conj_path. apply ap.
+    apply (path_sigma_prop (fun f => Pi_isProp (fun _ => Pi_isProp (fun _ => ag_isSet _ _ _)))).
+    apply path_Eqv. apply ptw_inv. intro x.
+    refine (ptw (idtoAbsIso_S _) x @ _).
+    refine (ptoe_ap_abstr _ x @ _).
+    unfold loops_fun.
+    pose (F := fun c0 : component Group (inc X) => USym (fst c0)).
+    refine (trp_trans_gen F _ _ x @ _).
+    refine (ap (trp F _) (trp_trans_gen F _ _ x) @ _).
+    assert (e : ap fst (snd (Binn (inc X))) = refl) by exact (ap_fst_path_sigma_prop _ _).
+    refine (trp_fst_inv _ _ @ ap (fun s => trp USym s⁻¹ _) e @ _).
+    match goal with |- _ = ?R =>
+      change (trp F (ap (fst (Binn (inc X))) g) (trp F (snd (Binn (inc X))) x) = R) end.
+    refine (ap (trp F _) (trp_fst _ x @ ap (fun s => trp USym s x) e) @ _).
+    refine ((ptw (trp_ap F (fst (Binn (inc X))) g) x)^ @ _).
+    exact (trp_loop_conj g x).
+  Defined.
+
+End AbstrBinn.
 
 (** Exercise [xca:abs-homgroup]: the pointwise product of homomorphisms
     into [G] is again a homomorphism for all [f, g] (and all [H]) iff [G]
