@@ -42,12 +42,16 @@
       definition [def:phi_*] ([abs_coinduce], with [coind_set] and the
       action [h · b :≡ b(h⁻¹ ·)]), and exercise [xca:phi^*-|phi_*]
       ([abs_adj_restrict_coinduce]).
-
-    Left out (statements only, no proofs yet; time limit per result)
-    - Definition [def:phi_!] (via a set quotient; [def_phi_shriek_stmt],
-      with the relation [phi_rel]), exercises [xca:phi_!-OK]
-      ([xca_phi_OK_stmt]) and [xca:phi_!-|phi^*]
-      ([xca_phi_shriek_adj_stmt]).
+    - Definition [def:phi_!] ([phi_shriek], the set quotient of
+      [T × X] by [phi_rel], with [h · [(t, x)] :≡ [(h t, x)]];
+      [def_phi_shriek]), exercises [xca:phi_!-OK] ([xca_phi_OK]) and
+      [xca:phi_!-|phi^*] ([xca_phi_shriek_adj], [k ↦ ([(t, x)] ↦ t · k(x))]).
+      Deviation: the statements of the exercise and of [xca:Bconcr-OK]
+      and [xca:f_!-abs(f)_!] are about [phi_shriek]; they used to quantify
+      over any [F] with [gset (F X) ≃ quot (phi_rel X)], which does not
+      determine the action.  Also [φ_!P_G ≅ P_H] ([phi_shriek_prtor], for
+      [xca:Bconcr-OK]); this is an isomorphism, not a path, since the
+      quotient lives in a higher universe.
  *)
 
 From HoTT Require Import
@@ -445,12 +449,16 @@ Section AbsRestrict.
 End AbsRestrict.
 
 
+Definition gact_unit `{Univalence} {G : AbsGroup} (X : absGSet G) (x : gset X)
+  : gact X (ag_e G) x = x
+  := ptw (ap fst (absHom_unit (fst (snd X)) (snd (snd X)))) x.
+
 Section PhiShriek.
 
   Context `{Uv : Univalence} {G H : AbsGroup} (φ : absHom G H).
 
   (** Definition [def:phi_!] and exercises [xca:phi_!-OK],
-      [xca:phi_!-|phi^*] (statements only).  The relation on [T × X]:
+      [xca:phi_!-|phi^*].  The relation on [T × X]:
       [(t, x) ∼ (u, y) :≡ ∃_g (t φ(g) = u) × (x = g ·_X y)]; [φ_!X] is the
       quotient with [h · [(t, x)] :≡ [(h t, x)]]. *)
   Definition phi_rel (X : absGSet G) (w w' : ag_S H × gset X) : PropU
@@ -465,17 +473,180 @@ Section PhiShriek.
          × (forall (h : ag_S H) w w', fst (phi_rel X w w')
               -> fst (phi_rel X ((h · fst w; snd w) : ag_S H × gset X) (h · fst w'; snd w'))).
 
+  Local Notation fφ := (fst φ).
+  Local Notation φu := (absHom_unit (fst φ) (snd φ)).
+
+  Definition xca_phi_OK : xca_phi_OK_stmt.
+  Proof.
+    intro X. refine (((_; _); _); _).
+    - intros [t x]. apply trunc. refine (ag_e G; (_; (gact_unit X x)^)).
+      exact (ap (ag_mul H t) φu @ ag_runit H t).
+    - intros [t x] [u y]. apply Trunc_functor. intros [g [r1 r2]].
+      refine (ag_inv G g; (_; _)); cbn in *.
+      + refine ((ap (fun k => k · fφ (ag_inv G g)) r1)^ @ (ag_assoc H _ _ _)^ @ _).
+        refine (ap (ag_mul H t) ((snd φ _ _)^ @ ap fφ (ag_rinv G g) @ φu) @ ag_runit H t).
+      + refine ((gact_unit X y)^ @ _).
+        refine (ap (fun k => gact X k y) (ag_linv G g)^ @ gact_mul X _ _ y @ _).
+        exact (ap (gact X (ag_inv G g)) r2^).
+    - intros [t x] [u y] [v z] h1 h2. cbn in *.
+      refine (ptrunc_rec ptrunc_isProp _ h1). intros [g [r1 r2]].
+      refine (ptrunc_rec ptrunc_isProp _ h2). intros [g' [r1' r2']].
+      apply trunc. refine (g · g'; (_; _)).
+      + refine (ap (ag_mul H t) (snd φ g g') @ ag_assoc H _ _ _ @ _).
+        exact (ap (fun k => k · fφ g') r1 @ r1').
+      + exact (r2 @ ap (gact X g) r2' @ (gact_mul X g g' z)^).
+    - intros h [t x] [u y]. apply Trunc_functor. intros [g [r1 r2]].
+      refine (g; (_; r2)). cbn in *.
+      exact ((ag_assoc H _ _ _)^ @ ap (ag_mul H h) r1).
+  Defined.
+
+  (** Definition [def:phi_!]: [φ_!X], with [h · [(t, x)] :≡ [(h t, x)]]. *)
+  Section Shriek.
+
+    Context (X : absGSet G).
+
+    Local Notation R := (phi_rel X).
+    Local Notation Q := (quot (phi_rel X)).
+    Local Notation qc := (S22_SetOperations.cls (phi_rel X)).
+
+    Definition ph_rr := fst (fst (fst (xca_phi_OK X))).
+    Definition ph_rs := snd (fst (fst (xca_phi_OK X))).
+    Definition ph_rt := snd (fst (xca_phi_OK X)).
+    Definition ph_cp := snd (xca_phi_OK X).
+
+    Definition ph_act (h : ag_S H) : Q -> Q
+      := fbar R ph_rr (quot_isSet R) (fun w => qc (h · fst w; snd w))
+           (fun w w' r => snd (cls_eq_iff R ph_rr ph_rs ph_rt _ _) (ph_cp h w w' r)).
+
+    Definition ph_act_mul (h h' : ag_S H) (z : Q) : ph_act (h · h') z = ph_act h (ph_act h' z).
+    Proof.
+      revert z. refine (im_ind R _ (fun z => quot_isSet R _ _) _). intro w.
+      exact (ap (fun k => qc (k; snd w)) (ag_assoc H h h' (fst w))^).
+    Defined.
+
+    Definition ph_act_unit (z : Q) : ph_act (ag_e H) z = z.
+    Proof.
+      revert z. refine (im_ind R _ (fun z => quot_isSet R _ _) _). intro w.
+      exact (ap (fun k => qc (k; snd w)) (ag_lunit H (fst w))).
+    Defined.
+
+    Definition ph_eqv (h : ag_S H) : Q ≃ Q
+      := mkEqv (ph_act h) (ph_act (ag_inv H h))
+           (fun z => (ph_act_mul _ _ z)^ @ ap (fun k => ph_act k z) (ag_linv H h) @ ph_act_unit z)
+           (fun z => (ph_act_mul _ _ z)^ @ ap (fun k => ph_act k z) (ag_rinv H h) @ ph_act_unit z).
+
+    Definition phi_shriek : absGSet H
+      := ((Q; quot_isSet R);
+          (ph_eqv; fun h h' => path_Eqv (ph_eqv (h · h')) (Eqv_comp (ph_eqv h') (ph_eqv h))
+                                 (ptw_inv (ph_act_mul h h')))).
+
+  End Shriek.
+
   Definition def_phi_shriek_stmt : Type
     := {F : absGSet G -> absGSet H &
          forall X, {e : gset (F X) ≃ quot (phi_rel X) &
                      forall h t x, fst e (gact (F X) h (eqinv (snd e) (S22_SetOperations.cls (phi_rel X) (t; x))))
                                    = S22_SetOperations.cls (phi_rel X) (h · t; x)}}.
 
+  Definition def_phi_shriek : def_phi_shriek_stmt
+    := (phi_shriek; fun X => (idEqv _; fun h t x => refl)).
+
+  (** Stated for [phi_shriek]: the hypothesis that [gset (F X)] is the
+      quotient does not determine the action of [F X]. *)
   Definition xca_phi_shriek_adj_stmt : Type
-    := forall F : absGSet G -> absGSet H,
-       forall X : absGSet G, forall Y : absGSet H,
-       (forall X', gset (F X') ≃ quot (phi_rel X')) ->
-       absHomG H (F X) Y ≃ absHomG G X (abs_restrict φ Y).
+    := forall (X : absGSet G) (Y : absGSet H),
+       absHomG H (phi_shriek X) Y ≃ absHomG G X (abs_restrict φ Y).
+
+  Section ShriekAdj.
+
+    Context (X : absGSet G) (Y : absGSet H).
+
+    Local Notation R := (phi_rel X).
+    Local Notation qc := (S22_SetOperations.cls (phi_rel X)).
+    Local Notation fφ := (fst φ).
+
+    Definition shriek_fwd (f : absHomG H (phi_shriek X) Y) : absHomG G X (abs_restrict φ Y).
+    Proof.
+      refine (fun x => fst f (qc (ag_e H; x)); _). intros s x.
+      refine (_ @ snd f (fφ s) (qc (ag_e H; x))).
+      apply (ap (fst f)). apply (snd (cls_eq_iff R (ph_rr X) (ph_rs X) (ph_rt X) _ _)).
+      apply trunc. refine (s; (_; refl)). exact (ag_lunit H _ @ (ag_runit H _)^).
+    Defined.
+
+    Definition shriek_bwd_wd (k : absHomG G X (abs_restrict φ Y)) (w w' : ag_S H × gset X)
+      (r : fst (R w w'))
+      : gact Y (fst w) (fst k (snd w)) = gact Y (fst w') (fst k (snd w')).
+    Proof.
+      destruct w as [t x], w' as [u y]. refine (ptrunc_rec (gset_isSet _ Y _ _) _ r).
+      intros [g [r1 r2]]. cbn in r1, r2 |- *.
+      refine (ap (fun z => gact Y t (fst k z)) r2 @ ap (gact Y t) (snd k g y) @ _).
+      exact ((gact_mul Y t (fφ g) _)^ @ ap (fun a => gact Y a (fst k y)) r1).
+    Defined.
+
+    Definition shriek_bwd (k : absHomG G X (abs_restrict φ Y)) : absHomG H (phi_shriek X) Y.
+    Proof.
+      refine (fbar R (ph_rr X) (gset_isSet _ Y) (fun w => gact Y (fst w) (fst k (snd w)))
+                (shriek_bwd_wd k); _).
+      intros h. refine (im_ind R _ (fun z => gset_isSet _ Y _ _) _). intros [t x].
+      exact (gact_mul Y h t _).
+    Defined.
+
+    Definition shriek_adj : absHomG H (phi_shriek X) Y ≃ absHomG G X (abs_restrict φ Y).
+    Proof.
+      refine (mkEqv shriek_fwd shriek_bwd _ _).
+      - intro f. apply (path_sigma_prop (fun f' => isGHom_isProp _ _ _ f')).
+        apply path_forall. refine (im_ind R _ (fun z => gset_isSet _ Y _ _) _). intros [t x].
+        exact ((snd f t (qc (ag_e H; x)))^ @ ap (fun a => fst f (qc (a; x))) (ag_runit H t)).
+      - intro k. apply (path_sigma_prop (fun f' => isGHom_isProp _ _ _ f')).
+        apply path_forall. intro x. exact (gact_unit Y (fst k x)).
+    Defined.
+
+  End ShriekAdj.
+
+  Definition xca_phi_shriek_adj : xca_phi_shriek_adj_stmt := shriek_adj.
+
+  (** [φ_!] sends the principal [G]-torsor to the principal [H]-torsor,
+      via [[(t, x)] ↦ t φ(x)] (used for [xca:Bconcr-OK], Section 7.5).
+      This is an isomorphism, not an identification: the quotient lives
+      in a higher universe (its classes are maps into [PropU]). *)
+  Section ShriekPrincipal.
+
+    Local Notation P := (absprtor G).
+    Local Notation R := (phi_rel P).
+    Local Notation qc := (S22_SetOperations.cls (phi_rel P)).
+    Local Notation fφ := (fst φ).
+
+    Definition shriek_pr_wd (w w' : ag_S H × ag_S G) (r : fst (R w w'))
+      : fst w · fφ (snd w) = fst w' · fφ (snd w').
+    Proof.
+      destruct w as [t x], w' as [u y]. refine (ptrunc_rec (ag_isSet H _ _) _ r).
+      intros [g [r1 r2]]. cbn in r1, r2 |- *.
+      refine (ap (fun z => t · fφ z) r2 @ ap (ag_mul H t) (snd φ g y) @ ag_assoc H _ _ _ @ _).
+      exact (ap (fun a => a · fφ y) r1).
+    Defined.
+
+    Definition shriek_pr_map : quot R -> ag_S H
+      := fbar R (ph_rr P) (ag_isSet H) (fun w => fst w · fφ (snd w)) shriek_pr_wd.
+
+    Definition shriek_pr_eqv : quot R ≃ ag_S H.
+    Proof.
+      refine (mkEqv shriek_pr_map (fun h => qc (h; ag_e G)) _ _).
+      - refine (im_ind R _ (fun z => quot_isSet R _ _) _). intros [t x].
+        apply (snd (cls_eq_iff R (ph_rr P) (ph_rs P) (ph_rt P) _ _)).
+        apply trunc. refine (ag_inv G x; (_; (ag_linv G x)^)). cbn.
+        refine ((ag_assoc H _ _ _)^ @ ap (ag_mul H t) ((snd φ _ _)^ @ ap fφ (ag_rinv G x)) @ _).
+        exact (ap (ag_mul H t) (absHom_unit _ (snd φ)) @ ag_runit H t).
+      - intro h. exact (ap (ag_mul H h) (absHom_unit _ (snd φ)) @ ag_runit H h).
+    Defined.
+
+    Definition phi_shriek_prtor : gIso (phi_shriek P) (absprtor H).
+    Proof.
+      refine (shriek_pr_eqv; _).
+      intro h. refine (im_ind R _ (fun z => ag_isSet H _ _) _). intros [t x].
+      exact (ag_assoc H _ _ _)^.
+    Defined.
+
+  End ShriekPrincipal.
 End PhiShriek.
 
 Section AbsCoinduce.

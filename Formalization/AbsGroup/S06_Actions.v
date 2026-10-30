@@ -92,12 +92,12 @@ Definition lem_abstrandconj_stmt `{Univalence} : Type
 
 (** Exercises [xca:f^*-abs(f)^*] and [xca:f_!-abs(f)_!] (statements
     only): [ev] commutes with restriction and with induction (the latter
-    for any [φ_!] as in Section 7.4). *)
+    up to isomorphism, with [φ_!] from Section 7.4, which lives in a
+    higher universe). *)
 Definition xca_restrict_abstr_stmt `{Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (Y : GSet H),
        fst (actions_eqv G) (restrict f Y) = abs_restrict (abstr_hom f) (fst (actions_eqv H) Y).
 
 Definition xca_induce_abstr_stmt `{Univalence} : Type
-  := forall (G H : Group) (f : Hom G H) (F : absGSet (abstr G) -> absGSet (abstr H)),
-       (forall X, gset (F X) ≃ quot (phi_rel (abstr_hom f) X)) ->
-       forall X : GSet G, fst (actions_eqv H) (induce f X) = F (fst (actions_eqv G) X).
+  := forall (G H : Group) (f : Hom G H) (X : GSet G),
+       gIso (fst (actions_eqv H) (induce f X)) (phi_shriek (abstr_hom f) (fst (actions_eqv G) X)).

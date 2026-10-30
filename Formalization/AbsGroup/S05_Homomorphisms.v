@@ -18,10 +18,12 @@
     - The category of abstract groups ([AbsGroupCat]) and the functor
       [abstr] ([AbstrFun]), fully faithful by [abstr_hom_eqv]
       ([AbstrFun_ff]).
+    - Exercise [xca:Bconcr-OK], part [it:Bconcr_pt] ([Bconcr_pt], as an
+      isomorphism of [H]-sets, since [φ_!P_G] lives in a higher universe).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - The functor [concr] on morphisms (it uses [φ_!]) and exercise
-      [xca:Bconcr-OK] ([xca_Bconcr_OK_stmt]); theorem
+    - The functor [concr] on morphisms (it uses [φ_!]) and the second
+      part of exercise [xca:Bconcr-OK] ([xca_Bconcr_OK_stmt]); theorem
       [thm:concr-equiv-cats], stated for [abstr]
       ([thm_concr_equiv_cats_stmt]).
  *)
@@ -162,13 +164,18 @@ Definition AbstrFun `{Funext} : Functor GroupCat AbsGroupCat
 Definition AbstrFun_ff `{Funext} : isFullyFaithful AbstrFun
   := fun G H => abstr_hom_isEquiv G H.
 
-(** Exercise [xca:Bconcr-OK] and theorem [thm:concr-equiv-cats]
-    (statements only).  [concr] on morphisms uses [φ_!] (Section 7.4,
-    stated only), so we state the theorem for [abstr], whose inverse
-    [concr] is.  The first component is part [it:Bconcr_pt]. *)
+(** Exercise [xca:Bconcr-OK]: part [it:Bconcr_pt] is [phi_shriek_prtor]
+    (Section 7.4), an isomorphism [φ_!P_G ≅ P_H] of [H]-sets rather than
+    a path, since [φ_!P_G] lives in a higher universe.  The second part
+    and theorem [thm:concr-equiv-cats] (statements only): [concr] on
+    morphisms uses [φ_!], so we state the theorem for [abstr], whose
+    inverse [concr] is. *)
+Definition Bconcr_pt_stmt `{Univalence} : Type
+  := forall (G H : AbsGroup) (φ : absHom G H), gIso (phi_shriek φ (absprtor G)) (absprtor H).
+
+Definition Bconcr_pt `{Univalence} : Bconcr_pt_stmt := fun G H φ => phi_shriek_prtor φ.
+
 Definition xca_Bconcr_OK_stmt `{Univalence} : Type
-  := (forall (G H : AbsGroup) (φ : absHom G H) (F : absGSet G -> absGSet H),
-        (forall X, gset (F X) ≃ quot (phi_rel φ X)) -> F (absprtor G) = absprtor H)
-     × {C : Functor AbsGroupCat GroupCat & forall G, fob C G = concr G}.
+  := Bconcr_pt_stmt × {C : Functor AbsGroupCat GroupCat & forall G, fob C G = concr G}.
 
 Definition thm_concr_equiv_cats_stmt `{Funext} : Type := isCatEquiv AbstrFun.
