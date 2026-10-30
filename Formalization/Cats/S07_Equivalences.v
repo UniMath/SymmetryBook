@@ -16,16 +16,21 @@
       [thm:Rezk-completion], first part: [η] is a weak equivalence
       ([RezkEta_isWeakEquiv]).  NOTE for the book text: for a
       precategory, [isRepr(F)] need not be a proposition, so the full
-      subcategory should be taken on [‖isRepr(F)‖] ([isReprU]).
+      subcategory should be taken on [‖isRepr(F)‖] ([isReprU]).  [L(C)]
+      is a category ([Rezk_isUnivalent], under univalence, as a full
+      subcategory of the presheaf category).
+    - Lemma [lem:ff-eso] ([lem_ff_eso]): for [C] a category and [F] fully
+      faithful, [∑_A F(A) ≅ B] is equivalent to a singleton once
+      inhabited ([IsoC_postcomp_isEquiv], [fmap_iso_isEquiv]).
     - Definition [def:flagged-cat] ([FlCat]); the path pregroupoid of
       exercise [xca:Rezk-completion-1trunc] ([TruncPathGrpd]).
 
     Left out (statements only, no proofs yet)
     - Lemmas [lem:cat-equiv-is-prop], [lem:equiv-precat-is-ff-split-eso],
-      [lem:ff-eso], [lem:precomp-equiv-cat], theorem [thm:ff-eso-equiv],
+      [lem:precomp-equiv-cat], theorem [thm:ff-eso-equiv],
       corollaries [cor:Cat-ua] and [cor:cat-2-type] (the [..._stmt]
       definitions).
-    - That [L(C)] is a category ([Rezk_isUnivalent_stmt]), the smallness
+    - The smallness
       part of theorem [thm:Rezk-completion] ([thm_Rezk_small_stmt]) and
       exercise [xca:Rezk-completion-locally-small]
       ([xca_Rezk_locally_small_stmt]).
@@ -96,10 +101,39 @@ Definition lem_equiv_precat_is_ff_split_eso_stmt `{Funext} : Type
                                   (adj_counit (fst e) B; snd (snd (snd e)) B)))
                    : isFullyFaithful F × isSplitEso F)).
 
-(** Lemma [lem:ff-eso] (statement only). *)
+(** Lemma [lem:ff-eso]. *)
 Definition lem_ff_eso_stmt `{Funext} : Type
   := forall (C : Cat) (D : WildPreCat) (F : Functor (fst C) D),
        isFullyFaithful F -> forall B : Ob D, isProp {A : Ob (fst C) & IsoC (fob F A) B}.
+
+(** Postcomposition with an isomorphism is an equivalence on
+    isomorphisms. *)
+Definition IsoC_postcomp_isEquiv `{Funext} {D : WildPreCat} {X Y Y' : Ob D} (j : IsoC Y Y')
+  : isEquiv (fun e : IsoC X Y => IsoC_comp j e).
+Proof.
+  refine (iso_to_isEquiv _ (IsoC_comp (IsoC_inv j)) _ _).
+  - intro e. apply path_IsoC.
+    destruct j as [f [[g s] [h r]]], e as [k ik]. cbn.
+    refine (alphaC _ _ _ @ ap (fun u => u ∘c k) _ @ lamC k).
+    exact (ap (fun u => u ∘c f) (isIsoC_inv_eq ((g; s); (h; r)))^ @ r).
+  - intro e. apply path_IsoC.
+    destruct j as [f [[g s] [h r]]], e as [k ik]. cbn.
+    exact (alphaC _ _ _ @ ap (fun u => u ∘c k) s @ lamC k).
+Defined.
+
+(** If [C] is a category and [F] is fully faithful, then the type of
+    pairs [(A, F(A) ≅ B)] is equivalent to a singleton as soon as it is
+    inhabited. *)
+Definition lem_ff_eso `{Funext} : lem_ff_eso_stmt.
+Proof.
+  intros [C [pc uC]] D F ff B [A0 i0] y.
+  refine (isContr_isProp' (isContr_Eqv (tot (fun A (p : A = A0) =>
+                                              IsoC_comp i0 (fmap_iso F (idtoiso p)));
+                                        tot_isEquiv _ (fun A => _))
+                                       (singleton_contr' A0)) _ y).
+  exact (comp_isEquiv (comp_isEquiv (uC A A0) (fmap_iso_isEquiv F ff A A0))
+           (IsoC_postcomp_isEquiv i0)).
+Defined.
 
 (** Theorem [thm:ff-eso-equiv] (statement only). *)
 Definition thm_ff_eso_equiv_stmt `{Funext} : Type
@@ -173,10 +207,18 @@ Section Rezk.
 
   Definition RezkEta_isWeakEquiv : isWeakEquiv RezkEta := (RezkEta_ff; RezkEta_eso).
 
-  (** That [L(C)] is a category (statement only). *)
+  (** That [L(C)] is a category: a full subcategory of the presheaf
+      category, which is a category when [Set] is one. *)
   Definition Rezk_isUnivalent_stmt : Type := isUnivalent Rezk.
 
+  Definition Rezk_isUnivalent_from (us : isUnivalent SetCat) : Rezk_isUnivalent_stmt
+    := FullSub_isUnivalent (PSh C) isReprU (PSh_isUnivalent C us).
+
 End Rezk.
+
+Definition Rezk_isUnivalent `{Univalence} (C : WildPreCat) (pc : isPreCat C)
+  : Rezk_isUnivalent_stmt C pc
+  := Rezk_isUnivalent_from C pc (snd SetCat_isCat).
 
 (** Theorem [thm:Rezk-completion], second part, and exercise
     [xca:Rezk-completion-locally-small] (statements only): smallness of
