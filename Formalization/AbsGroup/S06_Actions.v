@@ -13,12 +13,15 @@
       [GSet_eqv] (Section 5.2) and [abstr_hom_eqv] (Section 7.5); the
       underlying set of [ev(X)] is [X(sh_G)] by definition
       ([actions_eqv_set]).
+    - The action of [ev(X)] is transport in [X] ([actions_eqv_gact]).
+    - Example [ex:abstrandconj] and lemma [lem:abstrandconj]
+      ([lem_abstrandconj], with [e :≡ abstr_hom_eqv]; transport in
+      [Hom(H, -)] is conjugation, [USymf_trp_regroup]).
+    - Exercise [xca:f^*-abs(f)^*] ([xca_restrict_abstr]): the
+      identification is transport along the pointing path of [Bf].
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Example [ex:abstrandconj] and lemma [lem:abstrandconj]
-      ([lem_abstrandconj_stmt]), exercises [xca:f^*-abs(f)^*]
-      ([xca_restrict_abstr_stmt]) and [xca:f_!-abs(f)_!]
-      ([xca_induce_abstr_stmt]).
+    - Exercise [xca:f_!-abs(f)_!] ([xca_induce_abstr_stmt]).
  *)
 
 From HoTT Require Import
@@ -80,9 +83,36 @@ Definition actions_eqv_set `{Univalence} (G : Group) (X : GSet G)
   : fst (fst (fst (actions_eqv G) X)) = el X (sh G)
   := refl.
 
-(** Example [ex:abstrandconj] and lemma [lem:abstrandconj] (statement
-    only): [ev] sends the [G]-set [Hom(H,G)] to [absHom(abstr H, abstr G)]
-    with [g] acting by postcomposition with [conj^g]. *)
+(** The action of [ev(X)] is transport in [X]. *)
+Definition ptoe_ap_fst_fst {S : SetU} {c c' : component SetU S} (q : c = c') (y : fst (fst c))
+  : ptoe (ap fst (ap fst q)) y = trp (fun c0 : component SetU S => fst (fst c0)) q y.
+Proof. destruct q. exact refl. Defined.
+
+Definition trp_fst_fst_inv {S : SetU} {c c' : component SetU S} (q : c = c') (y : fst (fst c'))
+  : trp (fun c0 : component SetU S => fst (fst c0)) q⁻¹ y = ptoe (ap fst (ap fst q))⁻¹ y.
+Proof. destruct q. exact refl. Defined.
+
+Definition actions_eqv_gact `{Univalence} (G : Group) (X : GSet G) (g : USym G)
+  (x : el X (sh G)) : gact (fst (actions_eqv G) X) g x = trp (el X) g x.
+Proof.
+  pose (K := to_comp G SetU_isGrpd (X (sh G)) (X; refl)).
+  pose (F := fun c0 : component SetU (X (sh G)) => fst (fst c0)).
+  change (ptoe (ap fst (ap fst (loops_fun K g))) x = trp (el X) g x).
+  refine (ptoe_ap_fst_fst (loops_fun K g) x @ _). unfold loops_fun.
+  pose (x' := x : F (pt (BG (AutG SetU_isGrpd (X (sh G)))))).
+  refine (trp_trans_gen F (ap (fst K) g ⋅ snd K) (snd K)⁻¹ x' @ _).
+  refine (ap (trp F (snd K)⁻¹) (trp_trans_gen F (snd K) (ap (fst K) g) x') @ _).
+  assert (e : ap fst (ap fst (snd K)) = refl)
+    by exact (ap (ap fst) (ap_fst_path_sigma_prop _ _)).
+  refine (trp_fst_fst_inv _ _ @ ap (fun s => ptoe s⁻¹ _) e @ _).
+  change (trp F (ap (fst K) g) (trp F (snd K) x) = trp (el X) g x).
+  refine (ap (trp F _) ((ptoe_ap_fst_fst (snd K) x)^ @ ap (fun s => ptoe s x) e) @ _).
+  exact (ptw (trp_ap F (fst K) g) x)^.
+Defined.
+
+(** Example [ex:abstrandconj] and lemma [lem:abstrandconj]: [ev] sends
+    the [G]-set [Hom(H,G)] to [absHom(abstr H, abstr G)] with [g] acting
+    by postcomposition with [conj^g]. *)
 Definition lem_abstrandconj_stmt `{Univalence} : Type
   := forall H G : Group,
        {e : gset (fst (actions_eqv G) (HomG_set H G)) ≃ absHom (abstr H) (abstr G) &
@@ -90,13 +120,54 @@ Definition lem_abstrandconj_stmt `{Univalence} : Type
            fst e (gact (fst (actions_eqv G) (HomG_set H G)) g f)
            = absHom_comp (conj_absHom (abstr G) g) (fst e f)}.
 
-(** Exercises [xca:f^*-abs(f)^*] and [xca:f_!-abs(f)_!] (statements
-    only): [ev] commutes with restriction and with induction (the latter
+Definition USymf_trp_regroup {H G : Group} {z : utype (BG G)} (p : sh G = z)
+  (f : Hom H (regroup G (sh G))) (h : USym H)
+  : USymf (trp (fun y => Hom H (regroup G y)) p f) h = trp (fun y => y = y) p (USymf f h).
+Proof. destruct p. exact refl. Defined.
+
+Definition lem_abstrandconj `{ua : Univalence} : lem_abstrandconj_stmt.
+Proof.
+  intros H [Y].
+  refine (abstr_hom_eqv H (inc Y); fun g f => _).
+  refine (ap (abstr_hom) (actions_eqv_gact (inc Y) (HomG_set H (inc Y)) g f) @ _).
+  apply path_absHom. intro h.
+  exact (USymf_trp_regroup g f h @ trp_loop_conj g _).
+Defined.
+
+(** Exercises [xca:f^*-abs(f)^*] and [xca:f_!-abs(f)_!] (the second
+    stated only): [ev] commutes with restriction and with induction (the latter
     up to isomorphism, with [φ_!] from Section 7.4, which lives in a
     higher universe). *)
 Definition xca_restrict_abstr_stmt `{Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (Y : GSet H),
        fst (actions_eqv G) (restrict f Y) = abs_restrict (abstr_hom f) (fst (actions_eqv H) Y).
+
+Definition trp_conj_loop {A : Type} (F : A -> Type) {a b : A} (p : a = b) (q : b = b) (x : F b)
+  : trp F p⁻¹ (trp F q x) = trp F (p⁻¹ ⋅ (q ⋅ p)) (trp F p⁻¹ x).
+Proof. destruct p. exact (ap (fun r => trp F r x) (trans_1p q)^). Defined.
+
+Definition trp_V_trp {A : Type} (F : A -> Type) {a b : A} (p : a = b) (x : F a)
+  : trp F p⁻¹ (trp F p x) = x.
+Proof. destruct p. exact refl. Defined.
+
+Definition trp_trp_V {A : Type} (F : A -> Type) {a b : A} (p : a = b) (y : F b)
+  : trp F p (trp F p⁻¹ y) = y.
+Proof. destruct p. exact refl. Defined.
+
+(** [ev] commutes with restriction: the identification is given by
+    transport along the pointing path of [Bf], which is equivariant
+    since [U(f)(g) = f_pt⁻¹ · Bf(g) · f_pt]. *)
+Definition xca_restrict_abstr `{ua : Univalence} : xca_restrict_abstr_stmt.
+Proof.
+  intros G H f Y. apply path_absGSet.
+  pose (kp := snd (Bf f)).
+  refine (mkEqv (trp (el Y) kp⁻¹) (trp (el Y) kp) (trp_trp_V (el Y) kp) (trp_V_trp (el Y) kp);
+          fun s x => _).
+  refine (ap (trp (el Y) kp⁻¹) (actions_eqv_gact G (restrict f Y) s x) @ _).
+  refine (ap (trp (el Y) kp⁻¹) (ptw (trp_ap (el Y) (fst (Bf f)) s) x) @ _).
+  refine (trp_conj_loop (el Y) kp _ x @ _).
+  exact (actions_eqv_gact H Y _ _)^.
+Defined.
 
 Definition xca_induce_abstr_stmt `{Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (X : GSet G),
