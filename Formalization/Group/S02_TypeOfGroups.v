@@ -61,10 +61,14 @@
     - The exercise that [mkgroup(A,a)] and [mkgroup(A,b)] are merely
       identical ([mkgroup_merely_eq]).
 
+    - The chain of identifications in [ex:cyclicgroups], end to end
+      ([ex_cyclicgroups_chain]: [C_m = Z/mZ]).  The components of
+      [Fincyc] in [Cyc] and of [R_m] in [S1 → Set] correspond under the
+      inclusion [Cyc ⊆ ∑_{X:Set}(X ≃ X)] ([comp_sub_eqv]) and the
+      equivalence [gSet] of 3.3 ([comp_eqv], [gSet_RmSet]).
+
     Left out (statements only, no proofs yet; time limit per result)
-    - Example [ex:Cm] ([ex_Cm_stmt], with [RmFin], [BCm'], [shCm']), and
-      the chain of identifications in [ex:cyclicgroups], end to end
-      ([ex_cyclicgroups_chain_stmt]).
+    - Example [ex:Cm] ([ex_Cm_stmt], with [RmFin], [BCm'], [shCm']).
     - [xca:typegroupisgroupoid] is postponed to Section 4.4
       ([Group_isGrpd]), where it follows from [lem:hom-is-set].
     - Size issues: [Aut_Group(G)] is a group in a larger universe than
@@ -524,6 +528,78 @@ Section FirstExamples.
   (** The chain of identifications in example [ex:cyclicgroups], end to
       end: [C_m = Aut_{S1 → Set}(R_m)]. *)
   Definition ex_cyclicgroups_chain_stmt : Type := forall k : ℕ, CG k = ZmodmZ k.
+
+  (** Components along an equivalence [e] with [e(a) = b]. *)
+  Definition comp_eqv {A B : Type} (e : A ≃ B) {a : A} {b : B} (q : fst e a = b)
+    : component A a ≃ component B b.
+  Proof.
+    refine (mkEqv (fun w => (fst e (fst w); ptrunc_rec ptrunc_isProp
+                               (fun p => trunc (q^ @ ap (fst e) p)) (snd w)))
+              (fun w => (eqinv (snd e) (fst w); ptrunc_rec ptrunc_isProp
+                           (fun p => trunc ((eqinv_l (snd e) a)^ @ ap (eqinv (snd e)) (q @ p)))
+                           (snd w))) _ _).
+    - intro w. apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact (eqinv_l (snd e) (fst w)).
+    - intro w. apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact (eqinv_r (snd e) (fst w)).
+  Defined.
+
+  (** The component of a subtype is the component of the ambient type. *)
+  Definition comp_sub_eqv {A : Type} {P : A -> Type} (hP : forall x, isProp (P x)) (a : A) (pa : P a)
+    : component {x : A & P x} (a; pa) ≃ component A a.
+  Proof.
+    refine (mkEqv (fun w => (fst (fst w); ptrunc_rec ptrunc_isProp
+                               (fun p => trunc (ap fst p)) (snd w)))
+              (fun w => ((fst w; ptrunc_rec (hP _) (fun p => trp P p pa) (snd w));
+                         ptrunc_rec ptrunc_isProp
+                           (fun p => trunc (path_sigma_prop hP (u := (a; pa))
+                                              (v := (fst w; ptrunc_rec (hP _) (fun p => trp P p pa) (snd w))) p))
+                           (snd w))) _ _).
+    - intro w. apply (path_sigma_prop (fun _ => ptrunc_isProp)).
+      apply (path_sigma_prop hP). exact refl.
+    - intro w. apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact refl.
+  Defined.
+
+  (** Cycles as a subtype of [∑_{X:Set} (X ≃ X)]. *)
+  Local Notation TSet := {X : SetU & fst X ≃ fst X}.
+
+  Definition CycQ (w : TSet) : Type
+    := ptrunc (fst (fst w)) × (forall x x' : fst (fst w), fst (conn_by (snd w) x x')).
+
+  Definition CycQ_isProp (w : TSet) : isProp (CycQ w)
+    := prod_isProp ptrunc_isProp
+         (Pi_isProp (fun x => Pi_isProp (fun x' => snd (conn_by (snd w) x x')))).
+
+  Definition cyc_T_eqv : Cyc ≃ {w : TSet & CycQ w}
+    := mkEqv (fun c : Cyc => ((fst c; fst (snd c)); snd (snd c)) : {w : TSet & CycQ w})
+         (fun v : {w : TSet & CycQ w} => (fst (fst v); (snd (fst v); snd v)) : Cyc)
+         (fun _ => refl) (fun _ => refl).
+
+  (** [g(R_m) = (Fin m, s)], with [g] as in [gSet]. *)
+  Definition gSet_RmSet (k : ℕ)
+    : fst gSet (RmSet k) = ((Fin (S k); Fin_isSet (S k)); finsuccEqv k).
+  Proof.
+    refine (ap (fun s => ((Fin (S k); s); idtoeqv (ap fst (ap (RmSet k) loop))) : TSet)
+              (isSet_isProp _ (Rm_isSet k base) (Fin_isSet (S k))) @ _).
+    refine (ap (fun E => ((Fin (S k); Fin_isSet (S k)); E) : TSet) _).
+    refine (ap idtoeqv ((ap_compose (RmSet k) fst loop)^ @ S1_rec_loop _ _ _) @ _).
+    exact (ptoe_etop (finsuccEqv k)).
+  Defined.
+
+  Definition cyc_chain_eqv (k : ℕ) : utype (BG (CG k)) ≃ utype (BG (ZmodmZ k))
+    := Eqv_comp (comp_eqv cyc_T_eqv (a := Fincyc k) refl)
+         (Eqv_comp (comp_sub_eqv CycQ_isProp ((Fin (S k); Fin_isSet (S k)); finsuccEqv k) (snd (snd (Fincyc k))))
+            (comp_eqv (Eqv_inv gSet)
+               (ap (eqinv (snd gSet)) (gSet_RmSet k)^ @ eqinv_l (snd gSet) (RmSet k)))).
+
+  (** The chain of identifications in example [ex:cyclicgroups]: [C_m]
+      and [Z/mZ] are the automorphism groups of corresponding points
+      under [Cyc ⊆ ∑_{X:Set} (X ≃ X) ≃ (S1 → Set)]. *)
+  Definition ex_cyclicgroups_chain : ex_cyclicgroups_chain_stmt.
+  Proof.
+    intro k. refine (path_Group ((fst (cyc_chain_eqv k); _); snd (cyc_chain_eqv k))).
+    exact (path_sigma_prop (fun _ => ptrunc_isProp)
+             (u := sh (ZmodmZ k)) (v := fst (cyc_chain_eqv k) (sh (CG k)))
+             (ap (eqinv (snd gSet)) (gSet_RmSet k)^ @ eqinv_l (snd gSet) (RmSet k))^).
+  Defined.
 
   (** Example [ex:Cm]: [BC'_m :≡ ∑_{X:FinSet_m} ‖R_m⁻¹(X)‖₀], the
       [0]-image of [R_m : S1 → FinSet_m], pointed at
