@@ -20,6 +20,9 @@
 
     - Definition [def:gen-dihedral] relative to an action of [Σ_2]
       ([Dihedral]).
+    - That [j] gives the kernel of [p] ([sd_kernel]: [BH(sh_G)] is the
+      fiber of [Bp] at [sh_G]; kernels are defined in a later chapter, as
+      the book's footnote says).
 
     Left out (statements only, no proofs yet; time limit per result)
     - The action of [Σ_2] on [C_n] ([S2_on_Cn_stmt]), construction
@@ -27,8 +30,6 @@
       ([con_bidirectional_bicycle_stmt]), the cardinality [2n] of [D_n]
       ([dihedral_card_stmt]), and the exercise that [Q_8] and [D_4] are
       not isomorphic ([Q8_not_D4_stmt]).
-    - That [j] gives the kernel of [p] ([sd_kernel_stmt]; kernels are
-      defined in a later chapter, as the book's footnote says).
  *)
 
 From HoTT Require Import
@@ -202,10 +203,19 @@ Section SemidirectHoms.
     exact (ap (fun w => sn (pps_fw sd_sec_fun w)) e').
   Defined.
 
-  (** That [j] gives the kernel of [p] (statement only; kernels are
-      defined in a later chapter): [BH] is the fiber of [Bp] at [sh_G]. *)
+  (** That [j] gives the kernel of [p] (kernels are defined in a later
+      chapter): [BH] is the fiber of [Bp] at [sh_G]. *)
   Definition sd_kernel_stmt : Type
     := {e : utype (BG (H (sh G))) ≃ fiber (fst (Bf sd_proj)) (sh G) &
          forall u, fst e u = ((sh G; u); refl)}.
+
+  Definition sd_kernel : sd_kernel_stmt.
+  Proof.
+    refine (mkEqv (fun u => (((sh G; u); refl) : fiber (fst (Bf sd_proj)) (sh G)))
+              (fun w => trp (fun z => utype (BG (H z))) (snd w)^ (snd (fst w))) _ _;
+            fun u => refl).
+    - intro u. exact refl.
+    - intros [[z u] p]. cbn in p. destruct p. exact refl.
+  Defined.
 
 End SemidirectHoms.
