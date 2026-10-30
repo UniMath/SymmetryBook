@@ -39,7 +39,10 @@
       ([ex_charsurinj_stmt]); the lemma on images of composites
       ([img_comp_stmt]); lemma [lem:kerandcoker]
       ([lem_kerandcoker_stmt]); the exercise after it
-      ([xca_mono_epi_img_stmt]).
+      ([xca_mono_epi_img_stmt]), of which the first part is proved
+      ([mono_img]: for a mono the fibers of [Bi] are sets, so [Bp(i)] is
+      an equivalence onto the set image); the second part needs that
+      epimorphisms are surjective ([epi_surjection_stmt], Section 9.2).
     - Informal: footnotes [ft:cmpnt:UUp->UUp], [ft:(i,p)-equiv], example
       [exa:fibersofcomposites], exercise [xca:fibersofcomposites] and the
       example from linear algebra.
@@ -442,5 +445,25 @@ Definition lem_kerandcoker_stmt `{ua : Univalence} : Type
 Definition xca_mono_epi_img_stmt `{ua : Univalence} : Type
   := (forall (G H : Group) (m : Mono H), m = img (fst (snd m)))
      × (forall (G H : Group) (e : Epi G), e = prjim (fst (snd e))).
+
+(** The first part: for a monomorphism the fibers of [Bi] are sets
+    ([ismono_isCovering]), so [Bp(i)] is an equivalence onto the set
+    image, compatible with the inclusions ([Mono_path]).  The second part
+    needs that epimorphisms are surjective ([epi_surjection_stmt]). *)
+Definition mono_img `{ua : Univalence} {H : Group} (m : Mono H) : m = img (fst (snd m)).
+Proof.
+  destruct m as [G [i mi]].
+  pose (c := ismono_isCovering i mi).
+  pose (g := fun w : utype (BG (Img i)) => fst (strunc_rec (c (fst w)) idmap (snd w))).
+  assert (fg : forall w, Bp i (g w) = w).
+  { intros [y t]. revert t.
+    refine (strunc_ind _ (fun _ => BG_isGrpd (Img i) _ _) _). intros [z p].
+    exact (paths_ind_r (fst (Bf i) z)
+             (fun y0 p0 => Bp i (g (y0; settrunc ((z; p0) : fiber (fst (Bf i)) y0)))
+                           = (y0; settrunc ((z; p0) : fiber (fst (Bf i)) y0))) refl y p). }
+  pose (e := ((Bp i; Bp_pt i); iso_to_isEquiv (Bp i) g (fun _ => refl) fg) : BG G ≃* BG (Img i)).
+  refine (Mono_path ((G; (i; mi)) : Mono H) (img i) e _).
+  exact (ap (fun r => (fst (Bf i); r) : BG G →* BG H) (trans_1p _ @ ap_fst_Bp_pt i)).
+Defined.
 
 (** The example from linear algebra after this exercise (informal). *)
