@@ -13,16 +13,17 @@
     - [inn : Hom(G, Aut(G))] ([mkhom (Binn G)], pointed by [(inc_out G)⁻¹]);
       [out(G)] ([outG], the cokernel of [inn]); [Inn(G)] ([InnG], the
       image of [inn]); [Out(G)] ([OutG]).
-
     - The remark on [USym inn] ([USym_inn], via [USymf_path_Group_Iso]
       and [trp_Binn_loop] of Section 7.3), with [h ↦ g h g⁻¹].  NOTE for
       the book text: the remark says [h ↦ g⁻¹ h g]; see [USym_inn_stmt].
+    - Lemma [lemma:coker-out-action] ([coker_out_action]): the fibers of
+      [Binn] by the book's chain of equivalences ([fiber_Binn_eqv]), and
+      the set truncation of an equivalence ([strunc_eqv]).
 
     Left out (statements only)
     - The kernel of [inn] as
       the center ([ker_inn_center_stmt]; the center is defined in
-      [sec:abelian-groups], not yet formalized); lemma
-      [lemma:coker-out-action] ([coker_out_action_stmt]); that [Inn(G)] is
+      [sec:abelian-groups], not yet formalized); that [Inn(G)] is
       normal ([Inn_normal_stmt]); construction [cons:simpler-version-Out]
       ([cons_simpler_version_Out_stmt], as an isomorphism, with
       [Trunc1U_isGrpd]).
@@ -42,6 +43,38 @@ Local Open Scope uf_scope.
 Definition USymf_path_Group_Iso `{Univalence} {G K : Group} (P : G = K) (h : USym G)
   : USymf (fst (fst (path_Group_Iso_eqv G K) P)) h = trp USym P h.
 Proof. destruct P. destruct G as [X]. exact (trans_1p _ @ ap_idmap h). Defined.
+
+(** The set truncation of an equivalence. *)
+Definition strunc_eqv {A B : Type} (e : A ≃ B) : strunc A ≃ strunc B.
+Proof.
+  refine (mkEqv (strunc_rec strunc_isSet (fun a => settrunc (fst e a)))
+                (strunc_rec strunc_isSet (fun b => settrunc (eqinv (snd e) b))) _ _).
+  - exact (strunc_ind_prop _ (fun _ => strunc_isSet _ _)
+             (fun a => ap settrunc (eqinv_l (snd e) a))).
+  - exact (strunc_ind_prop _ (fun _ => strunc_isSet _ _)
+             (fun b => ap settrunc (eqinv_r (snd e) b))).
+Defined.
+
+(** The fibers of [Binn]: [Binn⁻¹(G') ≃ (BG'_÷ = BG_÷)], as in the proof
+    of lemma [lemma:coker-out-action]. *)
+Definition fiber_Binn_eqv `{Univalence} (G : Group) (G' : component Group G)
+  : fiber (fst (Binn G)) G' ≃ (utype (BG (fst G')) = utype (BG G)).
+Proof.
+  destruct G as [X], G' as [[Z] r].
+  refine (Eqv_comp (tot (fun y (p : ((inc Z; r) : component Group (inc X)) = fst (Binn (inc X)) y)
+                           => ap fst p);
+                    tot_isEquiv _ (fun y => snd (subtype_paths_eqv (fun _ => ptrunc_isProp) _ _))) _).
+  refine (Eqv_comp (tot (fun y => fst (path_inc_eqv Z (fst X; (y; snd (snd X)))));
+                    tot_isEquiv _ (fun y => snd (path_inc_eqv Z (fst X; (y; snd (snd X)))))) _).
+  refine (Eqv_comp (tot (fun y => fst (UUscone_paths_eqv Z (fst X; (y; snd (snd X)))));
+                    tot_isEquiv _ (fun y => snd (UUscone_paths_eqv Z (fst X; (y; snd (snd X)))))) _).
+  refine (Eqv_comp (tot (fun y => fst (Eqv_inv (path_sigma_eqv (Y := idmap)
+                                                  (x := fst Z) (x' := fst X)
+                                                  (y := fst (snd Z)) (y' := y))));
+                    tot_isEquiv _ (fun y => snd (Eqv_inv path_sigma_eqv))) _).
+  refine (Eqv_comp (sigma_comm _ _ _) _).
+  exact (sigma_contr_fibers (fun q => singleton_contr (trp idmap q (fst (snd Z))))).
+Defined.
 
 Definition USym_inn_gen `{Univalence} (G : Group) (g h : USym G)
   : USymf (fst (fst (path_Group_Iso_eqv G G) (ap fst (loops_fun (Binn G) g)))) h = (g ⋅ h) ⋅ g⁻¹.
@@ -91,11 +124,13 @@ Section Automorphisms.
   (** The definition of [out(G)]: the cokernel of [inn], an [Aut(G)]-set. *)
   Definition outG : GSet AutGrp := coker inn.
 
-  (** Lemma [lemma:coker-out-action] (statement only):
-      [out(G)(G') = ‖BG'_÷ = BG_÷‖₀]. *)
+  (** Lemma [lemma:coker-out-action]: [out(G)(G') = ‖BG'_÷ = BG_÷‖₀]. *)
   Definition coker_out_action_stmt : Type
     := forall G' : utype (BG AutGrp),
          el outG G' ≃ strunc (utype (BG (fst G')) = utype (BG G)).
+
+  Definition coker_out_action : coker_out_action_stmt
+    := fun G' => strunc_eqv (fiber_Binn_eqv G G').
 
   (** The definition of [Inn(G) :≡ Im(inn)]. *)
   Definition InnG : Group := Img inn.
