@@ -20,7 +20,9 @@
     - Theorem [lem:BGbytorsor]: [BG ≃ Torsor_G] ([BG_Torsor_eqv]).
     - Definition [def:restrictandinduce] ([restrict], [induce]) and
       remark [rem:coinduced-Hset] ([coinduce]); exercises
-      [xca:adjunction-_!-^*] (second part, [adj_induce_restrict]) and
+      [xca:why-setTrunc_f_!] ([xca_why_setTrunc], the book's solution
+      with [ℤ → 𝟙]), [xca:adjunction-_!-^*] (first part
+      [xca_induce_iso], second part [adj_induce_restrict]) and
       [xca:adjunction-^*-_*] ([adj_restrict_coinduce]).
     - Construction [con:inducedtorsor]: [η] ([eta_path]), [π]
       ([pi_path]), the pointed map [f_! : Torsor_G →* Torsor_H]
@@ -32,14 +34,12 @@
       [sub_coinduced]); the remarks' claims hold by definition.
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Exercise [xca:why-setTrunc_f_!] ([xca_why_setTrunc_stmt]), the
-      first part of [xca:adjunction-_!-^*] ([xca_induce_iso_stmt]), and
-      lemma [lem:epifullyfaithful] ([lem_epifullyfaithful_stmt]).
+    - Lemma [lem:epifullyfaithful] ([lem_epifullyfaithful_stmt]).
  *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core Truncations.SeparatedTrunc Cubical.DPath.
+  Types.Forall Types.Paths Truncations.Core Truncations.SeparatedTrunc Cubical.DPath Spaces.Circle.
 From SymmetryBook Require Export Actions.S04_Orbits.
 
 Local Open Scope uf_scope.
@@ -168,7 +168,7 @@ Section RestrictInduce.
 
 End RestrictInduce.
 
-(** Exercise [xca:why-setTrunc_f_!] (statement only): without the set
+(** Exercise [xca:why-setTrunc_f_!]: without the set
     truncation, [f_!X] need not be an [H]-set.  (The book's solution:
     [G :≡ ℤ], [H] trivial, [X] constant [𝟙], where the type is the
     circle.) *)
@@ -176,11 +176,50 @@ Definition xca_why_setTrunc_stmt `{Funext} : Type
   := {G : Group & {K : Group & {f : Hom G K & {X : GSet G &
        {w : utype (BG K) & ¬ isSet (induce_type f X w)}}}}}.
 
-(** Exercise [xca:adjunction-_!-^*], first part (statement only): for an
+(** The book's solution: [z ↦ (z, refl, tt)] has retraction [fst], so a
+    set [∑_{z:S¹} (sh_𝟙 = sh_𝟙) × 𝟙] would make [loop = refl]. *)
+Definition xca_why_setTrunc `{Univalence} : xca_why_setTrunc_stmt.
+Proof.
+  pose (f := @mkhom ZZ TG ((fun _ => sh TG); refl)).
+  pose (X := trivG ZZ (True; prop_is_set True_isProp)).
+  refine (ZZ; (TG; (f; (X; (sh TG; _))))).
+  intro s. apply loop_ne_refl.
+  pose (sec := fun a : S1 => ((a; (refl; tt)) : induce_type f X (sh TG))).
+  exact ((ap_idmap loop)^ @ ap_compose sec fst loop @ ap (ap fst) (s _ _ (ap sec loop) refl)).
+Defined.
+
+(** Exercise [xca:adjunction-_!-^*], first part: for an
     isomorphism [f], [f_!X ≃ X ∘ Bf⁻¹]. *)
 Definition xca_induce_iso_stmt `{Funext} : Type
   := forall (G K : Group) (f : Hom G K) (i : isIso f) (X : GSet G) (w : utype (BG K)),
        el (induce f X) w ≃ el X (eqinv i w).
+
+(** A set is equivalent to its set truncation. *)
+Definition strunc_set_eqv {T : Type} (sT : isSet T) : strunc T ≃ T.
+Proof.
+  refine (mkEqv (strunc_rec sT idmap) settrunc _ (fun _ => refl)).
+  apply strunc_ind_prop.
+  - intro u. exact (strunc_isSet _ _).
+  - intro y. exact refl.
+Defined.
+
+(** For an isomorphism [f], [∑_z (Bf(z) = w)] is contractible with
+    center [Bf⁻¹(w)], which contracts [f_!X(w)] to [X(Bf⁻¹(w))]. *)
+Definition xca_induce_iso `{Funext} : xca_induce_iso_stmt.
+Proof.
+  intros G K f i X w.
+  pose (C := {z : utype (BG G) & fst (Bf f) z = w}).
+  pose (cC := isContr_Eqv (mkEqv (fun u : fiber (fst (Bf f)) w => ((fst u; (snd u)^) : C))
+                                 (fun u : C => ((fst u; (snd u)^) : fiber (fst (Bf f)) w))
+                                 (fun u => ap (fun q => (fst u; q)) (inv_V (snd u)))
+                                 (fun u => ap (fun q => (fst u; q)) (inv_V (snd u))))
+                         (i w)).
+  pose (e1 := mkEqv (fun u : induce_type f X w => (((fst u; fst (snd u)) : C); snd (snd u)))
+                    (fun v : {c : C & el X (fst c)} => (fst (fst v); (snd (fst v); snd v)))
+                    (fun _ => refl) (fun _ => refl)).
+  pose (e := Eqv_comp e1 (sigma_contr_base (B := fun c : C => el X (fst c)) cC)).
+  exact (Eqv_comp (strunc_set_eqv (is_ntype_Eqv 0 (Eqv_inv e) (el_isSet X _))) e).
+Defined.
 
 Section AdjInduce.
 
@@ -262,9 +301,6 @@ Section InducedTorsor.
     - intros [z [p q]]. destruct q. cbn. destruct p. exact refl.
     - intro e. destruct e. exact refl.
   Defined.
-
-  Definition strunc_set_eqv {T : Type} (s : isSet T) : strunc T ≃ T
-    := Eqv_inv (settrunc; isEquiv_of_IsEquiv _ (H := isequiv_tr 0 T (IsTrunc0 := isSet_IsHSet s))).
 
   Definition eta_path (x : utype (BG G)) : induce f (pathsp x) = pathsp (Bf0 x)
     := @path_GSet _ K (induce f (pathsp x)) (pathsp (Bf0 x))

@@ -43,19 +43,22 @@
       [xca:Gx-action-on-G] ([act_tildeG]), construction
       [con:orbit-stabilizer] ([orbit_stabilizer]) and corollary
       [cor:action-subgrp-free] ([tildeG_free]).
+    - Example [exa:fixed-free-neither] ([exa_fixed_free]) and the first
+      two parts of exercise [xca:fixed-free-neither]
+      ([xca_fixed_free_neither]: [triv_stab_eqv], [princ_stab_contr]) and
+      of exercise [xca:fixed-free-neither-action-types]
+      ([xca_fixed_free_action_types], via [sigma_contr_base]).
+    - Corollary [lem:cosets-Gx.g] ([lem_cosets_Gx_g], as injectivity of
+      [h ↦ h · g]; that it is onto the orbit [G_x · g] is [orb_eq_iff]) and
+      construction [con:preLagrange] ([con_preLagrange], composing
+      [trans_Gdot_eqv], the inverse of [orbit_stabilizer] and [[_]₀]).
 
     Left out (statements only, no proofs yet; time limit per section)
     - The factorization through the quotient in [cor:orbit-equiv]
       ([cor_orbit_equiv_quot_stmt]), remarks [rem:orbit-fibs]
       ([rem_orbit_fibs_stmt]) and [rem:subgrp-is-stabsubgr]
-      ([rem_subgrp_is_stabsubgr_stmt]), example [exa:fixed-free-neither]
-      ([exa_fixed_free_stmt]) and exercises [xca:fixed-free-neither]
-      ([xca_fixed_free_neither_stmt], first two parts), [xca:Gset-A->B]
-      ([xca_Gset_AB_stmt]), [xca:fixed-free-neither-action-types]
-      ([xca_fixed_free_action_types_stmt], first two parts), corollary
-      [lem:cosets-Gx.g] ([lem_cosets_Gx_g_stmt], as injectivity of
-      [h ↦ h · g]) and construction [con:preLagrange]
-      ([con_preLagrange_stmt]).
+      ([rem_subgrp_is_stabsubgr_stmt]) and exercise [xca:Gset-A->B]
+      ([xca_Gset_AB_stmt]).
     - The third parts of [xca:fixed-free-neither] and
       [xca:fixed-free-neither-action-types] concern the example of
       Section 5.7, which is itself left out there.
@@ -470,7 +473,7 @@ End Stabilizers.
 
 (** Remarks [rem:orbit-fibs] and [rem:subgrp-is-stabsubgr], example
     [exa:fixed-free-neither] and exercise [xca:fixed-free-neither]
-    (statements only). *)
+    (the remarks as statements only). *)
 Section StabilizerStatements.
 
   Context `{Univalence}.
@@ -492,6 +495,46 @@ Section StabilizerStatements.
     := (forall (G : Group) (S : SetU) (s : fst S),
           utype (BG (Gx (trivG G S) s)) ≃ utype (BG G))
        × (forall (G : Group) (g : USym G), isContr (utype (BG (Gx (princ G) g)))).
+
+  Definition triv_tot_path (G : Group) (S : SetU) (s : fst S) {z : utype (BG G)} (p : sh G = z)
+    : ((sh G; s) : XhG (trivG G S)) = (z; s).
+  Proof. destruct p. exact refl. Defined.
+
+  (** First part: the component of [(sh_G, s)] in [BG × S] is [BG × {s}]. *)
+  Definition triv_stab_eqv (G : Group) (S : SetU) (s : fst S)
+    : utype (BG (Gx (trivG G S) s)) ≃ utype (BG G).
+  Proof.
+    refine (mkEqv (fun w => fst (fst w))
+                  (fun z => (((z; s) : XhG (trivG G S));
+                             ptrunc_rec ptrunc_isProp
+                               (fun p : sh G = z => trunc (triv_tot_path G S s p))
+                               (snd (BG_isConn G) (sh G) z))) _ _).
+    - intros [[z y] t].
+      assert (r : s = y).
+      { refine (ptrunc_rec (snd S _ _) _ t). intro q.
+        exact ((transport_const (ap fst q) s)^ @ (pr2_path q)). }
+      destruct r.
+      apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact refl.
+    - intro z. exact refl.
+  Defined.
+
+  (** Second part: [X_hG] is contractible for [X :≡ P_{sh_G}]. *)
+  Definition princ_stab_contr (G : Group) (g : USym G)
+    : isContr (utype (BG (Gx (princ G) g))).
+  Proof.
+    assert (c : isContr (XhG (princ G))).
+    { refine ((sh G; refl); _). intros [z p]. destruct p. exact refl. }
+    refine (Sigma_isContr c _). intro u.
+    refine (trunc ((snd c ((sh G; g) : XhG (princ G)))^ @ snd c u); _).
+    intro t. apply ptrunc_isProp.
+  Defined.
+
+  Definition xca_fixed_free_neither : xca_fixed_free_neither_stmt
+    := (triv_stab_eqv; princ_stab_contr).
+
+  (** Example [exa:fixed-free-neither], from the exercise. *)
+  Definition exa_fixed_free : exa_fixed_free_stmt
+    := (fun G S s => snd (triv_stab_eqv G S s); princ_stab_contr).
 
 End StabilizerStatements.
 
@@ -583,19 +626,60 @@ Section OrbitStabilizer.
 End OrbitStabilizer.
 
 (** Exercise [xca:fixed-free-neither-action-types], first two parts,
-    corollary [lem:cosets-Gx.g], construction [con:preLagrange]
-    (statements only).  Exercise [xca:lagrange2] asks for another proof
+    corollary [lem:cosets-Gx.g] and construction [con:preLagrange].  Exercise [xca:lagrange2] asks for another proof
     of [lagrange_card] (Section 5.3).
     (The exercise is placed after the section on the Orbit–Stabilizer construction, which fixes [X] and [x], since it concerns the particular [G]-sets [triv_G S] and [princ G].) *)
 Definition xca_fixed_free_action_types_stmt `{Univalence} : Type
   := (forall (G : Group) (S : SetU) (s : fst S), isContr (TotG (tildeG (trivG G S) s)))
      × (forall (G : Group) (g : USym G), TotG (tildeG (princ G) g) ≃ USym G).
 
+(** A sum over a contractible base is the fiber over the center. *)
+Definition sigma_contr_base {A : Type} {B : A -> Type} (c : isContr A)
+  : {a : A & B a} ≃ B (fst c).
+Proof.
+  refine (mkEqv (fun w => trp B (snd c (fst w))⁻¹ (snd w)) (fun b => (fst c; b)) _ _).
+  - intros [a b]. cbn. generalize (snd c a). intro p. destruct p. exact refl.
+  - intro b. cbn.
+    refine (ap (fun q => trp B q⁻¹ b)
+              (prop_is_set (isContr_isProp' c) _ _ (snd c (fst c)) refl)).
+Defined.
+
+(** First part: [G̃_s] is the fiber over [sh_G] of the equivalence
+    [BG_s ≃ BG]; second part: [BG_g] is contractible. *)
+Definition xca_fixed_free_action_types `{Univalence} : xca_fixed_free_action_types_stmt
+  := (fun G S s => snd (triv_stab_eqv G S s) (sh G);
+      fun G g => sigma_contr_base (B := fun w => el (tildeG (princ G) g) w)
+                   (princ_stab_contr G g)).
+
 Definition lem_cosets_Gx_g_stmt `{Univalence} : Type
   := forall (G : Group) (X : GSet G) (x : el X (sh G))
             (g : el (tildeG X x) (sh (Gx X x))),
        isInj (fun h : USym (Gx X x) => act (tildeG X x) h g).
 
+(** From freeness of [G̃_x] ([tildeG_free]) and [lem:free-pt-char]. *)
+Definition lem_cosets_Gx_g `{Univalence} : lem_cosets_Gx_g_stmt
+  := fun G X x g => cancel_isInj (el_isSet (tildeG X x) _)
+                      (Overture.fst (free_pt_char (tildeG X x) g) (tildeG_free X x g)).
+
 Definition con_preLagrange_stmt `{Univalence} : Type
   := forall (G : Group) (S : SubGrp G),
        el (sg_X S) (sh G) ≃ Orbits (tildeG (sg_X S) (sg_pt S)).
+
+(** Implementation of [con:preLagrange]: [fst⁻¹], then the inverse of
+    the Orbit–Stabilizer equivalence, then [[_]₀]. *)
+Definition trans_Gdot_eqv `{Univalence} {G : Group} (X : GSet G) (t : istrans X)
+  (x : el X (sh G)) : el X (sh G) ≃ Gdot X x.
+Proof.
+  pose (h := isContr_isProp' (trans_orbits_contr X t)).
+  refine (mkEqv (fun y => (y; h _ _)) fst (fun y => refl) _).
+  intros [y e]. apply (path_sigma_prop (fun _ => Orbits_isSet X _ _)). exact refl.
+Defined.
+
+Definition con_preLagrange `{Univalence} : con_preLagrange_stmt.
+Proof.
+  intros G S.
+  pose (X := sg_X S). pose (x := sg_pt S).
+  pose (s := is_ntype_Eqv 0 (Eqv_inv (orbit_stabilizer X x)) (Gdot_isSet X x)).
+  exact (Eqv_comp (Eqv_comp (trans_Gdot_eqv X (sg_trans S) x) (Eqv_inv (orbit_stabilizer X x)))
+                  (orbit0 (tildeG X x); XhG_set_orbit0_isEquiv (tildeG X x) s)).
+Defined.
