@@ -53,12 +53,18 @@
       construction [con:preLagrange] ([con_preLagrange], composing
       [trans_Gdot_eqv], the inverse of [orbit_stabilizer] and [[_]₀]).
 
-    Left out (statements only, no proofs yet; time limit per section)
     - The factorization through the quotient in [cor:orbit-equiv]
-      ([cor_orbit_equiv_quot_stmt]), remarks [rem:orbit-fibs]
-      ([rem_orbit_fibs_stmt]) and [rem:subgrp-is-stabsubgr]
-      ([rem_subgrp_is_stabsubgr_stmt]) and exercise [xca:Gset-A->B]
-      ([xca_Gset_AB_stmt]).
+      ([cor_orbit_equiv_quot]): a surjection [f] into a set with
+      [R(x, y) ⇔ f(x) = f(y)] induces [A/R ≃ B] ([quot_surj_eqv]).
+    - Remarks [rem:orbit-fibs] ([rem_orbit_fibs]) and
+      [rem:subgrp-is-stabsubgr] ([rem_subgrp_is_stabsubgr]): [BG_x] is
+      [TotG(Xorb x)] up to reassociation, and all of [TotG X] for a
+      transitive [X]; identifications in [Mono(G)] come from pointed
+      equivalences of classifying types that commute with the inclusions
+      ([Mono_path]).
+
+    Left out (statements only, no proofs yet; time limit per section)
+    - Exercise [xca:Gset-A->B] ([xca_Gset_AB_stmt]).
     - The third parts of [xca:fixed-free-neither] and
       [xca:fixed-free-neither-action-types] concern the example of
       Section 5.7, which is itself left out there.
@@ -239,7 +245,7 @@ Section Orbits.
 
 End Orbits.
 
-(** Corollary [cor:orbit-equiv], last part (statement only): [[_]]
+(** Corollary [cor:orbit-equiv], last part: [[_]]
     factors through the quotient of [X(sh_G)] by [∃_g (g · x = y)] by an
     equivalence. *)
 Definition orbit_rel {G : Group} (X : GSet G) (x y : el X (sh G)) : PropU
@@ -250,6 +256,49 @@ Definition cor_orbit_equiv_quot_stmt `{Univalence} : Type
        {e : quot (orbit_rel X) ≃ Orbits X &
          forall x, fst e (S22_SetOperations.cls (orbit_rel X) x) = orb X x}.
 
+(** The proof: a surjection [f] into a set with [R(x, y) ⇔ f(x) = f(y)]
+    induces an equivalence [A/R ≃ B] ([quot_surj_eqv]); for [[_]] this is
+    [orb_eq_iff] and [orb_isSurj]. *)
+Section QuotSurj.
+
+  Context `{ua : Univalence} {A B : Type} (sB : isSet B) (f : A -> B) (R : A -> A -> PropU)
+    (hR : forall x y, (fst (R x y) -> f x = f y) × (f x = f y -> fst (R x y)))
+    (sf : isSurj f).
+
+  Definition quot_surj_map : quot R -> B
+    := fbar R (fun x => snd (hR x x) refl) sB f (fun x x' r => fst (hR x x') r).
+
+  Definition quot_surj_cancel (z z' : quot R) (e : quot_surj_map z = quot_surj_map z') : z = z'.
+  Proof.
+    revert z z' e.
+    refine (im_ind R _ (fun z => Pi_isProp (fun z' => fun_isProp (quot_isSet R z z'))) _).
+    intro x.
+    refine (im_ind R _ (fun z' => fun_isProp (quot_isSet R _ z')) _).
+    intros x' e. change (f x = f x') in e.
+    apply (path_sigma_prop (fun _ => ptrunc_isProp)).
+    apply ptw_inv. intro y.
+    exact (path_PropU (fun r => snd (hR x' y) (e^ @ fst (hR x y) r))
+                      (fun r => snd (hR x y) (e @ fst (hR x' y) r))).
+  Defined.
+
+  Definition quot_surj_eqv : quot R ≃ B.
+  Proof.
+    refine (quot_surj_map; inj_surj_isEquiv (cancel_isInj sB quot_surj_cancel) _).
+    intro b. refine (ptrunc_rec ptrunc_isProp _ (sf b)). intros [x e].
+    exact (trunc (S22_SetOperations.cls R x; e)).
+  Defined.
+
+End QuotSurj.
+
+Definition cor_orbit_equiv_quot `{ua : Univalence} : cor_orbit_equiv_quot_stmt.
+Proof.
+  intros G X.
+  refine (quot_surj_eqv (Orbits_isSet X) (orb X) (orbit_rel X)
+            (fun x y => (Overture.snd (orb_eq_iff X x y); Overture.fst (orb_eq_iff X x y)))
+            (orb_isSurj X); _).
+  intro x. exact refl.
+Defined.
+
 (** Remark [rem:equivalents-of-[x]=[y]]: for [x, y : X(sh_G)] the
     propositions [[x] = [y]], [[x]₀ = [y]₀], [‖(sh_G,x) = (sh_G,y)‖] and
     [∃_g (g · x = y)] are equivalent (see [orbit0_eff] and [cor:orbit-equiv]
@@ -259,6 +308,31 @@ Definition cor_orbit_equiv_quot_stmt `{Univalence} : Type
     justify the notation [X/G] (informal). *)
 
 (** ** Stabilizers, fixed and free elements *)
+(** Identifications in [Mono(G)] from pointed equivalences of
+    classifying types that commute with the inclusions. *)
+Definition ismono_isProp `{Funext} {H G : Group} (i : Hom H G) : isProp (ismono i)
+  := Pi_isProp (fun _ => isProp_isProp _).
+
+Definition Mono_path_aux `{ua : Univalence} {G H H' : Group} (p : H = H')
+  (i : Hom H G) (i' : Hom H' G) (mi : ismono i) (mi' : ismono i')
+  (h : pcomp (Bf i') (fst (path_Group_pEqv p)) = Bf i)
+  : ((H; (i; mi)) : Mono G) = (H'; (i'; mi')).
+Proof.
+  destruct p.
+  refine (ap (fun w => (H; w) : Mono G) (path_sigma_prop ismono_isProp (u := (i; mi)) (v := (i'; mi')) _)).
+  exact ((inc_out i)^ @ ap inc h^ @ inc_out i').
+Defined.
+
+Definition Mono_path `{ua : Univalence} {G : Group} (m m' : Mono G)
+  (e : BG (fst m) ≃* BG (fst m'))
+  (h : pcomp (Bf (fst (snd m'))) (fst e) = Bf (fst (snd m))) : m = m'.
+Proof.
+  destruct m as [[X] [i mi]], m' as [[Y] [i' mi']].
+  refine (Mono_path_aux (path_Group e) i i' mi mi' _).
+  exact (ap (fun e0 : BG (mkgroup X) ≃* BG (mkgroup Y) => pcomp (Bf i') (fst e0))
+            (path_Group_pEqv_path_Group X Y e) @ h).
+Defined.
+
 Section Stabilizers.
 
   Context `{Univalence} {G : Group} (X : GSet G).
@@ -287,7 +361,7 @@ Section Stabilizers.
   Definition splitting_orbits : {O : Orbits X & fiber (orb X) O} ≃ el X (sh G)
     := sum_of_fibers (orb X).
 
-  (** Remark [rem:orbit-fibs] (statement only): the action type of
+  (** Remark [rem:orbit-fibs]: the action type of
       [X_{[x]}], pointed at [(sh_G, x)], is [BG_x], and its underlying set
       is [G · x]. *)
   Definition Xorb (x : el X (sh G)) : GSet G := GSet_sub X (orbit0_sub X (sh G; x)).
@@ -298,13 +372,71 @@ Section Stabilizers.
            ((TotG (Xorb x); ((sh G; (x; xp)) : TotG (Xorb x))) ≃* BG (Gx x))}
          × (el (Xorb x) (sh G) ≃ Gdot x).
 
-  (** Remark [rem:subgrp-is-stabsubgr] (statement only). *)
+  (** The proof: [TotG(Xorb x)] is [∑_z ∑_{y:X(z)} ‖(sh_G, x) = (z, y)‖],
+      which is [BG_x], the component of [(sh_G, x)] in [X_hG], up to
+      reassociation; and [‖(sh_G, x) = (sh_G, y)‖] is equivalent to
+      [[x]₀ = [y]₀] ([orbit0_eff]). *)
+  Definition rem_orbit_fibs : rem_orbit_fibs_stmt.
+  Proof.
+    intro x. refine ((trunc refl; _); _).
+    - pose (f := fun w : TotG (Xorb x) => ((fst w; fst (snd w)); snd (snd w)) : utype (BG (Gx x))).
+      refine ((f; refl); _).
+      refine (iso_to_isEquiv f (fun w : utype (BG (Gx x)) =>
+                                  ((fst (fst w); (snd (fst w); snd w)) : TotG (Xorb x)))
+                (fun _ => refl) (fun _ => refl)).
+    - exact (Eqv_of_Equiv (equiv_functor_sigma_id (fun y => Equiv_of_Eqv
+               (Eqv_of_props ptrunc_isProp (Orbits_isSet X _ _)
+                  (ptrunc_rec (Orbits_isSet X _ _) (ap (orbit0 X)))
+                  (orbit0_eff X _ _))))).
+  Defined.
+
+  (** Remark [rem:subgrp-is-stabsubgr]. *)
   Definition rem_subgrp_is_stabsubgr_stmt : Type
     := (forall (x : el X (sh G)) (xp : fst (orbit0_sub X (sh G; x) (sh G) x))
                (t : istrans (Xorb x)) (m : ismono (ix x)),
           subgrp_to_mono ((Xorb x; ((x; xp); t)) : SubGrp G) = (Gx x; (ix x; m)))
        × (forall (t : istrans X) (x : el X (sh G)) (m : ismono (ix x)),
             subgrp_to_mono ((X; (x; t)) : SubGrp G) = (Gx x; (ix x; m))).
+
+  (** The proof: [BG_x] is the component of [(sh_G, x)] in [X_hG], which
+      is [TotG(Xorb x)] up to reassociation, and all of [X_hG] if [X] is
+      transitive ([Mono_path]). *)
+  Definition comp_pt_path {A : Type} {a : A} (q : ptrunc (a = a))
+    : ((a; trunc refl) : component A a) = (a; q)
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := (a; trunc refl)) (v := (a; q)) refl.
+
+  Definition comp_pt_ap (x : el X (sh G)) (q : ptrunc (((sh G; x) : TotG X) = (sh G; x)))
+    : ap (BGx_fst x) (comp_pt_path q) ⋅ refl = refl
+    := trans_1p _ @ ap_compose (fun w : utype (BG (Gx x)) => fst w) (fun u : TotG X => fst u) _
+       @ ap (ap (fun u : TotG X => fst u)) (ap_fst_sigma_prop _ _).
+
+  Definition rem_subgrp_is_stabsubgr : rem_subgrp_is_stabsubgr_stmt.
+  Proof.
+    split.
+    - intros x xp t m.
+      pose (f := fun w : TotG (Xorb x) => ((fst w; fst (snd w)); snd (snd w)) : utype (BG (Gx x))).
+      pose (S := (Xorb x; ((x; xp); t)) : SubGrp G).
+      pose (e := ((f; comp_pt_path xp);
+                  iso_to_isEquiv f (fun w : utype (BG (Gx x)) =>
+                                      ((fst (fst w); (snd (fst w); snd w)) : TotG (Xorb x)))
+                    (fun _ => refl) (fun _ => refl)) : BG (subgrp_group S) ≃* BG (Gx x)).
+      refine (Mono_path (subgrp_to_mono S) (Gx x; (ix x; m)) e _).
+      refine (ap (fun r => ((fun w : TotG (Xorb x) => fst w); r) : BG (subgrp_group S) →* BG G) _).
+      exact (comp_pt_ap x _).
+    - intros t x m.
+      pose (c := conn_of_trans X t).
+      pose (f := fun w : TotG X => (w; ptrunc_rec ptrunc_isProp
+                   (fun q : (sh G; x) = w => trunc q) (snd c (sh G; x) w)) : utype (BG (Gx x))).
+      pose (S := (X; (x; t)) : SubGrp G).
+      pose (e := ((f; comp_pt_path _);
+                  iso_to_isEquiv f (fun w : utype (BG (Gx x)) => fst w)
+                    (fun _ => refl)
+                    (fun w => path_sigma_prop (fun _ => ptrunc_isProp) (u := f (fst w)) (v := w) refl))
+                 : BG (subgrp_group S) ≃* BG (Gx x)).
+      refine (Mono_path (subgrp_to_mono S) (Gx x; (ix x; m)) e _).
+      refine (ap (fun r => ((fun w : TotG X => fst w); r) : BG (subgrp_group S) →* BG G) _).
+      exact (comp_pt_ap x _).
+  Defined.
 
   (** Definition [def:fixed-free]. *)
   Definition isFixed (x : el X (sh G)) : Type := isIso (ix x).
