@@ -62,15 +62,15 @@
       the general [(A, f e) = (A', f)] for an equivalence [e].
     - Functoriality: the function underlying a composite identification
       in [Endo] is the composite ([endo_fun_concat]).
+    - Corollary [cor:id-m-cycle] ([cor_id_m_cycle], placed at the end):
+      the evaluation map is [ConnCycles] at [(Fin m, zs)] ([idm_eqv]),
+      and the compatibility with [zs] follows from [endo_fun_concat] and
+      [endo_fun_endo_path].
 
     Left out (statements only, no proofs yet)
     - [con:psi-alpha-m] and [cor:dgm-conncov] ([con_psi_alpha_m_stmt],
       [cor_dgm_conncov_stmt]; the book leaves the inverse of [ψ_m] as an
       exercise).
-    - [cor:id-m-cycle] ([cor_id_m_cycle_stmt]): the evaluation map is an
-      instance of [ConnCycles], and the compatibility with [zs] follows
-      from [endo_fun_concat]; the instantiation at [Fin m] ran into
-      universe constraints and was not finished.
  *)
 
 From HoTT Require Import
@@ -629,7 +629,7 @@ Section IdCycle.
 
 End IdCycle.
 
-(** Corollary [cor:id-m-cycle] (statement only): for the cycles
+(** Corollary [cor:id-m-cycle] (proved at the end): for the cycles
     [(Fin m, zs)], evaluation at [0] is an equivalence
     [((Fin m, zs) = (Fin m, zs)) ≃ Fin m], sending [refl] to [0], under
     which composition with [(zs, !)] corresponds to [zs]; this is the
@@ -1293,3 +1293,44 @@ Definition negidEqv `{Univalence} : S1 ≃ S1 := mkEqv negid negid negid_negid n
 Definition flip_cover `{Univalence}
   : ((S1; negid) : {B : Type & B -> S1}) = (S1; idmap)
   := cov_eq negidEqv idmap.
+
+(** Corollary [cor:id-m-cycle], from [cor:ConnCycles] ([ConnCycles]) for
+    [(X, t) ≡ (Y, u) ≡ (Fin m, zs)]: the second part uses
+    [endo_fun_concat], and that [endo_fun (zs, !)] is [zs]. *)
+Section IdMCycle.
+
+  Context `{ua : Univalence} (k : ℕ).
+
+  Local Notation zsk := (fst (finsuccEqv k)).
+
+  Definition trans_concat {X : Type} {a b c : X} (p : a = b) (q : b = c) : trans p q = p @ q.
+  Proof. destruct q, p. exact refl. Defined.
+
+  Definition endo_fun_endo_path {X Y : Type} {t : X -> X} {u : Y -> Y} (e : X ≃ Y)
+    (h : fst e ∘ t = u ∘ fst e) (x : X)
+    : endo_fun (endo_path e h) x = fst e x.
+  Proof.
+    refine (endo_fun_trp _ x @ _).
+    refine (ap (fun r => transport idmap r x) (ap_fst_pathpair _ _) @ _).
+    exact (ap (fun e' : X ≃ Y => fst e' x) (ptoe_etop e)).
+  Defined.
+
+  Definition idm_eqv : (((Fin (S k); zsk) : Endo) = (Fin (S k); zsk)) ≃ Fin (S k)
+    := (ev_x0 (finsuccEqv k) (finsuccEqv k) fin_zero;
+        ConnCycles (Fin_isSet (S k)) (Fin_isSet (S k)) (finsuccEqv k) (finsuccEqv k)
+          (Fin_isCycle k) (Fin_isCycle k) (fun n => (idmap; idmap)) fin_zero).
+
+End IdMCycle.
+
+Definition cor_id_m_cycle `{ua : Univalence} : cor_id_m_cycle_stmt.
+Proof.
+  intro k. cbv zeta.
+  refine (idm_eqv k; (_; _)).
+  - exact (endo_fun_trp (t := fst (finsuccEqv k)) (u := fst (finsuccEqv k)) refl fin_zero).
+  - intro p.
+  change (endo_fun (trans p (endo_path (finsuccEqv k) refl)) fin_zero
+          = fst (finsuccEqv k) (endo_fun p fin_zero)).
+  refine (ap (fun r => endo_fun r fin_zero) (trans_concat _ _) @ _).
+  refine (endo_fun_concat _ _ _ @ _).
+  exact (endo_fun_endo_path _ _ _).
+Defined.
