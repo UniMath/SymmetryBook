@@ -22,9 +22,14 @@
       with the transitive [G]-set [fibGSet] of fibers of a monomorphism,
       [fibGSet_trans]).
 
+    - Remark [rem:typeofsubgpstrivifab] ([rem_typeofsubgpstrivifab]:
+      [isAb_conj], [conj_isAb], and the trivial action for abelian [G]).
+      NOTE: the book's converse (trivial [Mono(G)] implies abelian) fails
+      for [Q_8], all of whose subgroups are normal; the statement is
+      restated with only the implication.
+
     Left out (statements only)
-    - Remark [rem:typeofsubgpstrivifab] ([rem_typeofsubgpstrivifab_stmt]);
-      that [E] is an equivalence (with [lem:SubG=MonoG], Section 5.3);
+    - That [E] is an equivalence (with [lem:SubG=MonoG], Section 5.3);
       exercise [xca:Sub(Sigma3)], first part ([xca_Sub_Sigma3_stmt]); the
       orbit structure of [Sub(Σ_3)] is not formalized.
  *)
@@ -81,13 +86,39 @@ Definition USymf_conj_mono `{fe : Funext} {G H : Group} (f : Hom H (regroup G (s
   : USymf (compG (moveshape G g) f) h = g ⋅ (USymf f h ⋅ g⁻¹)
   := ap (fun u => u h) (USym_compose f (moveshape G g)) @ USymf_moveshape G g (USymf f h).
 
-(** Remark [rem:typeofsubgpstrivifab] (statement only): [G] is abelian
-    iff all conjugations are trivial, iff the action of [Mono(G)] is
-    trivial. *)
+(** Remark [rem:typeofsubgpstrivifab]: [G] is abelian iff all
+    conjugations are trivial, and then the action of [Mono(G)] is
+    trivial.  NOTE: the book also claims the converse, that [G] is
+    abelian if the [G]-set [Mono(G)] is trivial.  That fails for the
+    quaternion group [Q_8]: all its subgroups are normal, so conjugation
+    fixes every element of the set [Mono(Q_8)], but [Q_8] is not
+    abelian.  The [G]-set [Mono(G)] is trivial iff all subgroups are
+    normal.  We state and prove only the implication. *)
 Definition rem_typeofsubgpstrivifab_stmt `{fe : Funext} : Type
   := forall G : Group,
        (isAb G <-> forall g q : USym G, g ⋅ (q ⋅ g⁻¹) = q)
-       × (isAb G <-> forall (g : USym G) (m : MonoFam G (sh G)), trp (MonoFam G) g m = m).
+       × (isAb G -> forall (g : USym G) (m : MonoFam G (sh G)), trp (MonoFam G) g m = m).
+
+Definition isAb_conj {G : Group} (ab : isAb G) (g q : USym G) : g ⋅ (q ⋅ g⁻¹) = q
+  := trans_assoc _ _ _ @ ap (fun r => r ⋅ g⁻¹) (ab g q) @ (trans_assoc _ _ _)^
+     @ ap (fun r => q ⋅ r) (trans_Vp g) @ trans_1p q.
+
+Definition conj_isAb {G : Group} (c : forall g q : USym G, g ⋅ (q ⋅ g⁻¹) = q) : isAb G
+  := fun g h => (trans_1p (g ⋅ h))^ @ ap (fun r => (g ⋅ h) ⋅ r) (trans_pV g)^
+                @ trans_assoc _ _ _ @ ap (fun r => r ⋅ g) (trans_assoc _ _ _)^
+                @ ap (fun r => r ⋅ g) (c g h).
+
+Definition rem_typeofsubgpstrivifab `{fe : Funext} : rem_typeofsubgpstrivifab_stmt.
+Proof.
+  intro G. refine ((isAb_conj, conj_isAb); _).
+  intros ab g [H [f mf]].
+  assert (E : compG (moveshape G g) f = f).
+  { apply USymf_cancel. apply ptw_inv. intro h0.
+    exact (USymf_conj_mono f g h0 @ isAb_conj ab g (USymf f h0)). }
+  refine (act_MonoFam g H f mf (trp ismono E^ mf) @ _).
+  exact (ap (fun w => (H; w) : MonoFam G (sh G))
+            (path_sigma_prop ismono_isProp (u := (_; trp ismono E^ mf)) (v := (f; mf)) E)).
+Defined.
 
 (** The definition of the [G]-set [Sub(G)], [z ↦ Sub(mkgroup(BG_÷, z))],
     again as a family of types (size issue); [SubGrp] is a set
