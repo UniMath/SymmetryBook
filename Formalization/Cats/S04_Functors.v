@@ -30,6 +30,12 @@
       [components_natiso]); exercise [xca:path-core-adj]
       ([xca_path_core_adj], with inverse [path_functor]:
       [p ↦ idtoiso(ap f p)]).
+    - Exercise [xca:functor-cat-univalent] ([FunctorCat_isUnivalent]):
+      a natural isomorphism gives an identification of functors
+      ([iso_path], componentwise by univalence of [D]; transport of the
+      arrow action is conjugation, [trp_fmap]), and the type of
+      functors with a natural isomorphism from [F] is contractible
+      ([FC_tot_contr]).
     - Example [ex:repr-functors] ([RepCo], [RepContra]).
 
     Left out (statements only, no proofs yet)
@@ -37,9 +43,8 @@
     - Exercise [xca:wildprecat-of-wildprecats] for wild functors into
       wild precategories ([wild_functor_laws_stmt]); the pentagon fillers
       are left out.
-    - Exercises [xca:wildcat-of-precats] ([xca_wildcat_of_precats_stmt],
-      for precategories) and [xca:functor-cat-univalent]
-      ([FunctorCat_isUnivalent_stmt]).
+    - Exercise [xca:wildcat-of-precats] ([xca_wildcat_of_precats_stmt],
+      for precategories).
 
     Left out (not formalized)
     - The hidden example after [def:full-faithful] (a work-in-progress
@@ -451,8 +456,83 @@ Section FunctorCat.
       exact (ap (fun k => k ∘c fst a A) (isIsoC_inv_eq (i A))^ @ snd (snd (i A))).
   Defined.
 
-  (** Exercise [xca:functor-cat-univalent] (statement only). *)
+  (** Exercise [xca:functor-cat-univalent]. *)
   Definition FunctorCat_isUnivalent_stmt : Type := isUnivalent D -> isUnivalent FunctorCat.
+
+  (** Transport of the action on arrows along [p : ob = ob'] is
+      conjugation with [idtoiso]. *)
+  Definition trp_fmap {ob ob' : Ob C -> Ob D} (p : ob = ob')
+    (m : forall A B, homC A B -> homC (ob A) (ob B)) (A B : Ob C) (f : homC A B)
+    : trp (fun (ob0 : Ob C -> Ob D) => forall A B, homC A B -> homC (ob0 A) (ob0 B)) p m A B f
+      = fst (idtoiso (ap (fun ob0 => ob0 B) p)) ∘c (m A B f ∘c invC (idtoiso (ap (fun ob0 => ob0 A) p))).
+  Proof. destruct p. exact (lamC _ @ rhoC _)^. Defined.
+
+  Definition ap_fob_path_Functor (F G : Functor C D) (p : fob F = fob G) q
+    : ap (@fob C D) (path_Functor pd F G p q) = p.
+  Proof.
+    destruct F as [ob m i c], G as [ob' m' i' c']. cbn in p, q. destruct p, q.
+    unfold path_Functor. cbn.
+    repeat match goal with |- context [match ?X with refl => _ end] => destruct X end.
+    exact refl.
+  Defined.
+
+  Definition ap_ev_ptw_inv {X : Type} {Y : X -> Type} {f g : forall x, Y x}
+    (h : forall x, f x = g x) (x : X) : ap (fun ob0 => ob0 x) (ptw_inv h) = h x.
+  Proof.
+    refine (_ @ ap (fun k => k x) (eqinv_r (funext f g) h)).
+    exact (match ptw_inv h as p return ap (fun ob0 => ob0 x) p = ptw p x with
+           | refl => refl end).
+  Defined.
+
+  Definition trp_idIso (F G : Functor C D) (P : F = G) (A : Ob C)
+    : fst (fst (trp (fun H => IsoC (C := FunctorCat) F H) P (idIsoC (C := FunctorCat) F))) A
+      = fst (idtoiso (ap (fun H => fob H A) P)).
+  Proof. destruct P. exact refl. Defined.
+
+  Section FCUnivalent.
+
+    Context (u : isUnivalent D).
+
+    Definition isotoidD {X Y : Ob D} (e : IsoC X Y) : X = Y := eqinv (u X Y) e.
+
+    Definition comp_iso {F G : Functor C D} (i : IsoC (C := FunctorCat) F G) (A : Ob C)
+      : IsoC (fob F A) (fob G A)
+      := (fst (fst i) A; natiso_components (fst i) (snd i) A).
+
+    Definition iso_path {F G : Functor C D} (i : IsoC (C := FunctorCat) F G) : F = G.
+    Proof.
+      refine (path_Functor pd F G (ptw_inv (fun A => isotoidD (comp_iso i A))) _).
+      apply ptw_inv; intro A; apply ptw_inv; intro B; apply ptw_inv; intro f.
+      refine (trp_fmap _ (@fmap C D F) A B f @ _).
+      refine (ap011 (fun x y => fst x ∘c (fmap F f ∘c invC y))
+                (ap idtoiso (ap_ev_ptw_inv _ B) @ eqinv_r (u _ _) (comp_iso i B))
+                (ap idtoiso (ap_ev_ptw_inv _ A) @ eqinv_r (u _ _) (comp_iso i A)) @ _).
+      refine (alphaC _ _ _ @ ap (fun k => k ∘c _) (snd (fst i) A B f)^ @ (alphaC _ _ _)^ @ _).
+      exact (ap (fun k => fmap G f ∘c k) (snd (fst (snd (comp_iso i A)))) @ rhoC _).
+    Defined.
+
+    Definition FC_tot_contr (F : Functor C D)
+      : isContr {G : Functor C D & IsoC (C := FunctorCat) F G}.
+    Proof.
+      refine ((F; idIsoC (C := FunctorCat) F); _). intros [G i].
+      refine (pathpair (iso_path i) _).
+      apply path_IsoC. apply (path_NatTrans pd). intro A.
+      refine (trp_idIso F G (iso_path i) A @ _).
+      refine (ap (fun q => fst (idtoiso q))
+                (ap_compose (@fob C D) (fun ob0 => ob0 A) (iso_path i)
+                 @ ap (ap (fun ob0 => ob0 A)) (ap_fob_path_Functor _ _ _ _)
+                 @ ap_ev_ptw_inv _ A) @ _).
+      exact (ap fst (eqinv_r (u _ _) (comp_iso i A))).
+    Defined.
+
+  End FCUnivalent.
+
+  Definition FunctorCat_isUnivalent : FunctorCat_isUnivalent_stmt.
+  Proof.
+    intros u F.
+    apply (isEquiv_from_tot (fun G (p : F = G) => @idtoiso FunctorCat F G p)).
+    exact (contr_map_isEquiv (singleton_contr F) (FC_tot_contr u F) _).
+  Defined.
 
 End FunctorCat.
 
