@@ -61,14 +61,22 @@
       ([gab]).  It disagrees with its image under [(a b)] only at
       [{a, b}] ([dis_gab]).
 
+    - Exercise [xca:sign-by-crossings] ([xca_sign_by_crossings], with
+      [inversions]): with the standard local ordering [gmin], the
+      2-element subsets where [gmin] and [σ⁻¹·gmin] disagree are the
+      inversions of [σ] ([inversions_ndis]).
+    - The exercise on even permutations ([even_perms_count]): for
+      [n ≥ 2] there are [n!/2] of them, since composing with a
+      transposition exchanges even and odd permutations ([Ev_Od]).
+      Both exercises are placed at the end, with statements at the
+      anchors.
+
     Left out (statements only, no proofs yet)
     - The pointing of [Bsgn] by the standard sign ordering of [Fin n]
       ([Bsgn_pt_stmt]) and that [BAG] is a connected groupoid
       ([BAG_isConn_stmt]).
-    - The exercises [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]),
-      [xca:sign-by-crossings] ([xca_sign_by_crossings_stmt], with
-      [inversions]) and the count [n!/2] of even permutations
-      ([even_perms_count_stmt]). *)
+    - Exercise [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]), which needs
+      both. *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -543,7 +551,8 @@ Section Sign.
          (even (length l) = even (length l')) × (sign (perm_of A σ) = even (length l)).
 
   (** Exercise [xca:sign-by-crossings]: the sign is [(-1)^{inv(σ)}],
-      counting inversions through [Fin n ≃ {k | k < n}]. *)
+      counting inversions through [Fin n ≃ {k | k < n}] (proved below,
+      [xca_sign_by_crossings]). *)
   Definition inversions (n : ℕ) (σ : Fin n ≃ Fin n) : ℕ
     := finadd (fun ij : Fin n * Fin n =>
          let i := fst (equiv_fin_finnat n (Overture.fst ij)) in
@@ -556,7 +565,8 @@ Section Sign.
     := forall (n : ℕ) (σ : Fin n ≃ Fin n),
          sign (perm_of (sh (SG n)) σ) = even (inversions n σ).
 
-  (** The number of even permutations is [n!/2] for [n ≥ 2]. *)
+  (** The number of even permutations is [n!/2] for [n ≥ 2] (proved
+      below, [even_perms_count]). *)
   Definition even_perms_count_stmt : Type
     := forall n : ℕ, (2 <= n)%nat ->
          {h : isFinSet {σ : sh (SG n) = sh (SG n) & sign σ = yes} &
@@ -1244,4 +1254,401 @@ Proof.
   intros n A σ l l' h h' hl hl'.
   pose (s := sign_of_transpsL A σ l h hl).
   exact (s^ @ sign_of_transpsL A σ l' h' hl'; s).
+Defined.
+
+(** ** Exercise [xca:sign-by-crossings]
+
+    By [sign_ndis] for [σ⁻¹] and the standard local ordering [gmin]
+    (the least element of each 2-element subset of [Fin n]), [sgn(σ)]
+    is the parity of the number of subsets [{i, j}] with [i < j] on
+    which [gmin] and [σ⁻¹·gmin] disagree, i.e. with [σ(j) < σ(i)]
+    ([inv_dis], [dis_inv]).  These subsets correspond to the inversions
+    of [σ] ([inv_to_dis], [inversions_ndis]). *)
+
+(** The least element of a decidable subset of [Fin m], for the order
+    of [fin_to_nat]. *)
+Definition minF (m : ℕ) (S : Fin m -> Bool)
+  : {x : Fin m & (S x = true) × (forall y, S y = true -> (fin_to_nat x <= fin_to_nat y)%nat)}
+    + (forall y, S y = false).
+Proof.
+  induction m as [|m IH].
+  - right. intros [].
+  - destruct (IH (fun x => S (inl x))) as [[x [rx hx]] | k].
+    + left. refine (inl x; (rx; _)). intros [y|[]] ry.
+      * exact (hx y ry).
+      * exact (leq_succ_l (is_bounded_fin_to_nat x)).
+    + destruct (dec_paths (S (inr tt)) true) as [r|k'].
+      * left. refine (inr tt; (r; _)). intros [y|[]] ry.
+        -- destruct (false_ne_true ((k y)^ @ ry)).
+        -- exact (leq_refl _).
+      * right. intros [y|[]]; [exact (k y) | exact (not_true_false k')].
+Defined.
+
+Definition lt_ne {a b : ℕ} (l : (a < b)%nat) : a ≠ b
+  := fun e => lt_irrefl b (trp (fun z => (z < b)%nat) e l).
+
+Definition lt_leq_absurd {a b : ℕ} (l : (a < b)%nat) (l' : (b <= a)%nat) : Empty
+  := lt_irrefl b (lt_leq_lt_trans l' l).
+
+Definition bmul_yes (u v : Bool) (e : bmul u v = yes) : v = u.
+Proof. destruct u, v; first [exact refl | destruct (false_ne_true e) | destruct (false_ne_true e)]. Defined.
+
+Section Crossings.
+  Context `{Univalence} (n : ℕ).
+
+  Local Notation A := (sh (SG n)).
+  Local Notation EAX := (EA (fst (fst (sh (SG n)))) (H0 := comp_Finite (sh (SG n)))).
+
+  Definition fcode (x : Fin n) : ℕ := fst (equiv_fin_finnat n x).
+
+  Definition cd_inj (x y : Fin n) (e : fcode x = fcode y) : x = y
+    := (eissect (equiv_fin_finnat n) x)^
+       @ ap (equiv_fin_finnat n)^-1 (path_sigma_hprop (equiv_fin_finnat n x) (equiv_fin_finnat n y) e)
+       @ eissect (equiv_fin_finnat n) y.
+
+  (** The standard local ordering: the least element of each 2-element
+      subset. *)
+  Definition gmin : LOB A.
+  Proof.
+    intro E. destruct (minF n (fst E)) as [w|k].
+    - exact (fst w; fst (snd w)).
+    - apply Empty_rec.
+      refine (ptrunc_rec (fun (x y : Empty) => match x with end) _ (el2_Fin2 (PB A E))). intro p.
+      pose (z := trp idmap p fin2_0 : sub_el _ (fst E)).
+      exact (false_ne_true ((k (fst z))^ @ snd z)).
+  Defined.
+
+  Definition gmin_min (E : EAX) (y : Fin n) (ry : fst E y = true)
+    : (fcode (fst (gmin E)) <= fcode y)%nat.
+  Proof.
+    unfold gmin. destruct (minF n (fst E)) as [w|k].
+    - exact (snd (snd w) y ry).
+    - destruct (false_ne_true ((k y)^ @ ry)).
+  Defined.
+
+  Definition gmin_eq (E : EAX) (x y : Fin n) (rx : fst E x = true) (ry : fst E y = true)
+    (l : (fcode x < fcode y)%nat) : fst (gmin E) = x.
+  Proof.
+    destruct (dec_paths (fst (gmin E)) x) as [e|ne]; [exact e|].
+    apply Empty_rec.
+    pose (my := ap fst (el2_two (PB A E) (gmin E) (x; rx) (y; ry)
+                          (fun q => ne (ap fst q)) (fun q => lt_ne l (ap fcode (ap fst q))))).
+    exact (lt_leq_absurd l (trp (fun z => (fcode z <= fcode x)%nat) my (gmin_min E x rx))).
+  Defined.
+
+  Context (σ : Fin n ≃ Fin n).
+
+  Local Notation ρ := (Eqv_inv σ).
+
+  Definition comp_inv_pt {Y : Type} (τ : Y ≃ Y) (x : Y)
+    : fst (Eqv_comp τ (Eqv_inv τ)) x = fst (idEqv Y) x
+    := eqinv_l (snd τ) x.
+
+  Definition sign_inv : sign (perm_of A σ) = sign (perm_of A ρ).
+  Proof.
+    apply bmul_yes. refine ((sign_comp A σ ρ)^ @ _).
+    refine (ap sign (perm_of_ext A (Eqv_comp σ ρ) (idEqv _) (comp_inv_pt σ)) @ _).
+    exact (ap sign (perm_of_id A) @ sign_refl A).
+  Defined.
+
+  Local Notation pullρ E := (pullEA (FX := comp_Finite A) (FY := comp_Finite A) ρ E).
+
+  Local Notation dis' := (dis (PB A) gmin (actLO ρ gmin)).
+
+  Definition dis_ne (E : EAX) (k : Fin (dis' E)) : fst (gmin E) ≠ fst (actLO ρ gmin E).
+  Proof.
+    revert k. unfold dis. destruct (el2_dec (PB A E) (gmin E) (actLO ρ gmin E)) as [q|q].
+    - intros [].
+    - intros _ e. exact (q (path_sigma_prop (fun x => isSet_bool _ _) e)).
+  Defined.
+
+  Definition ne_dis (E : EAX) (ne : fst (gmin E) ≠ fst (actLO ρ gmin E)) : Fin (dis' E).
+  Proof.
+    unfold dis. destruct (el2_dec (PB A E) (gmin E) (actLO ρ gmin E)) as [q|q].
+    - destruct (ne (ap fst q)).
+    - exact (inr tt).
+  Defined.
+
+  Definition dis_isProp (E : EAX) : isProp (Fin (dis' E)).
+  Proof.
+    unfold dis. destruct (el2_dec (PB A E) (gmin E) (actLO ρ gmin E)).
+    - intros [].
+    - exact Fin1_isProp.
+  Defined.
+
+  Definition ρσ (x : Fin n) : fst ρ (fst σ x) = x := eqinv_l (snd σ) x.
+
+  Section Pair.
+    Context (i j : Fin n) (l : (fcode i < fcode j)%nat).
+
+    Definition nij : i ≠ j := fun e => lt_ne l (ap fcode e).
+
+    Local Notation Eij := (e_ab A i j nij).
+
+    Definition g_ij : fst (gmin Eij) = i := gmin_eq Eij i j (Sab_a A i j) (Sab_b A i j) l.
+
+    Definition pull_σ (x : Fin n) (r : Sab A i j x = true)
+      : fst (pullρ Eij) (fst σ x) = true
+      := ap (Sab A i j) (ρσ x) @ r.
+
+    Definition σij_ne : fcode (fst σ i) ≠ fcode (fst σ j)
+      := fun e => nij ((ρσ i)^ @ ap (fst ρ) (cd_inj _ _ e) @ ρσ j).
+
+    (** [{i, j}] counts iff [(i, j)] is an inversion of [σ]. *)
+    Definition inv_dis (l' : (fcode (fst σ j) < fcode (fst σ i))%nat) : Fin (dis' Eij).
+    Proof.
+      apply ne_dis. refine (trp (fun z => z ≠ _) g_ij^ _).
+      change (i ≠ fst ρ (fst (gmin (pullρ Eij)))).
+      rewrite (gmin_eq (pullρ Eij) (fst σ j) (fst σ i)
+                 (pull_σ j (Sab_b A i j)) (pull_σ i (Sab_a A i j)) l').
+      rewrite ρσ. exact nij.
+    Defined.
+
+    Definition dis_inv (k : Fin (dis' Eij)) : (fcode (fst σ j) < fcode (fst σ i))%nat.
+    Proof.
+      destruct (nat_trichotomy (fcode (fst σ j)) (fcode (fst σ i))) as [[l'|e]|l'].
+      - exact l'.
+      - destruct (σij_ne e^).
+      - apply Empty_rec. apply (dis_ne Eij k). refine (g_ij @ _).
+        change (i = fst ρ (fst (gmin (pullρ Eij)))).
+        rewrite (gmin_eq (pullρ Eij) (fst σ i) (fst σ j)
+                   (pull_σ i (Sab_a A i j)) (pull_σ j (Sab_b A i j)) l').
+        exact (ρσ i)^.
+    Defined.
+  End Pair.
+
+  (** The summands of [inversions n σ]. *)
+  Definition indf (ij : Fin n * Fin n) : ℕ
+    := let i := fst (equiv_fin_finnat n (Overture.fst ij)) in
+       let j := fst (equiv_fin_finnat n (Overture.snd ij)) in
+       let si := fst (equiv_fin_finnat n (fst σ (Overture.fst ij))) in
+       let sj := fst (equiv_fin_finnat n (fst σ (Overture.snd ij))) in
+       if dec ((i < j)%nat * (sj < si)%nat) then 1%nat else 0%nat.
+
+  Definition ind_prop (ij : Fin n * Fin n) (k : Fin (indf ij))
+    : (fcode (Overture.fst ij) < fcode (Overture.snd ij))%nat
+      * (fcode (fst σ (Overture.snd ij)) < fcode (fst σ (Overture.fst ij)))%nat.
+  Proof.
+    revert k. unfold indf. cbv zeta. destruct (dec _) as [p|_].
+    - intros _. exact p.
+    - intros [].
+  Defined.
+
+  Definition prop_ind (i j : Fin n) (l : (fcode i < fcode j)%nat) (l' : (fcode (fst σ j) < fcode (fst σ i))%nat)
+    : Fin (indf (i, j)).
+  Proof.
+    unfold indf. cbv zeta. destruct (dec _) as [_|np].
+    - exact (inr tt).
+    - destruct (np (l, l')).
+  Defined.
+
+  Definition ind_isProp (ij : Fin n * Fin n) : isProp (Fin (indf ij)).
+  Proof.
+    unfold indf. cbv zeta. destruct (dec _).
+    - exact Fin1_isProp.
+    - intros [].
+  Defined.
+
+  Definition Sab_true (a b x : Fin n) (r : Sab A a b x = true) : (x = a) + (x = b).
+  Proof.
+    revert r. unfold Sab.
+    destruct (deceq (finset_isDecSet (comp_isFinSet A)) x a) as [e|_]; [intros _; exact (inl e)|].
+    destruct (deceq (finset_isDecSet (comp_isFinSet A)) x b) as [e|_];
+      [intros _; exact (inr e) | intro r; destruct (false_ne_true r)].
+  Defined.
+
+  (** Inversions of [σ] correspond to 2-element subsets on which [gmin]
+      and [σ⁻¹·gmin] disagree. *)
+  Definition inv_to_dis (w : {ij : Fin n * Fin n & Fin (indf ij)}) : {E : EAX & Fin (dis' E)}
+    := (e_ab A (Overture.fst (fst w)) (Overture.snd (fst w))
+          (nij _ _ (Overture.fst (ind_prop _ (snd w))));
+        inv_dis _ _ (Overture.fst (ind_prop _ (snd w))) (Overture.snd (ind_prop _ (snd w)))).
+
+  Definition inv_to_dis_inj (u u' : {ij : Fin n * Fin n & Fin (indf ij)}) (e : inv_to_dis u = inv_to_dis u') : u = u'.
+  Proof.
+    destruct u as [[i j] k], u' as [[i' j'] k'].
+    pose (l := Overture.fst (ind_prop _ k)). pose (l' := Overture.fst (ind_prop _ k')).
+    pose (e1 := ap fst e : e_ab A i j (nij i j l) = e_ab A i' j' (nij i' j' l')).
+    pose (ii := (g_ij i j l)^ @ ap (fun E => fst (gmin E)) e1 @ g_ij i' j' l').
+    pose (jS := (ap (fun E : EAX => fst E j) e1)^ @ Sab_b A i j : Sab A i' j' j = true).
+    refine (path_sigma_prop ind_isProp (u := ((i, j); k)) (v := ((i', j'); k')) (path_prod' ii _)).
+    destruct (Sab_true i' j' j jS) as [e2|e2].
+    - destruct (nij i j l (ii @ e2^)).
+    - exact e2.
+  Defined.
+
+  Definition e_ab_irr (a b : Fin n) (n1 n2 : a ≠ b) : e_ab A a b n1 = e_ab A a b n2.
+  Proof. unfold e_ab. apply (ap (fun c => (Sab A a b; c))). apply ℕ_isSet. Defined.
+
+  Definition inv_to_dis_surj : isSurj inv_to_dis.
+  Proof.
+    intros [E k].
+    refine (ptrunc_rec ptrunc_isProp _ (el2_other (PB A E) (gmin E))). intros [y ny].
+    pose (x0 := fst (gmin E)). pose (y0 := fst y).
+    assert (ne0 : x0 ≠ y0).
+    { intro e. apply ny. exact (path_sigma_prop (fun x => isSet_bool _ _) e^). }
+    assert (l : (fcode x0 < fcode y0)%nat).
+    { destruct (nat_trichotomy (fcode x0) (fcode y0)) as [[l|e]|l].
+      - exact l.
+      - destruct (ne0 (cd_inj _ _ e)).
+      - destruct (lt_leq_absurd l (gmin_min E y0 (snd y))). }
+    pose (rE := both_e_ab A x0 y0 (nij x0 y0 l) E (snd (gmin E)) (snd y)).
+    pose (l' := dis_inv x0 y0 l (trp (fun E => Fin (dis' E)) rE k)).
+    apply trunc. refine (((x0, y0); prop_ind x0 y0 l l'); _).
+    refine (path_sigma_prop dis_isProp _).
+    exact (rE @ e_ab_irr _ _ _ _).
+  Defined.
+
+  Definition inversions_ndis
+    : inversions n σ = @ndis _ _ (FE (hEB A)) (PB A) gmin (actLO ρ gmin).
+  Proof.
+    unfold inversions, ndis, finadd.
+    exact (fcard_equiv' (Equiv_of_Eqv (inv_to_dis; inj_surj_isEquiv
+                                              (cancel_isInj (IsHSet_isSet _) inv_to_dis_inj) inv_to_dis_surj))).
+  Defined.
+End Crossings.
+
+(** For [n ≤ 1] both sides are trivial. *)
+Definition sign_crossings_small `{Univalence} (n : ℕ) (σ : Fin n ≃ Fin n)
+  (h : forall x y : Fin n, x = y)
+  : sign (perm_of (sh (SG n)) σ) = even (inversions n σ).
+Proof.
+  refine (ap sign (perm_of_ext (sh (SG n)) σ (idEqv _) (fun x => h _ _))
+          @ ap sign (perm_of_id (sh (SG n))) @ sign_refl (sh (SG n)) @ _).
+  assert (r : indf n σ = fun _ => 0%nat).
+  { apply path_forall. intro ij. unfold indf. cbv zeta. destruct (dec _) as [p|_].
+    - destruct (lt_ne (Overture.fst p) (ap (fcode n) (h _ _))).
+    - exact refl. }
+  change (yes = even (finadd (indf n σ))).
+  rewrite r, (finadd_const (Fin n * Fin n) 0), nat_mul_zero_r. exact refl.
+Defined.
+
+(** Exercise [xca:sign-by-crossings]. *)
+Definition xca_sign_by_crossings `{Univalence} : xca_sign_by_crossings_stmt.
+Proof.
+  intros n σ. destruct n as [|[|m]].
+  - exact (sign_crossings_small 0 σ (fun x => match x with end)).
+  - refine (sign_crossings_small 1 σ _). intros [[]|[]] [[]|[]]. exact refl.
+  - pose (ne := trunc (e_ab (sh (SG m.+2)) (inr tt) (inl (inr tt)) (fun q => inl_ne_inr _ _ q^))).
+    refine (sign_inv _ σ @ sign_ndis (sh (SG m.+2)) (Eqv_inv σ) ne (gmin _) @ _).
+    exact (ap even (inversions_ndis _ σ)^).
+Defined.
+
+
+(** ** The exercise on the number of even permutations (after the remark
+    following [xca:sign-by-crossings])
+
+    Composing with a transposition exchanges the even and the odd
+    permutations ([Ev_Od]), and there are [n!] permutations ([fcard_aut]);
+    the symmetries of [Fin n] in [BΣ_n] are the permutations
+    ([perm_of_isEquiv]). *)
+
+Section EvenCount.
+  Context `{Univalence}.
+
+  (** [perm_of] is an equivalence. *)
+  Definition perm_of_isEquiv {n : ℕ} (A : utype (BG (SG n))) : isEquiv (perm_of A).
+  Proof.
+    refine (iso_to_isEquiv _ (fun w => idtoeqv (ap (fun B => fst (fst B)) w)) _ _).
+    - intro σ. exact (ap idtoeqv (ap_fst_fst_perm_of A σ) @ ptoe_etop σ).
+    - intro w.
+      refine (ap (fun q => path_sigma_prop (fun _ => ptrunc_isProp) (u := A) (v := A)
+                            (path_sigma_prop (fun X => isSet_isProp X) (u := fst A) (v := fst A) q))
+                 (etop_ptoe (ap (fun B => fst (fst B)) w) @ ap_compose fst fst w) @ _).
+      refine (ap (path_sigma_prop (fun _ => ptrunc_isProp) (u := A) (v := A))
+                 (path_sigma_prop_eta (fun X => isSet_isProp X) (ap fst w))^ @ _).
+      exact (path_sigma_prop_eta (fun _ => ptrunc_isProp) w)^.
+  Defined.
+
+  (** A type splits along a map to [Bool]. *)
+  Definition split_Bool_eqv {X : Type} (f : X -> Bool)
+    : X <~> ({x : X & f x = true} + {x : X & f x = false}).
+  Proof.
+    refine (equiv_adjointify
+              (fun x => match dec_paths (f x) true with
+                        | inl r => inl (x; r)
+                        | inr k => inr (x; not_true_false k) end)
+              (fun s => match s with inl w => fst w | inr w => fst w end) _ _).
+    - intros [[x r]|[x r]]; cbn; destruct (dec_paths (f x) true) as [r'|k].
+      + exact (ap inl (path_sigma_hprop (x; r') (x; r) refl)).
+      + destruct (k r).
+      + destruct (false_ne_true (r^ @ r')).
+      + exact (ap inr (path_sigma_hprop (x; not_true_false k) (x; r) refl)).
+    - intro x. cbn. destruct (dec_paths (f x) true); exact refl.
+  Defined.
+
+  Definition Equiv_comp_pt {X : Type} (σ : X <~> X) (τ : X ≃ X) (x : X)
+    : fst (Eqv_of_Equiv (σ oE Equiv_of_Eqv τ)) x = fst (Eqv_comp τ (Eqv_of_Equiv σ)) x
+    := refl.
+
+  Context (n : ℕ).
+
+  Local Notation A := (sh (SG n)).
+  Local Notation dA := (finset_isDecSet (comp_isFinSet A)).
+
+  Definition sgnE (σ : Fin n <~> Fin n) : Bool := sign (perm_of A (Eqv_of_Equiv σ)).
+
+  Definition EvP : Type := {σ : Fin n <~> Fin n & sgnE σ = true}.
+  Definition OdP : Type := {σ : Fin n <~> Fin n & sgnE σ = false}.
+
+  (** Composing with a transposition exchanges even and odd permutations. *)
+  Context (a b : Fin n) (nab : a ≠ b).
+
+  Definition tauE : Fin n <~> Fin n := Equiv_of_Eqv (transpEqv dA a b).
+
+  Definition sgnE_tau (σ : Fin n <~> Fin n) : sgnE (σ oE tauE) = negb (sgnE σ).
+  Proof.
+    unfold sgnE.
+    refine (ap sign (perm_of_ext A _ (Eqv_comp (transpEqv dA a b) (Eqv_of_Equiv σ))
+                       (Equiv_comp_pt σ (transpEqv dA a b))) @ _).
+    refine (sign_comp A _ _ @ _).
+    rewrite (sign_transp A a b nab).
+    destruct (sign (perm_of A (Eqv_of_Equiv σ))); exact refl.
+  Defined.
+
+  Definition tau_invol (σ : Fin n <~> Fin n) : (σ oE tauE) oE tauE = σ.
+  Proof.
+    apply path_equiv. apply path_forall. intro x.
+    exact (ap σ (transp_invol dA a b x)).
+  Defined.
+
+  Definition Ev_Od : EvP <~> OdP.
+  Proof.
+    refine (equiv_adjointify
+              (fun w : EvP => (fst w oE tauE; sgnE_tau (fst w) @ ap negb (snd w)) : OdP)
+              (fun w : OdP => (fst w oE tauE; sgnE_tau (fst w) @ ap negb (snd w)) : EvP) _ _).
+    - intro w. apply path_sigma_hprop. exact (tau_invol (fst w)).
+    - intro w. apply path_sigma_hprop. exact (tau_invol (fst w)).
+  Defined.
+
+  Definition fcard_Ev : (fcard EvP + fcard EvP)%nat = fact n.
+  Proof.
+    refine (ap (nat_add _) (fcard_equiv' Ev_Od) @ _).
+    refine ((fcard_sum EvP OdP)^ @ _).
+    refine ((fcard_equiv' (split_Bool_eqv sgnE))^ @ _).
+    exact (fcard_aut (Fin n)).
+  Defined.
+End EvenCount.
+
+Definition mul2 (k : ℕ) : mul 2 k = (k + k)%nat.
+Proof. cbn. rewrite nat_add_zero_r. exact refl. Defined.
+
+Definition loops_EvP `{Univalence} (n : ℕ)
+  : EvP n <~> {σ : sh (SG n) = sh (SG n) & sign σ = yes}
+  := equiv_functor_sigma'
+       (equiv_compose' (Equiv_of_Eqv (perm_of (sh (SG n)); perm_of_isEquiv (sh (SG n))))
+                       (Equiv_of_Eqv (Equiv_Eqv_eqv (Fin n) (Fin n))))
+       (fun σ => equiv_idmap).
+
+(** The exercise: for [n ≥ 2] there are [n!/2] even permutations. *)
+Definition even_perms_count `{Univalence} : even_perms_count_stmt.
+Proof.
+  intros n l.
+  destruct n as [|[|m]].
+  - destruct (not_lt_zero_r _ l).
+  - destruct (lt_irrefl _ l).
+  - pose (e := loops_EvP m.+2).
+    refine (Finite_isFinSet (finite_equiv' _ e _); _).
+    refine (ap (mul 2) (cardF_fcard _ @ (fcard_equiv' e)^) @ mul2 _ @ _).
+    exact (fcard_Ev m.+2 (inr tt) (inl (inr tt)) (fun q => inl_ne_inr _ _ q^)).
 Defined.
