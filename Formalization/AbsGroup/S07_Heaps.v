@@ -17,9 +17,12 @@
     - The heap operation [heap_op], abelian heaps ([isAbHeap]) and the
       structure map [heap_struct].
 
+    - The maps [r ↦ p q⁻¹ r] of [USym(H)] are the left multiplications by
+      symmetries of the end point ([heap_maps]; the statement assumes
+      [Funext], since the maps are compared as functions).
+
     Left out (statements only, no proofs yet; time limit per result)
-    - The group of symmetries [r ↦ p q⁻¹ r] of [USym(H)]
-      ([heap_maps_stmt]), the isomorphism of the endpoint groups of an
+    - The isomorphism of the endpoint groups of an
       abelian heap ([abheap_iso_stmt]), and exercise [xca:heap-variety]
       (heaps as a variety with a ternary operation;
       [xca_heap_variety_stmt]).
@@ -122,13 +125,29 @@ Defined.
 (** The heap operation [(p, q, r) ↦ p q⁻¹ r] on [USym(H)]. *)
 Definition heap_op (H : Heap) (p q r : USymH H) : USymH H := p ⋅ (q⁻¹ ⋅ r).
 
-(** The maps [r ↦ p q⁻¹ r] of [USym(H)] (statement only): they are
+(** The maps [r ↦ p q⁻¹ r] of [USym(H)]: they are
     exactly the left multiplications by symmetries of the end shape, so
     they form the symmetry group of the end point. *)
-Definition heap_maps_stmt : Type
+Definition heap_maps_stmt `{Funext} : Type
   := forall (H : Heap) (φ : USymH H -> USymH H),
        Ex (fun pq : USymH H × USymH H => φ = heap_op H (fst pq) (snd pq))
        <-> Ex (fun l : hend H = hend H => φ = fun r => l ⋅ r).
+
+(** The proof: [p q⁻¹ r = (p q⁻¹) r], and conversely [l r = (l q) q⁻¹ r]
+    for any [q : USym(H)], which exists merely. *)
+Definition heap_maps `{fe : Funext} : heap_maps_stmt.
+Proof.
+  intros H φ. split.
+  - refine (ptrunc_rec ptrunc_isProp _). intros [[p q] e]. apply trunc.
+    refine (p ⋅ q⁻¹; _).
+    exact (e @ ptw_inv (fun r => trans_assoc _ _ _)).
+  - refine (ptrunc_rec ptrunc_isProp _). intros [l e].
+    refine (ptrunc_rec ptrunc_isProp _ (snd (fst (snd (fst (BH H)))) (hstart H) (hend H))).
+    intro q. apply trunc. refine ((l ⋅ q; q); _).
+    refine (e @ ptw_inv (fun r => _)).
+    exact ((ap (fun s => l ⋅ s) (trans_assoc _ _ _ @ ap (fun s => s ⋅ r) (trans_Vp q)))^
+           @ trans_assoc _ _ _).
+Defined.
 
 (** Abelian heaps, whose endpoint groups are (purely) isomorphic
     (statement only). *)
