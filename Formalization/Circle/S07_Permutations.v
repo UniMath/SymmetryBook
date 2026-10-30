@@ -63,10 +63,9 @@
     - That [(ℤ, zs)] is not a cyclic permutation ([zs_not_cyc]): the
       integer [1 + Σ_a nat(a)] is not in the list ([iplus_notin]), so
       [cyc] fixes it.
-
-    Left out (statements only, no proofs yet)
     - The corollary with [a ≠ b] for each pair [(a, b)] in the list
-      ([perm_transpositions_ne_stmt]); it holds for the pairs we produce.
+      ([perm_transpositions_ne]), by dropping the pairs [(a, a)]
+      ([filter_ne]).
 
     Left out (not formalized)
     - The claim in [rem:cycle-vs-cycle] that turning a transposition
@@ -850,7 +849,7 @@ Definition perm_transpositions `{Univalence} {X : Type} (h : isFinSet X) (σ : X
        h.
 
 (** The corollary with genuine transpositions, i.e. with [a ≠ b] for each
-    pair [(a, b)] in the list (statement only). *)
+    pair [(a, b)] in the list. *)
 Fixpoint all_pairs_ne {X : Type} (l : list (X × X)) : Type
   := match l with nil => Unit | cons p l' => (fst p ≠ snd p) × all_pairs_ne l' end.
 
@@ -858,6 +857,45 @@ Definition perm_transpositions_ne_stmt `{Univalence} : Type
   := forall (X : Type) (h : isFinSet X) (σ : X ≃ X),
        ptrunc {l : list (X × X) & all_pairs_ne l
                  × (forall x, fst σ x = transpsL (finset_isDecSet h) l x)}.
+
+(** Dropping the pairs [(a, a)], which give the identity. *)
+Fixpoint filter_ne {X : Type} (dA : isDecSet X) (l : list (X × X)) : list (X × X)
+  := match l with
+     | nil => nil
+     | cons p l' => match deceq dA (fst p) (snd p) with
+                    | inl _ => filter_ne dA l'
+                    | inr _ => cons p (filter_ne dA l')
+                    end
+     end.
+
+Definition filter_ne_all {X : Type} (dA : isDecSet X) (l : list (X × X))
+  : all_pairs_ne (filter_ne dA l).
+Proof.
+  induction l as [|p l IH]; [exact tt|]. cbn.
+  destruct (deceq dA (fst p) (snd p)) as [_|n]; [exact IH | exact (n; IH)].
+Defined.
+
+Definition transp_same {X : Type} (dA : isDecSet X) (a x : X) : transp dA a a x = x.
+Proof.
+  unfold transp. destruct (deceq dA x a) as [e|n]; [exact e^ | exact refl].
+Defined.
+
+Definition transpsL_filter_ne {X : Type} (dA : isDecSet X) (l : list (X × X)) (x : X)
+  : transpsL dA l x = transpsL dA (filter_ne dA l) x.
+Proof.
+  revert x. induction l as [|[a b] l IH]; intro x; [exact refl|]. cbn.
+  destruct (deceq dA a b) as [e|_].
+  - destruct e. exact (ap (transpsL dA l) (transp_same dA a x) @ IH x).
+  - exact (IH _).
+Defined.
+
+Definition perm_transpositions_ne `{Univalence} : perm_transpositions_ne_stmt.
+Proof.
+  intros X h σ.
+  refine (ptrunc_rec ptrunc_isProp _ (perm_transpositions h σ)). intros [l hl].
+  exact (trunc (filter_ne _ l; (filter_ne_all _ l;
+                                fun x => hl x @ transpsL_filter_ne _ l x))).
+Defined.
 
 (** The exercise on binomial coefficients (the exercise after
     [def:support-permutation]): a set [A] of cardinality [n] has
