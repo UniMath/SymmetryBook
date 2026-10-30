@@ -16,10 +16,18 @@
       remark following the theorem: [g] is recovered from the action of
       [ρ_G(g)] on [refl_{sh_G}].
 
+    - Exercise [xca:PP-fixed-permutations] ([xca_PP_fixed], with
+      [PermSet], [FixedPerms], [act_PermSet]: transport in [PermSet] is
+      conjugation).  NOTE for the book text: a fixed [π] is
+      [x ↦ x π(refl)] ([fixed_rmul]), so evaluation at [refl] reverses
+      the order: [(π ∘ π')(refl) = π'(refl) π(refl)].  It is an
+      anti-isomorphism, unless the fixed permutations get the opposite
+      composition (or one evaluates [π ↦ π(refl)⁻¹]).  The statement
+      first had the order the other way round; it is corrected.
+
     Left out (statements only, no proofs yet; time limit per result)
     - The description of the subgroup [E(G, ρ_G)]
-      ([E_rho_symmetries_stmt]) and exercise [xca:PP-fixed-permutations]
-      ([xca_PP_fixed_stmt], with [PermSet] and [FixedPerms]).
+      ([E_rho_symmetries_stmt]).
 
     Left out (not formalized)
     - The proof via [lem:BGbytorsor] (the theorem is proved otherwise) and
@@ -97,11 +105,12 @@ Section Cayley.
     := forall σ : USym (SG_S USymSet),
          ptrunc (fiber (USymf rho) σ) <-> Ex (fun g : USym G => forall x, trp F σ x = x ⋅ g⁻¹).
 
-  (** Exercise [xca:PP-fixed-permutations] (statement only): the
+  (** Exercise [xca:PP-fixed-permutations]: the
       permutations of [UG] fixed by the action of [G] on
       [z ↦ ((sh_G = z) ≃ (sh_G = z))] are those with
       [π(g g') = g π(g')], and evaluation at [refl] is an equivalence from
-      them to [UG] turning composition into multiplication. *)
+      them to [UG] turning composition into the opposite multiplication
+      (see the NOTE in the header). *)
   Definition PermSet (z : utype (BG G)) : SetU
     := (((sh G = z) ≃ (sh G = z)); Eqv_sets_isSet (BG_isGrpd G (sh G) z)).
 
@@ -114,6 +123,52 @@ Section Cayley.
           <-> (forall g g' : USym G, fst pi (g ⋅ g') = g ⋅ fst pi g'))
        × isEquiv (fun pi : FixedPerms => fst (fst pi) refl)
        × (forall pi pi' : FixedPerms,
-            fst (fst pi) (fst (fst pi') refl) = fst (fst pi) refl ⋅ fst (fst pi') refl).
+            fst (fst pi) (fst (fst pi') refl) = fst (fst pi') refl ⋅ fst (fst pi) refl).
+
+  (** Transport in [PermSet] is conjugation: [p · π = p π(p⁻¹ _)]. *)
+  Definition act_PermSet {z : utype (BG G)} (p : sh G = z) (pi : el PermSet (sh G))
+    (x : sh G = z) : fst (act PermSet p pi) x = p ⋅ fst pi (p⁻¹ ⋅ x).
+  Proof. destruct p. exact refl. Defined.
+
+  Definition fixed_hom (pi : USym G ≃ USym G) (h : forall g : USym G, act PermSet g pi = pi)
+    (g g' : USym G) : fst pi (g ⋅ g') = g ⋅ fst pi g'.
+  Proof.
+    refine ((ap (fun s : USym G ≃ USym G => fst s (g ⋅ g')) (h g))^ @ act_PermSet g pi _ @ _).
+    exact (ap (fun y => g ⋅ fst pi y) (trans_assoc g' g g⁻¹ @ ap (fun r => r ⋅ g') (trans_pV g))).
+  Defined.
+
+  Definition hom_fixed (pi : USym G ≃ USym G)
+    (h : forall g g' : USym G, fst pi (g ⋅ g') = g ⋅ fst pi g') (g : USym G)
+    : act PermSet g pi = pi.
+  Proof.
+    apply path_Eqv. apply ptw_inv. intro x.
+    refine (act_PermSet g pi x @ ap (fun y => g ⋅ y) (h g⁻¹ x) @ _).
+    exact (trans_assoc _ g⁻¹ g @ ap (fun r => r ⋅ fst pi x) (trans_Vp g)).
+  Defined.
+
+  (** The fixed permutation [x ↦ x h]. *)
+  Definition rmul_eqv (h : USym G) : USym G ≃ USym G
+    := mkEqv (fun x => x ⋅ h) (fun x => x ⋅ h⁻¹)
+         (fun x => (trans_assoc h⁻¹ h x)^ @ ap (fun r => x ⋅ r) (trans_Vp h) @ trans_1p x)
+         (fun x => (trans_assoc h h⁻¹ x)^ @ ap (fun r => x ⋅ r) (trans_pV h) @ trans_1p x).
+
+  Definition rmul_fixed (h : USym G) : FixedPerms
+    := (rmul_eqv h; fun g g' => (trans_assoc h g' g)^).
+
+  Definition fixed_rmul (pi : FixedPerms) (x : USym G) : fst (fst pi) x = x ⋅ fst (fst pi) refl
+    := ap (fst (fst pi)) (trans_1p x)^ @ snd pi x refl.
+
+  (** The statement had [π(π'(refl)) = π(refl) π'(refl)], which fails for
+      non-abelian [G]: evaluation at [refl] turns composition into the
+      opposite multiplication. *)
+  Definition xca_PP_fixed : xca_PP_fixed_stmt.
+  Proof.
+    refine (((fun pi => (fixed_hom pi, hom_fixed pi)); _); _).
+    - refine (iso_to_isEquiv _ rmul_fixed _ (fun h => refl)).
+      intro pi. refine (path_sigma_prop (fun _ => Pi_isProp (fun _ => Pi_isProp
+                          (fun _ => USym_isSet G _ _))) _).
+      apply path_Eqv. apply ptw_inv. intro x. exact (fixed_rmul pi x)^.
+    - intros pi pi'. exact (fixed_rmul pi _).
+  Defined.
 
 End Cayley.

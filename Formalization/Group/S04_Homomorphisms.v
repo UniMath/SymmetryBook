@@ -48,13 +48,12 @@
     - Example [ex:groups-morphisms](1) for [Σ_m → Σ_{m+n}] and
       [Σ_m → Σ_{mn}] ([SG_sum_hom], [SG_prod_hom], given the
       identifications of finite sets), and (4) ([mod_hom], with
-      [forget_cyc_hom] and [Rm_hom]).
+      [forget_cyc_hom] and [Rm_hom]).  The equivalences
+      [Fin(m) ⨿ Fin(n) ≃ Fin(m+n)] and [Fin(m) × Fin(n) ≃ Fin(mn)]
+      used there ([fin_sum_eqv], [fin_prod_eqv], by induction).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - The identifications [Fin(m+n) = Fin(m) ⨿ Fin(n)] and
-      [Fin(mn) = Fin(m) × Fin(n)] ([fin_sum_eqv_stmt],
-      [fin_prod_eqv_stmt]), and the factorization of [R_m] through
-      [mod_m] ([mod_factor_stmt]).
+    - The factorization of [R_m] through [mod_m] ([mod_factor_stmt]).
     - The remark that [id_{Σ_3} ≠ τ̃] in [Hom(Σ_3, Σ_3)]
       ([id_ne_tau_stmt], with [tau3]).
  *)
@@ -292,6 +291,56 @@ Definition SG_prod_hom `{Univalence} (m n : ℕ)
 Definition fin_sum_eqv_stmt : Type := forall m n : ℕ, Fin m ⨿ Fin n ≃ Fin (add m n).
 
 Definition fin_prod_eqv_stmt : Type := forall m n : ℕ, Fin m × Fin n ≃ Fin (mul m n).
+
+(** Both by induction, using [Fin (S k) ≡ Fin k ⨿ 𝟙], [add m (S n) ≡
+    S (add m n)] and [mul (S m) n ≡ add (mul m n) n]. *)
+Definition sum_eqv {A A' B B' : Type} (e1 : A ≃ A') (e2 : B ≃ B') : A ⨿ B ≃ A' ⨿ B'
+  := mkEqv (fun s => match s with inl a => inl (fst e1 a) | inr b => inr (fst e2 b) end)
+           (fun s => match s with inl a => inl (eqinv (snd e1) a) | inr b => inr (eqinv (snd e2) b) end)
+           (fun s => match s with inl a => ap inl (eqinv_l (snd e1) a)
+                               | inr b => ap inr (eqinv_l (snd e2) b) end)
+           (fun s => match s with inl a => ap inl (eqinv_r (snd e1) a)
+                               | inr b => ap inr (eqinv_r (snd e2) b) end).
+
+Fixpoint fin_sum_eqv (m n : ℕ) : Fin m ⨿ Fin n ≃ Fin (add m n)
+  := match n with
+     | O => mkEqv (fun s : Fin m ⨿ Empty => match s with inl a => a | inr e => match e with end end)
+                  (fun a : Fin m => inl a)
+                  (fun s : Fin m ⨿ Empty => match s with inl a => refl | inr e => match e with end end)
+                  (fun a => refl)
+     | S n' => Eqv_comp
+                 (mkEqv (fun s : Fin m ⨿ (Fin n' ⨿ True) =>
+                           match s with inl a => inl (inl a) | inr (inl b) => inl (inr b)
+                                      | inr (inr t) => inr t end)
+                        (fun s => match s with inl (inl a) => inl a | inl (inr b) => inr (inl b)
+                                             | inr t => inr (inr t) end)
+                        (fun s => match s with inl a => refl | inr (inl b) => refl
+                                             | inr (inr t) => refl end)
+                        (fun s => match s with inl (inl a) => refl | inl (inr b) => refl
+                                             | inr t => refl end))
+                 (sum_eqv (fin_sum_eqv m n') (idEqv True))
+     end.
+
+Fixpoint fin_prod_eqv (m n : ℕ) : Fin m × Fin n ≃ Fin (mul m n)
+  := match m with
+     | O => mkEqv (fun w : Empty × Fin n => match fst w with end) (fun e : Empty => match e with end)
+                  (fun w : Empty × Fin n => match fst w with end) (fun e : Empty => match e with end)
+     | S m' => Eqv_comp
+                 (mkEqv (fun w : (Fin m' ⨿ True) × Fin n =>
+                           match fst w with inl a => inl (a; snd w) | inr _ => inr (snd w) end)
+                        (fun s => match s with inl w => (inl (fst w); snd w) | inr b => (inr tt; b) end)
+                        (fun w => match w with
+                                  | (inl a; b) => refl
+                                  | (inr t; b) => match t with tt => refl end
+                                  end)
+                        (fun s => match s with inl w => refl | inr b => refl end))
+                 (Eqv_comp (sum_eqv (fin_prod_eqv m' n) (idEqv (Fin n)))
+                           (fin_sum_eqv (mul m' n) n))
+     end.
+
+Definition fin_sum_eqv_proof : fin_sum_eqv_stmt := fin_sum_eqv.
+
+Definition fin_prod_eqv_proof : fin_prod_eqv_stmt := fin_prod_eqv.
 
 (** Example [ex:groups-morphisms](4), item [it:mod_m]: [mod_m : ℤ → C_m], with
     [Bmod_m(base) :≡ (Fin m, zs)] and [Bmod_m(loop) := (zs, !)], pointed
