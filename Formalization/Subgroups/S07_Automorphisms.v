@@ -20,10 +20,12 @@
       [Binn] by the book's chain of equivalences ([fiber_Binn_eqv]), and
       the set truncation of an equivalence ([strunc_eqv]).
 
+    - The kernel of [inn] is [Aut_{BG_÷ = BG_÷}(refl)] ([ker_inn_center],
+      via [fiber_Binn_eqv], which sends [shKer] to [refl]); this is the
+      center of [sec:abelian-groups] (Chapter 12, not formalized yet).
+
     Left out (statements only)
-    - The kernel of [inn] as
-      the center ([ker_inn_center_stmt]; the center is defined in
-      [sec:abelian-groups], not yet formalized); that [Inn(G)] is
+    - That [Inn(G)] is
       normal ([Inn_normal_stmt]); construction [cons:simpler-version-Out]
       ([cons_simpler_version_Out_stmt], as an isomorphism, with
       [Trunc1U_isGrpd]).
@@ -116,8 +118,8 @@ Section Automorphisms.
     := fun g h => USym_inn_gen G g h.
 
   (** The kernel of [inn] is [Aut_{BG_÷ = BG_÷}(refl)], the center [Z(G)]
-      of [sec:abelian-groups] (Chapter 12, not formalized yet; statement
-      only). *)
+      of [sec:abelian-groups] (Chapter 12, not formalized yet); proved
+      after the section ([ker_inn_center]). *)
   Definition ker_inn_center_stmt : Type
     := forall gp : isGrpd (utype (BG G) = utype (BG G)), Iso (Ker inn) (AutG gp refl).
 
@@ -151,3 +153,30 @@ Section Automorphisms.
     := Iso (AutG Trunc1U_isGrpd (tr (utype (BG G)))) OutG.
 
 End Automorphisms.
+
+(** The kernel of [inn] is [Aut_{BG_÷ = BG_÷}(refl)]: by [fiber_Binn_eqv]
+    the fiber of [Binn] over [sh_{Aut(G)}] is [BG_÷ = BG_÷], with [shKer]
+    sent to [refl]. *)
+Definition ap_fst_pair_refl {A : Type} {P : A -> Type} (x : A) (s s' : P x) (e : s = s')
+  : ap fst (match e in (_ = b) return ((x; s) = (x; b) :> {a : A & P a}) with refl => refl end) = refl.
+Proof. destruct e. exact refl. Defined.
+
+Definition fiber_Binn_shKer `{ua : Univalence} (X : UUscone)
+  : fst (fiber_Binn_eqv (inc X) (sh (AutGrp (inc X)))) (shKer (inn (inc X))) = refl.
+Proof.
+  cbn.
+  refine (ap (fun r : inc X = inc X =>
+                fst (pathsplit (ap fst (ap (fun X0 : UUscone => ((fst X0; fst (snd X0)); snd (snd X0)))
+                                         (ap out r)))))
+            (ap_fst_pair_refl (inc X) _ _ _) @ _).
+  exact refl.
+Defined.
+
+Definition ker_inn_center `{ua : Univalence} (G : Group) : ker_inn_center_stmt G.
+Proof.
+  destruct G as [X]. intro gp.
+  pose (e := comp_eqv (fiber_Binn_eqv (inc X) (sh (AutGrp (inc X)))) (fiber_Binn_shKer X)).
+  refine (fst (path_Group_Iso_eqv _ _)
+            (@path_Group _ (Ker (inn (inc X))) (AutG gp refl) ((fst e; _); snd e))).
+  apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact (fiber_Binn_shKer X)^.
+Defined.
