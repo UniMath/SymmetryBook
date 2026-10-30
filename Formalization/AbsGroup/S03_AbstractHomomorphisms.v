@@ -230,6 +230,25 @@ Section AbstrBinn.
     : trp (fun y => y = y) p x = (p ⋅ x) ⋅ p⁻¹.
   Proof. destruct p. exact (trans_1p x)^. Defined.
 
+  (** Transport of [USym] along [Binn(g)] is conjugation [x ↦ g x g⁻¹]. *)
+  Definition trp_Binn_loop (X : UUscone) (g x : USym (inc X))
+    : trp (fun c0 : component Group (inc X) => USym (fst c0)) (loops_fun (Binn (inc X)) g) x
+      = (g ⋅ x) ⋅ g⁻¹.
+  Proof.
+    unfold loops_fun.
+    pose (F := fun c0 : component Group (inc X) => USym (fst c0)).
+    pose (x' := x : F (pt (BAutG (inc X)))).
+    refine (trp_trans_gen F _ (snd (Binn (inc X)))⁻¹ x' @ _).
+    refine (ap (trp F _) (trp_trans_gen F (snd (Binn (inc X))) _ x') @ _).
+    assert (e : ap fst (snd (Binn (inc X))) = refl) by exact (ap_fst_path_sigma_prop _ _).
+    refine (trp_fst_inv _ _ @ ap (fun s => trp USym s⁻¹ _) e @ _).
+    match goal with |- _ = ?R =>
+      change (trp F (ap (fst (Binn (inc X))) g) (trp F (snd (Binn (inc X))) x') = R) end.
+    refine (ap (trp F _) (trp_fst _ x' @ ap (fun s => trp USym s x') e) @ _).
+    refine ((ptw (trp_ap F (fst (Binn (inc X))) g) x)^ @ _).
+    exact (trp_loop_conj g x).
+  Defined.
+
   Definition abstr_Binn : abstr_Binn_stmt.
   Proof.
     intros [X] g.
@@ -237,18 +256,7 @@ Section AbstrBinn.
     apply (path_sigma_prop (fun f => Pi_isProp (fun _ => Pi_isProp (fun _ => ag_isSet _ _ _)))).
     apply path_Eqv. apply ptw_inv. intro x.
     refine (ptw (idtoAbsIso_S _) x @ _).
-    refine (ptoe_ap_abstr _ x @ _).
-    unfold loops_fun.
-    pose (F := fun c0 : component Group (inc X) => USym (fst c0)).
-    refine (trp_trans_gen F _ _ x @ _).
-    refine (ap (trp F _) (trp_trans_gen F _ _ x) @ _).
-    assert (e : ap fst (snd (Binn (inc X))) = refl) by exact (ap_fst_path_sigma_prop _ _).
-    refine (trp_fst_inv _ _ @ ap (fun s => trp USym s⁻¹ _) e @ _).
-    match goal with |- _ = ?R =>
-      change (trp F (ap (fst (Binn (inc X))) g) (trp F (snd (Binn (inc X))) x) = R) end.
-    refine (ap (trp F _) (trp_fst _ x @ ap (fun s => trp USym s x) e) @ _).
-    refine ((ptw (trp_ap F (fst (Binn (inc X))) g) x)^ @ _).
-    exact (trp_loop_conj g x).
+    exact (ptoe_ap_abstr _ x @ trp_Binn_loop X g x).
   Defined.
 
 End AbstrBinn.

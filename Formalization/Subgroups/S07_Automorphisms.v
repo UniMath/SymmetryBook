@@ -14,8 +14,12 @@
       [out(G)] ([outG], the cokernel of [inn]); [Inn(G)] ([InnG], the
       image of [inn]); [Out(G)] ([OutG]).
 
+    - The remark on [USym inn] ([USym_inn], via [USymf_path_Group_Iso]
+      and [trp_Binn_loop] of Section 7.3), with [h ↦ g h g⁻¹].  NOTE for
+      the book text: the remark says [h ↦ g⁻¹ h g]; see [USym_inn_stmt].
+
     Left out (statements only)
-    - The remark on [USym inn] ([USym_inn_stmt]); the kernel of [inn] as
+    - The kernel of [inn] as
       the center ([ker_inn_center_stmt]; the center is defined in
       [sec:abelian-groups], not yet formalized); lemma
       [lemma:coker-out-action] ([coker_out_action_stmt]); that [Inn(G)] is
@@ -33,6 +37,21 @@ Local Open Scope uf_scope.
 
 (** ** 9.7 Automorphisms of groups *)
 
+(** [USymf] of the isomorphism given by an identification of groups is
+    transport. *)
+Definition USymf_path_Group_Iso `{Univalence} {G K : Group} (P : G = K) (h : USym G)
+  : USymf (fst (fst (path_Group_Iso_eqv G K) P)) h = trp USym P h.
+Proof. destruct P. destruct G as [X]. exact (trans_1p _ @ ap_idmap h). Defined.
+
+Definition USym_inn_gen `{Univalence} (G : Group) (g h : USym G)
+  : USymf (fst (fst (path_Group_Iso_eqv G G) (ap fst (loops_fun (Binn G) g)))) h = (g ⋅ h) ⋅ g⁻¹.
+Proof.
+  revert g h. destruct G as [X]. intros g h.
+  refine (USymf_path_Group_Iso _ h @ _).
+  refine ((ptw (trp_ap USym fst (loops_fun (Binn (inc X)) g)) h)^ @ _).
+  exact (trp_Binn_loop X g h).
+Defined.
+
 Section Automorphisms.
 
   Context `{ua : Univalence} (G : Group).
@@ -49,12 +68,19 @@ Section Automorphisms.
       instead of [refl_G], since [Copy] has no definitional eta). *)
   Definition inn : Hom G AutGrp := @mkhom G AutGrp (Binn G).
 
-  (** The remark on [USym inn] (statement only): [USym inn(g)] is the inner
-      automorphism [h ↦ g⁻¹ h g]; up to the identification
-      [path_Group_Iso_eqv] of Section 4.4 it is [conj_hom G g]. *)
+  (** The remark on [USym inn]: [USym inn(g)] is the inner automorphism
+      [h ↦ g h g⁻¹], up to the identification [path_Group_Iso_eqv] of
+      Section 4.4.  NOTE for the book text: the remark says
+      [h ↦ g⁻¹ h g], with [B(USym inn(g))] the identity pointed by [g];
+      by example [exa:conj-concrete] (and [abstr(Binn)(g) = conj^g] in
+      example [ex:conjhom]) it is pointed by [g⁻¹], giving
+      [h ↦ g h g⁻¹] ([abstr_Binn] in Section 7.3 agrees). *)
   Definition USym_inn_stmt : Type
     := forall g h : USym G,
-         USymf (fst (fst (path_Group_Iso_eqv G G) (ap fst (USymf inn g)))) h = g⁻¹ ⋅ (h ⋅ g).
+         USymf (fst (fst (path_Group_Iso_eqv G G) (ap fst (USymf inn g)))) h = (g ⋅ h) ⋅ g⁻¹.
+
+  Definition USym_inn : USym_inn_stmt
+    := fun g h => USym_inn_gen G g h.
 
   (** The kernel of [inn] is [Aut_{BG_÷ = BG_÷}(refl)], the center [Z(G)]
       of [sec:abelian-groups] (Chapter 12, not formalized yet; statement
