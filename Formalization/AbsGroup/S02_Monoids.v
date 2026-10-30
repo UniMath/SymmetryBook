@@ -25,6 +25,11 @@
       and from an isomorphism an identification ([path_AbsGroup]), by
       equivalence induction ([Eqv_ind]) and the fact that unit and inverse
       are determined by the multiplication ([path_AbsGroup_mul]).
+      Conversely, [path_AbsGroup] is an equivalence
+      ([path_AbsGroup_isEquiv], the full analysis of [rem:abs-iso]): it
+      is a section of [idtoAbsIso] ([idtoAbsIso_path], using the
+      computation rule [Eqv_ind_beta]), so the isomorphisms out of [G]
+      form a contractible type.
     - Exercise [xca:typemonoidisgroupoid] ([Monoid_isGrpd],
       [AbsGroup_isGrpd]).
     - Exercise [xca:op-abs-group]: [ag_op] and the isomorphism [op_iso]
@@ -36,8 +41,6 @@
       the hint.
 
     Left out (statements only, no proofs yet; time limit per result)
-    - The converse of [path_AbsGroup], i.e. that [(G = H) ≃ AbsIso(G,H)]
-      (the full "analysis" of [rem:abs-iso]; [path_AbsGroup_isEquiv_stmt]).
     - Exercise on Furstenberg groups ([Furstenberg],
       [xca_furstenberg_stmt]).
  *)
@@ -302,11 +305,81 @@ Proof.
   destruct pμ. apply path_AbsGroup_mul.
 Defined.
 
-(** The converse of [path_AbsGroup] (statement only): it is an
-    equivalence [AbsIso(G,H) ≃ (G = H)], the full analysis of remark
-    [rem:abs-iso]. *)
+(** The converse of [path_AbsGroup]: it is an equivalence
+    [AbsIso(G,H) ≃ (G = H)], the full analysis of remark [rem:abs-iso]. *)
 Definition path_AbsGroup_isEquiv_stmt `{Univalence} : Type
   := forall G K : AbsGroup, isEquiv (@path_AbsGroup _ G K).
+
+(** The computation rule of equivalence induction, from the
+    contractibility of the fiber of [idtoeqv] over [idEqv]. *)
+Definition Eqv_J {X : Type} (P : forall Y : Type, X ≃ Y -> Type) (d : P X (idEqv X))
+  {Y : Type} (p : X = Y) : X ≃ Y -> P Y (idtoeqv p)
+  := match p with refl => fun _ => d end.
+
+Definition Eqv_ind_beta `{Univalence} {X : Type} (P : forall Y : Type, X ≃ Y -> Type)
+  (d : P X (idEqv X)) : Eqv_ind P d X (idEqv X) = d.
+Proof.
+  change (trp (P X) (eqinv_r (ua X X) (idEqv X))
+            (Eqv_J P d (eqinv (ua X X) (idEqv X)) (idEqv X)) = d).
+  pose (F := fun w : fiber (@idtoeqv X X) (idEqv X) =>
+               trp (P X) (snd w)^ (Eqv_J P d (fst w) (idEqv X))).
+  refine (ap (fun r => trp (P X) r _) (inv_V _)^ @ _).
+  exact (ap F (isContr_isProp' (ua X X (idEqv X))
+                 (eqinv (ua X X) (idEqv X); (eqinv_r (ua X X) (idEqv X))^) (refl; refl))).
+Defined.
+
+Definition ap_ag_S_path_AbsGroup_mul `{Funext}
+  (S : Type) (sS sS' : isSet S) (e e' : S) (μ : S -> S -> S) (ι ι' : S -> S)
+  ru lu asc ri ru' lu' asc' ri'
+  : ap ag_S (path_AbsGroup_mul S sS sS' e e' μ ι ι' ru lu asc ri ru' lu' asc' ri') = refl.
+Proof.
+  unfold path_AbsGroup_mul. cbn.
+  repeat match goal with |- context [match ?X with refl => _ end] => destruct X end.
+  exact refl.
+Defined.
+
+(** The underlying map of the set is that of the isomorphism. *)
+Definition path_AbsGroup_S `{Univalence} {G K : AbsGroup} (f : AbsIso G K)
+  : ptoe (ap ag_S (path_AbsGroup f)) = fst (fst f).
+Proof.
+  destruct G as [S sS e μ ι ru lu asc ri].
+  destruct K as [T sT e' μ' ι' ru' lu' asc' ri'].
+  destruct f as [f hf]. cbn in f, hf.
+  revert T f sT e' μ' ι' ru' lu' asc' ri' hf.
+  refine (Eqv_ind _ _).
+  intros sT e' μ' ι' ru' lu' asc' ri' hf.
+  unfold path_AbsGroup. cbn. rewrite Eqv_ind_beta. cbn.
+  match goal with |- context [match ?X with refl => _ end] => destruct X end.
+  exact (ap ptoe (ap_ag_S_path_AbsGroup_mul S sS sT e e' μ ι ι' ru lu asc ri ru' lu' asc' ri')).
+Defined.
+
+Definition idtoAbsIso {G K : AbsGroup} (p : G = K) : AbsIso G K
+  := match p with refl => AbsIso_id G end.
+
+Definition idtoAbsIso_S {G K : AbsGroup} (p : G = K)
+  : fst (fst (idtoAbsIso p)) = ptoe (ap ag_S p).
+Proof. destruct p. exact refl. Defined.
+
+Definition idtoAbsIso_path `{Univalence} {G K : AbsGroup} (f : AbsIso G K)
+  : idtoAbsIso (path_AbsGroup f) = f.
+Proof.
+  apply (path_sigma_prop (fun g => Pi_isProp (fun _ => Pi_isProp (fun _ => ag_isSet K _ _)))).
+  apply path_Eqv. exact (idtoAbsIso_S _ @ path_AbsGroup_S f).
+Defined.
+
+Definition path_AbsGroup_isEquiv `{Univalence} : path_AbsGroup_isEquiv_stmt.
+Proof.
+  intros G K.
+  assert (c : isContr {K' : AbsGroup & AbsIso G K'}).
+  { refine ((G; AbsIso_id G); _). intros [K' f].
+    refine (ap (tot (fun K'' (p : G = K'') => idtoAbsIso p))
+              (isContr_isProp' (singleton_contr G) (G; refl) (K'; path_AbsGroup f)) @ _).
+    exact (ap (fun g => (K'; g) : {K'' : AbsGroup & AbsIso G K''}) (idtoAbsIso_path f)). }
+  pose (t := isEquiv_from_tot (fun K' (p : G = K') => idtoAbsIso p)
+               (contr_map_isEquiv (singleton_contr G) c _) K).
+  refine (isEquiv_homotopic (eqinv t) _ _ (eqinv_isEquiv t)).
+  intro f. exact (ap (eqinv t) (idtoAbsIso_path f)^ @ eqinv_l t _).
+Defined.
 
 (** Exercise [xca:op-abs-group]: the opposite group, and the inverse as an
     isomorphism [G ≅ G^op]. *)
