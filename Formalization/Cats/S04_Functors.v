@@ -27,7 +27,9 @@
       ([PlusUnit]) and [ex:path-gpd-nat] ([PathFun], [PathNat]).
     - Definition [def:functor-cat] ([FunctorCat], a precategory) and
       exercise [xca:funext-nat-trans] ([natiso_components],
-      [components_natiso]).
+      [components_natiso]); exercise [xca:path-core-adj]
+      ([xca_path_core_adj], with inverse [path_functor]:
+      [p ↦ idtoiso(ap f p)]).
     - Example [ex:repr-functors] ([RepCo], [RepContra]).
 
     Left out (statements only, no proofs yet)
@@ -36,9 +38,8 @@
       wild precategories ([wild_functor_laws_stmt]); the pentagon fillers
       are left out.
     - Exercises [xca:wildcat-of-precats] ([xca_wildcat_of_precats_stmt],
-      for precategories), [xca:functor-cat-univalent]
-      ([FunctorCat_isUnivalent_stmt]) and [xca:path-core-adj]
-      ([xca_path_core_adj_stmt]).
+      for precategories) and [xca:functor-cat-univalent]
+      ([FunctorCat_isUnivalent_stmt]).
 
     Left out (not formalized)
     - The hidden example after [def:full-faithful] (a work-in-progress
@@ -455,12 +456,27 @@ Section FunctorCat.
 
 End FunctorCat.
 
-(** Exercise [xca:path-core-adj] (statement only): for a type [A] and a
+(** Exercise [xca:path-core-adj]: for a type [A] and a
     category [C], restricting to objects is an equivalence
     [[A, C] ≃ (A → Ob(C))]. *)
 Definition xca_path_core_adj_stmt `{Funext} : Type
   := forall (A : Type) (C : Cat),
        isEquiv (fun F : Functor (PathGrpd A) (fst C) => fob F).
+
+(** The inverse sends [f : A → Ob(C)] to the functor [p ↦ idtoiso(ap f p)]. *)
+Definition path_functor {A : Type} {C : WildPreCat} (f : A -> Ob C) : Functor (PathGrpd A) C.
+Proof.
+  refine (Build_Functor (PathGrpd A) C f (fun a b p => fst (idtoiso (ap f p))) (fun a => refl) _).
+  intros a b e p q. destruct q, p. exact (lamC _)^.
+Defined.
+
+Definition xca_path_core_adj `{Funext} : xca_path_core_adj_stmt.
+Proof.
+  intros A C. refine (iso_to_isEquiv _ path_functor _ (fun f => refl)).
+  intro F. refine (path_Functor (fst (snd C)) (path_functor (fob F)) F refl _). cbn.
+  apply path_forall. intro a. apply path_forall. intro b. apply path_forall. intro p.
+  destruct p. exact (fid F a)^.
+Defined.
 
 (** Example [ex:repr-functors]: the representable wild functors
     [Hom(C₀, -) : C → U] and [Hom(-, C₀) : C^op → U]. *)

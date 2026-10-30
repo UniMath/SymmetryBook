@@ -9,7 +9,10 @@
       ([adjeqv]) natural in both arguments at once ([adjnat]); the unit
       and counit [eq:adj-unit-counit] ([adj_unit], [adj_counit]),
       naturality of the unit ([adj_unit_nat]), and exercise
-      [xca:adj-triangles] ([adj_triangle_l], [adj_triangle_r]).
+      [xca:adj-triangles] ([adj_triangle_l], [adj_triangle_r]) and its
+      converse, exercise [xca:adj-from-triangles]
+      ([xca_adj_from_triangles], [adj_from_triangles], with inverse
+      [g ↦ ε ∘ F(g)]).
     - Example [ex:trunc-adj] ([TruncAdj], with the inclusion [InclFun]).
     - Example [ex:pt-unpt-adj] ([PlusAdj]).  NOTE for the book text: it
       reads "For [A : U_*] and [X : U]"; it should be [A : U] and
@@ -23,7 +26,6 @@
       [∃_f ⊣ f^* ⊣ ∀_f] on subsets ([exists_pull_adj], [pull_forall_adj]).
 
     Left out (statements only, no proofs yet)
-    - Exercise [xca:adj-from-triangles] ([xca_adj_from_triangles_stmt]).
     - The set-level [f_! ⊣ f^* ⊣ f_*] of example [ex:Sigma-Pi-adj]
       ([SigmaPi_Set_stmt]).
 
@@ -113,7 +115,7 @@ Section UnitCounit.
 
 End UnitCounit.
 
-(** Exercise [xca:adj-from-triangles] (statement only): functors with a
+(** Exercise [xca:adj-from-triangles]: functors with a
     unit and counit satisfying the triangle laws give an adjunction, with
     [α(f) :≡ G(f) ∘ η]. *)
 Definition xca_adj_from_triangles_stmt : Type
@@ -122,6 +124,66 @@ Definition xca_adj_from_triangles_stmt : Type
        (forall A, fst ε (fob F A) ∘c fmap F (fst η A) = idC (fob F A)) ->
        (forall B, fmap G (fst ε B) ∘c fst η (fob G B) = idC (fob G B)) ->
        {adj : Adjunction C D & (ladj adj = F) × (radj adj = G)}.
+
+Section FromTriangles.
+
+  Context {C D : WildPreCat} (F : Functor C D) (G : Functor D C)
+    (η : NatTrans (idF C) (compF G F)) (ε : NatTrans (compF F G) (idF D))
+    (tl : forall A, fst ε (fob F A) ∘c fmap F (fst η A) = idC (fob F A))
+    (tr : forall B, fmap G (fst ε B) ∘c fst η (fob G B) = idC (fob G B)).
+
+  Definition tri_alpha (A : Ob C) (B : Ob D) (f : homC (fob F A) B) : homC A (fob G B)
+    := fmap G f ∘c fst η A.
+
+  Definition tri_beta (A : Ob C) (B : Ob D) (g : homC A (fob G B)) : homC (fob F A) B
+    := fst ε B ∘c fmap F g.
+
+  Definition tri_beta_alpha (A : Ob C) (B : Ob D) (f : homC (fob F A) B)
+    : tri_beta A B (tri_alpha A B f) = f.
+  Proof.
+    unfold tri_beta, tri_alpha.
+    refine (ap (fun k => fst ε B ∘c k) (fcomp F (fst η A) (fmap G f)) @ _).
+    refine (alphaC _ _ _ @ _).
+    refine (ap (fun k => k ∘c fmap F (fst η A)) (snd ε _ _ f)^ @ _).
+    refine ((alphaC _ _ _)^ @ _).
+    exact (ap (fun k => f ∘c k) (tl A) @ rhoC f).
+  Defined.
+
+  Definition tri_alpha_beta (A : Ob C) (B : Ob D) (g : homC A (fob G B))
+    : tri_alpha A B (tri_beta A B g) = g.
+  Proof.
+    unfold tri_beta, tri_alpha.
+    refine (ap (fun k => k ∘c fst η A) (fcomp G (fmap F g) (fst ε B)) @ _).
+    refine ((alphaC _ _ _)^ @ _).
+    refine (ap (fun k => fmap G (fst ε B) ∘c k) (snd η _ _ g) @ _).
+    refine (alphaC _ _ _ @ _).
+    exact (ap (fun k => k ∘c g) (tr B) @ lamC g).
+  Defined.
+
+  Definition tri_nat (A' A : Ob C) (B B' : Ob D) (h : homC A' A) (f : homC (fob F A) B)
+    (g : homC B B')
+    : tri_alpha A' B' (g ∘c (f ∘c fmap F h)) = fmap G g ∘c (tri_alpha A B f ∘c h).
+  Proof.
+    unfold tri_alpha.
+    refine (ap (fun k => k ∘c fst η A')
+              (fcomp G _ g @ ap (fun k => fmap G g ∘c k) (fcomp G _ f)) @ _).
+    refine ((alphaC _ _ _)^ @ _).
+    apply (ap (fun k => fmap G g ∘c k)).
+    refine ((alphaC _ _ _)^ @ _).
+    refine (ap (fun k => fmap G f ∘c k) (snd η _ _ h) @ _).
+    exact (alphaC _ _ _).
+  Defined.
+
+  Definition adj_from_triangles : Adjunction C D
+    := {| ladj := F; radj := G;
+          adjeqv := fun A B => mkEqv (tri_alpha A B) (tri_beta A B)
+                                     (tri_beta_alpha A B) (tri_alpha_beta A B);
+          adjnat := tri_nat |}.
+
+End FromTriangles.
+
+Definition xca_adj_from_triangles : xca_adj_from_triangles_stmt
+  := fun C D F G η ε tl tr => (adj_from_triangles F G η ε tl tr; (refl; refl)).
 
 (** Example [ex:trunc-adj]: [‖-‖_n ⊣ ι_n], with the unit [|-|_n]. *)
 Definition InclFun (C : WildPreCat) (P : Ob C -> PropU) : Functor (FullSub C P) C

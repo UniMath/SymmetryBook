@@ -16,7 +16,9 @@
     - Definition [def:decidable-subgroup] ([isDecSubGrp]).
     - Definition [def:typeofmono]: [ismono], [Mono G], [Mono_trivial],
       [Mono_proper]; example [ex:prodinclismono] ([inG1_ismono],
-      [inG2_ismono]).
+      [inG2_ismono]) and example [ex:SGninSGn+1] ([ex_SGninSGn1]: a
+      loop of [BΣ_S] is determined by its permutation ([SGS_perm_inj]),
+      and [_ ⨿ T] acts on permutations as [σ ⨿ id] ([sum_hom_perm])).
     - The map [F : Sub(G) → Mono(G)] of lemma [lem:SubG=MonoG]
       ([subgrp_to_mono]); [Ufst] is injective since identifications in
       a total space over a family of sets are determined by their first
@@ -43,7 +45,7 @@
       object classifier [(∑_A (A → BG)) ≃ (BG → U)] restricted to
       connected domains and set-valued fibers.
     - Examples [ex:Rm0-subgroup], [exa:fix1subSGn], [exa:C3subC6],
-      [ex:SGninSGn+1], [exa:EforSG3], [ex:prodinclisGset], and exercises
+      [exa:EforSG3], [ex:prodinclisGset], and exercises
       [xca:SG2subSG3],
       [xca:C3subSG3], [xca:lagrange-Z-action-Rm],
       [xca:lagrange-if-subgr-not-normal] (the [..._stmt] definitions of
@@ -333,6 +335,40 @@ Definition Mono_proper {G : Group} (m : Mono G) : Type := ¬ isIso (fst (snd m))
     [Σ_S → Σ_{S ⨿ T}]. *)
 Definition ex_SGninSGn1_stmt `{Univalence} : Type
   := forall S T : SetU, ismono (sum_hom S T).
+
+(** The underlying permutation of a loop in [BΣ_S] determines the loop. *)
+Definition SGS_perm `{Univalence} {S : SetU} {A B : utype (BG (SG_S S))} (p : A = B)
+  : fst (fst A) ≃ fst (fst B)
+  := idtoeqv (ap fst (ap fst p)).
+
+Definition SGS_perm_inj `{Univalence} {S : SetU} {A B : utype (BG (SG_S S))} (p q : A = B)
+  (h : forall x, fst (SGS_perm p) x = fst (SGS_perm q) x) : p = q.
+Proof.
+  pose (j1 := isInj_cancel (isEquiv_isInj (snd (subtype_paths_eqv (fun _ => ptrunc_isProp) A B)))).
+  pose (j2 := isInj_cancel (isEquiv_isInj
+                (snd (subtype_paths_eqv (fun X => isSet_isProp X) (fst A) (fst B))))).
+  apply j1. apply j2.
+  exact ((etop_ptoe _)^ @ ap etop (path_Eqv _ _ (ptw_inv h)) @ etop_ptoe _).
+Defined.
+
+Definition sum_hom_perm `{Univalence} (S T : SetU) {A B : utype (BG (SG_S S))} (p : A = B)
+  (x : fst (fst A))
+  : fst (SGS_perm (ap (comp_map S (sumSetU T)) p)) (inl x) = inl (fst (SGS_perm p) x).
+Proof. destruct p. exact refl. Defined.
+
+Definition ex_SGninSGn1 `{Univalence} : ex_SGninSGn1_stmt.
+Proof.
+  intros S T. refine (cancel_isInj (USym_isSet _) _). intros p q e.
+  assert (r : forall l : USym (SG_S S),
+             USymf (sum_hom S T) l = ap (comp_map S (sumSetU T)) l).
+  { intro l. exact (trans_1p _). }
+  apply SGS_perm_inj. intro x.
+  exact (ap (fun s => match s with inl y => y | inr _ => x end)
+            ((sum_hom_perm S T p x)^
+             @ ap (fun l : USym (SG_S (sumSetU T S)) => fst (SGS_perm l) (inl x))
+                  ((r p)^ @ e @ r q)
+             @ sum_hom_perm S T q x)).
+Defined.
 
 (** Exercise [xca:SG2subSG3]: for a pointing path [π], the image of
     [Ui_3] consists of the permutations fixing the point [π⁻¹(inr triv)];
