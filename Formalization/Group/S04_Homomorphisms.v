@@ -277,7 +277,7 @@ Definition path_SetU0 `{Univalence} {S T : SetU} (e : fst S ≃ fst T) : S = T
 (** The homomorphisms [Σ_m → Σ_{m+n}] and [Σ_m → Σ_{mn}] of example
     [ex:groups-morphisms](1), from identifications
     [Fin(m+n) = Fin(m) ⨿ Fin(n)] and [Fin(mn) = Fin(m) × Fin(n)]; these
-    equivalences themselves are stated only. *)
+    equivalences are [fin_sum_eqv] and [fin_prod_eqv] below. *)
 Definition SG_sum_hom `{Univalence} (m n : ℕ)
   (e : fst (sumSetU (FinSetU n) (FinSetU m)) ≃ fst (FinSetU (add m n)))
   : Hom (SG m) (SG (add m n))

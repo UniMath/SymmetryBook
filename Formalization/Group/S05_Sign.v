@@ -71,12 +71,18 @@
       Both exercises are placed at the end, with statements at the
       anchors.
 
+    - The pointing of [Bsgn] by the standard sign ordering [gmin] of
+      [Fin n] ([Bsgn_pt]): a point [x] of a 2-element set [T] gives
+      [Fin 2 ≃ T] ([pt2_eqv], [pt2_path]).  [BAG n] is a groupoid
+      ([BAG_isGrpd]), and connected for [n ≥ 2] ([BAG_isConn], placed
+      at the end): a transposition has sign [-1] and so exchanges the
+      two points of [Bsgn(sh)].  NOTE: for [n ≤ 1] the type [BAG n] is
+      not connected ([BAG_not_conn], [BAG0_not_conn], [BAG1_not_conn]),
+      since then all symmetries of [sh] are trivial; the book defines
+      [A_n] for all [n], and [BAG_isConn_stmt] is restated for [n ≥ 2].
+
     Left out (statements only, no proofs yet)
-    - The pointing of [Bsgn] by the standard sign ordering of [Fin n]
-      ([Bsgn_pt_stmt]) and that [BAG] is a connected groupoid
-      ([BAG_isConn_stmt]).
-    - Exercise [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]), which needs
-      both. *)
+    - Exercise [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]). *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -486,7 +492,8 @@ Section Sign.
     := fst (Bf (mu_E (Finite_isFinSet (@EA_Finite _ (fst (fst A)) (comp_Finite A)))))
          (@PA _ (fst (fst A)) (comp_Finite A)).
 
-  (** The pointing of [Bsgn] from the standard ordering of [Fin n]. *)
+  (** The pointing of [Bsgn] from the standard ordering of [Fin n]
+      ([Bsgn_pt] at the end, from [gmin]). *)
   Definition Bsgn_pt_stmt : Type := forall n : ℕ, sh (SG 2) = Bsgn n (sh (SG n)).
 
   (** The sign homomorphism, given a pointing. *)
@@ -494,14 +501,17 @@ Section Sign.
     := mkhom ((Bsgn n; p) : BG (SG n) →* BG (SG 2)).
 
   (** Definition [def:alternating-groups]: [BA_n :≡ ∑_{A:BΣ_n} Bsgn(A)],
-      pointed at [(Fin n, p(fin2_0))]; that it is connected (so that
-      [A_n] is a group) is stated only. *)
+      pointed at [(Fin n, p(fin2_0))]; that it is a connected groupoid
+      (so that [A_n] is a group) is proved at the end ([BAG_isConn],
+      [BAG_isGrpd]).  NOTE: the book defines [A_n] for any [n], but for
+      [n ≤ 1] the type [BA_n] is not connected ([BAG_not_conn]), so we
+      state connectedness for [n ≥ 2] only. *)
   Definition BAG (n : ℕ) : Type := {A : utype (BG (SG n)) & el2 (Bsgn n A)}.
 
   Definition shAG (n : ℕ) (p : sh (SG 2) = Bsgn n (sh (SG n))) : BAG n
     := (sh (SG n); trp el2 p (fin2_0 : el2 (sh (SG 2)))).
 
-  Definition BAG_isConn_stmt : Type := forall n : ℕ, isConn (BAG n) × isGrpd (BAG n).
+  Definition BAG_isConn_stmt : Type := forall m : ℕ, isConn (BAG m.+2) × isGrpd (BAG m.+2).
 
   Definition AG (n : ℕ) (p : sh (SG 2) = Bsgn n (sh (SG n))) (c : isConn (BAG n))
     (g : isGrpd (BAG n)) : Group
@@ -1653,3 +1663,115 @@ Proof.
     refine (ap (mul 2) (cardF_fcard _ @ (fcard_equiv' e)^) @ mul2 _ @ _).
     exact (fcard_Ev m.+2 (inr tt) (inl (inr tt)) (fun q => inl_ne_inr _ _ q^)).
 Defined.
+
+(** The pointing [Bsgn_pt] of definition [def:sgn] and the facts about
+    [BAG] of definition [def:alternating-groups]. *)
+Section Alternating.
+
+  Context `{Univalence}.
+
+  (** The other element of a 2-element set. *)
+  Definition el2_other_ex (T : BSG2) (x : el2 T) : {y : el2 T & y ≠ x}.
+  Proof.
+    refine (ptrunc_rec _ idmap (el2_other T x)).
+    intros [y ny] [y' ny'].
+    refine (path_sigma_prop (fun _ => Pi_isProp (fun _ => False_isProp)) _).
+    exact (el2_two T y x y' ny (fun r => ny' r^)).
+  Defined.
+
+  (** A point of a 2-element set gives an identification with [Fin 2]. *)
+  Definition pt2_eqv (T : BSG2) (x : el2 T) : Fin 2 ≃ el2 T.
+  Proof.
+    pose (y := fst (el2_other_ex T x)).
+    pose (ny := snd (el2_other_ex T x)).
+    refine (mkEqv (fun i => match i with inl _ => x | inr _ => y end)
+                  (fun z => match el2_dec T z x with inl _ => fin2_0 | inr _ => fin2_1 end) _ _).
+    - intros [[[]|[]]|[]]; cbn.
+      + destruct (el2_dec T x x) as [_|m]; [exact refl | destruct (m refl)].
+      + destruct (el2_dec T y x) as [r|_]; [destruct (ny r) | exact refl].
+    - intro z. destruct (el2_dec T z x) as [r|m]; cbn.
+      + exact r^.
+      + exact (el2_two T y x z ny (fun r => m r^)).
+  Defined.
+
+  Definition pt2_path (T : BSG2) (x : el2 T) : sh (SG 2) = T
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := sh (SG 2)) (v := T)
+         (path_SetU0 (S := FinSetU 2) (T := fst T) (pt2_eqv T x)).
+
+  (** Definition [def:sgn]: the pointing of [Bsgn] by the standard sign
+      ordering [gmin] of [Fin n]. *)
+  Definition Bsgn_pt : Bsgn_pt_stmt
+    := fun n => pt2_path (Bsgn n (sh (SG n))) (iota (sh (SG n)) (class_of _ (gmin n))).
+
+  Definition BAG_isGrpd (n : ℕ) : isGrpd (BAG n).
+  Proof.
+    apply IsTrunc_isGrpd.
+    refine (istrunc_sigma (IsTrunc0 := isGrpd_IsTrunc (BG_isGrpd (SG n)))).
+    intro A. exact (@istrunc_hset _ _ (isSet_IsHSet (el2_isSet _))).
+  Defined.
+
+  (** For [n ≥ 2], [BAG n] is connected: a transposition has sign [-1],
+      so it moves each point of [Bsgn(sh)] to the other one. *)
+  Definition BAG_isConn (m : ℕ) : isConn (BAG m.+2).
+  Proof.
+    pose (A0 := sh (SG m.+2)).
+    pose (x0 := iota A0 (class_of _ (gmin m.+2))).
+    assert (K : forall w : BAG m.+2, ptrunc (w = (A0; x0))).
+    { intros [A x].
+      refine (ptrunc_rec ptrunc_isProp _ (snd (BG_isConn (SG m.+2)) A A0)). intro p.
+      destruct p^.
+      destruct (el2_dec (Bsgn m.+2 A0) x x0) as [r|nx].
+      - exact (trunc (ap (fun y => (A0; y) : BAG m.+2) r)).
+      - pose (a := inr tt : fst (fst A0)).
+        pose (b := inl (inr tt) : fst (fst A0)).
+        pose (σ := perm_of A0 (transpEqv (finset_isDecSet (comp_isFinSet A0)) a b)).
+        pose (q := ap (fun B => el2 (Bsgn m.+2 B)) σ).
+        assert (nq : ptoe q x ≠ x).
+        { intro h. refine (false_ne_true _).
+          refine ((sign_transp A0 a b (fun r => inl_ne_inr _ _ r^))^ @ _).
+          exact (loops2_yes _ q (fix_refl _ q x h)). }
+        apply trunc.
+        refine (pathpair σ _).
+        refine ((ptoe_ap (fun B => el2 (Bsgn m.+2 B)) σ x)^ @ _).
+        exact (el2_two _ _ x x0 nq nx). }
+    refine (trunc (A0; x0); _).
+    intros w w'.
+    refine (ptrunc_rec ptrunc_isProp _ (K w)). intro r.
+    refine (ptrunc_rec ptrunc_isProp _ (K w')). intro r'.
+    exact (trunc (r'⁻¹ ⋅ r)).
+  Defined.
+
+  Definition trp_snd_path {X : Type} {Y : X -> Type} {u v : {x : X & Y x}} (r : u = v)
+    : trp Y (ap fst r) (snd u) = snd v
+    := match r with refl => refl end.
+
+  (** For [n ≤ 1] (when [Fin n] is a proposition) [BAG n] is not
+      connected: its symmetries are trivial, so they cannot exchange the
+      two points of [Bsgn(sh)]. *)
+  Definition BAG_not_conn (n : ℕ) (hp : isProp (Fin n)) : ¬ isConn (BAG n).
+  Proof.
+    intro c.
+    pose (A0 := sh (SG n)).
+    pose (x0 := iota A0 (class_of _ (gmin n))).
+    pose (x1 := fst (el2_other_ex _ x0)).
+    assert (L : forall σ τ : A0 = A0, σ = τ).
+    { intros σ τ.
+      refine ((eqinv_r (perm_of_isEquiv A0) σ)^ @ _ @ eqinv_r (perm_of_isEquiv A0) τ).
+      apply ap. apply path_Eqv. apply ptw_inv. intro x. apply hp. }
+    refine (ptrunc_rec False_isProp _ (snd c (A0; x0) (A0; x1))). intro r.
+    apply (snd (el2_other_ex _ x0)).
+    refine ((trp_snd_path r)^ @ _).
+    exact (ap (fun σ => trp (fun B => el2 (Bsgn n B)) σ x0) (L _ refl)).
+  Defined.
+
+  Definition Fin1_isProp : isProp (Fin 1)
+    := fun x y => Fin1_elems x @ (Fin1_elems y)^.
+
+  Definition BAG_isConn_proof : BAG_isConn_stmt
+    := fun m => (BAG_isConn m; BAG_isGrpd m.+2).
+
+  Definition BAG0_not_conn : ¬ isConn (BAG 0) := BAG_not_conn 0 False_isProp.
+
+  Definition BAG1_not_conn : ¬ isConn (BAG 1) := BAG_not_conn 1 Fin1_isProp.
+
+End Alternating.
