@@ -507,9 +507,10 @@ Section Sign.
     (g : isGrpd (BAG n)) : Group
     := mkgroup (BAG n; (shAG n p; (c; g))).
 
-  (** Exercise [xca:isos_A3_C3]. *)
+  (** Exercise [xca:isos_A3_C3] ([C_3] is [CG 2]: [CG k] is the cyclic
+      group of order [k+1]). *)
   Definition xca_isos_A3_C3_stmt : Type
-    := forall p c g, {i : Iso (AG 3 p c g) (CG 3) & {j : Iso (AG 3 p c g) (CG 3) & i ≠ j}}.
+    := forall p c g, {i : Iso (AG 3 p c g) (CG 2) & {j : Iso (AG 3 p c g) (CG 2) & i ≠ j}}.
 
   (** The identification of the symmetries of a [2]-element set with
       [Bool] ([+1] is [yes]). *)

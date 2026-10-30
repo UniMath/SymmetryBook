@@ -37,15 +37,16 @@
       [xca:normal-action-equiv] ([normalG_from_one]).
     - Definitions [def:action] ([ActionIn], [ActionOn], [ActionIn_eqv])
       and [std-action]; the standard [Σ_n]-set and the [Σ_n]-set of
-      decidable subsets.
+      decidable subsets; the footnote that the standard [Σ_n]-set is
+      transitive for [n > 0] ([std_SGset_trans], by transpositions).
 
     - Example [ex:S2-acts-on-C3] ([S2onC3], with [EndoFam], [C3pt]).
 
     Left out (statements only, no proofs yet; time limit per result)
     - Exercise [xca:not-normal] ([xca_not_normal_stmt], with the wedge
-      [WedgeS1S1] assumed a connected groupoid), exercise [xca:AutC3]
-      ([xca_AutC3_stmt]), and transitivity of the standard [Σ_n]-set
-      ([std_SGset_trans_stmt]).
+      [WedgeS1S1] assumed a connected groupoid) and exercise
+      [xca:AutC3] ([xca_AutC3_stmt], identifying [S2onC3] at [𝟚] with
+      [C_3], which is [CG 2]: [CG k] is the cyclic group of order [k+1]).
  *)
 
 From HoTT Require Import
@@ -484,9 +485,22 @@ Definition std_action (G : Group) : ActionIn G (utype (BG G)) := idmap.
     [Fin n]. *)
 Definition std_SGset `{Univalence} (n : ℕ) : GSet (SG n) := fun A => fst A.
 
-(** The standard [Σ_n]-set is transitive for [n > 0] (statement only). *)
+(** The footnote: the standard [Σ_n]-set is transitive for [n > 0];
+    the transposition [(y x)] carries [y] to [x]. *)
 Definition std_SGset_trans_stmt `{Univalence} : Type
   := forall n : ℕ, (0 < n)%nat -> istrans (std_SGset n).
+
+Definition std_SGset_trans `{Univalence} : std_SGset_trans_stmt.
+Proof.
+  intros [|m] l; [destruct (not_lt_zero_r _ l)|].
+  apply trunc. refine (inr tt; _). intro y. apply trunc.
+  pose (σ := transpEqv (finset_isDecSet (comp_isFinSet (sh (SG m.+1)))) y (inr tt)).
+  refine (perm_of (sh (SG m.+1)) σ; _).
+  refine ((transp_a (sh (SG m.+1)) y (inr tt))^ @ _).
+  refine ((ap (fun e => fst e y) (ptoe_etop σ))^ @ _).
+  refine ((ap (fun q => ptoe q y) (ap_fst_fst_perm_of (sh (SG m.+1)) σ))^ @ _).
+  exact (ptoe_ap (fun B => fst (fst B)) (perm_of (sh (SG m.+1)) σ) y).
+Defined.
 
 Definition decsub_SGset `{Univalence} (n : ℕ) : GSet (SG n)
   := fun A => ((fst (fst A) -> Bool); Pi_isSet (fun _ => isSet_bool)).
