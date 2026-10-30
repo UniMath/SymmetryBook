@@ -47,6 +47,11 @@
       loop [pushl(loop)], which acts as the successor; the wedge is still
       assumed a connected groupoid.
 
+    - Example [ex:prodinclisGset] ([ex_prodinclisGset], with the
+      transitivity as a hypothesis): [a ↦ ((a, sh_{G'}), refl)] is a
+      pointed equivalence compatible with the inclusions.  Identifications
+      in [Mono(G)] come from such pointed equivalences ([Mono_path]).
+
     Left out (statements only, no proofs yet; time limit per result)
     - That [F] is an equivalence (lemma [lem:SubG=MonoG], exercise
       [xca:SubG=MonoG]: [lem_SubG_MonoG_stmt]) and corollary
@@ -54,7 +59,7 @@
       object classifier [(∑_A (A → BG)) ≃ (BG → U)] restricted to
       connected domains and set-valued fibers.
     - Examples [ex:Rm0-subgroup], [exa:fix1subSGn], [exa:C3subC6],
-      [exa:EforSG3], [ex:prodinclisGset], and exercises
+      [exa:EforSG3], and exercises
       [xca:SG2subSG3] and [xca:C3subSG3] (the [..._stmt] definitions);
       where an example needs that a [G]-set is transitive, this is a
       hypothesis.
@@ -483,6 +488,31 @@ Section SubToMono.
 
 End SubToMono.
 
+(** Identifications in [Mono(G)] from pointed equivalences of
+    classifying types that commute with the inclusions. *)
+Definition ismono_isProp `{Funext} {H G : Group} (i : Hom H G) : isProp (ismono i)
+  := Pi_isProp (fun _ => isProp_isProp _).
+
+Definition Mono_path_aux `{ua : Univalence} {G H H' : Group} (p : H = H')
+  (i : Hom H G) (i' : Hom H' G) (mi : ismono i) (mi' : ismono i')
+  (h : pcomp (Bf i') (fst (path_Group_pEqv p)) = Bf i)
+  : ((H; (i; mi)) : Mono G) = (H'; (i'; mi')).
+Proof.
+  destruct p.
+  refine (ap (fun w => (H; w) : Mono G) (path_sigma_prop ismono_isProp (u := (i; mi)) (v := (i'; mi')) _)).
+  exact ((inc_out i)^ @ ap inc h^ @ inc_out i').
+Defined.
+
+Definition Mono_path `{ua : Univalence} {G : Group} (m m' : Mono G)
+  (e : BG (fst m) ≃* BG (fst m'))
+  (h : pcomp (Bf (fst (snd m'))) (fst e) = Bf (fst (snd m))) : m = m'.
+Proof.
+  destruct m as [[X] [i mi]], m' as [[Y] [i' mi']].
+  refine (Mono_path_aux (path_Group e) i i' mi mi' _).
+  exact (ap (fun e0 : BG (mkgroup X) ≃* BG (mkgroup Y) => pcomp (Bf i') (fst e0))
+            (path_Group_pEqv_path_Group X Y e) @ h).
+Defined.
+
 (** Example [exa:EforSG3]: [F] sends the standard [Σ_3]-set, pointed at
     the added element, to [(Σ_2, i_3)] (with [π :≡ refl]). *)
 Definition exa_EforSG3_stmt `{Univalence} : Type
@@ -508,13 +538,31 @@ Definition SubGrp_proper {G : Group} (S : SubGrp G) : Type
     (informal). *)
 
 (** Example [ex:prodinclisGset]: the [G × G']-set corresponding to
-    [i₁ : G → G × G'] is [princ_{G'} ∘ proj₂]. *)
+    [i₁ : G → G × G'] is [princ_{G'} ∘ proj₂] (the transitivity is a
+    hypothesis). *)
 Definition ex_prodinclisGset_stmt `{Univalence} : Type
   := forall (G G' : Group)
             (t : istrans (fun z : utype (BG (prodG G G')) => princ G' (snd z))),
        subgrp_to_mono (((fun z : utype (BG (prodG G G')) => princ G' (snd z));
                         ((refl : el (princ G') (sh G')); t)) : SubGrp (prodG G G'))
        = ((G; (inG1 G G'; inG1_ismono G G')) : Mono (prodG G G')).
+
+(** The proof: [a ↦ ((a, sh_{G'}), refl)] is a pointed equivalence from
+    [BG] to the classifying type of the subgroup, and composed with the
+    inclusion it is [Bi₁] ([Mono_path]). *)
+Definition ex_prodinclisGset `{ua : Univalence} : ex_prodinclisGset_stmt.
+Proof.
+  intros G G' t.
+  pose (X := fun z : utype (BG (prodG G G')) => princ G' (snd z)).
+  pose (S := (X; ((refl : el (princ G') (sh G')); t)) : SubGrp (prodG G G')).
+  pose (f := fun a : utype (BG G) => (((a; sh G') : utype (BG (prodG G G'))); refl) : TotG X).
+  assert (sf : forall w : TotG X, f (fst (fst w)) = w).
+  { intros [[a b] p]. change (sh G' = b) in p. destruct p. exact refl. }
+  refine (Mono_path (G := prodG G G') ((G; (inG1 G G'; inG1_ismono G G')) : Mono (prodG G G'))
+            (subgrp_to_mono S)
+            (((f; refl); iso_to_isEquiv f (fun w : TotG X => fst (fst w)) (fun _ => refl) sf)
+             : BG G ≃* BG (subgrp_group S)) refl)^.
+Defined.
 
 
 (** ** 5.3.3 The Lagrange construction *)

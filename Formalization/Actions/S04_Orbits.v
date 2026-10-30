@@ -61,7 +61,7 @@
       [TotG(Xorb x)] up to reassociation, and all of [TotG X] for a
       transitive [X]; identifications in [Mono(G)] come from pointed
       equivalences of classifying types that commute with the inclusions
-      ([Mono_path]).
+      ([Mono_path], Section 5.3).
 
     Left out (statements only, no proofs yet; time limit per section)
     - Exercise [xca:Gset-A->B] ([xca_Gset_AB_stmt]).
@@ -308,31 +308,6 @@ Defined.
     justify the notation [X/G] (informal). *)
 
 (** ** Stabilizers, fixed and free elements *)
-(** Identifications in [Mono(G)] from pointed equivalences of
-    classifying types that commute with the inclusions. *)
-Definition ismono_isProp `{Funext} {H G : Group} (i : Hom H G) : isProp (ismono i)
-  := Pi_isProp (fun _ => isProp_isProp _).
-
-Definition Mono_path_aux `{ua : Univalence} {G H H' : Group} (p : H = H')
-  (i : Hom H G) (i' : Hom H' G) (mi : ismono i) (mi' : ismono i')
-  (h : pcomp (Bf i') (fst (path_Group_pEqv p)) = Bf i)
-  : ((H; (i; mi)) : Mono G) = (H'; (i'; mi')).
-Proof.
-  destruct p.
-  refine (ap (fun w => (H; w) : Mono G) (path_sigma_prop ismono_isProp (u := (i; mi)) (v := (i'; mi')) _)).
-  exact ((inc_out i)^ @ ap inc h^ @ inc_out i').
-Defined.
-
-Definition Mono_path `{ua : Univalence} {G : Group} (m m' : Mono G)
-  (e : BG (fst m) ≃* BG (fst m'))
-  (h : pcomp (Bf (fst (snd m'))) (fst e) = Bf (fst (snd m))) : m = m'.
-Proof.
-  destruct m as [[X] [i mi]], m' as [[Y] [i' mi']].
-  refine (Mono_path_aux (path_Group e) i i' mi mi' _).
-  exact (ap (fun e0 : BG (mkgroup X) ≃* BG (mkgroup Y) => pcomp (Bf i') (fst e0))
-            (path_Group_pEqv_path_Group X Y e) @ h).
-Defined.
-
 Section Stabilizers.
 
   Context `{Univalence} {G : Group} (X : GSet G).
