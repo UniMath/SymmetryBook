@@ -25,15 +25,15 @@
       were formalized in Section 8.4 before [cats.tex] was added, and
       moved here.  NOTE for the book text: in [xca:univpropofpullback]
       the formula [(f(a), g(a), p(a))] should read [(β(a), γ(a), p(a))].
-
-    Left out (statements only, no proofs yet)
-    - That [G × H] with its projections is a product cone of groups
-      ([prodG_isProductCone_stmt]), and that [A ⨿ B] is a coproduct
-      cocone of types ([sum_isCoproductCocone_stmt]). *)
+    - [G × H] with its projections is a product cone of groups
+      ([prodG_isProductCone]): [f ↦ (p₁ ∘ f, p₂ ∘ f)] is an equivalence
+      with inverse [pairG] ([prodG_Phi_isEquiv]).  [A ⨿ B] is a
+      coproduct cocone of types ([sum_isCoproductCocone]), by the
+      universal property of the sum. *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Types.Unit Truncations.Core Spaces.Nat.Core.
+  Types.Forall Types.Paths Types.Sum Types.Unit Truncations.Core Spaces.Nat.Core.
 From SymmetryBook Require Export Cats.S07_Equivalences.
 
 Local Open Scope uf_scope.
@@ -125,11 +125,81 @@ Proof.
   refine (paths_ind_r _ _ _). exact refl.
 Defined.
 
-(** The product of groups with its projections is a product cone
-    (statement only). *)
+(** The product of groups with its projections is a product cone. *)
 Definition prodG_isProductCone_stmt `{Funext} : Type
   := forall G H : Group,
        {p1 : Hom (prodG G H) G & {p2 : Hom (prodG G H) H & isProductCone (C := GroupCat) p1 p2}}.
+
+(** The proof: [f ↦ (p₁ ∘ f, p₂ ∘ f)] is an equivalence, with inverse
+    the pairing [pairG] of homomorphisms. *)
+Definition ap_fst_pathpair_bin {X Y : Type} {x x' : X} {y y' : Y} (p : x = x') (q : y = y')
+  : ap (fun w : X × Y => fst w) (pathpair_bin (p; q)) = p.
+Proof. destruct p, q. exact refl. Defined.
+
+Definition ap_snd_pathpair_bin {X Y : Type} {x x' : X} {y y' : Y} (p : x = x') (q : y = y')
+  : ap (fun w : X × Y => snd w) (pathpair_bin (p; q)) = q.
+Proof. destruct p, q. exact refl. Defined.
+
+Definition pathpair_bin_eta {X Y : Type} {w w' : X × Y} (p : w = w')
+  : pathpair_bin (ap (fun w0 : X × Y => fst w0) p; ap (fun w0 : X × Y => snd w0) p) = p.
+Proof. destruct p. exact refl. Defined.
+
+Section ProdCone.
+
+  Context `{fe : Funext} (G H : Group).
+
+  Definition prG1 : Hom (prodG G H) G
+    := mkhom (((fun w : utype (BG G) × utype (BG H) => fst w); refl) : BG (prodG G H) →* BG G).
+
+  Definition prG2 : Hom (prodG G H) H
+    := mkhom (((fun w : utype (BG G) × utype (BG H) => snd w); refl) : BG (prodG G H) →* BG H).
+
+  Definition pairG {K : Group} (g : Hom K G) (h : Hom K H) : Hom K (prodG G H)
+    := mkhom (((fun k => (fst (Bf g) k; fst (Bf h) k) : utype (BG G) × utype (BG H));
+               pathpair_bin (snd (Bf g); snd (Bf h))) : BG K →* BG (prodG G H)).
+
+  Definition prodG_Phi {K : Group} (f : Hom K (prodG G H)) : Hom K G × Hom K H
+    := (compG prG1 f; compG prG2 f).
+
+  Definition prG1_pairG {K : Group} (g : Hom K G) (h : Hom K H) : compG prG1 (pairG g h) = g.
+  Proof.
+    destruct g as [[g0 pg]].
+    exact (ap (fun r => mkhom ((g0; r) : BG K →* BG G))
+              (trans_1p _ @ ap_fst_pathpair_bin pg (snd (Bf h)))).
+  Defined.
+
+  Definition prG2_pairG {K : Group} (g : Hom K G) (h : Hom K H) : compG prG2 (pairG g h) = h.
+  Proof.
+    destruct h as [[h0 ph]].
+    exact (ap (fun r => mkhom ((h0; r) : BG K →* BG H))
+              (trans_1p _ @ ap_snd_pathpair_bin (snd (Bf g)) ph)).
+  Defined.
+
+  Definition pairG_Phi {K : Group} (f : Hom K (prodG G H))
+    : pairG (compG prG1 f) (compG prG2 f) = f.
+  Proof.
+    destruct f as [[f0 pf]].
+    refine (ap (fun r => mkhom ((f0; r) : BG K →* BG (prodG G H))) _).
+    refine (_ @ pathpair_bin_eta pf).
+    exact (ap pathpair_bin (pathpair_bin (trans_1p _; trans_1p _))).
+  Defined.
+
+  Definition prodG_Phi_isEquiv (K : Group) : isEquiv (@prodG_Phi K).
+  Proof.
+    refine (iso_to_isEquiv (@prodG_Phi K) (fun w => pairG (fst w) (snd w)) pairG_Phi _).
+    intros [g h]. exact (pathpair_bin (prG1_pairG g h; prG2_pairG g h)).
+  Defined.
+
+End ProdCone.
+
+Definition prodG_isProductCone `{fe : Funext} : prodG_isProductCone_stmt.
+Proof.
+  intros G G'. refine (prG1 G G'; (prG2 G G'; _)).
+  intros K x1 x2.
+  refine (isContr_Eqv _ (prodG_Phi_isEquiv G G' K (x1; x2))).
+  exact (Eqv_of_Equiv (equiv_functor_sigma_id
+           (fun f => Equiv_of_Eqv (Eqv_inv (path_prod_eqv _ _ _ _))))).
+Defined.
 
 (** Remark [def:product-cones-as-terminal]: in the precategory of cones
     over [A, B], product cones are the terminal cones. *)
@@ -178,10 +248,25 @@ Definition isCoproductCocone_Op (C : WildPreCat) {A B Q : Ob C} (i1 : homC A Q) 
   : isCoproductCocone i1 i2 = @isProductCone (Op C) A B Q i1 i2
   := refl.
 
-(** The sum of types is a coproduct cocone (statement only). *)
+(** The sum of types is a coproduct cocone. *)
 Definition sum_isCoproductCocone_stmt `{Funext} : Type
   := forall A B : Type,
        isCoproductCocone (C := TypeCat) (A := A) (B := B) (Q := A ⨿ B) inl inr.
+
+(** The proof: by the universal property of the sum, [f ↦ (f ∘ inl, f ∘ inr)]
+    is an equivalence, so the type of [f] with [x₁ = f ∘ inl] and
+    [x₂ = f ∘ inr] is equivalent to the contractible type of [f] with
+    [sum_rec x₁ x₂ = f]. *)
+Definition sum_isCoproductCocone `{Funext} : sum_isCoproductCocone_stmt.
+Proof.
+  intros A B X x1 x2.
+  apply (@isContr_of_Contr _).
+  refine (contr_equiv' {f : A ⨿ B -> X & sum_ind (fun _ => X) x1 x2 = f} _).
+  refine (equiv_functor_sigma_id (fun f => _)).
+  refine ((equiv_sigma_prod0 _ _)^-1
+          oE (equiv_path_prod (x1, x2) (fun a => f (inl a), fun b => f (inr b)))^-1 oE _).
+  exact (equiv_ap' (equiv_sum_ind (fun _ => X))^-1 _ f).
+Defined.
 
 (** Definition [def:pullback]: [∏(f,g) :≡ ∑_{(b,c):B×C} (f(b) = g(c))]. *)
 Definition pullback {B C D : Type} (f : B -> D) (g : C -> D) : Type
