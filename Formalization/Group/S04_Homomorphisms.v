@@ -392,20 +392,6 @@ Section ModFactor.
     : ap fst (ap fst (ap h loop)) = ap (fun z => fst (fst (h z))) loop
     := (ap (ap fst) (ap_compose h fst loop)^ @ (ap_compose (fun z => fst (h z)) fst loop)^).
 
-  Definition ap_carrier_cyc_path (c d : Cyc) (e : cyc_endo c = cyc_endo d)
-    : ap (fun c0 : Cyc => fst (fst c0)) (cyc_path c d e) = ap (fun w : Endo => fst w) e.
-  Proof.
-    pose (u := (cyc_endo c; (snd (fst c); (snd (fst (snd c)); snd (snd c)))) : {w : Endo & CycP w}).
-    pose (v := (cyc_endo d; (snd (fst d); (snd (fst (snd d)); snd (snd d)))) : {w : Endo & CycP w}).
-    exact (ap_carrier_cyc_of (path_sigma_prop CycP_isProp (u := u) (v := v) e)
-           @ ap (ap (fun w : Endo => fst w)) (ap_fst_pathpair _ _)).
-  Defined.
-
-  Definition ap_fst_endo_path {X Y : Type} {t : X -> X} {u : Y -> Y} (e : X ≃ Y)
-    (h : fst e ∘ t = u ∘ fst e)
-    : ap (fun w : Endo => fst w) (endo_path e h) = etop e.
-  Proof. unfold endo_path. exact (ap_fst_pathpair _ _). Defined.
-
   Local Notation f0 := (fst (Bf (compG (forget_cyc_hom k) (mod_hom k)))).
   Local Notation g0 := (fst (Bf (Rm_hom k))).
 

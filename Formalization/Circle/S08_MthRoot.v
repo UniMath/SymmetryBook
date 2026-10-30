@@ -463,11 +463,6 @@ Section RootDegree.
     exact (ap (fun y => (fst v; y) : FN k × fst w) (endo_fun_trp (refl w) (snd v)))^.
   Defined.
 
-  Definition endo_fun_endo_path {X Y : Type} {t : X -> X} {u : Y -> Y} (e : X ≃ Y)
-    (h : fst e ∘ t = u ∘ fst e) (x : X) : endo_fun (endo_path e h) x = fst e x
-    := endo_fun_trp _ x @ ap (fun r => transport idmap r x) (ap_fst_endo_path e h)
-       @ ptw (ap fst (ptoe_etop e)) x.
-
   Definition endo_fun_inv {X Y : Type} {t : X -> X} {u : Y -> Y}
     (p : ((X; t) : Endo) = (Y; u)) (y : Y) : endo_fun p (endo_fun p^ y) = y
     := (endo_fun_concat p^ p y)^ @ ap (fun r => endo_fun r y) (concat_Vp p)

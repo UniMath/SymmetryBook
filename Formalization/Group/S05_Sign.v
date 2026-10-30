@@ -1764,9 +1764,6 @@ Section Alternating.
     exact (ap (fun σ => trp (fun B => el2 (Bsgn n B)) σ x0) (L _ refl)).
   Defined.
 
-  Definition Fin1_isProp : isProp (Fin 1)
-    := fun x y => Fin1_elems x @ (Fin1_elems y)^.
-
   Definition BAG_isConn_proof : BAG_isConn_stmt
     := fun m => (BAG_isConn m; BAG_isGrpd m.+2).
 

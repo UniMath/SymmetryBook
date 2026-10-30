@@ -35,9 +35,8 @@
       [ismono_isCovering]: lemma [lem:SubG=MonoG] with exercise
       [xca:SubG=MonoG] ([lem_SubG_MonoG]; the inverse [mono_to_subgrp]
       takes the [G]-set of fibers of [Bi], [fibX]), and corollary
-      [lem:setofsubgroups] ([lem_setofsubgroups], via [SubGrp_isSet]: a
-      map of transitive [G]-sets is determined by its value at one
-      point, [GSet_path_inj]).
+      [lem:setofsubgroups] ([lem_setofsubgroups], from [SubGrp_isSet] of
+      Section 5.3).
 
     Left out (statements only)
     - [it:epi] ⇒ [it:surjection] ([epi_surjection_stmt]): the book's proof
@@ -420,10 +419,12 @@ Section SubGMonoG.
     exact (ap (fun e' => fst e' x) (ptoe_etop (e z))).
   Defined.
 
-  Definition SubGrp_path (S S' : SubGrp G) (α : sg_X S = sg_X S')
-    (h : trp (fun Y : GSet G => el Y (sh G)) α (sg_pt S) = sg_pt S') : S = S'.
+  Definition SubGrp_path {X Y : GSet G} {x : el X (sh G)} {y : el Y (sh G)}
+    {t : istrans X} {t' : istrans Y} (α : X = Y)
+    (h : trp (fun Y0 : GSet G => el Y0 (sh G)) α x = y)
+    : ((X; (x; t)) : SubGrp G) = (Y; (y; t')).
   Proof.
-    destruct S as [X [x t]], S' as [Y [y t']]. cbn in α, h. destruct α. cbn in h. destruct h.
+    destruct α. destruct h.
     exact (ap (fun t0 => (X; (x; t0)) : SubGrp G) (istrans_isProp X t t')).
   Defined.
 
@@ -464,58 +465,18 @@ Section SubGMonoG.
   Definition subgrp_mono_subgrp (S : SubGrp G)
     : mono_to_subgrp (subgrp_incl S) (subgrp_incl_ismono S) = S.
   Proof.
-    refine (SubGrp_path _ S (path_GSet (X := fibX (subgrp_incl S) (subgrp_incl_ismono S))
-                               (Y := sg_X S)
-                               (fun z => Eqv_inv (fst_fiber_eqv (el (sg_X S)) z))) _).
-    exact (trp_path_GSet _ (sh G) _).
+    destruct S as [X [x t]]. unfold mono_to_subgrp.
+    exact (SubGrp_path (path_GSet (X := fibX (subgrp_incl (X; (x; t))) (subgrp_incl_ismono (X; (x; t))))
+                                  (Y := X) (fun z => Eqv_inv (fst_fiber_eqv (el X) z)))
+                       (trp_path_GSet _ (sh G) _)).
   Defined.
 
   Definition lem_SubG_MonoG_eqv : isEquiv (fun S : SubGrp G => subgrp_to_mono S).
   Proof.
-    refine (iso_to_isEquiv _ (fun m : Mono G => mono_to_subgrp (fst (snd m)) (snd (snd m)))
+    refine (iso_to_isEquiv (fun S : SubGrp G => subgrp_to_mono S)
+              (fun m : Mono G => mono_to_subgrp (fst (snd m)) (snd (snd m)))
               subgrp_mono_subgrp _).
     intros [H [i mi]]. exact (mono_subgrp_mono i mi)^.
-  Defined.
-
-  (** Corollary [lem:setofsubgroups]: [Sub(G)], and hence [Mono(G)], is a
-      set, since a map of transitive [G]-sets is determined by its value
-      at one point. *)
-  Definition ptoe_ap_fst_ptw {X Y : GSet G} (α : X = Y) (z : utype (BG G)) (w : el X z)
-    : ptoe (ap (fun T : SetU => fst T) (ptw α z)) w = trp (fun Y0 : GSet G => el Y0 z) α w.
-  Proof. destruct α. exact refl. Defined.
-
-  Definition GSet_path_inj {X Y : GSet G} (α β : X = Y)
-    (h : forall z w, trp (fun Y0 : GSet G => el Y0 z) α w = trp (fun Y0 : GSet G => el Y0 z) β w)
-    : α = β.
-  Proof.
-    apply (isInj_cancel (isEquiv_isInj (funext X Y))).
-    apply ptw_inv. intro z.
-    apply (isInj_cancel (isEquiv_isInj
-             (isInj_ap_isEquiv (fst_isInj (fun A => isSet_isProp A)) (X z) (Y z)))).
-    refine ((etop_ptoe _)^ @ _ @ etop_ptoe _). apply ap. apply path_Eqv. apply ptw_inv. intro w.
-    exact (ptoe_ap_fst_ptw α z w @ h z w @ (ptoe_ap_fst_ptw β z w)^).
-  Defined.
-
-  Definition trp_tot_path {X Y : GSet G} (α β : X = Y) {a : utype (BG G)} {x : el X a}
-    (h : trp (fun Y0 : GSet G => el Y0 a) α x = trp (fun Y0 : GSet G => el Y0 a) β x)
-    (v : TotG X) (r : ((a; x) : TotG X) = v)
-    : trp (fun Y0 : GSet G => el Y0 (fst v)) α (snd v) = trp (fun Y0 : GSet G => el Y0 (fst v)) β (snd v).
-  Proof. destruct r. exact h. Defined.
-
-  Definition trp_sg_pt {S S' : SubGrp G} (p : S = S')
-    : trp (fun Y : GSet G => el Y (sh G)) (ap fst p) (sg_pt S) = sg_pt S'.
-  Proof. destruct p. exact refl. Defined.
-
-  Definition SubGrp_isSet : isSet (SubGrp G).
-  Proof.
-    intros S S' p q.
-    refine (ap_fst_cancel (fun X : GSet G => Sigma_isSet (el_isSet X (sh G))
-                                               (fun _ => prop_is_set (istrans_isProp X))) p q _).
-    apply GSet_path_inj. intros z w.
-    refine (ptrunc_rec (el_isSet (sg_X S') z _ _) _
-              (snd (conn_of_trans (sg_X S) (sg_trans S)) (sh G; sg_pt S) (z; w))).
-    intro r.
-    exact (trp_tot_path (ap fst p) (ap fst q) (trp_sg_pt p @ (trp_sg_pt q)^) (z; w) r).
   Defined.
 
 End SubGMonoG.
@@ -524,4 +485,4 @@ Definition lem_SubG_MonoG `{ua : Univalence} : lem_SubG_MonoG_stmt
   := fun G => @lem_SubG_MonoG_eqv ua G.
 
 Definition lem_setofsubgroups `{ua : Univalence} : lem_setofsubgroups_stmt
-  := fun G => is_ntype_Eqv 0 (_; lem_SubG_MonoG G) SubGrp_isSet.
+  := fun G => is_ntype_Eqv 0 (_; lem_SubG_MonoG G) (SubGrp_isSet G).

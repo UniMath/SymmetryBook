@@ -148,27 +148,24 @@ Section ProdCone.
 
   Context `{fe : Funext} (G H : Group).
 
-  Definition prG1 : Hom (prodG G H) G
-    := mkhom (((fun w : utype (BG G) × utype (BG H) => fst w); refl) : BG (prodG G H) →* BG G).
-
-  Definition prG2 : Hom (prodG G H) H
-    := mkhom (((fun w : utype (BG G) × utype (BG H) => snd w); refl) : BG (prodG G H) →* BG H).
+  Local Notation p1 := (prG1 G H).
+  Local Notation p2 := (prG2 G H).
 
   Definition pairG {K : Group} (g : Hom K G) (h : Hom K H) : Hom K (prodG G H)
     := mkhom (((fun k => (fst (Bf g) k; fst (Bf h) k) : utype (BG G) × utype (BG H));
                pathpair_bin (snd (Bf g); snd (Bf h))) : BG K →* BG (prodG G H)).
 
   Definition prodG_Phi {K : Group} (f : Hom K (prodG G H)) : Hom K G × Hom K H
-    := (compG prG1 f; compG prG2 f).
+    := (compG p1 f; compG p2 f).
 
-  Definition prG1_pairG {K : Group} (g : Hom K G) (h : Hom K H) : compG prG1 (pairG g h) = g.
+  Definition prG1_pairG {K : Group} (g : Hom K G) (h : Hom K H) : compG p1 (pairG g h) = g.
   Proof.
     destruct g as [[g0 pg]].
     exact (ap (fun r => mkhom ((g0; r) : BG K →* BG G))
               (trans_1p _ @ ap_fst_pathpair_bin pg (snd (Bf h)))).
   Defined.
 
-  Definition prG2_pairG {K : Group} (g : Hom K G) (h : Hom K H) : compG prG2 (pairG g h) = h.
+  Definition prG2_pairG {K : Group} (g : Hom K G) (h : Hom K H) : compG p2 (pairG g h) = h.
   Proof.
     destruct h as [[h0 ph]].
     exact (ap (fun r => mkhom ((h0; r) : BG K →* BG H))
@@ -176,7 +173,7 @@ Section ProdCone.
   Defined.
 
   Definition pairG_Phi {K : Group} (f : Hom K (prodG G H))
-    : pairG (compG prG1 f) (compG prG2 f) = f.
+    : pairG (compG p1 f) (compG p2 f) = f.
   Proof.
     destruct f as [[f0 pf]].
     refine (ap (fun r => mkhom ((f0; r) : BG K →* BG (prodG G H))) _).
