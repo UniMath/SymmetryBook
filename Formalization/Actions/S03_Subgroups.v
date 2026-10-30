@@ -27,6 +27,10 @@
       [SubGrp_proper]).
     - Constructions [con:lagrange] ([lagrange]) and [cor:lagrange-dep-sum]
       ([lagrange_dep]).
+    - Exercises [xca:n-is-ptd-n+1] ([xca_n_is_ptd]: [S ↦ (S ⨿ 𝟙, inr tt)],
+      inverse [(X, x) ↦ X - {x}], with [Cpl_card] by counting) and
+      [xca:A-is-A-1+1] ([xca_A_is_A_1_1]); the book's hint for the first
+      ([xca:finsets-decidable]) is used through [finset_isDecSet].
     - Exercise [xca:lagrange] ([subgrp_Finite], [lagrange_card]), with
       the library's [Finite] and [fcard]; the choice function needed by
       the Lagrange construction exists merely, by transitivity and finite
@@ -40,7 +44,7 @@
       connected domains and set-valued fibers.
     - Examples [ex:Rm0-subgroup], [exa:fix1subSGn], [exa:C3subC6],
       [ex:SGninSGn+1], [exa:EforSG3], [ex:prodinclisGset], and exercises
-      [xca:n-is-ptd-n+1], [xca:A-is-A-1+1], [xca:SG2subSG3],
+      [xca:SG2subSG3],
       [xca:C3subSG3], [xca:lagrange-Z-action-Rm],
       [xca:lagrange-if-subgr-not-normal] (the [..._stmt] definitions of
       the sections [SubgroupExamples] and [LagrangeExercises]); where an
@@ -129,6 +133,185 @@ Definition xca_n_is_ptd_stmt `{Univalence} : Type
 
 Definition xca_A_is_A_1_1_stmt `{Univalence} : Type
   := forall A : Type, isDecSet A -> A ≃ {B : Type & A ≃ (B ⨿ True)}.
+
+Section RemovePoint.
+  Context `{Univalence} {A : Type} (dA : isDecSet A).
+
+  (** The complement [A - {a}] and the equivalence [A ≃ (A - {a}) + 𝟙]. *)
+  Definition unit_tt (t : True) : t = tt := match t with tt => refl end.
+
+  Definition Cpl (a : A) : Type := {x : A & x ≠ a}.
+
+  Definition Cpl_path {a : A} (u v : Cpl a) (r : fst u = fst v) : u = v
+    := path_sigma_prop (fun x => Pi_isProp (fun _ (e e' : Empty) => match e with end)) r.
+
+  Definition cplE (a : A) : A ≃ (Cpl a ⨿ True).
+  Proof.
+    refine (mkEqv (fun x => match snd (dA x a) with inl _ => inr tt | inr ne => inl (x; ne) end)
+                  (fun s => match s with inl w => fst w | inr _ => a end) _ _).
+    - intro x. destruct (snd (dA x a)) as [e|ne]; [exact e^ | exact refl].
+    - intros [[x ne]|[]].
+      + cbn. destruct (snd (dA x a)) as [e|ne']; [destruct (ne e)|].
+        apply ap. apply Cpl_path. exact refl.
+      + destruct (snd (dA a a)) as [_|ne]; [exact refl | destruct (ne refl)].
+  Defined.
+
+  Definition cplE_inv_tt (a : A) : eqinv (snd (cplE a)) (inr tt) = a := refl.
+
+  Definition sum_map {C B : Type} (g : C -> B) (s : C ⨿ True) : B ⨿ True
+    := match s with inl c => inl (g c) | inr t => inr t end.
+
+  Definition trp_sumEqv {C B : Type} (p : C = B) (f : A ≃ (C ⨿ True)) (x : A)
+    : fst (trp (fun B => A ≃ (B ⨿ True)) p f) x = sum_map (ptoe p) (fst f x).
+  Proof. destruct p. change (fst f x = sum_map idmap (fst f x)). destruct (fst f x); exact refl. Defined.
+
+  Section Back.
+    Context (B : Type) (e : A ≃ (B ⨿ True)).
+
+    Local Notation a := (eqinv (snd e) (inr tt)).
+
+    Definition psiB (b : B) : Cpl a.
+    Proof.
+      refine (eqinv (snd e) (inl b); _). intro r.
+      exact (inl_ne_inr _ _ ((eqinv_r (snd e) (inl b))^ @ ap (fst e) r @ eqinv_r (snd e) (inr tt))).
+    Defined.
+
+    Definition psiB_isEquiv : isEquiv psiB.
+    Proof.
+      refine (iso_to_isEquiv psiB
+                (fun w => match fst e (fst w) as s return (fst e (fst w) = s -> B) with
+                          | inl b => fun _ => b
+                          | inr t => fun r => match snd w ((eqinv_l (snd e) (fst w))^
+                                                  @ ap (eqinv (snd e)) (r @ ap inr (unit_tt t))) with end
+                          end refl) _ _).
+      - intro b. cbn.
+        generalize (refl (fst e (eqinv (snd e) (inl b)))).
+        generalize (fst e (eqinv (snd e) (inl b))) at 2 3. intros s r.
+        destruct s as [b'|t].
+        + exact (ap (fun s => match s with inl c => c | inr _ => b end) (r^ @ eqinv_r (snd e) (inl b))).
+        + destruct (inl_ne_inr _ _ ((eqinv_r (snd e) (inl b))^ @ r)).
+      - intros [x ne]. cbn.
+        generalize (refl (fst e x)). generalize (fst e x) at 2 3. intros s r.
+        destruct s as [b'|t].
+        + apply Cpl_path. cbn. exact (ap (eqinv (snd e)) r^ @ eqinv_l (snd e) x).
+        + destruct (ne ((eqinv_l (snd e) x)^ @ ap (eqinv (snd e)) (r @ ap inr (unit_tt t)))).
+    Defined.
+
+    Definition phiB : Cpl a ≃ B := Eqv_inv (psiB; psiB_isEquiv).
+
+
+    Definition cpl_back_path : ((Cpl a; cplE a) : {B : Type & A ≃ (B ⨿ True)}) = (B; e).
+    Proof.
+      refine (pathpair (etop phiB) _).
+      apply path_Eqv. apply path_forall. intro x.
+      refine (trp_sumEqv (etop phiB) (cplE a) x @ _).
+      refine (ap (fun g => sum_map g (fst (cplE a) x)) (ap fst (ptoe_etop phiB)) @ _).
+      unfold cplE. cbn.
+      destruct (snd (dA x a)) as [r|ne].
+      - refine (_ @ ap (fst e) r^). exact (eqinv_r (snd e) (inr tt))^.
+      - cbn. generalize (refl (fst e x)). generalize (fst e x) at 2 3. intros s r.
+        destruct s as [b|t].
+        + exact r^.
+        + destruct (ne ((eqinv_l (snd e) x)^ @ ap (eqinv (snd e)) (r @ ap inr (unit_tt t)))).
+    Defined.
+  End Back.
+
+  (** Exercise [xca:A-is-A-1+1]: [a ↦ (A - {a}, ·)], with inverse
+      [(B, e) ↦ e⁻¹(inr tt)]. *)
+  Definition xca_A_is_A_1_1_eqv : A ≃ {B : Type & A ≃ (B ⨿ True)}
+    := mkEqv (fun a => (Cpl a; cplE a)) (fun w => eqinv (snd (snd w)) (inr tt))
+             (fun a => refl) (fun w => cpl_back_path (fst w) (snd w)).
+End RemovePoint.
+
+Section PointedFinSets.
+  Context `{Univalence}.
+
+  Definition path_FS {k : ℕ} {S T : FinSet_n k} (E : fst (fst S) ≃ fst (fst T)) : S = T
+    := path_sigma_prop (fun _ => ptrunc_isProp)
+         (path_sigma_prop (fun X => isSet_isProp X) (u := fst S) (v := fst T) (etop E)).
+
+  Definition trp_FS {k : ℕ} {S T : FinSet_n k} (E : fst (fst S) ≃ fst (fst T)) (y : fst (fst S))
+    : trp (fun X : FinSet_n k => fst (fst X)) (path_FS E) y = fst E y.
+  Proof.
+    refine ((ptoe_ap (fun X : FinSet_n k => fst (fst X)) (path_FS E) y)^ @ _).
+    refine (ap (fun q => ptoe q y) (ap_compose fst fst _ @ _) @ ap (fun e => fst e y) (ptoe_etop E)).
+    unfold path_FS. rewrite ap_fst_sigma_prop. exact (ap_fst_sigma_prop _ _).
+  Defined.
+
+  Definition FS_isFinSet {k : ℕ} (X : FinSet_n k) : isFinSet (fst (fst X))
+    := ptrunc_rec ptrunc_isProp (fun q => trunc (k; q^)) (snd X).
+
+  (** Removing a point from a [k+1]-element set leaves a [k]-element set. *)
+  Definition Cpl_Finite {X : Type} (FX : Finite X) (dX : isDecSet X) (x : X) : Finite (Cpl x).
+  Proof.
+    refine (@finite_sigma _ (fun y => y ≠ x) FX (fun y => @finite_decidable_hprop _ _ _)).
+    - exact (isProp_IsHProp (Pi_isProp (fun _ (e e' : Empty) => match e with end))).
+    - destruct (snd (dX y x)) as [e|ne]; [exact (inr (fun k => k e)) | exact (inl ne)].
+  Defined.
+
+  Definition Cpl_card {k : ℕ} (X : FinSet_n (S k)) (x : fst (fst X))
+    : ptrunc (Fin k = Cpl x).
+  Proof.
+    pose (FX := isFinSet_Finite (FS_isFinSet X)).
+    pose (dX := finset_isDecSet (FS_isFinSet X)).
+    pose (FC := Cpl_Finite FX dX x).
+    assert (c : fcard (Cpl x) = k).
+    { refine (ptrunc_rec (ℕ_isSet _ _) _ (snd X)). intro q.
+      assert (e : (fcard (Cpl x) + fcard True)%nat = S k).
+      { refine ((fcard_sum (Cpl x) True)^ @ _).
+        refine ((fcard_equiv' (Equiv_of_Eqv (cplE dX x)))^ @ _).
+        exact (fcard_equiv' (Equiv_of_Eqv (idtoeqv q)))^. }
+      apply path_nat_succ. refine (_ @ e).
+      exact (ap S (nat_add_zero_r _)^ @ (nat_add_succ_r _ 0)^). }
+    refine (ptrunc_rec ptrunc_isProp _ (merely_equiv_fin (Cpl x))). intro f.
+    exact (trunc ((ap Fin c)^ @ etop (Eqv_inv (Eqv_of_Equiv f)))).
+  Defined.
+
+  Context (n : ℕ).
+
+  Definition FS_plus1 (S0 : FinSet_n n) : FinSet_n (S n)
+    := ((fst (fst S0) ⨿ True; sum_isSet (snd (fst S0)) (prop_is_set True_isProp));
+        ptrunc_rec ptrunc_isProp (fun q => trunc (ap (fun T => T ⨿ True) q)) (snd S0)).
+
+  Definition FS_minus1 (X : FinSet_n (S n)) (x : fst (fst X)) : FinSet_n n
+    := ((Cpl x; Sigma_isSet (snd (fst X)) (fun _ => Pi_isSet (fun _ (e e' : Empty) => match e with end)));
+        Cpl_card X x).
+
+  Definition minus_plus (S0 : FinSet_n n) : FS_minus1 (FS_plus1 S0) (inr tt) = S0.
+  Proof.
+    apply path_FS.
+    refine (mkEqv (fun w : Cpl (inr tt : fst (fst S0) ⨿ True) =>
+                     match fst w as y return (y ≠ inr tt -> fst (fst S0)) with
+                     | inl s => fun _ => s
+                     | inr t => fun ne => match ne (ap inr (unit_tt t)) with end
+                     end (snd w))
+                  (fun s => (inl s; fun q => inl_ne_inr _ _ q)) _ _).
+    - intros [[s|t] ne].
+      + apply Cpl_path. exact refl.
+      + destruct (ne (ap inr (unit_tt t))).
+    - intro s. exact refl.
+  Defined.
+
+  Definition plus_minus (X : FinSet_n (S n)) (x : fst (fst X))
+    : ((FS_plus1 (FS_minus1 X x); inr tt) : {X : FinSet_n (S n) & fst (fst X)}) = (X; x).
+  Proof.
+    pose (dX := finset_isDecSet (FS_isFinSet X)).
+    refine (pathpair (path_FS (S := FS_plus1 (FS_minus1 X x)) (T := X) (Eqv_inv (cplE dX x))) _).
+    exact (trp_FS (S := FS_plus1 (FS_minus1 X x)) (T := X) (Eqv_inv (cplE dX x)) (inr tt)).
+  Defined.
+
+  (** Exercise [xca:n-is-ptd-n+1]: [S ↦ (S ⨿ 𝟙, inr tt)], with inverse
+      [(X, x) ↦ X - {x}]. *)
+  Definition xca_n_is_ptd_eqv : FinSet_n n ≃ {X : FinSet_n (S n) & fst (fst X)}
+    := mkEqv (fun S0 => (FS_plus1 S0; inr tt)) (fun w => FS_minus1 (fst w) (snd w))
+             minus_plus (fun w => plus_minus (fst w) (snd w)).
+End PointedFinSets.
+
+Definition xca_n_is_ptd `{Univalence} : xca_n_is_ptd_stmt
+  := xca_n_is_ptd_eqv.
+
+Definition xca_A_is_A_1_1 `{Univalence} : xca_A_is_A_1_1_stmt
+  := fun A dA => xca_A_is_A_1_1_eqv dA.
 
 (** Example [exa:C3subC6]: [C_6] has a subgroup isomorphic to [C_3]. *)
 Definition exa_C3subC6_stmt `{Univalence} : Type
