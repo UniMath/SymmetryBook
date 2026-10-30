@@ -36,17 +36,16 @@
       [1]-type).
     - Example [def:slice-cat] ([SliceCat], a precategory) and exercise
       [xca:univ-slice-cat] ([UnivSlice], with morphisms given by
-      pointwise identifications).
+      pointwise identifications); the slice of a category is a category
+      ([SliceCat_isUnivalent]).
+    - That [(ℤ, ≤)] is a poset ([IntLeq_isPoset], with [ZLe]).
     - The laws for pointed maps ([pcomp_pid_l], [pcomp_pid_r],
       [pcomp_assoc]) moved here from Section 7.3.
 
     Left out (statements only, no proofs yet)
     - Exercise [xca:order-poset] ([xca_order_poset]).
-    - That [(ℤ, ≤)] is a poset ([IntLeq_isPoset_stmt], with [ZLe]).
     - The coherences of remark [rem:wild] that wild precategories lack
       ([hasUnitCoh], [hasPentagon]).
-    - That the slice of a category is univalent
-      ([SliceCat_isUnivalent_stmt]).
 
     Left out (not formalized)
     - Remark [rem:cat-sizes] (universe levels, implicit in Rocq's
@@ -566,8 +565,8 @@ Definition NatLeq_isPoset `{Funext} : isPoset NatLeq
       antisym_isUnivalent NatLeq (mkPreorder_isPreorder _ _ _ _) ℕ_isSet
         (fun m n l l' => leq_antisym l l')).
 
-(** [(ℤ, ≤)], with [x ≤ y] iff [y = x + n] for some [n : ℕ]; that it
-    is a poset is stated only. *)
+(** [(ℤ, ≤)], with [x ≤ y] iff [y = x + n] for some [n : ℕ]; it is a
+    poset ([IntLeq_isPoset]). *)
 Definition zadd_assoc (x y z : ℤ) : zadd (zadd x y) z = zadd x (zadd y z).
 Proof.
   apply toInt_inj. rewrite !toInt_zadd. exact (int_add_assoc _ _ _)^.
@@ -584,6 +583,35 @@ Definition IntLeq : WildPreCat
                  @ ap (zadd x) (iplus_add (fst w) (fst w'))^)) l') l).
 
 Definition IntLeq_isPoset_stmt : Type := isPoset IntLeq.
+
+Definition zadd_cancel (x a : ℤ) (e : zadd x a = x) : a = iplus 0.
+Proof.
+  apply toInt_inj.
+  refine ((int_add_0_l _)^ @ ap (fun t => int_add t (toInt a)) (int_add_neg_l (toInt x))^ @ _).
+  refine ((int_add_assoc _ _ _)^ @ ap (int_add (int_neg (toInt x))) (toInt_zadd x a)^ @ _).
+  exact (ap (fun z => int_add (int_neg (toInt x)) (toInt z)) e @ int_add_neg_l _).
+Defined.
+
+Definition add_eq_zero_l (n m : ℕ) (e : add n m = 0%nat) : n = 0%nat.
+Proof.
+  destruct n as [|n]. - exact refl.
+  - destruct m as [|m];
+      exact (Empty_rec _ (trp (fun k : ℕ => match k with O => True | S _ => Empty end) e^ triv)).
+Defined.
+
+Definition IntLeq_isPoset `{Funext} : IntLeq_isPoset_stmt.
+Proof.
+  refine (mkPreorder_isPreorder _ _ _ _;
+          antisym_isUnivalent IntLeq (mkPreorder_isPreorder _ _ _ _) ℤ_isSet _).
+  intros x y l l'.
+  refine (ptrunc_rec (ℤ_isSet x y) _ l). intros [n w].
+  refine (ptrunc_rec (ℤ_isSet x y) _ l'). intros [m w'].
+  assert (e : zadd x (iplus (add n m)) = x).
+  { exact (ap (zadd x) (iplus_add n m) @ (zadd_assoc _ _ _)^
+           @ ap (fun u => zadd u (iplus m)) w^ @ w'^). }
+  pose (nz := add_eq_zero_l n m (iplus_inj (zadd_cancel x _ e))).
+  exact (w @ ap (fun k => zadd x (iplus k)) nz)^.
+Defined.
 
 (** [(Prop, →)] is a poset. *)
 Definition PropImp `{Funext} : WildPreCat
@@ -685,8 +713,48 @@ Section Slice.
   Definition SliceCat_isPreCat : isPreCat SliceCat
     := fun A A' => Sigma_isSet (pc _ _) (fun g => prop_is_set (pc _ _ _ _)).
 
-  (** If [C] is univalent, then so is [C/C₀] (statement only). *)
+  (** If [C] is univalent, then so is [C/C₀]. *)
   Definition SliceCat_isUnivalent_stmt : Type := isUnivalent C -> isUnivalent SliceCat.
+
+  Definition slice_iso {A A' : SliceOb} (e : IsoC (C := SliceCat) A A') : IsoC (fst A) (fst A')
+    := (fst (fst e); ((fst (fst (fst (snd e))); ap fst (snd (fst (snd e))));
+                      (fst (fst (snd (snd e))); ap fst (snd (snd (snd e)))))).
+
+  Definition slice_path {A A' : Ob C} (p : A = A') (f : homC A C0) (f' : homC A' C0)
+    (w : f' = f ∘c invC (idtoiso p)) : ((A; f) : SliceOb) = (A'; f').
+  Proof. destruct p. destruct (w @ rhoC _). exact refl. Defined.
+
+  Definition ap_slice_path {A A' : Ob C} (p : A = A') (f : homC A C0) (f' : homC A' C0)
+    (w : f' = f ∘c invC (idtoiso p)) : ap (fun X : SliceOb => fst X) (slice_path p f f' w) = p.
+  Proof. destruct p. unfold slice_path. destruct (w @ rhoC _). exact refl. Defined.
+
+  Definition trp_idIso_slice {X Y : SliceOb} (P : X = Y)
+    : fst (fst (trp (fun Z => IsoC (C := SliceCat) X Z) P (idIsoC (C := SliceCat) X)))
+      = fst (idtoiso (ap (fun Z : SliceOb => fst Z) P)).
+  Proof. destruct P. exact refl. Defined.
+
+  Definition slice_tot_contr (u : isUnivalent C) (X : SliceOb)
+    : isContr {Y : SliceOb & IsoC (C := SliceCat) X Y}.
+  Proof.
+    refine ((X; idIsoC (C := SliceCat) X); _). intros [[A' f'] e].
+    destruct X as [A f].
+    pose (w := (rhoC f')^ @ ap (fun k => f' ∘c k) (snd (fst (snd (slice_iso e))))^
+               @ alphaC _ _ _ @ ap (fun k => k ∘c fst (fst (fst (snd e)))) (snd (fst e))
+               : f' = f ∘c invC (slice_iso e)).
+    pose (w' := w @ ap (fun y => f ∘c invC y) (eqinv_r (u _ _) (slice_iso e))^).
+    refine (pathpair (slice_path (eqinv (u _ _) (slice_iso e)) f f' w') _).
+    apply path_IsoC. apply path_SliceHom.
+    refine (trp_idIso_slice _ @ _).
+    refine (ap (fun r => fst (idtoiso r)) (ap_slice_path _ _ _ _) @ _).
+    exact (ap fst (eqinv_r (u _ _) (slice_iso e))).
+  Defined.
+
+  Definition SliceCat_isUnivalent : SliceCat_isUnivalent_stmt.
+  Proof.
+    intros u X.
+    apply (isEquiv_from_tot (fun Y (p : X = Y) => @idtoiso SliceCat X Y p)).
+    exact (contr_map_isEquiv (singleton_contr X) (slice_tot_contr u X) _).
+  Defined.
 
 End Slice.
 
