@@ -8,6 +8,10 @@
     - Definition [def:prod-in-a-cat] ([isProductCone], [ProductCone],
       [hasBinProducts]); the product of types is a product cone
       ([prod_isProductCone]).
+    - Exercise [xca:product-cone-prop] ([xca_product_cone_prop], with
+      [Funext]): two product cones are isomorphic, and transport along
+      [idtoiso⁻¹] is precomposition with the inverse
+      ([trp_hom_idtoiso]).
     - Remark [def:product-cones-as-terminal]: the precategory of cones
       ([ConeCat]), in which the product cones are the terminal cones
       ([productCone_terminal]).
@@ -23,7 +27,6 @@
       the formula [(f(a), g(a), p(a))] should read [(β(a), γ(a), p(a))].
 
     Left out (statements only, no proofs yet)
-    - Exercise [xca:product-cone-prop] ([xca_product_cone_prop_stmt]).
     - That [G × H] with its projections is a product cone of groups
       ([prodG_isProductCone_stmt]), and that [A ⨿ B] is a coproduct
       cocone of types ([sum_isCoproductCocone_stmt]). *)
@@ -48,9 +51,68 @@ Definition ProductCone {C : WildPreCat} (A B : Ob C) : Type
 
 Definition hasBinProducts (C : WildPreCat) : Type := forall A B : Ob C, ProductCone A B.
 
-(** Exercise [xca:product-cone-prop] (statement only). *)
-Definition xca_product_cone_prop_stmt : Type
+(** Exercise [xca:product-cone-prop] (with [Funext], so that being a
+    product cone is a proposition). *)
+Definition xca_product_cone_prop_stmt `{Funext} : Type
   := forall (C : WildPreCat), isUnivalent C -> forall A B : Ob C, isProp (ProductCone A B).
+
+Section ProductConeProp.
+
+  Context `{Funext} {C : WildPreCat} (u : isUnivalent C) (A B : Ob C).
+
+  Definition isProductCone_isProp {P : Ob C} (p1 : homC P A) (p2 : homC P B)
+    : isProp (isProductCone p1 p2)
+    := Pi_isProp (fun X => Pi_isProp (fun x1 => Pi_isProp (fun x2 => isContr_isProp _))).
+
+  (** A map into a product cone that is the identity on the projections
+      is the identity. *)
+  Definition cone_endo_id {P : Ob C} {p1 : homC P A} {p2 : homC P B}
+    (t : isProductCone p1 p2) (h : homC P P) (e1 : p1 = p1 ∘c h) (e2 : p2 = p2 ∘c h)
+    : h = idC P
+    := ap fst (isContr_isProp' (t P p1 p2) (h; (e1; e2)) (idC P; ((rhoC p1)^; (rhoC p2)^))).
+
+  (** Transport in [X ↦ Hom(X, D)] is precomposition with the inverse. *)
+  Definition trp_hom_idtoiso {P Q D : Ob C} (e : P = Q) (h : homC P D)
+    : trp (fun X => homC X D) e h = h ∘c fst (fst (snd (idtoiso e))).
+  Proof. destruct e. exact (rhoC h)^. Defined.
+
+  Definition trp_cone {P Q : Ob C} (e : P = Q)
+    (w : {p : homC P A × homC P B & isProductCone (fst p) (snd p)})
+    : fst (trp (fun X => {p : homC X A × homC X B & isProductCone (fst p) (snd p)}) e w)
+      = (trp (fun X => homC X A) e (fst (fst w)); trp (fun X => homC X B) e (snd (fst w))).
+  Proof. destruct e. exact refl. Defined.
+
+  Definition ProductCone_isProp : isProp (ProductCone A B).
+  Proof.
+    intros [P [[p1 p2] tp]] [Q [[q1 q2] tq]].
+    pose (f := fst (fst (tq P p1 p2))). pose (ef := snd (fst (tq P p1 p2))).
+    pose (g := fst (fst (tp Q q1 q2))). pose (eg := snd (fst (tp Q q1 q2))).
+    cbn in f, g, ef, eg.
+    assert (gf : g ∘c f = idC P).
+    { apply (cone_endo_id tp).
+      - exact (fst ef @ ap (fun k => k ∘c f) (fst eg) @ (alphaC _ _ _)^).
+      - exact (snd ef @ ap (fun k => k ∘c f) (snd eg) @ (alphaC _ _ _)^). }
+    assert (fg : f ∘c g = idC Q).
+    { apply (cone_endo_id tq).
+      - exact (fst eg @ ap (fun k => k ∘c g) (fst ef) @ (alphaC _ _ _)^).
+      - exact (snd eg @ ap (fun k => k ∘c g) (snd ef) @ (alphaC _ _ _)^). }
+    pose (i := (f; ((g; fg); (g; gf))) : IsoC P Q).
+    pose (e := eqinv (u P Q) i).
+    pose (r := eqinv_r (u P Q) i : idtoiso e = i).
+    refine (pathpair e _).
+    apply (path_sigma_prop (fun p => isProductCone_isProp (fst p) (snd p))).
+    refine (trp_cone e _ @ _).
+    refine (ap011 (fun a b => (a; b) : homC Q A × homC Q B) _ _).
+    - refine (trp_hom_idtoiso e p1 @ _).
+      exact (ap (fun j : IsoC P Q => p1 ∘c fst (fst (snd j))) r @ (fst eg)^).
+    - refine (trp_hom_idtoiso e p2 @ _).
+      exact (ap (fun j : IsoC P Q => p2 ∘c fst (fst (snd j))) r @ (snd eg)^).
+  Defined.
+
+End ProductConeProp.
+
+Definition xca_product_cone_prop `{Funext} : xca_product_cone_prop_stmt
+  := fun C u A B => ProductCone_isProp u A B.
 
 (** The product of types is a product cone in the wild category of
     types. *)
