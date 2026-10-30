@@ -55,9 +55,9 @@
       with [tau3]): otherwise [τ] would commute with the transposition
       [σ] of the first two elements ([sigma3]); symmetries act on
       [Fin 3] by [Fpath].
-
-    Left out (statements only, no proofs yet; time limit per result)
-    - The factorization of [R_m] through [mod_m] ([mod_factor_stmt]).
+    - The factorization of [R_m] through [mod_m] ([mod_factor]): both
+      maps [S1 → BΣ_m] agree on [base] by definition and on [loop]
+      after projecting to [U] ([mod_factor_loop], [S1_htpy]).
  *)
 
 From HoTT Require Import
@@ -347,8 +347,8 @@ Definition fin_prod_eqv_proof : fin_prod_eqv_stmt := fin_prod_eqv.
 (** Example [ex:groups-morphisms](4), item [it:mod_m]: [mod_m : ℤ → C_m], with
     [Bmod_m(base) :≡ (Fin m, zs)] and [Bmod_m(loop) := (zs, !)], pointed
     by [refl]; and the homomorphism [C_m → Σ_m] forgetting the cycle
-    structure.  That [R_m : ℤ → Σ_m] factors as their composite is stated
-    only. *)
+    structure.  [R_m : ℤ → Σ_m] factors as their composite
+    ([mod_factor] below). *)
 Definition mod_hom `{Univalence} (k : ℕ) : Hom ZZ (CG k)
   := mkhom ((S1_rec (utype (BG (CG k))) (sh (CG k))
                (path_sigma_prop (fun _ => ptrunc_isProp) (u := sh (CG k)) (v := sh (CG k))
@@ -369,6 +369,76 @@ Definition Rm_hom `{Univalence} (k : ℕ) : Hom ZZ (SG (S k))
 
 Definition mod_factor_stmt `{Univalence} : Type
   := forall k : ℕ, compG (forget_cyc_hom k) (mod_hom k) = Rm_hom k.
+
+(** The proof: both maps [S1 → BΣ_m] agree on [base] by definition, and
+    on [loop] after projecting to [U], where both give [etop(zs)]
+    ([S1_htpy]); identifications in a component of [SetU] are determined
+    by their underlying identifications of types. *)
+Section ModFactor.
+
+  Context `{ua : Univalence} (k : ℕ).
+
+  Definition SetU_comp_loop_inj {S : SetU} {c c' : component SetU S} (α β : c = c')
+    (e : ap fst (ap fst α) = ap fst (ap fst β)) : α = β.
+  Proof.
+    apply (isInj_cancel (isEquiv_isInj
+             (isInj_ap_isEquiv (fst_isInj (fun _ => ptrunc_isProp)) c c'))).
+    apply (isInj_cancel (isEquiv_isInj
+             (isInj_ap_isEquiv (fst_isInj (fun X => isSet_isProp X)) (fst c) (fst c')))).
+    exact e.
+  Defined.
+
+  Definition ap_fst_fst_S1 {S : SetU} (h : S1 -> component SetU S)
+    : ap fst (ap fst (ap h loop)) = ap (fun z => fst (fst (h z))) loop
+    := (ap (ap fst) (ap_compose h fst loop)^ @ (ap_compose (fun z => fst (h z)) fst loop)^).
+
+  Definition ap_carrier_cyc_path (c d : Cyc) (e : cyc_endo c = cyc_endo d)
+    : ap (fun c0 : Cyc => fst (fst c0)) (cyc_path c d e) = ap (fun w : Endo => fst w) e.
+  Proof.
+    pose (u := (cyc_endo c; (snd (fst c); (snd (fst (snd c)); snd (snd c)))) : {w : Endo & CycP w}).
+    pose (v := (cyc_endo d; (snd (fst d); (snd (fst (snd d)); snd (snd d)))) : {w : Endo & CycP w}).
+    exact (ap_carrier_cyc_of (path_sigma_prop CycP_isProp (u := u) (v := v) e)
+           @ ap (ap (fun w : Endo => fst w)) (ap_fst_pathpair _ _)).
+  Defined.
+
+  Definition ap_fst_endo_path {X Y : Type} {t : X -> X} {u : Y -> Y} (e : X ≃ Y)
+    (h : fst e ∘ t = u ∘ fst e)
+    : ap (fun w : Endo => fst w) (endo_path e h) = etop e.
+  Proof. unfold endo_path. exact (ap_fst_pathpair _ _). Defined.
+
+  Local Notation f0 := (fst (Bf (compG (forget_cyc_hom k) (mod_hom k)))).
+  Local Notation g0 := (fst (Bf (Rm_hom k))).
+
+  Definition mod_factor_loop : ap f0 loop = ap g0 loop.
+  Proof.
+    apply SetU_comp_loop_inj.
+    refine (ap_fst_fst_S1 f0 @ _ @ (ap_fst_fst_S1 g0)^).
+    refine (ap_compose _ (fun c : component Cyc (Fincyc k) => fst (fst (fst c))) loop @ _).
+    refine (ap (ap (fun c : component Cyc (Fincyc k) => fst (fst (fst c)))) (S1_rec_loop _ _ _) @ _).
+    refine (ap_compose fst (fun c : Cyc => fst (fst c)) _ @ _).
+    refine (ap (ap (fun c : Cyc => fst (fst c))) (ap_fst_pathpair _ _) @ _).
+    refine (ap_carrier_cyc_path _ _ _ @ _).
+    refine (ap_fst_endo_path _ _ @ _).
+    exact (S1_rec_loop _ _ _)^.
+  Defined.
+
+  Definition mod_factor_htpy : forall z, f0 z = g0 z
+    := S1_htpy (f := f0) (g := g0) refl (mod_factor_loop @ (trans_1p _)^).
+
+  Definition trp_pointing {A B : Type} {a : A} {b : B} {h h' : A -> B} (P : h = h')
+    (r : b = h a) : trp (fun k0 : A -> B => b = k0 a) P r = ptw P a ⋅ r.
+  Proof. destruct P. exact refl. Defined.
+
+End ModFactor.
+
+Definition mod_factor `{ua : Univalence} : mod_factor_stmt.
+Proof.
+  intro k.
+  refine (ap mkhom (pathpair (ptw_inv (mod_factor_htpy k)) _)).
+  refine (trp_pointing (A := utype (BG ZZ)) (B := utype (BG (SG (S k)))) (a := base)
+            (ptw_inv (mod_factor_htpy k)) _ @ _).
+  exact (ap (fun r => r ⋅ refl) (ap (fun H => H base) (eqinv_r (funext _ _) (mod_factor_htpy k)))).
+Defined.
 
 (** The remark that [id_{Σ_3} ≠ τ̃ :≡ (id, τ)] in [Hom(Σ_3, Σ_3)], for
     a transposition [τ]. *)
