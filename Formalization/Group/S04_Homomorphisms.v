@@ -51,16 +51,18 @@
       [forget_cyc_hom] and [Rm_hom]).  The equivalences
       [Fin(m) ⨿ Fin(n) ≃ Fin(m+n)] and [Fin(m) × Fin(n) ≃ Fin(mn)]
       used there ([fin_sum_eqv], [fin_prod_eqv], by induction).
+    - The remark that [id_{Σ_3} ≠ τ̃] in [Hom(Σ_3, Σ_3)] ([id_ne_tau],
+      with [tau3]): otherwise [τ] would commute with the transposition
+      [σ] of the first two elements ([sigma3]); symmetries act on
+      [Fin 3] by [Fpath].
 
     Left out (statements only, no proofs yet; time limit per result)
     - The factorization of [R_m] through [mod_m] ([mod_factor_stmt]).
-    - The remark that [id_{Σ_3} ≠ τ̃] in [Hom(Σ_3, Σ_3)]
-      ([id_ne_tau_stmt], with [tau3]).
  *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core Spaces.Circle Spaces.Finite.Fin.
+  Types.Forall Types.Paths Types.Sum Truncations.Core Spaces.Circle Spaces.Finite.Fin.
 From SymmetryBook Require Export Group.S03_AbstractGroups.
 
 Local Open Scope uf_scope.
@@ -369,13 +371,73 @@ Definition mod_factor_stmt `{Univalence} : Type
   := forall k : ℕ, compG (forget_cyc_hom k) (mod_hom k) = Rm_hom k.
 
 (** The remark that [id_{Σ_3} ≠ τ̃ :≡ (id, τ)] in [Hom(Σ_3, Σ_3)], for
-    a transposition [τ] (statement only). *)
+    a transposition [τ]. *)
 Definition tau3 `{Univalence} : sh (SG 3) = sh (SG 3)
   := path_sigma_prop (fun _ => ptrunc_isProp) (u := sh (SG 3)) (v := sh (SG 3))
        (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) (Eqv_of_Equiv (fin_transpose_last_two 1))).
 
 Definition id_ne_tau_stmt `{Univalence} : Type
   := idG (SG 3) ≠ mkhom ((idmap; tau3) : BG (SG 3) →* BG (SG 3)).
+
+(** The proof: equality would make [τ] commute with every symmetry, but
+    it does not commute with the transposition [σ] of the first two
+    elements.  Symmetries of [Σ_3] act on [Fin 3] by [Fpath]. *)
+Section IdNeTau.
+
+  Context `{ua : Univalence}.
+
+  Definition Fpath {c c' : component SetU (FinSetU 3)} (q : c = c') : fst (fst c) -> fst (fst c')
+    := ptoe (ap fst (ap fst q)).
+
+  Definition Fpath_trans {c c' c'' : component SetU (FinSetU 3)} (p : c = c') (q : c' = c'')
+    (x : fst (fst c)) : Fpath (q ⋅ p) x = Fpath q (Fpath p x).
+  Proof. destruct q, p. exact refl. Defined.
+
+  Definition Fpath_V {c c' : component SetU (FinSetU 3)} (p : c = c') (x : fst (fst c))
+    : Fpath p⁻¹ (Fpath p x) = x.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition sym3 (e : Fin 3 ≃ Fin 3) : sh (SG 3) = sh (SG 3)
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := sh (SG 3)) (v := sh (SG 3))
+         (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) e).
+
+  Definition Fpath_sym3 (e : Fin 3 ≃ Fin 3) (x : Fin 3) : Fpath (sym3 e) x = fst e x.
+  Proof.
+    unfold Fpath, sym3.
+    refine (ap (fun q : FinSetU 3 = FinSetU 3 => ptoe (ap fst q) x)
+              (ap_fst_pathpair _ _) @ _).
+    refine (ap (fun q : Fin 3 = Fin 3 => ptoe q x) (ap_fst_pathpair _ _) @ _).
+    exact (ap (fun f => fst f x) (ptoe_etop e)).
+  Defined.
+
+  Definition sigma3 : Fin 3 ≃ Fin 3
+    := Eqv_of_Equiv (equiv_functor_sum' (fin_transpose_last_two 0) (equiv_idmap Unit)).
+
+  Definition id_ne_tau : id_ne_tau_stmt.
+  Proof.
+    intro e.
+    pose (s := sym3 sigma3).
+    pose (r := ap (fun h : Hom (SG 3) (SG 3) =>
+                     Fpath (c := sh (SG 3)) (c' := sh (SG 3)) (USymf h s) (inl (inl (inr tt)))) e).
+    cbn beta in r. unfold USymf, loops_fun in r. cbn in r.
+    assert (L : Fpath (refl⁻¹ ⋅ (ap idmap s ⋅ refl)) (inl (inl (inr tt))) = inl (inr tt)).
+    { refine (ap (fun q : sh (SG 3) = sh (SG 3) => Fpath q (inl (inl (inr tt))))
+                (trans_1p _ @ ap_idmap s) @ _).
+      exact (Fpath_sym3 sigma3 _). }
+    assert (R : Fpath (tau3⁻¹ ⋅ (ap idmap s ⋅ tau3)) (inl (inl (inr tt))) = inr tt).
+    { refine (Fpath_trans _ _ _ @ _).
+      refine (ap (Fpath tau3⁻¹) (Fpath_trans _ _ _ @ _) @ _).
+      { refine (ap (Fpath (ap idmap s))
+                  (Fpath_sym3 (Eqv_of_Equiv (fin_transpose_last_two 1)) (inl (inl (inr tt)))) @ _).
+        refine (ap (fun q : sh (SG 3) = sh (SG 3) => Fpath q (inl (inl (inr tt)))) (ap_idmap s) @ _).
+        exact (Fpath_sym3 sigma3 (inl (inl (inr tt)))
+               @ (Fpath_sym3 (Eqv_of_Equiv (fin_transpose_last_two 1)) (inr tt))^). }
+      exact (Fpath_V _ _). }
+    pose (w := L^ @ r @ R).
+    exact (trp (fun x : Fin 3 => match x with inl _ => Unit | inr _ => Empty end) w tt).
+  Defined.
+
+End IdNeTau.
 
 (** Construction [def:loops-compose], pointwise, by induction on the
     pointing paths. *)
