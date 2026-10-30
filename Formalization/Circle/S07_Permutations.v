@@ -60,9 +60,11 @@
       list of its first element ([list_seg], [fcard_F]).
       The book assumes [2 ≤ k ≤ n] for both parts (the only [1]-cycle
       is the identity); the subsets are counted for all [k ≤ n].
+    - That [(ℤ, zs)] is not a cyclic permutation ([zs_not_cyc]): the
+      integer [1 + Σ_a nat(a)] is not in the list ([iplus_notin]), so
+      [cyc] fixes it.
 
     Left out (statements only, no proofs yet)
-    - That [(ℤ, zs)] is not a cyclic permutation ([zs_not_cyc_stmt]).
     - The corollary with [a ≠ b] for each pair [(a, b)] in the list
       ([perm_transpositions_ne_stmt]); it holds for the pairs we produce.
 
@@ -230,10 +232,46 @@ Section Permutations.
 
 End Permutations.
 
-(** Hence the infinite cycle [(ℤ, zs)] is not a cyclic permutation
-    (statement only). *)
+(** Hence the infinite cycle [(ℤ, zs)] is not a cyclic permutation:
+    some [x] is not in the list, so [cyc] fixes it, but [zs] does not. *)
 Definition zs_not_cyc_stmt : Type
   := forall (dZ : isDecSet ℤ) (a1 : ℤ) (r : list ℤ), ¬ (forall x, zs x = cyc dZ a1 r x).
+
+Fixpoint sum_nat_of_int (l : list ℤ) : ℕ
+  := match l with nil => 0%nat | cons b r => nat_add (nat_of_int (toInt b)) (sum_nat_of_int r) end.
+
+Definition nat_of_int_iplus (k : ℕ) : nat_of_int (toInt (iplus k)) = k
+  := match k with O => refl | S _ => refl end.
+
+Definition nat_ne_S_add (n j : ℕ) : n ≠ S (nat_add n j).
+Proof.
+  induction n as [|n IH].
+  - intro e. exact (trp (fun k : ℕ => match k with O => True | S _ => Empty end) e triv).
+  - intro e. exact (IH (ap nat_pred e)).
+Defined.
+
+(** [iplus (S (Σ + k))] is not in the list, where [Σ] sums the
+    [nat_of_int] of its elements. *)
+Definition iplus_notin (l : list ℤ) : forall k : ℕ,
+  notin (iplus (S (nat_add (sum_nat_of_int l) k))) l.
+Proof.
+  induction l as [|b r IH]; intro k.
+  - exact tt.
+  - split.
+    + intro e. apply (nat_ne_S_add (nat_of_int (toInt b)) (nat_add (sum_nat_of_int r) k)).
+      refine ((ap (fun z => nat_of_int (toInt z)) e)^ @ nat_of_int_iplus _ @ _).
+      exact (ap S (nat_add_assoc _ _ _)^).
+    + refine (trp (fun m => notin (iplus (S m)) r) _ (IH (nat_add (nat_of_int (toInt b)) k))).
+      exact (nat_add_assoc _ _ _ @ ap (fun m => nat_add m k) (nat_add_comm _ _)).
+Defined.
+
+Definition zs_not_cyc : zs_not_cyc_stmt.
+Proof.
+  intros dZ a1 r h.
+  pose (M := nat_add (sum_nat_of_int (cons a1 r)) 0).
+  pose (e := h (iplus (S M)) @ cyc_fixes dZ a1 r _ (iplus_notin (cons a1 r) 0)).
+  exact (nat_ne_S_add (S M) 0 ((iplus_inj e)^ @ ap S (nat_add_zero_r _)^)).
+Defined.
 
 (** Exercise [xca:factorial]: a finite set of cardinality [n] has [n!]
     permutations, via the library's [fcard_aut] instead of the bijection
