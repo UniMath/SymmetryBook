@@ -22,6 +22,9 @@
     - Lemma [lem:ff-eso] ([lem_ff_eso]): for [C] a category and [F] fully
       faithful, [∑_A F(A) ≅ B] is equivalent to a singleton once
       inhabited ([IsoC_postcomp_isEquiv], [fmap_iso_isEquiv]).
+    - Theorem [thm:1types-are-groupoids], first part
+      ([thm_1types_are_groupoids], with [Funext]; the inverse is
+      [PathFun]).
     - Definition [def:flagged-cat] ([FlCat]); the path pregroupoid of
       exercise [xca:Rezk-completion-1trunc] ([TruncPathGrpd]).
 
@@ -34,9 +37,8 @@
       part of theorem [thm:Rezk-completion] ([thm_Rezk_small_stmt]) and
       exercise [xca:Rezk-completion-locally-small]
       ([xca_Rezk_locally_small_stmt]).
-    - Theorem [thm:1types-are-groupoids], first part
-      ([thm_1types_are_groupoids_stmt]); exercise
-      [xca:Rezk-completion-1trunc] ([xca_Rezk_completion_1trunc_stmt]).
+    - Exercise [xca:Rezk-completion-1trunc]
+      ([xca_Rezk_completion_1trunc_stmt]).
     - Theorem [thm:flagged-cat-equiv] ([thm_flagged_cat_equiv_stmt],
       assuming that Rezk completions are categories).  NOTE for the book
       text: it says "sending a category [C]"; it should be a precategory.
@@ -234,12 +236,23 @@ Definition thm_Rezk_small_stmt `{Funext} : Type
 Definition xca_Rezk_locally_small_stmt `{Funext} : Type
   := forall (C : WildPreCat) (pc : isPreCat C), isLocSmallCat C -> isLocSmallCat (Rezk C pc).
 
-(** Theorem [thm:1types-are-groupoids] (statement only): for [1]-types
+(** Theorem [thm:1types-are-groupoids], first part (with [Funext]): for [1]-types
     [A] and [B], the projection [[A, B] → (A → B)] from functors between
     the path groupoids is an equivalence. *)
 Definition thm_1types_are_groupoids_stmt : Type
   := forall (A B : Type), isGrpd A -> isGrpd B ->
        isEquiv (fun F : Functor (PathGrpd A) (PathGrpd B) => fob F).
+
+(** The inverse is [f ↦ PathFun f]: a functor between path groupoids
+    acts on paths by [ap], by path induction and [F_id]. *)
+Definition thm_1types_are_groupoids `{Funext} : thm_1types_are_groupoids_stmt.
+Proof.
+  intros A B gA gB.
+  refine (iso_to_isEquiv _ PathFun _ (fun f => refl)).
+  intro F. refine (path_Functor (PathGrpd_isPreCat B gB) (PathFun (fob F)) F refl _). cbn.
+  apply ptw_inv; intro x; apply ptw_inv; intro y; apply ptw_inv; intro p.
+  destruct p. exact (fid F x)^.
+Defined.
 
 (** Exercise [xca:Rezk-completion-1trunc] (statement only): the path
     pregroupoid with [hom(x,y) :≡ ‖x = y‖₀], whose Rezk completion is the
