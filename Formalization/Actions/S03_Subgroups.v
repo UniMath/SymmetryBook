@@ -37,6 +37,15 @@
       the library's [Finite] and [fcard]; the choice function needed by
       the Lagrange construction exists merely, by transitivity and finite
       choice.
+    - Exercise [xca:lagrange-Z-action-Rm] ([xca_lagrange_Z_Rm]), by
+      [con:lagrange] with the choice map [i ↦ loop⁻ⁱ]
+      ([lagrange_choice_Rm]), since [loop⁻¹] acts as the predecessor;
+      this also shows that [R_m] is transitive ([RmZset_trans]), which
+      the statement assumes.
+    - Exercise [xca:lagrange-if-subgr-not-normal]
+      ([xca_lagrange_wedge]): the same argument ([pred_choice]) with the
+      loop [pushl(loop)], which acts as the successor; the wedge is still
+      assumed a connected groupoid.
 
     Left out (statements only, no proofs yet; time limit per result)
     - That [F] is an equivalence (lemma [lem:SubG=MonoG], exercise
@@ -46,12 +55,9 @@
       connected domains and set-valued fibers.
     - Examples [ex:Rm0-subgroup], [exa:fix1subSGn], [exa:C3subC6],
       [exa:EforSG3], [ex:prodinclisGset], and exercises
-      [xca:SG2subSG3],
-      [xca:C3subSG3], [xca:lagrange-Z-action-Rm],
-      [xca:lagrange-if-subgr-not-normal] (the [..._stmt] definitions of
-      the sections [SubgroupExamples] and [LagrangeExercises]); where an
-      example needs that a [G]-set is transitive, or that the wedge
-      [S1 ∨ S1] is a connected groupoid, this is a hypothesis.
+      [xca:SG2subSG3] and [xca:C3subSG3] (the [..._stmt] definitions);
+      where an example needs that a [G]-set is transitive, this is a
+      hypothesis.
  *)
 
 From HoTT Require Import
@@ -603,7 +609,7 @@ Section LagrangeCount.
 
 End LagrangeCount.
 
-(** Exercises after [xca:lagrange] (statements only). *)
+(** Exercises after [xca:lagrange]. *)
 Section LagrangeExercises.
 
   Context `{Univalence}.
@@ -615,6 +621,91 @@ Section LagrangeExercises.
   Definition xca_lagrange_Z_Rm_stmt : Type
     := forall (k : ℕ) (t : istrans (RmZset k)),
          USym ZZ ≃ (Fin (S k) × USym (subgrp_group ((RmZset k; (fin_zero; t)) : SubGrp ZZ))).
+
+  (** Iterating a loop [l] that acts on coordinates [c : FinNat(k+1) → T(a)]
+      as the predecessor [fp] brings every element to [c(0)]. *)
+  Section PredIter.
+
+    Context (k : ℕ) {A : Type} (T : A -> Type) {a : A} (l : a = a)
+      (c : FinNat (S k) -> T a) (d : T a -> FinNat (S k)) (cd : forall y, c (d y) = y)
+      (hl : forall u, trp T l (c u) = c (fp k u)).
+
+    Fixpoint pred_pow (i : ℕ) : a = a
+      := match i with O => refl | S i' => pred_pow i' ⋅ l end.
+
+    Definition trp_trans_T {b b' b'' : A} (q : b' = b'') (p : b = b') (y : T b)
+      : trp T (q ⋅ p) y = trp T q (trp T p y).
+    Proof. destruct q. exact refl. Defined.
+
+    Definition pred_pow_zero (i : ℕ) (li : (i < S k)%nat)
+      : trp T (pred_pow i) (c (i; li)) = c (zero_finnat k).
+    Proof.
+      revert li. induction i as [|i IH]; intro li.
+      - exact (ap c (path_sigma_prop (fun x => fn_isProp_lt k x) (u := (0%nat; li))
+                       (v := zero_finnat k) refl)).
+      - exact (trp_trans_T _ _ _ @ ap (trp T (pred_pow i)) (hl (S i; li)) @ IH _).
+    Defined.
+
+    Definition pred_choice (y : T a) : {g : a = a & trp T g y = c (zero_finnat k)}
+      := (pred_pow (fst (d y));
+          ap (trp T (pred_pow (fst (d y)))) (cd y)^ @ pred_pow_zero _ (snd (d y))).
+
+  End PredIter.
+
+  (** The choice map for [con:lagrange]: [loop⁻ⁱ] brings [i] to [0], since
+      [loop⁻¹] acts as the predecessor [fp]. *)
+  Section LagrangeRm.
+
+    Context (k : ℕ).
+
+    Local Notation ψ := (Eqv_of_Equiv (equiv_fin_finnat (S k))).
+
+    Definition fromNat (u : FinNat (S k)) : Fin (S k) := eqinv (snd ψ) u.
+
+    Definition fromNat_zero : fromNat (zero_finnat k) = fin_zero
+      := ap (eqinv (snd ψ)) (path_fin_to_finnat_fin_zero k)^ @ eqinv_l (snd ψ) fin_zero.
+
+    Definition act_loop_Rm (y : Fin (S k)) : act (RmZset k) loop y = fst (finsuccEqv k) y.
+    Proof.
+      refine (ptw (trp_ap idmap (Rm k) loop) y @ _).
+      refine (ap (fun q => trp idmap q y) (S1_rec_loop _ _ _) @ _).
+      exact (ap (fun e => fst e y) (ptoe_etop (finsuccEqv k))).
+    Defined.
+
+    Definition trp_Vp_T {B : Type} (T : B -> Type) {b b' : B} (p : b = b') (z : T b)
+      : trp T p⁻¹ (trp T p z) = z.
+    Proof. destruct p. exact refl. Defined.
+
+    (** If [p] acts as [finsucc], then [p⁻¹] acts as [fp]. *)
+    Definition trp_V_finsucc {B : Type} (T : B -> Type) {b : B} (p : b = b)
+      (Tb : T b = Fin (S k))
+      (h : forall y, trp T p (trp idmap Tb^ y) = trp idmap Tb^ (fst (finsuccEqv k) y))
+      (u : FinNat (S k))
+      : trp T p⁻¹ (trp idmap Tb^ (fromNat u)) = trp idmap Tb^ (fromNat (fp k u)).
+    Proof.
+      pose (r := ap (fun v => eqinv (snd ψ) (fs k v)) (eqinv_r (snd ψ) (fp k u))
+                 @ ap (eqinv (snd ψ)) (fs_fp k u)
+                 : fst (finsuccEqv k) (fromNat (fp k u)) = fromNat u).
+      refine (ap (trp T p⁻¹) ((ap (trp idmap Tb^) r)^ @ (h _)^) @ _).
+      exact (trp_Vp_T T p _).
+    Defined.
+
+    Definition lagrange_choice_Rm (x : Fin (S k))
+      : {g : USym ZZ & act (RmZset k) g x = fin_zero}.
+    Proof.
+      pose (w := pred_choice k (fun z => Rm k z) loop⁻¹ fromNat (fst ψ) (eqinv_l (snd ψ))
+                   (trp_V_finsucc (fun z => Rm k z) loop refl act_loop_Rm) x).
+      exact (fst w; snd w @ fromNat_zero).
+    Defined.
+
+  End LagrangeRm.
+
+  Definition xca_lagrange_Z_Rm : xca_lagrange_Z_Rm_stmt
+    := fun k t => lagrange ((RmZset k; (fin_zero; t)) : SubGrp ZZ) (lagrange_choice_Rm k).
+
+  (** The hypothesis of the statement holds: [R_m] is transitive. *)
+  Definition RmZset_trans (k : ℕ) : istrans (RmZset k)
+    := trunc (fin_zero; fun y => trunc (fst (lagrange_choice_Rm k y); (snd (lagrange_choice_Rm k y))^)).
 
   (** Exercise [xca:lagrange-if-subgr-not-normal]: for the wedge group
       (assumed a connected groupoid) acting on [Fin 3] by the cyclic
@@ -633,5 +724,38 @@ Section LagrangeExercises.
     := forall (c : isConn WedgeS1S1) (g : isGrpd WedgeS1S1),
          let G := mkgroup (WedgeS1S1; (pushl base; (c; g))) in
          forall x : Fin 3, {h : USym G & act (X3wedge : GSet G) h x = fin3 0 _}.
+
+  (** As for [R_m]: [pushl(loop)] acts as the successor, so its inverse
+      powers bring every element to [0]. *)
+  Definition act_wedge_loop (y : Fin 3)
+    : trp (fun w => fst (X3wedge w)) (ap pushl loop) y = fst (finsuccEqv 2) y.
+  Proof.
+    refine ((ptw (trp_ap (fun w => fst (X3wedge w)) pushl loop) y)^ @ _).
+    refine (ptw (trp_ap idmap (fun z => fst (X3wedge (pushl z))) loop) y @ _).
+    refine (ap (fun q => trp idmap q y) (ap_compose (fun z => X3wedge (pushl z)) fst loop) @ _).
+    refine (ap (fun q : FinSetU 3 = FinSetU 3 => trp idmap (ap fst q) y) (S1_rec_loop _ _ _) @ _).
+    refine (ap (fun q : Fin 3 = Fin 3 => trp idmap q y)
+              (ap_fst_sigma_prop (fun X => isSet_isProp X) (u := FinSetU 3) (v := FinSetU 3)
+                 (etop (finsuccEqv 2))) @ _).
+    exact (ap (fun e => fst e y) (ptoe_etop (finsuccEqv 2))).
+  Defined.
+
+  Definition fromNat_fin3 (l : (0 < 3)%nat) : fromNat 2 (zero_finnat 2) = fin3 0 l.
+  Proof.
+    refine (ap (fromNat 2) (path_sigma_prop (fun x => fn_isProp_lt 2 x) (u := zero_finnat 2)
+                              (v := (0%nat; l)) refl) @ _).
+    refine (ap (eqinv (snd (Eqv_of_Equiv (equiv_fin_finnat 3)))) (eisretr _ (0%nat; l))^ @ _).
+    exact (eqinv_l (snd (Eqv_of_Equiv (equiv_fin_finnat 3))) _).
+  Defined.
+
+  Definition xca_lagrange_wedge : xca_lagrange_wedge_stmt.
+  Proof.
+    intros c g G x.
+    pose (w := pred_choice 2 (fun w => fst (X3wedge w)) (ap pushl loop)⁻¹ (fromNat 2)
+                 (fst (Eqv_of_Equiv (equiv_fin_finnat 3)))
+                 (eqinv_l (snd (Eqv_of_Equiv (equiv_fin_finnat 3))))
+                 (trp_V_finsucc 2 (fun w => fst (X3wedge w)) (ap pushl loop) refl act_wedge_loop) x).
+    exact (fst w; snd w @ fromNat_fin3 _).
+  Defined.
 
 End LagrangeExercises.
