@@ -51,13 +51,14 @@
       transitivity as a hypothesis): [a ↦ ((a, sh_{G'}), refl)] is a
       pointed equivalence compatible with the inclusions.  Identifications
       in [Mono(G)] come from such pointed equivalences ([Mono_path]).
+    - That [F] is an equivalence (lemma [lem:SubG=MonoG], exercise
+      [xca:SubG=MonoG]) and corollary [lem:setofsubgroups]: statements
+      [lem_SubG_MonoG_stmt] and [lem_setofsubgroups_stmt] here, proofs
+      [lem_SubG_MonoG] and [lem_setofsubgroups] in Section 9.2
+      ([Subgroups/S02_Epis.v]), since the inverse uses that the fibers of
+      [Bi] are sets for a mono [i] ([ismono_isCovering]).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - That [F] is an equivalence (lemma [lem:SubG=MonoG], exercise
-      [xca:SubG=MonoG]: [lem_SubG_MonoG_stmt]) and corollary
-      [lem:setofsubgroups] ([lem_setofsubgroups_stmt]); this needs the
-      object classifier [(∑_A (A → BG)) ≃ (BG → U)] restricted to
-      connected domains and set-valued fibers.
     - Examples [ex:Rm0-subgroup], [exa:fix1subSGn], [exa:C3subC6],
       [exa:EforSG3], and exercises
       [xca:SG2subSG3] and [xca:C3subSG3] (the [..._stmt] definitions);
@@ -522,7 +523,8 @@ Definition exa_EforSG3_stmt `{Univalence} : Type
        = ((SG 2; (i3 refl; m)) : Mono (SG_S X3)).
 
 (** Lemma [lem:SubG=MonoG] with exercise [xca:SubG=MonoG], and corollary
-    [lem:setofsubgroups] (statements only). *)
+    [lem:setofsubgroups] (proved in Section 9.2: [lem_SubG_MonoG],
+    [lem_setofsubgroups]). *)
 Definition lem_SubG_MonoG_stmt `{Funext} : Type
   := forall G : Group, isEquiv (fun S : SubGrp G => subgrp_to_mono S).
 
