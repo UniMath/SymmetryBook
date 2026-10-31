@@ -60,9 +60,11 @@
 
     - Example [ex:Rm0-subgroup] ([ex_Rm0_subgroup], from [Hc_Fin] of
       Section 3.6).
+    - Example [exa:fix1subSGn] ([exa_fix1subSGn], via [xca_n_is_ptd_eqv]
+      and a transposition moving the base point).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Examples [exa:fix1subSGn], [exa:C3subC6],
+    - Examples [exa:C3subC6],
       [exa:EforSG3], and exercises
       [xca:SG2subSG3] and [xca:C3subSG3] (the [..._stmt] definitions);
       where an example needs that a [G]-set is transitive, this is a
@@ -346,6 +348,49 @@ End PointedFinSets.
 
 Definition xca_n_is_ptd `{Univalence} : xca_n_is_ptd_stmt
   := xca_n_is_ptd_eqv.
+
+(** Example [exa:fix1subSGn], from exercise [xca:n-is-ptd-n+1]: [BΣ_n]
+    is [FinSet_n], which is [∑_{X:FinSet_{n+1}} X], the total type of the
+    standard [Σ_{n+1}]-set.  The base point goes to [(Fin(n+1), inr tt)],
+    which is identified with [(Fin(n+1), k)] by the transposition of [k]
+    and [inr tt]. *)
+Definition FinSet_BSG_eqv `{Univalence} (m : ℕ) : FinSet_n m ≃ utype (BG (SG m)).
+Proof.
+  refine (mkEqv (fun X => (fst X; Trunc_functor (-1)
+                                 (fun e => path_sigma_prop (fun Y => isSet_isProp Y)
+                                             (u := FinSetU m) (v := fst X) e) (snd X))
+                          : utype (BG (SG m)))
+                (fun A => (fst A; Trunc_functor (-1) (ap fst) (snd A)) : FinSet_n m) _ _).
+  - intro X. apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact refl.
+  - intro A. apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact refl.
+Defined.
+
+Definition fix1_eqv `{Univalence} (n : ℕ) : utype (BG (SG n)) ≃ TotG (std_SGset (S n))
+  := Eqv_comp (Eqv_inv (FinSet_BSG_eqv n))
+       (Eqv_comp (xca_n_is_ptd_eqv n)
+          (Eqv_of_Equiv (equiv_functor_sigma_pb
+                           (Q := fun z : utype (BG (SG (S n))) => fst (fst z))
+                           (Equiv_of_Eqv (FinSet_BSG_eqv (S n)))))).
+
+Definition exa_fix1subSGn `{Univalence} : exa_fix1subSGn_stmt.
+Proof.
+  intros n k t.
+  pose (e := fix1_eqv n).
+  pose (σ := transpEqv (finset_isDecSet (comp_isFinSet (sh (SG n.+1)))) k (inr tt)).
+  pose (q := path_sigma_prop (fun _ => ptrunc_isProp) (u := sh (SG n.+1)) (v := fst (fst e (sh (SG n))))
+               (path_sigma_prop (fun Y => isSet_isProp Y) (u := FinSetU n.+1)
+                  (v := fst (fst (fst e (sh (SG n))))) (etop σ))).
+  assert (apq : ap (fun B => fst (fst B)) q = etop σ).
+  { refine (ap_compose fst fst _ @ _). unfold q.
+    rewrite ap_fst_sigma_prop. exact (ap_fst_sigma_prop _ _). }
+  assert (r : trp (fun z : utype (BG (SG n.+1)) => fst (fst z)) q k = inr tt).
+  { exact ((ptoe_ap (fun B => fst (fst B)) q k)^ @ ap (fun s => ptoe s k) apq
+           @ ap (fun f => fst f k) (ptoe_etop σ) @ transp_a (sh (SG n.+1)) k (inr tt)). }
+  refine (fst (path_Group_Iso_eqv _ _)
+            (@path_Group _ (SG n) (subgrp_group ((std_SGset (S n); (k; t)) : SubGrp (SG (S n))))
+               ((fst e; _); snd e))^).
+  exact (pathpair q r).
+Defined.
 
 Definition xca_A_is_A_1_1 `{Univalence} : xca_A_is_A_1_1_stmt
   := fun A dA => xca_A_is_A_1_1_eqv dA.
