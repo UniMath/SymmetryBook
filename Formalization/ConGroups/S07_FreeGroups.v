@@ -21,17 +21,19 @@
       reduction [reduce] (the exercise: by nested induction on words,
       using decidable equality), reduced words [Reduced], Dyck words
       [Dyck], and the interpretation [interp : S̃^* → UF_S].
+    - The exercise [R_1 ≃ ℤ] ([R1_Z], with the value [wval] of a word
+      and [reduce_rep]: a reduced word is [aⁿ] or [(a⁻¹)⁻ⁿ]).
 
     Left out (statements only, no proofs yet; time limit per result)
     - The remark [S̃^*/∼ ≃ R_S] ([reduce_quot_stmt]), theorem
       [thm:free-group-elements] ([thm_free_group_elements_stmt]), and the
-      exercises [R_1 ≃ ℤ] ([R1_Z_stmt]) and [F_{n+1} = F_n ∨ ℤ]
+      exercise [F_{n+1} = F_n ∨ ℤ]
       ([FG_succ_stmt], with [iterWedgeZ]).
  *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core Colimits.Coeq Spaces.List.Core Spaces.Finite.Fin.
+  Types.Forall Types.Paths Truncations.Core Colimits.Coeq Spaces.List.Core Spaces.Finite.Fin Spaces.Int.
 From SymmetryBook Require Export ConGroups.S06_Sums.
 
 Local Open Scope uf_scope.
@@ -212,6 +214,66 @@ Definition R1_Z_stmt : Type
   := {e : Reduced True_isDecSet ≃ ℤ &
        (fst e (nil; trunc (nil; refl)) = iplus 0)
        × (forall w, fst e (zeta_star w) = zs (fst e w))}.
+
+(** The proof: the value [wval w : Int] of a word (the number of [a]s
+    minus the number of [a⁻¹]s) is invariant under [reduce], and a reduced
+    word is determined by its value: [reduce w = repI (wval w)], with
+    [repI n] the word [aⁿ] or [(a⁻¹)⁻ⁿ].  We transfer from the library's
+    [Int] to [ℤ] along [fromInt]. *)
+Fixpoint wval (w : list (@Stilde True)) : Int
+  := match w with
+     | nil => zero
+     | cons (inl _) w' => int_succ (wval w')
+     | cons (inr _) w' => int_pred (wval w')
+     end.
+
+Fixpoint repP (n : ℕ) : list (@Stilde True)
+  := match n with O => cons (inl triv) nil | S n' => cons (inl triv) (repP n') end.
+
+Fixpoint repN (n : ℕ) : list (@Stilde True)
+  := match n with O => cons (inr triv) nil | S n' => cons (inr triv) (repN n') end.
+
+Definition repI (x : Int) : list (@Stilde True)
+  := match x with negS n => repN n | zero => nil | posS n => repP n end.
+
+Definition wval_rep (x : Int) : wval (repI x) = x.
+Proof.
+  destruct x as [n| |n]; [|exact refl|].
+  - induction n as [|n IH]; [exact refl|]. exact (ap int_pred IH).
+  - induction n as [|n IH]; [exact refl|]. exact (ap int_succ IH).
+Defined.
+
+Definition inl_ne_inr_T (e : (inl triv : @Stilde True) = inr triv) : Empty
+  := false_ne_true (ap (fun w : @Stilde True => match w with inl _ => false | inr _ => true end) e).
+
+Definition reduce_rep (w : list (@Stilde True)) : reduce True_isDecSet w = repI (wval w).
+Proof.
+  induction w as [|c w IH]; [exact refl|].
+  destruct c as [[]|[]]; cbn [reduce wval]; rewrite IH; destruct (wval w) as [[|n]| |[|n]];
+    cbn [repI repN repP int_succ int_pred compl];
+    try exact refl;
+    destruct (Stilde_dec True_isDecSet _ _) as [e|ne];
+    solve [ exact refl | destruct (inl_ne_inr_T e) | destruct (inl_ne_inr_T e^)
+          | destruct (ne refl) ].
+Defined.
+
+Definition R1_Z : R1_Z_stmt.
+Proof.
+  pose (sL := list_isSet (sum_isSet (fun x y => fst (True_isDecSet x y))
+                                    (fun x y => fst (True_isDecSet x y)))).
+  assert (rr : forall x, reduce True_isDecSet (repI x) = repI x)
+    by (intro x; exact (reduce_rep _ @ ap repI (wval_rep x))).
+  simple refine (mkEqv (fun w => fromInt (wval (fst w)))
+                   (fun z => (repI (toInt z); trunc (repI (toInt z); (rr _)^))) _ _; (refl; _)).
+  - intros [u s]. apply (path_sigma_prop (fun _ => ptrunc_isProp)). cbn.
+    refine (ap repI (toInt_fromInt _) @ _).
+    refine (ptrunc_rec (sL _ _) _ s). intros [x p]. destruct p^.
+    exact (ap repI (ap wval (reduce_rep x) @ wval_rep _) @ (reduce_rep x)^).
+  - intro z. exact (ap fromInt (wval_rep _) @ fromInt_toInt z).
+  - intro w.
+    exact (ap fromInt (ap wval (reduce_rep (cons (inl triv) (fst w))) @ wval_rep _)
+           @ fromInt_succ _).
+Defined.
 
 (** The exercise [F_{n+1} ≃ F_n ∨ ℤ] (statement only), hence
     [F_n = ((ℤ ∨ ℤ) ∨ ⋯) ∨ ℤ] with [n] copies of [ℤ]. *)
