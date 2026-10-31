@@ -16,15 +16,14 @@
       are [{g | g⁻¹Hg ⊆ H}/H], while the symmetries of [W_G H] come from
       [N_G H = {g | g⁻¹Hg = H}]); e.g. [BS(1,2)] with [H = ⟨a⟩].  It holds
       for finite [H].
-    - Parts of the lemma after the unpacking: [p_G^H] is an epimorphism
-      ([pN_isepi]: every [e : X = X] merely comes from a loop at
-      [(sh_G, X, pt)], [W_loops]), [i_H = i_G^H j_H] ([iH_jH]), and hence
-      [j_H] is a monomorphism ([jH_ismono]).
+    - The lemma after the unpacking ([normalizer_lemma]): [p_G^H] is an
+      epimorphism ([pN_isepi]: every [e : X = X] merely comes from a loop
+      at [(sh_G, X, pt)], [W_loops]); [i_H = i_G^H j_H] ([iH_jH]), hence
+      [j_H] is a monomorphism ([jH_ismono]); [ker p_G^H = (H, j_H)]
+      ([ker_pN_path]): the fiber of [Bp_G^H] over [sh_{W_G H}] is
+      [TotG X] ([eK_eqv], via [PsiW], [PhiW], [FWpath]).
 
-    Left out (statements only)
-    - The remaining part of the lemma after the unpacking,
-      [ker p_G^H = (H, j_H)] (the statement [normalizer_lemma_stmt] is
-      the whole lemma).
+    Left out
     - The equivalence [e] of the unpacking of [N_G H] is not formalized
       separately.
  *)
@@ -41,6 +40,17 @@ Local Open Scope uf_scope.
 (** The subgroup [H] is given by [S ≡ (X, pt_X, !) : Sub(G)]; [H] itself is
     [subgrp_group S] with the monomorphism [subgrp_incl S] (Section 5.3),
     as recalled at the start of the section (informal). *)
+(** The [G]-set part of [SubGrp_path] (Section 9.2). *)
+Definition sgX_SubGrp_path `{ua : Univalence} {G : Group} {Y Y' : GSet G} {x : el Y (sh G)}
+  {y : el Y' (sh G)} {t : istrans Y} {t' : istrans Y'} (α : Y = Y')
+  (h : trp (fun Y0 : GSet G => el Y0 (sh G)) α x = y)
+  : ap (fun s : SubGrp G => sg_X s) (SubGrp_path (t := t) (t' := t') α h) = α.
+Proof.
+  destruct α. destruct h.
+  exact ((ap_compose (fun t0 => (Y; (x; t0)) : SubGrp G) (fun s : SubGrp G => sg_X s)
+            (istrans_isProp Y t t'))^ @ ap_const (istrans_isProp Y t t') Y).
+Defined.
+
 Section Weyl.
 
   Context `{ua : Univalence} {G : Group} (S : SubGrp G).
@@ -105,9 +115,9 @@ Section Weyl.
                  (u := sh Normalizer) (v := BjH (sh (subgrp_group S))) phiH_pt).
 
   (** The lemma after the unpacking of [N_G H]: [i_G^H] is a monomorphism
-      ([iN_ismono]); [p_G^H] is an epimorphism ([pN_isepi] below),
-      [ker p_G^H = (H, j_H)] as subgroups of [N_G H] (not proved), and
-      [i_H = i_G^H j_H] ([iH_jH] below). *)
+      ([iN_ismono]); [p_G^H] is an epimorphism, [ker p_G^H = (H, j_H)] as
+      subgroups of [N_G H], and [i_H = i_G^H j_H] ([normalizer_lemma],
+      after the section). *)
   Definition normalizer_lemma_stmt : Type
     := isepi pN
        × {m : ismono jH & ker pN = ((subgrp_group S; (jH; m)) : Mono Normalizer)}
@@ -151,16 +161,6 @@ Section Weyl.
       composite of [(sh_G, X, pt) = (sh_G, X, g·pt)] over a [g] with
       [g·pt = e⁻¹(pt)] ([sub_move]) and [(X, g·pt) = (X, pt)] given by [e]
       ([W_loops]). *)
-  Definition sgX_SubGrp_path {Y Y' : GSet G} {x : el Y (sh G)} {y : el Y' (sh G)}
-    {t : istrans Y} {t' : istrans Y'} (α : Y = Y')
-    (h : trp (fun Y0 : GSet G => el Y0 (sh G)) α x = y)
-    : ap (fun s : SubGrp G => sg_X s) (SubGrp_path (t := t) (t' := t') α h) = α.
-  Proof.
-    destruct α. destruct h.
-    exact ((ap_compose (fun t0 => (Y; (x; t0)) : SubGrp G) (fun s : SubGrp G => sg_X s)
-              (istrans_isProp Y t t'))^ @ ap_const (istrans_isProp Y t t') Y).
-  Defined.
-
   Definition sub_move {y y' : utype (BG G)} (g : y = y') (x : el X y)
     (t : istrans (G := regroup G y) X) (t' : istrans (G := regroup G y') X)
     : {L : ((y; (X; (x; t))) : SubTot) = (y'; (X; (act X g x; t'))) &
@@ -238,4 +238,124 @@ Section Weyl.
            @ (loops_fun_pcomp (Bf iN) (Bf jH) h')^ @ (ptw (ap USymf iH_jH) h')^).
   Defined.
 
+  (** [ker p_G^H = (H, j_H)]: the fiber of [Bp_G^H] over [sh_{W_G H}] is
+      equivalent to [TotG X] ([kerW_eqv]), by [w ↦ (j_H(w), refl)]
+      ([PsiW]) with inverse [((y, X', x, !), r) ↦ (y, (ap_fst r)⁻¹ · x)]
+      ([PhiW]); the identifications of pairs use [FWpath]. *)
+  Local Notation CS := (component SubTot ((sh G; S) : SubTot)).
+  Local Notation sgXu := (fun u : CS => sg_X (snd (fst u)) : GSet G).
+  Local Notation FW := (fiber BpN (sh Weyl)).
+
+  Definition rhoW (u : CS) (α : X = sg_X (snd (fst u))) : sh Weyl = BpN u
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := sh Weyl) (v := BpN u) α.
+
+  Definition FWpath {u1 u2 : CS} (e : u1 = u2) (α1 : X = sg_X (snd (fst u1)))
+    (α2 : X = sg_X (snd (fst u2))) (q : α2 = α1 @ ap sgXu e)
+    : ((u1; rhoW u1 α1) : FW) = (u2; rhoW u2 α2).
+  Proof.
+    destruct e. exact (ap (fun a => (u1; rhoW u1 a) : FW) (q @ concat_p1 α1)^).
+  Defined.
+
+  Definition FWpath_fst {u1 u2 : CS} (e : u1 = u2) (α1 : X = sg_X (snd (fst u1)))
+    (α2 : X = sg_X (snd (fst u2))) (q : α2 = α1 @ ap sgXu e)
+    : ap fst (FWpath e α1 α2 q) = e.
+  Proof.
+    destruct e.
+    exact ((ap_compose (fun a => (u1; rhoW u1 a) : FW) fst ((q @ concat_p1 α1)^))^
+           @ ap_const ((q @ concat_p1 α1)^) u1).
+  Defined.
+
+  Definition rhoW_eta {u : CS} (r : sh Weyl = BpN u) : r = rhoW u (ap fst r)
+    := ap_fst_cancel (fun _ => prop_is_set ptrunc_isProp) r (rhoW u (ap fst r))
+         (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp) (u := sh Weyl) (v := BpN u) _)^.
+
+  Definition PsiW (w : TotG X) : FW := (BjH w; rhoW (BjH w) refl).
+
+  Definition PhiW (k : FW) : TotG X
+    := (fst (fst (fst k));
+        trp (fun Z : GSet G => el Z (fst (fst (fst k)))) (ap fst (snd k))^
+            (sg_pt (snd (fst (fst k))))).
+
+  Definition PhiW_PsiW (w : TotG X) : PhiW (PsiW w) = w.
+  Proof.
+    destruct w as [y x].
+    exact (ap (fun a : X = X => ((y; trp (fun Z : GSet G => el Z y) a^ x) : TotG X))
+              (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                 (u := sh Weyl) (v := BpN (BjH (y; x))) refl)).
+  Defined.
+
+  Definition BjH_pt' : sh Normalizer = BjH (sh (subgrp_group S))
+    := path_sigma_prop (fun _ => ptrunc_isProp)
+         (u := sh Normalizer) (v := BjH (sh (subgrp_group S))) phiH_pt.
+
+  Definition sgXu_BjH_pt : ap sgXu BjH_pt' = refl.
+  Proof.
+    refine (ap_compose fst (fun v : SubTot => sg_X (snd v) : GSet G) _ @ _).
+    refine (ap (ap (fun v : SubTot => sg_X (snd v) : GSet G))
+              (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                 (u := sh Normalizer) (v := BjH (sh (subgrp_group S))) phiH_pt) @ _).
+    refine ((ap_compose (fun t => (sh G; (X; (sg_pt S; t))) : SubTot)
+               (fun v : SubTot => sg_X (snd v) : GSet G) _)^ @ _).
+    exact (ap_const _ _).
+  Defined.
+
+  Definition PsiW_PhiW (k : FW) : PsiW (PhiW k) = k.
+  Proof.
+    destruct k as [[[y [X' [x t]]] c] r].
+    refine (_ @ ap (fun r0 => (((y; (X'; (x; t))); c); r0) : FW) (rhoW_eta r)^).
+    pose (α := ap fst r : X = X').
+    pose (hα := transport_pV (fun Z : GSet G => el Z y) α x).
+    pose (E := ap (fun s => (y; s) : SubTot)
+                 (SubGrp_path (G := regroup G y) (t := trans_at y) (t' := t) α hα)).
+    pose (e := path_sigma_prop (fun _ => ptrunc_isProp)
+                 (u := BjH (y; trp (fun Z : GSet G => el Z y) α^ x)) (v := ((y; (X'; (x; t))); c)) E).
+    refine (FWpath e refl α _).
+    refine (_ @ (concat_1p _)^).
+    refine ((sgX_SubGrp_path (G := regroup G y) (t := trans_at y) (t' := t) α hα)^ @ _).
+    refine (ap_compose (fun s => (y; s) : SubTot) (fun v : SubTot => sg_X (snd v) : GSet G) _ @ _).
+    refine ((ap (ap (fun v : SubTot => sg_X (snd v) : GSet G))
+               (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                  (u := BjH (y; trp (fun Z : GSet G => el Z y) α^ x))
+                  (v := ((y; (X'; (x; t))); c)) E))^ @ _).
+    exact (ap_compose fst (fun v : SubTot => sg_X (snd v) : GSet G) e)^.
+  Defined.
+
+  Definition PsiW_mem (w : TotG X) : ptrunc (shKer pN = PsiW w).
+  Proof.
+    refine (ptrunc_rec ptrunc_isProp _ (snd (conn_of_trans X (sg_trans S)) (sh G; sg_pt S) w)).
+    intro q. destruct q. apply trunc.
+    exact (FWpath BjH_pt' refl refl (ap (fun r => refl @ r) sgXu_BjH_pt^)).
+  Defined.
+
+  Definition eK (w : TotG X) : utype (BG (Ker pN)) := (PsiW w; PsiW_mem w).
+
+  Definition eK_eqv : TotG X ≃ utype (BG (Ker pN)).
+  Proof.
+    refine (mkEqv eK (fun k => PhiW (fst k)) PhiW_PsiW _).
+    intro k. apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact (PsiW_PhiW (fst k)).
+  Defined.
+
+  Definition eK_pt : sh (Ker pN) = eK (sh (subgrp_group S))
+    := path_sigma_prop (fun _ => ptrunc_isProp)
+         (u := sh (Ker pN)) (v := eK (sh (subgrp_group S)))
+         (FWpath BjH_pt' refl refl (ap (fun r => refl @ r) sgXu_BjH_pt^)).
+
+  Definition eK_pmap : BG (subgrp_group S) →* BG (Ker pN) := (eK; eK_pt).
+
+  Definition ker_pN_path : ((subgrp_group S; (jH; jH_ismono)) : Mono Normalizer) = ker pN.
+  Proof.
+    pose (ee := (eK_pmap; snd eK_eqv) : BG (subgrp_group S) ≃* BG (Ker pN)).
+    refine (Mono_path ((subgrp_group S; (jH; jH_ismono)) : Mono Normalizer) (ker pN) ee _).
+    refine (eqinv (snd (ptw_star (pcomp (Bf (kermap pN)) eK_pmap) (Bf jH))) ((fun w => refl); _)).
+    cbn. refine (trans_1p _ @ _).
+    refine (ap_compose (@fst FW (fun v => ptrunc (shKer pN = v))) fst eK_pt @ _).
+    refine (ap (ap fst) (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+              (u := sh (Ker pN)) (v := eK (sh (subgrp_group S))) _) @ _).
+    exact (FWpath_fst _ _ _ _).
+  Defined.
+
 End Weyl.
+
+Definition normalizer_lemma `{ua : Univalence} {G : Group} (S : SubGrp G)
+  : normalizer_lemma_stmt S
+  := ((pN_isepi S; (jH_ismono S; (ker_pN_path S)^)); iH_jH S).
