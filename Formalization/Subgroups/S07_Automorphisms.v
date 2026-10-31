@@ -18,7 +18,7 @@
       the book text: the remark says [h ↦ g⁻¹ h g]; see [USym_inn_stmt].
     - Lemma [lemma:coker-out-action] ([coker_out_action]): the fibers of
       [Binn] by the book's chain of equivalences ([fiber_Binn_eqv]), and
-      the set truncation of an equivalence ([strunc_eqv]).
+      the set truncation of an equivalence ([strunc_eqv], now in Section 9.3).
     - The kernel of [inn] is [Aut_{BG_÷ = BG_÷}(refl)] ([ker_inn_center],
       via [fiber_Binn_eqv], which sends [shKer] to [refl]); this is the
       center of [sec:abelian-groups] (Chapter 12, not formalized yet).
@@ -50,16 +50,7 @@ Definition USymf_path_Group_Iso `{Univalence} {G K : Group} (P : G = K) (h : USy
   : USymf (fst (fst (path_Group_Iso_eqv G K) P)) h = trp USym P h.
 Proof. destruct P. destruct G as [X]. exact (trans_1p _ @ ap_idmap h). Defined.
 
-(** The set truncation of an equivalence. *)
-Definition strunc_eqv {A B : Type} (e : A ≃ B) : strunc A ≃ strunc B.
-Proof.
-  refine (mkEqv (strunc_rec strunc_isSet (fun a => settrunc (fst e a)))
-                (strunc_rec strunc_isSet (fun b => settrunc (eqinv (snd e) b))) _ _).
-  - exact (strunc_ind_prop _ (fun _ => strunc_isSet _ _)
-             (fun a => ap settrunc (eqinv_l (snd e) a))).
-  - exact (strunc_ind_prop _ (fun _ => strunc_isSet _ _)
-             (fun b => ap settrunc (eqinv_r (snd e) b))).
-Defined.
+(** [strunc_eqv]: the set truncation of an equivalence, Section 9.3. *)
 
 (** The fibers of [Binn]: [Binn⁻¹(G') ≃ (BG'_÷ = BG_÷)], as in the proof
     of lemma [lemma:coker-out-action]. *)

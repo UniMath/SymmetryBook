@@ -44,12 +44,17 @@
       ([cor_cokermaps_Ker_f1_F1]): [Θ(v) :≡ (F₂(v), F1_pt)] is a pointed
       equivalence [BKer(f₁) ≃* BKer(F₁)] over [F₂] ([Theta_pEqv],
       [ThetaHom_comp]); loops on both sides are determined by their
-      image in [BG₀] ([KFcancel]).
+      image in [BG₀] ([KFcancel]).  NOTE for the book text: part
+      [it:coker-f1-F1] is false as stated (for [f₁ : 1 → C₂] and
+      [f₂ :≡ id], [coker(F₁)] has one element and [coker(f₁)(sh)] two),
+      since [BF₁] is [F₁] restricted to the component [BKer(f₂f₁)]; it is
+      proved when [(f₂f₁)⁻¹(x₂)] is connected
+      ([cor_cokermaps_coker_f1_F1_conn], via [cokerF1_eqv]).
 
     Left out (statements only; time limit per result)
     - The exercise after [rem:imageandcokernel] ([xca_ker_coker_stmt],
-      with [trivhom]); parts [it:coker-f1-F1] and [it:epif1->equivF'1]
-      of corollary [cor:cokermaps]
+      with [trivhom]); part [it:epif1->equivF'1] of corollary
+      [cor:cokermaps] (it needs [epi_surjection_stmt])
       ([cor_cokermaps_..._stmt], with [isF1], [isF2], [F1coker]); exercise
       [xca:abstract-kernel] ([xca_abstract_kernel_stmt], with [Xker]);
       lemma [lem:Im-fact-unique] ([lem_Im_fact_unique_stmt]); remark
@@ -236,12 +241,24 @@ Section PtdFibersOfComposites.
 End PtdFibersOfComposites.
 
 (** Corollary [cor:cokermaps] (parts [it:F1], [it:F2-mono],
-    [it:monof2->isoF2], [it:H-equiv] and [it:Ker-f1-F1] proved below).  The homomorphisms
+    [it:monof2->isoF2], [it:H-equiv] and [it:Ker-f1-F1] proved below;
+    [it:coker-f1-F1] under an extra hypothesis).  The homomorphisms
     [F₁ : Ker(f₂f₁) → Ker(f₂)] and [F₂ : Ker(f₁) → Ker(f₂f₁)] are
     specified by their defining equations; parts [it:H-equiv],
     [it:Ker-f1-F1], [it:coker-f1-F1] and [it:monof2->isoF2] are stated for
     any such [F₁], [F₂].  Part [it:epif1->equivF'1] uses [F'₁(w)], which
     is [F1] above for the unpointed maps. *)
+(** The set truncation of an equivalence. *)
+Definition strunc_eqv {A B : Type} (e : A ≃ B) : strunc A ≃ strunc B.
+Proof.
+  refine (mkEqv (strunc_rec strunc_isSet (fun a => settrunc (fst e a)))
+                (strunc_rec strunc_isSet (fun b => settrunc (eqinv (snd e) b))) _ _).
+  - exact (strunc_ind_prop _ (fun _ => strunc_isSet _ _)
+             (fun a => ap settrunc (eqinv_l (snd e) a))).
+  - exact (strunc_ind_prop _ (fun _ => strunc_isSet _ _)
+             (fun b => ap settrunc (eqinv_r (snd e) b))).
+Defined.
+
 Section CokerMaps.
 
   Context `{ua : Univalence} {G0 G1 G2 : Group} (f1 : Hom G0 G1) (f2 : Hom G1 G2).
@@ -583,6 +600,53 @@ Section CokerMaps.
   Proof.
     intros F1' F2' m e1 e2. destruct (F1_path F1' e1), (F2_path F2' e2).
     exact (Ker_f1_F1_aux m).
+  Defined.
+
+  (** Part [it:coker-f1-F1] is false as stated: for [f₁ : 1 → C₂] and
+      [f₂ :≡ id], [coker(F₁)] is the one-point set (as [BKer(f₂f₁)] and
+      [BKer(f₂)] are contractible), whereas [coker(f₁)(sh)] has two
+      elements.  The proof takes [H] to be an equivalence from the fiber
+      of [BF₁], whose domain is only the component [BKer(f₂f₁)] of
+      [(f₂f₁)⁻¹(x₂)], whereas [lem:fibersofcomposites] gives this for the
+      whole fiber.  It holds when the fiber [(f₂f₁)⁻¹(x₂)] is connected
+      ([cor_cokermaps_coker_f1_F1_conn]), e.g. when [f₂f₁] is an
+      epimorphism. *)
+  Definition sig_fw_eqv {A : Type} {P Q : A -> Type} (e : forall a, P a ≃ Q a)
+    : {a : A & P a} ≃ {a : A & Q a}.
+  Proof.
+    refine (mkEqv (fun w => (fst w; fst (e (fst w)) (snd w)))
+                  (fun w => (fst w; eqinv (snd (e (fst w))) (snd w))) _ _).
+    - intros [a x]. exact (ap (fun y => (a; y) : {a : A & P a}) (eqinv_l (snd (e a)) x)).
+    - intros [a y]. exact (ap (fun x => (a; x) : {a : A & Q a}) (eqinv_r (snd (e a)) y)).
+  Defined.
+
+  Definition sig_comp_eqv {A : Type} {a0 : A} (cA : isConn A) (P : A -> Type)
+    : {t : component A a0 & P (fst t)} ≃ {x : A & P x}.
+  Proof.
+    refine (mkEqv (fun w : {t : component A a0 & P (fst t)} => ((fst (fst w); snd w) : {x : A & P x}))
+                  (fun w : {x : A & P x} => ((((fst w; snd cA a0 (fst w)) : component A a0); snd w)
+                                             : {t : component A a0 & P (fst t)})) _ _).
+    - intros [[x c] y]. cbn.
+      exact (ap (fun c' => (((x; c') : component A a0); y) : {t : component A a0 & P (fst t)})
+                (ptrunc_isProp _ c)).
+    - intros [x y]. exact refl.
+  Defined.
+
+  Definition cokerF1_eqv (cn : isConn (fiber (fst (Bf (compG f2 f1))) (sh G2)))
+    (u : utype (BG (Ker f2)))
+    : fiber F1k u ≃ fiber k1 (fst (fst u)).
+  Proof.
+    refine (Eqv_comp (sig_fw_eqv (fun t => subtype_paths_eqv (fun _ => ptrunc_isProp) u (F1k t))) _).
+    refine (Eqv_comp (sig_comp_eqv cn (fun x => fst u = F1 k1 k2 (sh G2) x)) _).
+    exact (Hgen k1 k2 (sh G2) (fst u); Hgen_isEquiv k1 k2 (sh G2) (fst u)).
+  Defined.
+
+  Definition cor_cokermaps_coker_f1_F1_conn
+    : isConn (fiber (fst (Bf (compG f2 f1))) (sh G2)) -> cor_cokermaps_coker_f1_F1_stmt.
+  Proof.
+    intros cn F e. destruct (F1_path F e).
+    apply path_forall; intro u. apply path_SetU.
+    exact (strunc_eqv (cokerF1_eqv cn u)).
   Defined.
 
 End CokerMaps.
