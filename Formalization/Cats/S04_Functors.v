@@ -23,6 +23,9 @@
       [ρ], [α] for functors into precategories ([compF_idF_l],
       [compF_idF_r], [compF_assoc]); hence the wild precategory of
       precategories [PreCatCat].
+      For wild functors in general, [λ], [ρ] and [α] hold as well
+      ([wild_functor_laws], with [path_Functor_wild]; the statement
+      assumes [Funext], since the laws are compared as functions).
     - Definition [def:full-faithful] ([isFaithful], [isFull],
       [isFullyFaithful]).
     - Definition [def:nat-trans] ([NatTrans]); examples [ex:pt-unpt-unit]
@@ -41,9 +44,8 @@
     - Example [ex:repr-functors] ([RepCo], [RepContra]).
 
     Left out (statements only, no proofs yet)
-    - Exercise [xca:wildprecat-of-wildprecats] for wild functors into
-      wild precategories ([wild_functor_laws_stmt]); the pentagon fillers
-      are left out.
+    - The pentagon fillers of exercise [xca:wildprecat-of-wildprecats]
+      for wild functors.
     - Exercise [xca:wildcat-of-precats] ([xca_wildcat_of_precats_stmt],
       for precategories).
 
@@ -412,11 +414,47 @@ Definition compF_assoc `{Funext} {C D E W : WildPreCat} (pw : isPreCat W)
   : compF K (compF G F) = compF (compF K G) F
   := path_Functor pw (compF K (compF G F)) (compF (compF K G) F) refl refl.
 
-(** For wild functors in general, [λ], [ρ], [α] and the pentagon
-    fillers (statements only). *)
-Definition wild_functor_laws_stmt : Type
+(** For wild functors in general, [λ], [ρ] and [α]; the pentagon
+    fillers are left out.  The statement assumes [Funext], since the
+    laws of the functors are compared as functions. *)
+Definition wild_functor_laws_stmt `{Funext} : Type
   := forall (C D E W : WildPreCat) (F : Functor C D) (G : Functor D E) (K : Functor E W),
        (compF (idF D) F = F) × (compF F (idF C) = F) × (compF K (compF G F) = compF (compF K G) F).
+
+(** Wild functors with the same actions on objects and arrows are equal
+    when their laws agree pointwise. *)
+Definition path_Functor_wild `{Funext} {C D : WildPreCat} (fo : Ob C -> Ob D)
+  (fm : forall A B, homC A B -> homC (fo A) (fo B))
+  (i i' : forall A, fm A A (idC A) = idC (fo A))
+  (c c' : forall A B E (f : homC A B) (g : homC B E), fm A E (g ∘c f) = fm B E g ∘c fm A B f)
+  (ei : forall A, i A = i' A) (ec : forall A B E f g, c A B E f g = c' A B E f g)
+  : Build_Functor C D fo fm i c = Build_Functor C D fo fm i' c'.
+Proof.
+  refine (ap011 (Build_Functor C D fo fm) (path_forall _ _ ei) _).
+  do 3 (apply path_forall; intro). apply path_forall; intro f. apply path_forall; intro g.
+  exact (ec _ _ _ f g).
+Defined.
+
+Definition wild_assoc_law {X Y Z : Type} (f : X -> Y) (g : Y -> Z) {x x' : X} {y : Y} {z : Z}
+  (p : x = x') (q : f x' = y) (r : g y = z)
+  : ap g (ap f p @ q) @ r = ap (fun w => g (f w)) p @ (ap g q @ r)
+  := ap (fun s => s @ r) (ap_pp g _ q) @ concat_pp_p _ _ _
+     @ ap (fun s => s @ (ap g q @ r)) (ap_compose f g p)^.
+
+Definition wild_functor_laws `{Funext} : wild_functor_laws_stmt.
+Proof.
+  intros C D E W [foF fmF iF cF] [foG fmG iG cG] [foK fmK iK cK].
+  refine ((_; _); _).
+  - refine (path_Functor_wild _ _ _ _ _ _ _ _).
+    + intro A. exact (concat_p1 _ @ ap_idmap _).
+    + intros A B E' f g. exact (concat_p1 _ @ ap_idmap _).
+  - refine (path_Functor_wild _ _ _ _ _ _ _ _).
+    + intro A. exact (concat_1p _).
+    + intros A B E' f g. exact (concat_1p _).
+  - refine (path_Functor_wild _ _ _ _ _ _ _ _).
+    + intro A. exact (wild_assoc_law (fmG _ _) (fmK _ _) _ _ _).
+    + intros A B E' f g. exact (wild_assoc_law (fmG _ _) (fmK _ _) _ _ _).
+Defined.
 
 (** Exercise [xca:wildcat-of-precats] (statement only): the precategories,
     with functors as arrows, form a univalent wild category; likewise the
