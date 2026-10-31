@@ -21,23 +21,23 @@
       [isEpi_cancel]).
     - Exercise [xca:monos-epis-sets-types]: monos in types are the
       injections ([isMono_TypeCat_isInj]); surjections are epis in sets
-      ([isSurj_isEpi_SetCat]).
+      ([isSurj_isEpi_SetCat]), and conversely ([isEpi_SetCat_isSurj], by
+      the library's proof, which tests against the set cone of [f] (the
+      set-truncated pushout of [f] and [A → 𝟙]) instead of the set of
+      propositions, so no resizing is needed).  NOTE for the book text:
+      the usual proof via the set of propositions needs resizing; a hint
+      to the set cone would help.
     - Exercise [xca:monos-epis-preorder] ([preorder_isMono],
       [preorder_isEpi]).
 
     Left out (statements only, no proofs yet)
-    - Exercise [xca:monos-epis-sets-types], that epis in sets are
-      surjections ([isEpi_SetCat_isSurj_stmt]).  The usual proof tests
-      against the set of propositions, which is not in the same universe
-      as [A] and [B]; without propositional resizing another argument is
-      needed.  NOTE for the book text: a hint would help here.
     - Exercise [xca:mono-cat-grp] ([xca_mono_cat_grp_stmt]).  It needs
       that a homomorphism is determined by its action on symmetries,
       which is only proved in Chapter 7 ([abstr_hom_eqv]). *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Types.Unit Truncations.Core Spaces.Nat.Core.
+  Types.Forall Types.Paths Types.Unit Truncations.Core Spaces.Nat.Core HIT.epi.
 From SymmetryBook Require Export Cats.S02_Categories.
 
 Local Open Scope uf_scope.
@@ -215,13 +215,28 @@ Proof.
   exact (ap g p @ ap (fun u => u a) e @ (ap h p)^).
 Defined.
 
-(** The converse (statement only).  The usual proof tests against two
-    maps into the set of propositions, which lives in a larger universe
-    than [A] and [B], so it is not an object of the same category of
-    sets; without propositional resizing one needs another argument (for
-    instance via the pushout of [f] along itself). *)
+(** The converse.  The usual proof tests against two maps into the set
+    of propositions, which lives in a larger universe than [A] and [B],
+    so it is not an object of the same category of sets. *)
 Definition isEpi_SetCat_isSurj_stmt `{Funext} : Type
   := forall (A B : Ob SetCat) (f : homC A B), isEpi f -> isSurj f.
+
+(** The proof of the library ([HIT.epi]) avoids resizing: it tests
+    against the set truncation of the pushout of [f] and [A → 𝟙] (the
+    "set cone" of [f]), which is in the same universe as [A] and [B]. *)
+Definition isEpi_SetCat_isSurj `{ua : Univalence} : isEpi_SetCat_isSurj_stmt.
+Proof.
+  intros A B f e.
+  pose (X := @Build_HSet (fst A) (isSet_IsHSet (snd A))).
+  pose (Y := @Build_HSet (fst B) (isSet_IsHSet (snd B))).
+  assert (ep : HIT.epi.isepi (f : X -> Y)).
+  { intros Z g h p.
+    pose (D := ((Z : Type); IsHSet_isSet _) : Ob SetCat).
+    exact (ap fst (e D (fun a => h (f a)) (g; p^) (h; refl))). }
+  intro b.
+  exact (Trunc_functor (-1) (fun w : hfiber f b => (fst w; (snd w)^))
+           (center _ (HIT.epi.isepi_issurj (X := X) (Y := Y) f ep b))).
+Defined.
 
 (** Exercise [xca:monos-epis-preorder]: in a preorder every morphism is
     both a mono and an epi. *)
