@@ -18,13 +18,15 @@
     - The category of abstract groups ([AbsGroupCat]) and the functor
       [abstr] ([AbstrFun]), fully faithful by [abstr_hom_eqv]
       ([AbstrFun_ff]).
-    - Exercise [xca:Bconcr-OK], part [it:Bconcr_pt] ([Bconcr_pt], as an
-      isomorphism of [H]-sets, since [φ_!P_G] lives in a higher universe).
+    - Exercise [xca:Bconcr-OK] ([xca_Bconcr_OK]): part [it:Bconcr_pt]
+      ([Bconcr_pt], as an isomorphism of [H]-sets, since [φ_!P_G] lives
+      in a higher universe), and the functor [concr] ([ConcrFun]).
+      Deviation: on morphisms we do not use [φ_!]; [concr(φ)] is the
+      delooping of [r_H ∘ φ ∘ r_G⁻¹] ([concr_map], with [rG_iso] of
+      Section 7.4), and the functor laws follow from [abstr_hom_eqv].
 
     Left out (statements only, no proofs yet; time limit per result)
-    - The functor [concr] on morphisms (it uses [φ_!]) and the second
-      part of exercise [xca:Bconcr-OK] ([xca_Bconcr_OK_stmt]); theorem
-      [thm:concr-equiv-cats], stated for [abstr]
+    - Theorem [thm:concr-equiv-cats], stated for [abstr]
       ([thm_concr_equiv_cats_stmt]).
  *)
 
@@ -167,9 +169,8 @@ Definition AbstrFun_ff `{Funext} : isFullyFaithful AbstrFun
 (** Exercise [xca:Bconcr-OK]: part [it:Bconcr_pt] is [phi_shriek_prtor]
     (Section 7.4), an isomorphism [φ_!P_G ≅ P_H] of [H]-sets rather than
     a path, since [φ_!P_G] lives in a higher universe.  The second part
-    and theorem [thm:concr-equiv-cats] (statements only): [concr] on
-    morphisms uses [φ_!], so we state the theorem for [abstr], whose
-    inverse [concr] is. *)
+    is proved below ([xca_Bconcr_OK]); theorem [thm:concr-equiv-cats] is
+    stated for [abstr], whose inverse [concr] is (statement only). *)
 Definition Bconcr_pt_stmt `{Univalence} : Type
   := forall (G H : AbsGroup) (φ : absHom G H), gIso (phi_shriek φ (absprtor G)) (absprtor H).
 
@@ -177,5 +178,64 @@ Definition Bconcr_pt `{Univalence} : Bconcr_pt_stmt := fun G H φ => phi_shriek_
 
 Definition xca_Bconcr_OK_stmt `{Univalence} : Type
   := Bconcr_pt_stmt × {C : Functor AbsGroupCat GroupCat & forall G, fob C G = concr G}.
+
+(** The second part of [xca:Bconcr-OK]: [concr] as a functor.  On
+    morphisms, [concr(φ)] is the delooping ([abstr_hom_eqv]) of
+    [r_H ∘ φ ∘ r_G⁻¹], with [r_G : G ≅ abstr(concr G)] ([rG_iso],
+    Section 7.4); the functor laws follow by applying [abstr_hom], which
+    is an equivalence. *)
+Section ConcrFun.
+
+  Context `{Univalence}.
+
+  Definition rG_hom (A : AbsGroup) : absHom A (abstr (concr A)).
+  Proof. pose (r := rG_iso A). exact (fst (fst r); snd r). Defined.
+
+  Definition rG_inv_hom (A : AbsGroup) : absHom (abstr (concr A)) A.
+  Proof.
+    pose (r := rG_iso A). pose (e := fst r).
+    refine (eqinv (snd e); _). intros s t.
+    apply (isInj_cancel (isEquiv_isInj (snd e))).
+    refine (eqinv_r (snd e) _ @ _ @ (snd r _ _)^).
+    exact (ap011 (ag_mul (abstr (concr A))) (eqinv_r (snd e) s)^ (eqinv_r (snd e) t)^).
+  Defined.
+
+  Definition concr_map {A B : AbsGroup} (φ : absHom A B) : Hom (concr A) (concr B).
+  Proof.
+    exact (eqinv (abstr_hom_isEquiv (concr A) (concr B))
+             (absHom_comp (rG_hom B) (absHom_comp φ (rG_inv_hom A)))).
+  Defined.
+
+  Definition abstr_concr_map {A B : AbsGroup} (φ : absHom A B)
+    : abstr_hom (concr_map φ) = absHom_comp (rG_hom B) (absHom_comp φ (rG_inv_hom A)).
+  Proof. exact (eqinv_r (abstr_hom_isEquiv (concr A) (concr B)) _). Defined.
+
+  Definition concr_map_id (A : AbsGroup) : concr_map (absHom_id A) = idG (concr A).
+  Proof.
+    apply (isInj_cancel (isEquiv_isInj (abstr_hom_isEquiv (concr A) (concr A)))).
+    refine (abstr_concr_map _ @ _ @ (abstr_id (concr A))^).
+    apply path_absHom. intro s. exact (eqinv_r (snd (fst (rG_iso A))) s).
+  Defined.
+
+  Definition concr_map_comp {A B C : AbsGroup} (f : absHom A B) (g : absHom B C)
+    : concr_map (absHom_comp g f) = compG (concr_map g) (concr_map f).
+  Proof.
+    apply (isInj_cancel (isEquiv_isInj (abstr_hom_isEquiv (concr A) (concr C)))).
+    refine (abstr_concr_map _ @ _ @ (abstr_comp (concr_map f) (concr_map g))^).
+    refine (_ @ ap011 absHom_comp (abstr_concr_map g)^ (abstr_concr_map f)^).
+    apply path_absHom. intro s.
+    exact (ap (fun b => fst (rG_hom C) (fst g b)) (eqinv_l (snd (fst (rG_iso B))) _)^).
+  Defined.
+
+End ConcrFun.
+
+Definition ConcrFun `{Univalence} : Functor AbsGroupCat GroupCat.
+Proof.
+  exact (Build_Functor AbsGroupCat GroupCat concr (fun A B φ => concr_map φ)
+           concr_map_id (fun A B C f g => concr_map_comp f g)).
+Defined.
+
+Definition xca_Bconcr_OK `{Univalence} : xca_Bconcr_OK_stmt.
+Proof. exact (Bconcr_pt; (ConcrFun; fun G => refl)). Defined.
 
 Definition thm_concr_equiv_cats_stmt `{Funext} : Type := isCatEquiv AbstrFun.
