@@ -27,9 +27,11 @@
     Left out (statements only, no proofs yet; time limit per result)
     - The action of [Σ_2] on [C_n] ([S2_on_Cn_stmt]), construction
       [con:bidirectional-bicycle] and its exercises
-      ([con_bidirectional_bicycle_stmt]), the cardinality [2n] of [D_n]
-      ([dihedral_card_stmt]), and the exercise that [Q_8] and [D_4] are
-      not isomorphic ([Q8_not_D4_stmt]).
+      ([con_bidirectional_bicycle_stmt]), and the exercise that [Q_8]
+      and [D_4] are not isomorphic ([Q8_not_D4_stmt]).
+    - The cardinality [2n] of [D_n] ([dihedral_card_stmt]) is proved in
+      Section 10.2 ([dihedral_card]), where [C_n] is shown to have [n]
+      elements.
  *)
 
 From HoTT Require Import

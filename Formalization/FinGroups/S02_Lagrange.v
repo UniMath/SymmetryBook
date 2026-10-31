@@ -25,6 +25,11 @@
       [G/H], only if [P] is decidable.  The statements
       [Lagrangeascounting_stmt] and [cor_cyclicgroupsaresimple_stmt]
       assume the subgroup decidable.
+    - From Section 8.2: [D_n] has [2n] elements ([dihedral_card], for
+      [dihedral_card_stmt]), since its symmetries are pairs
+      ([USym_semidirect_eqv]), [Σ_2] has [2] symmetries ([SG2_card], via
+      [fcard_aut]) and [C_n] has [n] ([USym_CG_eqv]); [cardF_eqv]:
+      cardinality is invariant under equivalence.
 
     Left out (statements only)
     - Corollary [cor:whatSylow2needs].
@@ -188,6 +193,42 @@ Defined.
 
 Definition CG_Finite `{ua : Univalence} (k : ℕ) : Finite (USym (CG k))
   := Build_Finite _ (S k) (tr (Equiv_of_Eqv (USym_CG_eqv k))).
+
+(** The cardinality of a finite set only depends on its equivalence
+    class. *)
+Definition cardF_eqv `{ua : Univalence} {A B : Type} (e : A ≃ B) (hA : isFinSet A)
+  (hB : isFinSet B) : cardF hA = cardF hB
+  := cardF_fcard hA @ @fcard_equiv' _ _ (Equiv_of_Eqv e) _ _ @ (cardF_fcard hB)^.
+
+(** The statement [dihedral_card_stmt] of Section 8.2 ([D_n] has [2n]
+    elements), proved here since it uses [USym_CG_eqv]: the symmetries
+    of [Σ_2 ⋉ A] are pairs ([USym_semidirect_eqv]), [Σ_2] has
+    [2! = 2] symmetries ([card_Aut]) and [C_n] has [n]. *)
+Definition USym_SG2_eqv `{Univalence} : USym (SG 2) ≃ (Fin 2 <~> Fin 2)
+  := Eqv_comp (Eqv_comp (USym_SG_S_eqv (FinSetU 2)) (idtoeqv; ua _ _))
+       (Eqv_inv (Equiv_Eqv_eqv (Fin 2) (Fin 2))).
+
+Definition SG2_Finite `{Univalence} : Finite (USym (SG 2))
+  := finite_equiv' _ (Equiv_of_Eqv (Eqv_inv USym_SG2_eqv)) _.
+
+Definition SG2_card `{Univalence} : cardF (Finite_isFinSet SG2_Finite) = 2%nat
+  := cardF_fcard _ @ @fcard_equiv' _ _ (Equiv_of_Eqv USym_SG2_eqv) _ _ @ @fcard_aut _ (Fin 2) _.
+
+Definition dihedral_card `{ua : Univalence} : dihedral_card_stmt.
+Proof.
+  intros k A e.
+  pose (hX := Finite_isFinSet SG2_Finite).
+  pose (eY := Eqv_comp (idtoeqv (ap USym e)) (USym_CG_eqv k)).
+  pose (hY := Finite_isFinSet (finite_equiv' _ (Equiv_of_Eqv (Eqv_inv eY)) _)
+              : isFinSet (USym (A (sh (SG 2))))).
+  pose (hS := isFinSet_Eqv (binprod_prod _ _)
+                (Finite_isFinSet (@finite_prod _ _ (isFinSet_Finite hX) (isFinSet_Finite hY)))
+              : isFinSet (USym (SG 2) × USym (A (sh (SG 2))))).
+  exists (isFinSet_Eqv (USym_semidirect_eqv (SG 2) A) hS).
+  refine (cardF_eqv (USym_semidirect_eqv (SG 2) A) _ hS @ _).
+  refine (card_sum_const hX hY (fun _ => USym (A (sh (SG 2)))) (fun _ => idEqv _) hS @ _).
+  exact (ap011 mul SG2_card (cardF_fcard hY @ @fcard_equiv' _ _ (Equiv_of_Eqv eY) _ _)).
+Defined.
 
 Definition cor_cyclicgroupsaresimple `{ua : Univalence} : cor_cyclicgroupsaresimple_stmt.
 Proof.
