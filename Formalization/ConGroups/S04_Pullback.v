@@ -18,13 +18,18 @@
     - Definition [def:intersectionofgroups]: [pullbackG f f'] (the
       component at [(sh_H, sh_{H'}, p_{f'} p_f⁻¹)]), with its projections,
       and [intersectionG] of two monomorphisms.
+    - The exercise on [Hom(K, H ×_G H')] and [U(H ×_G H')]
+      ([pullbackG_univ]; the last part, about abstract groups, is not
+      stated separately).  Identifications in the pullback are pairs of
+      identifications with a commuting square ([pb_path], [pb_nat],
+      [pb_path_eta]), which is a proposition since [BG] is a groupoid;
+      [U(H ×_G H')] is the pullback of [USymf f] and [USymf f']
+      ([pbU_eqv]), and [Hom(K, H ×_G H')] is the type of pairs of pointed
+      maps with a pointed homotopy ([PBdata], [pbPhi_eqv], [pbHom_eqv]).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Example [ex:pullbackandgcd] ([ex_pullbackandgcd_stmt]), the example
-      [L ℤ = a ℤ ∩ b ℤ] ([lcm_intersection_stmt], with [dgHom]) and the
-      exercise on [Hom(K, H ×_G H')] and [U(H ×_G H')]
-      ([pullbackG_univ_stmt]; the last part, about abstract groups, is
-      not stated separately).
+    - Example [ex:pullbackandgcd] ([ex_pullbackandgcd_stmt]) and the
+      example [L ℤ = a ℤ ∩ b ℤ] ([lcm_intersection_stmt], with [dgHom]).
  *)
 
 From HoTT Require Import
@@ -209,10 +214,247 @@ Definition lcm_intersection_stmt `{Univalence} : Type
          × (compG (dgHom (S i)) (compG (pullbackG_pr1 (dgHom (S i)) (dgHom (S j))) k)
             = dgHom (nat_lcm (S i) (S j)))}.
 
-(** The exercise on [Hom(K, H ×_G H')] and [U(H ×_G H')] (statement
-    only). *)
+(** The exercise on [Hom(K, H ×_G H')] and [U(H ×_G H')] (proved below,
+    [pullbackG_univ]). *)
 Definition pullbackG_univ_stmt `{Funext} : Type
   := forall (H H' G K : Group) (f : Hom H G) (f' : Hom H' G),
        (pullback (fun k : Hom K H => compG f k) (fun k : Hom K H' => compG f' k)
         ≃ Hom K (pullbackG f f'))
        × (pullback (USymf f) (USymf f') ≃ USym (pullbackG f f')).
+
+(** Proof of the exercise.  Identifications in [pullbackB] are given by
+    identifications [p], [q] of the components with a commuting square
+    ([pb_path], [pb_nat], [pb_path_eta]); the square is a proposition,
+    since [BG] is a groupoid. *)
+Definition conj_sq_fw {A : Type} {x y z : A} (a : x = y) (b : x = z) (t : y = y) (t' : z = z)
+  : trans a⁻¹ b @ t' = t @ trans a⁻¹ b -> trans (trans a t) a⁻¹ = trans (trans b t') b⁻¹.
+Proof.
+  destruct b, a. intro e.
+  exact (trans_1p t @ (concat_p1 t)^ @ e^ @ concat_1p t' @ (trans_1p t')^).
+Defined.
+
+Definition conj_sq_bw {A : Type} {x y z : A} (a : x = y) (b : x = z) (t : y = y) (t' : z = z)
+  : trans (trans a t) a⁻¹ = trans (trans b t') b⁻¹ -> trans a⁻¹ b @ t' = t @ trans a⁻¹ b.
+Proof.
+  destruct b, a. intro e.
+  exact (concat_1p t' @ (trans_1p t')^ @ e^ @ trans_1p t @ (concat_p1 t)^).
+Defined.
+
+Definition pb_pt_sq {A : Type} {x y z y2 z2 : A} (a : x = y) (b : x = z) (P : y = y2) (Q : z = z2)
+  (h : y2 = z2) : trans a⁻¹ b @ Q = P @ h -> h ⋅ trans a P = trans b Q.
+Proof.
+  destruct b, Q, h, a. intro e.
+  exact (trans_1p P @ ((concat_p1 P)^ @ e^ @ concat_p1 _)).
+Defined.
+
+Definition pb_pt_sq_bw {A : Type} {x y z y2 z2 : A} (a : x = y) (b : x = z) (P : y = y2) (Q : z = z2)
+  (h : y2 = z2) : h ⋅ trans a P = trans b Q -> trans a⁻¹ b @ Q = P @ h.
+Proof.
+  destruct b, Q, h, a. intro e.
+  exact (concat_p1 _ @ ((trans_1p P)^ @ e)^ @ (concat_p1 P)^).
+Defined.
+
+Definition cancel_2path {A : Type} {x y z : A} (α : x = y) (β : z = y) : (α^ @ (α @ β^)) @ β = refl.
+Proof. destruct β, α. exact refl. Defined.
+
+Section PullbackUniv.
+
+  Context `{fe : Funext} {H H' G : Group} (f : Hom H G) (f' : Hom H' G).
+
+  Local Notation k := (fst (Bf f)).
+  Local Notation k' := (fst (Bf f')).
+  Local Notation PB := (pullbackB f f').
+
+  Definition pb_path {u v : PB} (p : prB u = prB v) (q : prC u = prC v)
+    (s : snd u @ ap k' q = ap k p @ snd v) : u = v.
+  Proof.
+    destruct u as [[b c] r], v as [[b' c'] r']. cbn in *. destruct p, q.
+    exact (ap (fun t => ((((b; c) : utype (BG H) × utype (BG H')); t) : PB))
+              ((concat_p1 r)^ @ s @ concat_1p r')).
+  Defined.
+
+  Definition ap_prB_pb_path {u v : PB} (p : prB u = prB v) (q : prC u = prC v)
+    (s : snd u @ ap k' q = ap k p @ snd v) : ap prB (pb_path p q s) = p.
+  Proof.
+    destruct u as [[b c] r], v as [[b' c'] r']. cbn in *. destruct p, q.
+    exact ((ap_compose (fun t => ((((b; c) : utype (BG H) × utype (BG H')); t) : PB)) prB
+              ((concat_p1 r)^ @ s @ concat_1p r'))^
+           @ ap_const ((concat_p1 r)^ @ s @ concat_1p r') _).
+  Defined.
+
+  Definition ap_prC_pb_path {u v : PB} (p : prB u = prB v) (q : prC u = prC v)
+    (s : snd u @ ap k' q = ap k p @ snd v) : ap prC (pb_path p q s) = q.
+  Proof.
+    destruct u as [[b c] r], v as [[b' c'] r']. cbn in *. destruct p, q.
+    exact ((ap_compose (fun t => ((((b; c) : utype (BG H) × utype (BG H')); t) : PB)) prC
+              ((concat_p1 r)^ @ s @ concat_1p r'))^
+           @ ap_const ((concat_p1 r)^ @ s @ concat_1p r') _).
+  Defined.
+
+  Definition pb_nat {u v : PB} (l : u = v) : snd u @ ap k' (ap prC l) = ap k (ap prB l) @ snd v.
+  Proof. destruct l. exact (concat_p1 _ @ (concat_1p _)^). Defined.
+
+  Definition pb_path_eta {u v : PB} (l : u = v) : pb_path (ap prB l) (ap prC l) (pb_nat l) = l.
+  Proof.
+    destruct l. destruct u as [[b c] r]. cbn.
+    exact (ap (ap (fun t => ((((b; c) : utype (BG H) × utype (BG H')); t) : PB)))
+              (cancel_2path (concat_p1 r) (concat_1p r))).
+  Defined.
+
+  Definition pb_path_congr {u v : PB} {p p' : prB u = prB v} {q q' : prC u = prC v}
+    (s : snd u @ ap k' q = ap k p @ snd v) (s' : snd u @ ap k' q' = ap k p' @ snd v)
+    (ep : p = p') (eq : q = q') : pb_path p q s = pb_path p' q' s'.
+  Proof.
+    destruct ep, eq. exact (ap (pb_path p q) (BG_isGrpd G _ _ _ _ s s')).
+  Defined.
+
+  Local Notation pbpt := (pullbackB_pt f f').
+  Local Notation lp := (USym_AutG_eqv (pullbackB_isGrpd f f') pbpt).
+
+  (** The symmetries of [H ×_G H'] map to the pullback of [USymf f] and
+      [USymf f'], by [l ↦ (ap prB l, ap prC l)]. *)
+  Definition pbU (l : USym (pullbackG f f')) : pullback (USymf f) (USymf f')
+    := (((ap prB (fst lp l); ap prC (fst lp l)) : USym H × USym H');
+        conj_sq_fw (snd (Bf f)) (snd (Bf f')) _ _ (pb_nat (fst lp l))).
+
+  Definition pbU_isInj : isInj pbU.
+  Proof.
+    apply (cancel_isInj (Sigma_isSet (Sigma_isSet (USym_isSet H) (fun _ => USym_isSet H'))
+                           (fun _ => prop_is_set (USym_isSet G _ _)))).
+    intros l1 l2 e.
+    apply (isInj_cancel (isEquiv_isInj (snd lp))).
+    pose (e12 := eqinv (snd (path_prod_eqv _ _ _ _)) (ap fst e)).
+    exact ((pb_path_eta (fst lp l1))^
+           @ pb_path_congr (u := pbpt) (v := pbpt) (pb_nat (fst lp l1)) (pb_nat (fst lp l2))
+               (fst e12) (snd e12)
+           @ pb_path_eta (fst lp l2)).
+  Defined.
+
+  Definition pbU_isSurj : isSurj pbU.
+  Proof.
+    intros [[a a'] e]. apply trunc.
+    pose (s0 := conj_sq_bw (snd (Bf f)) (snd (Bf f')) _ _ e).
+    pose (l := pb_path (u := pbpt) (v := pbpt) a a' s0).
+    exists (eqinv (snd lp) l).
+    apply (path_sigma_prop (fun _ => USym_isSet G _ _)). cbn.
+    refine (_ @ ap (fun l0 : pbpt = pbpt => ((ap prB l0; ap prC l0) : USym H × USym H')) (eqinv_r (snd lp) l)^).
+    exact (fst (path_prod_eqv _ _ _ _) ((ap_prB_pb_path (u := pbpt) (v := pbpt) a a' s0)^;
+                                        (ap_prC_pb_path (u := pbpt) (v := pbpt) a a' s0)^)).
+  Defined.
+
+  Definition pbU_eqv : USym (pullbackG f f') ≃ pullback (USymf f) (USymf f')
+    := (pbU; inj_surj_isEquiv pbU_isInj pbU_isSurj).
+
+  (** [Hom(K, H ×_G H')]: a pointed map [BK →* B(H ×_G H')] amounts to
+      pointed maps [k₁ : BK →* BH], [k₂ : BK →* BH'] with a pointed
+      homotopy [Bf k₁ ~ Bf' k₂] ([PBdata], [pbPhi0], [pbPsi0]). *)
+  Context {K : Group}.
+
+  Local Notation BP := (BG (pullbackG f f')).
+
+  Definition PBdata : Type
+    := {kk : (BG K →* BG H) × (BG K →* BG H') &
+         {h : forall x, k (fst (fst kk) x) = k' (fst (snd kk) x) &
+           h (sh K) ⋅ snd (pcomp (Bf f) (fst kk)) = snd (pcomp (Bf f') (snd kk))}}.
+
+  Definition pbg0 (d : PBdata) (x : utype (BG K)) : PB
+    := (((fst (fst (fst d)) x; fst (snd (fst d)) x) : utype (BG H) × utype (BG H')); fst (snd d) x).
+
+  Definition pbL (d : PBdata) : pbpt = pbg0 d (sh K)
+    := pb_path (u := pbpt) (v := pbg0 d (sh K)) (snd (fst (fst d))) (snd (snd (fst d)))
+         (pb_pt_sq_bw (snd (Bf f)) (snd (Bf f')) _ _ _ (snd (snd d))).
+
+  Definition pbmem (d : PBdata) (x : utype (BG K)) : ptrunc (pbpt = pbg0 d x)
+    := ptrunc_rec ptrunc_isProp (fun p : sh K = x => trunc (pbL d @ ap (pbg0 d) p))
+         (snd (BG_isConn K) (sh K) x).
+
+  Definition pbPhi0 (d : PBdata) : BG K →* BP
+    := ((fun x => (pbg0 d x; pbmem d x));
+        path_sigma_prop (fun _ => ptrunc_isProp) (u := pt BP) (v := (pbg0 d (sh K); pbmem d (sh K)))
+          (pbL d)).
+
+  Definition pbPhi0_L (d : PBdata) : ap fst (snd (pbPhi0 d)) = pbL d
+    := ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+         (u := pt BP) (v := (pbg0 d (sh K); pbmem d (sh K))) (pbL d).
+
+  Definition pbPsi0 (g : BG K →* BP) : PBdata.
+  Proof.
+    pose (L := ap fst (snd g) : pbpt = fst (fst g (sh K))).
+    pose (K1 := ((fun x => prB (fst (fst g x))); ap prB L) : BG K →* BG H).
+    pose (K2 := ((fun x => prC (fst (fst g x))); ap prC L) : BG K →* BG H').
+    exact (((K1; K2) : (BG K →* BG H) × (BG K →* BG H'));
+           ((fun x => snd (fst (fst g x)));
+            pb_pt_sq (snd (Bf f)) (snd (Bf f')) _ _ _ (pb_nat L))).
+  Defined.
+
+  Definition PBdata_path {k1 : utype (BG K) -> utype (BG H)} {k2 : utype (BG K) -> utype (BG H')}
+    {sk1 sk1' : sh H = k1 (sh K)} {sk2 sk2' : sh H' = k2 (sh K)}
+    (h : forall x, k (k1 x) = k' (k2 x))
+    (c : h (sh K) ⋅ snd (pcomp (Bf f) (k1; sk1)) = snd (pcomp (Bf f') (k2; sk2)))
+    (c' : h (sh K) ⋅ snd (pcomp (Bf f) (k1; sk1')) = snd (pcomp (Bf f') (k2; sk2')))
+    (e1 : sk1 = sk1') (e2 : sk2 = sk2')
+    : ((((k1; sk1); (k2; sk2)) : (BG K →* BG H) × (BG K →* BG H')); (h; c)) = ((((k1; sk1'); (k2; sk2')) : (BG K →* BG H) × (BG K →* BG H')); (h; c')) :> PBdata.
+  Proof.
+    destruct e1, e2.
+    exact (ap (fun c0 => ((((k1; sk1); (k2; sk2)) : (BG K →* BG H) × (BG K →* BG H')); (h; c0)) : PBdata)
+              (BG_isGrpd G _ _ _ _ c c')).
+  Defined.
+
+  Definition pbPsiPhi (d : PBdata) : pbPsi0 (pbPhi0 d) = d.
+  Proof.
+    destruct d as [[[k1 sk1] [k2 sk2]] [h c]].
+    refine (PBdata_path h _ c _ _).
+    - refine (ap (ap prB) (pbPhi0_L ((((k1; sk1); (k2; sk2)) : (BG K →* BG H) × (BG K →* BG H')); (h; c))) @ _).
+      exact (ap_prB_pb_path _ _ _).
+    - refine (ap (ap prC) (pbPhi0_L ((((k1; sk1); (k2; sk2)) : (BG K →* BG H) × (BG K →* BG H')); (h; c))) @ _).
+      exact (ap_prC_pb_path _ _ _).
+  Defined.
+
+  Definition pbPhiPsi (g : BG K →* BP) : pbPhi0 (pbPsi0 g) = g.
+  Proof.
+    destruct g as [gf gp].
+    apply (eqinv (snd (ptw_star (pbPhi0 (pbPsi0 (gf; gp))) (gf; gp)))).
+    exists (fun x => path_sigma_prop (fun _ => ptrunc_isProp)
+                       (u := fst (pbPhi0 (pbPsi0 (gf; gp))) x) (v := gf x) refl).
+    apply (isInj_cancel (isEquiv_isInj (snd (subtype_paths_eqv (fun _ => ptrunc_isProp) _ _)))).
+    refine (ap_trans fst _ _ @ _).
+    refine (ap011 trans (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp) _)
+              (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp) _) @ _).
+    exact (pb_path_congr (u := pbpt) _ (pb_nat (ap fst gp)) refl refl @ pb_path_eta (ap fst gp)).
+  Defined.
+
+  Definition pbPhi_eqv : PBdata ≃ (BG K →* BP) := mkEqv pbPhi0 pbPsi0 pbPsiPhi pbPhiPsi.
+
+  (** The pullback of [compG f] and [compG f'] is [PBdata], by [ptw_star]. *)
+  Definition pbHom_fw (w : pullback (fun k1 : Hom K H => compG f k1) (fun k2 : Hom K H' => compG f' k2))
+    : PBdata
+    := (((out (fst (fst w)); out (snd (fst w))) : (BG K →* BG H) × (BG K →* BG H'));
+        fst (ptw_star _ _) (ap out (snd w))).
+
+  Definition pbHom_bw (d : PBdata)
+    : pullback (fun k1 : Hom K H => compG f k1) (fun k2 : Hom K H' => compG f' k2)
+    := (((inc (fst (fst d)); inc (snd (fst d))) : Hom K H × Hom K H');
+        ap inc (eqinv (snd (ptw_star (pcomp (Bf f) (fst (fst d))) (pcomp (Bf f') (snd (fst d)))))
+                  (snd d))).
+
+  Definition pbHom_eqv
+    : pullback (fun k1 : Hom K H => compG f k1) (fun k2 : Hom K H' => compG f' k2) ≃ PBdata.
+  Proof.
+    refine (mkEqv pbHom_fw pbHom_bw _ _).
+    - intros [[[k1] [k2]] e].
+      exact (path_sigma_prop (fun _ => Hom_isSet K G _ _)
+               (u := pbHom_bw (pbHom_fw (((inc k1; inc k2) : Hom K H × Hom K H'); e)))
+               (v := ((inc k1; inc k2) : Hom K H × Hom K H'; e)) refl).
+    - intros [kk w].
+      refine (ap (fun w0 => (kk; w0) : PBdata) _).
+      pose (P := ptw_star (pcomp (Bf f) (fst kk)) (pcomp (Bf f') (snd kk))).
+      refine (ap (fst P) ((ap_compose inc out (eqinv (snd P) w))^ @ ap_idmap _) @ _).
+      exact (eqinv_r (snd P) w).
+  Defined.
+
+End PullbackUniv.
+
+Definition pullbackG_univ `{Funext} : pullbackG_univ_stmt
+  := fun H H' G K f f' =>
+       (Eqv_comp (pbHom_eqv f f' (K := K)) (Eqv_comp (pbPhi_eqv f f') (Eqv_inv (Copy_eqv _)));
+        Eqv_inv (pbU_eqv f f')).
