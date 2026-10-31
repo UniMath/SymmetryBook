@@ -18,9 +18,10 @@
       [e⁻¹ ≡ e] and [e · g ≡ g] hold by [refl].
     - Exercise [xca:abstract-group-of-maps]: the pointwise abstract group
       on [X → S] ([ag_maps]), using [Funext]; it is abelian if [G] is
-      ([ag_maps_isAb]).  The converse ([ag_maps_isAb_conv]) uses that [X]
-      is non-empty ([‖X‖], [def:non-empty]), as in the book (for [X]
-      empty, [X → S] is trivial, hence abelian, for any [G]).
+      ([ag_maps_isAb]).  We also give the converse for non-empty [X]
+      ([‖X‖], [def:non-empty]; [ag_maps_isAb_conv]), which the book no
+      longer states (for [X] empty, [X → S] is trivial, hence abelian,
+      for any [G]).
     - The law of left inverses ([ag_linv]) and a bridge to the library's
       groups ([AbsGroup_to_lib]). *)
 
