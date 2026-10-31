@@ -39,11 +39,17 @@
       [it:monof2->isoF2] ([cor_cokermaps_monof2_isoF2]): [ap_{F₂}] is a
       bijection on loops ([F2k_ap_isInj], [F2k_ap_isSurj]: a loop [g] of
       [Ker(f₂f₁)] has [Uf₂(Uf₁ g) = 1], so [Uf₁ g = 1]), and
-      [conn_isEquiv_iff_point].
+      [conn_isEquiv_iff_point].  Parts [it:H-equiv]
+      ([cor_cokermaps_H_equiv]) and [it:Ker-f1-F1]
+      ([cor_cokermaps_Ker_f1_F1]): [Θ(v) :≡ (F₂(v), F1_pt)] is a pointed
+      equivalence [BKer(f₁) ≃* BKer(F₁)] over [F₂] ([Theta_pEqv],
+      [ThetaHom_comp]); loops on both sides are determined by their
+      image in [BG₀] ([KFcancel]).
 
     Left out (statements only; time limit per result)
     - The exercise after [rem:imageandcokernel] ([xca_ker_coker_stmt],
-      with [trivhom]); the other parts of corollary [cor:cokermaps]
+      with [trivhom]); parts [it:coker-f1-F1] and [it:epif1->equivF'1]
+      of corollary [cor:cokermaps]
       ([cor_cokermaps_..._stmt], with [isF1], [isF2], [F1coker]); exercise
       [xca:abstract-kernel] ([xca_abstract_kernel_stmt], with [Xker]);
       lemma [lem:Im-fact-unique] ([lem_Im_fact_unique_stmt]); remark
@@ -229,8 +235,8 @@ Section PtdFibersOfComposites.
 
 End PtdFibersOfComposites.
 
-(** Corollary [cor:cokermaps] (parts [it:F1], [it:F2-mono] and
-    [it:monof2->isoF2] proved below).  The homomorphisms
+(** Corollary [cor:cokermaps] (parts [it:F1], [it:F2-mono],
+    [it:monof2->isoF2], [it:H-equiv] and [it:Ker-f1-F1] proved below).  The homomorphisms
     [F₁ : Ker(f₂f₁) → Ker(f₂)] and [F₂ : Ker(f₁) → Ker(f₂f₁)] are
     specified by their defining equations; parts [it:H-equiv],
     [it:Ker-f1-F1], [it:coker-f1-F1] and [it:monof2->isoF2] are stated for
@@ -429,6 +435,155 @@ Section CokerMaps.
     := fun m2 F e => trp isIso (ap fst (isContr_isProp' (fst cor_cokermaps_F2_mono)
                                           (F2Hom; F2Hom_isF2) (F; e)))
                        (F2Hom_isIso m2).
+
+  (** Parts [it:H-equiv] and [it:Ker-f1-F1]: [Θ(v) :≡ (F₂(v), F1_pt)]
+      ([Theta]) is a pointed equivalence [BKer(f₁) ≃* BKer(F₁)] over
+      [F₂] ([ThetaHom_comp]); it is an equivalence since loops on both
+      sides are determined by their image in [BG₀] ([KFcancel]), and a
+      loop of [Ker(F₁)] has [ap_{k₁}(g) = 1]. *)
+  Local Notation ptK2 := (sh (Ker f2)).
+  Local Notation ptK12 := (sh (Ker (compG f2 f1))).
+  Local Notation KF := (Ker F1Hom).
+
+  Definition trp_paths_fun {A B : Type} (h : A -> B) {b : B} {u v : A} (e : u = v) (X : b = h u)
+    : trp (fun w => b = h w) e X = X @ ap h e.
+  Proof. destruct e. exact (concat_p1 X)^. Defined.
+
+  Definition comp_path_eq {A : Type} {a : A} {u v : component A a} (h h' : u = v)
+    (e : ap fst h = ap fst h') : h = h'
+    := ap_fst_cancel (fun _ => prop_is_set ptrunc_isProp) h h' e.
+
+  Definition Theta0 (v : utype (BG (Ker f1))) : fiber F1k ptK2
+    := (F2k v; path_sigma_prop (fun _ => ptrunc_isProp) (u := ptK2) (v := F1k (F2k v))
+                 (F1_pt k1 k2 (fst (fst v)) (sh G1) (sh G2) (snd (fst v)) kp2)).
+
+  Definition ThetaE : ptK12 = F2k ptK1
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := ptK12) (v := F2k ptK1) refl.
+
+  Definition ThetaPt : shKer F1Hom = Theta0 ptK1.
+  Proof.
+    refine (pathpair (Y := fun u => ptK2 = F1k u) ThetaE _).
+    refine (trp_paths_fun F1k ThetaE _ @ _).
+    apply comp_path_eq.
+    refine (ap_pp fst _ _ @ _).
+    refine (ap011 concat (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp) _) _ @ concat_p1 _ @ _).
+    - refine ((ap_compose F1k fst ThetaE)^ @ _).
+      refine (ap_compose fst (F1 k1 k2 (sh G2)) ThetaE @ _).
+      exact (ap (ap (F1 k1 k2 (sh G2)))
+                (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp) (u := ptK12) (v := F2k ptK1) refl)).
+    - exact (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp) _)^.
+  Defined.
+
+  Definition Theta (v : utype (BG (Ker f1))) : utype (BG KF)
+    := (Theta0 v;
+        ptrunc_rec ptrunc_isProp
+          (fun r => trunc (ThetaPt @ ap Theta0 (path_sigma_prop (fun _ => ptrunc_isProp)
+                                                  (u := ptK1) (v := v) r)))
+          (snd v)).
+
+  Definition ThetaHom : Hom (Ker f1) KF
+    := @mkhom (Ker f1) KF
+         (Theta; path_sigma_prop (fun _ => ptrunc_isProp) (u := sh KF) (v := Theta ptK1) ThetaPt).
+
+  Definition ThetaHom_comp : pcomp (Bf (kermap F1Hom)) (Bf ThetaHom) = Bf F2Hom.
+  Proof.
+    refine (eqinv (snd (ptw_star (pcomp (Bf (kermap F1Hom)) (Bf ThetaHom)) (Bf F2Hom)))
+              ((fun v => refl); _)).
+    refine (trans_1p _ @ _).
+    change (ap (fun w : utype (BG KF) => fst (fst w)) (snd (Bf ThetaHom)) = snd (Bf F2Hom)).
+    refine (ap_compose (fun w : utype (BG KF) => fst w) (fun w : fiber F1k ptK2 => fst w) _ @ _).
+    refine (ap (ap fst) (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                           (u := sh KF) (v := Theta ptK1) ThetaPt) @ _).
+    exact (ap_fst_pathpair (Y := fun u => ptK2 = F1k u) ThetaE _).
+  Defined.
+
+  Definition fff (w : utype (BG KF)) : utype (BG G0) := fst (fst (fst (fst w))).
+
+  Definition KFcancel {u v : utype (BG KF)} (h h' : u = v) (e : ap fff h = ap fff h') : h = h'.
+  Proof.
+    apply comp_path_eq.
+    refine (ap_fst_cancel (fun u0 => BG_isGrpd (Ker f2) ptK2 (F1k u0)) _ _ _).
+    apply ffcancel.
+    refine ((ap_compose (fun w : fiber F1k ptK2 => fst w)
+               (fun w : utype (BG (Ker (compG f2 f1))) => fst (fst w)) _)^ @ _
+            @ ap_compose (fun w : fiber F1k ptK2 => fst w)
+                (fun w : utype (BG (Ker (compG f2 f1))) => fst (fst w)) _).
+    exact ((ap_compose (fun w : utype (BG KF) => fst w)
+              (fun w : fiber F1k ptK2 => fst (fst (fst w))) h)^ @ e
+           @ ap_compose (fun w : utype (BG KF) => fst w)
+               (fun w : fiber F1k ptK2 => fst (fst (fst w))) h').
+  Defined.
+
+  Definition Theta_fff (mu : ptK1 = ptK1)
+    : ap fff (ap Theta mu) = ap (fun w : utype (BG (Ker f1)) => fst (fst w)) mu
+    := (ap_compose Theta fff mu)^.
+
+  Definition Theta_ap_isInj : isInj (@ap _ _ Theta ptK1 ptK1).
+  Proof.
+    apply (cancel_isInj (BG_isGrpd KF _ _)). intros mu mu' e.
+    apply ffcancel. exact ((Theta_fff mu)^ @ ap (ap fff) e @ Theta_fff mu').
+  Defined.
+
+  Definition cancel_r {X : Type} {a b : X} (p : a = b) (A : b = b) : trans p A = p -> A = refl.
+  Proof. destruct p. intro e. exact ((trans_1p A)^ @ e). Defined.
+
+  Definition Theta_ap_isSurj : isSurj (@ap _ _ Theta ptK1 ptK1).
+  Proof.
+    intro l. apply trunc.
+    pose (L0 := ap fst l).
+    pose (g := ap fff l).
+    assert (E0 : ap F1k (ap fst L0) = refl) by exact (cancel_r _ _ (fib_nat L0)).
+    assert (E1 : ap k1 g = refl).
+    { pose (ff12 := fun w : utype (BG (Ker (compG f2 f1))) => fst (fst w)).
+      pose (ff2 := fun w : utype (BG (Ker f2)) => fst (fst w)).
+      pose (S1 := ap_compose (fun w : utype (BG KF) => fst w)
+                    (fun w : fiber F1k ptK2 => fst (fst (fst w))) l).
+      pose (S2 := ap_compose (fun w : fiber F1k ptK2 => fst w) ff12 L0).
+      exact (ap (ap k1) (S1 @ S2) @ (ap_compose ff12 k1 (ap fst L0))^ @ ap_compose F1k ff2 (ap fst L0)
+             @ ap (ap ff2) E0). }
+    pose (mu0 := pathpair (Y := fun z => sh G1 = k1 z) g
+                   (trp_fiber k1 (sh G1) g kp1 @ ap (trans kp1) E1)
+                 : shKer f1 = shKer f1).
+    exists (path_sigma_prop (fun _ => ptrunc_isProp) (u := ptK1) (v := ptK1) mu0).
+    apply KFcancel. refine (_ @ (Theta_fff _)^).
+    refine (_ @ (ap_compose (fun w : utype (BG (Ker f1)) => fst w)
+                   (fun w : fiber k1 (sh G1) => fst w) _)^).
+    refine (_ @ ap (ap fst) (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                                (u := ptK1) (v := ptK1) mu0)^).
+    exact (ap_fst_pathpair (Y := fun z => sh G1 = k1 z) g _)^.
+  Defined.
+
+  Definition ThetaHom_isIso : isIso ThetaHom
+    := snd (conn_isEquiv_iff_point Theta (BG_isConn _) (BG_isConn _) ptK1)
+         (inj_surj_isEquiv Theta_ap_isInj Theta_ap_isSurj).
+
+  Definition Theta_pEqv : BG (Ker f1) ≃* BG KF := (Bf ThetaHom; ThetaHom_isIso).
+
+  Definition F1_path (F : Hom (Ker (compG f2 f1)) (Ker f2)) (e : isF1 F) : F1Hom = F
+    := ap fst (isContr_isProp' cor_cokermaps_F1 (F1Hom; F1Hom_isF1) (F; e)).
+
+  Definition F2_path (F : Hom (Ker f1) (Ker (compG f2 f1))) (e : isF2 F) : F2Hom = F
+    := ap fst (isContr_isProp' (fst cor_cokermaps_F2_mono) (F2Hom; F2Hom_isF2) (F; e)).
+
+  Definition cor_cokermaps_H_equiv : cor_cokermaps_H_equiv_stmt.
+  Proof.
+    intros F e. destruct (F1_path F e).
+    exact (trp (fun K => Iso K (Ker f1)) (path_Group Theta_pEqv) (idG _; idG_isIso _)).
+  Defined.
+
+  Definition Ker_f1_F1_aux (m : ismono F2Hom)
+    : ((Ker f1; (F2Hom; m)) : Mono (Ker (compG f2 f1))) = ker F1Hom.
+  Proof.
+    refine (Mono_path ((Ker f1; (F2Hom; m)) : Mono (Ker (compG f2 f1))) (ker F1Hom)
+              Theta_pEqv _).
+    exact ThetaHom_comp.
+  Defined.
+
+  Definition cor_cokermaps_Ker_f1_F1 : cor_cokermaps_Ker_f1_F1_stmt.
+  Proof.
+    intros F1' F2' m e1 e2. destruct (F1_path F1' e1), (F2_path F2' e2).
+    exact (Ker_f1_F1_aux m).
+  Defined.
 
 End CokerMaps.
 
