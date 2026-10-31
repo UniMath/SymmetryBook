@@ -35,7 +35,11 @@
       [it:F2-mono] ([cor_cokermaps_F2_mono]): [F₁], [F₂] are the maps of
       [lem:fibersofcomposites] on the components ([F1Hom], [F2Hom]),
       unique since kernel maps are monomorphisms; [F₂] is a
-      monomorphism by [ismonoC_first] ([isF2_ismono]).
+      monomorphism by [ismonoC_first] ([isF2_ismono]).  Part
+      [it:monof2->isoF2] ([cor_cokermaps_monof2_isoF2]): [ap_{F₂}] is a
+      bijection on loops ([F2k_ap_isInj], [F2k_ap_isSurj]: a loop [g] of
+      [Ker(f₂f₁)] has [Uf₂(Uf₁ g) = 1], so [Uf₁ g = 1]), and
+      [conn_isEquiv_iff_point].
 
     Left out (statements only; time limit per result)
     - The exercise after [rem:imageandcokernel] ([xca_ker_coker_stmt],
@@ -225,8 +229,8 @@ Section PtdFibersOfComposites.
 
 End PtdFibersOfComposites.
 
-(** Corollary [cor:cokermaps] (parts [it:F1] and [it:F2-mono] proved
-    below).  The homomorphisms
+(** Corollary [cor:cokermaps] (parts [it:F1], [it:F2-mono] and
+    [it:monof2->isoF2] proved below).  The homomorphisms
     [F₁ : Ker(f₂f₁) → Ker(f₂)] and [F₂ : Ker(f₁) → Ker(f₂f₁)] are
     specified by their defining equations; parts [it:H-equiv],
     [it:Ker-f1-F1], [it:coker-f1-F1] and [it:monof2->isoF2] are stated for
@@ -354,6 +358,77 @@ Section CokerMaps.
     exact (Overture.fst (ismonoC_cancel _) (ismono_ismonoC _ (kermap_ismono (compG f2 f1)))
              _ F F' (e^ @ e')).
   Defined.
+
+  (** Part [it:monof2->isoF2]: by [conn_isEquiv_iff_point] it suffices
+      that [ap_{F₂}] is a bijection on the loops at the point.  It is
+      injective since [F₂] keeps the first component; a loop [g] of
+      [Ker(f₂f₁)] has [Uf₂(Uf₁ g) = 1], hence [Uf₁ g = 1] when [f₂] is
+      a monomorphism, so [g] lifts to [Ker(f₁)]. *)
+  Definition fib_nat {X Y : Type} {f : X -> Y} {y : Y} {u v : fiber f y} (l : u = v)
+    : trans (snd u) (ap f (ap fst l)) = snd v.
+  Proof. destruct l. exact refl. Defined.
+
+  Definition conj_triv {X : Type} {a b : X} (p : a = b) (A : b = b)
+    : trans (trans p A) p⁻¹ = refl -> trans p A = p.
+  Proof. destruct p. exact idmap. Defined.
+
+  Local Notation ptK1 := (sh (Ker f1)).
+
+  Definition ffcancel {K : Group} {X : Type} {f : X -> utype (BG K)} {y : utype (BG K)}
+    {x0 : fiber f y} {u v : component (fiber f y) x0} (h h' : u = v)
+    (e : ap (fun w : component (fiber f y) x0 => fst (fst w)) h
+         = ap (fun w : component (fiber f y) x0 => fst (fst w)) h')
+    : h = h'.
+  Proof.
+    refine (ap_fst_cancel (fun _ => prop_is_set ptrunc_isProp) h h' _).
+    refine (ap_fst_cancel (fun z => BG_isGrpd K y (f z)) _ _ _).
+    exact ((ap_compose (fun w : component (fiber f y) x0 => fst w) (fun w : fiber f y => fst w) h)^
+           @ e @ ap_compose (fun w : component (fiber f y) x0 => fst w) (fun w : fiber f y => fst w) h').
+  Defined.
+
+  Definition F2k_ff (mu : ptK1 = ptK1)
+    : ap (fun w : utype (BG (Ker (compG f2 f1))) => fst (fst w)) (ap F2k mu)
+      = ap (fun w : utype (BG (Ker f1)) => fst (fst w)) mu
+    := (ap_compose F2k (fun w : utype (BG (Ker (compG f2 f1))) => fst (fst w)) mu)^.
+
+  Definition F2k_ap_isInj : isInj (@ap _ _ F2k ptK1 ptK1).
+  Proof.
+    apply (cancel_isInj (BG_isGrpd (Ker (compG f2 f1)) _ _)). intros mu mu' e.
+    apply ffcancel. exact ((F2k_ff mu)^ @ ap (ap _) e @ F2k_ff mu').
+  Defined.
+
+  Definition F2k_ap_isSurj (m2 : ismono f2) : isSurj (@ap _ _ F2k ptK1 ptK1).
+  Proof.
+    intro l. apply trunc.
+    pose (l0 := ap fst l).
+    pose (g := ap fst l0 : sh G0 = sh G0).
+    pose (c12 := snd (Bf (compG f2 f1))).
+    assert (E1 : USymf f1 g = refl).
+    { apply (isInj_cancel m2).
+      exact ((loops_fun_pcomp (Bf f2) (Bf f1) g)^
+             @ ap (fun r => trans r c12⁻¹) (fib_nat l0) @ trans_pV c12 @ (trans_pV kp2)^). }
+    pose (mu0 := pathpair (Y := fun z => sh G1 = k1 z) g
+                  (trp_fiber k1 (sh G1) g kp1 @ conj_triv kp1 (ap k1 g) E1)
+                : shKer f1 = shKer f1).
+    exists (path_sigma_prop (fun _ => ptrunc_isProp) (u := ptK1) (v := ptK1) mu0).
+    apply ffcancel. refine (_ @ (F2k_ff _)^).
+    refine (ap_compose (fun w : utype (BG (Ker (compG f2 f1))) => fst w)
+              (fun w : fiber (fun x => k2 (k1 x)) (sh G2) => fst w) l @ _).
+    refine (_ @ (ap_compose (fun w : utype (BG (Ker f1)) => fst w)
+                   (fun w : fiber k1 (sh G1) => fst w) _)^).
+    refine (_ @ ap (ap fst) (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                                (u := ptK1) (v := ptK1) mu0)^).
+    exact (ap_fst_pathpair (Y := fun z => sh G1 = k1 z) g _)^.
+  Defined.
+
+  Definition F2Hom_isIso (m2 : ismono f2) : isIso F2Hom
+    := snd (conn_isEquiv_iff_point F2k (BG_isConn _) (BG_isConn _) ptK1)
+         (inj_surj_isEquiv F2k_ap_isInj (F2k_ap_isSurj m2)).
+
+  Definition cor_cokermaps_monof2_isoF2 : cor_cokermaps_monof2_isoF2_stmt
+    := fun m2 F e => trp isIso (ap fst (isContr_isProp' (fst cor_cokermaps_F2_mono)
+                                          (F2Hom; F2Hom_isF2) (F; e)))
+                       (F2Hom_isIso m2).
 
 End CokerMaps.
 
