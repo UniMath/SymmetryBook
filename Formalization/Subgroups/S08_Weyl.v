@@ -125,21 +125,10 @@ Section Weyl.
   Definition lem_WGHisHfixofGH_stmt : Type
     := (forall φ : forall y, el X y -> el X y, forall y, isEquiv (φ y)) -> isEquiv eWeyl.
 
-  Definition ptoe_ptw_GSet {Z Z' : GSet G} (f : Z = Z') (y : utype (BG G)) (v : el Z y)
-    : ptoe (ap fst (ptw f y)) v = trp (fun Z0 : GSet G => el Z0 y) f v.
-  Proof. destruct f. exact refl. Defined.
-
   (** [e] is injective: an identification of [G]-sets is determined by
-      its action. *)
-  Definition eWeyl_inj (f f' : X = X) (e : forall w, eWeyl f w = eWeyl f' w) : f = f'.
-  Proof.
-    apply (isInj_cancel (isEquiv_isInj (funext X X))). apply ptw_inv. intro y.
-    apply (isInj_cancel (isEquiv_isInj
-             (isInj_ap_isEquiv (fst_isInj (fun Y => isSet_isProp Y)) (X y) (X y)))).
-    apply (isInj_cancel (isEquiv_isInj (IntroUF.S13_Univalence.ua _ _))).
-    apply (path_sigma_prop (fun _ => isEquiv_isProp _)). apply ptw_inv. intro v.
-    exact (ptoe_ptw_GSet f y v @ e (y; v) @ (ptoe_ptw_GSet f' y v)^).
-  Defined.
+      its action ([GSet_path_ext] of Section 9.5). *)
+  Definition eWeyl_inj (f f' : X = X) (e : forall w, eWeyl f w = eWeyl f' w) : f = f'
+    := GSet_path_ext f f' (fun y v => e (y; v)).
 
   Definition lem_WGHisHfixofGH : lem_WGHisHfixofGH_stmt.
   Proof.

@@ -15,12 +15,20 @@
       pointing path of [Bq_N] is [refl] up to the membership proof.
     - Definition [def:associatednormal] ([ass], via [subgrp_to_mono] of
       Section 5.3).
+    - Lemma [lem:evaliseqwhennormal] ([lem_evaliseqwhennormal]): by
+      connectedness of [BG] we may assume [y ≡ z]; an identification of
+      [G]-sets is determined by its action ([GSet_path_ext]), for the
+      transitive [X_y] by the image of [pt_y] ([nor_ev_inj]), and
+      [ap_{X_-}(g)] sends [g · pt_y] to [pt_y] ([nor_ap_act], by path
+      induction), which gives both surjectivities.
+    - That [q_N] is an epimorphism ([qN_isepi]): [U q_N] is surjective by
+      the second part of [lem:evaliseqwhennormal].
 
     Left out (statements only)
-    - Lemmas [lem:diagfornormal], [lem:evaliseqwhennormal], [lem:qeq],
+    - Lemmas [lem:diagfornormal], [lem:qeq],
       [lem:normalsarekernels], corollary [cor:normalisnormal], lemma
-      [lem:characterizations of normal] (parts (1) - (3)), and that [q_N]
-      is an epimorphism ([..._stmt]).
+      [lem:characterizations of normal] (parts (1) - (3)) ([..._stmt]).
+    - The map [q : Nor(G) → Epi(G)] (see the size issue below).
     - Size issue: [G/N] lives in a larger universe than [G], so
       [nor(q(N)) = N] in [Nor(G)] and [(G', f) = q(nor(f))] in [Epi(G)]
       cannot be stated; [lem_qeq_stmt] states the content of the proof
@@ -125,18 +133,93 @@ Definition lem_diagfornormal_stmt `{ua : Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (s : isSurj (USymf f)),
        Emono (kermap f) (kermap_ismono f) = inor G (nor f s).
 
-(** Lemma [lem:evaliseqwhennormal] (statement only), with
+(** Lemma [lem:evaliseqwhennormal] (statement; proved below), with
     [N(y) ≡ (X_y, pt_y, !)]. *)
 Definition lem_evaliseqwhennormal_stmt `{ua : Univalence} : Type
   := forall (G : Group) (N : Nor G) (y z : utype (BG G)),
        isEquiv (fun e : sg_X (N y) = sg_X (N z) => trp (fun X : GSet G => el X y) e (sg_pt (N y)))
        × isSurj (fun p : y = z => ap (fun w => sg_X (N w) : GSet G) p).
 
+(** Lemma [lem:evaliseqwhennormal].  An identification of [G]-sets is
+    determined by its action ([GSet_path_ext]); for the transitive [X_y]
+    it is determined by the image of [pt_y] ([nor_ev_inj]), and
+    [ap_{X_-}(p)] sends [p · pt_y] to [pt_z] ([nor_ap_act]), by induction
+    on [p].  Both parts are propositions, so we may assume [y ≡ z]. *)
+Definition GSet_path_ext `{ua : Univalence} {G : Group} {X Y : GSet G} (f f' : X = Y)
+  (e : forall y v, trp (fun Z : GSet G => el Z y) f v = trp (fun Z : GSet G => el Z y) f' v)
+  : f = f'.
+Proof.
+  apply (isInj_cancel (isEquiv_isInj (funext X Y))). apply ptw_inv. intro y.
+  apply (isInj_cancel (isEquiv_isInj
+           (isInj_ap_isEquiv (fst_isInj (fun Y => isSet_isProp Y)) (X y) (Y y)))).
+  apply (isInj_cancel (isEquiv_isInj (IntroUF.S13_Univalence.ua _ _))).
+  apply (path_sigma_prop (fun _ => isEquiv_isProp _)). apply ptw_inv. intro v.
+  refine (_ @ e y v @ _).
+  - destruct f. exact refl.
+  - destruct f'. exact refl.
+Defined.
+
+Section EvalNormal.
+
+  Context `{ua : Univalence} {G : Group} (N : Nor G).
+
+  Local Notation XN w := (sg_X (N w) : GSet G).
+  Local Notation ptN w := (sg_pt (N w) : el (XN w) w).
+
+  Definition nor_reach (y : utype (BG G)) (a b : el (XN y) y)
+    : ptrunc {q : y = y & act (XN y) q a = b}
+    := ptrunc_rec ptrunc_isProp (fun r => trunc (ap fst r; act_ap_fst (XN y) r))
+         (snd (conn_of_trans (G := regroup G y) (XN y) (sg_trans (N y))) (y; a) (y; b)).
+
+  Definition nor_ap_act {y z : utype (BG G)} (p : y = z)
+    : trp (fun Z : GSet G => el Z z) (ap (fun w => XN w) p) (act (XN y) p (ptN y)) = ptN z.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition nor_ev_inj {y : utype (BG G)} (e e' : XN y = XN y)
+    (h : trp (fun Z : GSet G => el Z y) e (ptN y) = trp (fun Z : GSet G => el Z y) e' (ptN y))
+    : e = e'.
+  Proof.
+    apply GSet_path_ext. intros w v.
+    assert (all : forall u : TotG (XN y),
+               trp (fun Z : GSet G => el Z (fst u)) e (snd u)
+               = trp (fun Z : GSet G => el Z (fst u)) e' (snd u)).
+    { intro u.
+      refine (ptrunc_rec (snd (XN y (fst u)) _ _) _
+                (snd (conn_of_trans (G := regroup G y) (XN y) (sg_trans (N y))) (y; ptN y) u)).
+      intro r. destruct r. exact h. }
+    exact (all (w; v)).
+  Defined.
+
+  Definition nor_ap_V_pt {y : utype (BG G)} (g : y = y)
+    : trp (fun Z : GSet G => el Z y) (ap (fun w => XN w) g)^ (ptN y) = act (XN y) g (ptN y)
+    := (ap (trp (fun Z : GSet G => el Z y) (ap (fun w => XN w) g)^) (nor_ap_act g))^
+       @ transport_Vp (fun Z : GSet G => el Z y) (ap (fun w => XN w) g) _.
+
+End EvalNormal.
+
+Definition lem_evaliseqwhennormal `{ua : Univalence} : lem_evaliseqwhennormal_stmt.
+Proof.
+  intros G N y z.
+  refine (ptrunc_rec (prod_isProp (isEquiv_isProp _) (Pi_isProp (fun _ => ptrunc_isProp))) _
+            (snd (BG_isConn G) y z)).
+  intro p. destruct p. split.
+  - apply inj_surj_isEquiv.
+    + refine (cancel_isInj (snd (sg_X (N y) y)) _). intros e e' h. exact (nor_ev_inj N e e' h).
+    + intro x. refine (ptrunc_rec ptrunc_isProp _ (nor_reach N y (sg_pt (N y)) x)).
+      intros [g hg]. apply trunc. exists (ap (fun w => sg_X (N w) : GSet G) g)^.
+      exact (hg^ @ (nor_ap_V_pt N g)^).
+  - intro e.
+    refine (ptrunc_rec ptrunc_isProp _
+              (nor_reach N y (sg_pt (N y)) (trp (fun Z : GSet G => el Z y) e (sg_pt (N y))))).
+    intros [g hg]. apply trunc. exists g^.
+    apply (nor_ev_inj N). refine (hg^ @ (nor_ap_V_pt N g)^ @ _).
+    exact (ap (fun r => trp (fun Z : GSet G => el Z y) r (sg_pt (N y))) (ap_V _ g)^).
+Defined.
+
 (** Definition [def:normalquotient]: [G/N :≡ Aut_{G-Set}(X_{sh_G})] and the
     quotient homomorphism [q_N], [Bq_N(z) :≡ X_z]; the pointing path is
     [refl] up to the proof of membership in the component.  That [q_N] is
-    an epimorphism, and so the map [q : Nor(G) → Epi(G)], is left out
-    (via [lem:evaliseqwhennormal]). *)
+    an epimorphism ([qN_isepi]) is proved via [lem:evaliseqwhennormal]. *)
 Section Quotient.
 
   Context `{ua : Univalence} {G : Group} (N : Nor G).
@@ -156,6 +239,22 @@ Section Quotient.
   Definition qN : Hom G QG := @mkhom G QG (Bq; Bq_pt).
 
   Definition qN_isepi_stmt : Type := isepi qN.
+
+  (** [q_N] is an epimorphism: [U q_N] is surjective since every
+      identification [X_{sh_G} = X_{sh_G}] is merely [ap_X(g)]
+      ([lem_evaliseqwhennormal]), and identifications in the component are
+      determined by their first components. *)
+  Definition qN_isepi : qN_isepi_stmt.
+  Proof.
+    apply surj_isepi. apply (ap_isSurj_loops (Bf qN)). intro r.
+    pose (apfe := isInj_ap_isEquiv
+                    (fst_isInj (Q := fun Z : GSet G => ptrunc (X (sh G) = Z)) (fun _ => ptrunc_isProp))
+                    (Bq (sh G)) (Bq (sh G))).
+    refine (ptrunc_rec ptrunc_isProp _ (snd (lem_evaliseqwhennormal G N (sh G) (sh G)) (ap fst r))).
+    intros [p e]. apply trunc. exists p.
+    apply (isInj_cancel (isEquiv_isInj apfe)).
+    exact (e @ ap_compose Bq fst p).
+  Defined.
 
 End Quotient.
 
