@@ -21,9 +21,12 @@
       symmetries of the end point ([heap_maps]; the statement assumes
       [Funext], since the maps are compared as functions).
 
+    - For an abelian heap, the endpoint groups are (purely) isomorphic
+      ([abheap_iso]: the isomorphisms [(id, p)] for [p : a' = a] are all
+      equal, as the symmetries commute, [abheap_comm]).
+
     Left out (statements only, no proofs yet; time limit per result)
-    - The isomorphism of the endpoint groups of an
-      abelian heap ([abheap_iso_stmt]), and exercise [xca:heap-variety]
+    - Exercise [xca:heap-variety]
       (heaps as a variety with a ternary operation;
       [xca_heap_variety_stmt]).
  *)
@@ -149,12 +152,58 @@ Proof.
            @ trans_assoc _ _ _).
 Defined.
 
-(** Abelian heaps, whose endpoint groups are (purely) isomorphic
-    (statement only). *)
+(** Abelian heaps, whose endpoint groups are (purely) isomorphic. *)
 Definition isAbHeap (H : Heap) : Type := forall p q r : USymH H, heap_op H p q r = heap_op H r q p.
 
 Definition abheap_iso_stmt `{Funext} : Type
   := forall H : Heap, isAbHeap H -> Iso (heap_start_group H) (heap_end_group H).
+
+(** The proof: the symmetries of the start point commute
+    ([abheap_comm]), so for [p, q : a' = a] the isomorphisms [(id, p)]
+    and [(id, q)] are equal, by the homotopy [z ↦ r (q p⁻¹) r⁻¹] for
+    [r : a = z] (well defined since [q p⁻¹] is central).  Hence
+    [p ↦ (id, p)] factors through [‖a' = a‖], which is inhabited. *)
+Definition abheap_comm {A : Type} {a a' : A} (t : a = a')
+  (ab : forall p q r : a = a', p ⋅ (q⁻¹ ⋅ r) = r ⋅ (q⁻¹ ⋅ p)) (l m : a = a)
+  : l ⋅ m = m ⋅ l.
+Proof.
+  pose (cn := fun x : a = a => trans_assoc x t t⁻¹ @ ap (fun s => s ⋅ x) (trans_pV t)
+                               : t⁻¹ ⋅ (t ⋅ x) = x).
+  pose (E := fun x y : a = a =>
+               ap (fun s => (t ⋅ x) ⋅ s) (trans_assoc y t t⁻¹ @ ap (fun s => s ⋅ y) (trans_pV t))
+               @ (trans_assoc y x t)^ : (t ⋅ x) ⋅ (t⁻¹ ⋅ (t ⋅ y)) = t ⋅ (x ⋅ y)).
+  exact ((cn (l ⋅ m))^ @ ap (fun s => t⁻¹ ⋅ s) ((E l m)^ @ ab (t ⋅ l) t (t ⋅ m) @ E m l)
+         @ cn (m ⋅ l)).
+Defined.
+
+Definition abheap_iso `{fe : Funext} : abheap_iso_stmt.
+Proof.
+  intros K ab. destruct K as [[[A [cA gA]] [a a']]].
+  unfold isAbHeap, heap_op in ab. cbn in ab.
+  assert (cm : forall l m : a = a, l ⋅ m = m ⋅ l).
+  { intros l m. exact (ptrunc_rec (gA _ _ _ _) (fun t => abheap_comm t ab l m) (snd cA a a')). }
+  pose (F := fun p : a' = a =>
+               (mkhom (((fun x => x); p) : BG (heap_start_group (inc ((A; (cA; gA)); (a; a'))))
+                                            →* BG (heap_end_group (inc ((A; (cA; gA)); (a; a')))));
+                id_isEquiv A)
+               : Iso (heap_start_group (inc ((A; (cA; gA)); (a; a'))))
+                     (heap_end_group (inc ((A; (cA; gA)); (a; a'))))).
+  refine (wconst_elim (f := F) (Iso_isSet _ _) _ (snd cA a' a)).
+  intros p q. apply (path_sigma_prop (fun _ => isEquiv_isProp _)). apply (ap inc).
+  apply (eqinv (snd (ptw_star _ _))).
+  pose (l := q ⋅ p⁻¹ : a = a).
+  pose (c := fun z (r : a = z) => r ⋅ (l ⋅ r⁻¹) : z = z).
+  assert (wc : forall z, wconst (c z)).
+  { intros z r r'. destruct r'. unfold c.
+    exact (ap (fun s => r ⋅ s) (cm l r⁻¹) @ trans_assoc l r⁻¹ r
+           @ ap (fun s => s ⋅ l) (trans_Vp r) @ (trans_1p l)^). }
+  pose (h := fun z => wconst_elim (gA z z) (wc z) (snd cA a z)).
+  assert (ha : h a = l).
+  { exact (ap (wconst_elim (gA a a) (wc a)) (ptrunc_isProp _ (trunc refl)) @ trans_1p l). }
+  refine (h; _). cbn.
+  exact (ap (fun s => s ⋅ p) ha @ (trans_assoc p p⁻¹ q)^ @ ap (fun s => q ⋅ s) (trans_pV p)
+         @ trans_1p q).
+Defined.
 
 (** Exercise [xca:heap-variety] (statement only): the fibers of [USym]
     over a set are sets, and the fibers of [H ↦ (USym(H), p q⁻¹ r)] are
