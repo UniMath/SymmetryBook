@@ -40,9 +40,8 @@
       equivalence [group_shear_eqv], with [ā̄ = a] ([sg_bar_bar]) as in
       the hint.
 
-    Left out (statements only, no proofs yet; time limit per result)
-    - Exercise on Furstenberg groups ([Furstenberg],
-      [xca_furstenberg_stmt]).
+    - Exercise on Furstenberg groups ([Furstenberg], [xca_furstenberg]),
+      following the hint ([F_to_G], [G_to_F]).
  *)
 
 From HoTT Require Import
@@ -573,4 +572,83 @@ Definition Furstenberg : Type
        × (forall a c, Ex (fun b => op a b = c))}}.
 
 Definition xca_furstenberg_stmt `{Univalence} : Type := Furstenberg ≃ AbsGroup.
+
+(** The proof follows the hint: [a ↦ a ∘ a] is constant, with value [e]
+    ([furst_self]); then [a · b :≡ a ∘ (e ∘ b)] and [b⁻¹ :≡ e ∘ b] give
+    an abstract group, using [x ∘ e = x], [e ∘ (e ∘ x) = x] and
+    [e ∘ (x ∘ y) = y ∘ x].  Conversely [a ∘ b :≡ a · b⁻¹]. *)
+Section FurstenbergToGroup.
+
+  Context {S : Type} (sS : isSet S) (op : S -> S -> S) (ne : ptrunc S)
+    (A1 : forall a b c, op (op a c) (op b c) = op a b)
+    (A2 : forall a c, Ex (fun b => op a b = c)).
+
+  Definition furst_self (x a : S) : op x x = op a a
+    := ptrunc_rec (sS _ _) (fun w => (ap (fun y => op y y) (snd w))^ @ A1 a a (fst w)) (A2 a x).
+
+  Definition furst_e : S := wconst_elim sS (f := fun a => op a a) furst_self ne.
+
+  Definition furst_e_eq (a : S) : furst_e = op a a
+    := ptrunc_rec (sS _ _)
+         (fun x0 => ap (wconst_elim sS (f := fun a => op a a) furst_self) (ptrunc_isProp ne (trunc x0))
+                    @ furst_self x0 a) ne.
+
+  Local Notation e := furst_e.
+
+  Definition furst_runit (x : S) : op x e = x
+    := ptrunc_rec (sS _ _)
+         (fun w => ap (op x) (furst_e_eq (fst w)) @ ap (fun y => op y (op (fst w) (fst w))) (snd w)^
+                   @ A1 x (fst w) (fst w) @ snd w) (A2 x x).
+
+  Definition furst_ee (x : S) : op e (op e x) = x
+    := ap (fun y => op y (op e x)) (furst_e_eq x) @ A1 x e x @ furst_runit x.
+
+  Definition furst_swap (x y : S) : op e (op x y) = op y x
+    := ap (fun z => op z (op x y)) (furst_e_eq y) @ A1 y x y.
+
+  Definition furst_mul (a b : S) : S := op a (op e b).
+
+  Definition furst_assoc (a b c : S)
+    : furst_mul a (furst_mul b c) = furst_mul (furst_mul a b) c
+    := ap (op a) (furst_swap b (op e c)) @ (A1 a (op (op e c) b) (op e b))^
+       @ ap (op (op a (op e b))) (A1 (op e c) e b @ furst_runit (op e c)).
+
+  Definition F_to_G : AbsGroup
+    := {| ag_S := S; ag_isSet := sS; ag_e := e; ag_mul := furst_mul; ag_inv := op e;
+          ag_runit := fun a => ap (op a) (furst_e_eq e)^ @ furst_runit a;
+          ag_lunit := furst_ee;
+          ag_assoc := furst_assoc;
+          ag_rinv := fun a => ap (op a) (furst_ee a) @ (furst_e_eq a)^ |}.
+
+End FurstenbergToGroup.
+
+Definition G_to_F `{Funext} (G : AbsGroup) : Furstenberg.
+Proof.
+  refine ((ag_S G; ag_isSet G); (fun a b => ag_mul G a (ag_inv G b); ((trunc (ag_e G); _); _))).
+  - intros a b c. cbn.
+    rewrite ag_inv_mul, ag_inv_inv, ag_assoc, <- (ag_assoc G a (ag_inv G c) c), ag_linv, ag_runit.
+    exact refl.
+  - intros a c. apply trunc. refine (ag_mul G (ag_inv G c) a; _). cbn.
+    rewrite ag_inv_mul, ag_inv_inv, ag_assoc, ag_rinv, ag_lunit. exact refl.
+Defined.
+
+Definition F_to_G' (F : Furstenberg) : AbsGroup
+  := F_to_G (snd (fst F)) (fst (snd F)) (fst (fst (snd (snd F)))) (snd (fst (snd (snd F))))
+            (snd (snd (snd F))).
+
+Definition xca_furstenberg `{Univalence} : xca_furstenberg_stmt.
+Proof.
+  refine (Eqv_inv (mkEqv G_to_F F_to_G' _ _)).
+  - intro G. symmetry. refine (@path_AbsGroup _ G (F_to_G' (G_to_F G)) (idEqv _; _)).
+    intros s t. cbn. unfold furst_mul. cbn.
+    rewrite ag_rinv, ag_lunit, ag_inv_inv. exact refl.
+  - intros [[S sS] [op [[ne A1] A2]]].
+    refine (ap (fun w => ((S; sS); w) : Furstenberg) _).
+    refine (path_sigma_prop (fun op' => prod_isProp
+              (prod_isProp ptrunc_isProp
+                 (Pi_isProp (fun a => Pi_isProp (fun b => Pi_isProp (fun c => sS _ _)))))
+              (Pi_isProp (fun a => Pi_isProp (fun c => ptrunc_isProp)))) _).
+    apply ptw_inv. intro a. apply ptw_inv. intro b.
+    exact (ap (op a) (furst_ee sS op ne A1 A2 b)).
+Defined.
 
