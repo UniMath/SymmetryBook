@@ -10,10 +10,17 @@
       [i_G^H] ([iN], with [iN_ismono]), [p_G^H] ([pN]) and [j_H] ([jH],
       via [trans_at], [phiH]).
 
+    - Lemma [lem:WGHisHfixofG/H] ([lem_WGHisHfixofGH], with [eWeyl]),
+      under the hypothesis that every [G]-map [X → X] is invertible;
+      [eWeyl] is always injective ([eWeyl_inj]).  NOTE for the book text:
+      without the hypothesis the lemma fails (the fixed points of [G/H]
+      are [{g | g⁻¹Hg ⊆ H}/H], while the symmetries of [W_G H] come from
+      [N_G H = {g | g⁻¹Hg = H}]); e.g. [BS(1,2)] with [H = ⟨a⟩].  It holds
+      for finite [H].
+
     Left out (statements only)
     - The rest of the lemma after the unpacking ([normalizer_lemma_stmt]):
       [p_G^H] is an epimorphism, [ker p_G^H = (H, j_H)], [i_H = i_G^H j_H].
-    - Lemma [lem:WGHisHfixofG/H] ([lem_WGHisHfixofGH_stmt], with [eWeyl]).
     - The equivalence [e] of the unpacking of [N_G H] is not formalized
       separately.
  *)
@@ -102,12 +109,48 @@ Section Weyl.
        × {m : ismono jH & ker pN = ((subgrp_group S; (jH; m)) : Mono Normalizer)}
        × (subgrp_incl S = compG iN jH).
 
-  (** Lemma [lem:WGHisHfixofG/H] (statement only): the symmetries of
-      [W_G H], i.e. [X = X], are the [H]-fixed points of [X = G/H], via
-      [e(f)(y, v) :≡ f_y(v)]. *)
+  (** Lemma [lem:WGHisHfixofG/H]: the symmetries of [W_G H], i.e.
+      [X = X], are the [H]-fixed points of [X = G/H], via
+      [e(f)(y, v) :≡ f_y(v)].  NOTE: the book identifies
+      [∏_y (X(y) = X(y))] with [∏_y (X(y) → X(y))], which needs that every
+      [G]-map [X → X] is invertible.  That fails in general: the [G]-map
+      [gH ↦ gnH] of [G/H] only needs [n⁻¹Hn ⊆ H], and it is invertible
+      only if [n⁻¹Hn = H]; in [BS(1,2) = ⟨a, t | t a t⁻¹ = a²⟩] with
+      [H = ⟨a⟩] and [n = t⁻¹] the inclusion is strict.  (It holds when [H]
+      is finite.)  We assume that every [G]-map [X → X] is invertible;
+      [e] is always injective ([eWeyl_inj]). *)
   Definition eWeyl (f : X = X) (w : TotG X) : el X (fst w)
     := trp (fun Z : GSet G => el Z (fst w)) f (snd w).
 
-  Definition lem_WGHisHfixofGH_stmt : Type := isEquiv eWeyl.
+  Definition lem_WGHisHfixofGH_stmt : Type
+    := (forall φ : forall y, el X y -> el X y, forall y, isEquiv (φ y)) -> isEquiv eWeyl.
+
+  Definition ptoe_ptw_GSet {Z Z' : GSet G} (f : Z = Z') (y : utype (BG G)) (v : el Z y)
+    : ptoe (ap fst (ptw f y)) v = trp (fun Z0 : GSet G => el Z0 y) f v.
+  Proof. destruct f. exact refl. Defined.
+
+  (** [e] is injective: an identification of [G]-sets is determined by
+      its action. *)
+  Definition eWeyl_inj (f f' : X = X) (e : forall w, eWeyl f w = eWeyl f' w) : f = f'.
+  Proof.
+    apply (isInj_cancel (isEquiv_isInj (funext X X))). apply ptw_inv. intro y.
+    apply (isInj_cancel (isEquiv_isInj
+             (isInj_ap_isEquiv (fst_isInj (fun Y => isSet_isProp Y)) (X y) (X y)))).
+    apply (isInj_cancel (isEquiv_isInj (IntroUF.S13_Univalence.ua _ _))).
+    apply (path_sigma_prop (fun _ => isEquiv_isProp _)). apply ptw_inv. intro v.
+    exact (ptoe_ptw_GSet f y v @ e (y; v) @ (ptoe_ptw_GSet f' y v)^).
+  Defined.
+
+  Definition lem_WGHisHfixofGH : lem_WGHisHfixofGH_stmt.
+  Proof.
+    intro hyp.
+    pose (g := fun φ : forall w : TotG X, el X (fst w) =>
+                 path_GSet (X := X) (Y := X)
+                   (fun y => ((fun v => φ (y; v)); hyp (fun y v => φ (y; v)) y))).
+    assert (eg : forall φ, eWeyl (g φ) = φ).
+    { intro φ. apply ptw_inv. intros [y v]. exact (trp_path_GSet (G := G) _ y v). }
+    refine (iso_to_isEquiv _ g _ eg).
+    intro f. apply eWeyl_inj. intro w. exact (ptw (eg (eWeyl f)) w).
+  Defined.
 
 End Weyl.
