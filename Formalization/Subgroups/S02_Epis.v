@@ -37,6 +37,9 @@
       takes the [G]-set of fibers of [Bi], [fibX]), and corollary
       [lem:setofsubgroups] ([lem_setofsubgroups], from [SubGrp_isSet] of
       Section 5.3).
+    - From Section 4.5, placed here since it uses [surjection_connfib]:
+      lemma [lem:epifullyfaithful] ([lem_epifullyfaithful]), via the
+      library's [istrunc_extension_along_conn] ([Set] is a groupoid).
 
     Left out (statements only)
     - [it:epi] ⇒ [it:surjection] ([epi_surjection_stmt]): the book's proof
@@ -49,7 +52,7 @@
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core.
+  Types.Forall Types.Paths Truncations.Core Truncations.Connectedness Extensions.
 From SymmetryBook Require Export ConGroups.ConGroups.
 
 Local Open Scope uf_scope.
@@ -376,6 +379,23 @@ Section EpiSurj.
   Definition epi_surjection_stmt : Type := isepi f -> isSurj (USymf f).
 
 End EpiSurj.
+
+(** Lemma [lem:epifullyfaithful] of Section 4.5, placed here since it
+    uses [surjection_connfib]: [Bf] has connected fibers, so restricting
+    along it is an embedding of [BK → Set] into [BG → Set], since [Set]
+    is a groupoid (the library's [istrunc_extension_along_conn]). *)
+Definition lem_epifullyfaithful `{ua : Univalence} : lem_epifullyfaithful_stmt.
+Proof.
+  intros G K f s X.
+  pose (k0 := fst (Bf f)).
+  pose (cm := conn_to 0 k0 (fun y => isConn_strunc_isContr (surjection_connfib f s y))).
+  pose (E := ExtensionAlong k0 (fun _ => SetU) X).
+  assert (hE : IsHProp E).
+  { exact (@istrunc_extension_along_conn _ (-1) 0 _ _ k0 cm (fun _ => SetU)
+             (fun _ => isGrpd_IsTrunc SetU_isGrpd) X). }
+  refine (@IsHProp_isProp _ (istrunc_equiv_istrunc E _)).
+  exact (equiv_functor_sigma_id (fun Y => equiv_path_inverse _ _ oE (equiv_apD10 _ _ _)^-1)).
+Defined.
 
 (** Construction [con:monos-are-equalizers] (statement only; the
     implementation in the book is a draft): every monomorphism is an

@@ -33,8 +33,10 @@
       preimage, image and coinduced subset ([sub_preimage], [sub_image],
       [sub_coinduced]); the remarks' claims hold by definition.
 
-    Left out (statements only, no proofs yet; time limit per result)
-    - Lemma [lem:epifullyfaithful] ([lem_epifullyfaithful_stmt]).
+    - Lemma [lem:epifullyfaithful] is stated here
+      ([lem_epifullyfaithful_stmt]) and proved in [Subgroups/S02_Epis.v]
+      ([lem_epifullyfaithful]), since the proof uses that [Bf] has
+      connected fibers ([surjection_connfib]).
  *)
 
 From HoTT Require Import
@@ -331,7 +333,8 @@ Section InducedTorsor.
 
 End InducedTorsor.
 
-(** Lemma [lem:epifullyfaithful] (statement only): if [Uf] is
-    surjective, then [f^*] is an injection. *)
+(** Lemma [lem:epifullyfaithful] (statement; proved in
+    [Subgroups/S02_Epis.v]): if [Uf] is surjective, then [f^*] is an
+    injection. *)
 Definition lem_epifullyfaithful_stmt `{Funext} : Type
   := forall (G K : Group) (f : Hom G K), isSurj (USymf f) -> isInj (restrict f).
