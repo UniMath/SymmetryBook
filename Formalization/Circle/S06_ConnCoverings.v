@@ -66,11 +66,11 @@
       the evaluation map is [ConnCycles] at [(Fin m, zs)] ([idm_eqv]),
       and the compatibility with [zs] follows from [endo_fun_concat] and
       [endo_fun_endo_path].
-
-    Left out (statements only, no proofs yet)
-    - [con:psi-alpha-m] and [cor:dgm-conncov] ([con_psi_alpha_m_stmt],
-      [cor_dgm_conncov_stmt]; the book leaves the inverse of [ψ_m] as an
-      exercise).
+    - Construction [con:psi-alpha-m] and corollary [cor:dgm-conncov]
+      are stated here ([con_psi_alpha_m_stmt], [cor_dgm_conncov_stmt],
+      for [m = k+1]) and proved at the end of [S09_HigherImages.v]
+      ([con_psi_alpha_m], [cor_dgm_conncov]), since the proof uses
+      [zmul_cancel] from there.
  *)
 
 From HoTT Require Import
@@ -324,7 +324,7 @@ End FinCycle.
     bundle [R_m] (informal). *)
 
 (** Construction [con:psi-alpha-m] and corollary [cor:dgm-conncov]
-    (statements only), for [m = k+1]. *)
+    (statements), for [m = k+1]; proved in [S09_HigherImages.v]. *)
 Definition con_psi_alpha_m_stmt `{Univalence} : Type
   := forall k : ℕ, {ψ : Tot (Rm k) ≃ S1 & fst (powm k) = dg (S k) ∘ fst ψ}.
 

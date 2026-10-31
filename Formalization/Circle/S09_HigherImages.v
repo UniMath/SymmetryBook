@@ -39,6 +39,15 @@
       construction for a component [Cyc_B] of the domain of [ρ_m] and its
       image component [Cyc_{B'}] ([qmap], [qmap_fiber_pt],
       [qmap_isnConnMap]).
+    - Construction [con:psi-alpha-m] and corollary [cor:dgm-conncov] of
+      Section 3.6 ([con_psi_alpha_m], [cor_dgm_conncov], placed at the
+      end since they use [zmul_cancel]): [φ : S1 → ∑_z R_m(z)] with
+      [φ(loop)] the lift of [loop^m] ([psi_phi]); [fst ∘ φ = dg_m]
+      ([psi_phi_fst]); [φ] is an equivalence, since [ap_φ] is injective
+      (winding numbers, [psi_wind]) and surjective (loops at [(base,0)]
+      have winding number in [mℤ], [Hc_Fin]); [ψ :≡ φ⁻¹].  Instead of
+      constructing [ψ] and leaving its inverse as an exercise (as the book
+      does), we construct the inverse [φ] and invert it.
     Deviations:
     - [(X/m, t̄)] ([qcyc]) uses the library's quotient [QuotHIT] ([Qm]),
       which stays in the universe of [X], instead of the book's [X/m]
@@ -772,3 +781,113 @@ Definition xca_image_Cmd_to_Cm `{Univalence} (k j : ℕ)
       × isnConnMap 0 q
       × (fiber q (Fincyc k; trunc refl) ≃ Cycm j)}
   := (qFin k j; ((qFin_fiber k j; qFin_isnConnMap k j); qFin_fiber_pt k j)).
+
+(** Construction [con:psi-alpha-m] and corollary [cor:dgm-conncov] of
+    Section 3.6, placed here since they use [zmul_cancel].  For
+    [m = k+1], [φ : S1 → ∑_z R_m(z)] sends [loop] to the lift of [loop^m]
+    at [0]; [ap_φ] is an equivalence onto the loops at [(base, 0)], which
+    are [∑_n (t^n(0) = 0)] ([loopsAE]) with [n ∈ mℤ] ([Hc_Fin]); and
+    [fst ∘ φ = dg_m].  Then [ψ :≡ φ⁻¹]. *)
+Section PsiAlpha.
+
+  Context `{Univalence} (k : ℕ).
+
+  Local Notation t := (finsuccEqv k).
+
+  Definition psi_a0 : Tot (Rm k) := (base; fin_zero).
+
+  Definition psi_mz : iplus (S k) = zmul (iplus (S k)) (iplus 1)
+    := toInt_inj ((int_mul_1_r (toInt (iplus (S k))))^ @ (toInt_zmul (iplus (S k)) (iplus 1))^).
+
+  Definition psi_q0 : trp (Rm k) (loopZ (iplus (S k))) fin_zero = fin_zero
+    := trp_E_loopZ (Fin_isSet (S k)) t (iplus (S k)) fin_zero
+       @ fst (Ht_point (Fin_isSet (S k)) t (Fin_isCycle k) fin_zero (iplus (S k)))
+             (snd (Hc_Fin k (iplus (S k))) (trunc (iplus 1; psi_mz))).
+
+  Definition psi_L : psi_a0 = psi_a0 := pathpair (Y := Rm k) (loopZ (iplus (S k))) psi_q0.
+
+  Definition psi_phi : S1 -> Tot (Rm k) := S1_rec _ psi_a0 psi_L.
+
+  Definition psi_phi_fst (z : S1) : @fst S1 (Rm k) (psi_phi z) = dg (S k) z.
+  Proof.
+    pose (p0 := ap (@fst S1 (Rm k)) (S1_rec_base _ psi_a0 psi_L) @ (S1_rec_base S1 base (loopZ (iplus (S k))))^
+                : @fst S1 (Rm k) (psi_phi base) = dg (S k) base).
+    refine (S1_htpy (A := S1) (f := fun z => @fst S1 (Rm k) (psi_phi z)) (g := dg (S k)) p0 _ z).
+    pose (e1 := ap_compose psi_phi (@fst S1 (Rm k)) loop
+                : ap (fun z => @fst S1 (Rm k) (psi_phi z)) loop = ap (@fst S1 (Rm k)) (ap psi_phi loop)).
+    pose (e2 := ap (ap (@fst S1 (Rm k))) (S1_rec_loop (Tot (Rm k)) psi_a0 psi_L)
+                : ap (@fst S1 (Rm k)) (ap psi_phi loop) = ap (@fst S1 (Rm k)) psi_L).
+    pose (e3 := ap_fst_pathpair (Y := Rm k) (loopZ (iplus (S k))) psi_q0
+                : ap (@fst S1 (Rm k)) psi_L = loopZ (iplus (S k))).
+    pose (e4 := (S1_rec_loop S1 base (loopZ (iplus (S k))))^
+                : loopZ (iplus (S k)) = ap (dg (S k)) loop).
+    exact (e1 @ e2 @ e3 @ e4 @ (trans_1p (ap (dg (S k)) loop))^).
+  Defined.
+
+  Definition psi_wind (p : base = base)
+    : fst wdg (ap (@fst S1 (Rm k)) (ap psi_phi p)) = zmul (iplus (S k)) (fst wdg p).
+  Proof.
+    refine (ap (fun r : base = base => fst wdg (ap (@fst S1 (Rm k)) (ap psi_phi r))) (loopZ_wdg p)^ @ _).
+    pose (w := fst wdg p).
+    change (fst wdg (ap (@fst S1 (Rm k)) (ap psi_phi (loopexp loop (toInt w)))) = zmul (iplus (S k)) w).
+    refine (ap (fun r : psi_a0 = psi_a0 => fst wdg (ap (@fst S1 (Rm k)) r)) (ap_loopexp psi_phi loop _) @ _).
+    refine (ap (fun r : psi_a0 = psi_a0 => fst wdg (ap (@fst S1 (Rm k)) (loopexp r (toInt w)))) (S1_rec_loop (Tot (Rm k)) psi_a0 psi_L) @ _).
+    refine (ap (fun r : base = base => fst wdg r) (ap_loopexp (@fst S1 (Rm k)) psi_L (toInt w)) @ _).
+    refine (ap (fun r : base = base => fst wdg (loopexp r (toInt w))) (ap_fst_pathpair (Y := Rm k) (loopZ (iplus (S k))) psi_q0) @ _).
+    refine (ap (fst wdg) (loopexp_mul loop _ _) @ _).
+    refine (winding_Int _ @ _).
+    apply toInt_inj. exact (toInt_fromInt _ @ (toInt_zmul _ _)^).
+  Defined.
+
+  Definition psi_Tot_isGrpd : isGrpd (Tot (Rm k))
+    := Sigma_ntype 1 S1_isGrpd (fun z => set_ntype 1 (Rm_isSet k z)).
+
+  Definition psi_ap_isEquiv : isEquiv (@ap _ _ psi_phi base base).
+  Proof.
+    pose (LA := loopsAE (Fin_isSet (S k)) t fin_zero).
+    pose (LAe := loopsAE_isEquiv (Fin_isSet (S k)) t fin_zero).
+    apply inj_surj_isEquiv.
+    - refine (cancel_isInj (psi_Tot_isGrpd psi_a0 psi_a0) _). intros p p' e.
+      apply (isInj_cancel (isEquiv_isInj (snd wdg))).
+      apply (zmul_cancel k).
+      exact ((psi_wind p)^ @ ap (fun r : psi_a0 = psi_a0 => fst wdg (ap (@fst S1 (Rm k)) r)) e @ psi_wind p').
+    - intro l.
+      refine (ptrunc_rec ptrunc_isProp _
+                (fst (Hc_Fin k (fst (LA l)))
+                   (snd (Ht_point (Fin_isSet (S k)) t (Fin_isCycle k) fin_zero (fst (LA l)))
+                        (snd (LA l))))).
+      intros [q eq]. apply trunc. refine (loopZ q; _).
+      apply (isInj_cancel (isEquiv_isInj LAe)).
+      apply (path_sigma_prop (fun _ => Fin_isSet (S k) _ _)).
+      exact (eq @ ap (zmul (iplus (S k))) (winding q)^ @ (psi_wind (loopZ q))^).
+  Defined.
+
+  Definition psi_Tot_isConn : isConn (Tot (Rm k))
+    := isCycle_conn (Fin_isSet (S k)) t (Fin_isCycle k).
+
+  Definition psi_phi_isEquiv : isEquiv psi_phi.
+  Proof.
+    pose (h := @conn_isEquiv_iff_point _ S1 (Tot (Rm k)) psi_phi S1_isConn psi_Tot_isConn base).
+    exact (snd h psi_ap_isEquiv).
+  Defined.
+
+  Definition dg_fiber_eqv (z : S1) : Rm k z ≃ fiber (dg (S k)) z
+    := Eqv_comp (fst_fiber_eqv (Rm k) z)
+         (Eqv_inv (_; @preim_eq S1 (Tot (Rm k)) S1 (dg (S k)) (@fst S1 (Rm k))
+                        (psi_phi; psi_phi_isEquiv) (fun x => (psi_phi_fst x)^) z)).
+
+End PsiAlpha.
+
+Definition con_psi_alpha_m `{Univalence} : con_psi_alpha_m_stmt.
+Proof.
+  intro k. refine (Eqv_inv (psi_phi k; psi_phi_isEquiv k); _).
+  apply ptw_inv. intro w.
+  exact (ap (@fst S1 (Rm k)) (eqinv_r (psi_phi_isEquiv k) w)^ @ psi_phi_fst k _).
+Defined.
+
+Definition cor_dgm_conncov `{Univalence} : cor_dgm_conncov_stmt.
+Proof.
+  intro k. refine ((fun z => is_ntype_Eqv 0 (dg_fiber_eqv k z) (Rm_isSet k z); S1_isConn); _).
+  intro z. refine (ptrunc_rec ptrunc_isProp _ (S1_base_paths z)). intro p.
+  exact (trunc ((etop (dg_fiber_eqv k z))^ @ (ap (Rm k) p)^)).
+Defined.
