@@ -21,14 +21,15 @@
       reduction [reduce] (the exercise: by nested induction on words,
       using decidable equality), reduced words [Reduced], Dyck words
       [Dyck], and the interpretation [interp : S̃^* → UF_S].
+    - The remark [S̃^*/∼ ≃ R_S] ([reduce_quot]), from the idempotence of
+      [ρ_S] ([reduce_idem], via reduced words [isRed]).
     - The exercise [R_1 ≃ ℤ] ([R1_Z], with the value [wval] of a word
       and [reduce_rep]: a reduced word is [aⁿ] or [(a⁻¹)⁻ⁿ]).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - The remark [S̃^*/∼ ≃ R_S] ([reduce_quot_stmt]), theorem
-      [thm:free-group-elements] ([thm_free_group_elements_stmt]), and the
-      exercise [F_{n+1} = F_n ∨ ℤ]
-      ([FG_succ_stmt], with [iterWedgeZ]).
+    - Theorem [thm:free-group-elements] ([thm_free_group_elements_stmt])
+      and the exercise [F_{n+1} = F_n ∨ ℤ] ([FG_succ_stmt], with
+      [iterWedgeZ]).
  *)
 
 From HoTT Require Import
@@ -179,7 +180,7 @@ Section Words.
 
   Definition Dyck : Type := fiber reduce nil.
 
-  (** The remark that [ρ_S] induces [S̃^*/∼ ≃ R_S] (statement only). *)
+  (** The remark that [ρ_S] induces [S̃^*/∼ ≃ R_S]. *)
   Definition reduce_rel (u v : list Stilde) : PropU
     := ((reduce u = reduce v);
         list_isSet (sum_isSet (fun x y => fst (dS x y)) (fun x y => fst (dS x y))) _ _).
@@ -187,6 +188,51 @@ Section Words.
   Definition reduce_quot_stmt `{Univalence} : Type
     := {e : quot reduce_rel ≃ Reduced &
          forall w, fst (fst e (S22_SetOperations.cls reduce_rel w)) = reduce w}.
+
+  (** The proof: [ρ_S] is idempotent, since its values are reduced
+      ([reduce_isRed]: no letter is followed by its complement) and it
+      fixes reduced words ([isRed_reduce]). *)
+  Fixpoint isRed (w : list Stilde) : Type
+    := match w with
+       | nil => Unit
+       | cons x w' => (match w' with nil => Unit | cons y _ => ¬ (y = compl x) end) × isRed w'
+       end.
+
+  Definition reduce_isRed (w : list Stilde) : isRed (reduce w).
+  Proof.
+    induction w as [|x w IH]; [exact tt|]. cbn [reduce]. revert IH.
+    destruct (reduce w) as [|y r]; intro IH; [exact (tt; tt)|].
+    destruct (Stilde_dec y (compl x)) as [e|n]; [exact (snd IH) | exact (n; IH)].
+  Defined.
+
+  Definition isRed_reduce (w : list Stilde) : isRed w -> reduce w = w.
+  Proof.
+    induction w as [|x w IH]; intro h; [exact refl|]. cbn [reduce]. rewrite (IH (snd h)).
+    destruct w as [|y r]; [exact refl|].
+    destruct (Stilde_dec y (compl x)) as [e|n]; [destruct (fst h e) | exact refl].
+  Defined.
+
+  Definition reduce_idem (w : list Stilde) : reduce (reduce w) = reduce w
+    := isRed_reduce _ (reduce_isRed w).
+
+  Definition reduce_quot `{Univalence} : reduce_quot_stmt.
+  Proof.
+    pose (sL := list_isSet (sum_isSet (fun x y => fst (dS x y)) (fun x y => fst (dS x y)))).
+    pose (rr := fun w => refl (reduce w) : fst (reduce_rel w w)).
+    pose (rs := fun u v (e : fst (reduce_rel u v)) => e^ : fst (reduce_rel v u)).
+    pose (rt := fun u v w (e : fst (reduce_rel u v)) (e' : fst (reduce_rel v w))
+                => e @ e' : fst (reduce_rel u w)).
+    simple refine (mkEqv (fbar reduce_rel rr (im_isSet reduce sL)
+                            (fun w => (reduce w; trunc (w; refl)) : Reduced) _)
+                         (fun u => S22_SetOperations.cls reduce_rel (fst u)) _ _;
+                   fun w => refl).
+    - intros w w' e. apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact e.
+    - refine (im_ind reduce_rel _ (fun _ => quot_isSet reduce_rel _ _) _). intro w.
+      exact (snd (cls_eq_iff reduce_rel rr rs rt (reduce w) w) (reduce_idem w)).
+    - intros [v s]. apply (path_sigma_prop (fun _ => ptrunc_isProp)).
+      refine (ptrunc_rec (sL _ _) _ s). intros [x p].
+      exact (ap reduce p @ reduce_idem x @ p^).
+  Defined.
 
   (** The interpretation [⟦_⟧ : S̃^* → UF_S]. *)
   Fixpoint interp (w : list Stilde) : USym (FG S)
