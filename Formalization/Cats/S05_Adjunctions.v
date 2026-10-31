@@ -19,15 +19,13 @@
       [X : U_*].
     - Example [ex:Sigma-Pi-adj] for families of types: [f_! ⊣ f^*]
       ([SigPullAdj]) and [f^* ⊣ f_*] ([PullPiAdj]), and the special case
-      [Σ_A ⊣ cst ⊣ Π_A] ([SigConstAdj], [ConstPiAdj]).
+      [Σ_A ⊣ cst ⊣ Π_A] ([SigConstAdj], [ConstPiAdj]).  The set-level
+      version ([SigmaPi_Set], with [f_!] set-truncated: [SSigPullAdj],
+      [SPullPiAdj]).
     - Remark [rem:adj-in-posets]: an adjunction between preorders gives
       the biimplication and conversely ([adj_preorder_iff],
       [preorder_iff_adj]); the propositional analog
       [∃_f ⊣ f^* ⊣ ∀_f] on subsets ([exists_pull_adj], [pull_forall_adj]).
-
-    Left out (statements only, no proofs yet)
-    - The set-level [f_! ⊣ f^* ⊣ f_*] of example [ex:Sigma-Pi-adj]
-      ([SigmaPi_Set_stmt]).
 
     Left out (not formalized)
     - The example [⌈-⌉ ⊣ ι ⊣ ⌊-⌋] for [ι : ℤ → ℚ] in remark
@@ -291,7 +289,7 @@ Definition ConstPiAdj `{Funext} (A : Type) : Adjunction (FamCat True) (FamCat A)
   := PullPiAdj (fun _ : A => triv).
 
 (** The set-level version [f_! ⊣ f^* ⊣ f_*] on families of sets, with
-    [f_!] set-truncated (statement only). *)
+    [f_!] set-truncated (proved below, [SigmaPi_Set]). *)
 Definition isSetFam `{Funext} (A : Type) (X : Ob (FamCat A)) : PropU
   := ((forall a, isSet (X a)); Pi_isProp (fun a => isSet_isProp _)).
 
@@ -305,6 +303,66 @@ Definition SigmaPi_Set_stmt `{Funext} : Type
        × {adj : Adjunction (SetFam B) (SetFam A) &
            (forall Y a, fst (fob (ladj adj) Y) a = fst Y (f a))
            × (forall X b, fst (fob (radj adj) X) b = PiFam f (fst X) b)}.
+
+(** Proof of the set-level version: [f_!X(b) :≡ ‖Σ_a (f a = b) × X(a)‖₀],
+    and the adjunctions are those of [SigPullAdj] and [PullPiAdj],
+    using the universal property of the set truncation for [f_! ⊣ f^*]. *)
+Section SigmaPiSet.
+
+  Context `{Funext} {A B : Type} (f : A -> B).
+
+  Definition SSigOb (X : Ob (SetFam A)) : Ob (SetFam B)
+    := ((fun b => strunc (SigFam f (fst X) b)); fun b => strunc_isSet).
+
+  Definition SSigMap {X X' : Ob (SetFam A)} (g : homC (w := SetFam A) X X')
+    : homC (w := SetFam B) (SSigOb X) (SSigOb X')
+    := fun b => strunc_rec strunc_isSet
+                  (fun w => settrunc (fmap (SigFun f) (A := fst X) (B := fst X') g b w)).
+
+  Definition SSigFun : Functor (SetFam A) (SetFam B).
+  Proof.
+    refine (Build_Functor (SetFam A) (SetFam B) SSigOb (fun X X' g => SSigMap g) _ _).
+    - intro X. apply ptw_inv. intro b. apply ptw_inv.
+      refine (strunc_ind _ (fun _ => prop_is_set (strunc_isSet _ _)) _). intro w. exact refl.
+    - intros X X' X'' g g'. apply ptw_inv. intro b. apply ptw_inv.
+      refine (strunc_ind _ (fun _ => prop_is_set (strunc_isSet _ _)) _). intro w. exact refl.
+  Defined.
+
+  Definition SPullFun : Functor (SetFam B) (SetFam A)
+    := Build_Functor (SetFam B) (SetFam A)
+         (fun Y => ((fun a => fst Y (f a)); fun a => snd Y (f a)))
+         (fun Y Y' g a => g (f a)) (fun Y => refl) (fun Y Y' Y'' g g' => refl).
+
+  Definition SPiFun : Functor (SetFam A) (SetFam B)
+    := Build_Functor (SetFam A) (SetFam B)
+         (fun X => (PiFam f (fst X); fun b => Pi_isSet (fun a => Pi_isSet (fun _ => snd X a))))
+         (fun X X' g b u a p => g a (u a p)) (fun X => refl) (fun X X' X'' g g' => refl).
+
+  Definition ssig_pull_eqv (X : Ob (SetFam A)) (Y : Ob (SetFam B))
+    : homC (w := SetFam B) (SSigOb X) Y ≃ (forall a, fst X a -> fst Y (f a)).
+  Proof.
+    refine (mkEqv (fun k a x => k (f a) (settrunc (a; (refl; x))))
+                  (fun l b => strunc_rec (snd Y b) (eqinv (snd (sig_pull_eqv f (fst X) (fst Y))) l b))
+                  _ (fun l => refl)).
+    intro k. apply ptw_inv. intro b. apply ptw_inv.
+    refine (strunc_ind _ (fun _ => prop_is_set (snd Y b _ _)) _).
+    intros [a [p x]]. destruct p. exact refl.
+  Defined.
+
+  Definition SSigPullAdj : Adjunction (SetFam A) (SetFam B)
+    := Build_Adjunction (SetFam A) (SetFam B) SSigFun SPullFun ssig_pull_eqv
+         (fun X' X Y Y' h k g => refl).
+
+  Definition SPullPiAdj : Adjunction (SetFam B) (SetFam A)
+    := Build_Adjunction (SetFam B) (SetFam A) SPullFun SPiFun
+         (fun Y X => pull_pi_eqv f (fst Y) (fst X))
+         (fun Y' Y X X' h k g => adjnat (PullPiAdj f) h k g).
+
+End SigmaPiSet.
+
+Definition SigmaPi_Set `{Funext} : SigmaPi_Set_stmt
+  := fun A B f => ((SSigPullAdj f; ((fun X b => refl); (fun Y a => refl)));
+                   (SPullPiAdj f; ((fun Y a => refl); (fun X b => refl)))).
 
 (** Remark [rem:adj-in-posets]: for preorders, an adjunction amounts to
     [F(p) ≤ q ↔ p ≤ G(q)]; the propositional analog [∃_f ⊣ f^* ⊣ ∀_f]
