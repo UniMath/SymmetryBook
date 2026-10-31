@@ -26,7 +26,8 @@
       [isCovering_ismono]), via [cor:fib-vs-path] with [Q :≡ isProp] and
       the comparison of [Ωk] with [ap_k] ([loops_isInj_ap],
       [ap_isInj_loops]).  [Mono_MonoC_eqv]: the two types of
-      monomorphisms agree.
+      monomorphisms agree.  This also proves exercise [xca:mono-cat-grp]
+      of Section 6.3 ([xca_mono_cat_grp]).
     - Lemma [lem:epi-surj]: [it:surjection] ⇒ [it:epi]
       ([surjection_isepi]) and [it:surjection] ⇔ [it:connfib]
       ([surjection_connfib], [connfib_surjection]), via
@@ -332,6 +333,12 @@ Section EqMonoCover.
   Defined.
 
 End EqMonoCover.
+
+(** Exercise [xca:mono-cat-grp] (stated in Section 6.3): the
+    monomorphisms in the category of groups are those of definition
+    [def:typeofmono]; this is [ismono_iff_ismonoC]. *)
+Definition xca_mono_cat_grp `{ua : Univalence} : xca_mono_cat_grp_stmt
+  := fun H G f => (ismonoC_ismono f, ismono_ismonoC f).
 
 (** The type [Mono(H)] of definition [def:monomorphism] is that of
     definition [def:typeofmono] (Section 5.3). *)

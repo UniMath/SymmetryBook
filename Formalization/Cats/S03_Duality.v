@@ -30,10 +30,10 @@
     - Exercise [xca:monos-epis-preorder] ([preorder_isMono],
       [preorder_isEpi]).
 
-    Left out (statements only, no proofs yet)
-    - Exercise [xca:mono-cat-grp] ([xca_mono_cat_grp_stmt]).  It needs
-      that a homomorphism is determined by its action on symmetries,
-      which is only proved in Chapter 7 ([abstr_hom_eqv]). *)
+    - Exercise [xca:mono-cat-grp] ([xca_mono_cat_grp_stmt]) is stated
+      here and proved in Section 9.2 ([xca_mono_cat_grp] in
+      [Subgroups/S02_Epis.v]), since it needs that a homomorphism is
+      determined by its action on symmetries ([abstr_hom_eqv], Chapter 7). *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
