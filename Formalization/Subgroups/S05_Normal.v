@@ -27,18 +27,24 @@
     - Lemma [lem:normalsarekernels] ([lem_normalsarekernels], with the
       same hypothesis): from [lem:diagfornormal] and [mono_subgrp_mono]
       of Section 9.2.
+    - Lemma [lem:qeq] in the form [lem_qeq_stmt] (see the size issue
+      below), with surjectivity hypotheses ([lem_qeq]): [(Bq(y) = Bq(z))
+      ≃ X_y(z)] by evaluation ([qeq_eqv]), and [Q] with [BQ(w) :≡ (z ↦ (w
+      = f(z)))] ([Q0], [Qhom]), so that [BQ ∘ Bf ≡ Bq] on underlying
+      types ([Q_comp]); [ap_{Q0}] is inverted by evaluation at [refl]
+      ([apQ0_isEquiv], [Q_isIso]).
     - That [q_N] is an epimorphism ([qN_isepi]): [U q_N] is surjective by
       the second part of [lem:evaliseqwhennormal].
 
     Left out (statements only)
-    - Lemma [lem:qeq], corollary [cor:normalisnormal], lemma
+    - Corollary [cor:normalisnormal], lemma
       [lem:characterizations of normal] (parts (1) - (3)) ([..._stmt]).
     - The map [q : Nor(G) → Epi(G)] (see the size issue below).
     - Size issue: [G/N] lives in a larger universe than [G], so
       [nor(q(N)) = N] in [Nor(G)] and [(G', f) = q(nor(f))] in [Epi(G)]
       cannot be stated; [lem_qeq_stmt] states the content of the proof
       instead (pointed equivalences of [G]-sets, and an isomorphism [Q]
-      with [Q f = q_{nor f}]).
+      with [Q f = q_{nor f}]), and this is what is proved.
     - Informal: the remark after [def:ker2], the remark after
       [def:normalquotient] ([Y/N] and torsors), the marginal remark after
       [def:associatednormal].
@@ -322,7 +328,7 @@ End Quotient.
 (** The remark after [def:normalquotient] on the quotient [Y/N] of a
     [G]-type and torsors (informal). *)
 
-(** Lemma [lem:qeq] (statement only).  Size issue: [G/N] lives in a
+(** Lemma [lem:qeq] (statement; proved below).  Size issue: [G/N] lives in a
     larger universe than [G], so [nor(q(N))] and [N] are not elements of
     the same [Nor(G)], nor [(G', f)] and [q(nor(f))] of the same
     [Epi(G)].  We state the content of the book's proof instead:
@@ -336,6 +342,93 @@ Definition lem_qeq_stmt `{ua : Univalence} : Type
             fst (e y) (sg_pt (nor (qN N) s y)) = sg_pt (N y)})
        × (forall (H : Group) (f : Hom G H) (s : isSurj (USymf f)),
             {Q : Hom H (QG (nor f s)) & isIso Q × (compG Q f = qN (nor f s))}).
+
+(** Proof of [lem:qeq].  First part: [(Bq(y) = Bq(z)) ≃ (X_y = X_z) ≃
+    (X_z = X_y) ≃ X_y(z)], the last map by evaluation at [pt_z]
+    ([lem:evaliseqwhennormal]).  Second part: [BQ(w) :≡ (z ↦ (w = f(z)))]
+    ([Q0]), so that [BQ(f(y)) ≡ X_y]; [ap_{Q0}] at [f(sh_G)] is inverted
+    by evaluation at [refl] ([ev_apQ0]). *)
+Definition qeq_eqv `{ua : Univalence} {G : Group} (N : Nor G) (s : isSurj (USymf (qN N)))
+  (y z : utype (BG G)) : el (sg_X (nor (qN N) s y)) z ≃ el (sg_X (N y)) z.
+Proof.
+  refine (Eqv_comp (ap fst; isInj_ap_isEquiv
+                     (fst_isInj (Q := fun Z : GSet G => ptrunc (sg_X (N (sh G)) = Z))
+                                (fun _ => ptrunc_isProp)) (Bq N y) (Bq N z)) _).
+  refine (Eqv_comp (Eqv_of_Equiv (equiv_path_inverse _ _)) _).
+  exact (_; fst (lem_evaliseqwhennormal G N z y)).
+Defined.
+
+Section QEq.
+
+  Context `{ua : Univalence} {G H : Group} (f : Hom G H) (s : isSurj (USymf f)).
+
+  Local Notation k0 := (fst (Bf f)).
+  Local Notation kp := (snd (Bf f)).
+  Local Notation Nf := (nor f s).
+  Local Notation w0 := (k0 (sh G)).
+
+  Definition Q0 (w : utype (BG H)) : GSet G := fun z => ((w = k0 z); BG_isGrpd H w (k0 z)).
+
+  Definition BQ (w : utype (BG H)) : utype (BG (QG Nf))
+    := (Q0 w; ptrunc_rec ptrunc_isProp (fun q => trunc (ap Q0 q)) (snd (BG_isConn H) w0 w)).
+
+  Definition BQ_pt : sh (QG Nf) = BQ (sh H)
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := sh (QG Nf)) (v := BQ (sh H)) (ap Q0 kp^).
+
+  Definition Qhom : Hom H (QG Nf) := @mkhom H (QG Nf) (BQ; BQ_pt).
+
+  Definition Q_comp : compG Qhom f = qN Nf.
+  Proof.
+    apply (ap mkhom).
+    pose (h := fun x : utype (BG G) =>
+                 path_sigma_prop (fun _ => ptrunc_isProp) (u := BQ (k0 x)) (v := Bq Nf x) refl).
+    refine (eqinv (snd (ptw_star (pcomp (BQ; BQ_pt) (Bf f)) (Bq Nf; Bq_pt Nf))) (h; _)).
+    apply (ap_fst_cancel (fun _ => prop_is_set ptrunc_isProp)).
+    refine (ap (ap fst) (trans_is_concat _ _ @ ap (fun r => r @ h (sh G)) (trans_is_concat _ _))
+            @ _).
+    refine (ap_pp fst _ _ @ _ @ (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp) _)^).
+    refine (ap (fun r => r @ ap fst (h (sh G))) (ap_pp fst _ _) @ _).
+    change ((ap fst BQ_pt @ ap fst (ap BQ kp)) @ ap fst (h (sh G)) = refl).
+    pose (e1 := ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                  (u := sh (QG Nf)) (v := BQ (sh H)) (ap Q0 kp^) : ap fst BQ_pt = ap Q0 kp^).
+    pose (e3 := ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+                  (u := BQ (k0 (sh G))) (v := Bq Nf (sh G)) refl : ap fst (h (sh G)) = refl).
+    refine (ap011 concat (ap011 concat e1 (ap_compose BQ fst kp)^) e3 @ concat_p1 _ @ _).
+    exact (ap (fun r => r @ ap Q0 kp) (ap_V Q0 kp) @ concat_Vp _).
+  Defined.
+
+  Definition ev_apQ0 {w w' : utype (BG H)} (q : w = w') (r : w = w0)
+    : trp (fun Z : GSet G => el Z (sh G)) (ap Q0 q) r = q^ @ r.
+  Proof. destruct q. exact (concat_1p r)^. Defined.
+
+  Definition apQ0_isEquiv : isEquiv (@ap _ _ Q0 w0 w0).
+  Proof.
+    pose (ev := fun e : Q0 w0 = Q0 w0 => trp (fun Z : GSet G => el Z (sh G)) e (refl : w0 = w0)).
+    refine (snd (mkEqv (@ap _ _ Q0 w0 w0) (fun e => (ev e)^) _ _)).
+    - intro p. exact (ap inverse (ev_apQ0 p refl) @ ap inverse (concat_p1 _) @ inv_V p).
+    - intro e. apply (nor_ev_inj Nf (y := sh G)).
+      exact (ev_apQ0 _ refl @ concat_p1 _ @ inv_V _).
+  Defined.
+
+  Definition apBQ_isEquiv : isEquiv (@ap _ _ BQ w0 w0).
+  Proof.
+    refine (two_of_three_f (@ap _ _ BQ w0 w0) (@ap _ _ Q0 w0 w0) (@ap _ _ fst (BQ w0) (BQ w0))
+              (ptw_inv (fun p => (ap_compose BQ fst p)^)) apQ0_isEquiv _).
+    exact (isInj_ap_isEquiv (fst_isInj (Q := fun Z : GSet G => ptrunc (sg_X (Nf (sh G)) = Z))
+                                       (fun _ => ptrunc_isProp)) (BQ w0) (BQ w0)).
+  Defined.
+
+  Definition Q_isIso : isIso Qhom
+    := snd (conn_isEquiv_iff_point BQ (BG_isConn H) (BG_isConn (QG Nf)) w0) apBQ_isEquiv.
+
+End QEq.
+
+Definition lem_qeq `{ua : Univalence} : lem_qeq_stmt.
+Proof.
+  intro G. split.
+  - intros N s y. exact ((fun z => qeq_eqv N s y z); refl).
+  - intros H f s. exact (Qhom f s; (Q_isIso f s; Q_comp f s)).
+Defined.
 
 (** Corollary [cor:normalisnormal] (statement only). *)
 Definition cor_normalisnormal_stmt `{ua : Univalence} : Type
