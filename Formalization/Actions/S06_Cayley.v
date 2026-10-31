@@ -25,9 +25,8 @@
       composition (or one evaluates [π ↦ π(refl)⁻¹]).  The statement
       first had the order the other way round; it is corrected.
 
-    Left out (statements only, no proofs yet; time limit per result)
-    - The description of the subgroup [E(G, ρ_G)]
-      ([E_rho_symmetries_stmt]).
+    - The description of the subgroup [E(G, ρ_G)]: its symmetries are
+      the right multiplications ([E_rho_symmetries]).
 
     Left out (not formalized)
     - The proof via [lem:BGbytorsor] (the theorem is proved otherwise) and
@@ -99,11 +98,28 @@ Section Cayley.
     exact ((symm_symm g)^ @ ap symm e' @ symm_symm g').
   Defined.
 
-  (** The description of the subgroup [E(G, ρ_G)] (statement only): its
-      symmetries are the right multiplications [x ↦ x g⁻¹]. *)
+  (** The description of the subgroup [E(G, ρ_G)]: its symmetries are
+      the right multiplications [x ↦ x g⁻¹]. *)
   Definition E_rho_symmetries_stmt : Type
     := forall σ : USym (SG_S USymSet),
          ptrunc (fiber (USymf rho) σ) <-> Ex (fun g : USym G => forall x, trp F σ x = x ⋅ g⁻¹).
+
+  (** The proof: [USym_rho_act], and a symmetry in [Set] is determined by
+      its action ([SetU_comp_loop_inj] and univalence). *)
+  Definition E_rho_symmetries : E_rho_symmetries_stmt.
+  Proof.
+    intro σ. split.
+    - refine (ptrunc_rec ptrunc_isProp _). intros [g p]. apply trunc. refine (g; _). intro x.
+      exact (ap (fun r => trp F r x) p @ USym_rho_act g x).
+    - refine (ptrunc_rec ptrunc_isProp _). intros [g h]. apply trunc. refine (g; _).
+      apply SetU_comp_loop_inj.
+      refine ((ap_compose fst fst σ)^ @ _ @ ap_compose fst fst (USymf rho g)).
+      apply (isInj_cancel (isEquiv_isInj (ua _ _))).
+      apply (path_sigma_prop (fun _ => isEquiv_isProp _)).
+      apply ptw_inv. intro x.
+      exact ((ptw (trp_ap idmap F σ) x)^ @ h x @ (USym_rho_act g x)^
+             @ ptw (trp_ap idmap F (USymf rho g)) x).
+  Defined.
 
   (** Exercise [xca:PP-fixed-permutations]: the
       permutations of [UG] fixed by the action of [G] on
