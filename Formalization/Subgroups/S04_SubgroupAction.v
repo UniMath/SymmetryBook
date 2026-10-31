@@ -28,10 +28,16 @@
       for [Q_8], all of whose subgroups are normal; the statement is
       restated with only the implication.
 
+    - Exercise [xca:Sub(Sigma3)], first part ([xca_Sub_Sigma3]): the
+      trivial and the full subgroup ([trivSub], [fullSub]) are fixed by
+      the action, so transitivity makes them equal and [BG] contractible;
+      conversely all subgroups of a trivial group are equal
+      ([Sub_contr_eq]).
+
     Left out (statements only)
     - That [E] is an equivalence (with [lem:SubG=MonoG], Section 5.3);
-      exercise [xca:Sub(Sigma3)], first part ([xca_Sub_Sigma3_stmt]); the
-      orbit structure of [Sub(Σ_3)] is not formalized.
+      the orbit structure of [Sub(Σ_3)] in [xca:Sub(Sigma3)] is not
+      formalized.
  *)
 
 From HoTT Require Import
@@ -169,7 +175,7 @@ End EMap.
 Definition Ez `{ua : Univalence} {G : Group} (z : utype (BG G)) : MonoFam G z -> SubFam G z
   := fun w => Emono (fst (snd w)) (snd (snd w)).
 
-(** Exercise [xca:Sub(Sigma3)] (statement only, first part): [Sub(G)] is
+(** Exercise [xca:Sub(Sigma3)] (first part, proved below): [Sub(G)] is
     transitive iff [G] is trivial.  The orbit structure of [Sub(Σ_3)] is
     not formalized. *)
 Definition xca_Sub_Sigma3_stmt `{ua : Univalence} : Type
@@ -177,3 +183,79 @@ Definition xca_Sub_Sigma3_stmt `{ua : Univalence} : Type
        Ex (fun x : SubFam G (sh G) =>
              forall y : SubFam G (sh G), Ex (fun g : USym G => x = trp (SubFam G) g y))
        <-> isContr (utype (BG G)).
+
+(** Proof of the first part of [xca:Sub(Sigma3)].  The trivial subgroup
+    ([trivSub], the principal torsor) and the full subgroup ([fullSub])
+    are defined at every [z : BG], so they are fixed by the action
+    ([trp_section]).  If [Sub(G)] is transitive they are equal, so
+    [sh_G = z] is [‖sh_G = z‖] for every [z].  (The full subgroup is
+    [w ↦ ‖z = w‖], a proposition in the universe of [BG].)  Conversely, if [BG] is
+    contractible, any two subgroups are equal ([Sub_contr_eq]). *)
+Definition trp_section {A : Type} (P : A -> Type) (s : forall a, P a) {a b : A} (p : a = b)
+  : trp P p (s a) = s b
+  := match p with refl => refl end.
+
+Definition trp_paths_r {A : Type} {z a b : A} (p : a = b) (q : z = a)
+  : trp (fun w => z = w) p q = q @ p.
+Proof. destruct p. exact (concat_p1 q)^. Defined.
+
+Definition contr_contr_eqv {X Y : Type} (cX : isContr X) (cY : isContr Y) : X ≃ Y
+  := mkEqv (fun _ => fst cY) (fun _ => fst cX) (snd cX) (snd cY).
+
+Section SubSigma3.
+
+  Context `{ua : Univalence} {G : Group}.
+
+  Definition trivSub (z : utype (BG G)) : SubFam G z.
+  Proof.
+    refine ((fun w => ((z = w); BG_isGrpd G z w)); (refl; _)).
+    apply trunc. exists refl. intro y. apply trunc. exists y⁻¹.
+    exact (trp_paths_r y⁻¹ y @ concat_pV y)^.
+  Defined.
+
+  Definition fullSub (z : utype (BG G)) : SubFam G z.
+  Proof.
+    refine ((fun w => (ptrunc (z = w); prop_is_set ptrunc_isProp)); (trunc refl; _)).
+    apply trunc. exists (trunc refl). intro y. apply trunc. exists refl. exact (ptrunc_isProp _ _).
+  Defined.
+
+  Definition Sub_trans_contr
+    : Ex (fun x : SubFam G (sh G) =>
+            forall y : SubFam G (sh G), Ex (fun g : USym G => x = trp (SubFam G) g y))
+      -> isContr (utype (BG G)).
+  Proof.
+    refine (ptrunc_rec (isContr_isProp _) _). intros [x hx].
+    refine (ptrunc_rec (isContr_isProp _) _ (hx (trivSub (sh G)))). intros [g1 e1].
+    refine (ptrunc_rec (isContr_isProp _) _ (hx (fullSub (sh G)))). intros [g2 e2].
+    pose (E := (e1 @ trp_section (SubFam G) trivSub g1)^ @ e2 @ trp_section (SubFam G) fullSub g2
+               : trivSub (sh G) = fullSub (sh G)).
+    pose (T := fun z => ap (fun s : SubGrp G => fst (sg_X s z)) E : (sh G = z) = ptrunc (sh G = z)).
+    exact (sh G; fun z => trp (fun A : Type => A) (T z)⁻¹ (snd (BG_isConn G) (sh G) z)).
+  Defined.
+
+  Definition Sub_contr_eq (c : isContr (utype (BG G))) (S : SubGrp G) : trivSub (sh G) = S.
+  Proof.
+    destruct S as [Y [y0 t]].
+    pose (cp := fun z => isProp_inhabited_isContr (prop_is_set (isContr_isProp' c) (sh G) z)
+                           (isContr_isProp' c (sh G) z)).
+    assert (pY : isProp (el Y (sh G))).
+    { intros y1 y2.
+      refine (ptrunc_rec (el_isSet Y _ _ _) _ t). intros [x hx].
+      refine (ptrunc_rec (el_isSet Y _ _ _) _ (hx y1)). intros [g1 e1].
+      refine (ptrunc_rec (el_isSet Y _ _ _) _ (hx y2)). intros [g2 e2].
+      exact (ap (fun g => act Y g y1) (isContr_isProp' (cp (sh G)) refl g1) @ e1^ @ e2
+             @ ap (fun g => act Y g y2) (isContr_isProp' (cp (sh G)) g2 refl)). }
+    pose (cY := fun z => isContr_Eqv (idtoeqv (ap (el Y) (isContr_isProp' c (sh G) z)))
+                           (isProp_inhabited_isContr pY y0)).
+    refine (SubGrp_path _ (pY _ _)).
+    apply ptw_inv. intro z.
+    exact (path_sigma_prop (fun _ => isSet_isProp _)
+             (u := ((sh G = z); BG_isGrpd G (sh G) z)) (v := Y z)
+             (etop (contr_contr_eqv (cp z) (cY z)))).
+  Defined.
+
+End SubSigma3.
+
+Definition xca_Sub_Sigma3 `{ua : Univalence} : xca_Sub_Sigma3_stmt
+  := fun G => (Sub_trans_contr,
+               fun c => trunc (trivSub (sh G); fun y => trunc (refl; Sub_contr_eq c y))).
