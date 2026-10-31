@@ -58,8 +58,11 @@
       ([Subgroups/S02_Epis.v]), since the inverse uses that the fibers of
       [Bi] are sets for a mono [i] ([ismono_isCovering]).
 
+    - Example [ex:Rm0-subgroup] ([ex_Rm0_subgroup], from [Hc_Fin] of
+      Section 3.6).
+
     Left out (statements only, no proofs yet; time limit per result)
-    - Examples [ex:Rm0-subgroup], [exa:fix1subSGn], [exa:C3subC6],
+    - Examples [exa:fix1subSGn], [exa:C3subC6],
       [exa:EforSG3], and exercises
       [xca:SG2subSG3] and [xca:C3subSG3] (the [..._stmt] definitions);
       where an example needs that a [G]-set is transitive, this is a
@@ -94,12 +97,32 @@ Definition subgrp_group `{Funext} {G : Group} (S : SubGrp G) : Group
   := mkgroup (TotG (sg_X S); ((sh G; sg_pt S);
                 (conn_of_trans _ (sg_trans S); TotG_isGrpd (sg_X S)))).
 
-(** Example [ex:Rm0-subgroup]: the symmetries of [ℤ] picked out by
+(** Example [ex:Rm0-subgroup]: the symmetries of [S1] picked out by
     [(R_m, 0)] are the [loop^{mk}]. *)
 Definition ex_Rm0_subgroup_stmt `{Univalence} : Type
   := forall (k : ℕ) (p : base = base),
        (trp (Rm k) p fin_zero = fin_zero)
        <-> ptrunc {j : ℤ & p = loopZ (zmul (iplus (S k)) j)}.
+
+(** The proof: with [p = loop^n], transport in [R_m] is [t^n] for the
+    standard [m]-cycle ([trp_E_loopZ]), and [t^n(0) = 0] iff [n ∈ mℤ]
+    ([Ht_point] and [Hc_Fin], Section 3.6). *)
+Definition ex_Rm0_subgroup `{Univalence} : ex_Rm0_subgroup_stmt.
+Proof.
+  intros k p.
+  pose (n := fst wdg p).
+  assert (tr0 : trp (Rm k) p fin_zero = tpow (finsuccEqv k) n fin_zero)
+    by exact (ap (fun q : base = base => trp (Rm k) q fin_zero) (loopZ_wdg p)^
+              @ trp_E_loopZ (Fin_isSet (S k)) (finsuccEqv k) n fin_zero).
+  pose (HP := Ht_point (Fin_isSet (S k)) (finsuccEqv k) (Fin_isCycle k) fin_zero n).
+  pose (HF := Hc_Fin k n).
+  split.
+  - intro e.
+    exact (Trunc_functor (-1) (fun w => (fst w; (loopZ_wdg p)^ @ ap loopZ (snd w)))
+             (fst HF (snd HP (tr0^ @ e)))).
+  - refine (ptrunc_rec (Fin_isSet _ _ _) _). intros [j e].
+    exact (tr0 @ fst HP (snd HF (trunc (j; ap (fst wdg) e @ winding _)))).
+Defined.
 
 (** Lemma [lem:SubGisset]. *)
 Definition istrans_isProp {G : Group} (X : GSet G) : isProp (istrans X) := ptrunc_isProp.
