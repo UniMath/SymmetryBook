@@ -20,12 +20,17 @@
     - Lemma [lem:sumofgroupsISsum] ([sumG_univ]) and corollary
       [cor:ZplusZuniv] ([ZZ_sum_univ]).
 
+    - Exercise [xca:whatAREabeliangroups] ([xca_whatAREabeliangroups],
+      with [fold_map] and [wedge_incl]; the statement assumes [Funext]).
+      Via [univvee], [e] extends the fold map iff [e ∘ i₁ = id = e ∘ i₂]
+      ([ext_fold_fw], [ext_fold_bw]); then [(g, 1)] and [(1, h)] commute
+      in [BG × BG] ([ext_fold_isAb]).  Conversely, the multiplication of an
+      abelian group is a homomorphism [G × G → G] ([mulG_absHom]), which
+      deloops by [abstr_hom_eqv] ([isAb_ext_fold]).
+
     Left out (statements only, no proofs yet; time limit per result)
-    - Exercise [xca:whatAREabeliangroups]
-      ([xca_whatAREabeliangroups_stmt], with [fold_map] and
-      [wedge_incl]) and lemma [lem:wedgeofgpoidisgpoid]
-      ([lem_wedgeofgpoidisgpoid_stmt]; the book's proof uses words for
-      decidable groups).
+    - Lemma [lem:wedgeofgpoidisgpoid] ([lem_wedgeofgpoidisgpoid_stmt]; the
+      book's proof uses words for decidable groups).
  *)
 
 From HoTT Require Import
@@ -169,7 +174,7 @@ Proof.
                            (eqinv_r (snd (Hom_ZZ_eqv G)) a) (eqinv_r (snd (Hom_ZZ_eqv G)) b)).
 Defined.
 
-(** Exercise [xca:whatAREabeliangroups] (statement only): [G] is abelian
+(** Exercise [xca:whatAREabeliangroups] (proved below): [G] is abelian
     iff the fold map [BG ∨ BG →* BG] extends over the inclusion
     [BG ∨ BG →* BG × BG]. *)
 Definition BGxBG (G : Group) : Ustar := (utype (BG G) × utype (BG G); (sh G; sh G)).
@@ -182,9 +187,137 @@ Definition wedge_incl (G : Group) : wedge (BG G) (BG G) →* BGxBG G
        ((((fun z => (z; sh G)) : utype (BG G) -> utype (BGxBG G)); refl);
         (((fun z => (sh G; z)) : utype (BG G) -> utype (BGxBG G)); refl)).
 
-Definition xca_whatAREabeliangroups_stmt : Type
+Definition xca_whatAREabeliangroups_stmt `{Funext} : Type
   := forall G : Group,
        isAb G <-> {e : BGxBG G →* BG G & pcomp e (wedge_incl G) = fold_map G}.
+
+(** Proof of the exercise.  By [univvee], [e] extends the fold map iff
+    [e ∘ i₁ = id] and [e ∘ i₂ = id] ([ext_fold_iff]).  Then the loops
+    [(g, 1)] and [(1, h)], which commute in [BG × BG] ([pair_loops_comm]),
+    are sent to [g] and [h].  Conversely, for abelian [G] the
+    multiplication [(a, b) ↦ a b] is a homomorphism [G × G → G]
+    ([mulG_absHom]), which deloops by [abstr_hom_eqv] (Section 7.5). *)
+Definition univvee_fw_pcomp {A1 A2 B C : Ustar} (e : B →* C) (k : wedge A1 A2 →* B)
+  : univvee_fw A1 A2 C (pcomp e k)
+    = (pcomp e (fst (univvee_fw A1 A2 B k)); pcomp e (snd (univvee_fw A1 A2 B k))).
+Proof.
+  destruct k as [k kp], e as [e ep].
+  refine (ap (fun q => (((e ∘ k ∘ wi1 A1 A2; ap e kp ⋅ ep) : A1 →* C);
+                        ((e ∘ k ∘ wi2 A1 A2; q) : A2 →* C))) _).
+  refine (ap (fun r => trans (trans ep (ap e kp)) r) (ap_compose k e (wglue A1 A2)) @ _).
+  refine (trans_assoc ep (ap e kp) (ap e (ap k (wglue A1 A2))) @ _).
+  exact (ap (fun r => r ⋅ ep) (ap_trans e kp (ap k (wglue A1 A2)))^).
+Defined.
+
+Definition pair_loops_comm {A : Type} {x x' y y' : A} (p : x = x') (q : y = y')
+  : ap (fun w => (x'; w) : A × A) q ⋅ ap (fun z => (z; y) : A × A) p
+    = ap (fun z => (z; y') : A × A) p ⋅ ap (fun w => (x; w) : A × A) q.
+Proof. destruct p, q. exact refl. Defined.
+
+Definition comm4 {A : Type} {x : A} (a b c d : x = x) (cb : c ⋅ b = b ⋅ c)
+  : (a ⋅ c) ⋅ (b ⋅ d) = (a ⋅ b) ⋅ (c ⋅ d).
+Proof.
+  refine (trans_assoc d b (a ⋅ c) @ _).
+  refine (ap (fun r => r ⋅ d) ((trans_assoc b c a)^ @ ap (fun r => a ⋅ r) cb @ trans_assoc c b a) @ _).
+  exact (trans_assoc d c (a ⋅ b))^.
+Defined.
+
+Section WhatAreAbelian.
+
+  Context `{Funext} (G : Group).
+
+  Local Notation i1 := ((((fun z => (z; sh G)) : utype (BG G) -> utype (BGxBG G)); refl)
+                        : BG G →* BGxBG G).
+  Local Notation i2 := ((((fun z => (sh G; z)) : utype (BG G) -> utype (BGxBG G)); refl)
+                        : BG G →* BGxBG G).
+
+  Definition ext_fold_fw (e : BGxBG G →* BG G) (E : pcomp e (wedge_incl G) = fold_map G)
+    : (pcomp e i1; pcomp e i2) = ((pid (BG G); pid (BG G)) : (BG G →* BG G) × (BG G →* BG G))
+    := ap (fun w => (pcomp e (fst w); pcomp e (snd w)) : (BG G →* BG G) × (BG G →* BG G))
+          (univvee_fw_bw _ _ _ (i1; i2))^
+       @ (univvee_fw_pcomp e (wedge_incl G))^ @ ap (univvee_fw _ _ _) E
+       @ univvee_fw_bw _ _ _ (pid (BG G); pid (BG G)).
+
+  Definition ext_fold_bw (e : BGxBG G →* BG G)
+    (Q : (pcomp e i1; pcomp e i2) = ((pid (BG G); pid (BG G)) : (BG G →* BG G) × (BG G →* BG G)))
+    : pcomp e (wedge_incl G) = fold_map G.
+  Proof.
+    apply (isInj_cancel (isEquiv_isInj (snd (univvee (BG G) (BG G) (BG G))))).
+    refine (univvee_fw_pcomp e (wedge_incl G) @ _ @ (univvee_fw_bw _ _ _ (pid (BG G); pid (BG G)))^).
+    exact (ap (fun w => (pcomp e (fst w); pcomp e (snd w)) : (BG G →* BG G) × (BG G →* BG G))
+              (univvee_fw_bw _ _ _ (i1; i2)) @ Q).
+  Defined.
+
+  Definition loops_pid (g : USym G) : loops_fun (pid (BG G)) g = g
+    := trans_1p _ @ ap_idmap g.
+
+  Definition ext_fold_isAb (e : BGxBG G →* BG G) (E : pcomp e (wedge_incl G) = fold_map G)
+    : isAb G.
+  Proof.
+    pose (Q := eqinv (snd (path_prod_eqv _ _ _ _)) (ext_fold_fw e E)).
+    pose (L1 := fun g => (loops_pid g)^ @ ap (fun k => loops_fun k g) (fst Q)^
+                         @ loops_fun_pcomp e i1 g
+                         @ ap (loops_fun e) (loops_fun_refl (fun z : utype (BG G) => (z; sh G) : utype (BGxBG G)) g)).
+    pose (L2 := fun h => (loops_pid h)^ @ ap (fun k => loops_fun k h) (snd Q)^
+                         @ loops_fun_pcomp e i2 h
+                         @ ap (loops_fun e) (loops_fun_refl (fun z : utype (BG G) => (sh G; z) : utype (BGxBG G)) h)).
+    intros g h.
+    refine (ap011 (fun a b => a ⋅ b) (L1 g) (L2 h) @ _ @ (ap011 (fun a b => a ⋅ b) (L2 h) (L1 g))^).
+    refine ((loops_fun_comp _ (fst e) _ (snd e) _ _)^ @ _ @ loops_fun_comp _ (fst e) _ (snd e) _ _).
+    exact (ap (loops_fun e) (pair_loops_comm g h)^).
+  Defined.
+
+  (** For abelian [G], the multiplication is a homomorphism. *)
+  Definition snd2 (w : utype (BG G) × utype (BG G)) : utype (BG G) := snd w.
+
+  Definition mulG (l : USym (prodG G G)) : USym G := ap fst l ⋅ ap snd2 l.
+
+  Definition mulG_absHom (ab : isAb G) : absHom (abstr (prodG G G)) (abstr G).
+  Proof.
+    refine (mulG; _). intros s t. unfold mulG. cbn.
+    refine (ap011 (fun a b => a ⋅ b) (ap_trans fst t s) (ap_trans snd2 t s) @ _).
+    exact (comm4 _ _ _ _ (ab _ _)).
+  Defined.
+
+  Definition mulHom (ab : isAb G) : Hom (prodG G G) G
+    := eqinv (abstr_hom_isEquiv (prodG G G) G) (mulG_absHom ab).
+
+  Definition mulHom_i (ab : isAb G) (i : BG G →* BGxBG G)
+    (hi : forall g, mulG (loops_fun i g) = g)
+    : pcomp (Bf (mulHom ab)) i = pid (BG G).
+  Proof.
+    change (Bf (compG (mulHom ab) (@mkhom G (prodG G G) i)) = Bf (idG G)).
+    apply ap.
+    apply (isInj_cancel (isEquiv_isInj (abstr_hom_isEquiv G G))).
+    refine (abstr_comp (@mkhom G (prodG G G) i) (mulHom ab) @ _ @ (abstr_id G)^).
+    refine (ap (fun φ => absHom_comp φ (abstr_hom (@mkhom G (prodG G G) i)))
+              (eqinv_r (abstr_hom_isEquiv (prodG G G) G) (mulG_absHom ab)) @ _).
+    apply path_absHom. intro s. exact (hi s).
+  Defined.
+
+  Definition isAb_ext_fold (ab : isAb G)
+    : {e : BGxBG G →* BG G & pcomp e (wedge_incl G) = fold_map G}.
+  Proof.
+    exists (Bf (mulHom ab)).
+    apply ext_fold_bw. apply (fst (path_prod_eqv _ _ _ _)). split.
+    - apply mulHom_i. intro g.
+      refine (ap mulG (loops_fun_refl (fun z : utype (BG G) => (z; sh G) : utype (BGxBG G)) g) @ _).
+      refine (ap011 (fun a b => a ⋅ b)
+                ((ap_compose (fun z : utype (BG G) => (z; sh G) : utype (BGxBG G)) fst g)^ @ ap_idmap g)
+                ((ap_compose (fun z : utype (BG G) => (z; sh G) : utype (BGxBG G)) snd2 g)^ @ ap_const g (sh G))
+              @ _).
+      exact (trans_1p g).
+    - apply mulHom_i. intro h.
+      refine (ap mulG (loops_fun_refl (fun z : utype (BG G) => (sh G; z) : utype (BGxBG G)) h) @ _).
+      exact (ap011 (fun a b => a ⋅ b)
+               ((ap_compose (fun z : utype (BG G) => (sh G; z) : utype (BGxBG G)) fst h)^ @ ap_const h (sh G))
+               ((ap_compose (fun z : utype (BG G) => (sh G; z) : utype (BGxBG G)) snd2 h)^ @ ap_idmap h)).
+  Defined.
+
+End WhatAreAbelian.
+
+Definition xca_whatAREabeliangroups `{Funext} : xca_whatAREabeliangroups_stmt
+  := fun G => (isAb_ext_fold G, fun w => ext_fold_isAb G (fst w) (snd w)).
 
 (** Lemma [lem:wedgeofgpoidisgpoid] (statement only): the wedge of the
     classifying types of decidable groups is a groupoid. *)
