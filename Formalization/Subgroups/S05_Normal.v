@@ -21,12 +21,17 @@
       transitive [X_y] by the image of [pt_y] ([nor_ev_inj]), and
       [ap_{X_-}(g)] sends [g · pt_y] to [pt_y] ([nor_ap_act], by path
       induction), which gives both surjectivities.
+    - Lemma [lem:diagfornormal] ([lem_diagfornormal], with surjectivity
+      of [USymf f] as hypothesis, as for [nor]): [(B ker_f)⁻¹(z) ≃
+      (f(sh_G) = f(z))] ([diag_eqv]), pointed.
+    - Lemma [lem:normalsarekernels] ([lem_normalsarekernels], with the
+      same hypothesis): from [lem:diagfornormal] and [mono_subgrp_mono]
+      of Section 9.2.
     - That [q_N] is an epimorphism ([qN_isepi]): [U q_N] is surjective by
       the second part of [lem:evaliseqwhennormal].
 
     Left out (statements only)
-    - Lemmas [lem:diagfornormal], [lem:qeq],
-      [lem:normalsarekernels], corollary [cor:normalisnormal], lemma
+    - Lemma [lem:qeq], corollary [cor:normalisnormal], lemma
       [lem:characterizations of normal] (parts (1) - (3)) ([..._stmt]).
     - The map [q : Nor(G) → Epi(G)] (see the size issue below).
     - Size issue: [G/N] lives in a larger universe than [G], so
@@ -125,13 +130,69 @@ End Nor.
 (** The remark after [def:ker2]: [P_{f(y)} f] is not a [G]-torsor unless [f]
     is an isomorphism (informal). *)
 
-(** Lemma [lem:diagfornormal] (statement only): around the top,
+(** Lemma [lem:diagfornormal] (statement; proved below): around the top,
     [E(i(ker f))] is [y ↦ (sh_{G'} = f(y))] pointed at [Bf_pt]; around the
     bottom it is [nor(f)(sh_G)]; precomposition with [Bf_pt] identifies
     them. *)
 Definition lem_diagfornormal_stmt `{ua : Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (s : isSurj (USymf f)),
        Emono (kermap f) (kermap_ismono f) = inor G (nor f s).
+
+(** Proof of [lem:diagfornormal]: the fibers [(B ker_f)⁻¹(z)] are
+    equivalent to [f(sh_G) = f(z)] by [((x, q), !, p) ↦ Bf_pt⁻¹ q f(p⁻¹)]
+    ([diag_eqv]); the inverse needs the proof of membership in the
+    component of [(sh_G, Bf_pt)], which uses that [ap_{Bf}] is surjective
+    ([diag_mem]). *)
+Section DiagNormal.
+
+  Context `{ua : Univalence} {G H : Group} (f : Hom G H) (s : isSurj (USymf f)).
+
+  Local Notation k0 := (fst (Bf f)).
+  Local Notation kp := (snd (Bf f)).
+  Local Notation KF := (fibGSet (kermap f) (kermap_ismono f)).
+
+  Definition fib_shift {w : utype (BG H)} {x x' : utype (BG G)} (g : x = x') (q : w = k0 x)
+    : ((x; q) : fiber k0 w) = (x'; q @ ap k0 g).
+  Proof. destruct g. exact (ap (fun t => (x; t) : fiber k0 w) (concat_p1 q)^). Defined.
+
+  Definition diag_mem (z : utype (BG G)) (r : k0 (sh G) = k0 z)
+    : ptrunc (shKer f = ((z; kp @ r) : fiber k0 (sh H))).
+  Proof.
+    refine (ptrunc_rec ptrunc_isProp _ (snd (BG_isConn G) (sh G) z)). intro z0. destruct z0.
+    refine (ptrunc_rec ptrunc_isProp _ (ap_isSurj_all f s (sh G) r)). intros [g e].
+    exact (trunc (fib_shift g kp @ ap (fun t => (sh G; kp @ t) : fiber k0 (sh H)) e^)).
+  Defined.
+
+  Definition diag_fw (z : utype (BG G)) (w : el KF z) : el (sg_X (nor f s (sh G))) z
+    := kp^ @ snd (fst (fst w)) @ ap k0 (snd w)^.
+
+  Definition diag_bw (z : utype (BG G)) (r : el (sg_X (nor f s (sh G))) z) : el KF z
+    := ((((z; kp @ r) : fiber k0 (sh H)); diag_mem z r); refl).
+
+  Definition diag_pt_path (z : utype (BG G)) {q1 q2 : sh H = k0 z} (e : q1 = q2)
+    (c1 : ptrunc (shKer f = (z; q1))) (c2 : ptrunc (shKer f = (z; q2)))
+    : ((((z; q1) : fiber k0 (sh H)); c1); refl) = (((((z; q2) : fiber k0 (sh H)); c2); refl) : el KF z).
+  Proof. destruct e. exact (ap (fun c => ((((z; q1) : fiber k0 (sh H)); c); refl) : el KF z) (ptrunc_isProp c1 c2)). Defined.
+
+  Definition diag_eqv (z : utype (BG G)) : el KF z ≃ el (sg_X (nor f s (sh G))) z.
+  Proof.
+    refine (mkEqv (diag_fw z) (diag_bw z) _ _).
+    - intros [[[x q] c] p]. cbn in p. destruct p.
+      exact (diag_pt_path z (ap (fun t => kp @ t) (concat_p1 _) @ concat_p_Vp kp q) _ _).
+    - intro r. exact (concat_p1 _ @ concat_V_pp kp r).
+  Defined.
+
+  Definition lem_diagfornormal_pf : Emono (kermap f) (kermap_ismono f) = inor G (nor f s).
+  Proof.
+    refine (SubGrp_path (path_GSet diag_eqv) _).
+    refine (trp_path_GSet diag_eqv (sh G) _ @ _).
+    exact (concat_p1 (kp^ @ kp) @ concat_Vp kp).
+  Defined.
+
+End DiagNormal.
+
+Definition lem_diagfornormal `{ua : Univalence} : lem_diagfornormal_stmt
+  := fun G H f s => lem_diagfornormal_pf f s.
 
 (** Lemma [lem:evaliseqwhennormal] (statement; proved below), with
     [N(y) ≡ (X_y, pt_y, !)]. *)
@@ -292,12 +353,23 @@ Definition lem_characterizations_of_normal_stmt `{ua : Univalence} : Type
 (** Definition [def:associatednormal]: [ass(N) :≡ E⁻¹(i(N))], with group
     [Ass(N) :≡ Aut_{∑_x X_{sh_G}(x)}(sh_G, pt_{sh_G})] and the first
     projection; here [subgrp_to_mono] (Section 5.3, the map [F] of
-    [lem:SubG=MonoG]).  That it is a kernel is part of
-    [lem:normalsarekernels]. *)
+    [lem:SubG=MonoG]).  That it is a kernel is
+    [lem:normalsarekernels] below. *)
 Definition ass `{ua : Univalence} {G : Group} (N : Nor G) : Mono G := subgrp_to_mono (inor G N).
 
 (** The marginal remark after [def:associatednormal] (informal). *)
 
-(** Lemma [lem:normalsarekernels] (statement only). *)
+(** Lemma [lem:normalsarekernels]. *)
 Definition lem_normalsarekernels_stmt `{ua : Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (s : isSurj (USymf f)), ass (nor f s) = ker f.
+
+(** By [lem:diagfornormal], [i(nor(f)) = E(ker f)], and [E(ker f)] is the
+    subgroup [mono_to_subgrp] of Section 9.2 (up to the transitivity
+    proof), which [F] sends back to [ker f] ([mono_subgrp_mono]). *)
+Definition lem_normalsarekernels `{ua : Univalence} : lem_normalsarekernels_stmt.
+Proof.
+  intros G H f s. unfold ass.
+  refine (ap subgrp_to_mono (lem_diagfornormal G H f s)^ @ _).
+  refine (_ @ (mono_subgrp_mono (kermap f) (kermap_ismono f))^).
+  apply (ap subgrp_to_mono). exact (SubGrp_path refl refl).
+Defined.
