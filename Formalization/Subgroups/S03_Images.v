@@ -27,6 +27,10 @@
       [imincl_ismono], [imincl_ismonoC].
     - Definitions [def:Im-fact] ([EpiMono], [Imfact], with
       [EpiMono_comp]) and [def:image] ([img], [prjim]).
+    - Lemma [lem:kerandcoker] ([lem_kerandcoker]): [(z, r) ↦ (z, ap_fst r)]
+      is an equivalence of the components of the fibers of [Bp(f)] and
+      [Bf] ([kc_eqv]); the inverse rebuilds [r] from its first component,
+      the second lying in a set ([kc_snd]).
 
     Left out (statements only; time limit per result)
     - The exercise after [rem:imageandcokernel] ([xca_ker_coker_stmt],
@@ -37,8 +41,7 @@
       [rem:n-im-ptd-map] ([rem_n_im_ptd_map_stmt], with [Factp], [FactpN]);
       the parts of exercise [ex:charsurinj] not proved in 9.2/9.3
       ([ex_charsurinj_stmt]); the lemma on images of composites
-      ([img_comp_stmt]); lemma [lem:kerandcoker]
-      ([lem_kerandcoker_stmt]); the exercise after it
+      ([img_comp_stmt]); the exercise after [lem:kerandcoker]
       ([xca_mono_epi_img_stmt]), of which the first part is proved
       ([mono_img]: for a mono the fibers of [Bi] are sets, so [Bp(i)] is
       an equivalence onto the set image); the second part needs that
@@ -435,9 +438,98 @@ Definition img_comp_stmt `{ua : Univalence} : Type
           = (Img u; (compG (improj u) (improj f1);
                      isepi_comp _ _ (improj_isepi f1) (improj_isepi u)))).
 
-(** Lemma [lem:kerandcoker] (statement only). *)
+(** Lemma [lem:kerandcoker] (proved below). *)
 Definition lem_kerandcoker_stmt `{ua : Univalence} : Type
   := forall (G H : Group) (f : Hom G H), ker (improj f) = ker f.
+
+(** Proof of [lem:kerandcoker]: [(Bp)⁻¹(sh_{Im f}) → (Bf)⁻¹(sh_H)],
+    [(z, r) ↦ (z, ap_fst(r))] ([kc_Phi]) restricts to an equivalence of
+    the components ([kc_eqv]); the inverse reconstructs [r] from its
+    first component, using the membership in the component of
+    [(sh_G, Bf_pt)] for the second ([kc_snd]), which lives in a set. *)
+Section KerAndCoker.
+
+  Context `{ua : Univalence} {G H : Group} (f : Hom G H).
+
+  Local Notation k0 := (fst (Bf f)).
+  Local Notation kp := (snd (Bf f)).
+  Local Notation FP := (fiber (Bp f) (sh (Img f))).
+  Local Notation FF := (fiber k0 (sh H)).
+
+  Definition kc_Phi (u : FP) : FF := (fst u; ap fst (snd u)).
+
+  Definition kc_P0 : shKer f = kc_Phi (shKer (improj f))
+    := ap (fun t => (sh G; t) : FF) (ap_fst_Bp_pt f)^.
+
+  Definition kc_PhiC (y : component FP (shKer (improj f))) : component FF (shKer f)
+    := (kc_Phi (fst y); ptrunc_rec ptrunc_isProp (fun r => trunc (kc_P0 @ ap kc_Phi r)) (snd y)).
+
+  Definition kc_shift {w : utype (BG H)} {u v : fiber k0 w} (r0 : u = v)
+    : ((fst u; (snd v)^ @ snd u) : fiber k0 (k0 (fst v))) = (fst v; refl).
+  Proof. destruct r0. destruct u as [a p]. exact (ap (fun t => (a; t) : fiber k0 (k0 a)) (concat_Vp p)). Defined.
+
+  Definition kc_snd (z : utype (BG G)) (q : sh H = k0 z) (c : ptrunc (shKer f = (z; q)))
+    : trp (el (coker f)) q (settrunc (shKer f)) = settrunc ((z; refl) : fiber k0 (k0 z)).
+  Proof.
+    refine (act_coker f q (sh G) kp @ _).
+    refine (ptrunc_rec (strunc_isSet _ _) _ c). intro r0.
+    exact (ap settrunc (kc_shift r0)).
+  Defined.
+
+  Definition kc_r (z : utype (BG G)) (q : sh H = k0 z) (c : ptrunc (shKer f = (z; q)))
+    : sh (Img f) = Bp f z
+    := pathpair (Y := el (coker f)) q (kc_snd z q c).
+
+  Definition kc_mem (v : FF) (c : ptrunc (shKer f = v))
+    : ptrunc (shKer (improj f) = ((fst v; kc_r (fst v) (snd v) c) : FP)).
+  Proof.
+    refine (ptrunc_rec ptrunc_isProp _ c). intro r0. destruct r0. apply trunc.
+    apply (ap (fun r => (sh G; r) : FP)).
+    apply (ap_fst_cancel (fun w => strunc_isSet (T := fiber k0 w))).
+    exact (ap_fst_Bp_pt f @ (ap_fst_pathpair _ _)^).
+  Defined.
+
+  Definition kc_PsiC (w : component FF (shKer f)) : component FP (shKer (improj f))
+    := ((fst (fst w); kc_r (fst (fst w)) (snd (fst w)) (snd w)); kc_mem (fst w) (snd w)).
+
+  Definition kc_eqv : component FP (shKer (improj f)) ≃ component FF (shKer f).
+  Proof.
+    refine (mkEqv kc_PhiC kc_PsiC _ _).
+    - intros [[z r] c].
+      apply (path_sigma_prop (fun _ => ptrunc_isProp)). cbn.
+      apply (ap (fun t => (z; t) : FP)).
+      apply (ap_fst_cancel (fun w => strunc_isSet (T := fiber k0 w))).
+      exact (ap_fst_pathpair _ _).
+    - intros [[z q] c].
+      apply (path_sigma_prop (fun _ => ptrunc_isProp)). cbn.
+      exact (ap (fun t => (z; t) : FF) (ap_fst_pathpair (Y := el (coker f)) q (kc_snd z q c))
+             : kc_Phi (z; kc_r z q c) = (z; q)).
+  Defined.
+
+  Definition kc_pt : sh (Ker f) = kc_PhiC (sh (Ker (improj f)))
+    := path_sigma_prop (fun _ => ptrunc_isProp)
+         (u := sh (Ker f)) (v := kc_PhiC (sh (Ker (improj f)))) kc_P0.
+
+  Definition kc_pmap : BG (Ker (improj f)) →* BG (Ker f) := (kc_PhiC; kc_pt).
+
+  Definition lem_kerandcoker_pf : ker (improj f) = ker f.
+  Proof.
+    refine (Mono_path (ker (improj f)) (ker f) (kc_pmap; snd kc_eqv) _).
+    refine (eqinv (snd (ptw_star (pcomp (Bf (kermap f)) kc_pmap)
+                                 (Bf (kermap (improj f)))))
+              ((fun y => refl); _)).
+    cbn. refine (trans_1p _ @ _).
+    refine (ap_compose (@fst FF (fun v => ptrunc (shKer f = v))) (@fst _ _) kc_pt @ _).
+    refine (ap (ap (@fst _ _)) (ap_fst_path_sigma_prop (fun _ => ptrunc_isProp)
+              (u := sh (Ker f)) (v := kc_PhiC (sh (Ker (improj f)))) kc_P0) @ _).
+    refine ((ap_compose (fun t => (sh G; t) : FF) (@fst _ _) _)^ @ _).
+    exact (ap_const _ _).
+  Defined.
+
+End KerAndCoker.
+
+Definition lem_kerandcoker `{ua : Univalence} : lem_kerandcoker_stmt
+  := fun G H f => lem_kerandcoker_pf f.
 
 (** The exercise after [lem:kerandcoker] (statement only): a
     monomorphism is identified with the inclusion of its image, and an
