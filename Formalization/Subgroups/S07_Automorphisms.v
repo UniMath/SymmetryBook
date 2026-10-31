@@ -19,14 +19,18 @@
     - Lemma [lemma:coker-out-action] ([coker_out_action]): the fibers of
       [Binn] by the book's chain of equivalences ([fiber_Binn_eqv]), and
       the set truncation of an equivalence ([strunc_eqv]).
-
     - The kernel of [inn] is [Aut_{BG_÷ = BG_÷}(refl)] ([ker_inn_center],
       via [fiber_Binn_eqv], which sends [shKer] to [refl]); this is the
       center of [sec:abelian-groups] (Chapter 12, not formalized yet).
+    - That [Inn(G)] is normal ([Inn_normal], after the section): the
+      family [y ↦ (z ↦ ‖BG(z)_÷ = BG(y)_÷‖₀)] pointed at [|refl|]
+      ([XU], [NInn]) is transitive, since every [e : BK_÷ = BK_÷] merely
+      comes from an identification [K = K] ([KL_group]); at the shape it
+      is [out(G)] pointed at [|shKer|] ([coker_out_action],
+      [fiber_Binn_shKer]).
 
     Left out (statements only)
-    - That [Inn(G)] is
-      normal ([Inn_normal_stmt]); construction [cons:simpler-version-Out]
+    - Construction [cons:simpler-version-Out]
       ([cons_simpler_version_Out_stmt], as an isomorphism, with
       [Trunc1U_isGrpd]).
  *)
@@ -137,7 +141,8 @@ Section Automorphisms.
   (** The definition of [Inn(G) :≡ Im(inn)]. *)
   Definition InnG : Group := Img inn.
 
-  (** The lemma that [Inn(G)] is normal in [Aut(G)] (statement only). *)
+  (** The lemma that [Inn(G)] is normal in [Aut(G)] (statement; proved
+      after the section, [Inn_normal]). *)
   Definition Inn_normal_stmt : Type
     := {N : Nor AutGrp & inor AutGrp N = imsub inn}.
 
@@ -179,4 +184,88 @@ Proof.
   refine (fst (path_Group_Iso_eqv _ _)
             (@path_Group _ (Ker (inn (inc X))) (AutG gp refl) ((fst e; _); snd e))).
   apply (path_sigma_prop (fun _ => ptrunc_isProp)). exact (fiber_Binn_shKer X)^.
+Defined.
+
+(** [Inn(G)] is normal in [Aut(G)]: the family [y ↦ ‖BG(y)_÷ = BG(z)_÷‖₀]
+    of [Aut(G)]-sets, pointed at [|refl|] ([XU], [NInn]), is transitive
+    since every identification [e : BK_÷ = BK_÷] of a group [K] merely
+    comes from an identification [K = K] ([KL_group]: move the base point
+    along a path [e(sh_K) = sh_K]); at [sh_{Aut(G)}] it is [out(G)]
+    ([coker_out_action]) pointed at [|shKer|] ([fiber_Binn_shKer]). *)
+Definition UUscone_loop `{Funext} {A A' : Type} (e : A = A') (a : A) (a' : A')
+  (q : trp idmap e a = a') (h : isConn A × isGrpd A) (h' : isConn A' × isGrpd A')
+  : ((A; (a; h)) : UUscone) = (A'; (a'; h')).
+Proof.
+  destruct e. destruct q.
+  exact (ap (fun h0 => (A; (a; h0)) : UUscone) (isConnGrpd_isProp (A; a) h h')).
+Defined.
+
+Definition ap_fst_UUscone_loop `{Funext} {A A' : Type} (e : A = A') (a : A) (a' : A')
+  (q : trp idmap e a = a') (h : isConn A × isGrpd A) (h' : isConn A' × isGrpd A')
+  : ap (fun X : UUscone => fst X) (UUscone_loop e a a' q h h') = e.
+Proof.
+  destruct e. destruct q.
+  change (ap (fun X : UUscone => fst X)
+            (ap (fun h0 => (A; (a; h0)) : UUscone) (isConnGrpd_isProp (A; a) h h')) = refl).
+  exact ((ap_compose (fun h0 => (A; (a; h0)) : UUscone) (fun X : UUscone => fst X)
+            (isConnGrpd_isProp (A; a) h h'))^
+         @ ap_const (isConnGrpd_isProp (A; a) h h') A).
+Defined.
+
+Definition KL_group `{Funext} (K : Group) (e : utype (BG K) = utype (BG K))
+  : ptrunc {P : K = K & ap (fun K0 : Group => utype (BG K0)) P = e}.
+Proof.
+  destruct K as [[A [a h]]]. cbn in e.
+  refine (ptrunc_rec ptrunc_isProp _ (snd (fst h) (trp idmap e a) a)). intro q.
+  apply trunc. exists (ap inc (UUscone_loop e a a q h h)).
+  exact ((ap_compose inc (fun K0 : Group => utype (BG K0)) _)^ @ ap_fst_UUscone_loop e a a q h h).
+Defined.
+
+Section InnNormal.
+
+  Context `{ua : Univalence} (G : Group).
+
+  Local Notation UA z := (utype (BG (fst z))).
+
+  Definition KL_comp (y : utype (BG (AutGrp G))) (e : UA y = UA y)
+    : ptrunc {g : y = y & ap (fun z : utype (BG (AutGrp G)) => UA z) g = e}.
+  Proof.
+    refine (ptrunc_rec ptrunc_isProp _ (KL_group (fst y) e)). intros [P hP].
+    apply trunc. exists (path_sigma_prop (fun _ => ptrunc_isProp) (u := y) (v := y) P).
+    refine (ap_compose fst (fun K0 : Group => utype (BG K0)) _ @ _).
+    exact (ap (ap (fun K0 : Group => utype (BG K0))) (ap_fst_path_sigma_prop _ P) @ hP).
+  Defined.
+
+  Definition XU (y : utype (BG (AutGrp G))) : GSet (AutGrp G)
+    := fun z => (strunc (UA z = UA y); strunc_isSet).
+
+  Definition act_XU (y : utype (BG (AutGrp G))) {z z' : utype (BG (AutGrp G))} (g : z = z')
+    (e : UA z = UA y)
+    : act (XU y) g (settrunc e)
+      = settrunc ((ap (fun w : utype (BG (AutGrp G)) => UA w) g)^ @ e).
+  Proof. destruct g. exact (ap settrunc (concat_1p e)^). Defined.
+
+  Definition XU_trans (y : utype (BG (AutGrp G))) : istrans (G := regroup (AutGrp G) y) (XU y).
+  Proof.
+    apply trunc. exists (settrunc refl : el (XU y) y).
+    refine (strunc_ind_prop _ (fun _ => ptrunc_isProp) _). intro e.
+    refine (ptrunc_rec ptrunc_isProp _ (KL_comp y e)). intros [g hg].
+    apply trunc. exists g. refine (_ @ (act_XU y g e)^).
+    exact (ap settrunc ((concat_Vp e)^ @ ap (fun r => r^ @ e) hg^)).
+  Defined.
+
+  Definition NInn : Nor (AutGrp G) := fun y => (XU y; (settrunc refl; XU_trans y)).
+
+End InnNormal.
+
+Definition Inn_normal `{ua : Univalence} (G : Group) : Inn_normal_stmt G.
+Proof.
+  destruct G as [X]. exists (NInn (inc X)). unfold inor.
+  pose (ce := coker_out_action (inc X) (sh (AutGrp (inc X)))).
+  refine (SubGrp_path (path_GSet (X := XU (inc X) (sh (AutGrp (inc X)))) (Y := outG (inc X))
+                         (fun z => Eqv_inv (coker_out_action (inc X) z))) _).
+  refine (trp_path_GSet _ (sh _) _ @ _).
+  exact ((ap (eqinv (snd ce)) (ap settrunc (fiber_Binn_shKer X)))^
+         @ eqinv_l (snd ce) (settrunc (shKer (inn (inc X))))
+         : _ = settrunc (shKer (inn (inc X)))).
 Defined.
