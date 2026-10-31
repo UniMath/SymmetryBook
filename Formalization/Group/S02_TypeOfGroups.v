@@ -8,9 +8,9 @@
     - Definition [def:pt-conn-groupoid]: [UUscone] ([U_*^{=1}]), with the
       underlying pointed type [UUscone_ptd].
     - Exercise [xca:defgroup] ([isConn_from_pt], [pt_from_isConn],
-      [isGrpd_loops], [loops_isGrpd], [UUscone_eqv]).  The book's
-      "[A] is a groupoid iff [a = a] is a set" needs [A] connected for the
-      converse; we assume it there.
+      [isGrpd_loops], [loops_isGrpd], [UUscone_eqv]).  As in the book,
+      "[A] is a groupoid iff [a = a] is a set" assumes [A] connected; only
+      the converse ([loops_isGrpd]) uses it.
     - Definition [def:typegroup]: [Group :≡ Copy(UUscone)] with
       constructor [mkgroup]; [def:classifying-type]: [B], [BG], [sh];
       [def:looptype]: [loops] ([Ω]); [def:group-symmetries]: [USym] ([U]),
@@ -121,7 +121,7 @@ Section DefGroup.
 
   Definition isGrpd_loops (g : isGrpd A) : isSet (a = a) := g a a.
 
-  (** The converse needs connectedness (as everywhere in this section). *)
+  (** The converse, for connected [A]. *)
   Definition loops_isGrpd `{Funext} (c : isConn A) (s : isSet (a = a)) : isGrpd A.
   Proof.
     intros x y.

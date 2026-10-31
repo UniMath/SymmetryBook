@@ -17,11 +17,10 @@
       those of [xca:path-groupoid-laws] (Section 2.5).  The equations
       [e⁻¹ ≡ e] and [e · g ≡ g] hold by [refl].
     - Exercise [xca:abstract-group-of-maps]: the pointwise abstract group
-      on [X → S] ([ag_maps]), using [Funext].  It is abelian if [G] is;
-      for the converse, [X] must be inhabited (for [X] empty, [X → S] is
-      trivial, hence abelian, for any [G]); we assume [‖X‖]
-      ([ag_maps_isAb_conv]).  NOTE for the book text: the "only if"
-      direction needs [X] to be nonempty.
+      on [X → S] ([ag_maps]), using [Funext]; it is abelian if [G] is
+      ([ag_maps_isAb]).  The converse ([ag_maps_isAb_conv]) uses that [X]
+      is non-empty ([‖X‖], [def:non-empty]), as in the book (for [X]
+      empty, [X → S] is trivial, hence abelian, for any [G]).
     - The law of left inverses ([ag_linv]) and a bridge to the library's
       groups ([AbsGroup_to_lib]). *)
 

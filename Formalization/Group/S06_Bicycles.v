@@ -29,21 +29,24 @@
     - Definition [def:normal-bicycle] ([isNormal]), exercise
       [xca:normal-bicycle-equiv] ([normal_from_one]), and definition
       [def:cbid-bicycle] ([cbid], with [cbid_spec] and [cbid_refl]).
-    - The exercises after [def:cbid-bicycle]: normality iff [H_x = H_y]
-      ([Hx], [xca_normal_Hx]; for the converse, a symmetry [x ↦ y] is
+    - Exercises [xca:bicycle-normal-iff-Hx=Hy],
+      [xca:bicycle-normal-if-commuting] and [xca:bicycle-list-equivalence]:
+      normality iff [H_x = H_y] ([Hx], [xca_normal_Hx]; for the converse, a symmetry [x ↦ y] is
       built by relabelling, [relabel], [relabel_sym]); commuting bicycles
       are normal ([isCommuting], [commuting_isNormal]); lists with the
       same value at [x₀] have the same meaning ([xca_lists_equiv]).
     - Remark [rem:bicycle-list-concat] ([rem_bicycle_list_concat], with
       [BicycEqv_comp]).
-    - Remark [rem:inf-dihedral-frieze] and the exercise after it: the
+    - Remark [rem:inf-dihedral-frieze] and exercise
+      [xca:inf-dihedral-bicycle]: the
       infinite dihedral bicycle is normal ([dihedral_isNormal], with
       translations [dtr_sym] and reflections [dre_sym]); [T] is
       translation by [-1] and [R] the reflection [ρ_0] ([dT_spec],
       [dR_spec]), and [inl(n) ↦ inl(-n)], [inr(n) ↦ inr(n)] identifies
       [(X,a,b)] with [(X,T,R)] ([xca_frieze]).  We give the commuting
       equivalence; [BicycEqv_to_path] turns it into an identification.
-    - The two [6]-element bicycles of the last exercise ([HexagonBicyc],
+    - The two [6]-element bicycles of exercise
+      [xca:normal-bicycle-nonunique] ([HexagonBicyc],
       [PrismBicyc], on an inductive type [Six], connected by
       computation) and the exercise ([xca_six_bicycles]): they are in
       different components ([hex_ne_prism]: in the hexagon [a² = id], in
@@ -58,13 +61,13 @@
       [lem:evisinj-bicycle] ([post_isEquiv0]).  Hence [SG3_AutKc].
 
     Deviations
-    - The commuting-bicycles exercise is only half formalized: its
+    - Exercise [xca:bicycle-normal-if-commuting] is only half formalized: its
       second part is false as stated (NOTE for the book): [(𝟚, swap,
       swap)] is a commuting bicycle ([SwapBicyc], [SwapBicyc_isCommuting])
       that is not of the form [(X × Y, t × id, id × u)]
       ([SwapBicyc_not_product]).  A fix is to restrict to commuting
       bicycles with [aⁿ = bᵐ] only if [aⁿ = id]; this is for the authors
-      to decide.
+      to decide (the book now marks this part with a [\wip]).
  *)
 
 From HoTT Require Import
@@ -585,7 +588,7 @@ Section BicycExercises.
   Definition Hx (B : Bicyc) (x : bX B) (l : list (ℤ ⨿ ℤ)) : Type
     := sem (ba B) (bb B) l x = x.
 
-  (** The first exercise after [def:cbid-bicycle]: a bicycle is normal
+  (** Exercise [xca:bicycle-normal-iff-Hx=Hy]: a bicycle is normal
       iff [H_x = H_y] for all [x, y]. *)
   Definition xca_normal_Hx (B : Bicyc)
     : isNormal B <-> (forall x y l, Hx B x l <-> Hx B y l).
@@ -623,7 +626,7 @@ Section BicycExercises.
       + exact refl.
   Defined.
 
-  (** The second exercise after [def:cbid-bicycle], on commuting
+  (** Exercise [xca:bicycle-normal-if-commuting], on commuting
       bicycles, first part: they are normal. *)
   Definition commuting_isNormal (B : Bicyc) (cB : isCommuting B) : isNormal B.
   Proof.
@@ -665,7 +668,7 @@ Section BicycExercises.
     destruct (fst e (x; y)); exact (Bool.false_ne_true h^) || exact (Bool.false_ne_true h).
   Defined.
 
-  (** The third exercise after [def:cbid-bicycle]: for a normal bicycle,
+  (** Exercise [xca:bicycle-list-equivalence]: for a normal bicycle,
       lists are equivalent ([⟦ℓ⟧(x₀) = ⟦ℓ'⟧(x₀)]) iff [⟦ℓ⟧ = ⟦ℓ'⟧]. *)
   Definition xca_lists_equiv (B : Bicyc) (nB : isNormal B) (x0 : bX B)
     (l l' : list (ℤ ⨿ ℤ))
@@ -853,7 +856,7 @@ Section Frieze.
   Definition dE_eqv : (ℤ ⨿ ℤ) ≃ (ℤ ⨿ ℤ).
   Proof. refine (mkEqv dE dE _ _); intros [m|m]; cbn; try exact refl; exact (ap inl (zneg_zneg m)). Defined.
 
-  (** The exercise after [rem:inf-dihedral-frieze]: the infinite dihedral
+  (** Exercise [xca:inf-dihedral-bicycle]: the infinite dihedral
       bicycle [(X,a,b)] is identified with [(X,T,R)], via
       [inl(n) ↦ inl(-n)], [inr(n) ↦ inr(n)]. *)
   Definition xca_frieze (nD : isNormal D)
@@ -873,7 +876,8 @@ Section Frieze.
 
 End Frieze.
 
-(** The two [6]-element bicycles of the last exercise: the hexagon, with
+(** The two [6]-element bicycles of exercise [xca:normal-bicycle-nonunique]:
+    the hexagon, with
     [a = (0 1)(2 3)(4 5)] and [b = (1 2)(3 4)(5 0)], and the prism, with
     [a] rotating the inner triangle [p0 ← p1 ← p2 ← p0] and the outer one
     [p3 → p4 → p5 → p3], and [b] swapping [pᵢ] and [p(i+3)]. *)
@@ -1259,7 +1263,7 @@ Section SixCayley.
 
 End SixCayley.
 
-(** The last exercise of the section: the hexagon and the prism are in
+(** Exercise [xca:normal-bicycle-nonunique]: the hexagon and the prism are in
     different components of [Bicyc], but their automorphism groups are
     isomorphic to each other and to [Σ_3]. *)
 Definition xca_six_bicycles `{Univalence}
