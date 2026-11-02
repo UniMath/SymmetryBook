@@ -1355,6 +1355,7 @@ In the direction of further generality, we offer the following exercise.
   Suppose $X,Y$ are types related by an equivalence $f : X \to Y$.
   Let $B(x)$ be a type parameterized by $x:X$. Construct an 
   equivalence between $\sum_{x:X}B(x)$ and $\sum_{y:Y}B(\inv{f}(y))$.
+  Hint: insert the contractible type $\sum_{y:Y}(y\eqto f(x))$.
 \end{xca}
 
 The next exercise gives a dual to \cref{cor:contract-away}
@@ -1593,7 +1594,7 @@ The following lemma gives the desired characterization of paths between pairs.
 \begin{lemma}\label{lem:isEq-pair=}
   Suppose we are given a type $X$ and a family of types $Y(x)$ parametrized by the elements $x$ of $X$.
   For any elements $(x,y)$ and $(x',y')$ of $\sum _{x:X} Y(x)$,
-  the map defined in \cref{def:pairtopath} defined by
+  the map from \cref{def:pairtopath} defined by
   \[
     (p,q) \mapsto \pathpair p q
   \]
@@ -1700,25 +1701,30 @@ first and the second projection, respectively.
 Again, proving something about (or constructing something from) every
 element $(a,b)$ of $X \times Y$ is simply done for all $a:X$ and $b:Y$.
 
-There is an equivalence between $(a_1,b_1) \eqto (a_2,b_2)$ and $(a_1 \eqto a_2) \times (b_1 \eqto b_2)$.
-This follows from \cref{lem:isEq-pair=} together with \cref{xca:trp-nondep}.
-
 If $f: X \to Y$ and $f': X' \to Y'$, then we let
 $f\times f'$ denote the map of type $(X\times X') \to (Y\times Y')$
+\glossary(2timesz){$f\times f'$}{product of two maps}
 that sends $(x,x')$ to $(f(x),f'(x'))$.
 
-The following lemma follows from \cref{lem:isEq-pair=}, combined with \cref{def:pathover-trp} and \cref{xca:trp-nondep}.
+The following lemma characterizes paths in $X\times Y$ as pairs of a path in $X$ 
+and a path in $Y$. It follows from \cref{def:pathover-trp} and 
+\cref{xca:trp-nondep} combined with \cref{lem:isEq-pair=}.
 
 \begin{lemma}\label{lem:isEq-pair-bin=}
-  Suppose we are given type $X$ and $Y$.
+  Suppose we are given types $X$ and $Y$.
   For any elements $(x,y)$ and $(x',y')$ of $X \times Y$,
-  the map defined in \cref{def:pairtopath} defined by
+  the map defined in \cref{def:pairtopath} induces a map\footnote{%
+For the constant family of types $Y(x)\defeq Y$,
+\cref{def:pathover-trp} and \cref{xca:trp-nondep} yield, for any path $p$ in $X$,
+an equivalence between $y\eqto y'$ and $\pathover y _ p {y'}$.
+Application of this equivalence to $q$ yields $q_p$.
+}
   \[
-    (p,q) \mapsto \pathpair p q
+    (p,q) \mapsto \pathpair p {q_p}
   \]
-  is an equivalence of type
+  that is an equivalence of type
   \[
-    ( x\eqto x' ) \times (y\eqto y') \equivto \left( (x,y)\eqto (x',y')\right).
+    \left((x\eqto x') \times (y\eqto y')\right) \equivto \left((x,y)\eqto (x',y')\right).
   \]
 \end{lemma}
 
