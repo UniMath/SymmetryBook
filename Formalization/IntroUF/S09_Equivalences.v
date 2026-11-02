@@ -24,9 +24,10 @@
       [xca:Sigma-curry], [xca:Sigma-distrib], [xca:Sigma-comm],
       [xca:fib-of-comp], [xca:section-above-f] and [xca:sum-equiv-base];
       the round trips of the Σ-manipulations hold by definition.
-      [xca:sum-equiv-base] uses Coq-HoTT's [equiv_functor_sigma_pb],
-      because a direct proof needs half-adjoint coherence, which the book
-      hasn't introduced yet.
+      [xca:sum-equiv-base] avoids half-adjoint coherence by contracting
+      the fibers of [f], using the second part of footnote
+      [ft:Sigma-assoc] (a sum over a contractible type is its fiber over
+      the center).
     - Bridges: [tot] is [functor_sigma idmap]; [ptw⁻¹] is
       [path_forall]; [fiber f y ≃ hfiber f y] (the conventions [y = f x]
       and [f x = y] differ by path inversion); [isContr X] versus
@@ -227,12 +228,58 @@ Definition contract_away {X : Type} (a : X) (B : X -> Type)
   : {x : X & {_ : a = x & B x}} ≃ B a
   := (ca_map a (fun x _ => B x); ca_map_isEquiv a (fun x _ => B x)).
 
-(** Exercise [xca:sum-equiv-base]. *)
+(** Footnote [ft:Sigma-assoc], second part: a sum over a contractible
+    type is equivalent to the fiber over the center.  The contraction is
+    re-centered with [isContr_center] so that it is [refl] at the center. *)
+Definition trans_symm_l {X : Type} {c a : X} (p : c = a) : p ⋅ p⁻¹ = refl
+  := match p with refl => refl end.
+
+Section SumOverContr.
+
+  Context {W : Type} (H : isContr W) (C : W -> Type).
+
+  Local Definition soc_k : forall w : W, fst H = w := isContr_center H (fst H).
+
+  Definition soc_map : {w : W & C w} -> C (fst H)
+    := fun w => trp C (soc_k (fst w))⁻¹ (snd w).
+
+  Definition soc_gf (w : {w : W & C w}) : (fst H; soc_map w) = w.
+  Proof.
+    destruct w as [w c]. unfold soc_map; cbn.
+    revert c. destruct (soc_k w). intro c. exact refl.
+  Defined.
+
+  Definition soc_fg (c : C (fst H)) : soc_map (fst H; c) = c
+    := ap (fun e => trp C e⁻¹ c) (trans_symm_l (snd H (fst H))).
+
+  Definition sum_over_contr : {w : W & C w} ≃ C (fst H)
+    := mkEqv soc_map (fun c => (fst H; c)) soc_gf soc_fg.
+
+End SumOverContr.
+
+(** Exercise [xca:sum-equiv-base].  Insert the contractible
+    [Σ_y (y = f x)], pull [Σ_y] out and interchange it with [Σ_x]; the
+    inner sum is then over the contractible fiber [fiber f y], whose
+    center has first component [f⁻¹(y)] by definition. *)
 Definition sum_equiv_base {X Y : Type} {f : X -> Y} (t : isEquiv f)
-  (B : X -> Type) : {x : X & B x} ≃ {y : Y & B (eqinv t y)}
-  := Eqv_of_Equiv (equiv_inverse
-       (equiv_functor_sigma_pb (Q := B)
-          (Build_Equiv _ _ (eqinv t) (IsEquiv_of_isEquiv (eqinv_isEquiv t))))).
+  (B : X -> Type) : {x : X & B x} ≃ {y : Y & B (eqinv t y)}.
+Proof.
+  refine (Eqv_comp (Y := {y : Y & {w : fiber f y & B (fst w)}}) _ _).
+  - refine (mkEqv (fun v : {x : X & B x} =>
+                     (f (fst v); ((fst v; refl) : fiber f _); snd v))
+                  (fun u : {y : Y & {w : fiber f y & B (fst w)}} =>
+                     (fst (fst (snd u)); snd (snd u)))
+                  (fun _ => refl) _).
+    intros [y [[x p] b]]. cbn in b. revert y p. refine (paths_ind_r _ _ _). exact refl.
+  - refine (mkEqv (fun u : {y : Y & {w : fiber f y & B (fst w)}} =>
+                     (fst u; soc_map (t (fst u)) (fun w => B (fst w)) (snd u)))
+                  (fun u : {y : Y & B (eqinv t y)} =>
+                     (fst u; (fst (t (fst u)); snd u)))
+                  _ _).
+    + intros [y w]. exact (ap (fun z => (y; z)) (soc_gf (t y) _ w)).
+    + intros [y b]. exact (ap (fun z => (y; z) : {y : Y & B (eqinv t y)})
+                             (soc_fg (t y) (fun w => B (fst w)) b)).
+Defined.
 
 (** Definition [def:fiberwise]: totalization of a map of families,
     [tot(f)(x,y) :≡ (x, f(x)(y))]: the library's [functor_sigma idmap]. *)
