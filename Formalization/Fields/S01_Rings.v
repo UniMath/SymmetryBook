@@ -52,6 +52,19 @@
       z-outer reading, that is, [apd] of [z ↦ ap_{F(z,-)}(loop²)]
       applied to [loop³], is [(6γ)⁻¹].
 
+    Precomposition and powers ([TBD1]):
+    - [reading_w_precomp1], [reading_w_precomp2],
+      [loops_reading_precomp1], [loops_reading_precomp2]: the reading
+      of [F ∘ (f × id)] at [(p,q)] is that of [F] at [(ap_f(p),q)], and
+      likewise in the second variable (up to [ap_comp] on the sides).
+    - [loops_reading_pow1], [loops_reading_pow2]: the 2-loop of
+      [F(p^n,q)] and of [F(p,q^n)] is the [n]-th power of that of
+      [F(p,q)] ([ppow], with [p^{n+1} :≡ p ⋅ p^n]).
+    - [loops_reading_dg1], [loops_reading_dg2]: for [F : S¹ → S¹ → C]
+      and the degree [k] map [dg k] of Section 3.6 ([k : ℕ]), the 2-loop
+      of [F ∘ (dg_k × id)] and of [F ∘ (id × dg_k)] at [(loop,loop)] is
+      the [k]-th power of that of [F].
+
     How this answers [TBD2].  By definition of [m], the w-outer reading
     is the natural one: [ap_{F(-,w)}(loop) = ptw(m(loop))(w) = k'(w)], so
     the w-outer reading of [F(loop,loop)] is [ap_{k'}(loop)], the
@@ -66,13 +79,15 @@
     [F(loop^i,loop^j)] is [ij] times that of [F(loop,loop)]; for [m_k]
     the latter is [kγ] (the [k]-loop around [id_S¹]).  Precomposing
     [m_1] with the degree [k] map in either argument multiplies the
-    2-loop at [(loop,loop)] by [k], so under [M ≃ Ω²(B²ℤ) ≃ ℤ]
+    2-loop at [(loop,loop)] by [k] ([loops_reading_dg1],
+    [loops_reading_dg2]), so under [M ≃ Ω²(B²ℤ) ≃ ℤ]
     (read off at [(loop,loop)]) [m_k = m_1 ∘ (dg_k × id) = m_1 ∘ (id ×
     dg_k)], and [m_k] corresponds to [k].
 
     Not formalized: [B²ℤ], [m_k], the equivalence [M ≃ ℤ] and the
     identification of the w-outer reading of [m_k] with [kγ] (these
-    need the set truncation of [S¹ = X], univalence and [ptw_*]).  The
+    need the set truncation of [S¹ = X], univalence and [ptw_*]; for
+    [M ≃ ℤ], Constructions 13.1.21-25 may help), and negative [k].  The
     sign and the bilinearity are independent of all of this: they hold
     for any [F]. *)
 
@@ -364,3 +379,168 @@ Section Loop3Loop2.
     := ap symm loop3_loop2_reading ⋅ loops_reading_swap F loop3 loop2 eP3 eQ2.
 
 End Loop3Loop2.
+
+(** *** Precomposition and powers, for [TBD1] *)
+
+Local Definition ap_comp {X Y Z : Type} (f : X -> Y) (h : Y -> Z)
+  {x x' : X} (p : x = x') : ap (fun z => h (f z)) p = ap h (ap f p)
+  := match p with refl => refl end.
+
+Section Precomposition.
+
+  Context {A A' B B' C : Type} (F : A -> B -> C).
+
+  (** Precomposition in the first variable. *)
+  Definition reading_w_precomp1 (f : A' -> A) {a a' : A'} (p : a = a')
+    {b b' : B} (q : b = b')
+    : Sq_sides (ap_comp f (fun x => F x b) p) (ap_comp f (fun x => F x b') p)
+               refl refl (reading_w (fun z w => F (f z) w) p q)
+      = reading_w F (ap f p) q.
+  Proof. destruct p, q. exact refl. Defined.
+
+  (** Precomposition in the second variable. *)
+  Definition reading_w_precomp2 (g : B' -> B) {a a' : A} (p : a = a')
+    {b b' : B'} (q : b = b')
+    : Sq_sides refl refl (ap_comp g (F a) q) (ap_comp g (F a') q)
+               (reading_w (fun z w => F z (g w)) p q)
+      = reading_w F p (ap g q).
+  Proof. destruct p, q. exact refl. Defined.
+
+  Definition loops_reading_precomp1 (f : A' -> A) {a : A'} {b : B}
+    (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F (f z) b) p) (eQ : refl = ap (F (f a)) q)
+    : loops_reading (fun z w => F (f z) w) p q eP eQ
+      = loops_reading F (ap f p) q (ap_comp f (fun x => F x b) p ⋅ eP) eQ
+    := ap (sq_2loop _ _ eQ eQ) (reading_w_precomp1 f p q)
+       ⋅ (sq_2loop_sides _ _ refl refl eP eP eQ eQ _)⁻¹.
+
+  Definition loops_reading_precomp2 (g : B' -> B) {a : A} {b : B'}
+    (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z (g b)) p) (eQ : refl = ap (fun w => F a (g w)) q)
+    : loops_reading (fun z w => F z (g w)) p q eP eQ
+      = loops_reading F p (ap g q) eP (ap_comp g (F a) q ⋅ eQ)
+    := ap (sq_2loop eP eP _ _) (reading_w_precomp2 g p q)
+       ⋅ (sq_2loop_sides refl refl _ _ eP eP eQ eQ _)⁻¹.
+
+End Precomposition.
+
+(** Transporting the loops along identifications. *)
+Definition loops_reading_tr1 {A B C : Type} (F : A -> B -> C) {a : A} {b : B}
+  {p p' : a = a} (α : p = p') (q : b = b)
+  (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q)
+  : loops_reading F p q eP eQ = loops_reading F p' q (ap (ap _) α ⋅ eP) eQ.
+Proof. destruct α. exact refl. Defined.
+
+Definition loops_reading_tr2 {A B C : Type} (F : A -> B -> C) {a : A} {b : B}
+  (p : a = a) {q q' : b = b} (β : q = q')
+  (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q)
+  : loops_reading F p q eP eQ = loops_reading F p q' eP (ap (ap _) β ⋅ eQ).
+Proof. destruct β. exact refl. Defined.
+
+(** Powers [p^n] of a loop, with [p^{n+1} :≡ p ⋅ p^n], and of 2-loops. *)
+Fixpoint ppow {X : Type} {x : X} (p : x = x) (n : nat) : x = x
+  := match n with O => refl | S n => p ⋅ ppow p n end.
+
+Fixpoint eppow {X Y : Type} (f : X -> Y) {x : X} {p : x = x}
+  (e : refl = ap f p) (n : nat) : refl = ap f (ppow p n)
+  := match n with O => refl | S n => ecomp f (eppow f e n) e end.
+
+Definition gpow_comm {X : Type} {x : X} {y : x = x} (γ : y = y) (n : nat)
+  : ppow γ n ⋅ γ = γ ⋅ ppow γ n.
+Proof.
+  induction n as [|n IH]; cbn.
+  - exact (trans_1p γ)⁻¹.
+  - exact (ap (fun u => γ ⋅ u) IH ⋅ (trans_assoc _ _ _)⁻¹).
+Defined.
+
+Section Powers.
+
+  Context {A B C : Type} (F : A -> B -> C) {a : A} {b : B}.
+
+  Local Definition sq_2loop_l {c : C} {l : c = c} (e : refl = l)
+    : sq_2loop refl refl e e (trans_1p l) = refl.
+  Proof. destruct e. exact refl. Defined.
+
+  Local Definition sq_2loop_t {c : C} {t : c = c} (e : refl = t)
+    : sq_2loop e e refl refl ((trans_1p t)⁻¹ ⋅ refl) = refl.
+  Proof. destruct e. exact refl. Defined.
+
+  Local Definition reading_w_refl1 {b' : B} (q : b = b')
+    : reading_w F (refl a) q = trans_1p (ap (F a) q).
+  Proof. destruct q. exact refl. Defined.
+
+  (** [F(p^n,q)] has [n] times the 2-loop of [F(p,q)]. *)
+  Definition loops_reading_pow1 (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q) (n : nat)
+    : loops_reading F (ppow p n) q (eppow _ eP n) eQ
+      = ppow (loops_reading F p q eP eQ) n.
+  Proof.
+    induction n as [|n IH].
+    - exact (sq_2loop_l eQ ⋅ ap (sq_2loop refl refl eQ eQ) (reading_w_refl1 q)).
+    - exact (gpow_comm _ n ⋅ ap (fun u => u ⋅ _) IH
+             ⋅ loops_reading_hpaste F (ppow p n) p q (eppow _ eP n) eP eQ).
+  Defined.
+
+  (** [F(p,q^n)] has [n] times the 2-loop of [F(p,q)]. *)
+  Definition loops_reading_pow2 (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q) (n : nat)
+    : loops_reading F p (ppow q n) eP (eppow _ eQ n)
+      = ppow (loops_reading F p q eP eQ) n.
+  Proof.
+    induction n as [|n IH].
+    - exact (sq_2loop_t eP).
+    - exact (ap (fun u => _ ⋅ u) IH
+             ⋅ loops_reading_vpaste F p (ppow q n) q eP (eppow _ eQ n) eQ).
+  Defined.
+
+End Powers.
+
+(** [TBD1]: precomposing with the degree [k] map [dg_k] in either
+    variable multiplies the 2-loop of [F(loop,loop)] by [k]. *)
+Section DegreePrecomposition.
+
+  Context `{Univalence} {C : Type} (F : S1 -> S1 -> C)
+    (eP : refl = ap (fun z => F z base) loop) (eQ : refl = ap (F base) loop)
+    (k : nat).
+
+  Definition loopZ_ppow (n : nat) : loopZ (iplus n) = ppow loop n.
+  Proof.
+    induction n as [|n IH].
+    - exact refl.
+    - exact (ap (fun u => loop ⋅ u) IH ⋅ loopZ_zs (iplus n)).
+  Defined.
+
+  Definition dg_loop : ap (dg k) loop = ppow loop k
+    := loopZ_ppow k ⋅ S1_rec_loop S1 base (loopZ (iplus k)).
+
+  Local Definition cancel {Y : Type} {r t0 t1 t2 : Y}
+    (α : t1 = t0) (φ : t2 = t1) (E : r = t0)
+    : α ⋅ (φ ⋅ (φ⁻¹ ⋅ α⁻¹ ⋅ E)) = E.
+  Proof. destruct φ, α. exact refl. Defined.
+
+  (** The sides of [F ∘ (dg_k × id)] and [F ∘ (id × dg_k)]. *)
+  Definition eP_dg1 : refl = ap (fun z => F (dg k z) base) loop
+    := (ap_comp (dg k) (fun x => F x base) loop)⁻¹
+       ⋅ (ap (ap (fun x => F x base)) dg_loop)⁻¹ ⋅ eppow _ eP k.
+
+  Definition eQ_dg2 : refl = ap (fun w => F base (dg k w)) loop
+    := (ap_comp (dg k) (F base) loop)⁻¹
+       ⋅ (ap (ap (F base)) dg_loop)⁻¹ ⋅ eppow _ eQ k.
+
+  Definition loops_reading_dg1
+    : loops_reading (fun z w => F (dg k z) w) loop loop eP_dg1 eQ
+      = ppow (loops_reading F loop loop eP eQ) k
+    := loops_reading_pow1 F loop loop eP eQ k
+       ⋅ ap (fun e => loops_reading F (ppow loop k) loop e eQ) (cancel _ _ _)
+       ⋅ loops_reading_tr1 F dg_loop loop _ eQ
+       ⋅ loops_reading_precomp1 F (dg k) loop loop eP_dg1 eQ.
+
+  Definition loops_reading_dg2
+    : loops_reading (fun z w => F z (dg k w)) loop loop eP eQ_dg2
+      = ppow (loops_reading F loop loop eP eQ) k
+    := loops_reading_pow2 F loop loop eP eQ k
+       ⋅ ap (fun e => loops_reading F loop (ppow loop k) eP e) (cancel _ _ _)
+       ⋅ loops_reading_tr2 F loop dg_loop eP _
+       ⋅ loops_reading_precomp2 F (dg k) loop loop eP eQ_dg2.
+
+End DegreePrecomposition.
