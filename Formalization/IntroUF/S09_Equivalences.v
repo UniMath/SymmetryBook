@@ -231,9 +231,6 @@ Definition contract_away {X : Type} (a : X) (B : X -> Type)
 (** Footnote [ft:Sigma-assoc], second part: a sum over a contractible
     type is equivalent to the fiber over the center.  The contraction is
     re-centered with [isContr_center] so that it is [refl] at the center. *)
-Definition trans_symm_l {X : Type} {c a : X} (p : c = a) : p ⋅ p⁻¹ = refl
-  := match p with refl => refl end.
-
 Section SumOverContr.
 
   Context {W : Type} (H : isContr W) (C : W -> Type).
@@ -250,7 +247,7 @@ Section SumOverContr.
   Defined.
 
   Definition soc_fg (c : C (fst H)) : soc_map (fst H; c) = c
-    := ap (fun e => trp C e⁻¹ c) (trans_symm_l (snd H (fst H))).
+    := ap (fun e => trp C e⁻¹ c) (trans_Vp (snd H (fst H))).
 
   Definition sum_over_contr : {w : W & C w} ≃ C (fst H)
     := mkEqv soc_map (fun c => (fst H; c)) soc_gf soc_fg.

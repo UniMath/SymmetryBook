@@ -16,8 +16,10 @@
       [AbsGroup/AbsGroup.v] (Chapter 7, [absgroup.tex], Sections
       7.2 - 7.7), [ConGroups/ConGroups.v] (Chapter 8, [congp.tex],
       Sections 8.2 - 8.4, 8.6, 8.7), [Subgroups/Subgroups.v] (Chapter 9,
-      [subgroups.tex], Sections 9.2 - 9.8) and [FinGroups/FinGroups.v]
-      (Chapter 10, [fingp.tex], Sections 10.2 - 10.4).
+      [subgroups.tex], Sections 9.2 - 9.8), [FinGroups/FinGroups.v]
+      (Chapter 10, [fingp.tex], Sections 10.2 - 10.4) and
+      [Fields/Fields.v] (Chapter 13, [fields.tex], started: Section
+      13.1).
     - Results that are left out are stated without proof, as definitions
       of their statements (named [..._stmt]) at their proper place, and
       listed in the summary of their file.
@@ -53,4 +55,5 @@ From SymmetryBook Require Export
   AbsGroup.AbsGroup
   ConGroups.ConGroups
   Subgroups.Subgroups
-  FinGroups.FinGroups.
+  FinGroups.FinGroups
+  Fields.Fields.
