@@ -2,10 +2,10 @@
 
     ** Summary of this formalization
 
-    Only Section 13.1 ([S01_Rings.v]) has been started, with the sign
-    question [TBD2] of Example [exa:allS1*-swap]: swapping the arguments
-    of a function of two variables inverts the 2-loop of a square of
-    loops, so [swap(m_k) = m_{-k}].  The chapter is still in flux; the
+    Only Section 13.1 ([S01_Rings.v]) has been started, with the
+    questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]: the 2-loop
+    of a square of loops is bilinear, and swapping the arguments of a
+    function of two variables inverts it, so [swap(m_k) = m_{-k}].  The chapter is still in flux; the
     other results are not formalized yet.  It builds on Chapters 2 - 10
     ([FinGroups.FinGroups]).  Everything compiles with nothing
     admitted. *)
