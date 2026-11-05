@@ -106,6 +106,22 @@
       [wdg].
     - [M_eqv_Z]: the composite [M ≃ ℤ].
 
+    The direct equivalence [M_eqv_mult :
+    M ≃ Σ_{h : S¹ × S¹ → S¹} (id_{S¹} = h(base,-))]:
+    - [jmap : ΩB²ℤ → (S¹ → S¹)], [r ↦ ptoe(ap_fst(r))], is an embedding
+      onto the component of [id]; [ap_jmap_eq]: on 2-loops [ap_j] is
+      [ua0_step ∘ sigma_step], hence an equivalence ([ap_jmap_isEquiv]).
+    - [post]: postcomposition with [j], [(S¹ →* ΩB²ℤ) → (S¹ →* (S¹ → S¹,
+      id))] ([IdS1]); [evp_post]: [evp ∘ post = ap_j ∘ evp], so [post] is
+      an equivalence ([post_eqv]; [S¹] being connected is what makes this
+      work, via [evp]).
+    - [uncurry_eqv], and [M_eqv_mult] as the composite with
+      [M_eqv_loops] and [loops_cst_eqv].
+    - [M_eqv_mult_m]: [m_k] goes to the uncurried [h_k], where
+      [h_k(z,-)] goes around [id_S¹] along the [k]-loop
+      [x ↦ ex(x)(loop^k)] as [z] goes around [loop] ([h_k :≡ S1_rec id
+      (funext(kloop_pw k))]); [h_1] is the multiplication of [S¹].
+
     The maps [m_k], for all [k : ℤ], as in the example:
     - [kloop k]: the [k]-loop around [id_S¹], pointwise
       [x ↦ ex(x)(loop^k)] ([kloop_pw]), made a 2-loop at [refl_{S¹}]
@@ -926,16 +942,22 @@ Section MEqvZ.
     exact (equiv_ap (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 refl refl).
   Defined.
 
-  (** [(refl_{S¹} = refl_{S¹}) ≃ ∏_x (x = x)]: univalence and function
-      extensionality. *)
-  Definition ua_step : (refl S1 = refl S1) ≃ (forall x : S1, x = x).
+  (** [(refl_{S¹} = refl_{S¹}) ≃ (id_{S¹} = id_{S¹})]: univalence, and
+      that [equiv_fun] is an embedding. *)
+  Definition ua0_step : (refl S1 = refl S1) ≃ ((fun x : S1 => x) = (fun x => x)).
   Proof.
     apply Eqv_of_Equiv.
-    refine (equiv_compose' (equiv_path_forall (fun x : S1 => x) (fun x => x))^-1 _).
     refine (equiv_compose' (Build_Equiv _ _ (ap (x := equiv_path S1 S1 refl)
               (y := equiv_path S1 S1 refl) (@equiv_fun S1 S1)) _) _).
     exact (equiv_ap (equiv_equiv_path S1 S1) refl refl).
   Defined.
+
+  (** [(id_{S¹} = id_{S¹}) ≃ ∏_x (x = x)]: function extensionality. *)
+  Definition funext_step : ((fun x : S1 => x) = (fun x => x)) ≃ (forall x : S1, x = x)
+    := Eqv_of_Equiv (equiv_path_forall (fun x : S1 => x) (fun x => x))^-1.
+
+  Definition ua_step : (refl S1 = refl S1) ≃ (forall x : S1, x = x)
+    := Eqv_comp ua0_step funext_step.
 
   (** [∏_x (x = x) ≃ (base = base)]: evaluation at [base]
       ([xca:(S1->S1)_(f)-eqv-S1]). *)
@@ -1159,5 +1181,120 @@ Section MEqvZ.
        @ loops_reading_dgZ2 _ (eP_k _) (eQ_k _) k eQ'
        @ ap (fun g => loopexp g (toInt k)) reading_m_1
        @ (reading_m_k_any k eP eQ)^.
+
+  (** *** The direct equivalence [M ≃ Σ_{h : S¹ × S¹ → S¹} (id = h(base,-))]
+
+      [ΩB²ℤ] is the component of [refl] in [S¹ = S¹], which by univalence
+      is the component of [id] in [S¹ → S¹]: the map [j] below is an
+      embedding with that image.  Since [S¹] is connected, postcomposing
+      with [j] is an equivalence [(S¹ →* ΩB²ℤ) ≃ (S¹ →* (S¹ → S¹, id))];
+      we show this via [evp], which turns postcomposition into [ap_j]. *)
+  Definition jmap (r : pt B2Z = pt B2Z) : S1 -> S1 := transport idmap (ap pr1 r).
+
+  Definition IdS1 : Ustar := ((S1 -> S1); (fun x => x)).
+
+  (** Postcomposition with [j] (pointed by [ap_j]). *)
+  Definition post (g : S1star →* loops B2Z) : S1star →* IdS1
+    := ((fun z => jmap (fst g z)); ap jmap (snd g)).
+
+  Local Definition ap4 {A1 A2 A3 A4 A5 : Type} (h1 : A1 -> A2) (h2 : A2 -> A3)
+    (h3 : A3 -> A4) (h4 : A4 -> A5) {a a' : A1} (x : a = a')
+    : ap (fun r => h4 (h3 (h2 (h1 r)))) x = ap h4 (ap h3 (ap h2 (ap h1 x))).
+  Proof. destruct x. exact refl. Defined.
+
+  (** [ap_j] on 2-loops is [ua0_step ∘ sigma_step]. *)
+  Definition ap_jmap_eq (x : refl (pt B2Z) = refl (pt B2Z))
+    : ap jmap x = fst ua0_step (fst sigma_step x).
+  Proof.
+    change (ap jmap x = ap (@equiv_fun S1 S1) (ap (equiv_path S1 S1)
+              ((equiv_path_sigma_hprop
+                (P := fun p : S1 = S1 => transport (fun X => Tr 0 (S1 = X)) p (tr refl) = tr refl)
+                (refl; refl) (refl; refl))^-1
+                 (ap (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 x)))).
+    refine (ap4 (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 pr1 (equiv_path S1 S1)
+              (@equiv_fun S1 S1) x @ _).
+    apply (ap (ap (@equiv_fun S1 S1))). apply (ap (ap (equiv_path S1 S1))).
+    exact (inv_path_sigma_hprop_pr1 _ _ _)^.
+  Defined.
+
+  Definition ap_jmap_isEquiv
+    : isEquiv (fun x : refl (pt B2Z) = refl (pt B2Z) => ap jmap x).
+  Proof.
+    refine (isEquiv_homotopic (fst (Eqv_comp sigma_step ua0_step)) _ _
+              (snd (Eqv_comp sigma_step ua0_step))).
+    intro x. exact (ap_jmap_eq x)^.
+  Defined.
+
+  Local Definition ap_conj {X Y : Type} (f : X -> Y) {a x : X} (u : a = x) (l : x = x)
+    : (ap f u)⁻¹ ⋅ (ap f l ⋅ ap f u) = ap f (u⁻¹ ⋅ (l ⋅ u)).
+  Proof. destruct u. exact (ap (ap f) (trans_1p l)⁻¹ ⋅ trans_1p (ap f l)). Defined.
+
+  Definition evp_post (g : S1star →* loops B2Z)
+    : evp _ (post g) = ap jmap (evp _ g).
+  Proof.
+    destruct g as [h e].
+    refine (_ ⋅ ap (fun l => (ap jmap e)⁻¹ ⋅ (l ⋅ ap jmap e))
+                   (ap_compose h jmap loop)).
+    exact (ap_conj jmap e (ap h loop)).
+  Defined.
+
+  Definition post_isEquiv : isEquiv post.
+  Proof.
+    pose (ev1 := IsEquiv_of_isEquiv (evp_isEquiv (pt IdS1))).
+    pose (ev0 := IsEquiv_of_isEquiv (evp_isEquiv (refl (pt B2Z)))).
+    pose (aj := IsEquiv_of_isEquiv ap_jmap_isEquiv).
+    assert (c : IsEquiv (fun g => evp (pt IdS1) (post g))).
+    { refine (isequiv_homotopic (fun g => ap jmap (evp _ g)) _).
+      intro g. exact (evp_post g)^. }
+    exact (isEquiv_of_IsEquiv _ (H := @cancelL_isequiv _ _ _ (evp (pt IdS1)) post ev1 c)).
+  Defined.
+
+  Definition post_eqv : (S1star →* loops B2Z) ≃ (S1star →* IdS1) := (post; post_isEquiv).
+
+  (** Uncurrying. *)
+  Definition uncurry_eqv
+    : (S1star →* IdS1) ≃ {h : S1 * S1 -> S1 & (fun x => x) = (fun w => h (base, w))}.
+  Proof.
+    apply Eqv_of_Equiv.
+    exact (equiv_functor_sigma' (equiv_uncurry S1 S1 S1) (fun g => equiv_idmap _)).
+  Defined.
+
+  Definition M_eqv_mult
+    : M ≃ {h : S1 * S1 -> S1 & (fun x => x) = (fun w => h (base, w))}
+    := Eqv_comp M_eqv_loops (Eqv_comp loops_cst_eqv (Eqv_comp post_eqv uncurry_eqv)).
+
+  (** The image of [m_k]: [h_k(z,-)] goes once around [id_S¹] along the
+      [k]-loop [x ↦ ex(x)(loop^k)] as [z] goes around [loop]; for [k = 1]
+      this is the multiplication of [S¹]. *)
+  Definition h_k (k : ℤ) : S1 -> S1 -> S1
+    := S1_rec (S1 -> S1) (fun x => x) (path_forall _ _ (kloop_pw k)).
+
+  Definition ap_jmap_kloop (k : ℤ) : ap jmap (kloop k) = path_forall _ _ (kloop_pw k).
+  Proof.
+    refine (ap_jmap_eq _ @ _).
+    refine (ap (fst ua0_step) (eqinv_r (snd sigma_step) _) @ _).
+    refine ((eta_path_forall _ _ _)^ @ _).
+    exact (ap (path_forall _ _) (eqinv_r (snd ua_step) (kloop_pw k))).
+  Defined.
+
+  Definition jmap_S1_rec (k : ℤ)
+    : (fun z => jmap (S1_rec _ refl (kloop k) z)) = h_k k.
+  Proof.
+    refine (S1_fun_path (f := fun z => jmap (S1_rec _ refl (kloop k) z)) (g := h_k k) refl _).
+    refine ((ap_compose _ jmap loop) @ ap (ap jmap) (S1_rec_loop _ refl (kloop k)) @ _).
+    refine (ap_jmap_kloop k @ _).
+    exact ((S1_rec_loop _ _ _)^ @ (trans_1p _)^).
+  Defined.
+
+  Definition M_eqv_mult_m (k : ℤ)
+    : fst (fst M_eqv_mult (m_k k)) = uncurry (h_k k).
+  Proof.
+    change (fst (fst uncurry_eqv (post (fst loops_cst_eqv
+              (evp _ (evp_inv _ (eqinv (snd loops_cst_eqv) (dg_k' k))))))) = uncurry (h_k k)).
+    refine (ap (fun l => fst (fst uncurry_eqv (post (fst loops_cst_eqv l))))
+              (evp_evp_inv _ _) @ _).
+    refine (ap (fun d => fst (fst uncurry_eqv (post d))) (eqinv_r (snd loops_cst_eqv) _) @ _).
+    exact (ap uncurry (jmap_S1_rec k)).
+  Defined.
 
 End MEqvZ.
