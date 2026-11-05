@@ -5,7 +5,9 @@
     Only Section 13.1 ([S01_Rings.v]) has been started, with the
     questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]: the 2-loop
     of a square of loops is bilinear, and swapping the arguments of a
-    function of two variables inverts it, so [swap(m_k) = m_{-k}]; the
+    function of two variables inverts it, so [swap(m_k) = m_{-k}], also
+    as an identification in [M] ([swap_m_k], with [swap] on [M] defined
+    directly, [swapM]); the
     equivalence [M ≃ ℤ] of that example sends [m_k] to [k], and the
     w-outer reading of [m_k] is [γ^k] with [γ] that of [m_1], also as
     [m_1] precomposed with the degree [k] map, for all [k : ℤ]; and

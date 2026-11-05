@@ -171,7 +171,26 @@
       identifications; [reading_m_1_dgZ1], [reading_m_1_dgZ2] ([TBD1] for
       all [k : ℤ]): the readings of [m_1 ∘ (dg_k × id)] and
       [m_1 ∘ (id × dg_k)] equal that of [m_k].  The sign and the bilinearity are independent of all
-    of this: they hold for any [F]. *)
+    of this: they hold for any [F].
+
+    [TBD2] in [M]: [swap(m_k) = m_{-k}] ([swap_m_k]):
+    - [swapM]: the map [swap] of [con:swap-ptd-doms] for [M], defined
+      directly, with [swap(m)(w) :≡ (z ↦ m(z)(w))] pointed by
+      [ptw(fst(m_pt))(w)], and the outer pointing path with function part
+      [funext(z ↦ m(z)_pt)]; no property claimed in that construction is
+      used.  Its function of two variables is [swap2] of that of [m]
+      ([swapM_fun], by definition).
+    - [M_eqv_Z_swap]: [M_eqv_Z(swap(m_k)) = -k].  [M_eqv_Z] reads off the
+      w-outer reading ([reading_lc]) after the identification
+      [swap(m_k) = evp⁻¹(evp(swap(m_k)))] ([evp_inv_evp]); readings are
+      transported along identifications of functions of two variables
+      ([loops_reading_trp]), here along a loop at [pt] in [B²ℤ], which
+      changes nothing since [B²ℤ] is simply connected
+      ([B2Z_loop_merely_refl], [omega2_trp]); then the sign lemma
+      [loops_reading_swap], [reading_m_k], and [kloop(-k) = (kloop k)⁻¹]
+      ([kloop_neg], from [loopexp_neg]).
+    - [swap_m_k]: since [M_eqv_Z] is an equivalence and
+      [M_eqv_Z(m_{-k}) = -k] ([M_eqv_Z_m]). *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -1300,5 +1319,131 @@ Section MEqvZ.
     refine (ap (fun d => fst (fst uncurry_eqv (post d))) (eqinv_r (snd loops_cst_eqv) _) @ _).
     exact (ap uncurry (jmap_S1_rec k)).
   Defined.
+
+
+  (** *** [TBD2] in [M]: [swap(m_k) = m_{-k}]
+
+      [swapM] is the map [swap] of [con:swap-ptd-doms] for [M], defined
+      directly (none of the properties claimed in that construction are
+      used): [swap(m)(w) :≡ (z ↦ m(z)(w))], pointed by [m'_pt(w)] (with
+      [m'_pt :≡ ptw(fst(m_pt))]), and [swap(m)] pointed by the
+      identification [c = swap(m)(base)] whose function part is
+      [funext(z ↦ m(z)_pt)].  By definition the underlying function of
+      two variables of [swap(m)] is [swap2] of that of [m]. *)
+  Local Definition trp_ptb {f g : S1 -> utype B2Z} (φ : f = g) (u : pt B2Z = f base)
+    : transport (fun f : S1 -> utype B2Z => pt B2Z = f base) φ u = apD10 φ base ⋅ u.
+  Proof. destruct φ. exact refl. Defined.
+
+  Local Definition pt_coh (y : utype (pmap_ptd S1star B2Z)) (e : pt (pmap_ptd S1star B2Z) = y)
+    : snd y = apD10 (ap fst e) base.
+  Proof. destruct e. exact refl. Defined.
+
+  Definition swap_inner (m : M) (w : S1) : utype (pmap_ptd S1star B2Z)
+    := (fun z => fst (fst m z) w; apD10 (ap fst (snd m)) w).
+
+  Definition swapM (m : M) : M.
+  Proof.
+    refine (swap_inner m; _).
+    refine (path_sigma' (fun f : S1 -> utype B2Z => pt B2Z = f base)
+              (path_forall (fun _ => pt B2Z) (fun z => fst (fst m z) base) (fun z => snd (fst m z))) _).
+    refine (trp_ptb (f := fun _ => pt B2Z) (g := fun z => fst (fst m z) base) _ (refl (pt B2Z)) @ _).
+    refine (trans_1p _ @ _).
+    exact (apD10_path_forall (fun _ => pt B2Z) (fun z => fst (fst m z) base)
+             (fun z => snd (fst m z)) base @ pt_coh (fst m base) (snd m)).
+  Defined.
+
+  Definition swapM_fun (m : M)
+    : (fun z w => fst (fst (swapM m) z) w) = swap2 (fun z w => fst (fst m z) w)
+    := refl.
+
+  (** Readings along an identification of functions of two variables are
+      transported along its value at the base points. *)
+  Definition loops_reading_trp {A B C : Type} {F F' : A -> B -> C} (ρ : F = F')
+    {a : A} {b : B} (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q)
+    (eP' : refl = ap (fun z => F' z b) p) (eQ' : refl = ap (F' a) q)
+    : loops_reading F' p q eP' eQ'
+      = transport (fun c => refl c = refl c) (ap (fun G => G a b) ρ) (loops_reading F p q eP eQ).
+  Proof. destruct ρ. exact (loops_reading_indep _ _ _ _ _ _ _). Defined.
+
+  (** [B²ℤ] is simply connected: every loop at [pt] is merely [refl]. *)
+  Local Definition trp_Tr_refl {X : Type} (p : S1 = X)
+    : transport (fun X => Tr 0 (S1 = X)) p (tr refl) = tr p.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition B2Z_loop_merely_refl (δ : pt B2Z = pt B2Z) : Tr (-1) (δ = refl).
+  Proof.
+    pose (s := (trp_Tr_refl δ..1)^ @ δ..2 : tr δ..1 = tr refl :> Tr 0 (S1 = S1)).
+    refine (Trunc_functor (-1) _ ((equiv_path_Tr _ _)^-1 s)). intro r.
+    refine ((eta_path_sigma δ)^ @ _).
+    revert r. generalize (δ..2). generalize (δ..1). intros p q r.
+    pose (r' := r^). clearbody r'. clear r. revert q. destruct r'. intro q.
+    refine (ap (path_sigma _ (pt B2Z) (pt B2Z) refl) (y := refl) _).
+    apply path_ishprop.
+  Defined.
+
+  Definition omega2_trp (δ : pt B2Z = pt B2Z) (x : refl (pt B2Z) = refl (pt B2Z))
+    : fst omega2_B2Z_eqv (transport (fun c => refl c = refl c) δ x) = fst omega2_B2Z_eqv x.
+  Proof.
+    refine (@Trunc_rec (-1) _ _ (isSet_IsHSet ℤ_isSet _ _) _ (B2Z_loop_merely_refl δ)).
+    intro r. exact (ap (fun d => fst omega2_B2Z_eqv (transport (fun c => refl c = refl c) d x)) r).
+  Defined.
+
+  (** Integer powers of an inverse. *)
+  Local Definition loopexp_neg_succ {X : Type} {x : X} (p : x = x) (y : Int)
+    (IH : loopexp p (int_neg y) = (loopexp p y)^)
+    : loopexp p (int_neg (int_succ y)) = (loopexp p (int_succ y))^
+    := ap (loopexp p) (int_neg_succ y) @ loopexp_pred_r p _ @ ap (fun r => r @ p^) IH
+       @ (inv_pp p _)^ @ ap inverse (loopexp_succ_l p y)^.
+
+  Local Definition loopexp_neg_pred {X : Type} {x : X} (p : x = x) (y : Int)
+    (IH : loopexp p (int_neg y) = (loopexp p y)^)
+    : loopexp p (int_neg (int_pred y)) = (loopexp p (int_pred y))^
+    := ap (loopexp p) (int_neg_pred y) @ loopexp_succ_r p _ @ ap (fun r => r @ p) IH
+       @ ap (fun r => _ @ r) (inv_V p)^ @ (inv_pp p^ _)^ @ ap inverse (loopexp_pred_l p y)^.
+
+  Definition loopexp_neg {X : Type} {x : X} (p : x = x) (z : Int)
+    : loopexp p (int_neg z) = (loopexp p z)^.
+  Proof.
+    induction z as [|z IH|z IH] using Int_ind.
+    - exact refl.
+    - exact (loopexp_neg_succ p _ IH).
+    - exact (loopexp_neg_pred p _ IH).
+  Defined.
+
+  Definition kloop_neg (k : ℤ) : kloop (zneg k) = (kloop k)^.
+  Proof.
+    apply Psi_inj.
+    refine (Psi_kloop _ @ _ @ (ap_V _ (kloop k))^).
+    refine (ap (loopexp loop) (toInt_zneg k) @ loopexp_neg loop (toInt k) @ _).
+    exact (ap inverse (Psi_kloop k))^.
+  Defined.
+
+  (** [M_eqv_Z(swap(m_k)) = -k]: [M_eqv_Z] reads off the w-outer
+      reading ([reading_lc], after the identification
+      [swap(m_k) = evp⁻¹(evp(swap(m_k)))]); the w-outer reading of
+      [swap(m_k)] is that of [swap2(F_k)], which is the inverse of that of
+      [F_k] ([loops_reading_swap]), i.e. of [kloop k] ([reading_m_k]). *)
+  Definition M_eqv_Z_swap (k : ℤ) : fst M_eqv_Z (swapM (m_k k)) = zneg k.
+  Proof.
+    pose (l' := evp _ (swapM (m_k k))).
+    pose (ρ := ap (fun X : M => fun z w => fst (fst X z) w) (evp_inv_evp _ (swapM (m_k k)))^
+               : swap2 (F_k k) = F_of B2Z l').
+    change (fst omega2_B2Z_eqv (evp _ (fst (lc_eqv B2Z) l')) = zneg k).
+    refine (ap (fst omega2_B2Z_eqv) (reading_lc B2Z l')^ @ _).
+    refine (ap (fst omega2_B2Z_eqv)
+              (loops_reading_trp ρ loop loop (eQ_k k) (eP_k k) (eP_of B2Z l') (eQ_of B2Z l')) @ _).
+    refine (omega2_trp _ _ @ _).
+    refine (ap (fst omega2_B2Z_eqv) (loops_reading_swap (F_k k) loop loop (eP_k k) (eQ_k k)) @ _).
+    refine (ap (fun x => fst omega2_B2Z_eqv x^) (reading_m_k k) @ _).
+    exact (ap (fst omega2_B2Z_eqv) (kloop_neg k)^ @ omega2_kloop (zneg k)).
+  Defined.
+
+  (** [TBD2]: [swap(m_k) = m_{-k}] in [M], since [M_eqv_Z] is an
+      equivalence. *)
+  Definition swap_m_k (k : ℤ) : swapM (m_k k) = m_k (zneg k)
+    := (eqinv_l (snd M_eqv_Z) _)^
+       @ ap (eqinv (snd M_eqv_Z)) (M_eqv_Z_swap k @ (M_eqv_Z_m (zneg k))^)
+       @ eqinv_l (snd M_eqv_Z) _.
 
 End MEqvZ.
