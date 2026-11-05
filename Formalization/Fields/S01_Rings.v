@@ -125,6 +125,10 @@
       [z] is used up by evaluation at [loop]), the second is a point of
       [ΩB²ℤ ≃ S¹]; so the swap of [m] is not the swap of the variables of
       [h].
+    - [h_k_sigma] ([TBD1] in the Σ-type): [(h_k, refl) = (h_1 ∘ (dg_k × id),
+      refl)], i.e. [h_k(w,u) = h_1(w^k,u)] ([h_dg], [h_k_dg]: on [loop],
+      [ap_{h_1 ∘ dg_k}(loop) = (ap_{h_1}(loop))^k] is [funext] of the
+      [k]-loop, [h_k_loop]; the base component is [refl], [h_k_dg_base]).
 
     The maps [m_k], for all [k : ℤ], as in the example:
     - [kloop k]: the [k]-loop around [id_S¹], pointwise
@@ -1318,6 +1322,47 @@ Section MEqvZ.
               (evp_evp_inv _ _) @ _).
     refine (ap (fun d => fst (fst uncurry_eqv (post d))) (eqinv_r (snd loops_cst_eqv) _) @ _).
     exact (ap uncurry (jmap_S1_rec k)).
+  Defined.
+
+
+  (** [TBD1] in the Σ-type: [h_k(w,u) = h_1(w^k,u)], with [w^k :≡ dg_k(w)]
+      ([dgZ]).  Both have [h(base,-) ≡ id], so both are elements
+      [(h, refl)] of [Σ_{h : S¹ × S¹ → S¹} (id = h(base,-))], and they are
+      identified there ([h_k_sigma]).  On [loop]: [ap_{h_1 ∘ dg_k}(loop)
+      = (ap_{h_1}(loop))^k] ([ap_loopexp]), which is [funext] of the
+      [k]-loop by [ap_jmap_kloop] and [kloop k = γ^k] ([kloop_pow]). *)
+  Definition h_dg (k : ℤ) : S1 -> S1 -> S1 := fun w u => h_k (iplus 1) (dgZ k w) u.
+
+  Definition h_k_loop (k : ℤ)
+    : path_forall _ _ (kloop_pw k) = ap (h_dg k) loop.
+  Proof.
+    refine ((ap_jmap_kloop k)^ @ ap (ap jmap) (kloop_pow k) @ ap_loopexp jmap gamma (toInt k) @ _).
+    refine (ap (fun r => loopexp r (toInt k)) (ap_jmap_kloop (iplus 1)) @ _).
+    refine (ap (fun r => loopexp r (toInt k)) (S1_rec_loop _ _ _)^ @ _).
+    refine ((ap_loopexp (h_k (iplus 1)) loop (toInt k))^ @ _).
+    refine (ap (ap (h_k (iplus 1))) (S1_rec_loop S1 base (loopZ k))^ @ _).
+    exact (ap_compose (dgZ k) (h_k (iplus 1)) loop)^.
+  Defined.
+
+  Definition h_k_dg (k : ℤ) : h_k k = h_dg k
+    := S1_fun_path (f := h_k k) (g := h_dg k) refl
+         (S1_rec_loop _ _ _ @ h_k_loop k @ (trans_1p _)^).
+
+  Definition h_k_dg_base (k : ℤ) : ap (fun f => f base) (h_k_dg k) = refl.
+  Proof.
+    refine ((apD10_ap_ev _ base)^ @ _).
+    exact (ptw (eqinv_r (funext (h_k k) (h_dg k)) _) base).
+  Defined.
+
+  Definition h_k_sigma (k : ℤ)
+    : ((uncurry (h_k k); refl) : {h : S1 * S1 -> S1 & (fun x => x) = (fun w => h (base, w))})
+      = (uncurry (h_dg k); refl).
+  Proof.
+    refine (path_sigma' _ (ap uncurry (h_k_dg k)) _).
+    refine (@transport_paths_Fr _ _ (fun h : S1 * S1 -> S1 => fun w => h (base, w))
+              _ _ (fun x => x) (ap uncurry (h_k_dg k)) refl @ concat_1p _ @ _).
+    refine ((ap_compose uncurry (fun h => fun w => h (base, w)) (h_k_dg k))^ @ _).
+    exact (h_k_dg_base k).
   Defined.
 
 
