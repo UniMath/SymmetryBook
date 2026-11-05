@@ -11,13 +11,22 @@
       book, [MonoFam G (sh G)] and [SubFam G (sh G)] are [Mono] and
       [SubGrp] of [mkgroup(BG_÷, sh_G)], which for [SubFam] is [SubGrp G]
       by definition.
+    - With propositional resizing they are [G]-sets as in the book
+      ([SubG_GSet], [MonoG_GSet], with [el_SubG_eqv], [el_MonoG_eqv];
+      [SubG_res], [MonoG_res] from the resizing principles): a subgroup is
+      determined by its stabilizer subset of [USym G] ([stab],
+      [stab_isInj], via [trans_reach], [stC], [stE],
+      [stab_SubGrp_path]), so [Sub(G)] is essentially small
+      ([SubGrp_essSmall]).  The action on [Mono(G)] transferred to an
+      [abstr(G)]-set is conjugation ([MonoG_gact]).
     - Remark [rem:action-Mono(G)] ([moveshape], [act_MonoFam]; on
       symmetries [USymf_moveshape]).
     - Lemma [lem:conj-abstract] / exercise [xca:conj-abstract]: the core,
       [USymf_conj_mono]: the conjugate monomorphism has [USym] the
       conjugate [g (USymf f h) g⁻¹].  The transfer of the family to an
-      [abstr(G)]-set through [actions_eqv] (7.6) is not stated (size
-      issue).
+      [abstr(G)]-set through [actions_eqv] (7.6) needs resizing
+      ([MonoG_gact]); the identification of that [abstr(G)]-set with the
+      set of abstract monomorphisms is not formalized.
     - The action of [Sub(G)] ([act_SubFam]); the map [E] ([Emono], [Ez],
       with the transitive [G]-set [fibGSet] of fibers of a monomorphism,
       [fibGSet_trans]).
@@ -85,8 +94,8 @@ Definition USymf_moveshape (G : Group) {z z' : utype (BG G)} (p : z = z') (q : z
     of the lemma, that the conjugate [(H, mkgroup(id, g⁻¹) f)] has
     [USym] the abstract conjugate [conj^g ∘ USymf f]
     ([USymf_conj_mono]).  The transfer of the whole family [Mono(G)] to
-    an [abstr(G)]-set through [actions_eqv] (7.6) is not stated, by the
-    size issue above. *)
+    an [abstr(G)]-set through [actions_eqv] (7.6) needs resizing, see
+    [MonoG_gact] below. *)
 Definition USymf_conj_mono `{fe : Funext} {G H : Group} (f : Hom H (regroup G (sh G)))
   (g : USym G) (h : USym H)
   : USymf (compG (moveshape G g) f) h = g ⋅ (USymf f h ⋅ g⁻¹)
@@ -137,6 +146,180 @@ Definition act_SubFam {G : Group} {z z' : utype (BG G)} (p : z = z') (X : GSet G
   (ht : forall t1 t2 : istrans (G := regroup G z') X, t1 = t2)
   : trp (SubFam G) p (X; (x; t)) = (X; (act X p x; t')).
 Proof. destruct p. exact (ap (fun s => (X; (x; s)) : SubFam G z) (ht t t')). Defined.
+
+(** *** [Sub(G)] and [Mono(G)] as [G]-sets, by propositional resizing
+
+    A subgroup [(X, x)] is determined by its stabilizer subset
+    [g ↦ (g · x = x)] of [USym G] ([stab], [stab_isInj]): if [X] and [X']
+    have the same stabilizer, the relation "[a] and [b] are reached along
+    the same [p : sh_G = z]" ([stC]) is the graph of an equivalence
+    [X(z) ≃ X'(z)] sending [x] to [x'] ([stE], [stab_SubGrp_path]), by
+    transitivity ([trans_reach]).  So [Sub(G)] is a subtype of
+    [USym G → Prop_U]; propositional resizing makes [Prop_U] small
+    ([PropU_small], Section 2.19) and the (large) fibers of [stab]
+    small, hence [Sub(G)] is essentially small ([SubGrp_essSmall]).  This
+    gives [Sub(G)] as an element of [G-Set] ([SubG_GSet], with
+    [el_SubG_eqv]), and [Mono(G)] via [lem:SubG=MonoG] ([MonoG_GSet],
+    [el_MonoG_eqv]); [SubG_res] and [MonoG_res] take the two resizing
+    principles as hypotheses ([w < u < v], for groups in [U = Type@{u}]).
+    The action is transport, so the equivalences with [SubFam] and
+    [MonoFam] are automatically equivariant. *)
+Section StabInj.
+
+  Context `{ua : Univalence} {G : Group}.
+
+  Definition trans_reach (X : GSet G) (t : istrans X) (x : el X (sh G))
+    (z : utype (BG G)) (a : el X z) : Ex (fun p : sh G = z => act X p x = a).
+  Proof.
+    refine (ptrunc_rec ptrunc_isProp _ (snd (BG_isConn G) (sh G) z)). intro q.
+    refine (ptrunc_rec ptrunc_isProp _ t). intros [x0 c].
+    refine (ptrunc_rec ptrunc_isProp _ (c x)). intros [g1 e1].
+    refine (ptrunc_rec ptrunc_isProp _ (c (act X q^ a))). intros [g2 e2].
+    apply trunc. exists ((g1 @ g2^) @ q).
+    exact (transport_pp _ _ _ _ @ ap (act X q) (transport_pp _ _ _ _
+             @ ap (act X g2^) (e1^ @ e2) @ transport_Vp _ _ _) @ transport_pV _ _ _).
+  Defined.
+
+  Context (X X' : GSet G) (x : el X (sh G)) (x' : el X' (sh G))
+    (t : istrans X) (t' : istrans X')
+    (h : forall g : sh G = sh G, act X g x = x -> act X' g x' = x')
+    (h' : forall g : sh G = sh G, act X' g x' = x' -> act X g x = x).
+
+  Definition stC (z : utype (BG G)) (a : el X z) (b : el X' z) : Type
+    := Ex (fun p : sh G = z => (act X p x = a) × (act X' p x' = b)).
+
+  Definition stC_uniq {z} {a : el X z} {b b' : el X' z} (c : stC z a b) (c' : stC z a b')
+    : b = b'.
+  Proof.
+    refine (ptrunc_rec (el_isSet X' z _ _) _ c). intros [p [ea eb]].
+    refine (ptrunc_rec (el_isSet X' z _ _) _ c'). intros [q [ea' eb']].
+    pose (E := transport_pp _ p q^ x @ ap (act X q^) (ea @ ea'^) @ transport_Vp _ _ _
+               : act X (p @ q^) x = x).
+    exact (eb^ @ (transport_pV _ q _)^ @ ap (act X' q) ((transport_pp _ p q^ x')^ @ h _ E) @ eb').
+  Defined.
+
+  Definition stC_uniq' {z} {a a' : el X z} {b : el X' z} (c : stC z a b) (c' : stC z a' b)
+    : a = a'.
+  Proof.
+    refine (ptrunc_rec (el_isSet X z _ _) _ c). intros [p [ea eb]].
+    refine (ptrunc_rec (el_isSet X z _ _) _ c'). intros [q [ea' eb']].
+    pose (E := transport_pp _ p q^ x' @ ap (act X' q^) (eb @ eb'^) @ transport_Vp _ _ _
+               : act X' (p @ q^) x' = x').
+    exact (ea^ @ (transport_pV _ q _)^ @ ap (act X q) ((transport_pp _ p q^ x)^ @ h' _ E) @ ea').
+  Defined.
+
+  Definition stF (z : utype (BG G)) (a : el X z) : {b : el X' z & stC z a b}.
+  Proof.
+    refine (ptrunc_rec _ _ (trans_reach X t x z a)).
+    - intros [b c] [b' c']. exact (path_sigma_prop (fun _ => ptrunc_isProp) (u := (b; c)) (v := (b'; c')) (stC_uniq c c')).
+    - intros [p e]. exact (act X' p x'; trunc (p; (e; refl))).
+  Defined.
+
+  Definition stB (z : utype (BG G)) (b : el X' z) : {a : el X z & stC z a b}.
+  Proof.
+    refine (ptrunc_rec _ _ (trans_reach X' t' x' z b)).
+    - intros [a c] [a' c']. exact (path_sigma_prop (fun _ => ptrunc_isProp) (u := (a; c)) (v := (a'; c')) (stC_uniq' c c')).
+    - intros [p e]. exact (act X p x; trunc (p; (refl; e))).
+  Defined.
+
+  Definition stE (z : utype (BG G)) : el X z ≃ el X' z.
+  Proof.
+    refine (mkEqv (fun a => fst (stF z a)) (fun b => fst (stB z b)) _ _).
+    - intro a. exact (stC_uniq' (snd (stB z _)) (snd (stF z a))).
+    - intro b. exact (stC_uniq (snd (stF z _)) (snd (stB z b))).
+  Defined.
+
+  Definition stab_SubGrp_path : ((X; (x; t)) : SubGrp G) = (X'; (x'; t')).
+  Proof.
+    refine (SubGrp_path (path_GSet stE) _).
+    refine (trp_path_GSet stE (sh G) x @ _).
+    exact (stC_uniq (snd (stF (sh G) x)) (trunc (refl; (refl; refl)))).
+  Defined.
+
+End StabInj.
+
+Definition stab `{ua : Univalence} {G : Group} (S : SubGrp G) : USym G -> PropU
+  := fun g => ((act (sg_X S) g (sg_pt S) = sg_pt S); el_isSet (sg_X S) (sh G) _ _).
+
+Definition stab_isInj `{ua : Univalence} {G : Group} : isInj (@stab _ G).
+Proof.
+  refine (cancel_isInj (Pi_isSet (fun _ => PropU_isSet)) _).
+  intros [X [x t]] [X' [x' t']] e.
+  refine (stab_SubGrp_path X X' x x' t t' _ _).
+  - intros g. exact (trp idmap (ap fst (ptw e g))).
+  - intros g. exact (trp idmap (ap fst (ptw e g))^).
+Defined.
+
+Section SubSmall.
+  Context `{ua : Univalence} (Ωs : essSmall PropU) (rs : forall Q : PropU, essSmall (fst Q))
+    (G : Group).
+
+  Definition SubGrp_essSmall : essSmall (SubGrp G).
+  Proof.
+    pose (e := snd Ωs).
+    pose (F := fun P : USym G -> PropU => fiber (@stab _ G) P).
+    pose (Fp := fun P => ((F P; stab_isInj P) : PropU)).
+    refine (essSmall_Eqv _ ({p : USym G -> fst Ωs & fst (rs (Fp (fun g => eqinv (snd e) (p g))))}; _)).
+    - exact (Eqv_inv (sum_of_fibers (@stab _ G))).
+    - refine (Eqv_comp (Eqv_of_Equiv (equiv_functor_sigma_pb (Q := F)
+                (Equiv_of_Eqv (Pi_eqv (fun _ => Eqv_inv e))))^-1) _).
+      exact (Eqv_of_Equiv (equiv_functor_sigma_id (fun p => Equiv_of_Eqv (snd (rs (Fp _)))))).
+  Defined.
+
+End SubSmall.
+
+Section SubMonoGSet.
+
+  Context `{ua : Univalence} (Ωs : essSmall PropU) (rs : forall Q : PropU, essSmall (fst Q))
+    (G : Group).
+
+  Local Notation sS z := (SubGrp_essSmall Ωs rs (regroup G z)).
+
+  Definition SubG_GSet : GSet G
+    := fun z => (fst (sS z); is_ntype_Eqv 0 (snd (sS z)) (SubGrp_isSet (regroup G z))).
+
+  Definition el_SubG_eqv (z : utype (BG G)) : el SubG_GSet z ≃ SubFam G z := Eqv_inv (snd (sS z)).
+
+  Definition MonoSub_eqv (z : utype (BG G)) : MonoFam G z ≃ SubFam G z
+    := Eqv_inv (subgrp_to_mono; lem_SubG_MonoG (regroup G z)).
+
+  Definition MonoG_GSet : GSet G := SubG_GSet.
+
+  Definition el_MonoG_eqv (z : utype (BG G)) : el MonoG_GSet z ≃ MonoFam G z
+    := Eqv_comp (el_SubG_eqv z) (Eqv_inv (MonoSub_eqv z)).
+
+  (** Lemma [lem:conj-abstract], the transfer: under [actions_eqv]
+      (7.6), the [abstr(G)]-set of the [G]-set [Mono(G)] acts by
+      conjugation, [g · (H, f) = (H, mkgroup(id, g⁻¹) f)], whose [USym]
+      is [conj^g ∘ USymf f] ([USymf_conj_mono]). *)
+  Definition MonoG_gact (g : USym G) (H : Group) (f : Hom H (regroup G (sh G))) (m : ismono f)
+    (m' : ismono (compG (moveshape G g) f))
+    : gact (fst (actions_eqv G) MonoG_GSet) g (eqinv (snd (el_MonoG_eqv (sh G))) (H; (f; m)))
+      = eqinv (snd (el_MonoG_eqv (sh G))) (H; (compG (moveshape G g) f; m')).
+  Proof.
+    pose (F := fun z => eqinv (snd (el_MonoG_eqv z))).
+    assert (nat : forall (z z' : utype (BG G)) (p : z = z') (a : MonoFam G z),
+               trp (el MonoG_GSet) p (F z a) = F z' (trp (MonoFam G) p a)).
+    { intros z z' p a. destruct p. exact refl. }
+    exact (actions_eqv_gact G MonoG_GSet g _ @ nat _ _ g _ @ ap (F (sh G)) (act_MonoFam g H f m m')).
+  Defined.
+
+End SubMonoGSet.
+
+Section SubMonoRes.
+
+  Universes w u v.
+  Constraint w < u.
+  Constraint u < v.
+
+  Context `{ua : Univalence} (r1 : isEquiv lift_uv@{w u _ _ _ _ _})
+    (r2 : isEquiv lift_uv@{u v _ _ _ _ _}).
+
+  Definition SubG_res (G : Group) : GSet G := SubG_GSet (PropU_small r1) (resizing_essSmall r2) G.
+
+  Definition MonoG_res (G : Group) : GSet G := MonoG_GSet (PropU_small r1) (resizing_essSmall r2) G.
+
+End SubMonoRes.
 
 (** The definition of [E : Hom_G(Mono(G), Sub(G))],
     [E_z(H, f) :≡ ((Bf)⁻¹, (sh_H, Bf_pt))]: the fibers of [Bf] form a

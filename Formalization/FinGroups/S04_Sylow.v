@@ -6,8 +6,11 @@
     ** Summary of this formalization
 
     - Definition [def:sylowsubgroup] ([isSylow], [Syl]); [Syl_G^p] is a
-      subtype of [Sub(G)], not a [G]-subset (size issue, Section 9.4);
-      the conjugates of a subgroup ([Conj]).
+      subtype of [Sub(G)]; with propositional resizing also the book's
+      [G]-subset of the [G]-set [Sub(G)] ([Syl_GSet], with [Syl_GSet_sh],
+      from [SubG_GSet] of Section 9.4); the conjugates of a subgroup
+      ([Conj]).  The theorems below are stated with [Syl] and transport in
+      [SubFam].
 
     Left out (statements only)
     - Theorems [thm:sylow1], [thm:sylow2] (= [lem:sylowsareconjugates])
@@ -47,6 +50,31 @@ Section SylowDef.
          × ¬ NatDivides (nat_pow p (S n)) (fcard (USym G))}}.
 
   Definition Syl : Type := {K : SubGrp G & isSylow K}.
+
+  (** With propositional resizing ([SubG_GSet], Section 9.4), [Syl_G^p] is
+      the [G]-subset of [Sub(G)] of the book: at [z] the subgroups of
+      [mkgroup(BG_÷, z)] whose order is the largest power of [p] dividing
+      the order of [G] (truncated, to have a subset).  At [sh_G] its
+      elements are those of [Syl], up to truncation of [isSylow]
+      ([Syl_GSet_sh]). *)
+  Definition isSylowN {G' : Group} (K : SubGrp G') : Type
+    := {FK : Finite (USym (subgrp_group K)) & {n : ℕ &
+         (fcard (USym (subgrp_group K)) = nat_pow p n)
+         × ¬ NatDivides (nat_pow p (S n)) (fcard (USym G))}}.
+
+  Definition isSylowN_sh (K : SubGrp G) : isSylowN K = isSylow K := refl.
+
+  Context (Ωs : essSmall PropU) (rs : forall Q : PropU, essSmall (fst Q)).
+
+  Definition Syl_GSet : GSet G
+    := fun z => ({K : el (SubG_GSet Ωs rs G) z &
+                    ptrunc (isSylowN (fst (el_SubG_eqv Ωs rs G z) K))};
+                 Sigma_isSet (el_isSet _ z) (fun _ => prop_is_set ptrunc_isProp)).
+
+  Definition Syl_GSet_sh
+    : el Syl_GSet (sh G) ≃ {K : SubGrp G & ptrunc (isSylow K)}
+    := Eqv_of_Equiv (equiv_functor_sigma' (Equiv_of_Eqv (el_SubG_eqv Ωs rs G (sh G)))
+                                          (fun _ => equiv_idmap)).
 
   (** The conjugates of a subgroup: its orbit in [Sub(G)]. *)
   Definition Conj (K : SubGrp G) : Type

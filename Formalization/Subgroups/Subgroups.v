@@ -23,9 +23,9 @@
     run into size issues, documented in the section files.  Replacement
     resizes quotient groups and [Aut(G)] ([QG_small], [AutGrp_small]),
     which gives [lem:qeq] in the book's form ([lem_qeq_full], for
-    surjective homomorphisms); [Mono(G)] and [Sub(G)] are like power sets
-    (not images of a small type), so replacement alone does not resize
-    them; propositional resizing would. *)
+    surjective homomorphisms); propositional resizing makes [Sub(G)] and
+    [Mono(G)] [G]-sets as in the book ([SubG_GSet], [MonoG_GSet]), since
+    a subgroup is determined by its stabilizer subset ([stab_isInj]). *)
 
 From SymmetryBook Require Export
   Subgroups.S02_Epis

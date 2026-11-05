@@ -21,7 +21,10 @@
       identification is transport along the pointing path of [Bf].
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Exercise [xca:f_!-abs(f)_!] ([xca_induce_abstr_stmt]).
+    - Exercise [xca:f_!-abs(f)_!] ([xca_induce_abstr_stmt]), up to
+      isomorphism; with replacement the book's form as an identification
+      ([xca_induce_abstr_path_stmt]) follows from it
+      ([xca_induce_abstr_path]).
  *)
 
 From HoTT Require Import
@@ -137,7 +140,8 @@ Defined.
 (** Exercises [xca:f^*-abs(f)^*] and [xca:f_!-abs(f)_!] (the second
     stated only): [ev] commutes with restriction and with induction (the latter
     up to isomorphism, with [φ_!] from Section 7.4, which lives in a
-    higher universe). *)
+    higher universe; with replacement, as an identification, see
+    [xca_induce_abstr_path]). *)
 Definition xca_restrict_abstr_stmt `{Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (Y : GSet H),
        fst (actions_eqv G) (restrict f Y) = abs_restrict (abstr_hom f) (fst (actions_eqv H) Y).
@@ -172,3 +176,22 @@ Defined.
 Definition xca_induce_abstr_stmt `{Univalence} : Type
   := forall (G H : Group) (f : Hom G H) (X : GSet G),
        gIso (fst (actions_eqv H) (induce f X)) (phi_shriek (abstr_hom f) (fst (actions_eqv G) X)).
+
+(** With replacement, [xca:f_!-abs(f)_!] can be stated as in the book, as
+    an identification with the resized [φ_!] ([phi_shriek_small],
+    Section 7.4); it follows from the isomorphism form, which is still left
+    out. *)
+Definition xca_induce_abstr_path_stmt `{Univalence} : Type
+  := forall (rep : Replacement) (G H : Group) (f : Hom G H) (X : GSet G),
+       fst (actions_eqv H) (induce f X)
+       = phi_shriek_small rep (abstr_hom f) (fst (actions_eqv G) X).
+
+Definition xca_induce_abstr_path `{ua : Univalence} (i : xca_induce_abstr_stmt)
+  : xca_induce_abstr_path_stmt.
+Proof.
+  intros rep G H f X. apply path_absGSet.
+  pose (j := i G H f X).
+  pose (e := shriek_small_eqv rep (abstr_hom f) (fst (actions_eqv G) X)).
+  refine (Eqv_comp (fst j) e; fun s x => _).
+  exact (ap (fst e) (snd j s x) @ phi_shriek_small_equiv rep (abstr_hom f) _ s _).
+Defined.

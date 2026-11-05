@@ -31,7 +31,9 @@
       system of [Tr n], through an equivalence with the library's record
       [Factorization]; [n_image_fact] is the [n]-image factorization.
     - Exercise [xca:im_preserves_conn] ([im_preserves_conn]).
-    - Theorem [thm:image-Z-to-Cm] ([thm_image_Z_to_Cm], with [q = qZ]),
+    - Theorem [thm:image-Z-to-Cm] ([thm_image_Z_to_Cm], with [q = qZ];
+      with replacement [r ∘ q = -/m] as an identification,
+      [thm_image_Z_to_Cm_path], for the resized [X/m], [modm_small]),
       exercise [xca:image-Z-to-Cm] ([xca_image_Z_to_Cm]: the fiber of [q]
       at the standard [m]-cycle is [Cyc_0]) and exercise
       [xca:image-Cmd-to-Cm] ([xca_image_Cmd_to_Cm], for finite orders
@@ -733,6 +735,22 @@ Proof.
   refine (qZ k; ((fun c => Eqv_inv (QmE k (fst c)); _); r_isnTruncMap k)).
   exact (qmap_isnConnMap k Zcyc Zcyc D0 D0 D0_isProp hZ hZ (rho_Z_path k) (back0 k)
            (qd0 k) (pd0 k)).
+Defined.
+
+(** With replacement (footnote of [def:quotient-set], [quot_essSmall]),
+    the book's [X/m] has a copy in the universe of [X] ([modm_small]),
+    and [r ∘ q = -/m] holds as an identification of maps [Cyc_0 → U]
+    ([thm_image_Z_to_Cm_path]), as in the book. *)
+Definition modm_small `{Univalence} (rep : Replacement) (k : ℕ) (c : Cyc0) : SetU
+  := (fst (quot_essSmall rep (simm k (fst (snd (fst c)))));
+      is_ntype_Eqv 0 (snd (quot_essSmall rep (simm k (fst (snd (fst c)))))) (quot_isSet _)).
+
+Definition thm_image_Z_to_Cm_path `{Univalence} (rep : Replacement) (k : ℕ)
+  : (fun c => fst (fst (fst (qZ k c)))) = (fun c => fst (modm_small rep k c)).
+Proof.
+  apply path_forall. intro c. apply etop.
+  exact (Eqv_comp (fst (fst (snd (thm_image_Z_to_Cm k))) c)
+                  (snd (quot_essSmall rep (simm k (fst (snd (fst c))))))).
 Defined.
 
 (** Exercise [xca:image-Z-to-Cm]: the details of the proof above; the

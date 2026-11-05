@@ -17,6 +17,12 @@ Deviations from Book HoTT and the Coq-HoTT library include:
 - pointing paths and fibers use y = f(x), e.g. f : (X,x) →* (Y,y) has
   pointing path y = f(x)
 
+Size issues: when a construction lands in a larger universe than the book
+intends, the replacement principle ([Replacement], Section 2.19) and
+propositional resizing ([PropResizing], Section 2.18) may be used to
+resize it.  Use them as hypotheses (arguments of the definitions), never
+as Axioms, only where needed, and keep a size-free version if one exists.
+
 If a notion occurs definitionally in the Coq-Hott library, use it to define our notion,
 such as: Definition book_name := library_name. Use book_name henceforth.
 Include the summary that you write after each formalization run as a comment 

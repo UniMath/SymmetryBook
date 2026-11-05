@@ -15,7 +15,9 @@
       under products over a small type.  Other closure properties are not
       investigated.
     - Remark: propositional resizing makes propositions essentially small
-      and sets locally small.
+      and sets locally small ([resizing_essSmall],
+      [resizing_set_locSmall]), and the type of propositions of the
+      larger universe essentially small in it ([PropU_small]).
     - The replacement principle as a definition [Replacement] (used as a
       hypothesis), and exercise [xca:comp-loc-small-ess-small]. *)
 
@@ -164,6 +166,13 @@ Section ResizingSmall.
   Definition resizing_set_locSmall (r : isEquiv lift_uv) (A : Type@{v})
     (s : isSet A) (x y : A) : {X : Type@{u} & (x = y) ≃ X}
     := resizing_essSmall r ((x = y); s x y).
+
+  (** Resizing from [U] to [U'] also makes [Prop_{U'}] essentially
+      [U']-small: it is equivalent to [Prop_U], which lives in [U'] since
+      [U : U'] (the impredicativity of propositions). *)
+  Definition PropU_small (r : isEquiv lift_uv)
+    : {X : Type@{v} & {Y : Type@{v} & isProp Y} ≃ X}
+    := ({Y : Type@{u} & isProp Y}; Eqv_inv (lift_uv; r)).
 
 End ResizingSmall.
 
