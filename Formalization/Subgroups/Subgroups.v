@@ -20,7 +20,12 @@
     stated only, since the book's proof depends on the draft
     construction [con:monos-are-equalizers]; many results of 9.5 depend
     on it and are stated only.  [Mono(G)], [Sub(G)] and quotient groups
-    run into size issues, documented in the section files. *)
+    run into size issues, documented in the section files.  Replacement
+    resizes quotient groups and [Aut(G)] ([QG_small], [AutGrp_small]),
+    which gives [lem:qeq] in the book's form ([lem_qeq_full], for
+    surjective homomorphisms); [Mono(G)] and [Sub(G)] are like power sets
+    (not images of a small type), so replacement alone does not resize
+    them; propositional resizing would. *)
 
 From SymmetryBook Require Export
   Subgroups.S02_Epis

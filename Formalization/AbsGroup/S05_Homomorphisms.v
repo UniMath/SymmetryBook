@@ -168,13 +168,23 @@ Definition AbstrFun_ff `{Funext} : isFullyFaithful AbstrFun
 
 (** Exercise [xca:Bconcr-OK]: part [it:Bconcr_pt] is [phi_shriek_prtor]
     (Section 7.4), an isomorphism [φ_!P_G ≅ P_H] of [H]-sets rather than
-    a path, since [φ_!P_G] lives in a higher universe.  The second part
+    a path, since [φ_!P_G] lives in a higher universe; with replacement
+    it is the path [Bconcr_pt_path] for the resized [φ_!].  The second part
     is proved below ([xca_Bconcr_OK]); theorem [thm:concr-equiv-cats] is
     stated for [abstr], whose inverse [concr] is (statement only). *)
 Definition Bconcr_pt_stmt `{Univalence} : Type
   := forall (G H : AbsGroup) (φ : absHom G H), gIso (phi_shriek φ (absprtor G)) (absprtor H).
 
 Definition Bconcr_pt `{Univalence} : Bconcr_pt_stmt := fun G H φ => phi_shriek_prtor φ.
+
+(** With replacement, part [it:Bconcr_pt] as stated in the book: an
+    identification [φ_!P_G = P_H], for the resized [φ_!]. *)
+Definition Bconcr_pt_path_stmt `{Univalence} : Type
+  := forall (rep : Replacement) (G H : AbsGroup) (φ : absHom G H),
+       phi_shriek_small rep φ (absprtor G) = absprtor H.
+
+Definition Bconcr_pt_path `{Univalence} : Bconcr_pt_path_stmt
+  := fun rep G H φ => phi_shriek_small_prtor rep φ.
 
 Definition xca_Bconcr_OK_stmt `{Univalence} : Type
   := Bconcr_pt_stmt × {C : Functor AbsGroupCat GroupCat & forall G, fob C G = concr G}.

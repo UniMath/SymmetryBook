@@ -39,12 +39,18 @@
     Left out (statements only)
     - Corollary [cor:normalisnormal], lemma
       [lem:characterizations of normal] (parts (1) - (3)) ([..._stmt]).
-    - The map [q : Nor(G) → Epi(G)] (see the size issue below).
     - Size issue: [G/N] lives in a larger universe than [G], so
       [nor(q(N)) = N] in [Nor(G)] and [(G', f) = q(nor(f))] in [Epi(G)]
-      cannot be stated; [lem_qeq_stmt] states the content of the proof
-      instead (pointed equivalences of [G]-sets, and an isomorphism [Q]
-      with [Q f = q_{nor f}]), and this is what is proved.
+      cannot be stated directly; [lem_qeq_stmt] states the content of the
+      proof (pointed equivalences of [G]-sets, and an isomorphism [Q]
+      with [Q f = q_{nor f}]).  With replacement, [G/N] has a copy
+      [QG_small] in the universe of [G] ([AutG_small], the type of
+      [G]-sets being locally small, [GSet_locSmall]), giving
+      [q : Nor(G) → EpiS(G)] ([qS], with [qN_small_surj]) and
+      [lem:qeq] in the book's form ([lem_qeq_full]: [nor ∘ q = id] and
+      [q ∘ nor = id], via [coslice_path]), for surjective homomorphisms
+      [EpiS(G)] instead of epimorphisms (since [nor] needs surjectivity
+      and [it:epi] ⇒ [it:surjection] is left out in Section 9.2).
     - Informal: the remark after [def:ker2], the remark after
       [def:normalquotient] ([Y/N] and torsors), the marginal remark after
       [def:associatednormal].
@@ -311,9 +317,9 @@ Section Quotient.
       identification [X_{sh_G} = X_{sh_G}] is merely [ap_X(g)]
       ([lem_evaliseqwhennormal]), and identifications in the component are
       determined by their first components. *)
-  Definition qN_isepi : qN_isepi_stmt.
+  Definition qN_surj : isSurj (USymf qN).
   Proof.
-    apply surj_isepi. apply (ap_isSurj_loops (Bf qN)). intro r.
+    apply (ap_isSurj_loops (Bf qN)). intro r.
     pose (apfe := isInj_ap_isEquiv
                     (fst_isInj (Q := fun Z : GSet G => ptrunc (X (sh G) = Z)) (fun _ => ptrunc_isProp))
                     (Bq (sh G)) (Bq (sh G))).
@@ -322,6 +328,8 @@ Section Quotient.
     apply (isInj_cancel (isEquiv_isInj apfe)).
     exact (e @ ap_compose Bq fst p).
   Defined.
+
+  Definition qN_isepi : qN_isepi_stmt := surj_isepi qN qN_surj.
 
 End Quotient.
 
@@ -429,6 +437,116 @@ Proof.
   - intros N s y. exact ((fun z => qeq_eqv N s y z); refl).
   - intros H f s. exact (Qhom f s; (Q_isIso f s; Q_comp f s)).
 Defined.
+
+(** *** Lemma [lem:qeq] in the book's form, by replacement
+
+    [G/N] is [Aut] of [X_{sh_G}] in the type of [G]-sets, which is locally
+    small; so by replacement ([xca:comp-loc-small-ess-small], via
+    [AutG_small]) it has a copy [QG_small] in the universe of [G], with
+    [q_N] composed with the pointed equivalence ([qN_small]).  Then
+    [nor(q(N))] and [N] are elements of the same [Nor(G)], and [(G', f)]
+    and [q(nor(f))] of the same type of surjective homomorphisms out of
+    [G].  (We use surjective homomorphisms rather than epimorphisms, since
+    [nor] needs surjectivity, and [it:epi] ⇒ [it:surjection] of
+    [lem:epi-surj] is left out in Section 9.2.) *)
+Definition SetU_locSmall `{ua : Univalence} : locSmall SetU
+  := fun S T => essSmall_Eqv (subtype_paths_eqv (fun A => isSet_isProp A) S T)
+                  (U_locSmall (fst S) (fst T)).
+
+Definition GSet_locSmall `{ua : Univalence} (G : Group) : locSmall (GSet G)
+  := Pi_locSmall (fun _ => SetU_locSmall).
+
+Section QuotSmall.
+
+  Context `{ua : Univalence} (rep : Replacement) {G : Group} (N : Nor G).
+
+  Local Notation X := (fun y : utype (BG G) => sg_X (N y) : GSet G).
+
+  Definition QG_small : Group
+    := AutG_small rep GSet_isGrpd (GSet_locSmall G) (X (sh G)).
+
+  Definition QG_small_pEqv : BG (QG N) ≃* BG QG_small
+    := AutG_small_pEqv rep GSet_isGrpd (GSet_locSmall G) (X (sh G)).
+
+  Definition qN_small : Hom G QG_small := compG (mkhom (fst QG_small_pEqv)) (qN N).
+
+  Local Notation e := (fst (fst QG_small_pEqv)).
+
+  Definition qN_small_surj : isSurj (USymf qN_small).
+  Proof.
+    apply (ap_isSurj_loops (Bf qN_small)). intro r.
+    pose (ae := ap_isEquiv_of (snd QG_small_pEqv) (Bq N (sh G)) (Bq N (sh G))).
+    refine (ptrunc_rec ptrunc_isProp _
+              (loops_isSurj_ap (Bf (qN N)) (qN_surj N) (eqinv ae r))).
+    intros [p h]. apply trunc. exists p.
+    exact ((eqinv_r ae r)^ @ ap (ap e) h @ (ap_compose (Bq N) e p)^).
+  Defined.
+
+End QuotSmall.
+
+(** Surjective homomorphisms out of [G]. *)
+Definition EpiS (G : Group) : Type := {H : Group & {f : Hom G H & isSurj (USymf f)}}.
+
+Definition norS `{ua : Univalence} {G : Group} (E : EpiS G) : Nor G
+  := nor (fst (snd E)) (snd (snd E)).
+
+Definition qS `{ua : Univalence} (rep : Replacement) {G : Group} (N : Nor G) : EpiS G
+  := (QG_small rep N; (qN_small rep N; qN_small_surj rep N)).
+
+(** An isomorphism [Q] under [G] gives an identification in [Σ_H Hom(G,H)]. *)
+Definition coslice_path `{ua : Univalence} {G H H' : Group} (f : Hom G H) (f' : Hom G H')
+  (Q : Iso H H') (c : compG (fst Q) f = f')
+  : ((H; f) : {K : Group & Hom G K}) = (H'; f').
+Proof.
+  pose (Φ := path_Group_Iso_eqv H H').
+  pose (p := eqinv (snd Φ) Q).
+  assert (aux : forall (K : Group) (q : H = K),
+            ((H; f) : {K : Group & Hom G K}) = (K; compG (fst (idtoiso (C := GroupCat) q)) f)).
+  { intros K q. destruct q. exact (ap (fun u => ((H; u) : {K : Group & Hom G K})) (compG_idG_l f)^). }
+  refine (aux H' p @ _).
+  refine (ap (fun u => ((H'; compG u f) : {K : Group & Hom G K}))
+            (GroupCat_idtoiso_hom p @ ap fst (eqinv_r (snd Φ) Q)) @ _).
+  exact (ap (fun u => ((H'; u) : {K : Group & Hom G K})) c).
+Defined.
+
+Definition EpiS_path `{ua : Univalence} {G H H' : Group} {f : Hom G H} {f' : Hom G H'}
+  {s : isSurj (USymf f)} {s' : isSurj (USymf f')}
+  (p : ((H; f) : {K : Group & Hom G K}) = (H'; f'))
+  : ((H; (f; s)) : EpiS G) = (H'; (f'; s')).
+Proof.
+  assert (aux : forall (w w' : {K : Group & Hom G K}) (p : w = w')
+                  (t : isSurj (USymf (snd w))) (t' : isSurj (USymf (snd w'))),
+            ((fst w; (snd w; t)) : EpiS G) = (fst w'; (snd w'; t'))).
+  { intros w w' q t t'. destruct q.
+    exact (ap (fun u => ((fst w; (snd w; u)) : EpiS G))
+              (Pi_isProp (fun _ => ptrunc_isProp) t t')). }
+  exact (aux (H; f) (H'; f') p s s').
+Defined.
+
+Definition lem_qeq_full_stmt `{ua : Univalence} : Type
+  := forall (rep : Replacement) (G : Group),
+       (forall N : Nor G, norS (qS rep N) = N) × (forall E : EpiS G, qS rep (norS E) = E).
+
+Definition lem_qeq_full `{ua : Univalence} : lem_qeq_full_stmt.
+Proof.
+  intros rep G. split.
+  - intro N. apply path_forall. intro y.
+    pose (pe := QG_small_pEqv rep N).
+    pose (E := fun z => Eqv_comp (Eqv_inv (ap (fst (fst pe)); ap_isEquiv_of (snd pe) (Bq N y) (Bq N z)))
+                                 (qeq_eqv N (qN_surj N) y z)).
+    refine (SubGrp_path (G := regroup G y)
+              (@path_GSet _ (regroup G y) (sg_X (norS (qS rep N) y)) (sg_X (N y)) E) _).
+    refine (@trp_path_GSet _ (regroup G y) (sg_X (norS (qS rep N) y)) (sg_X (N y)) E y _ @ _).
+    exact (ap (fst (qeq_eqv N (qN_surj N) y y)) (eqinv_l (ap_isEquiv_of (snd pe) (Bq N y) (Bq N y)) refl)).
+  - intros [H [f s]].
+    pose (pe := QG_small_pEqv rep (nor f s)).
+    pose (Q' := compG (mkhom (fst pe)) (Qhom f s)).
+    assert (Qi : isIso Q').
+    { exact (comp_isEquiv (Q_isIso f s) (snd pe)). }
+    refine (EpiS_path (s := qN_small_surj rep (nor f s)) (s' := s)
+              (coslice_path f (qN_small rep (nor f s)) (Q'; Qi) _)^).
+    exact ((compG_assoc _ _ _)^ @ ap (compG (mkhom (fst pe))) (Q_comp f s)).
+  Defined.
 
 (** Corollary [cor:normalisnormal] (statement only). *)
 Definition cor_normalisnormal_stmt `{ua : Univalence} : Type

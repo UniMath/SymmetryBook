@@ -51,7 +51,12 @@
       over any [F] with [gset (F X) ≃ quot (phi_rel X)], which does not
       determine the action.  Also [φ_!P_G ≅ P_H] ([phi_shriek_prtor], for
       [xca:Bconcr-OK]); this is an isomorphism, not a path, since the
-      quotient lives in a higher universe.
+      quotient lives in a higher universe.  By replacement (footnote of
+      [def:quotient-set], [quot_essSmall]) the carrier can be resized:
+      [phi_shriek_small rep X] is [φ_!X] transferred to a [U]-small
+      carrier ([gset_transfer], with equivariant [shriek_small_eqv]), and
+      [phi_shriek_small_prtor : φ_!P_G = P_H] is an identification of
+      [H]-sets in one universe.
  *)
 
 From HoTT Require Import
@@ -648,6 +653,65 @@ Section PhiShriek.
 
   End ShriekPrincipal.
 End PhiShriek.
+
+(** Transferring a [G]-set structure along an equivalence of carriers
+    (possibly to another universe). *)
+Section GSetTransfer.
+
+  Context `{Univalence} {G : AbsGroup} (X : absGSet G) {T : Type} (sT : isSet T)
+    (e : gset X ≃ T).
+
+  Definition transfer_eqv (s : ag_S G) : T ≃ T
+    := Eqv_comp (Eqv_inv e) (Eqv_comp (fst (snd X) s) e).
+
+  Definition gset_transfer : absGSet G
+    := ((T; sT);
+        (transfer_eqv; fun a b => path_Eqv (transfer_eqv (a · b))
+                                   (Eqv_comp (transfer_eqv b) (transfer_eqv a))
+           (ptw_inv (fun t => ap (fst e) (gact_mul X a b _
+                                 @ ap (gact X a) (eqinv_l (snd e) _)^))))).
+
+  (** [e] is equivariant. *)
+  Definition gset_transfer_equiv (s : ag_S G) (x : gset X)
+    : fst e (gact X s x) = gact gset_transfer s (fst e x)
+    := ap (fun y => fst e (gact X s y)) (eqinv_l (snd e) x)^.
+
+End GSetTransfer.
+
+(** [φ_!X], resized to [U] by replacement (footnote of
+    [def:quotient-set], [quot_essSmall]), and [φ_!P_G = P_H] as an
+    identification of [H]-sets in the same universe. *)
+Section ShriekSmall.
+
+  Context `{Uv : Univalence} (rep : Replacement) {G H : AbsGroup} (φ : absHom G H).
+
+  Definition shriek_small_eqv (X : absGSet G)
+    : quot (phi_rel φ X) ≃ fst (quot_essSmall rep (phi_rel φ X))
+    := snd (quot_essSmall rep (phi_rel φ X)).
+
+  Definition phi_shriek_small (X : absGSet G) : absGSet H
+    := gset_transfer (phi_shriek φ X)
+         (is_ntype_Eqv 0 (shriek_small_eqv X) (quot_isSet _)) (shriek_small_eqv X).
+
+  (** The resizing equivalence is [H]-equivariant. *)
+  Definition phi_shriek_small_equiv (X : absGSet G) (h : ag_S H) (z : gset (phi_shriek φ X))
+    : fst (shriek_small_eqv X) (gact (phi_shriek φ X) h z)
+      = gact (phi_shriek_small X) h (fst (shriek_small_eqv X) z)
+    := gset_transfer_equiv (phi_shriek φ X) _ (shriek_small_eqv X) h z.
+
+  Definition phi_shriek_small_prtor_iso : gIso (phi_shriek_small (absprtor G)) (absprtor H).
+  Proof.
+    pose (e := shriek_small_eqv (absprtor G)).
+    refine (Eqv_comp (Eqv_inv e) (fst (phi_shriek_prtor φ)); _).
+    intros h t. cbn.
+    refine (ap (fst (fst (phi_shriek_prtor φ))) (eqinv_l (snd e) _) @ _).
+    exact (snd (phi_shriek_prtor φ) h _).
+  Defined.
+
+  Definition phi_shriek_small_prtor : phi_shriek_small (absprtor G) = absprtor H
+    := path_absGSet phi_shriek_small_prtor_iso.
+
+End ShriekSmall.
 
 Section AbsCoinduce.
 

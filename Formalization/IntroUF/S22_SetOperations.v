@@ -21,6 +21,8 @@
     - Weakly constant maps and [thm:wconstant-elim], via the image.
     - Set quotients: the book's [A/R] as the image of
       [R : A → (A → Prop)] ([quot], with classes [cls]);
+      the footnote of [def:quotient-set] ([quot_essSmall]: by replacement
+      [A/R] is essentially [U]-small);
       [lem:equiv-class-prop], [thm:quotient-property] (both parts, with
       [f̄([x]) ≡ f(x)]), exercise [xca:A/True-prop-trunc]; the quotient as
       a higher inductive type ([def:quotient-as-HIT]) is the library's
@@ -374,6 +376,15 @@ Section Quotients.
   End UniversalProperty.
 
 End Quotients.
+
+(** Footnote of [def:quotient-set]: by replacement, [A/R] is essentially
+    [U]-small, since [A → Prop_U] is locally [U]-small. *)
+Definition PropU_locSmall `{Univalence} : locSmall PropU
+  := fun P Q => essSmall_Eqv (PropU_paths_eqv P Q) (U_locSmall (fst P) (fst Q)).
+
+Definition quot_essSmall `{Univalence} (rep : Replacement) {A : Type}
+  (R : A -> A -> PropU) : essSmall (quot R)
+  := rep A (A -> PropU) R (small_essSmall A) (Pi_locSmall (fun _ => PropU_locSmall)).
 
 (** Exercise [xca:A/True-prop-trunc]. *)
 Section QuotientByTrue.

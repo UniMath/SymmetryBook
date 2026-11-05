@@ -18,7 +18,9 @@
     ([abstr_isEquiv]), assuming the replacement principle to keep the
     inverse in the same universe (NOTE for the book text); [Hom(G,H) ≃
     absHom(abstr G, abstr H)] ([abstr_hom_eqv]); [G-Set ≃ abstr(G)-Set]
-    ([actions_eqv]). *)
+    ([actions_eqv]).  Replacement also resizes the quotient [φ_!X], so
+    that [φ_!P_G = P_H] holds as an identification
+    ([phi_shriek_small_prtor], [Bconcr_pt_path]). *)
 
 From SymmetryBook Require Export
   AbsGroup.S02_Monoids

@@ -7,7 +7,9 @@
 
     - [Aut(G)] ([AutGrp]): [Group] is universe polymorphic, so
       [Aut_Group(G)] is a group (in a larger universe than [G]); its
-      classifying type is [BAutG] of Section 4.4 by definition.  NOTE:
+      classifying type is [BAutG] of Section 4.4 by definition.  By
+      replacement it has a copy in the universe of [G] ([AutGrp_small],
+      [AutGrp_small_pEqv]).  NOTE:
       the summaries of Sections 4.2 and 4.4 say that [Group] is not
       universe polymorphic; that is outdated.
     - [inn : Hom(G, Aut(G))] ([mkhom (Binn G)], pointed by [(inc_out G)⁻¹]);
@@ -92,6 +94,18 @@ Section Automorphisms.
   Definition AutGrp : Group := AutG Group_isGrpd G.
 
   Definition BAutGrp_is_BAutG : BG AutGrp = BAutG G := refl.
+
+  (** By replacement [Aut(G)] has a copy in the universe of [G]: the type
+      of groups is locally small (identifications are isomorphisms,
+      [path_Group_Iso_eqv]), so the component [BAut(G)] is essentially
+      small ([AutG_small]). *)
+  Definition Group_locSmall : locSmall Group := fun H K => (Iso H K; path_Group_Iso_eqv H K).
+
+  Definition AutGrp_small (rep : Replacement) : Group
+    := AutG_small rep Group_isGrpd Group_locSmall G.
+
+  Definition AutGrp_small_pEqv (rep : Replacement) : BG AutGrp ≃* BG (AutGrp_small rep)
+    := AutG_small_pEqv rep Group_isGrpd Group_locSmall G.
 
   (** The homomorphism [inn : G → Aut(G)] with [Binn(y) :≡ mkgroup(BG_÷, y)]
       ([Binn], [def:inner-autos], Section 4.4; pointed by [(inc_out G)⁻¹]

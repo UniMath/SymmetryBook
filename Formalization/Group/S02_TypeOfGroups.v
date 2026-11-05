@@ -22,6 +22,8 @@
     - Definition [def:automorphism-group]: [AutG gA a] for a groupoid [A]
       (with proof [gA]); the name [Aut] is taken by [X ≃ X] (Section 3.7).
       Remark [rem:symmetriesofnonconnectedgroupoids] ([group_is_AutG]).
+      Size: for a locally small groupoid [A], replacement gives a
+      [U]-small copy [AutG_small] of [AutG gA a] ([AutG_small_pEqv]).
     - Examples: [ZZ] ([ex:circlegroup]), the trivial group [TG], the
       permutation groups [SG_S], [SG n] ([ex:groups]), the cyclic groups
       [CG k] (for [m = k+1], with [Cyc_isGrpd]) and [ZmodmZ k]
@@ -235,6 +237,23 @@ Definition component_isGrpd `{Funext} {A : Type} (gA : isGrpd A) (a : A)
 Definition AutG `{Funext} {A : Type} (gA : isGrpd A) (a : A) : Group
   := mkgroup (component A a; ((a; trunc refl);
                 (component_isConn a; component_isGrpd gA a))).
+
+(** For a locally [U]-small groupoid [A], [Aut_A(a)] lives in a larger
+    universe than [U] when [A] does (e.g. [A] the type of groups, or of
+    [G]-sets); by replacement its component is essentially [U]-small
+    ([xca:comp-loc-small-ess-small]), which gives a [U]-small copy
+    [AutG_small] with a pointed equivalence of classifying types. *)
+Definition AutG_small `{Funext} (rep : Replacement) {A : Type} (gA : isGrpd A)
+  (hA : locSmall A) (a : A) : Group
+  := let s := replacement_component rep hA a in
+     mkgroup (fst s; (fst (snd s) (a; trunc refl);
+                      (isConn_Eqv (snd s) (component_isConn a);
+                       is_ntype_Eqv 1 (snd s) (component_isGrpd gA a)))).
+
+Definition AutG_small_pEqv `{Funext} (rep : Replacement) {A : Type} (gA : isGrpd A)
+  (hA : locSmall A) (a : A) : BG (AutG gA a) ≃* BG (AutG_small rep gA hA a)
+  := ((fst (snd (replacement_component rep hA a)); refl);
+      snd (snd (replacement_component rep hA a))).
 
 (** Remark [rem:symmetriesofnonconnectedgroupoids]: for connected [A],
     [fst : (A_(a), (a,!)) → (A, a)] is a pointed equivalence, so
