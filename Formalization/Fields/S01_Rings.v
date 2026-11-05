@@ -6,9 +6,10 @@
     ** Summary of this formalization
 
     Only the questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]
-    and the claim [M ≃ ℤ] of that example, with [m_k ↦ k], are
-    addressed so far; the other labels of this section are not
-    formalized yet (no [_stmt]s either: the chapter is still in flux).
+    and the claim [M ≃ ℤ] of that example, with [m_k ↦ k] and the
+    reading of [m_k] being [kγ], are addressed so far; the other
+    labels of this section are not formalized yet (no [_stmt]s either:
+    the chapter is still in flux).
 
     The example studies [M :≡ S¹ →* (S¹ →* B²ℤ)] and maps
     [m_k : M] given by [m_k(base) :≡ pt] and [m_k(loop) := ptw_*⁻¹(k')]
@@ -91,9 +92,10 @@
     - [M_eqv_loops]: [M ≃ Ω(S¹ →* B²ℤ)] by evaluation at [loop]
       ([evp], [cor:circle-loopspace]; this is [ev] of
       [rem:pointing-ev]).
-    - [loops_cst_eqv]: [Ω(S¹ →* B²ℤ) ≃ (S¹ →* ΩB²ℤ)] by [ptw_*]
-      ([con:identity-ptd-maps]) and turning the pointing condition
-      [h(base) ⋅ refl = refl] into [refl = h(base)].
+    - [loops_cst_eqv]: [Ω(S¹ →* B²ℤ) ≃ (S¹ →* ΩB²ℤ)], which is [ptw_*]
+      ([con:identity-ptd-maps]) at the constant map, implemented
+      directly ([lc_eqv], for any pointed [B]) so that a loop [ℓ] goes
+      to [(apD10(ap_fst(ℓ)), e)] by definition.
     - [omega2_eqv]: [(S¹ →* ΩB²ℤ) ≃ Ω²B²ℤ], [evp] again.
     - [omega2_B2Z_eqv]: [Ω²B²ℤ ≃ ℤ], along the second argument of the
       example: the second component of [pt = pt] is a path in the set
@@ -114,10 +116,28 @@
       [m_k(loop) := ptw_*⁻¹(dg_k')] and [(m_k)_pt :≡ refl].
     - [M_eqv_Z_m]: [M_eqv_Z(m_k) = k].
 
-    Not formalized: the identification of the w-outer reading of [m_k]
-    (forgetting pointing paths) with [kγ], which would connect the
-    2-loop readings above to [M_eqv_Z], and [loops_reading_dg1/2] for
-    negative [k].  The sign and the bilinearity are independent of all
+    The w-outer reading of [m_k]:
+    - [reading_lc] (any pointed [B]): for [m :≡ evp⁻¹(ℓ)] the w-outer
+      reading of [F(z,w) :≡ m(z)(w)] at [(loop,loop)] is [evp] of
+      [lc_eqv(ℓ)], with the sides identified with [refl] by [eP_of]
+      (from the pointing path [e] of [lc_eqv(ℓ)]) and [eQ_of] ([ap] of
+      a constant).  It rests on [reading_w_fun] (the reading in terms
+      of [apD10] of [ap_G(p)]) and [const_reading] (for a constant
+      function the reading of a homotopy [h] is [ap_h], conjugated).
+    - [reading_m_k]: for [m_k] ([F_k], [eP_k], [eQ_k]) this is
+      [kloop k]; [reading_m_k_Z]: it corresponds to [k] under
+      [Ω²B²ℤ ≃ ℤ].
+    - [Psi]: the composite [Ω²B²ℤ → (base = base)] as a single [ap]
+      ([Psi_eq]), hence injective ([Psi_inj]) and preserving powers;
+      [kloop_pow]: [kloop k = γ^k] with [γ :≡ kloop 1] ([gamma]).
+    - [reading_m_1]: [γ] is the reading of [m_1];
+      [reading_m_k_gamma]: the reading of [m_k] is [γ^k] ([loopexp]).
+    - [reading_m_1_dg1], [reading_m_1_dg2] ([TBD1] for [k : ℕ]): the
+      readings of [m_1 ∘ (dg_k × id)] and [m_1 ∘ (id × dg_k)] equal
+      that of [m_k].
+
+    Not formalized: [loops_reading_dg1/2], and hence
+    [reading_m_1_dg1/2], for negative [k] ([dg] is defined on [ℕ]).  The sign and the bilinearity are independent of all
     of this: they hold for any [F]. *)
 
 From HoTT Require Import
@@ -126,7 +146,7 @@ From HoTT Require Import
   Truncations.SeparatedTrunc Universes.TruncType Colimits.Quotient
   Spaces.Nat.Core Spaces.Nat.Factorial Spaces.Nat.Division
   Spaces.Finite.Fin Spaces.Finite.FinNat Spaces.Finite.Finite
-  Spaces.List.Core Spaces.Circle.
+  Spaces.List.Core Spaces.Int Spaces.Circle.
 From SymmetryBook Require Export FinGroups.FinGroups.
 
 Local Open Scope uf_scope.
@@ -574,6 +594,98 @@ Section DegreePrecomposition.
 
 End DegreePrecomposition.
 
+(** *** The w-outer reading of a map [m : S¹ →* (S¹ →* B)]
+
+    For a loop [ℓ] at the constant pointed map, and [m :≡ evp⁻¹(ℓ)]
+    (so [m(base) :≡ cst], [m(loop) = ℓ], [m_pt :≡ refl]), the w-outer
+    reading of [F(z,w) :≡ m(z)(w)] at [(loop,loop)] is [evp] of the
+    pointed map [S¹ →* ΩB] corresponding to [ℓ]. *)
+
+(** [X →* Y] pointed at the constant map [(cst_{pt}, refl)]. *)
+Definition pmap_ptd (X Y : Ustar) : Ustar
+  := ((X →* Y); ((fun _ => pt Y); refl)).
+
+(** The w-outer reading of [G(p,q)] in terms of a path [φ] of functions
+    identified with [ap_G(p)]. *)
+Definition beta_w {A B C : Type} (G : A -> B -> C) {a a' : A} (p : a = a')
+  {φ : G a = G a'} (θ : ap G p = φ) (w : B)
+  : apD10 φ w = ap (fun z => G z w) p.
+Proof. destruct θ, p. exact refl. Defined.
+
+Definition reading_w_fun {A B C : Type} (G : A -> B -> C) {a a' : A}
+  (p : a = a') {φ : G a = G a'} (θ : ap G p = φ) {b b' : B} (q : b = b')
+  : reading_w G p q
+    = Sq_sides (beta_w G p θ b) (beta_w G p θ b') refl refl
+        (po_sq (u := G a) (v := G a') q (apd (apD10 φ) q)).
+Proof. destruct θ, p, q. exact refl. Defined.
+
+Local Definition sq_2loop_t1 {C : Type} {c : C} {t : c = c} (et : refl = t)
+  (s : Sq t refl refl refl) : sq_2loop et refl refl refl s = s ⋅ et.
+Proof. destruct et. exact (trans_1p s)⁻¹. Defined.
+
+(** For a constant function the reading of a homotopy [h] is [ap_h],
+    conjugated by the identifications of its ends with [refl]. *)
+Definition const_reading {B C : Type} (c0 : C) (h : B -> c0 = c0)
+  {b b' : B} (q : b = b') (et : refl = h b) (eb : refl = h b')
+  : sq_2loop et eb (ap_const q c0)⁻¹ (ap_const q c0)⁻¹
+      (po_sq (u := fun _ => c0) (v := fun _ => c0) q (apd h q))
+    = eb⁻¹ ⋅ (ap h q ⋅ et).
+Proof.
+  destruct q. cbn. revert et eb. generalize (h b). intros t et eb.
+  destruct eb. exact (sq_2loop_t1 et refl).
+Defined.
+
+Section PtdReading.
+
+  Context `{Funext} (B : Ustar).
+
+  Local Notation c := (pt (pmap_ptd S1star B)).
+
+  Local Definition trp_pt_eqv {f g : S1 -> utype B} (φ : f = g)
+    (u : pt B = f base) (v : pt B = g base)
+    : (transport (fun f => pt B = f base) φ u = v) <~> (v = apD10 φ base ⋅ u).
+  Proof. destruct φ. exact (equiv_path_inverse _ _). Defined.
+
+  (** [ptw_*] at the constant map, directly: a loop [ℓ] at [c] goes to
+      [(apD10(ap_fst(ℓ)), e)] with [e : refl = apD10(ap_fst(ℓ))(base)]. *)
+  Definition lc_eqv : (c = c) ≃ (S1star →* loops B).
+  Proof.
+    apply Eqv_of_Equiv.
+    refine (equiv_compose' _ (equiv_path_sigma _ c c)^-1).
+    refine (equiv_functor_sigma' (equiv_apD10 _ _ _) _).
+    intro φ. cbn.
+    exact (equiv_compose' (equiv_concat_r (trans_1p _) _) (trp_pt_eqv φ refl refl)).
+  Defined.
+
+  Definition F_of (ℓ : c = c) : S1 -> S1 -> utype B
+    := fun z w => fst (S1_rec _ c ℓ z) w.
+
+  Definition theta_of (ℓ : c = c)
+    : ap (fun z => fst (S1_rec _ c ℓ z)) loop = ap fst ℓ
+    := ap_compose (S1_rec _ c ℓ) fst loop @ ap (ap fst) (S1_rec_loop _ c ℓ).
+
+  Definition eP_of (ℓ : c = c) : refl = ap (fun z => F_of ℓ z base) loop
+    := beta_w (fun z => fst (S1_rec _ c ℓ z)) loop (theta_of ℓ) base
+       ⋅ snd (fst lc_eqv ℓ).
+
+  Definition eQ_of (ℓ : c = c) : refl = ap (F_of ℓ base) loop
+    := (ap_const loop (pt B))⁻¹.
+
+  (** The w-outer reading of [F_of ℓ] at [(loop,loop)] is [evp] of the
+      pointed map corresponding to [ℓ]. *)
+  Definition reading_lc (ℓ : c = c)
+    : loops_reading (F_of ℓ) loop loop (eP_of ℓ) (eQ_of ℓ)
+      = evp _ (fst lc_eqv ℓ).
+  Proof.
+    unfold loops_reading.
+    refine (ap (sq_2loop _ _ _ _)
+              (reading_w_fun (fun z => fst (S1_rec _ c ℓ z)) loop (theta_of ℓ) loop) @ _).
+    refine (sq_2loop_sides _ _ refl refl _ _ _ _ _ @ _).
+    exact (const_reading (pt B) (apD10 (ap fst ℓ)) loop _ _).
+  Defined.
+
+End PtdReading.
+
 (** The equivalence [M ≃ ℤ] of Example [exa:allS1*-swap]. *)
 Section MEqvZ.
 
@@ -582,10 +694,6 @@ Section MEqvZ.
   (** [B²ℤ :≡ Σ_{X:U} ‖S¹ = X‖₀], pointed at [(S¹,|refl|)]. *)
   Definition B2Z : Ustar := ({X : Type & Tr 0 (S1 = X)}; (S1; tr refl)).
 
-  (** [X →* Y] pointed at the constant map [(cst_{pt}, refl)]. *)
-  Definition pmap_ptd (X Y : Ustar) : Ustar
-    := ((X →* Y); ((fun _ => pt Y); refl)).
-
   Definition M : Type := S1star →* pmap_ptd S1star B2Z.
 
   (** Evaluation at [loop] ([evp], [cor:circle-loopspace]). *)
@@ -593,16 +701,12 @@ Section MEqvZ.
     : M ≃ (pt (pmap_ptd S1star B2Z) = pt (pmap_ptd S1star B2Z))
     := (evp _; evp_isEquiv _).
 
-  (** [ptw_*] ([con:identity-ptd-maps]) at the constant map. *)
+  (** [ptw_*] ([con:identity-ptd-maps]) at the constant map, as
+      [lc_eqv]. *)
   Definition loops_cst_eqv
     : (pt (pmap_ptd S1star B2Z) = pt (pmap_ptd S1star B2Z))
-      ≃ (S1star →* loops B2Z).
-  Proof.
-    refine (Eqv_comp (ptw_star _ _) _).
-    apply Eqv_of_Equiv. refine (equiv_functor_sigma_id _). intro h. cbn.
-    refine (equiv_compose' (equiv_path_inverse _ _) _).
-    exact (equiv_concat_l (trans_1p (h base))^ _).
-  Defined.
+      ≃ (S1star →* loops B2Z)
+    := lc_eqv B2Z.
 
   Definition omega2_eqv
     : (S1star →* loops B2Z) ≃ (refl (pt B2Z) = refl (pt B2Z))
@@ -625,8 +729,8 @@ Section MEqvZ.
   Proof.
     apply Eqv_of_Equiv.
     refine (equiv_compose' (equiv_path_forall (fun x : S1 => x) (fun x => x))^-1 _).
-    refine (equiv_compose'
-              (equiv_path_equiv (equiv_path S1 S1 refl) (equiv_path S1 S1 refl))^-1 _).
+    refine (equiv_compose' (Build_Equiv _ _ (ap (x := equiv_path S1 S1 refl)
+              (y := equiv_path S1 S1 refl) (@equiv_fun S1 S1)) _) _).
     exact (equiv_ap (equiv_equiv_path S1 S1) refl refl).
   Defined.
 
@@ -669,6 +773,16 @@ Section MEqvZ.
   Definition evp_evp_inv {A : Type} (a : A) (l : a = a) : evp a (evp_inv a l) = l
     := trans_1p _ @ S1_rec_loop A a l.
 
+  Definition omega2_kloop (k : ℤ) : fst omega2_B2Z_eqv (kloop k) = k.
+  Proof.
+    change (fst wdg (fst ev_step (fst ua_step (fst sigma_step
+              (eqinv (snd sigma_step) (kloop_id k))))) = k).
+    refine (ap (fun x => fst wdg (fst ev_step (fst ua_step x)))
+              (eqinv_r (snd sigma_step) _) @ _).
+    refine (ap (fun x => fst wdg (fst ev_step x)) (eqinv_r (snd ua_step) _) @ _).
+    exact (wdg_loopZ k).
+  Defined.
+
   (** [M_eqv_Z] sends [m_k] to [k]. *)
   Definition M_eqv_Z_m (k : ℤ) : fst M_eqv_Z (m_k k) = k.
   Proof.
@@ -679,12 +793,134 @@ Section MEqvZ.
     refine (ap (fun d => fst omega2_B2Z_eqv (fst omega2_eqv d))
               (eqinv_r (snd loops_cst_eqv) _) @ _).
     refine (ap (fst omega2_B2Z_eqv) (evp_evp_inv _ _) @ _).
-    change (fst wdg (fst ev_step (fst ua_step (fst sigma_step
-              (eqinv (snd sigma_step) (kloop_id k))))) = k).
-    refine (ap (fun x => fst wdg (fst ev_step (fst ua_step x)))
-              (eqinv_r (snd sigma_step) _) @ _).
-    refine (ap (fun x => fst wdg (fst ev_step x)) (eqinv_r (snd ua_step) _) @ _).
-    exact (wdg_loopZ k).
+    exact (omega2_kloop k).
   Defined.
+
+  (** The w-outer reading of [m_k] (pointing paths forgotten,
+      [F(z,w) :≡ m_k(z)(w)]) at [(loop,loop)] is the [k]-loop around
+      [id_S¹], with the sides identified with [refl] by [eP_of] (from
+      the pointing of [dg_k']) and [eQ_of] ([ap] of a constant). *)
+  Definition ell_k (k : ℤ) : pt (pmap_ptd S1star B2Z) = pt (pmap_ptd S1star B2Z)
+    := eqinv (snd loops_cst_eqv) (dg_k' k).
+
+  Definition reading_m_k (k : ℤ)
+    : loops_reading (fun z w => fst (fst (m_k k) z) w) loop loop
+        (eP_of B2Z (ell_k k)) (eQ_of B2Z (ell_k k))
+      = kloop k
+    := reading_lc B2Z (ell_k k)
+       @ ap (evp _) (eqinv_r (snd loops_cst_eqv) (dg_k' k))
+       @ evp_evp_inv _ _.
+
+  (** Hence it corresponds to [k] under [Ω²B²ℤ ≃ ℤ]. *)
+  Definition reading_m_k_Z (k : ℤ)
+    : fst omega2_B2Z_eqv
+        (loops_reading (fun z w => fst (fst (m_k k) z) w) loop loop
+           (eP_of B2Z (ell_k k)) (eQ_of B2Z (ell_k k)))
+      = k
+    := ap (fst omega2_B2Z_eqv) (reading_m_k k) @ omega2_kloop k.
+
+  (** The composite of [sigma_step], [ua_step] and [ev_step] as a
+      single [ap]: it sends a 2-loop [x] to [ap] of
+      [r ↦ ptoe(ap_fst(r))(base)] at [x]; so it preserves powers. *)
+  Definition Psi (x : refl (pt B2Z) = refl (pt B2Z)) : base = base
+    := ap (fun r : pt B2Z = pt B2Z => transport idmap (ap pr1 r) base) x.
+
+  Local Definition inv_path_sigma_hprop_pr1 {A : Type} {P : A -> Type}
+    `{forall x, IsHProp (P x)} (u v : sig P) (r : u = v)
+    : (equiv_path_sigma_hprop u v)^-1 r = ap pr1 r
+    := (pr1_path_path_sigma_hprop u v _)^
+       @ ap (fun r => r..1) (eisretr (path_sigma_hprop u v) r).
+
+  Local Definition apD10_ap_ev {X Y : Type} {f g : X -> Y} (q : f = g) (x : X)
+    : apD10 q x = ap (fun h => h x) q.
+  Proof. destruct q. exact refl. Defined.
+
+  Local Definition ap5 {A1 A2 A3 A4 A5 A6 : Type} (h1 : A1 -> A2) (h2 : A2 -> A3)
+    (h3 : A3 -> A4) (h4 : A4 -> A5) (h5 : A5 -> A6) {a a' : A1} (x : a = a')
+    : ap (fun r => h5 (h4 (h3 (h2 (h1 r))))) x = ap h5 (ap h4 (ap h3 (ap h2 (ap h1 x)))).
+  Proof. destruct x. exact refl. Defined.
+
+  Definition Psi_eq (x : refl (pt B2Z) = refl (pt B2Z))
+    : Psi x = fst ev_step (fst ua_step (fst sigma_step x)).
+  Proof.
+    change (Psi x = apD10 (ap (@equiv_fun S1 S1) (ap (equiv_path S1 S1)
+              ((equiv_path_sigma_hprop
+                (P := fun p : S1 = S1 => transport (fun X => Tr 0 (S1 = X)) p (tr refl) = tr refl)
+                (refl; refl) (refl; refl))^-1
+                 (ap (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 x)))) base).
+    refine (_ @ (apD10_ap_ev _ base)^).
+    refine (_ @ (ap (fun y => ap (fun h : S1 -> S1 => h base)
+                   (ap (@equiv_fun S1 S1) (ap (equiv_path S1 S1) y)))
+                   (inv_path_sigma_hprop_pr1 _ _ _))^).
+    exact (ap5 (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 pr1 (equiv_path S1 S1)
+             (@equiv_fun S1 S1) (fun h : S1 -> S1 => h base) x).
+  Defined.
+
+  Definition Psi_inj {x y : refl (pt B2Z) = refl (pt B2Z)} (e : Psi x = Psi y) : x = y.
+  Proof.
+    pose (E := Eqv_comp sigma_step (Eqv_comp ua_step ev_step)).
+    refine ((eqinv_l (snd E) x)^ @ _ @ eqinv_l (snd E) y).
+    exact (ap (eqinv (snd E)) ((Psi_eq x)^ @ e @ Psi_eq y)).
+  Defined.
+
+  Definition Psi_kloop (k : ℤ) : Psi (kloop k) = loopZ k.
+  Proof.
+    refine (Psi_eq _ @ _).
+    change (fst ev_step (fst ua_step (fst sigma_step
+              (eqinv (snd sigma_step) (kloop_id k)))) = loopZ k).
+    refine (ap (fun x => fst ev_step (fst ua_step x)) (eqinv_r (snd sigma_step) _) @ _).
+    exact (ap (fst ev_step) (eqinv_r (snd ua_step) _)).
+  Defined.
+
+  (** [γ :≡ kloop 1] (the generator), and [kloop k = γ^k]. *)
+  Definition gamma : refl (pt B2Z) = refl (pt B2Z) := kloop (iplus 1).
+
+  Definition kloop_pow (k : ℤ) : kloop k = loopexp gamma (toInt k).
+  Proof.
+    apply Psi_inj.
+    refine (Psi_kloop k @ _ @ (ap_loopexp _ gamma (toInt k))^).
+    exact (ap (fun p => loopexp p (toInt k))
+             (Psi_kloop (iplus 1) @ loopexp_succ_r loop zero @ concat_1p loop))^.
+  Defined.
+
+  (** Integer powers in the library's sense agree with [ppow] on [ℕ]. *)
+  Definition loopexp_ppow {X : Type} {x : X} (p : x = x) (n : nat)
+    : loopexp p (toInt (iplus n)) = ppow p n.
+  Proof.
+    induction n as [|n IH].
+    - exact refl.
+    - exact (ap (loopexp p) (toInt_zs (iplus n)) @ loopexp_succ_r p _
+             @ (trans_is_concat _ _)^ @ ap (fun u => p ⋅ u) IH).
+  Defined.
+
+  (** Write [F_k(z,w) :≡ m_k(z)(w)], with the sides of its square at
+      [(loop,loop)] identified with [refl] by [eP_k], [eQ_k]. *)
+  Definition F_k (k : ℤ) : S1 -> S1 -> utype B2Z := fun z w => fst (fst (m_k k) z) w.
+  Definition eP_k (k : ℤ) := eP_of B2Z (ell_k k).
+  Definition eQ_k (k : ℤ) := eQ_of B2Z (ell_k k).
+
+  (** The w-outer reading of [m_k] is [kγ], with [γ] that of [m_1]. *)
+  Definition reading_m_1 : loops_reading (F_k (iplus 1)) loop loop (eP_k _) (eQ_k _) = gamma
+    := reading_m_k (iplus 1).
+
+  Definition reading_m_k_gamma (k : ℤ)
+    : loops_reading (F_k k) loop loop (eP_k k) (eQ_k k) = loopexp gamma (toInt k)
+    := reading_m_k k @ kloop_pow k.
+
+  (** [TBD1], for [k : ℕ]: precomposing [m_1] with the degree [k] map in
+      either argument gives the same 2-loop as [m_k]. *)
+  Definition reading_m_1_dg1 (n : nat)
+    : loops_reading (fun z w => F_k (iplus 1) (dg n z) w) loop loop
+        (eP_dg1 (F_k (iplus 1)) (eP_k _) n) (eQ_k _)
+      = loops_reading (F_k (iplus n)) loop loop (eP_k _) (eQ_k _)
+    := loops_reading_dg1 _ _ _ n @ ap (fun g => ppow g n) reading_m_1
+       @ (reading_m_k_gamma (iplus n) @ loopexp_ppow gamma n)^.
+
+  Definition reading_m_1_dg2 (n : nat)
+    : loops_reading (fun z w => F_k (iplus 1) z (dg n w)) loop loop
+        (eP_k _) (eQ_dg2 (F_k (iplus 1)) (eQ_k _) n)
+      = loops_reading (F_k (iplus n)) loop loop (eP_k _) (eQ_k _)
+    := loops_reading_dg2 _ _ _ n @ ap (fun g => ppow g n) reading_m_1
+       @ (reading_m_k_gamma (iplus n) @ loopexp_ppow gamma n)^.
 
 End MEqvZ.
