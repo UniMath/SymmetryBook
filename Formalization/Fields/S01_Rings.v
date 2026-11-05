@@ -118,9 +118,13 @@
     - [uncurry_eqv], and [M_eqv_mult] as the composite with
       [M_eqv_loops] and [loops_cst_eqv].
     - [M_eqv_mult_m]: [m_k] goes to the uncurried [h_k], where
-      [h_k(z,-)] goes around [id_S¹] along the [k]-loop
-      [x ↦ ex(x)(loop^k)] as [z] goes around [loop] ([h_k :≡ S1_rec id
-      (funext(kloop_pw k))]); [h_1] is the multiplication of [S¹].
+      [h_k(w,-)] goes around [id_S¹] along the [k]-loop
+      [u ↦ ex(u)(loop^k)] as [w] goes around [loop] ([h_k :≡ S1_rec id
+      (funext(kloop_pw k))]); [h_1] is the multiplication of [S¹].  The
+      first variable of [h] is the inner variable [w] of [m] (the outer
+      [z] is used up by evaluation at [loop]), the second is a point of
+      [ΩB²ℤ ≃ S¹]; so the swap of [m] is not the swap of the variables of
+      [h].
 
     The maps [m_k], for all [k : ℤ], as in the example:
     - [kloop k]: the [k]-loop around [id_S¹], pointwise
