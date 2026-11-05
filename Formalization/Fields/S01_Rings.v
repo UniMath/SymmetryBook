@@ -6,8 +6,9 @@
     ** Summary of this formalization
 
     Only the questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]
-    are addressed so far; the other labels of this section are not
-    formalized yet (no [_stmt]s either: the chapter is still in flux).
+    and the claim [M ≃ ℤ] of that example are addressed so far; the
+    other labels of this section are not formalized yet (no [_stmt]s
+    either: the chapter is still in flux).
 
     The example studies [M :≡ S¹ →* (S¹ →* B²ℤ)] and maps
     [m_k : M] given by [m_k(base) :≡ pt] and [m_k(loop) := ptw_*⁻¹(k')]
@@ -84,12 +85,28 @@
     (read off at [(loop,loop)]) [m_k = m_1 ∘ (dg_k × id) = m_1 ∘ (id ×
     dg_k)], and [m_k] corresponds to [k].
 
-    Not formalized: [B²ℤ], [m_k], the equivalence [M ≃ ℤ] and the
-    identification of the w-outer reading of [m_k] with [kγ] (these
-    need the set truncation of [S¹ = X], univalence and [ptw_*]; for
-    [M ≃ ℤ], Constructions 13.1.21-25 may help), and negative [k].  The
-    sign and the bilinearity are independent of all of this: they hold
-    for any [F]. *)
+    The equivalence [M ≃ ℤ] (claimed in [exa:allS1*-swap]), with
+    [B²ℤ :≡ Σ_{X:U} ‖S¹ = X‖₀] pointed at [(S¹,|refl|)] ([B2Z]) and
+    [S¹ →* B²ℤ] pointed at the constant map ([pmap_ptd]):
+    - [M_eqv_loops]: [M ≃ Ω(S¹ →* B²ℤ)] by evaluation at [loop]
+      ([evp], [cor:circle-loopspace]; this is [ev] of
+      [rem:pointing-ev]).
+    - [loops_cst_eqv]: [Ω(S¹ →* B²ℤ) ≃ (S¹ →* ΩB²ℤ)] by [ptw_*]
+      ([con:identity-ptd-maps]) and turning the pointing condition
+      [h(base) ⋅ refl = refl] into [refl = h(base)].
+    - [omega2_eqv]: [(S¹ →* ΩB²ℤ) ≃ Ω²B²ℤ], [evp] again.
+    - [omega2_B2Z_eqv]: [Ω²B²ℤ ≃ ℤ], along the second argument of the
+      example: the second component of [pt = pt] is a path in the set
+      [‖S¹ = S¹‖₀], so [Ω²B²ℤ ≃ (refl_{S¹} = refl_{S¹})]; by univalence
+      and function extensionality this is [∏_x (x = x)], which is
+      [base = base] by evaluation at [base] ([ev_base_S1_isEquiv], from
+      [xca:(S1->S1)_(f)-eqv-S1]), and that is [ℤ] by [wdg].
+    - [M_eqv_Z]: the composite [M ≃ ℤ].
+
+    Not formalized: [m_k], the value of [M_eqv_Z] at [m_k] and the
+    identification of the w-outer reading of [m_k] with [kγ], and
+    negative [k].  The sign and the bilinearity are independent of all
+    of this: they hold for any [F]. *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -544,3 +561,64 @@ Section DegreePrecomposition.
        ⋅ loops_reading_precomp2 F (dg k) loop loop eP eQ_dg2.
 
 End DegreePrecomposition.
+
+(** The equivalence [M ≃ ℤ] of Example [exa:allS1*-swap]. *)
+Section MEqvZ.
+
+  Context `{Univalence}.
+
+  (** [B²ℤ :≡ Σ_{X:U} ‖S¹ = X‖₀], pointed at [(S¹,|refl|)]. *)
+  Definition B2Z : Ustar := ({X : Type & Tr 0 (S1 = X)}; (S1; tr refl)).
+
+  (** [X →* Y] pointed at the constant map [(cst_{pt}, refl)]. *)
+  Definition pmap_ptd (X Y : Ustar) : Ustar
+    := ((X →* Y); ((fun _ => pt Y); refl)).
+
+  Definition M : Type := S1star →* pmap_ptd S1star B2Z.
+
+  (** Evaluation at [loop] ([evp], [cor:circle-loopspace]). *)
+  Definition M_eqv_loops
+    : M ≃ (pt (pmap_ptd S1star B2Z) = pt (pmap_ptd S1star B2Z))
+    := (evp _; evp_isEquiv _).
+
+  (** [ptw_*] ([con:identity-ptd-maps]) at the constant map. *)
+  Definition loops_cst_eqv
+    : (pt (pmap_ptd S1star B2Z) = pt (pmap_ptd S1star B2Z))
+      ≃ (S1star →* loops B2Z).
+  Proof.
+    refine (Eqv_comp (ptw_star _ _) _).
+    apply Eqv_of_Equiv. refine (equiv_functor_sigma_id _). intro h. cbn.
+    refine (equiv_compose' (equiv_path_inverse _ _) _).
+    exact (equiv_concat_l (trans_1p (h base))^ _).
+  Defined.
+
+  Definition omega2_eqv
+    : (S1star →* loops B2Z) ≃ (refl (pt B2Z) = refl (pt B2Z))
+    := (evp _; evp_isEquiv _).
+
+  (** [Ω²B²ℤ ≃ (refl_{S¹} = refl_{S¹}) ≃ ∏_x (x = x) ≃ (base = base)
+      ≃ ℤ]. *)
+  Definition omega2_B2Z_eqv : (refl (pt B2Z) = refl (pt B2Z)) ≃ ℤ.
+  Proof.
+    apply (Eqv_comp (Y := (refl S1 = refl S1))).
+    - apply Eqv_of_Equiv.
+      refine (equiv_compose' (equiv_path_sigma_hprop
+        (P := fun p : S1 = S1 => transport (fun X => Tr 0 (S1 = X)) p (tr refl) = tr refl)
+        (refl; refl) (refl; refl))^-1 _).
+      exact (equiv_ap (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 refl refl).
+    - apply (Eqv_comp (Y := (forall x : S1, x = x))).
+      + apply Eqv_of_Equiv.
+        refine (equiv_compose' (equiv_path_forall (fun x : S1 => x) (fun x => x))^-1 _).
+        refine (equiv_compose'
+                  (equiv_path_equiv (equiv_path S1 S1 refl) (equiv_path S1 S1 refl))^-1 _).
+        exact (equiv_ap (equiv_equiv_path S1 S1) refl refl).
+      + apply (Eqv_comp (Y := (base = base))).
+        * apply Eqv_of_Equiv. exact (Build_Equiv _ _ _ (ev_base_S1_isEquiv idmap)).
+        * exact wdg.
+  Defined.
+
+  Definition M_eqv_Z : M ≃ ℤ
+    := Eqv_comp M_eqv_loops
+         (Eqv_comp loops_cst_eqv (Eqv_comp omega2_eqv omega2_B2Z_eqv)).
+
+End MEqvZ.
