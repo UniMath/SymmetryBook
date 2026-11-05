@@ -7,7 +7,8 @@
     of a square of loops is bilinear, and swapping the arguments of a
     function of two variables inverts it, so [swap(m_k) = m_{-k}]; the
     equivalence [M ≃ ℤ] of that example sends [m_k] to [k], and the
-    w-outer reading of [m_k] is [γ^k] with [γ] that of [m_1].  The
+    w-outer reading of [m_k] is [γ^k] with [γ] that of [m_1], also as
+    [m_1] precomposed with the degree [k] map, for all [k : ℤ].  The
     chapter is still in flux; the other results are not formalized
     yet.  It builds on Chapters 2 - 10
     ([FinGroups.FinGroups]).  Everything compiles with nothing

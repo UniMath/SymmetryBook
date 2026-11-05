@@ -136,8 +136,21 @@
       readings of [m_1 ∘ (dg_k × id)] and [m_1 ∘ (id × dg_k)] equal
       that of [m_k].
 
-    Not formalized: [loops_reading_dg1/2], and hence
-    [reading_m_1_dg1/2], for negative [k] ([dg] is defined on [ℕ]).  The sign and the bilinearity are independent of all
+
+    Negative degrees and independence of the sides:
+    - [loops_reading_indep]: the 2-loop of a square of loops does not
+      depend on the identifications of its sides with [refl] (changing
+      them conjugates it, and 2-loops commute: [eckmann_hilton]).
+    - [loops_reading_inv1], [loops_reading_inv2]: [p⁻¹] gives the
+      inverse 2-loop; [loops_reading_loopexp1], [loops_reading_loopexp2]:
+      the integer power [p^z] ([loopexp], [z : Int]) gives [γ^z].
+    - [dgZ k :≡ S1_rec base loop^k] for [k : ℤ] ([dg n ≡ dgZ(ι₊ n)],
+      [dg_dgZ]); [loops_reading_dgZ1], [loops_reading_dgZ2]: precomposing
+      with [dgZ k] in either argument gives [γ^k].
+    - [reading_m_k_any]: the reading of [m_k] is [γ^k] for any side
+      identifications; [reading_m_1_dgZ1], [reading_m_1_dgZ2] ([TBD1] for
+      all [k : ℤ]): the readings of [m_1 ∘ (dg_k × id)] and
+      [m_1 ∘ (id × dg_k)] equal that of [m_k].  The sign and the bilinearity are independent of all
     of this: they hold for any [F]. *)
 
 From HoTT Require Import
@@ -594,6 +607,196 @@ Section DegreePrecomposition.
 
 End DegreePrecomposition.
 
+(** *** Independence of the side identifications, and negative degrees
+
+    The 2-loop of a square of loops does not depend on how its sides are
+    identified with [refl]: changing them conjugates it, and 2-loops
+    commute (Eckmann-Hilton). *)
+Section Independence.
+
+  Context {C : Type} {c : C}.
+
+  Local Definition sq_2loop_conj {t l : c = c} (e : refl = t) (f : refl = l)
+    (s : Sq t t l l)
+    : sq_2loop e e f f s
+      = (ap011 (fun x y : c = c => y ⋅ x) f e)⁻¹
+        ⋅ (s ⋅ ap011 (fun x y : c = c => y ⋅ x) e f).
+  Proof. destruct e, f. exact (trans_1p s)⁻¹. Defined.
+
+  Local Definition ap011_split {x x' y y' : c = c} (α : x = x') (β : y = y')
+    : ap011 (fun x y : c = c => y ⋅ x) α β
+      = ap (fun x => y ⋅ x) α @ ap (fun y => y ⋅ x') β.
+  Proof. destruct α, β. exact refl. Defined.
+
+  Local Definition ap_trans_refl {y y' : c = c} (β : y = y')
+    : ap (fun z : c = c => z ⋅ refl) β = trans_1p y @ β @ (trans_1p y')^.
+  Proof. destruct β. exact (whiskerR (concat_p1 _) _ @ concat_pV _)^. Defined.
+
+  Local Definition ap011_2loops (α β : refl c = refl c :> (c = c))
+    : ap011 (fun x y : c = c => y ⋅ x) α β = α @ β.
+  Proof.
+    refine (ap011_split α β @ _).
+    refine (ap (fun u => u @ _) (ap_idmap α) @ _).
+    exact (ap (fun u => α @ u) (ap_trans_refl β @ concat_p1 _ @ concat_1p _)).
+  Defined.
+
+  Definition sq_2loop_2loops (e f : refl c = refl c :> (c = c))
+    (s : Sq (refl c) (refl c) (refl c) (refl c))
+    : sq_2loop e e f f s = s.
+  Proof.
+    refine (sq_2loop_conj e f s @ _).
+    refine (trans_is_concat _ _ @ _).
+    refine (ap (fun u => u @ _) (trans_is_concat _ _) @ _).
+    refine (ap (fun u => (_ @ s) @ u^) (ap011_2loops f e @ eckmann_hilton f e) @ _).
+    refine (ap (fun u => (u @ s) @ _) (ap011_2loops e f) @ _).
+    refine (ap (fun u => u @ _) (eckmann_hilton _ s) @ _).
+    exact (concat_pp_V _ _).
+  Defined.
+
+  Definition sq_2loop_indep {t l : c = c} (e e' : refl = t) (f f' : refl = l)
+    (s : Sq t t l l)
+    : sq_2loop e e f f s = sq_2loop e' e' f' f' s.
+  Proof. destruct e, f. exact (sq_2loop_2loops e' f' s)^. Defined.
+
+End Independence.
+
+Definition loops_reading_indep {A B C : Type} (F : A -> B -> C) {a : A} {b : B}
+  (p : a = a) (q : b = b)
+  (eP eP' : refl = ap (fun z => F z b) p) (eQ eQ' : refl = ap (F a) q)
+  : loops_reading F p q eP eQ = loops_reading F p q eP' eQ'
+  := sq_2loop_indep _ _ _ _ _.
+
+(** Inverse loops give inverse 2-loops. *)
+Section Inverses.
+
+  Context {A B C : Type} (F : A -> B -> C) {a : A} {b : B}.
+
+  Definition einv {X Y : Type} (f : X -> Y) {x : X} {p : x = x}
+    (e : refl = ap f p) : refl = ap f p⁻¹
+    := (ap_V f p)^ ⋅ ap inverse e.
+
+  Local Definition cancel_r {X : Type} {x : X} {u v : x = x} (h : refl = v @ u)
+    : v = u^
+    := (concat_p1 _)^ @ whiskerL _ (concat_pV u)^ @ concat_p_pp _ _ _
+       @ whiskerR h^ _ @ concat_1p _.
+
+  Local Definition cancel_l {X : Type} {x : X} {u v : x = x} (h : refl = u @ v)
+    : v = u^
+    := (concat_1p _)^ @ whiskerR (concat_Vp u)^ _ @ concat_pp_p _ _ _
+       @ whiskerL _ h^ @ concat_p1 _.
+
+  Definition loops_reading_inv1 (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q)
+    (eP' : refl = ap (fun z => F z b) p⁻¹)
+    : loops_reading F p⁻¹ q eP' eQ = (loops_reading F p q eP eQ)⁻¹.
+  Proof.
+    apply cancel_r.
+    refine (_ @ trans_is_concat _ _).
+    refine (_ @ loops_reading_hpaste F p p⁻¹ q eP eP' eQ).
+    refine (_ @ (loops_reading_tr1 F (trans_pV p) q _ eQ)^).
+    exact ((loops_reading_pow1 F p q eP eQ 0)^ @ loops_reading_indep F _ q _ _ eQ eQ).
+  Defined.
+
+  Definition loops_reading_inv2 (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q)
+    (eQ' : refl = ap (F a) q⁻¹)
+    : loops_reading F p q⁻¹ eP eQ' = (loops_reading F p q eP eQ)⁻¹.
+  Proof.
+    apply cancel_l.
+    refine (_ @ trans_is_concat _ _).
+    refine (_ @ loops_reading_vpaste F p q q⁻¹ eP eQ eQ').
+    refine (_ @ (loops_reading_tr2 F p (trans_pV q) eP _)^).
+    exact ((loops_reading_pow2 F p q eP eQ 0)^ @ loops_reading_indep F p _ eP eP _ _).
+  Defined.
+
+End Inverses.
+
+(** Integer powers [p^z] ([loopexp]) multiply the 2-loop by [z]. *)
+Section IntPowers.
+
+  Context {A B C : Type} (F : A -> B -> C) {a : A} {b : B}.
+
+  Definition eloopexp {X Y : Type} (f : X -> Y) {x : X} {p : x = x}
+    (e : refl = ap f p) (z : Int) : refl = ap f (loopexp p z).
+  Proof.
+    induction z as [|n IH|n IH].
+    - exact refl.
+    - exact ((ap (ap f) (loopexp_succ_r p n @ (trans_is_concat _ _)^))⁻¹ ⋅ ecomp f IH e).
+    - exact ((ap (ap f) (loopexp_pred_r p _ @ (trans_is_concat _ _)^))⁻¹
+             ⋅ ecomp f IH (einv f e)).
+  Defined.
+
+  Definition loops_reading_loopexp1 (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q) (z : Int)
+    (e : refl = ap (fun z => F z b) (loopexp p z))
+    : loops_reading F (loopexp p z) q e eQ = loopexp (loops_reading F p q eP eQ) z.
+  Proof.
+    revert e. induction z as [|n IH|n IH]; intro e.
+    - exact (loops_reading_indep F _ q e refl eQ eQ @ loops_reading_pow1 F p q eP eQ 0).
+    - refine (loops_reading_tr1 F (loopexp_succ_r p n @ (trans_is_concat _ _)^) q e eQ @ _).
+      refine (loops_reading_indep F _ q _ (ecomp _ (eloopexp _ eP n) eP) eQ eQ @ _).
+      refine (loops_reading_hpaste F _ p q _ eP eQ @ trans_is_concat _ _ @ _).
+      exact (ap (fun u => _ @ u) (IH _) @ (loopexp_succ_l _ n)^).
+    - refine (loops_reading_tr1 F (loopexp_pred_r p _ @ (trans_is_concat _ _)^) q e eQ @ _).
+      refine (loops_reading_indep F _ q _
+                (ecomp _ (eloopexp _ eP _) (einv _ eP)) eQ eQ @ _).
+      refine (loops_reading_hpaste F _ p⁻¹ q _ _ eQ @ trans_is_concat _ _ @ _).
+      refine (ap (fun u => u @ _) (loops_reading_inv1 F p q eP eQ _) @ _).
+      exact (ap (fun u => _ @ u) (IH _) @ (loopexp_pred_l _ _)^).
+  Defined.
+
+  Definition loops_reading_loopexp2 (p : a = a) (q : b = b)
+    (eP : refl = ap (fun z => F z b) p) (eQ : refl = ap (F a) q) (z : Int)
+    (e : refl = ap (F a) (loopexp q z))
+    : loops_reading F p (loopexp q z) eP e = loopexp (loops_reading F p q eP eQ) z.
+  Proof.
+    revert e. induction z as [|n IH|n IH]; intro e.
+    - exact (loops_reading_indep F p _ eP eP e refl @ loops_reading_pow2 F p q eP eQ 0).
+    - refine (loops_reading_tr2 F p (loopexp_succ_r q n @ (trans_is_concat _ _)^) eP e @ _).
+      refine (loops_reading_indep F p _ eP eP _ (ecomp _ (eloopexp _ eQ n) eQ) @ _).
+      refine (loops_reading_vpaste F p _ q eP _ eQ @ trans_is_concat _ _ @ _).
+      exact (ap (fun u => u @ _) (IH _) @ (loopexp_succ_r _ n)^).
+    - refine (loops_reading_tr2 F p (loopexp_pred_r q _ @ (trans_is_concat _ _)^) eP e @ _).
+      refine (loops_reading_indep F p _ eP eP _
+                (ecomp _ (eloopexp _ eQ _) (einv _ eQ)) @ _).
+      refine (loops_reading_vpaste F p _ q⁻¹ eP _ _ @ trans_is_concat _ _ @ _).
+      refine (ap (fun u => _ @ u) (loops_reading_inv2 F p q eP eQ _) @ _).
+      exact (ap (fun u => u @ _) (IH _) @ (loopexp_pred_r _ _)^).
+  Defined.
+
+End IntPowers.
+
+(** The degree [k] map for all [k : ℤ] ([dg] of [def:dgm-map] is
+    [dgZ ∘ ι₊] by definition), and precomposition with it. *)
+Definition dgZ `{Univalence} (k : ℤ) : S1 -> S1 := S1_rec S1 base (loopZ k).
+
+Definition dg_dgZ `{Univalence} (n : nat) : dg n = dgZ (iplus n) := refl.
+
+Section IntDegrees.
+
+  Context `{Univalence} {C : Type} (F : S1 -> S1 -> C)
+    (eP : refl = ap (fun z => F z base) loop) (eQ : refl = ap (F base) loop)
+    (k : ℤ).
+
+  Definition dgZ_loop : ap (dgZ k) loop = loopexp loop (toInt k)
+    := S1_rec_loop S1 base (loopZ k).
+
+  Definition loops_reading_dgZ1 (eP' : refl = ap (fun z => F (dgZ k z) base) loop)
+    : loops_reading (fun z w => F (dgZ k z) w) loop loop eP' eQ
+      = loopexp (loops_reading F loop loop eP eQ) (toInt k)
+    := loops_reading_precomp1 F (dgZ k) loop loop eP' eQ
+       @ loops_reading_tr1 F dgZ_loop loop _ eQ
+       @ loops_reading_loopexp1 F loop loop eP eQ (toInt k) _.
+
+  Definition loops_reading_dgZ2 (eQ' : refl = ap (fun w => F base (dgZ k w)) loop)
+    : loops_reading (fun z w => F z (dgZ k w)) loop loop eP eQ'
+      = loopexp (loops_reading F loop loop eP eQ) (toInt k)
+    := loops_reading_precomp2 F (dgZ k) loop loop eP eQ'
+       @ loops_reading_tr2 F loop dgZ_loop eP _
+       @ loops_reading_loopexp2 F loop loop eP eQ (toInt k) _.
+
+End IntDegrees.
+
 (** *** The w-outer reading of a map [m : S¹ →* (S¹ →* B)]
 
     For a loop [ℓ] at the constant pointed map, and [m :≡ evp⁻¹(ℓ)]
@@ -922,5 +1125,39 @@ Section MEqvZ.
       = loops_reading (F_k (iplus n)) loop loop (eP_k _) (eQ_k _)
     := loops_reading_dg2 _ _ _ n @ ap (fun g => ppow g n) reading_m_1
        @ (reading_m_k_gamma (iplus n) @ loopexp_ppow gamma n)^.
+
+  (** By [loops_reading_indep] the choice of [eP_k], [eQ_k] does not
+      matter. *)
+  Definition reading_m_k_any (k : ℤ)
+    (eP : refl = ap (fun z => F_k k z base) loop) (eQ : refl = ap (F_k k base) loop)
+    : loops_reading (F_k k) loop loop eP eQ = loopexp gamma (toInt k)
+    := loops_reading_indep _ _ _ _ _ _ _ @ reading_m_k_gamma k.
+
+  (** [TBD1] for all [k : ℤ]: precomposing [m_1] with the degree [k]
+      map ([dgZ]) in either argument gives the 2-loop of [m_k], for any
+      identifications of the sides with [refl]. *)
+  Definition reading_m_1_dgZ1 (k : ℤ)
+    (eP' : refl = ap (fun z => F_k (iplus 1) (dgZ k z) base) loop)
+    (eQ' : refl = ap (F_k (iplus 1) base) loop)
+    (eP : refl = ap (fun z => F_k k z base) loop) (eQ : refl = ap (F_k k base) loop)
+    : loops_reading (fun z w => F_k (iplus 1) (dgZ k z) w) loop loop eP' eQ'
+      = loops_reading (F_k k) loop loop eP eQ
+    := loops_reading_indep (fun z w => F_k (iplus 1) (dgZ k z) w) loop loop
+         eP' eP' eQ' (eQ_k _)
+       @ loops_reading_dgZ1 _ (eP_k _) (eQ_k _) k eP'
+       @ ap (fun g => loopexp g (toInt k)) reading_m_1
+       @ (reading_m_k_any k eP eQ)^.
+
+  Definition reading_m_1_dgZ2 (k : ℤ)
+    (eP' : refl = ap (fun z => F_k (iplus 1) z base) loop)
+    (eQ' : refl = ap (fun w => F_k (iplus 1) base (dgZ k w)) loop)
+    (eP : refl = ap (fun z => F_k k z base) loop) (eQ : refl = ap (F_k k base) loop)
+    : loops_reading (fun z w => F_k (iplus 1) z (dgZ k w)) loop loop eP' eQ'
+      = loops_reading (F_k k) loop loop eP eQ
+    := loops_reading_indep (fun z w => F_k (iplus 1) z (dgZ k w)) loop loop
+         eP' (eP_k _) eQ' eQ'
+       @ loops_reading_dgZ2 _ (eP_k _) (eQ_k _) k eQ'
+       @ ap (fun g => loopexp g (toInt k)) reading_m_1
+       @ (reading_m_k_any k eP eQ)^.
 
 End MEqvZ.
