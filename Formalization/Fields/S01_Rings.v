@@ -6,9 +6,9 @@
     ** Summary of this formalization
 
     Only the questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]
-    and the claim [M ≃ ℤ] of that example are addressed so far; the
-    other labels of this section are not formalized yet (no [_stmt]s
-    either: the chapter is still in flux).
+    and the claim [M ≃ ℤ] of that example, with [m_k ↦ k], are
+    addressed so far; the other labels of this section are not
+    formalized yet (no [_stmt]s either: the chapter is still in flux).
 
     The example studies [M :≡ S¹ →* (S¹ →* B²ℤ)] and maps
     [m_k : M] given by [m_k(base) :≡ pt] and [m_k(loop) := ptw_*⁻¹(k')]
@@ -97,14 +97,26 @@
     - [omega2_eqv]: [(S¹ →* ΩB²ℤ) ≃ Ω²B²ℤ], [evp] again.
     - [omega2_B2Z_eqv]: [Ω²B²ℤ ≃ ℤ], along the second argument of the
       example: the second component of [pt = pt] is a path in the set
-      [‖S¹ = S¹‖₀], so [Ω²B²ℤ ≃ (refl_{S¹} = refl_{S¹})]; by univalence
-      and function extensionality this is [∏_x (x = x)], which is
-      [base = base] by evaluation at [base] ([ev_base_S1_isEquiv], from
-      [xca:(S1->S1)_(f)-eqv-S1]), and that is [ℤ] by [wdg].
+      [‖S¹ = S¹‖₀], so [Ω²B²ℤ ≃ (refl_{S¹} = refl_{S¹})] ([sigma_step]);
+      by univalence and function extensionality this is [∏_x (x = x)]
+      ([ua_step]), which is [base = base] by evaluation at [base]
+      ([ev_step], from [xca:(S1->S1)_(f)-eqv-S1]), and that is [ℤ] by
+      [wdg].
     - [M_eqv_Z]: the composite [M ≃ ℤ].
 
-    Not formalized: [m_k], the value of [M_eqv_Z] at [m_k] and the
-    identification of the w-outer reading of [m_k] with [kγ], and
+    The maps [m_k], for all [k : ℤ], as in the example:
+    - [kloop k]: the [k]-loop around [id_S¹], pointwise
+      [x ↦ ex(x)(loop^k)] ([kloop_pw]), made a 2-loop at [refl_{S¹}]
+      by function extensionality and univalence ([kloop_id]) and then
+      at [refl_{pt}] in [B²ℤ].
+    - [dg_k' : S¹ →* ΩB²ℤ] with [dg_k'(base) :≡ refl], [dg_k'(loop) :=
+      kloop k], pointed by [refl]; [m_k] with [m_k(base) :≡ pt],
+      [m_k(loop) := ptw_*⁻¹(dg_k')] and [(m_k)_pt :≡ refl].
+    - [M_eqv_Z_m]: [M_eqv_Z(m_k) = k].
+
+    Not formalized: the identification of the w-outer reading of [m_k]
+    (forgetting pointing paths) with [kγ], which would connect the
+    2-loop readings above to [M_eqv_Z], and [loops_reading_dg1/2] for
     negative [k].  The sign and the bilinearity are independent of all
     of this: they hold for any [F]. *)
 
@@ -596,29 +608,83 @@ Section MEqvZ.
     : (S1star →* loops B2Z) ≃ (refl (pt B2Z) = refl (pt B2Z))
     := (evp _; evp_isEquiv _).
 
-  (** [Ω²B²ℤ ≃ (refl_{S¹} = refl_{S¹}) ≃ ∏_x (x = x) ≃ (base = base)
-      ≃ ℤ]. *)
-  Definition omega2_B2Z_eqv : (refl (pt B2Z) = refl (pt B2Z)) ≃ ℤ.
+  (** [Ω²B²ℤ ≃ (refl_{S¹} = refl_{S¹})]: the second component of a
+      loop at [pt] is a path in the set [‖S¹ = S¹‖₀]. *)
+  Definition sigma_step : (refl (pt B2Z) = refl (pt B2Z)) ≃ (refl S1 = refl S1).
   Proof.
-    apply (Eqv_comp (Y := (refl S1 = refl S1))).
-    - apply Eqv_of_Equiv.
-      refine (equiv_compose' (equiv_path_sigma_hprop
-        (P := fun p : S1 = S1 => transport (fun X => Tr 0 (S1 = X)) p (tr refl) = tr refl)
-        (refl; refl) (refl; refl))^-1 _).
-      exact (equiv_ap (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 refl refl).
-    - apply (Eqv_comp (Y := (forall x : S1, x = x))).
-      + apply Eqv_of_Equiv.
-        refine (equiv_compose' (equiv_path_forall (fun x : S1 => x) (fun x => x))^-1 _).
-        refine (equiv_compose'
-                  (equiv_path_equiv (equiv_path S1 S1 refl) (equiv_path S1 S1 refl))^-1 _).
-        exact (equiv_ap (equiv_equiv_path S1 S1) refl refl).
-      + apply (Eqv_comp (Y := (base = base))).
-        * apply Eqv_of_Equiv. exact (Build_Equiv _ _ _ (ev_base_S1_isEquiv idmap)).
-        * exact wdg.
+    apply Eqv_of_Equiv.
+    refine (equiv_compose' (equiv_path_sigma_hprop
+      (P := fun p : S1 = S1 => transport (fun X => Tr 0 (S1 = X)) p (tr refl) = tr refl)
+      (refl; refl) (refl; refl))^-1 _).
+    exact (equiv_ap (equiv_path_sigma _ (pt B2Z) (pt B2Z))^-1 refl refl).
   Defined.
+
+  (** [(refl_{S¹} = refl_{S¹}) ≃ ∏_x (x = x)]: univalence and function
+      extensionality. *)
+  Definition ua_step : (refl S1 = refl S1) ≃ (forall x : S1, x = x).
+  Proof.
+    apply Eqv_of_Equiv.
+    refine (equiv_compose' (equiv_path_forall (fun x : S1 => x) (fun x => x))^-1 _).
+    refine (equiv_compose'
+              (equiv_path_equiv (equiv_path S1 S1 refl) (equiv_path S1 S1 refl))^-1 _).
+    exact (equiv_ap (equiv_equiv_path S1 S1) refl refl).
+  Defined.
+
+  (** [∏_x (x = x) ≃ (base = base)]: evaluation at [base]
+      ([xca:(S1->S1)_(f)-eqv-S1]). *)
+  Definition ev_step : (forall x : S1, x = x) ≃ (base = base)
+    := Eqv_of_Equiv (Build_Equiv _ _ _ (ev_base_S1_isEquiv idmap)).
+
+  Definition omega2_B2Z_eqv : (refl (pt B2Z) = refl (pt B2Z)) ≃ ℤ
+    := Eqv_comp sigma_step (Eqv_comp ua_step (Eqv_comp ev_step wdg)).
 
   Definition M_eqv_Z : M ≃ ℤ
     := Eqv_comp M_eqv_loops
          (Eqv_comp loops_cst_eqv (Eqv_comp omega2_eqv omega2_B2Z_eqv)).
+
+  (** The maps [m_k : M] of the example, for [k : ℤ].  First the
+      [k]-loop around [id_S¹]: pointwise it is [x ↦ ex(x)(loop^k)]
+      ([ext_base_S1], the rotation extending [loop^k]); by function
+      extensionality and univalence it is a 2-loop at [refl_{S¹}], and
+      hence at [refl_{pt}] in [B²ℤ] (the truncated component being a
+      set). *)
+  Definition kloop_pw (k : ℤ) : forall x : S1, x = x
+    := ext_base_S1 idmap (loopZ k).
+
+  Definition kloop_id (k : ℤ) : refl S1 = refl S1
+    := eqinv (snd ua_step) (kloop_pw k).
+
+  Definition kloop (k : ℤ) : refl (pt B2Z) = refl (pt B2Z)
+    := eqinv (snd sigma_step) (kloop_id k).
+
+  (** [dg_k' : S¹ →* ΩB²ℤ], with [dg_k'(base) :≡ refl_{pt}],
+      [dg_k'(loop) := kloop k], pointed by reflexivity. *)
+  Definition dg_k' (k : ℤ) : S1star →* loops B2Z := evp_inv _ (kloop k).
+
+  (** [m_k(base) :≡ pt], [m_k(loop) := ptw_*⁻¹(dg_k')] (with the
+      pointing condition of [dg_k'] turned around as in
+      [loops_cst_eqv]), [(m_k)_pt :≡ refl]. *)
+  Definition m_k (k : ℤ) : M := evp_inv _ (eqinv (snd loops_cst_eqv) (dg_k' k)).
+
+  Definition evp_evp_inv {A : Type} (a : A) (l : a = a) : evp a (evp_inv a l) = l
+    := trans_1p _ @ S1_rec_loop A a l.
+
+  (** [M_eqv_Z] sends [m_k] to [k]. *)
+  Definition M_eqv_Z_m (k : ℤ) : fst M_eqv_Z (m_k k) = k.
+  Proof.
+    change (fst omega2_B2Z_eqv (fst omega2_eqv (fst loops_cst_eqv
+              (evp _ (evp_inv _ (eqinv (snd loops_cst_eqv) (dg_k' k)))))) = k).
+    refine (ap (fun l => fst omega2_B2Z_eqv (fst omega2_eqv (fst loops_cst_eqv l)))
+              (evp_evp_inv _ _) @ _).
+    refine (ap (fun d => fst omega2_B2Z_eqv (fst omega2_eqv d))
+              (eqinv_r (snd loops_cst_eqv) _) @ _).
+    refine (ap (fst omega2_B2Z_eqv) (evp_evp_inv _ _) @ _).
+    change (fst wdg (fst ev_step (fst ua_step (fst sigma_step
+              (eqinv (snd sigma_step) (kloop_id k))))) = k).
+    refine (ap (fun x => fst wdg (fst ev_step (fst ua_step x)))
+              (eqinv_r (snd sigma_step) _) @ _).
+    refine (ap (fun x => fst wdg (fst ev_step x)) (eqinv_r (snd ua_step) _) @ _).
+    exact (wdg_loopZ k).
+  Defined.
 
 End MEqvZ.

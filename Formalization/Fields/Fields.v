@@ -6,7 +6,7 @@
     questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]: the 2-loop
     of a square of loops is bilinear, and swapping the arguments of a
     function of two variables inverts it, so [swap(m_k) = m_{-k}]; and the
-    equivalence [M ≃ ℤ] of that example.  The chapter is still in flux; the
+    equivalence [M ≃ ℤ] of that example, sending [m_k] to [k].  The chapter is still in flux; the
     other results are not formalized yet.  It builds on Chapters 2 - 10
     ([FinGroups.FinGroups]).  Everything compiles with nothing
     admitted. *)
