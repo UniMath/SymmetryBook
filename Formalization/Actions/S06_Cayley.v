@@ -18,12 +18,10 @@
 
     - Exercise [xca:PP-fixed-permutations] ([xca_PP_fixed], with
       [PermSet], [FixedPerms], [act_PermSet]: transport in [PermSet] is
-      conjugation).  NOTE for the book text: a fixed [π] is
-      [x ↦ x π(refl)] ([fixed_rmul]), so evaluation at [refl] reverses
-      the order: [(π ∘ π')(refl) = π'(refl) π(refl)].  It is an
-      anti-isomorphism, unless the fixed permutations get the opposite
-      composition (or one evaluates [π ↦ π(refl)⁻¹]).  The statement
-      first had the order the other way round; it is corrected.
+      conjugation).  A fixed [π] is [x ↦ x π(refl)] ([fixed_rmul]), so
+      evaluation at [refl] reverses the order:
+      [(π ∘ π')(refl) = π'(refl) π(refl)]; followed by inversion, as in
+      the book, it is an isomorphism [π ↦ π(refl)⁻¹].
 
     - The description of the subgroup [E(G, ρ_G)]: its symmetries are
       the right multiplications ([E_rho_symmetries]).
@@ -125,8 +123,8 @@ Section Cayley.
       permutations of [UG] fixed by the action of [G] on
       [z ↦ ((sh_G = z) ≃ (sh_G = z))] are those with
       [π(g g') = g π(g')], and evaluation at [refl] is an equivalence from
-      them to [UG] turning composition into the opposite multiplication
-      (see the NOTE in the header). *)
+      them to [UG] turning composition into the opposite multiplication;
+      followed by inversion it is an isomorphism. *)
   Definition PermSet (z : utype (BG G)) : SetU
     := (((sh G = z) ≃ (sh G = z)); Eqv_sets_isSet (BG_isGrpd G (sh G) z)).
 
@@ -139,7 +137,11 @@ Section Cayley.
           <-> (forall g g' : USym G, fst pi (g ⋅ g') = g ⋅ fst pi g'))
        × isEquiv (fun pi : FixedPerms => fst (fst pi) refl)
        × (forall pi pi' : FixedPerms,
-            fst (fst pi) (fst (fst pi') refl) = fst (fst pi') refl ⋅ fst (fst pi) refl).
+            fst (fst pi) (fst (fst pi') refl) = fst (fst pi') refl ⋅ fst (fst pi) refl)
+       × isEquiv (fun pi : FixedPerms => (fst (fst pi) refl)⁻¹)
+       × (forall pi pi' : FixedPerms,
+            (fst (fst pi) (fst (fst pi') refl))⁻¹
+            = (fst (fst pi) refl)⁻¹ ⋅ (fst (fst pi') refl)⁻¹).
 
   (** Transport in [PermSet] is conjugation: [p · π = p π(p⁻¹ _)]. *)
   Definition act_PermSet {z : utype (BG G)} (p : sh G = z) (pi : el PermSet (sh G))
@@ -174,17 +176,23 @@ Section Cayley.
   Definition fixed_rmul (pi : FixedPerms) (x : USym G) : fst (fst pi) x = x ⋅ fst (fst pi) refl
     := ap (fst (fst pi)) (trans_1p x)^ @ snd pi x refl.
 
-  (** The statement had [π(π'(refl)) = π(refl) π'(refl)], which fails for
-      non-abelian [G]: evaluation at [refl] turns composition into the
-      opposite multiplication. *)
+  Definition trans_symm {X : Type} {a b c : X} (p : a = b) (q : b = c)
+    : (q ⋅ p)⁻¹ = p⁻¹ ⋅ q⁻¹.
+  Proof. destruct p, q. exact refl. Defined.
+
+  (** Evaluation at [refl] turns composition into the opposite
+      multiplication; inverting the result corrects this. *)
   Definition xca_PP_fixed : xca_PP_fixed_stmt.
   Proof.
-    refine (((fun pi => (fixed_hom pi, hom_fixed pi)); _); _).
-    - refine (iso_to_isEquiv _ rmul_fixed _ (fun h => refl)).
+    assert (E : isEquiv (fun pi : FixedPerms => fst (fst pi) refl)).
+    { refine (iso_to_isEquiv _ rmul_fixed _ (fun h => refl)).
       intro pi. refine (path_sigma_prop (fun _ => Pi_isProp (fun _ => Pi_isProp
                           (fun _ => USym_isSet G _ _))) _).
-      apply path_Eqv. apply ptw_inv. intro x. exact (fixed_rmul pi x)^.
-    - intros pi pi'. exact (fixed_rmul pi _).
+      apply path_Eqv. apply ptw_inv. intro x. exact (fixed_rmul pi x)^. }
+    refine (((((fun pi => (fixed_hom pi, hom_fixed pi)); E);
+              (fun pi pi' => fixed_rmul pi _)); _); _).
+    - exact (comp_isEquiv E (snd symm_eqv)).
+    - intros pi pi'. exact (ap symm (fixed_rmul pi _) @ trans_symm _ _).
   Defined.
 
 End Cayley.

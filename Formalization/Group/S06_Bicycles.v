@@ -33,8 +33,20 @@
       [xca:bicycle-normal-if-commuting] and [xca:bicycle-list-equivalence]:
       normality iff [H_x = H_y] ([Hx], [xca_normal_Hx]; for the converse, a symmetry [x ↦ y] is
       built by relabelling, [relabel], [relabel_sym]); commuting bicycles
-      are normal ([isCommuting], [commuting_isNormal]); lists with the
-      same value at [x₀] have the same meaning ([xca_lists_equiv]).
+      are normal ([isCommuting], [commuting_isNormal]); the map
+      [Cyc × Cyc → Bicyc], [((X,t),(Y,u)) ↦ (X × Y, t × id, id × u)]
+      ([prodBicyc]) is injective with commuting image, and [(𝟚, swap,
+      swap)] is a commuting bicycle not in the image
+      ([xca_bicycle_product]); lists with the same value at [x₀] have the
+      same meaning ([xca_lists_equiv]).
+    - For the injectivity, identifications of cycles are the equivalences
+      commuting with [t] ([CycEqv], [path_to_CycEqv_isEquiv]).  An
+      identification [φ] of product bicycles is [α × β] for unique cycle
+      identifications: [α(x) :≡ pr₁ φ(x, y₀)] and [β(y) :≡ pr₂ φ(x₀, y)]
+      ([prodBEqv_inv]; they are equivalences since a map of a cycle
+      commuting with [t] and fixing a point is the identity, [cyc_fix]),
+      and [φ = α × β] by [lem:evisinj-bicycle] ([prodBEqv_isEquiv]).
+      Hence [ap prodBicyc] is an equivalence ([prodBicyc_ap_isEquiv]).
     - Remark [rem:bicycle-list-concat] ([rem_bicycle_list_concat], with
       [BicycEqv_comp]).
     - Remark [rem:inf-dihedral-frieze] and exercise
@@ -59,15 +71,6 @@
       an equivalence onto its component ([Kc'_isEquiv]): on loops it is
       postcomposition ([ap_Kc_post]), an equivalence by
       [lem:evisinj-bicycle] ([post_isEquiv0]).  Hence [SG3_AutKc].
-
-    Deviations
-    - Exercise [xca:bicycle-normal-if-commuting] is only half formalized: its
-      second part is false as stated (NOTE for the book): [(𝟚, swap,
-      swap)] is a commuting bicycle ([SwapBicyc], [SwapBicyc_isCommuting])
-      that is not of the form [(X × Y, t × id, id × u)]
-      ([SwapBicyc_not_product]).  A fix is to restrict to commuting
-      bicycles with [aⁿ = bᵐ] only if [aⁿ = id]; this is for the authors
-      to decide (the book now marks this part with a [\wip]).
  *)
 
 From HoTT Require Import
@@ -637,8 +640,7 @@ Section BicycExercises.
                      ptw_inv (fun z => (sem_comm B cB _ (inr refl) l z)^))); e)).
   Defined.
 
-  (** The second part fails as stated (NOTE for the book): the commuting
-      bicycle [(𝟚, swap, swap)] is not of the form
+  (** The commuting bicycle [(𝟚, swap, swap)] is not of the form
       [(X × Y, t × id, id × u)], since [t × id = id × u] forces [t = id]
       and [u = id]. *)
   Definition swap_connBy : isConnBy swapEqv swapEqv.
@@ -667,6 +669,245 @@ Section BicycExercises.
     pose (h := ht x y). rewrite E1 in h.
     destruct (fst e (x; y)); exact (Bool.false_ne_true h^) || exact (Bool.false_ne_true h).
   Defined.
+
+  (** The rest of the exercise: the map [Cyc × Cyc → Bicyc],
+      [((X,t),(Y,u)) ↦ (X × Y, t × id_Y, id_X × u)], is injective with all
+      bicycles in the image commuting, and [(𝟚, swap, swap)] is a
+      commuting bicycle not in the image.  We first identify
+      identifications of cycles with equivalences commuting with [t], as
+      for bicycles. *)
+  Definition cX (C : Cyc) : Type := fst (fst C).
+  Definition cX_isSet (C : Cyc) : isSet (cX C) := snd (fst C).
+  Definition ct (C : Cyc) : cX C ≃ cX C := fst (snd C).
+  Definition cne (C : Cyc) : ptrunc (cX C) := fst (snd (snd C)).
+  Definition cconn (C : Cyc) (x x' : cX C) : ptrunc {n : ℤ & x' = iterZ (ct C) n x}
+    := snd (snd (snd C)) x x'.
+
+  Definition CycEqv (C C' : Cyc) : Type
+    := {e : cX C ≃ cX C' & fst e ∘ fst (ct C) = fst (ct C') ∘ fst e}.
+
+  Definition path_to_CycEqv {C C' : Cyc} (p : C = C') : CycEqv C C'
+    := match p with refl => (idEqv _; refl) end.
+
+  Definition CycEqv_path {C C' : Cyc} (w w' : CycEqv C C')
+    (h : fst (fst w) = fst (fst w')) : w = w'.
+  Proof.
+    refine (path_sigma_prop _ (path_Eqv _ _ h)).
+    intro e. apply (Pi_isSet (fun _ => cX_isSet C')).
+  Defined.
+
+  Definition Cyc_total_isContr (C : Cyc) : isContr {C' : Cyc & CycEqv C C'}.
+  Proof.
+    refine ((C; path_to_CycEqv refl); _).
+    intros [C' w].
+    destruct C as [[X sX] [t c]], C' as [[Y sY] [t' c']], w as [e ht].
+    cbn in *.
+    revert sY t' c' ht.
+    enough (G : forall p : X = Y, forall (sY : isSet Y) (t' : Y ≃ Y)
+                  (c' : ptrunc Y × (forall x x' : Y, fst (conn_by t' x x')))
+                  (ht : fst (idtoeqv p) ∘ fst t = fst t' ∘ fst (idtoeqv p)),
+                  ((((X; sX); (t; c)) : Cyc); path_to_CycEqv refl)
+                  = ((((Y; sY); (t'; c')) : Cyc); (idtoeqv p; ht))).
+    { intros sY t' c' ht.
+      pose (q := ptoe_etop e). clearbody q. revert ht. revert q.
+      generalize (etop e). intros p q. destruct q. intros ht.
+      exact (G p sY t' c' ht). }
+    intro p. destruct p. intros sY t' c' ht.
+    destruct (path_Eqv t t' ht).
+    destruct (isSet_isProp X sX sY).
+    destruct (prod_isProp ptrunc_isProp
+                (Pi_isProp (fun x => Pi_isProp (fun x' => ptrunc_isProp))) c c').
+    refine (pathpair refl _).
+    exact (CycEqv_path (C := ((X; sX); (t; c))) (C' := ((X; sX); (t; c)))
+             (path_to_CycEqv refl) (idtoeqv refl; ht) refl).
+  Defined.
+
+  Definition path_to_CycEqv_isEquiv (C C' : Cyc) : isEquiv (@path_to_CycEqv C C')
+    := isEquiv_from_tot (fun C' => @path_to_CycEqv C C')
+         (contr_map_isEquiv (singleton_contr C) (Cyc_total_isContr C) _) C'.
+
+  (** A map of a cycle to itself commuting with [t] and fixing one
+      element is the identity. *)
+  Definition cyc_fix (C : Cyc) (h : cX C -> cX C)
+    (hc : forall x, h (fst (ct C) x) = fst (ct C) (h x)) (x0 : cX C) (e : h x0 = x0)
+    (x : cX C) : h x = x.
+  Proof.
+    refine (ptrunc_rec (cX_isSet C _ _) _ (cconn C x0 x)). intros [n p].
+    destruct p^.
+    exact (iterZ_nat (cX_isSet C) (ct C) (ct C) h hc n x0 @ ap (iterZ (ct C) n) e).
+  Defined.
+
+  (** The inverse of an equivalence commutes with the inverse data. *)
+  Definition eqv_inv_comm {X Y : Type} (e : X ≃ Y) (s : X -> X) (s' : Y -> Y)
+    (h : forall x, fst e (s x) = s' (fst e x)) (y : Y)
+    : eqinv (snd e) (s' y) = s (eqinv (snd e) y)
+    := ap (fun z => eqinv (snd e) (s' z)) (eqinv_r (snd e) y)^
+       @ ap (eqinv (snd e)) (h _)^ @ eqinv_l (snd e) _.
+
+  Definition prodEqv {X X' Y Y' : Type} (e : X ≃ X') (f : Y ≃ Y') : X × Y ≃ X' × Y'
+    := mkEqv (prod_map (fst e) (fst f)) (prod_map (eqinv (snd e)) (eqinv (snd f)))
+         (fun w => pathpair_bin (eqinv_l (snd e) (fst w); eqinv_l (snd f) (snd w)))
+         (fun w => pathpair_bin (eqinv_r (snd e) (fst w); eqinv_r (snd f) (snd w))).
+
+  Definition iterZ_idEqv {Y : Type} (sY : isSet Y) (n : ℤ) (y : Y)
+    : iterZ (idEqv Y) n y = y.
+  Proof.
+    revert n. refine (ℤ_ind_prop _ (fun n => sY _ _) _ _).
+    - intro n. induction n as [|n IH].
+      + exact refl.
+      + exact IH.
+    - intros [n]. induction n as [|n IH].
+      + exact refl.
+      + exact (eqinv_l (snd (idEqv Y)) _ @ IH).
+  Defined.
+
+  Definition pB_a (C D : Cyc) : cX C × cX D ≃ cX C × cX D := prodEqv (ct C) (idEqv (cX D)).
+  Definition pB_b (C D : Cyc) : cX C × cX D ≃ cX C × cX D := prodEqv (idEqv (cX C)) (ct D).
+
+  Definition iterZ_pa (C D : Cyc) (n : ℤ) (w : cX C × cX D)
+    : iterZ (pB_a C D) n w = (iterZ (ct C) n (fst w); snd w)
+    := pathpair_bin (iterZ_nat (cX_isSet C) (pB_a C D) (ct C) fst (fun _ => refl) n w;
+                     iterZ_nat (cX_isSet D) (pB_a C D) (idEqv _) snd (fun _ => refl) n w
+                     @ iterZ_idEqv (cX_isSet D) n (snd w)).
+
+  Definition iterZ_pb (C D : Cyc) (n : ℤ) (w : cX C × cX D)
+    : iterZ (pB_b C D) n w = (fst w; iterZ (ct D) n (snd w))
+    := pathpair_bin (iterZ_nat (cX_isSet C) (pB_b C D) (idEqv _) fst (fun _ => refl) n w
+                     @ iterZ_idEqv (cX_isSet C) n (fst w);
+                     iterZ_nat (cX_isSet D) (pB_b C D) (ct D) snd (fun _ => refl) n w).
+
+  Definition prod_ne (C D : Cyc) : ptrunc (cX C × cX D)
+    := ptrunc_rec ptrunc_isProp
+         (fun x => ptrunc_rec ptrunc_isProp (fun y => trunc ((x; y) : cX C × cX D)) (cne D))
+         (cne C).
+
+  Definition prod_connBy (C D : Cyc) : isConnBy (pB_a C D) (pB_b C D).
+  Proof.
+    intros w w'.
+    refine (ptrunc_rec ptrunc_isProp _ (cconn C (fst w) (fst w'))). intros [n p].
+    refine (ptrunc_rec ptrunc_isProp _ (cconn D (snd w) (snd w'))). intros [m q].
+    refine (trunc (cons (inl n) (cons (inr m) nil); _)).
+    change (w' = iterZ (pB_a C D) n (iterZ (pB_b C D) m w)).
+    exact (pathpair_bin (p; q)
+           @ (iterZ_pa C D n ((fst w; iterZ (ct D) m (snd w)) : cX C × cX D))^
+           @ ap (iterZ (pB_a C D) n) (iterZ_pb C D m w)^).
+  Defined.
+
+  Definition prodBicyc (CD : Cyc × Cyc) : Bicyc
+    := ((cX (fst CD) × cX (snd CD); Sigma_isSet (cX_isSet _) (fun _ => cX_isSet _));
+        (pB_a (fst CD) (snd CD); (pB_b (fst CD) (snd CD);
+         (prod_ne (fst CD) (snd CD); prod_connBy (fst CD) (snd CD))))).
+
+  Definition prodBicyc_isCommuting (CD : Cyc × Cyc) : isCommuting (prodBicyc CD) := refl.
+
+  (** Pairs of identifications of cycles give identifications of the
+      product bicycles, [(α, β) ↦ α × β]. *)
+  Definition prodBEqv {C C' D D' : Cyc} (al : CycEqv C C') (be : CycEqv D D')
+    : BicycEqv (prodBicyc (C; D)) (prodBicyc (C'; D'))
+    := (prodEqv (fst al) (fst be);
+        (ptw_inv (fun w => pathpair_bin (ptw (snd al) (fst w); refl));
+         ptw_inv (fun w => pathpair_bin (refl; ptw (snd be) (snd w))))).
+
+  (** Conversely, an identification [φ] of product bicycles gives
+      [α(x) :≡ pr₁ φ(x, y₀)] and [β(y) :≡ pr₂ φ(x₀, y)], given [x₀], [y₀]. *)
+  Section ProdInv.
+
+    Context {C C' D D' : Cyc} (x0 : cX C) (y0 : cX D)
+      (w : BicycEqv (prodBicyc (C; D)) (prodBicyc (C'; D'))).
+
+    Let phi := fst (fst w).
+    Let psi := eqinv (snd (fst w)).
+
+    Definition pi_al (x : cX C) : cX C' := fst (phi (x; y0)).
+    Definition pi_al' (x' : cX C') : cX C := fst (psi (x'; snd (phi (x0; y0)))).
+    Definition pi_be (y : cX D) : cX D' := snd (phi (x0; y)).
+    Definition pi_be' (y' : cX D') : cX D := snd (psi (fst (phi (x0; y0)); y')).
+
+    Definition pi_al_comm (x : cX C) : pi_al (fst (ct C) x) = fst (ct C') (pi_al x)
+      := ap fst (ptw (fst (snd w)) (x; y0)).
+    Definition pi_al'_comm (x' : cX C') : pi_al' (fst (ct C') x') = fst (ct C) (pi_al' x')
+      := ap fst (eqv_inv_comm (fst w) _ _ (ptw (fst (snd w)))
+                  ((x'; snd (phi (x0; y0))) : cX C' × cX D')).
+    Definition pi_be_comm (y : cX D) : pi_be (fst (ct D) y) = fst (ct D') (pi_be y)
+      := ap (fun z : cX C' × cX D' => snd z) (ptw (snd (snd w)) (x0; y)).
+    Definition pi_be'_comm (y' : cX D') : pi_be' (fst (ct D') y') = fst (ct D) (pi_be' y')
+      := ap (fun z : cX C × cX D => snd z) (eqv_inv_comm (fst w) _ _ (ptw (snd (snd w)))
+                  ((fst (phi (x0; y0)); y') : cX C' × cX D')).
+
+    Definition pi_al_gf (x : cX C) : pi_al' (pi_al x) = x
+      := cyc_fix C (fun x => pi_al' (pi_al x))
+           (fun x => ap pi_al' (pi_al_comm x) @ pi_al'_comm _) x0
+           (ap fst (eqinv_l (snd (fst w)) (x0; y0))) x.
+    Definition pi_al_fg (x' : cX C') : pi_al (pi_al' x') = x'
+      := cyc_fix C' (fun x' => pi_al (pi_al' x'))
+           (fun x' => ap pi_al (pi_al'_comm x') @ pi_al_comm _) (pi_al x0)
+           (ap pi_al (pi_al_gf x0)) x'.
+    Definition pi_be_gf (y : cX D) : pi_be' (pi_be y) = y
+      := cyc_fix D (fun y => pi_be' (pi_be y))
+           (fun y => ap pi_be' (pi_be_comm y) @ pi_be'_comm _) y0
+           (ap (fun z : cX C × cX D => snd z) (eqinv_l (snd (fst w)) (x0; y0))) y.
+    Definition pi_be_fg (y' : cX D') : pi_be (pi_be' y') = y'
+      := cyc_fix D' (fun y' => pi_be (pi_be' y'))
+           (fun y' => ap pi_be (pi_be'_comm y') @ pi_be_comm _) (pi_be y0)
+           (ap pi_be (pi_be_gf y0)) y'.
+
+    Definition prodBEqv_inv : CycEqv C C' × CycEqv D D'
+      := ((mkEqv pi_al pi_al' pi_al_gf pi_al_fg; ptw_inv pi_al_comm);
+          (mkEqv pi_be pi_be' pi_be_gf pi_be_fg; ptw_inv pi_be_comm)).
+
+  End ProdInv.
+
+  Definition prodBEqv_isEquiv {C C' D D' : Cyc} (x0 : cX C) (y0 : cX D)
+    : isEquiv (fun ab : CycEqv C C' × CycEqv D D' => prodBEqv (fst ab) (snd ab)).
+  Proof.
+    refine (iso_to_isEquiv _ (prodBEqv_inv x0 y0) _ _).
+    - intros [al be].
+      pose (ab := prodBEqv_inv x0 y0 (prodBEqv al be)).
+      exact (pathpair_bin (CycEqv_path (fst ab) al refl; CycEqv_path (snd ab) be refl)).
+    - intro w. apply BicycEqv_path.
+      exact (evisinj_bicycle (B := prodBicyc (C; D)) (B' := prodBicyc (C'; D'))
+               ((x0; y0) : cX C × cX D)
+               (prodBEqv (fst (prodBEqv_inv x0 y0 w)) (snd (prodBEqv_inv x0 y0 w))) w refl).
+  Defined.
+
+  Definition prodBicyc_ap_isEquiv (CD CD' : Cyc × Cyc)
+    : isEquiv (@ap _ _ prodBicyc CD CD').
+  Proof.
+    destruct CD as [C D], CD' as [C' D'].
+    refine (ptrunc_rec (isEquiv_isProp _) _ (cne C)). intro x0.
+    refine (ptrunc_rec (isEquiv_isProp _) _ (cne D)). intro y0.
+    refine (two_of_three_h pathpair_bin (fun pq => ap prodBicyc (pathpair_bin pq))
+              (@ap _ _ prodBicyc (C; D) (C'; D')) refl pathpair_bin_isEquiv _).
+    refine (two_of_three_f _
+              (fun pq => prodBEqv (path_to_CycEqv (fst pq)) (path_to_CycEqv (snd pq)))
+              path_to_BicycEqv _ _ (path_to_BicycEqv_isEquiv _ _)).
+    - apply ptw_inv. intros [p q]. destruct p, q.
+      apply (BicycEqv_path (B := prodBicyc (C; D)) (B' := prodBicyc (C; D))).
+      exact refl.
+    - exact (comp_isEquiv (snd (prodEqv (_; path_to_CycEqv_isEquiv C C')
+                                        (_; path_to_CycEqv_isEquiv D D')))
+               (prodBEqv_isEquiv x0 y0)).
+  Defined.
+
+  Definition prodBicyc_isInj : isInj prodBicyc
+    := ap_isEquiv_isInj prodBicyc_ap_isEquiv.
+
+  Definition SwapBicyc_not_in_image (CD : Cyc × Cyc) : SwapBicyc ≠ prodBicyc CD.
+  Proof.
+    intro p. pose (w := path_to_BicycEqv p^).
+    exact (SwapBicyc_not_product
+             (cX (fst CD); (cX (snd CD); (ct (fst CD); (ct (snd CD);
+              (fst w; ((fun x y => ptw (fst (snd w)) (x; y));
+                       (fun x y => ptw (snd (snd w)) (x; y))))))))).
+  Defined.
+
+  Definition xca_bicycle_product_stmt : Type
+    := isInj prodBicyc × (forall CD, isCommuting (prodBicyc CD))
+       × {B : Bicyc & isCommuting B × (forall CD, B ≠ prodBicyc CD)}.
+
+  Definition xca_bicycle_product : xca_bicycle_product_stmt
+    := ((prodBicyc_isInj; prodBicyc_isCommuting);
+        (SwapBicyc; (SwapBicyc_isCommuting; SwapBicyc_not_in_image))).
 
   (** Exercise [xca:bicycle-list-equivalence]: for a normal bicycle,
       lists are equivalent ([⟦ℓ⟧(x₀) = ⟦ℓ'⟧(x₀)]) iff [⟦ℓ⟧ = ⟦ℓ'⟧]. *)

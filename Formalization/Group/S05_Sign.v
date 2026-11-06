@@ -34,9 +34,10 @@
 
     - The unpointed map [Bsgn : BΣ_n → BΣ_2], [Bsgn(A) :≡ Bμ_{E(A)}(P)]
       ([Bsgn]); given a pointing [p], the sign homomorphism [sgn n p]
-      (definition [def:sgn]) and the alternating group [AG], with [BAG]
-      and [shAG] (definition [def:alternating-groups], given proofs that
-      [BAG] is a connected groupoid); definition [def:sgn-permutation]
+      (definition [def:sgn]) and, given proofs that [BAG] is a connected
+      groupoid, the group [AGp], with [BAG] and [shAG]; definition
+      [def:alternating-groups] ([AG], by cases, placed at the end);
+      definition [def:sgn-permutation]
       ([sign], via [Bsgn] and [two_element_loops_Bool]).
     - The exercise after [def:mu_E] ([xca_Umu_product], statement
       [xca_Umu_product_stmt]): [Uμ_E(s)] is [+1] iff the number of [e]
@@ -76,10 +77,11 @@
       [Fin 2 ≃ T] ([pt2_eqv], [pt2_path]).  [BAG n] is a groupoid
       ([BAG_isGrpd]), and connected for [n ≥ 2] ([BAG_isConn], placed
       at the end): a transposition has sign [-1] and so exchanges the
-      two points of [Bsgn(sh)].  NOTE: for [n ≤ 1] the type [BAG n] is
-      not connected ([BAG_not_conn], [BAG0_not_conn], [BAG1_not_conn]),
-      since then all symmetries of [sh] are trivial; the book defines
-      [A_n] for all [n], and [BAG_isConn_stmt] is restated for [n ≥ 2].
+      two points of [Bsgn(sh)].  For [n ≤ 1] the type [BAG n] is not
+      connected ([BAG_not_conn], [BAG0_not_conn], [BAG1_not_conn]),
+      since then all symmetries of [sh] are trivial; hence the book's
+      case distinction [A_0 :≡ A_1 :≡ 𝟙] in [def:alternating-groups]
+      ([AG]), and [BAG_isConn_stmt] is stated for [n ≥ 2].
 
     Left out (statements only, no proofs yet)
     - Exercise [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]). *)
@@ -500,12 +502,12 @@ Section Sign.
   Definition sgn (n : ℕ) (p : sh (SG 2) = Bsgn n (sh (SG n))) : Hom (SG n) (SG 2)
     := mkhom ((Bsgn n; p) : BG (SG n) →* BG (SG 2)).
 
-  (** Definition [def:alternating-groups]: [BA_n :≡ ∑_{A:BΣ_n} Bsgn(A)],
-      pointed at [(Fin n, p(fin2_0))]; that it is a connected groupoid
-      (so that [A_n] is a group) is proved at the end ([BAG_isConn],
-      [BAG_isGrpd]).  NOTE: the book defines [A_n] for any [n], but for
-      [n ≤ 1] the type [BA_n] is not connected ([BAG_not_conn]), so we
-      state connectedness for [n ≥ 2] only. *)
+  (** Definition [def:alternating-groups]: for [n ≥ 2],
+      [BA_n :≡ ∑_{A:BΣ_n} Bsgn(A)], pointed at [(Fin n, p(fin2_0))];
+      that it is a connected groupoid (so that [A_n] is a group) is
+      proved at the end ([BAG_isConn], [BAG_isGrpd]), where [AG] is
+      defined with [A_0 :≡ A_1 :≡ 𝟙].  For [n ≤ 1] the type [BA_n] is
+      not connected ([BAG_not_conn]). *)
   Definition BAG (n : ℕ) : Type := {A : utype (BG (SG n)) & el2 (Bsgn n A)}.
 
   Definition shAG (n : ℕ) (p : sh (SG 2) = Bsgn n (sh (SG n))) : BAG n
@@ -513,14 +515,14 @@ Section Sign.
 
   Definition BAG_isConn_stmt : Type := forall m : ℕ, isConn (BAG m.+2) × isGrpd (BAG m.+2).
 
-  Definition AG (n : ℕ) (p : sh (SG 2) = Bsgn n (sh (SG n))) (c : isConn (BAG n))
+  Definition AGp (n : ℕ) (p : sh (SG 2) = Bsgn n (sh (SG n))) (c : isConn (BAG n))
     (g : isGrpd (BAG n)) : Group
     := mkgroup (BAG n; (shAG n p; (c; g))).
 
   (** Exercise [xca:isos_A3_C3] ([C_3] is [CG 2]: [CG k] is the cyclic
       group of order [k+1]). *)
   Definition xca_isos_A3_C3_stmt : Type
-    := forall p c g, {i : Iso (AG 3 p c g) (CG 2) & {j : Iso (AG 3 p c g) (CG 2) & i ≠ j}}.
+    := forall p c g, {i : Iso (AGp 3 p c g) (CG 2) & {j : Iso (AGp 3 p c g) (CG 2) & i ≠ j}}.
 
   (** The identification of the symmetries of a [2]-element set with
       [Bool] ([+1] is [yes]). *)
@@ -1770,5 +1772,13 @@ Section Alternating.
   Definition BAG0_not_conn : ¬ isConn (BAG 0) := BAG_not_conn 0 False_isProp.
 
   Definition BAG1_not_conn : ¬ isConn (BAG 1) := BAG_not_conn 1 Fin1_isProp.
+
+  (** Definition [def:alternating-groups]: [A_0 :≡ A_1 :≡ 𝟙], and for
+      [n ≥ 2] the group on [BA_n] pointed by [Bsgn_pt]. *)
+  Definition AG (n : ℕ) : Group
+    := match n with
+       | O | S O => TG
+       | S (S m) => AGp (S (S m)) (Bsgn_pt (S (S m))) (BAG_isConn m) (BAG_isGrpd (S (S m)))
+       end.
 
 End Alternating.
