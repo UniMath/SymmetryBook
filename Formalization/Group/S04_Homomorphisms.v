@@ -41,7 +41,8 @@
       conjugation [g ↦ p g p⁻¹] ([conj_hom_USym]).
     - Definition [def:inner-autos]: [Binn : BG →* BAut(G)] ([BAutG] is the
       component of [G] in [Group], pointed at [G]); the group [Aut(G)],
-      in a larger universe, is [AutGrp] of Section 9.7.  The pointing path is [(inc_out G)⁻¹] rather than [refl]:
+      in a larger universe, is [AutGrp] of Section 9.7 (with replacement
+      resized to [AutGrp_small]).  The pointing path is [(inc_out G)⁻¹] rather than [refl]:
       [Copy] has no definitional eta rule, so [mkgroup(BG_÷, sh_G)] is
       not judgmentally [G].
 

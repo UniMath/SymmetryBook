@@ -74,7 +74,8 @@
     - [xca:typegroupisgroupoid] is postponed to Section 4.4
       ([Group_isGrpd]), where it follows from [lem:hom-is-set].
     - Size issues: [Aut_Group(G)] is a group in a larger universe than
-      [G] ([AutGrp], Section 9.7).
+      [G] ([AutGrp], Section 9.7); with replacement it has a copy in the
+      universe of [G] ([AutGrp_small]).
  *)
 
 From HoTT Require Import

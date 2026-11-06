@@ -9,9 +9,7 @@
       [Aut_Group(G)] is a group (in a larger universe than [G]); its
       classifying type is [BAutG] of Section 4.4 by definition.  By
       replacement it has a copy in the universe of [G] ([AutGrp_small],
-      [AutGrp_small_pEqv]).  NOTE:
-      the summaries of Sections 4.2 and 4.4 say that [Group] is not
-      universe polymorphic; that is outdated.
+      [AutGrp_small_pEqv]).
     - [inn : Hom(G, Aut(G))] ([mkhom (Binn G)], pointed by [(inc_out G)⁻¹]);
       [out(G)] ([outG], the cokernel of [inn]); [Inn(G)] ([InnG], the
       image of [inn]); [Out(G)] ([OutG]).

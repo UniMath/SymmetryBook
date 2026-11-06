@@ -13,10 +13,11 @@
     [Group] and [Hom G H] are wrapped copies ([Copy], Section 2.12) of
     [UUscone] and of pointed maps, as in the book.  Since [Copy] has no
     definitional eta rule, [mkgroup (B G)] is only propositionally equal
-    to [G] ([inc_out]).  [UUscone] and [Group] are not universe
-    polymorphic, so groups such as [Aut(G)] for [G : Group] are not
-    elements of the same [Group] (cf. the book's footnote on size
-    issues). *)
+    to [G] ([inc_out]).  [UUscone] and [Group] are universe
+    polymorphic; groups such as [Aut(G)] for [G : Group] live in a larger
+    universe (cf. the book's footnote on size issues), and with
+    replacement have a copy in the universe of [G] ([AutGrp_small],
+    Section 9.7). *)
 
 From SymmetryBook Require Export
   Group.S02_TypeOfGroups
