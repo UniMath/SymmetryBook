@@ -57,15 +57,24 @@
       obtained by transport along the paths [OA = ΩA] of the pointed
       equivalences [ev], characterized by [ev_B ∘ e(φ) = φ ∘ ev_A],
       [e_OmegaO_char]) and [O = e ∘ Ω] ([OO_e_loops]).
+    - Construction [con:swap-ptd-doms] (implementation [TBD] in the
+      book): [swap_fun], via the [Σ]-type [SwapData] of totally
+      unpointed maps with both pointings and their coherence, as the
+      book suggests; an involution, hence an equivalence
+      ([swap_isEquiv]), pointed ([swap_ptd_pt]), with [swap_÷÷] the swap
+      of arguments by definition ([swap_divdiv]).
+    - Construction [con:ptw-swap-ptd-doms] ([con_ptw_swap_ptd_doms]): by
+      [cor:Id-(B->*loopsA)] only the underlying maps are identified,
+      using [pw_ap] ([ptw_*] is [ap] of evaluation) and [conj_ap].
     - Exercise [xca:allptd-S1-contractible] (via
       [pmap_conn_set_isContr]) and construction [con:swap-on-paths]
       ([con_swap_on_paths]).
 
     Example [exa:allS1*-swap]: the questions [TBD1] and [TBD2] and the
     claim [M ≃ ℤ] of that example, with [m_k ↦ k] and the reading of
-    [m_k] being [kγ].  Not formalized yet: [con:swap-ptd-doms],
-    [rem:grpHomOK], [def:O'], [con:ptw-swap-ptd-doms], [def:AbHomgroup],
-    [lem:grpHomOK] and 13.1.3 Concrete rings.
+    [m_k] being [kγ] (the direct [swapM] there is not related to
+    [swap_fun] yet).  Not formalized yet: [rem:grpHomOK], [def:O'],
+    [def:AbHomgroup], [lem:grpHomOK] and 13.1.3 Concrete rings.
 
     The example studies [M :≡ S¹ →* (S¹ →* B²ℤ)] and maps
     [m_k : M] given by [m_k(base) :≡ pt] and [m_k(loop) := ptw_*⁻¹(k')]
@@ -806,6 +815,123 @@ Section EqvOmegaO.
   Defined.
 
 End EqvOmegaO.
+
+(** Construction [con:swap-ptd-doms] (its implementation is [TBD] in the
+    book; we follow the book's hint).  [X →* (Y →* Z)] is equivalent to
+    the type [SwapData X Y] of totally unpointed maps [F : X → Y → Z]
+    with pointings [e2(x) : pt_Z = F(x,pt_Y)] (from the values) and
+    [e1(y) : pt_Z = F(pt_X,y)] (from [f_pt], via [ptw_*]) and the
+    coherence [e1(pt_Y) = e2(pt_X)] ([sd_fw], [sd_bw], [sd_retr],
+    [sd_sec]).  Swapping the arguments and the two pointings, and
+    inverting the coherence, is an involution of these data
+    ([sd_sigma]); [swap] is the composite, an equivalence since it is
+    an involution ([swap_swap], [swap_isEquiv]), pointed by
+    [swap_ptd_pt], and [swap_÷÷] is the swap of the arguments by
+    definition ([swap_divdiv]). *)
+Section SwapPtdDoms.
+
+  Context `{Funext} (Z : Ustar).
+
+  (** Totally unpointed maps with the additional structure: both
+      pointings and their coherence at [(pt_X, pt_Y)]. *)
+  Definition SwapData (X Y : Ustar) : Type
+    := {F : utype X -> utype Y -> utype Z &
+        {e2 : forall x, pt Z = F x (pt Y) &
+        {e1 : forall y, pt Z = F (pt X) y & e1 (pt Y) = e2 (pt X)}}}.
+
+  Definition sd_fw {X Y : Ustar} (f : X →* pmap_ptd Y Z) : SwapData X Y
+    := ((fun x y => fst (fst f x) y);
+        ((fun x => snd (fst f x));
+         (fst (ptw_star_ind (snd f)); (trans_1p _)^ @ snd (ptw_star_ind (snd f))))).
+
+  Definition sd_bw {X Y : Ustar} (d : SwapData X Y) : X →* pmap_ptd Y Z
+    := ((fun x => ((fst d x; fst (snd d) x) : Y →* Z));
+        eqinv (snd (ptw_ind_eqv (pt (pmap_ptd Y Z)) ((fst d (pt X); fst (snd d) (pt X)) : Y →* Z)))
+          (fst (snd (snd d)); trans_1p _ @ snd (snd (snd d)))).
+
+  Definition sd_retr {X Y : Ustar} (f : X →* pmap_ptd Y Z) : sd_bw (sd_fw f) = f.
+  Proof.
+    destruct f as [g gp]. unfold sd_fw, sd_bw.
+    apply (ap (fun q => ((g; q) : X →* pmap_ptd Y Z))).
+    refine (_ @ eqinv_l (snd (ptw_ind_eqv _ _)) gp).
+    apply (ap (eqinv (snd (ptw_ind_eqv _ _)))).
+    refine (ap (fun c => (fst (ptw_star_ind gp); c)) _).
+    exact (concat_p_Vp _ _).
+  Defined.
+
+  Definition sd_sec {X Y : Ustar} (d : SwapData X Y) : sd_fw (sd_bw d) = d.
+  Proof.
+    destruct d as [F [e2 [e1 c]]].
+    pose (E := ptw_ind_eqv (pt (pmap_ptd Y Z)) ((F (pt X); e2 (pt X)) : Y →* Z)).
+    pose (v := (e1; trans_1p _ @ c) : Hpt (pt (pmap_ptd Y Z)) ((F (pt X); e2 (pt X)) : Y →* Z)).
+    pose (r := eqinv_r (snd E) v).
+    change ((((fun x y => F x y); (e2; (fst (ptw_star_ind (eqinv (snd E) v));
+              (trans_1p _)^ @ snd (ptw_star_ind (eqinv (snd E) v))))) : SwapData X Y)
+            = (F; (e2; (e1; c)))).
+    clearbody r. revert r. generalize (eqinv (snd E) v). intros w r.
+    change (ptw_star_ind w = v) in r.
+    refine (ap (fun k : Hpt (pt (pmap_ptd Y Z)) ((F (pt X); e2 (pt X)) : Y →* Z)
+                => (((fun x y => F x y); (e2; (fst k; (trans_1p (fst k (pt Y)))^ @ snd k)))
+                    : SwapData X Y)) r @ _).
+    exact (ap (fun c' => (F; (e2; (e1; c'))) : SwapData X Y) (concat_V_pp _ _)).
+  Defined.
+
+  Definition sd_sigma {X Y : Ustar} (d : SwapData X Y) : SwapData Y X
+    := ((fun y x => fst d x y); (fst (snd (snd d)); (fst (snd d); (snd (snd (snd d)))^))).
+
+  Definition sd_sigma_sigma {X Y : Ustar} (d : SwapData X Y) : sd_sigma (sd_sigma d) = d
+    := ap (fun c => (fst d; (fst (snd d); (fst (snd (snd d)); c)))) (inv_V _).
+
+  (** Construction [con:swap-ptd-doms]. *)
+  Definition swap_fun (X Y : Ustar) (f : X →* pmap_ptd Y Z) : Y →* pmap_ptd X Z
+    := sd_bw (sd_sigma (sd_fw f)).
+
+  Definition swap_swap (X Y : Ustar) (f : X →* pmap_ptd Y Z) : swap_fun Y X (swap_fun X Y f) = f
+    := ap (fun d => sd_bw (sd_sigma d)) (sd_sec _) @ ap sd_bw (sd_sigma_sigma _) @ sd_retr f.
+
+  Definition swap_isEquiv (X Y : Ustar) : isEquiv (swap_fun X Y)
+    := iso_to_isEquiv _ (swap_fun Y X) (swap_swap X Y) (swap_swap Y X).
+
+  Definition swap_ptd_pt (X Y : Ustar)
+    : pt (pmap_ptd Y (pmap_ptd X Z)) = swap_fun X Y (pt (pmap_ptd X (pmap_ptd Y Z)))
+    := ap (fun q => (((fun y => pt (pmap_ptd X Z)) : utype Y -> (X →* Z)); q)
+                      : Y →* pmap_ptd X Z)
+          (eqinv_l (snd (ptw_ind_eqv (pt (pmap_ptd X Z)) (pt (pmap_ptd X Z)))) refl)^.
+
+  (** [swap_÷÷] is the swapping of arguments, by definition. *)
+  Definition swap_divdiv (X Y : Ustar) (f : X →* pmap_ptd Y Z)
+    : (fun y x => fst (fst (swap_fun X Y f) y) x) = (fun y x => fst (fst f x) y)
+    := refl.
+
+End SwapPtdDoms.
+
+(** The first component of [ptw_*] is [ap] of evaluation. *)
+Definition pw_ap {X Y : Ustar} {f g : X →* Y} (e : f = g) (x : utype X)
+  : fst (ptw_star_ind e) x = ap (fun k : X →* Y => fst k x) e
+  := match e with refl => refl end.
+
+Definition conj_ap {P Q : Type} (h : P -> Q) {a b : P} (s : a = b) (l : b = b)
+  : ap h (s⁻¹ ⋅ (l ⋅ s)) = (ap h s)⁻¹ ⋅ (ap h l ⋅ ap h s).
+Proof. revert l. destruct s. intro l. exact (ap (ap h) (trans_1p l) @ (trans_1p (ap h l))^). Defined.
+
+(** Construction [con:ptw-swap-ptd-doms]: [ev ∘ swap(-) = ptw_* ∘ ev] on
+    [S¹ →* (X →* Y)]; by [cor:Id-(B->*loopsA)] only the underlying maps
+    need to be identified, and at [x] both are the conjugate of
+    [ap_{z ↦ f(z)(x)}(loop)] by [f'_pt(x)]. *)
+Definition con_ptw_swap_ptd_doms `{Funext} (X Y : Ustar)
+  : (fun f : S1star →* pmap_ptd X Y => pcomp (evpt Y) (swap_fun Y S1star X f))
+    = (fun f => fst (ptwc X Y) (evp _ f)).
+Proof.
+  apply path_forall. intro f.
+  apply (cor_Id_ptd_loops Y X).
+  apply path_forall. intro x.
+  pose (evx := fun k : X →* Y => fst k x).
+  refine (_ @ (pw_ap (evp _ f) x)^).
+  refine (_ @ (conj_ap evx (snd f) (ap (fst f) loop))^).
+  refine (_ @ ap (fun u => (ap evx (snd f))⁻¹ ⋅ (u ⋅ ap evx (snd f)))
+              (ap_compose (fst f) evx loop)).
+  exact (ap (fun e => e⁻¹ ⋅ (ap (fun z => fst (fst f z) x) loop ⋅ e)) (pw_ap (snd f) x)).
+Defined.
 
 (** *** Example [exa:allS1*-swap], [TBD1] and [TBD2]: bilinearity and
     the sign of [swap] *)
