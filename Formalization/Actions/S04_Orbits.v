@@ -62,9 +62,15 @@
       transitive [X]; identifications in [Mono(G)] come from pointed
       equivalences of classifying types that commute with the inclusions
       ([Mono_path], Section 5.3).
+    - Exercise [xca:Gset-A->B] ([xca_Gset_AB]).  Orbits are counted by a
+      map [c] on the underlying set that is invariant and whose fibers
+      are merely connected by the action ([orbits_by], via
+      [cor_orbit_equiv_quot]), invariant maps as fixed elements
+      ([invariant_eqv]).  The symmetries of [sh_{Σ_2}] act on [Fin 2] as
+      [id] or the swap ([trp2_cases]), both occurring ([lp2], with
+      [gsw2 :≡ perm_of(swap)]); the cases are then finite computations.
 
     Left out (statements only, no proofs yet; time limit per section)
-    - Exercise [xca:Gset-A->B] ([xca_Gset_AB_stmt]).
     - The third parts of [xca:fixed-free-neither] and
       [xca:fixed-free-neither-action-types] concern the example of
       Section 5.7, which is itself left out there.
@@ -645,7 +651,7 @@ Section StabilizerStatements.
 
 End StabilizerStatements.
 
-(** Exercise [xca:Gset-A->B] (statements only): for [G :≡ Σ_2 × Σ_2]
+(** Exercise [xca:Gset-A->B]: for [G :≡ Σ_2 × Σ_2]
     and [X(A, B) :≡ A → B] there are [2] orbits and no invariant maps; for
     the constant [G]-set [𝟚 × 𝟚] there are [4] of each; for the
     [Σ_2]-sets [X(-, 𝟚)] there are [3] orbits and [2] invariant maps, and
@@ -671,6 +677,379 @@ Section GsetAB.
        × ((Orbits X22 ≃ Fin 4) × (XuhG X22 ≃ Fin 4))
        × ((Orbits XA2 ≃ Fin 3) × (XuhG XA2 ≃ Fin 2))
        × ((Orbits X2B ≃ Fin 2) × (XuhG X2B ≃ Fin 0)).
+
+  (** The proof.  Orbits are computed with a classifying map [c] on the
+      underlying set that is invariant and whose fibers are merely
+      connected by the action ([cor_orbit_equiv_quot], [quot_surj_eqv]),
+      and invariant maps as the fixed elements ([invariant_eqv]).  The
+      symmetries of [sh_{Σ_2}] act on [Fin 2] as the identity ([refl]) or
+      the swap ([gsw2 :≡ perm_of(swap)]), and every symmetry acts as one of
+      these. *)
+  Definition orbits_by {G : Group} (X : GSet G) {B : Type} (sB : isSet B)
+    (c : el X (sh G) -> B) (inv : forall g x, c (act X g x) = c x)
+    (tr : forall x y, c x = c y -> Ex (fun g : USym G => act X g x = y))
+    (su : isSurj c) : Orbits X ≃ B
+    := Eqv_comp (Eqv_inv (fst (cor_orbit_equiv_quot G X)))
+         (quot_surj_eqv sB c (orbit_rel X)
+            (fun x y => (ptrunc_rec (sB _ _) (fun w => (inv (fst w) x)^ @ ap c (snd w));
+                         tr x y)) su).
+
+  Definition empty_eqv {A : Type} (n : ¬ A) : A ≃ Fin 0
+    := mkEqv (fun a => match n a with end) (fun e : Fin 0 => match e with end)
+         (fun a => match n a with end) (fun e : Fin 0 => match e with end).
+
+  Definition f2sw (x : Fin 2) : Fin 2
+    := match x with
+       | inl (inl e) => match e with end
+       | inl (inr _) => fin2_1
+       | inr _ => fin2_0
+       end.
+
+  Definition f2sw_inv (x : Fin 2) : f2sw (f2sw x) = x.
+  Proof. destruct x as [[[]|[]]|[]]; exact refl. Defined.
+
+  Definition f2swEqv : Fin 2 ≃ Fin 2 := mkEqv f2sw f2sw f2sw_inv f2sw_inv.
+
+  Definition f2_ne : fin2_0 ≠ fin2_1
+    := fun e => trp (fun x : Fin 2 => match x with inl _ => Unit | inr _ => Empty end) e triv.
+
+  Definition f2_cases (a : Fin 2) : (a = fin2_0) + (a = fin2_1).
+  Proof. destruct a as [[[]|[]]|[]]; [left|right]; exact refl. Defined.
+
+  Definition f2sw_nofix (a : Fin 2) : a ≠ f2sw a.
+  Proof.
+    destruct a as [[[]|[]]|[]]; intro e.
+    - exact (f2_ne e).
+    - exact (f2_ne e^).
+  Defined.
+
+  (** The two permutations of [Fin 2]: [perm2 false = id], [perm2 true = swap]. *)
+  Definition perm2 (b : Bool) : Fin 2 -> Fin 2 := if b then f2sw else idmap.
+
+  Definition perm2_inv (b : Bool) (x : Fin 2) : perm2 b (perm2 b x) = x.
+  Proof. destruct b; [exact (f2sw_inv x) | exact refl]. Defined.
+
+  Definition perm2_cases (h : Fin 2 -> Fin 2) (hi : forall x y, h x = h y -> x = y)
+    : {b : Bool & forall x, h x = perm2 b x}.
+  Proof.
+    destruct (f2_cases (h fin2_0)) as [e0|e0]; destruct (f2_cases (h fin2_1)) as [e1|e1].
+    - destruct (f2_ne (hi _ _ (e0 @ e1^))).
+    - exists false. intros [[[]|[]]|[]]; [exact e0 | exact e1].
+    - exists true. intros [[[]|[]]|[]]; [exact e0 | exact e1].
+    - destruct (f2_ne (hi _ _ (e0 @ e1^))).
+  Defined.
+
+  Definition gsw2 : USym (SG 2) := perm_of (sh (SG 2)) f2swEqv.
+
+  Definition lp2 (b : Bool) : USym (SG 2) := if b then gsw2 else refl.
+
+  Definition trp_V_p {Z : Type} (T : Z -> Type) {a b : Z} (p : a = b) (x : T a)
+    : trp T p⁻¹ (trp T p x) = x.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition trp_lp2 (b : Bool) (x : Fin 2) : trp el2 (lp2 b) x = perm2 b x.
+  Proof.
+    destruct b.
+    - exact ((ptoe_ap el2 gsw2 x)^
+             @ ap (fun q => ptoe q x) (ap_fst_fst_perm_of (sh (SG 2)) f2swEqv)
+             @ ap (fun e => fst e x) (ptoe_etop f2swEqv)).
+    - exact refl.
+  Defined.
+
+  (** If a symmetry acts as an involution [h], so does its inverse. *)
+  Definition trp_inv_invol (g : USym (SG 2)) (b : Bool)
+    (E : forall x, trp el2 g x = perm2 b x) (y : Fin 2) : trp el2 g⁻¹ y = perm2 b y
+    := ap (trp el2 g⁻¹) ((perm2_inv b y)^ @ (E (perm2 b y))^) @ trp_V_p el2 g (perm2 b y).
+
+  Definition trp2_cases (g : USym (SG 2))
+    : {b : Bool & (forall x, trp el2 g x = perm2 b x) × (forall x, trp el2 g⁻¹ x = perm2 b x)}.
+  Proof.
+    destruct (perm2_cases (trp el2 g)
+                (fun x y => Eqv_inj ((trp el2 g; trp_isEquiv el2 g) : Fin 2 ≃ Fin 2)))
+      as [b E].
+    exact (b; (E; trp_inv_invol g b E)).
+  Defined.
+
+  Definition trp_dom {Z : Type} (T : Z -> Type) (C : Type) {a b : Z} (p : a = b)
+    (f : T a -> C) (x : T b) : trp (fun z => T z -> C) p f x = f (trp T p⁻¹ x).
+  Proof. destruct p. exact refl. Defined.
+
+  Definition trp_cod {Z : Type} (T : Z -> Type) (C : Type) {a b : Z} (p : a = b)
+    (f : C -> T a) (x : C) : trp (fun z => C -> T z) p f x = trp T p (f x).
+  Proof. destruct p. exact refl. Defined.
+
+  Definition trp_dc {Z Z' : Type} (T : Z -> Type) (T' : Z' -> Type) {a b : Z × Z'} (p : a = b)
+    (f : T (fst a) -> T' (snd a)) (x : T (fst b))
+    : trp (fun z => T (fst z) -> T' (snd z)) p f x
+      = trp T' (ap (fun w : Z × Z' => snd w) p) (f (trp T (ap (fun w : Z × Z' => fst w) p)⁻¹ x)).
+  Proof. destruct p. exact refl. Defined.
+
+  Definition ap_fst_pb {X Y : Type} {x x' : X} {y y' : Y} (p : x = x') (q : y = y')
+    : ap (fun w : X × Y => fst w) (pathpair_bin (p; q)) = p.
+  Proof. destruct p, q. exact refl. Defined.
+
+  Definition ap_snd_pb {X Y : Type} {x x' : X} {y y' : Y} (p : x = x') (q : y = y')
+    : ap (fun w : X × Y => snd w) (pathpair_bin (p; q)) = q.
+  Proof. destruct p, q. exact refl. Defined.
+
+  (** Functions [Fin 2 → Fin 2] are determined by their two values. *)
+  Definition f2_funext {f f' : Fin 2 -> Fin 2} (e0 : f fin2_0 = f' fin2_0)
+    (e1 : f fin2_1 = f' fin2_1) : f = f'.
+  Proof. apply ptw_inv. intros [[[]|[]]|[]]; [exact e0 | exact e1]. Defined.
+
+  (** Whether the two values agree. *)
+  Definition f2_eqb (a b : Fin 2) : Fin 2
+    := match a, b with
+       | inl (inr _), inl (inr _) => fin2_1
+       | inr _, inr _ => fin2_1
+       | _, _ => fin2_0
+       end.
+
+  Definition f2_eqb_perm (t s : Bool) (f : Fin 2 -> Fin 2)
+    : f2_eqb (perm2 t (f (perm2 s fin2_0))) (perm2 t (f (perm2 s fin2_1)))
+      = f2_eqb (f fin2_0) (f fin2_1).
+  Proof.
+    destruct s; cbn; generalize (f fin2_0) (f fin2_1);
+      intros [[[]|[]]|[]] [[[]|[]]|[]]; destruct t; exact refl.
+  Defined.
+
+  (** The surjection [c] has values at [fin2_0] and [fin2_1]. *)
+  Definition f2_const (a : Fin 2) : Fin 2 -> Fin 2 := fun _ => a.
+
+  (** Functions [Fin 2 → Fin 2] by their two values. *)
+  Definition f2fun (a b : Fin 2) : Fin 2 -> Fin 2
+    := fun y => match y with
+                | inl (inl e) => match e with end
+                | inl (inr _) => a
+                | inr _ => b
+                end.
+
+  Definition f2_eta (f : Fin 2 -> Fin 2) (y : Fin 2) : f2fun (f fin2_0) (f fin2_1) y = f y.
+  Proof. destruct y as [[[]|[]]|[]]; exact refl. Defined.
+
+  Ltac f2_brute :=
+    first [ exact (false; (false; (refl; refl))) | exact (false; (true; (refl; refl)))
+          | exact (true; (false; (refl; refl))) | exact (true; (true; (refl; refl))) ].
+
+  Definition XAB_witness (a b a' b' : Fin 2) (e : f2_eqb a b = f2_eqb a' b')
+    : {s : Bool & {t : Bool & (perm2 t (f2fun a b (perm2 s fin2_0)) = a')
+                              × (perm2 t (f2fun a b (perm2 s fin2_1)) = b')}}.
+  Proof.
+    revert e.
+    destruct a as [[[]|[]]|[]], b as [[[]|[]]|[]], a' as [[[]|[]]|[]], b' as [[[]|[]]|[]];
+      intro e; try (destruct (f2_ne e)); try (destruct (f2_ne e^)); f2_brute.
+  Defined.
+
+  (** [X(A, B) :≡ A → B] over [Σ_2 × Σ_2]. *)
+  Let lpp (s t : Bool) : USym (prodG (SG 2) (SG 2)) := pathpair_bin (lp2 s; lp2 t).
+
+  Definition act_XAB (g : USym (prodG (SG 2) (SG 2))) (f : Fin 2 -> Fin 2) (x : Fin 2)
+    : act XAB g f x
+      = trp el2 (ap (fun w : BSG2 × BSG2 => snd w) g)
+          (f (trp el2 (ap (fun w : BSG2 × BSG2 => fst w) g)⁻¹ x))
+    := trp_dc el2 el2 g f x.
+
+  Definition act_XAB_lpp (s t : Bool) (f : Fin 2 -> Fin 2) (x : Fin 2)
+    : act XAB (lpp s t) f x = perm2 t (f (perm2 s x)).
+  Proof.
+    refine (act_XAB _ f x @ _). unfold lpp.
+    rewrite ap_fst_pb, ap_snd_pb.
+    refine (trp_lp2 t _ @ ap (fun y => perm2 t (f y)) _).
+    exact (trp_inv_invol (lp2 s) s (trp_lp2 s) x).
+  Defined.
+
+  Definition orbits_XAB : Orbits XAB ≃ Fin 2.
+  Proof.
+    refine (orbits_by XAB (Fin_isSet 2) (fun f : Fin 2 -> Fin 2 => f2_eqb (f fin2_0) (f fin2_1))
+              _ _ _).
+    - intros g f.
+      destruct (trp2_cases (ap (fun w : BSG2 × BSG2 => fst w) g)) as [s [_ Es]].
+      destruct (trp2_cases (ap (fun w : BSG2 × BSG2 => snd w) g)) as [t [Et _]].
+      refine (ap011 f2_eqb (act_XAB g f fin2_0 @ Et _ @ ap (fun y => perm2 t (f y)) (Es _))
+                           (act_XAB g f fin2_1 @ Et _ @ ap (fun y => perm2 t (f y)) (Es _))
+              @ f2_eqb_perm t s f).
+    - intros f f' e. cbn in e.
+      destruct (XAB_witness _ _ _ _ e) as [s [t [w0 w1]]].
+      apply trunc. exists (lpp s t).
+      exact (f2_funext (act_XAB_lpp s t f fin2_0 @ ap (perm2 t) (f2_eta f _)^ @ w0)
+                       (act_XAB_lpp s t f fin2_1 @ ap (perm2 t) (f2_eta f _)^ @ w1)).
+    - intro b. apply trunc.
+      destruct b as [[[]|[]]|[]].
+      + exact (idmap; refl).
+      + exact (f2_const fin2_0; refl).
+  Defined.
+
+  Definition fixed_XAB : XuhG XAB ≃ Fin 0
+    := empty_eqv (fun h =>
+         let w := fst (invariant_eqv XAB) h in
+         f2sw_nofix (fst w fin2_0)
+           (ap (fun f => f fin2_0) (snd w (lpp false true)) @ act_XAB_lpp false true (fst w) fin2_0)).
+
+  (** The constant [G]-set [𝟚 × 𝟚]. *)
+  Definition act_X22 (g : USym (prodG (SG 2) (SG 2))) (x : Fin 2 × Fin 2) : act X22 g x = x
+    := ptw (trp_const g) x.
+
+  Definition f22_4 : Fin 2 × Fin 2 ≃ Fin 4.
+  Proof.
+    refine (mkEqv (fun w : Fin 2 × Fin 2 =>
+                     match fst w with
+                     | inl (inl e) => match e with end
+                     | inl (inr _) => inl (inl (snd w))
+                     | inr _ => match snd w with
+                                | inl (inl e) => match e with end
+                                | inl (inr _) => inl (inr triv)
+                                | inr _ => inr triv
+                                end
+                     end : Fin 4)
+                  (fun y : Fin 4 =>
+                     match y with
+                     | inl (inl a) => (fin2_0; a)
+                     | inl (inr _) => (fin2_1; fin2_0)
+                     | inr _ => (fin2_1; fin2_1)
+                     end : Fin 2 × Fin 2) _ _).
+    - intros [[[[]|[]]|[]] [[[]|[]]|[]]]; exact refl.
+    - intros [[[[[]|[]]|[]]|[]]|[]]; exact refl.
+  Defined.
+
+  Definition orbits_X22 : Orbits X22 ≃ Fin 4.
+  Proof.
+    refine (orbits_by X22 (Fin_isSet 4) (fst f22_4) _ _ _).
+    - intros g x. exact (ap (fst f22_4) (act_X22 g x)).
+    - intros x y e. exact (trunc (refl; Eqv_inj f22_4 e)).
+    - intro b. exact (trunc (eqinv (snd f22_4) b; (eqinv_r (snd f22_4) b)^)).
+  Defined.
+
+  Definition fixed_X22 : XuhG X22 ≃ Fin 4.
+  Proof.
+    refine (Eqv_comp (invariant_eqv X22) (Eqv_comp _ f22_4)).
+    refine (mkEqv (fun w => fst w) (fun x => (x; fun g => (act_X22 g x)^)) _ (fun _ => refl)).
+    intro w.
+    refine (@path_sigma_prop _ (fun x : Fin 2 × Fin 2 =>
+                                  forall g : USym (prodG (SG 2) (SG 2)), x = act X22 g x)
+              _ (fst w; fun g => (act_X22 g (fst w))^) w refl).
+    intro x. exact (Pi_isProp (fun g => el_isSet X22 _ _ _)).
+  Defined.
+
+  (** [X(A) :≡ A → 𝟚] over [Σ_2]: [3] orbits (two constant maps and the
+      bijections) and [2] invariant maps (the constant ones). *)
+  Definition f2_cls3 (a b : Fin 2) : Fin 3
+    := match a, b with
+       | inl (inr _), inl (inr _) => inl fin2_0
+       | inr _, inr _ => inl fin2_1
+       | _, _ => inr triv
+       end.
+
+  Definition f2_cls3_perm (s : Bool) (f : Fin 2 -> Fin 2)
+    : f2_cls3 (f (perm2 s fin2_0)) (f (perm2 s fin2_1)) = f2_cls3 (f fin2_0) (f fin2_1).
+  Proof.
+    destruct s; cbn; generalize (f fin2_0) (f fin2_1);
+      intros [[[]|[]]|[]] [[[]|[]]|[]]; exact refl.
+  Defined.
+
+  Definition XA2_witness (a b a' b' : Fin 2) (e : f2_cls3 a b = f2_cls3 a' b')
+    : {s : Bool & (f2fun a b (perm2 s fin2_0) = a') × (f2fun a b (perm2 s fin2_1) = b')}.
+  Proof.
+    revert e.
+    destruct a as [[[]|[]]|[]], b as [[[]|[]]|[]], a' as [[[]|[]]|[]], b' as [[[]|[]]|[]];
+      intro e;
+      try (exact (match (trp (fun z : Fin 3 => match z with
+                                               | inl (inl (inl e)) => match e with end
+                                               | inl (inl (inr _)) => Unit
+                                               | inl (inr _) => Empty
+                                               | inr _ => Empty end) e triv) with end));
+      try (exact (match (trp (fun z : Fin 3 => match z with
+                                               | inl (inl (inl e)) => match e with end
+                                               | inl (inl (inr _)) => Empty
+                                               | inl (inr _) => Unit
+                                               | inr _ => Empty end) e triv) with end));
+      try (exact (match (trp (fun z : Fin 3 => match z with
+                                               | inl (inl (inl e)) => match e with end
+                                               | inl (inl (inr _)) => Empty
+                                               | inl (inr _) => Empty
+                                               | inr _ => Unit end) e triv) with end));
+      first [ exact (false; (refl; refl)) | exact (true; (refl; refl)) ].
+  Defined.
+
+  Definition act_XA2_lp (s : Bool) (f : Fin 2 -> Fin 2) (x : Fin 2)
+    : act XA2 (lp2 s) f x = f (perm2 s x)
+    := trp_dom el2 (Fin 2) (lp2 s) f x @ ap f (trp_inv_invol (lp2 s) s (trp_lp2 s) x).
+
+  Definition orbits_XA2 : Orbits XA2 ≃ Fin 3.
+  Proof.
+    refine (orbits_by XA2 (Fin_isSet 3) (fun f : Fin 2 -> Fin 2 => f2_cls3 (f fin2_0) (f fin2_1))
+              _ _ _).
+    - intros g f.
+      destruct (trp2_cases g) as [s [_ Es]].
+      exact (ap011 f2_cls3 (trp_dom el2 (Fin 2) g f fin2_0 @ ap f (Es _))
+                           (trp_dom el2 (Fin 2) g f fin2_1 @ ap f (Es _))
+             @ f2_cls3_perm s f).
+    - intros f f' e. cbn in e.
+      destruct (XA2_witness _ _ _ _ e) as [s [w0 w1]].
+      apply trunc. exists (lp2 s).
+      exact (f2_funext (act_XA2_lp s f fin2_0 @ (f2_eta f _)^ @ w0)
+                       (act_XA2_lp s f fin2_1 @ (f2_eta f _)^ @ w1)).
+    - intro b. apply trunc.
+      destruct b as [[[[]|[]]|[]]|[]].
+      + exact (f2_const fin2_0; refl).
+      + exact (f2_const fin2_1; refl).
+      + exact (idmap; refl).
+  Defined.
+
+  Definition fixed_XA2 : XuhG XA2 ≃ Fin 2.
+  Proof.
+    refine (Eqv_comp (invariant_eqv XA2) _).
+    refine (mkEqv (fun w => fst w fin2_0)
+                  (fun a => (f2_const a; fun g => (ptw_inv (fun x => trp_dom el2 (Fin 2) g _ x))^))
+                  _ (fun _ => refl)).
+    intro w. refine (path_sigma_prop (fun f => Pi_isProp (fun g => el_isSet XA2 _ _ _)) _).
+    exact (f2_funext (f := f2_const (fst w fin2_0)) (f' := fst w) refl
+             (ap (fun f => f fin2_0) (snd w (lp2 true))
+                           @ act_XA2_lp true (fst w) fin2_0)).
+  Defined.
+
+  (** [X(B) :≡ 𝟚 → B] over [Σ_2]: [2] orbits (the bijections and the
+      constant maps) and no invariant maps. *)
+  Definition X2B_witness (a b a' b' : Fin 2) (e : f2_eqb a b = f2_eqb a' b')
+    : {t : Bool & (perm2 t a = a') × (perm2 t b = b')}.
+  Proof.
+    revert e.
+    destruct a as [[[]|[]]|[]], b as [[[]|[]]|[]], a' as [[[]|[]]|[]], b' as [[[]|[]]|[]];
+      intro e; try (destruct (f2_ne e)); try (destruct (f2_ne e^));
+      first [ exact (false; (refl; refl)) | exact (true; (refl; refl)) ].
+  Defined.
+
+  Definition act_X2B_lp (t : Bool) (f : Fin 2 -> Fin 2) (x : Fin 2)
+    : act X2B (lp2 t) f x = perm2 t (f x)
+    := trp_cod el2 (Fin 2) (lp2 t) f x @ trp_lp2 t (f x).
+
+  Definition orbits_X2B : Orbits X2B ≃ Fin 2.
+  Proof.
+    refine (orbits_by X2B (Fin_isSet 2) (fun f : Fin 2 -> Fin 2 => f2_eqb (f fin2_0) (f fin2_1))
+              _ _ _).
+    - intros g f.
+      destruct (trp2_cases g) as [t [Et _]].
+      exact (ap011 f2_eqb (trp_cod el2 (Fin 2) g f fin2_0 @ Et _)
+                          (trp_cod el2 (Fin 2) g f fin2_1 @ Et _)
+             @ f2_eqb_perm t false f).
+    - intros f f' e. cbn in e.
+      destruct (X2B_witness _ _ _ _ e) as [t [w0 w1]].
+      apply trunc. exists (lp2 t).
+      exact (f2_funext (act_X2B_lp t f fin2_0 @ w0) (act_X2B_lp t f fin2_1 @ w1)).
+    - intro b. apply trunc.
+      destruct b as [[[]|[]]|[]].
+      + exact (idmap; refl).
+      + exact (f2_const fin2_0; refl).
+  Defined.
+
+  Definition fixed_X2B : XuhG X2B ≃ Fin 0
+    := empty_eqv (fun h =>
+         let w := fst (invariant_eqv X2B) h in
+         f2sw_nofix (fst w fin2_0)
+           (ap (fun f => f fin2_0) (snd w (lp2 true)) @ act_X2B_lp true (fst w) fin2_0)).
+
+  Definition xca_Gset_AB : xca_Gset_AB_stmt
+    := ((((orbits_XAB; fixed_XAB); (orbits_X22; fixed_X22)); (orbits_XA2; fixed_XA2));
+        (orbits_X2B; fixed_X2B)).
 
 End GsetAB.
 
