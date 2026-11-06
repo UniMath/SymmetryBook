@@ -73,8 +73,19 @@
     Example [exa:allS1*-swap]: the questions [TBD1] and [TBD2] and the
     claim [M ≃ ℤ] of that example, with [m_k ↦ k] and the reading of
     [m_k] being [kγ] (the direct [swapM] there is not related to
-    [swap_fun] yet).  Not formalized yet: [rem:grpHomOK], [def:O'],
-    [def:AbHomgroup], [lem:grpHomOK] and 13.1.3 Concrete rings.
+    [swap_fun] yet).
+
+    The unlabeled definitions at the end of the section, for abstract
+    rings: [isInvertible], [zero_not_invertible] (via
+    [ar_mul_zero_r]), [isField], [isDiscreteField], [isLocalRing],
+    [isHeytingField]; "nontrivial commutative ring" is
+    [ar_isNontrivial × ar_isComm].
+
+    Not formalized: [rem:grpHomOK] (a TODO in the book), [def:O'] (its
+    typing is unclear), [def:AbHomgroup] and [lem:grpHomOK] (the proof
+    is W.i.p. in the book), and 13.1.3 Concrete rings ([def:ring] with
+    [ring:unit-laws], [ring:assoc-law] and [xca:Rconcring->URabstring]
+    are [TBD] in the book).
 
     The example studies [M :≡ S¹ →* (S¹ →* B²ℤ)] and maps
     [m_k : M] given by [m_k(base) :≡ pt] and [m_k(loop) := ptw_*⁻¹(k')]
@@ -2239,3 +2250,48 @@ Section MEqvZ.
        @ eqinv_l (snd M_eqv_Z) _.
 
 End MEqvZ.
+
+(** *** Fields (the unlabeled definitions at the end of Section 13.1),
+    for abstract commutative rings *)
+Section AbsFields.
+
+  Context (R : AbsRing).
+
+  Local Notation "a + b" := (ar_add R a b).
+  Local Notation "a · b" := (ar_mul R a b) (at level 40).
+  Local Notation "0" := (ar_zero R).
+  Local Notation "1" := (ar_one R).
+
+  (** [0] is absorbing: [a · 0 = 0]. *)
+  Definition ar_mul_zero_r (a : ar_S R) : a · 0 = 0.
+  Proof.
+    apply (ag_cancel_l (ar_grp R) (a · 0)).
+    refine ((ar_ldistr R a 0 0)^ @ _).
+    refine (ap (ar_mul R a) (ag_runit (ar_grp R) 0) @ _).
+    exact (ag_runit (ar_grp R) _)^.
+  Defined.
+
+  Definition isInvertible (e : ar_S R) : Type
+    := ptrunc {a : ar_S R & (e · a = 1) × (a · e = 1)}.
+
+  (** In a non-trivial ring, [0] is not invertible. *)
+  Definition zero_not_invertible (nt : ar_isNontrivial R) : ¬ isInvertible 0.
+  Proof.
+    refine (ptrunc_rec (False_isProp) _).
+    intros [a [_ r]]. apply nt.
+    exact ((ar_mul_zero_r a)^ @ r).
+  Defined.
+
+  Definition isField : Type
+    := (ar_isNontrivial R × ar_isComm R) × isContr {x : ar_S R & ¬ isInvertible x}.
+
+  Definition isDiscreteField : Type
+    := isField × forall a : ar_S R, ptrunc ((a = 0) ⨿ isInvertible a).
+
+  Definition isLocalRing : Type
+    := (ar_isNontrivial R × ar_isComm R)
+       × forall a b : ar_S R, isInvertible (a + b) -> ptrunc (isInvertible a ⨿ isInvertible b).
+
+  Definition isHeytingField : Type := isField × isLocalRing.
+
+End AbsFields.
