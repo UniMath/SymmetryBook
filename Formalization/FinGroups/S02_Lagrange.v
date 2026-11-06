@@ -299,22 +299,22 @@ Section Q8NotD4.
        @ BicycEqv_sem (toE g) (lstq (evq g)) k0.
 
   (** The symmetry [k0 ↦ k1]. *)
-  Definition e1 (k : Eight) : Eight
+  Definition qe1 (k : Eight) : Eight
     := match k with
        | k0 => k1 | k1 => k4 | k2 => k7 | k3 => k2
        | k4 => k5 | k5 => k0 | k6 => k3 | k7 => k6 end.
 
-  Definition e1' (k : Eight) : Eight
+  Definition qe1' (k : Eight) : Eight
     := match k with
        | k1 => k0 | k4 => k1 | k7 => k2 | k2 => k3
        | k5 => k4 | k0 => k5 | k3 => k6 | k6 => k7 end.
 
-  Definition e1Eqv : Eight ≃ Eight.
-  Proof. refine (mkEqv e1 e1' _ _); intros []; exact refl. Defined.
+  Definition qe1Eqv : Eight ≃ Eight.
+  Proof. refine (mkEqv qe1 qe1' _ _); intros []; exact refl. Defined.
 
   Definition E1 : BicycEqv QB QB.
   Proof.
-    refine (e1Eqv; (ptw_inv (f := e1 ∘ qa) (g := qa ∘ e1) _; ptw_inv (f := e1 ∘ qb) (g := qb ∘ e1) _));
+    refine (qe1Eqv; (ptw_inv (f := qe1 ∘ qa) (g := qa ∘ qe1) _; ptw_inv (f := qe1 ∘ qb) (g := qb ∘ qe1) _));
       intros []; exact refl.
   Defined.
 
