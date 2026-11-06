@@ -4,7 +4,8 @@
 
     Only Section 13.1 ([S01_Rings.v]) has been started: abstract and
     mixed rings (13.1.1, 13.1.2: [AbsRing], [MixRing], the integers as a
-    mixed ring, and [USym R] of a mixed ring as an abstract ring), and the
+    mixed ring, and [USym R] of a mixed ring as an abstract ring), pointed
+    homotopies and the functor [O] with [O = e ∘ Ω], and the
     questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]: the 2-loop
     of a square of loops is bilinear, and swapping the arguments of a
     function of two variables inverts it, so [swap(m_k) = m_{-k}], also

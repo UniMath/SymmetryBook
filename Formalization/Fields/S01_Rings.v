@@ -32,11 +32,40 @@
       associativity is the associativity law via [USym_compose]; hence
       [abstr(R)] is abelian ([mr_grp_abelian]).
 
+    Subsection "Move to a better place (Ch. 11 or 2)":
+    - [Hpt f g] is the type [H(f,g)] of [con:identity-ptd-maps]; we use
+      [ptw_*] in the form of [xca:identity-ptd-maps] ([ptw_star_ind],
+      which computes on [refl]) and show it is an equivalence
+      ([ptw_ind_eqv]: [Σ_g H(f,g)] is contractible by [ptw_star]);
+      [pmap_path] identifies pointed maps by a pointed homotopy.
+    - Definition [def:ptd-homotopy-compo] ([ptw_comp]) and construction
+      [con:ptd-homotopy-compo] ([con_ptd_homotopy_compo]).
+    - Definition [def:cst-ptd] ([cst_ptd]; [cst_path p] is the path
+      [(p, ρ_p)] in [Σ_x (pt_B = x)]); remark [rem:loops-at-ptd-cst]
+      ([ptwc : Ω(X →* Y) ≃ (X →* ΩY)]).
+    - Construction [con:Id-(B->*A)] ([con_Id_ptd]), exercise
+      [xca:ev-section-loopsA] ([rho_r], [i_beta],
+      [xca_ev_section_loopsA]), construction [con:ev-section-loopsA]
+      ([s_loops], [con_ev_section_loopsA]) and corollary
+      [cor:Id-(B->*loopsA)] ([cor_Id_ptd_loops]).
+    - Definition [def:O-functor] ([OO], [OO_f], [OO_pt]) and exercise
+      [xca:O-functor] ([OO_pid], [OO_pcomp], [OO_pt_ptw]).
+    - Remark [rem:pointing-ev]: [evpt : O A →* ΩA], pointed by
+      [eps_ev loop].
+    - Construction [con:Omega-O]: [con_Omega_O] (via [iota], [iota_gen],
+      [iota_coh], as in the book); the equivalence [e] ([e_OmegaO],
+      obtained by transport along the paths [OA = ΩA] of the pointed
+      equivalences [ev], characterized by [ev_B ∘ e(φ) = φ ∘ ev_A],
+      [e_OmegaO_char]) and [O = e ∘ Ω] ([OO_e_loops]).
+    - Exercise [xca:allptd-S1-contractible] (via
+      [pmap_conn_set_isContr]) and construction [con:swap-on-paths]
+      ([con_swap_on_paths]).
+
     Example [exa:allS1*-swap]: the questions [TBD1] and [TBD2] and the
     claim [M ≃ ℤ] of that example, with [m_k ↦ k] and the reading of
-    [m_k] being [kγ].  The other labels of this section (the subsection
-    "Move to a better place" and 13.1.3 Concrete rings) are not
-    formalized yet.
+    [m_k] being [kγ].  Not formalized yet: [con:swap-ptd-doms],
+    [rem:grpHomOK], [def:O'], [con:ptw-swap-ptd-doms], [def:AbHomgroup],
+    [lem:grpHomOK] and 13.1.3 Concrete rings.
 
     The example studies [M :≡ S¹ →* (S¹ →* B²ℤ)] and maps
     [m_k : M] given by [m_k(base) :≡ pt] and [m_k(loop) := ptw_*⁻¹(k')]
@@ -462,6 +491,321 @@ Section IntMixRing.
 
 End IntMixRing.
 
+
+(** *** Subsection "Move to a better place (Ch. 11 or 2)": pointed
+    homotopies, [Ω] and [O] *)
+
+(** [X →* Y] pointed at the constant map [(cst_{pt}, refl)]. *)
+Definition pmap_ptd (X Y : Ustar) : Ustar
+  := ((X →* Y); ((fun _ => pt Y); refl)).
+
+Section PtdHomotopies.
+
+  Context `{Funext} {X Y : Ustar}.
+
+  (** The type [H(f,g)] of [con:identity-ptd-maps]. *)
+  Definition Hpt (f g : X →* Y) : Type
+    := {h : forall x, fst f x = fst g x & h (pt X) ⋅ snd f = snd g}.
+
+  (** [ptw_*], as in exercise [xca:identity-ptd-maps], by induction
+      ([ptw_star_ind]).  It is an equivalence: on total spaces it is a
+      map between contractible types, [Σ_g H(f,g)] being contractible
+      since [ptw_star] (the book's chain of equivalences) is a fiberwise
+      equivalence.  We use this version since it computes on [refl]. *)
+  Definition Hpt_tot_isContr (f : X →* Y) : isContr {g : X →* Y & Hpt f g}
+    := isContr_Eqv (tot (fun g => fst (ptw_star f g)); tot_isEquiv _ (fun g => snd (ptw_star f g)))
+         (singleton_contr f).
+
+  Definition ptw_star_ind_isEquiv (f g : X →* Y) : isEquiv (@ptw_star_ind X Y f g)
+    := isEquiv_from_tot (fun g => @ptw_star_ind X Y f g)
+         (contr_map_isEquiv (singleton_contr f) (Hpt_tot_isContr f) _) g.
+
+  Definition ptw_ind_eqv (f g : X →* Y) : (f = g) ≃ Hpt f g
+    := (ptw_star_ind; ptw_star_ind_isEquiv f g).
+
+  (** Identifying pointed maps by a pointed homotopy. *)
+  Definition pmap_path {f g : X →* Y} (h : forall x, fst f x = fst g x)
+    (c : h (pt X) ⋅ snd f = snd g) : f = g
+    := eqinv (snd (ptw_ind_eqv f g)) (h; c).
+
+  (** Definition [def:ptd-homotopy-compo]: pointwise composition
+      [k' ·_ptw k :≡ (x ↦ k'(x) · k(x), k'_pt · ap_{k'(pt) · -}(k_pt))]
+      (with the associativity of path composition made explicit). *)
+  Definition ptw_comp {f g h : X →* Y} (k : Hpt f g) (k' : Hpt g h) : Hpt f h
+    := ((fun x => fst k' x ⋅ fst k x);
+        snd k' ⋅ (ap (fun u => fst k' (pt X) ⋅ u) (snd k)
+                  ⋅ (trans_assoc (snd f) (fst k (pt X)) (fst k' (pt X)))⁻¹)).
+
+  (** Construction [con:ptd-homotopy-compo]: [ptw_*(qp) = ptw_*(q) ·_ptw
+      ptw_*(p)], by induction on [q] and [p]. *)
+  Definition con_ptd_homotopy_compo {f g h : X →* Y} (p : f = g) (q : g = h)
+    : ptw_star_ind (q ⋅ p) = ptw_comp (ptw_star_ind p) (ptw_star_ind q).
+  Proof. destruct q, p. exact refl. Defined.
+
+End PtdHomotopies.
+
+(** Definition [def:cst-ptd]: the pointed constant map [cst_*^A(b,p) :≡
+    (cst_b, p)]. *)
+Definition cst_ptd (A : Ustar) {B : Ustar} (w : {x : utype B & pt B = x}) : A →* B
+  := ((fun _ => fst w); snd w).
+
+(** The path [(p, ρ_p) : (b, refl) = (b', p)] in [Σ_x (pt_B = x)], by
+    induction on [p]. *)
+Definition cst_path {B : Type} {b b' : B} (p : b = b')
+  : ((b; refl) : {x : B & b = x}) = (b'; p)
+  := match p with refl => refl end.
+
+(** Remark [rem:loops-at-ptd-cst]: the variant [ptw_* : Ω(X →* Y) ≃
+    (X →* ΩY)], replacing [h(pt_X) · refl = refl] by [refl = h(pt_X)]
+    (laws of symmetry and right unit). *)
+Definition ptwc `{Funext} (X Y : Ustar)
+  : (pt (pmap_ptd X Y) = pt (pmap_ptd X Y)) ≃ (X →* loops Y).
+Proof.
+  refine (Eqv_comp (ptw_ind_eqv _ _) _).
+  exact (tot (fun h => fst (Eqv_comp (eq_l_eqv (trans_1p (h (pt X)))) symm_eqv));
+         tot_isEquiv _ (fun h => snd (Eqv_comp (eq_l_eqv (trans_1p (h (pt X)))) symm_eqv))).
+Defined.
+
+(** Construction [con:Id-(B->*A)]: given a section [s] of
+    [ev : (id_A = id_A) → (pt_A = pt_A)], an identification of the
+    underlying maps of [f, f' : B →* A] gives one of [f] and [f'];
+    by induction on [f_÷ = f'_÷] and on [f_pt], with
+    [h(b) :≡ ptw(s(r))(f(b))] for [r :≡ f'_pt · f_pt⁻¹]. *)
+Definition con_Id_ptd `{Funext} (A : Ustar)
+  (s : (pt A = pt A) -> (id (utype A) = id (utype A)))
+  (sec : forall p, ptw (s p) (pt A) = p)
+  (B : Ustar) (f f' : B →* A) (e : fst f = fst f') : f = f'.
+Proof.
+  destruct A as [A a], f as [f fp], f' as [f' fp']. cbn in *. destruct e.
+  revert s sec fp'. revert a fp. refine (paths_ind_r _ _ _). intros s sec fp'.
+  refine (@pmap_path _ B (_; _) ((f; refl) : B →* (A; _)) ((f; fp') : B →* (A; _))
+            (fun b => ptw (s (fp' ⋅ refl⁻¹)) (f b)) _).
+  exact (trans_1p _ @ sec _ @ trans_1p fp').
+Defined.
+
+(** Exercise [xca:ev-section-loopsA]: [ρ_q : q · refl = q] and
+    [i(β) : ap_{- · refl}(β) = β · ρ_p], by induction; hence
+    [ap_{- · refl}(α) = α] for [α : refl = refl]. *)
+Section EvSection.
+
+  Context {A : Type} {a : A}.
+
+  Definition rho_r {x : A} (q : a = x) : q ⋅ refl = q := trans_1p q.
+
+  Definition i_beta {p : a = a} (β : p = refl)
+    : ap (fun x => x ⋅ refl) β = β ⋅ rho_r p.
+  Proof. revert p β. refine (paths_ind_r _ _ _). exact refl. Defined.
+
+  Definition xca_ev_section_loopsA (α : refl a = refl a)
+    : ap (fun x => x ⋅ refl) α = α
+    := i_beta α @ trans_1p α.
+
+End EvSection.
+
+(** Construction [con:ev-section-loopsA]: [ev : (id_{ΩA} = id_{ΩA}) →
+    (rfl = rfl)], [i ↦ ptw(i)(rfl)], has the section
+    [α ↦ ptw⁻¹(p ↦ ap_{- · p}(α))]. *)
+Section EvSectionLoops.
+
+  Context `{Funext} (A : Ustar).
+
+  Definition ev_loops (i : id (pt A = pt A) = id (pt A = pt A)) : refl (pt A) = refl (pt A)
+    := ptw i refl.
+
+  Definition s_loops (α : refl (pt A) = refl (pt A)) : id (pt A = pt A) = id (pt A = pt A)
+    := ptw_inv (fun p => ap (fun x => x ⋅ p) α).
+
+  Definition con_ev_section_loopsA (α : refl (pt A) = refl (pt A))
+    : ev_loops (s_loops α) = α
+    := ptw (eqinv_r (funext (id _) (id _)) (fun p => ap (fun x => x ⋅ p) α)) refl
+       @ xca_ev_section_loopsA α.
+
+End EvSectionLoops.
+
+(** Corollary [cor:Id-(B->*loopsA)]. *)
+Definition cor_Id_ptd_loops `{Funext} (A B : Ustar) (f f' : B →* loops A)
+  (e : fst f = fst f') : f = f'
+  := con_Id_ptd (loops A) (s_loops A) (con_ev_section_loopsA A) B f f' e.
+
+(** Definition [def:O-functor]: [O A :≡ (S¹ →* A)], and [O(f)] is
+    composition with [f], pointed by [ap_{cst_*}(f_pt, ρ_{f_pt})]
+    ([cst_path]); [O(f)_pt ≡ refl] when [f_pt ≡ refl]. *)
+Definition OO (A : Ustar) : Ustar := pmap_ptd S1star A.
+
+Definition OO_pt {A B : Ustar} (f : A →* B)
+  : pt (OO B) = pcomp f (pt (OO A))
+  := ap (cst_ptd S1star) (cst_path (snd f)).
+
+Definition OO_f {A B : Ustar} (f : A →* B) : OO A →* OO B
+  := ((fun g => pcomp f g); OO_pt f).
+
+(** Exercise [xca:O-functor]: [O] preserves identities and composition,
+    and [O(f)_pt = ptw_*⁻¹(cst_{f_pt}, ρ_{f_pt})]. *)
+Section OFunctor.
+
+  Context `{Funext}.
+
+  Definition OO_pid (A : Ustar) : OO_f (pid A) = pid (OO A)
+    := @pmap_path _ (OO A) (OO A) (OO_f (pid A)) (pid (OO A))
+         (fun g : S1star →* A => pcomp_pid_l g) refl.
+
+  Definition OO_pcomp {A B C : Ustar} (g : B →* C) (f : A →* B)
+    : OO_f (pcomp g f) = pcomp (OO_f g) (OO_f f).
+  Proof.
+    refine (@pmap_path _ (OO A) (OO C) (OO_f (pcomp g f)) (pcomp (OO_f g) (OO_f f))
+              (fun h : S1star →* A => (pcomp_assoc g f h)^) _).
+    destruct g as [g gp], f as [f fp].
+    destruct A as [A a], B as [B b], C as [C c]. cbn in *.
+    revert c gp. refine (paths_ind_r _ _ _).
+    revert b fp. refine (paths_ind_r _ _ _).
+    exact refl.
+  Defined.
+
+  Definition OO_pt_ptw {A B : Ustar} (f : A →* B)
+    : OO_pt f = eqinv (snd (ptw_ind_eqv (pt (OO B)) (pcomp f (pt (OO A)))))
+                  ((fun _ => snd f); rho_r (snd f)).
+  Proof.
+    refine ((eqinv_l (snd (ptw_ind_eqv _ _)) (OO_pt f))^ @ _).
+    apply (ap (eqinv (snd (ptw_ind_eqv _ _)))).
+    destruct A as [A a], B as [B b], f as [f fp]. cbn in *.
+    revert b fp. refine (paths_ind_r _ _ _). exact refl.
+  Defined.
+
+End OFunctor.
+
+(** Remark [rem:pointing-ev]: [ev_A : (S¹ →* A) → ΩA] is pointed by
+    [ε_A(loop)], with [ε_A(p) : refl = cst_{pt}(p) · refl] defined by
+    induction on [p] (here with [evp]'s form of [Ω(f)(loop)]). *)
+Definition eps_ev (A : Ustar) {z : S1} (p : base = z)
+  : refl (pt A) = (refl (pt A))⁻¹ ⋅ (ap (fun _ : S1 => pt A) p ⋅ refl)
+  := match p with refl => refl end.
+
+Definition evpt (A : Ustar) : OO A →* loops A
+  := (evp (pt A); eps_ev A loop).
+
+(** Exercise [xca:allptd-S1-contractible]. *)
+Definition pmap_conn_set_isContr `{Funext} {X S : Ustar} (cX : isConn (utype X))
+  (sS : isSet (utype S)) : isContr (X →* S).
+Proof.
+  refine (((fun _ => pt S); refl); _). intro f.
+  refine (@pmap_path _ X S (((fun _ => pt S); refl) : X →* S) f (fun x => ptrunc_rec (sS _ _) (fun p => ap (fst f) p ⋅ snd f)
+                                (snd cX (pt X) x)) _).
+  exact (sS _ _ _ _).
+Defined.
+
+Definition xca_allptd_S1_contractible `{Funext} (X Y Z : Ustar)
+  (cX : isConn (utype X)) (cY : isConn (utype Y)) (gZ : isGrpd (utype Z))
+  : isContr (X →* pmap_ptd Y Z)
+  := @pmap_conn_set_isContr _ X (pmap_ptd Y Z) cX (pmap_isSet (X := Y) (Y := Z) cY gZ).
+
+(** Construction [con:swap-on-paths]: for [g(b)(a) :≡ f(a)(b)] and
+    [q : b = b'], [f(-)(q) = ptw(g(q))], by induction on [q]. *)
+Definition con_swap_on_paths {A B C : Type} (f : A -> B -> C) {b b' : B} (q : b = b')
+  : (fun a => ap (f a) q) = ptw (ap (fun b a => f a b) q).
+Proof. destruct q. exact refl. Defined.
+
+(** [ι(f,p,g)], by induction on [g]. *)
+Definition iota {A B : Type} (f : A -> B) (p : S1 -> A) {z : S1} (g : base = z)
+  : ap f (ap p g ⋅ refl) ⋅ refl = ap (fun x => f (p x)) g ⋅ refl
+  := match g with refl => refl end.
+
+Definition iota_gen {A B : Type} (f : A -> B) (a : A) (p : S1 -> A) (pp : a = p base)
+  : loops_fun (((f; refl) : (A; a) →* (B; f a))) (evp a (p; pp))
+    = evp (f a) (pcomp ((f; refl) : (A; a) →* (B; f a)) ((p; pp) : S1star →* (A; a))).
+Proof. revert a pp. refine (paths_ind_r _ _ _). exact (iota f p loop). Defined.
+
+Definition iota_coh {A B : Type} (f : A -> B) (a : A) {z : S1} (g : base = z)
+  : iota f (fun _ : S1 => a) g
+    ⋅ (ap (loops_fun (((f; refl) : (A; a) →* (B; f a)))) (eps_ev (A; a) g) ⋅ refl)
+    = eps_ev (B; f a) g
+  := match g with refl => refl end.
+
+(** Construction [con:Omega-O]: [Ω(f) ∘ ev_A = ev_B ∘ O(f)] as pointed
+    maps.  The underlying maps are identified at [(p, p_pt)] by
+    [i(f,f_pt)(p,p_pt)], by induction on [p_pt] and [f_pt], reducing to
+    [ι(f,p,loop)]; the triangle for the pointing paths becomes, after
+    generalizing [loop] to [g : base = z], a reflexivity triangle at
+    [g ≡ refl] ([iota_coh]). *)
+Definition con_Omega_O `{Funext} {A B : Ustar} (f : A →* B)
+  : pcomp (loops_map f) (evpt A) = pcomp (evpt B) (OO_f f).
+Proof.
+  destruct f as [f fp], A as [A a], B as [B b]. cbn in *.
+  revert b fp. refine (paths_ind_r _ _ _).
+  refine (@pmap_path _ (OO (A; a)) (loops (B; f a))
+            (pcomp (loops_map ((f; refl) : (A; a) →* (B; f a))) (evpt (A; a)))
+            (pcomp (evpt (B; f a)) (OO_f ((f; refl) : (A; a) →* (B; f a))))
+            (fun p => iota_gen f a (fst p) (snd p)) _).
+  exact (iota_coh f a loop).
+Defined.
+
+(** The second part of [con:Omega-O]: the equivalence [e :≡ ev_B⁻¹ ∘ (- ∘
+    ev_A) : (ΩA →* ΩB) ≃ (OA →* OB)] and [O = e ∘ Ω].  We obtain [e] by
+    transport along the paths [OA = ΩA] given by the pointed
+    equivalences [ev] (univalence, [path_to_pEqv_isEquiv]), so that it is
+    an equivalence by construction; it is characterized by
+    [ev_B ∘ e(φ) = φ ∘ ev_A] ([e_OmegaO_char]), and [O = e ∘ Ω]
+    ([OO_e_loops]) follows from the first part. *)
+Section EqvOmegaO.
+
+  Context `{Univalence}.
+
+  Definition pmap_tr {X X' Y Y' : Ustar} (p : X = X') (q : Y = Y') (φ : X →* Y) : X' →* Y'
+    := match p, q with refl, refl => φ end.
+
+  Definition pmap_tr_isEquiv {X X' Y Y' : Ustar} (p : X = X') (q : Y = Y')
+    : isEquiv (pmap_tr p q).
+  Proof.
+    refine (iso_to_isEquiv _ (pmap_tr p^ q^) _ _); intro φ; destruct p, q; exact refl.
+  Defined.
+
+  Local Notation pE p := (fst (path_to_pEqv p)).
+
+  Definition pmap_tr_char {X X' Y Y' : Ustar} (p : X = X') (q : Y = Y') (φ : X →* Y)
+    : pcomp (pE q) φ = pcomp (pmap_tr p q φ) (pE p).
+  Proof. destruct p, q. exact (pcomp_pid_l φ). Defined.
+
+  Definition pmap_tr_from {X X' Y Y' : Ustar} (p : X = X') (q : Y = Y') (φ : X →* Y)
+    (ψ : X' →* Y') (r : pcomp (pE q) φ = pcomp ψ (pE p)) : pmap_tr p q φ = ψ.
+  Proof. destruct p, q. exact ((pcomp_pid_l φ)^ @ r). Defined.
+
+  (** [ev_A] as a pointed equivalence, and the corresponding path. *)
+  Definition evpEqv (A : Ustar) : OO A ≃* loops A := (evpt A; evp_isEquiv (pt A)).
+
+  Definition evPath (A : Ustar) : OO A = loops A
+    := eqinv (path_to_pEqv_isEquiv (OO A) (loops A)) (evpEqv A).
+
+  Definition evPath_pE (A : Ustar) : pE (evPath A) = evpt A
+    := ap fst (eqinv_r (path_to_pEqv_isEquiv (OO A) (loops A)) (evpEqv A)).
+
+  (** The equivalence [e : (ΩA →* ΩB) ≃ (OA →* OB)], characterized by
+      [ev_B ∘ e(φ) = φ ∘ ev_A], that is, [e(φ) = ev_B⁻¹ ∘ φ ∘ ev_A]. *)
+  Definition e_OmegaO (A B : Ustar) : (loops A →* loops B) ≃ (OO A →* OO B)
+    := Eqv_inv (pmap_tr (evPath A) (evPath B); pmap_tr_isEquiv _ _).
+
+  Definition e_OmegaO_char (A B : Ustar) (φ : loops A →* loops B)
+    : pcomp (evpt B) (fst (e_OmegaO A B) φ) = pcomp φ (evpt A).
+  Proof.
+    refine (ap (fun k => pcomp k _) (evPath_pE B)^ @ _).
+    refine (pmap_tr_char (evPath A) (evPath B) _ @ _).
+    refine (ap (fun k => pcomp k _)
+              (eqinv_r (pmap_tr_isEquiv (evPath A) (evPath B)) φ) @ _).
+    exact (ap (pcomp φ) (evPath_pE A)).
+  Defined.
+
+  (** [O = e ∘ Ω]. *)
+  Definition OO_e_loops (A B : Ustar)
+    : (fun f : A →* B => OO_f f) = (fun f => fst (e_OmegaO A B) (loops_map f)).
+  Proof.
+    apply path_forall. intro f.
+    refine ((eqinv_l (pmap_tr_isEquiv (evPath A) (evPath B)) (OO_f f))^ @ _).
+    apply (ap (eqinv (pmap_tr_isEquiv (evPath A) (evPath B)))).
+    apply pmap_tr_from.
+    refine (ap (fun k => pcomp k _) (evPath_pE B) @ _).
+    refine ((con_Omega_O f)^ @ _).
+    exact (ap (pcomp _) (evPath_pE A))^.
+  Defined.
+
+End EqvOmegaO.
 
 (** *** Example [exa:allS1*-swap], [TBD1] and [TBD2]: bilinearity and
     the sign of [swap] *)
@@ -1101,9 +1445,6 @@ End IntDegrees.
     reading of [F(z,w) :≡ m(z)(w)] at [(loop,loop)] is [evp] of the
     pointed map [S¹ →* ΩB] corresponding to [ℓ]. *)
 
-(** [X →* Y] pointed at the constant map [(cst_{pt}, refl)]. *)
-Definition pmap_ptd (X Y : Ustar) : Ustar
-  := ((X →* Y); ((fun _ => pt Y); refl)).
 
 (** The w-outer reading of [G(p,q)] in terms of a path [φ] of functions
     identified with [ap_G(p)]. *)
