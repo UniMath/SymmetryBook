@@ -49,7 +49,14 @@
       [f₂ :≡ id], [coker(F₁)] has one element and [coker(f₁)(sh)] two),
       since [BF₁] is [F₁] restricted to the component [BKer(f₂f₁)]; it is
       proved when [(f₂f₁)⁻¹(x₂)] is connected
-      ([cor_cokermaps_coker_f1_F1_conn], via [cokerF1_eqv]).
+      ([cor_cokermaps_coker_f1_F1_conn], via [cokerF1_eqv]).  The exact
+      condition ([cor_cokermaps_coker_f1_F1_corr], after definition
+      [def:Im(grphom)]): reading the part as "[‖H'(u)‖₀] is an
+      equivalence for all [u]" ([cokerH]), it holds iff [‖F'₁(x₂)‖₀] is
+      an equivalence, iff [Im(f₂f₁) = Im(f₂)] in [Mono(G₂)]; the bridge
+      is [Cfib] (the preimage of [BKer(f₂)] under [F'₁] is [BKer(f₂f₁)]),
+      with [fib_homog] for injectivity, and [Jhom : Im(f₂f₁) → Im(f₂)]
+      over [G₂] with [Mono_path], [Mono_path_isIso].
 
     Left out (statements only; time limit per result)
     - The exercise after [rem:imageandcokernel] ([xca_ker_coker_stmt],
@@ -73,7 +80,7 @@
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core.
+  Types.Forall Types.Paths Truncations.Core Truncations.SeparatedTrunc.
 From SymmetryBook Require Export Subgroups.S02_Epis.
 
 Local Open Scope uf_scope.
@@ -795,6 +802,184 @@ Definition img `{ua : Univalence} {G H : Group} (f : Hom G H) : Mono H
 
 Definition prjim `{ua : Univalence} {G H : Group} (f : Hom G H) : Epi G
   := (Img f; (improj f; improj_isepi f)).
+
+(** Corollary [cor:cokermaps], part [it:coker-f1-F1], corrected: the map
+    [‖H'(u)‖₀ : coker(F₁)(u) → coker(f₁)(fst u)] induced by [H'] (the
+    book's identification is [etop] of it) is an equivalence for all
+    [u : BKer(f₂)] if and only if [‖F'₁(x₂)‖₀] is an equivalence, if and
+    only if [Im(f₂f₁) = Im(f₂)] in [Mono(G₂)] (a proposition, as [Mono(G₂)]
+    is a set by [lem:setofsubgroups]).  The bridge is [Cfib]: in
+    [(f₂f₁)⁻¹(x₂)], the preimage under [F'₁] of the component [BKer(f₂)]
+    is the component [BKer(f₂f₁)].  For [Im], [J] is the homomorphism
+    [Im(f₂f₁) → Im(f₂)] over [G₂] given by [tot(‖F'₁‖₀)]
+    ([Jhom], [Jhom_comp]); equal monomorphisms have [J] invertible
+    ([Mono_path_isIso]) and conversely ([Mono_path]). *)
+Definition strunc_path `{Univalence} {A : Type} {a b : A} (e : settrunc a = settrunc b) : ptrunc (a = b)
+  := equiv_inverse (equiv_path_Tr (n := -1) a b) e.
+
+Definition ptrunc_strunc_path {A : Type} {a b : A} (r : ptrunc (a = b)) : settrunc a = settrunc b
+  := ptrunc_rec (strunc_isSet _ _) (ap settrunc) r.
+
+(** A proposition on the fibers of a map with connected domain that
+    holds at one point holds everywhere. *)
+Definition fib_homog {A B : Type} (f : A -> B) (cA : isConn A)
+  (R : forall z, fiber f z -> Type) (hR : forall z a, isProp (R z a))
+  {z0 : B} (a0 : fiber f z0) (r0 : R z0 a0) : forall z a, R z a.
+Proof.
+  assert (K : forall x, R (f x) (x; refl)).
+  { intro x. destruct a0 as [x0 q0].
+    refine (ptrunc_rec (hR _ _) _ (snd cA x0 x)). intro p. destruct p.
+    revert z0 q0 r0. refine (paths_ind_r _ _ _). exact idmap. }
+  intros z [x q]. revert z q. exact (paths_ind_r _ _ (K x)).
+Defined.
+
+Definition sig_comp_eqv' {A : Type} {a0 : A} (P : A -> Type) (h : forall x, P x -> ptrunc (a0 = x))
+  : {t : component A a0 & P (fst t)} ≃ {x : A & P x}.
+Proof.
+  refine (mkEqv (fun w : {t : component A a0 & P (fst t)} => ((fst (fst w); snd w) : {x : A & P x}))
+                (fun w : {x : A & P x} => ((((fst w; h (fst w) (snd w)) : component A a0); snd w)
+                                           : {t : component A a0 & P (fst t)})) _ _).
+  - intros [[x c] y]. cbn.
+    exact (ap (fun c' => (((x; c') : component A a0); y) : {t : component A a0 & P (fst t)})
+              (ptrunc_isProp _ c)).
+  - intros [x y]. exact refl.
+Defined.
+
+Definition Mono_path_isIso `{ua : Univalence} {G : Group} (m m' : Mono G) (p : m = m')
+  (J : Hom (fst m) (fst m')) (e : compG (fst (snd m')) J = fst (snd m)) : isIso J.
+Proof.
+  destruct p.
+  assert (E : J = idG (fst m))
+    by exact (Overture.fst (ismonoC_cancel _) (ismono_ismonoC _ (snd (snd m))) _ J (idG _)
+                (e @ (compG_idG_r _)^)).
+  exact (trp isIso E^ (idG_isIso _)).
+Defined.
+
+Section CokerF1Corrected.
+
+  Context `{ua : Univalence} {G0 G1 G2 : Group} (f1 : Hom G0 G1) (f2 : Hom G1 G2).
+
+  Local Notation k1 := (fst (Bf f1)).
+  Local Notation kp1 := (snd (Bf f1)).
+  Local Notation k2 := (fst (Bf f2)).
+  Local Notation kp2 := (snd (Bf f2)).
+  Local Notation F1' := (F1 k1 k2 (sh G2)).
+  Local Notation sh12 := (shKer (compG f2 f1)).
+  Local Notation F1pt := (F1_pt k1 k2 (sh G0) (sh G1) (sh G2) kp1 kp2).
+
+  (** [‖H'(u)‖₀], with [H'(u)] the map [Hgen] on the fiber of [BF₁]. *)
+  Definition cokerH (u : utype (BG (Ker f2)))
+    : strunc (fiber (F1k f1 f2) u) -> strunc (fiber k1 (fst (fst u)))
+    := strunc_rec strunc_isSet
+         (fun t : fiber (F1k f1 f2) u =>
+            settrunc (Hgen k1 k2 (sh G2) (fst u) ((fst (fst t); ap fst (snd t)) : fiber F1' (fst u)))).
+
+  Definition Cfib : Type
+    := forall w : fiber (fst (Bf (compG f2 f1))) (sh G2),
+         ptrunc (shKer f2 = F1' w) -> ptrunc (sh12 = w).
+
+  Definition Cfib_cokerH (cf : Cfib) (u : utype (BG (Ker f2))) : isEquiv (cokerH u).
+  Proof.
+    pose (h := fun x (p : fst u = F1' x) =>
+                 cf x (ptrunc_rec ptrunc_isProp (fun r => trunc (r @ p)) (snd u))).
+    pose (Eq := Eqv_comp (sig_fw_eqv (fun t => subtype_paths_eqv (fun _ => ptrunc_isProp) u (F1k f1 f2 t)))
+                  (Eqv_comp (sig_comp_eqv' (fun x => fst u = F1' x) h)
+                     (Hgen k1 k2 (sh G2) (fst u); Hgen_isEquiv k1 k2 (sh G2) (fst u)))).
+    exact (snd (strunc_eqv Eq)).
+  Defined.
+
+  Definition cokerH_Cfib (e : forall u, isEquiv (cokerH u)) : Cfib.
+  Proof.
+    intros w c.
+    pose (u := (F1' w; c) : utype (BG (Ker f2))).
+    pose (y := settrunc (Hgen k1 k2 (sh G2) (fst u) ((w; refl) : fiber F1' (fst u)))).
+    destruct (fst (e u y)) as [x q]. revert x q.
+    refine (strunc_ind_prop _ (fun _ => Pi_isProp (fun _ => ptrunc_isProp)) _). intros t q.
+    refine (ptrunc_rec ptrunc_isProp _ (strunc_path q)). intro r.
+    pose (r' := (Hinv_Hgen k1 k2 (sh G2) (fst u) _)^ @ ap (Hinv k1 k2 (sh G2) (fst u)) r
+                @ Hinv_Hgen k1 k2 (sh G2) (fst u) _).
+    exact (ptrunc_rec ptrunc_isProp (fun r0 => trunc (r0 @ (ap fst r')^)) (snd (fst t))).
+  Defined.
+
+  Definition R12 (z : utype (BG G2)) (a : fiber (fun x => k2 (k1 x)) z) : Type
+    := forall a', ptrunc (F1 k1 k2 z a = F1 k1 k2 z a') -> ptrunc (a = a').
+
+  Definition F1coker_isInj (cf : Cfib) : isInj (F1coker f1 f2 (sh G2)).
+  Proof.
+    pose (H := fib_homog (fun x => k2 (k1 x)) (BG_isConn G0) R12
+                 (fun z a => Pi_isProp (fun _ => Pi_isProp (fun _ => ptrunc_isProp))) sh12
+                 (fun a' c => cf a' (ptrunc_rec ptrunc_isProp (fun r => trunc (F1pt @ r)) c))).
+    apply (cancel_isInj strunc_isSet).
+    refine (strunc_ind_prop _ (fun _ => Pi_isProp (fun _ => Pi_isProp (fun _ => strunc_isSet _ _))) _).
+    intro a.
+    refine (strunc_ind_prop _ (fun _ => Pi_isProp (fun _ => strunc_isSet _ _)) _).
+    intros a' e.
+    exact (ptrunc_strunc_path (H (sh G2) a a' (strunc_path e))).
+  Defined.
+
+  Definition F1coker_isSurj : isSurj (F1coker f1 f2 (sh G2)).
+  Proof.
+    refine (strunc_ind_prop _ (fun _ => ptrunc_isProp) _). intros [y p].
+    refine (ptrunc_rec ptrunc_isProp _ (snd (BG_isConn G1) (k1 (sh G0)) y)). intro r. destruct r.
+    exact (trunc (settrunc ((sh G0; p) : fiber (fun x => k2 (k1 x)) (sh G2)); refl)).
+  Defined.
+
+  Definition Cfib_F1coker (cf : Cfib) : isEquiv (F1coker f1 f2 (sh G2))
+    := inj_surj_isEquiv (F1coker_isInj cf) F1coker_isSurj.
+
+  Definition F1coker_Cfib (e : isEquiv (F1coker f1 f2 (sh G2))) : Cfib.
+  Proof.
+    intros w c.
+    pose (hw := ptrunc_rec (strunc_isSet _ _) (fun r => ap settrunc (F1pt^ @ r)) c
+                : settrunc (F1' sh12) = settrunc (F1' w)).
+    exact (strunc_path (ap fst (isContr_isProp' (e (settrunc (F1' w)))
+                                  (settrunc sh12; hw^) (settrunc w; refl)))).
+  Defined.
+
+  (** The homomorphism [J : Im(f₂f₁) → Im(f₂)] over [G₂]. *)
+  Definition BJ : utype (BG (Img (compG f2 f1))) -> utype (BG (Img f2)) := tot (F1coker f1 f2).
+
+  Definition Jpt : sh (Img f2) = BJ (sh (Img (compG f2 f1)))
+    := ap (fun c => (sh G2; c) : utype (BG (Img f2))) (ap settrunc F1pt).
+
+  Definition Jhom : Hom (Img (compG f2 f1)) (Img f2)
+    := @mkhom (Img (compG f2 f1)) (Img f2) (BJ; Jpt).
+
+  Definition Jhom_comp : compG (imincl f2) Jhom = imincl (compG f2 f1).
+  Proof.
+    apply (ap mkhom).
+    refine (eqinv (snd (ptw_star (pcomp (Bf (imincl f2)) (Bf Jhom)) (Bf (imincl (compG f2 f1)))))
+              ((fun _ => refl); _)).
+    refine (trans_1p _ @ _).
+    change (ap (fun w : utype (BG (Img f2)) => fst w) Jpt = refl).
+    exact ((ap_compose (fun c => (sh G2; c) : utype (BG (Img f2))) (fun w => fst w)
+              (ap settrunc F1pt))^
+           @ ap_const _ _).
+  Defined.
+
+  Definition F1coker_all (e2 : isEquiv (F1coker f1 f2 (sh G2))) : forall z, isEquiv (F1coker f1 f2 z).
+  Proof.
+    intro z. refine (ptrunc_rec (Pi_isProp (fun _ => isContr_isProp _)) _ (snd (BG_isConn G2) (sh G2) z)).
+    intro p. destruct p. exact e2.
+  Defined.
+
+  Definition F1coker_img (e2 : isEquiv (F1coker f1 f2 (sh G2))) : img (compG f2 f1) = img f2
+    := Mono_path (img (compG f2 f1)) (img f2)
+         (Bf Jhom; tot_isEquiv (F1coker f1 f2) (F1coker_all e2)) (ap Bf Jhom_comp).
+
+  Definition img_F1coker (p : img (compG f2 f1) = img f2) : isEquiv (F1coker f1 f2 (sh G2))
+    := isEquiv_from_tot (F1coker f1 f2)
+         (Mono_path_isIso (img (compG f2 f1)) (img f2) p Jhom Jhom_comp) (sh G2).
+
+  Definition cor_cokermaps_coker_f1_F1_corr_stmt : Type
+    := ((forall u, isEquiv (cokerH u)) <-> isEquiv (F1coker f1 f2 (sh G2)))
+       × (isEquiv (F1coker f1 f2 (sh G2)) <-> img (compG f2 f1) = img f2).
+
+  Definition cor_cokermaps_coker_f1_F1_corr : cor_cokermaps_coker_f1_F1_corr_stmt
+    := ((fun e => Cfib_F1coker (cokerH_Cfib e), fun e u => Cfib_cokerH (F1coker_Cfib e) u);
+        (F1coker_img, img_F1coker)).
+
+End CokerF1Corrected.
 
 (** Exercise [ex:charsurinj].  Proved: (1)(a)⇐(b) [surj_isepi], (b)⇔(c')
     for the connected fibers ([surjection_connfib], [connfib_surjection]),
