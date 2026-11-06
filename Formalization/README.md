@@ -23,6 +23,13 @@ propositional resizing ([PropResizing], Section 2.18) may be used to
 resize it.  Use them as hypotheses (arguments of the definitions), never
 as Axioms, only where needed, and keep a size-free version if one exists.
 
+Principles like Function Extensionality, Univalence, Replacement, Prop
+Resizing, as well as many coercions such as \etop, \pathpair, after their
+introduction and some explicit use for pedagogical purposes, may in the
+book text be implicitly used.  Be ready to make them explicit in the
+formalized text when needed, for example, to remediate universe
+inconsistencies.
+
 If a notion occurs definitionally in the Coq-Hott library, use it to define our notion,
 such as: Definition book_name := library_name. Use book_name henceforth.
 Include the summary that you write after each formalization run as a comment 
