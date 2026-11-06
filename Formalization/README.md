@@ -25,10 +25,11 @@ as Axioms, only where needed, and keep a size-free version if one exists.
 
 Principles like Function Extensionality, Univalence, Replacement, Prop
 Resizing, as well as many coercions such as \etop, \pathpair, after their
-introduction and some explicit use for pedagogical purposes, may in the
-book text be implicitly used.  Be ready to make them explicit in the
+introduction and some explicit use for pedagogical purposes, are often
+implicitly used in the book text.  Be ready to make them explicit in the
 formalized text when needed, for example, to remediate universe
-inconsistencies.
+inconsistencies. Classical principles implicitly used in the book text
+are excluded from the above policy and should be reported first.
 
 If a notion occurs definitionally in the Coq-Hott library, use it to define our notion,
 such as: Definition book_name := library_name. Use book_name henceforth.
