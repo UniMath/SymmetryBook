@@ -5,11 +5,38 @@
 
     ** Summary of this formalization
 
-    Only the questions [TBD1] and [TBD2] of Example [exa:allS1*-swap]
-    and the claim [M ≃ ℤ] of that example, with [m_k ↦ k] and the
-    reading of [m_k] being [kγ], are addressed so far; the other
-    labels of this section are not formalized yet (no [_stmt]s either:
-    the chapter is still in flux).
+    Subsections 13.1.1 and 13.1.2:
+    - Definitions [def:abstractring] and [def:typering]: [DistrLaws]
+      ([ring:ldistr-law], [ring:rdistr-law]) and the book's [Σ]-type
+      [AbsRing] (the book's [Ring]), with projections [ar_grp],
+      [ar_one], [ar_mul], ..., the monoid [ar_monoid], and
+      [ar_isNontrivial], [ar_isComm], [AbsCommRing].
+    - Exercise [xca:ring-group-abelian] ([xca_ring_group_abelian]),
+      following the hint: expand [(a+1)·(b+1)] in two ways and cancel.
+    - Definition [def:ringhom] ([AbsRingHom], [AbsRingHom_monoid]).
+      Example [exa:ring-Z-polynomials] is [TBD] in the book.
+    - Definitions [def:mixring] and [def:typemixring]: [RingProps]
+      ([mixring:unit-laws], [mixring:lr-coherence-law],
+      [mixring:assoc-law]), [MixRing], [MixCommRing],
+      [mr_isNontrivial].  The associativity law [ℓ ∘ r = r ∘ ℓ] is read
+      pointwise, [ℓ_g ∘ r_h = r_h ∘ ℓ_g] in [Hom(R,R)].
+    - The example of the integers: [ℓ_g = r_g :≡ veG g] (Section 4.4),
+      [Z_mixring], [Z_mixcommring], non-trivial since [loop ≠ refl];
+      coherence ([Z_coh]) is [g^n = loop^{mn} = h^m] for [g = loop^m],
+      [h = loop^n]; associativity follows from coherence via [Znatural]
+      since homomorphisms out of [ℤ] are determined by the image of
+      [loop] ([Hom_ZZ_path]).
+    - Exercise [xca:Rmixring->URabstring] ([xca_Rmixring_URabstring]):
+      [USym R] with [abstr(R)] and [g·h :≡ (USym ℓ_g)(h)]; the
+      distributive laws are [USymf_comp] (with coherence on the right),
+      associativity is the associativity law via [USym_compose]; hence
+      [abstr(R)] is abelian ([mr_grp_abelian]).
+
+    Example [exa:allS1*-swap]: the questions [TBD1] and [TBD2] and the
+    claim [M ≃ ℤ] of that example, with [m_k ↦ k] and the reading of
+    [m_k] being [kγ].  The other labels of this section (the subsection
+    "Move to a better place" and 13.1.3 Concrete rings) are not
+    formalized yet.
 
     The example studies [M :≡ S¹ →* (S¹ →* B²ℤ)] and maps
     [m_k : M] given by [m_k(base) :≡ pt] and [m_k(loop) := ptw_*⁻¹(k')]
@@ -212,6 +239,229 @@ From SymmetryBook Require Export FinGroups.FinGroups.
 Local Open Scope uf_scope.
 
 (** ** 13.1 Rings, abstract and concrete *)
+
+(** *** 13.1.1 Abstract rings *)
+
+(** Definition [def:abstractring]: the distributive laws
+    [DistrLaws(R,·,+)], parts [ring:ldistr-law] and [ring:rdistr-law]. *)
+Definition DistrLaws (R : Type) (μ plus : R -> R -> R) : Type
+  := (forall a b c : R, μ a (plus b c) = plus (μ a b) (μ a c))
+     × (forall a b c : R, μ (plus a b) c = plus (μ a c) (μ b c)).
+
+(** Definitions [def:abstractring] and [def:typering]: the type of
+    abstract rings, as the book's iterated [Σ]-type (the book writes
+    [Ring]; we write [AbsRing], keeping [Ring] for the concrete notion
+    of [def:ring]). *)
+Definition AbsRing : Type
+  := {G : AbsGroup & {e : ag_S G & {μ : ag_S G -> ag_S G -> ag_S G &
+       MonoidLaws (ag_S G) e μ × DistrLaws (ag_S G) μ (ag_mul G)}}}.
+
+Section AbsRingData.
+
+  Context (R : AbsRing).
+
+  (** The (additive) group [(R,0,+,-)] and the (multiplicative) monoid
+      [(R,1,·)] of [R]. *)
+  Definition ar_grp : AbsGroup := fst R.
+  Definition ar_S : Type := ag_S ar_grp.
+  Definition ar_zero : ar_S := ag_e ar_grp.
+  Definition ar_add : ar_S -> ar_S -> ar_S := ag_mul ar_grp.
+  Definition ar_neg : ar_S -> ar_S := ag_inv ar_grp.
+  Definition ar_one : ar_S := fst (snd R).
+  Definition ar_mul : ar_S -> ar_S -> ar_S := fst (snd (snd R)).
+  Definition ar_mlaws : MonoidLaws ar_S ar_one ar_mul := fst (snd (snd (snd R))).
+  Definition ar_ldistr : forall a b c, ar_mul a (ar_add b c) = ar_add (ar_mul a b) (ar_mul a c)
+    := fst (snd (snd (snd (snd R)))).
+  Definition ar_rdistr : forall a b c, ar_mul (ar_add a b) c = ar_add (ar_mul a c) (ar_mul b c)
+    := snd (snd (snd (snd (snd R)))).
+
+  Definition ar_monoid : Monoid
+    := {| mo_S := ar_S; mo_isSet := ag_isSet ar_grp; mo_e := ar_one; mo_mul := ar_mul;
+          mo_runit := fun g => fst (fst (snd ar_mlaws) g);
+          mo_lunit := fun g => snd (fst (snd ar_mlaws) g);
+          mo_assoc := snd (snd ar_mlaws) |}.
+
+  (** Non-trivial and commutative abstract rings. *)
+  Definition ar_isNontrivial : Type := ar_zero ≠ ar_one.
+
+  Definition ar_isComm : Type := forall a b : ar_S, ar_mul a b = ar_mul b a.
+
+  (** Exercise [xca:ring-group-abelian], following the hint: expanding
+      [(a+1)·(b+1)] with the left distributive law first gives
+      [(a·b + b) + (a + 1)], with the right one first
+      [(a·b + a) + (b + 1)]; cancel [a·b] and [1]. *)
+  Definition xca_ring_group_abelian : ag_isAb ar_grp.
+  Proof.
+    intros a b.
+    pose (one := ar_one). pose (mu := ar_mul).
+    pose (l1 := fun g => snd (fst (snd ar_mlaws) g) : mu one g = g).
+    pose (r1 := fun g => fst (fst (snd ar_mlaws) g) : mu g one = g).
+    assert (E : ar_add (ar_add (mu a b) b) (ar_add a one)
+                = ar_add (ar_add (mu a b) a) (ar_add b one)).
+    { refine ((ap011 ar_add (ar_rdistr a one b @ ap (ar_add (mu a b)) (l1 b))
+                 (r1 (ar_add a one)))^ @ _).
+      refine ((ar_ldistr (ar_add a one) b one)^ @ _).
+      refine (ar_rdistr a one (ar_add b one) @ _).
+      exact (ap011 ar_add (ar_ldistr a b one @ ap (ar_add (mu a b)) (r1 a))
+               (l1 (ar_add b one))). }
+    pose (re := fun x y => ap (ar_add (mu a b)) (ag_assoc ar_grp x y one)^
+                           @ ag_assoc ar_grp (mu a b) x (ar_add y one)).
+    apply (ag_cancel_r ar_grp one).
+    apply (ag_cancel_l ar_grp (mu a b)).
+    exact (re a b @ E^ @ (re b a)^).
+  Defined.
+
+End AbsRingData.
+
+(** The type of commutative abstract rings ([def:typering]). *)
+Definition AbsCommRing : Type := {R : AbsRing & ar_isComm R}.
+
+(** Definition [def:ringhom]: an abstract homomorphism of the additive
+    groups that is a monoid homomorphism of the multiplicative monoids. *)
+Definition AbsRingHom (R S : AbsRing) : Type
+  := {f : absHom (ar_grp R) (ar_grp S) &
+       (fst f (ar_one R) = ar_one S)
+       × forall a b, fst f (ar_mul R a b) = ar_mul S (fst f a) (fst f b)}.
+
+Definition AbsRingHom_monoid (R S : AbsRing) (f : AbsRingHom R S)
+  : MonoidHom (ar_monoid R) (ar_monoid S)
+  := (fst (fst f); snd f).
+
+(** Example [exa:ring-Z-polynomials] is [TBD] in the book. *)
+
+(** *** 13.1.2 Mixed rings *)
+
+Section MixedRings.
+
+  Context `{Funext}.
+
+  (** Definition [def:mixring]: the laws [RingProps(R,1_R,ℓ,r)]
+      ([mixring:unit-laws], [mixring:lr-coherence-law],
+      [mixring:assoc-law]).  The associativity law [ℓ ∘ r = r ∘ ℓ] is
+      read pointwise: [ℓ_g ∘ r_h = r_h ∘ ℓ_g] for all [g, h], expressing
+      [g·(x·h) = (g·x)·h]. *)
+  Definition RingProps (R : Group) (one : USym R) (l r : USym R -> Hom R R) : Type
+    := ((l one = idG R) × (r one = idG R))
+       × (forall g h : USym R, USymf (l g) h = USymf (r h) g)
+       × (forall g h : USym R, compG (l g) (r h) = compG (r h) (l g)).
+
+  (** Definition [def:typemixring]: the type of mixed rings. *)
+  Definition MixRing : Type
+    := {R : Group & {one : USym R & {l : USym R -> Hom R R & {r : USym R -> Hom R R &
+         RingProps R one l r}}}}.
+
+  Definition MixCommRing : Type
+    := {R : Group & {one : USym R & {l : USym R -> Hom R R & {r : USym R -> Hom R R &
+         RingProps R one l r × (l = r)}}}}.
+
+  Definition mr_isNontrivial (R : MixRing) : Type := fst (snd R) ≠ refl.
+
+  Section MixRingData.
+
+    Context (R : MixRing).
+
+    Local Notation G := (fst R).
+    Local Notation one := (fst (snd R)).
+    Local Notation l := (fst (snd (snd R))).
+    Local Notation r := (fst (snd (snd (snd R)))).
+    Definition mr_props : RingProps G one l r := snd (snd (snd (snd R))).
+
+    (** [g·h :≡ (USym ℓ_g)(h)], which is [(USym r_h)(g)] by coherence. *)
+    Definition mr_mul (g h : USym G) : USym G := USymf (l g) h.
+
+    Definition USymf_idG (K : Group) (g : USym K) : USymf (idG K) g = g
+      := trans_1p _ @ ap_idmap g.
+
+    (** Exercise [xca:Rmixring->URabstring]: [USym R] is an abstract ring
+        with additive group [abstr(R)] and multiplicative monoid
+        [(USym R, 1_R, ·)]. *)
+    Definition mr_mlaws : MonoidLaws (USym G) one mr_mul.
+    Proof.
+      refine (USym_isSet G; ((fun g => (_; _)); _)).
+      - refine (snd (fst mr_props) g one @ _).
+        refine (ap (fun f => USymf f g) (snd (fst (fst mr_props))) @ _).
+        exact (USymf_idG G g).
+      - refine (ap (fun f => USymf f g) (fst (fst (fst mr_props))) @ _).
+        exact (USymf_idG G g).
+      - intros g1 g2 g3. unfold mr_mul.
+        refine (ap (USymf (l g1)) (snd (fst mr_props) g2 g3) @ _).
+        refine ((ap10 (USym_compose (r g3) (l g1)) g2)^ @ _).
+        refine (ap (fun f => USymf f g2) (snd mr_props g1 g3) @ _).
+        refine (ap10 (USym_compose (l g1) (r g3)) g2 @ _).
+        exact (snd (fst mr_props) _ g3)^.
+    Defined.
+
+    Definition mr_distr : DistrLaws (USym G) mr_mul (ag_mul (abstr G)).
+    Proof.
+      split.
+      - intros a b c. exact (USymf_comp (l a) c b).
+      - intros a b c. unfold mr_mul.
+        refine (snd (fst mr_props) _ c @ _).
+        refine (USymf_comp (r c) b a @ _).
+        exact (ap011 (fun x y => x ⋅ y) (snd (fst mr_props) a c)^ (snd (fst mr_props) b c)^).
+    Defined.
+
+    Definition xca_Rmixring_URabstring : AbsRing
+      := (abstr G; (one; (mr_mul; (mr_mlaws; mr_distr)))).
+
+    (** As in [xca:ring-group-abelian], the group [R] is abelian. *)
+    Definition mr_grp_abelian : ag_isAb (abstr G)
+      := xca_ring_group_abelian xca_Rmixring_URabstring.
+
+  End MixRingData.
+
+End MixedRings.
+
+(** The example after [def:mixring]: the integers as a mixed ring, with
+    [1_ℤ :≡ loop] and [ℓ_g = r_g] classified by [Bℓ_g(base) :≡ base],
+    [Bℓ_g(loop) := g], pointed by [refl] ([veG] of Section 4.4). *)
+Section IntMixRing.
+
+  Context `{Univalence}.
+
+  Definition Z_ell (g : USym ZZ) : Hom ZZ ZZ := veG ZZ g.
+
+  Definition Hom_ZZ_path {K : Group} (f f' : Hom ZZ K)
+    (e : fst (Hom_ZZ_eqv K) f = fst (Hom_ZZ_eqv K) f') : f = f'
+    := (eqinv_l (snd (Hom_ZZ_eqv K)) f)^ @ ap (eqinv (snd (Hom_ZZ_eqv K))) e
+       @ eqinv_l (snd (Hom_ZZ_eqv K)) f'.
+
+  Definition Z_ell_loop (g : USym ZZ) : fst (Hom_ZZ_eqv ZZ) (Z_ell g) = g
+    := trans_1p _ @ S1_rec_loop _ _ _.
+
+  (** [ap_{Bℓ_g}(loop^n) = g^n]. *)
+  Definition Z_ell_ap (g : USym ZZ) (n : Int)
+    : USymf (Z_ell g) (loopexp loop n) = loopexp g n
+    := trans_1p _ @ ap_loopexp _ loop n @ ap (fun s => loopexp s n) (S1_rec_loop _ _ _).
+
+  Definition Z_coh (g h : USym ZZ) : USymf (Z_ell g) h = USymf (Z_ell h) g.
+  Proof.
+    rewrite <- (loopZ_wdg g), <- (loopZ_wdg h). unfold loopZ.
+    refine (Z_ell_ap _ _ @ loopexp_mul loop _ _ @ _).
+    refine (ap (loopexp loop) (int_mul_comm _ _) @ _).
+    exact (Z_ell_ap _ _ @ loopexp_mul loop _ _)^.
+  Defined.
+
+  Definition Z_props : RingProps ZZ loop Z_ell Z_ell.
+  Proof.
+    pose (u := Hom_ZZ_path (Z_ell loop) (idG ZZ)
+                 (Z_ell_loop loop @ (trans_1p _ @ ap_idmap loop)^)).
+    refine (((u; u); Z_coh); _).
+    intros g h. apply Hom_ZZ_path.
+    refine (Znatural _ _ _ _ @ _ @ (Znatural _ _ _ _)^).
+    refine (ap (USymf (Z_ell g)) (Z_ell_loop h) @ _).
+    exact (Z_coh g h @ ap (USymf (Z_ell h)) (Z_ell_loop g)^).
+  Defined.
+
+  Definition Z_mixring : MixRing := (ZZ; (loop; (Z_ell; (Z_ell; Z_props)))).
+
+  Definition Z_mixcommring : MixCommRing
+    := (ZZ; (loop; (Z_ell; (Z_ell; (Z_props; refl))))).
+
+  Definition Z_mixring_nontrivial : mr_isNontrivial Z_mixring := loop_ne_refl.
+
+End IntMixRing.
+
 
 (** *** Example [exa:allS1*-swap], [TBD1] and [TBD2]: bilinearity and
     the sign of [swap] *)
