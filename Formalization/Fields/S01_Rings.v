@@ -125,6 +125,10 @@
       [z] is used up by evaluation at [loop]), the second is a point of
       [ΩB²ℤ ≃ S¹]; so the swap of [m] is not the swap of the variables of
       [h].
+    - [M_eqv_mult_m_sigma]: with both components, [M_eqv_mult(m_k) =
+      (h_k, refl)]; the pointing component is [refl] because the
+      identification of the first components is [refl] at [base]
+      ([S1_fun_path_base], [sigma_uncurry_path]).
     - [h_k_sigma] ([TBD1] in the Σ-type): [(h_k, refl) = (h_1 ∘ (dg_k × id),
       refl)], i.e. [h_k(w,u) = h_1(w^k,u)] ([h_dg], [h_k_dg]: on [loop],
       [ap_{h_1 ∘ dg_k}(loop) = (ap_{h_1}(loop))^k] is [funext] of the
@@ -1348,21 +1352,47 @@ Section MEqvZ.
     := S1_fun_path (f := h_k k) (g := h_dg k) refl
          (S1_rec_loop _ _ _ @ h_k_loop k @ (trans_1p _)^).
 
-  Definition h_k_dg_base (k : ℤ) : ap (fun f => f base) (h_k_dg k) = refl.
+  (** An identification made by [S1_fun_path] with [p] at [base] is [p]
+      at [base]. *)
+  Definition S1_fun_path_base {A : Type} {f g : S1 -> A} (p : f base = g base)
+    (q : ap f loop = p⁻¹ ⋅ (ap g loop ⋅ p))
+    : ap (fun F => F base) (S1_fun_path p q) = p.
   Proof.
     refine ((apD10_ap_ev _ base)^ @ _).
-    exact (ptw (eqinv_r (funext (h_k k) (h_dg k)) _) base).
+    exact (ptw (eqinv_r (funext f g) _) base).
   Defined.
+
+  Definition h_k_dg_base (k : ℤ) : ap (fun f => f base) (h_k_dg k) = refl
+    := S1_fun_path_base _ _.
+
+  (** Identifications in [Σ_{h : S¹ × S¹ → S¹} (id = h(base,-))] from
+      identifications of the curried maps. *)
+  Definition sigma_uncurry_path {f g : S1 -> S1 -> S1} (e : f = g)
+    (r : (fun x => x) = f base) (r' : (fun x => x) = g base)
+    (q : r' = r @ ap (fun F => F base) e)
+    : ((uncurry f; r) : {h : S1 * S1 -> S1 & (fun x => x) = (fun w => h (base, w))})
+      = (uncurry g; r').
+  Proof. destruct e. exact (ap (fun s => (uncurry f; s)) (q @ concat_p1 r)^). Defined.
 
   Definition h_k_sigma (k : ℤ)
     : ((uncurry (h_k k); refl) : {h : S1 * S1 -> S1 & (fun x => x) = (fun w => h (base, w))})
-      = (uncurry (h_dg k); refl).
+      = (uncurry (h_dg k); refl)
+    := sigma_uncurry_path (h_k_dg k) refl refl (concat_1p _ @ h_k_dg_base k)^.
+
+  (** [M_eqv_mult] sends [m_k] to [(h_k, refl)], with both components. *)
+  Definition jmap_S1_rec_base (k : ℤ) : ap (fun f => f base) (jmap_S1_rec k) = refl
+    := S1_fun_path_base _ _.
+
+  Definition M_eqv_mult_m_sigma (k : ℤ)
+    : fst M_eqv_mult (m_k k) = (uncurry (h_k k); refl).
   Proof.
-    refine (path_sigma' _ (ap uncurry (h_k_dg k)) _).
-    refine (@transport_paths_Fr _ _ (fun h : S1 * S1 -> S1 => fun w => h (base, w))
-              _ _ (fun x => x) (ap uncurry (h_k_dg k)) refl @ concat_1p _ @ _).
-    refine ((ap_compose uncurry (fun h => fun w => h (base, w)) (h_k_dg k))^ @ _).
-    exact (h_k_dg_base k).
+    change (fst uncurry_eqv (post (fst loops_cst_eqv
+              (evp _ (evp_inv _ (eqinv (snd loops_cst_eqv) (dg_k' k))))))
+            = (uncurry (h_k k); refl)).
+    refine (ap (fun l => fst uncurry_eqv (post (fst loops_cst_eqv l)))
+              (evp_evp_inv _ _) @ _).
+    refine (ap (fun d => fst uncurry_eqv (post d)) (eqinv_r (snd loops_cst_eqv) _) @ _).
+    exact (sigma_uncurry_path (jmap_S1_rec k) refl refl (concat_1p _ @ jmap_S1_rec_base k)^).
   Defined.
 
 

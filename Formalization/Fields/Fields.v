@@ -12,7 +12,7 @@
     w-outer reading of [m_k] is [γ^k] with [γ] that of [m_1], also as
     [m_1] precomposed with the degree [k] map, for all [k : ℤ]; and
     [M ≃ Σ_{h : S¹ × S¹ → S¹} (id = h(base,-))], sending [m_1] to the
-    multiplication of [S¹], with [h_k(w,u) = h_1(w^k,u)] there
+    multiplication of [S¹] (with both components, [M_eqv_mult_m_sigma]), with [h_k(w,u) = h_1(w^k,u)] there
     ([h_k_sigma]).  The
     chapter is still in flux; the other results are not formalized
     yet.  It builds on Chapters 2 - 10
