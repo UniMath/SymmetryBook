@@ -30,6 +30,15 @@
       ([USym_semidirect_eqv]), [Σ_2] has [2] symmetries ([SG2_card], via
       [fcard_aut]) and [C_n] has [n] ([USym_CG_eqv]); [cardF_eqv]:
       cardinality is invariant under equivalence.
+    - From Section 8.2: [Q_8] and [D_4] are not isomorphic ([Q8_not_D4],
+      for [Q8_not_D4_stmt]), for any action of [Σ_2] (the hypothesis on
+      [C_4] is not used).  In [Q_8] every element of order [2] is a
+      square ([Q8_inv_square]: symmetries of the quaternion bicycle are
+      determined by their value at [k0], [ev_inj], with
+      [ev(g g) = sq(ev g)], [ev_sq], and [k0 ↦ k1] squares to the only
+      element of order [2]); in [Σ_2 ⋉ A], [(swap, 1)] has order [2] but
+      is not a square, since squares have first component [1]
+      ([D_inv_nonsquare]).  Iso groups are equal ([path_Group]).
 
     Left out (statements only)
     - Corollary [cor:whatSylow2needs].
@@ -40,7 +49,8 @@
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
   Types.Forall Types.Paths Truncations.Core
-  Spaces.Finite.Fin Spaces.Finite.Finite Spaces.Nat.Core Spaces.Nat.Division Colimits.Quotient.
+  Spaces.Finite.Fin Spaces.Finite.Finite Spaces.Nat.Core Spaces.Nat.Division Colimits.Quotient
+  Spaces.List.Core Spaces.Int.
 From SymmetryBook Require Export Subgroups.Subgroups.
 
 Local Open Scope uf_scope.
@@ -228,6 +238,168 @@ Proof.
   refine (cardF_eqv (USym_semidirect_eqv (SG 2) A) _ hS @ _).
   refine (card_sum_const hX hY (fun _ => USym (A (sh (SG 2)))) (fun _ => idEqv _) hS @ _).
   exact (ap011 mul SG2_card (cardF_fcard hY @ @fcard_equiv' _ _ (Equiv_of_Eqv eY) _ _)).
+Defined.
+
+(** The statement [Q8_not_D4_stmt] of Section 8.2 ([Q_8] and [D_4] are
+    not isomorphic), proved here since it uses [USym_SG_S_eqv] as above.
+    The invariant: every element of order [2] is a square.  This holds in
+    [Q_8], whose only element of order [2] sends [k0] to [k4], the square
+    of [k0 ↦ k1] ([Q8_inv_square]: symmetries are determined by their
+    value at [k0], [ev_inj], and [ev(g g) = sq(ev g)], [ev_sq]).  It
+    fails in [Σ_2 ⋉ A] for any action [A]: [(swap, 1)] has order [2] but
+    is not a square, as squares have first component [p p = 1]
+    ([D_inv_nonsquare]). *)
+Section Q8NotD4.
+
+  Context `{Univalence}.
+
+  Local Notation QB := QuaternionBicyc.
+
+  Definition toP (g : USym Q8) : QB = QB := fst (USym_AutG_eqv Bicyc_isGrpd QB) g.
+
+  Definition toE (g : USym Q8) : BicycEqv QB QB := path_to_BicycEqv (toP g).
+
+  Definition Wq (g : USym Q8) : Eight -> Eight := fst (fst (toE g)).
+
+  Definition evq (g : USym Q8) : Eight := Wq g k0.
+
+  Definition pBE_trans {B B' B'' : Bicyc} (P : B = B') (Q : B' = B'')
+    : fst (fst (path_to_BicycEqv (Q ⋅ P))) = fst (fst (path_to_BicycEqv Q)) ∘ fst (fst (path_to_BicycEqv P)).
+  Proof. destruct Q, P. exact refl. Defined.
+
+  Definition Wq_trans (g g' : USym Q8) : Wq (g' ⋅ g) = Wq g' ∘ Wq g
+    := ap (fun P => fst (fst (path_to_BicycEqv P))) (ap_trans (fun w => fst w) g g') @ pBE_trans _ _.
+
+  Definition ev_inj {g g' : USym Q8} (h : evq g = evq g') : g = g'.
+  Proof.
+    refine (Eqv_inj (USym_AutG_eqv Bicyc_isGrpd QB) _).
+    refine (Eqv_inj (path_to_BicycEqv; path_to_BicycEqv_isEquiv QB QB) _).
+    exact (BicycEqv_path _ _ (evisinj_bicycle (B := QB) (B' := QB) k0 (toE g) (toE g') h)).
+  Defined.
+
+  Definition lstq (x : Eight) : list (ℤ ⨿ ℤ)
+    := match x with
+       | k0 => nil
+       | k1 => cons (inl (iplus 1)) nil
+       | k2 => cons (inl (iplus 1)) (cons (inr (iplus 1)) nil)
+       | k3 => cons (inl (iplus 2)) (cons (inr (iplus 1)) nil)
+       | k4 => cons (inl (iplus 2)) nil
+       | k5 => cons (inl (iplus 3)) nil
+       | k6 => cons (inl (iplus 3)) (cons (inr (iplus 1)) nil)
+       | k7 => cons (inr (iplus 1)) nil
+       end.
+
+  Definition lstq_spec (x : Eight) : sem qaEqv qbEqv (lstq x) k0 = x.
+  Proof. destruct x; exact refl. Defined.
+
+  Definition sq (x : Eight) : Eight := sem qaEqv qbEqv (lstq x) x.
+
+  Definition ev_sq (g : USym Q8) : evq (g ⋅ g) = sq (evq g)
+    := ap (fun h => h k0) (Wq_trans g g) @ ap (Wq g) (lstq_spec (evq g))^
+       @ BicycEqv_sem (toE g) (lstq (evq g)) k0.
+
+  (** The symmetry [k0 ↦ k1]. *)
+  Definition e1 (k : Eight) : Eight
+    := match k with
+       | k0 => k1 | k1 => k4 | k2 => k7 | k3 => k2
+       | k4 => k5 | k5 => k0 | k6 => k3 | k7 => k6 end.
+
+  Definition e1' (k : Eight) : Eight
+    := match k with
+       | k1 => k0 | k4 => k1 | k7 => k2 | k2 => k3
+       | k5 => k4 | k0 => k5 | k3 => k6 | k6 => k7 end.
+
+  Definition e1Eqv : Eight ≃ Eight.
+  Proof. refine (mkEqv e1 e1' _ _); intros []; exact refl. Defined.
+
+  Definition E1 : BicycEqv QB QB.
+  Proof.
+    refine (e1Eqv; (ptw_inv (f := e1 ∘ qa) (g := qa ∘ e1) _; ptw_inv (f := e1 ∘ qb) (g := qb ∘ e1) _));
+      intros []; exact refl.
+  Defined.
+
+  Definition v1 : USym Q8 := eqinv (snd (USym_AutG_eqv Bicyc_isGrpd QB)) (BicycEqv_to_path E1).
+
+  Definition evq_v1 : evq v1 = k1.
+  Proof.
+    refine (ap (fun w : BicycEqv QB QB => fst (fst w) k0)
+              (ap path_to_BicycEqv (eqinv_r (snd (USym_AutG_eqv Bicyc_isGrpd QB)) _)
+               @ eqinv_r (path_to_BicycEqv_isEquiv QB QB) E1)).
+  Defined.
+
+  Definition eight_disc {k l : Eight} (h : k = l) : eight_eqb k l = true
+    := trp (fun l => eight_eqb k l = true) h (eight_eqb_refl k).
+
+  Definition Q8_inv_square (w : USym Q8) (ww : w ⋅ w = refl) (nw : w ≠ refl)
+    : {v : USym Q8 & v ⋅ v = w}.
+  Proof.
+    assert (hsq : sq (evq w) = k0) by exact ((ev_sq w)^ @ ap evq ww).
+    assert (hne : evq w ≠ k0) by exact (fun h => nw (ev_inj (g' := refl) h)).
+    assert (E : evq w = k4).
+    { revert hsq hne. generalize (evq w) as x. intros [] hsq hne;
+        first [ exact refl | destruct (hne refl)
+              | destruct (Bool.false_ne_true (eight_disc hsq)) ]. }
+    exists v1. apply ev_inj.
+    exact (ev_sq v1 @ ap sq evq_v1 @ E^).
+  Defined.
+
+  (** The symmetry [swap] of [Σ_2]. *)
+  Definition sw2 (x : Fin 2) : Fin 2
+    := match x with inl (inl e) => match e with end | inl (inr t) => inr t | inr t => inl (inr t) end.
+
+  Definition sw2Eqv : Fin 2 ≃ Fin 2.
+  Proof. refine (mkEqv sw2 sw2 _ _); intros [[[]|[]]|[]]; exact refl. Defined.
+
+  Definition USym_SG2_Eqv : USym (SG 2) ≃ (Fin 2 ≃ Fin 2)
+    := Eqv_comp (USym_SG_S_eqv (FinSetU 2)) (idtoeqv; ua _ _).
+
+  Definition s0 : USym (SG 2) := eqinv (snd USym_SG2_Eqv) sw2Eqv.
+
+  Definition s0_ne_refl : s0 ≠ refl.
+  Proof.
+    intro h.
+    pose (E := ap (fun e : Fin 2 ≃ Fin 2 => fst e (inr triv))
+                 ((eqinv_r (snd USym_SG2_Eqv) sw2Eqv)^ @ ap (fst USym_SG2_Eqv) h)).
+    exact (Bool.false_ne_true
+             (ap (fun x : Fin 2 => match x with inl _ => false | inr _ => true end) E)).
+  Defined.
+
+  Definition psa_refl' {X : Type} {Y : X -> Type} (f : forall x, Y x) {x x' : X} (p : x = x')
+    : psa f p refl = refl.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition D_inv_nonsquare (A : utype (BG (SG 2)) -> Group)
+    : {s : USym (Dihedral A) & (s ⋅ s = refl) × (s ≠ refl) × (forall g, g ⋅ g ≠ s)}.
+  Proof.
+    pose (eD := USym_semidirect_eqv (SG 2) A).
+    pose (s := eqinv (snd eD) ((s0; refl) : USym (SG 2) × USym (A (sh (SG 2))))).
+    assert (es : fst eD s = (s0; refl)) by exact (eqinv_r (snd eD) _).
+    exists s. refine ((_; _); _).
+    - apply (Eqv_inj eD).
+      refine (USym_semidirect_mult (SG 2) A s0 s0 refl refl @ _).
+      refine (ap011 (fun a b => (a; b) : USym (SG 2) × USym (A (sh (SG 2))))
+                (SG2_sq s0) (ap (fun x => x ⋅ refl) (psa_refl' (sd_sec_fun (SG 2) A) s0)) @ _).
+      exact refl.
+    - intro h. apply s0_ne_refl.
+      exact ((ap (fun w => fst w) es)^ @ ap (fun h => fst (fst eD h)) h).
+    - intros g e. apply s0_ne_refl.
+      refine ((ap (fun w => fst w) es)^ @ _).
+      refine ((ap (fun h => fst (fst eD h)) e)^ @ _).
+      refine ((ap (fun h => fst (fst eD (h ⋅ h))) (eqinv_l (snd eD) g))^ @ _).
+      refine (ap (fun w => fst w) (USym_semidirect_mult (SG 2) A _ _ _ _) @ _).
+      exact (SG2_sq _).
+  Defined.
+
+End Q8NotD4.
+
+Definition Q8_not_D4 `{ua : Univalence} : Q8_not_D4_stmt.
+Proof.
+  intros A _ [phi i].
+  pose (P := fun G : Group => forall w : USym G, w ⋅ w = refl -> w ≠ refl -> {v : USym G & v ⋅ v = w}).
+  pose (p := path_Group ((Bf phi; i) : BG Q8 ≃* BG (Dihedral A))).
+  destruct (D_inv_nonsquare A) as [s [[ss ns] nsq]].
+  destruct (trp P p Q8_inv_square s ss ns) as [v hv].
+  exact (nsq v hv).
 Defined.
 
 Definition cor_cyclicgroupsaresimple `{ua : Univalence} : cor_cyclicgroupsaresimple_stmt.
