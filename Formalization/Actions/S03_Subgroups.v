@@ -62,10 +62,15 @@
       Section 3.6).
     - Example [exa:fix1subSGn] ([exa_fix1subSGn], via [xca_n_is_ptd_eqv]
       and a transposition moving the base point).
+    - Example [exa:C3subC6] ([exa_C3subC6]): [F(X,t) :≡ X/2], with
+      [∑_{(X,t):Cyc_6} X/2 ≃ Cyc_3] from [thm:fiber-cdg] ([fiber_cdg])
+      and [lem:sum-of-fibers] ([tot_fib_rho] of Section 3.9).  The base
+      point of [F(sh)] is the image of [sh_{C_3}] under this equivalence
+      (the book's [[0]]; that it is [[0]] is not shown), which makes the
+      equivalence pointed; transitivity follows from connectedness.
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Examples [exa:C3subC6],
-      [exa:EforSG3], and exercises
+    - Example [exa:EforSG3], and exercises
       [xca:SG2subSG3] and [xca:C3subSG3] (the [..._stmt] definitions);
       where an example needs that a [G]-set is transitive, this is a
       hypothesis.
@@ -398,6 +403,53 @@ Definition xca_A_is_A_1_1 `{Univalence} : xca_A_is_A_1_1_stmt
 (** Example [exa:C3subC6]: [C_6] has a subgroup isomorphic to [C_3]. *)
 Definition exa_C3subC6_stmt `{Univalence} : Type
   := {S : SubGrp (CG 5) & Iso (subgrp_group S) (CG 2)}.
+
+(** The proof, as in the book: [F(X,t) :≡ X/2] on [BC_6 ≡ Cyc_6], and
+    [∑_{(X,t):Cyc_6} X/2 ≃ ∑_{(X,t):Cyc_6} ρ_2⁻¹(X,t) ≃ Cyc_3] by
+    [thm:fiber-cdg] ([fiber_cdg]; the condition [P] holds on [Cyc_6]) and
+    [lem:sum-of-fibers] ([tot_fib_rho], from Section 3.9).  The base point
+    of [F(sh)] is the image of [sh_{C_3}] (the book's [[0]]); this makes
+    the equivalence pointed, and also gives transitivity. *)
+Section C3subC6.
+
+  Context `{Univalence}.
+
+  Definition F26 : GSet (CG 5)
+    := fun w => (Xm 1 (fst (snd (fst w))); quot_isSet _).
+
+  Definition c36_tot : {d : Cycm 5 & Fib 1 (fst d)} ≃ Cycm 2
+    := tot_fib_rho 1 (Fincyc 2) (Fincyc 5)
+         (rho_back_comp 1 (Fincyc 2) (Fincyc 5) (Dfin 2) (Dfin 5) (Dfin_isProp 5)
+            (hFin 2) (hFin 5) (backfin 1 2))
+         (rho_comp 1 (Fincyc 2) (Fincyc 5) (rho_Fin_path 1 2)).
+
+  Definition c36_fib (d : Cycm 5) : Fib 1 (fst d) ≃ el F26 d
+    := Eqv_comp (fiber_cdg 1 (fst d))
+         (prod_prop_l_eqv (Pdiv_isProp 1 (fst d))
+            (Pdiv_comp 1 (Fincyc 5) (Dfin 5) (Dfin_isProp 5) (hFin 5) (pdfin 1 2) d)).
+
+  Definition c36_eqv : Cycm 2 ≃ TotG F26
+    := Eqv_comp (Eqv_inv c36_tot)
+         (tot (fun d => fst (c36_fib d)); tot_isEquiv _ (fun d => snd (c36_fib d))).
+
+  Definition c36_p : fst (fst c36_eqv (Fincyc 2; trunc refl)) = sh (CG 5)
+    := path_sigma_prop (fun _ => ptrunc_isProp)
+         (u := fst (fst c36_eqv (Fincyc 2; trunc refl))) (v := sh (CG 5)) (rho_Fin_path 1 2).
+
+  Definition c36_x0 : el F26 (sh (CG 5))
+    := act F26 c36_p (snd (fst c36_eqv (Fincyc 2; trunc refl))).
+
+  Definition C3subC6 : SubGrp (CG 5)
+    := (F26; (c36_x0; trans_of_conn F26 (isConn_Eqv c36_eqv (component_isConn _)))).
+
+  Definition c36_pEqv : BG (CG 2) ≃* BG (subgrp_group C3subC6)
+    := ((fst c36_eqv; (tot_path_act F26 c36_p (snd (fst c36_eqv (Fincyc 2; trunc refl))))⁻¹);
+        snd c36_eqv).
+
+  Definition exa_C3subC6 : exa_C3subC6_stmt
+    := (C3subC6; fst (path_Group_Iso_eqv _ _) (path_Group c36_pEqv)^).
+
+End C3subC6.
 
 (** Definition [def:decidable-subgroup]. *)
 Definition isDecSubGrp {G : Group} (S : SubGrp G) : Type := isDecSet (el (sg_X S) (sh G)).
