@@ -74,10 +74,13 @@
       the permutations fixing [π⁻¹(inr triv)]; conversely such a
       permutation, conjugated by [π], fixes [inr triv] and restricts to
       a permutation of [Fin 2] ([restrEqv]).
+    - Exercise [xca:C3subSG3] ([xca_C3subSG3], placed after [Mono_path]):
+      [j] forgets the cycle structure, [j' :≡ j ∘ ι] with [ι] induced by
+      inversion of cycles; [USymj] and [USymj'] send the generator to
+      [zs] and [zs⁻¹], and [ι] identifies [(C_3, j')] with [(C_3, j)].
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Example [exa:EforSG3], and exercise
-      [xca:C3subSG3] (the [..._stmt] definitions);
+    - Example [exa:EforSG3] (the [..._stmt] definition);
       where an example needs that a [G]-set is transitive, this is a
       hypothesis.
  *)
@@ -636,7 +639,7 @@ End SG2subSG3.
 Definition xca_SG2subSG3 `{Univalence} : xca_SG2subSG3_stmt
   := fun pp σ => xca_SG2subSG3_pp pp σ.
 
-(** Exercise [xca:C3subSG3]. *)
+(** Exercise [xca:C3subSG3] (proved after [Mono_path] below). *)
 Definition xca_C3subSG3_stmt `{Univalence} : Type
   := {j : Hom (CG 2) (SG 3) & {j' : Hom (CG 2) (SG 3) &
        {m : ismono j & {m' : ismono j' &
@@ -749,6 +752,206 @@ Proof.
   exact (ap (fun e0 : BG (mkgroup X) ≃* BG (mkgroup Y) => pcomp (Bf i') (fst e0))
             (path_Group_pEqv_path_Group X Y e) @ h).
 Defined.
+
+(** Exercise [xca:C3subSG3]: [Bj(X,t) :≡ X] (forgetting the cycle
+    structure) and [j' :≡ j ∘ ι], with [ι] induced by inversion
+    [(X,t) ↦ (X,t⁻¹)], pointed by [φ] swapping [1] and [2] in [Fin 3]
+    ([φ zs⁻¹ = zs φ]).  Both are monomorphisms since loops of [BC_3] are
+    determined by their permutations ([loopC3_inj]); [USymj] sends the
+    generator to [zs], and [USymj'] to [φ zs φ = zs⁻¹] ([j3_ne], evaluated
+    at [0]); [ι] identifies [(C_3, j')] with [(C_3, j)] by [Mono_path]. *)
+Section C3subSG3.
+
+  Context `{Univalence}.
+
+  (** The inverse [(X, t⁻¹)] of a cycle. *)
+  Definition eqinv_inv {X Y : Type} (e : X ≃ Y) (x : X) : eqinv (snd (Eqv_inv e)) x = fst e x
+    := ap (eqinv (snd (Eqv_inv e))) (eqinv_l (snd e) x)^ @ eqinv_l (snd (Eqv_inv e)) (fst e x).
+
+  Definition iter_ext {Y : Type} (f g : Y -> Y) (h : forall y, f y = g y) (n : ℕ) (y : Y)
+    : iter f n y = iter g n y.
+  Proof.
+    induction n as [|n IH].
+    - exact refl.
+    - exact (h _ @ ap g IH).
+  Defined.
+
+  Definition iterZ_inv_l {X : Type} (sX : isSet X) (t : X ≃ X) (z : ℤ) (y : X)
+    : iterZ (Eqv_inv t) z (iterZ t z y) = y.
+  Proof.
+    revert z. refine (ℤ_ind_prop _ (fun z => sX _ _) _ _).
+    - intro n. exact (iter_inv_l t n y).
+    - intros [n]. exact (iter_ext _ _ (eqinv_inv t) n _ @ iter_inv_r t n y).
+  Defined.
+
+  Definition cinv (C : Cyc) : Cyc
+    := (fst C; (Eqv_inv (ct C); (cne C; fun x x' =>
+          ptrunc_rec ptrunc_isProp
+            (fun w => trunc (fst w; (iterZ_inv_l (cX_isSet C) (ct C) (fst w) x')^
+                                    @ ap (iterZ (Eqv_inv (ct C)) (fst w)) (snd w)^))
+            (cconn C x' x)))).
+
+  Definition cinv_cinv (C : Cyc) : cinv (cinv C) = C
+    := cyc_path (cinv (cinv C)) C
+         (ap (fun f => (cX C; f) : Endo) (path_forall _ _ (eqinv_inv (ct C)))).
+
+  (** On [Fin 3], [φ] swapping [1] and [2] turns [zs⁻¹] into [zs]. *)
+  Definition zs3 : Fin 3 -> Fin 3 := fst (finsuccEqv 2).
+  Definition p30 : Fin 3 := inl (inl (inr triv)).
+  Definition p31 : Fin 3 := inl (inr triv).
+  Definition p32 : Fin 3 := inr triv.
+
+  Definition phi3 (x : Fin 3) : Fin 3
+    := match x with inl (inl _) => p30 | inl (inr _) => p32 | inr _ => p31 end.
+
+  Definition phi3_invol (x : Fin 3) : phi3 (phi3 x) = x.
+  Proof. destruct x as [[[[]|[]]|[]]|[]]; exact refl. Defined.
+
+  Definition phi3Eqv : Fin 3 ≃ Fin 3 := mkEqv phi3 phi3 phi3_invol phi3_invol.
+
+  Definition phi3_zs (y : Fin 3) : phi3 y = zs3 (phi3 (zs3 y)).
+  Proof. destruct y as [[[[]|[]]|[]]|[]]; exact refl. Defined.
+
+  Definition phi3_comm (x : Fin 3) : phi3 (eqinv (snd (finsuccEqv 2)) x) = zs3 (phi3 x)
+    := phi3_zs _ @ ap (fun y => zs3 (phi3 y)) (eqinv_r (snd (finsuccEqv 2)) x).
+
+  Definition cinv_path : cinv (Fincyc 2) = Fincyc 2
+    := cyc_path (cinv (Fincyc 2)) (Fincyc 2)
+         (endo_path phi3Eqv (path_forall _ _ phi3_comm)).
+
+  (** [ι : C_3 → C_3], induced by inversion. *)
+  Local Notation BC3 := (component Cyc (Fincyc 2)).
+
+  Definition cinvC (w : BC3) : BC3
+    := (cinv (fst w); ptrunc_rec ptrunc_isProp (fun p => trunc (cinv_path^ @ ap cinv p)) (snd w)).
+
+  Definition cinvC_invol (w : BC3) : cinvC (cinvC w) = w
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := cinvC (cinvC w)) (v := w) (cinv_cinv (fst w)).
+
+  Definition cinvC_pt : sh (CG 2) = cinvC (sh (CG 2))
+    := path_sigma_prop (fun _ => ptrunc_isProp) (u := sh (CG 2)) (v := cinvC (sh (CG 2))) cinv_path^.
+
+  Definition iotaC3 : Hom (CG 2) (CG 2) := mkhom ((cinvC; cinvC_pt) : BG (CG 2) →* BG (CG 2)).
+
+  (** [j] forgets the cycle structure, [j' :≡ j ∘ ι]. *)
+  Definition Bj3 (w : BC3) : component SetU (FinSetU 3)
+    := (fst (fst w); ptrunc_rec ptrunc_isProp (fun p => trunc (ap (fun c : Cyc => fst c) p)) (snd w)).
+
+  Definition j3 : Hom (CG 2) (SG 3) := mkhom ((Bj3; refl) : BG (CG 2) →* BG (SG 3)).
+
+  Definition j3' : Hom (CG 2) (SG 3) := compG j3 iotaC3.
+
+  (** Permutations of the carriers. *)
+  Local Notation cC := (fun w : BC3 => fst (fst (fst w))).
+  Local Notation cfst := (fun c : Cyc => fst (fst c)).
+  Local Notation c3 := (fun w : utype (BG (SG 3)) => fst (fst w)).
+
+  Definition Bj3_perm {A B : BC3} (p : A = B) (x : fst (fst (fst A)))
+    : ptoe (ap c3 (ap Bj3 p)) x = ptoe (ap cC p) x.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition Bj3i_perm {A B : BC3} (p : A = B) (x : fst (fst (fst A)))
+    : ptoe (ap c3 (ap (fun w => Bj3 (cinvC w)) p)) x = ptoe (ap cC p) x.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition fst_perm {A B : BC3} (p : A = B) (x : fst (fst (fst A)))
+    : ptoe (ap cfst (ap fst p)) x = ptoe (ap cC p) x.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition CycEqv_perm {C C' : Cyc} (p : C = C') (x : cX C)
+    : fst (fst (path_to_CycEqv p)) x = ptoe (ap cfst p) x.
+  Proof. destruct p. exact refl. Defined.
+
+  Definition ptoe_inv_invol {X : Type} (q : X = X) (f : X -> X) (hf : forall x, f (f x) = x)
+    (h : forall x, ptoe q x = f x) (x : X) : ptoe q⁻¹ x = f x
+    := ap (ptoe q⁻¹) (h (f x) @ hf x)^ @ ptoe_V_l q (f x).
+
+  (** Loops of [BC_3] are determined by their permutations. *)
+  Definition loopC3_inj (l l' : USym (CG 2))
+    (h : forall x, ptoe (ap cC l) x = ptoe (ap cC l') x) : l = l'.
+  Proof.
+    apply (ap_fst_cancel (fun _ => prop_is_set ptrunc_isProp)).
+    apply (isInj_cancel (isEquiv_isInj (path_to_CycEqv_isEquiv (Fincyc 2) (Fincyc 2)))).
+    apply CycEqv_path. apply path_forall. intro x.
+    exact (CycEqv_perm _ x @ fst_perm l x @ h x @ (fst_perm l' x)^ @ (CycEqv_perm _ x)^).
+  Defined.
+
+  Definition permj3 (l : USym (CG 2)) (x : Fin 3)
+    : ptoe (ap c3 (USymf j3 l)) x = ptoe (ap cC l) x
+    := ap (fun q : USym (SG 3) => ptoe (ap c3 q) x) (trans_1p _ : USymf j3 l = ap Bj3 l) @ Bj3_perm l x.
+
+  Local Notation Q := (ap Bj3 cinvC_pt ⋅ refl).
+
+  Definition permj3' (l : USym (CG 2)) (x : Fin 3)
+    : ptoe (ap c3 (USymf j3' l)) x = ptoe (ap c3 Q)⁻¹ (ptoe (ap cC l) (ptoe (ap c3 Q) x))
+    := ptoe_ap_trans c3 (ap (fun w => Bj3 (cinvC w)) l ⋅ Q) Q⁻¹ x @ ptoe_ap_V c3 Q _
+       @ ap (ptoe (ap c3 Q)⁻¹)
+            (ptoe_ap_trans c3 Q (ap (fun w => Bj3 (cinvC w)) l) x @ Bj3i_perm l _).
+
+  Definition ptoe_endo_path {X Y : Type} {t : X -> X} {u : Y -> Y} (e : X ≃ Y)
+    (h : fst e ∘ t = u ∘ fst e) (x : X)
+    : ptoe (ap (fun w : Endo => fst w) (endo_path e h)) x = fst e x.
+  Proof.
+    unfold endo_path.
+    refine (ap (fun q => ptoe q x) (ap_fst_pathpair (Y := fun X : Type => X -> X) _ _) @ _).
+    exact (ap (fun e' : X ≃ Y => fst e' x) (ptoe_etop e)).
+  Defined.
+
+  Definition ptoe_cinv_path (x : Fin 3) : ptoe (ap cfst cinv_path) x = phi3 x
+    := ap (fun q => ptoe q x)
+          (ap_carrier_cyc_path (cinv (Fincyc 2)) (Fincyc 2)
+             (endo_path phi3Eqv (path_forall _ _ phi3_comm)))
+       @ ptoe_endo_path phi3Eqv _ x.
+
+  Definition ptQ (x : Fin 3) : ptoe (ap c3 Q) x = phi3 x.
+  Proof.
+    refine (ptoe_ap_trans c3 refl (ap Bj3 cinvC_pt) x @ Bj3_perm cinvC_pt x @ _).
+    refine (ap (fun q => ptoe q x) (ap_compose fst cfst cinvC_pt) @ _).
+    refine (ap (fun q : Fincyc 2 = cinv (Fincyc 2) => ptoe (ap cfst q) x)
+              (@ap_fst_sigma_prop _ (fun c => ptrunc (Fincyc 2 = c)) (fun _ => ptrunc_isProp)
+                 (sh (CG 2)) (cinvC (sh (CG 2))) cinv_path^) @ _).
+    refine (ptoe_ap_V cfst cinv_path x @ _).
+    exact (ptoe_inv_invol _ phi3 phi3_invol ptoe_cinv_path x).
+  Defined.
+
+  Definition ptQi (x : Fin 3) : ptoe (ap c3 Q)⁻¹ x = phi3 x
+    := ptoe_inv_invol _ phi3 phi3_invol ptQ x.
+
+  Definition j3_ismono : ismono j3
+    := cancel_isInj (USym_isSet _) (fun l l' e => loopC3_inj l l' (fun x =>
+         (permj3 l x)^ @ ap (fun q : USym (SG 3) => ptoe (ap c3 q) x) e @ permj3 l' x)).
+
+  Definition j3'_ismono : ismono j3'.
+  Proof.
+    refine (cancel_isInj (USym_isSet _) (fun l l' e => loopC3_inj l l' (fun y => _))).
+    pose (E := fun x => (permj3' l x)^ @ ap (fun q : USym (SG 3) => ptoe (ap c3 q) x) e @ permj3' l' x).
+    exact (ap (ptoe (ap cC l)) (ptoe_V_r (ap c3 Q) y)^
+           @ (ptoe_V_r (ap c3 Q) _)^ @ ap (ptoe (ap c3 Q)) (E (ptoe (ap c3 Q)⁻¹ y))
+           @ ptoe_V_r (ap c3 Q) _ @ ap (ptoe (ap cC l')) (ptoe_V_r (ap c3 Q) y)).
+  Defined.
+
+  Definition gen3 (x : Fin 3) : ptoe (ap cC (CG_gen 2)) x = zs3 x
+    := ap (fun q => ptoe q x) (ap_carrier_CG_gen 2)
+       @ ap (fun e : Fin 3 ≃ Fin 3 => fst e x) (ptoe_etop (finsuccEqv 2)).
+
+  Definition j3_ne : USymf j3 ≠ USymf j3'.
+  Proof.
+    intro e.
+    pose (a := permj3 (CG_gen 2) p30 @ gen3 p30 : ptoe (ap c3 (USymf j3 (CG_gen 2))) p30 = p31).
+    pose (b := permj3' (CG_gen 2) p30 @ ap (ptoe (ap c3 Q)⁻¹) (ap (ptoe (ap cC (CG_gen 2))) (ptQ p30)
+               @ gen3 _) @ ptQi _ : ptoe (ap c3 (USymf j3' (CG_gen 2))) p30 = p32).
+    exact (inl_ne_inr _ _ (a^ @ ap (fun f : USym (CG 2) -> USym (SG 3) => ptoe (ap c3 (f (CG_gen 2))) p30) e @ b)).
+  Defined.
+
+  Definition iotaC3_pEqv : BG (CG 2) ≃* BG (CG 2)
+    := (Bf iotaC3; iso_to_isEquiv cinvC cinvC cinvC_invol cinvC_invol).
+
+  Definition xca_C3subSG3 : xca_C3subSG3_stmt
+    := (j3; (j3'; (j3_ismono; (j3'_ismono; (j3_ne;
+         (Mono_path ((CG 2; (j3'; j3'_ismono)) : Mono (SG 3)) (CG 2; (j3; j3_ismono))
+            iotaC3_pEqv refl)^))))).
+
+End C3subSG3.
 
 (** Example [exa:EforSG3]: [F] sends the standard [Σ_3]-set, pointed at
     the added element, to [(Σ_2, i_3)] (with [π :≡ refl]). *)
