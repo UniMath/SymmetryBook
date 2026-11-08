@@ -78,11 +78,13 @@
       [j] forgets the cycle structure, [j' :≡ j ∘ ι] with [ι] induced by
       inversion of cycles; [USymj] and [USymj'] send the generator to
       [zs] and [zs⁻¹], and [ι] identifies [(C_3, j')] with [(C_3, j)].
+    - Example [exa:EforSG3] ([exa_EforSG3], with the transitivity of the
+      standard [Σ_3]-set as a hypothesis): [B ↦ (B ⨿ 𝟙, inr tt)] is a
+      pointed equivalence [BΣ_2 ≃ ∑_A A] (from [xca:n-is-ptd-n+1]) whose
+      composite with [fst] is [Bi_3], so [F(X, inr tt) = (Σ_2, i_3)] in
+      [Mono(Σ_3)] by [Mono_path].
 
-    Left out (statements only, no proofs yet; time limit per result)
-    - Example [exa:EforSG3] (the [..._stmt] definition);
-      where an example needs that a [G]-set is transitive, this is a
-      hypothesis.
+    Nothing in this section is left out.
  *)
 
 From HoTT Require Import
@@ -960,6 +962,53 @@ Definition exa_EforSG3_stmt `{Univalence} : Type
        subgrp_to_mono (((fun A : utype (BG (SG_S X3)) => fst A); (inr triv; t))
                        : SubGrp (SG_S X3))
        = ((SG 2; (i3 refl; m)) : Mono (SG_S X3)).
+
+(** The proof: [B ↦ (B ⨿ 𝟙, inr tt)] is an equivalence [BΣ_2 ≃ ∑_A A]
+    ([plus_pt_isEquiv], from exercise [xca:n-is-ptd-n+1] up to the
+    truncated components), pointed by [refl]; followed by [fst] it is
+    [Bi_3] on the nose, so [Mono_path] applies with [refl]. *)
+Section EforSG3.
+
+  Context `{Univalence}.
+
+  Definition X3set : GSet (SG_S X3) := fun A => fst A.
+
+  Local Notation k3 := (comp_map (FinSetU 2) (sumSetU T1)).
+
+  (** [B ↦ (B ⨿ 𝟙, inr tt)], an equivalence by [xca:n-is-ptd-n+1]. *)
+  Definition plus_pt (B : utype (BG (SG 2))) : TotG X3set := (k3 B; inr tt).
+
+  Definition FS3_tot_eqv : {X : FinSet_n 3 & fst (fst X)} ≃ TotG X3set
+    := mkEqv (fun w : {X : FinSet_n 3 & fst (fst X)} => (((fst (fst w); Trunc_functor (-1)
+                           (fun e => path_sigma_prop (fun Y => isSet_isProp Y)
+                                       (u := X3) (v := fst (fst w)) e) (snd (fst w)))
+                         : utype (BG (SG_S X3))); snd w) : TotG X3set)
+             (fun v : TotG X3set => (((fst (fst v); Trunc_functor (-1) (ap fst) (snd (fst v))) : FinSet_n 3);
+                        snd v))
+             (fun w : {X : FinSet_n 3 & fst (fst X)} => ap (fun z => ((fst (fst w); z) : FinSet_n 3; snd w)) (ptrunc_isProp _ _))
+             (fun v : TotG X3set => ap (fun z => ((fst (fst v); z) : utype (BG (SG_S X3)); snd v)) (ptrunc_isProp _ _)).
+
+  Definition plus_pt_comp : utype (BG (SG 2)) ≃ TotG X3set
+    := Eqv_comp (Eqv_inv (FinSet_BSG_eqv 2)) (Eqv_comp (xca_n_is_ptd_eqv 2) FS3_tot_eqv).
+
+  Definition plus_pt_htpy (B : utype (BG (SG 2))) : plus_pt B = fst plus_pt_comp B
+    := ap (fun z => ((sumSetU T1 (fst B); z) : utype (BG (SG_S X3)); inr tt) : TotG X3set)
+          (ptrunc_isProp _ _).
+
+  Definition plus_pt_isEquiv : isEquiv plus_pt
+    := iso_to_isEquiv plus_pt (eqinv (snd plus_pt_comp))
+         (fun B => ap (eqinv (snd plus_pt_comp)) (plus_pt_htpy B) @ eqinv_l (snd plus_pt_comp) B)
+         (fun w => plus_pt_htpy _ @ eqinv_r (snd plus_pt_comp) w).
+
+  Definition exa_EforSG3 : exa_EforSG3_stmt.
+  Proof.
+    intros t m.
+    refine (Mono_path ((SG 2; (i3 refl; m)) : Mono (SG_S X3))
+              (subgrp_to_mono ((X3set; (inr triv; t)) : SubGrp (SG_S X3)))
+              ((plus_pt; refl); plus_pt_isEquiv) refl)^.
+  Defined.
+
+End EforSG3.
 
 (** Lemma [lem:SubG=MonoG] with exercise [xca:SubG=MonoG], and corollary
     [lem:setofsubgroups] (proved in Section 9.2: [lem_SubG_MonoG],
