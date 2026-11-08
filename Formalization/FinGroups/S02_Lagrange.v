@@ -39,6 +39,11 @@
       element of order [2]); in [Σ_2 ⋉ A], [(swap, 1)] has order [2] but
       is not a square, since squares have first component [1]
       ([D_inv_nonsquare]).  Iso groups are equal ([path_Group]).
+    - From Section 5.7: Fermat's Little Theorem ([fermat_little], for
+      [fermat_little_stmt]), by the book's proof: [C_p] acting on the
+      colorings [Fin p → Fin n]; a coloring fixed by a non-trivial
+      symmetry is constant ([fl_fix_const], by
+      [cor_cyclicgroupsaresimple] for its orbit); then [burnside].
 
     Left out (statements only)
     - Corollary [cor:whatSylow2needs].
@@ -48,7 +53,7 @@
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core
+  Types.Forall Types.Paths Types.Sum Types.Unit Truncations.Core
   Spaces.Finite.Fin Spaces.Finite.Finite Spaces.Nat.Core Spaces.Nat.Division Colimits.Quotient
   Spaces.List.Core Spaces.Int.
 From SymmetryBook Require Export Subgroups.Subgroups.
@@ -412,6 +417,175 @@ Proof.
   - left. exact (@fcard_one_contr _ _ FH e).
   - right. exact (snd (Lagrangeascounting_full (CG k) Sg FG d) e).
 Defined.
+
+(** Fermat's Little Theorem, stated in Section 5.7 ([fermat_little_stmt])
+    and proved here, since the book's proof uses
+    [cor_cyclicgroupsaresimple] (via [xca:lagrange]).  [C_p] ([CG k],
+    [p = k+1]) acts on the colorings [X(S, t) :≡ (S → n)] ([flX]).  A
+    coloring fixed by a symmetry [g ≠ refl] is constant ([fl_fix_const]):
+    its orbit, as a subgroup ([orbit_subgrp]), is decidable; by
+    [cor_cyclicgroupsaresimple] either its symmetries, the stabilizer
+    ([X0_loops_eqv]), are trivial, contradicting [g], or the orbit is a
+    point, so the generator [zs] fixes the coloring, which is then
+    constant since [(Fin p, zs)] is a cycle.  Splitting [∑_g X^g] by
+    [g = refl] gives [n^p + (p-1) n] ([fl_sum_card]), and [burnside]
+    gives [Card(X/C_p) · p]. *)
+Section Fermat.
+
+  Context `{Univalence} (k n : ℕ) (P : IsPrime (S k)).
+
+  Local Notation G := (CG k).
+
+  Definition fl_car (c : utype (BG G)) : Type := fst (fst (fst c)).
+
+  (** The [C_p]-set of colorings [X(S, t) :≡ (S → n)]. *)
+  Definition flX : GSet G
+    := fun c => ((fl_car c -> Fin n); Pi_isSet (fun _ => Fin_isSet n)).
+
+  Local Notation S0 := (Fin (S k) -> Fin n).
+
+  Definition flFG : Finite (USym G) := CG_Finite k.
+  Definition flFX : Finite S0 := _.
+
+  Definition fl_act (g : USym G) (f : S0) (x : Fin (S k))
+    : act flX g f x = f (trp fl_car g⁻¹ x)
+    := trp_dom fl_car (Fin n) g f x.
+
+  Definition fl_ptoe_etop {X Y : Type} (e : X ≃ Y) (x : X) : ptoe (etop e) x = fst e x
+    := ap (fun e' : X ≃ Y => fst e' x) (ptoe_etop e).
+
+  Definition fl_trp_gen (x : Fin (S k)) : trp fl_car (CG_gen k) x = fst (finsuccEqv k) x.
+  Proof.
+    refine ((ptoe_ap fl_car (CG_gen k) x)^ @ _).
+    refine (ap (fun q : Fin (S k) = Fin (S k) => ptoe q x) (ap_carrier_CG_gen k) @ _).
+    exact (fl_ptoe_etop (finsuccEqv k) x).
+  Defined.
+
+  Definition fl_const_fix (g : USym G) (c : Fin n) : act flX g (fun _ => c) = (fun _ => c)
+    := path_forall _ _ (fun x => fl_act g _ x).
+
+  (** Invariance under [t] gives invariance under its powers. *)
+  Definition fl_tpow_inv {X : Type} (t : X ≃ X) (f : X -> Fin n)
+    (hf : forall x, f (fst t x) = f x) (m : ℤ) (x : X) : f (tpow t m x) = f x.
+  Proof.
+    revert m. refine (ℤ_ind_prop _ (fun _ => Fin_isSet n _ _) _ _).
+    - intro j. induction j as [|j IH]; [exact refl | exact (hf _ @ IH)].
+    - intros [j]. induction j as [|j IH]; [exact refl | ].
+      exact ((hf _)^ @ ap f (eqinv_r (snd t) _) @ IH).
+  Defined.
+
+  Definition fl_pt : Fin (S k) := inr tt.
+
+  (** A coloring fixed by a non-trivial symmetry is constant: its
+      stabilizer is a subgroup of [C_p] with two elements, so it is all of
+      [C_p] by [cor_cyclicgroupsaresimple], and the generator fixes it. *)
+  Definition fl_fix_const (g : USym G) (ng : g ≠ refl) (f : S0) (hf : act flX g f = f)
+    (x : Fin (S k)) : f x = f fl_pt.
+  Proof.
+    pose (Sg := orbit_subgrp flX f).
+    pose (d := finset_isDecSet (Finite_isFinSet (X0_Finite flX flFG flFX f))).
+    destruct (cor_cyclicgroupsaresimple k P Sg d) as [c|c].
+    - destruct ng.
+      pose (L := X0_loops_eqv flX f f (trunc refl)).
+      exact (ap fst ((eqinv_r (snd L) (g; hf))^ @ ap (fst L) (isContr_isProp' c _ _)
+                     @ eqinv_r (snd L) (refl; refl))).
+    - assert (hg : forall y, f (fst (finsuccEqv k) y) = f y).
+      { intro y.
+        pose (u := act (sg_X Sg) (CG_gen k)⁻¹ (sg_pt Sg)).
+        refine (_ @ ap (fun h : S0 => h y) ((act_sub_fst flX _ (CG_gen k)⁻¹ (sg_pt Sg))^ @ ap fst (isContr_isProp' c u (sg_pt Sg)))).
+        refine (_ @ (fl_act (CG_gen k)⁻¹ f y)^).
+        exact (ap f ((fl_trp_gen y)^ @ ap (fun q : sh G = sh G => trp fl_car q y) (symm_symm (CG_gen k))^)). }
+      refine (ptrunc_rec (Fin_isSet n _ _) _ (snd (snd (snd (Fincyc k))) fl_pt x)).
+      intros [m e]. exact (ap f e @ fl_tpow_inv (finsuccEqv k) f hg m fl_pt).
+  Defined.
+
+  (** Counting. *)
+  #[local] Instance flFG' : Finite (USym G) := flFG.
+  #[local] Instance flU_hset : IsHSet (USym G) := isSet_IsHSet (USym_isSet G).
+  #[local] Instance flS0_hset : IsHSet S0 := isSet_IsHSet (Pi_isSet (fun _ => Fin_isSet n)).
+
+  Local Notation NT := {g : USym G & ~ (g = refl)}.
+
+  Definition fl_split : USym G <~> {g : USym G & g = refl} + NT
+    := equiv_decidable_sum (fun g : USym G => g = refl).
+
+  Definition fl_c1 : fcard (USym G) = S k := refl.
+
+  Local Notation R1 := {g : USym G & g = refl}.
+
+  Definition flR1_fin : Finite R1 := finite_contr R1.
+  Definition flNT_fin : Finite NT := _.
+
+  Definition fl_c2 : fcard (USym G) = @fcard _ (@finite_sum R1 NT flR1_fin flNT_fin)
+    := @fcard_equiv' _ _ fl_split flFG' (@finite_sum R1 NT flR1_fin flNT_fin).
+  Definition fl_c3 : @fcard _ flR1_fin = 1%nat
+    := @fcard_equiv' _ _ (equiv_contr_unit (A := R1)) flR1_fin _.
+  Definition fl_c4 : (S k = S (@fcard _ flNT_fin))
+    := (fl_c1 : fcard (USym G) = S k)^ @ fl_c2 @ @fcard_sum R1 NT flR1_fin flNT_fin
+       @ ap (fun m => (m + @fcard _ flNT_fin)%nat) fl_c3.
+  Definition fl_S_inj {a b : ℕ} (e : S a = S b) : a = b := ap nat_pred e.
+
+  Definition fl_NT_card : @fcard _ flNT_fin = k := (fl_S_inj fl_c4)^.
+
+  Definition fl_fix_isProp (g : USym G) (f : S0) : IsHProp (act flX g f = f)
+    := isProp_IsHProp (Pi_isSet (fun _ => Fin_isSet n) _ _).
+
+  Local Notation XF := {g : USym G & Xfix flX g}.
+
+  Definition flXA : {w : XF & fst w = refl} <~> S0.
+  Proof.
+    refine (equiv_adjointify (fun w => fst (snd (fst w)))
+              (fun f => ((refl; (f; refl)); refl)) (fun _ => refl) _).
+    intros [[g [f h]] e]. change (g = refl) in e. revert h. revert g e. refine (paths_ind_r _ _ _). intro h.
+    exact (ap (fun h' : f = f => (((refl; (f; h')); refl) : {w : XF & fst w = refl}))
+              (Pi_isSet (fun _ => Fin_isSet n) _ _ refl h)).
+  Defined.
+
+  Definition flXB : {w : XF & ~ (fst w = refl)} <~> NT * Fin n.
+  Proof.
+    refine (equiv_adjointify (fun w : {w : XF & ~ (fst w = refl)} => (((fst (fst w); snd w) : NT), fst (snd (fst w)) fl_pt))
+              (fun u : NT * Fin n =>
+                 ((fst (Overture.fst u); ((fun _ => Overture.snd u);
+                    fl_const_fix (fst (Overture.fst u)) (Overture.snd u))) : XF;
+                  snd (Overture.fst u))) (fun _ => refl) _).
+    intros [[g [f h]] ne].
+    refine (ap (fun u : Xfix flX g => (((g; u) : XF); ne) : {w : XF & ~ (fst w = refl)}) _).
+    refine (@path_sigma_hprop _ _ (fl_fix_isProp g) (_; _) (f; h) _).
+    exact (path_forall _ _ (fun x => (fl_fix_const g ne f h x)^)).
+  Defined.
+
+  Definition fl_Xfix_eqv : XF <~> S0 + (NT * Fin n)
+    := equiv_functor_sum' flXA flXB
+       oE equiv_decidable_sum (fun w : XF => fst w = refl).
+
+  (** [Card(∑_g X^g) = n^p + (p-1) n]. *)
+  Definition fl_sum_card
+    : @fcard _ (sumXfix_Finite flX flFG flFX) = (nat_pow n (S k) + k * n)%nat.
+  Proof.
+    refine (@fcard_equiv' _ _ fl_Xfix_eqv _ (@finite_sum S0 (NT * Fin n) flFX (@finite_prod NT (Fin n) flNT_fin _)) @ _).
+    refine (@fcard_sum S0 (NT * Fin n) flFX (@finite_prod NT (Fin n) flNT_fin _) @ _).
+    refine (ap011 nat_add (@fcard_arrow _ (Fin (S k)) (Fin n) _ _) (@fcard_prod NT (Fin n) flNT_fin _ @ _)).
+    exact (ap (fun m => (m * n)%nat) fl_NT_card).
+  Defined.
+
+End Fermat.
+
+(** Fermat's Little Theorem: Burnside's lemma gives
+    [n^p + (p-1) n = Card(X/C_p) · p]. *)
+Definition fermat_little `{Univalence} : fermat_little_stmt.
+Proof.
+  intros p n P. destruct p as [|k].
+  - destruct (not_lt_zero_r 1 (gt_one_isprime (n := 0))).
+  - pose (O := @fcard _ (Orbits_Finite (flX k n) (flFG k) (flFX k n))).
+    pose (B := (fl_sum_card k n P)^ @ burnside (flX k n) (flFG k) (flFX k n)
+               : (nat_pow n (S k) + k * n = O * S k)%nat).
+    refine (trp (fun m => NatDivides (S k) m) _ (nat_divides_sub (S k) (O * S k) (S k * n) _ _)).
+    refine (ap (fun m => (m - S k * n)%nat) B^ @ _).
+    refine (ap (fun m => (nat_pow n (S k) + k * n - m)%nat) (nat_mul_succ_l k n @ nat_add_comm _ _) @ _).
+    refine (nat_sub_r_add _ _ _ @ _).
+    exact (ap (fun m => (m - n)%nat) (nat_add_sub_cancel_r _ _)).
+Defined.
+
 
 (** Corollary [cor:whatSylow2needs] (statement only): [H] is a subgroup of
     the kernel [N]; surjectivity of [f] is surjectivity on symmetries. *)

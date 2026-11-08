@@ -27,11 +27,12 @@
       [CG_gen 3] acts as [zs] ([trp_gen]); the orbits are counted with
       [orbits_by] (Section 5.4) and a classifier [c4] of the [16]
       sequences, moving each sequence to a representative ([to_rep]).
-
-    Left out (statements only, no proofs yet; time limit per result)
     - Fermat's Little Theorem ([fermat_little_stmt], with the library's
-      [IsPrime] and [NatDivides]); it needs the action of [C_p] on
-      [Fin p → Fin n] for a general prime [p].
+      [IsPrime] and [NatDivides]); proved as [fermat_little] in Section
+      10.2 ([FinGroups/S02_Lagrange.v]), since the book's proof uses
+      corollary [cor:cyclicgroupsaresimple].
+
+    Nothing in this section is left out.
  *)
 
 From HoTT Require Import
@@ -456,6 +457,6 @@ Section Burnside.
 
 End Burnside.
 
-(** Fermat's Little Theorem (statement only). *)
+(** Fermat's Little Theorem (proved in Section 10.2 as [fermat_little]). *)
 Definition fermat_little_stmt : Type
   := forall p n : ℕ, IsPrime p -> NatDivides p (nat_pow n p - n)%nat.
