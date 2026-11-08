@@ -68,10 +68,16 @@
       point of [F(sh)] is the image of [sh_{C_3}] under this equivalence
       (the book's [[0]]; that it is [[0]] is not shown), which makes the
       equivalence pointed; transitivity follows from connectedness.
+    - Exercise [xca:SG2subSG3] ([xca_SG2subSG3]), for all pointing paths
+      at once: with [π] the permutation of the pointing path, [USymi_3]
+      maps [l] to [π⁻¹ (l ⨿ id) π] ([i3_conj]), so its image consists of
+      the permutations fixing [π⁻¹(inr triv)]; conversely such a
+      permutation, conjugated by [π], fixes [inr triv] and restricts to
+      a permutation of [Fin 2] ([restrEqv]).
 
     Left out (statements only, no proofs yet; time limit per result)
-    - Example [exa:EforSG3], and exercises
-      [xca:SG2subSG3] and [xca:C3subSG3] (the [..._stmt] definitions);
+    - Example [exa:EforSG3], and exercise
+      [xca:C3subSG3] (the [..._stmt] definitions);
       where an example needs that a [G]-set is transitive, this is a
       hypothesis.
  *)
@@ -519,6 +525,116 @@ Definition xca_SG2subSG3_stmt `{Univalence} : Type
        let xpp := ptoe (ap (fun w : utype (BG (SG_S X3)) => fst (fst w)) pp)⁻¹ (inr triv) in
        ptrunc (fiber (USymf (i3 pp)) σ)
        <-> (ptoe (ap (fun w : utype (BG (SG_S X3)) => fst (fst w)) σ) xpp = xpp).
+
+Section SG2subSG3.
+
+  Context `{Univalence}.
+
+  Local Notation c3 := (fun w : utype (BG (SG_S X3)) => fst (fst w)).
+  Local Notation c2 := (fun w : utype (BG (SG 2)) => fst (fst w)).
+  Local Notation k3 := (comp_map (FinSetU 2) (sumSetU T1)).
+
+  Definition ptoe_V_r {X Y : Type} (q : X = Y) (y : Y) : ptoe q (ptoe q⁻¹ y) = y.
+  Proof. destruct q. exact refl. Defined.
+
+  Definition ptoe_V_l {X Y : Type} (q : X = Y) (x : X) : ptoe q⁻¹ (ptoe q x) = x.
+  Proof. destruct q. exact refl. Defined.
+
+  Definition ptoe_ap_V {A : Type} (f : A -> Type) {a b : A} (q : a = b) (y : f b)
+    : ptoe (ap f q⁻¹) y = ptoe (ap f q)⁻¹ y.
+  Proof. destruct q. exact refl. Defined.
+
+  Definition SGS_perm_ptoe {S : SetU} {A B : utype (BG (SG_S S))} (p : A = B) (x : fst (fst A))
+    : fst (SGS_perm p) x = ptoe (ap (fun w : utype (BG (SG_S S)) => fst (fst w)) p) x.
+  Proof. destruct p. exact refl. Defined.
+
+  (** [l ⨿ id] on the carriers. *)
+  Definition k3_inl {A B : utype (BG (SG 2))} (p : A = B) (a : fst (fst A))
+    : ptoe (ap c3 (ap k3 p)) (inl a) = inl (ptoe (ap c2 p) a).
+  Proof. destruct p. exact refl. Defined.
+
+  Definition k3_inr {A B : utype (BG (SG 2))} (p : A = B) (t : True)
+    : ptoe (ap c3 (ap k3 p)) (inr t) = inr t.
+  Proof. destruct p. exact refl. Defined.
+
+  Context (pp : sh (SG_S X3) = k3 (sh (SG 2))).
+
+  Definition i3_conj (l : USym (SG 2)) (x : Fin 2 ⨿ True)
+    : ptoe (ap c3 (USymf (i3 pp) l)) x
+      = ptoe (ap c3 pp)⁻¹ (ptoe (ap c3 (ap k3 l)) (ptoe (ap c3 pp) x))
+    := ptoe_ap_trans c3 (ap k3 l ⋅ pp) pp⁻¹ x @ ptoe_ap_V c3 pp _
+       @ ap (ptoe (ap c3 pp)⁻¹) (ptoe_ap_trans c3 pp (ap k3 l) x).
+
+  (** A permutation of [A ⨿ 𝟙] fixing [inr triv] restricts to [A]. *)
+  Definition restr {A : Type} (f : A ⨿ True -> A ⨿ True) (a : A) : A
+    := match f (inl a) with inl b => b | inr _ => a end.
+
+  Definition restr_eq {A : Type} (f g : A ⨿ True -> A ⨿ True) (gf : forall y, g (f y) = y)
+    (fr : f (inr triv) = inr triv) (a : A) : f (inl a) = inl (restr f a).
+  Proof.
+    unfold restr. remember (f (inl a)) as s eqn:es. destruct s as [b | t].
+    - exact refl.
+    - destruct t. destruct (inl_ne_inr a triv ((gf (inl a))^ @ ap g es @ ap g fr^ @ gf _)).
+  Defined.
+
+  Definition inl_cancel {A B : Type} {a a' : A} (e : (inl a : A ⨿ B) = inl a') : a = a'
+    := ap (fun s => match s with inl b => b | inr _ => a end) e.
+
+  Definition restrEqv {A : Type} (f g : A ⨿ True -> A ⨿ True)
+    (gf : forall y, g (f y) = y) (fg : forall y, f (g y) = y)
+    (fr : f (inr triv) = inr triv) (gr : g (inr triv) = inr triv) : A ≃ A
+    := mkEqv (restr f) (restr g)
+         (fun a => inl_cancel ((restr_eq g f fg gr _)^ @ ap g (restr_eq f g gf fr a)^ @ gf _))
+         (fun a => inl_cancel ((restr_eq f g gf fr _)^ @ ap f (restr_eq g f fg gr a)^ @ fg _)).
+
+  (** The exercise for the pointing path [pp]: [USymi_3(l)] acts as
+      [π⁻¹ ∘ (l ⨿ id) ∘ π] ([i3_conj]), with [π] the permutation of [pp];
+      conversely, [π σ π⁻¹] fixes [inr triv] and restricts to [Fin 2]. *)
+  Definition xca_SG2subSG3_pp (σ : USym (SG_S X3))
+    : let xpp := ptoe (ap c3 pp)⁻¹ (inr triv) in
+      ptrunc (fiber (USymf (i3 pp)) σ) <-> (ptoe (ap c3 σ) xpp = xpp).
+  Proof.
+    intro xpp. split.
+    - refine (ptrunc_rec (snd X3 _ _) _). intros [l e].
+      refine (ap (fun s => ptoe (ap c3 s) xpp) e @ i3_conj l xpp @ _).
+      refine (ap (fun y => ptoe (ap c3 pp)⁻¹ (ptoe (ap c3 (ap k3 l)) y))
+                 (ptoe_V_r (ap c3 pp) (inr triv)) @ _).
+      exact (ap (ptoe (ap c3 pp)⁻¹) (k3_inr l triv)).
+    - intro h.
+      pose (P := ap c3 pp). pose (Sg := ap c3 σ).
+      pose (f := fun y => ptoe P (ptoe Sg (ptoe P⁻¹ y))).
+      pose (g := fun y => ptoe P (ptoe Sg⁻¹ (ptoe P⁻¹ y))).
+      assert (gf : forall y, g (f y) = y).
+      { intro y. unfold f, g.
+        exact (ap (fun z => ptoe P (ptoe Sg⁻¹ z)) (ptoe_V_l P _)
+               @ ap (ptoe P) (ptoe_V_l Sg _) @ ptoe_V_r P y). }
+      assert (fg : forall y, f (g y) = y).
+      { intro y. unfold f, g.
+        exact (ap (fun z => ptoe P (ptoe Sg z)) (ptoe_V_l P _)
+               @ ap (ptoe P) (ptoe_V_r Sg _) @ ptoe_V_r P y). }
+      assert (fr : f (inr triv) = inr triv).
+      { exact (ap (ptoe P) h @ ptoe_V_r P _). }
+      assert (gr : g (inr triv) = inr triv).
+      { exact (ap (ptoe P) ((ap (ptoe Sg⁻¹) h)^ @ ptoe_V_l Sg xpp) @ ptoe_V_r P _). }
+      pose (τ := restrEqv f g gf fg fr gr).
+      pose (l := perm_of (sh (SG 2)) τ).
+      assert (hl : forall a, ptoe (ap c2 l) a = fst τ a).
+      { intro a. exact (ap (fun q => ptoe q a) (ap_fst_fst_perm_of _ τ)
+                        @ ap (fun e => fst e a) (ptoe_etop τ)). }
+      assert (hK : forall y, ptoe (ap c3 (ap k3 l)) y = f y).
+      { intros [a | t].
+        - exact (k3_inl l a @ ap inl (hl a) @ (restr_eq f g gf fr a)^).
+        - destruct t. exact (k3_inr l triv @ fr^). }
+      apply trunc. exists l.
+      apply SGS_perm_inj. intro x.
+      refine (SGS_perm_ptoe _ x @ _ @ (i3_conj l x)^ @ (SGS_perm_ptoe _ x)^).
+      exact ((ap (ptoe Sg) (ptoe_V_l P x))^ @ (ptoe_V_l P _)^ @ ap (ptoe P⁻¹) (hK _)^).
+  Defined.
+
+End SG2subSG3.
+
+Definition xca_SG2subSG3 `{Univalence} : xca_SG2subSG3_stmt
+  := fun pp σ => xca_SG2subSG3_pp pp σ.
 
 (** Exercise [xca:C3subSG3]. *)
 Definition xca_C3subSG3_stmt `{Univalence} : Type
