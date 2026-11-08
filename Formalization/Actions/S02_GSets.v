@@ -48,14 +48,19 @@
       ([Subgroups/S07_Automorphisms.v]), since the second part uses that
       homomorphisms are determined by their action on symmetries.
 
-    Left out (statements only, no proofs yet; time limit per result)
-    - Exercise [xca:not-normal] ([xca_not_normal_stmt], with the wedge
-      [WedgeS1S1] assumed a connected groupoid).
+    - Exercise [xca:not-normal] ([xca_not_normal], with the wedge
+      [WedgeS1S1] assumed a connected groupoid): the [G]-set of
+      [fig:not-normal] ([Xw]); identifications [X = X] fix [0], the only
+      fixed point of the transposition, so [X = X] is contractible and
+      [ev_0] misses [1].
+
+    Nothing in this section is left out.
  *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Truncations.Core Spaces.Circle Colimits.Pushout Spaces.Nat.Core.
+  Types.Forall Types.Paths Types.Sum Truncations.Core Spaces.Circle Colimits.Pushout
+  Spaces.Nat.Core Spaces.Finite.Fin.
 From SymmetryBook Require Export Group.Group.
 
 Local Open Scope uf_scope.
@@ -411,8 +416,8 @@ Definition ev_Hom_isInj `{Funext} {G : Group} {X Y : GSet G} (t : istrans X)
 Definition hom_of_path {G : Group} {X Y : GSet G} (e : X = Y) : HomGs X Y
   := fun z => trp (fun T : SetU => fst T) (ptw e z).
 
-(** Exercise [xca:not-normal] (statement only), for the group of the
-    wedge [S1 ∨ S1] (the pushout of the two base points, assumed a
+(** Exercise [xca:not-normal] (proved below as [xca_not_normal]), for
+    the group of the wedge [S1 ∨ S1] (the pushout of the two base points, assumed a
     connected groupoid here): a transitive [G]-set [X] with [X = X]
     contractible, for which [ev_x] is not surjective. *)
 Definition WedgeS1S1 : Type := Pushout (fun _ : True => base) (fun _ : True => base).
@@ -467,6 +472,158 @@ Definition ev_path_isInj `{Univalence} {G : Group} {X Y : GSet G} (t : istrans X
   {z : utype (BG G)} (x : el X z) : isInj (fun e : X = Y => hom_of_path e z x)
   := cancel_isInj (el_isSet Y z)
        (fun e e' h => hom_of_path_cancel e e' (evisinj_trans t x _ _ h)).
+
+(** Exercise [xca:not-normal]: the [G]-set [X] of [fig:not-normal] on
+    [𝟛 = {0, 1, 2}], with the 3-cycle [0 ↦ 1 ↦ 2 ↦ 0] over the left circle
+    and the transposition of [1] and [2] over the right one ([Xw]).  An
+    identification [e : X = X] commutes with both ([hom_of_path_act]),
+    so it fixes [0], the only fixed point of the transposition
+    ([XWN_fix]); as [X] is transitive, [e = refl] by [ev_path_isInj].  So
+    [X = X] is contractible and [ev_0] misses [1]. *)
+Section NotNormal.
+
+  Context `{Univalence} (wc : isConn WedgeS1S1) (wg : isGrpd WedgeS1S1).
+
+  Definition wn0 : Fin 3 := inl (inl (inr tt)).
+  Definition wn1 : Fin 3 := inl (inr tt).
+  Definition wn2 : Fin 3 := inr tt.
+
+  (** The blue 3-cycle and the red transposition of [x = 1] and [2]. *)
+  Definition rot3 (x : Fin 3) : Fin 3
+    := match x with
+       | inl (inl (inl e)) => match e with end
+       | inl (inl (inr _)) => wn1 | inl (inr _) => wn2 | inr _ => wn0
+       end.
+
+  Definition rot3i (x : Fin 3) : Fin 3
+    := match x with
+       | inl (inl (inl e)) => match e with end
+       | inl (inl (inr _)) => wn2 | inl (inr _) => wn0 | inr _ => wn1
+       end.
+
+  Definition tr3 (x : Fin 3) : Fin 3
+    := match x with
+       | inl (inl (inl e)) => match e with end
+       | inl (inl (inr _)) => wn0 | inl (inr _) => wn2 | inr _ => wn1
+       end.
+
+  Definition rot3Eqv : Fin 3 ≃ Fin 3.
+  Proof. refine (mkEqv rot3 rot3i _ _); intros [[[[]|[]]|[]]|[]]; exact refl. Defined.
+
+  Definition tr3Eqv : Fin 3 ≃ Fin 3.
+  Proof. refine (mkEqv tr3 tr3 _ _); intros [[[[]|[]]|[]]|[]]; exact refl. Defined.
+
+  Definition Xw : WedgeS1S1 -> SetU
+    := @Pushout_rec True S1 S1 (fun _ => base) (fun _ => base) SetU (S1_rec SetU (FinSetU 3) (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) rot3Eqv))
+                        (S1_rec SetU (FinSetU 3) (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) tr3Eqv)) (fun _ => refl).
+
+  Definition trp_fst_path_SetU0 {S T : SetU} (e : fst S ≃ fst T) (y : fst S)
+    : trp (fun T : SetU => fst T) (path_SetU0 e) y = fst e y.
+  Proof.
+    refine (transport_compose idmap (fun T : SetU => fst T) (path_SetU0 e) y @ _).
+    refine (ap (fun q => ptoe q y) (@ap_fst_sigma_prop _ isSet (fun A => isSet_isProp A) S T (etop e)) @ _).
+    exact (ap (fun e' : fst S ≃ fst T => fst e' y) (ptoe_etop e)).
+  Defined.
+
+  Definition WG : Group
+    := mkgroup (WedgeS1S1; (pushl base; (wc; wg))).
+
+  Definition wla : pushl base = pushl base :> WedgeS1S1
+    := ap (@pushl True S1 S1 (fun _ => base) (fun _ => base)) loop.
+
+  Definition wpgl : pushl base = pushr base :> WedgeS1S1
+    := @pglue True S1 S1 (fun _ => base) (fun _ => base) tt.
+
+  Definition wlb : pushl base = pushl base :> WedgeS1S1
+    := (wpgl @ ap (@pushr True S1 S1 (fun _ => base) (fun _ => base)) loop) @ wpgl^.
+
+  Local Notation Fw := (fun z : WedgeS1S1 => fst (Xw z)).
+
+  Definition wla_act (y : Fin 3) : trp Fw wla y = rot3 y.
+  Proof.
+    refine ((transport_compose Fw (@pushl True S1 S1 (fun _ => base) (fun _ => base)) loop y)^ @ _).
+    refine (transport_compose (fun T : SetU => fst T) (S1_rec SetU (FinSetU 3) (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) rot3Eqv)) loop y @ _).
+    refine (ap (fun q : FinSetU 3 = FinSetU 3 => trp (fun T : SetU => fst T) q y) (S1_rec_loop _ _ _) @ _).
+    exact (trp_fst_path_SetU0 (S := FinSetU 3) (T := FinSetU 3) rot3Eqv y).
+  Defined.
+
+  Definition wpgl_act (y : Fin 3) : trp Fw wpgl y = y.
+  Proof.
+    refine (transport_compose (fun T : SetU => fst T) Xw wpgl y @ _).
+    exact (ap (fun q : FinSetU 3 = FinSetU 3 => trp (fun T : SetU => fst T) q y)
+             (@Pushout_rec_beta_pglue True S1 S1 (fun _ => base) (fun _ => base) SetU
+                (S1_rec SetU (FinSetU 3) (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) rot3Eqv))
+                (S1_rec SetU (FinSetU 3) (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) tr3Eqv))
+                (fun _ => refl) tt)).
+  Defined.
+
+  Definition wlr : pushr base = pushr base :> WedgeS1S1
+    := ap (@pushr True S1 S1 (fun _ => base) (fun _ => base)) loop.
+
+  Definition wlr_act (y : Fin 3) : trp Fw wlr y = tr3 y.
+  Proof.
+    refine ((transport_compose Fw (@pushr True S1 S1 (fun _ => base) (fun _ => base)) loop y)^ @ _).
+    refine (transport_compose (fun T : SetU => fst T) (S1_rec SetU (FinSetU 3) (path_SetU0 (S := FinSetU 3) (T := FinSetU 3) tr3Eqv)) loop y @ _).
+    refine (ap (fun q : FinSetU 3 = FinSetU 3 => trp (fun T : SetU => fst T) q y) (S1_rec_loop _ _ _) @ _).
+    exact (trp_fst_path_SetU0 (S := FinSetU 3) (T := FinSetU 3) tr3Eqv y).
+  Defined.
+
+  Definition wlb_act (y : Fin 3) : trp Fw wlb y = tr3 y.
+  Proof.
+    refine (transport_pp Fw (wpgl @ wlr) wpgl^ y @ _).
+    refine (ap (trp Fw wpgl^) (transport_pp Fw wpgl wlr y) @ _).
+    refine (ap (fun u => trp Fw wpgl^ (trp Fw wlr u)) (wpgl_act y) @ _).
+    refine (ap (trp Fw wpgl^) (wlr_act y) @ _).
+    refine ((ap (trp Fw wpgl^) (wpgl_act (tr3 y)))^ @ _).
+    exact (transport_Vp Fw wpgl (tr3 y)).
+  Defined.
+
+  Definition XWN : GSet WG := Xw.
+
+  Definition tr3_fix (u : Fin 3) (h : u = tr3 u) : u = wn0.
+  Proof.
+    destruct u as [[[[]|[]]|[]]|[]].
+    - exact refl.
+    - destruct (inl_ne_inr _ _ h).
+    - destruct (inr_ne_inl _ _ h).
+  Defined.
+
+  Definition hom_of_path_act {G : Group} {X Y : GSet G} (e : X = Y) {z w : utype (BG G)}
+    (p : z = w) (y : el X z) : hom_of_path e w (act X p y) = act Y p (hom_of_path e z y).
+  Proof. destruct e, p. exact refl. Defined.
+
+  (** Every identification [X = X] fixes [0], the only fixed point of [tr3]. *)
+  Definition XWN_fix (e : XWN = XWN) : hom_of_path e (sh WG) wn0 = wn0
+    := tr3_fix _ (ap (hom_of_path e (sh WG)) (wlb_act wn0)^ @ hom_of_path_act e wlb wn0 @ wlb_act _).
+
+  Definition XWN_trans : istrans XWN.
+  Proof.
+    apply trunc. exists wn0. intro y. apply trunc.
+    destruct y as [[[[]|[]]|[]]|[]].
+    - exists refl. exact refl.
+    - exists (wla @ wla). refine (_ @ (transport_pp Fw wla wla _)^).
+      exact ((wla_act (rot3 wn1))^ @ ap (trp Fw wla) (wla_act wn1)^).
+    - exists wla. exact (wla_act wn2)^.
+  Defined.
+
+  Definition XWN_contr : isContr (XWN = XWN)
+    := isProp_inhabited_isContr
+         (fun e e' : XWN = XWN => isInj_cancel (ev_path_isInj (Y := XWN) XWN_trans (z := sh WG) wn0) e e' (XWN_fix e @ (XWN_fix e')^)) refl.
+
+  Definition XWN_not_surj : ¬ isSurj (fun e : XWN = XWN => hom_of_path e (sh WG) wn0).
+  Proof.
+    intro s. refine (ptrunc_rec False_isProp _ (s wn1)). intros [e h].
+    exact (inr_ne_inl _ _ (ap (fun u : Fin 3 => match u with inl a => a | inr _ => inr tt end)
+                                (h @ XWN_fix e))).
+  Defined.
+
+End NotNormal.
+
+Definition xca_not_normal `{Univalence} : xca_not_normal_stmt.
+Proof.
+  intros c g. exists (XWN c g).
+  exact ((XWN_trans c g; XWN_contr c g); (wn0; XWN_not_surj c g)).
+Defined.
 
 (** ** 5.2.2 Actions in a type *)
 
