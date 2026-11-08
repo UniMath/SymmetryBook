@@ -42,11 +42,15 @@
 
     - Example [ex:S2-acts-on-C3] ([S2onC3], with [EndoFam], [C3pt]).
 
+    - Exercise [xca:AutC3] ([xca_AutC3_stmt], identifying [S2onC3] at
+      [𝟚] with [C_3], which is [CG 2]: [CG k] is the cyclic group of
+      order [k+1]); proved as [xca_AutC3] at the end of Section 9.7
+      ([Subgroups/S07_Automorphisms.v]), since the second part uses that
+      homomorphisms are determined by their action on symmetries.
+
     Left out (statements only, no proofs yet; time limit per result)
     - Exercise [xca:not-normal] ([xca_not_normal_stmt], with the wedge
-      [WedgeS1S1] assumed a connected groupoid) and exercise
-      [xca:AutC3] ([xca_AutC3_stmt], identifying [S2onC3] at [𝟚] with
-      [C_3], which is [CG 2]: [CG k] is the cyclic group of order [k+1]).
+      [WedgeS1S1] assumed a connected groupoid).
  *)
 
 From HoTT Require Import
@@ -535,8 +539,8 @@ Section S2actsC3.
 
   Definition S2onC3 (S : BSG2) : Group := AutG (EndoFam_isGrpd (el2 S)) (C3pt S).
 
-  (** Exercise [xca:AutC3] (statement only): this action identifies
-      [BΣ_2] with the component of [C_3] in [Group]. *)
+  (** Exercise [xca:AutC3]: this action identifies [BΣ_2] with the
+      component of [C_3] in [Group] (proved in Section 9.7). *)
   Definition xca_AutC3_stmt : Type
     := (S2onC3 (sh (SG 2)) = CG 2)
        × (forall m : forall S, ptrunc (CG 2 = S2onC3 S),
