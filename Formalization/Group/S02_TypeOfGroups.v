@@ -69,8 +69,11 @@
       inclusion [Cyc ⊆ ∑_{X:Set}(X ≃ X)] ([comp_sub_eqv]) and the
       equivalence [gSet] of 3.3 ([comp_eqv], [gSet_RmSet]).
 
-    Left out (statements only, no proofs yet; time limit per result)
-    - Example [ex:Cm] ([ex_Cm_stmt], with [RmFin], [BCm'], [shCm']).
+    - Example [ex:Cm] ([ex_Cm], with [RmFin], [BCm'], [shCm']): [BCm'] is
+      a pointed connected groupoid, pointed-equivalent to [BC_m]
+      ([Cm'_pEqv_BG]); see the comment before [conn_map_ap_surj].
+
+    Notes
     - [xca:typegroupisgroupoid] is postponed to Section 4.4
       ([Group_isGrpd]), where it follows from [lem:hom-is-set].
     - Size issues: [Aut_Group(G)] is a group in a larger universe than
@@ -624,7 +627,8 @@ Section FirstExamples.
   (** Example [ex:Cm]: [BC'_m :≡ ∑_{X:FinSet_m} ‖R_m⁻¹(X)‖₀], the
       [0]-image of [R_m : S1 → FinSet_m], pointed at
       [(Fin m, |(base, refl)|₀)]; that it is a pointed connected groupoid
-      pointed-equivalent to [BC_m] is stated only. *)
+      pointed-equivalent to [BC_m] is proved after Section [RmloopCGm]
+      ([ex_Cm]). *)
   Definition RmFin (k : ℕ) (z : S1) : FinSet_n (S k)
     := (RmSet k z; ptrunc_rec ptrunc_isProp (fun p : base = z => trunc (ap (Rm k) p))
                      (S1_base_paths z)).
@@ -793,6 +797,128 @@ Section RmloopCGm.
 
 End RmloopCGm.
 
+
+(** The proof of [ex:Cm], following the book: [R_m] factors as
+    [Rcyc : S1 → Cyc_m] ([base ↦ pt_n], [loop ↦ σ_n⁻¹], [Rcyc_fact])
+    followed by the underlying finite set [Rcyc_r].  The latter is
+    [0]-truncated ([r_isnTruncMap] of 3.9), and [Rcyc] is [0]-connected
+    since every symmetry of [pt_n] is a power of [σ_n] ([pw_surj], 3.10).
+    By [thm:n-im-univ-prop] this factorization is the [0]-image
+    factorization, whence the pointed equivalence [g]
+    ([Cm'_pEqv_BG]).  The book's route through [c : S1 ≃ Cyc_0] and
+    [thm:image-Z-to-Cm] is avoided, since our [q] uses a different
+    quotient ([modm]). *)
+(** A map [f] between connected types is [0]-connected if [ap_f] at a
+    point is surjective. *)
+Definition conn_map_ap_surj `{Funext} {A B : Type} (f : A -> B) (a0 : A)
+  (cA : forall a, ptrunc (a0 = a)) (cB : forall b, ptrunc (f a0 = b))
+  (hs : forall q : f a0 = f a0, ptrunc {l : a0 = a0 & q = ap f l}) : isnConnMap 0 f.
+Proof.
+  intro b. refine (ptrunc_rec (isContr_isProp (strunc (fiber f b))) _ (cB b)). intro e. destruct e.
+  refine (settrunc ((a0; refl) : fiber f (f a0)); _).
+  refine (strunc_ind_prop _ (fun _ => strunc_isSet _ _) _). intros [a p].
+  refine (ptrunc_rec (strunc_isSet _ _) _ (cA a)). intro e. destruct e.
+  refine (ptrunc_rec (strunc_isSet _ _) _ (hs p)). intros [l hl].
+  apply (ap settrunc).
+  refine (path_sigma (fun x => f a0 = f x) (a0; refl) (a0; p) l _).
+  exact (transport_paths_Fr l refl @ concat_1p _ @ hl^).
+Defined.
+
+(** Along an identification of factorizations, the first maps correspond. *)
+Definition fact_trp {n : trunc_index} {X Y : Type} {f : X -> Y} {F F' : FactNConn n f}
+  (P : F = F') (x : X) : transport idmap (ap fst P) (fst (snd F) x) = fst (snd F') x
+  := match P with refl => refl end.
+
+Definition fact_pEqv {n : trunc_index} {X Y : Type} {f : X -> Y} {F F' : FactNConn n f}
+  (P : F = F') (x : X) : ((fst F; fst (snd F) x) : Ustar) ≃* (fst F'; fst (snd F') x)
+  := ((ptoe (ap fst P); (fact_trp P x)^); trp_isEquiv idmap (ap fst P)).
+
+Section ExCm.
+
+  Context `{Univalence} (k : ℕ).
+
+  Local Notation pt := (pt_n k).
+  Local Notation σ := (sigma_n k).
+
+  (** [R_m] factors through [Cyc_m]: [base ↦ pt_n], [loop ↦ σ_n⁻¹]. *)
+  Definition Rcyc : S1 -> Cycm k := S1_rec (Cycm k) pt σ^.
+
+  Definition Rcyc_r (c : Cycm k) : FinSet_n (S k)
+    := (fst (fst c); ptrunc_rec ptrunc_isProp
+                       (fun p : Fincyc k = fst c => trunc (ap (fun d : Cyc => fst (fst d) : Type) p))
+                       (snd c)).
+
+  Definition ap_Car_sigmaV : ap (Car k) σ^ = etop (finsuccEqv k).
+  Proof.
+    refine ((etop_ptoe _)^ @ ap etop (path_Eqv _ _ (path_forall _ _ (fun z => _)))).
+    refine ((transport_compose idmap (Car k) σ^ z)^ @ _).
+    refine (ap (transport (Car k) σ^) (trp_sigma k _ @ eqinv_l (snd (finsuccEqv k)) z)^ @ _).
+    exact (transport_Vp (Car k) σ (fst (finsuccEqv k) z)).
+  Defined.
+
+  Definition Car_Rcyc (z : S1) : Car k (Rcyc z) = Rm k z :> Type0.
+  Proof.
+    refine (S1_ind (fun z => Car k (Rcyc z) = Rm k z :> Type0) refl _ z).
+    refine (@transport_paths_FlFr S1 Type0 (fun z => Car k (Rcyc z)) (Rm k) base base loop refl @ _).
+    refine (ap (fun q => q @ ap (Rm k) loop) (concat_p1 _) @ _).
+    refine (ap (fun q => q^ @ ap (Rm k) loop) (ap_compose Rcyc (Car k) loop) @ _).
+    refine (ap (fun q : pt = pt => (ap (Car k) q)^ @ ap (Rm k) loop) (S1_rec_loop _ _ _) @ _).
+    refine (ap (fun q : Fin (S k) = Fin (S k) => q^ @ ap (Rm k) loop) ap_Car_sigmaV @ _).
+    refine (ap (fun q : Fin (S k) = Fin (S k) => (etop (finsuccEqv k))^ @ q) (S1_rec_loop _ _ _) @ _).
+    exact (concat_Vp _).
+  Defined.
+
+  Definition Rcyc_fact : RmFin k = Rcyc_r ∘ Rcyc.
+  Proof.
+    apply path_forall. intro z.
+    apply (path_sigma_prop (fun _ => ptrunc_isProp)).
+    apply (path_sigma_prop (fun X => isSet_isProp X)).
+    exact (Car_Rcyc z)^.
+  Defined.
+
+  Definition Rcyc_r_trunc : isnTruncMap 0 Rcyc_r.
+  Proof.
+    intro X.
+    refine (istrunc_equiv_istrunc _ (Equiv_of_Eqv _) (IsTrunc0 := r_isnTruncMap k (fst X))).
+    exact (Eqv_inv (tot (fun c => fst (subtype_paths_eqv (fun _ => ptrunc_isProp) X (Rcyc_r c)));
+           tot_isEquiv _ (fun c => snd (subtype_paths_eqv (fun _ => ptrunc_isProp) X (Rcyc_r c))))).
+  Defined.
+
+  Definition ap_Rcyc_loopV : ap Rcyc loop^ = σ
+    := ap_V Rcyc loop @ ap inverse (S1_rec_loop _ _ _) @ inv_V σ.
+
+  Definition Rcyc_conn : isnConnMap 0 Rcyc.
+  Proof.
+    refine (conn_map_ap_surj Rcyc base S1_base_paths (snd (component_isConn _) pt) _).
+    intro q. destruct (pw_surj k q) as [i e].
+    exact (trunc (spow loop^ i; e @ (ap_pw Rcyc loop^ i @ ap (fun s => spow s i) ap_Rcyc_loopV)^)).
+  Defined.
+
+  Definition Fcyc : FactNConn 0 (RmFin k)
+    := (Cycm k; (Rcyc; (Rcyc_r; ((Rcyc_fact; Rcyc_conn); Rcyc_r_trunc)))).
+
+  Definition Fcyc_path : n_image_fact 0 (RmFin k) = Fcyc.
+  Proof.
+    pose proof (n_im_univ_prop 0 (RmFin k)) as C.
+    exact ((snd C (n_image_fact 0 (RmFin k)))^ @ snd C Fcyc).
+  Defined.
+
+  Definition Cm'_peqv : ((BCm' k; shCm' k) : Ustar) ≃* (Cycm k; pt) := fact_pEqv Fcyc_path base.
+
+  Definition Cm'_isConn : isConn (BCm' k)
+    := isConn_Eqv (Eqv_inv (fst (fst Cm'_peqv); snd Cm'_peqv)) (component_isConn _).
+
+  Definition Cm'_isGrpd : isGrpd (BCm' k)
+    := Sigma_ntype 1 (Sigma_ntype 1 SetU_isGrpd (fun S => prop_ntype 1 _ ptrunc_isProp))
+         (fun X => set_ntype 1 strunc_isSet).
+
+  Definition Cm'_pEqv_BG : ((BCm' k; shCm' k) : Ustar) ≃* BG (CG k)
+    := trp (fun Y => ((BCm' k; shCm' k) : Ustar) ≃* Y) (refl : (Cycm k; pt) = BG (CG k)) Cm'_peqv.
+
+End ExCm.
+
+Definition ex_Cm `{Univalence} : ex_Cm_stmt
+  := fun k => ((Cm'_isConn k; Cm'_isGrpd k); Cm'_pEqv_BG k).
 
 (** Example [ex:productofgroups]: [G × H :≡ mkgroup(BG × BH)]. *)
 Definition prodG `{Funext} (G G' : Group) : Group

@@ -84,8 +84,8 @@ End UniversalPropertyCycn.
     the inverse [cyc_Psi] of [ev].  Deviation: instead of the book's
     argument with [χ] for the uniqueness, the second round trip
     [cyc_Psi (ev f) = f] holds since [(f(x), ap_f)] is in [T(x)]
-    ([cyc_Psi_ev]).  Powers are in diagrammatic order ([spow],
-    [ppow_spow]). *)
+    ([Psi_ev]).  Powers are in diagrammatic order ([spow],
+    [ppow_pw]). *)
 Section UMPProof.
 
   Context `{Univalence} (k : ℕ).
