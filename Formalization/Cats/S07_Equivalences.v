@@ -26,6 +26,12 @@
       builds the adjunction by [lem:adj-via-repr] from
       [α(f) :≡ F⁻¹(i_B⁻¹ ∘ f)]; fully faithful functors reflect
       isomorphisms ([ff_reflect_iso]).
+    - Theorem [thm:Rezk-completion], second part ([thm_Rezk_small],
+      assuming [Replacement] and [Univalence]; deviation: replacement is
+      applied to [Ob(η)], using that [L(C)] is a locally small category,
+      [Cat_locSmall]), and exercise [xca:Rezk-completion-locally-small]
+      ([xca_Rezk_locally_small], with [Univalence]; by Yoneda,
+      [Rezk_hom_eqv]).
     - Lemma [lem:ff-eso] ([lem_ff_eso]): for [C] a category and [F] fully
       faithful, [∑_A F(A) ≅ B] is equivalent to a singleton once
       inhabited ([IsoC_postcomp_isEquiv], [fmap_iso_isEquiv]).
@@ -49,10 +55,6 @@
       exercise [xca:Rezk-completion-1trunc] ([TruncPathGrpd]).
 
     Left out (statements only, no proofs yet)
-    - The smallness
-      part of theorem [thm:Rezk-completion] ([thm_Rezk_small_stmt]) and
-      exercise [xca:Rezk-completion-locally-small]
-      ([xca_Rezk_locally_small_stmt]).
     - Exercise [xca:Rezk-completion-1trunc]
       ([xca_Rezk_completion_1trunc_stmt]).
     - Theorem [thm:flagged-cat-equiv] ([thm_flagged_cat_equiv_stmt],
@@ -822,8 +824,7 @@ Definition Rezk_isUnivalent `{Univalence} (C : WildPreCat) (pc : isPreCat C)
   := Rezk_isUnivalent_from C pc (snd SetCat_isCat).
 
 (** Theorem [thm:Rezk-completion], second part, and exercise
-    [xca:Rezk-completion-locally-small] (statements only): smallness of
-    [L(C)]. *)
+    [xca:Rezk-completion-locally-small]: smallness of [L(C)]. *)
 Definition isEssSmallCat (C : WildPreCat) : Type
   := essSmall (Ob C) × (forall A B : Ob C, essSmall (homC A B)).
 
@@ -834,6 +835,72 @@ Definition thm_Rezk_small_stmt `{Funext} : Type
 
 Definition xca_Rezk_locally_small_stmt `{Funext} : Type
   := forall (C : WildPreCat) (pc : isPreCat C), isLocSmallCat C -> isLocSmallCat (Rezk C pc).
+
+(** Exercise [xca:Rezk-completion-locally-small] (with [Univalence], so
+    that essential smallness is a proposition): for representations
+    [yo(A) ≅ F] and [yo(B) ≅ G], [Hom(F,G) ≃ Hom(yo A, yo B) ≃ hom(A,B)]
+    ([Rezk_hom_eqv]). *)
+Definition Rezk_hom_eqv `{Funext} (C : WildPreCat) (pc : isPreCat C) {F G : Ob (PSh C)}
+  {A B : Ob C} (i : IsoC (C := PSh C) (yo_ob C pc A) F)
+  (j : IsoC (C := PSh C) (yo_ob C pc B) G)
+  : homC (w := PSh C) F G ≃ homC A B.
+Proof.
+  refine (Eqv_comp (Eqv_comp ((fun k => k ∘c fst i); precomp_isEquiv (snd i) G)
+                             ((fun k => invC j ∘c k); postcomp_isEquiv (invC_isIso j) _)) _).
+  exact (Eqv_inv (fmap (RezkEta C pc); RezkEta_ff C pc A B)).
+Defined.
+
+Definition xca_Rezk_locally_small `{Univalence} : xca_Rezk_locally_small_stmt.
+Proof.
+  intros C pc ls [F r] [G s].
+  refine (ptrunc_rec (essSmall_isProp _) _ r). intros [A i].
+  refine (ptrunc_rec (essSmall_isProp _) _ s). intros [B j].
+  exact (essSmall_Eqv (Rezk_hom_eqv C pc i j) (ls A B)).
+Defined.
+
+Definition essSmall_Sigma {A : Type} {B : A -> Type} (sA : essSmall A)
+  (sB : forall a, essSmall (B a)) : essSmall {a : A & B a}
+  := ({x : fst sA & fst (sB (eqinv (snd (snd sA)) x))};
+      Eqv_comp (tot (fun a => fst (snd (sB a))); tot_isEquiv _ (fun a => snd (snd (sB a))))
+               (sum_equiv_base (snd (snd sA)) (fun a => fst (sB a)))).
+
+(** In a category with essentially small hom-sets, the identity types
+    of objects are essentially small. *)
+Definition Cat_locSmall `{Funext} (C : WildPreCat) (u : isUnivalent C)
+  (ls : forall A B : Ob C, essSmall (homC A B)) : locSmall (Ob C).
+Proof.
+  intros A B. refine (essSmall_Eqv (idtoiso; u A B) _).
+  refine (essSmall_Sigma (ls A B) (fun k => essSmall_Sigma _ (fun _ => _))).
+  - exact (essSmall_Sigma (ls B A) (fun g => essSmall_locSmall (ls B B) _ _)).
+  - exact (essSmall_Sigma (ls B A) (fun g => essSmall_locSmall (ls A A) _ _)).
+Defined.
+
+(** [Ob(L(C))] is the image of [Ob(η)], since [η] is essentially
+    surjective and [L(C)] is a category. *)
+Definition Rezk_Ob_im `{Univalence} (C : WildPreCat) (pc : isPreCat C)
+  : Ob (Rezk C pc) ≃ im (fob (RezkEta C pc)).
+Proof.
+  assert (ex : forall y, Ex (fun x => y = fob (RezkEta C pc) x)).
+  { intro y. refine (ptrunc_rec ptrunc_isProp _ (RezkEta_eso C pc y)). intros [A i].
+    exact (trunc (A; (eqinv (Rezk_isUnivalent C pc _ y) i)^)). }
+  refine (mkEqv (fun y => (y; ex y)) fst (fun y => refl) _).
+  intro w. exact (ap (fun e => (fst w; e) : im _) (ptrunc_isProp _ _)).
+Defined.
+
+(** Theorem [thm:Rezk-completion], second part, assuming the
+    replacement principle (and [Univalence]).  Deviation from the book's
+    proof: replacement is applied to [Ob(η) : Ob(C) → Ob(L(C))] rather
+    than to [Ob(yo)] into [Set_U^{C^op}], using that [L(C)] is a
+    locally small category ([Cat_locSmall]); this avoids resizing the
+    hom-sets of [C] into [U]. *)
+Definition thm_Rezk_small `{Univalence} (rep : Replacement) : thm_Rezk_small_stmt.
+Proof.
+  intros C pc [so sh]. refine ((_ : essSmall (Ob (Rezk C pc))); xca_Rezk_locally_small C pc sh).
+  exact (essSmall_Eqv (Rezk_Ob_im C pc)
+           (rep (Ob C) (Ob (Rezk C pc)) (fob (RezkEta C pc)) so
+                (Cat_locSmall (Rezk C pc) (Rezk_isUnivalent C pc)
+                              (xca_Rezk_locally_small C pc sh)))).
+Defined.
 
 (** Theorem [thm:1types-are-groupoids], first part (with [Funext]): for [1]-types
     [A] and [B], the projection [[A, B] → (A → B)] from functors between
