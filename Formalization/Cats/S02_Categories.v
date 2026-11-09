@@ -31,6 +31,9 @@
       antisymmetric ([poset_antisym], [antisym_isUnivalent]); [(ℕ, ≤)],
       [(Prop, →)] and [(Sub(S), ⊆)] are posets; [𝟚] with the always true
       relation is not univalent ([BoolTrue_not_univalent]).
+    - Exercise [xca:order-poset] ([xca_order_poset]): divisibility is
+      antisymmetric on [Order] ([OrderDiv_antisym]), since cycles with
+      the same [H] are merely identified by [lem:IdCycle] ([Hc_ord_path]).
     - Definition [def:wild-pre-groupoid] ([isPreGrpd]) and example
       [ex:path-groupoid] ([PathGrpd], univalent, a precategory for a
       [1]-type).
@@ -43,7 +46,6 @@
       [pcomp_assoc]) moved here from Section 7.3.
 
     Left out (statements only, no proofs yet)
-    - Exercise [xca:order-poset] ([xca_order_poset]).
     - The coherences of remark [rem:wild] that wild precategories lack
       ([hasUnitCoh], [hasPentagon]).
 
@@ -643,13 +645,38 @@ Definition BoolTrue : WildPreCat
 Definition BoolTrue_not_univalent : ¬ isUnivalent BoolTrue
   := fun u => yes_ne_no (eqinv (u yes no) (triv; ((triv; refl); (triv; refl)))).
 
-(** Exercise [xca:order-poset]: the orders with divisibility form a poset
-    (statement only). *)
+(** Exercise [xca:order-poset]: the orders with divisibility form a poset. *)
 Definition OrderDiv `{Univalence} : WildPreCat
   := mkPreorder Order (fun d k => (divides d k; Pi_isProp (fun n => fun_isProp (snd (HO d n)))))
        (fun d n x => x) (fun d k l f g n x => f n (g n x)).
 
-Definition xca_order_poset `{Univalence} : Type := isPoset OrderDiv.
+Definition xca_order_poset_stmt `{Univalence} : Type := isPoset OrderDiv.
+
+(** Cycles with the same [H] are merely identified ([lem:IdCycle]), so
+    divisibility is antisymmetric; [Order] is a set by definition. *)
+Definition Hc_ord_path `{Univalence} (c c' : Cyc)
+  (h : forall n, (fst (Hc c n) -> fst (Hc c' n)) × (fst (Hc c' n) -> fst (Hc c n)))
+  : ord c = ord c'.
+Proof.
+  pose (w := IdCycle_31 (fst (snd c)) (fst (snd c')) (snd (snd c)) (snd (snd c'))
+               (IdCycle_23 (snd (fst c)) (snd (fst c')) (fst (snd c)) (fst (snd c'))
+                  (snd (snd c)) (snd (snd c')) h)).
+  refine (ptrunc_rec (strunc_isSet _ _) _ w). intro q.
+  exact (ap settrunc (cyc_path c c' q)).
+Defined.
+
+Definition OrderDiv_antisym `{Univalence} : antisymmetric OrderDiv.
+Proof.
+  intros d. refine (strunc_ind_prop _ (fun _ => Pi_isProp (fun _ => Pi_isProp
+                      (fun _ => Pi_isProp (fun _ => strunc_isSet _ _)))) _ d). intro c.
+  intro k. refine (strunc_ind_prop _ (fun _ => Pi_isProp (fun _ => Pi_isProp
+                      (fun _ => strunc_isSet _ _))) _ k). intros c' f g.
+  exact (Hc_ord_path c c' (fun n => (g n; f n))).
+Defined.
+
+Definition xca_order_poset `{Univalence} : xca_order_poset_stmt
+  := (mkPreorder_isPreorder _ _ _ _;
+      antisym_isUnivalent OrderDiv (mkPreorder_isPreorder _ _ _ _) strunc_isSet OrderDiv_antisym).
 
 (** Definition [def:wild-pre-groupoid]. *)
 Definition isPreGrpd (C : WildPreCat) : Type := forall (A B : Ob C) (f : homC A B), isIsoC f.
