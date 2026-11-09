@@ -20,9 +20,16 @@
       ([ff_isInj], via [ff_reflects_iso] and [ff_ap_isEquiv]), and
       [isRepr(F)] is equivalent to the fiber of [yo] over [F].
 
-    Left out (statements only, no proofs yet)
-    - Lemma [lem:adj-via-repr] ([lem_adj_via_repr_stmt]) and corollary
-      [cor:adj-unique] ([cor_adj_unique_stmt]). *)
+    - Lemma [lem:adj-via-repr] ([lem_adj_via_repr], from
+      [adj_via_repr], which does not need [D] to be a precategory): the
+      action on arrows is forced, [G(g) :≡ α(g ∘ α⁻¹(id))] ([avr_fm]),
+      and the rest consists of identifications of arrows of [C].
+    - Corollary [cor:adj-unique] ([cor_adj_unique]): for each [D] the
+      pairs [(C₀, α)] with [α] natural form a proposition when [C] is a
+      category ([AdjRep_isProp], via the isomorphism [β(α⁻¹(id))]), so
+      the data of the adjunction ([AdjData]) form a proposition.
+
+    Nothing in this section is left out. *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -198,7 +205,7 @@ Definition cor_repr_prop `{Univalence} (C : WildPreCat) (pc : isPreCat C)
   : cor_repr_prop_stmt C pc
   := repr_isProp C pc (snd SetCat_isCat).
 
-(** Lemma [lem:adj-via-repr] (statement only): a map on objects [G] with
+(** Lemma [lem:adj-via-repr] (proved below as [lem_adj_via_repr]): a map on objects [G] with
     natural isomorphisms [Hom_D(F -, D) ≅ yo(G(D))] extends uniquely to a
     right adjoint. *)
 Definition lem_adj_via_repr_stmt `{Funext} : Type
@@ -214,8 +221,224 @@ Definition lem_adj_via_repr_stmt `{Funext} : Type
                                           p (adjeqv adj A B))
                                = a B A}}}.
 
-(** Corollary [cor:adj-unique] (statement only): for a functor defined
+(** Corollary [cor:adj-unique] (proved below): for a functor defined
     on a category, the data of a right adjoint is a proposition. *)
 Definition cor_adj_unique_stmt `{Funext} : Type
   := forall (C : Cat) (D : WildPreCat) (F : Functor (fst C) D),
        isProp {adj : Adjunction (fst C) D & ladj adj = F}.
+
+(** The proof of lemma [lem:adj-via-repr] ([adj_via_repr]): the action
+    of the right adjoint on arrows must be [G(g) :≡ α(g ∘ ε)] with
+    [ε :≡ α⁻¹(id)] ([avr_fm]), by naturality in [D] at [(G(D), ε)]; it
+    is a functor and [α] is natural in [D] since [α] is natural in [C]
+    ([avr_counit], [avr_natB]).  All remaining data are identifications
+    of arrows of [C], hence propositions.  Neither the statement nor
+    the proof needs [D] to be a precategory. *)
+Section AdjViaRepr.
+
+  Context `{Funext} (C D : WildPreCat) (pc : isPreCat C) (F : Functor C D)
+    (G0 : Ob D -> Ob C) (a : forall B (A : Ob C), homC (fob F A) B ≃ homC A (G0 B))
+    (an : forall B A A' (h : homC (w := C) A' A) (f : homC (fob F A) B),
+            fst (a B A') (f ∘c fmap F h) = fst (a B A) f ∘c h).
+
+  Local Notation e B A := (fst (a B A)).
+  Local Notation einv B A := (eqinv (snd (a B A))).
+
+  Definition avr_eps (B : Ob D) : homC (fob F (G0 B)) B := einv B (G0 B) (idC (G0 B)).
+
+  Definition avr_fm (B B' : Ob D) (g : homC B B') : homC (G0 B) (G0 B')
+    := e B' (G0 B) (g ∘c avr_eps B).
+
+  Definition avr_counit {A : Ob C} {B : Ob D} (f : homC (fob F A) B)
+    : avr_eps B ∘c fmap F (e B A f) = f.
+  Proof.
+    refine ((eqinv_l (snd (a B A)) _)^ @ ap (einv B A) _ @ eqinv_l (snd (a B A)) f).
+    refine (an B (G0 B) A (e B A f) (avr_eps B) @ _).
+    exact (ap (fun k => k ∘c e B A f) (eqinv_r (snd (a B (G0 B))) (idC (G0 B))) @ lamC _).
+  Defined.
+
+  Definition avr_natB {A : Ob C} {B B' : Ob D} (f : homC (fob F A) B) (g : homC B B')
+    : e B' A (g ∘c f) = avr_fm B B' g ∘c e B A f.
+  Proof.
+    refine (ap (fun k => e B' A (g ∘c k)) (avr_counit f)^ @ _).
+    refine (ap (e B' A) (alphaC (fmap F (e B A f)) (avr_eps B) g) @ _).
+    exact (an B' (G0 B) A (e B A f) (g ∘c avr_eps B)).
+  Defined.
+
+  Definition avr_fid (B : Ob D) : avr_fm B B (idC B) = idC (G0 B)
+    := ap (e B (G0 B)) (lamC _) @ eqinv_r (snd (a B (G0 B))) (idC (G0 B)).
+
+  Definition avr_fcomp (B B' B'' : Ob D) (g : homC B B') (g' : homC B' B'')
+    : avr_fm B B'' (g' ∘c g) = avr_fm B' B'' g' ∘c avr_fm B B' g
+    := ap (e B'' (G0 B)) (alphaC (avr_eps B) g g')^ @ avr_natB (g ∘c avr_eps B) g'.
+
+  Definition avr_G : Functor D C := Build_Functor D C G0 avr_fm avr_fid avr_fcomp.
+
+  Definition avr_nat (A' A : Ob C) (B B' : Ob D) (h : homC A' A) (f : homC (fob F A) B)
+    (g : homC B B')
+    : e B' A' (g ∘c (f ∘c fmap F h)) = avr_fm B B' g ∘c (e B A f ∘c h).
+  Proof.
+    refine (ap (e B' A') (alphaC (fmap F h) f g) @ _).
+    refine (an B' A A' h (g ∘c f) @ _).
+    refine (ap (fun k => k ∘c h) (avr_natB f g) @ _).
+    exact (alphaC h (e B A f) (avr_fm B B' g))^.
+  Defined.
+
+  Definition avr_adj : Adjunction C D
+    := Build_Adjunction C D F avr_G (fun A B => a B A) avr_nat.
+
+  Definition AdjExt : Type
+    := {adj : Adjunction C D &
+         {p : ladj adj = F & {q : fob (radj adj) = G0 &
+           forall A B, trp (fun G1 : Ob D -> Ob C => homC (fob F A) B ≃ homC A (G1 B))
+                           q (trp (fun F1 : Functor C D => homC (fob F1 A) B ≃ homC A (fob (radj adj) B))
+                                  p (adjeqv adj A B))
+                       = a B A}}}.
+
+End AdjViaRepr.
+
+Definition adj_via_repr `{Funext} (C D : WildPreCat) (pc : isPreCat C) (F : Functor C D)
+  (G0 : Ob D -> Ob C) (a : forall B (A : Ob C), homC (fob F A) B ≃ homC A (G0 B))
+  (an : forall B A A' (h : homC (w := C) A' A) (f : homC (fob F A) B),
+          fst (a B A') (f ∘c fmap F h) = fst (a B A) f ∘c h)
+  : isContr (AdjExt C D F G0 a).
+Proof.
+  refine ((avr_adj C D F G0 a an; (refl; (refl; fun A B => refl))); _).
+  intros [adj [p [q r]]]. destruct adj as [F' G' e' n']. cbn in p, q, r. destruct p.
+  rename F' into F.
+  destruct G' as [go gm gi gc]. cbn in q, r. destruct q. cbn in r.
+  rename go into G0.
+  assert (Er : (fun A B => a B A) = e')
+    by exact (ptw_inv (fun A => ptw_inv (fun B => (r A B)^))).
+  destruct Er.
+  assert (Em : avr_fm C D F G0 a = gm).
+  { apply ptw_inv; intro B. apply ptw_inv; intro B'. apply ptw_inv; intro g.
+    refine (ap (fun k => fst (a B' (G0 B)) (g ∘c k))
+              (ap (fun k => avr_eps C D F G0 a B ∘c k) (fid F (G0 B))
+               @ rhoC (avr_eps C D F G0 a B))^ @ _).
+    refine (n' (G0 B) (G0 B) B B' (idC (G0 B)) (avr_eps C D F G0 a B) g @ _).
+    refine (ap (fun k => gm B B' g ∘c (k ∘c idC (G0 B))) (eqinv_r (snd (a B (G0 B))) _) @ _).
+    exact (ap (fun k => gm B B' g ∘c k) (lamC _) @ rhoC _). }
+  destruct Em.
+  destruct (ptw_inv (fun B => pc _ _ _ _ (avr_fid C D F G0 a B) (gi B)) : avr_fid C D F G0 a = gi).
+  destruct (ptw_inv (fun B => ptw_inv (fun B' => ptw_inv (fun B'' => ptw_inv (fun g =>
+              ptw_inv (fun g' => pc _ _ _ _ (avr_fcomp C D F G0 a an B B' B'' g g')
+                                   (gc B B' B'' g g'))))))
+            : avr_fcomp C D F G0 a an = gc).
+  destruct (ptw_inv (fun A' => ptw_inv (fun A => ptw_inv (fun B => ptw_inv (fun B' =>
+              ptw_inv (fun h => ptw_inv (fun f => ptw_inv (fun g =>
+                pc _ _ _ _ (avr_nat C D F G0 a an A' A B B' h f g) (n' A' A B B' h f g))))))))
+            : avr_nat C D F G0 a an = n').
+  destruct (ptw_inv (fun A => ptw_inv (fun B => Eqv_sets_isSet (pc A (G0 B)) _ _ refl (r A B)))
+            : (fun A B => refl) = r).
+  exact refl.
+Defined.
+
+Definition lem_adj_via_repr `{Funext} : lem_adj_via_repr_stmt
+  := fun C D pc pd F G0 a an => adj_via_repr C D pc F G0 a an.
+
+(** Corollary [cor:adj-unique].  For each [B], the pairs of an object
+    [C₀] with a natural family [Hom_D(F -, B) ≃ Hom_C(-, C₀)] form a
+    proposition when [C] is a category: two of them differ by the
+    isomorphism [k :≡ β(α⁻¹(id))] ([adjrep_k], [AdjRep_isProp]). *)
+Definition AdjRep {C D : WildPreCat} (F : Functor C D) (B : Ob D) : Type
+  := {C0 : Ob C & {a : forall A, homC (fob F A) B ≃ homC A C0 &
+       forall A A' (h : homC (w := C) A' A) (f : homC (fob F A) B),
+         fst (a A') (f ∘c fmap F h) = fst (a A) f ∘c h}}.
+
+Definition adjrep_path `{Funext} {C D : WildPreCat} (pc : isPreCat C) (F : Functor C D)
+  (B : Ob D) {C0 C1 : Ob C} (P : C0 = C1) (a : forall A, homC (fob F A) B ≃ homC A C0) an
+  (b : forall A, homC (fob F A) B ≃ homC A C1) bn
+  (E : forall A f, fst (b A) f = fst (idtoiso P) ∘c fst (a A) f)
+  : ((C0; (a; an)) : AdjRep F B) = (C1; (b; bn)).
+Proof.
+  destruct P.
+  assert (Ea : a = b).
+  { apply ptw_inv; intro A. apply path_Eqv. apply ptw_inv; intro f. exact ((lamC _)^ @ (E A f)^). }
+  destruct Ea.
+  destruct (ptw_inv (fun A => ptw_inv (fun A' => ptw_inv (fun h => ptw_inv (fun f =>
+              pc _ _ _ _ (an A A' h f) (bn A A' h f))))) : an = bn).
+  exact refl.
+Defined.
+
+Definition adjrep_counit {C D : WildPreCat} (F : Functor C D) (B : Ob D) (r : AdjRep F B)
+  {A : Ob C} (f : homC (fob F A) B)
+  : eqinv (snd (fst (snd r) (fst r))) (idC (fst r)) ∘c fmap F (fst (fst (snd r) A) f) = f.
+Proof.
+  destruct r as [C0 [a an]]. cbn.
+  refine ((eqinv_l (snd (a A)) _)^ @ ap (eqinv (snd (a A))) _ @ eqinv_l (snd (a A)) f).
+  refine (an C0 A (fst (a A) f) _ @ _).
+  exact (ap (fun k => k ∘c fst (a A) f) (eqinv_r (snd (a C0)) (idC C0)) @ lamC _).
+Defined.
+
+(** For representations [(C₀, α)] and [(C₁, β)]: [β(f) = k ∘ α(f)]. *)
+Definition adjrep_k {C D : WildPreCat} (F : Functor C D) (B : Ob D) (r r' : AdjRep F B)
+  : homC (fst r) (fst r')
+  := fst (fst (snd r') (fst r)) (eqinv (snd (fst (snd r) (fst r))) (idC (fst r))).
+
+Definition adjrep_k_spec {C D : WildPreCat} (F : Functor C D) (B : Ob D) (r r' : AdjRep F B)
+  {A : Ob C} (f : homC (fob F A) B)
+  : fst (fst (snd r') A) f = adjrep_k F B r r' ∘c fst (fst (snd r) A) f
+  := ap (fst (fst (snd r') A)) (adjrep_counit F B r f)^ @ snd (snd r') _ _ _ _.
+
+Definition AdjRep_isProp `{Funext} (C : Cat) {D : WildPreCat} (F : Functor (fst C) D) (B : Ob D)
+  : isProp (AdjRep F B).
+Proof.
+  intros r r'.
+  pose (k := adjrep_k F B r r'). pose (k' := adjrep_k F B r' r).
+  assert (kk : forall A (f : homC (fob F A) B),
+             fst (fst (snd r) A) f = (k' ∘c k) ∘c fst (fst (snd r) A) f).
+  { intros A f. refine (adjrep_k_spec F B r' r f @ _).
+    exact (ap (fun u => k' ∘c u) (adjrep_k_spec F B r r' f) @ alphaC _ _ _). }
+  assert (kk' : forall A (f : homC (fob F A) B),
+             fst (fst (snd r') A) f = (k ∘c k') ∘c fst (fst (snd r') A) f).
+  { intros A f. refine (adjrep_k_spec F B r r' f @ _).
+    exact (ap (fun u => k ∘c u) (adjrep_k_spec F B r' r f) @ alphaC _ _ _). }
+  pose (ε := fun r0 : AdjRep F B => eqinv (snd (fst (snd r0) (fst r0))) (idC (fst r0))).
+  assert (e1 : k ∘c k' = idC (fst r')).
+  { refine ((rhoC _)^ @ ap (fun u => (k ∘c k') ∘c u) (eqinv_r (snd (fst (snd r') (fst r'))) _)^
+            @ (kk' _ (ε r'))^ @ eqinv_r (snd (fst (snd r') (fst r'))) _). }
+  assert (e2 : k' ∘c k = idC (fst r)).
+  { refine ((rhoC _)^ @ ap (fun u => (k' ∘c k) ∘c u) (eqinv_r (snd (fst (snd r) (fst r))) _)^
+            @ (kk _ (ε r))^ @ eqinv_r (snd (fst (snd r) (fst r))) _). }
+  pose (K := (k; ((k'; e1); (k'; e2))) : IsoC (fst r) (fst r')).
+  pose (P := eqinv (snd (snd C) (fst r) (fst r')) K).
+  destruct r as [C0 [a an]], r' as [C1 [b bn]].
+  refine (adjrep_path (fst (snd C)) F B P a an b bn _).
+  intros A f.
+  refine (adjrep_k_spec F B (C0; (a; an)) (C1; (b; bn)) f @ _).
+  exact (ap (fun u : IsoC C0 C1 => fst u ∘c fst (a A) f) (eqinv_r (snd (snd C) C0 C1) K)^).
+Defined.
+
+(** The data of an adjunction [F ⊣ G] are representations for all [D]
+    together with an extension as in [lem:adj-via-repr]. *)
+Definition AdjData `{Funext} {C D : WildPreCat} (F : Functor C D) : Type
+  := {t : forall B, AdjRep F B &
+       AdjExt C D F (fun B => fst (t B)) (fun B A => fst (snd (t B)) A)}.
+
+Definition AdjData_isProp `{Funext} (C : Cat) {D : WildPreCat} (F : Functor (fst C) D)
+  : isProp (AdjData F)
+  := Sigma_isProp (Pi_isProp (fun B => AdjRep_isProp C F B))
+       (fun t => isContr_isProp' (adj_via_repr (fst C) D (fst (snd C)) F _ _
+                                    (fun B => snd (snd (t B))))).
+
+Definition adj_to_data `{Funext} {C D : WildPreCat} (adj : Adjunction C D) : AdjData (ladj adj)
+  := ((fun B => (fob (radj adj) B; ((fun A => adjeqv adj A B);
+                                     fun A A' h f => adjnat_pre adj h f)));
+      (adj; (refl; (refl; fun A B => refl)))).
+
+Definition data_to_adj `{Funext} {C D : WildPreCat} {F : Functor C D} (s : AdjData F)
+  : {adj : Adjunction C D & ladj adj = F}
+  := (fst (snd s); fst (snd (snd s))).
+
+Definition data_to_adj_trp `{Funext} {C D : WildPreCat} (adj : Adjunction C D) {F : Functor C D}
+  (p : ladj adj = F)
+  : data_to_adj (trp AdjData p (adj_to_data adj)) = (adj; p).
+Proof. destruct p. exact refl. Defined.
+
+Definition cor_adj_unique `{Funext} : cor_adj_unique_stmt.
+Proof.
+  intros C D F [adj p] [adj' p'].
+  exact ((data_to_adj_trp adj p)^ @ ap data_to_adj (AdjData_isProp C F _ _)
+         @ data_to_adj_trp adj' p').
+Defined.
