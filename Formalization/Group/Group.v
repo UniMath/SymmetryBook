@@ -5,7 +5,7 @@
     Section 4.1 is an overview without results.  Sections 4.2 - 4.7: the
     type of groups ([S02_TypeOfGroups.v]), abstract groups
     ([S03_AbstractGroups.v]), homomorphisms ([S04_Homomorphisms.v]),
-    the sign homomorphism ([S05_Sign.v], partly), bicycles
+    the sign homomorphism ([S05_Sign.v]), bicycles
     ([S06_Bicycles.v]) and ∞-groups ([S07_InfinityGroups.v]), one file per section, each starting
     with its own summary.  They build on Chapters 2 and 3
     ([Circle.Circle]).  Everything compiles with nothing admitted.

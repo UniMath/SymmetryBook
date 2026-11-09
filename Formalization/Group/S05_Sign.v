@@ -83,8 +83,12 @@
       case distinction [A_0 :≡ A_1 :≡ 𝟙] in [def:alternating-groups]
       ([AG]), and [BAG_isConn_stmt] is stated for [n ≥ 2].
 
-    Left out (statements only, no proofs yet)
-    - Exercise [xca:isos_A3_C3] ([xca_isos_A3_C3_stmt]). *)
+    - Exercise [xca:isos_A3_C3] ([xca_isos_A3_C3], placed at the end,
+      statement [xca_isos_A3_C3_stmt] at the anchor): two different
+      isomorphisms [A_3 → C_3], for any pointing [p]; see the comment
+      before [IsosA3C3].
+
+    Nothing in this section is left out. *)
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
@@ -473,11 +477,12 @@ Section SignOrdering.
 
 End SignOrdering.
 
-(** ** Left-out results of this section
+(** ** The sign homomorphism, relative to a pointing
 
     Definition [def:sgn] needs a pointing of [Bsgn], from the standard
-    sign ordering of [Fin n]; we define the unpointed map [Bsgn] and state
-    the rest relative to a pointing [p] (statements only). *)
+    sign ordering of [Fin n]; we define the unpointed map [Bsgn] here and
+    the rest relative to a pointing [p].  The standard pointing
+    [Bsgn_pt] is constructed at the end (Section [Alternating]). *)
 Section Sign.
 
   Context `{Univalence}.
@@ -520,7 +525,7 @@ Section Sign.
     := mkgroup (BAG n; (shAG n p; (c; g))).
 
   (** Exercise [xca:isos_A3_C3] ([C_3] is [CG 2]: [CG k] is the cyclic
-      group of order [k+1]). *)
+      group of order [k+1]); proved at the end ([xca_isos_A3_C3]). *)
   Definition xca_isos_A3_C3_stmt : Type
     := forall p c g, {i : Iso (AGp 3 p c g) (CG 2) & {j : Iso (AGp 3 p c g) (CG 2) & i ≠ j}}.
 
@@ -1782,3 +1787,386 @@ Section Alternating.
        end.
 
 End Alternating.
+
+(** ** Exercise [xca:isos_A3_C3]
+
+    For any pointing [p] of [Bsgn] and proofs [c], [g] that [BAG 3] is a
+    connected groupoid, two different isomorphisms [A_3 → C_3]
+    ([xca_isos_A3_C3]).  We construct [a3_f : Cyc_3 → BA_3] over [BΣ_3]:
+    a [3]-cycle goes to its underlying set ([cyc_set3]) with the sign
+    ordering obtained by transporting the given point [x0] of
+    [Bsgn(sh)] along any identification with [pt_3] ([a3_S],
+    [a3_S_contr]).  This is well defined since the image of [σ_3] is even
+    (it has order [3], [cyc_s0_even]).  [a3_f] is an equivalence
+    ([a3_f_isEquiv], via [conn_isEquiv_iff_point]): [ap_{a3_f}] is
+    injective since evaluation at [0] is ([Ecyc_isEquiv]), and
+    surjective since an even symmetry of [Fin 3] fixing [0] is trivial
+    ([even_fix0_refl]: otherwise it is the transposition of [1] and [2],
+    [fix0_cases]).  The first isomorphism [a3_iso1] is its inverse; the
+    second [a3_iso2] precomposes the automorphism [a3_swap] of [BA_3]
+    that exchanges the two sign orderings, pointed by a transposition.
+    They differ ([a3_iso_ne]): otherwise [a3_swap] is homotopic to the
+    identity, and the homotopy at [a3_f(pt_3)] is an odd symmetry
+    commuting with the [3]-cycle, which does not exist
+    ([a3_no_odd_central]).  Elements of [BAG 3] are built with [bagA3],
+    which gives the family explicitly: inferring it, and comparing the
+    instances of [el2], [Bsgn] and [el2_oth] (which are universe
+    polymorphic), makes Rocq unfold [Bsgn] and is very slow. *)
+
+Section IsosA3C3.
+
+  Context `{Univalence}.
+
+  Local Notation pt := (pt_n 2).
+  Local Notation σ := (sigma_n 2).
+  Local Notation A0 := (sh (SG 3)).
+  Local Notation BS3 := (utype (BG (SG 3))).
+  Local Notation zinv := (eqinv (snd (finsuccEqv 2))).
+  Local Notation dA := (finset_isDecSet (comp_isFinSet A0)).
+  Local Notation Fsg := (fun B : BS3 => el2 (Bsgn 3 B)).
+
+  Definition Car3 (B : BS3) : Type := fst (fst B).
+
+  Local Notation z0 := (inl (inl (inr tt)) : Fin 3).
+  Local Notation z1 := (inl (inr tt) : Fin 3).
+  Local Notation z2 := (inr tt : Fin 3).
+
+  Definition a3_cases (v : Fin 3) : ((v = z0) + (v = z1)) + (v = z2)
+    := match v with
+       | inl (inl (inl e)) => match e with end
+       | inl (inl (inr tt)) => inl (inl refl)
+       | inl (inr tt) => inl (inr refl)
+       | inr tt => inr refl
+       end.
+
+  Definition f3_01 : z0 ≠ z1 := fun r => inl_ne_inr _ _ (path_sum_inl _ r).
+  Definition f3_02 : z0 ≠ z2 := fun r => inl_ne_inr _ _ r.
+  Definition f3_12 : z1 ≠ z2 := fun r => inl_ne_inr _ _ r.
+
+  (** A permutation of [Fin 3] fixing [0] is the identity or swaps [1]
+      and [2]. *)
+  Definition fix0_cases (e : Fin 3 -> Fin 3) (ie : forall x y, e x = e y -> x = y)
+    (h0 : e z0 = z0) : (forall x, e x = x) + ((e z1 = z2) × (e z2 = z1)).
+  Proof.
+    destruct (a3_cases (e z1)) as [[E1|E1]|E1].
+    - destruct (f3_01 (ie _ _ (h0 @ E1^))).
+    - destruct (a3_cases (e z2)) as [[E2|E2]|E2].
+      + destruct (f3_02 (ie _ _ (h0 @ E2^))).
+      + destruct (f3_12 (ie _ _ (E1 @ E2^))).
+      + left. intros [[[[]|[]]|[]]|[]]; [exact h0 | exact E1 | exact E2].
+    - destruct (a3_cases (e z2)) as [[E2|E2]|E2].
+      + destruct (f3_02 (ie _ _ (h0 @ E2^))).
+      + right. exact (E1; E2).
+      + destruct (f3_12 (ie _ _ (E1 @ E2^))).
+  Defined.
+
+  Definition perm_of_eta (μ : A0 = A0) : perm_of A0 (idtoeqv (ap Car3 μ)) = μ.
+  Proof.
+    unfold perm_of.
+    refine (ap (fun q => path_sigma_prop (fun _ => ptrunc_isProp) (u := A0) (v := A0)
+                           (path_sigma_prop (fun X => isSet_isProp X) (u := fst A0) (v := fst A0) q))
+               (etop_ptoe _ @ ap_compose fst fst μ) @ _).
+    refine (ap (path_sigma_prop (fun _ => ptrunc_isProp) (u := A0) (v := A0))
+               (path_sigma_prop_eta (fun X => isSet_isProp X) (ap fst μ))^ @ _).
+    exact (path_sigma_prop_eta (fun _ => ptrunc_isProp) μ)^.
+  Defined.
+
+  Definition trp_Car3_inj (μ : A0 = A0) (x y : Fin 3)
+    (E : transport Car3 μ x = transport Car3 μ y) : x = y
+    := (transport_Vp Car3 μ x)^ @ ap (transport Car3 μ^) E @ transport_Vp Car3 μ y.
+
+  Definition perm_of_trp (μ : A0 = A0) (τ : Fin 3 ≃ Fin 3)
+    (h : forall x, transport Car3 μ x = fst τ x) : μ = perm_of A0 τ
+    := (perm_of_eta μ)^ @ perm_of_ext A0 (idtoeqv (ap Car3 μ)) τ
+         (fun x => (transport_compose idmap Car3 μ x)^ @ h x).
+
+  (** The key lemma: an even symmetry of [Fin 3] fixing [0] is trivial. *)
+  Definition even_fix0_refl (μ : A0 = A0) (hs : sign μ = yes)
+    (h0 : transport Car3 μ z0 = z0) : μ = refl.
+  Proof.
+    destruct (fix0_cases (transport Car3 μ) (trp_Car3_inj μ) h0) as [h | [E1 E2]].
+    - exact (perm_of_trp μ (idEqv _) h @ perm_of_id A0).
+    - assert (P : μ = perm_of A0 (transpEqv dA z1 z2)).
+      { apply perm_of_trp. intro x. destruct (a3_cases x) as [[e|e]|e]; destruct e^.
+        - exact (h0 @ (transp_ne A0 z1 z2 z0 f3_01 f3_02)^).
+        - exact (E1 @ (transp_a A0 z1 z2)^).
+        - exact (E2 @ (transp_b A0 z1 z2 f3_12)^). }
+      destruct (false_ne_true ((sign_transp A0 z1 z2 f3_12)^ @ ap sign P^ @ hs)).
+  Defined.
+
+  (** The underlying [3]-element set of a [3]-cycle. *)
+  Definition cyc_set3 (c : Cycm 2) : BS3
+    := (fst (fst c); ptrunc_rec ptrunc_isProp (fun q : Fincyc 2 = fst c => trunc (ap fst q)) (snd c)).
+
+  Local Notation s0 := (ap cyc_set3 σ).
+
+  Definition sign_spow_S {B : BS3} (s : B = B) (i : ℕ)
+    : sign (spow s (S i)) = bmul (sign s) (sign (spow s i))
+    := ap sign (trans_concat (spow s i) s)^ @ sign_trans B s (spow s i).
+
+  Definition sign_spow_yes {B : BS3} (s : B = B) (hs : sign s = yes) (i : ℕ)
+    : sign (spow s i) = yes.
+  Proof.
+    induction i as [|i IH]. - exact (sign_refl B).
+    - exact (sign_spow_S s i @ ap011 bmul hs IH).
+  Defined.
+
+  Definition cyc_s0_cube : spow s0 3 = refl := (ap_pw cyc_set3 σ 3)^ @ ap (ap cyc_set3) (sigma_pow 2).
+
+  (** [σ_3] has order [3], so its image is even. *)
+  Definition cyc_s0_even : sign s0 = yes.
+  Proof.
+    assert (E : bmul (sign s0) (bmul (sign s0) (bmul (sign s0) yes)) = yes).
+    { refine ((sign_spow_S s0 2 @ ap (bmul _) (sign_spow_S s0 1 @ ap (bmul _)
+                 (sign_spow_S s0 0 @ ap (bmul _) (sign_refl A0))))^ @ _).
+      exact (ap sign cyc_s0_cube @ sign_refl A0). }
+    revert E. destruct (sign s0); intro E; [exact refl | destruct (false_ne_true E)].
+  Defined.
+
+  Definition r3_even (τ : pt = pt) : sign (ap cyc_set3 τ) = yes.
+  Proof.
+    destruct (pw_surj 2 τ) as [i e].
+    exact (ap (fun t => sign (ap cyc_set3 t)) e @ ap sign (ap_pw cyc_set3 σ i) @ sign_spow_yes s0 cyc_s0_even i).
+  Defined.
+
+  (** Even symmetries fix the points of [Bsgn(B)], odd ones move them. *)
+  Definition even_fix (B : BS3) (lam : B = B) (h : sign lam = yes) (x : el2 (Bsgn 3 B))
+    : transport Fsg lam x = x.
+  Proof.
+    refine ((ptoe_ap Fsg lam x)^ @ _).
+    assert (L := loops2_at (Bsgn 3 B) (ap Fsg lam) x).
+    revert L. destruct (el2_dec (Bsgn 3 B) (ptoe (ap Fsg lam) x) x) as [e|n]; intro L.
+    - exact e.
+    - destruct (false_ne_true (L^ @ h)).
+  Defined.
+
+  Definition even_of_fix (B : BS3) (lam : B = B) (x : el2 (Bsgn 3 B))
+    (h : transport Fsg lam x = x) : sign lam = yes
+    := loops2_yes _ (ap Fsg lam) (fix_refl _ (ap Fsg lam) x (ptoe_ap Fsg lam x @ h)).
+
+  Definition trp_cyc_s0 (x : Fin 3) : transport Car3 s0 x = zinv x
+    := (transport_compose Car3 cyc_set3 σ x)^ @ trp_sigma 2 x.
+
+  Definition ap_fst_inj {X : Type} {P : X -> Type} (hP : forall x, isSet (P x))
+    {u v : {x : X & P x}} (q q' : u = v) (r : ap fst q = ap fst q') : q = q'
+    := path_path_sigma P u v q q' r (hP _ _ _ _ _).
+
+  Local Notation Fam := (fun c : Cycm 2 => el2 (Bsgn 3 (cyc_set3 c))).
+
+  (** The sign ordering of a [3]-cycle: the transport of a given point
+      [x0] of [Bsgn(sh)] along any identification with [pt_3], well
+      defined since these are even. *)
+  Definition a3_S (x0 : el2 (Bsgn 3 A0)) (c : Cycm 2) : Type
+    := {x : Fam c & forall τ : pt = c, x = transport Fam τ x0}.
+
+  Definition a3_fix_x0 (x0 : el2 (Bsgn 3 A0)) (τ : pt = pt) : transport Fam τ x0 = x0
+    := transport_compose Fsg cyc_set3 τ x0 @ even_fix A0 (ap cyc_set3 τ) (r3_even τ) x0.
+
+  Definition a3_S_pt (x0 : el2 (Bsgn 3 A0)) : isContr (a3_S x0 pt).
+  Proof.
+    refine ((x0; fun τ => (a3_fix_x0 x0 τ)^); _).
+    intros [x h]. apply (path_sigma_prop (fun x => Pi_isProp (fun τ => el2_isSet _ x _))).
+    exact (h refl)^.
+  Defined.
+
+  Definition a3_S_contr (x0 : el2 (Bsgn 3 A0)) (c : Cycm 2) : isContr (a3_S x0 c)
+    := ptrunc_rec (isContr_isProp (a3_S x0 c))
+         (fun q : pt = c => transport (fun y : Cycm 2 => isContr (a3_S x0 y)) q (a3_S_pt x0))
+         (snd (component_isConn (Fincyc 2)) pt c).
+
+  Definition a3_chi (x0 : el2 (Bsgn 3 A0)) (c : Cycm 2) : Fam c := fst (fst (a3_S_contr x0 c)).
+
+  (** Elements of [BAG 3], with the family given explicitly (inferring
+      it is slow). *)
+  Definition bagA3 (A : BS3) (x : el2 (Bsgn 3 A)) : BAG 3
+    := @exist BS3 (fun A => el2 (Bsgn 3 A)) A x.
+
+  Definition a3_f (x0 : el2 (Bsgn 3 A0)) (c : Cycm 2) : BAG 3 := bagA3 (cyc_set3 c) (a3_chi x0 c).
+
+  Definition a3_f_pt (x0 : el2 (Bsgn 3 A0)) : a3_f x0 pt = bagA3 A0 x0
+    := ap (bagA3 A0) (snd (fst (a3_S_contr x0 pt)) refl).
+
+  Definition ap_fst_a3_f (x0 : el2 (Bsgn 3 A0)) {c' : Cycm 2} (τ : pt = c')
+    : ap fst (ap (a3_f x0) τ) = ap cyc_set3 τ
+    := (ap_compose (a3_f x0) fst τ)^.
+
+  Definition a3_f_ap_inj (x0 : el2 (Bsgn 3 A0)) (τ τ' : pt = pt) (E : ap (a3_f x0) τ = ap (a3_f x0) τ')
+    : τ = τ'
+    := isInj_cancel (isEquiv_isInj (Ecyc_isEquiv 2)) τ τ'
+         (transport_compose Car3 cyc_set3 τ z0
+          @ ap (fun l : A0 = A0 => transport Car3 l z0)
+               ((ap_fst_a3_f x0 τ)^ @ ap (ap fst) E @ ap_fst_a3_f x0 τ')
+          @ (transport_compose Car3 cyc_set3 τ' z0)^).
+
+  Definition a3_f_ap_surj (x0 : el2 (Bsgn 3 A0)) (l : a3_f x0 pt = a3_f x0 pt)
+    : {τ : pt = pt & l = ap (a3_f x0) τ}.
+  Proof.
+    pose (lam := ap fst l).
+    pose (lam_even := even_of_fix (cyc_set3 pt) lam (a3_chi x0 pt) (trp_snd_path l)).
+    pose (y := transport Car3 lam z0).
+    pose (τ := eqinv (Ecyc_isEquiv 2) y).
+    pose (Eτ := eqinv_r (Ecyc_isEquiv 2) y : Ecyc 2 τ = y).
+    pose (μ := lam @ (ap cyc_set3 τ)^).
+    assert (μ_fix : transport Car3 μ z0 = z0).
+    { exact (transport_pp Car3 lam _ z0
+             @ ap (transport Car3 (ap cyc_set3 τ)^) (Eτ^ @ transport_compose Car3 cyc_set3 τ z0)
+             @ transport_Vp Car3 (ap cyc_set3 τ) z0). }
+    assert (μ_even : sign μ = yes).
+    { refine (ap sign (trans_concat lam (ap cyc_set3 τ)^)^ @ sign_trans A0 _ lam @ _).
+      exact (ap011 bmul (ap sign (ap_V cyc_set3 τ)^ @ r3_even τ^) lam_even). }
+    refine (τ; ap_fst_inj (fun B => el2_isSet (Bsgn 3 B)) l (ap (a3_f x0) τ) _).
+    refine (_ @ (ap_fst_a3_f x0 τ)^).
+    exact ((concat_pV_p lam (ap cyc_set3 τ))^ @ ap (fun m => m @ ap cyc_set3 τ) (even_fix0_refl μ μ_even μ_fix)
+           @ concat_1p _).
+  Defined.
+
+  Definition a3_f_isEquiv (x0 : el2 (Bsgn 3 A0)) (c : isConn (BAG 3)) : isEquiv (a3_f x0).
+  Proof.
+    refine (snd (conn_isEquiv_iff_point (a3_f x0) (component_isConn _) c pt) _).
+    refine (inj_surj_isEquiv (cancel_isInj (BAG_isGrpd 3 _ _) (a3_f_ap_inj x0)) _).
+    intro l. exact (trunc (a3_f_ap_surj x0 l)).
+  Defined.
+
+  (** ** The two isomorphisms *)
+
+  Definition a3_pt0 (p : sh (SG 2) = Bsgn 3 (sh (SG 3))) : el2 (Bsgn 3 A0) := trp el2 p fin2_0.
+
+  Definition a3_g (x0 : el2 (Bsgn 3 A0)) (c : isConn (BAG 3)) : BAG 3 -> Cycm 2
+    := eqinv (a3_f_isEquiv x0 c).
+
+  Definition a3_g_pt (x0 : el2 (Bsgn 3 A0)) (c : isConn (BAG 3)) : pt = a3_g x0 c (bagA3 A0 x0)
+    := (eqinv_l (a3_f_isEquiv x0 c) pt)^ @ ap (a3_g x0 c) (a3_f_pt x0).
+
+  (** The automorphism of [BA_3] exchanging the two sign orderings. *)
+  Definition el2_oth (T : BSG2) (x : el2 T) : el2 T := fst (el2_other_ex T x).
+
+  Definition el2_oth_ne (T : BSG2) (x : el2 T) : el2_oth T x ≠ x := snd (el2_other_ex T x).
+
+  Definition el2_oth_oth (T : BSG2) (x : el2 T) : el2_oth T (el2_oth T x) = x
+    := el2_two T _ _ _ (el2_oth_ne T (el2_oth T x)) (el2_oth_ne T x).
+
+  Definition a3_swap (z : BAG 3) : BAG 3 := bagA3 (fst z) (el2_oth _ (snd z)).
+
+  Definition a3_swap_swap (z : BAG 3) : a3_swap (a3_swap z) = z
+    := ap (bagA3 (fst z)) (el2_oth_oth _ (snd z)).
+
+  Definition a3_swap_isEquiv : isEquiv a3_swap := iso_to_isEquiv a3_swap a3_swap a3_swap_swap a3_swap_swap.
+
+  Definition a3_swap_pt (x0 : el2 (Bsgn 3 A0)) : bagA3 A0 x0 = bagA3 A0 (el2_oth (Bsgn 3 A0) x0).
+  Proof.
+    pose (Tl := perm_of A0 (transpEqv dA z1 z2)).
+    assert (mv : transport Fsg Tl x0 ≠ x0).
+    { intro e. exact (false_ne_true ((sign_transp A0 z1 z2 f3_12)^ @ even_of_fix A0 Tl x0 e)). }
+    exact (path_sigma Fsg (bagA3 A0 x0) (bagA3 A0 (el2_oth (Bsgn 3 A0) x0)) Tl
+             (el2_two (Bsgn 3 A0) (transport Fsg Tl x0) x0 (el2_oth (Bsgn 3 A0) x0) mv
+                (fun e => el2_oth_ne (Bsgn 3 A0) x0 e^))).
+  Defined.
+
+  (** An identification [phi(z) = z] lies over an odd symmetry. *)
+  Definition trp_snd_bag {u v : BAG 3} (r : u = v) : transport Fsg (ap fst r) (snd u) = snd v
+    := match r with refl => refl end.
+
+  Definition a3_swap_snd_ne (z : BAG 3) : snd (a3_swap z) ≠ snd z := el2_oth_ne _ (snd z).
+
+  Definition a3_swap_fix_odd (z : BAG 3) (r : a3_swap z = z) : sign (ap fst r) ≠ yes
+    := fun h => a3_swap_snd_ne z ((even_fix (fst z) (ap fst r) h (snd (a3_swap z)))^ @ trp_snd_bag r).
+
+  Definition nat_0_ne_S {m : ℕ} : (0%nat = S m) -> Empty
+    := fun e => transport (fun j : ℕ => match j with O => Unit | S _ => Empty end) e tt.
+
+  Definition zinv_z0_ne : zinv z0 ≠ z0.
+  Proof.
+    intro e.
+    pose (E := ap (fp 2) (path_fin_to_finnat_fin_zero 2)^ @ (ftf_zinv 2 z0)^ @ ap fin_to_finnat e
+               @ path_fin_to_finnat_fin_zero 2).
+    exact (nat_0_ne_S (ap fst E)^).
+  Defined.
+
+  Definition spow_comm {X : Type} {a : X} (s : a = a) (i : ℕ) : s @ spow s i = spow s i @ s.
+  Proof.
+    induction i as [|i IH]. - exact (concat_p1 s @ (concat_1p s)^).
+    - exact (concat_p_pp _ _ _ @ ap (fun m => m @ s) IH).
+  Defined.
+
+  Definition cyc3_comm_Car (t : pt = pt) (ht : σ @ t = t @ σ) (x : Fin 3)
+    : transport (Car 2) t (zinv x) = zinv (transport (Car 2) t x)
+    := (ap (transport (Car 2) t) (trp_sigma 2 x))^ @ (transport_pp (Car 2) σ t x)^
+       @ ap (fun f : pt = pt => transport (Car 2) f x) ht @ transport_pp (Car 2) t σ x
+       @ trp_sigma 2 _.
+
+  (** No odd symmetry of [Fin 3] commutes with the [3]-cycle [s0]. *)
+  Definition a3_no_odd_central (lam : A0 = A0) (hodd : sign lam ≠ yes) (hc : s0 @ lam = lam @ s0)
+    : Empty.
+  Proof.
+    pose (cl := fun x => (ap (transport Car3 lam) (trp_cyc_s0 x))^ @ (transport_pp Car3 s0 lam x)^
+                         @ ap (fun f : A0 = A0 => transport Car3 f x) hc
+                         @ transport_pp Car3 lam s0 x @ trp_cyc_s0 (transport Car3 lam x)).
+    pose (y := transport Car3 lam z0).
+    pose (τ := eqinv (Ecyc_isEquiv 2) y).
+    pose (Eτ := eqinv_r (Ecyc_isEquiv 2) y : Ecyc 2 τ = y).
+    pose (q := ap cyc_set3 τ).
+    pose (μ := lam @ q^).
+    assert (μ_fix : transport Car3 μ z0 = z0).
+    { exact (transport_pp Car3 lam _ z0
+             @ ap (transport Car3 q^) (Eτ^ @ transport_compose Car3 cyc_set3 τ z0)
+             @ transport_Vp Car3 q z0). }
+    assert (μ_odd : sign μ ≠ yes).
+    { intro h. apply hodd.
+      refine (_ @ h).
+      exact ((ap (fun b => bmul b (sign lam)) (ap sign (ap_V cyc_set3 τ)^ @ r3_even τ^))^
+             @ (sign_trans A0 q^ lam)^ @ ap sign (trans_concat lam q^)). }
+    assert (cq : forall x, transport Car3 q (zinv x) = zinv (transport Car3 q x)).
+    { intro x. destruct (pw_surj 2 τ) as [i e].
+      refine ((transport_compose Car3 cyc_set3 τ _)^ @ cyc3_comm_Car τ _ x @ ap zinv (transport_compose Car3 cyc_set3 τ x)).
+      exact (ap (fun t => σ @ t) e @ spow_comm σ i @ ap (fun t => t @ σ) e^). }
+    assert (cqV : forall w, transport Car3 q^ (zinv w) = zinv (transport Car3 q^ w)).
+    { intro w. exact (ap (transport Car3 q^) (ap zinv (transport_pV Car3 q w)^ @ (cq _)^)
+                      @ transport_Vp Car3 q _). }
+    assert (cμ : forall x, transport Car3 μ (zinv x) = zinv (transport Car3 μ x)).
+    { intro x. exact (transport_pp Car3 lam q^ (zinv x) @ ap (transport Car3 q^) (cl x)
+                      @ cqV _ @ ap zinv (transport_pp Car3 lam q^ x)^). }
+    destruct (fix0_cases (transport Car3 μ) (trp_Car3_inj μ) μ_fix) as [h | [E1 E2]].
+    - exact (μ_odd (ap sign (perm_of_trp μ (idEqv _) h @ perm_of_id A0) @ sign_refl A0)).
+    - pose (w := zinv z0).
+      assert (Ew : transport Car3 μ w = w) by exact (cμ z0 @ ap zinv μ_fix).
+      destruct (a3_cases w) as [[e|e]|e].
+      + exact (zinv_z0_ne e).
+      + exact (f3_12 (((ap (transport Car3 μ) e)^ @ Ew @ e)^ @ E1)).
+      + exact (f3_12 (E2^ @ (ap (transport Car3 μ) e)^ @ Ew @ e)).
+  Defined.
+
+  Definition a3_iso1 (p : sh (SG 2) = Bsgn 3 (sh (SG 3))) (c : isConn (BAG 3)) (g : isGrpd (BAG 3)) : Iso (AGp 3 p c g) (CG 2)
+    := (mkhom ((a3_g (a3_pt0 p) c; a3_g_pt (a3_pt0 p) c) : BG (AGp 3 p c g) →* BG (CG 2));
+        eqinv_isEquiv (a3_f_isEquiv (a3_pt0 p) c)).
+
+  Definition a3_iso2 (p : sh (SG 2) = Bsgn 3 (sh (SG 3))) (c : isConn (BAG 3)) (g : isGrpd (BAG 3)) : Iso (AGp 3 p c g) (CG 2)
+    := (mkhom (pcomp ((a3_g (a3_pt0 p) c; a3_g_pt (a3_pt0 p) c) : BG (AGp 3 p c g) →* BG (CG 2))
+                     ((a3_swap; a3_swap_pt (a3_pt0 p)) : BG (AGp 3 p c g) →* BG (AGp 3 p c g)));
+        comp_isEquiv a3_swap_isEquiv (eqinv_isEquiv (a3_f_isEquiv (a3_pt0 p) c))).
+
+  (** If [iA = jA], then [a3_swap] is homotopic to the identity, and the
+      homotopy at [fA(pt_3)] gives an odd symmetry commuting with [s0]. *)
+  Definition a3_iso_ne (p : sh (SG 2) = Bsgn 3 (sh (SG 3))) (c : isConn (BAG 3)) (g : isGrpd (BAG 3)) : a3_iso1 p c g ≠ a3_iso2 p c g.
+  Proof.
+    intro E.
+    pose (x0 := a3_pt0 p).
+    pose (t := a3_f_isEquiv x0 c).
+    pose (hf := ap (fun i : Iso (AGp 3 p c g) (CG 2) => fst (Bf (fst i))) E
+                : a3_g x0 c = comp (a3_g x0 c) a3_swap).
+    pose (hphi := fun z => (eqinv_r t (a3_swap z))^ @ ap (a3_f x0) (ap10 hf z)^ @ eqinv_r t z
+                           : a3_swap z = z).
+    pose (z := a3_f x0 pt).
+    pose (l := ap (a3_f x0) σ).
+    pose (lam := ap fst (hphi z)).
+    assert (hc : s0 @ lam = lam @ s0).
+    { refine ((ap_pp fst _ _ @ ap (fun m => m @ lam) ((ap_compose a3_swap fst l)^ @ ap_fst_a3_f x0 σ))^
+              @ ap (ap fst) (concat_Ap hphi l) @ _).
+      exact (ap_pp fst _ _ @ ap (fun m => lam @ m) (ap (ap fst) (ap_idmap l) @ ap_fst_a3_f x0 σ)). }
+    exact (a3_no_odd_central lam (a3_swap_fix_odd z (hphi z)) hc).
+  Defined.
+
+
+End IsosA3C3.
+
+Definition xca_isos_A3_C3 `{Univalence} : xca_isos_A3_C3_stmt
+  := fun p c g => (a3_iso1 p c g; (a3_iso2 p c g; a3_iso_ne p c g)).
