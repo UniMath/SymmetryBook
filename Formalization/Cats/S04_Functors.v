@@ -26,6 +26,15 @@
       For wild functors in general, [λ], [ρ] and [α] hold as well
       ([wild_functor_laws], with [path_Functor_wild]; the statement
       assumes [Funext], since the laws are compared as functions).
+    - Exercise [xca:wildcat-of-precats] ([xca_wildcat_of_precats]):
+      [PreCatCat] is univalent, and so is the full subcategory [CatCat]
+      on the categories.  Criterion [isUnivalent_from] with the
+      isomorphisms of precategories ([isPreCatIso], bijective on objects
+      and arrows): [C = D] is equivalent to these
+      ([idtoPreCatIso_isEquiv]), by contractibility of the pairs [(D, F)]
+      ([PreCat_total_isContr], with induction on equivalences [ua_ind],
+      [ua_ind2]), and isomorphisms in [PreCatCat] are such functors
+      ([PreCatIso_of_iso]).  The statement assumes [Univalence].
     - Definition [def:full-faithful] ([isFaithful], [isFull],
       [isFullyFaithful]).
     - Definition [def:nat-trans] ([NatTrans]); examples [ex:pt-unpt-unit]
@@ -46,8 +55,6 @@
     Left out (statements only, no proofs yet)
     - The pentagon fillers of exercise [xca:wildprecat-of-wildprecats]
       for wild functors.
-    - Exercise [xca:wildcat-of-precats] ([xca_wildcat_of_precats_stmt],
-      for precategories).
 
     Left out (not formalized)
     - The hidden example after [def:full-faithful] (a work-in-progress
@@ -468,7 +475,167 @@ Definition PreCatCat `{Funext} : WildPreCat
         rhoC := fun C D F => compF_idF_r (snd D) F;
         alphaC := fun C D E W F G K => compF_assoc (snd W) F G K |}.
 
-Definition xca_wildcat_of_precats_stmt `{Funext} : Type := isUnivalent PreCatCat.
+Section PreCatUA.
+
+  Context `{Univalence}.
+
+  (** Induction on equivalences, for a type and for a family of types. *)
+  Definition ua_ind {X : Type} (P : forall (Y : Type) (f : X -> Y), isEquiv f -> Type)
+    (b : P X (id X) (id_isEquiv X)) (Y : Type) (f : X -> Y) (q : isEquiv f) : P Y f q.
+  Proof.
+    pose (e := (f; q) : X ≃ Y).
+    change (P Y (fst e) (snd e)).
+    refine (trp (fun e' : X ≃ Y => P Y (fst e') (snd e')) (ptoe_etop e) _).
+    generalize (etop e). intro p. destruct p. exact b.
+  Defined.
+
+  Definition ua_ind2 {X : Type} (Hm : X -> X -> Type)
+    (P : forall (h : X -> X -> Type) (f : forall A B, Hm A B -> h A B),
+           (forall A B, isEquiv (f A B)) -> Type)
+    (b : P Hm (fun A B => id (Hm A B)) (fun A B => id_isEquiv (Hm A B)))
+    (h : X -> X -> Type) (f : forall A B, Hm A B -> h A B) (q : forall A B, isEquiv (f A B))
+    : P h f q.
+  Proof.
+    pose (P' := fun (h : X -> X -> Type) (e : forall A B, Hm A B ≃ h A B) =>
+                  P h (fun A B => fst (e A B)) (fun A B => snd (e A B))).
+    change (P' h (fun A B => ((f A B; q A B) : Hm A B ≃ h A B))).
+    pose (k := fun A => ptw_inv (fun B => etop ((f A B; q A B) : Hm A B ≃ h A B))).
+    pose (p := ptw_inv k : Hm = h).
+    assert (E : (fun A B => idtoeqv (ptw (ptw p A) B))
+                = (fun A B => ((f A B; q A B) : Hm A B ≃ h A B))).
+    { apply ptw_inv; intro A. apply ptw_inv; intro B.
+      refine (_ @ ptoe_etop _). apply ap.
+      refine (ap (fun u => ptw (u A) B) (eqinv_r (funext Hm h) k) @ _).
+      exact (ptw (eqinv_r (funext _ _) (fun B => etop ((f A B; q A B) : Hm A B ≃ h A B))) B). }
+    refine (trp (P' h) E _).
+    clearbody p. destruct p. exact b.
+  Defined.
+
+  (** Isomorphisms of precategories: bijective on objects and on arrows. *)
+  Definition isPreCatIso {C D : PreCat} (F : Functor (fst C) (fst D)) : Type
+    := isEquiv (fob F) × (forall A B, isEquiv (@fmap _ _ F A B)).
+
+  Definition isPreCatIso_isProp {C D : PreCat} (F : Functor (fst C) (fst D))
+    : isProp (isPreCatIso F)
+    := prod_isProp (isEquiv_isProp _)
+         (Pi_isProp (fun A => Pi_isProp (fun B => isEquiv_isProp _))).
+
+  Definition idtoPreCatIso {C D : PreCat} (p : C = D)
+    : {F : Functor (fst C) (fst D) & isPreCatIso F}
+    := match p with refl => (idF (fst C); (id_isEquiv _; fun A B => id_isEquiv _)) end.
+
+  Definition PreCat_total_isContr (C : PreCat)
+    : isContr {D : PreCat & {F : Functor (fst C) (fst D) & isPreCatIso F}}.
+  Proof.
+    refine ((C; idtoPreCatIso refl); _).
+    intros [D [F [qo qm]]].
+    destruct C as [[O0 h0 i0 c0 l0 r0 a0] pc0].
+    destruct D as [[O h i c l r a] pd].
+    destruct F as [fo fm fi fc]. cbn in *.
+    revert qm; revert fc; revert fi; revert fm; revert pd; revert a; revert r; revert l;
+      revert c; revert i; revert h; revert qo; revert fo; revert O.
+    refine (ua_ind _ _).
+    intros h i c l r a pd fm fi fc qm.
+    revert fc; revert fi; revert pd; revert a; revert r; revert l; revert c; revert i;
+      revert qm; revert fm; revert h.
+    refine (ua_ind2 h0 _ _).
+    intros i c l r a pd fi fc. cbn in *.
+    destruct (ptw_inv fi : i0 = i).
+    destruct (ptw_inv (fun A => ptw_inv (fun B => ptw_inv (fun E => ptw_inv (fun g =>
+                ptw_inv (fun f => fc A B E f g))))) : c0 = c).
+    destruct (ptw_inv (fun A => ptw_inv (fun B => ptw_inv (fun f => pc0 A B _ _ (l0 A B f) (l A B f))))
+              : l0 = l).
+    destruct (ptw_inv (fun A => ptw_inv (fun B => ptw_inv (fun f => pc0 A B _ _ (r0 A B f) (r A B f))))
+              : r0 = r).
+    destruct (ptw_inv (fun A => ptw_inv (fun B => ptw_inv (fun E => ptw_inv (fun D =>
+                ptw_inv (fun f => ptw_inv (fun g => ptw_inv (fun k =>
+                  pc0 A D _ _ (a0 A B E D f g k) (a A B E D f g k)))))))) : a0 = a).
+    destruct (Pi_isProp (fun A => Pi_isProp (fun B => isSet_isProp _)) pc0 pd).
+    refine (ap (fun w => ((_; pc0) : PreCat; w)) _).
+    refine (path_sigma_prop (fun F => @isPreCatIso_isProp (_; pc0) (_; pc0) F) _).
+    refine (path_Functor_wild _ _ _ _ _ _ _ _).
+    - intro A. apply pc0.
+    - intros A B E f g. apply pc0.
+  Defined.
+
+  Definition idtoPreCatIso_isEquiv (C D : PreCat) : isEquiv (@idtoPreCatIso C D)
+    := isEquiv_from_tot (fun D => @idtoPreCatIso C D)
+         (contr_map_isEquiv (singleton_contr C) (PreCat_total_isContr C) _) D.
+
+End PreCatUA.
+
+(** A path of functors moves [fmap] along the path of object maps. *)
+Definition fmap_trp {C D : WildPreCat} {K K' : Functor C D} (r : K = K') {A B : Ob C}
+  (f : homC A B)
+  : fmap K' f = trp (fun fo : Ob C -> Ob D => homC (fo A) (fo B)) (ap fob r) (fmap K f).
+Proof. destruct r. exact refl. Defined.
+
+Definition HasSec {C D : WildPreCat} (F : Functor C D) (X Y : Ob C) : Type
+  := {σ : homC (fob F X) (fob F Y) -> homC X Y & forall h, fmap F (σ h) = h}.
+
+Definition HasSec_trp {C D : WildPreCat} (F : Functor C D) {X X' Y Y' : Ob C}
+  (a : X = X') (b : Y = Y') : HasSec F X Y -> HasSec F X' Y'.
+Proof. destruct a, b. exact idmap. Defined.
+
+(** An isomorphism in [PreCatCat] is bijective on objects and arrows. *)
+Definition PreCatIso_of_iso `{Univalence} {C D : PreCat} (F : Functor (fst C) (fst D))
+  (i : isIsoC (C := PreCatCat) F) : isPreCatIso F.
+Proof.
+  pose (G := fst (fst i) : Functor (fst D) (fst C)).
+  pose (s := snd (fst i) : compF F G = idF (fst D)).
+  pose (r' := trp (fun K : Functor (fst D) (fst C) => compF K F = idF (fst C))
+                (isIsoC_inv_eq i) (snd (snd i)) : compF G F = idF (fst C)).
+  refine (_; _).
+  - exact (fst (isIsoC_isEquiv (fob F)) ((fob G; ap fob s); (fob G; ap fob r'))).
+  - intros A B.
+    pose (ret := fun g : homC (fob F A) (fob F B) =>
+                   trp (fun fo : Ob (fst C) -> Ob (fst C) => homC (fo A) (fo B)) (ap fob r')
+                     (fmap G g)).
+    assert (sec : HasSec F A B).
+    { refine (HasSec_trp F (ptw (ap fob r') A) (ptw (ap fob r') B) _).
+      pose (P := fun fo : Ob (fst D) -> Ob (fst D) => homC (fo (fob F A)) (fo (fob F B))).
+      refine ((fun h => fmap G (trp P (ap fob s) h)); _).
+      intro h.
+      refine ((trp_V_p P (ap fob s) _)^ @ ap (trp P (ap fob s)⁻¹) _ @ trp_V_p P (ap fob s) h).
+      exact (fmap_trp s _)^. }
+    exact (fst (isIsoC_isEquiv (@fmap _ _ F A B))
+             ((fst sec; ptw_inv (snd sec)); (ret; ptw_inv (fun f => (fmap_trp r' f)^)))).
+Defined.
+
+Definition PreCatCat_isUnivalent `{Univalence} : isUnivalent PreCatCat
+  := isUnivalent_from PreCatCat (fun C D F => isPreCatIso F) (fun C D F => isPreCatIso_isProp F)
+       (fun C D F i => PreCatIso_of_iso F i)
+       (fun C D => (idtoPreCatIso; idtoPreCatIso_isEquiv C D))
+       (fun C D p => match p with refl => refl end).
+
+(** The full subcategory on the categories. *)
+Definition isUnivalentU `{Funext} (C : PreCat) : PropU
+  := (isUnivalent (fst C); Pi_isProp (fun A => Pi_isProp (fun B => isEquiv_isProp _))).
+
+Definition CatCat `{Funext} : WildPreCat := FullSub PreCatCat isUnivalentU.
+
+(** Exercise [xca:wildcat-of-precats], with [Univalence]: [PreCatCat]
+    is univalent, and so is its full subcategory [CatCat] on the
+    categories. *)
+Definition xca_wildcat_of_precats_stmt `{Univalence} : Type
+  := isUnivalent PreCatCat × isUnivalent CatCat.
+
+(** The proof uses the criterion [isUnivalent_from] with the property
+    [isPreCatIso F]: [F] is an equivalence on objects and on all types of
+    arrows (an isomorphism of precategories).  Identifications [C = D]
+    are equivalent to such functors ([idtoPreCatIso_isEquiv]), since the
+    type of pairs [(D, F)] is contractible ([PreCat_total_isContr]): by
+    induction on equivalences ([ua_ind], [ua_ind2]) the objects and arrows
+    of [D] are those of [C] and [F] is the identity on them; the identity
+    arrows and the composition then agree with those of [C], and the
+    rest are propositions since the types of arrows are sets.  An
+    isomorphism in [PreCatCat] is bijective on objects and arrows
+    ([PreCatIso_of_iso]): its inverse gives a retraction of [fmap F],
+    and a section after moving along the identification [G F = id] on
+    objects ([HasSec_trp]). *)
+
+Definition xca_wildcat_of_precats `{Univalence} : xca_wildcat_of_precats_stmt
+  := (PreCatCat_isUnivalent; FullSub_isUnivalent PreCatCat isUnivalentU PreCatCat_isUnivalent).
 
 (** Definition [def:full-faithful]. *)
 Definition isFaithful {C D : WildPreCat} (F : Functor C D) : Type
