@@ -33,7 +33,9 @@
       [xca:bicycle-normal-if-commuting] and [xca:bicycle-list-equivalence]:
       normality iff [H_x = H_y] ([Hx], [xca_normal_Hx]; for the converse, a symmetry [x ↦ y] is
       built by relabelling, [relabel], [relabel_sym]); commuting bicycles
-      are normal ([isCommuting], [commuting_isNormal]); the map
+      are normal ([isCommuting], [commuting_isNormal]), but [ab = ba] is
+      not necessary: the infinite dihedral bicycle below is normal and
+      not commuting ([xca_commuting_not_necessary]); the map
       [Cyc × Cyc → Bicyc], [((X,t),(Y,u)) ↦ (X × Y, t × id, id × u)]
       ([prodBicyc]) is injective with commuting image, and [(𝟚, swap,
       swap)] is a commuting bicycle not in the image
@@ -1058,6 +1060,19 @@ Section Frieze.
     - refine (dre_sym n; ap inr _).
       exact (ap (fun u => zadd u n) zneg_0 @ zadd_0_l' n)^.
   Defined.
+
+  (** Exercise [xca:bicycle-normal-if-commuting], second part: [ab = ba]
+      is not necessary for normality, since the infinite dihedral
+      bicycle is normal but [ab(inl 0) = inr(-1)] and [ba(inl 0) = inr 1]. *)
+  Definition dihedral_not_commuting : ¬ isCommuting D.
+  Proof.
+    intro c. pose (e := ap toInt (ap (fun u : ℤ ⨿ ℤ => match u with inl m => m | inr m => m end)
+                                     (ptw c x0))).
+    cbn in e. discriminate e.
+  Defined.
+
+  Definition xca_commuting_not_necessary : {B : Bicyc & isNormal B × ¬ isCommuting B}
+    := (D; (dihedral_isNormal; dihedral_not_commuting)).
 
   (** [T] and [R] of [rem:inf-dihedral-frieze], concretely: [T] is the
       translation by [-1] and [R] the reflection [ρ_0]. *)
