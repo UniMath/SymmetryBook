@@ -11,7 +11,7 @@
     coverings over the circle ([S06_ConnCoverings.v]), permutations
     ([S07_Permutations.v]), the [m]-th root ([S08_MthRoot.v]) and higher
     images ([S09_HigherImages.v]), and the universal property of [Cyc_n]
-    ([S10_UniversalPropertyCycn.v], statements only); 3.6 partly.  The
+    ([S10_UniversalPropertyCycn.v]).  The
     hidden Section 3.11 is not formalized.
     They build on Chapter 2 ([IntroUF.IntroUF]).  Everything compiles with
     nothing admitted.
