@@ -29,6 +29,16 @@
     - Lemma [lem:ff-eso] ([lem_ff_eso]): for [C] a category and [F] fully
       faithful, [∑_A F(A) ≅ B] is equivalent to a singleton once
       inhabited ([IsoC_postcomp_isEquiv], [fmap_iso_isEquiv]).
+    - Theorem [thm:ff-eso-equiv] ([thm_ff_eso_equiv]; split essential
+      surjectivity from [lem:ff-eso], [ff_eso_split]).
+    - Corollary [cor:Cat-ua] ([cor_Cat_ua], with [Univalence]): via
+      [idtoPreCatIso] of exercise [xca:wildcat-of-precats]; between
+      categories, isomorphisms of precategories and equivalences are
+      logically equivalent propositions ([preiso_to_equiv],
+      [equiv_to_preiso]).
+    - Corollary [cor:cat-2-type] ([cor_cat_2_type], with
+      [Univalence]); functors between categories form a 1-type
+      ([Functor_isTrunc1]).
     - Theorem [thm:1types-are-groupoids], first part
       ([thm_1types_are_groupoids], with [Funext]; the inverse is
       [PathFun]).
@@ -36,9 +46,7 @@
       exercise [xca:Rezk-completion-1trunc] ([TruncPathGrpd]).
 
     Left out (statements only, no proofs yet)
-    - Lemmas [lem:precomp-equiv-cat], theorem [thm:ff-eso-equiv],
-      corollaries [cor:Cat-ua] and [cor:cat-2-type] (the [..._stmt]
-      definitions).
+    - Lemma [lem:precomp-equiv-cat] ([lem_precomp_equiv_cat_stmt]).
     - The smallness
       part of theorem [thm:Rezk-completion] ([thm_Rezk_small_stmt]) and
       exercise [xca:Rezk-completion-locally-small]
@@ -307,14 +315,35 @@ Proof.
            (IsoC_postcomp_isEquiv i0)).
 Defined.
 
-(** Theorem [thm:ff-eso-equiv] (statement only). *)
+(** Theorem [thm:ff-eso-equiv]. *)
 Definition thm_ff_eso_equiv_stmt `{Funext} : Type
   := forall (C : Cat) (D : PreCat),
        isInj (fun e : CatEquiv (fst C) (fst D) => fst e)
        × (forall F : Functor (fst C) (fst D),
             ptrunc (isCatEquiv F) <-> isFullyFaithful F × isEso F).
 
-(** Corollary [cor:Cat-ua] (statement only). *)
+(** For [C] a category, a fully faithful essentially surjective functor
+    is split essentially surjective ([lem:ff-eso]). *)
+Definition ff_eso_split `{Funext} (C : Cat) {D : WildPreCat} (F : Functor (fst C) D)
+  (ff : isFullyFaithful F) (eso : isEso F) : isSplitEso F
+  := fun B => ptrunc_rec (lem_ff_eso C D F ff B) idmap (eso B).
+
+Definition thm_ff_eso_equiv `{Funext} : thm_ff_eso_equiv_stmt.
+Proof.
+  intros C D. refine (_; _).
+  - intros F [[F1 x] p] [[F2 x'] p']. cbn in p, p'. destruct p, p'.
+    exact (ap (fun y => (((F; y) : CatEquiv _ _); refl)) (lem_cat_equiv_is_prop C (fst D) F x x')).
+  - intro F. split.
+    + refine (ptrunc_rec (prod_isProp (Pi_isProp (fun A => Pi_isProp (fun B => isEquiv_isProp _)))
+                                      (Pi_isProp (fun B => ptrunc_isProp))) _).
+      intro e. refine (cat_equiv_ff F e; fun B => trunc _).
+      exact (fob (radj (fst e)) B;
+             trp (fun F1 : Functor (fst C) (fst D) => IsoC (fob F1 (fob (radj (fst e)) B)) B)
+                 (fst (snd e)) (adj_counit (fst e) B; snd (snd (snd e)) B)).
+    + intros [ff eso]. exact (trunc (fse_equiv F ff (ff_eso_split C F ff eso))).
+Defined.
+
+(** Corollary [cor:Cat-ua]. *)
 Definition idAdj (C : WildPreCat) : Adjunction C C
   := Build_Adjunction C C (idF C) (idF C) (fun A B => idEqv _) (fun A' A B B' h f g => refl).
 
@@ -330,8 +359,86 @@ Definition idtoCatEquiv {C D : WildPreCat} (p : C = D) : CatEquiv C D
 Definition cor_Cat_ua_stmt : Type
   := forall C D : Cat, isEquiv (fun p : C = D => idtoCatEquiv (ap fst p)).
 
-(** Corollary [cor:cat-2-type] (statement only). *)
+(** Corollary [cor:cat-2-type]. *)
 Definition cor_cat_2_type_stmt : Type := IsTrunc 2 Cat.
+
+(** Corollary [cor:Cat-ua].  Through [idtoPreCatIso] (exercise
+    [xca:wildcat-of-precats]): for categories, isomorphisms of
+    precategories are the same as equivalences ([preiso_to_equiv],
+    [equiv_to_preiso]), both being propositions. *)
+Definition toPreCat (C : Cat) : PreCat := (fst C; fst (snd C)).
+
+Definition preiso_to_equiv `{Funext} {C D : PreCat} (F : Functor (fst C) (fst D))
+  (i : isPreCatIso F) : isCatEquiv F
+  := fse_equiv F (snd i) (fun B => (eqinv (fst i) B; idtoiso (eqinv_r (fst i) B))).
+
+Definition equiv_to_preiso `{Funext} (C D : Cat) (F : Functor (fst C) (fst D))
+  (e : isCatEquiv F) : isPreCatIso (C := toPreCat C) (D := toPreCat D) F.
+Proof.
+  refine ((_ : isEquiv (fob F)); cat_equiv_ff F e).
+  pose (uD := snd (snd D)).
+  apply inj_surj_isEquiv.
+  - intro B.
+    refine (isProp_Eqv (Eqv_inv (tot (fun A (p : B = fob F A) => idtoiso p^);
+                                 tot_isEquiv _ (fun A => comp_isEquiv _ (uD (fob F A) B))))
+                       (lem_ff_eso C (fst D) F (cat_equiv_ff F e) B)).
+    exact (iso_to_isEquiv (fun p : B = fob F A => p^) (fun p => p^) inv_V inv_V).
+  - intro B. apply trunc.
+    refine (fob (radj (fst e)) B; (eqinv (uD _ B) _)^).
+    exact (trp (fun F1 : Functor (fst C) (fst D) => IsoC (fob F1 (fob (radj (fst e)) B)) B)
+               (fst (snd e)) (adj_counit (fst e) B; snd (snd (snd e)) B)).
+Defined.
+
+Definition Cat_ua `{Univalence} (C D : Cat)
+  : isEquiv (fun p : C = D => idtoCatEquiv (ap fst p)).
+Proof.
+  pose (E1 := subtype_paths_eqv (Q := fun X : WildPreCat => isPreCat X × isUnivalent X)
+                (fun X => prod_isProp (Pi_isProp (fun A => Pi_isProp (fun B => isSet_isProp _)))
+                            (Pi_isProp (fun A => Pi_isProp (fun B => isEquiv_isProp _)))) C D).
+  pose (E2 := subtype_paths_eqv (Q := isPreCat)
+                (fun X => Pi_isProp (fun A => Pi_isProp (fun B => isSet_isProp _)))
+                (toPreCat C) (toPreCat D)).
+  pose (h := tot (fun F (i : isPreCatIso (C := toPreCat C) (D := toPreCat D) F) =>
+                    preiso_to_equiv F i)).
+  assert (th : isEquiv h).
+  { refine (tot_isEquiv _ (fun F => iso_to_isEquiv _ (equiv_to_preiso C D F) _ _)).
+    - intro i. exact (@isPreCatIso_isProp _ (toPreCat C) (toPreCat D) F _ _).
+    - intro e. exact (lem_cat_equiv_is_prop C (fst D) F _ _). }
+  refine (isEquiv_homotopic (fun p => h (idtoPreCatIso (eqinv (snd E2) (fst E1 p)))) _ _ _).
+  - intro p. destruct p.
+    refine (ap (fun q => h (idtoPreCatIso q)) (eqinv_l (snd E2) refl) @ _).
+    exact (ap (fun y => ((idF (fst C); y) : CatEquiv _ _)) (lem_cat_equiv_is_prop C (fst C) _ _ _)).
+  - exact (comp_isEquiv (comp_isEquiv (comp_isEquiv (snd E1) (eqinv_isEquiv (snd E2)))
+                                      (idtoPreCatIso_isEquiv _ _)) th).
+Defined.
+
+Definition cor_Cat_ua `{Univalence} : cor_Cat_ua_stmt := Cat_ua.
+
+(** Corollary [cor:cat-2-type]: functors between categories form a
+    1-type ([Functor_isTrunc1]), and so do equivalences. *)
+Definition issig_Functor (C D : WildPreCat)
+  : {fo : Ob C -> Ob D &
+     {fm : forall A B, homC A B -> homC (fo A) (fo B) &
+      {fi : forall A, fm A A (idC A) = idC (fo A) &
+       forall A B E (f : homC A B) (g : homC B E), fm A E (g ∘c f) = fm B E g ∘c fm A B f}}}
+    <~> Functor C D
+  := ltac:(issig).
+
+Definition Functor_isTrunc1 `{Funext} (C D : Cat) : IsTrunc 1 (Functor (fst C) (fst D)).
+Proof.
+  pose (obD := isGrpd_IsTrunc (Ob_isGrpd D)).
+  pose (hD := fun A B => isSet_IsHSet (fst (snd D) A B)).
+  exact (istrunc_equiv_istrunc _ (issig_Functor (fst C) (fst D))).
+Defined.
+
+Definition cor_cat_2_type `{Univalence} : cor_cat_2_type_stmt.
+Proof.
+  apply istrunc_S. intros C D.
+  pose (hF := Functor_isTrunc1 C D).
+  pose (hE := fun F : Functor (fst C) (fst D) =>
+                isProp_IsHProp (lem_cat_equiv_is_prop C (fst D) F)).
+  exact (istrunc_equiv_istrunc _ (Equiv_of_Eqv (Eqv_inv (_; Cat_ua C D)))).
+Defined.
 
 (** Definition [def:we-cat]. *)
 Definition isWeakEquiv {C D : WildPreCat} (F : Functor C D) : Type
