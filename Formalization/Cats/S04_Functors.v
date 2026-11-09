@@ -463,7 +463,8 @@ Proof.
     + intros A B E' f g. exact (wild_assoc_law (fmG _ _) (fmK _ _) _ _ _).
 Defined.
 
-(** Exercise [xca:wildcat-of-precats] (statement only): the precategories,
+(** Exercise [xca:wildcat-of-precats] (proved below as
+    [xca_wildcat_of_precats]): the precategories,
     with functors as arrows, form a univalent wild category; likewise the
     categories. *)
 Definition PreCatCat `{Funext} : WildPreCat

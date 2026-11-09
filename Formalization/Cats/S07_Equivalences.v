@@ -52,14 +52,14 @@
       [PathFun]); second part, [U^{≤1} ≃ Gpd] ([thm_1types_gpd], with
       [Univalence]; [GpdFun] and [cor:Cat-ua]).
     - Definition [def:flagged-cat] ([FlCat]).
+    - Theorem [thm:flagged-cat-equiv] ([thm_flagged_cat_equiv], with
+      [Univalence] and assuming that Rezk completions are categories,
+      which [Rezk_isUnivalent] provides under [Univalence]; the inverse
+      is [FlPre]).  NOTE for the book text: it says "sending a category
+      [C]"; it should be a precategory.
     - Exercise [xca:Rezk-completion-1trunc] ([xca_Rezk_completion_1trunc],
       with [Univalence]): the path pregroupoid [TruncPathGrpd]; [Ob(η)]
       extends to an equivalence [‖A‖₁ ≃ Ob(L)] ([RT_f]).
-
-    Left out (statements only, no proofs yet)
-    - Theorem [thm:flagged-cat-equiv] ([thm_flagged_cat_equiv_stmt],
-      assuming that Rezk completions are categories).  NOTE for the book
-      text: it says "sending a category [C]"; it should be a precategory.
 
     Left out (not formalized)
     - Remark [rem:chicken-or-egg] (informal). *)
@@ -1051,7 +1051,7 @@ Definition xca_Rezk_completion_1trunc `{Univalence} : xca_Rezk_completion_1trunc
 (** Definition [def:flagged-cat]. *)
 Definition FlCat : Type := {C : Cat & {A : Type & {f : A -> Ob (fst C) & isSurj f}}}.
 
-(** Theorem [thm:flagged-cat-equiv] (statement only), assuming that the
+(** Theorem [thm:flagged-cat-equiv], assuming that the
     Rezk completion is a category.  NOTE for the book text: the theorem
     says "sending a category [C]"; it should be a precategory. *)
 Definition thm_flagged_cat_equiv_stmt `{Funext} : Type
@@ -1064,6 +1064,127 @@ Definition thm_flagged_cat_equiv_stmt `{Funext} : Type
                                 (fun w => trunc (fst w; (eqinv (u _ _ _ B) (snd w))^))
                                 (RezkEta_eso (fst C) (snd C) B))))
                   : FlCat).
+
+(** The proof (with [Univalence]): the inverse sends [(D, A, f)] to the
+    precategory [FlPre] on [A] with [hom(a,b) :≡ hom_D(f(a), f(b))].
+    For a precategory [C], [η] is an isomorphism [C ≅ FlPre(L(C), Ob C, η)]
+    ([flag_rt1]).  For a flagged category, [K : FlPre(D,A,f) → D] is a
+    weak equivalence, so by [lem:precomp-equiv-cat] [K ≅ G ∘ η] for some
+    [G : L → D] ([flG], [flα]), which is fully faithful and essentially
+    surjective, hence an equivalence; [cor:Cat-ua] turns it into a path
+    along which [Ob(η)] becomes [f] ([flag_rt2], [flag_path]). *)
+(** The precategory on [A] with [hom(a,b) :≡ hom_D(f(a), f(b))]. *)
+Definition FlPre (X : FlCat) : PreCat.
+Proof.
+  destruct X as [D [A [f s]]].
+  refine (Build_WildPreCat A (fun a b => homC (f a) (f b)) (fun a => idC (f a))
+            (fun a b c g h => g ∘c h) (fun a b h => lamC h) (fun a b h => rhoC h)
+            (fun a b c d h g k => alphaC h g k); _).
+  exact (fun a b => fst (snd D) (f a) (f b)).
+Defined.
+
+(** A path of categories acts on objects by its equivalence. *)
+Definition flag_path `{Funext} {C D : Cat} (P : C = D) (A : Type) (g : A -> Ob (fst C)) (s : isSurj g)
+  (f : A -> Ob (fst D)) (s' : isSurj f)
+  (E : forall a, fob (fst (idtoCatEquiv (ap fst P))) (g a) = f a)
+  : ((C; (A; (g; s))) : FlCat) = (D; (A; (f; s'))).
+Proof.
+  destruct P. destruct (ptw_inv E : g = f).
+  exact (ap (fun t => ((C; (A; (g; t))) : FlCat)) (Pi_isProp (fun _ => ptrunc_isProp) s s')).
+Defined.
+
+Section Flagged.
+
+  Context `{Univalence} (u : forall (C : WildPreCat) (pc : isPreCat C), isUnivalent (Rezk C pc)).
+
+  Definition RezkCat (C : PreCat) : Cat
+    := (Rezk (fst C) (snd C); (FullSub_isPreCat _ _ (FunctorCat_isPreCat _ _ _); u (fst C) (snd C))).
+
+  Definition FlOf (C : PreCat) : FlCat
+    := (RezkCat C;
+        (Ob (fst C); (fob (RezkEta (fst C) (snd C));
+          fun B => ptrunc_rec ptrunc_isProp
+                     (fun w => trunc (fst w; (eqinv (u _ _ _ B) (snd w))^))
+                     (RezkEta_eso (fst C) (snd C) B)))).
+
+  Definition flag_rt1 (C : PreCat) : FlPre (FlOf C) = C.
+  Proof.
+    pose (η := RezkEta (fst C) (snd C)).
+    refine (eqinv (idtoPreCatIso_isEquiv C (FlPre (FlOf C)))
+              (Build_Functor (fst C) (fst (FlPre (FlOf C))) idmap (fun a b h => fmap η h)
+                 (fun a => fid η a) (fun a b c g h => fcomp η g h);
+               (id_isEquiv _; RezkEta_ff (fst C) (snd C))))^.
+  Defined.
+
+  Section RT2.
+
+    Context (D : Cat) (A : Type) (f : A -> Ob (fst D)) (s : isSurj f).
+
+    Local Notation C := (FlPre (D; (A; (f; s)))).
+    Local Notation η := (RezkEta (fst C) (snd C)).
+    Local Notation pd := (fst (snd D)).
+
+    Definition flK : Functor (fst C) (fst D)
+      := Build_Functor (fst C) (fst D) f (fun a b h => h) (fun a => refl) (fun a b c g h => refl).
+
+    Definition flK_eso : isEso flK
+      := fun d => ptrunc_rec ptrunc_isProp
+                    (fun w : {a : A & d = f a} => trunc ((fst w; idtoiso (snd w)^)
+                                                          : {a : Ob (fst C) & IsoC (fob flK a) d}))
+                    (s d).
+
+    Definition flG : Functor (fst (RezkCat C)) (fst D)
+      := fst (precompF_split D η (RezkEta_ff _ _) (RezkEta_eso _ _) flK).
+
+    Definition flα : IsoC (C := FunctorCat (fst C) (fst D) pd) (compF flG η) flK
+      := snd (precompF_split D η (RezkEta_ff _ _) (RezkEta_eso _ _) flK).
+
+    Definition flαc (a : A) : IsoC (fob flG (fob η a)) (f a)
+      := (fst (fst flα) a; natiso_components (fst C) (fst D) pd (fst flα) (snd flα) a).
+
+    Definition flG_ff : isFullyFaithful flG.
+    Proof.
+      intros X Y. refine (ptrunc_rec (isEquiv_isProp _) _ (RezkEta_eso _ _ X)). intros [a i].
+      refine (ptrunc_rec (isEquiv_isProp _) _ (RezkEta_eso _ _ Y)). intros [b j].
+      destruct (eqinv (u _ _ _ X) i), (eqinv (u _ _ _ Y) j).
+      pose (conj := fun h : homC (f a) (f b) => invC (flαc b) ∘c (h ∘c fst (flαc a))).
+      refine (isEquiv_homotopic (comp conj (eqinv (RezkEta_ff _ _ a b))) _ _
+                (comp_isEquiv (eqinv_isEquiv _)
+                   (comp_isEquiv (precomp_isEquiv (snd (flαc a)) _)
+                                 (postcomp_isEquiv (invC_isIso (flαc b)) _)))).
+      intro k. unfold comp.
+      refine (_ @ ap (fmap flG) (eqinv_r (RezkEta_ff _ _ a b) k)).
+      refine (ap (fun v => invC (flαc b) ∘c v) (snd (fst flα) a b _) @ alphaC _ _ _ @ _).
+      exact (ap (fun v => v ∘c _) (iso_rl (flαc b)) @ lamC _).
+    Defined.
+
+    Definition flG_eso : isEso flG
+      := fun d => ptrunc_rec ptrunc_isProp
+                    (fun w : {a : A & d = f a} =>
+                       trunc (fob η (fst w); IsoC_comp (idtoiso (snd w)^) (flαc (fst w))))
+                    (s d).
+
+    Definition flG_equiv : isCatEquiv flG
+      := fse_equiv flG flG_ff (ff_eso_split (RezkCat C) flG flG_ff flG_eso).
+
+    Definition flag_rt2 : FlOf C = (D; (A; (f; s))).
+    Proof.
+      pose (t := Cat_ua (RezkCat C) D).
+      refine (flag_path (eqinv t (flG; flG_equiv)) A (fob η) _ f s _).
+      intro a.
+      exact (ap (fun e : CatEquiv _ _ => fob (fst e) (fob η a)) (eqinv_r t (flG; flG_equiv))
+             @ eqinv (snd (snd D) _ _) (flαc a)).
+    Defined.
+
+  End RT2.
+
+End Flagged.
+
+Definition thm_flagged_cat_equiv `{Univalence} : thm_flagged_cat_equiv_stmt.
+Proof.
+  intro u. refine (iso_to_isEquiv (FlOf u) FlPre (flag_rt1 u) _).
+  intros [D [A [f s]]]. exact (flag_rt2 u D A f s).
+Defined.
 
 (** Theorem [thm:1types-are-groupoids], second part:
     the path groupoid construction is an equivalence [U^{≤1} ≃ Gpd]. *)

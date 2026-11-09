@@ -178,7 +178,8 @@ Definition isMono_Op_isEpi (C : WildPreCat) {A B : Ob C} (f : homC A B)
   : @isMono (Op C) B A f = isEpi f := refl.
 
 (** Exercise [xca:mono-cat-grp]: the monomorphisms in the category of
-    groups are those of definition [def:typeofmono] (statement only). *)
+    groups are those of definition [def:typeofmono] (proved in Section
+    9.2 as [xca_mono_cat_grp]). *)
 Definition xca_mono_cat_grp_stmt `{Funext} : Type
   := forall (H G : Group) (f : Hom H G), isMono (C := GroupCat) f <-> ismono f.
 

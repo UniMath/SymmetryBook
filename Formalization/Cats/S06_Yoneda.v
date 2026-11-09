@@ -168,8 +168,8 @@ Section Yoneda.
     intro f. apply (path_NatTrans SetCat_isPreCat). intro A. exact refl.
   Defined.
 
-  (** Corollary [cor:yo-emb-obj] (statement only): for a category, [yo]
-      is injective on objects. *)
+  (** Corollary [cor:yo-emb-obj] (proved below as [cor_yo_emb_obj]): for
+      a category, [yo] is injective on objects. *)
   Definition cor_yo_emb_obj_stmt : Type := isUnivalent C -> isInj (fob yo).
 
   (** Definition [def:repr]. *)
