@@ -29,6 +29,8 @@
     - Lemma [lem:ff-eso] ([lem_ff_eso]): for [C] a category and [F] fully
       faithful, [∑_A F(A) ≅ B] is equivalent to a singleton once
       inhabited ([IsoC_postcomp_isEquiv], [fmap_iso_isEquiv]).
+    - Lemma [lem:precomp-equiv-cat] ([lem_precomp_equiv_cat], following
+      HoTT book 9.9: [precompF_ff], [precompF_split]).
     - Theorem [thm:ff-eso-equiv] ([thm_ff_eso_equiv]; split essential
       surjectivity from [lem:ff-eso], [ff_eso_split]).
     - Corollary [cor:Cat-ua] ([cor_Cat_ua], with [Univalence]): via
@@ -47,7 +49,6 @@
       exercise [xca:Rezk-completion-1trunc] ([TruncPathGrpd]).
 
     Left out (statements only, no proofs yet)
-    - Lemma [lem:precomp-equiv-cat] ([lem_precomp_equiv_cat_stmt]).
     - The smallness
       part of theorem [thm:Rezk-completion] ([thm_Rezk_small_stmt]) and
       exercise [xca:Rezk-completion-locally-small]
@@ -442,7 +443,7 @@ Defined.
 Definition isWeakEquiv {C D : WildPreCat} (F : Functor C D) : Type
   := isFullyFaithful F × isEso F.
 
-(** Lemma [lem:precomp-equiv-cat] (statement only). *)
+(** Lemma [lem:precomp-equiv-cat]. *)
 Definition precompF `{Funext} {C D : WildPreCat} (E : WildPreCat) (pe : isPreCat E)
   (K : Functor C D) : Functor (FunctorCat D E pe) (FunctorCat C E pe)
   := Build_Functor (FunctorCat D E pe) (FunctorCat C E pe) (fun G => compF G K)
@@ -452,6 +453,329 @@ Definition precompF `{Funext} {C D : WildPreCat} (E : WildPreCat) (pe : isPreCat
 Definition lem_precomp_equiv_cat_stmt `{Funext} : Type
   := forall (C D : PreCat) (E : Cat) (K : Functor (fst C) (fst D)),
        isWeakEquiv K -> isCatEquiv (precompF (fst E) (fst (snd E)) K).
+
+Definition iso_cancel_r {C : WildPreCat} {A B X : Ob C} {f : homC A B} (i : isIsoC f)
+  {x y : homC B X} (p : x ∘c f = y ∘c f) : x = y
+  := (eqinv_l (precomp_isEquiv i X) x)^ @ ap (eqinv (precomp_isEquiv i X)) p
+     @ eqinv_l (precomp_isEquiv i X) y.
+
+(** The proof of lemma [lem:precomp-equiv-cat] follows [HoTT book,
+    Lemmas 9.9.1–9.9.4]: [- ∘ H] is fully faithful ([precompF_ff]):
+    for [γ : GH ⇒ G'H], the arrows [g] with [g ∘ G(k) = G'(k) ∘ γ_a] for
+    all [k : H(a) ≅ b] form a contractible type ([PffT_isContr]); and it
+    is split essentially surjective ([precompF_split]): [G(b)] is the
+    center of the contractible type of compatible families of
+    isomorphisms [F(a) ≅ c] indexed by [k : H(a) ≅ b] ([PeX_isContr],
+    using that [E] is a category), and similarly for arrows
+    ([PeY_isContr]). *)
+Section PrecompFF.
+
+  Context `{Funext} {C D E : WildPreCat} (pe : isPreCat E) (K : Functor C D)
+    (ff : isFullyFaithful K) (eso : isEso K) (G G' : Functor D E)
+    (γ : NatTrans (compF G K) (compF G' K)).
+
+  (** [g ∘ G(k) = G'(k) ∘ γ_a] for one isomorphism [k : K(a₀) ≅ b]
+      implies it for all arrows [u : K(a) → b]. *)
+  Definition pff_ext {b : Ob D} (g : homC (fob G b) (fob G' b)) {a0 : Ob C}
+    (k0 : IsoC (fob K a0) b) (c0 : g ∘c fmap G (fst k0) = fmap G' (fst k0) ∘c fst γ a0)
+    {a : Ob C} (u : homC (fob K a) b) : g ∘c fmap G u = fmap G' u ∘c fst γ a.
+  Proof.
+    pose (h := eqinv (ff a a0) (invC k0 ∘c u)).
+    assert (eu : fst k0 ∘c fmap K h = u).
+    { refine (ap (fun v => fst k0 ∘c v) (eqinv_r (ff a a0) _) @ alphaC _ _ _ @ _).
+      exact (ap (fun v => v ∘c u) (iso_lr k0) @ lamC u). }
+    clearbody h. destruct eu.
+    refine (ap (fun v => g ∘c v) (fcomp G _ _) @ alphaC _ _ _ @ _).
+    refine (ap (fun v => v ∘c _) c0 @ (alphaC _ _ _)^ @ _).
+    refine (ap (fun v => fmap G' (fst k0) ∘c v) (snd γ a a0 h)^ @ alphaC _ _ _ @ _).
+    exact (ap (fun v => v ∘c fst γ a) (fcomp G' _ _)^).
+  Defined.
+
+  Definition PffT (b : Ob D) : Type
+    := {g : homC (fob G b) (fob G' b) &
+         forall a (k : IsoC (fob K a) b), g ∘c fmap G (fst k) = fmap G' (fst k) ∘c fst γ a}.
+
+  Definition PffT_isSet (b : Ob D) : isSet (PffT b)
+    := Sigma_isSet (pe _ _) (fun g => prop_is_set (Pi_isProp (fun a => Pi_isProp (fun k =>
+                                                     pe _ _ _ _)))).
+
+  Definition PffT_isContr (b : Ob D) : isContr (PffT b).
+  Proof.
+    refine (ptrunc_rec (isContr_isProp _) _ (eso b)). intros [a0 k0].
+    pose (g0 := (fmap G' (fst k0) ∘c fst γ a0) ∘c fmap G (invC k0)).
+    assert (c0 : g0 ∘c fmap G (fst k0) = fmap G' (fst k0) ∘c fst γ a0).
+    { refine ((alphaC _ _ _)^ @ ap (fun v => _ ∘c v) (fcomp G _ _)^ @ _).
+      exact (ap (fun v => _ ∘c fmap G v) (iso_rl k0) @ ap (fun v => _ ∘c v) (fid G _)
+             @ rhoC _). }
+    refine ((g0; fun a k => pff_ext g0 k0 c0 (fst k)); _).
+    intros [g c]. apply (path_sigma_prop (fun g => Pi_isProp (fun a => Pi_isProp (fun k =>
+                                                     pe _ _ _ _)))).
+    exact (iso_cancel_r (fmap_isIso G (snd k0)) (c0 @ (c a0 k0)^)).
+  Defined.
+
+  Definition pff_d (b : Ob D) : homC (fob G b) (fob G' b) := fst (fst (PffT_isContr b)).
+
+  Definition pff_d_ext (b : Ob D) {a : Ob C} (u : homC (fob K a) b)
+    : pff_d b ∘c fmap G u = fmap G' u ∘c fst γ a.
+  Proof.
+    refine (ptrunc_rec (pe _ _ _ _) _ (eso b)). intros [a0 k0].
+    exact (pff_ext (pff_d b) k0 (snd (fst (PffT_isContr b)) a0 k0) u).
+  Defined.
+
+  Definition pff_nat : NatTrans G G'.
+  Proof.
+    refine (pff_d; fun b b' f => _).
+    refine (ptrunc_rec (pe _ _ _ _) _ (eso b)). intros [a k].
+    apply (iso_cancel_r (fmap_isIso G (snd k))).
+    refine ((alphaC _ _ _)^ @ ap (fun v => fmap G' f ∘c v) (pff_d_ext b (fst k)) @ _).
+    refine (alphaC _ _ _ @ ap (fun v => v ∘c _) (fcomp G' _ _)^ @ (pff_d_ext b' _)^ @ _).
+    exact (ap (fun v => _ ∘c v) (fcomp G _ _) @ alphaC _ _ _).
+  Defined.
+
+End PrecompFF.
+
+Definition precompF_ff `{Funext} {C D E : WildPreCat} (pe : isPreCat E) (K : Functor C D)
+  (ff : isFullyFaithful K) (eso : isEso K) : isFullyFaithful (precompF E pe K).
+Proof.
+  intros G G'. refine (iso_to_isEquiv _ (pff_nat pe K ff eso G G') _ _).
+  - intro δ. apply (path_NatTrans pe). intro b.
+    exact (ap fst (snd (PffT_isContr pe K ff eso G G' (fmap (precompF E pe K) δ) b)
+                       (fst δ b; fun a k => (snd δ _ _ (fst k))^))).
+  - intro γ. apply (path_NatTrans pe). intro a.
+    refine ((rhoC _)^ @ ap (fun v => _ ∘c v) (fid G _)^ @ _).
+    refine (pff_d_ext pe K ff eso G G' γ (fob K a) (idC _) @ _).
+    exact (ap (fun v => v ∘c _) (fid G' _) @ lamC _).
+Defined.
+
+Definition comp_isIsoC {C : WildPreCat} {A B X : Ob C} {f : homC A B} {g : homC B X}
+  (i : isIsoC f) (j : isIsoC g) : isIsoC (g ∘c f).
+Proof.
+  destruct i as [[f1 s] [f2 r]], j as [[g1 s'] [g2 r']].
+  exact (snd (IsoC_comp (g; ((g1; s'); (g2; r'))) (f; ((f1; s); (f2; r))))).
+Defined.
+
+Definition iso_cancel_l {C : WildPreCat} {A B X : Ob C} {f : homC A B} (i : isIsoC f)
+  {x y : homC X A} (p : f ∘c x = f ∘c y) : x = y
+  := (eqinv_l (postcomp_isEquiv i X) x)^ @ ap (eqinv (postcomp_isEquiv i X)) p
+     @ eqinv_l (postcomp_isEquiv i X) y.
+
+Section FFLift.
+
+  Context {C D : WildPreCat} (K : Functor C D) (ff : isFullyFaithful K).
+
+  Definition ff_inj {a a' : Ob C} {f f' : homC a a'} (p : fmap K f = fmap K f') : f = f'
+    := (eqinv_l (ff a a') f)^ @ ap (eqinv (ff a a')) p @ eqinv_l (ff a a') f'.
+
+  (** The arrow [l : a → a'] with [k' ∘ K(l) = u]. *)
+  Definition ff_lift {a a' : Ob C} {b : Ob D} (k' : IsoC (fob K a') b) (u : homC (fob K a) b)
+    : homC a a'
+    := eqinv (ff a a') (invC k' ∘c u).
+
+  Definition ff_lift_spec {a a' : Ob C} {b : Ob D} (k' : IsoC (fob K a') b)
+    (u : homC (fob K a) b) : fst k' ∘c fmap K (ff_lift k' u) = u.
+  Proof.
+    refine (ap (fun v => fst k' ∘c v) (eqinv_r (ff a a') _) @ alphaC _ _ _ @ _).
+    exact (ap (fun v => v ∘c u) (iso_lr k') @ lamC u).
+  Defined.
+
+  (** Arrows [f, f'] with [k' ∘ K(f) = k' ∘ K(f')] are equal. *)
+  Definition ff_lift_unique {a a' : Ob C} {b : Ob D} (k' : IsoC (fob K a') b)
+    {f f' : homC a a'} (p : fst k' ∘c fmap K f = fst k' ∘c fmap K f') : f = f'
+    := ff_inj (iso_cancel_l (snd k') p).
+
+  Definition ff_lift_isIso {a a' : Ob C} {b : Ob D} (k' : IsoC (fob K a') b)
+    (k : IsoC (fob K a) b) : isIsoC (ff_lift k' (fst k))
+    := ff_reflect_iso K ff _ (trp isIsoC (eqinv_r (ff a a') _)^
+                                (comp_isIsoC (snd k) (invC_isIso k'))).
+
+End FFLift.
+
+Section PrecompEso.
+
+  Context `{Funext} {C D : WildPreCat} (E : Cat) (K : Functor C D)
+    (ff : isFullyFaithful K) (eso : isEso K) (F : Functor C (fst E)).
+
+  Local Notation pe := (fst (snd E)).
+  Local Notation uE := (snd (snd E)).
+
+  (** The cones under [b]: compatible families of isomorphisms
+      [h_{a,k} : F(a) ≅ c] for [k : K(a) ≅ b]. *)
+  Definition PeH (b : Ob D) (c : Ob (fst E)) : Type
+    := {h : forall a, IsoC (fob K a) b -> IsoC (fob F a) c &
+         forall a a' (k : IsoC (fob K a) b) (k' : IsoC (fob K a') b) (f : homC a a'),
+           fst k' ∘c fmap K f = fst k -> fst (h a' k') ∘c fmap F f = fst (h a k)}.
+
+  Definition PeH_cond_isProp (b : Ob D) (c : Ob (fst E))
+    (h : forall a, IsoC (fob K a) b -> IsoC (fob F a) c)
+    : isProp (forall a a' (k : IsoC (fob K a) b) (k' : IsoC (fob K a') b) (f : homC a a'),
+                fst k' ∘c fmap K f = fst k -> fst (h a' k') ∘c fmap F f = fst (h a k))
+    := Pi_isProp (fun a => Pi_isProp (fun a' => Pi_isProp (fun k => Pi_isProp (fun k' =>
+         Pi_isProp (fun f => Pi_isProp (fun _ => pe _ _ _ _)))))).
+
+  Section FixedLift.
+
+    Context {b : Ob D} {a0 : Ob C} (k0 : IsoC (fob K a0) b).
+
+    Definition peh_of {c : Ob (fst E)} (e : IsoC (fob F a0) c) : PeH b c.
+    Proof.
+      refine ((fun a k => (fst e ∘c fmap F (ff_lift K ff k0 (fst k));
+                           comp_isIsoC (fmap_isIso F (ff_lift_isIso K ff k0 k)) (snd e)));
+              fun a a' k k' f r => _).
+      cbn. refine ((alphaC _ _ _)^ @ ap (fun v => fst e ∘c v) ((fcomp F _ _)^ @ ap (fmap F) _)).
+      apply (ff_lift_unique K ff k0).
+      refine (ap (fun v => _ ∘c v) (fcomp K _ _) @ alphaC _ _ _ @ _).
+      refine (ap (fun v => v ∘c _) (ff_lift_spec K ff k0 (fst k')) @ r @ _).
+      exact (ff_lift_spec K ff k0 (fst k))^.
+    Defined.
+
+    Definition ff_lift_id : ff_lift K ff k0 (fst k0) = idC a0.
+    Proof.
+      apply (ff_lift_unique K ff k0).
+      exact (ff_lift_spec K ff k0 (fst k0) @ (rhoC _)^ @ ap (fun v => _ ∘c v) (fid K a0)^).
+    Defined.
+
+    Definition peh_eqv (c : Ob (fst E)) : PeH b c ≃ IsoC (fob F a0) c.
+    Proof.
+      refine (mkEqv (fun x => fst x a0 k0) peh_of _ _).
+      - intros [h φ]. apply (path_sigma_prop (PeH_cond_isProp b c)).
+        apply ptw_inv; intro a. apply ptw_inv; intro k. apply path_IsoC.
+        exact (φ a a0 k k0 _ (ff_lift_spec K ff k0 (fst k))).
+      - intro e. apply path_IsoC. cbn.
+        exact (ap (fun v => fst e ∘c fmap F v) ff_lift_id @ ap (fun v => fst e ∘c v) (fid F a0)
+               @ rhoC _).
+    Defined.
+
+  End FixedLift.
+
+  Definition PeX_isContr (b : Ob D) : isContr {c : Ob (fst E) & PeH b c}.
+  Proof.
+    refine (ptrunc_rec (isContr_isProp _) _ (eso b)). intros [a0 k0].
+    refine (isContr_Eqv (Eqv_inv (tot (fun c => fst (peh_eqv k0 c));
+                                  tot_isEquiv _ (fun c => snd (peh_eqv k0 c)))) _).
+    exact (isContr_Eqv (tot (fun c (p : fob F a0 = c) => idtoiso p);
+                        tot_isEquiv _ (fun c => uE _ c)) (singleton_contr _)).
+  Defined.
+
+  Definition Gob (b : Ob D) : Ob (fst E) := fst (fst (PeX_isContr b)).
+
+  Definition Gh (b : Ob D) : forall a, IsoC (fob K a) b -> IsoC (fob F a) (Gob b)
+    := fst (snd (fst (PeX_isContr b))).
+
+  Definition Gφ (b : Ob D) {a a'} (k : IsoC (fob K a) b) (k' : IsoC (fob K a') b)
+    (f : homC a a') (r : fst k' ∘c fmap K f = fst k)
+    : fst (Gh b a' k') ∘c fmap F f = fst (Gh b a k)
+    := snd (snd (fst (PeX_isContr b))) a a' k k' f r.
+
+End PrecompEso.
+
+Section PrecompEsoMap.
+
+  Context `{Funext} {C D : WildPreCat} (E : Cat) (K : Functor C D)
+    (ff : isFullyFaithful K) (eso : isEso K) (F : Functor C (fst E)).
+
+  Local Notation pe := (fst (snd E)).
+  Local Notation G0 := (Gob E K ff eso F).
+  Local Notation h := (Gh E K ff eso F).
+  Local Notation φ := (Gφ E K ff eso F).
+
+  Definition PeY {b b' : Ob D} (g : homC b b') (m : homC (G0 b) (G0 b')) : Type
+    := forall a (k : IsoC (fob K a) b) a' (k' : IsoC (fob K a') b') (f : homC a a'),
+         fst k' ∘c fmap K f = g ∘c fst k -> m ∘c fst (h b a k) = fst (h b' a' k') ∘c fmap F f.
+
+  Definition PeY_isProp {b b' : Ob D} (g : homC b b') (m : homC (G0 b) (G0 b'))
+    : isProp (PeY g m)
+    := Pi_isProp (fun a => Pi_isProp (fun k => Pi_isProp (fun a' => Pi_isProp (fun k' =>
+         Pi_isProp (fun f => Pi_isProp (fun _ => pe _ _ _ _)))))).
+
+  Definition pey_ext {b b' : Ob D} (g : homC b b') (m : homC (G0 b) (G0 b'))
+    {a a'} (k : IsoC (fob K a) b) (k' : IsoC (fob K a') b') (f0 : homC a a')
+    (r0 : fst k' ∘c fmap K f0 = g ∘c fst k)
+    (c0 : m ∘c fst (h b a k) = fst (h b' a' k') ∘c fmap F f0) : PeY g m.
+  Proof.
+    intros a1 k1 a1' k1' f1 r1.
+    pose (p := ff_lift K ff k (fst k1)). pose (q := ff_lift K ff k' (fst k1')).
+    assert (e : f0 ∘c p = q ∘c f1).
+    { apply (ff_lift_unique K ff k').
+      refine (ap (fun v => _ ∘c v) (fcomp K _ _) @ alphaC _ _ _ @ ap (fun v => v ∘c _) r0 @ _).
+      refine ((alphaC _ _ _)^ @ ap (fun v => g ∘c v) (ff_lift_spec K ff k (fst k1)) @ _).
+      refine (r1^ @ _).
+      refine (ap (fun v => v ∘c _) (ff_lift_spec K ff k' (fst k1'))^ @ (alphaC _ _ _)^ @ _).
+      exact (ap (fun v => _ ∘c v) (fcomp K _ _)^). }
+    refine (ap (fun v => m ∘c v) (φ b k1 k p (ff_lift_spec K ff k (fst k1)))^ @ _).
+    refine (alphaC _ _ _ @ ap (fun v => v ∘c _) c0 @ (alphaC _ _ _)^ @ _).
+    refine (ap (fun v => _ ∘c v) ((fcomp F _ _)^ @ ap (fmap F) e @ fcomp F _ _) @ _).
+    exact (alphaC _ _ _ @ ap (fun v => v ∘c _) (φ b' k1' k' q (ff_lift_spec K ff k' (fst k1')))).
+  Defined.
+
+  Definition PeY_isContr {b b' : Ob D} (g : homC b b') : isContr {m : homC (G0 b) (G0 b') & PeY g m}.
+  Proof.
+    refine (ptrunc_rec (isContr_isProp _) _ (eso b)). intros [a k].
+    refine (ptrunc_rec (isContr_isProp _) _ (eso b')). intros [a' k'].
+    pose (f0 := ff_lift K ff k' (g ∘c fst k)).
+    pose (m0 := (fst (h b' a' k') ∘c fmap F f0) ∘c invC (h b a k)).
+    assert (c0 : m0 ∘c fst (h b a k) = fst (h b' a' k') ∘c fmap F f0).
+    { exact ((alphaC _ _ _)^ @ ap (fun v => _ ∘c v) (iso_rl (h b a k)) @ rhoC _). }
+    refine ((m0; pey_ext g m0 k k' f0 (ff_lift_spec K ff k' _) c0); _).
+    intros [m cm]. apply (path_sigma_prop (PeY_isProp g)).
+    exact (iso_cancel_r (snd (h b a k)) (c0 @ (cm a k a' k' f0 (ff_lift_spec K ff k' _))^)).
+  Defined.
+
+  Definition Gmap {b b' : Ob D} (g : homC b b') : homC (G0 b) (G0 b')
+    := fst (fst (PeY_isContr g)).
+
+  Definition Gmap_spec {b b' : Ob D} (g : homC b b') : PeY g (Gmap g)
+    := snd (fst (PeY_isContr g)).
+
+  Definition Gfid (b : Ob D) : Gmap (idC b) = idC (G0 b).
+  Proof.
+    refine (ap fst (snd (PeY_isContr (idC b)) (idC _; _))).
+    intros a1 k1 a1' k1' f1 r1. exact (lamC _ @ (φ b k1 k1' f1 (r1 @ lamC _))^).
+  Defined.
+
+  Definition Gfcomp {b b' b'' : Ob D} (g : homC b b') (g' : homC b' b'')
+    : Gmap (g' ∘c g) = Gmap g' ∘c Gmap g.
+  Proof.
+    refine (ap fst (snd (PeY_isContr (g' ∘c g)) (Gmap g' ∘c Gmap g; _))).
+    intros a1 k1 a1'' k1'' f1 r1.
+    refine (ptrunc_rec (pe _ _ _ _) _ (eso b')). intros [a' k'].
+    pose (fa := ff_lift K ff k' (g ∘c fst k1)). pose (fb := ff_lift K ff k1'' (g' ∘c fst k')).
+    assert (e : fb ∘c fa = f1).
+    { apply (ff_lift_unique K ff k1'').
+      refine (ap (fun v => _ ∘c v) (fcomp K _ _) @ alphaC _ _ _ @ _).
+      refine (ap (fun v => v ∘c _) (ff_lift_spec K ff k1'' _) @ (alphaC _ _ _)^ @ _).
+      refine (ap (fun v => g' ∘c v) (ff_lift_spec K ff k' _) @ alphaC _ _ _ @ r1^). }
+    refine ((alphaC _ _ _)^ @ ap (fun v => Gmap g' ∘c v)
+              (Gmap_spec g a1 k1 a' k' fa (ff_lift_spec K ff k' _)) @ _).
+    refine (alphaC _ _ _ @ ap (fun v => v ∘c _)
+              (Gmap_spec g' a' k' a1'' k1'' fb (ff_lift_spec K ff k1'' _)) @ _).
+    exact ((alphaC _ _ _)^ @ ap (fun v => _ ∘c v) ((fcomp F _ _)^ @ ap (fmap F) e)).
+  Defined.
+
+  Definition PeG : Functor D (fst E)
+    := Build_Functor D (fst E) G0 (fun b b' g => Gmap g) Gfid (fun b b' b'' g g' => Gfcomp g g').
+
+  Definition pe_nt : NatTrans F (compF PeG K).
+  Proof.
+    refine ((fun a => fst (h (fob K a) a (idIsoC _))); fun a a' f => _).
+    exact (Gmap_spec (fmap K f) a (idIsoC _) a' (idIsoC _) f (lamC _ @ (rhoC _)^)).
+  Defined.
+
+End PrecompEsoMap.
+
+Definition precompF_split `{Funext} {C D : WildPreCat} (E : Cat) (K : Functor C D)
+  (ff : isFullyFaithful K) (eso : isEso K) : isSplitEso (precompF (fst E) (fst (snd E)) K).
+Proof.
+  intro F. refine (PeG E K ff eso F; IsoC_inv _).
+  exact (pe_nt E K ff eso F;
+         components_natiso C (fst E) (fst (snd E)) (pe_nt E K ff eso F)
+           (fun a => snd (Gh E K ff eso F (fob K a) a (idIsoC _)))).
+Defined.
+
+Definition lem_precomp_equiv_cat `{Funext} : lem_precomp_equiv_cat_stmt.
+Proof.
+  intros C D E K [ff eso].
+  exact (fse_equiv _ (precompF_ff (fst (snd E)) K ff eso) (precompF_split E K ff eso)).
+Defined.
 
 (** Definition [def:Rezk-completion]: the full subcategory of presheaves
     on the (merely) representable ones.  NOTE for the book text: for a
