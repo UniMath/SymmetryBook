@@ -51,12 +51,12 @@
       ([thm_1types_are_groupoids], with [Funext]; the inverse is
       [PathFun]); second part, [U^{≤1} ≃ Gpd] ([thm_1types_gpd], with
       [Univalence]; [GpdFun] and [cor:Cat-ua]).
-    - Definition [def:flagged-cat] ([FlCat]); the path pregroupoid of
-      exercise [xca:Rezk-completion-1trunc] ([TruncPathGrpd]).
+    - Definition [def:flagged-cat] ([FlCat]).
+    - Exercise [xca:Rezk-completion-1trunc] ([xca_Rezk_completion_1trunc],
+      with [Univalence]): the path pregroupoid [TruncPathGrpd]; [Ob(η)]
+      extends to an equivalence [‖A‖₁ ≃ Ob(L)] ([RT_f]).
 
     Left out (statements only, no proofs yet)
-    - Exercise [xca:Rezk-completion-1trunc]
-      ([xca_Rezk_completion_1trunc_stmt]).
     - Theorem [thm:flagged-cat-equiv] ([thm_flagged_cat_equiv_stmt],
       assuming that Rezk completions are categories).  NOTE for the book
       text: it says "sending a category [C]"; it should be a precategory.
@@ -66,7 +66,7 @@
 
 From HoTT Require Import
   Basics Types.Sigma Types.Prod Types.Equiv Types.Bool Types.Universe
-  Types.Forall Types.Paths Types.Unit Truncations.Core Spaces.Nat.Core.
+  Types.Forall Types.Paths Types.Unit Truncations.Core Truncations.SeparatedTrunc Spaces.Nat.Core.
 From SymmetryBook Require Export Cats.S06_Yoneda.
 
 Local Open Scope uf_scope.
@@ -920,7 +920,7 @@ Proof.
   destruct p. exact (fid F x)^.
 Defined.
 
-(** Exercise [xca:Rezk-completion-1trunc] (statement only): the path
+(** Exercise [xca:Rezk-completion-1trunc]: the path
     pregroupoid with [hom(x,y) :≡ ‖x = y‖₀], whose Rezk completion is the
     [1]-truncation. *)
 Section TruncPath.
@@ -958,6 +958,95 @@ End TruncPath.
 
 Definition xca_Rezk_completion_1trunc_stmt `{Funext} : Type
   := forall A : Type, Ob (Rezk (TruncPathGrpd A) (TruncPathGrpd_isPreCat A)) ≃ Trunc 1 A.
+
+(** The solution (with [Univalence]): [Ob(η)] extends to
+    [f : ‖A‖₁ → Ob(L)] ([RT_f]), which is surjective since [η] is
+    essentially surjective, and an embedding: on [|x|, |y|], [ap f]
+    corresponds to [‖x = y‖₀ ≃ hom(ηx, ηy) ≃ Iso(ηx, ηy)] ([RT_claim],
+    [RT_Psi]; all arrows of the path pregroupoid are isomorphisms,
+    [TP_isPreGrpd]). *)
+Section RezkTrunc.
+
+  Context `{Univalence} (A : Type).
+
+  Local Notation TP := (TruncPathGrpd A).
+  Local Notation tpc := (TruncPathGrpd_isPreCat A).
+  Local Notation L := (Rezk TP tpc).
+  Local Notation η := (RezkEta TP tpc).
+
+  Definition RT_cat : Cat
+    := (L; (FullSub_isPreCat _ _ (FunctorCat_isPreCat _ _ _); Rezk_isUnivalent TP tpc)).
+
+  Definition TP_isPreGrpd : isPreGrpd TP.
+  Proof.
+    intros x y. refine (strunc_ind_prop _ (fun k => isIsoC_isProp (C := TP) k) _).
+    intro p. destruct p. exact ((settrunc refl; refl); (settrunc refl; refl)).
+  Defined.
+
+  Definition RT_f : Trunc 1 A -> Ob L
+    := Trunc_rec (n := 1) (IsTrunc0 := isGrpd_IsTrunc (Ob_isGrpd RT_cat)) (fob η).
+
+  Definition RT_Psi (x y : A) : homC (w := TP) x y -> IsoC (C := L) (fob η x) (fob η y)
+    := fun k => (fmap η k; fmap_isIso η (TP_isPreGrpd x y k)).
+
+  Definition RT_Psi_isEquiv (x y : A) : isEquiv (RT_Psi x y).
+  Proof.
+    refine (iso_to_isEquiv _ (fun j => eqinv (RezkEta_ff TP tpc x y) (fst j)) _ _).
+    - intro k. exact (eqinv_l (RezkEta_ff TP tpc x y) k).
+    - intro j. apply (path_IsoC (C := L)). exact (eqinv_r (RezkEta_ff TP tpc x y) (fst j)).
+  Defined.
+
+  Definition RT_path_Tr (x y : A) (p : x = y) : equiv_path_Tr (n := 0) x y (tr p) = ap tr p.
+  Proof. exact refl. Defined.
+
+  Definition RT_claim0 (x y : A) (p : x = y)
+    : idtoiso (C := L) (ap (fob η) p) = RT_Psi x y (settrunc p).
+  Proof.
+    destruct p. apply (path_IsoC (C := L) (e := idIsoC (C := L) _) (e' := RT_Psi x x (settrunc refl))).
+    exact (fid η x)^.
+  Defined.
+
+  Definition RT_ap (x y : A) (p : x = y) : ap RT_f (ap (tr (n := 1)) p) = ap (fob η) p
+    := match p with refl => refl end.
+
+  Definition RT_claim (x y : A) (z : Tr 0 (x = y))
+    : idtoiso (C := L) (ap RT_f (equiv_path_Tr (n := 0) x y z)) = RT_Psi x y z.
+  Proof.
+    revert z.
+    refine (strunc_ind_prop
+              (fun z => idtoiso (C := L) (ap RT_f (equiv_path_Tr (n := 0) x y z)) = RT_Psi x y z)
+              (fun z => IsoC_isSet (fst (snd RT_cat)) _ _ _ _) _).
+    intro p.
+    refine (ap (fun q => idtoiso (C := L) (ap RT_f q)) (RT_path_Tr x y p) @ _).
+    exact (ap (idtoiso (C := L)) (RT_ap x y p) @ RT_claim0 x y p).
+  Defined.
+
+  Definition RT_ap_isEquiv (u v : Trunc 1 A) : isEquiv (@ap _ _ RT_f u v).
+  Proof.
+    revert u. refine (@Trunc_ind 1 _ (fun u => isEquiv (@ap _ _ RT_f u v))
+                        (fun u => @istrunc_hprop (-1) _ (isProp_IsHProp (isEquiv_isProp _))) _).
+    intro x. revert v. refine (@Trunc_ind 1 _ (fun v => isEquiv (@ap _ _ RT_f (tr x) v))
+                        (fun v => @istrunc_hprop (-1) _ (isProp_IsHProp (isEquiv_isProp _))) _).
+    intro y. pose (e := equiv_path_Tr (n := 0) x y).
+    pose (uL := Rezk_isUnivalent TP tpc (fob η x) (fob η y)).
+    pose (ei := Eqv_of_Equiv (equiv_inverse e)).
+    refine (isEquiv_homotopic (comp (eqinv uL) (comp (RT_Psi x y) (fst ei))) _ _
+              (comp_isEquiv (comp_isEquiv (snd ei) (RT_Psi_isEquiv x y)) (eqinv_isEquiv uL))).
+    intro q. refine (ap (eqinv uL) (RT_claim x y (fst ei q))^ @ eqinv_l uL _ @ _).
+    exact (ap (ap RT_f) (eisretr e q)).
+  Defined.
+
+  Definition RT_f_isEquiv : isEquiv RT_f.
+  Proof.
+    refine (inj_surj_isEquiv (ap_isEquiv_isInj RT_ap_isEquiv) _).
+    intro y. refine (ptrunc_rec ptrunc_isProp _ (RezkEta_eso TP tpc y)). intros [x i].
+    exact (trunc (tr x; (eqinv (Rezk_isUnivalent TP tpc _ y) i)^)).
+  Defined.
+
+End RezkTrunc.
+
+Definition xca_Rezk_completion_1trunc `{Univalence} : xca_Rezk_completion_1trunc_stmt
+  := fun A => Eqv_inv (RT_f A; RT_f_isEquiv A).
 
 (** Definition [def:flagged-cat]. *)
 Definition FlCat : Type := {C : Cat & {A : Type & {f : A -> Ob (fst C) & isSurj f}}}.
