@@ -41,7 +41,8 @@
       ([Functor_isTrunc1]).
     - Theorem [thm:1types-are-groupoids], first part
       ([thm_1types_are_groupoids], with [Funext]; the inverse is
-      [PathFun]).
+      [PathFun]); second part, [U^{≤1} ≃ Gpd] ([thm_1types_gpd], with
+      [Univalence]; [GpdFun] and [cor:Cat-ua]).
     - Definition [def:flagged-cat] ([FlCat]); the path pregroupoid of
       exercise [xca:Rezk-completion-1trunc] ([TruncPathGrpd]).
 
@@ -56,9 +57,6 @@
     - Theorem [thm:flagged-cat-equiv] ([thm_flagged_cat_equiv_stmt],
       assuming that Rezk completions are categories).  NOTE for the book
       text: it says "sending a category [C]"; it should be a precategory.
-
-    - The second part of [thm:1types-are-groupoids], [U^{≤1} ≃ Gpd]
-      ([thm_1types_gpd_stmt], with [Gpd] and [PathGrpdGpd]).
 
     Left out (not formalized)
     - Remark [rem:chicken-or-egg] (informal). *)
@@ -587,7 +585,7 @@ Definition thm_flagged_cat_equiv_stmt `{Funext} : Type
                                 (RezkEta_eso (fst C) (snd C) B))))
                   : FlCat).
 
-(** Theorem [thm:1types-are-groupoids], second part (statement only):
+(** Theorem [thm:1types-are-groupoids], second part:
     the path groupoid construction is an equivalence [U^{≤1} ≃ Gpd]. *)
 Definition Gpd : Type := {C : Cat & isPreGrpd (fst C)}.
 
@@ -596,3 +594,35 @@ Definition PathGrpdGpd `{Funext} (X : {X : Type & isGrpd X}) : Gpd
       PathGrpd_isPreGrpd (fst X)).
 
 Definition thm_1types_gpd_stmt `{Funext} : Type := isEquiv PathGrpdGpd.
+
+(** The functor [PathGrpd(C₀) → C] from the path groupoid on the objects
+    of a category, acting by [idtoiso]. *)
+Definition GpdFun (C : Cat) : Functor (PathGrpd (Ob (fst C))) (fst C).
+Proof.
+  refine (Build_Functor (PathGrpd (Ob (fst C))) (fst C) idmap
+            (fun A B p => fst (idtoiso p)) (fun A => refl) _).
+  intros A B E p q. destruct p, q. exact (lamC _)^.
+Defined.
+
+Definition GpdFun_isPreCatIso `{Univalence} (G : Gpd)
+  : isPreCatIso (C := toPreCat (fst (PathGrpdGpd (Ob (fst (fst G)); Ob_isGrpd (fst G)))))
+                (D := toPreCat (fst G)) (GpdFun (fst G)).
+Proof.
+  refine (id_isEquiv _; fun A B => comp_isEquiv (snd (snd (fst G)) A B) _).
+  apply inj_surj_isEquiv.
+  - exact (fst_isInj (fun f => isIsoC_isProp f)).
+  - intro f. exact (trunc ((f; snd G A B f); refl)).
+Defined.
+
+(** The proof (with [Univalence]): the inverse sends a groupoid to its
+    type of objects; [GpdFun] is an isomorphism of precategories, so
+    [cor:Cat-ua] identifies [PathGrpd(C₀)] with [C]. *)
+Definition thm_1types_gpd `{Univalence} : thm_1types_gpd_stmt.
+Proof.
+  refine (iso_to_isEquiv _ (fun G : Gpd => (Ob (fst (fst G)); Ob_isGrpd (fst G))) _ _).
+  - intros [X gX]. exact (ap (fun g => (X; g) : {X : Type & isGrpd X}) (isGrpd_isProp X _ _)).
+  - intro G.
+    refine (path_sigma_prop (fun C => Pi_isProp (fun A => Pi_isProp (fun B =>
+                               Pi_isProp (fun f => isIsoC_isProp f)))) _).
+    exact (eqinv (Cat_ua (fst (PathGrpdGpd (Ob (fst (fst G)); Ob_isGrpd (fst G)))) (fst G)) (GpdFun (fst G); preiso_to_equiv _ (GpdFun_isPreCatIso G))).
+Defined.
